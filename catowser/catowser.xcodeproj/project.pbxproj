@@ -7,33 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A910B05602B21CB19029F7B9 /* Pods_catowser.framework */; };
 		8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49A1EED5E700020102F /* AppDelegate.swift */; };
-		8435A49D1EED5E700020102F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* ViewController.swift */; };
-		8435A4A01EED5E700020102F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435A49E1EED5E700020102F /* Main.storyboard */; };
+		8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8435A4A21EED5E700020102F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A11EED5E700020102F /* Assets.xcassets */; };
 		8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A31EED5E700020102F /* LaunchScreen.storyboard */; };
+		84458EAF1EF70783007DA030 /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84458EAE1EF70783007DA030 /* BrowserViewModel.swift */; };
 		846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* TabModel.swift */; };
-		84704FC01EEE757C00F89F6B /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FBF1EEE757C00F89F6B /* TabsView.swift */; };
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC31EEE785500F89F6B /* TabViewModel.swift */; };
-		84F814BC1EF6AE0000C263E2 /* TopTabsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F814BA1EF6AE0000C263E2 /* TopTabsLayout.swift */; };
-		84F814BD1EF6AE0000C263E2 /* TopTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F814BB1EF6AE0000C263E2 /* TopTabsViewController.swift */; };
+		847D7C8D1EF6C8AC00291B87 /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* BrowserViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
 		8435A4971EED5E700020102F /* catowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8435A49A1EED5E700020102F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		8435A49C1EED5E700020102F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		8435A49F1EED5E700020102F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8435A49C1EED5E700020102F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		8435A4A11EED5E700020102F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8435A4A41EED5E700020102F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8435A4A61EED5E700020102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84458EAE1EF70783007DA030 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
 		846220AE1EEE9B6C00B84C73 /* TabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabModel.swift; sourceTree = "<group>"; };
-		84704FBF1EEE757C00F89F6B /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		84704FC31EEE785500F89F6B /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
-		84F814BA1EF6AE0000C263E2 /* TopTabsLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTabsLayout.swift; sourceTree = "<group>"; };
-		84F814BB1EF6AE0000C263E2 /* TopTabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopTabsViewController.swift; sourceTree = "<group>"; };
+		847D7C881EF6C30F00291B87 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
+		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,17 +41,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A910B05602B21CB19029F7B9 /* Pods_catowser.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8435A48E1EED5E700020102F = {
 			isa = PBXGroup;
 			children = (
 				8435A4991EED5E700020102F /* catowser */,
 				8435A4981EED5E700020102F /* Products */,
+				E35CED317EE4DF68ED3EDD9C /* Pods */,
+				5906B47E95A37FC0872DBD1A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,10 +77,10 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				847D7C871EF6C30F00291B87 /* Browser */,
 				84E64DCC1EED9FD500F21F95 /* Tabs */,
 				8435A49A1EED5E700020102F /* AppDelegate.swift */,
-				8435A49C1EED5E700020102F /* ViewController.swift */,
-				8435A49E1EED5E700020102F /* Main.storyboard */,
+				8435A49C1EED5E700020102F /* BaseViewController.swift */,
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
 				8435A4A61EED5E700020102F /* Info.plist */,
@@ -77,17 +88,32 @@
 			path = catowser;
 			sourceTree = "<group>";
 		};
+		847D7C871EF6C30F00291B87 /* Browser */ = {
+			isa = PBXGroup;
+			children = (
+				847D7C881EF6C30F00291B87 /* BrowserViewController.swift */,
+				84458EAE1EF70783007DA030 /* BrowserViewModel.swift */,
+			);
+			path = Browser;
+			sourceTree = "<group>";
+		};
 		84E64DCC1EED9FD500F21F95 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				84F814BA1EF6AE0000C263E2 /* TopTabsLayout.swift */,
-				84F814BB1EF6AE0000C263E2 /* TopTabsViewController.swift */,
-				84704FBF1EEE757C00F89F6B /* TabsView.swift */,
 				84704FC11EEE769800F89F6B /* TabView.swift */,
 				84704FC31EEE785500F89F6B /* TabViewModel.swift */,
 				846220AE1EEE9B6C00B84C73 /* TabModel.swift */,
 			);
 			path = Tabs;
+			sourceTree = "<group>";
+		};
+		E35CED317EE4DF68ED3EDD9C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */,
+				2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,9 +123,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8435A4A91EED5E700020102F /* Build configuration list for PBXNativeTarget "catowser" */;
 			buildPhases = (
+				903C417858128E7774D9CABE /* [CP] Check Pods Manifest.lock */,
 				8435A4931EED5E700020102F /* Sources */,
 				8435A4941EED5E700020102F /* Frameworks */,
 				8435A4951EED5E700020102F /* Resources */,
+				D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */,
+				CB0A5CA74B08547C773A307D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -150,39 +179,77 @@
 			files = (
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
 				8435A4A21EED5E700020102F /* Assets.xcassets in Resources */,
-				8435A4A01EED5E700020102F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		903C417858128E7774D9CABE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CB0A5CA74B08547C773A307D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-catowser/Pods-catowser-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-catowser/Pods-catowser-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8435A4931EED5E700020102F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84F814BC1EF6AE0000C263E2 /* TopTabsLayout.swift in Sources */,
-				84704FC01EEE757C00F89F6B /* TabsView.swift in Sources */,
-				84F814BD1EF6AE0000C263E2 /* TopTabsViewController.swift in Sources */,
-				8435A49D1EED5E700020102F /* ViewController.swift in Sources */,
+				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
+				847D7C8D1EF6C8AC00291B87 /* BrowserViewController.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
 				846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
+				84458EAF1EF70783007DA030 /* BrowserViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		8435A49E1EED5E700020102F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				8435A49F1EED5E700020102F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		8435A4A31EED5E700020102F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -299,6 +366,7 @@
 		};
 		8435A4AA1EED5E700020102F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ERT5B59458;
@@ -313,6 +381,7 @@
 		};
 		8435A4AB1EED5E700020102F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ERT5B59458;

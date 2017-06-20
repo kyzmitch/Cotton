@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 protocol TabDelegate: class {
     
@@ -15,41 +16,79 @@ protocol TabDelegate: class {
 
 class TabView: UIControl {
     
-    private let closeButtonRadius: CGFloat = 11
     public var modelView: TabViewModel?
     public weak var delegate: TabDelegate?
-    public override var isSelected {
-        didSet {
-            
-        }
-    }
+    
+    fileprivate lazy var rightCurve = SingleCurveView(right: true)
+    fileprivate lazy var leftCurve = SingleCurveView(right: false)
+    
+    lazy var centerBackground: UIView = {
+        let centerBackground = UIView()
+        centerBackground.backgroundColor = UIColor.blue
+        return centerBackground
+    }()
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     override init(frame: CGRect) {
-        isSelected = false
-        let cicleX = frame.origin.x + frame.size.width - closeButtonRadius
-        let cicleY = frame.origin.y + closeButtonRadius
-        let closeCicleCenter = CGPoint(x: cicleX, y: cicleY)
-        let ciclePath = UIBezierPath(arcCenter: closeCicleCenter, radius: closeButtonRadius, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: false)
-        
-        
         super.init(frame: frame)
+        contentMode = .redraw
         
-        backgroundColor = modelView?.backgroundColour()
+        backgroundColor = UIColor.green
+        
+        addSubview(rightCurve)
+        addSubview(leftCurve)
+        addSubview(centerBackground)
+        
+        rightCurve.snp.makeConstraints { make in
+            make.right.equalTo(self)
+            make.top.equalTo(self)
+            make.bottom.equalTo(self)
+            make.width.equalTo(SingleCurveView.CurveWidth)
+        }
+        leftCurve.snp.makeConstraints { make in
+            make.left.equalTo(self)
+            make.top.equalTo(self)
+            make.bottom.equalTo(self)
+            make.width.equalTo(SingleCurveView.CurveWidth)
+        }
+        centerBackground.snp.makeConstraints { make in
+            make.left.equalTo(leftCurve.snp.right)
+            make.right.equalTo(rightCurve.snp.left)
+            make.top.equalTo(self)
+            make.bottom.equalTo(self)
+        }
+        
+        isSelected = false
     }
     
-    override var frame: CGRect {
-        
-        didSet {
-            
+    override var intrinsicContentSize: CGSize {
+        get {
+            return CGSize(width: 160.0, height: 0.0)
         }
     }
     
-    override func awakeFromNib() {
+    fileprivate class SingleCurveView: UIView {
+        static let CurveWidth: CGFloat = 50
+        var right: Bool = true
+        init(right: Bool) {
+            self.right = right
+            super.init(frame: CGRect.zero)
+            self.backgroundColor = UIColor.darkGray
+        }
         
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func draw(_ rect: CGRect) {
+            super.draw(rect)
+            let bezierPath = UIBezierPath.topTabsCurve(frame.width, height: frame.height, direction: right ? .right : .left)
+            UIColor.black.setFill()
+            bezierPath.fill()
+        }
     }
 }
 
