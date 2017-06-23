@@ -25,17 +25,22 @@ class BrowserViewController: UIViewController {
         return stackView
     }()
     
+    private let stackViewScrollableContainer: UIScrollView = {
+        let stackView = UIScrollView()
+        stackView.showsHorizontalScrollIndicator = false
+        stackView.backgroundColor = UIColor.cyan
+        return stackView
+    }()
+    
     override func viewDidLoad() {
         view.backgroundColor = UIColor.white
         
-        let stackViewScrollableContainer = UIScrollView()
-        stackViewScrollableContainer.backgroundColor = UIColor.cyan
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.snp.makeConstraints { (maker) in
             maker.height.equalTo(tabsContainerHeight)
             maker.topMargin.equalTo(view).offset(10)
-            maker.leading.equalTo(view).offset(20)
-            maker.trailing.equalTo(view).offset(-20)
+            maker.leading.equalTo(view).offset(0)
+            maker.trailing.equalTo(view).offset(0)
         }
         
         stackViewScrollableContainer.addSubview(tabsStackView)
@@ -47,14 +52,13 @@ class BrowserViewController: UIViewController {
             maker.height.equalToSuperview()
         }
         
-        let tabRect = CGRect(origin: CGPoint.zero, size: CGSize(width: 0, height: 0))
-        let tabView = TabView(frame: tabRect)
-        tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: "First website"))
-        tabsStackView.addArrangedSubview(tabView)
-        
-        let tabView2 = TabView(frame: tabRect)
-        tabView2.modelView = TabViewModel(tabModel: TabModel(tabTitle: "Second website"))
-        tabsStackView.addArrangedSubview(tabView2)
+        let tabRect = CGRect(origin: CGPoint.zero, size: CGSize.zero)
+        for i in 0..<10 {
+            let tabView = TabView(frame: tabRect)
+            let title = "Home \(i)"
+            tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))
+            tabsStackView.addArrangedSubview(tabView)
+        }
         
     }
 }

@@ -11,20 +11,28 @@ import UIKit
 import SnapKit
 
 protocol TabDelegate: class {
-    
+    func tab(_ tab: TabView, didPressCloseButton button: UIControl?) -> Void
 }
 
 class TabView: UIControl {
     
-    public var modelView: TabViewModel?
+    public var modelView: TabViewModel? {
+        willSet {
+            if let mv = newValue {
+                centerBackground.backgroundColor = mv.backgroundColour
+                backgroundColor = mv.realBackgroundColour
+                rightCurve.curveColour = mv.tabCurvesColour
+                leftCurve.curveColour = mv.tabCurvesColour
+            }
+        }
+    }
     public weak var delegate: TabDelegate?
     
-    fileprivate lazy var rightCurve = SingleCurveView(right: true)
-    fileprivate lazy var leftCurve = SingleCurveView(right: false)
+    fileprivate lazy var rightCurve = SingleCurveView(right: true, backColour: UIColor.clear)
+    fileprivate lazy var leftCurve = SingleCurveView(right: false, backColour: UIColor.clear)
     
     lazy var centerBackground: UIView = {
         let centerBackground = UIView()
-        centerBackground.backgroundColor = UIColor.blue
         return centerBackground
     }()
     
@@ -35,8 +43,6 @@ class TabView: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentMode = .redraw
-        
-        backgroundColor = UIColor.green
         
         addSubview(rightCurve)
         addSubview(leftCurve)
@@ -66,17 +72,25 @@ class TabView: UIControl {
     
     override var intrinsicContentSize: CGSize {
         get {
-            return CGSize(width: 160.0, height: 0.0)
+            if let mv = modelView {
+                return mv.tabSize
+            }
+            else {
+                return CGSize(width: 180.0, height: 0.0)
+            }
         }
     }
     
     fileprivate class SingleCurveView: UIView {
         static let CurveWidth: CGFloat = 50
-        var right: Bool = true
-        init(right: Bool) {
+        private var right: Bool = true
+        public var curveColour: UIColor?
+        
+        init(right: Bool, backColour: UIColor) {
             self.right = right
+            
             super.init(frame: CGRect.zero)
-            self.backgroundColor = UIColor.darkGray
+            self.backgroundColor = backColour
         }
         
         required init?(coder aDecoder: NSCoder) {
@@ -86,7 +100,12 @@ class TabView: UIControl {
         override func draw(_ rect: CGRect) {
             super.draw(rect)
             let bezierPath = UIBezierPath.topTabsCurve(frame.width, height: frame.height, direction: right ? .right : .left)
-            UIColor.black.setFill()
+            if let crvClr = curveColour {
+                crvClr.setFill()
+            }
+            else {
+                UIColor.gray.setFill()
+            }
             bezierPath.fill()
         }
     }
