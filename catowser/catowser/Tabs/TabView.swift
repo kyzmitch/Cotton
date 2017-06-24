@@ -118,7 +118,7 @@ enum TopTabsCurveDirection {
 }
 
 extension UIBezierPath {
-    static func topTabsCurve(_ width: CGFloat, height: CGFloat, direction: TopTabsCurveDirection) -> UIBezierPath {
+    class func topTabsCurve(_ width: CGFloat, height: CGFloat, direction: TopTabsCurveDirection) -> UIBezierPath {
         let x1: CGFloat = 32.84
         let x2: CGFloat = 5.1
         let x3: CGFloat = 19.76

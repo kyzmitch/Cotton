@@ -12,8 +12,18 @@ import SnapKit
 
 class BrowserViewController: UIViewController {
     
-    private let tabsContainerHeight = 40.0
-    public var viewModel: BrowserViewModel?
+    public var viewModel: BrowserViewModel? {
+        willSet {
+            if let vm = newValue {
+                stackViewScrollableContainer.snp.makeConstraints { (maker) in
+                    maker.height.equalTo(vm.tabsContainerHeight)
+                    maker.topMargin.equalTo(view).offset(10)
+                    maker.leading.equalTo(view).offset(0)
+                    maker.trailing.equalTo(view).offset(0)
+                }
+            }
+        }
+    }
     
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
@@ -21,15 +31,13 @@ class BrowserViewController: UIViewController {
         stackView.distribution = .fillEqually
         stackView.spacing = 10
         stackView.axis = .horizontal
-        stackView.backgroundColor = UIColor.orange
         return stackView
     }()
     
     private let stackViewScrollableContainer: UIScrollView = {
-        let stackView = UIScrollView()
-        stackView.showsHorizontalScrollIndicator = false
-        stackView.backgroundColor = UIColor.cyan
-        return stackView
+        let scrollView = UIScrollView()
+        scrollView.showsHorizontalScrollIndicator = false
+        return scrollView
     }()
     
     override func viewDidLoad() {
@@ -37,7 +45,7 @@ class BrowserViewController: UIViewController {
         
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.snp.makeConstraints { (maker) in
-            maker.height.equalTo(tabsContainerHeight)
+            maker.height.equalTo(40.0)
             maker.topMargin.equalTo(view).offset(10)
             maker.leading.equalTo(view).offset(0)
             maker.trailing.equalTo(view).offset(0)
@@ -52,6 +60,7 @@ class BrowserViewController: UIViewController {
             maker.height.equalToSuperview()
         }
         
+        // Code for debug to check tabs look and scrolling
         let tabRect = CGRect(origin: CGPoint.zero, size: CGSize.zero)
         for i in 0..<10 {
             let tabView = TabView(frame: tabRect)
@@ -60,5 +69,23 @@ class BrowserViewController: UIViewController {
             tabsStackView.addArrangedSubview(tabView)
         }
         
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        let bounds = stackViewScrollableContainer.bounds
+        stackViewScrollableContainer.layer.insertSublayer(CAGradientLayer.lightBackgroundGradientLayer(bounds: bounds), at: 0)
+    }
+}
+
+extension CAGradientLayer {
+    class func lightBackgroundGradientLayer(bounds: CGRect) -> CAGradientLayer {
+        let layer = CAGradientLayer()
+        layer.frame = bounds
+        let topColor: CGColor = UIColor.white.cgColor
+        let bottomColor: CGColor = UIColor.gray.cgColor
+        layer.colors = [topColor, bottomColor]
+        layer.locations = [0.0, 1.0]
+        return layer
     }
 }
