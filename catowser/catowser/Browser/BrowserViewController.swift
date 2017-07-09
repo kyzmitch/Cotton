@@ -37,12 +37,15 @@ class BrowserViewController: BaseViewController {
     private let stackViewScrollableContainer: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.bounces = false
         return scrollView
     }()
     
     private func addTabView(_ tabView: TabView) {
         tabsStackView.addArrangedSubview(tabView)
         view.layoutIfNeeded()
+        // TODO: actually possibly need to just add constant width
+        // view with gradient and make scroll view transparrent
         resizeTabsBackLayer()
     }
     

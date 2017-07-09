@@ -23,6 +23,8 @@ class TabView: UIControl {
                 backgroundColor = mv.realBackgroundColour
                 rightCurve.curveColour = mv.tabCurvesColour
                 leftCurve.curveColour = mv.tabCurvesColour
+                
+                titleText.text = mv.preparedTitle()
             }
         }
     }
@@ -36,6 +38,30 @@ class TabView: UIControl {
         return centerBackground
     }()
     
+    private let closeButton: UIButton = {
+        let closeButton = UIButton()
+        closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControlState())
+        closeButton.tintColor = UIColor.lightGray
+        closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        return closeButton
+    }()
+    
+    private let titleText: UILabel = {
+        let titleText = UILabel()
+        titleText.textAlignment = NSTextAlignment.left
+        titleText.isUserInteractionEnabled = false
+        titleText.numberOfLines = 1
+        titleText.font = UIFont.boldSystemFont(ofSize: 10.0)
+        return titleText
+    }()
+    
+    private let favicon: UIImageView = {
+        let favicon = UIImageView()
+        favicon.layer.cornerRadius = 2.0
+        favicon.layer.masksToBounds = true
+        return favicon
+    }()
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -47,6 +73,9 @@ class TabView: UIControl {
         addSubview(rightCurve)
         addSubview(leftCurve)
         addSubview(centerBackground)
+        addSubview(favicon)
+        addSubview(titleText)
+        addSubview(closeButton)
         
         rightCurve.snp.makeConstraints { make in
             make.right.equalTo(self)
@@ -65,6 +94,23 @@ class TabView: UIControl {
             make.right.equalTo(rightCurve.snp.left)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
+        }
+        favicon.snp.makeConstraints { make in
+            make.centerY.equalTo(self)
+            make.size.equalTo(18.0)
+            make.leading.equalTo(self).offset(10)
+        }
+        titleText.snp.makeConstraints { make in
+            make.centerY.equalTo(self)
+            make.height.equalTo(self)
+            make.leading.equalTo(favicon.snp.trailing).offset(10)
+            make.trailing.equalTo(self).offset(10)
+        }
+        closeButton.snp.makeConstraints { make in
+            make.centerY.equalTo(self)
+            make.height.equalTo(self.snp.height)
+            make.width.equalTo(self.snp.height)
+            make.trailing.equalTo(self).offset(-5)
         }
         
         isSelected = false
@@ -148,5 +194,38 @@ extension UIBezierPath {
         bezierPath.close()
         bezierPath.miterLimit = 4
         return bezierPath
+    }
+}
+
+extension UIEdgeInsets {
+    init(equalInset inset: CGFloat) {
+        top = inset
+        left = inset
+        right = inset
+        bottom = inset
+    }
+}
+
+private class BezierView: UIView {
+    var fillColor: UIColor?
+    init() {
+        super.init(frame: CGRect.zero)
+        self.backgroundColor = UIColor.clear
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        guard let fillColor = self.fillColor else {
+            return
+        }
+        let bezierPath = UIBezierPath.topTabsCurve(frame.width, height: frame.height, direction: .both)
+        
+        fillColor.setFill()
+        bezierPath.fill()
     }
 }

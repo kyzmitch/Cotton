@@ -11,13 +11,13 @@ import UIKit
 
 struct TabModel {
     
-    private var title: String
-    private var titleColour: UIColor?
-    private var iconUrl: URL?
-    private var url: URL?
+    public var title: String
+    public var titleColour: UIColor?
+    public var iconUrl: URL?
+    public var url: URL?
     
     init(tabTitle: String) {
-        self.init(tabTitle: tabTitle, tabTitleColour: nil, tabIconUrl: nil)
+        self.init(tabTitle: tabTitle, tabTitleColour: UIColor.black, tabIconUrl: nil)
     }
     
     init(tabTitle: String, tabTitleColour: UIColor?, tabIconUrl: URL?) {
