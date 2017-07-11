@@ -50,15 +50,14 @@ class BrowserViewController: BaseViewController {
     private func addTabView(_ tabView: TabView) {
         tabsStackView.addArrangedSubview(tabView)
         view.layoutIfNeeded()
-        // TODO: actually possibly need to just add constant width
-        // view with gradient and make scroll view transparrent
-        resizeTabsBackLayer()
     }
     
     private func removeTabView(_ tabView: TabView) {
         tabsStackView.removeArrangedSubview(tabView)
-        view.layoutIfNeeded()
-        resizeTabsBackLayer()
+        tabView.removeFromSuperview()
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     override func viewDidLoad() {
@@ -104,12 +103,13 @@ class BrowserViewController: BaseViewController {
     
     private func resizeTabsBackLayer() -> Void {
         tabsViewBackLayer?.removeFromSuperlayer()
-        let size = stackViewScrollableContainer.contentSize
-        tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(size: size)
-        stackViewScrollableContainer.layer.insertSublayer(tabsViewBackLayer!, at: 0)
+        let frame = stackViewScrollableContainer.frame
+        tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(frame: frame)
+        view.layer.insertSublayer(tabsViewBackLayer!, at: 0)
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         resizeTabsBackLayer()
     }
 }
@@ -122,11 +122,11 @@ extension BrowserViewController: TabDelegate {
 }
 
 extension CAGradientLayer {
-    class func lightBackgroundGradientLayer(size: CGSize) -> CAGradientLayer {
+    class func lightBackgroundGradientLayer(frame: CGRect) -> CAGradientLayer {
         let layer = CAGradientLayer()
-        layer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        layer.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height)
         let topColor: CGColor = UIColor.white.cgColor
-        let bottomColor: CGColor = UIColor.gray.cgColor
+        let bottomColor: CGColor = UIColor.lightGray.cgColor
         layer.colors = [topColor, bottomColor]
         layer.locations = [0.0, 1.0]
         return layer
