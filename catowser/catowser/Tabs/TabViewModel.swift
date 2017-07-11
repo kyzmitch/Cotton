@@ -13,6 +13,7 @@ struct TabViewModel {
     private let model: TabModel
     init(tabModel: TabModel) {
         model = tabModel
+        selected = false
     }
     
     public let backgroundColour = UIColor.lightGray
@@ -22,4 +23,5 @@ struct TabViewModel {
     public func preparedTitle() -> String {
         return model.title
     }
+    public var selected: Bool
 }

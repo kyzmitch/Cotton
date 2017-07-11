@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 
 protocol TabDelegate: class {
-    func tab(_ tab: TabView, didPressCloseButton button: UIControl?) -> Void
+    func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) -> Void
 }
 
 class TabView: UIControl {
@@ -66,6 +66,18 @@ class TabView: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func handleClosePressed() -> Void {
+        var closedTabSelected: Bool
+        if let reallySelected = modelView?.selected {
+            closedTabSelected = reallySelected
+        }
+        else {
+            print("\(#function): selected is unknown")
+            closedTabSelected = false
+        }
+        delegate?.tab(self, didPressCloseButton: closedTabSelected)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentMode = .redraw
@@ -76,6 +88,8 @@ class TabView: UIControl {
         addSubview(favicon)
         addSubview(titleText)
         addSubview(closeButton)
+        
+        closeButton.addTarget(self, action: #selector(handleClosePressed), for: .touchUpInside)
         
         rightCurve.snp.makeConstraints { make in
             make.right.equalTo(self)

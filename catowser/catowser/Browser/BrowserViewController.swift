@@ -41,11 +41,23 @@ class BrowserViewController: BaseViewController {
         return scrollView
     }()
     
+    private let webContentBackgroundView: UIView = {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor(colorLiteralRed: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
+        return backgroundView
+    }()
+    
     private func addTabView(_ tabView: TabView) {
         tabsStackView.addArrangedSubview(tabView)
         view.layoutIfNeeded()
         // TODO: actually possibly need to just add constant width
         // view with gradient and make scroll view transparrent
+        resizeTabsBackLayer()
+    }
+    
+    private func removeTabView(_ tabView: TabView) {
+        tabsStackView.removeArrangedSubview(tabView)
+        view.layoutIfNeeded()
         resizeTabsBackLayer()
     }
     
@@ -58,6 +70,14 @@ class BrowserViewController: BaseViewController {
             maker.topMargin.equalTo(view).offset(10)
             maker.leading.equalTo(view).offset(0)
             maker.trailing.equalTo(view).offset(0)
+        }
+        
+        view.addSubview(webContentBackgroundView)
+        webContentBackgroundView.snp.makeConstraints { (maker) in
+            maker.top.equalTo(stackViewScrollableContainer.snp.bottom)
+            maker.leading.equalTo(view).offset(0)
+            maker.trailing.equalTo(view).offset(0)
+            maker.bottom.equalTo(view).offset(0)
         }
         
         stackViewScrollableContainer.addSubview(tabsStackView)
@@ -73,6 +93,7 @@ class BrowserViewController: BaseViewController {
         let tabRect = CGRect(origin: CGPoint.zero, size: CGSize.zero)
         for i in 0..<10 {
             let tabView = TabView(frame: tabRect)
+            tabView.delegate = self
             let title = "Home \(i)"
             tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))
             addTabView(tabView)
@@ -90,6 +111,13 @@ class BrowserViewController: BaseViewController {
     
     override func viewDidLayoutSubviews() {
         resizeTabsBackLayer()
+    }
+}
+
+extension BrowserViewController: TabDelegate {
+    func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) {
+        print("\(#function): closed")
+        removeTabView(tab)
     }
 }
 
