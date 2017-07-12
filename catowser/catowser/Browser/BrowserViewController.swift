@@ -17,9 +17,6 @@ class BrowserViewController: BaseViewController {
             if let vm = newValue {
                 stackViewScrollableContainer.snp.makeConstraints { (maker) in
                     maker.height.equalTo(vm.tabsContainerHeight)
-                    maker.topMargin.equalTo(view).offset(10)
-                    maker.leading.equalTo(view).offset(0)
-                    maker.trailing.equalTo(view).offset(0)
                 }
             }
         }
@@ -57,11 +54,21 @@ class BrowserViewController: BaseViewController {
     
     @objc private func addTabPressed() -> Void {
         print("\(#function): add pressed")
+        
+        let tabView = TabView(frame: CGRect.zero)
+        tabView.delegate = self
+        let title = "Blank"
+        tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))
+        addTabView(tabView)
     }
     
     private func addTabView(_ tabView: TabView) {
-        tabsStackView.addArrangedSubview(tabView)
-        view.layoutIfNeeded()
+        let count = tabsStackView.arrangedSubviews.count
+        tabsStackView.insertArrangedSubview(tabView, at:count)
+        
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     private func removeTabView(_ tabView: TabView) {
@@ -91,7 +98,7 @@ class BrowserViewController: BaseViewController {
             maker.height.equalTo(topViewPanelHeight)
             maker.topMargin.equalTo(view).offset(topViewsOffset)
             maker.leading.equalTo(view).offset(0)
-            maker.trailing.equalTo(addTabButton.snp.trailing)
+            maker.trailing.equalTo(addTabButton.snp.leading)
         }
         
         view.addSubview(webContentBackgroundView)
@@ -109,16 +116,6 @@ class BrowserViewController: BaseViewController {
             maker.leading.equalTo(0)
             maker.trailing.equalTo(0)
             maker.height.equalToSuperview()
-        }
-        
-        // Code for debug to check tabs look and scrolling
-        let tabRect = CGRect(origin: CGPoint.zero, size: CGSize.zero)
-        for i in 0..<10 {
-            let tabView = TabView(frame: tabRect)
-            tabView.delegate = self
-            let title = "Home normal usual tab text \(i)"
-            tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))
-            addTabView(tabView)
         }
     }
     
