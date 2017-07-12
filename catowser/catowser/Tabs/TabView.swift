@@ -118,7 +118,7 @@ class TabView: UIControl {
             make.centerY.equalTo(self)
             make.height.equalTo(self)
             make.leading.equalTo(favicon.snp.trailing).offset(10)
-            make.trailing.equalTo(self).offset(10)
+            make.trailing.equalTo(closeButton.snp.leading).offset(10)
         }
         closeButton.snp.makeConstraints { make in
             make.centerY.equalTo(self)

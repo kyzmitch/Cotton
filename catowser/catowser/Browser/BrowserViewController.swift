@@ -41,11 +41,23 @@ class BrowserViewController: BaseViewController {
         return scrollView
     }()
     
+    private let addTabButton: UIButton = {
+        let addButton = UIButton()
+        let image = UIImage(imageLiteralResourceName: "newTabButton-Normal")
+        addButton.setImage(image, for: .normal)
+        addButton.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
+        return addButton
+    }()
+    
     private let webContentBackgroundView: UIView = {
         let backgroundView = UIView()
         backgroundView.backgroundColor = UIColor(colorLiteralRed: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
         return backgroundView
     }()
+    
+    @objc private func addTabPressed() -> Void {
+        print("\(#function): add pressed")
+    }
     
     private func addTabView(_ tabView: TabView) {
         tabsStackView.addArrangedSubview(tabView)
@@ -60,15 +72,26 @@ class BrowserViewController: BaseViewController {
         }
     }
     
+    private let topViewsOffset = CGFloat(10)
+    private let topViewPanelHeight = CGFloat(40)
+    
     override func viewDidLoad() {
         view.backgroundColor = UIColor.white
         
+        view.addSubview(addTabButton)
+        addTabButton.snp.makeConstraints { (maker) in
+            maker.topMargin.equalTo(view).offset(topViewsOffset)
+            maker.height.equalTo(topViewPanelHeight)
+            maker.width.equalTo(topViewPanelHeight)
+            maker.trailing.equalTo(view).offset(0)
+        }
+        
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.snp.makeConstraints { (maker) in
-            maker.height.equalTo(40.0)
-            maker.topMargin.equalTo(view).offset(10)
+            maker.height.equalTo(topViewPanelHeight)
+            maker.topMargin.equalTo(view).offset(topViewsOffset)
             maker.leading.equalTo(view).offset(0)
-            maker.trailing.equalTo(view).offset(0)
+            maker.trailing.equalTo(addTabButton.snp.trailing)
         }
         
         view.addSubview(webContentBackgroundView)
@@ -93,7 +116,7 @@ class BrowserViewController: BaseViewController {
         for i in 0..<10 {
             let tabView = TabView(frame: tabRect)
             tabView.delegate = self
-            let title = "Home \(i)"
+            let title = "Home normal usual tab text \(i)"
             tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))
             addTabView(tabView)
         }
