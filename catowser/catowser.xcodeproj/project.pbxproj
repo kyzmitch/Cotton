@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A910B05602B21CB19029F7B9 /* Pods_catowser.framework */; };
+		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49A1EED5E700020102F /* AppDelegate.swift */; };
 		8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8435A4A21EED5E700020102F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A11EED5E700020102F /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
+		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIConstants.swift; path = Common/UIConstants.swift; sourceTree = "<group>"; };
 		8435A4971EED5E700020102F /* catowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8435A49A1EED5E700020102F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8435A49C1EED5E700020102F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
 				8435A4A61EED5E700020102F /* Info.plist */,
+				8412FF3C1F72AF050011FDD7 /* UIConstants.swift */,
 			);
 			path = catowser;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
 				84458EAF1EF70783007DA030 /* BrowserViewModel.swift in Sources */,
+				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

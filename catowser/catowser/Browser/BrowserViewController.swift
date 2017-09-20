@@ -48,14 +48,38 @@ class BrowserViewController: BaseViewController {
     
     private let webContentBackgroundView: UIView = {
         let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor(colorLiteralRed: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
+        #if swift(>=4.0)
+            backgroundView.backgroundColor = UIColor(red: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
+        #else
+            backgroundView.backgroundColor = UIColor(colorLiteralRed: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
+        #endif
         return backgroundView
     }()
     
     @objc private func addTabPressed() -> Void {
         print("\(#function): add pressed")
         
-        let tabView = TabView(frame: CGRect.zero)
+        // Need to find out the very right tab view coordinates
+        // to know initial coordinates for newly added tab view
+        // to make animation of adding new tab view more smooth
+        var newlyAddedTabFrame: CGRect
+        if let veryRightTabView = tabsStackView.arrangedSubviews.last {
+            let origin = CGPoint(x: veryRightTabView.frame.origin.x + veryRightTabView.frame.size.width, y: 0)
+            var size: CGSize
+            if let tabHeight = viewModel?.tabsContainerHeight {
+                size = CGSize(width: 0, height: tabHeight)
+            }
+            else {
+                size = CGSize(width: 0, height: UIConstants.tabHeight)
+            }
+            
+            newlyAddedTabFrame = CGRect(origin: origin, size: size)
+        }
+        else {
+            newlyAddedTabFrame = CGRect.zero
+        }
+        
+        let tabView = TabView(frame: newlyAddedTabFrame)
         tabView.delegate = self
         let title = "Blank"
         tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))

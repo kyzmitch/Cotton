@@ -9,5 +9,5 @@
 import Foundation
 
 struct BrowserViewModel {
-    public let tabsContainerHeight = 40.0
+    public let tabsContainerHeight = UIConstants.tabHeight
 }

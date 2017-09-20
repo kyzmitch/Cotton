@@ -63,7 +63,7 @@ class TabView: UIControl {
     }()
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("\(#function): has not been implemented")
     }
     
     @objc private func handleClosePressed() -> Void {
@@ -136,7 +136,7 @@ class TabView: UIControl {
                 return mv.tabSize
             }
             else {
-                return CGSize(width: 180.0, height: 0.0)
+                return CGSize(width: 180.0, height: UIConstants.tabHeight)
             }
         }
     }
@@ -154,7 +154,7 @@ class TabView: UIControl {
         }
         
         required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
+            fatalError("\(#function): has not been implemented")
         }
         
         override func draw(_ rect: CGRect) {
@@ -228,7 +228,7 @@ private class BezierView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("\(#function): has not been implemented")
     }
     
     override func draw(_ rect: CGRect) {
