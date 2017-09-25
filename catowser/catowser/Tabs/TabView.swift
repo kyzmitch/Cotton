@@ -136,7 +136,7 @@ class TabView: UIControl {
                 return mv.tabSize
             }
             else {
-                return CGSize(width: 180.0, height: UIConstants.tabHeight)
+                return CGSize(width: UIConstants.tabWidth(), height: UIConstants.tabHeight)
             }
         }
     }

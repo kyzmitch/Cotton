@@ -19,7 +19,7 @@ struct TabViewModel {
     public let backgroundColour = UIColor.lightGray
     public let tabCurvesColour = UIColor.lightGray
     public let realBackgroundColour = UIColor.clear
-    public let tabSize = CGSize(width: 180.0, height: UIConstants.tabHeight)
+    public let tabSize = CGSize(width: UIConstants.tabWidth(), height: UIConstants.tabHeight)
     public func preparedTitle() -> String {
         return model.title
     }
