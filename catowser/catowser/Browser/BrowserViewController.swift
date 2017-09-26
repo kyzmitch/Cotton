@@ -48,11 +48,7 @@ class BrowserViewController: BaseViewController {
     
     private let webContentBackgroundView: UIView = {
         let backgroundView = UIView()
-        #if swift(>=4.0)
-            backgroundView.backgroundColor = UIColor(red: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
-        #else
-            backgroundView.backgroundColor = UIColor(colorLiteralRed: 192/255.0, green: 240/255.0, blue: 144/255.0, alpha: 1.0)
-        #endif
+            backgroundView.backgroundColor = BrowserViewModel.browserBackgroundColour
         return backgroundView
     }()
     
@@ -98,6 +94,19 @@ class BrowserViewController: BaseViewController {
         tabView.removeFromSuperview()
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
+        }
+    }
+    
+    private func makeTabActive(_ tabView: TabView) {
+        for stackSubView in tabsStackView.arrangedSubviews {
+            if let specificTab = stackSubView as? TabView {
+                if specificTab != tabView {
+                    specificTab.
+                }
+                else {
+                    
+                }
+            }
         }
     }
     
@@ -160,6 +169,11 @@ extension BrowserViewController: TabDelegate {
     func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) {
         print("\(#function): closed")
         removeTabView(tab)
+    }
+    
+    func tab(_ tab: TabView, didBecomeActive active: Bool) {
+        print("\(#function): tapped")
+        makeTabActive(tab)
     }
 }
 

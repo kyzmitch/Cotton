@@ -9,14 +9,20 @@
 import Foundation
 import UIKit
 import SnapKit
+import CoreGraphics
 
 protocol TabDelegate: class {
     func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) -> Void
+    func tab(_ tab: TabView, didBecomeActive active: Bool) -> Void
+}
+
+enum TabVisualState {
+    case selected, deselected
 }
 
 class TabView: UIControl {
     
-    public var modelView: TabViewModel? {
+    private var modelView: TabViewModel? {
         willSet {
             if let mv = newValue {
                 centerBackground.backgroundColor = mv.backgroundColour
@@ -28,6 +34,20 @@ class TabView: UIControl {
             }
         }
     }
+    
+    public var visualState: TabVisualState {
+        didSet {
+            switch visualState {
+            case .deselected:
+                break
+            case .selected:
+                break
+            default:
+                print("\(#function): unknown case")
+            }
+        }
+    }
+    
     public weak var delegate: TabDelegate?
     
     fileprivate lazy var rightCurve = SingleCurveView(right: true, backColour: UIColor.clear)
@@ -76,6 +96,22 @@ class TabView: UIControl {
             closedTabSelected = false
         }
         delegate?.tab(self, didPressCloseButton: closedTabSelected)
+    }
+    
+    private func handleTapGesture() -> Void {
+        modelView?.selected = true
+        delegate?.tab(self, didBecomeActive: true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            // TODO: this is not working, need to think more
+            let location = touch.location(in: self)
+            if self.frame.contains(location) {
+                handleTapGesture()
+                break
+            }
+        }
     }
     
     override init(frame: CGRect) {
@@ -127,7 +163,9 @@ class TabView: UIControl {
             make.trailing.equalTo(self).offset(-5)
         }
         
+        // Not selected by default
         isSelected = false
+        visualState = .deselected
     }
     
     override var intrinsicContentSize: CGSize {
