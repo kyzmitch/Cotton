@@ -18,6 +18,7 @@
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC31EEE785500F89F6B /* TabViewModel.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* BrowserViewController.swift */; };
+		C27371171F7A341900900F03 /* Titles.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Titles.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,9 @@
 		84704FC31EEE785500F89F6B /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
 		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C27371181F7A341900900F03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Titles.strings; sourceTree = "<group>"; };
+		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Titles.strings; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,6 +91,7 @@
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
 				8435A4A61EED5E700020102F /* Info.plist */,
 				8412FF3C1F72AF050011FDD7 /* UIConstants.swift */,
+				C27371191F7A341900900F03 /* Titles.strings */,
 			);
 			path = catowser;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
@@ -181,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
+				C27371171F7A341900900F03 /* Titles.strings in Resources */,
 				8435A4A21EED5E700020102F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,8 +271,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				8435A4A41EED5E700020102F /* Base */,
+				C273711A1F7A345800900F03 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		C27371191F7A341900900F03 /* Titles.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C27371181F7A341900900F03 /* en */,
+				C273711B1F7A345A00900F03 /* ru */,
+			);
+			name = Titles.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -275,6 +292,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -330,6 +348,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

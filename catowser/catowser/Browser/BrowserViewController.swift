@@ -81,8 +81,7 @@ class BrowserViewController: BaseViewController {
         
         let tabView = TabView(frame: newlyAddedTabFrame)
         tabView.delegate = self
-        let title = "Blank"
-        tabView.modelView = TabViewModel(tabModel: TabModel(tabTitle: title))
+        tabView.modelView = TabViewModel(tabModel: TabModel())
         addTabView(tabView)
     }
     
@@ -90,9 +89,8 @@ class BrowserViewController: BaseViewController {
         let count = tabsStackView.arrangedSubviews.count
         tabsStackView.insertArrangedSubview(tabView, at:count)
         
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
-        }
+        self.view.layoutIfNeeded()
+        stackViewScrollableContainer.scrollToVeryRight()
     }
     
     private func removeTabView(_ tabView: TabView) {
@@ -174,5 +172,15 @@ extension CAGradientLayer {
         layer.colors = [topColor, bottomColor]
         layer.locations = [0.0, 1.0]
         return layer
+    }
+}
+
+extension UIScrollView {
+    func scrollToVeryRight() -> Void {
+        if self.contentSize.width <= self.bounds.size.width {
+            return
+        }
+        let bottomOffset = CGPoint(x: self.contentSize.width - self.bounds.size.width, y: 0)
+        self.setContentOffset(bottomOffset, animated: true)
     }
 }

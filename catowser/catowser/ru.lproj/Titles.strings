@@ -1,0 +1,10 @@
+/* 
+  Titles.strings
+  catowser
+
+  Created by Andrey Ermoshin on 26/09/2017.
+  Copyright © 2017 andreiermoshin. All rights reserved.
+*/
+
+/* This is to show something on tab when it is without website address or title of web site */
+"ttl_tab_short_blank" = "Пустая вкладка";

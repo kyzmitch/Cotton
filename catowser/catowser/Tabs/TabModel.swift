@@ -16,11 +16,9 @@ struct TabModel {
     public var iconUrl: URL?
     public var url: URL?
     
-    init(tabTitle: String) {
-        self.init(tabTitle: tabTitle, tabTitleColour: UIColor.black, tabIconUrl: nil)
-    }
-    
-    init(tabTitle: String, tabTitleColour: UIColor?, tabIconUrl: URL?) {
+    init(tabTitle: String = NSLocalizedString("ttl_tab_short_blank", comment: "This is to show something on tab when it is without website address or title of web site"),
+         tabTitleColour: UIColor = UIColor.black,
+         tabIconUrl: URL? = nil) {
         title = tabTitle
         titleColour = tabTitleColour
         iconUrl = url
