@@ -84,7 +84,9 @@ class BrowserViewController: BaseViewController {
     private func addTabView(_ tabView: TabView) {
         let count = tabsStackView.arrangedSubviews.count
         tabsStackView.insertArrangedSubview(tabView, at:count)
-        
+        if count == 0 {
+            makeTabActive(tabView)
+        }
         self.view.layoutIfNeeded()
         stackViewScrollableContainer.scrollToVeryRight()
     }
@@ -100,12 +102,7 @@ class BrowserViewController: BaseViewController {
     private func makeTabActive(_ tabView: TabView) {
         for stackSubView in tabsStackView.arrangedSubviews {
             if let specificTab = stackSubView as? TabView {
-                if specificTab != tabView {
-                    specificTab.
-                }
-                else {
-                    
-                }
+                specificTab.visualState = (specificTab !== tabView) ? TabVisualState.deselected : TabVisualState.selected
             }
         }
     }

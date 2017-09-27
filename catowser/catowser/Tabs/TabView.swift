@@ -22,28 +22,61 @@ enum TabVisualState {
 
 class TabView: UIControl {
     
-    private var modelView: TabViewModel? {
+    public var modelView: TabViewModel? {
         willSet {
             if let mv = newValue {
-                centerBackground.backgroundColor = mv.backgroundColour
-                backgroundColor = mv.realBackgroundColour
-                rightCurve.curveColour = mv.tabCurvesColour
-                leftCurve.curveColour = mv.tabCurvesColour
                 
+                switch visualState {
+                case .deselected:
+                    applyColoursFrom(mv, for: .deselected)
+                    break
+                case .selected:
+                    applyColoursFrom(mv, for: .selected)
+                    break
+                }
                 titleText.text = mv.preparedTitle()
             }
         }
+    }
+    
+    private func applyColoursFrom(_ modelView: TabViewModel, for visualState: TabVisualState) {
+        switch visualState {
+        case .deselected:
+            centerBackground.backgroundColor = modelView.backgroundColourDeselected
+            backgroundColor = modelView.realBackgroundColour
+            rightCurve.curveColour = modelView.tabCurvesColourDeselected
+            leftCurve.curveColour = modelView.tabCurvesColourDeselected
+            titleText.textColor = modelView.titleColourDeselected
+            break
+        case .selected:
+            centerBackground.backgroundColor = modelView.backgroundColourSelected
+            backgroundColor = modelView.realBackgroundColour
+            rightCurve.curveColour = modelView.tabCurvesColourSelected
+            leftCurve.curveColour = modelView.tabCurvesColourSelected
+            titleText.textColor = modelView.titleColourSelected
+            break
+        }
+        rightCurve.setNeedsDisplay()
+        leftCurve.setNeedsDisplay()
     }
     
     public var visualState: TabVisualState {
         didSet {
             switch visualState {
             case .deselected:
+                modelView?.selected = false
+                isSelected = false
+                if let mv = modelView {
+                    applyColoursFrom(mv, for: .deselected)
+                }
                 break
             case .selected:
+                modelView?.selected = true
+                isSelected = true
+                if let mv = modelView {
+                    applyColoursFrom(mv, for: .selected)
+                }
                 break
-            default:
-                print("\(#function): unknown case")
             }
         }
     }
@@ -106,7 +139,7 @@ class TabView: UIControl {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             // TODO: this is not working, need to think more
-            let location = touch.location(in: self)
+            let location = touch.location(in: self.superview)
             if self.frame.contains(location) {
                 handleTapGesture()
                 break
@@ -115,6 +148,7 @@ class TabView: UIControl {
     }
     
     override init(frame: CGRect) {
+        visualState = .deselected
         super.init(frame: frame)
         contentMode = .redraw
         
@@ -162,10 +196,6 @@ class TabView: UIControl {
             make.width.equalTo(self.snp.height)
             make.trailing.equalTo(self).offset(-5)
         }
-        
-        // Not selected by default
-        isSelected = false
-        visualState = .deselected
     }
     
     override var intrinsicContentSize: CGSize {

@@ -16,8 +16,12 @@ struct TabViewModel {
         selected = false
     }
     
-    public let backgroundColour = UIColor.lightGray
-    public let tabCurvesColour = UIColor.lightGray
+    public let backgroundColourSelected = UIColor.lightGray
+    public let backgroundColourDeselected = UIColor.darkGray
+    public let tabCurvesColourSelected = UIColor.lightGray
+    public let tabCurvesColourDeselected = UIColor.darkGray
+    public let titleColourSelected = UIColor.black
+    public let titleColourDeselected = UIColor.lightGray
     public let realBackgroundColour = UIColor.clear
     public let tabSize = CGSize(width: UIConstants.tabWidth(), height: UIConstants.tabHeight)
     public func preparedTitle() -> String {
