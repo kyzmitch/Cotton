@@ -1,5 +1,5 @@
 //
-//  BrowserViewController.swift
+//  TabsViewController.swift
 //  catowser
 //
 //  Created by admin on 18/06/2017.
@@ -10,7 +10,7 @@ import UIKit
 import CoreGraphics
 import SnapKit
 
-class BrowserViewController: BaseViewController {
+class TabsViewController: BaseViewController {
     
     public var viewModel: BrowserViewModel? {
         willSet {
@@ -162,7 +162,7 @@ class BrowserViewController: BaseViewController {
     }
 }
 
-extension BrowserViewController: TabDelegate {
+extension TabsViewController: TabDelegate {
     func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) {
         print("\(#function): closed")
         removeTabView(tab)
