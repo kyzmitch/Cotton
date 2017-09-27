@@ -13,11 +13,14 @@
 		8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8435A4A21EED5E700020102F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A11EED5E700020102F /* Assets.xcassets */; };
 		8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A31EED5E700020102F /* LaunchScreen.storyboard */; };
-		84458EAF1EF70783007DA030 /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84458EAE1EF70783007DA030 /* BrowserViewModel.swift */; };
+		84458EAF1EF70783007DA030 /* TabsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84458EAE1EF70783007DA030 /* TabsViewModel.swift */; };
 		846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* TabModel.swift */; };
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC31EEE785500F89F6B /* TabViewModel.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
+		C22599631F7BEF6D000E4C3A /* BrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* BrowserViewController.swift */; };
+		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
+		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
@@ -30,12 +33,15 @@
 		8435A4A11EED5E700020102F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8435A4A41EED5E700020102F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8435A4A61EED5E700020102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84458EAE1EF70783007DA030 /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
+		84458EAE1EF70783007DA030 /* TabsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewModel.swift; sourceTree = "<group>"; };
 		846220AE1EEE9B6C00B84C73 /* TabModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabModel.swift; sourceTree = "<group>"; };
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		84704FC31EEE785500F89F6B /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C22599621F7BEF6D000E4C3A /* BrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewController.swift; sourceTree = "<group>"; };
+		C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
+		C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewController.swift; sourceTree = "<group>"; };
 		C27371181F7A341900900F03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -100,7 +106,10 @@
 			isa = PBXGroup;
 			children = (
 				847D7C881EF6C30F00291B87 /* TabsViewController.swift */,
-				84458EAE1EF70783007DA030 /* BrowserViewModel.swift */,
+				84458EAE1EF70783007DA030 /* TabsViewModel.swift */,
+				C22599621F7BEF6D000E4C3A /* BrowserViewController.swift */,
+				C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */,
+				C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -254,12 +263,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
+				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
+				C22599631F7BEF6D000E4C3A /* BrowserViewController.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
 				846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
-				84458EAF1EF70783007DA030 /* BrowserViewModel.swift in Sources */,
+				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
+				84458EAF1EF70783007DA030 /* TabsViewModel.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

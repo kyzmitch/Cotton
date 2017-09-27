@@ -12,7 +12,7 @@ import SnapKit
 
 class TabsViewController: BaseViewController {
     
-    public var viewModel: BrowserViewModel? {
+    public var viewModel: TabsViewModel? {
         willSet {
             if let vm = newValue {
                 stackViewScrollableContainer.snp.makeConstraints { (maker) in
@@ -44,12 +44,6 @@ class TabsViewController: BaseViewController {
         addButton.setImage(image, for: .normal)
         addButton.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
         return addButton
-    }()
-    
-    private let webContentBackgroundView: UIView = {
-        let backgroundView = UIView()
-            backgroundView.backgroundColor = BrowserViewModel.browserBackgroundColour
-        return backgroundView
     }()
     
     @objc private func addTabPressed() -> Void {
@@ -127,14 +121,6 @@ class TabsViewController: BaseViewController {
             maker.topMargin.equalTo(view).offset(topViewsOffset)
             maker.leading.equalTo(view).offset(0)
             maker.trailing.equalTo(addTabButton.snp.leading)
-        }
-        
-        view.addSubview(webContentBackgroundView)
-        webContentBackgroundView.snp.makeConstraints { (maker) in
-            maker.top.equalTo(stackViewScrollableContainer.snp.bottom)
-            maker.leading.equalTo(view).offset(0)
-            maker.trailing.equalTo(view).offset(0)
-            maker.bottom.equalTo(view).offset(0)
         }
         
         stackViewScrollableContainer.addSubview(tabsStackView)
