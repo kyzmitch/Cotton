@@ -91,8 +91,8 @@ class TabView: UIControl {
         return centerBackground
     }()
     
-    private let closeButton: UIButton = {
-        let closeButton = UIButton()
+    private let closeButton: ButtonWithDecreasedTouchArea = {
+        let closeButton = ButtonWithDecreasedTouchArea()
         closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControlState())
         closeButton.tintColor = UIColor.lightGray
         closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
@@ -309,5 +309,14 @@ private class BezierView: UIView {
         
         fillColor.setFill()
         bezierPath.fill()
+    }
+}
+
+private class ButtonWithDecreasedTouchArea: UIButton {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        // decrease touch area for control in all directions by 20
+        
+        let area = self.bounds.insetBy(dx: 5, dy: 5)
+        return area.contains(point)
     }
 }
