@@ -10,14 +10,16 @@ import UIKit
 
 class BrowserViewController: BaseViewController {
     
-    public var viewModel: BrowserViewModel?
+    public var viewModel: BrowserViewModel? {
+        willSet {
+            if let vm = newValue {
+                webContentBackgroundView.backgroundColor = vm.browserBackgroundColour
+            }
+        }
+    }
     
     private let webContentBackgroundView: UIView = {
         let backgroundView = UIView()
-        if let backColour = viewModel?.browserBackgroundColour {
-            backgroundView.backgroundColor = backColour
-        }
-        
         return backgroundView
     }()
     
@@ -26,7 +28,7 @@ class BrowserViewController: BaseViewController {
         
         view.addSubview(webContentBackgroundView)
         webContentBackgroundView.snp.makeConstraints { (maker) in
-            maker.top.equalTo(stackViewScrollableContainer.snp.bottom)
+            maker.top.equalTo(view).offset(0)
             maker.leading.equalTo(view).offset(0)
             maker.trailing.equalTo(view).offset(0)
             maker.bottom.equalTo(view).offset(0)
