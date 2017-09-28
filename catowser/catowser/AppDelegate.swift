@@ -15,10 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-        let viewModel = TabsViewModel()
-        let tabsViewController = TabsViewController()
-        tabsViewController.viewModel = viewModel
-        window?.rootViewController = tabsViewController
+        let rootViewController = MasterBrowserViewController()
+        let viewModel = MasterBrowserViewModel()
+        rootViewController.viewModel = viewModel
+        window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
         
         return true

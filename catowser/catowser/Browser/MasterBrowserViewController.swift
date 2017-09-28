@@ -10,12 +10,18 @@ import UIKit
 
 class MasterBrowserViewController: BaseViewController {
 
+    public var viewModel: MasterBrowserViewModel?
+    
     private lazy var tabsViewController: TabsViewController = {
-        let viewModel = TabsViewModel()
+        var tabsViewModel: TabsViewModel
+        if let vm = viewModel {
+            tabsViewModel = TabsViewModel(vm.topViewsOffset, vm.topViewPanelHeight)
+        }
+        else {
+            tabsViewModel = TabsViewModel()
+        }
         let viewController = TabsViewController()
-        viewController.viewModel = viewModel
-        // Add View Controller as Child View Controller
-        add(asChildViewController: viewController)
+        viewController.viewModel = tabsViewModel
         
         return viewController
     }()
@@ -24,16 +30,38 @@ class MasterBrowserViewController: BaseViewController {
         let viewModel = BrowserViewModel()
         let viewController = BrowserViewController()
         viewController.viewModel = viewModel
-        // Add View Controller as Child View Controller
-        add(asChildViewController: viewController)
         
         return viewController
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        add(asChildViewController: tabsViewController)
+        add(asChildViewController: browserViewController)
+        
+        let statusBarFrame = UIApplication.shared.statusBarFrame
+        let topOffset = statusBarFrame.origin.y + statusBarFrame.size.height
+        
+        tabsViewController.view.snp.makeConstraints { (maker) in
+            if let vm = viewModel {
+                maker.height.equalTo(vm.topViewPanelHeight + topOffset)
+            }
+            else {
+                maker.height.equalTo(UIConstants.tabHeight + topOffset)
+            }
+            
+            maker.topMargin.equalTo(view).offset(0)
+            maker.leading.equalTo(view).offset(0)
+            maker.trailing.equalTo(view).offset(0)
+        }
+        
+        browserViewController.view.snp.makeConstraints { (maker) in
+            maker.top.equalTo(tabsViewController.view.snp.bottom).offset(0)
+            maker.bottom.equalTo(0)
+            maker.leading.equalTo(0)
+            maker.trailing.equalTo(0)
+        }
     }
 
     private func add(asChildViewController viewController: UIViewController) {
@@ -42,9 +70,6 @@ class MasterBrowserViewController: BaseViewController {
         
         // Add Child View as Subview
         view.addSubview(viewController.view)
-        
-        // Configure Child View
-        viewController.view.frame = view.bounds
         viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         // Notify Child View Controller

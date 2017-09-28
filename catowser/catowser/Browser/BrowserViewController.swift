@@ -7,31 +7,27 @@
 //
 
 import UIKit
+import SnapKit
+import WebKit
 
 class BrowserViewController: BaseViewController {
     
-    public var viewModel: BrowserViewModel? {
-        willSet {
-            if let vm = newValue {
-                webContentBackgroundView.backgroundColor = vm.browserBackgroundColour
-            }
-        }
-    }
+    public var viewModel: BrowserViewModel?
     
-    private let webContentBackgroundView: UIView = {
-        let backgroundView = UIView()
-        return backgroundView
+    private let webContentView: WKWebView = {
+        let webView = WKWebView()
+        return webView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(webContentBackgroundView)
-        webContentBackgroundView.snp.makeConstraints { (maker) in
-            maker.top.equalTo(view).offset(0)
-            maker.leading.equalTo(view).offset(0)
-            maker.trailing.equalTo(view).offset(0)
-            maker.bottom.equalTo(view).offset(0)
+        view.addSubview(webContentView)
+        webContentView.snp.makeConstraints { (maker) in
+            maker.top.equalTo(view)
+            maker.leading.equalTo(view)
+            maker.trailing.equalTo(view)
+            maker.bottom.equalTo(view)
         }
     }
 }

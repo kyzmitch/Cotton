@@ -12,15 +12,7 @@ import SnapKit
 
 class TabsViewController: BaseViewController {
     
-    public var viewModel: TabsViewModel? {
-        willSet {
-            if let vm = newValue {
-                stackViewScrollableContainer.snp.makeConstraints { (maker) in
-                    maker.height.equalTo(vm.tabsContainerHeight)
-                }
-            }
-        }
-    }
+    public var viewModel: TabsViewModel?
     
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
@@ -101,35 +93,39 @@ class TabsViewController: BaseViewController {
         }
     }
     
-    private let topViewsOffset = CGFloat(10)
-    private let topViewPanelHeight = CGFloat(40)
-    
     override func viewDidLoad() {
-        view.backgroundColor = UIColor.white
+        super.viewDidLoad()
+        
+        var tabsHeight: CGFloat
+        if let vm = viewModel {
+            tabsHeight = vm.tabsContainerHeight
+        }
+        else {
+            tabsHeight = UIConstants.tabHeight
+        }
         
         view.addSubview(addTabButton)
         addTabButton.snp.makeConstraints { (maker) in
-            maker.topMargin.equalTo(view).offset(topViewsOffset)
-            maker.height.equalTo(topViewPanelHeight)
-            maker.width.equalTo(topViewPanelHeight)
-            maker.trailing.equalTo(view).offset(0)
+            maker.bottom.equalTo(view.snp.bottom)
+            maker.width.equalTo(tabsHeight)
+            maker.height.equalTo(tabsHeight)
+            maker.trailing.equalTo(view.snp.trailing)
         }
         
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.snp.makeConstraints { (maker) in
-            maker.height.equalTo(topViewPanelHeight)
-            maker.topMargin.equalTo(view).offset(topViewsOffset)
             maker.leading.equalTo(view).offset(0)
             maker.trailing.equalTo(addTabButton.snp.leading)
+            maker.bottom.equalTo(view).offset(0)
+            maker.height.equalTo(tabsHeight)
         }
         
         stackViewScrollableContainer.addSubview(tabsStackView)
         tabsStackView.snp.makeConstraints { (maker) in
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.leading.equalTo(0)
-            maker.trailing.equalTo(0)
-            maker.height.equalToSuperview()
+            maker.top.equalTo(stackViewScrollableContainer)
+            maker.bottom.equalTo(stackViewScrollableContainer)
+            maker.leading.equalTo(stackViewScrollableContainer)
+            maker.trailing.equalTo(stackViewScrollableContainer)
         }
     }
     
@@ -137,13 +133,14 @@ class TabsViewController: BaseViewController {
     
     private func resizeTabsBackLayer() -> Void {
         tabsViewBackLayer?.removeFromSuperlayer()
-        let frame = stackViewScrollableContainer.frame
+        let frame = view.frame
         tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(frame: frame)
         view.layer.insertSublayer(tabsViewBackLayer!, at: 0)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        print("\(#function): new layout")
         resizeTabsBackLayer()
     }
 }
@@ -157,6 +154,16 @@ extension TabsViewController: TabDelegate {
     func tab(_ tab: TabView, didBecomeActive active: Bool) {
         print("\(#function): tapped")
         makeTabActive(tab)
+    }
+}
+
+extension TabsViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        print("\(#function): device was rotated")
+        // Need to redraw background layer
+        resizeTabsBackLayer()
+        
     }
 }
 
