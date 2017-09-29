@@ -85,6 +85,40 @@ class TabsViewController: BaseViewController {
         }
     }
     
+    private func selectNearbyTab(to tab: TabView) {
+        if tabsStackView.arrangedSubviews.count == 1 {
+            // next handling is just workaround which 99% of time will not be needed
+            if let onlyOneView = tabsStackView.arrangedSubviews.first {
+                if onlyOneView != tab {
+                    (onlyOneView as? TabView)?.visualState = .selected
+                }
+            }
+        }
+        else {
+            if let specifiedTabIndex = tabsStackView.arrangedSubviews.index(of: tab) {
+                var nearTab: TabView?
+                if specifiedTabIndex == 0 {
+                    nearTab = tabsStackView.arrangedSubviews[1] as? TabView
+                }
+                else if specifiedTabIndex == tabsStackView.arrangedSubviews.count - 1 {
+                    nearTab = tabsStackView.arrangedSubviews[specifiedTabIndex - 1] as? TabView
+                }
+                else {
+                    // if in the middle then select previous from the left
+                    nearTab = tabsStackView.arrangedSubviews[specifiedTabIndex - 1] as? TabView
+                }
+                
+                if let searchedTab = nearTab {
+                    searchedTab.visualState = .selected
+                }
+            }
+            else {
+                // Select something anyway
+                print("\(#function): tab not found, will select some random one")
+            }
+        }
+    }
+    
     private func makeTabActive(_ tabView: TabView) {
         for stackSubView in tabsStackView.arrangedSubviews {
             if let specificTab = stackSubView as? TabView {
@@ -149,6 +183,10 @@ extension TabsViewController: TabDelegate {
     func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) {
         print("\(#function): closed")
         removeTabView(tab)
+        if tab.visualState == .selected {
+            // Need to activate some another tab in that case
+            selectNearbyTab(to: tab)
+        }
     }
     
     func tab(_ tab: TabView, didBecomeActive active: Bool) {
