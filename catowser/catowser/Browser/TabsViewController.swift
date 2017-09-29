@@ -182,11 +182,11 @@ class TabsViewController: BaseViewController {
 extension TabsViewController: TabDelegate {
     func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) {
         print("\(#function): closed")
-        removeTabView(tab)
         if tab.visualState == .selected {
             // Need to activate some another tab in that case
             selectNearbyTab(to: tab)
         }
+        removeTabView(tab)
     }
     
     func tab(_ tab: TabView, didBecomeActive active: Bool) {
