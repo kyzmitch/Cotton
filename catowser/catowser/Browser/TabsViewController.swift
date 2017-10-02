@@ -17,8 +17,8 @@ class TabsViewController: BaseViewController {
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 10
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 6
         stackView.axis = .horizontal
         return stackView
     }()
@@ -197,15 +197,15 @@ class TabsViewController: BaseViewController {
     
     private func resizeTabsBackLayer() -> Void {
         tabsViewBackLayer?.removeFromSuperlayer()
-        let frame = view.frame
-        tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(frame: frame)
+        let bounds = view.bounds
+        tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(bounds: bounds)
         view.layer.insertSublayer(tabsViewBackLayer!, at: 0)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        print("\(#function): new layout")
-        resizeTabsBackLayer()
+    private func resizeTabsWidthBasedOnCurrentHorizontalSizeClass() {
+        for subview in tabsStackView.arrangedSubviews {
+            subview.invalidateIntrinsicContentSize()
+        }
     }
 }
 
@@ -231,14 +231,15 @@ extension TabsViewController {
         print("\(#function): device was rotated")
         // Need to redraw background layer
         resizeTabsBackLayer()
-        
+        // change tabs width if needed
+        resizeTabsWidthBasedOnCurrentHorizontalSizeClass()
     }
 }
 
 extension CAGradientLayer {
-    class func lightBackgroundGradientLayer(frame: CGRect) -> CAGradientLayer {
+    class func lightBackgroundGradientLayer(bounds: CGRect) -> CAGradientLayer {
         let layer = CAGradientLayer()
-        layer.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: frame.size.height)
+        layer.frame = CGRect(x: 0, y: 0, width: bounds.size.width, height: bounds.size.height)
         let topColor: CGColor = UIColor.white.cgColor
         let bottomColor: CGColor = UIColor.lightGray.cgColor
         layer.colors = [topColor, bottomColor]

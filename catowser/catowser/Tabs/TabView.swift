@@ -203,8 +203,11 @@ class TabView: UIControl {
     
     override var intrinsicContentSize: CGSize {
         get {
-            if let mv = modelView {
-                return mv.tabSize
+            if traitCollection.horizontalSizeClass == .compact {
+                return CGSize(width: UIConstants.compactTabWidth, height: UIConstants.tabHeight)
+            }
+            else if traitCollection.horizontalSizeClass == .regular {
+                return CGSize(width: UIConstants.regularTabWidth, height: UIConstants.tabHeight)
             }
             else {
                 return CGSize(width: UIConstants.tabWidth(), height: UIConstants.tabHeight)

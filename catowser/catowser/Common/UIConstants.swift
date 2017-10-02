@@ -20,8 +20,9 @@ struct UIConstants {
             return 180.0
         }
         else {
-            print("\(#function): interface not implemented")
             return 180.0
         }
     }
+    static public let compactTabWidth = CGFloat(40.0)
+    static public let regularTabWidth = CGFloat(180.0)
 }
