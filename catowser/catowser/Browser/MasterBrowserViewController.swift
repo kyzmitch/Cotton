@@ -75,5 +75,4 @@ class MasterBrowserViewController: BaseViewController {
         // Notify Child View Controller
         viewController.didMove(toParentViewController: self)
     }
-
 }

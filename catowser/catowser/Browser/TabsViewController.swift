@@ -119,10 +119,40 @@ class TabsViewController: BaseViewController {
         }
     }
     
+    private func makeTabFullyVisibleIfNeeded(_ tabView: TabView) {
+        // the tab could be partly visible from the left, so
+        // need to check if x coordinate of it not less than stackview x = 0
+        // or it could be hidden by right side (+ button)
+        // in that case need to check that x + width of tab is not bigger than
+        // stackview width
+        
+        let containerWidth = stackViewScrollableContainer.bounds.size.width
+        if stackViewScrollableContainer.contentSize.width <= containerWidth {
+            return
+        }
+        
+        let specificTabFrame = tabView.frame
+        let realOrigin = stackViewScrollableContainer.convert(specificTabFrame.origin, from: tabsStackView)
+        let tabVeryRigthX = realOrigin.x + specificTabFrame.size.width
+        // TODO: finish impl below
+        if specificTabFrame.origin.x < 0 {
+            
+        }
+        else if tabVeryRigthX > containerWidth {
+            
+        }
+        stackViewScrollableContainer.scroll(on: 100)
+    }
+    
     private func makeTabActive(_ tabView: TabView) {
         for stackSubView in tabsStackView.arrangedSubviews {
             if let specificTab = stackSubView as? TabView {
                 specificTab.visualState = (specificTab !== tabView) ? TabVisualState.deselected : TabVisualState.selected
+                if specificTab === tabView {
+                    // if tab which was selected was partly hidden for example under + button
+                    // need to scroll it to make it fully visible
+                    makeTabFullyVisibleIfNeeded(tabView)
+                }
             }
         }
     }
@@ -224,5 +254,10 @@ extension UIScrollView {
         }
         let bottomOffset = CGPoint(x: self.contentSize.width - self.bounds.size.width, y: 0)
         self.setContentOffset(bottomOffset, animated: true)
+    }
+    
+    func  scroll(on pixels: CGFloat) -> Void {
+        // pixels could be negative to scroll to the left
+        // TODO
     }
 }

@@ -62,6 +62,9 @@ class TabView: UIControl {
     
     public var visualState: TabVisualState {
         didSet {
+            if oldValue == visualState {
+                return
+            }
             switch visualState {
             case .deselected:
                 modelView?.selected = false
