@@ -11,6 +11,7 @@ import UIKit
 class MasterBrowserViewController: BaseViewController {
 
     public var viewModel: MasterBrowserViewModel?
+    private let websiteAddressSearchController = WebsiteSearchControllerManager()
     
     private lazy var tabsViewController: TabsViewController = {
         var tabsViewModel: TabsViewModel
@@ -32,11 +33,6 @@ class MasterBrowserViewController: BaseViewController {
         viewController.viewModel = viewModel
         
         return viewController
-    }()
-    
-    private lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
-        return controller
     }()
     
     override func viewDidLoad() {
@@ -61,16 +57,16 @@ class MasterBrowserViewController: BaseViewController {
             maker.trailing.equalTo(view).offset(0)
         }
         
-        add(asChildViewController: searchController)
+        add(asChildViewController: websiteAddressSearchController.searchController)
         
-        searchController.searchBar.snp.makeConstraints { (maker) in
+        websiteAddressSearchController.searchController.searchBar.snp.makeConstraints { (maker) in
             maker.top.equalTo(tabsViewController.view.snp.bottom).offset(0)
             maker.leading.equalTo(0)
             maker.trailing.equalTo(0)
         }
         
         browserViewController.view.snp.makeConstraints { (maker) in
-            maker.top.equalTo(searchController.searchBar.snp.bottom).offset(0)
+            maker.top.equalTo(websiteAddressSearchController.searchController.searchBar.snp.bottom).offset(0)
             maker.bottom.equalTo(0)
             maker.leading.equalTo(0)
             maker.trailing.equalTo(0)
@@ -90,6 +86,11 @@ class MasterBrowserViewController: BaseViewController {
     }
     
     private func add(asChildViewController searchController: UISearchController) {
+        // ensure that the search bar does not remain on the screen
+        // if the user navigates to another view controller
+        // while the UISearchController is active.
+        definesPresentationContext = true
+        
         addChildViewController(searchController)
         view.addSubview(searchController.searchBar)
         searchController.didMove(toParentViewController: self)
