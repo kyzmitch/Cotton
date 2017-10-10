@@ -34,6 +34,11 @@ class MasterBrowserViewController: BaseViewController {
         return viewController
     }()
     
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        return controller
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,8 +61,16 @@ class MasterBrowserViewController: BaseViewController {
             maker.trailing.equalTo(view).offset(0)
         }
         
-        browserViewController.view.snp.makeConstraints { (maker) in
+        add(asChildViewController: searchController)
+        
+        searchController.searchBar.snp.makeConstraints { (maker) in
             maker.top.equalTo(tabsViewController.view.snp.bottom).offset(0)
+            maker.leading.equalTo(0)
+            maker.trailing.equalTo(0)
+        }
+        
+        browserViewController.view.snp.makeConstraints { (maker) in
+            maker.top.equalTo(searchController.searchBar.snp.bottom).offset(0)
             maker.bottom.equalTo(0)
             maker.leading.equalTo(0)
             maker.trailing.equalTo(0)
@@ -74,5 +87,11 @@ class MasterBrowserViewController: BaseViewController {
         
         // Notify Child View Controller
         viewController.didMove(toParentViewController: self)
+    }
+    
+    private func add(asChildViewController searchController: UISearchController) {
+        addChildViewController(searchController)
+        view.addSubview(searchController.searchBar)
+        searchController.didMove(toParentViewController: self)
     }
 }
