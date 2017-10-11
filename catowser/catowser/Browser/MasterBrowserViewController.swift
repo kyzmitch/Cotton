@@ -90,9 +90,12 @@ class MasterBrowserViewController: BaseViewController {
         // if the user navigates to another view controller
         // while the UISearchController is active.
         definesPresentationContext = true
-        
-        addChildViewController(searchController)
+        // BUT, you should never push to navigation controller or use it as a child etc.
+        // If you want that, you can use UISearchContainerViewController to wrap it first.
+        // http://samwize.com/2016/11/27/uisearchcontroller-development-guide/
+        let container = UISearchContainerViewController(searchController: searchController)
+        addChildViewController(container)
         view.addSubview(searchController.searchBar)
-        searchController.didMove(toParentViewController: self)
+        container.didMove(toParentViewController: self)
     }
 }
