@@ -16,6 +16,7 @@ class BrowserViewController: BaseViewController {
     
     private let webContentView: WKWebView = {
         let webView = WKWebView()
+        webView.backgroundColor = UIColor.blue
         return webView
     }()
     
@@ -28,6 +29,14 @@ class BrowserViewController: BaseViewController {
             maker.leading.equalTo(view)
             maker.trailing.equalTo(view)
             maker.bottom.equalTo(view)
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touchedView = touches.first?.view {
+            if touchedView === webContentView {
+                webContentView.becomeFirstResponder()
+            }
         }
     }
 }
