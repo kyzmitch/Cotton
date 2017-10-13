@@ -114,9 +114,8 @@ class MasterBrowserViewController: BaseViewController {
         // http://samwize.com/2016/11/27/uisearchcontroller-development-guide/
         let container = UISearchContainerViewController(searchController: searchController)
         addChildViewController(container)
-        searchBarContainerView = container.view
-        view.addSubview(container.view)
-        view.bringSubview(toFront: searchController.searchBar)
+        searchBarContainerView = searchController.searchBar
+        view.addSubview(searchController.searchBar)
         container.didMove(toParentViewController: self)
     }
 }
