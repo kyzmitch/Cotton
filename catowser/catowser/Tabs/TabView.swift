@@ -29,10 +29,8 @@ class TabView: UIControl {
                 switch visualState {
                 case .deselected:
                     applyColoursFrom(mv, for: .deselected)
-                    break
                 case .selected:
                     applyColoursFrom(mv, for: .selected)
-                    break
                 }
                 titleText.text = mv.preparedTitle()
             }
@@ -47,14 +45,12 @@ class TabView: UIControl {
             rightCurve.curveColour = modelView.tabCurvesColourDeselected
             leftCurve.curveColour = modelView.tabCurvesColourDeselected
             titleText.textColor = modelView.titleColourDeselected
-            break
         case .selected:
             centerBackground.backgroundColor = modelView.backgroundColourSelected
             backgroundColor = modelView.realBackgroundColour
             rightCurve.curveColour = modelView.tabCurvesColourSelected
             leftCurve.curveColour = modelView.tabCurvesColourSelected
             titleText.textColor = modelView.titleColourSelected
-            break
         }
         rightCurve.setNeedsDisplay()
         leftCurve.setNeedsDisplay()
@@ -65,21 +61,21 @@ class TabView: UIControl {
             if oldValue == visualState {
                 return
             }
+            
+            let changeVisualState: (Bool) -> Void = { [weak self] (selected: Bool) -> Void in
+                guard let strongSelf = self else { return }
+                strongSelf.isSelected = selected
+                if var mv = strongSelf.modelView {
+                    mv.selected = selected
+                    strongSelf.applyColoursFrom(mv, for: selected ? .selected : .deselected)
+                }
+            }
+            
             switch visualState {
             case .deselected:
-                modelView?.selected = false
-                isSelected = false
-                if let mv = modelView {
-                    applyColoursFrom(mv, for: .deselected)
-                }
-                break
+                changeVisualState(false)
             case .selected:
-                modelView?.selected = true
-                isSelected = true
-                if let mv = modelView {
-                    applyColoursFrom(mv, for: .selected)
-                }
-                break
+                changeVisualState(true)
             }
         }
     }
@@ -259,7 +255,7 @@ extension UIBezierPath {
         let x4: CGFloat = 58.27
         let x5: CGFloat = -12.15
         
-        //// Bezier Drawing
+        // Bezier Drawing
         let bezierPath = UIBezierPath()
         bezierPath.move(to: CGPoint(x: width, y: height))
         switch direction {
