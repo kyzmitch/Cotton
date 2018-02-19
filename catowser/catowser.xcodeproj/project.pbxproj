@@ -24,6 +24,7 @@
 		C2341B671F8CF726004780A9 /* WebsiteSearchControllerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2341B661F8CF726004780A9 /* WebsiteSearchControllerManager.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
+		C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewModel.swift; sourceTree = "<group>"; };
+		C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +95,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				C70724C8201E603E0021CF5D /* Extensions */,
 				847D7C871EF6C30F00291B87 /* Browser */,
 				84E64DCC1EED9FD500F21F95 /* Tabs */,
 				8435A49A1EED5E700020102F /* AppDelegate.swift */,
@@ -128,6 +131,14 @@
 				846220AE1EEE9B6C00B84C73 /* TabModel.swift */,
 			);
 			path = Tabs;
+			sourceTree = "<group>";
+		};
+		C70724C8201E603E0021CF5D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		E35CED317EE4DF68ED3EDD9C /* Pods */ = {
@@ -281,6 +292,7 @@
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
 				84458EAF1EF70783007DA030 /* TabsViewModel.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
+				C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
