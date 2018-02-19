@@ -11,6 +11,8 @@ import UIKit
 
 struct UIConstants {
     static public let tabHeight = CGFloat(40.0)
+    static public let searchViewHeight = CGFloat(64.0)
+    static public let tabBarHeight = CGFloat(40.0) // system height?
     static public let topViewsOffset = CGFloat(10)
     static public func tabWidth() -> CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {

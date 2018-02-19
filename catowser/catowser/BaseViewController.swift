@@ -9,6 +9,19 @@
 import UIKit
 
 class BaseViewController: UIViewController {
-
+    
 }
 
+extension UIViewController {
+    public func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
+        // Add Child View Controller
+        addChildViewController(viewController)
+        
+        // Add Child View as Subview
+        containerView.addSubview(viewController.view)
+        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        // Notify Child View Controller
+        viewController.didMove(toParentViewController: self)
+    }
+}

@@ -1,16 +1,19 @@
 //
-//  BrowserViewController.swift
+//  WebSiteViewController.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 27/09/2017.
 //  Copyright © 2017 andreiermoshin. All rights reserved.
 //
+// This class is for providing UI for specific website
+// and each tab with not empty website address will have
+// instance of that class.
 
 import UIKit
 import SnapKit
 import WebKit
 
-class BrowserViewController: BaseViewController {
+class WebSiteViewController: BaseViewController {
     
     public var viewModel: BrowserViewModel?
     

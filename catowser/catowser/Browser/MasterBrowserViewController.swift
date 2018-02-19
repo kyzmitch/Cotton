@@ -8,12 +8,15 @@
 
 import UIKit
 
+protocol SearchBarControllerInterface: class {
+    func isBlank() -> Bool
+}
+
 class MasterBrowserViewController: BaseViewController {
 
     public var viewModel: MasterBrowserViewModel?
-    private let websiteAddressSearchController = WebsiteSearchControllerManager()
-    private var searchBarContainerView: UIView?
     
+    // Needed only for ipads
     private lazy var tabsViewController: TabsViewController = {
         var tabsViewModel: TabsViewModel
         if let vm = viewModel {
@@ -28,54 +31,103 @@ class MasterBrowserViewController: BaseViewController {
         return viewController
     }()
     
-    private lazy var browserViewController: BrowserViewController = {
-        let viewModel = BrowserViewModel()
-        let viewController = BrowserViewController()
-        viewController.viewModel = viewModel
+    private lazy var searchBarController: UIViewController & SearchBarControllerInterface = {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return TabletSearchBarViewController()
+        }
+        else {
+            return SmartphoneSearchBarViewController()
+        }
+    }()
+    
+    private lazy var blankWebPageController: BlankWebPageViewController = {
+        let viewController = BlankWebPageViewController()
         
         return viewController
+    }()
+    
+    private lazy var webSiteContainerView: UIView = {
+        let container = UIView()
+        return container
+    }()
+    
+    private lazy var tabBarViewController: WebBrowserTabBarController = {
+        let tabBar = WebBrowserTabBarController()
+        return tabBar
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        add(asChildViewController: tabsViewController)
-        addSearchBar(from: websiteAddressSearchController.searchController)
-        add(asChildViewController: browserViewController)
+        var tabsControllerAdded = false
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            tabsControllerAdded = true
+            add(asChildViewController: tabsViewController, to:view)
+        }
+        
+        add(asChildViewController: searchBarController, to:view)
+        add(asChildViewController: blankWebPageController, to:webSiteContainerView)
+        
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            add(asChildViewController: tabBarViewController, to:view)
+        }
         
         let statusBarFrame = UIApplication.shared.statusBarFrame
         let topOffset = statusBarFrame.origin.y + statusBarFrame.size.height
         
-        tabsViewController.view.snp.makeConstraints { (maker) in
-            if let vm = viewModel {
-                maker.height.equalTo(vm.topViewPanelHeight + topOffset)
-            }
-            else {
-                maker.height.equalTo(UIConstants.tabHeight + topOffset)
+        if tabsControllerAdded {
+            tabsViewController.view.snp.makeConstraints { (maker) in
+                maker.top.equalTo(0)
+                maker.leading.equalTo(0)
+                maker.trailing.equalTo(0)
+                if let vm = viewModel {
+                    maker.height.equalTo(vm.topViewPanelHeight + topOffset)
+                }
+                else {
+                    maker.height.equalTo(UIConstants.tabHeight + topOffset)
+                }
             }
             
-            maker.topMargin.equalTo(view).offset(0)
-            maker.leading.equalTo(view).offset(0)
-            maker.trailing.equalTo(view).offset(0)
-        }
-        
-        searchBarContainerView?.snp.makeConstraints { (maker) in
-            maker.top.equalTo(tabsViewController.view.snp.bottom).offset(0)
-            maker.leading.equalTo(0)
-            maker.trailing.equalTo(0)
-            maker.height.equalTo(56)
-        }
-        
-        browserViewController.view.snp.makeConstraints { (maker) in
-            if let sbview = searchBarContainerView {
-                maker.top.equalTo(sbview.snp.bottom).offset(0)
+            searchBarController.view.snp.makeConstraints({ (maker) in
+                maker.top.equalTo(tabsViewController.view.snp.bottom)
+                maker.leading.equalTo(0)
+                maker.trailing.equalTo(0)
+                maker.height.equalTo(UIConstants.searchViewHeight)
+            })
+            
+            // Need to have not simple view controller view but container view
+            // to have ability to insert to it and show view controller with
+            // bookmarks in case if search bar has no any address entered or
+            // webpage controller with web view if some address entered in search bar
+            webSiteContainerView.snp.makeConstraints { (maker) in
+                maker.top.equalTo(searchBarController.view.snp.bottom)
+                maker.bottom.equalTo(0)
+                maker.leading.equalTo(0)
+                maker.trailing.equalTo(0)
             }
-            else {
-                maker.top.equalTo(tabsViewController.view).offset(0)
+        }
+        else {
+            searchBarController.view.snp.makeConstraints({ (maker) in
+                maker.top.equalTo(0)
+                maker.leading.equalTo(0)
+                maker.trailing.equalTo(0)
+                maker.height.equalTo(UIConstants.searchViewHeight)
+            })
+            
+            webSiteContainerView.snp.makeConstraints { (maker) in
+                maker.top.equalTo(searchBarController.view.snp.bottom)
+                maker.bottom.equalTo(0)
+                maker.leading.equalTo(0)
+                maker.trailing.equalTo(0)
             }
-            maker.bottom.equalTo(0)
-            maker.leading.equalTo(0)
-            maker.trailing.equalTo(0)
+            
+            tabBarViewController.view.snp.makeConstraints({ (maker) in
+                maker.top.equalTo(webSiteContainerView.snp.bottom)
+                maker.bottom.equalTo(0)
+                maker.leading.equalTo(0)
+                maker.trailing.equalTo(0)
+                maker.height.equalTo(UIConstants.tabBarHeight)
+            })
         }
     }
     
@@ -90,33 +142,6 @@ class MasterBrowserViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
-    }
-
-    private func add(asChildViewController viewController: UIViewController) {
-        // Add Child View Controller
-        addChildViewController(viewController)
-        
-        // Add Child View as Subview
-        view.addSubview(viewController.view)
-        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        // Notify Child View Controller
-        viewController.didMove(toParentViewController: self)
-    }
-    
-    private func addSearchBar(from searchController: UISearchController) {
-        // ensure that the search bar does not remain on the screen
-        // if the user navigates to another view controller
-        // while the UISearchController is active.
-        definesPresentationContext = true
-        // NOTE: you should never push to navigation controller or use it as a child etc.
-        // If you want that, you can use UISearchContainerViewController to wrap it first.
-        // http://samwize.com/2016/11/27/uisearchcontroller-development-guide/
-        let container = UISearchContainerViewController(searchController: searchController)
-        addChildViewController(container)
-        searchBarContainerView = searchController.searchBar
-        view.addSubview(searchController.searchBar)
-        container.didMove(toParentViewController: self)
     }
 }
 
