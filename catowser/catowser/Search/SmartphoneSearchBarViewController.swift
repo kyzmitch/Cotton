@@ -23,7 +23,7 @@ class SmartphoneSearchBarViewController: BaseViewController, SearchBarController
         super.viewDidLoad()
 
         view.addSubview(goBackButton)
-        view.addSubview(searchBarViewController.view)
+        add(asChildViewController: searchBarViewController, to:view)
         
         goBackButton.snp.makeConstraints { (maker) in
             maker.leading.equalTo(0)

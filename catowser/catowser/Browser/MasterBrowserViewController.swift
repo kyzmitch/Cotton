@@ -121,16 +121,16 @@ class MasterBrowserViewController: BaseViewController {
                     maker.top.equalTo(view)
                 }
                 
-                maker.leading.equalTo(0)
-                maker.trailing.equalTo(0)
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
                 maker.height.equalTo(UIConstants.searchViewHeight)
             })
             
             webSiteContainerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(searchBarController.view.snp.bottom)
-                maker.bottom.equalTo(0)
-                maker.leading.equalTo(0)
-                maker.trailing.equalTo(0)
+                maker.bottom.equalTo(tabBarViewController.view.snp.top)
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
             }
             
             tabBarViewController.view.snp.makeConstraints({ (maker) in
