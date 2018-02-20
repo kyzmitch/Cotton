@@ -20,6 +20,7 @@ class TabsViewController: BaseViewController {
         stackView.distribution = .equalSpacing
         stackView.spacing = 6
         stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -90,6 +91,7 @@ class TabsViewController: BaseViewController {
         }
         self.view.layoutIfNeeded()
         stackViewScrollableContainer.scrollToVeryRight()
+        showTabPreviewsButton.setTitle("\(count + 1)", for: .normal)
     }
     
     private func removeTabView(_ tabView: TabView) {
@@ -98,6 +100,8 @@ class TabsViewController: BaseViewController {
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
+        let count = tabsStackView.arrangedSubviews.count
+        showTabPreviewsButton.setTitle("\(count)", for: .normal)
     }
     
     private func selectNearbyTab(to tab: TabView) {
@@ -175,15 +179,6 @@ class TabsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: need to remove useless vars after checks
-        var tabsHeight: CGFloat
-        if let vm = viewModel {
-            tabsHeight = vm.tabsContainerHeight
-        }
-        else {
-            tabsHeight = UIConstants.tabHeight
-        }
-        
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.addSubview(tabsStackView)
         view.addSubview(addTabButton)
@@ -212,7 +207,7 @@ class TabsViewController: BaseViewController {
             maker.top.equalTo(0)
             maker.bottom.equalTo(0)
             maker.trailing.equalTo(view).offset(0)
-            maker.width.equalTo(addTabButton.snp.width)
+            maker.width.equalTo(view.snp.height)
         }
     }
     

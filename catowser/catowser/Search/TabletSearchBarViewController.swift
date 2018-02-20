@@ -15,38 +15,40 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
     lazy var goBackButton: UIButton = {
         let btn = UIButton()
         btn.setTitle(NSLocalizedString("ttl_btn_back", comment: "To go on previous web page"), for: .normal)
-        
+        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
         return btn
     }()
     
     lazy var goForwardButton: UIButton = {
         let btn = UIButton()
         btn.setTitle(NSLocalizedString("ttl_btn_forward", comment: "To go on next web page"), for: .normal)
-        
+        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
         return btn
     }()
     
     lazy var reloadButton: UIButton = {
         let btn = UIButton()
         btn.setTitle(NSLocalizedString("ttl_btn_reload", comment: "To reload web page"), for: .normal)
-        
+        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
         return btn
     }()
     
     lazy var settingsButton: UIButton = {
         let btn = UIButton()
         btn.setTitle(NSLocalizedString("ttl_btn_settings", comment: "To show settings menu"), for: .normal)
-        
+        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
         return btn
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = UIConstants.searchBarBackgroundColour
+        
         view.addSubview(goBackButton)
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
-        view.addSubview(searchBarViewController.view)
+        add(asChildViewController: searchBarViewController, to:view)
         view.addSubview(settingsButton)
         
         goBackButton.snp.makeConstraints { (maker) in

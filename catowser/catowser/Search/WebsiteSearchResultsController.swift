@@ -1,5 +1,5 @@
 //
-//  WebsiteSearchModelController.swift
+//  WebsiteSearchResultsController.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 10/10/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebsiteSearchModelController: NSObject {
+class WebsiteSearchResultsController: NSObject {
 
     public lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
@@ -23,16 +23,27 @@ class WebsiteSearchModelController: NSObject {
     }()
 }
 
-extension WebsiteSearchModelController: UISearchResultsUpdating {
+extension WebsiteSearchResultsController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        print("\(#function): search string or address: \(searchController.searchBar.text ?? "") ")
+        let text = searchController.searchBar.text ?? ""
+        print("\(#function): search string or address: \(text)")
     }
 }
 
-extension WebsiteSearchModelController: UISearchBarDelegate {
+extension WebsiteSearchResultsController: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("\(#function): pressed")
+    }
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print("\(#function):")
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print("\(#function):")
+    }
 }
 
-extension WebsiteSearchModelController: UISearchControllerDelegate {
+extension WebsiteSearchResultsController: UISearchControllerDelegate {
     
 }

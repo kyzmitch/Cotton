@@ -8,8 +8,8 @@
 
 /* This is to show something on tab when it is without website address or title of web site */
 "ttl_tab_short_blank" = "Blank";
-"ttl_btn_back" = "Back";
-"ttl_btn_forward" = "Forward";
-"ttl_btn_reload" = "Reload";
-"ttl_btn_settings" = "Settings";
+"ttl_btn_back" = "<";
+"ttl_btn_forward" = ">";
+"ttl_btn_reload" = "R";
+"ttl_btn_settings" = "S";
 
