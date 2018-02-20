@@ -10,8 +10,8 @@ import UIKit
 
 class SearchBarBaseViewController: BaseViewController {
 
-    private var searchBarContainerView: UIView?
-    private let websiteAddressSearchController = WebsiteSearchModelController()
+    private var searchBarContainerView: UISearchBar?
+    private let websiteAddressSearchController = WebsiteSearchResultsController()
     
     override func viewDidLoad() {
         super.viewDidLoad()

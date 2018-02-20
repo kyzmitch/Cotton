@@ -27,4 +27,6 @@ struct UIConstants {
     }
     static public let compactTabWidth = CGFloat(40.0)
     static public let regularTabWidth = CGFloat(180.0)
+    static public let searchBarTextColour = UIColor.black
+    static public let searchBarBackgroundColour = UIColor.white
 }

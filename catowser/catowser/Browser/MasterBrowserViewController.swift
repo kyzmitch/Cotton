@@ -108,9 +108,9 @@ class MasterBrowserViewController: BaseViewController {
             // webpage controller with web view if some address entered in search bar
             webSiteContainerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(searchBarController.view.snp.bottom)
-                maker.bottom.equalTo(view)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
+                maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
             }
         }
         else {
@@ -138,7 +138,7 @@ class MasterBrowserViewController: BaseViewController {
                 maker.leading.equalTo(0)
                 maker.trailing.equalTo(0)
                 maker.height.equalTo(UIConstants.tabBarHeight)
-                maker.bottom.equalTo(0)
+                maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
             })
         }
     }
