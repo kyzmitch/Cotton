@@ -12,8 +12,12 @@
 // displayed on tab without entered web site address.
 
 import UIKit
+import SnapKit
 
 class BlankWebPageViewController: BaseViewController {
+    
+    // private lazy var mostVisitedWebSitesCollectionView: UICollectionView
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

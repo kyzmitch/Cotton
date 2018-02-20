@@ -66,32 +66,39 @@ class MasterBrowserViewController: BaseViewController {
         }
         
         add(asChildViewController: searchBarController, to:view)
+        view.addSubview(webSiteContainerView)
         add(asChildViewController: blankWebPageController, to:webSiteContainerView)
         
         if UIDevice.current.userInterfaceIdiom == .phone {
             add(asChildViewController: tabBarViewController, to:view)
         }
         
-        let statusBarFrame = UIApplication.shared.statusBarFrame
-        let topOffset = statusBarFrame.origin.y + statusBarFrame.size.height
-        
         if tabsControllerAdded {
             tabsViewController.view.snp.makeConstraints { (maker) in
-                maker.top.equalTo(0)
-                maker.leading.equalTo(0)
-                maker.trailing.equalTo(0)
+                // https://github.com/SnapKit/SnapKit/issues/448
+                // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
+                // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
+                
+                if #available(iOS 11, *) {
+                    maker.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+                } else {
+                    maker.top.equalTo(view)
+                }
+                
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
                 if let vm = viewModel {
-                    maker.height.equalTo(vm.topViewPanelHeight + topOffset)
+                    maker.height.equalTo(vm.topViewPanelHeight)
                 }
                 else {
-                    maker.height.equalTo(UIConstants.tabHeight + topOffset)
+                    maker.height.equalTo(UIConstants.tabHeight)
                 }
             }
             
             searchBarController.view.snp.makeConstraints({ (maker) in
                 maker.top.equalTo(tabsViewController.view.snp.bottom)
-                maker.leading.equalTo(0)
-                maker.trailing.equalTo(0)
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
                 maker.height.equalTo(UIConstants.searchViewHeight)
             })
             
@@ -101,14 +108,19 @@ class MasterBrowserViewController: BaseViewController {
             // webpage controller with web view if some address entered in search bar
             webSiteContainerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(searchBarController.view.snp.bottom)
-                maker.bottom.equalTo(0)
-                maker.leading.equalTo(0)
-                maker.trailing.equalTo(0)
+                maker.bottom.equalTo(view)
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
             }
         }
         else {
             searchBarController.view.snp.makeConstraints({ (maker) in
-                maker.top.equalTo(0)
+                if #available(iOS 11, *) {
+                    maker.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+                } else {
+                    maker.top.equalTo(view)
+                }
+                
                 maker.leading.equalTo(0)
                 maker.trailing.equalTo(0)
                 maker.height.equalTo(UIConstants.searchViewHeight)
@@ -123,10 +135,10 @@ class MasterBrowserViewController: BaseViewController {
             
             tabBarViewController.view.snp.makeConstraints({ (maker) in
                 maker.top.equalTo(webSiteContainerView.snp.bottom)
-                maker.bottom.equalTo(0)
                 maker.leading.equalTo(0)
                 maker.trailing.equalTo(0)
                 maker.height.equalTo(UIConstants.tabBarHeight)
+                maker.bottom.equalTo(0)
             })
         }
     }

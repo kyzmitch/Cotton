@@ -38,6 +38,21 @@ class TabsViewController: BaseViewController {
         return addButton
     }()
     
+    private lazy var showTabPreviewsButton: UIButton = {
+        let showTabsButton = UIButton()
+        // Tabs count should be used here
+        let count = tabsStackView.arrangedSubviews.count
+        showTabsButton.setTitle("\(count)", for: .normal)
+        showTabsButton.addTarget(self, action: #selector(showTabPreviewsPressed), for: .touchUpInside)
+        return showTabsButton
+    }()
+    
+    @objc private func showTabPreviewsPressed() {
+        print("\(#function): show pressed")
+        // Coordinator should be used here
+        // to show tab previews collection view modally
+    }
+    
     @objc private func addTabPressed() -> Void {
         print("\(#function): add pressed")
         
@@ -160,6 +175,7 @@ class TabsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: need to remove useless vars after checks
         var tabsHeight: CGFloat
         if let vm = viewModel {
             tabsHeight = vm.tabsContainerHeight
@@ -168,28 +184,35 @@ class TabsViewController: BaseViewController {
             tabsHeight = UIConstants.tabHeight
         }
         
-        view.addSubview(addTabButton)
-        addTabButton.snp.makeConstraints { (maker) in
-            maker.bottom.equalTo(view.snp.bottom)
-            maker.width.equalTo(tabsHeight)
-            maker.height.equalTo(tabsHeight)
-            maker.trailing.equalTo(view.snp.trailing)
-        }
-        
         view.addSubview(stackViewScrollableContainer)
+        stackViewScrollableContainer.addSubview(tabsStackView)
+        view.addSubview(addTabButton)
+        view.addSubview(showTabPreviewsButton)
+        
         stackViewScrollableContainer.snp.makeConstraints { (maker) in
             maker.leading.equalTo(view).offset(0)
             maker.trailing.equalTo(addTabButton.snp.leading)
             maker.bottom.equalTo(view).offset(0)
-            maker.height.equalTo(tabsHeight)
+            maker.top.equalTo(view).offset(0)
         }
-        
-        stackViewScrollableContainer.addSubview(tabsStackView)
         tabsStackView.snp.makeConstraints { (maker) in
             maker.top.equalTo(stackViewScrollableContainer)
             maker.bottom.equalTo(stackViewScrollableContainer)
             maker.leading.equalTo(stackViewScrollableContainer)
             maker.trailing.equalTo(stackViewScrollableContainer)
+        }
+        addTabButton.snp.makeConstraints { (maker) in
+            maker.bottom.equalTo(view)
+            maker.top.equalTo(view)
+            maker.leading.equalTo(stackViewScrollableContainer.snp.trailing)
+            maker.width.equalTo(view.snp.height)
+        }
+        showTabPreviewsButton.snp.makeConstraints { (maker) in
+            maker.leading.equalTo(addTabButton.snp.trailing)
+            maker.top.equalTo(0)
+            maker.bottom.equalTo(0)
+            maker.trailing.equalTo(view).offset(0)
+            maker.width.equalTo(addTabButton.snp.width)
         }
     }
     
