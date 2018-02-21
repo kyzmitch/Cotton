@@ -1,5 +1,5 @@
 //
-//  WebBrowserTabBarController.swift
+//  WebBrowserToolbarController.swift
 //  catowser
 //
 //  Created by admin on 19/02/2018.
@@ -15,10 +15,13 @@
 
 import UIKit
 
-class WebBrowserTabBarController: BaseViewController {
+class WebBrowserToolbarController: BaseViewController {
 
     private lazy var toolbarView: UIToolbar = {
         let toolbar = UIToolbar()
+        toolbar.tintColor = UIColor.black
+        toolbar.backgroundColor = UIColor.white
+        
         var barItems = [UIBarButtonItem]()
         barItems.append(backButton)
         let space1 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -38,17 +41,20 @@ class WebBrowserTabBarController: BaseViewController {
     }()
     
     private lazy var backButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(handleBackPressed))
+        let img = UIImage(named: "nav-back")
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleBackPressed))
         return btn
     }()
     
     private lazy var forwardButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: .redo, target: self, action: #selector(handleForwardPressed))
+        let img = UIImage(named: "nav-forward")
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleForwardPressed))
         return btn
     }()
     
     private lazy var reloadButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(handleReloadPressed))
+        let img = UIImage(named: "nav-refresh")
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleReloadPressed))
         return btn
     }()
     
@@ -60,7 +66,8 @@ class WebBrowserTabBarController: BaseViewController {
     }()
     
     private lazy var settingsButton: UIBarButtonItem = {
-        let btn = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(handleSettingsPressed))
+        let img = UIImage(named: "nav-menu")
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleSettingsPressed))
         return btn
     }()
     

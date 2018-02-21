@@ -10,7 +10,7 @@
 		14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A910B05602B21CB19029F7B9 /* Pods_catowser.framework */; };
 		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
-		841A2D80203AD0B50050A996 /* WebBrowserTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserTabBarController.swift */; };
+		841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
 		841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */; };
 		841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */; };
 		841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */; };
@@ -36,7 +36,7 @@
 		2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
 		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIConstants.swift; path = Common/UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
-		841A2D7F203AD0B50050A996 /* WebBrowserTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserTabBarController.swift; sourceTree = "<group>"; };
+		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
 		841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewController.swift; sourceTree = "<group>"; };
 		841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartphoneSearchBarViewController.swift; sourceTree = "<group>"; };
 		841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarBaseViewController.swift; sourceTree = "<group>"; };
@@ -114,12 +114,12 @@
 			path = WebSite;
 			sourceTree = "<group>";
 		};
-		841A2D7C203ACBDB0050A996 /* WebBrowserTabBar */ = {
+		841A2D7C203ACBDB0050A996 /* WebBrowserToolbar */ = {
 			isa = PBXGroup;
 			children = (
-				841A2D7F203AD0B50050A996 /* WebBrowserTabBarController.swift */,
+				841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */,
 			);
-			path = WebBrowserTabBar;
+			path = WebBrowserToolbar;
 			sourceTree = "<group>";
 		};
 		8435A48E1EED5E700020102F = {
@@ -143,7 +143,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
-				841A2D7C203ACBDB0050A996 /* WebBrowserTabBar */,
+				841A2D7C203ACBDB0050A996 /* WebBrowserToolbar */,
 				841A2D7B203ACBBA0050A996 /* WebSite */,
 				841A2D7A203ACB970050A996 /* WebTabs */,
 				841A2D79203ACB420050A996 /* Search */,
@@ -339,7 +339,7 @@
 				C2341B671F8CF726004780A9 /* WebsiteSearchResultsController.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
-				841A2D80203AD0B50050A996 /* WebBrowserTabBarController.swift in Sources */,
+				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
 				84458EAF1EF70783007DA030 /* TabsViewModel.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,

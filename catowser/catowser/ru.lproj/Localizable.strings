@@ -8,7 +8,3 @@
 
 /* This is to show something on tab when it is without website address or title of web site */
 "ttl_tab_short_blank" = "Пустая вкладка";
-"ttl_btn_back" = "<";
-"ttl_btn_forward" = ">";
-"ttl_btn_reload" = "О";
-"ttl_btn_settings" = "Н";

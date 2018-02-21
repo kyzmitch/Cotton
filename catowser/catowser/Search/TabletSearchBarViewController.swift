@@ -14,29 +14,29 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
     
     lazy var goBackButton: UIButton = {
         let btn = UIButton()
-        btn.setTitle(NSLocalizedString("ttl_btn_back", comment: "To go on previous web page"), for: .normal)
-        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
+        let img = UIImage(named: "nav-back")
+        btn.setImage(img, for: .normal)
         return btn
     }()
     
     lazy var goForwardButton: UIButton = {
         let btn = UIButton()
-        btn.setTitle(NSLocalizedString("ttl_btn_forward", comment: "To go on next web page"), for: .normal)
-        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
+        let img = UIImage(named: "nav-forward")
+        btn.setImage(img, for: .normal)
         return btn
     }()
     
     lazy var reloadButton: UIButton = {
         let btn = UIButton()
-        btn.setTitle(NSLocalizedString("ttl_btn_reload", comment: "To reload web page"), for: .normal)
-        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
+        let img = UIImage(named: "nav-refresh")
+        btn.setImage(img, for: .normal)
         return btn
     }()
     
     lazy var settingsButton: UIButton = {
         let btn = UIButton()
-        btn.setTitle(NSLocalizedString("ttl_btn_settings", comment: "To show settings menu"), for: .normal)
-        btn.setTitleColor(UIConstants.searchBarTextColour, for: .normal)
+        let img = UIImage(named: "nav-menu")
+        btn.setImage(img, for: .normal)
         return btn
     }()
     
@@ -49,7 +49,7 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
         add(asChildViewController: searchBarViewController, to:view)
-        view.addSubview(settingsButton)
+        // view.addSubview(settingsButton)
         
         goBackButton.snp.makeConstraints { (maker) in
             maker.leading.equalTo(0)
@@ -73,14 +73,14 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
             maker.leading.equalTo(reloadButton.snp.trailing)
             maker.top.equalTo(0)
             maker.bottom.equalTo(0)
-            maker.trailing.equalTo(settingsButton.snp.leading)
+            maker.trailing.equalTo(0)
         }
-        settingsButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(searchBarViewController.view.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.width.equalTo(view.snp.height)
-        }
+//        settingsButton.snp.makeConstraints { (maker) in
+//            maker.leading.equalTo(searchBarViewController.view.snp.trailing)
+//            maker.top.equalTo(0)
+//            maker.bottom.equalTo(0)
+//            maker.width.equalTo(view.snp.height)
+//        }
     }
     
     func isBlank() -> Bool {
