@@ -67,11 +67,12 @@ class MasterBrowserViewController: BaseViewController {
         
         add(asChildViewController: searchBarController, to:view)
         view.addSubview(webSiteContainerView)
-        add(asChildViewController: blankWebPageController, to:webSiteContainerView)
         
         if UIDevice.current.userInterfaceIdiom == .phone {
             add(asChildViewController: toolbarViewController, to:view)
         }
+        
+        add(asChildViewController: blankWebPageController, to:webSiteContainerView)
         
         if tabsControllerAdded {
             tabsViewController.view.snp.makeConstraints { (maker) in
@@ -110,7 +111,11 @@ class MasterBrowserViewController: BaseViewController {
                 maker.top.equalTo(searchBarController.view.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
+                if #available(iOS 11, *) {
+                    maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+                } else {
+                    maker.bottom.equalTo(view)
+                }
             }
         }
         else {
@@ -138,8 +143,20 @@ class MasterBrowserViewController: BaseViewController {
                 maker.leading.equalTo(0)
                 maker.trailing.equalTo(0)
                 maker.height.equalTo(UIConstants.tabBarHeight)
-                maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin)
+                
+                if #available(iOS 11, *) {
+                    maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+                } else {
+                    maker.bottom.equalTo(view)
+                }
             })
+        }
+        
+        blankWebPageController.view.snp.makeConstraints { (make) in
+            make.leading.equalTo(webSiteContainerView)
+            make.trailing.equalTo(webSiteContainerView)
+            make.top.equalTo(webSiteContainerView)
+            make.bottom.equalTo(webSiteContainerView)
         }
     }
     
