@@ -51,9 +51,9 @@ class MasterBrowserViewController: BaseViewController {
         return container
     }()
     
-    private lazy var tabBarViewController: WebBrowserTabBarController = {
-        let tabBar = WebBrowserTabBarController()
-        return tabBar
+    private lazy var toolbarViewController: WebBrowserToolbarController = {
+        let toolbar = WebBrowserToolbarController()
+        return toolbar
     }()
     
     override func viewDidLoad() {
@@ -70,7 +70,7 @@ class MasterBrowserViewController: BaseViewController {
         add(asChildViewController: blankWebPageController, to:webSiteContainerView)
         
         if UIDevice.current.userInterfaceIdiom == .phone {
-            add(asChildViewController: tabBarViewController, to:view)
+            add(asChildViewController: toolbarViewController, to:view)
         }
         
         if tabsControllerAdded {
@@ -128,12 +128,12 @@ class MasterBrowserViewController: BaseViewController {
             
             webSiteContainerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(searchBarController.view.snp.bottom)
-                maker.bottom.equalTo(tabBarViewController.view.snp.top)
+                maker.bottom.equalTo(toolbarViewController.view.snp.top)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
             }
             
-            tabBarViewController.view.snp.makeConstraints({ (maker) in
+            toolbarViewController.view.snp.makeConstraints({ (maker) in
                 maker.top.equalTo(webSiteContainerView.snp.bottom)
                 maker.leading.equalTo(0)
                 maker.trailing.equalTo(0)

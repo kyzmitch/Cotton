@@ -14,7 +14,9 @@ class SmartphoneSearchBarViewController: BaseViewController, SearchBarController
     
     lazy var goBackButton: UIButton = {
         let btn = UIButton()
-        btn.setTitle(NSLocalizedString("ttl_btn_back", comment: "To go on previous web page"), for: .normal)
+        btn.backgroundColor = UIColor.white
+        let img = UIImage(named: "goBack")
+        btn.setImage(img, for: .normal)
         
         return btn
     }()
