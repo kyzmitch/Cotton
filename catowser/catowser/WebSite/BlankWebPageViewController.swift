@@ -17,10 +17,26 @@ import SnapKit
 class BlankWebPageViewController: BaseViewController {
     
     // private lazy var mostVisitedWebSitesCollectionView: UICollectionView
+    private var label: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
+        view.backgroundColor = UIColor.white
+        
+        // TODO: remove temporary label
+        // and replace it with collection view
+        label = UILabel()
+        label?.numberOfLines = 3
+        label?.textAlignment = .center
+        label!.text = "Page with most visited websites previews"
+        label?.textColor = UIColor.black
+        view.addSubview(label!)
+        
+        label!.snp.makeConstraints { (make) in
+            make.center.equalTo(view)
+            make.width.equalTo(300)
+            make.height.equalTo(100)
+        }
     }
 }
