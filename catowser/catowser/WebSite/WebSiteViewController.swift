@@ -15,7 +15,7 @@ import WebKit
 
 class WebSiteViewController: BaseViewController {
     
-    public var viewModel: BrowserViewModel?
+    var viewModel: BrowserViewModel?
     
     private let webContentView: WKWebView = {
         let webView = WKWebView()

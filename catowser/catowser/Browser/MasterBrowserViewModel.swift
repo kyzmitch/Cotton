@@ -10,6 +10,6 @@ import Foundation
 import UIKit
 
 struct MasterBrowserViewModel {
-    public let topViewsOffset = UIConstants.topViewsOffset
-    public let topViewPanelHeight = UIConstants.tabHeight
+    let topViewsOffset = UIConstants.topViewsOffset
+    let topViewPanelHeight = UIConstants.tabHeight
 }

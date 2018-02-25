@@ -14,7 +14,7 @@ protocol SearchBarControllerInterface: class {
 
 class MasterBrowserViewController: BaseViewController {
 
-    public var viewModel: MasterBrowserViewModel?
+    var viewModel: MasterBrowserViewModel?
     
     // Needed only for ipads
     private lazy var tabsViewController: TabsViewController = {
