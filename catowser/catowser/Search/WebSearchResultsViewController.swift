@@ -8,33 +8,6 @@
 
 import UIKit
 
-protocol WebPageDescription {
-    var webAddress: URL {get set}
-    var title: String {get set}
-    var shortDescription: String {get set}
-    var icon: UIImage {get set}
-}
-
-protocol WebSearchResult {
-    var searchEngineName: String {get set}
-    var numberOfSearchResults: Int {get set}
-    func searchResultDescription(for number: Int) -> WebPageDescription
-}
-
-protocol TextWebSearchResult: WebSearchResult {
-    var searchedText: String {get set}
-}
-
-extension TextWebSearchResult {
-    func searchedKeywords() -> [String] {
-        return searchedText.split(separator: " ").filter {$0.count >= 3}.map {String($0)}
-    }
-}
-
-protocol ImageWebSearchResult: WebSearchResult {
-    var searchedImage: UIImage {get set}
-}
-
 class WebSearchResultsViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
     private enum DataSourceState {
