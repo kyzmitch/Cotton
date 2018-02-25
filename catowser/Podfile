@@ -7,5 +7,5 @@ target 'catowser' do
 
   # Pods for catowser
   pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit.git', :branch => 'swift-4'
-
+  pod 'Alamofire', '~> 4.6'
 end

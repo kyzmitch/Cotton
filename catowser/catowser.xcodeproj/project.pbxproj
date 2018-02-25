@@ -29,15 +29,19 @@
 		C2341B671F8CF726004780A9 /* WebsiteSearchControllerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2341B661F8CF726004780A9 /* WebsiteSearchControllerHolder.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
+		C705C0EA2042ECEE0018067F /* HttpApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0E92042ECEE0018067F /* HttpApi.swift */; };
 		C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */; };
 		C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */; };
 		C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */; };
-		C71A33432041E79C0092D259 /* WebSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A33422041E79C0092D259 /* WebSearch.swift */; };
+		C71A33432041E79C0092D259 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A33422041E79C0092D259 /* HttpClient.swift */; };
+		C7D9E54A2042CA3E00FE55A3 /* WebSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */; };
+		C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */; };
+		C7D9E5502042D66D00FE55A3 /* AlamofireHttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
-		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIConstants.swift; path = Common/UIConstants.swift; sourceTree = "<group>"; };
+		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
 		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
 		841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewController.swift; sourceTree = "<group>"; };
@@ -63,10 +67,14 @@
 		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewModel.swift; sourceTree = "<group>"; };
+		C705C0E92042ECEE0018067F /* HttpApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpApi.swift; sourceTree = "<group>"; };
 		C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultsViewController.swift; sourceTree = "<group>"; };
 		C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultTableViewCell.swift; sourceTree = "<group>"; };
-		C71A33422041E79C0092D259 /* WebSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearch.swift; sourceTree = "<group>"; };
+		C71A33422041E79C0092D259 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchEngine.swift; sourceTree = "<group>"; };
+		C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
+		C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireHttpClient.swift; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,7 +107,6 @@
 				841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */,
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
 				C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */,
-				C71A33422041E79C0092D259 /* WebSearch.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -152,6 +159,8 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				C7D9E54E2042D64E00FE55A3 /* Network */,
+				C7D9E54B2042CDEE00FE55A3 /* Constants */,
 				841A2D7C203ACBDB0050A996 /* WebBrowserToolbar */,
 				841A2D7B203ACBBA0050A996 /* WebSite */,
 				841A2D7A203ACB970050A996 /* WebTabs */,
@@ -164,7 +173,6 @@
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
 				8435A4A61EED5E700020102F /* Info.plist */,
-				8412FF3C1F72AF050011FDD7 /* UIConstants.swift */,
 				C27371191F7A341900900F03 /* Localizable.strings */,
 			);
 			path = catowser;
@@ -195,6 +203,26 @@
 				C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C7D9E54B2042CDEE00FE55A3 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				8412FF3C1F72AF050011FDD7 /* UIConstants.swift */,
+				C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		C7D9E54E2042D64E00FE55A3 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				C705C0E92042ECEE0018067F /* HttpApi.swift */,
+				C71A33422041E79C0092D259 /* HttpClient.swift */,
+				C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */,
+				C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 		E35CED317EE4DF68ED3EDD9C /* Pods */ = {
@@ -317,10 +345,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-catowser/Pods-catowser-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,6 +365,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */,
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
 				C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */,
 				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
@@ -343,15 +374,18 @@
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
+				C7D9E5502042D66D00FE55A3 /* AlamofireHttpClient.swift in Sources */,
 				846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
-				C71A33432041E79C0092D259 /* WebSearch.swift in Sources */,
+				C71A33432041E79C0092D259 /* HttpClient.swift in Sources */,
 				C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */,
+				C705C0EA2042ECEE0018067F /* HttpApi.swift in Sources */,
 				C2341B671F8CF726004780A9 /* WebsiteSearchControllerHolder.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
+				C7D9E54A2042CA3E00FE55A3 /* WebSearchEngine.swift in Sources */,
 				84458EAF1EF70783007DA030 /* TabsViewModel.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
