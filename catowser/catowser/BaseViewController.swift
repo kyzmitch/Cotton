@@ -15,14 +15,9 @@ class BaseViewController: UIViewController {
 }
 
 extension UIViewController {
-    public func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
-        // Add Child View Controller
+    func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
         addChildViewController(viewController)
-        
-        // Add Child View as Subview
         containerView.addSubview(viewController.view)
-        
-        // Notify Child View Controller
         viewController.didMove(toParentViewController: self)
     }
 }

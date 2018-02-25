@@ -16,7 +16,7 @@ class WebsiteSearchControllerHolder: NSObject {
         resultsController = searchResultsController
     }
     
-    public lazy var searchController: UISearchController = {
+    lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: resultsController)
         controller.searchResultsUpdater = self
         controller.delegate = self

@@ -22,7 +22,7 @@ enum TabVisualState {
 
 class TabView: UIControl {
     
-    public var modelView: TabViewModel? {
+    var modelView: TabViewModel? {
         willSet {
             if let mv = newValue {
                 
@@ -56,7 +56,7 @@ class TabView: UIControl {
         leftCurve.setNeedsDisplay()
     }
     
-    public var visualState: TabVisualState {
+    var visualState: TabVisualState {
         didSet {
             if oldValue == visualState {
                 return
@@ -80,12 +80,12 @@ class TabView: UIControl {
         }
     }
     
-    public weak var delegate: TabDelegate?
+    weak var delegate: TabDelegate?
     
     fileprivate lazy var rightCurve = SingleCurveView(right: true, backColour: UIColor.clear)
     fileprivate lazy var leftCurve = SingleCurveView(right: false, backColour: UIColor.clear)
     
-    lazy var centerBackground: UIView = {
+    private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
         return centerBackground
     }()
@@ -222,7 +222,7 @@ class TabView: UIControl {
     fileprivate class SingleCurveView: UIView {
         static let CurveWidth: CGFloat = 50
         private var right: Bool = true
-        public var curveColour: UIColor?
+        var curveColour: UIColor?
         
         init(right: Bool, backColour: UIColor) {
             self.right = right

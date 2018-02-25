@@ -11,7 +11,7 @@ import UIKit
 class WebSearchResultTableViewCell: UITableViewCell {
 
     private let container = UIView()
-    public let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         /*
          Translation of autoresizing masks into constraints is disabled because it would conflict with the auto adjusting constraints.
@@ -23,7 +23,7 @@ class WebSearchResultTableViewCell: UITableViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    public let iconImageView: UIImageView = {
+    private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -78,10 +78,10 @@ class WebSearchResultTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(using webPageDescription: WebPageDescription) {
+    func configure(using webPageDescription: WebPageDescription) {
         titleLabel.text = webPageDescription.title
         iconImageView.image = webPageDescription.icon
     }
     
-    public static let cellIdentifier = UIIdentifiers.webSearchResultCellId
+    static let cellIdentifier = UIIdentifiers.webSearchResultCellId
 }

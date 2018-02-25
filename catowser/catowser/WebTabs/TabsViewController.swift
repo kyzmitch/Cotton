@@ -12,7 +12,7 @@ import SnapKit
 
 class TabsViewController: BaseViewController {
     
-    public var viewModel: TabsViewModel?
+    var viewModel: TabsViewModel?
     
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()

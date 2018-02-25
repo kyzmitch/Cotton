@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 struct TabsViewModel {
-    public var tabsContainerHeight: CGFloat
-    public var topViewsOffset: CGFloat
+    var tabsContainerHeight: CGFloat
+    var topViewsOffset: CGFloat
     
     
     init(_ topOffset: CGFloat = UIConstants.topViewsOffset, _ heiht: CGFloat = UIConstants.tabHeight) {
