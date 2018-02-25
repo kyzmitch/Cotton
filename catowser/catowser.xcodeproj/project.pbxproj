@@ -31,7 +31,7 @@
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
 		C705C0EA2042ECEE0018067F /* HttpApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0E92042ECEE0018067F /* HttpApi.swift */; };
 		C705C0EC20430E610018067F /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0EB20430E610018067F /* SearchSuggestClient.swift */; };
-		C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */; };
+		C705C0EE204340BD0018067F /* UIColour+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */; };
 		C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */; };
 		C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */; };
 		C71A33432041E79C0092D259 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A33422041E79C0092D259 /* HttpClient.swift */; };
@@ -70,7 +70,7 @@
 		C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewModel.swift; sourceTree = "<group>"; };
 		C705C0E92042ECEE0018067F /* HttpApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpApi.swift; sourceTree = "<group>"; };
 		C705C0EB20430E610018067F /* SearchSuggestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestClient.swift; sourceTree = "<group>"; };
-		C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColour+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultsViewController.swift; sourceTree = "<group>"; };
 		C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		C71A33422041E79C0092D259 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
@@ -202,7 +202,7 @@
 		C70724C8201E603E0021CF5D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */,
+				C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -394,7 +394,7 @@
 				C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
-				C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */,
+				C705C0EE204340BD0018067F /* UIColour+CatowserExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

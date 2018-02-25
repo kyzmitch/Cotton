@@ -42,18 +42,14 @@ class TabView: UIControl {
         case .deselected:
             centerBackground.backgroundColor = modelView.backgroundColourDeselected
             backgroundColor = modelView.realBackgroundColour
-            rightCurve.curveColour = modelView.tabCurvesColourDeselected
-            leftCurve.curveColour = modelView.tabCurvesColourDeselected
+            highlightLine.isHidden = true
             titleText.textColor = modelView.titleColourDeselected
         case .selected:
             centerBackground.backgroundColor = modelView.backgroundColourSelected
             backgroundColor = modelView.realBackgroundColour
-            rightCurve.curveColour = modelView.tabCurvesColourSelected
-            leftCurve.curveColour = modelView.tabCurvesColourSelected
+            highlightLine.isHidden = false
             titleText.textColor = modelView.titleColourSelected
         }
-        rightCurve.setNeedsDisplay()
-        leftCurve.setNeedsDisplay()
     }
     
     var visualState: TabVisualState {
@@ -82,9 +78,6 @@ class TabView: UIControl {
     
     weak var delegate: TabDelegate?
     
-    fileprivate lazy var rightCurve = SingleCurveView(right: true, backColour: UIColor.clear)
-    fileprivate lazy var leftCurve = SingleCurveView(right: false, backColour: UIColor.clear)
-    
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
         return centerBackground
@@ -112,6 +105,13 @@ class TabView: UIControl {
         favicon.layer.cornerRadius = 2.0
         favicon.layer.masksToBounds = true
         return favicon
+    }()
+    
+    private let highlightLine: UIView = {
+        let line = UIView()
+        line.backgroundColor = UIConstants.webSiteTabHighlitedLineColour
+        line.isHidden = true
+        return line
     }()
     
     required init?(coder aDecoder: NSCoder) {
@@ -159,30 +159,17 @@ class TabView: UIControl {
         super.init(frame: frame)
         contentMode = .redraw
         
-        addSubview(rightCurve)
-        addSubview(leftCurve)
         addSubview(centerBackground)
         addSubview(favicon)
         addSubview(titleText)
         addSubview(closeButton)
+        addSubview(highlightLine)
         
         closeButton.addTarget(self, action: #selector(handleClosePressed), for: .touchUpInside)
         
-        rightCurve.snp.makeConstraints { make in
-            make.right.equalTo(self)
-            make.top.equalTo(self)
-            make.bottom.equalTo(self)
-            make.width.equalTo(SingleCurveView.CurveWidth)
-        }
-        leftCurve.snp.makeConstraints { make in
-            make.left.equalTo(self)
-            make.top.equalTo(self)
-            make.bottom.equalTo(self)
-            make.width.equalTo(SingleCurveView.CurveWidth)
-        }
         centerBackground.snp.makeConstraints { make in
-            make.left.equalTo(leftCurve.snp.right)
-            make.right.equalTo(rightCurve.snp.left)
+            make.left.equalTo(self)
+            make.right.equalTo(self)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
         }
@@ -203,6 +190,12 @@ class TabView: UIControl {
             make.width.equalTo(self.snp.height)
             make.trailing.equalTo(self).offset(-5)
         }
+        highlightLine.snp.makeConstraints { make in
+            make.top.equalTo(self)
+            make.leading.equalTo(self).offset(-2)
+            make.trailing.equalTo(self).offset(2)
+            make.height.equalTo(UIConstants.highlightLineWidth)
+        }
     }
     
     override var intrinsicContentSize: CGSize {
@@ -218,35 +211,6 @@ class TabView: UIControl {
             }
         }
     }
-    
-    fileprivate class SingleCurveView: UIView {
-        static let CurveWidth: CGFloat = 50
-        private var right: Bool = true
-        var curveColour: UIColor?
-        
-        init(right: Bool, backColour: UIColor) {
-            self.right = right
-            
-            super.init(frame: CGRect.zero)
-            self.backgroundColor = backColour
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            fatalError("\(#function): has not been implemented")
-        }
-        
-        override func draw(_ rect: CGRect) {
-            super.draw(rect)
-            let bezierPath = UIBezierPath.topTabsCurve(frame.width, height: frame.height, direction: right ? .right : .left)
-            if let crvClr = curveColour {
-                crvClr.setFill()
-            }
-            else {
-                UIColor.gray.setFill()
-            }
-            bezierPath.fill()
-        }
-    }
 }
 
 extension UIEdgeInsets {
@@ -255,30 +219,6 @@ extension UIEdgeInsets {
         left = inset
         right = inset
         bottom = inset
-    }
-}
-
-private class BezierView: UIView {
-    var fillColor: UIColor?
-    init() {
-        super.init(frame: CGRect.zero)
-        self.backgroundColor = UIColor.clear
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("\(#function): has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        guard let fillColor = self.fillColor else {
-            return
-        }
-        let bezierPath = UIBezierPath.topTabsCurve(frame.width, height: frame.height, direction: .both)
-        
-        fillColor.setFill()
-        bezierPath.fill()
     }
 }
 

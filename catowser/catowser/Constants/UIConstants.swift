@@ -29,6 +29,9 @@ struct UIConstants {
     static public let regularTabWidth = CGFloat(180.0)
     static public let searchBarTextColour = UIColor.black
     static public let searchBarBackgroundColour = UIColor.white
+    
+    static public let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
+    static public let highlightLineWidth: CGFloat = 3
 }
 
 struct UIIdentifiers {
