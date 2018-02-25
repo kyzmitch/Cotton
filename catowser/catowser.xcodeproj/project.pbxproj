@@ -26,10 +26,13 @@
 		C22599631F7BEF6D000E4C3A /* WebSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebSiteViewController.swift */; };
 		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
-		C2341B671F8CF726004780A9 /* WebsiteSearchResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2341B661F8CF726004780A9 /* WebsiteSearchResultsController.swift */; };
+		C2341B671F8CF726004780A9 /* WebsiteSearchControllerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2341B661F8CF726004780A9 /* WebsiteSearchControllerHolder.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
 		C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */; };
+		C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */; };
+		C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */; };
+		C71A33432041E79C0092D259 /* WebSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A33422041E79C0092D259 /* WebSearch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,12 +58,15 @@
 		C22599621F7BEF6D000E4C3A /* WebSiteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSiteViewController.swift; sourceTree = "<group>"; };
 		C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
 		C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewController.swift; sourceTree = "<group>"; };
-		C2341B661F8CF726004780A9 /* WebsiteSearchResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteSearchResultsController.swift; sourceTree = "<group>"; };
+		C2341B661F8CF726004780A9 /* WebsiteSearchControllerHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsiteSearchControllerHolder.swift; sourceTree = "<group>"; };
 		C27371181F7A341900900F03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewModel.swift; sourceTree = "<group>"; };
 		C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultsViewController.swift; sourceTree = "<group>"; };
+		C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		C71A33422041E79C0092D259 /* WebSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearch.swift; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,10 +93,13 @@
 		841A2D79203ACB420050A996 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				C2341B661F8CF726004780A9 /* WebsiteSearchResultsController.swift */,
+				C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */,
+				C2341B661F8CF726004780A9 /* WebsiteSearchControllerHolder.swift */,
 				841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */,
 				841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */,
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
+				C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */,
+				C71A33422041E79C0092D259 /* WebSearch.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -327,6 +336,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
+				C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */,
 				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebSiteViewController.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
@@ -335,13 +345,15 @@
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
 				846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
+				C71A33432041E79C0092D259 /* WebSearch.swift in Sources */,
 				C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */,
-				C2341B671F8CF726004780A9 /* WebsiteSearchResultsController.swift in Sources */,
+				C2341B671F8CF726004780A9 /* WebsiteSearchControllerHolder.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
 				84458EAF1EF70783007DA030 /* TabsViewModel.swift in Sources */,
+				C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */,

@@ -11,7 +11,7 @@ import UIKit
 class SearchBarBaseViewController: BaseViewController {
 
     private var searchBarContainerView: UISearchBar?
-    private let websiteAddressSearchController = WebsiteSearchResultsController()
+    private let websiteAddressSearchController = WebsiteSearchControllerHolder(nil /* TODO: pass view controller instead of nil */)
     
     override func viewDidLoad() {
         super.viewDidLoad()

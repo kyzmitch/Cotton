@@ -30,3 +30,7 @@ struct UIConstants {
     static public let searchBarTextColour = UIColor.black
     static public let searchBarBackgroundColour = UIColor.white
 }
+
+struct UIIdentifiers {
+    static public let webSearchResultCellId = "WebSearchResultTableViewCell"
+}

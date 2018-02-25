@@ -1,5 +1,5 @@
 //
-//  WebsiteSearchResultsController.swift
+//  WebsiteSearchControllerHolder.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 10/10/2017.
@@ -8,10 +8,16 @@
 
 import UIKit
 
-class WebsiteSearchResultsController: NSObject {
+class WebsiteSearchControllerHolder: NSObject {
 
+    private let resultsController: UIViewController?
+    
+    init(_ searchResultsController: UIViewController?) {
+        resultsController = searchResultsController
+    }
+    
     public lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
+        let controller = UISearchController(searchResultsController: resultsController)
         controller.searchResultsUpdater = self
         controller.delegate = self
         controller.searchBar.delegate = self
@@ -23,14 +29,14 @@ class WebsiteSearchResultsController: NSObject {
     }()
 }
 
-extension WebsiteSearchResultsController: UISearchResultsUpdating {
+extension WebsiteSearchControllerHolder: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let text = searchController.searchBar.text ?? ""
         print("\(#function): search string or address: \(text)")
     }
 }
 
-extension WebsiteSearchResultsController: UISearchBarDelegate {
+extension WebsiteSearchControllerHolder: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("\(#function): pressed")
     }
@@ -44,6 +50,6 @@ extension WebsiteSearchResultsController: UISearchBarDelegate {
     }
 }
 
-extension WebsiteSearchResultsController: UISearchControllerDelegate {
+extension WebsiteSearchControllerHolder: UISearchControllerDelegate {
     
 }

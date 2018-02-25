@@ -164,14 +164,13 @@ class TabsViewController: BaseViewController {
     }
     
     private func makeTabActive(_ tabView: TabView) {
-        for stackSubView in tabsStackView.arrangedSubviews {
-            if let specificTab = stackSubView as? TabView {
-                specificTab.visualState = (specificTab !== tabView) ? TabVisualState.deselected : TabVisualState.selected
-                if specificTab === tabView {
-                    // if tab which was selected was partly hidden for example under + button
-                    // need to scroll it to make it fully visible
-                    makeTabFullyVisibleIfNeeded(tabView)
-                }
+        for stackSubView in tabsStackView.arrangedSubviews where stackSubView is TabView {
+            let specificTab = stackSubView as! TabView
+            specificTab.visualState = (specificTab !== tabView) ? TabVisualState.deselected : TabVisualState.selected
+            if specificTab === tabView {
+                // if tab which was selected was partly hidden for example under + button
+                // need to scroll it to make it fully visible
+                makeTabFullyVisibleIfNeeded(tabView)
             }
         }
     }
