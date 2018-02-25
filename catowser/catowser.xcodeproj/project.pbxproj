@@ -30,6 +30,7 @@
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
 		C705C0EA2042ECEE0018067F /* HttpApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0E92042ECEE0018067F /* HttpApi.swift */; };
+		C705C0EC20430E610018067F /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0EB20430E610018067F /* SearchSuggestClient.swift */; };
 		C70724CA201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */; };
 		C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */; };
 		C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */; };
@@ -68,6 +69,7 @@
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewModel.swift; sourceTree = "<group>"; };
 		C705C0E92042ECEE0018067F /* HttpApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpApi.swift; sourceTree = "<group>"; };
+		C705C0EB20430E610018067F /* SearchSuggestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestClient.swift; sourceTree = "<group>"; };
 		C70724C9201E60880021CF5D /* UIBezierPath+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultsViewController.swift; sourceTree = "<group>"; };
 		C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultTableViewCell.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 				C71A33422041E79C0092D259 /* HttpClient.swift */,
 				C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */,
 				C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */,
+				C705C0EB20430E610018067F /* SearchSuggestClient.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */,
 				C705C0EA2042ECEE0018067F /* HttpApi.swift in Sources */,
 				C2341B671F8CF726004780A9 /* WebsiteSearchControllerHolder.swift in Sources */,
+				C705C0EC20430E610018067F /* SearchSuggestClient.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
