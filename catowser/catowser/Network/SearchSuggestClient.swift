@@ -52,20 +52,25 @@ enum SearchResult {
 typealias SearchSuggestionsCallback = (_ response: SearchResult) -> Void
 
 protocol SearchClient {
+    associatedtype NetworkClientType: HttpApi
     var searchEngine: WebSearchEngine {get set}
+    var httpClient: NetworkClientType {get set}
     var textSearchCallback: SearchSuggestionsCallback {get set}
     
-    init(webSearchEngine: WebSearchEngine, textSearchHandler: @escaping SearchSuggestionsCallback)
+    init(webSearchEngine: WebSearchEngine, webClient: NetworkClientType, textSearchHandler: @escaping SearchSuggestionsCallback)
     func searchText(searchQuery: String)
     func searchImage(searchedImage: UIImage)
 }
 
-class SearchSuggestClient: SearchClient {
+class SearchSuggestClient<HttpClientType: HttpApi>: SearchClient {
+    typealias NetworkClientType = HttpClientType
+    var httpClient: HttpClientType
     var searchEngine: WebSearchEngine
     var textSearchCallback: SearchSuggestionsCallback
     
-    required init(webSearchEngine: WebSearchEngine, textSearchHandler: @escaping SearchSuggestionsCallback) {
+    required init(webSearchEngine: WebSearchEngine, webClient: HttpClientType, textSearchHandler: @escaping SearchSuggestionsCallback) {
         searchEngine = webSearchEngine
+        httpClient = webClient
         textSearchCallback = textSearchHandler
     }
     

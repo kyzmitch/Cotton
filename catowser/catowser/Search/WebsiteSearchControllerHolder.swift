@@ -8,12 +8,14 @@
 
 import UIKit
 
-class WebsiteSearchControllerHolder: NSObject {
+class WebsiteSearchControllerHolder<SC: SearchClient>: NSObject, UISearchResultsUpdating, UISearchBarDelegate, UISearchControllerDelegate {
 
     private let resultsController: UIViewController?
+    private let searchSuggestionsClient: SC
     
-    init(_ searchResultsController: UIViewController?) {
+    init(_ searchResultsController: UIViewController?, searchClient: SC) {
         resultsController = searchResultsController
+        searchSuggestionsClient = searchClient
     }
     
     lazy var searchController: UISearchController = {
@@ -27,16 +29,16 @@ class WebsiteSearchControllerHolder: NSObject {
         controller.dimsBackgroundDuringPresentation = false
         return controller
     }()
-}
-
-extension WebsiteSearchControllerHolder: UISearchResultsUpdating {
+    
+    // MARK: UISearchResultsUpdating
+    
     func updateSearchResults(for searchController: UISearchController) {
         let text = searchController.searchBar.text ?? ""
         print("\(#function): search string or address: \(text)")
     }
-}
-
-extension WebsiteSearchControllerHolder: UISearchBarDelegate {
+    
+    // MARK: UISearchBarDelegate
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         print("\(#function): pressed")
     }
@@ -48,8 +50,7 @@ extension WebsiteSearchControllerHolder: UISearchBarDelegate {
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         print("\(#function):")
     }
+    
+    // MARK: UISearchControllerDelegate
 }
 
-extension WebsiteSearchControllerHolder: UISearchControllerDelegate {
-    
-}

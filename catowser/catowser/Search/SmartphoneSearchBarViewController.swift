@@ -10,7 +10,16 @@ import UIKit
 
 class SmartphoneSearchBarViewController: BaseViewController, SearchBarControllerInterface {
 
-    let searchBarViewController = SearchBarBaseViewController()
+    let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
+    
+    init(_ searchSuggestionsClient: SearchSuggestClient<AlamofireHttpClient>) {
+        searchBarViewController = SearchBarBaseViewController(searchSuggestionsClient)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     lazy var goBackButton: UIButton = {
         let btn = UIButton()

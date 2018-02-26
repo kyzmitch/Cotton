@@ -32,11 +32,16 @@ class MasterBrowserViewController: BaseViewController {
     }()
     
     private lazy var searchBarController: UIViewController & SearchBarControllerInterface = {
+        
+        let searchSuggestClient = SearchClientsFactory.searchSuggestClient(of: .Google, handler: { (result) in
+            
+        })
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
-            return TabletSearchBarViewController()
+            return TabletSearchBarViewController(searchSuggestClient)
         }
         else {
-            return SmartphoneSearchBarViewController()
+            return SmartphoneSearchBarViewController(searchSuggestClient)
         }
     }()
     

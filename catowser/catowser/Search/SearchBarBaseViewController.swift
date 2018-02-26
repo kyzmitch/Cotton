@@ -8,10 +8,24 @@
 
 import UIKit
 
-class SearchBarBaseViewController: BaseViewController {
+class SearchBarBaseViewController<SC: SearchClient>: BaseViewController {
 
     private var searchBarContainerView: UISearchBar?
-    private let websiteAddressSearchController = WebsiteSearchControllerHolder(nil /* TODO: pass view controller instead of nil */)
+    private let suggestionsClient: SC
+    private lazy var websiteAddressSearchController: WebsiteSearchControllerHolder<SC> = {
+        /* TODO: pass view controller instead of nil */
+        let holder = WebsiteSearchControllerHolder<SC>(nil, searchClient: suggestionsClient)
+        return holder
+    }()
+    
+    init(_ searchSuggestionsClient: SC) {
+        suggestionsClient = searchSuggestionsClient
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

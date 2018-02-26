@@ -25,45 +25,53 @@ class AlamofireHttpClient: NSObject, HttpApi {
     typealias ResponseData = Data
     
     var userAgent: String
+    var acceptHeader: String
     var defaultTimeout: TimeInterval
-    var endpointUrl: URL
+    var endpointState: EndpointUrlState
     
     private weak var request: Request?
     
     private lazy var alamofire: SessionManager = {
         let configuration = URLSessionConfiguration.ephemeral
         var defaultHeaders = SessionManager.default.session.configuration.httpAdditionalHeaders ?? [:]
-        defaultHeaders["User-Agent"] = userAgent
-        configuration.httpAdditionalHeaders = defaultHeaders
+        configuration.httpAdditionalHeaders = httpHeaders
         return SessionManager(configuration: configuration)
     }()
     
     private lazy var httpHeaders: HTTPHeaders = {
         let dictionary = ["User-Agent": userAgent,
-                          "Accept": "application/xml,application/json;charset=UTF-8"]
+                          "Accept": acceptHeader]
         return dictionary
     }()
     
-    required init?(endpointAddressString: String, timeout: TimeInterval) {
-        let url = URL(string: endpointAddressString)
-        guard let _ = url else {
-            print(#function + ": wrong url string \(endpointAddressString)")
-            return nil
-        }
-        endpointUrl = url!
+    required init(endpointAddressString: String?, acceptHeaderString: String, timeout: TimeInterval = NetworkConstants.requestTimeout) {
         defaultTimeout = timeout
         userAgent = NetworkConstants.userAgentName
+        acceptHeader = acceptHeaderString
+        
+        endpointState = .NeedFullUrl
         super.init()
+        setEndpointState(with: endpointAddressString)
     }
     
-    func sendRequest(type: HttpRequestType, path: String, responseCallback: @escaping (HttpResponseData<Data>) -> Void) -> HttpRequestSendError? {
+    func sendRequest(type: HttpRequestType, path: String, responseCallback: @escaping (HttpResponseData<Data>) -> Void) {
         
-        guard let requestUrl = URL(string: path, relativeTo: endpointUrl) else {
-            responseCallback(.error(.InvalidUrl))
-            return .InvalidUrl
+        var constructedUrl: URL?
+        
+        if case let .NeedUrlSuffix(endpointUrl) = endpointState {
+            constructedUrl = URL(string: path, relativeTo: endpointUrl)
+        }
+        else {
+            responseCallback(.error(.EndpointIsNotSet))
+            return
         }
         
-        request = alamofire.request(requestUrl.absoluteString, method: type.alamofireType(), parameters: nil, encoding: URLEncoding.default, headers: httpHeaders).validate(statusCode: 200..<300).responseData(completionHandler: { response in
+        guard let requestUrl = constructedUrl else {
+            responseCallback(.error(.InvalidUrl))
+            return
+        }
+        
+        request = alamofire.request(requestUrl.absoluteString, method: type.alamofireType(), parameters: nil, encoding: URLEncoding.default, headers: nil).validate(statusCode: 200..<300).responseData(completionHandler: { response in
             if let urlResponseError = response.result.error {
                 responseCallback(.error(.ResponseError(urlResponseError)))
                 return
@@ -76,7 +84,5 @@ class AlamofireHttpClient: NSObject, HttpApi {
                 responseCallback(.error(.EmptyData))
             }
         })
-        
-        return nil
     }
 }

@@ -15,36 +15,47 @@ class HttpClient: NSObject, HttpApi {
     private lazy var httpSession: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = ["User-Agent": userAgent,
-                                               "Accept": "application/xml,application/json;charset=UTF-8"]
+                                               "Accept": acceptHeader]
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: queue)
         return session
     }()
     
     private let queue: OperationQueue
-    var endpointUrl: URL
+    var endpointState: EndpointUrlState
     var userAgent: String
+    var acceptHeader: String
     var defaultTimeout: TimeInterval
     
     private weak var currentTask: URLSessionDataTask?
     
-    required init?(endpointAddressString: String, timeout: TimeInterval = NetworkConstants.requestTimeout) {
-        let url = URL(string: endpointAddressString)
-        guard let _ = url else {
-            print(#function + ": wrong url string \(endpointAddressString)")
-            return nil
-        }
-        endpointUrl = url!
+    required init(endpointAddressString: String?, acceptHeaderString: String, timeout: TimeInterval = NetworkConstants.requestTimeout) {
         defaultTimeout = timeout
         queue = OperationQueue()
+        acceptHeader = acceptHeaderString
         userAgent = NetworkConstants.userAgentName
+        
+        endpointState = .NeedFullUrl
         super.init()
+        setEndpointState(with: endpointAddressString)
     }
     
-    func sendRequest(type: HttpRequestType, path: String, responseCallback: @escaping HttpResponseCallback<ResponseData>) -> HttpRequestSendError? {
-        guard let requestUrl = URL(string: path, relativeTo: endpointUrl) else {
-            responseCallback(.error(.InvalidUrl))
-            return .InvalidUrl
+    func sendRequest(type: HttpRequestType, path: String, responseCallback: @escaping HttpResponseCallback<ResponseData>) {
+        
+        var constructedUrl: URL?
+        
+        if case let .NeedUrlSuffix(endpointUrl) = endpointState {
+            constructedUrl = URL(string: path, relativeTo: endpointUrl)
         }
+        else {
+            responseCallback(.error(.EndpointIsNotSet))
+            return
+        }
+        
+        guard let requestUrl = constructedUrl else {
+            responseCallback(.error(.InvalidUrl))
+            return
+        }
+        
         let request = URLRequest(url: requestUrl, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: defaultTimeout)
         
         currentTask = httpSession.dataTask(with: request) { (data, response, error) in
@@ -63,7 +74,7 @@ class HttpClient: NSObject, HttpApi {
         }
         
         currentTask?.resume()
-        return nil
+        return
     }
 }
 
