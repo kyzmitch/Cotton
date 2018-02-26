@@ -10,7 +10,16 @@ import UIKit
 
 class TabletSearchBarViewController: BaseViewController, SearchBarControllerInterface {
 
-    let searchBarViewController = SearchBarBaseViewController()
+    let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
+    
+    init(_ searchSuggestionsClient: SearchSuggestClient<AlamofireHttpClient>) {
+        searchBarViewController = SearchBarBaseViewController(searchSuggestionsClient)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     lazy var goBackButton: UIButton = {
         let btn = UIButton()
@@ -75,12 +84,15 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
             maker.bottom.equalTo(0)
             maker.trailing.equalTo(0)
         }
-//        settingsButton.snp.makeConstraints { (maker) in
-//            maker.leading.equalTo(searchBarViewController.view.snp.trailing)
-//            maker.top.equalTo(0)
-//            maker.bottom.equalTo(0)
-//            maker.width.equalTo(view.snp.height)
-//        }
+        
+        /*
+        settingsButton.snp.makeConstraints { (maker) in
+            maker.leading.equalTo(searchBarViewController.view.snp.trailing)
+            maker.top.equalTo(0)
+            maker.bottom.equalTo(0)
+            maker.width.equalTo(view.snp.height)
+        }
+        */
     }
     
     func isBlank() -> Bool {

@@ -20,7 +20,7 @@ enum TabVisualState {
     case selected, deselected
 }
 
-class TabView: UIControl {
+class TabView: UIView {
     
     var modelView: TabViewModel? {
         willSet {
@@ -60,7 +60,6 @@ class TabView: UIControl {
             
             let changeVisualState: (Bool) -> Void = { [weak self] (selected: Bool) -> Void in
                 guard let strongSelf = self else { return }
-                strongSelf.isSelected = selected
                 if var mv = strongSelf.modelView {
                     mv.selected = selected
                     strongSelf.applyColoursFrom(mv, for: selected ? .selected : .deselected)

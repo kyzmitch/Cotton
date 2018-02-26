@@ -35,6 +35,8 @@
 		C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */; };
 		C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */; };
 		C71A33432041E79C0092D259 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A33422041E79C0092D259 /* HttpClient.swift */; };
+		C7BE4FAF2044310B00FC761B /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
+		C7BE4FB120444A8F00FC761B /* SearchClientsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FB020444A8F00FC761B /* SearchClientsFactory.swift */; };
 		C7D9E54A2042CA3E00FE55A3 /* WebSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */; };
 		C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */; };
 		C7D9E5502042D66D00FE55A3 /* AlamofireHttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */; };
@@ -74,6 +76,8 @@
 		C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultsViewController.swift; sourceTree = "<group>"; };
 		C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultTableViewCell.swift; sourceTree = "<group>"; };
 		C71A33422041E79C0092D259 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		C7BE4FB020444A8F00FC761B /* SearchClientsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchClientsFactory.swift; sourceTree = "<group>"; };
 		C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchEngine.swift; sourceTree = "<group>"; };
 		C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
 		C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireHttpClient.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */,
+				C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -224,6 +229,7 @@
 				C7D9E54F2042D66D00FE55A3 /* AlamofireHttpClient.swift */,
 				C7D9E5492042CA3E00FE55A3 /* WebSearchEngine.swift */,
 				C705C0EB20430E610018067F /* SearchSuggestClient.swift */,
+				C7BE4FB020444A8F00FC761B /* SearchClientsFactory.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -376,6 +382,7 @@
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
+				C7BE4FAF2044310B00FC761B /* CharacterSet+CatowserExtensions.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
 				C7D9E5502042D66D00FE55A3 /* AlamofireHttpClient.swift in Sources */,
 				846220AF1EEE9B6C00B84C73 /* TabModel.swift in Sources */,
@@ -383,6 +390,7 @@
 				C71A33432041E79C0092D259 /* HttpClient.swift in Sources */,
 				C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */,
 				C705C0EA2042ECEE0018067F /* HttpApi.swift in Sources */,
+				C7BE4FB120444A8F00FC761B /* SearchClientsFactory.swift in Sources */,
 				C2341B671F8CF726004780A9 /* WebsiteSearchControllerHolder.swift in Sources */,
 				C705C0EC20430E610018067F /* SearchSuggestClient.swift in Sources */,
 				84704FC41EEE785500F89F6B /* TabViewModel.swift in Sources */,
