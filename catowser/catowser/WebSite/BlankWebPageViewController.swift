@@ -19,10 +19,8 @@ class BlankWebPageViewController: BaseViewController {
     // private lazy var mostVisitedWebSitesCollectionView: UICollectionView
     private var label: UILabel?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = UIColor.white
+    override func loadView() {
+        view = UIView()
         
         // TODO: remove temporary label
         // and replace it with collection view
@@ -32,6 +30,12 @@ class BlankWebPageViewController: BaseViewController {
         label!.text = "Page with most visited websites previews"
         label?.textColor = UIColor.black
         view.addSubview(label!)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.white
         
         label!.snp.makeConstraints { (make) in
             make.center.equalTo(view)

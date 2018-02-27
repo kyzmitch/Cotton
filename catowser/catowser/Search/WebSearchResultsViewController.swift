@@ -26,10 +26,15 @@ class WebSearchResultsViewController: BaseViewController, UITableViewDataSource,
         return tableView
     }()
     
+    override func loadView() {
+        view = UIView()
+        
+        view.addSubview(webSitesTable)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addSubview(webSitesTable)
+        
         webSitesTable.snp.makeConstraints { (make) in
             make.leading.equalTo(view)
             make.trailing.equalTo(view)

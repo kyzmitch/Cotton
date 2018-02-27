@@ -175,13 +175,17 @@ class TabsViewController: BaseViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        view = UIView()
         
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.addSubview(tabsStackView)
         view.addSubview(addTabButton)
         view.addSubview(showTabPreviewsButton)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         stackViewScrollableContainer.snp.makeConstraints { (maker) in
             maker.leading.equalTo(view).offset(0)

@@ -30,11 +30,15 @@ class SmartphoneSearchBarViewController: BaseViewController, SearchBarController
         return btn
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func loadView() {
+        view = UIView()
+        
         view.addSubview(goBackButton)
         add(asChildViewController: searchBarViewController, to:view)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
         goBackButton.snp.makeConstraints { (maker) in
             maker.leading.equalTo(0)

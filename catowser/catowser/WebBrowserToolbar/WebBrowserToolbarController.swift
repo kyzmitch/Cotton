@@ -91,10 +91,14 @@ class WebBrowserToolbarController: BaseViewController {
         
     }
     
+    override func loadView() {
+        view = UIView()
+        
+        view.addSubview(toolbarView)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.addSubview(toolbarView)
         
         toolbarView.snp.makeConstraints { (maker) in
             maker.leading.equalTo(view)
