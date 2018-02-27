@@ -49,16 +49,20 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
         return btn
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = UIConstants.searchBarBackgroundColour
+    override func loadView() {
+        view = UIView()
         
         view.addSubview(goBackButton)
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
         add(asChildViewController: searchBarViewController, to:view)
         // view.addSubview(settingsButton)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = UIConstants.searchBarBackgroundColour
         
         goBackButton.snp.makeConstraints { (maker) in
             maker.leading.equalTo(0)

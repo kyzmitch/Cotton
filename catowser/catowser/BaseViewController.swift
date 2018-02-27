@@ -9,13 +9,12 @@
 import UIKit
 
 class BaseViewController: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+
 }
 
 extension UIViewController {
     func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
+        viewController.willMove(toParentViewController: self)
         addChildViewController(viewController)
         containerView.addSubview(viewController.view)
         viewController.didMove(toParentViewController: self)

@@ -23,10 +23,15 @@ class WebSiteViewController: BaseViewController {
         return webView
     }()
     
+    override func loadView() {
+        view = UIView()
+        
+        view.addSubview(webContentView)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(webContentView)
         webContentView.snp.makeConstraints { (maker) in
             maker.top.equalTo(view)
             maker.leading.equalTo(view)

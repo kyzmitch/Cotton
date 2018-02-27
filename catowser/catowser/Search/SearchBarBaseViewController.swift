@@ -27,10 +27,14 @@ class SearchBarBaseViewController<SC: SearchClient>: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        view = UIView()
+        
+        addSearchBar(from: websiteAddressSearchController.searchController)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        addSearchBar(from: websiteAddressSearchController.searchController)
         
         searchBarContainerView?.snp.makeConstraints { (maker) in
             maker.top.equalTo(0)

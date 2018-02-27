@@ -61,12 +61,14 @@ class MasterBrowserViewController: BaseViewController {
         return toolbar
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        // Your custom implementation of this method should not call super.
+        view = UIView()
         
-        var tabsControllerAdded = false
+        // In that method, create your view hierarchy programmatically and assign
+        // the root view of that hierarchy to the view controller’s view property.
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
-            tabsControllerAdded = true
             add(asChildViewController: tabsViewController, to:view)
         }
         
@@ -78,6 +80,15 @@ class MasterBrowserViewController: BaseViewController {
         }
         
         add(asChildViewController: blankWebPageController, to:webSiteContainerView)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        var tabsControllerAdded = false
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            tabsControllerAdded = true
+        }
         
         if tabsControllerAdded {
             tabsViewController.view.snp.makeConstraints { (maker) in
