@@ -38,10 +38,10 @@ class MasterBrowserViewController: BaseViewController {
         })
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            return TabletSearchBarViewController(searchSuggestClient)
+            return TabletSearchBarViewController(searchSuggestClient, self)
         }
         else {
-            return SmartphoneSearchBarViewController(searchSuggestClient)
+            return SmartphoneSearchBarViewController(searchSuggestClient, self)
         }
     }()
     
@@ -54,6 +54,11 @@ class MasterBrowserViewController: BaseViewController {
     private lazy var webSiteContainerView: UIView = {
         let container = UIView()
         return container
+    }()
+
+    private lazy var searchResultsTableView: UITableView = {
+        let tableView = UITableView(frame: CGRect.zero)
+        return tableView
     }()
     
     private lazy var toolbarViewController: WebBrowserToolbarController = {
@@ -80,11 +85,14 @@ class MasterBrowserViewController: BaseViewController {
         }
         
         add(asChildViewController: blankWebPageController, to:webSiteContainerView)
+
+        view.addSubview(searchResultsTableView)
+        view.sendSubview(toBack: searchResultsTableView)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         var tabsControllerAdded = false
         if UIDevice.current.userInterfaceIdiom == .pad {
             tabsControllerAdded = true
@@ -217,5 +225,19 @@ extension MasterBrowserViewController {
         }
         
         return handling
+    }
+}
+
+extension MasterBrowserViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+
+    }
+
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+
     }
 }

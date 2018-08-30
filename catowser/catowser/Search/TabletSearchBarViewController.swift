@@ -12,8 +12,8 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
 
     let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
     
-    init(_ searchSuggestionsClient: SearchSuggestClient<AlamofireHttpClient>) {
-        searchBarViewController = SearchBarBaseViewController(searchSuggestionsClient)
+    init(_ searchSuggestionsClient: SearchSuggestClient<AlamofireHttpClient>, _ searchBarDelegate: UISearchBarDelegate) {
+        searchBarViewController = SearchBarBaseViewController(searchSuggestionsClient, searchBarDelegate)
         super.init(nibName: nil, bundle: nil)
     }
     

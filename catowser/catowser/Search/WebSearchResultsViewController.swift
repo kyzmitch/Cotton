@@ -34,15 +34,15 @@ class WebSearchResultsViewController: BaseViewController, UITableViewDataSource,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         webSitesTable.snp.makeConstraints { (make) in
             make.leading.equalTo(view)
             make.trailing.equalTo(view)
             make.top.equalTo(view)
             make.bottom.equalTo(view)
         }
-        
-        webSitesTable.register(WebSearchResultTableViewCell.layerClass, forCellReuseIdentifier: WebSearchResultTableViewCell.cellIdentifier)
+
+        webSitesTable.register(WebSearchResultTableViewCell.self, forCellReuseIdentifier: WebSearchResultTableViewCell.cellIdentifier)
     }
 
     // MARK: UITableViewDataSource
