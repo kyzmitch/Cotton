@@ -84,7 +84,7 @@ class TabView: UIView {
     
     private let closeButton: ButtonWithDecreasedTouchArea = {
         let closeButton = ButtonWithDecreasedTouchArea()
-        closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControlState())
+        closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControl.State())
         closeButton.tintColor = UIColor.lightGray
         closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
         return closeButton
