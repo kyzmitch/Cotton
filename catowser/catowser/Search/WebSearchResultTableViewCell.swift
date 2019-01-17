@@ -29,7 +29,7 @@ class WebSearchResultTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         container.backgroundColor = UIColor.clear
@@ -71,7 +71,7 @@ class WebSearchResultTableViewCell: UITableViewCell {
         titleLabel.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
         
-        titleLabel.firstBaselineAnchor.constraintEqualToSystemSpacingBelow(container.topAnchor, multiplier: 1).isActive = true
+        titleLabel.firstBaselineAnchor.constraint(equalToSystemSpacingBelow: container.topAnchor, multiplier: 1).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {

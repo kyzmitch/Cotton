@@ -1,29 +1,20 @@
 PODS:
-  - Alamofire (4.6.0)
-  - SnapKit (3.2.0)
+  - Alamofire (4.7.3)
+  - SnapKit (4.2.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.6)
-  - SnapKit (from `https://github.com/SnapKit/SnapKit.git`, branch `swift-4`)
+  - Alamofire (~> 4.7)
+  - SnapKit (~> 4.2.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
-
-EXTERNAL SOURCES:
-  SnapKit:
-    :branch: swift-4
-    :git: https://github.com/SnapKit/SnapKit.git
-
-CHECKOUT OPTIONS:
-  SnapKit:
-    :commit: d31148f449abe819fd1a58d5e07e94874c7e6003
-    :git: https://github.com/SnapKit/SnapKit.git
+    - SnapKit
 
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  SnapKit: c71c530b73cedd2a8b998098687001baff265086
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
-PODFILE CHECKSUM: bb62f661a2f97ee1b53d78594b6c1deebee623ac
+PODFILE CHECKSUM: 25e744c3531093bd4d058a4a30310a40b7a2ce1a
 
 COCOAPODS: 1.5.3

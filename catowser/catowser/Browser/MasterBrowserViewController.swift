@@ -87,7 +87,7 @@ class MasterBrowserViewController: BaseViewController {
         add(asChildViewController: blankWebPageController, to:webSiteContainerView)
 
         view.addSubview(searchResultsTableView)
-        view.sendSubview(toBack: searchResultsTableView)
+        view.sendSubviewToBack(searchResultsTableView)
     }
     
     override func viewDidLoad() {
@@ -193,8 +193,8 @@ class MasterBrowserViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIKeyboardWillChangeFrame, object: nil, queue: nil, using: keyboardWillChangeFrameClosure())
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIKeyboardWillHide, object: nil, queue: nil, using: keyboardWillHideClosure())
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: nil, using: keyboardWillChangeFrameClosure())
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -207,7 +207,7 @@ class MasterBrowserViewController: BaseViewController {
 extension MasterBrowserViewController {
     private func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
-            guard let info = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] else { return }
+            guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
             guard let value = info as? NSValue else { return }
             let rect = value.cgRectValue
             
