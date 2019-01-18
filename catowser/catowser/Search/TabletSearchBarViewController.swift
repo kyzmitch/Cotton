@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabletSearchBarViewController: BaseViewController, SearchBarControllerInterface {
+class TabletSearchBarViewController: BaseViewController {
 
     let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
     
@@ -98,7 +98,13 @@ class TabletSearchBarViewController: BaseViewController, SearchBarControllerInte
         }
         */
     }
-    
+}
+
+extension TabletSearchBarViewController: SearchBarControllerInterface {
+    func stateChanged(to state: SearchBarState) {
+        
+    }
+
     func isBlank() -> Bool {
         return true
     }

@@ -10,7 +10,7 @@ import UIKit
 
 class SearchBarBaseViewController<SC: SearchClient>: BaseViewController, UISearchBarDelegate {
 
-    private let searchBarView: UISearchBar
+    let searchBarView: UISearchBar
     private let suggestionsClient: SC
     
     init(_ searchSuggestionsClient: SC, _ searchBarDelegate: UISearchBarDelegate) {

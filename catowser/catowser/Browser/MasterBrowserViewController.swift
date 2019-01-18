@@ -8,8 +8,17 @@
 
 import UIKit
 
+/// The sate of search bar
+enum SearchBarState {
+    /// keyboard is hidden
+    case clear
+    /// keyboard is visible
+    case readyForInput
+}
+
 protocol SearchBarControllerInterface: class {
     func isBlank() -> Bool
+    func stateChanged(to state: SearchBarState)
 }
 
 class MasterBrowserViewController: BaseViewController {
@@ -234,10 +243,22 @@ extension MasterBrowserViewController: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // need to free space to show `cancel` button for search bar on smartPhone
+        searchBarController.stateChanged(to: .readyForInput)
+    }
 
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+        searchBarController.stateChanged(to: .clear)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+        searchBarController.stateChanged(to: .clear)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-
+        view.endEditing(true)
+        searchBarController.stateChanged(to: .clear)
     }
 }
