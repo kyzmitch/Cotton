@@ -17,8 +17,16 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         let img = UIImage(named: "goBack")
         btn.setImage(img, for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
 
         return btn
+    }()
+
+    private let lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
 
     private lazy var backButtonNormalWidth: NSLayoutConstraint = {
@@ -43,8 +51,8 @@ final class SmartphoneSearchBarViewController: BaseViewController {
 
         view.addSubview(goBackButton)
         add(asChildViewController: searchBarViewController, to:view)
-        
-        goBackButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(lineView)
+
         searchBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
 
         goBackButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -56,6 +64,11 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         searchBarViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         searchBarViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         searchBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+
+        lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
 

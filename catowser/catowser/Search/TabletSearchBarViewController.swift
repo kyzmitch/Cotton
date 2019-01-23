@@ -44,6 +44,13 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.setImage(img, for: .normal)
         return btn
     }()
+
+    private let lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     // "nav-menu" image from assets should be used for settings button
     
@@ -54,6 +61,7 @@ final class TabletSearchBarViewController: BaseViewController {
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
         add(asChildViewController: searchBarViewController, to:view)
+        view.addSubview(lineView)
     }
     
     override func viewDidLoad() {
@@ -85,6 +93,11 @@ final class TabletSearchBarViewController: BaseViewController {
             maker.bottom.equalTo(0)
             maker.trailing.equalTo(0)
         }
+
+        lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
 
