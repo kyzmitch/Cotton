@@ -8,4 +8,4 @@
 
 /* This is to show something on tab when it is without website address or title of web site */
 "ttl_tab_short_blank" = "Blank";
-
+"placeholder_searchbar" = "Search or enter address";

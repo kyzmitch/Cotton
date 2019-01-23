@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabletSearchBarViewController: BaseViewController {
+final class TabletSearchBarViewController: BaseViewController {
 
     let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
     
@@ -21,33 +21,31 @@ class TabletSearchBarViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var goBackButton: UIButton = {
+    private let goBackButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-back")
+        btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
         return btn
     }()
     
-    lazy var goForwardButton: UIButton = {
+    private let goForwardButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-forward")
+        btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
         return btn
     }()
     
-    lazy var reloadButton: UIButton = {
+    private let reloadButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-refresh")
+        btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
         return btn
     }()
     
-    lazy var settingsButton: UIButton = {
-        let btn = UIButton()
-        let img = UIImage(named: "nav-menu")
-        btn.setImage(img, for: .normal)
-        return btn
-    }()
+    // "nav-menu" image from assets should be used for settings button
     
     override func loadView() {
         view = UIView()
@@ -56,7 +54,6 @@ class TabletSearchBarViewController: BaseViewController {
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
         add(asChildViewController: searchBarViewController, to:view)
-        // view.addSubview(settingsButton)
     }
     
     override func viewDidLoad() {
@@ -88,15 +85,6 @@ class TabletSearchBarViewController: BaseViewController {
             maker.bottom.equalTo(0)
             maker.trailing.equalTo(0)
         }
-        
-        /*
-        settingsButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(searchBarViewController.view.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.width.equalTo(view.snp.height)
-        }
-        */
     }
 }
 

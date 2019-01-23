@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebSearchResultsViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
+final class WebSearchResultsViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate {
 
     private enum DataSourceState {
         case empty

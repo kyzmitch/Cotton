@@ -8,13 +8,13 @@
 
 import UIKit
 
-class SmartphoneSearchBarViewController: BaseViewController {
+final class SmartphoneSearchBarViewController: BaseViewController {
 
     let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
 
-    private lazy var goBackButton: UIButton = {
+    private let goBackButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = UIColor.white
+        btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         let img = UIImage(named: "goBack")
         btn.setImage(img, for: .normal)
 

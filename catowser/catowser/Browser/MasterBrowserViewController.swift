@@ -21,7 +21,7 @@ protocol SearchBarControllerInterface: class {
     func stateChanged(to state: SearchBarState)
 }
 
-class MasterBrowserViewController: BaseViewController {
+final class MasterBrowserViewController: BaseViewController {
 
     var viewModel: MasterBrowserViewModel?
     
@@ -102,6 +102,7 @@ class MasterBrowserViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = UIColor.white
         var tabsControllerAdded = false
         if UIDevice.current.userInterfaceIdiom == .pad {
             tabsControllerAdded = true
@@ -195,7 +196,7 @@ class MasterBrowserViewController: BaseViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         get {
-            return .lightContent
+            return ThemeProvider.shared.theme.statusBarStyle
         }
     }
     
@@ -248,17 +249,19 @@ extension MasterBrowserViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        view.endEditing(true)
-        searchBarController.stateChanged(to: .clear)
+        endSearch(for: searchBar)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        view.endEditing(true)
-        searchBarController.stateChanged(to: .clear)
+        endSearch(for: searchBar)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        view.endEditing(true)
+        endSearch(for: searchBar)
+    }
+
+    private func endSearch(for searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
         searchBarController.stateChanged(to: .clear)
     }
 }
