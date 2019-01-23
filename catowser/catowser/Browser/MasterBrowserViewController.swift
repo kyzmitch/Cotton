@@ -70,7 +70,7 @@ final class MasterBrowserViewController: BaseViewController {
         return tableView
     }()
     
-    private lazy var toolbarViewController: WebBrowserToolbarController = {
+    private let toolbarViewController: WebBrowserToolbarController = {
         let toolbar = WebBrowserToolbarController()
         return toolbar
     }()

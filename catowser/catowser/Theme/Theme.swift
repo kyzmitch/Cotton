@@ -11,11 +11,16 @@ import UIKit
 protocol Theme {
     var statusBarStyle: UIStatusBarStyle { get }
     var searchBarButtonBackgroundColor: UIColor { get }
+    var searchBarSeparatorColor: UIColor { get }
 }
 
 extension Theme {
     var statusBarStyle: UIStatusBarStyle {
         return .default
+    }
+
+    var searchBarSeparatorColor: UIColor {
+        return #colorLiteral(red: 0.9176470588, green: 0.9176470588, blue: 0.9176470588, alpha: 1)
     }
 }
 

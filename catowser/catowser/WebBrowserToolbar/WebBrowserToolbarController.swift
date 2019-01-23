@@ -15,12 +15,12 @@
 
 import UIKit
 
-class WebBrowserToolbarController: BaseViewController {
+final class WebBrowserToolbarController: BaseViewController {
 
     private lazy var toolbarView: UIToolbar = {
         let toolbar = UIToolbar()
-        toolbar.tintColor = UIColor.black
-        toolbar.backgroundColor = UIColor.white
+
+        ThemeProvider.shared.setup(toolbar)
         
         var barItems = [UIBarButtonItem]()
         barItems.append(backButton)
@@ -40,56 +40,36 @@ class WebBrowserToolbarController: BaseViewController {
         return toolbar
     }()
     
-    private lazy var backButton: UIBarButtonItem = {
+    private let backButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-back")
-        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleBackPressed))
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .back)
         return btn
     }()
     
-    private lazy var forwardButton: UIBarButtonItem = {
+    private let forwardButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-forward")
-        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleForwardPressed))
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .forward)
         return btn
     }()
     
-    private lazy var reloadButton: UIBarButtonItem = {
+    private let reloadButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-refresh")
-        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleReloadPressed))
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .reload)
         return btn
     }()
     
-    private lazy var openedTabsButton: UIBarButtonItem = {
+    private let openedTabsButton: UIBarButtonItem = {
         // TODO: need to transfer number of opened tabs here somehow
         let count = 0
-        let btn = UIBarButtonItem(title: "\(count)", style: .plain, target: self, action: #selector(handleShowOpenedTabsPressed))
+        let btn = UIBarButtonItem(title: "\(count)", style: .plain, target: self, action: .openTabs)
         return btn
     }()
     
-    private lazy var settingsButton: UIBarButtonItem = {
+    private let settingsButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-menu")
-        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: #selector(handleSettingsPressed))
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .settings)
         return btn
     }()
-    
-    @objc private func handleBackPressed() {
-        
-    }
-    
-    @objc private func handleForwardPressed() {
-        
-    }
-    
-    @objc private func handleReloadPressed() {
-        
-    }
-    
-    @objc private func handleShowOpenedTabsPressed() {
-        
-    }
-    
-    @objc private func handleSettingsPressed() {
-        
-    }
     
     override func loadView() {
         view = UIView()
@@ -107,4 +87,34 @@ class WebBrowserToolbarController: BaseViewController {
             maker.bottom.equalTo(view)
         }
     }
+}
+
+private extension WebBrowserToolbarController {
+    @objc func handleBackPressed() {
+
+    }
+
+    @objc func handleForwardPressed() {
+
+    }
+
+    @objc func handleReloadPressed() {
+
+    }
+
+    @objc func handleShowOpenedTabsPressed() {
+
+    }
+
+    @objc func handleSettingsPressed() {
+
+    }
+}
+
+fileprivate extension Selector {
+    static let back = #selector(WebBrowserToolbarController.handleBackPressed)
+    static let forward = #selector(WebBrowserToolbarController.handleForwardPressed)
+    static let reload = #selector(WebBrowserToolbarController.handleReloadPressed)
+    static let openTabs = #selector(WebBrowserToolbarController.handleShowOpenedTabsPressed)
+    static let settings = #selector(WebBrowserToolbarController.handleSettingsPressed)
 }

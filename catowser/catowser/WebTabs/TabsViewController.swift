@@ -91,7 +91,7 @@ class TabsViewController: BaseViewController {
         if count == 0 {
             makeTabActive(tabView)
         }
-        self.view.layoutIfNeeded()
+        view.layoutIfNeeded()
         stackViewScrollableContainer.scrollToVeryRight()
         showTabPreviewsButton.setTitle("\(count + 1)", for: .normal)
     }
@@ -250,6 +250,7 @@ extension TabsViewController: TabDelegate {
 
 extension TabsViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // TODO: this is not called more than 1 time in simulator
         super.traitCollectionDidChange(previousTraitCollection)
         print("\(#function): device was rotated")
         // Need to redraw background layer
