@@ -212,6 +212,10 @@ final class MasterBrowserViewController: BaseViewController {
         
         NotificationCenter.default.removeObserver(self)
     }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
 }
 
 extension MasterBrowserViewController {
