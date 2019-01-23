@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebSearchResultTableViewCell: UITableViewCell {
+final class WebSearchResultTableViewCell: UITableViewCell {
 
     private let container = UIView()
     private let titleLabel: UILabel = {
