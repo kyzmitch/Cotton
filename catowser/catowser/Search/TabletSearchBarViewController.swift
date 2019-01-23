@@ -47,7 +47,7 @@ final class TabletSearchBarViewController: BaseViewController {
 
     private let lineView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = ThemeProvider.shared.theme.searchBarSeparatorColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

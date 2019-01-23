@@ -31,6 +31,11 @@ final class ThemeProvider {
         searchBarView.isTranslucent = false
     }
 
+    func setup(_ toolbar: UIToolbar) {
+        toolbar.tintColor = .black
+        toolbar.barTintColor = .white
+    }
+
     private init() {
         themeType = .default
         theme = themeType.theme
