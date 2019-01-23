@@ -20,8 +20,13 @@ final class ThemeProvider {
     private(set) var theme: Theme
 
     func setup(_ searchBarView: UISearchBar) {
-        searchBarView.barTintColor = UIColor.white
-        searchBarView.tintColor = UIColor.black
+        // Trying to get rid of the 1px black line underneath the search bar
+        // https://stackoverflow.com/a/8998710/483101
+        searchBarView.backgroundColor = .white
+        searchBarView.backgroundImage = UIImage()
+
+        searchBarView.barTintColor = .white
+        searchBarView.tintColor = .gray
         searchBarView.barStyle = .default
         searchBarView.isTranslucent = false
     }

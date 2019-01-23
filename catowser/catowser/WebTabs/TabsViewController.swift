@@ -43,6 +43,8 @@ class TabsViewController: BaseViewController {
         let showTabsButton = UIButton()
         // Tabs count should be used here
         let count = tabsStackView.arrangedSubviews.count
+        showTabsButton.setTitleShadowColor(.black, for: .normal)
+        showTabsButton.setTitleColor(.black, for: .normal)
         showTabsButton.setTitle("\(count)", for: .normal)
         showTabsButton.addTarget(self, action: #selector(showTabPreviewsPressed), for: .touchUpInside)
         return showTabsButton
