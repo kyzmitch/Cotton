@@ -218,9 +218,10 @@ class TabsViewController: BaseViewController {
     
     private var tabsViewBackLayer: CAGradientLayer?
     
-    private func resizeTabsBackLayer() -> Void {
+    private func updateTabsBackLayer(with width: CGFloat) {
         tabsViewBackLayer?.removeFromSuperlayer()
-        let bounds = view.bounds
+        var bounds = view.bounds
+        bounds.size.width = width
         tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(bounds: bounds)
         view.layer.insertSublayer(tabsViewBackLayer!, at: 0)
     }
@@ -250,11 +251,17 @@ extension TabsViewController: TabDelegate {
 
 extension TabsViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        // TODO: this is not called more than 1 time in simulator
         super.traitCollectionDidChange(previousTraitCollection)
-        print("\(#function): device was rotated")
         // Need to redraw background layer
-        resizeTabsBackLayer()
+        updateTabsBackLayer(with: view.bounds.size.width)
+        // change tabs width if needed
+        resizeTabsWidthBasedOnCurrentHorizontalSizeClass()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        // Need to redraw background layer
+        updateTabsBackLayer(with: size.width)
         // change tabs width if needed
         resizeTabsWidthBasedOnCurrentHorizontalSizeClass()
     }
