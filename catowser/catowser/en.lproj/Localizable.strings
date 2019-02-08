@@ -8,4 +8,6 @@
 
 /* This is to show something on tab when it is without website address or title of web site */
 "ttl_tab_short_blank" = "Blank";
+"ttl_tab_short_favorites" = "Favorite sites";
 "placeholder_searchbar" = "Search or enter address";
+"msg_blank_site_message" = "Blank tab";

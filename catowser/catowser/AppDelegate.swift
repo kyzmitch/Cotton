@@ -16,9 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-        let rootViewController = MasterBrowserViewController()
-        let viewModel = MasterBrowserViewModel()
-        rootViewController.viewModel = viewModel
+        let vm = MasterBrowserViewModel()
+        let rootViewController = MasterBrowserViewController(vm)
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
         

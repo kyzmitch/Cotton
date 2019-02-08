@@ -8,5 +8,6 @@ target 'catowser' do
   # Pods for catowser
   pod 'SnapKit', '~>4.2.0'
   pod 'Alamofire', '~> 4.7'
+  pod 'ReactiveSwift', '~> 3.0'
   pod 'SwiftLint'
 end

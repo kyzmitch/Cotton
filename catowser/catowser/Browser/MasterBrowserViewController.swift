@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveSwift
 
 /// The sate of search bar
 enum SearchBarState {
@@ -21,21 +22,34 @@ protocol SearchBarControllerInterface: class {
     func stateChanged(to state: SearchBarState)
 }
 
+/// An interface for component which suppose to render tabs
+///
+/// Class protocol is used because object gonna be stored by `weak` ref
+/// `AnyObject` is new name for it, but will use old one to find when XCode
+/// will start mark it as deprecated.
+/// https://forums.swift.org/t/class-only-protocols-class-vs-anyobject/11507/4
+protocol TabRendererInterface: AnyViewController {
+    func open(tab: Tab)
+}
+
 final class MasterBrowserViewController: BaseViewController {
 
-    var viewModel: MasterBrowserViewModel?
+    init(_ viewModel: MasterBrowserViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private let viewModel: MasterBrowserViewModel
     
-    // Needed only for ipads
+    /// Tabs list without previews. Needed only for tablets or landscape mode.
     private lazy var tabsViewController: TabsViewController = {
-        var tabsViewModel: TabsViewModel
-        if let vm = viewModel {
-            tabsViewModel = TabsViewModel(vm.topViewsOffset, vm.topViewPanelHeight)
-        }
-        else {
-            tabsViewModel = TabsViewModel()
-        }
+        let vm = TabsViewModel()
         let viewController = TabsViewController()
-        viewController.viewModel = tabsViewModel
+        viewController.viewModel = vm
         
         return viewController
     }()
@@ -53,27 +67,24 @@ final class MasterBrowserViewController: BaseViewController {
             return SmartphoneSearchBarViewController(searchSuggestClient, self)
         }
     }()
-    
-    private lazy var blankWebPageController: BlankWebPageViewController = {
-        let viewController = BlankWebPageViewController()
-        
-        return viewController
-    }()
-    
-    private lazy var webSiteContainerView: UIView = {
-        let container = UIView()
-        return container
-    }()
 
-    private lazy var searchResultsTableView: UITableView = {
-        let tableView = UITableView(frame: CGRect.zero)
-        return tableView
-    }()
-    
-    private let toolbarViewController: WebBrowserToolbarController = {
-        let toolbar = WebBrowserToolbarController()
+    /// The view controller to manage blank tab, possibly will be enhaced
+    /// to support favorite sites list.
+    private let blankWebPageController = BlankWebPageViewController()
+
+    /// The view needed to hold tab content like WebView or favorites table view.
+    private let containerView = UIView()
+
+    /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
+    private lazy var toolbarViewController: WebBrowserToolbarController = {
+        let router = ToolbarRouter(presenter: self)
+        let toolbar = WebBrowserToolbarController(router: router)
         return toolbar
     }()
+
+    private var currentWebViewController: WebViewController?
+
+    private var disposables = [Disposable?]()
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -87,26 +98,18 @@ final class MasterBrowserViewController: BaseViewController {
         }
         
         add(asChildViewController: searchBarController, to:view)
-        view.addSubview(webSiteContainerView)
+        view.addSubview(containerView)
         
         if UIDevice.current.userInterfaceIdiom == .phone {
             add(asChildViewController: toolbarViewController, to:view)
         }
-        
-        add(asChildViewController: blankWebPageController, to:webSiteContainerView)
-
-        view.addSubview(searchResultsTableView)
-        view.sendSubviewToBack(searchResultsTableView)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
-        var tabsControllerAdded = false
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            tabsControllerAdded = true
-        }
+        let tabsControllerAdded = UIDevice.current.userInterfaceIdiom == .pad ? true : false
         
         if tabsControllerAdded {
             tabsViewController.view.snp.makeConstraints { (maker) in
@@ -122,12 +125,7 @@ final class MasterBrowserViewController: BaseViewController {
                 
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                if let vm = viewModel {
-                    maker.height.equalTo(vm.topViewPanelHeight)
-                }
-                else {
-                    maker.height.equalTo(UIConstants.tabHeight)
-                }
+                maker.height.equalTo(viewModel.topViewPanelHeight)
             }
             
             searchBarController.view.snp.makeConstraints({ (maker) in
@@ -141,7 +139,7 @@ final class MasterBrowserViewController: BaseViewController {
             // to have ability to insert to it and show view controller with
             // bookmarks in case if search bar has no any address entered or
             // webpage controller with web view if some address entered in search bar
-            webSiteContainerView.snp.makeConstraints { (maker) in
+            containerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(searchBarController.view.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
@@ -165,7 +163,7 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.height.equalTo(UIConstants.searchViewHeight)
             })
             
-            webSiteContainerView.snp.makeConstraints { (maker) in
+            containerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(searchBarController.view.snp.bottom)
                 maker.bottom.equalTo(toolbarViewController.view.snp.top)
                 maker.leading.equalTo(view)
@@ -173,7 +171,7 @@ final class MasterBrowserViewController: BaseViewController {
             }
             
             toolbarViewController.view.snp.makeConstraints({ (maker) in
-                maker.top.equalTo(webSiteContainerView.snp.bottom)
+                maker.top.equalTo(containerView.snp.bottom)
                 maker.leading.equalTo(0)
                 maker.trailing.equalTo(0)
                 maker.height.equalTo(UIConstants.tabBarHeight)
@@ -185,12 +183,22 @@ final class MasterBrowserViewController: BaseViewController {
                 }
             })
         }
-        
-        blankWebPageController.view.snp.makeConstraints { (make) in
-            make.leading.equalTo(webSiteContainerView)
-            make.trailing.equalTo(webSiteContainerView)
-            make.top.equalTo(webSiteContainerView)
-            make.bottom.equalTo(webSiteContainerView)
+
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
+
+        let disposeA = NotificationCenter.default.reactive
+            .notifications(forName: UIResponder.keyboardWillChangeFrameNotification)
+            .observe(on: UIScheduler())
+            .observeValues {[weak self] notification in
+                self?.keyboardWillChangeFrameClosure()(notification)
+        }
+
+        disposables.append(disposeA)
+
+        if let currentTab = try? TabsListManager.shared.selectedTab() {
+            open(tab: currentTab)
+        } else {
+            open(tab: .blank)
         }
     }
     
@@ -200,21 +208,52 @@ final class MasterBrowserViewController: BaseViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: nil, using: keyboardWillChangeFrameClosure())
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         NotificationCenter.default.removeObserver(self)
     }
 
+    deinit {
+        disposables.forEach { $0?.dispose() }
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+}
+
+extension MasterBrowserViewController: TabRendererInterface {
+    func open(tab: Tab) {
+        print("\(#function)")
+
+        switch tab.contentType {
+        case .site(let site):
+            guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {
+                return
+            }
+            removeCurrentWebView()
+            add(asChildViewController: webViewController, to: containerView)
+            webViewController.view.snp.makeConstraints { make in
+                make.left.right.top.bottom.equalTo(containerView)
+            }
+        default:
+            removeCurrentWebView()
+            add(asChildViewController: blankWebPageController, to: containerView)
+            blankWebPageController.view.snp.makeConstraints { maker in
+                maker.left.right.top.bottom.equalTo(containerView)
+            }
+            break
+        }
+    }
+
+    private func removeCurrentWebView() {
+        if let previousWebViewController = currentWebViewController {
+            previousWebViewController.willMove(toParent: nil)
+            previousWebViewController.removeFromParent()
+            // remove view and constraints
+            previousWebViewController.view.removeFromSuperview()
+        }
     }
 }
 
