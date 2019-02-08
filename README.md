@@ -1,4 +1,5 @@
-# Сatowser
+# Сatowser - iOS browser
 
-Browser for iOS
-![alt text](https://github.com/kyzmitch/catowser/blob/master/screenshots/iphone_screenshot.png)
+<img src="screenshots/iphone_screenshot.png" width="300" />
+<img src="screenshots/ipad_screenshot.png" width="7000" />
+<img src="screenshots/ipad_landskape_screenshot.png" width="1000" />
