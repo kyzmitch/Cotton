@@ -10,5 +10,4 @@ import Foundation
 import UIKit
 
 struct BrowserViewModel {
-    let browserBackgroundColour = UIColor.superLightGray
 }

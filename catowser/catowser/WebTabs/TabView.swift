@@ -16,62 +16,24 @@ protocol TabDelegate: class {
     func tab(_ tab: TabView, didBecomeActive active: Bool) -> Void
 }
 
-enum TabVisualState {
-    case selected, deselected
-}
-
-class TabView: UIView {
+/// The tab view for tablets
+final class TabView: UIView {
     
-    var modelView: TabViewModel? {
+    var viewModel: Tab {
         willSet {
-            if let mv = newValue {
-                
-                switch visualState {
-                case .deselected:
-                    applyColoursFrom(mv, for: .deselected)
-                case .selected:
-                    applyColoursFrom(mv, for: .selected)
-                }
-                titleText.text = mv.preparedTitle()
-            }
+            titleText.text = viewModel.title
+            // TODO: add UIImageView for site icon
         }
     }
     
-    private func applyColoursFrom(_ modelView: TabViewModel, for visualState: TabVisualState) {
-        switch visualState {
-        case .deselected:
-            centerBackground.backgroundColor = modelView.backgroundColourDeselected
-            backgroundColor = modelView.realBackgroundColour
-            highlightLine.isHidden = true
-            titleText.textColor = modelView.titleColourDeselected
-        case .selected:
-            centerBackground.backgroundColor = modelView.backgroundColourSelected
-            backgroundColor = modelView.realBackgroundColour
-            highlightLine.isHidden = false
-            titleText.textColor = modelView.titleColourSelected
-        }
-    }
-    
-    var visualState: TabVisualState {
-        didSet {
-            if oldValue == visualState {
+    var visualState: Tab.VisualState {
+        // Swift docs: You can name the parameter or use the default parameter name of `oldValue`.
+        didSet(previousVisualState) {
+            if previousVisualState == visualState {
                 return
             }
-            
-            let changeVisualState: (Bool) -> Void = { [weak self] (selected: Bool) -> Void in
-                guard let strongSelf = self else { return }
-                if var mv = strongSelf.modelView {
-                    mv.selected = selected
-                    strongSelf.applyColoursFrom(mv, for: selected ? .selected : .deselected)
-                }
-            }
-            
-            switch visualState {
-            case .deselected:
-                changeVisualState(false)
-            case .selected:
-                changeVisualState(true)
-            }
+            viewModel.visualState = visualState
+            updateColours()
         }
     }
     
@@ -92,7 +54,7 @@ class TabView: UIView {
     
     private let titleText: UILabel = {
         let titleText = UILabel()
-        titleText.textAlignment = NSTextAlignment.left
+        titleText.textAlignment = .left
         titleText.isUserInteractionEnabled = false
         titleText.numberOfLines = 1
         titleText.font = UIFont.boldSystemFont(ofSize: 10.0)
@@ -117,47 +79,29 @@ class TabView: UIView {
         fatalError("\(#function): has not been implemented")
     }
     
-    override var canBecomeFirstResponder: Bool {
-        get {
-            // NOTE: experimenting with UIResponder methods
-            // default is NO
-            return false
-        }
-    }
-    
-    @objc private func handleClosePressed() -> Void {
-        var closedTabSelected: Bool
-        if let reallySelected = modelView?.selected {
-            closedTabSelected = reallySelected
-        }
-        else {
-            print("\(#function): selected is unknown")
-            closedTabSelected = false
-        }
-        delegate?.tab(self, didPressCloseButton: closedTabSelected)
-    }
-    
-    private func handleTapGesture() -> Void {
-        modelView?.selected = true
-        delegate?.tab(self, didBecomeActive: true)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            // TODO: this is not working, need to think more
-            let location = touch.location(in: self.superview)
-            if self.frame.contains(location) {
-                handleTapGesture()
-                break
-            }
-        }
+    convenience init(frame: CGRect, tab: Tab, delegate: TabDelegate) {
+        self.init(frame: frame)
+        viewModel = tab
+        visualState = tab.visualState
+        // Call function not relying on didSet
+        // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
+        updateColours()
+        titleText.text = viewModel.title
+        self.delegate = delegate
     }
     
     override init(frame: CGRect) {
-        visualState = .deselected
-        super.init(frame: frame)
-        contentMode = .redraw
+        // set temporarily values before calling required base init
+        viewModel = .deselectedBlank
+        visualState = viewModel.visualState
         
+        super.init(frame: frame)
+        // Call function not relying on didSet
+        // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
+        updateColours()
+        titleText.text = viewModel.title
+        
+        contentMode = .redraw
         addSubview(centerBackground)
         addSubview(favicon)
         addSubview(titleText)
@@ -167,8 +111,8 @@ class TabView: UIView {
         closeButton.addTarget(self, action: #selector(handleClosePressed), for: .touchUpInside)
         
         centerBackground.snp.makeConstraints { make in
-            make.left.equalTo(self)
-            make.right.equalTo(self)
+            make.leading.equalTo(self)
+            make.trailing.equalTo(self)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
         }
@@ -206,14 +150,51 @@ class TabView: UIView {
                 return CGSize(width: UIConstants.regularTabWidth, height: UIConstants.tabHeight)
             }
             else {
-                return CGSize(width: UIConstants.tabWidth(), height: UIConstants.tabHeight)
+                return CGSize(width: UIConstants.tabWidth, height: UIConstants.tabHeight)
+            }
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        get {
+            // NOTE: experimenting with UIResponder methods
+            // default is NO
+            return false
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            // TODO: this is not working, need to think more
+            let location = touch.location(in: self.superview)
+            if self.frame.contains(location) {
+                handleTapGesture()
+                break
             }
         }
     }
 }
 
+private extension TabView {
+    func updateColours() {
+        centerBackground.backgroundColor = viewModel.backgroundColor
+        backgroundColor = viewModel.realBackgroundColour
+        highlightLine.isHidden =  viewModel.visualState == .deselected
+        titleText.textColor = viewModel.titleColor
+    }
+    
+    @objc func handleClosePressed() -> Void {
+        delegate?.tab(self, didPressCloseButton: viewModel.visualState == .selected)
+    }
+    
+    func handleTapGesture() -> Void {
+        delegate?.tab(self, didBecomeActive: true)
+    }
+}
+
 extension UIEdgeInsets {
     init(equalInset inset: CGFloat) {
+        self.init()
         top = inset
         left = inset
         right = inset

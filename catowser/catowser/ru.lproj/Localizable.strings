@@ -8,4 +8,6 @@
 
 /* This is to show something on tab when it is without website address or title of web site */
 "ttl_tab_short_blank" = "Пустая вкладка";
+"ttl_tab_short_favorites" = "Избранные сайты";
 "placeholder_searchbar" = "Введите запрос или адрес";
+"msg_blank_site_message" = "Пустой таб";

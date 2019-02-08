@@ -43,34 +43,56 @@ final class WebBrowserToolbarController: BaseViewController {
     private let backButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-back")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .back)
+        btn.isEnabled = false
         return btn
     }()
     
     private let forwardButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-forward")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .forward)
+        btn.isEnabled = false
         return btn
     }()
     
     private let reloadButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-refresh")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .reload)
+        btn.isEnabled = false
         return btn
     }()
+
+    private let counterView: CounterView = CounterView(frame: .zero)
     
-    private let openedTabsButton: UIBarButtonItem = {
-        // TODO: need to transfer number of opened tabs here somehow
-        let count = 0
-        let btn = UIBarButtonItem(title: "\(count)", style: .plain, target: self, action: .openTabs)
+    private lazy var openedTabsButton: UIBarButtonItem = {
+        counterView.digit = TabsListManager.shared.tabsCount
+        TabsListManager.shared.attach(counterView)
+        // Can't use simple bar button with text because it positioned incorrectly
+        let btn = UIBarButtonItem(customView: counterView)
         return btn
     }()
     
     private let settingsButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-menu")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .settings)
+        btn.isEnabled = false
         return btn
     }()
-    
+
+    private let router: ToolbarRouter
+
+    init(router: ToolbarRouter) {
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    deinit {
+        TabsListManager.shared.detach(counterView)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func loadView() {
         view = UIView()
         
@@ -81,10 +103,18 @@ final class WebBrowserToolbarController: BaseViewController {
         super.viewDidLoad()
         
         toolbarView.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(view)
-            maker.trailing.equalTo(view)
-            maker.top.equalTo(view)
-            maker.bottom.equalTo(view)
+            maker.left.right.top.bottom.equalTo(view)
+        }
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Workaround for UIBarButtonItem with a custom UIView
+        // for strange reason it can't recognize gesture recognizers or
+        // even target-action for this specific view
+        for touch in touches {
+            if touch.view == counterView {
+                handleShowOpenedTabsPressed()
+            }
         }
     }
 }
@@ -103,7 +133,7 @@ private extension WebBrowserToolbarController {
     }
 
     @objc func handleShowOpenedTabsPressed() {
-
+        router.showTabs()
     }
 
     @objc func handleSettingsPressed() {
@@ -117,4 +147,14 @@ fileprivate extension Selector {
     static let reload = #selector(WebBrowserToolbarController.handleReloadPressed)
     static let openTabs = #selector(WebBrowserToolbarController.handleShowOpenedTabsPressed)
     static let settings = #selector(WebBrowserToolbarController.handleSettingsPressed)
+}
+
+extension CounterView: TabsObserver {
+    var name: String {
+        return String(describing: self)
+    }
+
+    func update(with tabsCount: Int) {
+        self.digit = tabsCount
+    }
 }

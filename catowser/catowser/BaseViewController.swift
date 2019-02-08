@@ -14,7 +14,7 @@ class BaseViewController: UIViewController {
 
 extension UIViewController {
     func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
-        viewController.willMove(toParent: self)
+        // from docs `willMove` will be called automatically inside `addChild`
         addChild(viewController)
         containerView.addSubview(viewController.view)
         viewController.didMove(toParent: self)
