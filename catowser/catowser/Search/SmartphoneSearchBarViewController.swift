@@ -10,7 +10,7 @@ import UIKit
 
 final class SmartphoneSearchBarViewController: BaseViewController {
 
-    let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
+    let searchBarViewController: SearchBarBaseViewController
 
     private let lineView: UIView = {
         let view = UIView()
@@ -19,8 +19,8 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         return view
     }()
 
-    init(_ searchSuggestionsClient: SearchSuggestClient<AlamofireHttpClient>, _ searchBarDelegate: UISearchBarDelegate) {
-        searchBarViewController = SearchBarBaseViewController(searchSuggestionsClient, searchBarDelegate)
+    init(_ searchBarDelegate: UISearchBarDelegate) {
+        searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
         super.init(nibName: nil, bundle: nil)
     }
     

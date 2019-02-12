@@ -52,9 +52,8 @@ enum SearchResult {
 typealias SearchSuggestionsCallback = (_ response: SearchResult) -> Void
 
 protocol SearchClient {
-    associatedtype NetworkClientType: HttpApi
+    var httpClient: HttpApi { get set }
     var searchEngine: WebSearchEngine {get set}
-    var httpClient: NetworkClientType {get set}
     var textSearchCallback: SearchSuggestionsCallback {get set}
     
     init(webSearchEngine: WebSearchEngine, webClient: NetworkClientType, textSearchHandler: @escaping SearchSuggestionsCallback)
