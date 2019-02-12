@@ -10,10 +10,10 @@ import UIKit
 
 final class TabletSearchBarViewController: BaseViewController {
 
-    let searchBarViewController: SearchBarBaseViewController<SearchSuggestClient<AlamofireHttpClient>>
+    let searchBarViewController: SearchBarBaseViewController
     
-    init(_ searchSuggestionsClient: SearchSuggestClient<AlamofireHttpClient>, _ searchBarDelegate: UISearchBarDelegate) {
-        searchBarViewController = SearchBarBaseViewController(searchSuggestionsClient, searchBarDelegate)
+    init(_ searchBarDelegate: UISearchBarDelegate) {
+        searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -87,6 +87,8 @@ final class TabletSearchBarViewController: BaseViewController {
             maker.bottom.equalTo(0)
             maker.width.equalTo(view.snp.height)
         }
+        
+        searchBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
         searchBarViewController.view.snp.makeConstraints { (maker) in
             maker.leading.equalTo(reloadButton.snp.trailing)
             maker.top.equalTo(0)
