@@ -76,6 +76,7 @@ final class MasterBrowserViewController: BaseViewController {
         return toolbar
     }()
 
+    /// The current holder for WebView (controller) if browser has at least one
     private var currentWebViewController: WebViewController?
 
     private var disposables = [Disposable?]()
@@ -143,8 +144,7 @@ final class MasterBrowserViewController: BaseViewController {
                     maker.bottom.equalTo(view)
                 }
             }
-        }
-        else {
+        } else {
             searchBarController.view.snp.makeConstraints({ (maker) in
                 if #available(iOS 11, *) {
                     maker.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
@@ -192,7 +192,8 @@ final class MasterBrowserViewController: BaseViewController {
         if let currentTab = try? TabsListManager.shared.selectedTab() {
             open(tab: currentTab)
         } else {
-            open(tab: .blank)
+            let firstTab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
+            open(tab: firstTab)
         }
     }
     
@@ -277,7 +278,7 @@ extension MasterBrowserViewController {
 
 extension MasterBrowserViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
+        // TODO: send input to some search queue facade
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
