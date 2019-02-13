@@ -10,7 +10,9 @@ import UIKit
 
 final class SearchBarBaseViewController: BaseViewController {
 
-    private let searchBarView: UISearchBar = {
+    /// The search bar view. Must be public to allow control `cancel` button.
+    /// Later it can be better to make it private and create function.
+    let searchBarView: UISearchBar = {
         let view = UISearchBar(frame: CGRect.zero)
         ThemeProvider.shared.setup(view)
         view.placeholder = NSLocalizedString("placeholder_searchbar", comment: "The text which is displayed when search bar is empty")
@@ -19,6 +21,7 @@ final class SearchBarBaseViewController: BaseViewController {
     
     init(_ searchBarDelegate: UISearchBarDelegate) {
         super.init(nibName: nil, bundle: nil)
+        
         searchBarView.delegate = searchBarDelegate
     }
     
