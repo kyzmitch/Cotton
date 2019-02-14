@@ -278,7 +278,12 @@ extension MasterBrowserViewController {
 
 extension MasterBrowserViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        // TODO: send input to some search queue facade
+        if searchText.isEmpty {
+            // hideSearchController()
+        } else {
+            // showSearchController()
+            SearchSuggestClient.shared.constructSuggestions(basedOn: searchText)
+        }
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
