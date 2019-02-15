@@ -44,6 +44,15 @@ final class MasterBrowserViewController: BaseViewController {
     }
 
     private let viewModel: MasterBrowserViewModel
+
+    private let searchSuggestClient: SearchSuggestClient = {
+        // TODO: implement parsing e.g. google.xml
+        guard let sEngine = try? OpenSearchParser.parse("", engineID: "") else {
+            return SearchSuggestClient(.googleEngine)
+        }
+        let client = SearchSuggestClient(sEngine)
+        return client
+    }()
     
     /// Tabs list without previews. Needed only for tablets or landscape mode.
     private lazy var tabsViewController: TabsViewController = {
@@ -269,7 +278,6 @@ extension MasterBrowserViewController {
     private func keyboardWillHideClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
             print("\(#function): keyboard will hide")
-            
         }
         
         return handling
@@ -282,7 +290,7 @@ extension MasterBrowserViewController: UISearchBarDelegate {
             // hideSearchController()
         } else {
             // showSearchController()
-            SearchSuggestClient.shared.constructSuggestions(basedOn: searchText)
+            searchSuggestClient.constructSuggestions(basedOn: searchText)
         }
     }
 
