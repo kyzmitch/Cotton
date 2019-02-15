@@ -23,6 +23,9 @@
 		60724EE92209C9A20071BECF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE82209C9A20071BECF /* Protocols.swift */; };
 		60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */; };
 		60724F752215AABB0071BECF /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
+		60724F77221693670071BECF /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
+		60724F7A221695C80071BECF /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
+		60724F7D221698AF0071BECF /* OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F7C221698AF0071BECF /* OpenSearchParser.swift */; };
 		607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */; };
 		607D02AF21FEF87F009FCD0B /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
 		607D02B121FF1200009FCD0B /* String+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */; };
@@ -69,6 +72,9 @@
 		60724EE82209C9A20071BECF /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewsReuseManager.swift; sourceTree = "<group>"; };
 		60724F742215AABB0071BECF /* SearchSuggestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestClient.swift; sourceTree = "<group>"; };
+		60724F76221693670071BECF /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
+		60724F79221695C80071BECF /* google.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = google.xml; sourceTree = "<group>"; };
+		60724F7C221698AF0071BECF /* OpenSearchParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSearchParser.swift; sourceTree = "<group>"; };
 		607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarRouter.swift; sourceTree = "<group>"; };
 		607D02AE21FEF87F009FCD0B /* TabsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubject.swift; sourceTree = "<group>"; };
 		607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CatowserExtensions.swift"; sourceTree = "<group>"; };
@@ -132,6 +138,22 @@
 				6010ECCC21F7529400972E28 /* ThemeProvider.swift */,
 			);
 			path = Theme;
+			sourceTree = "<group>";
+		};
+		60724F78221694A30071BECF /* SearchPlugins */ = {
+			isa = PBXGroup;
+			children = (
+				60724F79221695C80071BECF /* google.xml */,
+			);
+			path = SearchPlugins;
+			sourceTree = "<group>";
+		};
+		60724F7B2216989E0071BECF /* Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				60724F7C221698AF0071BECF /* OpenSearchParser.swift */,
+			);
+			path = Parsers;
 			sourceTree = "<group>";
 		};
 		841A2D79203ACB420050A996 /* Search */ = {
@@ -205,6 +227,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				60724F7B2216989E0071BECF /* Parsers */,
 				6010ECC421F74E1500972E28 /* Theme */,
 				C7D9E54E2042D64E00FE55A3 /* Network */,
 				C7D9E54B2042CDEE00FE55A3 /* Constants */,
@@ -217,6 +240,7 @@
 				8435A49A1EED5E700020102F /* AppDelegate.swift */,
 				8435A49C1EED5E700020102F /* BaseViewController.swift */,
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
+				60724F78221694A30071BECF /* SearchPlugins */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
 				8435A4A61EED5E700020102F /* Info.plist */,
 				C27371191F7A341900900F03 /* Localizable.strings */,
@@ -260,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				60724F742215AABB0071BECF /* SearchSuggestClient.swift */,
+				60724F76221693670071BECF /* SearchEngine.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -337,6 +362,7 @@
 			files = (
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
 				C27371171F7A341900900F03 /* Localizable.strings in Resources */,
+				60724F7A221695C80071BECF /* google.xml in Resources */,
 				8435A4A21EED5E700020102F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,6 +427,7 @@
 				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
+				60724F7D221698AF0071BECF /* OpenSearchParser.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				60724EE92209C9A20071BECF /* Protocols.swift in Sources */,
@@ -418,6 +445,7 @@
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
 				60724EDA2204332B0071BECF /* DefaultTabProvider.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
+				60724F77221693670071BECF /* SearchEngine.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
 				60724EA721FF17C90071BECF /* TabsCache.swift in Sources */,

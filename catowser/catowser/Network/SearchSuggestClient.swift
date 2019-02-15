@@ -7,11 +7,27 @@
 //
 
 import Foundation
+import ReactiveSwift
+
 
 final class SearchSuggestClient {
-    static let shared = SearchSuggestClient()
+    private let searchEngine: SearchEngine
 
-    func constructSuggestions(basedOn query: String) {
-        
+    init(_ searchEngine: SearchEngine) {
+        self.searchEngine = searchEngine
+    }
+
+    func constructSuggestions(basedOn query: String) -> SignalProducer<[String], SSError> {
+        guard let url = searchEngine.suggestURLForQuery(query) else {
+            return
+        }
+
+
+    }
+}
+
+extension SearchSuggestClient {
+    enum SSError: Error{
+        case wrongUrl
     }
 }
