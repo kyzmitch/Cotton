@@ -13,9 +13,6 @@ final class WebSearchResultTableViewCell: UITableViewCell {
     private let container = UIView()
     private let titleLabel: UILabel = {
         let label = UILabel()
-        /*
-         Translation of autoresizing masks into constraints is disabled because it would conflict with the auto adjusting constraints.
-         */
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         
@@ -76,11 +73,6 @@ final class WebSearchResultTableViewCell: UITableViewCell {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(using webPageDescription: WebPageDescription) {
-        titleLabel.text = webPageDescription.title
-        iconImageView.image = webPageDescription.icon
     }
     
     static let cellIdentifier = UIIdentifiers.webSearchResultCellId

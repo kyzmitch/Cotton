@@ -12,7 +12,7 @@ final class WebSearchResultsViewController: BaseViewController, UITableViewDataS
 
     private enum DataSourceState {
         case empty
-        case found(String, TextWebSearchResult)
+        case found(String)
     }
     
     // Only one search engine at the moment
@@ -57,19 +57,11 @@ final class WebSearchResultsViewController: BaseViewController, UITableViewDataS
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if case let .found(_, searchResult) = dataState {
-            return searchResult.numberOfSearchResults
-        }
-        else {
-            return 0
-        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: WebSearchResultTableViewCell.cellIdentifier, for: indexPath) as! WebSearchResultTableViewCell
-        if case let .found(_, searchResult) = dataState {
-            cell.configure(using: searchResult.searchResultDescription(for: indexPath.row))
-        }
         return cell
     }
 }
