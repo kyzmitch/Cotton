@@ -89,6 +89,8 @@ final class MasterBrowserViewController: BaseViewController {
     private var currentWebViewController: WebViewController?
 
     private var disposables = [Disposable?]()
+
+    private var searchSuggestionsDisposable: Disposable?
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -220,6 +222,7 @@ final class MasterBrowserViewController: BaseViewController {
 
     deinit {
         disposables.forEach { $0?.dispose() }
+        searchSuggestionsDisposable?.dispose()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -290,7 +293,16 @@ extension MasterBrowserViewController: UISearchBarDelegate {
             // hideSearchController()
         } else {
             // showSearchController()
-            searchSuggestClient.constructSuggestions(basedOn: searchText)
+            searchSuggestionsDisposable?.dispose()
+            searchSuggestionsDisposable = searchSuggestClient.constructSuggestions(basedOn: searchText)
+                .startWithResult { result in
+                    switch result {
+                    case .success(_):
+                        break
+                    case .failure:
+                        break
+                    }
+            }
         }
     }
 
