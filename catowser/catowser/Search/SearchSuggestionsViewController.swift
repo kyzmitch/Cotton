@@ -12,6 +12,8 @@ fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
 }
 
+/// View controller to control suggestions view
+/// Looks similar to one in Safari
 final class SearchSuggestionsViewController: UITableViewController {
 
     var suggestions: [String] = [] {

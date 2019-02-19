@@ -68,7 +68,7 @@ fileprivate extension URL {
 }
 
 extension SearchEngine {
-    static let googleEngine: SearchEngine = SearchEngine(shortName: "Google", image: .googleImage, searchTemplate: "https://www.google.com/search?q={searchTerms}&ie=utf-8&oe=utf-8&client=firefox-b-1-m", suggestTemplate: "https://www.google.com/complete/search?client=firefox&q={searchTerms}")
+    static let googleEngine: SearchEngine = SearchEngine(shortName: "Google", image: .googleImage, searchTemplate: "https://www.google.com/search?q={searchTerms}&ie=utf-8&oe=utf-8&client=catowser", suggestTemplate: "https://www.google.com/complete/search?client=catowser&q={searchTerms}")
 }
 
 extension UIImage {

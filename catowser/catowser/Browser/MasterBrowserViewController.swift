@@ -81,7 +81,11 @@ final class MasterBrowserViewController: BaseViewController {
     private let blankWebPageController = BlankWebPageViewController()
 
     /// The view needed to hold tab content like WebView or favorites table view.
-    private let containerView = UIView()
+    private let containerView: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.blue
+        return v
+    }()
 
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
@@ -295,6 +299,9 @@ extension MasterBrowserViewController {
 private extension MasterBrowserViewController {
     private func showSearchController() {
         self.add(asChildViewController: searchSuggestionsController, to: containerView)
+        searchSuggestionsController.view.snp.makeConstraints { make in
+            make.left.right.top.bottom.equalTo(containerView)
+        }
     }
 
     private func hideSearchController() {
