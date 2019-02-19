@@ -71,6 +71,11 @@ final class MasterBrowserViewController: BaseViewController {
         }
     }()
 
+    private let searchSuggestionsController: SearchSuggestionsViewController = {
+        let vc = SearchSuggestionsViewController()
+        return vc
+    }()
+
     /// The view controller to manage blank tab, possibly will be enhaced
     /// to support favorite sites list.
     private let blankWebPageController = BlankWebPageViewController()
@@ -287,17 +292,32 @@ extension MasterBrowserViewController {
     }
 }
 
+private extension MasterBrowserViewController {
+    private func showSearchController() {
+        self.add(asChildViewController: searchSuggestionsController, to: containerView)
+    }
+
+    private func hideSearchController() {
+        searchSuggestionsController.willMove(toParent: nil)
+        searchSuggestionsController.removeFromParent()
+        // remove view and constraints
+        searchSuggestionsController.view.removeFromSuperview()
+    }
+}
+
 extension MasterBrowserViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
-            // hideSearchController()
+            hideSearchController()
         } else {
-            // showSearchController()
+            showSearchController()
             searchSuggestionsDisposable?.dispose()
-            searchSuggestionsDisposable = searchSuggestClient.constructSuggestions(basedOn: searchText)
-                .startWithResult { result in
+            searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
+                .observe(on: UIScheduler())
+                .startWithResult { [weak self] result in
                     switch result {
-                    case .success(_):
+                    case .success(let suggestions):
+                        self?.searchSuggestionsController.suggestions = suggestions
                         break
                     case .failure:
                         break

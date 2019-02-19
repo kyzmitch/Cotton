@@ -42,7 +42,6 @@
 		846220AF1EEE9B6C00B84C73 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
-		8A0DFB61221B1C0200E1A5B7 /* SuggestionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DFB60221B1C0200E1A5B7 /* SuggestionsView.swift */; };
 		8A9C9FFD22134A5A0093756C /* UIImage+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
@@ -50,8 +49,7 @@
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
 		C705C0EE204340BD0018067F /* UIColour+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */; };
-		C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */; };
-		C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */; };
+		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
 		C7BE4FAF2044310B00FC761B /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
 		C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */; };
 /* End PBXBuildFile section */
@@ -94,7 +92,6 @@
 		846220AE1EEE9B6C00B84C73 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
-		8A0DFB60221B1C0200E1A5B7 /* SuggestionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsView.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22599621F7BEF6D000E4C3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -105,8 +102,7 @@
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewModel.swift; sourceTree = "<group>"; };
 		C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColour+CatowserExtensions.swift"; sourceTree = "<group>"; };
-		C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultsViewController.swift; sourceTree = "<group>"; };
-		C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchResultTableViewCell.swift; sourceTree = "<group>"; };
+		C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewController.swift; sourceTree = "<group>"; };
 		C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
@@ -164,9 +160,7 @@
 				841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */,
 				841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */,
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
-				C707CC11203F0BAF002EA258 /* WebSearchResultsViewController.swift */,
-				C71A333E2041DF5C0092D259 /* WebSearchResultTableViewCell.swift */,
-				8A0DFB60221B1C0200E1A5B7 /* SuggestionsView.swift */,
+				C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -426,7 +420,6 @@
 				C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */,
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
 				607D02AF21FEF87F009FCD0B /* TabsSubject.swift in Sources */,
-				C71A333F2041DF5C0092D259 /* WebSearchResultTableViewCell.swift in Sources */,
 				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
@@ -452,13 +445,12 @@
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
 				60724EA721FF17C90071BECF /* TabsCache.swift in Sources */,
-				8A0DFB61221B1C0200E1A5B7 /* SuggestionsView.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
 				604A500921F9CFE400EF07F9 /* Collection.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
 				60724F752215AABB0071BECF /* SearchSuggestClient.swift in Sources */,
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
-				C707CC12203F0BAF002EA258 /* WebSearchResultsViewController.swift in Sources */,
+				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				607D02B121FF1200009FCD0B /* String+CatowserExtensions.swift in Sources */,

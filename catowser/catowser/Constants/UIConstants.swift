@@ -33,7 +33,3 @@ struct UIConstants {
     static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
     static let highlightLineWidth: CGFloat = 3
 }
-
-struct UIIdentifiers {
-    static public let webSearchResultCellId = "WebSearchResultTableViewCell"
-}
