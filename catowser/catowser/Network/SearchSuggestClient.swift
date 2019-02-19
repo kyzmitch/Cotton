@@ -29,7 +29,7 @@ final class SearchSuggestClient {
         request?.cancel()
     }
 
-    func constructSuggestions(basedOn query: String) -> SignalProducer<[String], SuggestClientError> {
+    func suggestionsProducer(basedOn query: String) -> SignalProducer<[String], SuggestClientError> {
         guard let url = searchEngine.suggestURLForQuery(query) else {
             return SignalProducer(error: .wrongUrl)
         }
