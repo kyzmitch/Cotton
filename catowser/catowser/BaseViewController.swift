@@ -16,6 +16,7 @@ extension UIViewController {
     func add(asChildViewController viewController: UIViewController, to containerView: UIView) {
         // from docs `willMove` will be called automatically inside `addChild`
         addChild(viewController)
+        // BTW, do we need to add constraints ?
         containerView.addSubview(viewController.view)
         viewController.didMove(toParent: self)
     }
