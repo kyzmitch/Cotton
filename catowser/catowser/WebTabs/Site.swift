@@ -13,9 +13,9 @@ struct Site {
     let url: URL
 
     var domainString: String {
-        // TODO: parse url to extract only domain name
-        // http://www.opennet.ru/opennews/art.shtml?num=50072
-        return "www.opennet.ru"
+        // For http://www.opennet.ru/opennews/art.shtml?num=50072
+        // it should be "www.opennet.ru"
+        return url.host ?? "site"
     }
 
     init(url: URL) {
@@ -30,6 +30,4 @@ struct Site {
     }
 }
 
-extension Site: Equatable {
-    
-}
+extension Site: Equatable {}

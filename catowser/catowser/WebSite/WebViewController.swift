@@ -38,6 +38,7 @@ final class WebViewController: BaseViewController {
         super.viewDidLoad()
         
         webView.uiDelegate = self
+        webView.navigationDelegate = self
         let request = URLRequest(url: site.url)
         webView.load(request)
     }
@@ -54,4 +55,8 @@ final class WebViewController: BaseViewController {
 
 extension WebViewController: WKUIDelegate {
 
+}
+
+extension WebViewController: WKNavigationDelegate {
+    
 }
