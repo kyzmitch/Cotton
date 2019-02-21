@@ -248,27 +248,19 @@ extension MasterBrowserViewController: TabRendererInterface {
             guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {
                 return
             }
-            removeCurrentWebView()
+            currentWebViewController?.removeFromChild()
+            blankWebPageController.removeFromChild()
             add(asChildViewController: webViewController, to: containerView)
             webViewController.view.snp.makeConstraints { make in
                 make.left.right.top.bottom.equalTo(containerView)
             }
         default:
-            removeCurrentWebView()
+            currentWebViewController?.removeFromChild()
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in
                 maker.left.right.top.bottom.equalTo(containerView)
             }
             break
-        }
-    }
-
-    private func removeCurrentWebView() {
-        if let previousWebViewController = currentWebViewController {
-            previousWebViewController.willMove(toParent: nil)
-            previousWebViewController.removeFromParent()
-            // remove view and constraints
-            previousWebViewController.view.removeFromSuperview()
         }
     }
 }
@@ -297,14 +289,15 @@ extension MasterBrowserViewController {
 }
 
 private extension MasterBrowserViewController {
-    private func showSearchController() {
+    func showSearchController() {
         self.add(asChildViewController: searchSuggestionsController, to: containerView)
+        searchSuggestionsController.delegate = self
         searchSuggestionsController.view.snp.makeConstraints { make in
             make.left.right.top.bottom.equalTo(containerView)
         }
     }
 
-    private func hideSearchController() {
+    func hideSearchController() {
         searchSuggestionsController.willMove(toParent: nil)
         searchSuggestionsController.removeFromParent()
         // remove view and constraints
@@ -353,5 +346,31 @@ extension MasterBrowserViewController: UISearchBarDelegate {
     private func endSearch(for searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchBarController.stateChanged(to: .clear)
+    }
+}
+
+extension MasterBrowserViewController: SearchSuggestionsListDelegate {
+    func didSelect(_ suggestion: String) {
+        guard let url = searchSuggestClient.searchURL(basedOn: suggestion) else {
+            return
+        }
+        hideSearchController()
+
+        let site = Site(url: url)
+        if let currentTab = try? TabsListManager.shared.selectedTab() {
+            var updatedTab = currentTab
+            updatedTab.contentType = .site(site)
+            do {
+                try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
+                open(tab: updatedTab)
+            } catch {
+                print("Failed to replace current tab")
+            }
+        } else {
+            // Most likely this code never will be triggered because always one selected tab is availbale
+            let tab = Tab(contentType: .site(site), selected: true)
+            TabsListManager.shared.add(tab: tab)
+            open(tab: tab)
+        }
     }
 }

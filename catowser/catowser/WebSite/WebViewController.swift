@@ -38,6 +38,8 @@ final class WebViewController: BaseViewController {
         super.viewDidLoad()
         
         webView.uiDelegate = self
+        let request = URLRequest(url: site.url)
+        webView.load(request)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

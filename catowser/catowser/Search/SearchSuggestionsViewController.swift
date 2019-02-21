@@ -12,6 +12,10 @@ fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
 }
 
+protocol SearchSuggestionsListDelegate: class {
+    func didSelect(_ suggestion: String)
+}
+
 /// View controller to control suggestions view
 /// Looks similar to one in Safari
 final class SearchSuggestionsViewController: UITableViewController {
@@ -21,6 +25,8 @@ final class SearchSuggestionsViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+
+    weak var delegate: SearchSuggestionsListDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,5 +53,15 @@ extension SearchSuggestionsViewController /* UITableViewDataSource */ {
         let cell = tableView.dequeueReusableCell(withIdentifier: .searchSuggestionCellId, for: indexPath)
         cell.textLabel?.text = suggestions[indexPath.row]
         return cell
+    }
+}
+
+extension SearchSuggestionsViewController /* UITableViewDelegate */ {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let suggestion = suggestions[safe: indexPath.row] else {
+            return
+        }
+
+        delegate?.didSelect(suggestion)
     }
 }
