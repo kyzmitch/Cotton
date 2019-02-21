@@ -43,6 +43,7 @@
 		846220AF1EEE9B6C00B84C73 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
+		8A95D7B1221F17010032C156 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D7B0221F17010032C156 /* Box.swift */; };
 		8A9C9FFD22134A5A0093756C /* UIImage+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
@@ -94,6 +95,7 @@
 		846220AE1EEE9B6C00B84C73 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
+		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22599621F7BEF6D000E4C3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				8A95D7AF221F16E90032C156 /* Primitives */,
 				60724F7B2216989E0071BECF /* Parsers */,
 				6010ECC421F74E1500972E28 /* Theme */,
 				C7D9E54E2042D64E00FE55A3 /* Network */,
@@ -254,6 +257,14 @@
 				C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */,
 			);
 			path = Browser;
+			sourceTree = "<group>";
+		};
+		8A95D7AF221F16E90032C156 /* Primitives */ = {
+			isa = PBXGroup;
+			children = (
+				8A95D7B0221F17010032C156 /* Box.swift */,
+			);
+			path = Primitives;
 			sourceTree = "<group>";
 		};
 		C70724C8201E603E0021CF5D /* Extensions */ = {
@@ -434,6 +445,7 @@
 				60724EE72209C8730071BECF /* TabsPreviewsRouter.swift in Sources */,
 				C7BE4FAF2044310B00FC761B /* CharacterSet+CatowserExtensions.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
+				8A95D7B1221F17010032C156 /* Box.swift in Sources */,
 				605C550721F8AA5900B3DC73 /* ReusableItem.swift in Sources */,
 				846220AF1EEE9B6C00B84C73 /* Tab.swift in Sources */,
 				8A9C9FFD22134A5A0093756C /* UIImage+CatowserExtensions.swift in Sources */,

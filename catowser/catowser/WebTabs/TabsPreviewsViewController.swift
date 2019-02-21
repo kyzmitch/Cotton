@@ -12,6 +12,8 @@ import ReactiveSwift
 final class TabsPreviewsViewController: BaseViewController {
 
     private var uxState: MutableProperty<State> = MutableProperty<State>(.loading)
+    
+    typealias TabsBox = Box<[Tab]>
 
     private let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -108,7 +110,8 @@ final class TabsPreviewsViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         let tabs = TabsListManager.shared.fetch()
-        uxState.value = .tabs(dataSource: tabs)
+        let tabsBox: TabsBox = TabsBox(tabs)
+        uxState.value = .tabs(dataSource: tabsBox)
     }
 
     deinit {
@@ -149,7 +152,12 @@ extension TabsPreviewsViewController: TabsObserver {
     }
 
     func tabDidAdd(_ tab: Tab, at index: Int) {
-
+        guard case let .tabs(box) = uxState.value else {
+            return
+        }
+        
+        box.value.insert(tab, at: index)
+        render(state: uxState.value)
     }
 }
 
@@ -187,9 +195,9 @@ extension TabsPreviewsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var tab: Tab?
         switch uxState.value {
-        case .tabs(let dataSource) where indexPath.item < dataSource.count:
+        case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             // must use `item` for UICollectionView
-            tab = dataSource[safe: indexPath.item]
+            tab = dataSource.value[safe: indexPath.item]
         default: break
         }
 
@@ -218,7 +226,8 @@ private extension TabsPreviewsViewController {
     }
 
     @objc func addTabPressed() {
-
+        let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
+        TabsListManager.shared.add(tab: tab)
     }
 }
 
@@ -231,15 +240,15 @@ fileprivate extension TabsPreviewsViewController {
     enum State {
         /// Maybe it is not needed state, but it is required for scalability when some user will have 100 tabs
         case loading
-        /// Actual collection for tabs
-        case tabs(dataSource: [Tab])
+        /// Actual collection for tabs, at least one tab always will be in it
+        case tabs(dataSource: TabsBox)
 
         var itemsNumber: Int {
             switch self {
             case .loading:
                 return 0
-            case .tabs(let dataSource):
-                return dataSource.count
+            case .tabs(let box):
+                return box.value.count
             }
         }
     }
