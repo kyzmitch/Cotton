@@ -64,6 +64,8 @@ protocol TabsSubject {
     ///
     /// - Returns: selected tab or nothing if it was not found.
     func selectTab(at indexPath: IndexPath) -> Tab?
+    /// Replaces currently active tab by combining two operations
+    func replaceSelectedTab(with tab: Tab) throws
     /// Fetches latest tabs.
     func fetch() -> [Tab]
 }
@@ -155,12 +157,13 @@ final class TabsListManager {
     func selectedTab() throws -> Tab {
         let index = selectedTabIndex.value
         guard index >= 0 else {
-            struct NoInitializedYet: Error {}
-            throw NoInitializedYet()
+            throw NotInitializedYet()
         }
 
         return tabs.value[index]
     }
+
+    fileprivate struct NotInitializedYet: Error {}
 }
 
 extension TabsListManager: TabsSubject {
@@ -230,8 +233,17 @@ extension TabsListManager: TabsSubject {
         selectedTabIndex.value = index
     }
 
+    func replaceSelectedTab(with tab: Tab) throws {
+        let index = selectedTabIndex.value
+        guard index >= 0 else {
+            throw NotInitializedYet()
+        }
+
+        tabs.value[index] = tab
+    }
+
     func selectTab(at indexPath: IndexPath) -> Tab? {
-        // item property is used because UICollectionView used
+        // item property is used because `UICollectionView` used
         guard let tab = tabs.value[safe: indexPath.item] else {
             return nil
         }

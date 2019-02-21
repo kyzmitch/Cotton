@@ -29,6 +29,15 @@ final class SearchSuggestClient {
         request?.cancel()
     }
 
+    /// Constructs search URL. Convinient wrapper around search engine class function.
+    func searchURL(basedOn query: String) -> URL? {
+        return searchEngine.searchURLForQuery(query)
+    }
+
+    /// Constructs search suggestions http request producer.
+    ///
+    /// - Parameter query: String to search
+    /// - Returns: The `SignalProducer` with array of suggested strings in successfull case.
     func suggestionsProducer(basedOn query: String) -> SignalProducer<[String], SuggestClientError> {
         guard let url = searchEngine.suggestURLForQuery(query) else {
             return SignalProducer(error: .wrongUrl)
@@ -48,6 +57,10 @@ final class SearchSuggestClient {
                         observer.send(error: .networkError(error))
                         return
                     }
+
+                    // This is specific parsing for response if url is
+                    // configured to use `client=firefox`
+                    // for `client=chrome` it is different
 
                     // response example:
                     // ["open",["open office","openvpn","opencv","opengl","openedu","opencart",

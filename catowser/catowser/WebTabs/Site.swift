@@ -10,7 +10,7 @@ import Foundation
 
 struct Site {
     /// Initial url
-    private let url: URL
+    let url: URL
 
     var domainString: String {
         // TODO: parse url to extract only domain name
