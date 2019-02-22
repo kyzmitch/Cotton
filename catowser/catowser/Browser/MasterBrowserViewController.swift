@@ -19,8 +19,13 @@ enum SearchBarState {
 }
 
 protocol SearchBarControllerInterface: class {
-    func isBlank() -> Bool
     func stateChanged(to state: SearchBarState)
+    func setAddressString(_ address: String)
+}
+
+extension SearchBarControllerInterface {
+    /* optional */ func stateChanged(to state: SearchBarState) {
+    }
 }
 
 /// An interface for component which suppose to render tabs
@@ -84,9 +89,11 @@ final class MasterBrowserViewController: BaseViewController {
     /// The view needed to hold tab content like WebView or favorites table view.
     private let containerView: UIView = {
         let v = UIView()
-        v.backgroundColor = UIColor.blue
+        v.backgroundColor = .black
         return v
     }()
+    
+    private var keyboardHeight: CGFloat?
 
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
@@ -249,6 +256,7 @@ extension MasterBrowserViewController: TabRendererInterface {
             guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {
                 return
             }
+            searchBarController.setAddressString(site.url.absoluteString)
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
             add(asChildViewController: webViewController, to: containerView)
@@ -274,7 +282,8 @@ extension MasterBrowserViewController {
             let rect = value.cgRectValue
             
             print("\(#function): keyboard will show with height \(rect.size.height)")
-            
+            // need to reduce search suggestions list height
+            keyboardHeight = rect.size.height
         }
         
         return handling
@@ -283,6 +292,7 @@ extension MasterBrowserViewController {
     private func keyboardWillHideClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
             print("\(#function): keyboard will hide")
+            keyboardHeight = nil
         }
         
         return handling
@@ -293,9 +303,18 @@ private extension MasterBrowserViewController {
     func showSearchController() {
         self.add(asChildViewController: searchSuggestionsController, to: containerView)
         searchSuggestionsController.delegate = self
-        searchSuggestionsController.view.snp.makeConstraints { make in
-            make.left.right.top.bottom.equalTo(containerView)
+        
+        searchSuggestionsController.view.translatesAutoresizingMaskIntoConstraints = false
+        searchSuggestionsController.view.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
+        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
+        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
+        
+        if let bottomShift = keyboardHeight {
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: bottomShift).isActive = true
+        } else {
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
         }
+        
     }
 
     func hideSearchController() {

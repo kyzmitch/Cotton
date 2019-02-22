@@ -103,12 +103,8 @@ final class TabletSearchBarViewController: BaseViewController {
     }
 }
 
-extension TabletSearchBarViewController: SearchBarControllerInterface {
-    func stateChanged(to state: SearchBarState) {
-        
-    }
-
-    func isBlank() -> Bool {
-        return true
+extension TabletSearchBarViewController: SearchBarControllerInterface {    
+    func setAddressString(_ address: String) {
+        searchBarViewController.searchBarView.text = address
     }
 }

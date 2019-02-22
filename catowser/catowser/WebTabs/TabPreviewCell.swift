@@ -118,7 +118,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         backgroundHolder.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
         backgroundHolder.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
         // https://stackoverflow.com/questions/32981532/difference-between-leftanchor-and-leadinganchor
-        // What is the difference between `left``and `leading` anchors
+        // What is the difference between `left` and `leading` anchors
         backgroundHolder.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
         backgroundHolder.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
 
