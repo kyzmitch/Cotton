@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import WebKit
+import CoreBrowser
 
 final class WebViewController: BaseViewController {
     

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 import CoreGraphics
+import CoreBrowser
 
 protocol TabDelegate: class {
     func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) -> Void

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {

@@ -8,26 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A910B05602B21CB19029F7B9 /* Pods_catowser.framework */; };
+		2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */; };
 		6010ECC621F74E2900972E28 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECC521F74E2900972E28 /* Theme.swift */; };
 		6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCA21F751B500972E28 /* LightTheme.swift */; };
 		6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCC21F7529400972E28 /* ThemeProvider.swift */; };
-		604A500921F9CFE400EF07F9 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A500821F9CFE400EF07F9 /* Collection.swift */; };
 		605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */; };
 		605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */; };
-		605C550721F8AA5900B3DC73 /* ReusableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C550621F8AA5900B3DC73 /* ReusableItem.swift */; };
-		60724EA721FF17C90071BECF /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
 		60724EA921FF1BD80071BECF /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA821FF1BD80071BECF /* CounterView.swift */; };
-		60724EDA2204332B0071BECF /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
-		60724EDC220463D40071BECF /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EDB220463D40071BECF /* Site.swift */; };
 		60724EE72209C8730071BECF /* TabsPreviewsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE62209C8730071BECF /* TabsPreviewsRouter.swift */; };
-		60724EE92209C9A20071BECF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE82209C9A20071BECF /* Protocols.swift */; };
 		60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */; };
-		60724F752215AABB0071BECF /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
 		60724F7A221695C80071BECF /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */; };
-		607D02AF21FEF87F009FCD0B /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
-		607D02B121FF1200009FCD0B /* String+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */; };
-		6094E713221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */; };
 		6094E720221FD2B9004269A2 /* CoreBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6094E71E221FD2B9004269A2 /* CoreBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -35,6 +26,21 @@
 		6094E72A221FD2F7004269A2 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
 		6094E72B221FD310004269A2 /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
 		6094E72C221FD4BA004269A2 /* SearchEngine.swift in Headers */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		6094E730221FE2E5004269A2 /* UIColour+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */; };
+		6094E731221FE2EC004269A2 /* ReusableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C550621F8AA5900B3DC73 /* ReusableItem.swift */; };
+		6094E732221FE2EF004269A2 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604A500821F9CFE400EF07F9 /* Collection.swift */; };
+		6094E733221FE2F6004269A2 /* String+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */; };
+		6094E734221FE2F9004269A2 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE82209C9A20071BECF /* Protocols.swift */; };
+		6094E735221FE2FE004269A2 /* UIImage+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */; };
+		6094E736221FE302004269A2 /* UIViewController+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */; };
+		6094E737221FE3D2004269A2 /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
+		6094E73F221FE65F004269A2 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E73E221FE65F004269A2 /* ReactiveSwift.framework */; };
+		6094E740221FE6CB004269A2 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D7B0221F17010032C156 /* Box.swift */; };
+		6094E741221FE706004269A2 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
+		6094E742221FE718004269A2 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EDB220463D40071BECF /* Site.swift */; };
+		6094E743221FE72C004269A2 /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
+		6094E744221FE7B3004269A2 /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
+		6094E745221FE7FF004269A2 /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
 		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
 		841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
@@ -45,17 +51,13 @@
 		8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8435A4A21EED5E700020102F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A11EED5E700020102F /* Assets.xcassets */; };
 		8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A31EED5E700020102F /* LaunchScreen.storyboard */; };
-		846220AF1EEE9B6C00B84C73 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
-		8A95D7B1221F17010032C156 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D7B0221F17010032C156 /* Box.swift */; };
-		8A9C9FFD22134A5A0093756C /* UIImage+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
-		C705C0EE204340BD0018067F /* UIColour+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */; };
 		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
 		C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */; };
 /* End PBXBuildFile section */
@@ -85,6 +87,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1734249475EC8FA1087C42A0 /* Pods-CoreBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBrowser/Pods-CoreBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		25A1D5F1221A945E907F61C1 /* Pods-CoreBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBrowser/Pods-CoreBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
 		6010ECC521F74E2900972E28 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		6010ECCA21F751B500972E28 /* LightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
@@ -111,6 +115,10 @@
 		6094E71C221FD2B9004269A2 /* CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E71E221FD2B9004269A2 /* CoreBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreBrowser.h; sourceTree = "<group>"; };
 		6094E71F221FD2B9004269A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6094E738221FE3F3004269A2 /* ReactiveSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6094E73A221FE3FD004269A2 /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6094E73C221FE3FF004269A2 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6094E73E221FE65F004269A2 /* ReactiveSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
 		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
@@ -128,6 +136,7 @@
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C22599621F7BEF6D000E4C3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
@@ -148,6 +157,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6094E73F221FE65F004269A2 /* ReactiveSwift.framework in Frameworks */,
+				2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,7 +177,12 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6094E73E221FE65F004269A2 /* ReactiveSwift.framework */,
+				6094E73C221FE3FF004269A2 /* Alamofire.framework */,
+				6094E73A221FE3FD004269A2 /* Result.framework */,
+				6094E738221FE3F3004269A2 /* ReactiveSwift.framework */,
 				A910B05602B21CB19029F7B9 /* Pods_catowser.framework */,
+				8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -355,6 +371,8 @@
 			children = (
 				C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */,
 				2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */,
+				1734249475EC8FA1087C42A0 /* Pods-CoreBrowser.debug.xcconfig */,
+				25A1D5F1221A945E907F61C1 /* Pods-CoreBrowser.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -378,6 +396,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6094E727221FD2B9004269A2 /* Build configuration list for PBXNativeTarget "CoreBrowser" */;
 			buildPhases = (
+				4EFB9C87A566D4BFCB0AB7B2 /* [CP] Check Pods Manifest.lock */,
 				6094E717221FD2B9004269A2 /* Headers */,
 				6094E718221FD2B9004269A2 /* Sources */,
 				6094E719221FD2B9004269A2 /* Frameworks */,
@@ -475,6 +494,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4EFB9C87A566D4BFCB0AB7B2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CoreBrowser-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		903C417858128E7774D9CABE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -524,9 +561,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6094E742221FE718004269A2 /* Site.swift in Sources */,
 				6094E729221FD2DE004269A2 /* OpenSearchParser.swift in Sources */,
 				6094E72B221FD310004269A2 /* CharacterSet+CatowserExtensions.swift in Sources */,
+				6094E736221FE302004269A2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				6094E72A221FD2F7004269A2 /* SearchEngine.swift in Sources */,
+				6094E732221FE2EF004269A2 /* Collection.swift in Sources */,
+				6094E730221FE2E5004269A2 /* UIColour+CatowserExtensions.swift in Sources */,
+				6094E735221FE2FE004269A2 /* UIImage+CatowserExtensions.swift in Sources */,
+				6094E741221FE706004269A2 /* Tab.swift in Sources */,
+				6094E743221FE72C004269A2 /* TabsSubject.swift in Sources */,
+				6094E745221FE7FF004269A2 /* TabsCache.swift in Sources */,
+				6094E744221FE7B3004269A2 /* DefaultTabProvider.swift in Sources */,
+				6094E733221FE2F6004269A2 /* String+CatowserExtensions.swift in Sources */,
+				6094E731221FE2EC004269A2 /* ReusableItem.swift in Sources */,
+				6094E740221FE6CB004269A2 /* Box.swift in Sources */,
+				6094E737221FE3D2004269A2 /* SearchSuggestClient.swift in Sources */,
+				6094E734221FE2F9004269A2 /* Protocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,44 +585,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				60724EDC220463D40071BECF /* Site.swift in Sources */,
 				C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */,
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
-				607D02AF21FEF87F009FCD0B /* TabsSubject.swift in Sources */,
 				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
-				60724EE92209C9A20071BECF /* Protocols.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				60724EE72209C8730071BECF /* TabsPreviewsRouter.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
-				8A95D7B1221F17010032C156 /* Box.swift in Sources */,
-				605C550721F8AA5900B3DC73 /* ReusableItem.swift in Sources */,
-				846220AF1EEE9B6C00B84C73 /* Tab.swift in Sources */,
-				8A9C9FFD22134A5A0093756C /* UIImage+CatowserExtensions.swift in Sources */,
 				607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
-				60724EDA2204332B0071BECF /* DefaultTabProvider.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
-				60724EA721FF17C90071BECF /* TabsCache.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
-				604A500921F9CFE400EF07F9 /* Collection.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
-				6094E713221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift in Sources */,
-				60724F752215AABB0071BECF /* SearchSuggestClient.swift in Sources */,
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
-				607D02B121FF1200009FCD0B /* String+CatowserExtensions.swift in Sources */,
-				C705C0EE204340BD0018067F /* UIColour+CatowserExtensions.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -610,6 +647,7 @@
 /* Begin XCBuildConfiguration section */
 		6094E725221FD2B9004269A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1734249475EC8FA1087C42A0 /* Pods-CoreBrowser.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -638,6 +676,7 @@
 		};
 		6094E726221FD2B9004269A2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25A1D5F1221A945E907F61C1 /* Pods-CoreBrowser.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -780,7 +819,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -795,7 +833,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

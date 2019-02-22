@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveSwift
+import CoreBrowser
 
 final class TabsPreviewsViewController: BaseViewController {
 

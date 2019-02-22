@@ -8,21 +8,21 @@
 
 import Foundation
 
-struct Site {
+public struct Site {
     /// Initial url
-    let url: URL
+    public let url: URL
 
-    var domainString: String {
+    public var domainString: String {
         // For http://www.opennet.ru/opennews/art.shtml?num=50072
         // it should be "www.opennet.ru"
         return url.host ?? "site"
     }
 
-    init(url: URL) {
+    public init(url: URL) {
         self.url = url
     }
 
-    init?(urlString: String) {
+    public init?(urlString: String) {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
