@@ -28,7 +28,7 @@ final class BlankWebPageViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = .white
 
         label.snp.makeConstraints { (make) in
             make.center.equalTo(view)

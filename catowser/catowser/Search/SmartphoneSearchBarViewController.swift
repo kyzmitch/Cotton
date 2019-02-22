@@ -57,8 +57,10 @@ extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
             searchBarViewController.searchBarView.setShowsCancelButton(false, animated: false)
         }
     }
-
-    func isBlank() -> Bool {
-        return true
+    
+    func setAddressString(_ address: String) {
+        searchBarViewController.searchBarView.endEditing(true)
+        // searchBarViewController.searchBarView.setShowsCancelButton(false, animated: false)
+        searchBarViewController.searchBarView.text = address
     }
 }
