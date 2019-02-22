@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 import Alamofire
+import CoreBrowser
 
 final class SearchSuggestClient {
     private let searchEngine: SearchEngine
