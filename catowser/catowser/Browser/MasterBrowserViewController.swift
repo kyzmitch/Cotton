@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveSwift
+import CoreBrowser
 
 /// The sate of search bar
 enum SearchBarState {

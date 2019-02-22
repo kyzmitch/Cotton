@@ -23,13 +23,18 @@
 		60724EE92209C9A20071BECF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE82209C9A20071BECF /* Protocols.swift */; };
 		60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */; };
 		60724F752215AABB0071BECF /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
-		60724F77221693670071BECF /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
 		60724F7A221695C80071BECF /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
-		60724F7D221698AF0071BECF /* OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F7C221698AF0071BECF /* OpenSearchParser.swift */; };
 		607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */; };
 		607D02AF21FEF87F009FCD0B /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
 		607D02B121FF1200009FCD0B /* String+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */; };
 		6094E713221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */; };
+		6094E720221FD2B9004269A2 /* CoreBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6094E71E221FD2B9004269A2 /* CoreBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
+		6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6094E729221FD2DE004269A2 /* OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F7C221698AF0071BECF /* OpenSearchParser.swift */; };
+		6094E72A221FD2F7004269A2 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
+		6094E72B221FD310004269A2 /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
+		6094E72C221FD4BA004269A2 /* SearchEngine.swift in Headers */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
 		841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
@@ -52,9 +57,32 @@
 		C2E0D9CC1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2E0D9CB1F7CE5B90068E2F1 /* MasterBrowserViewModel.swift */; };
 		C705C0EE204340BD0018067F /* UIColour+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */; };
 		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
-		C7BE4FAF2044310B00FC761B /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
 		C7D9E54D2042CE0200FE55A3 /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D9E54C2042CE0200FE55A3 /* NetworkConstants.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6094E721221FD2B9004269A2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6094E71B221FD2B9004269A2;
+			remoteInfo = CoreBrowser;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6094E728221FD2B9004269A2 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
@@ -80,6 +108,9 @@
 		607D02AE21FEF87F009FCD0B /* TabsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubject.swift; sourceTree = "<group>"; };
 		607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		6094E71C221FD2B9004269A2 /* CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6094E71E221FD2B9004269A2 /* CoreBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreBrowser.h; sourceTree = "<group>"; };
+		6094E71F221FD2B9004269A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
 		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
@@ -113,10 +144,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6094E719221FD2B9004269A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8435A4941EED5E700020102F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
 				14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -156,6 +195,15 @@
 				60724F7C221698AF0071BECF /* OpenSearchParser.swift */,
 			);
 			path = Parsers;
+			sourceTree = "<group>";
+		};
+		6094E71D221FD2B9004269A2 /* CoreBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				6094E71E221FD2B9004269A2 /* CoreBrowser.h */,
+				6094E71F221FD2B9004269A2 /* Info.plist */,
+			);
+			path = CoreBrowser;
 			sourceTree = "<group>";
 		};
 		841A2D79203ACB420050A996 /* Search */ = {
@@ -211,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				8435A4991EED5E700020102F /* catowser */,
+				6094E71D221FD2B9004269A2 /* CoreBrowser */,
 				8435A4981EED5E700020102F /* Products */,
 				E35CED317EE4DF68ED3EDD9C /* Pods */,
 				5906B47E95A37FC0872DBD1A /* Frameworks */,
@@ -221,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				8435A4971EED5E700020102F /* catowser.app */,
+				6094E71C221FD2B9004269A2 /* CoreBrowser.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -311,7 +361,37 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		6094E717221FD2B9004269A2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6094E720221FD2B9004269A2 /* CoreBrowser.h in Headers */,
+				6094E72C221FD4BA004269A2 /* SearchEngine.swift in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		6094E71B221FD2B9004269A2 /* CoreBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6094E727221FD2B9004269A2 /* Build configuration list for PBXNativeTarget "CoreBrowser" */;
+			buildPhases = (
+				6094E717221FD2B9004269A2 /* Headers */,
+				6094E718221FD2B9004269A2 /* Sources */,
+				6094E719221FD2B9004269A2 /* Frameworks */,
+				6094E71A221FD2B9004269A2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoreBrowser;
+			productName = CoreBrowser;
+			productReference = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8435A4961EED5E700020102F /* catowser */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8435A4A91EED5E700020102F /* Build configuration list for PBXNativeTarget "catowser" */;
@@ -321,10 +401,12 @@
 				8435A4941EED5E700020102F /* Frameworks */,
 				8435A4951EED5E700020102F /* Resources */,
 				D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */,
+				6094E728221FD2B9004269A2 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6094E722221FD2B9004269A2 /* PBXTargetDependency */,
 			);
 			name = catowser;
 			productName = catowser;
@@ -341,6 +423,10 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
+					6094E71B221FD2B9004269A2 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+					};
 					8435A4961EED5E700020102F = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1010;
@@ -362,11 +448,19 @@
 			projectRoot = "";
 			targets = (
 				8435A4961EED5E700020102F /* catowser */,
+				6094E71B221FD2B9004269A2 /* CoreBrowser */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6094E71A221FD2B9004269A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8435A4951EED5E700020102F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -426,6 +520,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6094E718221FD2B9004269A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6094E729221FD2DE004269A2 /* OpenSearchParser.swift in Sources */,
+				6094E72B221FD310004269A2 /* CharacterSet+CatowserExtensions.swift in Sources */,
+				6094E72A221FD2F7004269A2 /* SearchEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8435A4931EED5E700020102F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -437,13 +541,11 @@
 				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
-				60724F7D221698AF0071BECF /* OpenSearchParser.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				60724EE92209C9A20071BECF /* Protocols.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				60724EE72209C8730071BECF /* TabsPreviewsRouter.swift in Sources */,
-				C7BE4FAF2044310B00FC761B /* CharacterSet+CatowserExtensions.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
 				8A95D7B1221F17010032C156 /* Box.swift in Sources */,
 				605C550721F8AA5900B3DC73 /* ReusableItem.swift in Sources */,
@@ -456,7 +558,6 @@
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
 				60724EDA2204332B0071BECF /* DefaultTabProvider.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
-				60724F77221693670071BECF /* SearchEngine.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
 				60724EA721FF17C90071BECF /* TabsCache.swift in Sources */,
@@ -476,6 +577,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6094E722221FD2B9004269A2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
+			targetProxy = 6094E721221FD2B9004269A2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8435A4A31EED5E700020102F /* LaunchScreen.storyboard */ = {
@@ -499,6 +608,61 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6094E725221FD2B9004269A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CoreBrowser/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ae.CoreBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6094E726221FD2B9004269A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CoreBrowser/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ae.CoreBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		8435A4A71EED5E700020102F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -616,6 +780,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -630,6 +795,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -643,6 +809,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6094E727221FD2B9004269A2 /* Build configuration list for PBXNativeTarget "CoreBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6094E725221FD2B9004269A2 /* Debug */,
+				6094E726221FD2B9004269A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8435A4921EED5E700020102F /* Build configuration list for PBXProject "catowser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

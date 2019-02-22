@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct SearchEngine {
+public struct SearchEngine {
     /// Name e.g. "DuckDuckGo"
     private let shortName: String
     /// Favicon for search web site
@@ -25,7 +25,7 @@ struct SearchEngine {
     ///
     /// - Parameter query: Text entered by user in search view.
     /// - Returns: URL
-    func suggestURLForQuery(_ query: String) -> URL? {
+    public func suggestURLForQuery(_ query: String) -> URL? {
         guard let suggestTemplate = suggestTemplate else {
             return nil
         }
@@ -36,7 +36,7 @@ struct SearchEngine {
     ///
     /// - Parameter query: Text entered by user in search view.
     /// - Returns: URL
-    func searchURLForQuery(_ query: String) -> URL? {
+    public func searchURLForQuery(_ query: String) -> URL? {
         return .getURLFromTemplate(searchTemplate, query: query)
     }
 }
@@ -67,7 +67,7 @@ fileprivate extension URL {
     }
 }
 
-extension SearchEngine {
+public extension SearchEngine {
     /// Search engine configured for google endpoints, but firefox used as a client.
     /// Can't use own `catowser` param because it is ignored by Google with Http 400 error
     static let googleEngine: SearchEngine = SearchEngine(shortName: "Google", image: .googleImage, searchTemplate: "https://www.google.com/search?q={searchTerms}&ie=utf-8&oe=utf-8&client=firefox", suggestTemplate: "https://www.google.com/complete/search?client=firefox&q={searchTerms}")
