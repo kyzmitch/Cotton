@@ -10,8 +10,8 @@ import Foundation
 
 /// Wrapper type to be able to have mutable associated values for enum cases
 /// Source: https://stackoverflow.com/a/36765426
-final class Box<T>: CustomDebugStringConvertible {
-    var value: T
-    var debugDescription: String { return "\(value)" }
-    init(_ value: T) { self.value = value }
+public final class Box<T>: CustomDebugStringConvertible {
+    public var value: T
+    public var debugDescription: String { return "\(value)" }
+    public init(_ value: T) { self.value = value }
 }

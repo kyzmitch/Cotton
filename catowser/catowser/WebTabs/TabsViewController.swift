@@ -9,6 +9,7 @@
 import UIKit
 import CoreGraphics
 import SnapKit
+import CoreBrowser
 
 // Is it only for tablets?
 struct TabsViewModel {

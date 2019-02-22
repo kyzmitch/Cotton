@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveSwift
+import CoreBrowser
 
 fileprivate extension CGFloat {
     static let cornerRadius = CGFloat(6.0)

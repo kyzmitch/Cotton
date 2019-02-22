@@ -10,7 +10,7 @@ import Foundation
 import ReactiveSwift
 
 /// MARK: Tabs observer protocol.
-protocol TabsObserver {
+public protocol TabsObserver {
     /// To be able to search specific observer.
     var name: String { get }
     /// Updates observer with tabs count.
@@ -33,7 +33,7 @@ protocol TabsObserver {
 }
 
 // Marks optional functions for protocol
-extension TabsObserver {
+public extension TabsObserver {
     func didSelect(index: Int) {
         // Only landscape/regular tabs list view use that
     }
@@ -44,7 +44,7 @@ extension TabsObserver {
     }
 }
 
-protocol TabsSubject {
+public protocol TabsSubject {
     /// Add tabs observer.
     func attach(_ observer: TabsObserver)
     /// Removes tabs observer.
@@ -70,7 +70,7 @@ protocol TabsSubject {
     func fetch() -> [Tab]
 }
 
-final class TabsListManager {
+public final class TabsListManager {
     // Can't really implement this in Singletone pattern due to
     // asynс initialization for several parameters during init.
     // http://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
@@ -79,7 +79,7 @@ final class TabsListManager {
     // state for time before some cached tabs will be fetched from storage.
 
     /// Instance.
-    static let shared = TabsListManager(storage: TabsCacheProvider.shared)
+    public static let shared = TabsListManager(storage: TabsCacheProvider.shared)
 
     private let tabs: MutableProperty<[Tab]>
     private let selectedTabIndex: MutableProperty<Int>
@@ -149,12 +149,12 @@ final class TabsListManager {
         disposables.forEach { $0?.dispose() }
     }
 
-    var tabsCount: Int {
+    public var tabsCount: Int {
         return self.tabs.value.count
     }
 
     /// Returns currently selected tab. We have to use Optional type
-    func selectedTab() throws -> Tab {
+    public func selectedTab() throws -> Tab {
         let index = selectedTabIndex.value
         guard index >= 0 else {
             throw NotInitializedYet()
@@ -167,11 +167,11 @@ final class TabsListManager {
 }
 
 extension TabsListManager: TabsSubject {
-    func fetch() -> [Tab] {
+    public func fetch() -> [Tab] {
         return tabs.value
     }
 
-    func close(tab: Tab) {
+    public func close(tab: Tab) {
         // if it is last tab - replace it with blank one
         if tabs.value.count == 1 {
             assert(tab == tabs.value.first!, "closing unexpected tab")
@@ -201,12 +201,12 @@ extension TabsListManager: TabsSubject {
         
     }
 
-    func closeAll() {
+    public func closeAll() {
         resetToOneTab()
         selectedTabIndex.value = 0
     }
 
-    func add(tab: Tab) {
+    public func add(tab: Tab) {
         let newIndex: Int
         switch DefaultTabProvider.shared.defaultPosition {
         case .listEnd:
@@ -225,7 +225,7 @@ extension TabsListManager: TabsSubject {
         }
     }
 
-    func select(tab: Tab) {
+    public func select(tab: Tab) {
         guard let index = tabs.value.firstIndex(of: tab) else {
             return
         }
@@ -233,7 +233,7 @@ extension TabsListManager: TabsSubject {
         selectedTabIndex.value = index
     }
 
-    func replaceSelectedTab(with tab: Tab) throws {
+    public func replaceSelectedTab(with tab: Tab) throws {
         let index = selectedTabIndex.value
         guard index >= 0 else {
             throw NotInitializedYet()
@@ -242,7 +242,7 @@ extension TabsListManager: TabsSubject {
         tabs.value[index] = tab
     }
 
-    func selectTab(at indexPath: IndexPath) -> Tab? {
+    public func selectTab(at indexPath: IndexPath) -> Tab? {
         // item property is used because `UICollectionView` used
         guard let tab = tabs.value[safe: indexPath.item] else {
             return nil
@@ -253,13 +253,13 @@ extension TabsListManager: TabsSubject {
         return tab
     }
 
-    func attach(_ observer: TabsObserver) {
+    public func attach(_ observer: TabsObserver) {
         queue.async { [weak self] in
             self?.observers.append(observer)
         }
     }
 
-    func detach(_ observer: TabsObserver) {
+    public func detach(_ observer: TabsObserver) {
         queue.async { [weak self] in
             self?.observers.removeAll { (currentObserver) -> Bool in
                 return currentObserver.name == observer.name

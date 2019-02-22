@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 final class TabsPreviewsRouter {
     

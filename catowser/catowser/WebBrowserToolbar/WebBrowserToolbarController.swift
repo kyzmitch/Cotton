@@ -14,6 +14,7 @@
 // settings for the application.
 
 import UIKit
+import CoreBrowser
 
 final class WebBrowserToolbarController: BaseViewController {
 

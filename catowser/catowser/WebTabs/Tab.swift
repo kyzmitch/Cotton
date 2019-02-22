@@ -10,7 +10,7 @@ import UIKit
 import ReactiveSwift
 import Result
 
-extension Tab {
+public extension Tab {
     enum ContentType {
         case blank
         case site(Site)
@@ -33,7 +33,7 @@ extension Tab {
 
 
 extension Tab.ContentType: Equatable {
-    static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
+    public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
         case (.site(let lSite), .site(let rSite)):
             return lSite == rSite
@@ -51,7 +51,7 @@ extension Tab.ContentType: Equatable {
     }
 }
 
-extension Tab {
+public extension Tab {
     /// Replacement for `Bool` type to provide more clarity during usage on `view` layer.
     enum VisualState {
         case selected, deselected
@@ -59,23 +59,23 @@ extension Tab {
 }
 
 /// View model for tab view which is a website representation for specific case
-struct Tab {
+public struct Tab {
     // The id to be able to compare e.g. blank tabs and avoid switch to ref. type
     let id: UUID
     // Actual website info stored only for one case
-    var contentType: ContentType
+    public var contentType: ContentType
     // Usually only one tab should be in selected state
-    var visualState: VisualState
+    public var visualState: VisualState
     /// Should be set to constants based on initial tab state (blank, top sites, etc.)
     /// `String` type probably should be replaced with Signal to be able to
     /// react on async title fetch from a real Site.
-    private(set) var (titleSignal, titleObserver) = Signal<String, NoError>.pipe()
+    public let (titleSignal, titleObserver) = Signal<String, NoError>.pipe()
 
-    var title: String {
+    public var title: String {
         return contentType.title
     }
 
-    var titleColor: UIColor {
+    public var titleColor: UIColor {
         switch visualState {
         case .selected:
             return .lightGrayText
@@ -84,7 +84,7 @@ struct Tab {
         }
     }
 
-    var backgroundColor: UIColor {
+    public var backgroundColor: UIColor {
         switch visualState {
         case .selected:
             return .superLightGray
@@ -101,11 +101,11 @@ struct Tab {
             return .normallyLightGray
         }
     }
-    let realBackgroundColour = UIColor.clear
+    public let realBackgroundColour = UIColor.clear
     
     private(set) var faviconImage: UIImage?
 
-    init(contentType: ContentType, selected: Bool = true) {
+    public init(contentType: ContentType, selected: Bool = true) {
         self.contentType = contentType
         // set default value
         titleObserver.send(value: contentType.title)
@@ -113,18 +113,17 @@ struct Tab {
         id = UUID()
     }
 
-    static let deselectedBlank: Tab = Tab(contentType: .blank, selected: false)
-    static let blank: Tab = Tab(contentType: .blank, selected: true)
-    static var initial: Tab {
+    public static let deselectedBlank: Tab = Tab(contentType: .blank, selected: false)
+    public static let blank: Tab = Tab(contentType: .blank, selected: true)
+    public static var initial: Tab {
         return Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
     }
 }
 
 extension Tab: Equatable {
-    static func == (lhs: Tab, rhs: Tab) -> Bool {
+    public static func == (lhs: Tab, rhs: Tab) -> Bool {
         return lhs.id == rhs.id
     }
-    
 }
 
 fileprivate extension UIColor {

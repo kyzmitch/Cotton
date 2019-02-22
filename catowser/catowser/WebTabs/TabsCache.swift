@@ -10,11 +10,11 @@ import Foundation
 import ReactiveSwift
 import Result
 
-enum TabStorageError: Swift.Error {
+public enum TabStorageError: Swift.Error {
     case unknown
 }
 
-protocol TabsStorage {
+public protocol TabsStorage {
     /// Defines human redable name for Int if it is describes index.
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int
@@ -40,7 +40,7 @@ protocol TabsStorage {
     func add(tab: Tab)
 }
 
-final class TabsCacheProvider {
+public final class TabsCacheProvider {
     static let shared = TabsCacheProvider()
     private init() {
         queue = DispatchQueue(label: .queueNameWith(suffix: "tabsCache"))
@@ -54,7 +54,7 @@ final class TabsCacheProvider {
 }
 
 extension TabsCacheProvider: TabsStorage {
-    func fetchSelectedIndex() -> SignalProducer<Int, TabStorageError> {
+    public func fetchSelectedIndex() -> SignalProducer<Int, TabStorageError> {
         let producer = SignalProducer<Int, TabStorageError>.init { (observer, _ /* lifetime */) in
             observer.send(value: 0)
             observer.sendCompleted()
@@ -62,12 +62,12 @@ extension TabsCacheProvider: TabsStorage {
         return producer.start(on: scheduler)
     }
 
-    func select(tab: Tab) -> Int? {
+    public func select(tab: Tab) -> Int? {
         // TODO: implemente, temporary code
         return nil
     }
 
-    func fetch() -> SignalProducer<[Tab], TabStorageError> {
+    public func fetch() -> SignalProducer<[Tab], TabStorageError> {
         let producer = SignalProducer<[Tab], TabStorageError>.init { (observer, _ /* lifetime */) in
             let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
             observer.send(value: [tab])
@@ -76,7 +76,7 @@ extension TabsCacheProvider: TabsStorage {
         return producer.start(on: scheduler)
     }
 
-    func add(tab: Tab) {
+    public func add(tab: Tab) {
         // TODO: add code
     }
 }

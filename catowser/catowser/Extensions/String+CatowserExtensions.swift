@@ -8,12 +8,12 @@
 
 import Foundation
 
-extension String {
-    static func mainBundleName() -> String {
+public extension String {
+    public static func mainBundleName() -> String {
         return Bundle.main.bundleIdentifier ?? "com.ae.catowser"
     }
 
-    static func queueNameWith(suffix: String) -> String {
+    public static func queueNameWith(suffix: String) -> String {
         return .mainBundleName() + ".\(suffix)"
     }
 }

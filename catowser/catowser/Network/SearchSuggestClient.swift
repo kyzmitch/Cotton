@@ -9,9 +9,8 @@
 import Foundation
 import ReactiveSwift
 import Alamofire
-import CoreBrowser
 
-final class SearchSuggestClient {
+public final class SearchSuggestClient {
     private let searchEngine: SearchEngine
 
     private let alamofire: SessionManager = {
@@ -22,7 +21,7 @@ final class SearchSuggestClient {
 
     private weak var request: Request?
 
-    init(_ searchEngine: SearchEngine) {
+    public init(_ searchEngine: SearchEngine) {
         self.searchEngine = searchEngine
     }
 
@@ -31,7 +30,7 @@ final class SearchSuggestClient {
     }
 
     /// Constructs search URL. Convinient wrapper around search engine class function.
-    func searchURL(basedOn query: String) -> URL? {
+    public func searchURL(basedOn query: String) -> URL? {
         return searchEngine.searchURLForQuery(query)
     }
 
@@ -39,7 +38,7 @@ final class SearchSuggestClient {
     ///
     /// - Parameter query: String to search
     /// - Returns: The `SignalProducer` with array of suggested strings in successfull case.
-    func suggestionsProducer(basedOn query: String) -> SignalProducer<[String], SuggestClientError> {
+    public func suggestionsProducer(basedOn query: String) -> SignalProducer<[String], SuggestClientError> {
         guard let url = searchEngine.suggestURLForQuery(query) else {
             return SignalProducer(error: .wrongUrl)
         }
@@ -84,7 +83,7 @@ final class SearchSuggestClient {
     }
 }
 
-extension SearchSuggestClient {
+public extension SearchSuggestClient {
     enum SuggestClientError: Error{
         case zombyInstance
         case wrongUrl
