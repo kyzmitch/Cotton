@@ -52,15 +52,16 @@ extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
     func stateChanged(to state: SearchBarState) {
         switch state {
         case .readyForInput:
-            searchBarViewController.searchBarView.setShowsCancelButton(true, animated: true)
-        case .clear:
-            searchBarViewController.searchBarView.setShowsCancelButton(false, animated: false)
+            searchBarViewController.showCancelButton(true)
+        case .clearTapped:
+            searchBarViewController.showCancelButton(false)
+        case .cancelTapped:
+            searchBarViewController.showCancelButton(false)
+            searchBarViewController.resetToRememberedSiteAddress()
         }
     }
     
     func setAddressString(_ address: String) {
-        searchBarViewController.searchBarView.endEditing(true)
-        // searchBarViewController.searchBarView.setShowsCancelButton(false, animated: false)
-        searchBarViewController.searchBarView.text = address
+        searchBarViewController.rememberCurrentSiteAddress(address)
     }
 }

@@ -10,24 +10,6 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 
-/// The sate of search bar
-enum SearchBarState {
-    /// keyboard is hidden
-    case clear
-    /// keyboard is visible
-    case readyForInput
-}
-
-protocol SearchBarControllerInterface: class {
-    func stateChanged(to state: SearchBarState)
-    func setAddressString(_ address: String)
-}
-
-extension SearchBarControllerInterface {
-    /* optional */ func stateChanged(to state: SearchBarState) {
-    }
-}
-
 /// An interface for component which suppose to render tabs
 ///
 /// Class protocol is used because object gonna be stored by `weak` ref
@@ -81,6 +63,8 @@ final class MasterBrowserViewController: BaseViewController {
         let vc = SearchSuggestionsViewController()
         return vc
     }()
+
+    private var isSuggestionsShowed: Bool = false
 
     /// The view controller to manage blank tab, possibly will be enhaced
     /// to support favorite sites list.
@@ -317,8 +301,13 @@ extension MasterBrowserViewController {
 }
 
 private extension MasterBrowserViewController {
-    func showSearchController() {
+    func showSearchControllerIfNeeded() {
+        guard !isSuggestionsShowed else {
+            return
+        }
+
         add(asChildViewController: searchSuggestionsController, to: view)
+        isSuggestionsShowed = true
         searchSuggestionsController.delegate = self
         searchSuggestionsController.view.translatesAutoresizingMaskIntoConstraints = false
         searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor, constant: 0).isActive = true
@@ -337,10 +326,32 @@ private extension MasterBrowserViewController {
     }
 
     func hideSearchController() {
+        guard isSuggestionsShowed else {
+            print("Attempted to hide suggestions when they are not showed")
+            return
+        }
+
         searchSuggestionsController.willMove(toParent: nil)
         searchSuggestionsController.removeFromParent()
         // remove view and constraints
         searchSuggestionsController.view.removeFromSuperview()
+
+        isSuggestionsShowed = false
+    }
+
+    func startSearch(_ searchText: String) {
+        searchSuggestionsDisposable?.dispose()
+        searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
+            .observe(on: UIScheduler())
+            .startWithResult { [weak self] result in
+                switch result {
+                case .success(let suggestions):
+                    self?.searchSuggestionsController.suggestions = suggestions
+                    break
+                case .failure:
+                    break
+                }
+        }
     }
 }
 
@@ -349,19 +360,8 @@ extension MasterBrowserViewController: UISearchBarDelegate {
         if searchText.isEmpty {
             hideSearchController()
         } else {
-            showSearchController()
-            searchSuggestionsDisposable?.dispose()
-            searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
-                .observe(on: UIScheduler())
-                .startWithResult { [weak self] result in
-                    switch result {
-                    case .success(let suggestions):
-                        self?.searchSuggestionsController.suggestions = suggestions
-                        break
-                    case .failure:
-                        break
-                    }
-            }
+            showSearchControllerIfNeeded()
+            startSearch(searchText)
         }
     }
 
@@ -371,7 +371,7 @@ extension MasterBrowserViewController: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        endSearch(for: searchBar)
+        endSearch(for: searchBar, byCancel: true)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -382,9 +382,10 @@ extension MasterBrowserViewController: UISearchBarDelegate {
         endSearch(for: searchBar)
     }
 
-    private func endSearch(for searchBar: UISearchBar) {
+    private func endSearch(for searchBar: UISearchBar, byCancel: Bool = false) {
         searchBar.resignFirstResponder()
-        searchBarController.stateChanged(to: .clear)
+        searchBarController.stateChanged(to: byCancel ? .cancelTapped : .clearTapped)
+        hideSearchController()
     }
 }
 
