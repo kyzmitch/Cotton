@@ -102,12 +102,21 @@ final class MasterBrowserViewController: BaseViewController {
         return toolbar
     }()
 
+    /// View to make color under toolbar is the same on iPhone x without home button
+    private lazy var underToolbarView: UIView = {
+        let v = UIView()
+        ThemeProvider.shared.setupUnderToolbar(v)
+        return v
+    }()
+
     /// The current holder for WebView (controller) if browser has at least one
     private var currentWebViewController: WebViewController?
 
     private var disposables = [Disposable?]()
 
     private var searchSuggestionsDisposable: Disposable?
+
+    private let tabsControllerAdded: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -125,6 +134,8 @@ final class MasterBrowserViewController: BaseViewController {
         
         if UIDevice.current.userInterfaceIdiom == .phone {
             add(asChildViewController: toolbarViewController, to:view)
+            // Need to not add it if it is not iPhone without home button
+            view.addSubview(underToolbarView)
         }
     }
     
@@ -132,7 +143,6 @@ final class MasterBrowserViewController: BaseViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
-        let tabsControllerAdded = UIDevice.current.userInterfaceIdiom == .pad ? true : false
         
         if tabsControllerAdded {
             tabsViewController.view.snp.makeConstraints { (maker) in
@@ -194,22 +204,29 @@ final class MasterBrowserViewController: BaseViewController {
             
             toolbarViewController.view.snp.makeConstraints({ (maker) in
                 maker.top.equalTo(containerView.snp.bottom)
-                maker.leading.equalTo(0)
-                maker.trailing.equalTo(0)
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
                 maker.height.equalTo(UIConstants.tabBarHeight)
-                
+
                 if #available(iOS 11, *) {
                     maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
                 } else {
                     maker.bottom.equalTo(view)
                 }
             })
+
+            underToolbarView.snp.makeConstraints { (maker) in
+                maker.top.equalTo(toolbarViewController.view.snp.bottom)
+                maker.leading.equalTo(view)
+                maker.trailing.equalTo(view)
+                maker.bottom.equalTo(view.snp.bottom)
+            }
         }
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
         let disposeA = NotificationCenter.default.reactive
-            .notifications(forName: UIResponder.keyboardWillChangeFrameNotification)
+            .notifications(forName: UIResponder.keyboardDidChangeFrameNotification)
             .observe(on: UIScheduler())
             .observeValues {[weak self] notification in
                 self?.keyboardWillChangeFrameClosure()(notification)
@@ -301,20 +318,22 @@ extension MasterBrowserViewController {
 
 private extension MasterBrowserViewController {
     func showSearchController() {
-        self.add(asChildViewController: searchSuggestionsController, to: containerView)
+        add(asChildViewController: searchSuggestionsController, to: view)
         searchSuggestionsController.delegate = self
-        
         searchSuggestionsController.view.translatesAutoresizingMaskIntoConstraints = false
-        searchSuggestionsController.view.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 0).isActive = true
-        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0).isActive = true
-        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0).isActive = true
+        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor, constant: 0).isActive = true
+        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         
         if let bottomShift = keyboardHeight {
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: bottomShift).isActive = true
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomShift).isActive = true
         } else {
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0).isActive = true
+            if tabsControllerAdded {
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+            } else {
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0).isActive = true
+            }
         }
-        
     }
 
     func hideSearchController() {

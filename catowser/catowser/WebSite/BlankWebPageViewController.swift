@@ -14,7 +14,7 @@ final class BlankWebPageViewController: BaseViewController {
         let label = UILabel()
         label.numberOfLines = 3
         label.textAlignment = .center
-        label.text = NSLocalizedString("msg_blank_site_message", comment: "To show that there is no site address")
+        label.text = "Catowser"
         label.textColor = .black
         return label
     }()

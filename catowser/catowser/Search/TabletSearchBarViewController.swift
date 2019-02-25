@@ -26,6 +26,7 @@ final class TabletSearchBarViewController: BaseViewController {
         let img = UIImage(named: "nav-back")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
+		btn.isEnabled = false
         return btn
     }()
     
@@ -34,6 +35,7 @@ final class TabletSearchBarViewController: BaseViewController {
         let img = UIImage(named: "nav-forward")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
+		btn.isEnabled = false
         return btn
     }()
     
@@ -42,6 +44,7 @@ final class TabletSearchBarViewController: BaseViewController {
         let img = UIImage(named: "nav-refresh")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
+		btn.isEnabled = false
         return btn
     }()
 
