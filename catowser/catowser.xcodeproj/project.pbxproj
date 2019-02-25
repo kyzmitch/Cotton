@@ -123,7 +123,7 @@
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
 		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
 		841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewController.swift; sourceTree = "<group>"; };
-		841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartphoneSearchBarViewController.swift; sourceTree = "<group>"; };
+		841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartphoneSearchBarViewController.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarBaseViewController.swift; sourceTree = "<group>"; };
 		8435A4971EED5E700020102F /* catowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8435A49A1EED5E700020102F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
