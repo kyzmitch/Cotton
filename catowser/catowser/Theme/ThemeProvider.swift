@@ -8,6 +8,10 @@
 
 import UIKit
 
+extension UIColor {
+    static let phoneToolbarColor: UIColor = .white
+}
+
 final class ThemeProvider {
     static let shared = ThemeProvider()
 
@@ -33,7 +37,12 @@ final class ThemeProvider {
 
     func setup(_ toolbar: UIToolbar) {
         toolbar.tintColor = .black
-        toolbar.barTintColor = .white
+        toolbar.barTintColor = .phoneToolbarColor
+        // background color is `nil`
+    }
+
+    func setupUnderToolbar(_ view: UIView) {
+        view.backgroundColor = .phoneToolbarColor
     }
 
     private init() {
