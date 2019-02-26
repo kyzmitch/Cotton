@@ -59,7 +59,7 @@ extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
         case .clearTapped:
             searchBarViewController.showCancelButton(false)
         case .cancelTapped:
-            searchBarViewController.showCancelButton(false)
+            searchBarViewController.prepareForViewMode()
             searchBarViewController.resetToRememberedSiteAddress()
         case .viewMode:
             searchBarViewController.prepareForViewMode()
