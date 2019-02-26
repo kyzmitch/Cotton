@@ -51,7 +51,7 @@ final class MasterBrowserViewController: BaseViewController {
         return viewController
     }()
     
-    private lazy var searchBarController: UIViewController & SearchBarControllerInterface = {
+    private lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
         if UIDevice.current.userInterfaceIdiom == .pad {
             return TabletSearchBarViewController(self)
         } else {
@@ -112,10 +112,10 @@ final class MasterBrowserViewController: BaseViewController {
         if UIDevice.current.userInterfaceIdiom == .pad {
             add(asChildViewController: tabsViewController, to:view)
         }
-        
-        add(asChildViewController: searchBarController, to:view)
+
+        add(asChildViewController: searchBarController.viewController, to:view)
         view.addSubview(containerView)
-        
+
         if UIDevice.current.userInterfaceIdiom == .phone {
             add(asChildViewController: toolbarViewController, to:view)
             // Need to not add it if it is not iPhone without home button
@@ -335,6 +335,7 @@ private extension MasterBrowserViewController {
         searchSuggestionsController.removeFromParent()
         // remove view and constraints
         searchSuggestionsController.view.removeFromSuperview()
+        searchSuggestionsController.suggestions = [String]()
 
         isSuggestionsShowed = false
     }
@@ -361,6 +362,9 @@ extension MasterBrowserViewController: UISearchBarDelegate {
             hideSearchController()
         } else {
             showSearchControllerIfNeeded()
+            // TODO: How to delay network request
+            // https://stackoverflow.com/a/2471977/483101
+            // or using Reactive api
             startSearch(searchText)
         }
     }
@@ -395,6 +399,7 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             return
         }
         hideSearchController()
+        searchBarController.stateChanged(to: .viewMode)
 
         let site = Site(url: url)
         if let currentTab = try? TabsListManager.shared.selectedTab() {

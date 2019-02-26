@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 final class SmartphoneSearchBarViewController: BaseViewController {
 
@@ -48,6 +49,8 @@ final class SmartphoneSearchBarViewController: BaseViewController {
     }
 }
 
+extension SmartphoneSearchBarViewController: AnyViewController {}
+
 extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
     func stateChanged(to state: SearchBarState) {
         switch state {
@@ -58,6 +61,8 @@ extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
         case .cancelTapped:
             searchBarViewController.showCancelButton(false)
             searchBarViewController.resetToRememberedSiteAddress()
+        case .viewMode:
+            searchBarViewController.prepareForViewMode()
         }
     }
     
