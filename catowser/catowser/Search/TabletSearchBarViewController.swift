@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 final class TabletSearchBarViewController: BaseViewController {
 
@@ -105,6 +106,8 @@ final class TabletSearchBarViewController: BaseViewController {
         lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
 }
+
+extension TabletSearchBarViewController: AnyViewController {}
 
 extension TabletSearchBarViewController: SearchBarControllerInterface {    
     func setAddressString(_ address: String) {

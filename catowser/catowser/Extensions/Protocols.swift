@@ -14,10 +14,15 @@ import UIKit
 /// https://ilya.puchka.me/properties-of-types-conforming-to-protocols-in-swift/
 public protocol AnyViewController: class {
     var viewController: UIViewController { get }
+    var view: UIView { get }
 }
 
 public extension AnyViewController where Self: UIViewController {
     var viewController: UIViewController {
         return self
+    }
+
+    var view: UIView {
+        return viewController.view
     }
 }
