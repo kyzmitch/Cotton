@@ -51,8 +51,12 @@ final class SearchBarBaseViewController: BaseViewController {
         return label
     }()
 
-    private let siteNameTapGesture: UITapGestureRecognizer = {
+    private lazy var siteNameTapGesture: UITapGestureRecognizer = {
+        // Need to init gesture lazily, if it will  be initialized as a constant
+        // then it will not work :( action is not called
         let tap = UITapGestureRecognizer(target: self, action: .siteNameTap)
+        tap.numberOfTapsRequired = 1
+        tap.numberOfTouchesRequired = 1
         return tap
     }()
 
@@ -122,8 +126,9 @@ final class SearchBarBaseViewController: BaseViewController {
         // first need to disable and after that enable new one
         hiddenLabelConstraint.isActive = false
         showedLabelConstraint.isActive = true
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: 0.3) {
             self.siteNameLabel.layoutIfNeeded()
+            self.searchBarView.alpha = 0
             self.siteNameLabel.alpha = 1
         }
         searchBarView.resignFirstResponder()
@@ -131,17 +136,22 @@ final class SearchBarBaseViewController: BaseViewController {
 }
 
 private extension SearchBarBaseViewController {
-    @objc func handleSiteNameTap() {
+    @objc func handleSiteNameTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard gestureRecognizer.view != nil else { return }
+        
+        guard gestureRecognizer.state == .ended else { return }
         showedLabelConstraint.isActive = false
         hiddenLabelConstraint.isActive = true
+        searchBarView.becomeFirstResponder()
 
-        UIView.animate(withDuration: 0.25) {
+        UIView.animate(withDuration: 0.3) {
             self.siteNameLabel.layoutIfNeeded()
             self.siteNameLabel.alpha = 0
+            self.searchBarView.alpha = 1
         }
     }
 }
 
 fileprivate extension Selector {
-    static let siteNameTap = #selector(SearchBarBaseViewController.handleSiteNameTap)
+    static let siteNameTap = #selector(SearchBarBaseViewController.handleSiteNameTap(_:))
 }
