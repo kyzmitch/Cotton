@@ -11,22 +11,14 @@ import CoreGraphics
 import SnapKit
 import CoreBrowser
 
-// Is it only for tablets?
-struct TabsViewModel {
-    var tabsContainerHeight: CGFloat
-    var topViewsOffset: CGFloat
-
-    init(_ topOffset: CGFloat = UIConstants.topViewsOffset, _ heiht: CGFloat = UIConstants.tabHeight) {
-        topViewsOffset = topOffset
-        tabsContainerHeight = heiht
+fileprivate extension TabsViewController {
+    struct Sizes {
+        static let tabsContainerHeight: CGFloat = UIConstants.tabHeight
     }
 }
 
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
-    
-    var viewModel: TabsViewModel?
-    
     private let tabsStackView: UIStackView = {
         // TODO: create a wrapper around UIStackView to provide
         // more convinient interface instead of direct usage for `arrangedSubviews`
@@ -250,13 +242,7 @@ private extension TabsViewController {
         var newlyAddedTabFrame: CGRect
         if let veryRightTabView = tabsStackView.arrangedSubviews.last {
             let origin = CGPoint(x: veryRightTabView.frame.origin.x + veryRightTabView.frame.size.width, y: 0)
-            var size: CGSize
-            if let tabHeight = viewModel?.tabsContainerHeight {
-                size = CGSize(width: 0, height: tabHeight)
-            }
-            else {
-                size = CGSize(width: 0, height: UIConstants.tabHeight)
-            }
+            let size: CGSize = CGSize(width: 0, height: Sizes.tabsContainerHeight)
 
             newlyAddedTabFrame = CGRect(origin: origin, size: size)
         }
@@ -284,6 +270,15 @@ extension TabsViewController: TabsObserver {
     func tabDidAdd(_ tab: Tab, at index: Int) {
         let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
         add(tabView, at: index)
+    }
+
+    func tabDidReplace(_ tab: Tab, at index: Int) {
+        guard let view = tabsStackView.arrangedSubviews[safe: index], let tabView = view as? TabView else {
+            print("Unknown tab view index \(index) count = \(tabsStackView.arrangedSubviews.count)")
+            return
+        }
+
+        tabView.viewModel = tab
     }
 }
 
