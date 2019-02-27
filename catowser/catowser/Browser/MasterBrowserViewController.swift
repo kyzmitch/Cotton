@@ -17,7 +17,7 @@ import CoreBrowser
 /// will start mark it as deprecated.
 /// https://forums.swift.org/t/class-only-protocols-class-vs-anyobject/11507/4
 protocol TabRendererInterface: AnyViewController {
-    func open(tab: Tab)
+    func open(tab: Tab, searchQuery: String?)
 }
 
 final class MasterBrowserViewController: BaseViewController {
@@ -93,6 +93,11 @@ final class MasterBrowserViewController: BaseViewController {
         return v
     }()
 
+    /// Dynamicly determined height because it can be different before layout finish it's work
+    private var toolbarHeight: CGFloat {
+        return toolbarViewController.view.bounds.size.height + underToolbarView.bounds.size.height
+    }
+
     /// The current holder for WebView (controller) if browser has at least one
     private var currentWebViewController: WebViewController?
 
@@ -101,6 +106,8 @@ final class MasterBrowserViewController: BaseViewController {
     private var searchSuggestionsDisposable: Disposable?
 
     private let tabsControllerAdded: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+
+    private var initialTabLoaded: Bool = false
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -217,7 +224,20 @@ final class MasterBrowserViewController: BaseViewController {
         }
 
         disposables.append(disposeA)
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // must load tab in willAppear to let app delegate function finish
+        // this will prevent error in layout engine in search bar controller
+        // when UILabel constraints are changed depending on search bar state
+
+        guard !initialTabLoaded else {
+            return
+        }
+        initialTabLoaded = true
+        
         if let currentTab = try? TabsListManager.shared.selectedTab() {
             open(tab: currentTab)
         } else {
@@ -249,7 +269,7 @@ final class MasterBrowserViewController: BaseViewController {
 }
 
 extension MasterBrowserViewController: TabRendererInterface {
-    func open(tab: Tab) {
+    func open(tab: Tab, searchQuery: String? = nil) {
         print("\(#function)")
 
         switch tab.contentType {
@@ -257,7 +277,9 @@ extension MasterBrowserViewController: TabRendererInterface {
             guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {
                 return
             }
-            searchBarController.setAddressString(site.url.absoluteString)
+
+            let state: SearchBarState = .viewMode(suggestion: searchQuery, host: site.host)
+            searchBarController.changeState(to: state)
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
             add(asChildViewController: webViewController, to: containerView)
@@ -265,6 +287,7 @@ extension MasterBrowserViewController: TabRendererInterface {
                 make.left.right.top.bottom.equalTo(containerView)
             }
         default:
+            searchBarController.changeState(to: .blankSearch)
             currentWebViewController?.removeFromChild()
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in
@@ -315,12 +338,14 @@ private extension MasterBrowserViewController {
         searchSuggestionsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         
         if let bottomShift = keyboardHeight {
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomShift).isActive = true
+            // fix wrong height of keyboard on Simulator when keyboard partly visible
+            let correctedShift = bottomShift < toolbarHeight ? toolbarHeight : bottomShift
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -correctedShift).isActive = true
         } else {
             if tabsControllerAdded {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-            } else {
                 searchSuggestionsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0).isActive = true
+            } else {
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
             }
         }
     }
@@ -370,26 +395,27 @@ extension MasterBrowserViewController: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // need to free space to show `cancel` button for search bar on smartPhone
-        searchBarController.stateChanged(to: .readyForInput)
+        searchBarController.changeState(to: .startSearch)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        endSearch(for: searchBar, byCancel: true)
+        hideSearchController()
+        searchBar.resignFirstResponder()
+        searchBarController.changeState(to: .cancelTapped)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        endSearch(for: searchBar)
+        // need to open web view with url of search engine
+        // and specific search queue
+        guard let suggestion = searchBar.text else {
+
+            return
+        }
+        didSelect(suggestion)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        endSearch(for: searchBar)
-    }
-
-    private func endSearch(for searchBar: UISearchBar, byCancel: Bool = false) {
-        searchBar.resignFirstResponder()
-        searchBarController.stateChanged(to: byCancel ? .cancelTapped : .clearTapped)
-        hideSearchController()
+        // called when `Cancel` pressed or search bar no more a first responder
     }
 }
 
@@ -399,15 +425,16 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             return
         }
         hideSearchController()
-        searchBarController.stateChanged(to: .viewMode)
-
         let site = Site(url: url)
+        let state: SearchBarState = .viewMode(suggestion: suggestion, host: site.host)
+        searchBarController.changeState(to: state)
+
         if let currentTab = try? TabsListManager.shared.selectedTab() {
             var updatedTab = currentTab
             updatedTab.contentType = .site(site)
             do {
                 try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
-                open(tab: updatedTab)
+                open(tab: updatedTab, searchQuery: suggestion)
             } catch {
                 print("Failed to replace current tab")
             }
@@ -415,7 +442,7 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             // Most likely this code never will be triggered because always one selected tab is availbale
             let tab = Tab(contentType: .site(site), selected: true)
             TabsListManager.shared.add(tab: tab)
-            open(tab: tab)
+            open(tab: tab, searchQuery: suggestion)
         }
     }
 }
