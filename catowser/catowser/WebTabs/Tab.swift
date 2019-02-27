@@ -23,7 +23,7 @@ public extension Tab {
             case .blank:
                 return .defaultTitle
             case .site(let someSite):
-                return someSite.domainString
+                return someSite.host
             default:
                 return "Not implemented"
             }

@@ -52,21 +52,7 @@ final class SmartphoneSearchBarViewController: BaseViewController {
 extension SmartphoneSearchBarViewController: AnyViewController {}
 
 extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
-    func stateChanged(to state: SearchBarState) {
-        switch state {
-        case .readyForInput:
-            searchBarViewController.showCancelButton(true)
-        case .clearTapped:
-            searchBarViewController.showCancelButton(false)
-        case .cancelTapped:
-            searchBarViewController.prepareForViewMode()
-            searchBarViewController.resetToRememberedSiteAddress()
-        case .viewMode:
-            searchBarViewController.prepareForViewMode()
-        }
-    }
-    
-    func setAddressString(_ address: String) {
-        searchBarViewController.rememberCurrentSiteAddress(address)
+    func changeState(to state: SearchBarState) {
+        searchBarViewController.changeState(to: state)
     }
 }

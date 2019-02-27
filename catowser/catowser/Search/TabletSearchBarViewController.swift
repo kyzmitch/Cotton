@@ -110,7 +110,4 @@ final class TabletSearchBarViewController: BaseViewController {
 extension TabletSearchBarViewController: AnyViewController {}
 
 extension TabletSearchBarViewController: SearchBarControllerInterface {    
-    func setAddressString(_ address: String) {
-        searchBarViewController.rememberCurrentSiteAddress(address)
-    }
 }
