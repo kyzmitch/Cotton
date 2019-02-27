@@ -21,8 +21,9 @@ protocol TabDelegate: class {
 final class TabView: UIView {
     
     var viewModel: Tab {
-        willSet {
+        didSet {
             titleText.text = viewModel.title
+
             // TODO: add UIImageView for site icon
         }
     }

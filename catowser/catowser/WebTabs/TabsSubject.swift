@@ -27,6 +27,8 @@ public protocol TabsObserver {
     ///
     /// - Parameter index: new selected index.
     func didSelect(index: Int)
+    /// Notifies about tab content type changes or `site` changes
+    func tabDidReplace(_ tab: Tab, at index: Int)
 
     /// No need to add delegate methods for tab close case.
     /// because anyway view must be removed right away.
@@ -42,6 +44,8 @@ public extension TabsObserver {
         // e.g. Counter view doesn't need to handle that
         // as it uses another delegate method with `tabsCount`
     }
+
+    func tabDidReplace(_ tab: Tab, at index: Int) {}
 }
 
 public protocol TabsSubject {
@@ -240,6 +244,12 @@ extension TabsListManager: TabsSubject {
         }
 
         tabs.value[index] = tab
+
+        // Need to notify observers to allow them
+        // to update title for tab view
+        DispatchQueue.main.async {
+            self.observers.forEach { $0.tabDidReplace(tab, at: index) }
+        }
     }
 
     public func selectTab(at indexPath: IndexPath) -> Tab? {

@@ -22,16 +22,13 @@ protocol TabRendererInterface: AnyViewController {
 
 final class MasterBrowserViewController: BaseViewController {
 
-    init(_ viewModel: MasterBrowserViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    private let viewModel: MasterBrowserViewModel
 
     private let searchSuggestClient: SearchSuggestClient = {
         // TODO: implement parsing e.g. google.xml
@@ -44,10 +41,7 @@ final class MasterBrowserViewController: BaseViewController {
     
     /// Tabs list without previews. Needed only for tablets or landscape mode.
     private lazy var tabsViewController: TabsViewController = {
-        let vm = TabsViewModel()
         let viewController = TabsViewController()
-        viewController.viewModel = vm
-        
         return viewController
     }()
     
@@ -149,7 +143,7 @@ final class MasterBrowserViewController: BaseViewController {
                 
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                maker.height.equalTo(viewModel.topViewPanelHeight)
+                maker.height.equalTo(UIConstants.tabHeight)
             }
             
             searchBarController.view.snp.makeConstraints({ (maker) in
