@@ -36,6 +36,10 @@ public protocol TabsObserver {
 
 // Marks optional functions for protocol
 public extension TabsObserver {
+    var name: String {
+        return String(describing: self)
+    }
+
     func didSelect(index: Int) {
         // Only landscape/regular tabs list view use that
     }
@@ -46,6 +50,8 @@ public extension TabsObserver {
     }
 
     func tabDidReplace(_ tab: Tab, at index: Int) {}
+
+    /* optional */ func update(with tabsCount: Int) {}
 }
 
 public protocol TabsSubject {

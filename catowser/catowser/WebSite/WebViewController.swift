@@ -13,7 +13,12 @@ import CoreBrowser
 
 final class WebViewController: BaseViewController {
     
-    var site: Site
+    var site: Site {
+        didSet {
+            let request = URLRequest(url: site.url)
+            webView.load(request)
+        }
+    }
 
     init(_ site: Site) {
         self.site = site
@@ -54,8 +59,87 @@ final class WebViewController: BaseViewController {
     }
 }
 
-extension WebViewController: WKUIDelegate {
+fileprivate extension WebViewController {
+    func isAppleMapsURL(_ url: URL) -> Bool {
+        if url.scheme == "http" || url.scheme == "https" {
+            if url.host == "maps.apple.com" && url.query != nil {
+                return true
+            }
+        }
+        return false
+    }
 
+    func isStoreURL(_ url: URL) -> Bool {
+        if url.scheme == "http" || url.scheme == "https" || url.scheme == "itms-apps" {
+            if url.host == "itunes.apple.com" {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+extension WebViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            decisionHandler(.cancel)
+            return
+        }
+
+        if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" {
+            UIApplication.shared.open(url, options: [:])
+            decisionHandler(.cancel)
+            return
+        }
+
+        if isAppleMapsURL(url) {
+            UIApplication.shared.open(url, options: [:])
+            decisionHandler(.cancel)
+            return
+        }
+
+        if isStoreURL(url) {
+            UIApplication.shared.open(url, options: [:])
+            decisionHandler(.cancel)
+            return
+        }
+
+        if url.scheme == "mailto" {
+            UIApplication.shared.open(url, options: [:])
+            decisionHandler(.cancel)
+            return
+        }
+
+        if ["http", "https"].contains(url.scheme) {
+            decisionHandler(.allow)
+            return
+        }
+
+        decisionHandler(.cancel)
+    }
+
+    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        guard let webViewUrl = webView.url else {
+            print("web view without url")
+            return
+        }
+        guard let currentTab = try? TabsListManager.shared.selectedTab() else {
+            fatalError("opening a link without current tab")
+        }
+
+        let site = Site(url: webViewUrl)
+        var updatedTab = currentTab
+        updatedTab.contentType = .site(site)
+        do {
+            try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
+        } catch {
+            print("\(#function) - failed to replace current tab")
+        }
+    }
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+
+    }
 }
 
 extension WebViewController: WKNavigationDelegate {

@@ -144,14 +144,6 @@ private extension TabsPreviewsViewController {
 }
 
 extension TabsPreviewsViewController: TabsObserver {
-    var name: String {
-        return String(describing: self)
-    }
-
-    func update(with tabsCount: Int) {
-
-    }
-
     func tabDidAdd(_ tab: Tab, at index: Int) {
         guard case let .tabs(box) = uxState.value else {
             return

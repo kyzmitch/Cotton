@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 /// The sate of search bar
 enum SearchBarState {
@@ -21,12 +22,7 @@ enum SearchBarState {
 }
 
 protocol SearchBarControllerInterface: class {
-    func changeState(to state: SearchBarState)
-}
-
-extension SearchBarControllerInterface {
-    /* optional */ func changeState(to state: SearchBarState) {
-    }
+    /* non optional */ func changeState(to state: SearchBarState)
 }
 
 fileprivate extension String {
@@ -56,7 +52,11 @@ final class SearchBarBaseViewController: BaseViewController {
 
     private lazy var siteNameTapGesture: UITapGestureRecognizer = {
         // Need to init gesture lazily, if it will  be initialized as a constant
-        // then it will not work :( action is not called
+        // then it will not work :( action is not called.
+        // Problem is with using `self` inside constant,
+        // it seems it is not fully initialized at that point.
+        // https://forums.swift.org/t/self-usage-inside-constant-property/21011
+
         let tap = UITapGestureRecognizer(target: self, action: .siteNameTap)
         tap.numberOfTapsRequired = 1
         tap.numberOfTouchesRequired = 1
@@ -90,7 +90,11 @@ final class SearchBarBaseViewController: BaseViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    deinit {
+        TabsListManager.shared.detach(self)
+    }
+
     override func loadView() {
         view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -113,6 +117,21 @@ final class SearchBarBaseViewController: BaseViewController {
         siteNameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         siteNameLabel.widthAnchor.constraint(equalTo: searchBarView.widthAnchor, constant: 0).isActive = true
         hiddenLabelConstraint.isActive = true
+
+        TabsListManager.shared.attach(self)
+    }
+}
+
+extension SearchBarBaseViewController: TabsObserver {
+    func tabDidReplace(_ tab: Tab, at index: Int) {
+        // this also can be called on non active tab
+        // but at the same time it really doesn't make sense
+        // to replace site on tab which is not active
+        // So, assume that `tab` parameter is currently selected
+        // and will replace content which is currently disprlayed by search bar
+
+        searchBarView.text = tab.searchBarContent
+        siteNameLabel.text = tab.title
     }
 }
 

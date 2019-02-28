@@ -28,6 +28,15 @@ public extension Tab {
                 return "Not implemented"
             }
         }
+
+        var searchBarContent: String {
+            switch self {
+            case .site(let someSite):
+                return someSite.url.absoluteString
+            default:
+                return ""
+            }
+        }
     }
 }
 
@@ -73,6 +82,10 @@ public struct Tab {
 
     public var title: String {
         return contentType.title
+    }
+
+    public var searchBarContent: String {
+        return contentType.searchBarContent
     }
 
     public var titleColor: UIColor {
