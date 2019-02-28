@@ -9,6 +9,10 @@ Building the code
 
 ## Screenshots
 
-<img style="border:5px solid black ; width:300px;" src="screenshots/iphone_screenshot.png" width="400"/>
-<img src="screenshots/ipad_screenshot.png" width="400" border="5" />
-<img src="screenshots/ipad_landskape_screenshot.png" width="400"/>
+[//]: # (CSS is filtered by Github, so style="border:5px solid black ; width:300px;" is not working for img tags)
+
+<img src="screenshots/iphone_screenshot.png" width="400"/> | <img src="screenshots/ipad_screenshot.png" width="400" border="5" /> | <img src="screenshots/ipad_landskape_screenshot.png" width="400"/>
+--- | --- | ---
+
+
+
