@@ -9,6 +9,6 @@ Building the code
 
 ## Screenshots
 
-<img style="border:5px solid black" src="screenshots/iphone_screenshot.png" width="300"/>
+<img style="border:5px solid black ; width:300px;" src="screenshots/iphone_screenshot.png" width="400"/>
 <img src="screenshots/ipad_screenshot.png" width="400" border="5" />
-<img src="screenshots/ipad_landskape_screenshot.png" width="1000" border="5" />
+<img src="screenshots/ipad_landskape_screenshot.png" width="400"/>
