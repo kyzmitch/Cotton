@@ -20,8 +20,14 @@ public struct Site {
         return url.host ?? "site"
     }
 
-    public init(url: URL) {
+    /// String associated with site if site was created from search engine.
+    /// This convinient property to transfer/save search query to use it for search view.
+    /// Different approach could be to store it in tab content type `.site` state as 2nd associated value.
+    public let searchSuggestion: String?
+
+    public init(url: URL, searchSuggestion: String? = nil) {
         self.url = url
+        self.searchSuggestion = searchSuggestion
     }
 
     public init?(urlString: String) {
@@ -29,6 +35,7 @@ public struct Site {
             return nil
         }
         url = decodedUrl
+        searchSuggestion = nil
     }
 }
 

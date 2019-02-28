@@ -17,7 +17,7 @@ import CoreBrowser
 /// will start mark it as deprecated.
 /// https://forums.swift.org/t/class-only-protocols-class-vs-anyobject/11507/4
 protocol TabRendererInterface: AnyViewController {
-    func open(tab: Tab, searchQuery: String?)
+    func open(tab: Tab)
 }
 
 final class MasterBrowserViewController: BaseViewController {
@@ -263,7 +263,7 @@ final class MasterBrowserViewController: BaseViewController {
 }
 
 extension MasterBrowserViewController: TabRendererInterface {
-    func open(tab: Tab, searchQuery: String? = nil) {
+    func open(tab: Tab) {
         print("\(#function)")
 
         switch tab.contentType {
@@ -272,8 +272,6 @@ extension MasterBrowserViewController: TabRendererInterface {
                 return
             }
 
-            let state: SearchBarState = .viewMode(suggestion: searchQuery, host: site.host)
-            searchBarController.changeState(to: state)
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
             add(asChildViewController: webViewController, to: containerView)
@@ -419,24 +417,25 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             return
         }
         hideSearchController()
-        let site = Site(url: url)
-        let state: SearchBarState = .viewMode(suggestion: suggestion, host: site.host)
-        searchBarController.changeState(to: state)
+        let site = Site(url: url, searchSuggestion: suggestion)
 
         if let currentTab = try? TabsListManager.shared.selectedTab() {
             var updatedTab = currentTab
             updatedTab.contentType = .site(site)
             do {
                 try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
-                open(tab: updatedTab, searchQuery: suggestion)
+                open(tab: updatedTab)
             } catch {
                 print("Failed to replace current tab")
             }
         } else {
             // Most likely this code never will be triggered because always one selected tab is availbale
+            let state: SearchBarState = .viewMode(suggestion: suggestion, host: site.host)
+            searchBarController.changeState(to: state)
+
             let tab = Tab(contentType: .site(site), selected: true)
             TabsListManager.shared.add(tab: tab)
-            open(tab: tab, searchQuery: suggestion)
+            open(tab: tab)
         }
     }
 }

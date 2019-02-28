@@ -22,7 +22,7 @@ final class TabsPreviewsRouter {
     /// Asks presenter to open specific tab (site, favorites, etc.) in web view
     func open(_ tab: Tab) {
         presenter?.viewController.dismiss(animated: false, completion: { [weak self] in
-            self?.presenter?.open(tab: tab, searchQuery: nil)
+            self?.presenter?.open(tab: tab)
         })
     }
 }
