@@ -151,10 +151,6 @@ fileprivate extension Selector {
 }
 
 extension CounterView: TabsObserver {
-    var name: String {
-        return String(describing: self)
-    }
-
     func update(with tabsCount: Int) {
         self.digit = tabsCount
     }

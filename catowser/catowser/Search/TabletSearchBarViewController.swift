@@ -109,5 +109,8 @@ final class TabletSearchBarViewController: BaseViewController {
 
 extension TabletSearchBarViewController: AnyViewController {}
 
-extension TabletSearchBarViewController: SearchBarControllerInterface {    
+extension TabletSearchBarViewController: SearchBarControllerInterface {
+    func changeState(to state: SearchBarState) {
+        searchBarViewController.changeState(to: state)
+    }
 }

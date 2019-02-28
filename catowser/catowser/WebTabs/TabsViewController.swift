@@ -258,10 +258,6 @@ extension TabsViewController: TabsObserver {
     func didSelect(index: Int) {
         makeTabActive(at: index)
     }
-
-    var name: String {
-        return String(describing: self)
-    }
     
     func update(with tabsCount: Int) {
         showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
