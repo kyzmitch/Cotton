@@ -34,6 +34,10 @@ final class WebViewsReuseManager {
     /// - Parameter site: The site object with all info for WebView.
     /// - Returns: Web view controller configured with `Site`.
     func getControllerFor(_ site: Site) throws -> WebViewController {
+        if let existingController = views.first(where: { $0.site == site }) {
+            return existingController
+        }
+
         let count = views.count
         if views.isEmpty || count < viewsLimit {
             let vc = WebViewController(site)
