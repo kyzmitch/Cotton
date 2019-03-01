@@ -209,7 +209,7 @@ extension TabsPreviewsViewController: UICollectionViewDelegate {
         guard let tab = TabsListManager.shared.selectTab(at: indexPath) else {
             return
         }
-        router.open(tab)
+        router.close(andLoad: tab.contentType)
     }
 }
 
@@ -219,6 +219,8 @@ private extension TabsPreviewsViewController {
     }
 
     @objc func addTabPressed() {
+        // on previews screen will make new added tab always selected
+        // same behaviour has Safari and Firefox
         let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
         TabsListManager.shared.add(tab: tab)
     }

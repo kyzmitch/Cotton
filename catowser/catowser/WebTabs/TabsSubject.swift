@@ -21,18 +21,18 @@ public protocol TabsObserver {
     /// We can pause drawing new tab on view layer
     /// to be able firstly determine type of initial tab state.
     ///
-    /// - Parameter tab: new tab.
+    /// - parameters:
+    ///     - tab: new tab
+    ///     - index: where to add new object
     func tabDidAdd(_ tab: Tab, at index: Int)
     /// Tells observer that index has changed.
     ///
-    /// - Parameter index: new selected index.
-    func didSelect(index: Int)
+    /// - parameters:
+    ///     - index: new selected index.
+    ///     - content: Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
+    func didSelect(index: Int, content: Tab.ContentType)
     /// Notifies about tab content type changes or `site` changes
     func tabDidReplace(_ tab: Tab, at index: Int)
-    /// Can be used to update web view with new content.
-    ///
-    /// - Parameter tab: new selected tab.
-    func activeTabDidChange(_ tab: Tab)
 
     /// No need to add delegate methods for tab close case.
     /// because anyway view must be removed right away.
@@ -44,7 +44,7 @@ public extension TabsObserver {
         return String(describing: self)
     }
 
-    func didSelect(index: Int) {
+    func didSelect(index: Int, content: Tab.ContentType) {
         // Only landscape/regular tabs list view use that
     }
 
@@ -56,8 +56,6 @@ public extension TabsObserver {
     /* optional */ func tabDidReplace(_ tab: Tab, at index: Int) {}
 
     /* optional */ func update(with tabsCount: Int) {}
-
-    /* optional */ func activeTabDidChange(_ tab: Tab) {}
 }
 
 public protocol TabsSubject {
@@ -91,7 +89,7 @@ public final class TabsListManager {
     // asynс initialization for several parameters during init.
     // http://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
     // But if we choose some default state for this object we can make async init.
-    // One empty tab (.blank or even tab with favorite sites) will be good default
+    // One empty tab (`.blank` or even tab with favorite sites) will be good default
     // state for time before some cached tabs will be fetched from storage.
 
     /// Instance.
@@ -157,7 +155,11 @@ public final class TabsListManager {
         disposables.append(selectedTabIndex.signal
             .observe(on: UIScheduler())
             .observeValues { [weak self] newIndex in
-                self?.observers.forEach { $0.didSelect(index: newIndex) }
+                guard let `self` = self else {
+                    return
+                }
+                let tab = self.tabs.value[newIndex]
+                self.observers.forEach { $0.didSelect(index: newIndex, content: tab.contentType) }
         })
     }
 
@@ -228,11 +230,15 @@ extension TabsListManager: TabsSubject {
         case .listEnd:
             tabs.value.append(tab)
             newIndex = tabs.value.count - 1
-            selectedTabIndex.value = newIndex
+            if tab.visualState == .selected {
+                selectedTabIndex.value = newIndex
+            }
         case .afterSelected:
             newIndex = selectedTabIndex.value + 1
             tabs.value.insert(tab, at: newIndex)
-            selectedTabIndex.value = newIndex
+            if tab.visualState == .selected {
+                selectedTabIndex.value = newIndex
+            }
         }
 
         storage.add(tab: tab)
@@ -294,13 +300,6 @@ private extension TabsListManager {
     func resetToOneTab() {
         tabs.value.removeAll()
         let tab: Tab = .initial
-
-        // change content right away
-        DispatchQueue.main.async { [weak self] in
-            self?.observers.forEach {
-                $0.activeTabDidChange(tab)
-            }
-        }
 
         tabs.value.append(tab)
         selectedTabIndex.value = 0

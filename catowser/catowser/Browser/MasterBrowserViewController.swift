@@ -17,7 +17,7 @@ import CoreBrowser
 /// will start mark it as deprecated.
 /// https://forums.swift.org/t/class-only-protocols-class-vs-anyobject/11507/4
 protocol TabRendererInterface: AnyViewController {
-    func open(tab: Tab)
+    func open(tabContent: Tab.ContentType)
 }
 
 final class MasterBrowserViewController: BaseViewController {
@@ -235,10 +235,10 @@ final class MasterBrowserViewController: BaseViewController {
         initialTabLoaded = true
         
         if let currentTab = try? TabsListManager.shared.selectedTab() {
-            open(tab: currentTab)
+            open(tabContent: currentTab.contentType)
         } else {
             let firstTab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
-            open(tab: firstTab)
+            open(tabContent: firstTab.contentType)
         }
     }
     
@@ -266,10 +266,8 @@ final class MasterBrowserViewController: BaseViewController {
 }
 
 extension MasterBrowserViewController: TabRendererInterface {
-    func open(tab: Tab) {
-        print("\(#function)")
-
-        switch tab.contentType {
+    func open(tabContent: Tab.ContentType) {
+        switch tabContent {
         case .site(let site):
             guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {
                 return
@@ -427,7 +425,7 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             updatedTab.contentType = .site(site)
             do {
                 try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
-                open(tab: updatedTab)
+                open(tabContent: updatedTab.contentType)
             } catch {
                 print("Failed to replace current tab")
             }
@@ -439,7 +437,7 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
 }
 
 extension MasterBrowserViewController: TabsObserver {
-    func activeTabDidChange(_ tab: Tab) {
-        open(tab: tab)
+    func didSelect(index: Int, content: Tab.ContentType) {
+        open(tabContent: content)
     }
 }

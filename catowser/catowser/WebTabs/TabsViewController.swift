@@ -255,7 +255,7 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func didSelect(index: Int) {
+    func didSelect(index: Int, content: Tab.ContentType) {
         makeTabActive(at: index)
     }
     
