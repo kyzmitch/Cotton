@@ -158,6 +158,10 @@ public final class TabsListManager {
                 guard let `self` = self else {
                     return
                 }
+                // already selected tab can be selected again
+                // so, need to think about Tab.visualState and remove it
+                // and use only selectedTabIndex or implement some check
+                // here to not notify observers
                 let tab = self.tabs.value[newIndex]
                 self.observers.forEach { $0.didSelect(index: newIndex, content: tab.contentType) }
         })
@@ -198,23 +202,29 @@ extension TabsListManager: TabsSubject {
         }
 
         let currentlySelected = selectedTabIndex.value
-        if let tabIndex = tabs.value.firstIndex(of: tab) {
-            if currentlySelected == tabIndex {
-                // find if we're closing selected tab
-                // select next - same behaviour is in Firefox for ios
-                if tabIndex == tabs.value.count - 1 {
-                    selectedTabIndex.value = tabIndex - 1
-                }
-                // if it is not last index, then it is automatically will become next index as planned
-            } else {
-                if tabIndex < currentlySelected {
-                    selectedTabIndex.value = currentlySelected - 1
-                }
-                // for opposite case it will stay the same
-            }
-            tabs.value.remove(at: tabIndex)
+        guard let tabIndex = tabs.value.firstIndex(of: tab) else {
+            fatalError("closing non existing tab")
         }
         
+        // remembering last index before mutating collection
+        let lastIndex = tabs.value.count - 1
+        // need to remove it first before changing selected index
+        // otherwise in one case the handler will select closed tab
+        tabs.value.remove(at: tabIndex)
+        
+        if currentlySelected == tabIndex {
+            // find if we're closing selected tab
+            // select next - same behaviour is in Firefox for ios
+            if tabIndex == lastIndex {
+                selectedTabIndex.value = tabIndex - 1
+            }
+            // if it is not last index, then it is automatically will become next index as planned
+        } else {
+            if tabIndex < currentlySelected {
+                selectedTabIndex.value = currentlySelected - 1
+            }
+            // for opposite case it will stay the same
+        }
     }
 
     public func closeAll() {
