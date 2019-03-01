@@ -18,7 +18,7 @@ enum SearchBarState {
     /// keyboard is hidden and old text is visible
     case cancelTapped
     /// when keyboard and all buttons are not displayed
-    case viewMode(suggestion: String?, host: String)
+    case viewMode(title: String, searchAddressContent: String)
 }
 
 protocol SearchBarControllerInterface: class {
@@ -50,28 +50,22 @@ final class SearchBarBaseViewController: BaseViewController {
         return label
     }()
 
+    /// To remember previously entered search query
+    private var searchBarContent: String?
+
     private lazy var siteNameTapGesture: UITapGestureRecognizer = {
         // Need to init gesture lazily, if it will  be initialized as a constant
         // then it will not work :( action is not called.
         // Problem is with using `self` inside constant,
         // it seems it is not fully initialized at that point.
         // https://forums.swift.org/t/self-usage-inside-constant-property/21011
+        // https://stackoverflow.com/questions/50393312/why-can-i-use-self-when-i-initialize-property-with-a-closure
 
         let tap = UITapGestureRecognizer(target: self, action: .siteNameTap)
         tap.numberOfTapsRequired = 1
         tap.numberOfTouchesRequired = 1
         return tap
     }()
-
-    /// Should store search query or web site domain if website is not a search engine. Can be empty if active tab is blank.
-    /// Later need to think if real URL will be needed, to store it in different property.
-    private var searchContent: String? {
-        didSet {
-            searchBarView.text = searchContent
-            // if search queue is empty then need to show placeholder
-            siteNameLabel.text = searchContent ?? .placeholderText
-        }
-    }
 
     private lazy var hiddenLabelConstraint: NSLayoutConstraint = {
         return siteNameLabel.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0)
@@ -130,8 +124,8 @@ extension SearchBarBaseViewController: TabsObserver {
         // So, assume that `tab` parameter is currently selected
         // and will replace content which is currently disprlayed by search bar
 
-        searchBarView.text = tab.searchBarContent
-        siteNameLabel.text = tab.title
+        let state: SearchBarState = .viewMode(title: tab.title, searchAddressContent: tab.searchBarContent)
+        changeState(to: state)
     }
 }
 
@@ -140,14 +134,14 @@ extension SearchBarBaseViewController: SearchBarControllerInterface {
         switch state {
         case .startSearch:
             searchBarView.setShowsCancelButton(true, animated: true)
-            guard searchContent != nil else {
+            guard searchBarView.text != nil else {
                 break
             }
             // need somehow select all text in search bar view
             prepareForEditMode()
-            // also probably need to set current text for search bar
         case .blankSearch:
-            searchContent = nil
+            searchBarView.text = nil
+            siteNameLabel.text = .placeholderText
             searchBarView.setShowsCancelButton(false, animated: false)
             searchBarView.resignFirstResponder()
             // for blank mode it is better to hide label and
@@ -157,18 +151,22 @@ extension SearchBarBaseViewController: SearchBarControllerInterface {
             searchBarView.setShowsCancelButton(false, animated: true)
             searchBarView.resignFirstResponder()
 
-            guard searchContent != nil else {
+            guard searchBarView.text != nil else {
                 break
             }
 
             prepareForViewMode()
             // even if search bar now is not visible and
             // it is under label, need to revert text content in it
-            searchBarView.text = searchContent
-        case .viewMode(let suggestionString, let hostString):
+            searchBarView.text = self.searchBarContent
+        case .viewMode(let title, let searchBarContent):
             searchBarView.setShowsCancelButton(false, animated: true)
-            searchContent = suggestionString ?? hostString
+            searchBarView.text = searchBarContent
+            siteNameLabel.text = title
             prepareForViewMode()
+
+            // remember search query in case if it will be edited
+            self.searchBarContent = searchBarContent
         }
     }
 }

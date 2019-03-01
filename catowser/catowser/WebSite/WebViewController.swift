@@ -127,6 +127,11 @@ extension WebViewController: WKUIDelegate {
             fatalError("opening a link without current tab")
         }
 
+        // check if it is same site
+        guard case let .site(currentSite) = currentTab.contentType, currentSite.url != webViewUrl else {
+            return
+        }
+
         let site = Site(url: webViewUrl)
         var updatedTab = currentTab
         updatedTab.contentType = .site(site)

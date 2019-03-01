@@ -24,7 +24,7 @@ public extension Tab {
                 return .defaultTitle
             case .site(let someSite):
                 if let search = someSite.searchSuggestion {
-                    return "\(search) at Search Engine Name"
+                    return search
                 } else {
                     return someSite.host
                 }
