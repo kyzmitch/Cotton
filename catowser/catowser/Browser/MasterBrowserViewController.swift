@@ -161,11 +161,7 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.top.equalTo(searchBarController.view.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                if #available(iOS 11, *) {
-                    maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-                } else {
-                    maker.bottom.equalTo(view)
-                }
+                maker.bottom.equalTo(view)
             }
         } else {
             searchBarController.view.snp.makeConstraints({ (maker) in
