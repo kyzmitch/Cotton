@@ -283,9 +283,15 @@ extension TabsViewController: TabDelegate {
         print("\(#function): closed")
         TabsListManager.shared.close(tab: tabView.viewModel)
         if active {
+            // Next should be done only by reacting on TabsListManager
+            // What if it will decide to select not nearby tab?
+            
             // Need to activate some another tab in that case
             selectNearbyTab(to: tabView)
         }
+        // For some reason after closing not active tab
+        // app deselects old active tab and as a result we don't have any active tab 
+        
         removeTabView(tabView)
     }
     
