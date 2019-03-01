@@ -22,7 +22,7 @@ enum SearchBarState {
 }
 
 protocol SearchBarControllerInterface: class {
-    /* non optional */ func changeState(to state: SearchBarState)
+    /* non optional */ func changeState(to state: SearchBarState, animated: Bool)
 }
 
 fileprivate extension String {
@@ -138,12 +138,14 @@ extension SearchBarBaseViewController: TabsObserver {
             state = .blankSearch
         }
 
-        changeState(to: state)
+        // run without animation, because label with search query
+        // slides when web view has already displayed
+        changeState(to: state, animated: false)
     }
 }
 
 extension SearchBarBaseViewController: SearchBarControllerInterface {
-    func changeState(to state: SearchBarState) {
+    func changeState(to state: SearchBarState, animated: Bool = true) {
         switch state {
         case .startSearch:
             searchBarView.setShowsCancelButton(true, animated: true)
@@ -173,10 +175,10 @@ extension SearchBarBaseViewController: SearchBarControllerInterface {
             // it is under label, need to revert text content in it
             searchBarView.text = self.searchBarContent
         case .viewMode(let title, let searchBarContent):
-            searchBarView.setShowsCancelButton(false, animated: true)
+            searchBarView.setShowsCancelButton(false, animated: animated)
             searchBarView.text = searchBarContent
             siteNameLabel.text = title
-            prepareForViewMode()
+            prepareForViewMode(animated: animated)
 
             // remember search query in case if it will be edited
             self.searchBarContent = searchBarContent
@@ -194,15 +196,25 @@ private extension SearchBarBaseViewController {
         prepareForEditMode()
     }
 
-    func prepareForViewMode() {
+    func prepareForViewMode(animated: Bool = true) {
         // Order of disabling/enabling is important to not to cause errors in layout calculation. First need to disable and after that enable new one.
         hiddenLabelConstraint.isActive = false
         showedLabelConstraint.isActive = true
-        UIView.animate(withDuration: 0.3) {
-            self.siteNameLabel.layoutIfNeeded()
-            self.searchBarView.alpha = 0
-            self.siteNameLabel.alpha = 1
+        
+        func applyLayout() {
+            siteNameLabel.layoutIfNeeded()
+            searchBarView.alpha = 0
+            siteNameLabel.alpha = 1
         }
+        
+        if animated {
+            UIView.animate(withDuration: 0.3) {
+                applyLayout()
+            }
+        } else {
+            applyLayout()
+        }
+        
         searchBarView.resignFirstResponder()
     }
 

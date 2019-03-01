@@ -13,8 +13,8 @@ import CoreGraphics
 import CoreBrowser
 
 protocol TabDelegate: class {
-    func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) -> Void
-    func tab(_ tab: TabView, didBecomeActive active: Bool) -> Void
+    func tabViewDidClose(_ tabView: TabView, was active: Bool)
+    func tabDidBecomeActive(_ tab: Tab)
 }
 
 /// The tab view for tablets
@@ -186,11 +186,11 @@ private extension TabView {
     }
     
     @objc func handleClosePressed() -> Void {
-        delegate?.tab(self, didPressCloseButton: viewModel.visualState == .selected)
+        delegate?.tabViewDidClose(self, was: viewModel.visualState == .selected)
     }
     
     func handleTapGesture() -> Void {
-        delegate?.tab(self, didBecomeActive: true)
+        delegate?.tabDidBecomeActive(viewModel)
     }
 }
 

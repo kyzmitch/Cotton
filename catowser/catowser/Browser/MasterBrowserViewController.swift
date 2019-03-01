@@ -276,7 +276,7 @@ extension MasterBrowserViewController: TabRendererInterface {
                 make.left.right.top.bottom.equalTo(containerView)
             }
         default:
-            searchBarController.changeState(to: .blankSearch)
+            searchBarController.changeState(to: .blankSearch, animated: true)
             currentWebViewController?.removeFromChild()
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in
@@ -384,13 +384,13 @@ extension MasterBrowserViewController: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarController.changeState(to: .startSearch)
+        searchBarController.changeState(to: .startSearch, animated: true)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         hideSearchController()
         searchBar.resignFirstResponder()
-        searchBarController.changeState(to: .cancelTapped)
+        searchBarController.changeState(to: .cancelTapped, animated: true)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
