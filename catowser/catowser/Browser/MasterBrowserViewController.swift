@@ -218,6 +218,8 @@ final class MasterBrowserViewController: BaseViewController {
         }
 
         disposables.append(disposeA)
+
+        TabsListManager.shared.attach(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -253,6 +255,7 @@ final class MasterBrowserViewController: BaseViewController {
     }
 
     deinit {
+        TabsListManager.shared.detach(self)
         disposables.forEach { $0?.dispose() }
         searchSuggestionsDisposable?.dispose()
     }
@@ -430,12 +433,13 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             }
         } else {
             // Most likely this code never will be triggered because always one selected tab is availbale
-            let state: SearchBarState = .viewMode(suggestion: suggestion, host: site.host)
-            searchBarController.changeState(to: state)
-
-            let tab = Tab(contentType: .site(site), selected: true)
-            TabsListManager.shared.add(tab: tab)
-            open(tab: tab)
+            fatalError("Can't found selected tab to replace it")
         }
+    }
+}
+
+extension MasterBrowserViewController: TabsObserver {
+    func activeTabDidChange(_ tab: Tab) {
+        open(tab: tab)
     }
 }

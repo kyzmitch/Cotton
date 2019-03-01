@@ -29,6 +29,10 @@ public protocol TabsObserver {
     func didSelect(index: Int)
     /// Notifies about tab content type changes or `site` changes
     func tabDidReplace(_ tab: Tab, at index: Int)
+    /// Can be used to update web view with new content.
+    ///
+    /// - Parameter tab: new selected tab.
+    func activeTabDidChange(_ tab: Tab)
 
     /// No need to add delegate methods for tab close case.
     /// because anyway view must be removed right away.
@@ -49,9 +53,11 @@ public extension TabsObserver {
         // as it uses another delegate method with `tabsCount`
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) {}
+    /* optional */ func tabDidReplace(_ tab: Tab, at index: Int) {}
 
     /* optional */ func update(with tabsCount: Int) {}
+
+    /* optional */ func activeTabDidChange(_ tab: Tab) {}
 }
 
 public protocol TabsSubject {
@@ -288,16 +294,29 @@ private extension TabsListManager {
     func resetToOneTab() {
         tabs.value.removeAll()
         let tab: Tab = .initial
+
+        // change content right away
+        DispatchQueue.main.async { [weak self] in
+            self?.observers.forEach {
+                $0.activeTabDidChange(tab)
+            }
+        }
+
         tabs.value.append(tab)
+        selectedTabIndex.value = 0
 
         switch DefaultTabProvider.shared.addSpeed {
         case .immediately:
             DispatchQueue.main.async { [weak self] in
-                self?.observers.forEach {$0.tabDidAdd(tab, at: 0)}
+                self?.observers.forEach {
+                    $0.tabDidAdd(tab, at: 0)
+                }
             }
         case .after(let interval):
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + interval) { [weak self] in
-                self?.observers.forEach {$0.tabDidAdd(tab, at: 0)}
+                self?.observers.forEach {
+                    $0.tabDidAdd(tab, at: 0)
+                }
             }
         }
     }
