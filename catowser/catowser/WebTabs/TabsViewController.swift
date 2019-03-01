@@ -279,23 +279,19 @@ extension TabsViewController: TabsObserver {
 }
 
 extension TabsViewController: TabDelegate {
-    func tab(_ tab: TabView, didPressCloseButton wasActive: Bool) {
+    func tabViewDidClose(_ tabView: TabView, was active: Bool) {
         print("\(#function): closed")
-        TabsListManager.shared.close(tab: tab.viewModel)
-        if tab.visualState == .selected {
+        TabsListManager.shared.close(tab: tabView.viewModel)
+        if active {
             // Need to activate some another tab in that case
-            selectNearbyTab(to: tab)
+            selectNearbyTab(to: tabView)
         }
-        removeTabView(tab)
+        removeTabView(tabView)
     }
     
-    func tab(_ tab: TabView, didBecomeActive active: Bool) {
+    func tabDidBecomeActive(_ tab: Tab) {
         print("\(#function): tapped")
-        guard active else {
-            assert(active, "\(#function): not handled")
-            return
-        }
-        TabsListManager.shared.select(tab: tab.viewModel)
+        TabsListManager.shared.select(tab: tab)
     }
 }
 
