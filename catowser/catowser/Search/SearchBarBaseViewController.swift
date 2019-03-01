@@ -127,6 +127,19 @@ extension SearchBarBaseViewController: TabsObserver {
         let state: SearchBarState = .viewMode(title: tab.title, searchAddressContent: tab.searchBarContent)
         changeState(to: state)
     }
+
+    func didSelect(index: Int, content: Tab.ContentType) {
+        let state: SearchBarState
+
+        switch content {
+        case .site(let site):
+            state = .viewMode(title: site.title, searchAddressContent: site.searchBarContent)
+        default:
+            state = .blankSearch
+        }
+
+        changeState(to: state)
+    }
 }
 
 extension SearchBarBaseViewController: SearchBarControllerInterface {

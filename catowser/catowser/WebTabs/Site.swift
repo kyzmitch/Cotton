@@ -25,6 +25,18 @@ public struct Site {
     /// Different approach could be to store it in tab content type `.site` state as 2nd associated value.
     public let searchSuggestion: String?
 
+    public var title: String {
+        if let search = searchSuggestion {
+            return search
+        } else {
+            return host
+        }
+    }
+
+    public var searchBarContent: String {
+        return searchSuggestion ?? url.absoluteString
+    }
+
     public init(url: URL, searchSuggestion: String? = nil) {
         self.url = url
         self.searchSuggestion = searchSuggestion

@@ -23,11 +23,7 @@ public extension Tab {
             case .blank:
                 return .defaultTitle
             case .site(let someSite):
-                if let search = someSite.searchSuggestion {
-                    return search
-                } else {
-                    return someSite.host
-                }
+                return someSite.title
             default:
                 return "Not implemented"
             }
@@ -36,7 +32,7 @@ public extension Tab {
         var searchBarContent: String {
             switch self {
             case .site(let someSite):
-                return someSite.searchSuggestion ?? someSite.url.absoluteString
+                return someSite.searchBarContent
             default:
                 return ""
             }

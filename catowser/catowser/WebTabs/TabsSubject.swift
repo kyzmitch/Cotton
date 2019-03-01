@@ -194,8 +194,6 @@ extension TabsListManager: TabsSubject {
         if tabs.value.count == 1 {
             assert(tab == tabs.value.first!, "closing unexpected tab")
             resetToOneTab()
-            // No need to change selected index because it is already 0
-            // selectedTabIndex.value = 0
             return
         }
 
@@ -302,6 +300,8 @@ private extension TabsListManager {
         let tab: Tab = .initial
 
         tabs.value.append(tab)
+        // No need to change selected index because it is already 0
+        // but it is needed to update web view content
         selectedTabIndex.value = 0
 
         switch DefaultTabProvider.shared.addSpeed {
