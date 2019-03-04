@@ -122,8 +122,6 @@ public final class TabsListManager {
                 case .success(let tabsArray):
                     guard let `self` = self else { return }
                     self.tabs.value = tabsArray
-                    // Temp workaround
-                    self.selectedTabIndex.value = 0
                 case .failure(let error):
                     print("not complete async init of \(TabsListManager.self): \(error)")
                 }
@@ -135,6 +133,7 @@ public final class TabsListManager {
                 switch result {
                 case .success(let index):
                     guard let `self` = self else { return }
+                    // need to wait before tabs fetch will be finished
                     self.selectedTabIndex.value = index
                 case .failure(let error):
                     print("not complete async init of \(TabsListManager.self): \(error)")
@@ -217,13 +216,19 @@ extension TabsListManager: TabsSubject {
             // select next - same behaviour is in Firefox for ios
             if tabIndex == lastIndex {
                 selectedTabIndex.value = tabIndex - 1
+            } else {
+                // if it is not last index, then it is automatically will become next index as planned
+                // index is the same, but tab content will be different, so, need to notify observers
+                // re-settings same value will trigger observers notification
+                selectedTabIndex.value = currentlySelected
             }
-            // if it is not last index, then it is automatically will become next index as planned
         } else {
             if tabIndex < currentlySelected {
                 selectedTabIndex.value = currentlySelected - 1
+            } else {
+                // for opposite case it will stay the same
+                selectedTabIndex.value = currentlySelected
             }
-            // for opposite case it will stay the same
         }
     }
 

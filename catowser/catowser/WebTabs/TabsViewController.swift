@@ -257,6 +257,7 @@ private extension TabsViewController {
 extension TabsViewController: TabsObserver {
     func didSelect(index: Int, content: Tab.ContentType) {
         makeTabActive(at: index)
+        // selectNearbyTab(to: tabView)
     }
     
     func update(with tabsCount: Int) {
@@ -281,18 +282,8 @@ extension TabsViewController: TabsObserver {
 extension TabsViewController: TabDelegate {
     func tabViewDidClose(_ tabView: TabView, was active: Bool) {
         print("\(#function): closed")
-        TabsListManager.shared.close(tab: tabView.viewModel)
-        if active {
-            // Next should be done only by reacting on TabsListManager
-            // What if it will decide to select not nearby tab?
-            
-            // Need to activate some another tab in that case
-            selectNearbyTab(to: tabView)
-        }
-        // For some reason after closing not active tab
-        // app deselects old active tab and as a result we don't have any active tab 
-        
         removeTabView(tabView)
+        TabsListManager.shared.close(tab: tabView.viewModel)
     }
     
     func tabDidBecomeActive(_ tab: Tab) {

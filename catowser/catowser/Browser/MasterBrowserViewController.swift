@@ -100,8 +100,6 @@ final class MasterBrowserViewController: BaseViewController {
     private var searchSuggestionsDisposable: Disposable?
 
     private let tabsControllerAdded: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
-
-    private var initialTabLoaded: Bool = false
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -216,26 +214,6 @@ final class MasterBrowserViewController: BaseViewController {
         disposables.append(disposeA)
 
         TabsListManager.shared.attach(self)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        // must load tab in willAppear to let app delegate function finish
-        // this will prevent error in layout engine in search bar controller
-        // when UILabel constraints are changed depending on search bar state
-
-        guard !initialTabLoaded else {
-            return
-        }
-        initialTabLoaded = true
-        
-        if let currentTab = try? TabsListManager.shared.selectedTab() {
-            open(tabContent: currentTab.contentType)
-        } else {
-            let firstTab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
-            open(tabContent: firstTab.contentType)
-        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
