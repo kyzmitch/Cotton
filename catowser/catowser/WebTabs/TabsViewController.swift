@@ -148,39 +148,6 @@ private extension TabsViewController {
         showTabPreviewsButton.setTitle("\(count)", for: .normal)
     }
 
-    func selectNearbyTab(to tab: TabView) {
-        if tabsStackView.arrangedSubviews.count == 1 {
-            // next handling is just workaround which 99% of time will not be needed
-            if let onlyOneView = tabsStackView.arrangedSubviews.first {
-                if onlyOneView != tab {
-                    (onlyOneView as? TabView)?.visualState = .selected
-                }
-            }
-        } else {
-            if let specifiedTabIndex = tabsStackView.arrangedSubviews.index(of: tab) {
-                var nearTab: TabView?
-                if specifiedTabIndex == 0 {
-                    nearTab = tabsStackView.arrangedSubviews[1] as? TabView
-                }
-                else if specifiedTabIndex == tabsStackView.arrangedSubviews.count - 1 {
-                    nearTab = tabsStackView.arrangedSubviews[specifiedTabIndex - 1] as? TabView
-                }
-                else {
-                    // if in the middle then select previous from the left
-                    nearTab = tabsStackView.arrangedSubviews[specifiedTabIndex - 1] as? TabView
-                }
-
-                if let searchedTab = nearTab {
-                    searchedTab.visualState = .selected
-                }
-            }
-            else {
-                // Select something anyway
-                print("\(#function): tab not found, will select some random one")
-            }
-        }
-    }
-
     func makeTabFullyVisibleIfNeeded(_ tabView: TabView) {
         // the tab could be partly visible from the left, so
         // need to check if x coordinate of it not less than stackview x = 0
@@ -257,7 +224,6 @@ private extension TabsViewController {
 extension TabsViewController: TabsObserver {
     func didSelect(index: Int, content: Tab.ContentType) {
         makeTabActive(at: index)
-        // selectNearbyTab(to: tabView)
     }
     
     func update(with tabsCount: Int) {

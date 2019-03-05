@@ -100,6 +100,10 @@ final class MasterBrowserViewController: BaseViewController {
     private var searchSuggestionsDisposable: Disposable?
 
     private let tabsControllerAdded: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+
+    /// Not initialized, will be initialized after `TabsListManager`
+    /// during tab opening. Used only during tab opening for optimization
+    private var currentTabContent: Tab.ContentType?
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -241,6 +245,11 @@ final class MasterBrowserViewController: BaseViewController {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
+        if let currentType = currentTabContent, currentType == tabContent {
+            print("same ")
+            return
+        }
+
         switch tabContent {
         case .site(let site):
             guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {

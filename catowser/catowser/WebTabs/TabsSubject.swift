@@ -94,6 +94,8 @@ public final class TabsListManager {
 
     /// Instance.
     public static let shared = TabsListManager(storage: TabsCacheProvider.shared)
+    /// Current tab selection strategy
+    public var selectionStrategy: TabSelectionStrategy
 
     private let tabs: MutableProperty<[Tab]>
     private let selectedTabIndex: MutableProperty<Int>
@@ -109,6 +111,8 @@ public final class TabsListManager {
     private var disposables = [Disposable?]()
 
     init(storage: TabsStorage) {
+        selectionStrategy = NearbySelectionStrategy()
+
         tabs = MutableProperty<[Tab]>([])
         selectedTabIndex = MutableProperty<Int>(-1)
 
@@ -187,6 +191,17 @@ public final class TabsListManager {
     fileprivate struct NotInitializedYet: Error {}
 }
 
+extension TabsListManager: IndexSelectionContext {
+    public var collectionLastIndex: Int {
+        // -1 index is not possible because always should be at least 1 tab
+        return tabs.value.count - 1
+    }
+
+    public var currentlySelectedIndex: Int {
+        return selectedTabIndex.value
+    }
+}
+
 extension TabsListManager: TabsSubject {
     public func fetch() -> [Tab] {
         return tabs.value
@@ -200,36 +215,15 @@ extension TabsListManager: TabsSubject {
             return
         }
 
-        let currentlySelected = selectedTabIndex.value
         guard let tabIndex = tabs.value.firstIndex(of: tab) else {
             fatalError("closing non existing tab")
         }
-        
-        // remembering last index before mutating collection
-        let lastIndex = tabs.value.count - 1
+
+        let newIndex = selectionStrategy.autoSelectedIndexBasedOn(self, removedIndex: tabIndex)
         // need to remove it first before changing selected index
         // otherwise in one case the handler will select closed tab
         tabs.value.remove(at: tabIndex)
-        
-        if currentlySelected == tabIndex {
-            // find if we're closing selected tab
-            // select next - same behaviour is in Firefox for ios
-            if tabIndex == lastIndex {
-                selectedTabIndex.value = tabIndex - 1
-            } else {
-                // if it is not last index, then it is automatically will become next index as planned
-                // index is the same, but tab content will be different, so, need to notify observers
-                // re-settings same value will trigger observers notification
-                selectedTabIndex.value = currentlySelected
-            }
-        } else {
-            if tabIndex < currentlySelected {
-                selectedTabIndex.value = currentlySelected - 1
-            } else {
-                // for opposite case it will stay the same
-                selectedTabIndex.value = currentlySelected
-            }
-        }
+        selectedTabIndex.value = newIndex
     }
 
     public func closeAll() {
