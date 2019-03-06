@@ -18,6 +18,19 @@ import CoreBrowser
 
 final class WebBrowserToolbarController: BaseViewController {
 
+    /// Site navigation delegate
+    private weak var siteNavigationDelegate: SiteNavigationDelegate? {
+        didSet {
+            guard let navigator = siteNavigationDelegate else {
+                backButton.isEnabled = false
+                forwardButton.isEnabled = false
+                return
+            }
+
+            reload()
+        }
+    }
+
     private lazy var toolbarView: UIToolbar = {
         let toolbar = UIToolbar()
 
@@ -44,21 +57,18 @@ final class WebBrowserToolbarController: BaseViewController {
     private let backButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-back")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .back)
-        btn.isEnabled = false
         return btn
     }()
     
     private let forwardButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-forward")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .forward)
-        btn.isEnabled = false
         return btn
     }()
     
     private let reloadButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-refresh")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .reload)
-        btn.isEnabled = false
         return btn
     }()
 
@@ -102,7 +112,12 @@ final class WebBrowserToolbarController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // disabled after `init` because no web view is present
+        backButton.isEnabled = false
+        forwardButton.isEnabled = false
+        reloadButton.isEnabled = false
+
         toolbarView.snp.makeConstraints { (maker) in
             maker.left.right.top.bottom.equalTo(view)
         }
@@ -120,13 +135,25 @@ final class WebBrowserToolbarController: BaseViewController {
     }
 }
 
+extension WebBrowserToolbarController: SiteNavigationComponent {
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate) {
+        siteNavigationDelegate = navigator
+    }
+
+    func reloadNavigationElements() {
+        // this will be useful when user will change current web view
+        backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
+        forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+    }
+}
+
 private extension WebBrowserToolbarController {
     @objc func handleBackPressed() {
-
+        siteNavigationDelegate?.goBack()
     }
 
     @objc func handleForwardPressed() {
-
+        siteNavigationDelegate?.goForward()
     }
 
     @objc func handleReloadPressed() {

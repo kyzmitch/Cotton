@@ -11,7 +11,21 @@ import CoreBrowser
 
 final class TabletSearchBarViewController: BaseViewController {
 
-    let searchBarViewController: SearchBarBaseViewController
+    private let searchBarViewController: SearchBarBaseViewController
+
+    /// Site navigation delegate. It is always `nil` during initialization because no active web view is present
+    private weak var siteNavigationDelegate: SiteNavigationDelegate? {
+        didSet {
+            guard let navigator = siteNavigationDelegate else {
+                goBackButton.isEnabled = false
+                goForwardButton.isEnabled = false
+                return
+            }
+
+            // this will be useful when user will change current web view
+            reloadNavigationElements()
+        }
+    }
     
     init(_ searchBarDelegate: UISearchBarDelegate) {
         searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
@@ -22,21 +36,21 @@ final class TabletSearchBarViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let goBackButton: UIButton = {
+    private lazy var goBackButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-back")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
-		btn.isEnabled = false
+        btn.addTarget(self, action: .backPressed, for: .touchUpInside)
         return btn
     }()
     
-    private let goForwardButton: UIButton = {
+    private lazy var goForwardButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-forward")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
-		btn.isEnabled = false
+        btn.addTarget(self, action: .forwardPressed, for: .touchUpInside)
         return btn
     }()
     
@@ -45,7 +59,6 @@ final class TabletSearchBarViewController: BaseViewController {
         let img = UIImage(named: "nav-refresh")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
-		btn.isEnabled = false
         return btn
     }()
 
@@ -70,6 +83,11 @@ final class TabletSearchBarViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // disabled after `init` because no web view is present
+        goBackButton.isEnabled = false
+        goForwardButton.isEnabled = false
+        reloadButton.isEnabled = false
 
         view.backgroundColor = UIConstants.searchBarBackgroundColour
         
@@ -105,6 +123,25 @@ final class TabletSearchBarViewController: BaseViewController {
         lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
+
+    @objc fileprivate func backPressed() {
+        siteNavigationDelegate?.goBack()
+    }
+
+    @objc fileprivate func forwardPressed() {
+        siteNavigationDelegate?.goForward()
+    }
+}
+
+extension TabletSearchBarViewController: SiteNavigationComponent {
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate) {
+        siteNavigationDelegate = navigator
+    }
+
+    func reloadNavigationElements() {
+        goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
+        goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+    }
 }
 
 extension TabletSearchBarViewController: AnyViewController {}
@@ -113,4 +150,9 @@ extension TabletSearchBarViewController: SearchBarControllerInterface {
     func changeState(to state: SearchBarState, animated: Bool) {
         searchBarViewController.changeState(to: state, animated: animated)
     }
+}
+
+fileprivate extension Selector {
+    static let backPressed = #selector(TabletSearchBarViewController.backPressed)
+    static let forwardPressed = #selector(TabletSearchBarViewController.forwardPressed)
 }
