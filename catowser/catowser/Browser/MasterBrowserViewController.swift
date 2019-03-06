@@ -246,7 +246,7 @@ final class MasterBrowserViewController: BaseViewController {
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
         if let currentType = currentTabContent, currentType == tabContent {
-            print("same ")
+            print("same site")
             return
         }
 
@@ -256,6 +256,7 @@ extension MasterBrowserViewController: TabRendererInterface {
                 return
             }
 
+            updateSiteNavigator(to: webViewController)
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
             add(asChildViewController: webViewController, to: containerView)
@@ -422,5 +423,34 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
 extension MasterBrowserViewController: TabsObserver {
     func didSelect(index: Int, content: Tab.ContentType) {
         open(tabContent: content)
+    }
+
+    func tabDidReplace(_ tab: Tab, at index: Int) {
+        // need update navigation if the same tab was updated
+        reloadNavigationElements()
+    }
+}
+
+extension MasterBrowserViewController: SiteNavigationComponent {
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate) {
+        // Decided to just use next approach
+        // since app can have only one needed holder at a time
+        // no need to use new Observer or notification center
+        // just need to figure out how to transfer parameter to holder
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            toolbarViewController.updateSiteNavigator(to: navigator)
+        } else if let tabletVc = searchBarController as? SiteNavigationComponent {
+            // complex type casting
+            tabletVc.updateSiteNavigator(to: navigator)
+        }
+    }
+
+    func reloadNavigationElements() {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            toolbarViewController.reloadNavigationElements()
+        } else if let tabletVc = searchBarController as? SiteNavigationComponent {
+            // complex type casting
+            tabletVc.reloadNavigationElements()
+        }
     }
 }

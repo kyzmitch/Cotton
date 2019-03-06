@@ -11,6 +11,21 @@ import SnapKit
 import WebKit
 import CoreBrowser
 
+protocol SiteNavigationDelegate: class {
+    var canGoBack: Bool { get }
+    var canGoForward: Bool { get }
+
+    func goForward()
+    func goBack()
+    func reload()
+}
+
+protocol SiteNavigationComponent {
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate)
+    /// Reloads state of UI components
+    func reloadNavigationElements()
+}
+
 final class WebViewController: BaseViewController {
     
     var site: Site {
@@ -143,10 +158,32 @@ extension WebViewController: WKUIDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-
+        
     }
 }
 
 extension WebViewController: WKNavigationDelegate {
     
+}
+
+extension WebViewController: SiteNavigationDelegate {
+    var canGoBack: Bool {
+        return webView.canGoBack
+    }
+
+    var canGoForward: Bool {
+        return webView.canGoForward
+    }
+
+    func goForward() {
+        _ = webView.goForward()
+    }
+
+    func goBack() {
+        _ = webView.goBack()
+    }
+
+    func reload() {
+        _ = webView.reload()
+    }
 }
