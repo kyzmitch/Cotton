@@ -34,7 +34,7 @@ fileprivate extension UIBlurEffect.Style {
 }
 
 protocol TabPreviewCellDelegate: AnyObject {
-    func tabCellDidClose(_ cell: TabPreviewCell)
+    func tabCellDidClose(at index: Int)
 }
 
 final class TabPreviewCell: UICollectionViewCell, ReusableItem {
@@ -52,6 +52,9 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
             return CGFloat.textBoxHeight * 8
         }
     }
+
+    /// Index needed to find tab which was closed
+    private var tabIndex: Int?
 
     private weak var delegate: TabPreviewCellDelegate?
 
@@ -161,11 +164,12 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     }
 
     @objc func close() {
-        print("\(#function)")
-        delegate?.tabCellDidClose(self)
+        print("tab preview cell \(#function)")
+        tabIndex.map { delegate?.tabCellDidClose(at: $0) }
     }
 
-    func configure(with tab: Tab, delegate: TabPreviewCellDelegate) {
+    func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
+        self.tabIndex = index
         self.delegate = delegate
         // TODO: learn how exactly Signal works
         // is it possible to fetch very first pushed value to it

@@ -148,15 +148,25 @@ extension TabsPreviewsViewController: TabsObserver {
         guard case let .tabs(box) = uxState.value else {
             return
         }
-        
+
         box.value.insert(tab, at: index)
         render(state: uxState.value)
+    }
+
+    func didSelect(index: Int, content: Tab.ContentType) {
+
     }
 }
 
 extension TabsPreviewsViewController: TabPreviewCellDelegate {
-    func tabCellDidClose(_ cell: TabPreviewCell) {
+    func tabCellDidClose(at index: Int) {
+        guard case let .tabs(box) = uxState.value else {
+            return
+        }
 
+        let tab = box.value.remove(at: index)
+        render(state: uxState.value)
+        TabsListManager.shared.close(tab: tab)
     }
 }
 
@@ -199,7 +209,7 @@ extension TabsPreviewsViewController: UICollectionViewDataSource {
             return UICollectionViewCell(frame: .zero)
         }
         let cell = collectionView.dequeueCell(at: indexPath, type: TabPreviewCell.self)
-        cell.configure(with: correctTab, delegate: self)
+        cell.configure(with: correctTab, at: indexPath.item, delegate: self)
         return cell
     }
 }

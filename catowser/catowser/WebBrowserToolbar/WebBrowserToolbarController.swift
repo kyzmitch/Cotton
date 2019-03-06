@@ -21,13 +21,13 @@ final class WebBrowserToolbarController: BaseViewController {
     /// Site navigation delegate
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
         didSet {
-            guard let navigator = siteNavigationDelegate else {
+            guard let _ = siteNavigationDelegate else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
                 return
             }
 
-            reload()
+            reloadNavigationElements()
         }
     }
 
@@ -54,19 +54,19 @@ final class WebBrowserToolbarController: BaseViewController {
         return toolbar
     }()
     
-    private let backButton: UIBarButtonItem = {
+    private lazy var backButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-back")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .back)
         return btn
     }()
     
-    private let forwardButton: UIBarButtonItem = {
+    private lazy var forwardButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-forward")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .forward)
         return btn
     }()
     
-    private let reloadButton: UIBarButtonItem = {
+    private lazy var reloadButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-refresh")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .reload)
         return btn
@@ -82,7 +82,7 @@ final class WebBrowserToolbarController: BaseViewController {
         return btn
     }()
     
-    private let settingsButton: UIBarButtonItem = {
+    private lazy var settingsButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-menu")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .settings)
         btn.isEnabled = false
@@ -136,7 +136,7 @@ final class WebBrowserToolbarController: BaseViewController {
 }
 
 extension WebBrowserToolbarController: SiteNavigationComponent {
-    func updateSiteNavigator(to navigator: SiteNavigationDelegate) {
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate?) {
         siteNavigationDelegate = navigator
     }
 
