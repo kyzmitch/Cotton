@@ -264,6 +264,7 @@ extension MasterBrowserViewController: TabRendererInterface {
                 make.left.right.top.bottom.equalTo(containerView)
             }
         default:
+            updateSiteNavigator(to: nil)
             searchBarController.changeState(to: .blankSearch, animated: true)
             currentWebViewController?.removeFromChild()
             add(asChildViewController: blankWebPageController, to: containerView)
@@ -432,7 +433,7 @@ extension MasterBrowserViewController: TabsObserver {
 }
 
 extension MasterBrowserViewController: SiteNavigationComponent {
-    func updateSiteNavigator(to navigator: SiteNavigationDelegate) {
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate?) {
         // Decided to just use next approach
         // since app can have only one needed holder at a time
         // no need to use new Observer or notification center

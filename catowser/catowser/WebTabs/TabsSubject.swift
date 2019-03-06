@@ -220,7 +220,7 @@ extension TabsListManager: TabsSubject {
         }
 
         let newIndex = selectionStrategy.autoSelectedIndexBasedOn(self, removedIndex: tabIndex)
-        // need to remove it first before changing selected index
+        // need to remove it before changing selected index
         // otherwise in one case the handler will select closed tab
         tabs.value.remove(at: tabIndex)
         selectedTabIndex.value = newIndex

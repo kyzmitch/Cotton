@@ -21,7 +21,7 @@ protocol SiteNavigationDelegate: class {
 }
 
 protocol SiteNavigationComponent {
-    func updateSiteNavigator(to navigator: SiteNavigationDelegate)
+    func updateSiteNavigator(to navigator: SiteNavigationDelegate?)
     /// Reloads state of UI components
     func reloadNavigationElements()
 }
