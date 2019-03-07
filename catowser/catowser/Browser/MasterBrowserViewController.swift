@@ -302,6 +302,16 @@ extension MasterBrowserViewController {
 }
 
 private extension MasterBrowserViewController {
+    func navigationComponent() -> SiteNavigationComponent? {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return toolbarViewController
+        } else if let tabletVc = searchBarController as? SiteNavigationComponent {
+            // complex type casting
+            return tabletVc
+        }
+        return nil
+    }
+
     func showSearchControllerIfNeeded() {
         guard !isSuggestionsShowed else {
             return
@@ -434,24 +444,10 @@ extension MasterBrowserViewController: TabsObserver {
 
 extension MasterBrowserViewController: SiteNavigationComponent {
     func updateSiteNavigator(to navigator: SiteNavigationDelegate?) {
-        // Decided to just use next approach
-        // since app can have only one needed holder at a time
-        // no need to use new Observer or notification center
-        // just need to figure out how to transfer parameter to holder
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            toolbarViewController.updateSiteNavigator(to: navigator)
-        } else if let tabletVc = searchBarController as? SiteNavigationComponent {
-            // complex type casting
-            tabletVc.updateSiteNavigator(to: navigator)
-        }
+        navigationComponent()?.updateSiteNavigator(to: navigator)
     }
 
     func reloadNavigationElements() {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            toolbarViewController.reloadNavigationElements()
-        } else if let tabletVc = searchBarController as? SiteNavigationComponent {
-            // complex type casting
-            tabletVc.reloadNavigationElements()
-        }
+        navigationComponent()?.reloadNavigationElements()
     }
 }
