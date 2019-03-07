@@ -219,7 +219,7 @@ extension TabsPreviewsViewController: UICollectionViewDelegate {
         guard let tab = TabsListManager.shared.selectTab(at: indexPath) else {
             return
         }
-        router.close(andLoad: tab.contentType)
+        router.dismiss(andLoad: tab.contentType)
     }
 }
 

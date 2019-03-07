@@ -147,11 +147,8 @@ extension WebViewController: WKUIDelegate {
             return
         }
 
-        let site = Site(url: webViewUrl)
-        var updatedTab = currentTab
-        updatedTab.contentType = .site(site)
         do {
-            try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
+            try TabsListManager.shared.replaceSelected(tabContent: .site(Site(url: webViewUrl)))
         } catch {
             print("\(#function) - failed to replace current tab")
         }

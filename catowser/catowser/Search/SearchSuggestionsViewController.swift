@@ -58,6 +58,8 @@ extension SearchSuggestionsViewController /* UITableViewDataSource */ {
 
 extension SearchSuggestionsViewController /* UITableViewDelegate */ {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         guard let suggestion = suggestions[safe: indexPath.row] else {
             return
         }
