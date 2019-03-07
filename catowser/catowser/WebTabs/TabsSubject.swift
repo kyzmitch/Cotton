@@ -79,7 +79,7 @@ public protocol TabsSubject {
     /// - Returns: selected tab or nothing if it was not found.
     func selectTab(at indexPath: IndexPath) -> Tab?
     /// Replaces currently active tab by combining two operations
-    func replaceSelectedTab(with tab: Tab) throws
+    func replaceSelected(tabContent: Tab.ContentType) throws
     /// Fetches latest tabs.
     func fetch() -> [Tab]
 }
@@ -262,18 +262,20 @@ extension TabsListManager: TabsSubject {
         selectedTabIndex.value = index
     }
 
-    public func replaceSelectedTab(with tab: Tab) throws {
+    public func replaceSelected(tabContent: Tab.ContentType) throws {
         let index = selectedTabIndex.value
-        guard index >= 0 else {
+
+        guard var selectedTab = tabs.value[safe: index] else {
             throw NotInitializedYet()
         }
 
-        tabs.value[index] = tab
+        selectedTab.contentType = tabContent
+        tabs.value[index] = selectedTab
 
         // Need to notify observers to allow them
         // to update title for tab view
         DispatchQueue.main.async {
-            self.observers.forEach { $0.tabDidReplace(tab, at: index) }
+            self.observers.forEach { $0.tabDidReplace(selectedTab, at: index) }
         }
     }
 

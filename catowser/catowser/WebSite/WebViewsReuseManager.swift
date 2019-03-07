@@ -19,7 +19,7 @@ final class WebViewsReuseManager {
     /// Needed to store index of last returned view
     private var lastSelectedIndex: Int?
 
-    private init(_ viewsLimit: Int = 2) {
+    private init(_ viewsLimit: Int = 3) {
         assert(viewsLimit >= 1, "Not possible view limit")
         views = [WebViewController]()
         if viewsLimit >= 1 {
@@ -33,19 +33,23 @@ final class WebViewsReuseManager {
     ///
     /// - Parameter site: The site object with all info for WebView.
     /// - Returns: Web view controller configured with `Site`.
-    func getControllerFor(_ site: Site) throws -> WebViewController {
-        if let existingController = views.first(where: { $0.site == site }) {
-            return existingController
+    func controllerFor(_ site: Site, open inNewView: Bool) throws -> WebViewController {
+        if let ix = lastSelectedIndex, !inNewView {
+            guard let vc = views[safe: ix] else {
+                struct OutOfBoundsIndex: Error {}
+                throw OutOfBoundsIndex()
+            }
+            return vc
         }
 
         let count = views.count
-        if views.isEmpty || count < viewsLimit {
+        if count >= 0 && count < viewsLimit {
             let vc = WebViewController(site)
             views.append(vc)
             lastSelectedIndex = count
             return vc
         } else {
-            guard let lastIndex = lastSelectedIndex else {
+            guard let selectedIndex = lastSelectedIndex else {
                 // Not possible case actually, so, adding exception will not make sense
                 // and at the same time creating view controller here is not good.
                 // Also, need to have non Optional return value.
@@ -57,8 +61,8 @@ final class WebViewsReuseManager {
             }
 
             let nextIndex: Int
-            if lastIndex + 1 < count {
-                nextIndex = lastIndex + 1
+            if selectedIndex + 1 < count - 1 {
+                nextIndex = selectedIndex + 1
             } else {
                 nextIndex = 0
             }

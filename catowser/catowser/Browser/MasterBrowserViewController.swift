@@ -103,7 +103,7 @@ final class MasterBrowserViewController: BaseViewController {
 
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
-    private var currentTabContent: Tab.ContentType?
+    private var previousTabContent: Tab.ContentType?
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -245,14 +245,10 @@ final class MasterBrowserViewController: BaseViewController {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        if let currentType = currentTabContent, currentType == tabContent {
-            print("same site")
-            return
-        }
-
         switch tabContent {
         case .site(let site):
-            guard let webViewController = try? WebViewsReuseManager.shared.getControllerFor(site) else {
+            guard let webViewController = try?
+                WebViewsReuseManager.shared.controllerFor(site, open: isNewWebViewRequired) else {
                 return
             }
 
@@ -273,35 +269,29 @@ extension MasterBrowserViewController: TabRendererInterface {
             }
             break
         }
-    }
-}
 
-extension MasterBrowserViewController {
-    private func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
-        func handling(_ notification: Notification) {
-            guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
-            guard let value = info as? NSValue else { return }
-            let rect = value.cgRectValue
-            
-            print("\(#function): keyboard will show with height \(rect.size.height)")
-            // need to reduce search suggestions list height
-            keyboardHeight = rect.size.height
-        }
-        
-        return handling
-    }
-    
-    private func keyboardWillHideClosure() -> (Notification) -> Void {
-        func handling(_ notification: Notification) {
-            print("\(#function): keyboard will hide")
-            keyboardHeight = nil
-        }
-        
-        return handling
+        previousTabContent = tabContent
     }
 }
 
 private extension MasterBrowserViewController {
+    var isNewWebViewRequired: Bool {
+        guard let content = previousTabContent else {
+            // value doesn't matter for this case, because even if `false`
+            // will be returned, then web views list
+            // will not be able to return current web view
+            // because it was never created
+            return true
+        }
+
+        guard case .site = content else {
+            // if previous content was not a site
+            return true
+        }
+
+        return false
+    }
+
     func navigationComponent() -> SiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return toolbarViewController
@@ -310,6 +300,29 @@ private extension MasterBrowserViewController {
             return tabletVc
         }
         return nil
+    }
+
+    func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
+        func handling(_ notification: Notification) {
+            guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
+            guard let value = info as? NSValue else { return }
+            let rect = value.cgRectValue
+
+            print("\(#function): keyboard will show with height \(rect.size.height)")
+            // need to reduce search suggestions list height
+            keyboardHeight = rect.size.height
+        }
+
+        return handling
+    }
+
+    func keyboardWillHideClosure() -> (Notification) -> Void {
+        func handling(_ notification: Notification) {
+            print("\(#function): keyboard will hide")
+            keyboardHeight = nil
+        }
+
+        return handling
     }
 
     func showSearchControllerIfNeeded() {
@@ -413,20 +426,13 @@ extension MasterBrowserViewController: SearchSuggestionsListDelegate {
             return
         }
         hideSearchController()
-        let site = Site(url: url, searchSuggestion: suggestion)
+        let siteContent: Tab.ContentType = .site(Site(url: url, searchSuggestion: suggestion))
 
-        if let currentTab = try? TabsListManager.shared.selectedTab() {
-            var updatedTab = currentTab
-            updatedTab.contentType = .site(site)
-            do {
-                try TabsListManager.shared.replaceSelectedTab(with: updatedTab)
-                open(tabContent: updatedTab.contentType)
-            } catch {
-                print("Failed to replace current tab")
-            }
-        } else {
-            // Most likely this code never will be triggered because always one selected tab is availbale
-            fatalError("Can't found selected tab to replace it")
+        do {
+            try TabsListManager.shared.replaceSelected(tabContent: siteContent)
+            open(tabContent: siteContent)
+        } catch {
+            print("\(#function) failed to replace current tab")
         }
     }
 }
