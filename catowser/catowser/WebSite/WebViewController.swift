@@ -28,15 +28,17 @@ protocol SiteNavigationComponent {
 
 final class WebViewController: BaseViewController {
     
-    var site: Site {
-        didSet {
-            let request = URLRequest(url: site.url)
-            webView.load(request)
-        }
+    private(set) var currentUrl: URL
+
+    func load(_ url: URL) {
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
 
+    private var ignoreSiteUpdate: Bool = false
+
     init(_ site: Site) {
-        self.site = site
+        self.currentUrl = site.url
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,8 +62,7 @@ final class WebViewController: BaseViewController {
         
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        let request = URLRequest(url: site.url)
-        webView.load(request)
+        load(currentUrl)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -138,17 +139,12 @@ extension WebViewController: WKUIDelegate {
             print("web view without url")
             return
         }
-        guard let currentTab = try? TabsListManager.shared.selectedTab() else {
-            fatalError("opening a link without current tab")
-        }
 
-        // check if it is same site
-        guard case let .site(currentSite) = currentTab.contentType, currentSite.url != webViewUrl else {
-            return
-        }
+        currentUrl = webViewUrl
+        let site: Site = .init(url: webViewUrl)
 
         do {
-            try TabsListManager.shared.replaceSelected(tabContent: .site(Site(url: webViewUrl)))
+            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
         } catch {
             print("\(#function) - failed to replace current tab")
         }
