@@ -38,7 +38,7 @@ final class TabsViewController: BaseViewController {
         return scrollView
     }()
     
-    private let addTabButton: UIButton = {
+    private lazy var addTabButton: UIButton = {
         let addButton = UIButton()
         let image = UIImage(imageLiteralResourceName: "newTabButton-Normal")
         addButton.setImage(image, for: .normal)
