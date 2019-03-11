@@ -155,6 +155,7 @@ extension SearchBarBaseViewController: SearchBarControllerInterface {
             // need somehow select all text in search bar view
             prepareForEditMode()
         case .blankSearch:
+            searchBarContent = nil
             searchBarView.text = nil
             siteNameLabel.text = .placeholderText
             searchBarView.setShowsCancelButton(false, animated: false)
