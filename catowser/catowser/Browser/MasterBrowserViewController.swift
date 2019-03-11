@@ -248,7 +248,7 @@ extension MasterBrowserViewController: TabRendererInterface {
         switch tabContent {
         case .site(let site):
             guard let webViewController = try?
-                WebViewsReuseManager.shared.controllerFor(site, open: isNewWebViewRequired) else {
+                WebViewsReuseManager.shared.controllerFor(site) else {
                 return
             }
 
@@ -275,23 +275,6 @@ extension MasterBrowserViewController: TabRendererInterface {
 }
 
 private extension MasterBrowserViewController {
-    var isNewWebViewRequired: Bool {
-        guard let content = previousTabContent else {
-            // value doesn't matter for this case, because even if `false`
-            // will be returned, then web views list
-            // will not be able to return current web view
-            // because it was never created
-            return true
-        }
-
-        guard case .site = content else {
-            // if previous content was not a site
-            return true
-        }
-
-        return false
-    }
-
     func navigationComponent() -> SiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return toolbarViewController
