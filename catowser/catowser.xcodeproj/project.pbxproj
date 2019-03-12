@@ -214,14 +214,31 @@
 		608DA70A222E7048009F75BD /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				60724ED92204332B0071BECF /* DefaultTabProvider.swift */,
+				607D02AE21FEF87F009FCD0B /* TabsSubject.swift */,
+				60724EA621FF17C90071BECF /* TabsCache.swift */,
 				608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		608DA73E2237DA33009F75BD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				846220AE1EEE9B6C00B84C73 /* Tab.swift */,
+				60724EDB220463D40071BECF /* Site.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		6094E71D221FD2B9004269A2 /* CoreBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				C70724C8201E603E0021CF5D /* Extensions */,
+				C7D9E54E2042D64E00FE55A3 /* Network */,
+				8A95D7AF221F16E90032C156 /* Primitives */,
+				60724F7B2216989E0071BECF /* Parsers */,
+				608DA73E2237DA33009F75BD /* Models */,
 				608DA70A222E7048009F75BD /* Tabs */,
 				6094E71E221FD2B9004269A2 /* CoreBrowser.h */,
 				6094E71F221FD2B9004269A2 /* Info.plist */,
@@ -247,12 +264,7 @@
 				84704FC11EEE769800F89F6B /* TabView.swift */,
 				605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */,
 				605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */,
-				607D02AE21FEF87F009FCD0B /* TabsSubject.swift */,
-				846220AE1EEE9B6C00B84C73 /* Tab.swift */,
-				60724EA621FF17C90071BECF /* TabsCache.swift */,
 				60724EA821FF1BD80071BECF /* CounterView.swift */,
-				60724ED92204332B0071BECF /* DefaultTabProvider.swift */,
-				60724EDB220463D40071BECF /* Site.swift */,
 				60724EE62209C8730071BECF /* TabsPreviewsRouter.swift */,
 			);
 			path = WebTabs;
@@ -301,16 +313,12 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
-				8A95D7AF221F16E90032C156 /* Primitives */,
-				60724F7B2216989E0071BECF /* Parsers */,
 				6010ECC421F74E1500972E28 /* Theme */,
-				C7D9E54E2042D64E00FE55A3 /* Network */,
 				C7D9E54B2042CDEE00FE55A3 /* Constants */,
 				841A2D7C203ACBDB0050A996 /* WebBrowserToolbar */,
 				841A2D7B203ACBBA0050A996 /* WebSite */,
 				841A2D7A203ACB970050A996 /* WebTabs */,
 				841A2D79203ACB420050A996 /* Search */,
-				C70724C8201E603E0021CF5D /* Extensions */,
 				847D7C871EF6C30F00291B87 /* Browser */,
 				8435A49A1EED5E700020102F /* AppDelegate.swift */,
 				8435A49C1EED5E700020102F /* BaseViewController.swift */,
