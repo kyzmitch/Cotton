@@ -20,6 +20,7 @@
 		60724F7A221695C80071BECF /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */; };
 		608DA709222E6F5E009F75BD /* TabSelectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */; };
+		608DA744223914D8009F75BD /* ajaxHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = 608DA743223914D8009F75BD /* ajaxHandler.js */; };
 		6094E720221FD2B9004269A2 /* CoreBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6094E71E221FD2B9004269A2 /* CoreBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -111,6 +112,7 @@
 		607D02AE21FEF87F009FCD0B /* TabsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubject.swift; sourceTree = "<group>"; };
 		607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelectionStrategy.swift; sourceTree = "<group>"; };
+		608DA743223914D8009F75BD /* ajaxHandler.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ajaxHandler.js; sourceTree = "<group>"; };
 		6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		6094E71C221FD2B9004269A2 /* CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E71E221FD2B9004269A2 /* CoreBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreBrowser.h; sourceTree = "<group>"; };
@@ -231,9 +233,18 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		608DA7422238FE33009F75BD /* JavaScripts */ = {
+			isa = PBXGroup;
+			children = (
+				608DA743223914D8009F75BD /* ajaxHandler.js */,
+			);
+			path = JavaScripts;
+			sourceTree = "<group>";
+		};
 		6094E71D221FD2B9004269A2 /* CoreBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				608DA7422238FE33009F75BD /* JavaScripts */,
 				C70724C8201E603E0021CF5D /* Extensions */,
 				C7D9E54E2042D64E00FE55A3 /* Network */,
 				8A95D7AF221F16E90032C156 /* Primitives */,
@@ -490,6 +501,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				608DA744223914D8009F75BD /* ajaxHandler.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
