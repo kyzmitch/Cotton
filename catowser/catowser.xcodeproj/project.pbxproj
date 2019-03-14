@@ -20,7 +20,9 @@
 		60724F7A221695C80071BECF /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */; };
 		608DA709222E6F5E009F75BD /* TabSelectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */; };
-		608DA744223914D8009F75BD /* ajaxHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = 608DA743223914D8009F75BD /* ajaxHandler.js */; };
+		608DA74E223A3BD5009F75BD /* JSPlugins.h in Headers */ = {isa = PBXBuildFile; fileRef = 608DA74C223A3BD5009F75BD /* JSPlugins.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		608DA751223A3BD5009F75BD /* JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; };
+		608DA752223A3BD5009F75BD /* JSPlugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6094E720221FD2B9004269A2 /* CoreBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6094E71E221FD2B9004269A2 /* CoreBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -63,6 +65,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		608DA74F223A3BD5009F75BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 608DA749223A3BD4009F75BD;
+			remoteInfo = JSPlugins;
+		};
 		6094E721221FD2B9004269A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -79,6 +88,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				608DA752223A3BD5009F75BD /* JSPlugins.framework in Embed Frameworks */,
 				6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -113,6 +123,9 @@
 		607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelectionStrategy.swift; sourceTree = "<group>"; };
 		608DA743223914D8009F75BD /* ajaxHandler.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ajaxHandler.js; sourceTree = "<group>"; };
+		608DA74A223A3BD4009F75BD /* JSPlugins.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSPlugins.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		608DA74C223A3BD5009F75BD /* JSPlugins.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSPlugins.h; sourceTree = "<group>"; };
+		608DA74D223A3BD5009F75BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		6094E71C221FD2B9004269A2 /* CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E71E221FD2B9004269A2 /* CoreBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreBrowser.h; sourceTree = "<group>"; };
@@ -153,6 +166,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		608DA747223A3BD4009F75BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6094E719221FD2B9004269A2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -166,6 +186,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				608DA751223A3BD5009F75BD /* JSPlugins.framework in Frameworks */,
 				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
 				14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */,
 			);
@@ -233,18 +254,27 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		608DA7422238FE33009F75BD /* JavaScripts */ = {
+		608DA7422238FE33009F75BD /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
 				608DA743223914D8009F75BD /* ajaxHandler.js */,
 			);
-			path = JavaScripts;
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		608DA74B223A3BD5009F75BD /* JSPlugins */ = {
+			isa = PBXGroup;
+			children = (
+				608DA7422238FE33009F75BD /* Scripts */,
+				608DA74C223A3BD5009F75BD /* JSPlugins.h */,
+				608DA74D223A3BD5009F75BD /* Info.plist */,
+			);
+			path = JSPlugins;
 			sourceTree = "<group>";
 		};
 		6094E71D221FD2B9004269A2 /* CoreBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				608DA7422238FE33009F75BD /* JavaScripts */,
 				C70724C8201E603E0021CF5D /* Extensions */,
 				C7D9E54E2042D64E00FE55A3 /* Network */,
 				8A95D7AF221F16E90032C156 /* Primitives */,
@@ -306,6 +336,7 @@
 			children = (
 				8435A4991EED5E700020102F /* catowser */,
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,
+				608DA74B223A3BD5009F75BD /* JSPlugins */,
 				8435A4981EED5E700020102F /* Products */,
 				E35CED317EE4DF68ED3EDD9C /* Pods */,
 				5906B47E95A37FC0872DBD1A /* Frameworks */,
@@ -317,6 +348,7 @@
 			children = (
 				8435A4971EED5E700020102F /* catowser.app */,
 				6094E71C221FD2B9004269A2 /* CoreBrowser.framework */,
+				608DA74A223A3BD4009F75BD /* JSPlugins.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -404,6 +436,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		608DA745223A3BD4009F75BD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				608DA74E223A3BD5009F75BD /* JSPlugins.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6094E717221FD2B9004269A2 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -416,6 +456,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		608DA749223A3BD4009F75BD /* JSPlugins */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 608DA755223A3BD5009F75BD /* Build configuration list for PBXNativeTarget "JSPlugins" */;
+			buildPhases = (
+				608DA745223A3BD4009F75BD /* Headers */,
+				608DA746223A3BD4009F75BD /* Sources */,
+				608DA747223A3BD4009F75BD /* Frameworks */,
+				608DA748223A3BD4009F75BD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JSPlugins;
+			productName = JSPlugins;
+			productReference = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		6094E71B221FD2B9004269A2 /* CoreBrowser */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6094E727221FD2B9004269A2 /* Build configuration list for PBXNativeTarget "CoreBrowser" */;
@@ -450,6 +508,7 @@
 			);
 			dependencies = (
 				6094E722221FD2B9004269A2 /* PBXTargetDependency */,
+				608DA750223A3BD5009F75BD /* PBXTargetDependency */,
 			);
 			name = catowser;
 			productName = catowser;
@@ -466,6 +525,10 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
+					608DA749223A3BD4009F75BD = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+					};
 					6094E71B221FD2B9004269A2 = {
 						CreatedOnToolsVersion = 10.1;
 						ProvisioningStyle = Automatic;
@@ -492,16 +555,23 @@
 			targets = (
 				8435A4961EED5E700020102F /* catowser */,
 				6094E71B221FD2B9004269A2 /* CoreBrowser */,
+				608DA749223A3BD4009F75BD /* JSPlugins */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		608DA748223A3BD4009F75BD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6094E71A221FD2B9004269A2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				608DA744223914D8009F75BD /* ajaxHandler.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +652,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		608DA746223A3BD4009F75BD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6094E718221FD2B9004269A2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -640,6 +717,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		608DA750223A3BD5009F75BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 608DA749223A3BD4009F75BD /* JSPlugins */;
+			targetProxy = 608DA74F223A3BD5009F75BD /* PBXContainerItemProxy */;
+		};
 		6094E722221FD2B9004269A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
@@ -669,6 +751,61 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		608DA753223A3BD5009F75BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = JSPlugins/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ae.JSPlugins;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		608DA754223A3BD5009F75BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = JSPlugins/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = ae.JSPlugins;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		6094E725221FD2B9004269A2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1734249475EC8FA1087C42A0 /* Pods-CoreBrowser.debug.xcconfig */;
@@ -872,6 +1009,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		608DA755223A3BD5009F75BD /* Build configuration list for PBXNativeTarget "JSPlugins" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				608DA753223A3BD5009F75BD /* Debug */,
+				608DA754223A3BD5009F75BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6094E727221FD2B9004269A2 /* Build configuration list for PBXNativeTarget "CoreBrowser" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
