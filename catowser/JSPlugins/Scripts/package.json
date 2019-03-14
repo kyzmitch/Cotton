@@ -1,0 +1,14 @@
+{
+  "name": "js_browser_demo",
+  "version": "1.0.0",
+  "description": "Scripts for injection to webview",
+  "main": "ajaxHandler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrei Ermoshin",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.15.1"
+  }
+}
