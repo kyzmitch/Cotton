@@ -8,6 +8,7 @@ if (typeof jQuery == 'undefined') {
     // https://css-tricks.com/snippets/jquery/check-if-jquery-is-loaded/
     console.log('jQuery is not present on site')
 } else {
+    console.log('jQuery ajax listener will be added')
     $( document ).ajaxSend(function( event, request, settings )  {
         callNativeApp (settings.data);
     });
