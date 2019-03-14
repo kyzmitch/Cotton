@@ -4,7 +4,7 @@
   "description": "Scripts for injection to webview",
   "main": "ajaxHandler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ."
   },
   "author": "Andrei Ermoshin",
   "license": "ISC",
