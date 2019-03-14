@@ -2,10 +2,16 @@
 // will call the native app with the request details.
 // https://stackoverflow.com/questions/28766676/how-can-i-monitor-requests-on-wkwebview
 // Following code only will work with Ajax script
+// https://stackoverflow.com/a/7341884/483101
 
-$( document ).ajaxSend(function( event, request, settings )  {
-    callNativeApp (settings.data);
-});
+if (typeof jQuery == 'undefined') {
+    // https://css-tricks.com/snippets/jquery/check-if-jquery-is-loaded/
+    console.log('jQuery is not present on site')
+} else {
+    $( document ).ajaxSend(function( event, request, settings )  {
+        callNativeApp (settings.data);
+    });
+}
 
 function callNativeApp (data) {
     try {
