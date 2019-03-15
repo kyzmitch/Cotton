@@ -1,4 +1,4 @@
-# Сatowser - browser for iOS
+# Cotton - browser for iOS
 
 Building the code
 -----------------
