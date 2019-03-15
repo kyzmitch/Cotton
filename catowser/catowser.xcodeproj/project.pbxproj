@@ -980,6 +980,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -995,6 +996,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2E7159D4401F487B0F97CD59 /* Pods-catowser.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
