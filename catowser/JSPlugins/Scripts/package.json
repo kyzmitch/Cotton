@@ -1,6 +1,7 @@
 {
   "name": "js_browser_demo",
   "version": "1.0.0",
+  "private": true,
   "description": "Scripts for injection to webview",
   "main": "ajaxHandler.js",
   "scripts": {
@@ -9,6 +10,6 @@
   "author": "Andrei Ermoshin",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^5.15.1"
+    "eslint": "^5.15.2"
   }
 }
