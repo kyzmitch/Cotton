@@ -41,6 +41,8 @@ public struct Site {
     private let isPrivate: Bool = false
 
     private let blockPopups: Bool = true
+
+    public let canLoadPlugins: Bool = true
     
     public init(url: URL, searchSuggestion: String? = nil) {
         self.url = url

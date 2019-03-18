@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import WebKit
 import CoreBrowser
+import JSPlugins
 
 protocol SiteNavigationDelegate: class {
     var canGoBack: Bool { get }
@@ -30,19 +31,45 @@ final class WebViewController: BaseViewController {
     
     private(set) var currentUrl: URL
 
+    /// Configuration should be transferred from `Site`
     private let configuration: WKWebViewConfiguration
 
-    func load(_ url: URL) {
+    /// Content controller should be created every time when `Site` is changed
+    private var contentController = WKUserContentController()
+
+    private var pluginsPresented: Bool = false
+
+    func load(_ url: URL, canLoadPlugins: Bool = true) {
+        if canLoadPlugins && !pluginsPresented {
+            injectPlugins(atInit: false)
+        } else if !canLoadPlugins {
+            webView.configuration.userContentController = WKUserContentController()
+            pluginsPresented = false
+        }
+
         let request = URLRequest(url: url)
         webView.load(request)
     }
 
-    private var ignoreSiteUpdate: Bool = false
+    private func injectPlugins(atInit: Bool) {
+        if !atInit {
+            contentController = WKUserContentController()
+            // can't use `didSet` because it is called inside `init` and web view is not available yet
+            webView.configuration.userContentController = contentController
+        }
+
+        JSPluginsManager.shared.visit(contentController)
+
+        pluginsPresented = true
+    }
 
     init(_ site: Site) {
-        self.currentUrl = site.url
-        self.configuration = site.webViewConfig
+        currentUrl = site.url
+        configuration = site.webViewConfig
         super.init(nibName: nil, bundle: nil)
+        if site.canLoadPlugins {
+            injectPlugins(atInit: true)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -50,6 +77,7 @@ final class WebViewController: BaseViewController {
     }
 
     private lazy var webView: WKWebView = {
+        configuration.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.backgroundColor = .black
         
