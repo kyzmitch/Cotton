@@ -35,13 +35,13 @@ final class WebViewController: BaseViewController {
     private let configuration: WKWebViewConfiguration
 
     /// Content controller should be created every time when `Site` is changed
-    private var contentController = WKUserContentController()
+    private var contentController: WKUserContentController
 
     private var pluginsPresented: Bool = false
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         if canLoadPlugins && !pluginsPresented {
-            injectPlugins(atInit: false)
+            injectPlugins()
         } else if !canLoadPlugins {
             webView.configuration.userContentController = WKUserContentController()
             pluginsPresented = false
@@ -51,25 +51,22 @@ final class WebViewController: BaseViewController {
         webView.load(request)
     }
 
-    private func injectPlugins(atInit: Bool) {
-        if !atInit {
-            contentController = WKUserContentController()
-            // can't use `didSet` because it is called inside `init` and web view is not available yet
-            webView.configuration.userContentController = contentController
-        }
+    private func injectPlugins() {
+        contentController = WKUserContentController()
 
+        // inject only for specific sites, to fix case
+        // then instagram related plugin is injected to google site
         JSPluginsManager.shared.visit(contentController)
-
+        // can't use `didSet` because it is called inside `init` and web view is not available yet
+        webView.configuration.userContentController = contentController
         pluginsPresented = true
     }
 
     init(_ site: Site) {
         currentUrl = site.url
         configuration = site.webViewConfig
+        contentController = WKUserContentController()
         super.init(nibName: nil, bundle: nil)
-        if site.canLoadPlugins {
-            injectPlugins(atInit: true)
-        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -192,22 +189,25 @@ extension WebViewController: WKNavigationDelegate {
 
 extension WebViewController: SiteNavigationDelegate {
     var canGoBack: Bool {
-        return webView.canGoBack
+        return isViewLoaded ? webView.canGoBack : false
     }
 
     var canGoForward: Bool {
-        return webView.canGoForward
+        return isViewLoaded ? webView.canGoForward : false
     }
 
     func goForward() {
+        guard isViewLoaded else { return }
         _ = webView.goForward()
     }
 
     func goBack() {
+        guard isViewLoaded else { return }
         _ = webView.goBack()
     }
 
     func reload() {
+        guard isViewLoaded else { return }
         _ = webView.reload()
     }
 }

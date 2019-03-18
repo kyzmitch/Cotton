@@ -13,6 +13,7 @@ final class BlankWebPageViewController: BaseViewController {
     private let logo: UIImageView = {
         let img = UIImage(named: "Logo")
         let imgView = UIImageView(image: img)
+        imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
     
