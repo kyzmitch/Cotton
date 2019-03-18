@@ -60,6 +60,8 @@
 		8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A31EED5E700020102F /* LaunchScreen.storyboard */; };
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
+		8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A012FA322400F1200041487 /* InstagramHandler.swift */; };
+		8A012FA72240111700041487 /* jQueryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A012FA62240111700041487 /* jQueryHandler.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
@@ -125,7 +127,7 @@
 		607D02AE21FEF87F009FCD0B /* TabsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubject.swift; sourceTree = "<group>"; };
 		607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelectionStrategy.swift; sourceTree = "<group>"; };
-		608DA743223914D8009F75BD /* ajaxHandler.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = ajaxHandler.js; sourceTree = "<group>"; };
+		608DA743223914D8009F75BD /* jquery_ajax.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery_ajax.js; sourceTree = "<group>"; };
 		608DA74A223A3BD4009F75BD /* JSPlugins.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSPlugins.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		608DA74C223A3BD5009F75BD /* JSPlugins.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSPlugins.h; sourceTree = "<group>"; };
 		608DA74D223A3BD5009F75BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -155,6 +157,8 @@
 		846220AE1EEE9B6C00B84C73 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
+		8A012FA322400F1200041487 /* InstagramHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramHandler.swift; sourceTree = "<group>"; };
+		8A012FA62240111700041487 /* jQueryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jQueryHandler.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -264,7 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				608DA75D223FBFDE009F75BD /* ig.js */,
-				608DA743223914D8009F75BD /* ajaxHandler.js */,
+				608DA743223914D8009F75BD /* jquery_ajax.js */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -272,6 +276,7 @@
 		608DA74B223A3BD5009F75BD /* JSPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				8A012FA52240110000041487 /* Handlers */,
 				608DA7422238FE33009F75BD /* Scripts */,
 				608DA74C223A3BD5009F75BD /* JSPlugins.h */,
 				608DA74D223A3BD5009F75BD /* Info.plist */,
@@ -389,6 +394,15 @@
 				C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */,
 			);
 			path = Browser;
+			sourceTree = "<group>";
+		};
+		8A012FA52240110000041487 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				8A012FA322400F1200041487 /* InstagramHandler.swift */,
+				8A012FA62240111700041487 /* jQueryHandler.swift */,
+			);
+			path = Handlers;
 			sourceTree = "<group>";
 		};
 		8A95D7AF221F16E90032C156 /* Primitives */ = {
@@ -667,8 +681,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A012FA72240111700041487 /* jQueryHandler.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* JSPluginsManager.swift in Sources */,
+				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

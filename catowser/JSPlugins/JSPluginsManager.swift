@@ -10,7 +10,7 @@ import Foundation
 import WebKit
 
 public final class JSPluginsManager {
-    static let shared = JSPluginsManager()
+    public static let shared = JSPluginsManager()
 
     private var activePlugins = Set<JSPluginName>()
 
@@ -20,6 +20,14 @@ public final class JSPluginsManager {
     }
 
     public func visit(_ userContentController: WKUserContentController) {
-
+        for pluginType in activePlugins {
+            do {
+                let wkScript = try JSPluginFactory.shared.script(for: pluginType)
+                userContentController.addUserScript(wkScript)
+                userContentController.add(pluginType.scriptHandler, name: pluginType.messageHandlerName)
+            } catch {
+                print("\(#function) failed to load plugin \(pluginType.rawValue)")
+            }
+        }
     }
 }

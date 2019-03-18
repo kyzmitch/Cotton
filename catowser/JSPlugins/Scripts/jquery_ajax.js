@@ -16,7 +16,7 @@ if (typeof jQuery == 'undefined') {
 
 function callNativeApp (data) {
     try {
-        webkit.messageHandlers.callbackHandler.postMessage(data);
+        webkit.messageHandlers.jQueryHandler.postMessage(data);
     }
     catch(err) {
         console.log('The native context does not exist yet');
