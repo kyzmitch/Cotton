@@ -10,19 +10,16 @@ import UIKit
 import SnapKit
 
 final class BlankWebPageViewController: BaseViewController {
-    private let label: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 3
-        label.textAlignment = .center
-        label.text = "Catowser"
-        label.textColor = .black
-        return label
+    private let logo: UIImageView = {
+        let img = UIImage(named: "Logo")
+        let imgView = UIImageView(image: img)
+        return imgView
     }()
     
     override func loadView() {
         view = UIView()
 
-        view.addSubview(label)
+        view.addSubview(logo)
     }
     
     override func viewDidLoad() {
@@ -30,12 +27,9 @@ final class BlankWebPageViewController: BaseViewController {
         
         view.backgroundColor = .white
 
-        label.snp.makeConstraints { (make) in
+        logo.snp.makeConstraints { (make) in
             make.center.equalTo(view)
-            let shift = 20
-            make.leading.equalTo(shift)
-            make.trailing.equalTo(-shift)
-            make.height.equalTo(100)
+            make.width.height.equalTo(120)
         }
     }
 }

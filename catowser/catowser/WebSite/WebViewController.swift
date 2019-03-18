@@ -30,6 +30,8 @@ final class WebViewController: BaseViewController {
     
     private(set) var currentUrl: URL
 
+    private let configuration: WKWebViewConfiguration
+
     func load(_ url: URL) {
         let request = URLRequest(url: url)
         webView.load(request)
@@ -39,6 +41,7 @@ final class WebViewController: BaseViewController {
 
     init(_ site: Site) {
         self.currentUrl = site.url
+        self.configuration = site.webViewConfig
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -46,8 +49,8 @@ final class WebViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private let webView: WKWebView = {
-        let webView = WKWebView()
+    private lazy var webView: WKWebView = {
+        let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.backgroundColor = .black
         
         return webView

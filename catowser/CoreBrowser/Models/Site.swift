@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import WebKit
 
 public struct Site {
     /// Initial url
@@ -37,6 +38,10 @@ public struct Site {
         return searchSuggestion ?? url.absoluteString
     }
 
+    private let isPrivate: Bool = false
+
+    private let blockPopups: Bool = true
+    
     public init(url: URL, searchSuggestion: String? = nil) {
         self.url = url
         self.searchSuggestion = searchSuggestion
@@ -48,6 +53,21 @@ public struct Site {
         }
         url = decodedUrl
         searchSuggestion = nil
+    }
+
+    /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
+    public var webViewConfig: WKWebViewConfiguration {
+        let configuration = WKWebViewConfiguration()
+        configuration.processPool = WKProcessPool()
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
+        // We do this to go against the configuration of the <meta name="viewport">
+        // tag to behave the same way as Safari :-(
+        configuration.ignoresViewportScaleLimits = true
+        if isPrivate {
+            configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+        }
+
+        return configuration
     }
 }
 
