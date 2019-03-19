@@ -19,3 +19,7 @@ cd catowser/JSPlugins/Scripts
 npm init
 eslint --init
 ```
+
+## JavaScript info
+- https://en.wikipedia.org/wiki/Unobtrusive_JavaScript
+- 

@@ -10,19 +10,35 @@ import Foundation
 import WebKit
 
 public final class InstagramHandler: NSObject {
-    
+}
+
+fileprivate extension InstagramHandler {
+    enum MessageKey: String {
+        case log = "log"
+        case url = "url"
+    }
 }
 
 extension InstagramHandler: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("JS Instagram handler: \(message.name) \(message.body)")
-
-        guard let args = message.body as? [String: AnyObject] else {
-            print("message.body is empty")
+        guard let args = message.body as? [String: String] else {
+            print("\(#function) message.body has unexpected format")
             return
         }
 
-        // switch message.name
-
+        for (key, value) in args {
+            switch MessageKey(rawValue: key) {
+            case .log?:
+                print("\(value)")
+            case .url?:
+                guard let url = URL(string: value) else {
+                    print("url key value has incorrect format")
+                    continue
+                }
+                print("received url: \(url.absoluteString)")
+            default:
+                print("unexpected key \(key)")
+            }
+        }
     }
 }
