@@ -21,8 +21,9 @@ public final class JSPluginsManager {
     public func visit(_ userContentController: WKUserContentController) {
         for (pluginType, handler) in activePlugins {
             do {
-                let wkScript = try JSPluginFactory.shared.script(for: pluginType.rawValue)
+                let wkScript = try JSPluginFactory.shared.script(for: pluginType)
                 userContentController.addUserScript(wkScript)
+                userContentController.removeScriptMessageHandler(forName: pluginType.messageHandlerName)
                 userContentController.add(handler, name: pluginType.messageHandlerName)
             } catch {
                 print("\(#function) failed to load plugin \(pluginType.rawValue)")

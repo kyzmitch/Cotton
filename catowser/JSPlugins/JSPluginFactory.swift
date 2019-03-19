@@ -24,6 +24,16 @@ public enum JSPluginName: String {
             return "jQueryHandler"
         }
     }
+
+    var mainFrameOnly: Bool {
+        switch self {
+        case .instagram:
+            return false
+        case .jQueryAjax:
+            return true
+        }
+    }
+
 }
 
 // extension JSPluginName: Hashable {}
@@ -35,13 +45,14 @@ final class JSPluginFactory {
 
     private init() {}
 
-    func script(for type: JSPluginName.RawValue) throws -> WKUserScript {
-        if let existingJS = scripts.object(forKey: type as NSString) {
+    func script(for type: JSPluginName) throws -> WKUserScript {
+        let typeName = type.rawValue
+        if let existingJS = scripts.object(forKey: typeName as NSString) {
             return existingJS
         } else {
-            let source = try JSPluginFactory.loadScriptSource(type)
-            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-            scripts.setObject(wkScript, forKey: type as NSString)
+            let source = try JSPluginFactory.loadScriptSource(typeName)
+            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: type.mainFrameOnly)
+            scripts.setObject(wkScript, forKey: typeName as NSString)
             return wkScript
         }
     }
