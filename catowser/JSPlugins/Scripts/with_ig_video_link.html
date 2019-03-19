@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>With Instagram link</title>
+    <script src="ig.js"></script>
+    <!-- 
+        <meta> tags always go inside the <head> element.
+    -->
+    <meta property="og:type" content="video" />
+    <meta property="og:video" content="https://scontent-mia3-1.cdninstagram.com/vp/11ce6e07b6d856ae8fae7d0d35a0a52c/5C91C2CC/t50.2886-16/55718427_321147761870838_3781376708767121408_n.mp4?_nc_ht=scontent-mia3-1.cdninstagram.com" />
+    <meta property="og:video:secure_url" content="https://scontent-mia3-1.cdninstagram.com/vp/11ce6e07b6d856ae8fae7d0d35a0a52c/5C91C2CC/t50.2886-16/55718427_321147761870838_3781376708767121408_n.mp4?_nc_ht=scontent-mia3-1.cdninstagram.com" />
+    <meta property="og:video:type" content="video/mp4" />
+    <meta property="og:video:width" content="640" />
+    <meta property="og:video:height" content="800" />
+
+    <script>
+        if(window.onload) {
+            var curronload = window.onload;
+            var newonload = function(evt) {
+                curronload(evt);
+                searchIgVideoLink();
+            };
+            window.onload = newonload;
+        } else {
+            window.onload = searchIgVideoLink;
+        }
+    </script>
+</head>
+<body>
+    
+</body>
