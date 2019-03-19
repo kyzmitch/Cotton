@@ -6,13 +6,13 @@ var ig_video_url = get_ig_meta('og:video');
 
 if(ig_video_url){
 	try {
-        webkit.messageHandlers.igHandler.postMessage(meta_video);
+        webkit.messageHandlers.igHandler.postMessage("url":ig_video_url);
     } catch(err) {
-        webkit.messageHandlers.igHandler.postMessage({type:'log',content:'The native context does not exist yet'});
+        webkit.messageHandlers.igHandler.postMessage("log":"The native context does not exist yet");
     }
 }
 else {
-    webkit.messageHandlers.igHandler.postMessage({type:'log',content:'No any video url was found'});
+    webkit.messageHandlers.igHandler.postMessage("log":"No any video url was found");
 }
 
 function get_ig_meta(key) {

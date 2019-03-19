@@ -10,10 +10,12 @@
 import Foundation
 import WebKit
 
+/// JS Plugin handler where `rawValue` represent js script name
 public enum JSPluginName: String {
     case instagram = "ig"
     case jQueryAjax = "jquery_ajax"
-    
+
+    /// JS var name
     var messageHandlerName: String {
         switch self {
         case .instagram:
@@ -22,18 +24,9 @@ public enum JSPluginName: String {
             return "jQueryHandler"
         }
     }
-    
-    var scriptHandler: WKScriptMessageHandler {
-        switch self {
-        case .instagram:
-            let ig = InstagramHandler()
-            return ig
-        case .jQueryAjax:
-            let jquery = JQueryHandler()
-            return jquery
-        }
-    }
 }
+
+// extension JSPluginName: Hashable {}
 
 final class JSPluginFactory {
     static let shared = JSPluginFactory()
@@ -42,22 +35,22 @@ final class JSPluginFactory {
 
     private init() {}
 
-    func script(for type: JSPluginName) throws -> WKUserScript {
-        if let existingJS = scripts.object(forKey: type.rawValue as NSString) {
+    func script(for type: JSPluginName.RawValue) throws -> WKUserScript {
+        if let existingJS = scripts.object(forKey: type as NSString) {
             return existingJS
         } else {
             let source = try JSPluginFactory.loadScriptSource(type)
-            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
-            scripts.setObject(wkScript, forKey: type.rawValue as NSString)
+            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            scripts.setObject(wkScript, forKey: type as NSString)
             return wkScript
         }
     }
 }
 
 fileprivate extension JSPluginFactory {
-    static func loadScriptSource(_ resourceName: JSPluginName) throws -> String {
-        guard let filepath = Bundle.init(for: self).path(forResource: resourceName.rawValue, ofType: "js") else {
-            print("\(resourceName.rawValue).js not found!")
+    static func loadScriptSource(_ resourceName: JSPluginName.RawValue) throws -> String {
+        guard let filepath = Bundle.init(for: self).path(forResource: resourceName, ofType: "js") else {
+            print("\(resourceName).js not found!")
             struct JSFileNotExist: Error {}
             throw JSFileNotExist()
         }
