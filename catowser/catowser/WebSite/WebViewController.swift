@@ -34,16 +34,13 @@ final class WebViewController: BaseViewController {
     /// Configuration should be transferred from `Site`
     private let configuration: WKWebViewConfiguration
 
-    /// Content controller should be created every time when `Site` is changed
-    private var contentController: WKUserContentController
-
     private var pluginsPresented: Bool = false
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         if canLoadPlugins && !pluginsPresented {
             injectPlugins()
         } else if !canLoadPlugins {
-            webView.configuration.userContentController = WKUserContentController()
+            configuration.userContentController.removeAllUserScripts()
             pluginsPresented = false
         }
 
@@ -52,20 +49,16 @@ final class WebViewController: BaseViewController {
     }
 
     private func injectPlugins() {
-        contentController = WKUserContentController()
-
+        configuration.userContentController.removeAllUserScripts()
         // inject only for specific sites, to fix case
         // then instagram related plugin is injected to google site
-        JSPluginsManager.shared.visit(contentController)
-        // can't use `didSet` because it is called inside `init` and web view is not available yet
-        webView.configuration.userContentController = contentController
+        JSPluginsManager.shared.visit(configuration.userContentController)
         pluginsPresented = true
     }
 
     init(_ site: Site) {
         currentUrl = site.url
         configuration = site.webViewConfig
-        contentController = WKUserContentController()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -74,23 +67,26 @@ final class WebViewController: BaseViewController {
     }
 
     private lazy var webView: WKWebView = {
-        configuration.userContentController = contentController
         let webView = WKWebView(frame: .zero, configuration: configuration)
-        webView.backgroundColor = .black
-        
+        webView.backgroundColor = .white
         return webView
     }()
     
     override func loadView() {
-        view = webView
+        view = UIView(frame: .zero)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        load(currentUrl)
+        // try create web view only after creating
+        view.addSubview(webView)
         webView.uiDelegate = self
         webView.navigationDelegate = self
-        load(currentUrl)
+        webView.snp.makeConstraints { (maker) in
+            maker.leading.trailing.top.bottom.equalTo(view)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

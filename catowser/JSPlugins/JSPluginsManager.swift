@@ -12,19 +12,18 @@ import WebKit
 public final class JSPluginsManager {
     public static let shared = JSPluginsManager()
 
-    private var activePlugins = Set<JSPluginName>()
+    private var activePlugins = [JSPluginName: WKScriptMessageHandler]()
 
     private init() {
-        activePlugins.insert(.instagram)
-        activePlugins.insert(.instagram)
+        activePlugins[.instagram] = InstagramHandler()
     }
 
     public func visit(_ userContentController: WKUserContentController) {
-        for pluginType in activePlugins {
+        for (pluginType, handler) in activePlugins {
             do {
-                let wkScript = try JSPluginFactory.shared.script(for: pluginType)
+                let wkScript = try JSPluginFactory.shared.script(for: pluginType.rawValue)
                 userContentController.addUserScript(wkScript)
-                userContentController.add(pluginType.scriptHandler, name: pluginType.messageHandlerName)
+                userContentController.add(handler, name: pluginType.messageHandlerName)
             } catch {
                 print("\(#function) failed to load plugin \(pluginType.rawValue)")
             }
