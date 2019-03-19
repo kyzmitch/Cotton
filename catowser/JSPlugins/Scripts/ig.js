@@ -17,7 +17,17 @@ if(window.onload) {
 	window.onload = searchIgVideoLink;
 }
 
+function cottonLog(message) {
+	try {
+		webkit.messageHandlers.igHandler.postMessage({"log":message});
+	} catch(err) {
+		console.log(message);
+	}
+}
+
 function searchIgVideoLink() {
+	cottonLog("Start search for video url")
+	
 	var ig_video_url = get_ig_meta('og:video');
 
 	if(ig_video_url){
@@ -41,8 +51,9 @@ function get_ig_meta(key) {
 	var metas = document.getElementsByTagName('meta');
 
 	for (var i=0; i<metas.length; i++){
-		if (metas[i].getAttribute("property") == key){
-			return metas[i].getAttribute("content");
+		var meta = metas[i];
+		if (meta.getAttribute("property") == key){
+			return meta.getAttribute("content");
 		}
 	}
 
