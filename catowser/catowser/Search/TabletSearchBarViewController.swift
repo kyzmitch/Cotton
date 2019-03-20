@@ -23,7 +23,7 @@ final class TabletSearchBarViewController: BaseViewController {
             }
 
             // this will be useful when user will change current web view
-            reloadNavigationElements()
+            reloadNavigationElements(false)
         }
     }
     
@@ -138,9 +138,10 @@ extension TabletSearchBarViewController: SiteNavigationComponent {
         siteNavigationDelegate = navigator
     }
 
-    func reloadNavigationElements() {
+    func reloadNavigationElements(_ withSite: Bool) {
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+        reloadButton.isEnabled = withSite
     }
 }
 
