@@ -21,21 +21,22 @@ fileprivate extension InstagramHandler {
 
 extension InstagramHandler: WKScriptMessageHandler {
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let args = message.body as? [String: String] else {
+        guard let args = message.body as? [String: Any] else {
             print("\(#function) message.body has unexpected format")
             return
         }
 
         for (key, value) in args {
             switch MessageKey(rawValue: key) {
-            case .log?:
-                print("\(value)")
+            case .log? where value is String:
+                print("\(value as! String)")
             case .url?:
-                guard let url = URL(string: value) else {
-                    print("url key value has incorrect format")
-                    continue
+                if let urlString = value as? String, let url = URL(string: urlString) {
+                    print("received url: \(url.absoluteString)")
                 }
-                print("received url: \(url.absoluteString)")
+                else {
+                    print("url key value has incorrect format")
+                }
             default:
                 print("unexpected key \(key)")
             }
