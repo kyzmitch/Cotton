@@ -51,7 +51,7 @@ final class JSPluginFactory {
             return existingJS
         } else {
             let source = try JSPluginFactory.loadScriptSource(typeName)
-            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: type.mainFrameOnly)
+            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: type.mainFrameOnly)
             scripts.setObject(wkScript, forKey: typeName as NSString)
             return wkScript
         }

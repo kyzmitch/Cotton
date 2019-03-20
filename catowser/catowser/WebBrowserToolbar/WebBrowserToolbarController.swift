@@ -27,7 +27,7 @@ final class WebBrowserToolbarController: BaseViewController {
                 return
             }
 
-            reloadNavigationElements()
+            reloadNavigationElements(false)
         }
     }
 
@@ -140,10 +140,11 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         siteNavigationDelegate = navigator
     }
 
-    func reloadNavigationElements() {
+    func reloadNavigationElements(_ withSite: Bool) {
         // this will be useful when user will change current web view
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+        reloadButton.isEnabled = withSite
     }
 }
 
@@ -157,7 +158,7 @@ private extension WebBrowserToolbarController {
     }
 
     @objc func handleReloadPressed() {
-
+        siteNavigationDelegate?.reload()
     }
 
     @objc func handleShowOpenedTabsPressed() {

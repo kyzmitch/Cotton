@@ -24,7 +24,7 @@ protocol SiteNavigationDelegate: class {
 protocol SiteNavigationComponent {
     func updateSiteNavigator(to navigator: SiteNavigationDelegate?)
     /// Reloads state of UI components
-    func reloadNavigationElements()
+    func reloadNavigationElements(_ withSite: Bool)
 }
 
 final class WebViewController: BaseViewController {

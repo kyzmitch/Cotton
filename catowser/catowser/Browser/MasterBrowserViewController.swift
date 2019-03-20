@@ -427,7 +427,13 @@ extension MasterBrowserViewController: TabsObserver {
 
     func tabDidReplace(_ tab: Tab, at index: Int) {
         // need update navigation if the same tab was updated
-        reloadNavigationElements()
+        let withSite: Bool
+        if case .site = tab.contentType {
+            withSite = true
+        } else {
+            withSite = false
+        }
+        reloadNavigationElements(withSite)
     }
 }
 
@@ -436,7 +442,7 @@ extension MasterBrowserViewController: SiteNavigationComponent {
         navigationComponent()?.updateSiteNavigator(to: navigator)
     }
 
-    func reloadNavigationElements() {
-        navigationComponent()?.reloadNavigationElements()
+    func reloadNavigationElements(_ withSite: Bool) {
+        navigationComponent()?.reloadNavigationElements(withSite)
     }
 }
