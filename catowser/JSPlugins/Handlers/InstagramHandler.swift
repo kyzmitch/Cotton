@@ -67,6 +67,7 @@ extension InstagramHandler: WKScriptMessageHandler {
             case .url?:
                 if let urlString = value as? String, let url = URL(string: urlString) {
                     print("received url: \(url.absoluteString)")
+                    delegate?.didReceiveVideoLink(url)
                 }
                 else {
                     print("url key value has incorrect format")
