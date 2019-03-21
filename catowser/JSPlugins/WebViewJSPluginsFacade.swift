@@ -10,29 +10,25 @@ import Foundation
 import WebKit
 
 public final class WebViewJSPluginsFacade {
-    private var activePlugins: [JSPluginName: WKScriptMessageHandler]
+    private let plugins: [CottonJSPlugin]
 
-    public init?(_ pluginsDelegates: [PluginHandlerDelegate]) {
-        guard pluginsDelegates.count != 0 else {
+    public init?(_ plugins: [CottonJSPlugin]) {
+        guard plugins.count != 0 else {
             assertionFailure("Can't initialize object with empty plugins list")
             return nil
         }
-        activePlugins = [JSPluginName: WKScriptMessageHandler]()
-        for pluginDelegate in pluginsDelegates {
-
-        }
-        activePlugins[.instagram] = InstagramHandler()
+        self.plugins = plugins
     }
 
     public func visit(_ userContentController: WKUserContentController) {
-        for (pluginType, handler) in activePlugins {
+        for plugin in plugins {
             do {
-                let wkScript = try JSPluginFactory.shared.script(for: pluginType)
+                let wkScript = try JSPluginFactory.shared.script(for: plugin)
                 userContentController.addUserScript(wkScript)
-                userContentController.removeScriptMessageHandler(forName: pluginType.messageHandlerName)
-                userContentController.add(handler, name: pluginType.messageHandlerName)
+                userContentController.removeScriptMessageHandler(forName: plugin.messageHandlerName)
+                userContentController.add(plugin.handler, name: plugin.messageHandlerName)
             } catch {
-                print("\(#function) failed to load plugin \(pluginType.rawValue)")
+                print("\(#function) failed to load plugin \(plugin.jsFileName)")
             }
         }
     }

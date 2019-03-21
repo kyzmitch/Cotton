@@ -15,7 +15,7 @@ import WebKit
 // because every handler will have own delegate protocol
 
 public enum PluginHandlerDelegate {
-    case instagram(InstagramContentDelegate?)
+    case instagram(InstagramContentDelegate)
     case jQueryAjax
 }
 
@@ -24,26 +24,8 @@ public protocol CottonJSPlugin {
     var messageHandlerName: String { get }
     var isMainFrameOnly: Bool { get }
     var delegate: PluginHandlerDelegate { get }
-}
-
-public struct InstagramContentPlugin: CottonJSPlugin {
-    public var delegate: PluginHandlerDelegate = .instagram(nil)
-
-    public let jsFileName: String = "ig"
-
-    public let messageHandlerName: String = "igHandler"
-
-    public let isMainFrameOnly: Bool = false
-}
-
-public struct JQueryAjaxLinksPlugin: CottonJSPlugin {
-    public var delegate: PluginHandlerDelegate = .jQueryAjax
-
-    public let jsFileName: String = "jquery_ajax"
-
-    public let messageHandlerName: String = "jQueryHandler"
-
-    public let isMainFrameOnly: Bool = true
+    var handler: WKScriptMessageHandler { get }
+    init?(delegate: PluginHandlerDelegate)
 }
 
 final class JSPluginFactory {
@@ -53,13 +35,13 @@ final class JSPluginFactory {
 
     private init() {}
 
-    func script(for type: CottonJSPlugin) throws -> WKUserScript {
-        let typeName = type.jsFileName
+    func script(for plugin: CottonJSPlugin) throws -> WKUserScript {
+        let typeName = plugin.jsFileName
         if let existingJS = scripts.object(forKey: typeName as NSString) {
             return existingJS
         } else {
             let source = try JSPluginFactory.loadScriptSource(typeName)
-            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: type.isMainFrameOnly)
+            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: plugin.isMainFrameOnly)
             scripts.setObject(wkScript, forKey: typeName as NSString)
             return wkScript
         }
