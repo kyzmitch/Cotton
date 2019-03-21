@@ -10,7 +10,6 @@ import Foundation
 import WebKit
 
 public final class JQueryHandler: NSObject {
-    
 }
 
 extension JQueryHandler: WKScriptMessageHandler {

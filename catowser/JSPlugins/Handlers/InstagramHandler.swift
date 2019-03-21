@@ -9,7 +9,20 @@
 import Foundation
 import WebKit
 
+public protocol InstagramContentDelegate: class {
+    func didReceiveVideoLink(_ url: URL)
+}
+
 public final class InstagramHandler: NSObject {
+    private weak var delegate: InstagramContentDelegate?
+    public init(_ delegate: InstagramContentDelegate) {
+        self.delegate = delegate
+        super.init()
+    }
+
+    private override init() {
+        super.init()
+    }
 }
 
 fileprivate extension InstagramHandler {
