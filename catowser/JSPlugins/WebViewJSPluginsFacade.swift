@@ -1,5 +1,5 @@
 //
-//  JSPluginsManager.swift
+//  WebViewJSPluginsFacade.swift
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 18/03/2019.
@@ -9,12 +9,18 @@
 import Foundation
 import WebKit
 
-public final class JSPluginsManager {
-    public static let shared = JSPluginsManager()
+public final class WebViewJSPluginsFacade {
+    private var activePlugins: [JSPluginName: WKScriptMessageHandler]
 
-    private var activePlugins = [JSPluginName: WKScriptMessageHandler]()
+    public init?(_ pluginsDelegates: [PluginHandlerDelegate]) {
+        guard pluginsDelegates.count != 0 else {
+            assertionFailure("Can't initialize object with empty plugins list")
+            return nil
+        }
+        activePlugins = [JSPluginName: WKScriptMessageHandler]()
+        for pluginDelegate in pluginsDelegates {
 
-    private init() {
+        }
         activePlugins[.instagram] = InstagramHandler()
     }
 

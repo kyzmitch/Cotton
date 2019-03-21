@@ -34,6 +34,8 @@ final class WebViewController: BaseViewController {
     /// Configuration should be transferred from `Site`
     private let configuration: WKWebViewConfiguration
 
+    private let pluginsFacade: WebViewJSPluginsFacade
+
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         if canLoadPlugins {
             injectPlugins()
@@ -49,12 +51,13 @@ final class WebViewController: BaseViewController {
         configuration.userContentController.removeAllUserScripts()
         // inject only for specific sites, to fix case
         // then instagram related plugin is injected to google site
-        JSPluginsManager.shared.visit(configuration.userContentController)
+        pluginsFacade.visit(configuration.userContentController)
     }
 
     init(_ site: Site) {
         currentUrl = site.url
         configuration = site.webViewConfig
+        pluginsFacade = WebViewJSPluginsFacade()
         super.init(nibName: nil, bundle: nil)
     }
 
