@@ -12,6 +12,10 @@ import WebKit
 import CoreBrowser
 import JSPlugins
 
+protocol CottonPluginsProvider: class {
+    func defaultPlugins() -> [CottonJSPlugin]
+}
+
 protocol SiteNavigationDelegate: class {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
@@ -34,7 +38,7 @@ final class WebViewController: BaseViewController {
     /// Configuration should be transferred from `Site`
     private let configuration: WKWebViewConfiguration
 
-    private let pluginsFacade: WebViewJSPluginsFacade
+    private var pluginsFacade: WebViewJSPluginsFacade?
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         if canLoadPlugins {
@@ -51,13 +55,16 @@ final class WebViewController: BaseViewController {
         configuration.userContentController.removeAllUserScripts()
         // inject only for specific sites, to fix case
         // then instagram related plugin is injected to google site
-        pluginsFacade.visit(configuration.userContentController)
+        pluginsFacade?.visit(configuration.userContentController)
     }
 
-    init(_ site: Site) {
+    init(_ site: Site, pluginsProvider: CottonPluginsProvider) {
         currentUrl = site.url
         configuration = site.webViewConfig
-        pluginsFacade = WebViewJSPluginsFacade()
+        if site.canLoadPlugins {
+            pluginsFacade = WebViewJSPluginsFacade(pluginsProvider.defaultPlugins())
+        }
+
         super.init(nibName: nil, bundle: nil)
     }
 

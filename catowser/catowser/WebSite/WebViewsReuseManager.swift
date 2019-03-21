@@ -33,7 +33,7 @@ final class WebViewsReuseManager {
     ///
     /// - Parameter site: The site object with all info for WebView.
     /// - Returns: Web view controller configured with `Site`.
-    func controllerFor(_ site: Site) throws -> WebViewController {
+    func controllerFor(_ site: Site, pluginsProvider: CottonPluginsProvider) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
         for (i, vc) in views.enumerated() {
             let currentUrl = vc.currentUrl
@@ -48,7 +48,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let vc = WebViewController(site)
+            let vc = WebViewController(site, pluginsProvider: pluginsProvider)
             views.append(vc)
             lastSelectedIndex = count
             return vc

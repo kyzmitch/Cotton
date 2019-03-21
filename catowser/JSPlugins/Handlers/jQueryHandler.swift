@@ -9,6 +9,27 @@
 import Foundation
 import WebKit
 
+public struct JQueryAjaxLinksPlugin: CottonJSPlugin {
+    public let handler: WKScriptMessageHandler
+
+    public let delegate: PluginHandlerDelegate
+
+    public let jsFileName: String = "jquery_ajax"
+
+    public let messageHandlerName: String = "jQueryHandler"
+
+    public let isMainFrameOnly: Bool = true
+
+    public init?(delegate: PluginHandlerDelegate) {
+        guard case .jQueryAjax = delegate else {
+            assertionFailure("failed to create object")
+            return nil
+        }
+        self.delegate = delegate
+        handler = JQueryHandler()
+    }
+}
+
 public final class JQueryHandler: NSObject {
 }
 

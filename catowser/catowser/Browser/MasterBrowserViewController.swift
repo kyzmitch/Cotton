@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import CoreBrowser
+import JSPlugins
 
 /// An interface for component which suppose to render tabs
 ///
@@ -104,6 +105,14 @@ final class MasterBrowserViewController: BaseViewController {
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private var previousTabContent: Tab.ContentType?
+
+    fileprivate lazy var plugins: [CottonJSPlugin] = {
+        var array = [CottonJSPlugin]()
+        if let igPlugin = InstagramContentPlugin(delegate: .instagram(self)) {
+            array.append(igPlugin)
+        }
+        return array
+    }()
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -243,12 +252,18 @@ final class MasterBrowserViewController: BaseViewController {
     }
 }
 
+extension MasterBrowserViewController: CottonPluginsProvider {
+    func defaultPlugins() -> [CottonJSPlugin] {
+        return plugins
+    }
+}
+
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
         switch tabContent {
         case .site(let site):
             guard let webViewController = try?
-                WebViewsReuseManager.shared.controllerFor(site) else {
+                WebViewsReuseManager.shared.controllerFor(site, pluginsProvider: self) else {
                 return
             }
 
@@ -444,5 +459,11 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 
     func reloadNavigationElements(_ withSite: Bool) {
         navigationComponent()?.reloadNavigationElements(withSite)
+    }
+}
+
+extension MasterBrowserViewController: InstagramContentDelegate {
+    func didReceiveVideoLink(_ url: URL) {
+        
     }
 }
