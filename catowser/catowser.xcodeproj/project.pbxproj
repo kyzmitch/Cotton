@@ -48,6 +48,10 @@
 		6094E743221FE72C004269A2 /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
 		6094E744221FE7B3004269A2 /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
 		6094E745221FE7FF004269A2 /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
+		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
+		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
+		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
+		841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */; };
 		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
 		841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
@@ -142,6 +146,10 @@
 		6094E73A221FE3FD004269A2 /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E73C221FE3FF004269A2 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E73E221FE65F004269A2 /* ReactiveSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
+		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
+		841022C0224788F80021516F /* LinkTagsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LinkTagsViewController.storyboard; sourceTree = "<group>"; };
+		841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+MainBundle.swift"; sourceTree = "<group>"; };
 		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
 		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
@@ -301,6 +309,16 @@
 			path = CoreBrowser;
 			sourceTree = "<group>";
 		};
+		841022B72247816D0021516F /* Downloads */ = {
+			isa = PBXGroup;
+			children = (
+				841022B8224781A20021516F /* LinkTagsViewController.swift */,
+				841022BC224785340021516F /* LinksBadgeView.swift */,
+				841022C0224788F80021516F /* LinkTagsViewController.storyboard */,
+			);
+			path = Downloads;
+			sourceTree = "<group>";
+		};
 		841A2D79203ACB420050A996 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +388,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				841022B72247816D0021516F /* Downloads */,
 				6010ECC421F74E1500972E28 /* Theme */,
 				C7D9E54B2042CDEE00FE55A3 /* Constants */,
 				841A2D7C203ACBDB0050A996 /* WebBrowserToolbar */,
@@ -392,6 +411,7 @@
 			isa = PBXGroup;
 			children = (
 				C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */,
+				841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -604,6 +624,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */,
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
 				C27371171F7A341900900F03 /* Localizable.strings in Resources */,
 				60724F7A221695C80071BECF /* google.xml in Resources */,
@@ -726,6 +747,7 @@
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				60724EE72209C8730071BECF /* TabsPreviewsRouter.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
+				841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */,
 				607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
@@ -733,9 +755,11 @@
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
+				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
+				841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
