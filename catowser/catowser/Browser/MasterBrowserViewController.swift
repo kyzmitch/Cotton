@@ -61,10 +61,23 @@ final class MasterBrowserViewController: BaseViewController {
     
     private let linkTagsController: AnyViewController & LinkTagsPresenter = {
         let vc = LinkTagsViewController.newFromStoryboard()
+        // hidden by default
+        vc.view.alpha = 0
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
         return vc
+    }()
+    
+    private lazy var hiddenTagsConstraint: NSLayoutConstraint = {
+        return linkTagsController.view.heightAnchor.constraint(equalToConstant: 0)
+    }()
+    
+    private lazy var showedTagsConstraint: NSLayoutConstraint = {
+        return linkTagsController.view.heightAnchor.constraint(equalToConstant: 80)
     }()
 
     private var isSuggestionsShowed: Bool = false
+    
+    private var isLinkTagsShowed: Bool = false
 
     /// The view controller to manage blank tab, possibly will be enhaced
     /// to support favorite sites list.
@@ -138,6 +151,8 @@ final class MasterBrowserViewController: BaseViewController {
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }
+        
+        add(asChildViewController: linkTagsController.viewController, to: view)
     }
     
     override func viewDidLoad() {
@@ -179,6 +194,8 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.trailing.equalTo(view)
                 maker.bottom.equalTo(view)
             }
+            
+            linkTagsController.view.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 0).isActive = true
         } else {
             searchBarController.view.snp.makeConstraints({ (maker) in
                 if #available(iOS 11, *) {
@@ -218,7 +235,13 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.trailing.equalTo(view)
                 maker.bottom.equalTo(view.snp.bottom)
             }
+            
+            linkTagsController.view.bottomAnchor.constraint(equalToSystemSpacingBelow: toolbarViewController.view.topAnchor, multiplier: 0).isActive = true
         }
+        
+        linkTagsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
+        linkTagsController.view.trailingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.trailingAnchor, multiplier: 0).isActive = true
+        hiddenTagsConstraint.isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
@@ -265,6 +288,8 @@ extension MasterBrowserViewController: CottonPluginsProvider {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
+        hideLinkTagsController()
+        
         switch tabContent {
         case .site(let site):
             guard let webViewController = try?
@@ -327,6 +352,22 @@ private extension MasterBrowserViewController {
 
         return handling
     }
+    
+    func showLinkTagsControllerIfNeeded() {
+        guard !isLinkTagsShowed else {
+            return
+        }
+        
+        isLinkTagsShowed = true
+        // Order of disabling/enabling is important to not to cause errors in layout calculation.
+        hiddenTagsConstraint.isActive = false
+        showedTagsConstraint.isActive = true
+        
+        UIView.animate(withDuration: 0.3) {
+            self.linkTagsController.view.alpha = 1
+            self.linkTagsController.view.layoutIfNeeded()
+        }
+    }
 
     func showSearchControllerIfNeeded() {
         guard !isSuggestionsShowed else {
@@ -352,6 +393,19 @@ private extension MasterBrowserViewController {
                 searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
             }
         }
+    }
+    
+    func hideLinkTagsController() {
+        guard isLinkTagsShowed else {
+            print("Attempt to hide link tags view when it is hidden")
+            return
+        }
+        showedTagsConstraint.isActive = false
+        hiddenTagsConstraint.isActive = true
+        
+        linkTagsController.view.alpha = 0
+        linkTagsController.view.layoutIfNeeded()
+        isLinkTagsShowed = false
     }
 
     func hideSearchController() {
@@ -453,6 +507,7 @@ extension MasterBrowserViewController: TabsObserver {
         } else {
             withSite = false
         }
+        hideLinkTagsController()
         reloadNavigationElements(withSite)
     }
 }
@@ -469,6 +524,7 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 
 extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoLink(_ url: URL) {
-        
+        linkTagsController.add(url, for: .video)
+        showLinkTagsControllerIfNeeded()
     }
 }

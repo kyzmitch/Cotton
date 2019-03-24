@@ -31,6 +31,8 @@ final class LinkTagsViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
