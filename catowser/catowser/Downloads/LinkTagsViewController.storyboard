@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Link Tags View Controller-->
+        <scene sceneID="cGi-5g-Rqd">
+            <objects>
+                <collectionViewController storyboardIdentifier="LinkTagsViewController" id="o2I-RF-bjI" customClass="LinkTagsViewController" customModule="catowser" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="b3S-CT-0bt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="C0I-Z3-gbi">
+                            <size key="itemSize" width="156" height="69"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LinksBadgeView" id="V44-6X-U29" customClass="LinksBadgeView" customModule="catowser" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="156" height="69"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="156" height="69"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGW-zy-8y2">
+                                            <rect key="frame" x="8" y="28" width="10" height="33"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpH-VJ-1Dt">
+                                            <rect key="frame" x="28" y="28" width="120" height="33"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="FGW-zy-8y2" firstAttribute="top" secondItem="V44-6X-U29" secondAttribute="topMargin" id="0F6-L0-8Zb"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="top" secondItem="V44-6X-U29" secondAttribute="topMargin" id="5Bs-2P-SjE"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="cpH-VJ-1Dt" secondAttribute="bottom" id="N7u-E1-C8c"/>
+                                    <constraint firstItem="FGW-zy-8y2" firstAttribute="leading" secondItem="V44-6X-U29" secondAttribute="leadingMargin" id="UR9-c4-asf"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="cpH-VJ-1Dt" secondAttribute="trailing" id="Xpw-sG-NQM"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="leading" secondItem="FGW-zy-8y2" secondAttribute="trailing" constant="10" id="bcm-Za-Oe8"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="FGW-zy-8y2" secondAttribute="bottom" id="eJc-xH-lWm"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="badgeLabel" destination="FGW-zy-8y2" id="ve2-EU-q69"/>
+                                    <outlet property="tagTypeLabel" destination="cpH-VJ-1Dt" id="Tdx-Qt-KXh"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="o2I-RF-bjI" id="UOC-y5-ljt"/>
+                            <outlet property="delegate" destination="o2I-RF-bjI" id="rhe-BF-sBg"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O3W-Nc-u4Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-671.20000000000005" y="-462.8185907046477"/>
+        </scene>
+    </scenes>
+</document>

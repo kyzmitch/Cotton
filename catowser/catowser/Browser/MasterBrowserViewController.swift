@@ -58,6 +58,11 @@ final class MasterBrowserViewController: BaseViewController {
         let vc = SearchSuggestionsViewController()
         return vc
     }()
+    
+    private let linkTagsController: AnyViewController & LinkTagsPresenter = {
+        let vc = LinkTagsViewController.newFromStoryboard()
+        return vc
+    }()
 
     private var isSuggestionsShowed: Bool = false
 
