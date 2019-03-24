@@ -54,11 +54,12 @@ final class TabletSearchBarViewController: BaseViewController {
         return btn
     }()
     
-    private let reloadButton: UIButton = {
+    private lazy var reloadButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-refresh")
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
+        btn.addTarget(self, action: .reloadPressed, for: .touchUpInside)
         return btn
     }()
 
@@ -131,6 +132,10 @@ final class TabletSearchBarViewController: BaseViewController {
     @objc fileprivate func forwardPressed() {
         siteNavigationDelegate?.goForward()
     }
+    
+    @objc fileprivate func reloadPressed() {
+        siteNavigationDelegate?.reload()
+    }
 }
 
 extension TabletSearchBarViewController: SiteNavigationComponent {
@@ -156,4 +161,5 @@ extension TabletSearchBarViewController: SearchBarControllerInterface {
 fileprivate extension Selector {
     static let backPressed = #selector(TabletSearchBarViewController.backPressed)
     static let forwardPressed = #selector(TabletSearchBarViewController.forwardPressed)
+    static let reloadPressed = #selector(TabletSearchBarViewController.reloadPressed)
 }
