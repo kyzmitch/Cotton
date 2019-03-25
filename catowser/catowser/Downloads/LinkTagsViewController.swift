@@ -65,12 +65,15 @@ final class LinkTagsViewController: UICollectionViewController {
         }
         return cell
     }
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+    }
 }
 
 fileprivate extension LinksBadgeView {
     func set(_ linksCount: Int, tagName: String) {
-        badgeLabel.text = "\(linksCount)"
-        tagTypeLabel.text = tagName
+        tagTypeLabel.text = "\(linksCount) \(tagName)"
     }
 }
 
@@ -91,5 +94,6 @@ extension LinkTagsViewController: LinkTagsPresenter {
     
     func clearLinks() {
         dataSource.removeAll()
+        collectionView.reloadData()
     }
 }
