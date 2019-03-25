@@ -293,7 +293,7 @@ extension MasterBrowserViewController: TabRendererInterface {
         switch tabContent {
         case .site(let site):
             guard let webViewController = try?
-                WebViewsReuseManager.shared.controllerFor(site, pluginsProvider: self) else {
+                WebViewsReuseManager.shared.controllerFor(site, pluginsProvider: self, delegate: self) else {
                 return
             }
 
@@ -526,5 +526,11 @@ extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoLink(_ url: URL) {
         linkTagsController.add(url, for: .video)
         showLinkTagsControllerIfNeeded()
+    }
+}
+
+extension MasterBrowserViewController: SiteExternalNavigationDelegate {
+    func didStartProvisionalNavigation() {
+        hideLinkTagsController()
     }
 }

@@ -9,11 +9,24 @@
 import UIKit
 import CoreBrowser
 
-enum LinksType: Int /* row number*/ {
-    case video = 0
-    case audio = 1
-    case pdf = 2
-    case unrecognized = 3
+enum LinksType: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .video:
+            return "video"
+        case .audio:
+            return "audio"
+        case .pdf:
+            return "pdf"
+        case .unrecognized:
+            return NSLocalizedString("txt_unknown_link_content_type", comment: "Unknown content from link")
+        }
+    }
+
+    case video
+    case audio
+    case pdf
+    case unrecognized
 }
 
 protocol LinkTagsPresenter: class {
@@ -22,8 +35,9 @@ protocol LinkTagsPresenter: class {
 }
 
 final class LinkTagsViewController: UICollectionViewController {
-    
-    fileprivate var dataSource = Set<LinksType>()
+    typealias UrlsBox = Box<[URL]>
+
+    fileprivate var dataSource = [LinksType: UrlsBox]()
     
     static func newFromStoryboard() -> LinkTagsViewController {
         return LinkTagsViewController.instantiateFromStoryboard("LinkTagsViewController", identifier: "LinkTagsViewController")
@@ -45,7 +59,18 @@ final class LinkTagsViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
+        for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
+            cell.set(tuple.value.value.count, tagName: tuple.key.description)
+            break
+        }
         return cell
+    }
+}
+
+fileprivate extension LinksBadgeView {
+    func set(_ linksCount: Int, tagName: String) {
+        badgeLabel.text = "\(linksCount)"
+        tagTypeLabel.text = tagName
     }
 }
 
@@ -53,7 +78,15 @@ extension LinkTagsViewController: AnyViewController {}
 
 extension LinkTagsViewController: LinkTagsPresenter {
     func add(_ link: URL, for type: LinksType) {
-        
+        if let urls = dataSource[type] {
+            urls.value.append(link)
+        } else {
+            let box = UrlsBox([link])
+            dataSource[type] = box
+        }
+
+        // no specific index
+        collectionView.reloadData()
     }
     
     func clearLinks() {
