@@ -12,7 +12,7 @@ import WebKit
 public struct JQueryAjaxLinksPlugin: CottonJSPlugin {
     public let handler: WKScriptMessageHandler
 
-    public let delegate: PluginHandlerDelegate
+    public let delegate: PluginHandlerDelegateType
 
     public let jsFileName: String = "jquery_ajax"
 
@@ -20,12 +20,17 @@ public struct JQueryAjaxLinksPlugin: CottonJSPlugin {
 
     public let isMainFrameOnly: Bool = true
 
-    public init?(delegate: PluginHandlerDelegate) {
+    public init?(delegate: PluginHandlerDelegateType) {
         guard case .jQueryAjax = delegate else {
             assertionFailure("failed to create object")
             return nil
         }
         self.delegate = delegate
+        handler = JQueryHandler()
+    }
+
+    public init?(anyProtocol: Any) {
+        delegate = .jQueryAjax
         handler = JQueryHandler()
     }
 }

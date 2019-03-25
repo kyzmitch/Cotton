@@ -14,7 +14,7 @@ import WebKit
 // And it is not convinient to make association with delegate protocol for plugin handler
 // because every handler will have own delegate protocol
 
-public enum PluginHandlerDelegate {
+public enum PluginHandlerDelegateType {
     case instagram(InstagramContentDelegate)
     case jQueryAjax
 }
@@ -23,9 +23,10 @@ public protocol CottonJSPlugin {
     var jsFileName: String { get }
     var messageHandlerName: String { get }
     var isMainFrameOnly: Bool { get }
-    var delegate: PluginHandlerDelegate { get }
+    var delegate: PluginHandlerDelegateType { get }
     var handler: WKScriptMessageHandler { get }
-    init?(delegate: PluginHandlerDelegate)
+    init?(delegate: PluginHandlerDelegateType)
+    init?(anyProtocol: Any)
 }
 
 final class JSPluginFactory {
