@@ -13,6 +13,8 @@ struct UIConstants {
     static let tabHeight = CGFloat(40.0)
     static let searchViewHeight = CGFloat(64.0)
     static let tabBarHeight = CGFloat(40.0) // system height?
+    static let linkTagsHeight = CGFloat(40.0)
+    
     static var tabWidth: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return 40.0
