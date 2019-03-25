@@ -31,33 +31,24 @@
                                     <rect key="frame" x="0.0" y="0.0" width="156" height="69"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGW-zy-8y2">
-                                            <rect key="frame" x="8" y="28" width="10" height="33"/>
-                                            <color key="backgroundColor" red="0.53879123263888884" green="0.41338433159722221" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpH-VJ-1Dt">
-                                            <rect key="frame" x="28" y="28" width="120" height="33"/>
-                                            <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpH-VJ-1Dt">
+                                            <rect key="frame" x="12" y="28" width="132" height="33"/>
+                                            <color key="backgroundColor" red="0.53879123259999995" green="0.41338433159999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </view>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="FGW-zy-8y2" firstAttribute="top" secondItem="V44-6X-U29" secondAttribute="topMargin" id="0F6-L0-8Zb"/>
-                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="top" secondItem="V44-6X-U29" secondAttribute="topMargin" id="5Bs-2P-SjE"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="cpH-VJ-1Dt" secondAttribute="bottom" id="N7u-E1-C8c"/>
-                                    <constraint firstItem="FGW-zy-8y2" firstAttribute="leading" secondItem="V44-6X-U29" secondAttribute="leadingMargin" id="UR9-c4-asf"/>
+                                    <constraint firstAttribute="topMargin" secondItem="cpH-VJ-1Dt" secondAttribute="top" id="5Bs-2P-SjE"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="bottom" secondItem="V44-6X-U29" secondAttribute="bottomMargin" id="N7u-E1-C8c"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="cpH-VJ-1Dt" secondAttribute="trailing" id="Xpw-sG-NQM"/>
-                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="leading" secondItem="FGW-zy-8y2" secondAttribute="trailing" constant="10" id="bcm-Za-Oe8"/>
-                                    <constraint firstAttribute="bottomMargin" secondItem="FGW-zy-8y2" secondAttribute="bottom" id="eJc-xH-lWm"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="leading" secondItem="V44-6X-U29" secondAttribute="leadingMargin" id="c3l-RX-yna"/>
                                 </constraints>
+                                <edgeInsets key="layoutMargins" top="8" left="12" bottom="8" right="12"/>
                                 <connections>
-                                    <outlet property="badgeLabel" destination="FGW-zy-8y2" id="ve2-EU-q69"/>
                                     <outlet property="tagTypeLabel" destination="cpH-VJ-1Dt" id="Tdx-Qt-KXh"/>
                                 </connections>
                             </collectionViewCell>

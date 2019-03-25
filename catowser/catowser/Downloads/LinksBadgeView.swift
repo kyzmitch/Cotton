@@ -10,13 +10,18 @@ import UIKit
 import CoreBrowser
 
 final class LinksBadgeView: UICollectionViewCell, ReusableItem {
-    @IBOutlet weak var badgeLabel: UILabel!
     @IBOutlet weak var tagTypeLabel: UILabel!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        layer.masksToBounds = true
+        tagTypeLabel.layer.masksToBounds = true
+    }
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        badgeLabel.layer.cornerRadius = badgeLabel.bounds.size.height / 2
+        layer.cornerRadius = bounds.size.height / 2
         tagTypeLabel.layer.cornerRadius = tagTypeLabel.bounds.size.height / 2
     }
 }
