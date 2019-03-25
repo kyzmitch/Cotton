@@ -10,3 +10,5 @@
 "ttl_tab_short_blank" = "Пустая вкладка";
 "ttl_tab_short_favorites" = "Избранные сайты";
 "placeholder_searchbar" = "Введите запрос или адрес";
+"txt_unknown_link_content_type" = "Неизвестный контент";
+

@@ -25,6 +25,10 @@ protocol SiteNavigationDelegate: class {
     func reload()
 }
 
+protocol SiteExternalNavigationDelegate: class {
+    func didStartProvisionalNavigation()
+}
+
 protocol SiteNavigationComponent {
     func updateSiteNavigator(to navigator: SiteNavigationDelegate?)
     /// Reloads state of UI components
@@ -39,6 +43,8 @@ final class WebViewController: BaseViewController {
     private let configuration: WKWebViewConfiguration
 
     private var pluginsFacade: WebViewJSPluginsFacade?
+
+    private weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         if canLoadPlugins {
@@ -58,7 +64,8 @@ final class WebViewController: BaseViewController {
         pluginsFacade?.visit(configuration.userContentController)
     }
 
-    init(_ site: Site, pluginsProvider: CottonPluginsProvider) {
+    init(_ site: Site, pluginsProvider: CottonPluginsProvider, externalNavigationDelegate: SiteExternalNavigationDelegate) {
+        self.externalNavigationDelegate = externalNavigationDelegate
         currentUrl = site.url
         configuration = site.webViewConfig
         if site.canLoadPlugins {
@@ -186,7 +193,6 @@ extension WebViewController: WKUIDelegate {
 }
 
 extension WebViewController: WKNavigationDelegate {
-    
 }
 
 extension WebViewController: SiteNavigationDelegate {
@@ -200,16 +206,19 @@ extension WebViewController: SiteNavigationDelegate {
 
     func goForward() {
         guard isViewLoaded else { return }
+        externalNavigationDelegate?.didStartProvisionalNavigation()
         _ = webView.goForward()
     }
 
     func goBack() {
         guard isViewLoaded else { return }
+        externalNavigationDelegate?.didStartProvisionalNavigation()
         _ = webView.goBack()
     }
 
     func reload() {
         guard isViewLoaded else { return }
+        externalNavigationDelegate?.didStartProvisionalNavigation()
         _ = webView.reload()
     }
 }
