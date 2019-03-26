@@ -12,6 +12,7 @@ import WebKit
 public protocol InstagramContentDelegate: class {
     func didReceiveVideoLink(_ url: URL)
     func didReceiveVideoTags(_ tags: [HTMLVideoTag])
+    func didReceiveVideoNodes(_ nodes: [InstagramNode])
 }
 
 public struct InstagramContentPlugin: CottonJSPlugin {
@@ -58,8 +59,8 @@ public final class InstagramHandler: NSObject {
 fileprivate extension InstagramHandler {
     enum MessageKey: String {
         case log = "log"
-        case url = "url"
         case videoTags = "videoTags"
+        case videoNodes = "videoNodes"
     }
 }
 
@@ -74,13 +75,21 @@ extension InstagramHandler: WKScriptMessageHandler {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
                 print("\(value as! String)")
-            case .url?:
-                if let urlString = value as? String, let url = URL(string: urlString) {
-                    print("received url: \(url.absoluteString)")
-                    delegate?.didReceiveVideoLink(url)
+            case .videoNodes?:
+                guard let jsonString = value as? String else {
+                    print("video tags json is not a string")
+                    break
                 }
-                else {
-                    print("url key value has incorrect format")
+                guard let jsonObject = jsonString.data(using: .utf8) else {
+                    print("failed to convert string to data")
+                    break
+                }
+                do {
+                    let decoded = try JSONDecoder().decode([[String: InstagramNode]].self, from: jsonObject)
+                    let nodes: [InstagramNode] = decoded.compactMap {$0.first?.value}
+                    delegate?.didReceiveVideoNodes(nodes)
+                } catch {
+                    print("failed decode html video tags array")
                 }
             case .videoTags?:
                 guard let jsonString = value as? String else {
@@ -97,7 +106,6 @@ extension InstagramHandler: WKScriptMessageHandler {
                 } catch {
                     print("failed decode html video tags array")
                 }
-
             default:
                 print("unexpected key \(key)")
             }

@@ -1,10 +1,35 @@
 "use strict";
 
 window.addEventListener("load", function() {
-    delayedVideoLinksSearch();
+	window.setTimeout(delayedVideoLinksSearch, 2000);
 }, false); 
-
+	
 function delayedVideoLinksSearch() {
+	let videoTags = tryExtractVideoTags();
+	if (videoTags.length != 0) {
+		sendVideoTagsToNativeApp(videoTags.toString);
+	} else {
+		cottonLog('video tags were not found');
+	}
+    
+	if (typeof window._sharedData !== 'undefined') {
+		let nodes = tryExtractVideoNodes(window._sharedData);
+		if(nodes.length != 0){
+			sendVideoNodesToNativeApp(nodes.toString);
+		} else {
+			cottonLog('empty nodes array');
+		}
+	} else {
+		cottonLog('_sharedData is empty');
+	}
+
+	let metaLink = tryExtractVideoLinkFromMeta();
+	if(metaLink) {
+		sendLinkToNativeApp(metaLink);
+	}
+}
+
+function tryExtractVideoTags(){
 	let videoTags = document.getElementsByTagName('video')
 	let resultTags = new Array();
     // videoTags is an HTMLCollection, so, can't use map
@@ -13,34 +38,10 @@ function delayedVideoLinksSearch() {
 		let videoObject = {"src": tag.src, "poster": tag.poster};
 		resultTags.push(videoObject);
 	}
-	if (resultTags.length != 0){
-		sendVideoTagsToNativeApp(resultTags.toString);
-	}
-    
-	if (window._sharedData) {
-		const link = tryExtractLinkSingleVideoPost(window._sharedData);
-		if (typeof link !== 'undefined') {
-			sendLinkToNativeApp(link);
-		}
-		const links = tryExtractVideoFromOwnPost(window._sharedData);
-		if(links.length == 0){
-			cottonLog('empty links array');
-		}
-		for(let i=0;i<links.length;i++){
-			sendLinkToNativeApp(links[i]);
-		}
-	}
-	const metaLink = tryExtractVideoLinkFromMeta();
-	if(metaLink) {
-		sendLinkToNativeApp(metaLink);
-	}
+	return resultTags;
 }
 
-function tryExtractLinkSingleVideoPost(json){
-	return json['entry_data']['PostPage'][0]['graphql']['shortcode_media']['video_url'];
-}
-
-function tryExtractVideoFromOwnPost(json){
+function tryExtractVideoNodes(json){
 	// const edges = json['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_sidecar_to_children']['edges'];
 	const entry_data = json['entry_data'];
 	var result = new Array();
@@ -72,20 +73,16 @@ function tryExtractVideoFromOwnPost(json){
 		return result;
 	}
 
-	for(var i=0;i<edges.length;i++){
-		const link = edges[i]['node']['video_url']
-		if (typeof link !== 'undefined') {
-			result.push(link);
-		}
-	}
-	return result
+	// link should be edges[i]['node']['video_url']
+	// returning whole object with previews instead of just video url
+	return edges;
 }
 
 function tryExtractVideoLinkFromMeta() {
-	var metas = document.getElementsByTagName('meta');
+	let metas = document.getElementsByTagName('meta');
 
-	for (var i=0; i<metas.length; i++){
-		var meta = metas[i];
+	for (let i=0; i<metas.length; i++){
+		let meta = metas[i];
 		if (meta.getAttribute("property") == 'og:video'){
 			return meta.getAttribute("content");
 		}
@@ -95,19 +92,33 @@ function tryExtractVideoLinkFromMeta() {
 }
 
 function sendLinkToNativeApp(link) {
-	console.log('Video url: ' + link);
+	console.log('video url: ' + link);
     try {
         webkit.messageHandlers.igHandler.postMessage({"url": link});
     } catch(err) {
-        console.log('The native context does not exist yet');
+        console.log('the native context does not exist yet');
+    }
+}
+
+function sendVideoNodesToNativeApp(nodes) {
+	for (let i=0; i<nodes.length; i++) {
+		console.log('video node with url: ' + nodes[i]['node']['video_url']);
+	}
+    try {
+        webkit.messageHandlers.igHandler.postMessage({"videoNodes": nodes});
+    } catch(err) {
+        console.log('the native context does not exist yet');
     }
 }
 
 function sendVideoTagsToNativeApp(tags) {
+	for (let i=0; i<tags.length; i++) {
+		console.log('video tag with src: ' + tags[i]['src'])
+	}
     try {
         webkit.messageHandlers.igHandler.postMessage({"videoTags": tags});
     } catch(err) {
-        console.log('The native context does not exist yet');
+        console.log('the native context does not exist yet');
     }
 }
 
