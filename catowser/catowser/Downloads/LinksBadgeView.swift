@@ -12,16 +12,7 @@ import CoreBrowser
 final class LinksBadgeView: UICollectionViewCell, ReusableItem {
     @IBOutlet weak var tagTypeLabel: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        layer.masksToBounds = true
-        tagTypeLabel.layer.masksToBounds = true
-    }
-
     override func layoutSubviews() {
         super.layoutSubviews()
-
-        layer.cornerRadius = bounds.size.height / 2
-        tagTypeLabel.layer.cornerRadius = tagTypeLabel.bounds.size.height / 2
     }
 }

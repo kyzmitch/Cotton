@@ -61,19 +61,13 @@ final class MasterBrowserViewController: BaseViewController {
     
     private let linkTagsController: AnyViewController & LinkTagsPresenter = {
         let vc = LinkTagsViewController.newFromStoryboard()
-        // hidden by default
-        vc.view.alpha = 0
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         return vc
     }()
     
-    private lazy var hiddenTagsConstraint: NSLayoutConstraint = {
-        return linkTagsController.view.heightAnchor.constraint(equalToConstant: 0)
-    }()
+    private var hiddenTagsConstraint: NSLayoutConstraint?
     
-    private lazy var showedTagsConstraint: NSLayoutConstraint = {
-        return linkTagsController.view.heightAnchor.constraint(equalToConstant: 80)
-    }()
+    private var showedTagsConstraint: NSLayoutConstraint?
 
     private var isSuggestionsShowed: Bool = false
     
@@ -145,14 +139,15 @@ final class MasterBrowserViewController: BaseViewController {
 
         add(asChildViewController: searchBarController.viewController, to:view)
         view.addSubview(containerView)
+        
+        // should be added before iPhone toolbar
+        add(asChildViewController: linkTagsController.viewController, to: view)
 
         if UIDevice.current.userInterfaceIdiom == .phone {
             add(asChildViewController: toolbarViewController, to:view)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }
-        
-        add(asChildViewController: linkTagsController.viewController, to: view)
     }
     
     override func viewDidLoad() {
@@ -195,7 +190,8 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.bottom.equalTo(view)
             }
             
-            linkTagsController.view.bottomAnchor.constraint(equalToSystemSpacingBelow: view.bottomAnchor, multiplier: 0).isActive = true
+            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -UIConstants.linkTagsHeight)
+            showedTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         } else {
             searchBarController.view.snp.makeConstraints({ (maker) in
                 if #available(iOS 11, *) {
@@ -236,12 +232,14 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.bottom.equalTo(view.snp.bottom)
             }
             
-            linkTagsController.view.bottomAnchor.constraint(equalToSystemSpacingBelow: toolbarViewController.view.topAnchor, multiplier: 0).isActive = true
+            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: UIConstants.linkTagsHeight)
+            showedTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
         }
         
+        hiddenTagsConstraint?.isActive = true
         linkTagsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
         linkTagsController.view.trailingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.trailingAnchor, multiplier: 0).isActive = true
-        hiddenTagsConstraint.isActive = true
+        linkTagsController.view.heightAnchor.constraint(equalToConstant: UIConstants.linkTagsHeight).isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
@@ -360,11 +358,10 @@ private extension MasterBrowserViewController {
         
         isLinkTagsShowed = true
         // Order of disabling/enabling is important to not to cause errors in layout calculation.
-        hiddenTagsConstraint.isActive = false
-        showedTagsConstraint.isActive = true
+        hiddenTagsConstraint?.isActive = false
+        showedTagsConstraint?.isActive = true
         
-        UIView.animate(withDuration: 0.3) {
-            self.linkTagsController.view.alpha = 1
+        UIView.animate(withDuration: 2) {
             self.linkTagsController.view.layoutIfNeeded()
         }
     }
@@ -400,10 +397,9 @@ private extension MasterBrowserViewController {
             print("Attempt to hide link tags view when it is hidden")
             return
         }
-        showedTagsConstraint.isActive = false
-        hiddenTagsConstraint.isActive = true
-        
-        linkTagsController.view.alpha = 0
+        showedTagsConstraint?.isActive = false
+        hiddenTagsConstraint?.isActive = true
+
         linkTagsController.view.layoutIfNeeded()
         isLinkTagsShowed = false
     }

@@ -44,8 +44,8 @@ final class LinkTagsViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
