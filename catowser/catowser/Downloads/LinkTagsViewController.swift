@@ -8,16 +8,17 @@
 
 import UIKit
 import CoreBrowser
+import JSPlugins
 
 enum LinksType: CustomStringConvertible {
     var description: String {
         switch self {
         case .video:
-            return "video"
+            return NSLocalizedString("txt_video_tag", comment: "")
         case .audio:
-            return "audio"
+            return NSLocalizedString("txt_audio_tag", comment: "")
         case .pdf:
-            return "pdf"
+            return NSLocalizedString("txt_pdf_tag", comment: "")
         case .unrecognized:
             return NSLocalizedString("txt_unknown_link_content_type", comment: "Unknown content from link")
         }
@@ -30,14 +31,12 @@ enum LinksType: CustomStringConvertible {
 }
 
 protocol LinkTagsPresenter: class {
-    func add(_ link: URL, for type: LinksType)
+    func setLinks(_ count: Int, for type: LinksType)
     func clearLinks()
 }
 
 final class LinkTagsViewController: UICollectionViewController {
-    typealias UrlsBox = Box<[URL]>
-
-    fileprivate var dataSource = [LinksType: UrlsBox]()
+    fileprivate var dataSource = [LinksType: Int]()
     
     static func newFromStoryboard() -> LinkTagsViewController {
         return LinkTagsViewController.instantiateFromStoryboard("LinkTagsViewController", identifier: "LinkTagsViewController")
@@ -60,7 +59,7 @@ final class LinkTagsViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
         for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
-            cell.set(tuple.value.value.count, tagName: tuple.key.description)
+            cell.set(tuple.value, tagName: tuple.key.description)
             break
         }
         return cell
@@ -80,14 +79,8 @@ fileprivate extension LinksBadgeView {
 extension LinkTagsViewController: AnyViewController {}
 
 extension LinkTagsViewController: LinkTagsPresenter {
-    func add(_ link: URL, for type: LinksType) {
-        if let urls = dataSource[type] {
-            urls.value.append(link)
-        } else {
-            let box = UrlsBox([link])
-            dataSource[type] = box
-        }
-
+    func setLinks(_ count: Int, for type: LinksType) {
+        dataSource[type] = count
         // no specific index
         collectionView.reloadData()
     }

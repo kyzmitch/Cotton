@@ -12,6 +12,7 @@
 		6010ECC621F74E2900972E28 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECC521F74E2900972E28 /* Theme.swift */; };
 		6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCA21F751B500972E28 /* LightTheme.swift */; };
 		6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCC21F7529400972E28 /* ThemeProvider.swift */; };
+		60271784224A3DA70019EF15 /* HTMLVideoTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60271783224A3DA70019EF15 /* HTMLVideoTag.swift */; };
 		605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */; };
 		605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */; };
 		60724EA921FF1BD80071BECF /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA821FF1BD80071BECF /* CounterView.swift */; };
@@ -112,6 +113,7 @@
 		6010ECC521F74E2900972E28 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		6010ECCA21F751B500972E28 /* LightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
 		6010ECCC21F7529400972E28 /* ThemeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProvider.swift; sourceTree = "<group>"; };
+		60271783224A3DA70019EF15 /* HTMLVideoTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLVideoTag.swift; sourceTree = "<group>"; };
 		604A500821F9CFE400EF07F9 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPreviewsViewController.swift; sourceTree = "<group>"; };
 		605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPreviewCell.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				608DA74D223A3BD5009F75BD /* Info.plist */,
 				608DA759223FBB3E009F75BD /* JSPluginFactory.swift */,
 				608DA75F223FD826009F75BD /* WebViewJSPluginsFacade.swift */,
+				60271783224A3DA70019EF15 /* HTMLVideoTag.swift */,
 			);
 			path = JSPlugins;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				8A012FA72240111700041487 /* jQueryHandler.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* WebViewJSPluginsFacade.swift in Sources */,
+				60271784224A3DA70019EF15 /* HTMLVideoTag.swift in Sources */,
 				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

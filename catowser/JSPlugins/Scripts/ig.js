@@ -1,11 +1,22 @@
-
 "use strict";
 
 window.addEventListener("load", function() {
-    window.setTimeout(delayedVideoLinkSearch, 2000);
+    delayedVideoLinksSearch();
 }, false); 
 
-function delayedVideoLinkSearch() {
+function delayedVideoLinksSearch() {
+	let videoTags = document.getElementsByTagName('video')
+	let resultTags = new Array();
+    // videoTags is an HTMLCollection, so, can't use map
+    for(let i = 0; i < videoTags.length; i++) {
+		let tag = videoTags.item(i);
+		let videoObject = {"src": tag.src, "poster": tag.poster};
+		resultTags.push(videoObject);
+	}
+	if (resultTags.length != 0){
+		sendVideoTagsToNativeApp(resultTags.toString);
+	}
+    
 	if (window._sharedData) {
 		const link = tryExtractLinkSingleVideoPost(window._sharedData);
 		if (typeof link !== 'undefined') {
@@ -15,7 +26,7 @@ function delayedVideoLinkSearch() {
 		if(links.length == 0){
 			cottonLog('empty links array');
 		}
-		for(var i=0;i<links.length;i++){
+		for(let i=0;i<links.length;i++){
 			sendLinkToNativeApp(links[i]);
 		}
 	}
@@ -85,11 +96,19 @@ function tryExtractVideoLinkFromMeta() {
 
 function sendLinkToNativeApp(link) {
 	console.log('Video url: ' + link);
-		try {
-			webkit.messageHandlers.igHandler.postMessage({"url": link});
-    	} catch(err) {
-			console.log('The native context does not exist yet');
-    	}
+    try {
+        webkit.messageHandlers.igHandler.postMessage({"url": link});
+    } catch(err) {
+        console.log('The native context does not exist yet');
+    }
+}
+
+function sendVideoTagsToNativeApp(tags) {
+    try {
+        webkit.messageHandlers.igHandler.postMessage({"videoTags": tags});
+    } catch(err) {
+        console.log('The native context does not exist yet');
+    }
 }
 
 function cottonLog(message) {
