@@ -523,10 +523,16 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 }
 
 extension MasterBrowserViewController: InstagramContentDelegate {
-    func didReceiveVideoLink(_ url: URL) {
-        linkTagsController.add(url, for: .video)
+    func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
+        linkTagsController.setLinks(tags.count, for: .video)
         showLinkTagsControllerIfNeeded()
     }
+
+    func didReceiveVideoLink(_ url: URL) {
+
+    }
+
+
 }
 
 extension MasterBrowserViewController: SiteExternalNavigationDelegate {

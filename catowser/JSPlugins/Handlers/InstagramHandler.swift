@@ -11,6 +11,7 @@ import WebKit
 
 public protocol InstagramContentDelegate: class {
     func didReceiveVideoLink(_ url: URL)
+    func didReceiveVideoTags(_ tags: [HTMLVideoTag])
 }
 
 public struct InstagramContentPlugin: CottonJSPlugin {
@@ -58,6 +59,7 @@ fileprivate extension InstagramHandler {
     enum MessageKey: String {
         case log = "log"
         case url = "url"
+        case videoTags = "videoTags"
     }
 }
 
@@ -80,6 +82,22 @@ extension InstagramHandler: WKScriptMessageHandler {
                 else {
                     print("url key value has incorrect format")
                 }
+            case .videoTags?:
+                guard let jsonString = value as? String else {
+                    print("video tags json is not a string")
+                    break
+                }
+                guard let jsonObject = jsonString.data(using: .utf8) else {
+                    print("failed to convert string to data")
+                    break
+                }
+                do {
+                    let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
+                    delegate?.didReceiveVideoTags(decoded)
+                } catch {
+                    print("failed decode html video tags array")
+                }
+
             default:
                 print("unexpected key \(key)")
             }
