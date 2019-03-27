@@ -12,7 +12,7 @@ import WebKit
 public protocol InstagramContentDelegate: class {
     func didReceiveVideoLink(_ url: URL)
     func didReceiveVideoTags(_ tags: [HTMLVideoTag])
-    func didReceiveVideoNodes(_ nodes: [InstagramNode])
+    func didReceiveVideoNodes(_ nodes: [InstagramVideoNode])
 }
 
 public struct InstagramContentPlugin: CottonJSPlugin {
@@ -76,39 +76,40 @@ extension InstagramHandler: WKScriptMessageHandler {
             case .log? where value is String:
                 print("\(value as! String)")
             case .videoNodes?:
-                guard let jsArrayString =  value as? String else {
-                    print("video tags json is not an array")
-                    break
-                }
-                guard let jsonObject = jsArrayString.data(using: .utf8, allowLossyConversion: true) else {
-                    print("failed to convert string to data")
+                guard let jsonObject = dataFrom(value) else {
                     break
                 }
                 do {
-                    let decoded = try JSONDecoder().decode([[String: InstagramNode]].self, from: jsonObject)
-                    let nodes: [InstagramNode] = decoded.compactMap {$0.first?.value}
-                    delegate?.didReceiveVideoNodes(nodes)
+                    let decoded = try JSONDecoder().decode(InstagramVideos.self, from: jsonObject)
+                    delegate?.didReceiveVideoNodes(decoded.nodes)
                 } catch {
-                    print("failed decode html video tags array")
+                    print("failed decode html video tags array \(error)")
                 }
             case .videoTags?:
-                guard let jsonString = value as? String else {
-                    print("video tags json is not a string")
-                    break
-                }
-                guard let jsonObject = jsonString.data(using: .utf8) else {
-                    print("failed to convert string to data")
+                guard let jsonObject = dataFrom(value) else {
                     break
                 }
                 do {
                     let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
                     delegate?.didReceiveVideoTags(decoded)
                 } catch {
-                    print("failed decode html video tags array")
+                    print("failed decode html video tags array \(error)")
                 }
             default:
                 print("unexpected key \(key)")
             }
         }
+    }
+    
+    func dataFrom(_ value: Any) -> Data? {
+        guard let jsArrayString =  value as? String else {
+            print("js value is not a string")
+            return nil
+        }
+        guard let jsonObject = jsArrayString.data(using: .utf8, allowLossyConversion: true) else {
+            print("failed to convert string to data")
+            return nil
+        }
+        return jsonObject
     }
 }

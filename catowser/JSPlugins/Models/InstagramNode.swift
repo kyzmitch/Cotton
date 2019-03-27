@@ -8,26 +8,24 @@
 
 import Foundation
 
-public struct InstagramNode: Decodable {
-    let mediaPreview: UIImage
+public struct InstagramVideoNode: Decodable {
+    let mediaPreview: UIImage?
     let videUrl: URL
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let base64String = try container.decode(String.self, forKey: .mediaPreview)
-        guard let mediaPreviewData = Data(base64Encoded: base64String) else {
-            throw DecodingError.wrongBase64String
+        if let base64String = try container.decodeIfPresent(String.self, forKey: .mediaPreview), let mediaPreviewData = Data(base64Encoded: base64String) {
+            mediaPreview = UIImage(data: mediaPreviewData)
+        } else {
+            // TODO: need to identify why UIImage can't be created with current base64 value
+            mediaPreview = nil
         }
-        guard let image = UIImage(data: mediaPreviewData) else {
-            throw DecodingError.wrongDataForImage
-        }
-        mediaPreview = image
         
         videUrl = try container.decode(URL.self, forKey: .videUrl)
     }
 }
 
-extension InstagramNode {
+extension InstagramVideoNode {
     enum CodingKeys: String, CodingKey {
         case mediaPreview = "media_preview"
         case videUrl = "video_url"
