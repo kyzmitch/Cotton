@@ -5,10 +5,11 @@ window.addEventListener("load", function() {
 }, false); 
 
 function delayedVideoLinksSearch() {
-	if (typeof window.__additionalData["feed"].data !== 'undefined') {
-		let json = window.__additionalData['feed'].data;
-		cottonLog(json);
+	let json = window.__additionalData['feed'].data;
+	if (typeof json !== 'undefined') {
 		let feedEdges = tryExtractAdditionalDataNodes(json);
+		cottonLog(feedEdges);
+		
 		if(feedEdges.length != 0){
 			sendVideoNodesToNativeApp(feedEdges);
 		} else {
@@ -27,13 +28,6 @@ function delayedVideoLinksSearch() {
 		}
 	} else {
 		cottonLog('_sharedData is empty');
-	}
-
-	let metaLink = tryExtractVideoLinkFromMeta();
-	if(metaLink) {
-		sendLinkToNativeApp(metaLink);
-	} else {
-		cottonLog('meta tag with video was not found');
 	}
 }
 
@@ -131,8 +125,9 @@ function sendVideoNodesToNativeApp(nodes) {
 		console.log('video node[' + i + ']with url: ' + nodes[i]['node']['video_url']);
 	}
     try {
-		cottonLog(node.toString);
-        webkit.messageHandlers.igHandler.postMessage({"videoNodes": nodes.toString});
+		let stringVersion = JSON.stringify(nodes);
+		// stringify doesn't work, it returns the same dictionary
+        webkit.messageHandlers.igHandler.postMessage({"videoNodes": stringVersion});
     } catch(err) {
         console.log('the native context does not exist yet');
     }
@@ -153,6 +148,6 @@ function cottonLog(message) {
 	try {
 		webkit.messageHandlers.igHandler.postMessage({"log": message});
 	} catch(err) {
-        console.log('cotton log: ' + message);
+		console.log(message);
 	}
 }
