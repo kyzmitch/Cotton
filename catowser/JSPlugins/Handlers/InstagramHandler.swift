@@ -75,12 +75,6 @@ extension InstagramHandler: WKScriptMessageHandler {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
                 print("\(value as! String)")
-            case .log? where value is Dictionary<String, Any>:
-                let d = value as! Dictionary<String, Any>
-                print("dictionary")
-                break
-            case .log? where value is Array<Dictionary<String, Any>>:
-                
             case .videoNodes?:
                 guard let dictionary = value as? Dictionary<String, Any> else {
                     print("video tags json is not a dictionary")
