@@ -76,12 +76,11 @@ extension InstagramHandler: WKScriptMessageHandler {
             case .log? where value is String:
                 print("\(value as! String)")
             case .videoNodes?:
-                guard let dictionary = value as? Dictionary<String, Any> else {
-                    print("video tags json is not a dictionary")
+                guard let jsArrayString =  value as? String else {
+                    print("video tags json is not an array")
                     break
                 }
-                let jsonString = "\(dictionary)"
-                guard let jsonObject = jsonString.data(using: .utf8) else {
+                guard let jsonObject = jsArrayString.data(using: .utf8, allowLossyConversion: true) else {
                     print("failed to convert string to data")
                     break
                 }
