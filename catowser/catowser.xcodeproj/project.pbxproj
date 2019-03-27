@@ -67,6 +67,8 @@
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
 		8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A012FA322400F1200041487 /* InstagramHandler.swift */; };
 		8A012FA72240111700041487 /* jQueryHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A012FA62240111700041487 /* jQueryHandler.swift */; };
+		8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */; };
+		8A0DF900224C019C000CADA6 /* InstagramVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FF224C019C000CADA6 /* InstagramVideos.swift */; };
 		8A0E0EAB224A94E600D86CD7 /* InstagramNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramNode.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
@@ -170,6 +172,8 @@
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		8A012FA322400F1200041487 /* InstagramHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramHandler.swift; sourceTree = "<group>"; };
 		8A012FA62240111700041487 /* jQueryHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jQueryHandler.swift; sourceTree = "<group>"; };
+		8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDecodable.swift; sourceTree = "<group>"; };
+		8A0DF8FF224C019C000CADA6 /* InstagramVideos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideos.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramNode.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
@@ -435,6 +439,8 @@
 			children = (
 				60271783224A3DA70019EF15 /* HTMLVideoTag.swift */,
 				8A0E0EAA224A94E600D86CD7 /* InstagramNode.swift */,
+				8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */,
+				8A0DF8FF224C019C000CADA6 /* InstagramVideos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -717,11 +723,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0DF900224C019C000CADA6 /* InstagramVideos.swift in Sources */,
 				8A0E0EAB224A94E600D86CD7 /* InstagramNode.swift in Sources */,
 				8A012FA72240111700041487 /* jQueryHandler.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* WebViewJSPluginsFacade.swift in Sources */,
 				60271784224A3DA70019EF15 /* HTMLVideoTag.swift in Sources */,
+				8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */,
 				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
