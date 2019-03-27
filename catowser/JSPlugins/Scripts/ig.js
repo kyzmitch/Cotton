@@ -1,23 +1,29 @@
 "use strict";
 
 window.addEventListener("load", function() {
-	window.setTimeout(delayedVideoLinksSearch, 2000);
+	window.setTimeout(delayedVideoLinksSearch, 3000);
 }, false); 
-	
+
 function delayedVideoLinksSearch() {
-	let videoTags = tryExtractVideoTags();
-	if (videoTags.length != 0) {
-		sendVideoTagsToNativeApp(videoTags.toString);
+	if (typeof window.__additionalData["feed"].data !== 'undefined') {
+		let json = window.__additionalData['feed'].data;
+		cottonLog(json);
+		let feedEdges = tryExtractAdditionalDataNodes(json);
+		if(feedEdges.length != 0){
+			sendVideoNodesToNativeApp(feedEdges);
+		} else {
+			cottonLog('empty nodes array from __additionalData');
+		}
 	} else {
-		cottonLog('video tags were not found');
+		cottonLog('additionalData is empty');
 	}
     
 	if (typeof window._sharedData !== 'undefined') {
 		let nodes = tryExtractVideoNodes(window._sharedData);
 		if(nodes.length != 0){
-			sendVideoNodesToNativeApp(nodes.toString);
+			sendVideoNodesToNativeApp(nodes);
 		} else {
-			cottonLog('empty nodes array');
+			cottonLog('empty nodes array from _sharedData');
 		}
 	} else {
 		cottonLog('_sharedData is empty');
@@ -26,6 +32,8 @@ function delayedVideoLinksSearch() {
 	let metaLink = tryExtractVideoLinkFromMeta();
 	if(metaLink) {
 		sendLinkToNativeApp(metaLink);
+	} else {
+		cottonLog('meta tag with video was not found');
 	}
 }
 
@@ -39,6 +47,24 @@ function tryExtractVideoTags(){
 		resultTags.push(videoObject);
 	}
 	return resultTags;
+}
+
+function tryExtractAdditionalDataNodes(json) {
+	const user = json['user'];
+	var result = new Array();
+	if(typeof user === 'undefined'){
+		return result;
+	}
+	const edge_web_feed_timeline = user['edge_web_feed_timeline'];
+	if(typeof edge_web_feed_timeline === 'undefined'){
+		return result;
+	}
+	let edges = edge_web_feed_timeline['edges'];
+	if(typeof edges === 'undefined'){
+		return result;
+	}
+
+	return edges;
 }
 
 function tryExtractVideoNodes(json){
@@ -68,7 +94,7 @@ function tryExtractVideoNodes(json){
 	if(typeof edge_sidecar_to_children === 'undefined'){
 		return result;
 	}
-	const edges = edge_sidecar_to_children['edges'];
+	let edges = edge_sidecar_to_children['edges'];
 	if(typeof edges === 'undefined'){
 		return result;
 	}
@@ -102,10 +128,11 @@ function sendLinkToNativeApp(link) {
 
 function sendVideoNodesToNativeApp(nodes) {
 	for (let i=0; i<nodes.length; i++) {
-		console.log('video node with url: ' + nodes[i]['node']['video_url']);
+		console.log('video node[' + i + ']with url: ' + nodes[i]['node']['video_url']);
 	}
     try {
-        webkit.messageHandlers.igHandler.postMessage({"videoNodes": nodes});
+		cottonLog(node.toString);
+        webkit.messageHandlers.igHandler.postMessage({"videoNodes": nodes.toString});
     } catch(err) {
         console.log('the native context does not exist yet');
     }
@@ -126,6 +153,6 @@ function cottonLog(message) {
 	try {
 		webkit.messageHandlers.igHandler.postMessage({"log": message});
 	} catch(err) {
-		console.log(message);
+        console.log('cotton log: ' + message);
 	}
 }

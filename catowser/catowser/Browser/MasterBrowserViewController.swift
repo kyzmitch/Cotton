@@ -394,7 +394,7 @@ private extension MasterBrowserViewController {
     
     func hideLinkTagsController() {
         guard isLinkTagsShowed else {
-            print("Attempt to hide link tags view when it is hidden")
+            // print("Attempt to hide link tags view when it is hidden")
             return
         }
         showedTagsConstraint?.isActive = false
