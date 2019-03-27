@@ -8,8 +8,6 @@ function delayedVideoLinksSearch() {
 	let json = window.__additionalData['feed'].data;
 	if (typeof json !== 'undefined') {
 		let feedEdges = tryExtractAdditionalDataNodes(json);
-		cottonLog(feedEdges);
-		
 		if(feedEdges.length != 0){
 			sendVideoNodesToNativeApp(feedEdges);
 		} else {
@@ -125,9 +123,8 @@ function sendVideoNodesToNativeApp(nodes) {
 		console.log('video node[' + i + ']with url: ' + nodes[i]['node']['video_url']);
 	}
     try {
-		let stringVersion = JSON.stringify(nodes);
-		// stringify doesn't work, it returns the same dictionary
-        webkit.messageHandlers.igHandler.postMessage({"videoNodes": stringVersion});
+		// JSON.stringify doesn't work, it returns the same array
+        webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
     } catch(err) {
         console.log('the native context does not exist yet');
     }
