@@ -1,5 +1,5 @@
 //
-//  InstagramNode.swift
+//  InstagramVideoNode.swift
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 3/26/19.

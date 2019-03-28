@@ -5,27 +5,31 @@ window.addEventListener("load", function() {
 }, false); 
 
 function delayedVideoLinksSearch() {
-	let json = window.__additionalData['feed'].data;
-	if (typeof json !== 'undefined') {
-		let feedEdges = tryExtractAdditionalDataNodes(json);
+	let additionalDataJSON = window.__additionalData['feed'].data;
+	if (typeof additionalDataJSON !== 'undefined') {
+		let feedEdges = tryExtractAdditionalDataNodes(additionalDataJSON);
 		if(feedEdges.length != 0){
+			cottonLog('going to send nodes from __additionalData');
 			sendVideoNodesToNativeApp(feedEdges);
 		} else {
-			cottonLog('empty nodes array from __additionalData');
+			cottonLog('__additionalData doesn`t contain edge nodes');
 		}
 	} else {
-		cottonLog('additionalData is empty');
+		cottonLog('__additionalData isn`t defined');
 	}
-    
-	if (typeof window._sharedData !== 'undefined') {
-		let nodes = tryExtractVideoNodes(window._sharedData);
+	
+	let sharedDataJSON = window._sharedData;
+	if (typeof sharedDataJSON !== 'undefined') {
+		// even if it is not empty it not always contains nodes with urls
+		let nodes = tryExtractVideoNodes(sharedDataJSON);
 		if(nodes.length != 0){
+			cottonLog('going to send nodes from _sharedData');
 			sendVideoNodesToNativeApp(nodes);
 		} else {
-			cottonLog('empty nodes array from _sharedData');
+			cottonLog('_sharedData doesn`t contain edge nodes');
 		}
 	} else {
-		cottonLog('_sharedData is empty');
+		cottonLog('_sharedData isn`t defined');
 	}
 }
 
@@ -42,12 +46,12 @@ function tryExtractVideoTags(){
 }
 
 function tryExtractAdditionalDataNodes(json) {
-	const user = json['user'];
-	var result = new Array();
+	let user = json['user'];
+	let result = new Array();
 	if(typeof user === 'undefined'){
 		return result;
 	}
-	const edge_web_feed_timeline = user['edge_web_feed_timeline'];
+	let edge_web_feed_timeline = user['edge_web_feed_timeline'];
 	if(typeof edge_web_feed_timeline === 'undefined'){
 		return result;
 	}
@@ -61,28 +65,28 @@ function tryExtractAdditionalDataNodes(json) {
 
 function tryExtractVideoNodes(json){
 	// const edges = json['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_sidecar_to_children']['edges'];
-	const entry_data = json['entry_data'];
-	var result = new Array();
+	let entry_data = json['entry_data'];
+	let result = new Array();
 	if(typeof entry_data === 'undefined'){
 		return result;
 	}
-	const PostPage = entry_data['PostPage'];
+	let PostPage = entry_data['PostPage'];
 	if(typeof PostPage === 'undefined'){
 		return result;
 	}
-	const firstPage = PostPage[0];
+	let firstPage = PostPage[0];
 	if(typeof firstPage === 'undefined'){
 		return result;
 	}
-	const graphql = firstPage['graphql'];
+	let graphql = firstPage['graphql'];
 	if(typeof graphql === 'undefined'){
 		return result;
 	}
-	const shortcode_media = graphql['shortcode_media'];
+	let shortcode_media = graphql['shortcode_media'];
 	if(typeof shortcode_media === 'undefined'){
 		return result;
 	}
-	const edge_sidecar_to_children = shortcode_media['edge_sidecar_to_children'];
+	let edge_sidecar_to_children = shortcode_media['edge_sidecar_to_children'];
 	if(typeof edge_sidecar_to_children === 'undefined'){
 		return result;
 	}

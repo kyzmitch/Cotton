@@ -1,0 +1,668 @@
+{
+    "config": {
+      "csrf_token": "1s7CND7DkYCmUeStWro8BJqsGHuDpfUy",
+      "viewer": {
+        "biography": "",
+        "external_url": null,
+        "full_name": "Andrey Ermoshin",
+        "has_phone_number": true,
+        "has_profile_pic": true,
+        "id": "281251477",
+        "is_joined_recently": false,
+        "is_private": false,
+        "profile_pic_url": "https://scontent-mia3-1.cdninstagram.com/vp/4a7bc83f899520f5742e0e91c2deb17f/5D390F65/t51.2885-19/s150x150/35276661_649579108735456_3975690250532945920_n.jpg?_nc_ht=scontent-mia3-1.cdninstagram.com",
+        "profile_pic_url_hd": "https://scontent-mia3-1.cdninstagram.com/vp/e5dabab1301377ed1785e5c8a556254f/5D35E195/t51.2885-19/s320x320/35276661_649579108735456_3975690250532945920_n.jpg?_nc_ht=scontent-mia3-1.cdninstagram.com",
+        "username": "kyzmitch",
+        "badge_count": "{\"seq_id\": 963, \"badge_count\": 0, \"badge_count_at_ms\": 1553758161583}"
+      },
+      "viewerId": "281251477"
+    },
+    "country_code": "US",
+    "language_code": "en",
+    "locale": "en_US",
+    "entry_data": {
+      "FeedPage": [
+        {
+          
+        }
+      ]
+    },
+    "hostname": "www.instagram.com",
+    "deployment_stage": "c2",
+    "platform": "ios",
+    "rhx_gis": "4a9d6c7cb1ab44cc799521c88d41492e",
+    "nonce": "QRW1Fyw4AortzkrrqYLVsg==",
+    "mid_pct": 30.05946,
+    "zero_data": {
+      
+    },
+    "cache_schema_version": 3,
+    "server_checks": {
+      "hfe": true
+    },
+    "knobs": {
+      "acct:ntb": 0,
+      "cb": 0,
+      "captcha": 0,
+      "fr": 0
+    },
+    "to_cache": {
+      "gatekeepers": {
+        "sw": true,
+        "vl": true,
+        "seo": true,
+        "seoht": true,
+        "2fac": true,
+        "phone_qp": true,
+        "nt": true,
+        "rp": true,
+        "oba": true,
+        "3": false,
+        "4": true,
+        "5": false,
+        "6": false,
+        "7": false,
+        "8": false,
+        "9": false,
+        "10": false,
+        "11": true,
+        "12": false,
+        "13": true,
+        "14": true,
+        "15": true,
+        "16": true,
+        "17": false,
+        "18": true,
+        "19": false
+      },
+      "qe": {
+        "sdc": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "app_upsell": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "igl_app_upsell": {
+          "g": "test_only_link",
+          "p": {
+            "has_only_iglite_link": "true",
+            "has_iglite_content_and_link": "false",
+            "has_no_upsell": "false"
+          }
+        },
+        "direct_conversation_reporting": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "frx_reporting": {
+          "g": "test",
+          "p": {
+            "ig_frx_v0": "true"
+          }
+        },
+        "general_reporting": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "reporting": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "acc_recovery_link": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "notif": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "show_copy_link": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "p_edit": {
+          "g": "control",
+          "p": {
+            "has_redirect_on_confirm": "false"
+          }
+        },
+        "404_as_react": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "acc_recovery": {
+          "g": "test_with_recaptcha",
+          "p": {
+            "has_recaptcha_removed": "true"
+          }
+        },
+        "bundle": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "collections": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "comment_ta": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "su": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "ebd_ul": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "ebdsim_li": {
+          "g": "control",
+          "p": {
+            "www_url": "false"
+          }
+        },
+        "ebdsim_lo": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "empty_feed": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "appsell": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "heart_tab": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "follow_button": {
+          "g": "test",
+          "p": {
+            "is_inline": "true"
+          }
+        },
+        "log_cont": {
+          "g": "control_intent_m",
+          "p": {
+            "has_contextual_m": "false"
+          }
+        },
+        "msisdn": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "onetaplogin": {
+          "g": "default_opt_out",
+          "p": {
+            "during_reg": "true",
+            "default_value": "false",
+            "storage_version": "one_tap_storage_version"
+          }
+        },
+        "onetap": {
+          "g": "control",
+          "p": {
+            "has_checkbox": "false"
+          }
+        },
+        "profile_tabs": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "multireg_iter": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "reg_vp": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "report_media": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "report_profile": {
+          "g": "test",
+          "p": {
+            "is_enabled": "true"
+          }
+        },
+        "su_universe": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "stale": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "tp_pblshr": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "felix": {
+          "g": "test",
+          "p": {
+            "is_enabled": "true"
+          }
+        },
+        "felix_clear_fb_cookie": {
+          "g": "control",
+          "p": {
+            "is_enabled": "true",
+            "blacklist": "fbsr_124024574287414"
+          }
+        },
+        "felix_creation_duration_limits": {
+          "g": "dogfooding",
+          "p": {
+            "maximum_length_seconds": "600",
+            "minimum_length_seconds": "15"
+          }
+        },
+        "felix_creation_enabled": {
+          "g": "",
+          "p": {
+            "is_enabled": "true"
+          }
+        },
+        "felix_creation_fb_crossposting": {
+          "g": "control",
+          "p": {
+            "is_enabled": "false"
+          }
+        },
+        "felix_creation_fb_crossposting_v2": {
+          "g": "control",
+          "p": {
+            "is_enabled": "true",
+            "display_version": "2"
+          }
+        },
+        "felix_creation_validation": {
+          "g": "control",
+          "p": {
+            "edit_video_controls": "true",
+            "description_maximum_length": "2200",
+            "max_video_size_in_bytes": "3600000000",
+            "minimum_length_for_feed_preview_seconds": "60",
+            "title_maximum_length": "75",
+            "valid_cover_mime_types": "image/jpeg,image/png",
+            "valid_video_extensions": "mp4,mov",
+            "valid_video_mime_types": "video/mp4,video/quicktime"
+          }
+        },
+        "felix_creation_video_upload": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "felix_early_onboarding": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "profile_enhance_li": {
+          "g": "control",
+          "p": {
+            "has_tag_creation": "false"
+          }
+        },
+        "profile_enhance_lo": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "comment_enhance": {
+          "g": "control",
+          "p": {
+            "has_new_comments_mobile": "true",
+            "has_new_comments": "true",
+            "has_like_animation": "true",
+            "has_new_comments_desktop": "true"
+          }
+        },
+        "mweb_topical_explore": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "follow_all_fb": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "lite_direct_upsell": {
+          "g": "test",
+          "p": {
+            
+          }
+        },
+        "a2hs_heuristic_uc": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "a2hs_heuristic_non_uc": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "web_hashtag": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "web_hashtag_logged_out": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "header_scroll": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "web_share": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "lite_rating": {
+          "g": "",
+          "p": {
+            "is_enabled": "false"
+          }
+        },
+        "web_embeds_share": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "web_embeds_logged_out": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "web_datasaver_mode": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "lite_datasaver_mode": {
+          "g": "test",
+          "p": {
+            "is_datasaver_on": "true",
+            "is_datasaver_enabled": "true"
+          }
+        },
+        "post_options": {
+          "g": "control",
+          "p": {
+            "enable_igtv_embed": "true",
+            "use_refactor": "true"
+          }
+        },
+        "igtv_creation_feed_preview": {
+          "g": "test",
+          "p": {
+            "is_enabled": "true"
+          }
+        },
+        "igtv_public_viewing": {
+          "g": "control",
+          "p": {
+            "is_enabled": "true"
+          }
+        },
+        "nux": {
+          "g": "test",
+          "p": {
+            "has_fb_friction_dialog": "true"
+          }
+        },
+        "iglmsr": {
+          "g": "multi_reg",
+          "p": {
+            "has_multi_step_registration": "true"
+          }
+        },
+        "igwsvl": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "iglcp": {
+          "g": "has_prefill",
+          "p": {
+            "has_login_prefill": "true"
+          }
+        },
+        "lite_story_video_upload": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "iglscioi": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "ws2": {
+          "g": "control_01_15",
+          "p": {
+            "has_mweb_swipe": "false"
+          }
+        },
+        "wpn": {
+          "g": "test_01_29",
+          "p": {
+            "has_new_phone_form": "true"
+          }
+        },
+        "hc": {
+          "g": "test_both",
+          "p": {
+            "is_feed_enabled": "true",
+            "is_enabled": "true"
+          }
+        },
+        "lite_user_tag_creation": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "iglcius": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "wfvu": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "iglsa": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "igwllre": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "wss2": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "sticker_tray": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "web_sentry": {
+          "g": "",
+          "p": {
+            
+          }
+        },
+        "igwspe": {
+          "g": "has_sensitivity_screen",
+          "p": {
+            "has_stories_sensitivity_screen": "true"
+          }
+        },
+        "0": {
+          "p": {
+            "1": false,
+            "2": false
+          },
+          "qex": true
+        },
+        "2": {
+          "p": {
+            "0": false
+          },
+          "qex": true
+        },
+        "3": {
+          "p": {
+            "0": false
+          },
+          "qex": true
+        },
+        "4": {
+          "p": {
+            "0": false
+          },
+          "qex": true
+        },
+        "5": {
+          "p": {
+            "0": false
+          },
+          "qex": true
+        },
+        "6": {
+          "p": {
+            "0": "12",
+            "1": true
+          },
+          "qex": true
+        },
+        "7": {
+          "p": {
+            "0": false
+          },
+          "qex": true
+        },
+        "8": {
+          "p": {
+            "0": false,
+            "1": false,
+            "2": false,
+            "3": false,
+            "4": false
+          },
+          "qex": true
+        },
+        "9": {
+          "p": {
+            "0": false,
+            "1": false,
+            "2": 1000,
+            "3": 100,
+            "4": 25
+          },
+          "qex": true
+        }
+      },
+      "probably_has_app": true,
+      "cb": false
+    },
+    "rollout_hash": "b09243ac865f",
+    "bundle_variant": "es6",
+    "is_canary": false
+  }
