@@ -11,7 +11,6 @@ import WebKit
 
 public protocol InstagramContentDelegate: class {
     func didReceiveVideoLink(_ url: URL)
-    func didReceiveVideoTags(_ tags: [HTMLVideoTag])
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode])
 }
 
@@ -80,20 +79,14 @@ extension InstagramHandler: WKScriptMessageHandler {
                     break
                 }
                 do {
-                    let decoded = try JSONDecoder().decode(InstagramVideos.self, from: jsonObject)
-                    delegate?.didReceiveVideoNodes(decoded.nodes)
+                    let decoded = try JSONDecoder().decode(InstagramVideoArray.self, from: jsonObject)
+                    if decoded.nodes.count > 0 {
+                        delegate?.didReceiveVideoNodes(decoded.nodes)
+                    } else {
+                        print("no any video node was found during decoding")
+                    }
                 } catch {
-                    print("failed decode html video tags array \(error)")
-                }
-            case .videoTags?:
-                guard let jsonObject = dataFrom(value) else {
-                    break
-                }
-                do {
-                    let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
-                    delegate?.didReceiveVideoTags(decoded)
-                } catch {
-                    print("failed decode html video tags array \(error)")
+                    print("failed decode video nodes array: \(error)")
                 }
             default:
                 print("unexpected key \(key)")

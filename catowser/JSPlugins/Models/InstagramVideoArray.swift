@@ -1,5 +1,5 @@
 //
-//  InstagramVideos.swift
+//  InstagramVideoArray.swift
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 3/27/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct InstagramVideos: Decodable {
+public struct InstagramVideoArray: Decodable {
     public let nodes: [InstagramVideoNode]
     
     public init(from decoder: Decoder) throws {
