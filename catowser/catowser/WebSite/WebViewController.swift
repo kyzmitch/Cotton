@@ -81,6 +81,7 @@ final class WebViewController: BaseViewController {
 
     private lazy var webView: WKWebView = {
         let webView = WKWebView(frame: .zero, configuration: configuration)
+        webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
         return webView
     }()
