@@ -190,7 +190,7 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.bottom.equalTo(view)
             }
             
-            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -UIConstants.linkTagsHeight)
+            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: UIConstants.linkTagsHeight)
             showedTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         } else {
             searchBarController.view.snp.makeConstraints({ (maker) in
