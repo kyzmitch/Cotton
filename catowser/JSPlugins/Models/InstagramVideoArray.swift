@@ -25,7 +25,12 @@ public struct InstagramVideoArray: Decodable {
                 }
             } catch {
                 // https://stackoverflow.com/a/46713058
-                _ = try? container.decode(CottonDummyCodable.self)
+                // this is to do something like `continue`
+                // in the loop if some condition is not met
+                // in this case it is when exception is raised
+                // because JSON sometimes couldn't contain all
+                // needed properties to construct an object
+                _ = try? container.decode(CottonDummyDecodable.self)
             }
         }
         self.nodes = nodes
