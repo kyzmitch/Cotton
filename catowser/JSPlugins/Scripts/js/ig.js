@@ -10,6 +10,21 @@ XMLHttpRequest.prototype.open = function(method, url, async, username, password)
 	this.cottonRealOpen(method, url, async, username, password);
 };
 
+XMLHttpRequest.prototype.cottonRealSend = XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.send = function(body) {
+	this.cottonRealSend(body);
+	this.addEventListener('readystatechange', function() {
+		if (this.readyState === 4 /* DONE */) {
+			if (this.status === 200) {
+				// this.responseType is empty for some reason, so it's not possible to parse 
+				// for json specifically
+				cottonLog('200 ok url:' + this.responseURL);
+				cottonLog('response text: ' + this.responseText);
+			}
+		}
+	});
+};
+
 function delayedVideoLinksSearch() {
 	let additionalDataJSON = window.__additionalData['feed'].data;
 	if (typeof additionalDataJSON !== 'undefined') {
