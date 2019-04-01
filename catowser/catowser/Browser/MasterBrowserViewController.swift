@@ -513,8 +513,8 @@ extension MasterBrowserViewController: SiteNavigationComponent {
         navigationComponent()?.updateSiteNavigator(to: navigator)
     }
 
-    func reloadNavigationElements(_ withSite: Bool) {
-        navigationComponent()?.reloadNavigationElements(withSite)
+    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
+        navigationComponent()?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
     }
 }
 

@@ -24,12 +24,16 @@ final class WebBrowserToolbarController: BaseViewController {
             guard let _ = siteNavigationDelegate else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
+                downloadsHidden = true
+                downloadLinksButton.isEnabled = true
                 return
             }
 
             reloadNavigationElements(false)
         }
     }
+
+    fileprivate var downloadsHidden: Bool = true
 
     private lazy var toolbarView: UIToolbar = {
         let toolbar = UIToolbar()
@@ -49,7 +53,7 @@ final class WebBrowserToolbarController: BaseViewController {
         barItems.append(openedTabsButton)
         let space4 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         barItems.append(space4)
-        barItems.append(settingsButton)
+        barItems.append(downloadLinksButton)
         toolbar.setItems(barItems, animated: false)
         return toolbar
     }()
@@ -81,11 +85,18 @@ final class WebBrowserToolbarController: BaseViewController {
         let btn = UIBarButtonItem(customView: counterView)
         return btn
     }()
+
+    private lazy var downloadsView: UIImageView = {
+        let img = UIImage(named: "nav-downloads")
+        let imgView = UIImageView(image: img)
+        return imgView
+    }()
     
-    private lazy var settingsButton: UIBarButtonItem = {
-        let img = UIImage(named: "nav-menu")
-        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .settings)
-        btn.isEnabled = false
+    private lazy var downloadLinksButton: UIBarButtonItem = {
+        let btn = UIBarButtonItem(customView: downloadsView)
+        btn.target = self
+        btn.action = .downloads
+        // TODO: need to make custom image view grayed when UIBarButtonItem is not enabled
         return btn
     }()
 
@@ -130,6 +141,8 @@ final class WebBrowserToolbarController: BaseViewController {
         for touch in touches {
             if touch.view == counterView {
                 handleShowOpenedTabsPressed()
+            } else if touch.view == downloadsView {
+                handleDownloadsPressed()
             }
         }
     }
@@ -140,11 +153,14 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         siteNavigationDelegate = navigator
     }
 
-    func reloadNavigationElements(_ withSite: Bool) {
+    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         // this will be useful when user will change current web view
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
+        downloadsHidden = true
+        downloadLinksButton.isEnabled = true
+        animateDownloadsButton(downloadsHidden)
     }
 }
 
@@ -165,8 +181,18 @@ private extension WebBrowserToolbarController {
         router.showTabs()
     }
 
-    @objc func handleSettingsPressed() {
+    @objc func handleDownloadsPressed() {
+        animateDownloadsButton(downloadsHidden)
+        downloadsHidden = !downloadsHidden
+    }
 
+    func animateDownloadsButton(_ arrowDown: Bool) {
+        let rotate = UIViewPropertyAnimator(duration: 0.33, curve: .easeIn)
+        rotate.addAnimations {
+            let angle = arrowDown ? CGFloat.pi : 0
+            self.downloadsView.transform = CGAffineTransform(rotationAngle: angle)
+        }
+        rotate.startAnimation()
     }
 }
 
@@ -175,7 +201,7 @@ fileprivate extension Selector {
     static let forward = #selector(WebBrowserToolbarController.handleForwardPressed)
     static let reload = #selector(WebBrowserToolbarController.handleReloadPressed)
     static let openTabs = #selector(WebBrowserToolbarController.handleShowOpenedTabsPressed)
-    static let settings = #selector(WebBrowserToolbarController.handleSettingsPressed)
+    static let downloads = #selector(WebBrowserToolbarController.handleDownloadsPressed)
 }
 
 extension CounterView: TabsObserver {

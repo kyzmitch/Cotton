@@ -32,7 +32,7 @@ protocol SiteExternalNavigationDelegate: class {
 protocol SiteNavigationComponent {
     func updateSiteNavigator(to navigator: SiteNavigationDelegate?)
     /// Reloads state of UI components
-    func reloadNavigationElements(_ withSite: Bool)
+    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
 }
 
 final class WebViewController: BaseViewController {
