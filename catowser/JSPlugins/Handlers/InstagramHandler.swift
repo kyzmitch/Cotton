@@ -58,6 +58,7 @@ public final class InstagramHandler: NSObject {
 fileprivate extension InstagramHandler {
     enum MessageKey: String {
         case log = "log"
+        case singleVideoNode = "singleVideoNode"
         case videoTags = "videoTags"
         case videoNodes = "videoNodes"
     }
@@ -87,6 +88,16 @@ extension InstagramHandler: WKScriptMessageHandler {
                     }
                 } catch {
                     print("failed decode video nodes array: \(error)")
+                }
+            case .singleVideoNode?:
+                guard let jsonObject = dataFrom(value) else {
+                    break
+                }
+                do {
+                    let decoded = try JSONDecoder().decode(InstagramVideoNode.self, from: jsonObject)
+                    delegate?.didReceiveVideoNodes([decoded])
+                } catch {
+                    print("failed decode single video node: \(error)")
                 }
             default:
                 print("unexpected key \(key)")
