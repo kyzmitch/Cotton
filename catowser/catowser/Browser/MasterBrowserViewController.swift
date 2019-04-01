@@ -522,6 +522,9 @@ extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linkTagsController.setLinks(nodes.count, for: .video)
         showLinkTagsControllerIfNeeded()
+
+        // attempt to use video url to send http request
+        
     }
 
     func didReceiveVideoLink(_ url: URL) {

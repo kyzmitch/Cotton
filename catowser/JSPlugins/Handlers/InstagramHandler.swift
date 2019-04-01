@@ -73,7 +73,7 @@ extension InstagramHandler: WKScriptMessageHandler {
         for (key, value) in args {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
-                print("\(value as! String)")
+                print("JS log: \(value as! String)")
             case .videoNodes?:
                 guard let jsonObject = dataFrom(value) else {
                     break
