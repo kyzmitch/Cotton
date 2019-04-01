@@ -4,6 +4,12 @@ window.addEventListener("load", function() {
 	window.setTimeout(delayedVideoLinksSearch, 3000);
 }, false); 
 
+XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open = function(method, url, async, username, password) {
+	cottonLog('HttpRequest: ' + method  + ' url: ' + url);
+	this.cottonRealOpen(method, url, async, username, password);
+};
+
 function delayedVideoLinksSearch() {
 	let additionalDataJSON = window.__additionalData['feed'].data;
 	if (typeof additionalDataJSON !== 'undefined') {
