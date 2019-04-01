@@ -70,8 +70,6 @@ final class TabletSearchBarViewController: BaseViewController {
         return view
     }()
     
-    // "nav-menu" image from assets should be used for settings button
-    
     override func loadView() {
         view = UIView()
         
@@ -143,10 +141,12 @@ extension TabletSearchBarViewController: SiteNavigationComponent {
         siteNavigationDelegate = navigator
     }
 
-    func reloadNavigationElements(_ withSite: Bool) {
+    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
+
+        // tablet layout currently doesn't have downloads button
     }
 }
 
