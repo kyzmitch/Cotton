@@ -68,6 +68,8 @@ final class MasterBrowserViewController: BaseViewController {
     
     private var showedTagsConstraint: NSLayoutConstraint?
 
+    private var linkTagsViewHeightConstraint: NSLayoutConstraint?
+
     private var isSuggestionsShowed: Bool = false
     
     private var isLinkTagsShowed: Bool = false
@@ -95,7 +97,15 @@ final class MasterBrowserViewController: BaseViewController {
     /// View to make color under toolbar is the same on iPhone x without home button
     private lazy var underToolbarView: UIView = {
         let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         ThemeProvider.shared.setupUnderToolbar(v)
+        return v
+    }()
+
+    private lazy var underLinkTagsView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        ThemeProvider.shared.setupUnderLinkTags(v)
         return v
     }()
 
@@ -138,14 +148,19 @@ final class MasterBrowserViewController: BaseViewController {
 
         add(asChildViewController: searchBarController.viewController, to:view)
         view.addSubview(containerView)
-        
-        // should be added before iPhone toolbar
-        add(asChildViewController: linkTagsController.viewController, to: view)
 
-        if UIDevice.current.userInterfaceIdiom == .phone {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .phone:
+            // should be added before iPhone toolbar
+            add(asChildViewController: linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to:view)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
+        case .pad:
+            view.addSubview(underLinkTagsView)
+            add(asChildViewController: linkTagsController.viewController, to: view)
+        default:
+            break
         }
     }
     
@@ -188,9 +203,17 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.trailing.equalTo(view)
                 maker.bottom.equalTo(view)
             }
-            
-            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: UIConstants.linkTagsHeight)
-            showedTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+
+            underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+            underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+            let dummyViewHeight: CGFloat = 20.0 /* view.safeAreaInsets.bottom */
+            linkTagsViewHeightConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
+            linkTagsViewHeightConstraint?.isActive = true
+
+            let bottomMargin = dummyViewHeight + UIConstants.linkTagsHeight
+            hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin)
+            showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            linkTagsController.view.bottomAnchor.constraint(equalTo: underLinkTagsView.topAnchor, constant: 0).isActive = true
         } else {
             searchBarController.view.snp.makeConstraints({ (maker) in
                 if #available(iOS 11, *) {
@@ -236,8 +259,8 @@ final class MasterBrowserViewController: BaseViewController {
         }
         
         hiddenTagsConstraint?.isActive = true
-        linkTagsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        linkTagsController.view.trailingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.trailingAnchor, multiplier: 0).isActive = true
+        linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         linkTagsController.view.heightAnchor.constraint(equalToConstant: UIConstants.linkTagsHeight).isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
@@ -252,6 +275,18 @@ final class MasterBrowserViewController: BaseViewController {
         disposables.append(disposeA)
 
         TabsListManager.shared.attach(self)
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        // only here we can get correct value for
+        // safe area inset
+        if tabsControllerAdded {
+            linkTagsViewHeightConstraint?.constant = view.safeAreaInsets.bottom
+            underLinkTagsView.setNeedsLayout()
+            underLinkTagsView.layoutIfNeeded()
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -285,16 +320,8 @@ extension MasterBrowserViewController: CottonPluginsProvider {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        // hideLinkTagsController()
-        // TODO: uncomment after testing
-        linkTagsController.setLinks(2, for: .video)
-        linkTagsController.setLinks(4, for: .pdf)
-        linkTagsController.setLinks(1, for: .audio)
-        linkTagsController.setLinks(10, for: .unrecognized)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.showLinkTagsControllerIfNeeded()
-        }
-
+        hideLinkTagsController()
+        
         switch tabContent {
         case .site(let site):
             guard let webViewController = try?

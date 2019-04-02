@@ -47,7 +47,7 @@ final class LinkTagsViewController: UICollectionViewController {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        ThemeProvider.shared.setupUnderLinkTags(collectionView)
 
         // Inset From property must be set to "from Content Inset"
         // in Storyboard of view controller in UICollectionView
@@ -86,10 +86,6 @@ final class LinkTagsViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
-}
-
-extension LinkTagsViewController: UICollectionViewDelegateFlowLayout {
-
 }
 
 fileprivate extension LinksBadgeView {
