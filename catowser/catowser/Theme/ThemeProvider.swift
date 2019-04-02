@@ -10,6 +10,7 @@ import UIKit
 
 extension UIColor {
     static let phoneToolbarColor: UIColor = .white
+    static let linkTagsBackgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
 }
 
 final class ThemeProvider {
@@ -43,6 +44,10 @@ final class ThemeProvider {
 
     func setupUnderToolbar(_ view: UIView) {
         view.backgroundColor = .phoneToolbarColor
+    }
+
+    func setupUnderLinkTags(_ view: UIView) {
+        view.backgroundColor = .linkTagsBackgroundColor
     }
 
     private init() {
