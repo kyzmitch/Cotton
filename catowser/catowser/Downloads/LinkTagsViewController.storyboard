@@ -12,43 +12,41 @@
         <!--Link Tags View Controller-->
         <scene sceneID="cGi-5g-Rqd">
             <objects>
-                <collectionViewController storyboardIdentifier="LinkTagsViewController" id="o2I-RF-bjI" customClass="LinkTagsViewController" customModule="catowser" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="b3S-CT-0bt">
+                <collectionViewController storyboardIdentifier="LinkTagsViewController" automaticallyAdjustsScrollViewInsets="NO" id="o2I-RF-bjI" customClass="LinkTagsViewController" customModule="catowser" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" id="b3S-CT-0bt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <edgeInsets key="layoutMargins" top="0.0" left="20" bottom="0.0" right="20"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="10" sectionInsetReference="layoutMargins" id="C0I-Z3-gbi">
-                            <size key="itemSize" width="165" height="52"/>
+                        <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="C0I-Z3-gbi">
+                            <size key="itemSize" width="165" height="40"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LinksBadgeView" id="V44-6X-U29" customClass="LinksBadgeView" customModule="catowser" customModuleProvider="target">
-                                <rect key="frame" x="20" y="0.0" width="165" height="52"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="LinksBadgeView" id="V44-6X-U29" customClass="LinksBadgeView" customModule="catowser" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="165" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="165" height="52"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="165" height="40"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpH-VJ-1Dt">
-                                            <rect key="frame" x="20" y="4" width="125" height="44"/>
-                                            <color key="backgroundColor" red="1" green="0.73430876552540514" blue="0.23409539292777803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <rect key="frame" x="8" y="4" width="149" height="32"/>
+                                            <color key="backgroundColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                 </view>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="cpH-VJ-1Dt" firstAttribute="top" secondItem="V44-6X-U29" secondAttribute="top" constant="4" id="Dwc-YF-ZnO"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="cpH-VJ-1Dt" secondAttribute="trailing" id="Xpw-sG-NQM"/>
-                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="leading" secondItem="V44-6X-U29" secondAttribute="leadingMargin" id="c3l-RX-yna"/>
+                                    <constraint firstAttribute="trailing" secondItem="cpH-VJ-1Dt" secondAttribute="trailing" constant="8" id="Xpw-sG-NQM"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="leading" secondItem="V44-6X-U29" secondAttribute="leading" constant="8" id="c3l-RX-yna"/>
                                     <constraint firstAttribute="bottom" secondItem="cpH-VJ-1Dt" secondAttribute="bottom" constant="4" id="rF7-nd-aHa"/>
                                 </constraints>
-                                <edgeInsets key="layoutMargins" top="2" left="20" bottom="2" right="20"/>
                                 <connections>
                                     <outlet property="tagTypeLabel" destination="cpH-VJ-1Dt" id="Tdx-Qt-KXh"/>
                                 </connections>
