@@ -39,13 +39,31 @@ final class LinkTagsViewController: UICollectionViewController {
     fileprivate var dataSource = [LinksType: Int]()
     
     static func newFromStoryboard() -> LinkTagsViewController {
-        return LinkTagsViewController.instantiateFromStoryboard("LinkTagsViewController", identifier: "LinkTagsViewController")
+        let name = String(describing: self)
+        return LinkTagsViewController.instantiateFromStoryboard(name, identifier: name)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+
+        // Inset From property must be set to "from Content Inset"
+        // in Storyboard of view controller in UICollectionView
+        // overwise you will see gap from the top of cells
+        let zeroInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = zeroInset
+
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
+            assertionFailure("collection layout isn't flow")
+            return
+        }
+
+        flowLayout.sectionInset = zeroInset
+        let estimatedSize = CGSize(width: 128, height: UIConstants.linkTagsHeight)
+        flowLayout.estimatedItemSize = estimatedSize
+        flowLayout.invalidateLayout()
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -68,6 +86,10 @@ final class LinkTagsViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
+}
+
+extension LinkTagsViewController: UICollectionViewDelegateFlowLayout {
+
 }
 
 fileprivate extension LinksBadgeView {

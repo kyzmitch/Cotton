@@ -61,7 +61,6 @@ final class MasterBrowserViewController: BaseViewController {
     
     private let linkTagsController: AnyViewController & LinkTagsPresenter = {
         let vc = LinkTagsViewController.newFromStoryboard()
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
         return vc
     }()
     
@@ -361,7 +360,7 @@ private extension MasterBrowserViewController {
         hiddenTagsConstraint?.isActive = false
         showedTagsConstraint?.isActive = true
         
-        UIView.animate(withDuration: 2) {
+        UIView.animate(withDuration: 0.33) {
             self.linkTagsController.view.layoutIfNeeded()
         }
     }
