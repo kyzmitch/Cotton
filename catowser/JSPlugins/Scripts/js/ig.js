@@ -20,12 +20,13 @@ XMLHttpRequest.prototype.send = function(body) {
 		
 		// this.responseType is empty for some reason, so it's not possible to parse 
 		// for json specifically
-		cottonLog('200 ok url:' + this.responseURL);
+		cottonLog('HttpResponse 200 OK:' + this.responseURL);
 		cottonHandleHttpResponseText(this.responseText);
 	});
 };
 
 function cottonHandleHttpResponseText(text) {
+    cottonLog(text);
 	// 1) attempt to extract from concrete user post
 	let singleNode = text['graphql']['shortcode_media'];
 	if(typeof singleNode !== 'undefined'){
@@ -88,12 +89,18 @@ function cottonTryExtractAdditionalDataNodes(json) {
 	if(typeof user === 'undefined'){
 		user = json['data']['user'];
 		if(typeof user === 'undefined'){
-			return result;
+			user = json['graphql']['user']
+			if(typeof user === 'undefined'){
+				return result;
+			}
 		}
 	}
 	let edge_web_feed_timeline = user['edge_web_feed_timeline'];
 	if(typeof edge_web_feed_timeline === 'undefined'){
-		return result;
+		edge_web_feed_timeline = user['edge_owner_to_timeline_media']
+		if(typeof edge_web_feed_timeline === 'undefined'){
+			return result;
+		}
 	}
 	let edges = edge_web_feed_timeline['edges'];
 	if(typeof edges === 'undefined'){

@@ -320,8 +320,16 @@ extension MasterBrowserViewController: CottonPluginsProvider {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        hideLinkTagsController()
-        
+        // hideLinkTagsController()
+        // TODO: uncomment after testing
+        linkTagsController.setLinks(2, for: .video)
+        linkTagsController.setLinks(4, for: .pdf)
+        linkTagsController.setLinks(1, for: .audio)
+        linkTagsController.setLinks(10, for: .unrecognized)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.showLinkTagsControllerIfNeeded()
+        }
+
         switch tabContent {
         case .site(let site):
             guard let webViewController = try?
