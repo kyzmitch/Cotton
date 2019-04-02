@@ -11,9 +11,14 @@ import Foundation
 public struct InstagramVideoNode: Decodable {
     let mediaPreview: UIImage?
     let videUrl: URL
+    let thumbnailUrl: URL
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        let isVideo: Bool = try container.decode(Bool.self, forKey: .isVideo)
+        guard isVideo else {
+            throw DecodingError.notVideo
+        }
         if let base64String = try container.decodeIfPresent(String.self, forKey: .mediaPreview), let mediaPreviewData = Data(base64Encoded: base64String) {
             mediaPreview = UIImage(data: mediaPreviewData)
         } else {
@@ -22,16 +27,21 @@ public struct InstagramVideoNode: Decodable {
         }
         
         videUrl = try container.decode(URL.self, forKey: .videUrl)
+        thumbnailUrl = try container.decode(URL.self, forKey: .thumbnailUrl)
     }
 }
 
 extension InstagramVideoNode {
     enum CodingKeys: String, CodingKey {
         case mediaPreview = "media_preview"
+        case isVideo = "is_video"
         case videUrl = "video_url"
+        case thumbnailUrl = "thumbnail_src"
+        case videoDuration = "video_duration"
     }
     
     enum DecodingError: Error {
+        case notVideo
         case wrongBase64String
         case wrongDataForImage
     }
