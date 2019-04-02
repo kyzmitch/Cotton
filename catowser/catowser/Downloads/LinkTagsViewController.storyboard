@@ -33,7 +33,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpH-VJ-1Dt">
-                                            <rect key="frame" x="8" y="4" width="149" height="32"/>
+                                            <rect key="frame" x="8" y="0.0" width="149" height="40"/>
                                             <color key="backgroundColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -42,10 +42,10 @@
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="top" secondItem="V44-6X-U29" secondAttribute="top" constant="4" id="Dwc-YF-ZnO"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="height" secondItem="V44-6X-U29" secondAttribute="height" id="B3k-eO-ZZe"/>
+                                    <constraint firstItem="cpH-VJ-1Dt" firstAttribute="centerY" secondItem="V44-6X-U29" secondAttribute="centerY" id="XEZ-73-Ybx"/>
                                     <constraint firstAttribute="trailing" secondItem="cpH-VJ-1Dt" secondAttribute="trailing" constant="8" id="Xpw-sG-NQM"/>
                                     <constraint firstItem="cpH-VJ-1Dt" firstAttribute="leading" secondItem="V44-6X-U29" secondAttribute="leading" constant="8" id="c3l-RX-yna"/>
-                                    <constraint firstAttribute="bottom" secondItem="cpH-VJ-1Dt" secondAttribute="bottom" constant="4" id="rF7-nd-aHa"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="tagTypeLabel" destination="cpH-VJ-1Dt" id="Tdx-Qt-KXh"/>
