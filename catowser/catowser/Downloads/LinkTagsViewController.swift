@@ -62,7 +62,7 @@ final class LinkTagsViewController: UICollectionViewController {
 
         flowLayout.sectionInset = zeroInset
         let estimatedSize = CGSize(width: 128, height: UIConstants.linkTagsHeight)
-        flowLayout.estimatedItemSize = estimatedSize
+        flowLayout.estimatedItemSize = estimatedSize /* UICollectionViewFlowLayout.automaticSize */
         flowLayout.invalidateLayout()
     }
     
@@ -94,7 +94,8 @@ extension LinkTagsViewController: UICollectionViewDelegateFlowLayout {
 
 fileprivate extension LinksBadgeView {
     func set(_ linksCount: Int, tagName: String) {
-        tagTypeLabel.text = "\(linksCount) \(tagName)"
+        let source = "\(linksCount) \(tagName)"
+        tagTypeLabel.text = source
     }
 }
 
