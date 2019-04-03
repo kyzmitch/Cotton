@@ -9,13 +9,14 @@
 import Foundation
 import UIKit
 
-struct UIConstants {
+extension CGFloat {
     static let tabHeight = CGFloat(40.0)
     static let searchViewHeight = CGFloat(64.0)
     static let tabBarHeight = CGFloat(40.0) // system height?
     static let linkTagsHeight = CGFloat(40.0)
     static let tagLabelHorizontalMargin = CGFloat(10.0)
-    
+    static let safeAreaBottomMargin = CGFloat(20.0) /* view.safeAreaInsets.bottom */
+
     static var tabWidth: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return 40.0
@@ -29,9 +30,11 @@ struct UIConstants {
     }
     static let compactTabWidth = CGFloat(40.0)
     static let regularTabWidth = CGFloat(180.0)
+    static let highlightLineWidth: CGFloat = 3
+}
+
+struct UIConstants {
     static let searchBarTextColour = UIColor.black
     static let searchBarBackgroundColour = UIColor.white
-    
     static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
-    static let highlightLineWidth: CGFloat = 3
 }

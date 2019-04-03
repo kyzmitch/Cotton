@@ -19,7 +19,8 @@ public struct InstagramVideoNode: Decodable {
         guard isVideo else {
             throw DecodingError.notVideo
         }
-        if let base64String = try container.decodeIfPresent(String.self, forKey: .mediaPreview), let mediaPreviewData = Data(base64Encoded: base64String) {
+        if  let base64String = try container.decodeIfPresent(String.self, forKey: .mediaPreview),
+            let mediaPreviewData = Data(base64Encoded: base64String) {
             mediaPreview = UIImage(data: mediaPreviewData)
         } else {
             // TODO: need to identify why UIImage can't be created with current base64 value
