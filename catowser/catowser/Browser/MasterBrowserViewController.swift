@@ -135,7 +135,7 @@ final class MasterBrowserViewController: BaseViewController {
 
     private var searchSuggestionsDisposable: Disposable?
 
-    private let tabsControllerAdded: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+    private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
@@ -187,7 +187,7 @@ final class MasterBrowserViewController: BaseViewController {
 
         view.backgroundColor = UIColor.white
         
-        if tabsControllerAdded {
+        if isPad {
             tabsViewController.view.snp.makeConstraints { (maker) in
                 // https://github.com/SnapKit/SnapKit/issues/448
                 // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
@@ -310,11 +310,29 @@ final class MasterBrowserViewController: BaseViewController {
 
         // only here we can get correct value for
         // safe area inset
-        if tabsControllerAdded {
+        if isPad {
             underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
             underLinkTagsView.setNeedsLayout()
             underLinkTagsView.layoutIfNeeded()
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if isPad {
+
+        } else {
+            let allHeight = containerView.bounds.height
+            let toolbarHeight = toolbarViewController.view.bounds.height
+            let dummyViewHeight = underToolbarView.bounds.height
+            let freeHeight = allHeight - toolbarHeight - dummyViewHeight - .linkTagsHeight
+            filesGreedHeightConstraint?.constant = freeHeight
+            hiddenFilesGreedConstraint?.constant = freeHeight
+        }
+
+        filesGreedController.view.setNeedsLayout()
+        filesGreedController.view.layoutIfNeeded()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -454,7 +472,7 @@ private extension MasterBrowserViewController {
             let correctedShift = bottomShift < toolbarHeight ? toolbarHeight : bottomShift
             searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -correctedShift).isActive = true
         } else {
-            if tabsControllerAdded {
+            if isPad {
                 searchSuggestionsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0).isActive = true
             } else {
                 searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
