@@ -52,6 +52,7 @@
 		60A82C4D22549446008210D9 /* FilesGreedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */; };
 		60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGreedViewController.swift */; };
 		60A82C5122549604008210D9 /* CAGradientLayer+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */; };
+		60A82C532254E1F7008210D9 /* LinksRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C522254E1F7008210D9 /* LinksRouter.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -156,6 +157,7 @@
 		60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FilesGreedViewController.storyboard; sourceTree = "<group>"; };
 		60A82C4E22549453008210D9 /* FilesGreedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedViewController.swift; sourceTree = "<group>"; };
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
+		60A82C522254E1F7008210D9 /* LinksRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksRouter.swift; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
 		841022C0224788F80021516F /* LinkTagsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LinkTagsViewController.storyboard; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				841022C0224788F80021516F /* LinkTagsViewController.storyboard */,
 				60A82C4E22549453008210D9 /* FilesGreedViewController.swift */,
 				60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */,
+				60A82C522254E1F7008210D9 /* LinksRouter.swift */,
 			);
 			path = Downloads;
 			sourceTree = "<group>";
@@ -798,6 +801,7 @@
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
+				60A82C532254E1F7008210D9 /* LinksRouter.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

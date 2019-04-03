@@ -35,12 +35,20 @@ protocol LinkTagsPresenter: class {
     func clearLinks()
 }
 
+protocol LinkTagsDelegate: class {
+    func didSelect(type: LinksType)
+}
+
 final class LinkTagsViewController: UICollectionViewController {
     fileprivate var dataSource = [LinksType: Int]()
+
+    weak var delegate: LinkTagsDelegate?
     
-    static func newFromStoryboard() -> LinkTagsViewController {
+    static func newFromStoryboard(delegate: LinkTagsDelegate) -> LinkTagsViewController {
         let name = String(describing: self)
-        return LinkTagsViewController.instantiateFromStoryboard(name, identifier: name)
+        let vc = LinkTagsViewController.instantiateFromStoryboard(name, identifier: name)
+        vc.delegate = delegate
+        return vc
     }
     
     override func viewDidLoad() {
@@ -84,7 +92,10 @@ final class LinkTagsViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
+            delegate?.didSelect(type: tuple.key)
+            break
+        }
     }
 }
 

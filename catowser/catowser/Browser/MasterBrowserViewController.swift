@@ -61,8 +61,8 @@ final class MasterBrowserViewController: BaseViewController {
     }()
 
     /// The link tags controller to display segments with link types amount
-    private let linkTagsController: AnyViewController & LinkTagsPresenter = {
-        let vc = LinkTagsViewController.newFromStoryboard()
+    private lazy var linkTagsController: AnyViewController & LinkTagsPresenter = {
+        let vc = LinkTagsViewController.newFromStoryboard(delegate: self)
         return vc
     }()
 
@@ -87,6 +87,8 @@ final class MasterBrowserViewController: BaseViewController {
     private var isSuggestionsShowed: Bool = false
     
     private var isLinkTagsShowed: Bool = false
+
+    private var isFilesGreedShowed: Bool = false
 
     /// The view controller to manage blank tab, possibly will be enhaced
     /// to support favorite sites list.
@@ -324,9 +326,7 @@ final class MasterBrowserViewController: BaseViewController {
 
         } else {
             let allHeight = containerView.bounds.height
-            let toolbarHeight = toolbarViewController.view.bounds.height
-            let dummyViewHeight = underToolbarView.bounds.height
-            let freeHeight = allHeight - toolbarHeight - dummyViewHeight - .linkTagsHeight
+            let freeHeight = allHeight - .linkTagsHeight
             filesGreedHeightConstraint?.constant = freeHeight
             hiddenFilesGreedConstraint?.constant = freeHeight
         }
@@ -366,15 +366,8 @@ extension MasterBrowserViewController: CottonPluginsProvider {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        // hideLinkTagsController()
-        // TODO: uncomment after testing
-        linkTagsController.setLinks(2, for: .video)
-        linkTagsController.setLinks(4, for: .pdf)
-        linkTagsController.setLinks(1, for: .audio)
-        linkTagsController.setLinks(10, for: .unrecognized)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.showLinkTagsControllerIfNeeded()
-        }
+        hideFilesGreedIfNeeded()
+        hideLinkTagsController()
 
         switch tabContent {
         case .site(let site):
@@ -390,6 +383,16 @@ extension MasterBrowserViewController: TabRendererInterface {
             webViewController.view.snp.makeConstraints { make in
                 make.left.right.top.bottom.equalTo(containerView)
             }
+
+            // TODO - remove after testing
+            linkTagsController.setLinks(2, for: .video)
+            linkTagsController.setLinks(4, for: .pdf)
+            linkTagsController.setLinks(1, for: .audio)
+            linkTagsController.setLinks(10, for: .unrecognized)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.showLinkTagsControllerIfNeeded()
+            }
+
         default:
             updateSiteNavigator(to: nil)
             searchBarController.changeState(to: .blankSearch, animated: true)
@@ -422,7 +425,6 @@ private extension MasterBrowserViewController {
             guard let value = info as? NSValue else { return }
             let rect = value.cgRectValue
 
-            print("\(#function): keyboard will show with height \(rect.size.height)")
             // need to reduce search suggestions list height
             keyboardHeight = rect.size.height
         }
@@ -432,7 +434,6 @@ private extension MasterBrowserViewController {
 
     func keyboardWillHideClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
-            print("\(#function): keyboard will hide")
             keyboardHeight = nil
         }
 
@@ -452,6 +453,19 @@ private extension MasterBrowserViewController {
         UIView.animate(withDuration: 0.33) {
             self.linkTagsController.view.layoutIfNeeded()
         }
+    }
+
+    func showFilesGreedIfNeeded() {
+        guard !isFilesGreedShowed else {
+            return
+        }
+        hiddenFilesGreedConstraint?.isActive = false
+        showedFilesGreedConstraint?.isActive = true
+
+        UIView.animate(withDuration: 0.33) {
+            self.filesGreedController.view.layoutIfNeeded()
+        }
+        isFilesGreedShowed = true
     }
 
     func showSearchControllerIfNeeded() {
@@ -482,7 +496,6 @@ private extension MasterBrowserViewController {
     
     func hideLinkTagsController() {
         guard isLinkTagsShowed else {
-            // print("Attempt to hide link tags view when it is hidden")
             return
         }
         showedTagsConstraint?.isActive = false
@@ -490,6 +503,18 @@ private extension MasterBrowserViewController {
 
         linkTagsController.view.layoutIfNeeded()
         isLinkTagsShowed = false
+    }
+
+    func hideFilesGreedIfNeeded() {
+        guard isFilesGreedShowed else {
+            return
+        }
+
+        showedFilesGreedConstraint?.isActive = false
+        hiddenFilesGreedConstraint?.isActive = true
+
+        filesGreedController.view.layoutIfNeeded()
+        isFilesGreedShowed = false
     }
 
     func hideSearchController() {
@@ -610,13 +635,16 @@ extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linkTagsController.setLinks(nodes.count, for: .video)
         showLinkTagsControllerIfNeeded()
-
-        // attempt to use video url to send http request
-        
     }
+}
 
-    func didReceiveVideoLink(_ url: URL) {
+extension MasterBrowserViewController: LinkTagsDelegate {
+    func didSelect(type: LinksType) {
+        hideFilesGreedIfNeeded()
 
+        if type == .video {
+            showFilesGreedIfNeeded()
+        }
     }
 }
 
