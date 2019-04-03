@@ -10,7 +10,6 @@ import Foundation
 import WebKit
 
 public protocol InstagramContentDelegate: class {
-    func didReceiveVideoLink(_ url: URL)
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode])
 }
 

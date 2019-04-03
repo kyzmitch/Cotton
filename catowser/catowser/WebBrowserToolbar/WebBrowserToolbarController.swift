@@ -16,6 +16,10 @@
 import UIKit
 import CoreBrowser
 
+protocol DonwloadPanelDelegate: class {
+    func didPressDownloads(to hide: Bool)
+}
+
 final class WebBrowserToolbarController: BaseViewController {
 
     /// Site navigation delegate
@@ -24,8 +28,8 @@ final class WebBrowserToolbarController: BaseViewController {
             guard let _ = siteNavigationDelegate else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
-                downloadsHidden = true
-                downloadLinksButton.isEnabled = true
+                hideDownloads = true
+                downloadLinksButton.isEnabled = false
                 return
             }
 
@@ -33,7 +37,13 @@ final class WebBrowserToolbarController: BaseViewController {
         }
     }
 
-    fileprivate var downloadsHidden: Bool = true
+    weak var delegate: DonwloadPanelDelegate?
+
+    fileprivate var hideDownloads: Bool = true {
+        didSet {
+            animateDownloadsButton(hideDownloads)
+        }
+    }
 
     private lazy var toolbarView: UIToolbar = {
         let toolbar = UIToolbar()
@@ -158,9 +168,8 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
-        downloadsHidden = true
-        downloadLinksButton.isEnabled = true
-        animateDownloadsButton(downloadsHidden)
+        hideDownloads = true
+        downloadLinksButton.isEnabled = downloadsAvailable
     }
 }
 
@@ -182,8 +191,8 @@ private extension WebBrowserToolbarController {
     }
 
     @objc func handleDownloadsPressed() {
-        animateDownloadsButton(downloadsHidden)
-        downloadsHidden = !downloadsHidden
+        hideDownloads = !hideDownloads
+        delegate?.didPressDownloads(to: hideDownloads)
     }
 
     func animateDownloadsButton(_ arrowDown: Bool) {

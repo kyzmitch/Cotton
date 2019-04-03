@@ -33,8 +33,8 @@ final class FilesGreedViewController: UICollectionViewController {
         super.viewDidLayoutSubviews()
 
         backLayer?.removeFromSuperlayer()
-        backLayer = .lightBackgroundGradientLayer(bounds: view.bounds)
-        view.layer.insertSublayer(backLayer!, at: 0)
+        backLayer = .lightBackgroundGradientLayer(bounds: view.bounds, lightTop: false)
+        collectionView.layer.insertSublayer(backLayer!, at: 0)
     }
 
     // MARK: UICollectionViewDataSource
