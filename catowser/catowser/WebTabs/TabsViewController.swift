@@ -13,7 +13,7 @@ import CoreBrowser
 
 fileprivate extension TabsViewController {
     struct Sizes {
-        static let tabsContainerHeight: CGFloat = UIConstants.tabHeight
+        static let tabsContainerHeight: CGFloat = .tabHeight
     }
 }
 
@@ -192,7 +192,7 @@ private extension TabsViewController {
         tabsViewBackLayer?.removeFromSuperlayer()
         var bounds = view.bounds
         bounds.size.width = width
-        tabsViewBackLayer = CAGradientLayer.lightBackgroundGradientLayer(bounds: bounds)
+        tabsViewBackLayer = .lightBackgroundGradientLayer(bounds: bounds)
         view.layer.insertSublayer(tabsViewBackLayer!, at: 0)
     }
 
@@ -274,18 +274,6 @@ extension TabsViewController {
         updateTabsBackLayer(with: size.width)
         // change tabs width if needed
         resizeTabsWidthBasedOnCurrentHorizontalSizeClass()
-    }
-}
-
-extension CAGradientLayer {
-    class func lightBackgroundGradientLayer(bounds: CGRect) -> CAGradientLayer {
-        let layer = CAGradientLayer()
-        layer.frame = CGRect(x: 0, y: 0, width: bounds.size.width, height: bounds.size.height)
-        let topColor: CGColor = UIColor.white.cgColor
-        let bottomColor: CGColor = UIColor.lightGray.cgColor
-        layer.colors = [topColor, bottomColor]
-        layer.locations = [0.0, 1.0]
-        return layer
     }
 }
 

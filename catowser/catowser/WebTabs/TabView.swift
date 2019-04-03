@@ -139,20 +139,20 @@ final class TabView: UIView {
             make.top.equalTo(self)
             make.leading.equalTo(self).offset(-2)
             make.trailing.equalTo(self).offset(2)
-            make.height.equalTo(UIConstants.highlightLineWidth)
+            make.height.equalTo(CGFloat.highlightLineWidth)
         }
     }
     
     override var intrinsicContentSize: CGSize {
         get {
             if traitCollection.horizontalSizeClass == .compact {
-                return CGSize(width: UIConstants.compactTabWidth, height: UIConstants.tabHeight)
+                return CGSize(width: .compactTabWidth, height: .tabHeight)
             }
             else if traitCollection.horizontalSizeClass == .regular {
-                return CGSize(width: UIConstants.regularTabWidth, height: UIConstants.tabHeight)
+                return CGSize(width: .regularTabWidth, height: .tabHeight)
             }
             else {
-                return CGSize(width: UIConstants.tabWidth, height: UIConstants.tabHeight)
+                return CGSize(width: .tabWidth, height: .tabHeight)
             }
         }
     }

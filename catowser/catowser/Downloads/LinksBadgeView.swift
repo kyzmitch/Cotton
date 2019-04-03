@@ -28,7 +28,7 @@ final class LinksBadgeView: UICollectionViewCell, ReusableItem {
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
         var newFrame = layoutAttributes.frame
-        let expectedWidth = size.width + 2 * UIConstants.tagLabelHorizontalMargin
+        let expectedWidth = size.width + 2 * .tagLabelHorizontalMargin
         newFrame.size.width = expectedWidth
         layoutAttributes.frame = newFrame
         return layoutAttributes

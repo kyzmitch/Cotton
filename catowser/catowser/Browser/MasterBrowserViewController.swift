@@ -54,13 +54,21 @@ final class MasterBrowserViewController: BaseViewController {
         }
     }()
 
+    /// The table to display search suggestions list
     private let searchSuggestionsController: SearchSuggestionsViewController = {
         let vc = SearchSuggestionsViewController()
         return vc
     }()
-    
+
+    /// The link tags controller to display segments with link types amount
     private let linkTagsController: AnyViewController & LinkTagsPresenter = {
         let vc = LinkTagsViewController.newFromStoryboard()
+        return vc
+    }()
+
+    /// The files greed controller to display links for downloads
+    private lazy var filesGreedController: AnyViewController & FilesGreedPresenter = {
+        let vc = FilesGreedViewController.newFromStoryboard()
         return vc
     }()
     
@@ -68,7 +76,13 @@ final class MasterBrowserViewController: BaseViewController {
     
     private var showedTagsConstraint: NSLayoutConstraint?
 
-    private var linkTagsViewHeightConstraint: NSLayoutConstraint?
+    private var hiddenFilesGreedConstraint: NSLayoutConstraint?
+
+    private var showedFilesGreedConstraint: NSLayoutConstraint?
+
+    private var filesGreedHeightConstraint: NSLayoutConstraint?
+
+    private var underLinksViewHeightConstraint: NSLayoutConstraint?
 
     private var isSuggestionsShowed: Bool = false
     
@@ -151,12 +165,16 @@ final class MasterBrowserViewController: BaseViewController {
 
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
+            add(asChildViewController: filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to:view)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         case .pad:
+            // no need to add files greed as a child
+            // will try to show as popover
+
             view.addSubview(underLinkTagsView)
             add(asChildViewController: linkTagsController.viewController, to: view)
         default:
@@ -183,14 +201,14 @@ final class MasterBrowserViewController: BaseViewController {
                 
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                maker.height.equalTo(UIConstants.tabHeight)
+                maker.height.equalTo(CGFloat.tabHeight)
             }
             
             searchBarController.view.snp.makeConstraints({ (maker) in
                 maker.top.equalTo(tabsViewController.view.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                maker.height.equalTo(UIConstants.searchViewHeight)
+                maker.height.equalTo(CGFloat.searchViewHeight)
             })
             
             // Need to have not simple view controller view but container view
@@ -206,11 +224,11 @@ final class MasterBrowserViewController: BaseViewController {
 
             underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
             underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-            let dummyViewHeight: CGFloat = 20.0 /* view.safeAreaInsets.bottom */
-            linkTagsViewHeightConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
-            linkTagsViewHeightConstraint?.isActive = true
+            let dummyViewHeight: CGFloat = .safeAreaBottomMargin
+            underLinksViewHeightConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
+            underLinksViewHeightConstraint?.isActive = true
 
-            let bottomMargin = dummyViewHeight + UIConstants.linkTagsHeight
+            let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
             hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin)
             showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
             linkTagsController.view.bottomAnchor.constraint(equalTo: underLinkTagsView.topAnchor, constant: 0).isActive = true
@@ -224,7 +242,7 @@ final class MasterBrowserViewController: BaseViewController {
                 
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                maker.height.equalTo(UIConstants.searchViewHeight)
+                maker.height.equalTo(CGFloat.searchViewHeight)
             })
             
             containerView.snp.makeConstraints { (maker) in
@@ -238,7 +256,7 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.top.equalTo(containerView.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
-                maker.height.equalTo(UIConstants.tabBarHeight)
+                maker.height.equalTo(CGFloat.tabBarHeight)
 
                 if #available(iOS 11, *) {
                     maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -254,14 +272,24 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.bottom.equalTo(view.snp.bottom)
             }
             
-            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: UIConstants.linkTagsHeight)
+            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: .linkTagsHeight)
             showedTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
+
+            filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+            filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+            // temporarily use 0 height because actual height of free space is unknown at the moment
+            let greedHeight: CGFloat = 0
+            hiddenFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linkTagsController.view.topAnchor, constant: greedHeight)
+            hiddenFilesGreedConstraint?.isActive = true
+            showedFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linkTagsController.view.topAnchor, constant: 0)
+            filesGreedHeightConstraint = filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
+            filesGreedHeightConstraint?.isActive = true
         }
         
         hiddenTagsConstraint?.isActive = true
         linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        linkTagsController.view.heightAnchor.constraint(equalToConstant: UIConstants.linkTagsHeight).isActive = true
+        linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
@@ -283,7 +311,7 @@ final class MasterBrowserViewController: BaseViewController {
         // only here we can get correct value for
         // safe area inset
         if tabsControllerAdded {
-            linkTagsViewHeightConstraint?.constant = view.safeAreaInsets.bottom
+            underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
             underLinkTagsView.setNeedsLayout()
             underLinkTagsView.layoutIfNeeded()
         }

@@ -49,8 +49,9 @@
 		6094E743221FE72C004269A2 /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
 		6094E744221FE7B3004269A2 /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
 		6094E745221FE7FF004269A2 /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
-		60A82C4222539AB3008210D9 /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4022539AB3008210D9 /* FilesGreedViewController.swift */; };
-		60A82C4322539AB3008210D9 /* FilesGreedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4122539AB3008210D9 /* FilesGreedViewController.xib */; };
+		60A82C4D22549446008210D9 /* FilesGreedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */; };
+		60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGreedViewController.swift */; };
+		60A82C5122549604008210D9 /* CAGradientLayer+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -152,8 +153,9 @@
 		6094E73A221FE3FD004269A2 /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E73C221FE3FF004269A2 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E73E221FE65F004269A2 /* ReactiveSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		60A82C4022539AB3008210D9 /* FilesGreedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedViewController.swift; sourceTree = "<group>"; };
-		60A82C4122539AB3008210D9 /* FilesGreedViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FilesGreedViewController.xib; sourceTree = "<group>"; };
+		60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FilesGreedViewController.storyboard; sourceTree = "<group>"; };
+		60A82C4E22549453008210D9 /* FilesGreedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedViewController.swift; sourceTree = "<group>"; };
+		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
 		841022C0224788F80021516F /* LinkTagsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LinkTagsViewController.storyboard; sourceTree = "<group>"; };
@@ -327,8 +329,8 @@
 				841022B8224781A20021516F /* LinkTagsViewController.swift */,
 				841022BC224785340021516F /* LinksBadgeView.swift */,
 				841022C0224788F80021516F /* LinkTagsViewController.storyboard */,
-				60A82C4022539AB3008210D9 /* FilesGreedViewController.swift */,
-				60A82C4122539AB3008210D9 /* FilesGreedViewController.xib */,
+				60A82C4E22549453008210D9 /* FilesGreedViewController.swift */,
+				60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */,
 			);
 			path = Downloads;
 			sourceTree = "<group>";
@@ -468,6 +470,7 @@
 				60724EE82209C9A20071BECF /* Protocols.swift */,
 				8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */,
 				6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */,
+				60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -651,10 +654,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */,
+				60A82C4D22549446008210D9 /* FilesGreedViewController.storyboard in Resources */,
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
 				C27371171F7A341900900F03 /* Localizable.strings in Resources */,
 				60724F7A221695C80071BECF /* google.xml in Resources */,
-				60A82C4322539AB3008210D9 /* FilesGreedViewController.xib in Resources */,
 				8435A4A21EED5E700020102F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -756,6 +759,7 @@
 				6094E745221FE7FF004269A2 /* TabsCache.swift in Sources */,
 				608DA709222E6F5E009F75BD /* TabSelectionStrategy.swift in Sources */,
 				6094E744221FE7B3004269A2 /* DefaultTabProvider.swift in Sources */,
+				60A82C5122549604008210D9 /* CAGradientLayer+CatowserExtension.swift in Sources */,
 				6094E733221FE2F6004269A2 /* String+CatowserExtensions.swift in Sources */,
 				6094E731221FE2EC004269A2 /* ReusableItem.swift in Sources */,
 				6094E740221FE6CB004269A2 /* Box.swift in Sources */,
@@ -785,7 +789,7 @@
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
-				60A82C4222539AB3008210D9 /* FilesGreedViewController.swift in Sources */,
+				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
 				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
