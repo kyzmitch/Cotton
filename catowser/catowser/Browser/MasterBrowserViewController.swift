@@ -40,12 +40,6 @@ final class MasterBrowserViewController: BaseViewController {
         return viewController
     }()
 
-    /// The files greed controller to display links for downloads
-    private lazy var filesGreedController: AnyViewController & FilesGreedPresenter = {
-        let vc = FilesGreedViewController.newFromStoryboard()
-        return vc
-    }()
-
     /// The view controller to manage blank tab, possibly will be enhaced
     /// to support favorite sites list.
     private let blankWebPageController = BlankWebPageViewController()
@@ -112,13 +106,13 @@ final class MasterBrowserViewController: BaseViewController {
         }
 
         linksRouter = LinksRouter(viewController: self)
-        
+
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)
 
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
-            add(asChildViewController: filesGreedController.viewController, to: view)
+            add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to:view)
@@ -228,14 +222,14 @@ final class MasterBrowserViewController: BaseViewController {
             linksRouter.hiddenTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: .linkTagsHeight)
             linksRouter.showedTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
 
-            filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-            filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+            linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+            linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
             // temporarily use 0 height because actual height of free space is unknown at the moment
             let greedHeight: CGFloat = 0
-            linksRouter.hiddenFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
+            linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
             linksRouter.hiddenFilesGreedConstraint?.isActive = true
-            linksRouter.showedFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
-            linksRouter.filesGreedHeightConstraint = filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
+            linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
+            linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
             linksRouter.filesGreedHeightConstraint?.isActive = true
         }
         
@@ -282,8 +276,8 @@ final class MasterBrowserViewController: BaseViewController {
             linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
         }
 
-        filesGreedController.view.setNeedsLayout()
-        filesGreedController.view.layoutIfNeeded()
+        linksRouter.filesGreedController.view.setNeedsLayout()
+        linksRouter.filesGreedController.view.layoutIfNeeded()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
