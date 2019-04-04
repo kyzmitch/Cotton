@@ -31,6 +31,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.translatesAutoresizingMaskIntoConstraints = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         // https://www.hackingwithswift.com/example-code/uikit/how-to-register-a-cell-for-uitableviewcell-reuse
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: .searchSuggestionCellId)
     }
