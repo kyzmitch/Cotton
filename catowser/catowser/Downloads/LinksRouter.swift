@@ -58,11 +58,11 @@ final class LinksRouter: NSObject {
 
     var underLinksViewHeightConstraint: NSLayoutConstraint?
 
-    var isSuggestionsShowed: Bool = false
+    private var isSuggestionsShowed: Bool = false
 
-    var isLinkTagsShowed: Bool = false
+    private var isLinkTagsShowed: Bool = false
 
-    var isFilesGreedShowed: Bool = false
+    private var isFilesGreedShowed: Bool = false
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
     
@@ -77,9 +77,11 @@ final class LinksRouter: NSObject {
         return client
     }()
 
-    private let presenter: AnyViewController & MasterDelegate
+    typealias LinksRouterPresenter = AnyViewController & MasterDelegate
 
-    init(viewController: AnyViewController & MasterDelegate) {
+    private weak var presenter: LinksRouterPresenter!
+
+    init(viewController: LinksRouterPresenter) {
         presenter = viewController
     }
 
