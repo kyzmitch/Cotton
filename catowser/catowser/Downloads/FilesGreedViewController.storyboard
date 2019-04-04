@@ -32,16 +32,30 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7iX-xN-SGl">
-                                            <rect key="frame" x="0.0" y="0.0" width="158" height="156"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="158" height="116"/>
                                         </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RgF-9g-0ee">
+                                            <rect key="frame" x="0.0" y="116" width="158" height="40"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="RBA-CR-VBg"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                 </view>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="RgF-9g-0ee" secondAttribute="bottom" id="DjJ-5C-Shv"/>
                                     <constraint firstItem="7iX-xN-SGl" firstAttribute="leading" secondItem="NKS-pE-QzE" secondAttribute="leading" id="GM1-Vi-SjE"/>
                                     <constraint firstAttribute="trailing" secondItem="7iX-xN-SGl" secondAttribute="trailing" id="Oau-h3-dEs"/>
+                                    <constraint firstAttribute="trailing" secondItem="RgF-9g-0ee" secondAttribute="trailing" id="auR-gI-NSg"/>
+                                    <constraint firstItem="RgF-9g-0ee" firstAttribute="leading" secondItem="NKS-pE-QzE" secondAttribute="leading" id="eu5-Ph-kM3"/>
+                                    <constraint firstItem="7iX-xN-SGl" firstAttribute="bottom" secondItem="RgF-9g-0ee" secondAttribute="top" id="rLW-Gu-aWb"/>
                                     <constraint firstItem="7iX-xN-SGl" firstAttribute="top" secondItem="NKS-pE-QzE" secondAttribute="top" id="tgq-Bo-Xhk"/>
-                                    <constraint firstAttribute="bottom" secondItem="7iX-xN-SGl" secondAttribute="bottom" id="uft-Xx-Jt3"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="buttonContainer" destination="RgF-9g-0ee" id="0uh-ca-nsZ"/>
+                                    <outlet property="imageView" destination="7iX-xN-SGl" id="hMF-F3-78h"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
