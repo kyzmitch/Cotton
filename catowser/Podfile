@@ -10,6 +10,7 @@ target 'catowser' do
   pod 'Alamofire', '~> 4.7'
   pod 'ReactiveSwift', '~> 3.0'
   pod 'SwiftLint'
+  pod 'AHDownloadButton'
 end
 
 target 'CoreBrowser' do
