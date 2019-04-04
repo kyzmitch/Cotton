@@ -33,9 +33,9 @@ final class TabsPreviewsViewController: BaseViewController {
     fileprivate var numberOfColumns: Int {
         // iPhone 4-6+ portrait
         if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-            return Sizes.CompactNumberOfColumnsThin
+            return Sizes.compactNumberOfColumnsThin
         } else {
-            return Sizes.NumberOfColumnsWide
+            return Sizes.numberOfColumnsWide
         }
     }
 
@@ -123,9 +123,9 @@ final class TabsPreviewsViewController: BaseViewController {
 fileprivate extension TabsPreviewsViewController {
     struct Sizes {
         static let textBoxHeight = CGFloat(32.0)
-        static let CompactNumberOfColumnsThin = 2
-        static let NumberOfColumnsWide = 3
-        static let Margin = CGFloat(15)
+        static let compactNumberOfColumnsThin = 2
+        static let numberOfColumnsWide = 3
+        static let margin = CGFloat(15)
     }
 }
 
@@ -171,21 +171,21 @@ extension TabsPreviewsViewController: TabPreviewCellDelegate {
 
 extension TabsPreviewsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return Sizes.Margin
+        return Sizes.margin
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = floor((collectionView.bounds.width - Sizes.Margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
+        let cellWidth = floor((collectionView.bounds.width - Sizes.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
         let cellHeight = TabPreviewCell.cellHeightForCurrent(traitCollection)
         return CGSize(width: cellWidth, height: cellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(equalInset: Sizes.Margin)
+        return UIEdgeInsets(equalInset: Sizes.margin)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return Sizes.Margin
+        return Sizes.margin
     }
 }
 

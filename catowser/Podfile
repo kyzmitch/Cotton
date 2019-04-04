@@ -7,10 +7,11 @@ target 'catowser' do
 
   # Pods for catowser
   pod 'SnapKit', '~>4.2.0'
-  pod 'Alamofire', '~> 4.7'
+  pod 'Alamofire', '~> 4.8'
   pod 'ReactiveSwift', '~> 3.0'
   pod 'SwiftLint'
   pod 'AHDownloadButton'
+  pod 'AlamofireImage', '~> 3.5'
 end
 
 target 'CoreBrowser' do
@@ -18,7 +19,7 @@ target 'CoreBrowser' do
   use_frameworks!
 
   # Pods for CoreBrowser
-  pod 'Alamofire', '~> 4.7'
+  pod 'Alamofire', '~> 4.8'
   pod 'ReactiveSwift', '~> 3.0'
   pod 'SwiftLint'
 end
