@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import JSPlugins
 import ReactiveSwift
 
 protocol MasterDelegate: class {
@@ -16,6 +17,11 @@ protocol MasterDelegate: class {
     var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
 
     func handleSearchSuggestion(url: URL, suggestion: String)
+}
+
+protocol LinksRouterInterface: class {
+    func openTagsFor(instagramVideo nodes: [InstagramVideoNode])
+    func closeTags()
 }
 
 /// Should contain copies for references to all needed constraints and view controllers. NSObject subclass to support system delegate protocol.
@@ -46,23 +52,25 @@ final class LinksRouter: NSObject {
         }
     }()
 
-    var hiddenTagsConstraint: NSLayoutConstraint?
+    weak var hiddenTagsConstraint: NSLayoutConstraint!
 
-    var showedTagsConstraint: NSLayoutConstraint?
+    weak var showedTagsConstraint: NSLayoutConstraint!
 
-    var hiddenFilesGreedConstraint: NSLayoutConstraint?
+    weak var hiddenFilesGreedConstraint: NSLayoutConstraint!
 
-    var showedFilesGreedConstraint: NSLayoutConstraint?
+    weak var showedFilesGreedConstraint: NSLayoutConstraint!
 
-    var filesGreedHeightConstraint: NSLayoutConstraint?
+    weak var filesGreedHeightConstraint: NSLayoutConstraint!
 
-    var underLinksViewHeightConstraint: NSLayoutConstraint?
+    weak var underLinksViewHeightConstraint: NSLayoutConstraint!
 
     private var isSuggestionsShowed: Bool = false
 
     private var isLinkTagsShowed: Bool = false
 
     private var isFilesGreedShowed: Bool = false
+
+    private var instagramVideos: [InstagramVideoNode]?
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
     
@@ -88,22 +96,23 @@ final class LinksRouter: NSObject {
     deinit {
         searchSuggestionsDisposable?.dispose()
     }
+}
 
-    func showLinkTagsControllerIfNeeded() {
-        guard !isLinkTagsShowed else {
-            return
-        }
-
-        isLinkTagsShowed = true
-        // Order of disabling/enabling is important to not to cause errors in layout calculation.
-        hiddenTagsConstraint?.isActive = false
-        showedTagsConstraint?.isActive = true
-
-        UIView.animate(withDuration: 0.33) {
-            self.linkTagsController.view.layoutIfNeeded()
-        }
+extension LinksRouter: LinksRouterInterface {
+    func openTagsFor(instagramVideo nodes: [InstagramVideoNode]) {
+        instagramVideos = nodes
+        linkTagsController.setLinks(nodes.count, for: .video)
+        showLinkTagsControllerIfNeeded()
     }
 
+    func closeTags() {
+        instagramVideos = nil
+        hideFilesGreedIfNeeded()
+        hideLinkTagsController()
+    }
+}
+
+fileprivate extension LinksRouter {
     func showFilesGreedIfNeeded() {
         guard !isFilesGreedShowed else {
             return
@@ -143,29 +152,6 @@ final class LinksRouter: NSObject {
         }
     }
 
-    func hideLinkTagsController() {
-        guard isLinkTagsShowed else {
-            return
-        }
-        showedTagsConstraint?.isActive = false
-        hiddenTagsConstraint?.isActive = true
-
-        linkTagsController.view.layoutIfNeeded()
-        isLinkTagsShowed = false
-    }
-
-    func hideFilesGreedIfNeeded() {
-        guard isFilesGreedShowed else {
-            return
-        }
-
-        showedFilesGreedConstraint?.isActive = false
-        hiddenFilesGreedConstraint?.isActive = true
-
-        filesGreedController.view.layoutIfNeeded()
-        isFilesGreedShowed = false
-    }
-
     func hideSearchController() {
         guard isSuggestionsShowed else {
             print("Attempted to hide suggestions when they are not showed")
@@ -180,9 +166,45 @@ final class LinksRouter: NSObject {
 
         isSuggestionsShowed = false
     }
-}
 
-fileprivate extension LinksRouter {
+    func hideLinkTagsController() {
+        guard isLinkTagsShowed else {
+            return
+        }
+        showedTagsConstraint?.isActive = false
+        hiddenTagsConstraint?.isActive = true
+
+        linkTagsController.view.layoutIfNeeded()
+        isLinkTagsShowed = false
+    }
+    
+    func hideFilesGreedIfNeeded() {
+        guard isFilesGreedShowed else {
+            return
+        }
+
+        showedFilesGreedConstraint?.isActive = false
+        hiddenFilesGreedConstraint?.isActive = true
+
+        filesGreedController.view.layoutIfNeeded()
+        isFilesGreedShowed = false
+    }
+
+    func showLinkTagsControllerIfNeeded() {
+        guard !isLinkTagsShowed else {
+            return
+        }
+
+        isLinkTagsShowed = true
+        // Order of disabling/enabling is important to not to cause errors in layout calculation.
+        hiddenTagsConstraint?.isActive = false
+        showedTagsConstraint?.isActive = true
+
+        UIView.animate(withDuration: 0.33) {
+            self.linkTagsController.view.layoutIfNeeded()
+        }
+    }
+
     func startSearch(_ searchText: String) {
         searchSuggestionsDisposable?.dispose()
         searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
@@ -203,7 +225,8 @@ extension LinksRouter: LinkTagsDelegate {
     func didSelect(type: LinksType) {
         hideFilesGreedIfNeeded()
 
-        if type == .video {
+        if type == .video, let nodes = instagramVideos {
+            filesGreedController.setNodes(nodes)
             showFilesGreedIfNeeded()
         }
     }

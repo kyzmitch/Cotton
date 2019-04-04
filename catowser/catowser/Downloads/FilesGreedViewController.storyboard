@@ -18,19 +18,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="83O-Db-3ma">
-                            <size key="itemSize" width="158" height="88"/>
+                            <size key="itemSize" width="158" height="156"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NKS-pE-QzE">
-                                <rect key="frame" x="0.0" y="0.0" width="158" height="88"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VideoFileViewCell" id="NKS-pE-QzE" customClass="VideoFileViewCell" customModule="catowser" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="158" height="156"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                    <rect key="frame" x="0.0" y="0.0" width="158" height="88"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="158" height="156"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7iX-xN-SGl">
+                                            <rect key="frame" x="0.0" y="0.0" width="158" height="156"/>
+                                        </imageView>
+                                    </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="7iX-xN-SGl" firstAttribute="leading" secondItem="NKS-pE-QzE" secondAttribute="leading" id="GM1-Vi-SjE"/>
+                                    <constraint firstAttribute="trailing" secondItem="7iX-xN-SGl" secondAttribute="trailing" id="Oau-h3-dEs"/>
+                                    <constraint firstItem="7iX-xN-SGl" firstAttribute="top" secondItem="NKS-pE-QzE" secondAttribute="top" id="tgq-Bo-Xhk"/>
+                                    <constraint firstAttribute="bottom" secondItem="7iX-xN-SGl" secondAttribute="bottom" id="uft-Xx-Jt3"/>
+                                </constraints>
                             </collectionViewCell>
                         </cells>
                         <connections>

@@ -310,8 +310,7 @@ extension MasterBrowserViewController: CottonPluginsProvider {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        linksRouter.hideFilesGreedIfNeeded()
-        linksRouter.hideLinkTagsController()
+        linksRouter.closeTags()
 
         switch tabContent {
         case .site(let site):
@@ -421,7 +420,7 @@ extension MasterBrowserViewController: TabsObserver {
         } else {
             withSite = false
         }
-        linksRouter.hideLinkTagsController()
+        linksRouter.closeTags()
         reloadNavigationElements(withSite)
     }
 }
@@ -438,13 +437,12 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 
 extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
-        linksRouter.linkTagsController.setLinks(nodes.count, for: .video)
-        linksRouter.showLinkTagsControllerIfNeeded()
+        linksRouter.openTagsFor(instagramVideo: nodes)
     }
 }
 
 extension MasterBrowserViewController: SiteExternalNavigationDelegate {
     func didStartProvisionalNavigation() {
-        linksRouter.hideLinkTagsController()
+        linksRouter.closeTags()
     }
 }
