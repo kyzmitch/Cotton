@@ -16,8 +16,8 @@ final class TabsPreviewsViewController: BaseViewController {
     
     typealias TabsBox = Box<[Tab]>
 
-    private let collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private lazy var collectionView: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: collectionLayout)
         cv.register(TabPreviewCell.self)
         cv.contentInset = UIEdgeInsets(top: 0 /* Sizes.searchBarHeight */, left: 0, bottom: 0, right: 0)
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -81,7 +81,6 @@ final class TabsPreviewsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        collectionView.collectionViewLayout = collectionLayout
         collectionView.dataSource = self
         collectionView.delegate = self
 

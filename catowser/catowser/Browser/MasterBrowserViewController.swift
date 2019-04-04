@@ -27,43 +27,17 @@ final class MasterBrowserViewController: BaseViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    /// Router and layout handler for supplementary views.
+    private var linksRouter: LinksRouter!
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    private let searchSuggestClient: SearchSuggestClient = {
-        // TODO: implement parsing e.g. google.xml
-        guard let sEngine = try? OpenSearchParser.parse("", engineID: "") else {
-            return SearchSuggestClient(.googleEngine)
-        }
-        let client = SearchSuggestClient(sEngine)
-        return client
-    }()
     
     /// Tabs list without previews. Needed only for tablets or landscape mode.
     private lazy var tabsViewController: TabsViewController = {
         let viewController = TabsViewController()
         return viewController
-    }()
-    
-    private lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return TabletSearchBarViewController(self)
-        } else {
-            return SmartphoneSearchBarViewController(self)
-        }
-    }()
-
-    /// The table to display search suggestions list
-    private let searchSuggestionsController: SearchSuggestionsViewController = {
-        let vc = SearchSuggestionsViewController()
-        return vc
-    }()
-
-    /// The link tags controller to display segments with link types amount
-    private lazy var linkTagsController: AnyViewController & LinkTagsPresenter = {
-        let vc = LinkTagsViewController.newFromStoryboard(delegate: self)
-        return vc
     }()
 
     /// The files greed controller to display links for downloads
@@ -71,24 +45,6 @@ final class MasterBrowserViewController: BaseViewController {
         let vc = FilesGreedViewController.newFromStoryboard()
         return vc
     }()
-    
-    private var hiddenTagsConstraint: NSLayoutConstraint?
-    
-    private var showedTagsConstraint: NSLayoutConstraint?
-
-    private var hiddenFilesGreedConstraint: NSLayoutConstraint?
-
-    private var showedFilesGreedConstraint: NSLayoutConstraint?
-
-    private var filesGreedHeightConstraint: NSLayoutConstraint?
-
-    private var underLinksViewHeightConstraint: NSLayoutConstraint?
-
-    private var isSuggestionsShowed: Bool = false
-    
-    private var isLinkTagsShowed: Bool = false
-
-    private var isFilesGreedShowed: Bool = false
 
     /// The view controller to manage blank tab, possibly will be enhaced
     /// to support favorite sites list.
@@ -100,8 +56,6 @@ final class MasterBrowserViewController: BaseViewController {
         v.backgroundColor = .black
         return v
     }()
-    
-    private var keyboardHeight: CGFloat?
 
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
@@ -125,17 +79,12 @@ final class MasterBrowserViewController: BaseViewController {
         return v
     }()
 
-    /// Dynamicly determined height because it can be different before layout finish it's work
-    private var toolbarHeight: CGFloat {
-        return toolbarViewController.view.bounds.size.height + underToolbarView.bounds.size.height
-    }
+    var _keyboardHeight: CGFloat?
 
     /// The current holder for WebView (controller) if browser has at least one
     private var currentWebViewController: WebViewController?
 
     private var disposables = [Disposable?]()
-
-    private var searchSuggestionsDisposable: Disposable?
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
@@ -162,14 +111,16 @@ final class MasterBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to:view)
         }
 
-        add(asChildViewController: searchBarController.viewController, to:view)
+        linksRouter = LinksRouter(viewController: self)
+        
+        add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)
 
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
             add(asChildViewController: filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
-            add(asChildViewController: linkTagsController.viewController, to: view)
+            add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to:view)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
@@ -178,7 +129,7 @@ final class MasterBrowserViewController: BaseViewController {
             // will try to show as popover
 
             view.addSubview(underLinkTagsView)
-            add(asChildViewController: linkTagsController.viewController, to: view)
+            add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
         default:
             break
         }
@@ -206,7 +157,7 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.height.equalTo(CGFloat.tabHeight)
             }
             
-            searchBarController.view.snp.makeConstraints({ (maker) in
+            linksRouter.searchBarController.view.snp.makeConstraints({ (maker) in
                 maker.top.equalTo(tabsViewController.view.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
@@ -218,7 +169,7 @@ final class MasterBrowserViewController: BaseViewController {
             // bookmarks in case if search bar has no any address entered or
             // webpage controller with web view if some address entered in search bar
             containerView.snp.makeConstraints { (maker) in
-                maker.top.equalTo(searchBarController.view.snp.bottom)
+                maker.top.equalTo(linksRouter.searchBarController.view.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
                 maker.bottom.equalTo(view)
@@ -227,15 +178,15 @@ final class MasterBrowserViewController: BaseViewController {
             underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
             underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
-            underLinksViewHeightConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
-            underLinksViewHeightConstraint?.isActive = true
+            linksRouter.underLinksViewHeightConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
+            linksRouter.underLinksViewHeightConstraint?.isActive = true
 
             let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
-            hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin)
-            showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-            linkTagsController.view.bottomAnchor.constraint(equalTo: underLinkTagsView.topAnchor, constant: 0).isActive = true
+            linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin)
+            linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+            linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: underLinkTagsView.topAnchor, constant: 0).isActive = true
         } else {
-            searchBarController.view.snp.makeConstraints({ (maker) in
+            linksRouter.searchBarController.view.snp.makeConstraints({ (maker) in
                 if #available(iOS 11, *) {
                     maker.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
                 } else {
@@ -248,7 +199,7 @@ final class MasterBrowserViewController: BaseViewController {
             })
             
             containerView.snp.makeConstraints { (maker) in
-                maker.top.equalTo(searchBarController.view.snp.bottom)
+                maker.top.equalTo(linksRouter.searchBarController.view.snp.bottom)
                 maker.bottom.equalTo(toolbarViewController.view.snp.top)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
@@ -274,24 +225,24 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.bottom.equalTo(view.snp.bottom)
             }
             
-            hiddenTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: .linkTagsHeight)
-            showedTagsConstraint = linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
+            linksRouter.hiddenTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: .linkTagsHeight)
+            linksRouter.showedTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
 
             filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
             filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
             // temporarily use 0 height because actual height of free space is unknown at the moment
             let greedHeight: CGFloat = 0
-            hiddenFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linkTagsController.view.topAnchor, constant: greedHeight)
-            hiddenFilesGreedConstraint?.isActive = true
-            showedFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linkTagsController.view.topAnchor, constant: 0)
-            filesGreedHeightConstraint = filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
-            filesGreedHeightConstraint?.isActive = true
+            linksRouter.hiddenFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
+            linksRouter.hiddenFilesGreedConstraint?.isActive = true
+            linksRouter.showedFilesGreedConstraint = filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
+            linksRouter.filesGreedHeightConstraint = filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
+            linksRouter.filesGreedHeightConstraint?.isActive = true
         }
         
-        hiddenTagsConstraint?.isActive = true
-        linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
+        linksRouter.hiddenTagsConstraint?.isActive = true
+        linksRouter.linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        linksRouter.linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        linksRouter.linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
@@ -313,7 +264,7 @@ final class MasterBrowserViewController: BaseViewController {
         // only here we can get correct value for
         // safe area inset
         if isPad {
-            underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
+            linksRouter.underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
             underLinkTagsView.setNeedsLayout()
             underLinkTagsView.layoutIfNeeded()
         }
@@ -327,8 +278,8 @@ final class MasterBrowserViewController: BaseViewController {
         } else {
             let allHeight = containerView.bounds.height
             let freeHeight = allHeight - .linkTagsHeight
-            filesGreedHeightConstraint?.constant = freeHeight
-            hiddenFilesGreedConstraint?.constant = freeHeight
+            linksRouter.filesGreedHeightConstraint?.constant = freeHeight
+            linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
         }
 
         filesGreedController.view.setNeedsLayout()
@@ -350,7 +301,6 @@ final class MasterBrowserViewController: BaseViewController {
     deinit {
         TabsListManager.shared.detach(self)
         disposables.forEach { $0?.dispose() }
-        searchSuggestionsDisposable?.dispose()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -366,8 +316,8 @@ extension MasterBrowserViewController: CottonPluginsProvider {
 
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        hideFilesGreedIfNeeded()
-        hideLinkTagsController()
+        linksRouter.hideFilesGreedIfNeeded()
+        linksRouter.hideLinkTagsController()
 
         switch tabContent {
         case .site(let site):
@@ -384,18 +334,9 @@ extension MasterBrowserViewController: TabRendererInterface {
                 make.left.right.top.bottom.equalTo(containerView)
             }
 
-            // TODO - remove after testing
-            linkTagsController.setLinks(2, for: .video)
-            linkTagsController.setLinks(4, for: .pdf)
-            linkTagsController.setLinks(1, for: .audio)
-            linkTagsController.setLinks(10, for: .unrecognized)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.showLinkTagsControllerIfNeeded()
-            }
-
         default:
             updateSiteNavigator(to: nil)
-            searchBarController.changeState(to: .blankSearch, animated: true)
+            linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
             currentWebViewController?.removeFromChild()
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in
@@ -412,7 +353,7 @@ private extension MasterBrowserViewController {
     func navigationComponent() -> SiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return toolbarViewController
-        } else if let tabletVc = searchBarController as? SiteNavigationComponent {
+        } else if let tabletVc = linksRouter.searchBarController as? SiteNavigationComponent {
             // complex type casting
             return tabletVc
         }
@@ -426,7 +367,7 @@ private extension MasterBrowserViewController {
             let rect = value.cgRectValue
 
             // need to reduce search suggestions list height
-            keyboardHeight = rect.size.height
+            _keyboardHeight = rect.size.height
         }
 
         return handling
@@ -434,166 +375,36 @@ private extension MasterBrowserViewController {
 
     func keyboardWillHideClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
-            keyboardHeight = nil
+            _keyboardHeight = nil
         }
 
         return handling
     }
-    
-    func showLinkTagsControllerIfNeeded() {
-        guard !isLinkTagsShowed else {
-            return
-        }
-        
-        isLinkTagsShowed = true
-        // Order of disabling/enabling is important to not to cause errors in layout calculation.
-        hiddenTagsConstraint?.isActive = false
-        showedTagsConstraint?.isActive = true
-        
-        UIView.animate(withDuration: 0.33) {
-            self.linkTagsController.view.layoutIfNeeded()
-        }
-    }
-
-    func showFilesGreedIfNeeded() {
-        guard !isFilesGreedShowed else {
-            return
-        }
-        hiddenFilesGreedConstraint?.isActive = false
-        showedFilesGreedConstraint?.isActive = true
-
-        UIView.animate(withDuration: 0.33) {
-            self.filesGreedController.view.layoutIfNeeded()
-        }
-        isFilesGreedShowed = true
-    }
-
-    func showSearchControllerIfNeeded() {
-        guard !isSuggestionsShowed else {
-            return
-        }
-
-        add(asChildViewController: searchSuggestionsController, to: view)
-        isSuggestionsShowed = true
-        searchSuggestionsController.delegate = self
-        searchSuggestionsController.view.translatesAutoresizingMaskIntoConstraints = false
-        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor, constant: 0).isActive = true
-        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        
-        if let bottomShift = keyboardHeight {
-            // fix wrong height of keyboard on Simulator when keyboard partly visible
-            let correctedShift = bottomShift < toolbarHeight ? toolbarHeight : bottomShift
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -correctedShift).isActive = true
-        } else {
-            if isPad {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0).isActive = true
-            } else {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-            }
-        }
-    }
-    
-    func hideLinkTagsController() {
-        guard isLinkTagsShowed else {
-            return
-        }
-        showedTagsConstraint?.isActive = false
-        hiddenTagsConstraint?.isActive = true
-
-        linkTagsController.view.layoutIfNeeded()
-        isLinkTagsShowed = false
-    }
-
-    func hideFilesGreedIfNeeded() {
-        guard isFilesGreedShowed else {
-            return
-        }
-
-        showedFilesGreedConstraint?.isActive = false
-        hiddenFilesGreedConstraint?.isActive = true
-
-        filesGreedController.view.layoutIfNeeded()
-        isFilesGreedShowed = false
-    }
-
-    func hideSearchController() {
-        guard isSuggestionsShowed else {
-            print("Attempted to hide suggestions when they are not showed")
-            return
-        }
-
-        searchSuggestionsController.willMove(toParent: nil)
-        searchSuggestionsController.removeFromParent()
-        // remove view and constraints
-        searchSuggestionsController.view.removeFromSuperview()
-        searchSuggestionsController.suggestions = [String]()
-
-        isSuggestionsShowed = false
-    }
-
-    func startSearch(_ searchText: String) {
-        searchSuggestionsDisposable?.dispose()
-        searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
-            .observe(on: UIScheduler())
-            .startWithResult { [weak self] result in
-                switch result {
-                case .success(let suggestions):
-                    self?.searchSuggestionsController.suggestions = suggestions
-                    break
-                case .failure:
-                    break
-                }
-        }
-    }
 }
 
-extension MasterBrowserViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            hideSearchController()
-        } else {
-            showSearchControllerIfNeeded()
-            // TODO: How to delay network request
-            // https://stackoverflow.com/a/2471977/483101
-            // or using Reactive api
-            startSearch(searchText)
+extension MasterBrowserViewController: AnyViewController {}
+
+extension MasterBrowserViewController: MasterDelegate {
+    var keyboardHeight: CGFloat? {
+        get {
+            return _keyboardHeight
+        }
+        set {
+            _keyboardHeight = keyboardHeight
         }
     }
 
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarController.changeState(to: .startSearch, animated: true)
+    /// Dynamicly determined height because it can be different before layout finish it's work
+    var toolbarHeight: CGFloat {
+        return toolbarViewController.view.bounds.size.height + underToolbarView.bounds.size.height
     }
 
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        hideSearchController()
-        searchBar.resignFirstResponder()
-        searchBarController.changeState(to: .cancelTapped, animated: true)
+    var toolbarTopAnchor: NSLayoutYAxisAnchor {
+        return toolbarViewController.view.topAnchor
     }
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // need to open web view with url of search engine
-        // and specific search queue
-        guard let suggestion = searchBar.text else {
-
-            return
-        }
-        didSelect(suggestion)
-    }
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        // called when `Cancel` pressed or search bar no more a first responder
-    }
-}
-
-extension MasterBrowserViewController: SearchSuggestionsListDelegate {
-    func didSelect(_ suggestion: String) {
-        guard let url = searchSuggestClient.searchURL(basedOn: suggestion) else {
-            return
-        }
-        hideSearchController()
+    func handleSearchSuggestion(url: URL, suggestion: String) {
         let siteContent: Tab.ContentType = .site(Site(url: url, searchSuggestion: suggestion))
-
         do {
             try TabsListManager.shared.replaceSelected(tabContent: siteContent)
             open(tabContent: siteContent)
@@ -616,7 +427,7 @@ extension MasterBrowserViewController: TabsObserver {
         } else {
             withSite = false
         }
-        hideLinkTagsController()
+        linksRouter.hideLinkTagsController()
         reloadNavigationElements(withSite)
     }
 }
@@ -633,23 +444,13 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 
 extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
-        linkTagsController.setLinks(nodes.count, for: .video)
-        showLinkTagsControllerIfNeeded()
-    }
-}
-
-extension MasterBrowserViewController: LinkTagsDelegate {
-    func didSelect(type: LinksType) {
-        hideFilesGreedIfNeeded()
-
-        if type == .video {
-            showFilesGreedIfNeeded()
-        }
+        linksRouter.linkTagsController.setLinks(nodes.count, for: .video)
+        linksRouter.showLinkTagsControllerIfNeeded()
     }
 }
 
 extension MasterBrowserViewController: SiteExternalNavigationDelegate {
     func didStartProvisionalNavigation() {
-        hideLinkTagsController()
+        linksRouter.hideLinkTagsController()
     }
 }
