@@ -9,12 +9,43 @@
 import UIKit
 import CoreBrowser
 import AHDownloadButton
+import AlamofireImage
 
 final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     /// Video preview
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView! {
+        didSet {
+            imageView.backgroundColor = UIColor.white
+        }
+    }
     /// Container for download button which will be added programmatically
     @IBOutlet weak var buttonContainer: UIView!
+
+    var previewURL: URL? {
+        didSet {
+            if let url = previewURL {
+                imageView.af_setImage(withURL: url)
+            }
+        }
+    }
+
+    var downloadURL: URL? {
+        didSet {
+            downloadButton.state = .startDownload
+            downloadButton.progress = 0
+        }
+    }
+
+    private lazy var downloadButton: AHDownloadButton = {
+        let btn = AHDownloadButton(frame: .zero)
+        btn.delegate = self
+        btn.translatesAutoresizingMaskIntoConstraints = true
+
+        btn.startDownloadButtonTitle = NSLocalizedString("ttl_download_button", comment: "The title of download button")
+        btn.downloadedButtonTitle = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
+
+        return btn
+    }()
 
     static func cellHeight(basedOn cellWidth: CGFloat, _ traitCollection: UITraitCollection) -> CGFloat {
 
@@ -24,12 +55,23 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let downloadButton = AHDownloadButton(frame: .zero)
-        downloadButton.translatesAutoresizingMaskIntoConstraints = true
         buttonContainer.addSubview(downloadButton)
     }
 
-    struct Sizes {
+    private struct Sizes {
         static let downloadButtonHeight: CGFloat = 40.0
+    }
+}
+
+extension VideoFileViewCell: AHDownloadButtonDelegate {
+    func downloadButton(_ downloadButton: AHDownloadButton, tappedWithState state: AHDownloadButton.State) {
+        switch state {
+        case .startDownload:
+            break
+        case .pending:
+            break
+        case .downloading, .downloaded:
+            break
+        }
     }
 }
