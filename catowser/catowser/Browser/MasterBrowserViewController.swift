@@ -438,6 +438,7 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linksRouter.openTagsFor(instagramVideo: nodes)
+        reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
