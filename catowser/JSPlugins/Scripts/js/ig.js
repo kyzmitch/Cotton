@@ -84,6 +84,7 @@ function cottonTryExtractVideoTags(){
 }
 
 function cottonTryExtractAdditionalDataNodes(json) {
+	cottonLog('Additional data: ' + JSON.stringify(json));
 	let user = json['user'];
 	let result = new Array();
 	if(typeof user === 'undefined'){

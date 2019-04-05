@@ -11,7 +11,7 @@ import CoreBrowser
 import JSPlugins
 
 protocol FilesGreedPresenter: class {
-    func setNodes(_ nodes: [InstagramVideoNode])
+    func setInstagramVideo(_ nodes: [InstagramVideoNode])
 }
 
 final class FilesGreedViewController: UICollectionViewController, CollectionViewInterface {
@@ -21,6 +21,9 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
     }
 
     private var backLayer: CAGradientLayer?
+
+    /// Array with objects to store URLs for Instagram resources
+    private var instagramVideos = [InstagramVideoNode]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,16 +50,19 @@ fileprivate extension FilesGreedViewController {
 // MARK: UICollectionViewDataSource
 extension FilesGreedViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 0
+        return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return instagramVideos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(at: indexPath, type: VideoFileViewCell.self)
-        
+
+        let node = instagramVideos[indexPath.item]
+        cell.previewURL = node.thumbnailUrl
+        cell.downloadURL = node.videUrl
         return cell
     }
 }
@@ -64,8 +70,9 @@ extension FilesGreedViewController {
 extension FilesGreedViewController: AnyViewController {}
 
 extension FilesGreedViewController: FilesGreedPresenter {
-    func setNodes(_ nodes: [InstagramVideoNode]) {
-
+    func setInstagramVideo(_ nodes: [InstagramVideoNode]) {
+        instagramVideos = nodes
+        collectionView.reloadData()
     }
 }
 

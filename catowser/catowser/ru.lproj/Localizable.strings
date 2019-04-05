@@ -15,3 +15,6 @@
 "txt_video_tag" = "видео";
 "txt_audio_tag" = "аудио";
 "txt_pdf_tag" = "pdf";
+
+"ttl_download_button" = "Скачать";
+"ttl_downloaded_button" = "Открыть";

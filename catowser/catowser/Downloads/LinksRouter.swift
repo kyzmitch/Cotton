@@ -52,17 +52,19 @@ final class LinksRouter: NSObject {
         }
     }()
 
-    weak var hiddenTagsConstraint: NSLayoutConstraint!
+    // MARK: All constraints should be stored by strong references because they are removed during deactivation
 
-    weak var showedTagsConstraint: NSLayoutConstraint!
+    var hiddenTagsConstraint: NSLayoutConstraint?
 
-    weak var hiddenFilesGreedConstraint: NSLayoutConstraint!
+    var showedTagsConstraint: NSLayoutConstraint?
 
-    weak var showedFilesGreedConstraint: NSLayoutConstraint!
+    var hiddenFilesGreedConstraint: NSLayoutConstraint?
 
-    weak var filesGreedHeightConstraint: NSLayoutConstraint!
+    var showedFilesGreedConstraint: NSLayoutConstraint?
 
-    weak var underLinksViewHeightConstraint: NSLayoutConstraint!
+    var filesGreedHeightConstraint: NSLayoutConstraint?
+
+    var underLinksViewHeightConstraint: NSLayoutConstraint?
 
     private var isSuggestionsShowed: Bool = false
 
@@ -226,7 +228,7 @@ extension LinksRouter: LinkTagsDelegate {
         hideFilesGreedIfNeeded()
 
         if type == .video, let nodes = instagramVideos {
-            filesGreedController.setNodes(nodes)
+            filesGreedController.setInstagramVideo(nodes)
             showFilesGreedIfNeeded()
         }
     }
