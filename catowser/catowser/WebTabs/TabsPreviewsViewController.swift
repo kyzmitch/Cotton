@@ -10,7 +10,7 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 
-final class TabsPreviewsViewController: BaseViewController {
+final class TabsPreviewsViewController: UIViewController, CollectionViewInterface {
 
     private var uxState: MutableProperty<State> = MutableProperty<State>(.loading)
     
@@ -29,15 +29,6 @@ final class TabsPreviewsViewController: BaseViewController {
         let layout = UICollectionViewFlowLayout()
         return layout
     }()
-
-    fileprivate var numberOfColumns: Int {
-        // iPhone 4-6+ portrait
-        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-            return Sizes.compactNumberOfColumnsThin
-        } else {
-            return Sizes.numberOfColumnsWide
-        }
-    }
 
     private lazy var toolbar: UIToolbar = {
         let toolbar = UIToolbar()
@@ -123,8 +114,6 @@ final class TabsPreviewsViewController: BaseViewController {
 fileprivate extension TabsPreviewsViewController {
     struct Sizes {
         static let textBoxHeight = CGFloat(32.0)
-        static let compactNumberOfColumnsThin = 2
-        static let numberOfColumnsWide = 3
         static let margin = CGFloat(15)
     }
 }
