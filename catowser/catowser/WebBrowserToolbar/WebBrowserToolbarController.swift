@@ -29,7 +29,7 @@ final class WebBrowserToolbarController: BaseViewController {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
                 hideDownloads = true
-                downloadLinksButton.isEnabled = false
+                updateDownloadButtonState(false)
                 return
             }
 
@@ -106,7 +106,6 @@ final class WebBrowserToolbarController: BaseViewController {
         let btn = UIBarButtonItem(customView: downloadsView)
         btn.target = self
         btn.action = .downloads
-        // TODO: need to make custom image view grayed when UIBarButtonItem is not enabled
         return btn
     }()
 
@@ -169,11 +168,16 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
         hideDownloads = true
-        downloadLinksButton.isEnabled = downloadsAvailable
+        updateDownloadButtonState(downloadsAvailable)
     }
 }
 
 private extension WebBrowserToolbarController {
+    func updateDownloadButtonState(_ enabled: Bool) {
+        downloadLinksButton.isEnabled = enabled
+        downloadsView.alpha = enabled ? 1.0 : 0.3
+    }
+
     @objc func handleBackPressed() {
         siteNavigationDelegate?.goBack()
     }

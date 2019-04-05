@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import AHDownloadButton
 import AlamofireImage
+import SnapKit
 
 final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     /// Video preview
@@ -39,7 +40,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     private lazy var downloadButton: AHDownloadButton = {
         let btn = AHDownloadButton(frame: .zero)
         btn.delegate = self
-        btn.translatesAutoresizingMaskIntoConstraints = true
+        btn.translatesAutoresizingMaskIntoConstraints = false
 
         btn.startDownloadButtonTitle = NSLocalizedString("ttl_download_button", comment: "The title of download button")
         btn.downloadedButtonTitle = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
@@ -56,6 +57,9 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         super.awakeFromNib()
 
         buttonContainer.addSubview(downloadButton)
+        downloadButton.snp.makeConstraints { (maker) in
+            maker.leading.trailing.top.bottom.equalToSuperview()
+        }
     }
 
     private struct Sizes {
