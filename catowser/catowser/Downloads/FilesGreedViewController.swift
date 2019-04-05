@@ -14,22 +14,13 @@ protocol FilesGreedPresenter: class {
     func setNodes(_ nodes: [InstagramVideoNode])
 }
 
-final class FilesGreedViewController: UICollectionViewController {
+final class FilesGreedViewController: UICollectionViewController, CollectionViewInterface {
     static func newFromStoryboard() -> FilesGreedViewController {
         let name = String(describing: self)
         return FilesGreedViewController.instantiateFromStoryboard(name, identifier: name)
     }
 
     private var backLayer: CAGradientLayer?
-
-    fileprivate var numberOfColumns: Int {
-        // iPhone 4-6+ portrait
-        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-            return Sizes.compactNumberOfColumnsThin
-        } else {
-            return Sizes.numberOfColumnsWide
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,8 +40,6 @@ final class FilesGreedViewController: UICollectionViewController {
 
 fileprivate extension FilesGreedViewController {
     struct Sizes {
-        static let compactNumberOfColumnsThin = 2
-        static let numberOfColumnsWide = 3
         static let margin = CGFloat(15)
     }
 }
@@ -60,7 +49,6 @@ extension FilesGreedViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 0
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 0

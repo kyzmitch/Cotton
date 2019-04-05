@@ -54,6 +54,7 @@
 		60A82C5122549604008210D9 /* CAGradientLayer+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */; };
 		60A82C532254E1F7008210D9 /* LinksRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C522254E1F7008210D9 /* LinksRouter.swift */; };
 		60A82C5522562D3B008210D9 /* VideoFileViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5422562D3B008210D9 /* VideoFileViewCell.swift */; };
+		60D52CEE22572F2300CB56F0 /* CollectionViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -160,6 +161,7 @@
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60A82C522254E1F7008210D9 /* LinksRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksRouter.swift; sourceTree = "<group>"; };
 		60A82C5422562D3B008210D9 /* VideoFileViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFileViewCell.swift; sourceTree = "<group>"; };
+		60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewInterface.swift; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
 		841022C0224788F80021516F /* LinkTagsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LinkTagsViewController.storyboard; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 				8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */,
 				6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */,
 				60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */,
+				60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -760,6 +763,7 @@
 				6094E729221FD2DE004269A2 /* OpenSearchParser.swift in Sources */,
 				6094E72B221FD310004269A2 /* CharacterSet+CatowserExtensions.swift in Sources */,
 				6094E736221FE302004269A2 /* UIViewController+CatowserExtensions.swift in Sources */,
+				60D52CEE22572F2300CB56F0 /* CollectionViewInterface.swift in Sources */,
 				6094E72A221FD2F7004269A2 /* SearchEngine.swift in Sources */,
 				6094E732221FE2EF004269A2 /* Collection.swift in Sources */,
 				6094E730221FE2E5004269A2 /* UIColour+CatowserExtensions.swift in Sources */,
