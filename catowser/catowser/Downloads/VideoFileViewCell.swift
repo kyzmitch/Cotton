@@ -39,6 +39,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 
     private lazy var downloadButton: AHDownloadButton = {
         let btn = AHDownloadButton(frame: .zero)
+        btn.isUserInteractionEnabled = true
         btn.delegate = self
         btn.translatesAutoresizingMaskIntoConstraints = false
 
@@ -58,12 +59,43 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 
         buttonContainer.addSubview(downloadButton)
         downloadButton.snp.makeConstraints { (maker) in
-            maker.leading.trailing.top.bottom.equalToSuperview()
+            maker.leading.trailing.equalToSuperview()
+            maker.top.equalToSuperview().offset(2)
+            maker.bottom.equalToSuperview().offset(2)
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if touch.view == downloadButton {
+                downloadButton(downloadButton, tappedWithState: downloadButton.state)
+                break
+            }
         }
     }
 
     private struct Sizes {
-        static let downloadButtonHeight: CGFloat = 40.0
+        static let downloadButtonHeight: CGFloat = 44.0
+    }
+}
+
+fileprivate extension VideoFileViewCell {
+    func downloadFile() {
+        guard let url = downloadURL else {
+            downloadButton.progress = 0
+            downloadButton.state = .startDownload
+            return
+        }
+        downloadButton.state = .downloading
+        let task = URLSession.shared.downloadTask(with: url) { [weak self] (_, response, error) in
+            print("Finish: \(response) \(error)")
+            self?.downloadButton.state = .downloaded
+        }
+        task.resume()
+    }
+    
+    func stopDownload() {
+        
     }
 }
 
@@ -71,10 +103,17 @@ extension VideoFileViewCell: AHDownloadButtonDelegate {
     func downloadButton(_ downloadButton: AHDownloadButton, tappedWithState state: AHDownloadButton.State) {
         switch state {
         case .startDownload:
+            downloadButton.progress = 0
+            downloadButton.state = .pending
+            downloadFile()
             break
         case .pending:
             break
-        case .downloading, .downloaded:
+        case .downloading:
+            downloadButton.progress = 0
+            downloadButton.state = .startDownload
+            stopDownload()
+        case .downloaded:
             break
         }
     }

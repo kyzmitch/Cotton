@@ -26,7 +26,6 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 function cottonHandleHttpResponseText(text) {
-    cottonLog(text);
 	// 1) attempt to extract from concrete user post
 	let singleNode = text['graphql']['shortcode_media'];
 	if(typeof singleNode !== 'undefined'){
@@ -84,7 +83,6 @@ function cottonTryExtractVideoTags(){
 }
 
 function cottonTryExtractAdditionalDataNodes(json) {
-	cottonLog('Additional data: ' + JSON.stringify(json));
 	let user = json['user'];
 	let result = new Array();
 	if(typeof user === 'undefined'){
