@@ -281,3 +281,14 @@ extension LinksRouter: UISearchBarDelegate {
         // called when `Cancel` pressed or search bar no more a first responder
     }
 }
+
+extension LinksRouter: DonwloadPanelDelegate {
+    func didPressDownloads(to hide: Bool) {
+        if hide {
+            hideFilesGreedIfNeeded()
+            hideLinkTagsController()
+        } else {
+            showLinkTagsControllerIfNeeded()
+        }
+    }
+}
