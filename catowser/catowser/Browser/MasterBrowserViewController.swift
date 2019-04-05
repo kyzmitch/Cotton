@@ -54,7 +54,7 @@ final class MasterBrowserViewController: BaseViewController {
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
         let router = ToolbarRouter(presenter: self)
-        let toolbar = WebBrowserToolbarController(router: router)
+        let toolbar = WebBrowserToolbarController(router: router, delegate: linksRouter)
         return toolbar
     }()
 

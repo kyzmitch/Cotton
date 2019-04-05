@@ -28,8 +28,8 @@ final class WebBrowserToolbarController: BaseViewController {
             guard let _ = siteNavigationDelegate else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
-                hideDownloads = true
-                updateDownloadButtonState(false)
+                downloadsArrowDown = true
+                enableDownloadsButton = false
                 return
             }
 
@@ -39,9 +39,16 @@ final class WebBrowserToolbarController: BaseViewController {
 
     weak var delegate: DonwloadPanelDelegate?
 
-    fileprivate var hideDownloads: Bool = true {
+    fileprivate var downloadsArrowDown: Bool = true {
         didSet {
-            animateDownloadsButton(hideDownloads)
+            animateDownloadsArrow(down: !downloadsArrowDown)
+        }
+    }
+    
+    fileprivate var enableDownloadsButton: Bool {
+        didSet {
+            downloadLinksButton.isEnabled = enableDownloadsButton
+            downloadsView.alpha = enableDownloadsButton ? 1.0 : 0.3
         }
     }
 
@@ -111,8 +118,11 @@ final class WebBrowserToolbarController: BaseViewController {
 
     private let router: ToolbarRouter
 
-    init(router: ToolbarRouter) {
+    init(router: ToolbarRouter, delegate: DonwloadPanelDelegate) {
         self.router = router
+        self.delegate = delegate
+        downloadsArrowDown = true
+        enableDownloadsButton = false
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -167,15 +177,19 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
-        hideDownloads = true
-        updateDownloadButtonState(downloadsAvailable)
+        downloadsArrowDown = !downloadsAvailable
+        enableDownloadsButton = downloadsAvailable
     }
 }
 
 private extension WebBrowserToolbarController {
-    func updateDownloadButtonState(_ enabled: Bool) {
-        downloadLinksButton.isEnabled = enabled
-        downloadsView.alpha = enabled ? 1.0 : 0.3
+    func animateDownloadsArrow(down: Bool) {
+        let rotate = UIViewPropertyAnimator(duration: 0.33, curve: .easeIn)
+        rotate.addAnimations {
+            let angle = down ? CGFloat.pi : 0
+            self.downloadsView.transform = CGAffineTransform(rotationAngle: angle)
+        }
+        rotate.startAnimation()
     }
 
     @objc func handleBackPressed() {
@@ -195,17 +209,8 @@ private extension WebBrowserToolbarController {
     }
 
     @objc func handleDownloadsPressed() {
-        hideDownloads = !hideDownloads
-        delegate?.didPressDownloads(to: hideDownloads)
-    }
-
-    func animateDownloadsButton(_ arrowDown: Bool) {
-        let rotate = UIViewPropertyAnimator(duration: 0.33, curve: .easeIn)
-        rotate.addAnimations {
-            let angle = arrowDown ? CGFloat.pi : 0
-            self.downloadsView.transform = CGAffineTransform(rotationAngle: angle)
-        }
-        rotate.startAnimation()
+        downloadsArrowDown = !downloadsArrowDown
+        delegate?.didPressDownloads(to: downloadsArrowDown)
     }
 }
 
