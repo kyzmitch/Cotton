@@ -119,7 +119,12 @@ public final class TabsListManager {
         self.storage = storage
         queue = DispatchQueue(label: .queueNameWith(suffix: "tabsListSubject"))
 
+        // Temporarily delay to wait before first `observer` will be added
+        // to send data from storage to it
+        let delay = TimeInterval(1)
+        
         disposables.append(storage.fetch()
+            .delay(delay, on: scheduler)
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
                 switch result {
@@ -132,6 +137,7 @@ public final class TabsListManager {
         })
 
         disposables.append(storage.fetchSelectedIndex()
+            .delay(delay, on: scheduler)
             .observe(on: scheduler)
             .startWithResult({ [weak self] result in
                 switch result {
