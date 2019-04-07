@@ -47,7 +47,7 @@ final class MasterBrowserViewController: BaseViewController {
     /// The view needed to hold tab content like WebView or favorites table view.
     private let containerView: UIView = {
         let v = UIView()
-        v.backgroundColor = .black
+        v.backgroundColor = .white
         return v
     }()
 
@@ -236,7 +236,7 @@ final class MasterBrowserViewController: BaseViewController {
         linksRouter.hiddenTagsConstraint?.isActive = true
         linksRouter.linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         linksRouter.linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        linksRouter.linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
+    linksRouter.linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
