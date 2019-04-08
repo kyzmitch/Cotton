@@ -19,6 +19,12 @@ public struct InstagramVideoNode: Decodable {
     public let mediaPreview: UIImage?
     /// The resolution of the video clip
     public let dimensions: CGSize?
+    /// The name of video
+    public let name: String
+    /// Video file name
+    public var fileName: String {
+        return "\(name).mp4"
+    }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -52,6 +58,13 @@ public struct InstagramVideoNode: Decodable {
             mediaPreview = nil
         }
         dimensions = nil
+
+        if let mediaCaption = try container.decodeIfPresent(IgEdgeMediaCaption.self, forKey: .mediaCaption),
+           let edge = mediaCaption.edges.first {
+            name = edge.node.text
+        } else {
+            name = UUID().uuidString
+        }
     }
 }
 
@@ -64,6 +77,7 @@ extension InstagramVideoNode {
         case typeName = "__typename"
         case videUrl = "video_url"
         case videoDuration = "video_duration"
+        case mediaCaption = "edge_media_to_caption"
     }
     
     enum DecodingError: Error {
@@ -71,5 +85,17 @@ extension InstagramVideoNode {
         case missingPreviewURL
         case wrongBase64String
         case wrongDataForImage
+    }
+}
+
+fileprivate struct IgEdgeMediaCaption: Decodable {
+    let edges: [IgMediaCaptionEdge]
+
+    fileprivate struct IgMediaCaptionNodeText: Decodable {
+        let text: String
+    }
+
+    fileprivate struct IgMediaCaptionEdge: Decodable {
+        let node: IgMediaCaptionNodeText
     }
 }

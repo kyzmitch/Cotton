@@ -23,11 +23,11 @@ extension CoreBrowser {
 
 extension CoreBrowser {
     public final class DownloadFacade {
-        static let shared = DownloadFacade()
+        public static let shared = DownloadFacade()
 
         private init() {}
 
-        typealias DownloadComplete = (Result<Data>) -> Void
+        public typealias DownloadComplete = (Result<Data>) -> Void
     }
 }
 
@@ -37,7 +37,7 @@ extension CoreBrowser.DownloadFacade {
     /// - Parameter file: All info about remote file and info about how it should be saved.
     /// - Parameter progressHandler: Use to track traffic progress.
     /// - Parameter completeHandler: Use to track error or success of download.
-    func download(file: Downloable, progressHandler: @escaping Request.ProgressHandler, completeHandler: @escaping DownloadComplete) {
+    public func download(file: Downloable, progressHandler: @escaping Request.ProgressHandler, completeHandler: @escaping DownloadComplete) {
         let destination: DownloadRequest.DownloadFileDestination = filePath(name: file.fileName)
         let request = Alamofire.download(file.url, method: .get, to: destination)
         request

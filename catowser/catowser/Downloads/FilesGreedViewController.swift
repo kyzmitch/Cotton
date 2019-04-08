@@ -123,4 +123,21 @@ extension FilesGreedViewController: VideoFileCellDelegate {
         alert.addAction(cancel)
         present(alert, animated: true)
     }
+
+    func didStartDownload(for cell: VideoFileViewCell) -> Downloable? {
+        guard let indexPath = collectionView.indexPath(for: cell) else {
+            return nil
+        }
+
+        let node = instagramVideos[indexPath.item]
+        return node
+    }
+}
+
+/// Declaring following properties here, because type and protocol are from different frameworks.
+/// So, this place is neutral.
+extension InstagramVideoNode: Downloable {
+    public var url: URL {
+        return videUrl
+    }
 }
