@@ -14,6 +14,7 @@ import SnapKit
 
 protocol VideoFileCellDelegate: class {
     func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void)
+    func didStartDownload(for cell: VideoFileViewCell) -> Downloable?
 }
 
 final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
@@ -100,7 +101,6 @@ fileprivate extension VideoFileViewCell {
             return
         }
         downloadButton.state = .downloading
-
     }
     
     func stopDownload() {
