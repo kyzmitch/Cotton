@@ -18,3 +18,9 @@
 
 "ttl_download_button" = "Скачать";
 "ttl_downloaded_button" = "Открыть";
+
+"txt_where_save" = "Где сохранить?";
+"txt_app_sandbox" = "Файлы";
+"txt_gallery" = "Фото Галерея";
+
+"ttl_common_cancel" = "Отмена";

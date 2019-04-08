@@ -30,6 +30,13 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
         view.translatesAutoresizingMaskIntoConstraints = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
+            assertionFailure("collection layout isn't flow")
+            return
+        }
+
+        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        flowLayout.invalidateLayout()
     }
 
     override func viewDidLayoutSubviews() {
@@ -43,7 +50,7 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
 fileprivate extension FilesGreedViewController {
     struct Sizes {
-        static let margin = CGFloat(15)
+        static let margin = CGFloat(10)
     }
 }
 
@@ -59,10 +66,9 @@ extension FilesGreedViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(at: indexPath, type: VideoFileViewCell.self)
-
+        cell.delegate = self
         let node = instagramVideos[indexPath.item]
-        cell.previewURL = node.thumbnailUrl
-        cell.downloadURL = node.videUrl
+        cell.setupWith(previewURL: node.thumbnailUrl, downloadURL: node.videUrl)
         return cell
     }
 }
@@ -93,5 +99,28 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return Sizes.margin
+    }
+}
+
+extension FilesGreedViewController: VideoFileCellDelegate {
+    func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void) {
+        let title = NSLocalizedString("txt_where_save", comment: "Text to ask where need to save the file")
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let sandBoxTitle = NSLocalizedString("txt_app_sandbox", comment: "Application sandbox which is visible using Files.app")
+        let sandBox = UIAlertAction(title: sandBoxTitle, style: .default) { (_) in
+            callback(.sandboxFiles)
+        }
+        alert.addAction(sandBox)
+        let galleryTitle = NSLocalizedString("txt_gallery", comment: "iOS Gallery which can be checked using Photos.app")
+        let gallery = UIAlertAction(title: galleryTitle, style: .default) { (_) in
+            callback(.globalGallery)
+        }
+        alert.addAction(gallery)
+        let cancelTtl = NSLocalizedString("ttl_common_cancel", comment: "Button title when need dismiss alert")
+        let cancel = UIAlertAction(title: cancelTtl, style: .cancel) { (_) in
+            callback(nil)
+        }
+        alert.addAction(cancel)
+        present(alert, animated: true)
     }
 }

@@ -18,3 +18,9 @@
 
 "ttl_download_button" = "Download";
 "ttl_downloaded_button" = "Open";
+
+"txt_where_save" = "Where to save?";
+"txt_app_sandbox" = "Files app";
+"txt_gallery" = "Phone Gallery";
+
+"ttl_common_cancel" = "Cancel";
