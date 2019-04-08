@@ -12,6 +12,10 @@ import AHDownloadButton
 import AlamofireImage
 import SnapKit
 
+protocol VideoFileCellDelegate: class {
+    func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void)
+}
+
 final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     /// Video preview
     @IBOutlet weak var imageView: UIImageView! {
@@ -22,7 +26,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     /// Container for download button which will be added programmatically
     @IBOutlet weak var buttonContainer: UIView!
 
-    var previewURL: URL? {
+    fileprivate var previewURL: URL? {
         didSet {
             if let url = previewURL {
                 imageView.af_setImage(withURL: url)
@@ -30,11 +34,18 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         }
     }
 
-    var downloadURL: URL? {
+    fileprivate var downloadURL: URL? {
         didSet {
             downloadButton.state = .startDownload
             downloadButton.progress = 0
         }
+    }
+
+    weak var delegate: VideoFileCellDelegate?
+
+    func setupWith(previewURL: URL, downloadURL: URL) {
+        self.previewURL = previewURL
+        self.downloadURL = downloadURL
     }
 
     private lazy var downloadButton: AHDownloadButton = {
@@ -43,8 +54,10 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         btn.delegate = self
         btn.translatesAutoresizingMaskIntoConstraints = false
 
-        btn.startDownloadButtonTitle = NSLocalizedString("ttl_download_button", comment: "The title of download button")
-        btn.downloadedButtonTitle = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
+        let beforeTtl = NSLocalizedString("ttl_download_button", comment: "The title of download button")
+        btn.startDownloadButtonTitle = beforeTtl
+        let afterTtl = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
+        btn.downloadedButtonTitle = afterTtl
 
         return btn
     }()
@@ -81,21 +94,18 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 
 fileprivate extension VideoFileViewCell {
     func downloadFile() {
-        guard let url = downloadURL else {
+        guard let _ = downloadURL else {
             downloadButton.progress = 0
             downloadButton.state = .startDownload
             return
         }
         downloadButton.state = .downloading
-        let task = URLSession.shared.downloadTask(with: url) { [weak self] (_, response, error) in
-            print("Finish: \(response) \(error)")
-            self?.downloadButton.state = .downloaded
-        }
-        task.resume()
+
     }
     
     func stopDownload() {
-        
+        downloadButton.progress = 0
+        downloadButton.state = .startDownload
     }
 }
 
@@ -105,13 +115,20 @@ extension VideoFileViewCell: AHDownloadButtonDelegate {
         case .startDownload:
             downloadButton.progress = 0
             downloadButton.state = .pending
-            downloadFile()
-            break
+            delegate?.didPressDownload(callback: { [weak self] (location) in
+                guard let self = self else {
+                    return
+                }
+                guard let _ = location else {
+                    self.downloadButton.progress = 0
+                    self.downloadButton.state = .startDownload
+                    return
+                }
+                self.downloadFile()
+            })
         case .pending:
             break
         case .downloading:
-            downloadButton.progress = 0
-            downloadButton.state = .startDownload
             stopDownload()
         case .downloaded:
             break
