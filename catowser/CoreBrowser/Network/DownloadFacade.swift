@@ -8,8 +8,9 @@
 
 import Foundation
 import Alamofire
+import ReactiveSwift
 
-public protocol Downloable {
+public protocol Downloadable {
     var url: URL { get }
     var fileName: String { get }
 }
@@ -26,26 +27,58 @@ extension CoreBrowser {
         public static let shared = DownloadFacade()
 
         private init() {}
-
-        public typealias DownloadComplete = (Result<Data>) -> Void
     }
 }
 
 extension CoreBrowser.DownloadFacade {
+    public typealias DownloadWithProgressSignalProducer = SignalProducer<CoreBrowser.ProgressResponse<Void>, DownloadError>
+
     /// Sends download request and saves file.
     ///
     /// - Parameter file: All info about remote file and info about how it should be saved.
-    /// - Parameter progressHandler: Use to track traffic progress.
-    /// - Parameter completeHandler: Use to track error or success of download.
-    public func download(file: Downloable, progressHandler: @escaping Request.ProgressHandler, completeHandler: @escaping DownloadComplete) {
-        let destination: DownloadRequest.DownloadFileDestination = filePath(name: file.fileName)
-        let request = Alamofire.download(file.url, method: .get, to: destination)
-        request
-            .downloadProgress(queue: .main, closure: progressHandler)
-            .responseData(queue: nil) { response in
+    /// - Returns: Signal Producer with progress
+    public func download(file: Downloadable) -> DownloadWithProgressSignalProducer {
+        let producer = DownloadWithProgressSignalProducer { [weak self] (observer, _) in
+            guard let `self` = self else {
+                observer.send(error: .zombyInstance)
+                return
+            }
 
+            let destination: DownloadRequest.DownloadFileDestination = self.filePath(name: file.fileName)
+            let request = Alamofire.download(file.url, method: .get, to: destination)
+
+            request.downloadProgress(queue: .main, closure: { (progress) in
+                observer.send(value: .progress(progress))
+            }).responseData(queue: nil) { (response: DownloadResponse<Data>) in
+                switch response.result {
+                case .success(_):
+                    let void: (Void) = ()
+                    observer.send(value: .complete(void))
+                    observer.sendCompleted()
+                    break
+                case .failure(let error):
+                    observer.send(error: .networkError(error))
+                }
+            }
         }
 
+        return producer
+    }
+}
+
+extension CoreBrowser.DownloadFacade {
+    public enum DownloadError: Error, CustomStringConvertible {
+        case zombyInstance
+        case networkError(Error)
+
+        public var description: String {
+            switch self {
+            case .zombyInstance:
+                return "zomby instance of DownloadFacade"
+            case .networkError(let error):
+                return "network error: \(error)"
+            }
+        }
     }
 }
 

@@ -210,6 +210,7 @@ fileprivate extension LinksRouter {
     func startSearch(_ searchText: String) {
         searchSuggestionsDisposable?.dispose()
         searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
+            .throttle(0.5, on: QueueScheduler.main)
             .observe(on: UIScheduler())
             .startWithResult { [weak self] result in
                 switch result {

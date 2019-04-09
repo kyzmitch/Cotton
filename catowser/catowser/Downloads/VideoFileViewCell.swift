@@ -10,11 +10,12 @@ import UIKit
 import CoreBrowser
 import AHDownloadButton
 import AlamofireImage
+import ReactiveSwift
 import SnapKit
 
 protocol VideoFileCellDelegate: class {
     func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void)
-    func didStartDownload(for cell: VideoFileViewCell) -> Downloable?
+    func didStartDownload(for cell: VideoFileViewCell) -> Downloadable?
 }
 
 final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
@@ -94,18 +95,43 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 }
 
 fileprivate extension VideoFileViewCell {
-    func downloadFile() {
-        guard let _ = downloadURL else {
-            downloadButton.progress = 0
-            downloadButton.state = .startDownload
-            return
-        }
+    func download(_ batch: Downloadable) {
         downloadButton.state = .downloading
+        CoreBrowser.DownloadFacade.shared.download(file: batch)
+            .observe(on: QueueScheduler.main)
+            .startWithResult { [weak self] (result) in
+            guard let self = self else {
+                return
+            }
+            switch result {
+            case .success(let value):
+                switch value {
+                case .progress(let progress):
+                    let converted = CGFloat(progress.fractionCompleted)
+                    self.downloadButton.progress = converted
+                case .complete:
+                    self.downloadButton.state = .downloaded
+                }
+            case .failure(let error):
+                print("File download error: \(error)")
+                self.setInitialButtonState()
+            }
+        }
     }
     
     func stopDownload() {
         downloadButton.progress = 0
         downloadButton.state = .startDownload
+    }
+
+    func setInitialButtonState() {
+        downloadButton.progress = 0
+        downloadButton.state = .startDownload
+    }
+
+    func setPendingButtonState() {
+        downloadButton.progress = 0
+        downloadButton.state = .pending
     }
 }
 
@@ -113,18 +139,19 @@ extension VideoFileViewCell: AHDownloadButtonDelegate {
     func downloadButton(_ downloadButton: AHDownloadButton, tappedWithState state: AHDownloadButton.State) {
         switch state {
         case .startDownload:
-            downloadButton.progress = 0
-            downloadButton.state = .pending
+            setPendingButtonState()
+
+            guard let batch = delegate?.didStartDownload(for: self) else {
+                return setInitialButtonState()
+            }
             delegate?.didPressDownload(callback: { [weak self] (location) in
                 guard let self = self else {
                     return
                 }
                 guard let _ = location else {
-                    self.downloadButton.progress = 0
-                    self.downloadButton.state = .startDownload
-                    return
+                    return self.setInitialButtonState()
                 }
-                self.downloadFile()
+                self.download(batch)
             })
         case .pending:
             break
