@@ -33,9 +33,10 @@ extension CoreBrowser {
 extension CoreBrowser.DownloadFacade {
     public typealias DownloadWithProgressSignalProducer = SignalProducer<CoreBrowser.ProgressResponse<Void>, DownloadError>
 
-    /// Sends download request and saves file.
+    /// Sends download request and saves file
     ///
-    /// - Parameter file: All info about remote file and info about how it should be saved.
+    /// - Parameter file: All info about remote file and info about how it should be saved
+    /// - Parameter location: Where to save the file
     /// - Returns: Signal Producer with progress
     public func download(file: Downloadable, saveTo location: CoreBrowser.FileSaveLocation) -> DownloadWithProgressSignalProducer {
         let producer = DownloadWithProgressSignalProducer { [weak self] (observer, _) in
@@ -44,7 +45,14 @@ extension CoreBrowser.DownloadFacade {
                 return
             }
 
-            let destination = self.downloadDestination(from: file.fileName)
+            let destination: DownloadRequest.DownloadFileDestination
+            do {
+                destination = try self.downloadDestination(from: file.fileName)
+            } catch {
+                observer.send(error: .noDocumentsDirectory)
+                return
+            }
+
             let request = Alamofire.download(file.url, method: .get, to: destination)
 
             request.downloadProgress(queue: .main, closure: { (progress) in
@@ -83,6 +91,7 @@ extension CoreBrowser.DownloadFacade {
 extension CoreBrowser.DownloadFacade {
     public enum DownloadError: Error, CustomStringConvertible {
         case zombyInstance
+        case noDocumentsDirectory
         case noCorrectDownloadDestination
         case failedExcludeFromBackup(Error)
         case networkError(Error)
@@ -91,8 +100,10 @@ extension CoreBrowser.DownloadFacade {
             switch self {
             case .zombyInstance:
                 return "zomby instance of DownloadFacade"
+            case .noDocumentsDirectory:
+                return "No documents directory"
             case .failedExcludeFromBackup(let error):
-                return "failed to exlude download url from backup: \(error)"
+                return "failed to exclude download url from backup: \(error)"
             case .noCorrectDownloadDestination:
                 return "download destination URL is empty"
             case .networkError(let error):
@@ -104,13 +115,13 @@ extension CoreBrowser.DownloadFacade {
 
 fileprivate extension CoreBrowser.DownloadFacade {
     /// Path to temporary file to not waste RAM
-    func downloadDestination(from name: String) -> DownloadRequest.DownloadFileDestination {
+    func downloadDestination(from name: String) throws -> DownloadRequest.DownloadFileDestination {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         assert(urls.count != 0, "Failed to find documents directory")
-
-        let documentsURL = urls[0]
-        var fileURL = documentsURL.appendingPathComponent(name)
-
+        guard let documentsURL = urls.first else {
+            throw DownloadError.noDocumentsDirectory
+        }
+        let fileURL = documentsURL.appendingPathComponent(name)
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
