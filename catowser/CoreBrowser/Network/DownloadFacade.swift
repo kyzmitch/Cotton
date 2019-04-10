@@ -37,14 +37,14 @@ extension CoreBrowser.DownloadFacade {
     ///
     /// - Parameter file: All info about remote file and info about how it should be saved.
     /// - Returns: Signal Producer with progress
-    public func download(file: Downloadable) -> DownloadWithProgressSignalProducer {
+    public func download(file: Downloadable, saveTo location: CoreBrowser.FileSaveLocation) -> DownloadWithProgressSignalProducer {
         let producer = DownloadWithProgressSignalProducer { [weak self] (observer, _) in
             guard let `self` = self else {
                 observer.send(error: .zombyInstance)
                 return
             }
 
-            let destination: DownloadRequest.DownloadFileDestination = self.filePath(name: file.fileName)
+            let destination = self.downloadDestination(from: file.fileName)
             let request = Alamofire.download(file.url, method: .get, to: destination)
 
             request.downloadProgress(queue: .main, closure: { (progress) in
@@ -52,6 +52,20 @@ extension CoreBrowser.DownloadFacade {
             }).responseData(queue: nil) { (response: DownloadResponse<Data>) in
                 switch response.result {
                 case .success(_):
+                    guard var destinationURL = response.destinationURL else {
+                        observer.send(error: .noCorrectDownloadDestination)
+                        return
+                    }
+                    var values = URLResourceValues()
+                    values.isExcludedFromBackup = true
+                    do {
+                        try destinationURL.setResourceValues(values)
+                    }
+                    catch {
+                        print("Failed to exclude from backup: \(error)")
+                        observer.send(error: .failedExcludeFromBackup(error))
+                    }
+
                     let void: (Void) = ()
                     observer.send(value: .complete(void))
                     observer.sendCompleted()
@@ -69,12 +83,18 @@ extension CoreBrowser.DownloadFacade {
 extension CoreBrowser.DownloadFacade {
     public enum DownloadError: Error, CustomStringConvertible {
         case zombyInstance
+        case noCorrectDownloadDestination
+        case failedExcludeFromBackup(Error)
         case networkError(Error)
 
         public var description: String {
             switch self {
             case .zombyInstance:
                 return "zomby instance of DownloadFacade"
+            case .failedExcludeFromBackup(let error):
+                return "failed to exlude download url from backup: \(error)"
+            case .noCorrectDownloadDestination:
+                return "download destination URL is empty"
             case .networkError(let error):
                 return "network error: \(error)"
             }
@@ -84,11 +104,14 @@ extension CoreBrowser.DownloadFacade {
 
 fileprivate extension CoreBrowser.DownloadFacade {
     /// Path to temporary file to not waste RAM
-    func filePath(name: String) -> DownloadRequest.DownloadFileDestination {
-        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let fileURL = documentsURL.appendingPathComponent(name)
+    func downloadDestination(from name: String) -> DownloadRequest.DownloadFileDestination {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        assert(urls.count != 0, "Failed to find documents directory")
 
+        let documentsURL = urls[0]
+        var fileURL = documentsURL.appendingPathComponent(name)
+
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
 
