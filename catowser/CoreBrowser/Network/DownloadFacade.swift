@@ -26,6 +26,8 @@ extension CoreBrowser {
     public final class DownloadFacade {
         public static let shared = DownloadFacade()
 
+        fileprivate let appGroupIdentifier = "group.com.ae.cotton-browser"
+
         private init() {}
     }
 }
@@ -46,9 +48,11 @@ extension CoreBrowser.DownloadFacade {
             }
 
             let destination: DownloadRequest.DownloadFileDestination
-            do {
-                destination = try self.downloadDestination(from: file.fileName)
-            } catch {
+            if let appGroupDestination = try? self.groupDestination(from: file.fileName) {
+                destination = appGroupDestination
+            } else if let sandboxDestination = try? self.sandboxDestination(from: file.fileName) {
+                destination = sandboxDestination
+            } else {
                 observer.send(error: .noDocumentsDirectory)
                 return
             }
@@ -92,6 +96,7 @@ extension CoreBrowser.DownloadFacade {
     public enum DownloadError: Error, CustomStringConvertible {
         case zombyInstance
         case noDocumentsDirectory
+        case noAppGroupDirectory
         case noCorrectDownloadDestination
         case failedExcludeFromBackup(Error)
         case networkError(Error)
@@ -102,6 +107,8 @@ extension CoreBrowser.DownloadFacade {
                 return "zomby instance of DownloadFacade"
             case .noDocumentsDirectory:
                 return "No documents directory"
+            case .noAppGroupDirectory:
+                return "No app group"
             case .failedExcludeFromBackup(let error):
                 return "failed to exclude download url from backup: \(error)"
             case .noCorrectDownloadDestination:
@@ -115,13 +122,27 @@ extension CoreBrowser.DownloadFacade {
 
 fileprivate extension CoreBrowser.DownloadFacade {
     /// Path to temporary file to not waste RAM
-    func downloadDestination(from name: String) throws -> DownloadRequest.DownloadFileDestination {
+    func sandboxDestination(from name: String) throws -> DownloadRequest.DownloadFileDestination {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         assert(urls.count != 0, "Failed to find documents directory")
         guard let documentsURL = urls.first else {
             throw DownloadError.noDocumentsDirectory
         }
-        let fileURL = documentsURL.appendingPathComponent(name)
+        return documentsURL.destination(using: name)
+    }
+
+    func groupDestination(from name: String) throws -> DownloadRequest.DownloadFileDestination {
+        guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+            throw DownloadError.noAppGroupDirectory
+        }
+
+        return groupURL.destination(using: name)
+    }
+}
+
+fileprivate extension URL {
+    func destination(using name: String) -> DownloadRequest.DownloadFileDestination {
+        let fileURL = self.appendingPathComponent(name)
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
