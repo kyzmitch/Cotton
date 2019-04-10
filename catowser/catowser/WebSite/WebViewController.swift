@@ -27,6 +27,7 @@ protocol SiteNavigationDelegate: class {
 
 protocol SiteExternalNavigationDelegate: class {
     func didStartProvisionalNavigation()
+    func didOpenSiteWith(appName: String)
 }
 
 protocol SiteNavigationComponent {
@@ -45,6 +46,8 @@ final class WebViewController: BaseViewController {
     private var pluginsFacade: WebViewJSPluginsFacade?
 
     private weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
+
+    fileprivate let igSiteName = "instagram.com"
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         if canLoadPlugins {
@@ -163,7 +166,9 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if url.absoluteString.contains("instagram.com") {
+        if url.absoluteString.contains(igSiteName) {
+            externalNavigationDelegate?.didOpenSiteWith(appName: igSiteName)
+
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
             guard let _ = WKNavigationActionPolicy(rawValue: ignoreAppRawValue) else {
                 decisionHandler(.allow)
