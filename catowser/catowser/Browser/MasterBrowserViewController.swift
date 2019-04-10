@@ -446,4 +446,9 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
     func didStartProvisionalNavigation() {
         linksRouter.closeTags()
     }
+
+    func didOpenSiteWith(appName: String) {
+        // notify user to remove speicifc application from iOS
+        // to be able to use Cotton browser features
+    }
 }
