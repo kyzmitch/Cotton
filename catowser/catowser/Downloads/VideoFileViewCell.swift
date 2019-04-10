@@ -109,7 +109,7 @@ fileprivate extension VideoFileViewCell {
                 case .progress(let progress):
                     let converted = CGFloat(progress.fractionCompleted)
                     self.downloadButton.progress = converted
-                case .complete(let downloadedData):
+                case .complete:
                     self.downloadButton.state = .downloaded
                 }
             case .failure(let error):
