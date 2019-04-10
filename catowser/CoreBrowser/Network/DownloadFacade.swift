@@ -48,9 +48,10 @@ extension CoreBrowser.DownloadFacade {
             }
 
             let destination: DownloadRequest.DownloadFileDestination
-            if let appGroupDestination = try? self.groupDestination(from: file.fileName) {
-                destination = appGroupDestination
-            } else if let sandboxDestination = try? self.sandboxDestination(from: file.fileName) {
+            // You can't participate in the files app (or iTunes File Sharing)
+            // if you don't store your files in the Documents folder.
+
+            if let sandboxDestination = try? self.sandboxDestination(from: file.fileName) {
                 destination = sandboxDestination
             } else {
                 observer.send(error: .noDocumentsDirectory)
