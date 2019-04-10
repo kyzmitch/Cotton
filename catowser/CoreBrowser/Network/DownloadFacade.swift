@@ -97,6 +97,7 @@ extension CoreBrowser.DownloadFacade {
         case zombyInstance
         case noDocumentsDirectory
         case noAppGroupDirectory
+        case failedCreateFileProviderFolder
         case noCorrectDownloadDestination
         case failedExcludeFromBackup(Error)
         case networkError(Error)
@@ -109,6 +110,8 @@ extension CoreBrowser.DownloadFacade {
                 return "No documents directory"
             case .noAppGroupDirectory:
                 return "No app group"
+            case .failedCreateFileProviderFolder:
+                return "Failed create folder"
             case .failedExcludeFromBackup(let error):
                 return "failed to exclude download url from backup: \(error)"
             case .noCorrectDownloadDestination:
@@ -132,11 +135,25 @@ fileprivate extension CoreBrowser.DownloadFacade {
     }
 
     func groupDestination(from name: String) throws -> DownloadRequest.DownloadFileDestination {
-        guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
+        let fileManager = FileManager.default
+
+        guard let groupURL = fileManager.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier) else {
             throw DownloadError.noAppGroupDirectory
         }
+        let storagePathUrl = groupURL.appendingPathComponent("File Provider Storage")
+        let storagePath = storagePathUrl.path
 
-        return groupURL.destination(using: name)
+        if !fileManager.fileExists(atPath: storagePath) {
+            do {
+                try fileManager.createDirectory(atPath: storagePath,
+                                                withIntermediateDirectories: false,
+                                                attributes: nil)
+            } catch let error {
+                print("error creating filepath: \(error)")
+                throw DownloadError.failedCreateFileProviderFolder
+            }
+        }
+        return storagePathUrl.destination(using: name)
     }
 }
 
