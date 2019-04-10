@@ -95,9 +95,9 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 }
 
 fileprivate extension VideoFileViewCell {
-    func download(_ batch: Downloadable) {
+    func download(_ batch: Downloadable, andSaveTo location: CoreBrowser.FileSaveLocation) {
         downloadButton.state = .downloading
-        CoreBrowser.DownloadFacade.shared.download(file: batch)
+        CoreBrowser.DownloadFacade.shared.download(file: batch, saveTo: location)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
             guard let self = self else {
@@ -109,7 +109,7 @@ fileprivate extension VideoFileViewCell {
                 case .progress(let progress):
                     let converted = CGFloat(progress.fractionCompleted)
                     self.downloadButton.progress = converted
-                case .complete:
+                case .complete(let downloadedData):
                     self.downloadButton.state = .downloaded
                 }
             case .failure(let error):
@@ -148,10 +148,10 @@ extension VideoFileViewCell: AHDownloadButtonDelegate {
                 guard let self = self else {
                     return
                 }
-                guard let _ = location else {
+                guard let location = location else {
                     return self.setInitialButtonState()
                 }
-                self.download(batch)
+                self.download(batch, andSaveTo: location)
             })
         case .pending:
             break

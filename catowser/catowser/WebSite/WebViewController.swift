@@ -96,7 +96,6 @@ final class WebViewController: BaseViewController {
         load(currentUrl)
         // try create web view only after creating
         view.addSubview(webView)
-        webView.uiDelegate = self
         webView.navigationDelegate = self
         webView.snp.makeConstraints { (maker) in
             maker.leading.trailing.top.bottom.equalTo(view)
@@ -133,7 +132,7 @@ fileprivate extension WebViewController {
     }
 }
 
-extension WebViewController: WKUIDelegate {
+extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
@@ -164,6 +163,16 @@ extension WebViewController: WKUIDelegate {
             return
         }
 
+        if url.absoluteString.contains("instagram.com") {
+            let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
+            guard let _ = WKNavigationActionPolicy(rawValue: ignoreAppRawValue) else {
+                decisionHandler(.allow)
+                return
+            }
+            decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
+            return
+        }
+
         if ["http", "https"].contains(url.scheme) {
             decisionHandler(.allow)
             return
@@ -191,9 +200,6 @@ extension WebViewController: WKUIDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
     }
-}
-
-extension WebViewController: WKNavigationDelegate {
 }
 
 extension WebViewController: SiteNavigationDelegate {
