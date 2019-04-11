@@ -41,7 +41,7 @@ final class WebViewController: BaseViewController {
     private(set) var currentUrl: URL
 
     /// Configuration should be transferred from `Site`
-    private let configuration: WKWebViewConfiguration
+    private var configuration: WKWebViewConfiguration
 
     private var pluginsFacade: WebViewJSPluginsFacade?
 
@@ -57,6 +57,28 @@ final class WebViewController: BaseViewController {
         }
 
         let request = URLRequest(url: url)
+        webView.load(request)
+    }
+
+    /// Reload by creating new webview
+    func load(site: Site, canLoadPlugins: Bool = true) {
+        currentUrl = site.url
+        configuration = site.webViewConfig
+        
+        if isWebViewLoaded {
+            webView.removeFromSuperview()
+            webView = WebViewController.createWebView(with: configuration)
+            view.addSubview(webView)
+            webView.snp.makeConstraints { (maker) in
+                maker.leading.trailing.top.bottom.equalTo(view)
+            }
+        }
+        
+        if canLoadPlugins {
+            injectPlugins()
+        }
+        
+        let request = URLRequest(url: currentUrl)
         webView.load(request)
     }
 
@@ -81,13 +103,19 @@ final class WebViewController: BaseViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private var isWebViewLoaded: Bool = false
 
     private lazy var webView: WKWebView = {
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        return WebViewController.createWebView(with: configuration)
+    }()
+    
+    private static func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
+        let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
         return webView
-    }()
+    }
     
     override func loadView() {
         view = UIView(frame: .zero)
@@ -99,6 +127,7 @@ final class WebViewController: BaseViewController {
         load(currentUrl)
         // try create web view only after creating
         view.addSubview(webView)
+        isWebViewLoaded = true
         webView.navigationDelegate = self
         webView.snp.makeConstraints { (maker) in
             maker.leading.trailing.top.bottom.equalTo(view)
