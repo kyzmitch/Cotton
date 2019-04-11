@@ -92,11 +92,8 @@ final class LinksRouter: NSObject {
 
     private weak var presenter: LinksRouterPresenter!
 
-    fileprivate let domainsHistory: DomainsHistory
-
-    init(viewController: LinksRouterPresenter, domainsHistory: DomainsHistory) {
+    init(viewController: LinksRouterPresenter) {
         presenter = viewController
-        self.domainsHistory = domainsHistory
     }
 
     deinit {
@@ -214,7 +211,7 @@ fileprivate extension LinksRouter {
         searchSuggestionsController.suggestions.removeAll()
         searchSuggestionsController.knownDomains.removeAll()
 
-        searchSuggestionsController.knownDomains = domainsHistory.domainNames(whereURLContains: searchText)
+        searchSuggestionsController.knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
 
         searchSuggestionsDisposable?.dispose()
         searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
