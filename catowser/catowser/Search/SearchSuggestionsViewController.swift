@@ -12,8 +12,13 @@ fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
 }
 
+enum SuggestionType {
+    case suggestion(String)
+    case knownDomain(String)
+}
+
 protocol SearchSuggestionsListDelegate: class {
-    func didSelect(_ suggestion: String)
+    func didSelect(_ content: SuggestionType)
 }
 
 /// View controller to control suggestions view
@@ -21,6 +26,12 @@ protocol SearchSuggestionsListDelegate: class {
 final class SearchSuggestionsViewController: UITableViewController {
 
     var suggestions: [String] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+
+    var knownDomains: [String] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -36,24 +47,51 @@ final class SearchSuggestionsViewController: UITableViewController {
         // https://www.hackingwithswift.com/example-code/uikit/how-to-register-a-cell-for-uitableviewcell-reuse
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: .searchSuggestionCellId)
     }
+
+    fileprivate func value(from indexPath: IndexPath) -> String? {
+        let text: String?
+        switch indexPath.section {
+        case 0:
+            text = knownDomains[indexPath.row]
+        case 1:
+            text = suggestions[indexPath.row]
+        default:
+            text = nil
+        }
+        return text
+    }
 }
 
 extension SearchSuggestionsViewController /* UITableViewDataSource */ {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return NSLocalizedString("ttl_search_history_domains", comment: "Known domains")
+        case 1:
+            return NSLocalizedString("ttl_search_suggestions", comment: "Suggestions from search engine")
+        default:
+            return nil
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Currently will be designed to support only one source
-        // e.g. search suggestions from DuckDuckGo
-        // but in the future it could be better to add different sources
-        // as additional sections
-        return suggestions.count
+        switch section {
+        case 0:
+            return knownDomains.count
+        case 1:
+            return suggestions.count
+        default:
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: .searchSuggestionCellId, for: indexPath)
-        cell.textLabel?.text = suggestions[indexPath.row]
+        cell.textLabel?.text = value(from: indexPath)
         return cell
     }
 }
@@ -62,10 +100,19 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let suggestion = suggestions[safe: indexPath.row] else {
+        guard let text = value(from: indexPath) else {
             return
         }
 
-        delegate?.didSelect(suggestion)
+        let content: SuggestionType
+        switch indexPath.section {
+        case 0:
+            content = .knownDomain(text)
+        case 1:
+            content = .suggestion(text)
+        default:
+            return
+        }
+        delegate?.didSelect(content)
     }
 }

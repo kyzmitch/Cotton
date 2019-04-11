@@ -24,3 +24,6 @@
 "txt_gallery" = "Фото Галерея";
 
 "ttl_common_cancel" = "Отмена";
+
+"ttl_search_history_domains" = "Известные сайты";
+"ttl_search_suggestions" = "Предложения";
