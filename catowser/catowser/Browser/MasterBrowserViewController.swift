@@ -105,7 +105,7 @@ final class MasterBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to:view)
         }
 
-        linksRouter = LinksRouter(viewController: self)
+        linksRouter = LinksRouter(viewController: self, domainsHistory: InMemoryDomainSearchProvider())
 
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)
@@ -373,6 +373,16 @@ private extension MasterBrowserViewController {
 
         return handling
     }
+
+    func replaceTab(with url: URL, with suggestion: String? = nil) {
+        let siteContent: Tab.ContentType = .site(Site(url: url, searchSuggestion: suggestion))
+        do {
+            try TabsListManager.shared.replaceSelected(tabContent: siteContent)
+            open(tabContent: siteContent)
+        } catch {
+            print("\(#function) failed to replace current tab")
+        }
+    }
 }
 
 extension MasterBrowserViewController: AnyViewController {}
@@ -396,14 +406,12 @@ extension MasterBrowserViewController: MasterDelegate {
         return toolbarViewController.view.topAnchor
     }
 
-    func handleSearchSuggestion(url: URL, suggestion: String) {
-        let siteContent: Tab.ContentType = .site(Site(url: url, searchSuggestion: suggestion))
-        do {
-            try TabsListManager.shared.replaceSelected(tabContent: siteContent)
-            open(tabContent: siteContent)
-        } catch {
-            print("\(#function) failed to replace current tab")
-        }
+    func openSearchSuggestion(url: URL, suggestion: String) {
+        replaceTab(with: url, with: suggestion)
+    }
+
+    func openDomain(with url: URL) {
+        replaceTab(with: url)
     }
 }
 

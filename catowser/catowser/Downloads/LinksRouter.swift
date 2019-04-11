@@ -16,7 +16,8 @@ protocol MasterDelegate: class {
     var toolbarHeight: CGFloat { get }
     var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
 
-    func handleSearchSuggestion(url: URL, suggestion: String)
+    func openSearchSuggestion(url: URL, suggestion: String)
+    func openDomain(with url: URL)
 }
 
 protocol LinksRouterInterface: class {
@@ -91,8 +92,11 @@ final class LinksRouter: NSObject {
 
     private weak var presenter: LinksRouterPresenter!
 
-    init(viewController: LinksRouterPresenter) {
+    fileprivate let domainsHistory: DomainsHistory
+
+    init(viewController: LinksRouterPresenter, domainsHistory: DomainsHistory) {
         presenter = viewController
+        self.domainsHistory = domainsHistory
     }
 
     deinit {
@@ -164,7 +168,6 @@ fileprivate extension LinksRouter {
         searchSuggestionsController.removeFromParent()
         // remove view and constraints
         searchSuggestionsController.view.removeFromSuperview()
-        searchSuggestionsController.suggestions = [String]()
 
         isSuggestionsShowed = false
     }
@@ -208,6 +211,11 @@ fileprivate extension LinksRouter {
     }
 
     func startSearch(_ searchText: String) {
+        searchSuggestionsController.suggestions.removeAll()
+        searchSuggestionsController.knownDomains.removeAll()
+
+        searchSuggestionsController.knownDomains = domainsHistory.domainNames(whereURLContains: searchText)
+
         searchSuggestionsDisposable?.dispose()
         searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
             .throttle(0.5, on: QueueScheduler.main)
@@ -236,12 +244,23 @@ extension LinksRouter: LinkTagsDelegate {
 }
 
 extension LinksRouter: SearchSuggestionsListDelegate {
-    func didSelect(_ suggestion: String) {
+    func didSelect(_ content: SuggestionType) {
         hideSearchController()
-        guard let url = searchSuggestClient.searchURL(basedOn: suggestion) else {
-            return
+
+        switch content {
+        case .knownDomain(let domain):
+            guard let url = URL(string: "https://\(domain)") else {
+                assertionFailure("Failed construct site URL using domain name")
+                return
+            }
+            presenter.openDomain(with: url)
+        case .suggestion(let suggestion):
+            guard let url = searchSuggestClient.searchURL(basedOn: suggestion) else {
+                assertionFailure("Failed construct search engine url from suggestion string")
+                return
+            }
+            presenter.openSearchSuggestion(url: url, suggestion: suggestion)
         }
-        presenter.handleSearchSuggestion(url: url, suggestion: suggestion)
     }
 }
 
@@ -271,11 +290,10 @@ extension LinksRouter: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // need to open web view with url of search engine
         // and specific search queue
-        guard let suggestion = searchBar.text else {
-
+        guard let text = searchBar.text else {
             return
         }
-        didSelect(suggestion)
+        didSelect(.suggestion(text))
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
