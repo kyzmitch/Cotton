@@ -28,7 +28,7 @@ final class MasterBrowserViewController: BaseViewController {
     }
 
     /// Router and layout handler for supplementary views.
-    private var linksRouter: LinksRouter!
+    private var linksRouter: MasterRouter!
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -105,7 +105,7 @@ final class MasterBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to:view)
         }
 
-        linksRouter = LinksRouter(viewController: self)
+        linksRouter = MasterRouter(viewController: self)
 
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)
