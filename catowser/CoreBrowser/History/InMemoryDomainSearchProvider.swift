@@ -9,10 +9,12 @@
 import Foundation
 
 public final class InMemoryDomainSearchProvider {
+    public static let shared = InMemoryDomainSearchProvider()
+    
     fileprivate let storage: Trie
     fileprivate let topDomains: [String]
 
-    public init() {
+    private init() {
         storage = Trie()
 
         guard let bundle = Bundle(identifier: "ae.CoreBrowser") else {
@@ -45,5 +47,8 @@ extension InMemoryDomainSearchProvider: DomainsHistory {
 
     public func rememberDomain(name: String) {
         storage.insert(word: name)
+        if let withoutWww = name.withoutPrefix("www.") {
+            storage.insert(word: withoutWww)
+        }
     }
 }

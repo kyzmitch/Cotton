@@ -105,7 +105,7 @@ final class MasterBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to:view)
         }
 
-        linksRouter = LinksRouter(viewController: self, domainsHistory: InMemoryDomainSearchProvider())
+        linksRouter = LinksRouter(viewController: self)
 
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)

@@ -195,6 +195,10 @@ extension WebViewController: WKNavigationDelegate {
         currentUrl = webViewUrl
         let site: Site = .init(url: webViewUrl)
 
+        if let host = currentUrl.host {
+            InMemoryDomainSearchProvider.shared.rememberDomain(name: host)
+        }
+
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
         } catch {

@@ -23,4 +23,9 @@ public extension String {
         // See https://bugzilla.mozilla.org/show_bug.cgi?id=1192155 for additional details.
         return self.contains("/") && !self.contains(" ")
     }
+
+    func withoutPrefix(_ prefix: String) -> String? {
+        guard self.hasPrefix(prefix) else { return nil }
+        return String(self.dropFirst(prefix.count))
+    }
 }
