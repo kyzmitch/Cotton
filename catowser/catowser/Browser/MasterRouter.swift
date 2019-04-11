@@ -1,5 +1,5 @@
 //
-//  LinksRouter.swift
+//  MasterRouter.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 03/04/2019.
@@ -26,7 +26,7 @@ protocol LinksRouterInterface: class {
 }
 
 /// Should contain copies for references to all needed constraints and view controllers. NSObject subclass to support system delegate protocol.
-final class LinksRouter: NSObject {
+final class MasterRouter: NSObject {
     /// The table to display search suggestions list
     let searchSuggestionsController: SearchSuggestionsViewController = {
         let vc = SearchSuggestionsViewController()
@@ -101,7 +101,7 @@ final class LinksRouter: NSObject {
     }
 }
 
-extension LinksRouter: LinksRouterInterface {
+extension MasterRouter: LinksRouterInterface {
     func openTagsFor(instagramVideo nodes: [InstagramVideoNode]) {
         instagramVideos = nodes
         linkTagsController.setLinks(nodes.count, for: .video)
@@ -115,7 +115,7 @@ extension LinksRouter: LinksRouterInterface {
     }
 }
 
-fileprivate extension LinksRouter {
+fileprivate extension MasterRouter {
     func showFilesGreedIfNeeded() {
         guard !isFilesGreedShowed else {
             return
@@ -229,7 +229,7 @@ fileprivate extension LinksRouter {
     }
 }
 
-extension LinksRouter: LinkTagsDelegate {
+extension MasterRouter: LinkTagsDelegate {
     func didSelect(type: LinksType) {
         hideFilesGreedIfNeeded()
 
@@ -240,11 +240,17 @@ extension LinksRouter: LinkTagsDelegate {
     }
 }
 
-extension LinksRouter: SearchSuggestionsListDelegate {
+extension MasterRouter: SearchSuggestionsListDelegate {
     func didSelect(_ content: SuggestionType) {
         hideSearchController()
 
         switch content {
+        case .looksLikeURL(let likeURL):
+            guard let url = URL(string: likeURL) else {
+                assertionFailure("Failed construct site URL using edited URL")
+                return
+            }
+            presenter.openDomain(with: url)
         case .knownDomain(let domain):
             guard let url = URL(string: "https://\(domain)") else {
                 assertionFailure("Failed construct site URL using domain name")
@@ -261,9 +267,9 @@ extension LinksRouter: SearchSuggestionsListDelegate {
     }
 }
 
-extension LinksRouter: UISearchBarDelegate {
+extension MasterRouter: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
+        if searchText.isEmpty || searchText.looksLikeAURL() {
             hideSearchController()
         } else {
             showSearchControllerIfNeeded()
@@ -285,12 +291,18 @@ extension LinksRouter: UISearchBarDelegate {
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // need to open web view with url of search engine
-        // and specific search queue
         guard let text = searchBar.text else {
             return
         }
-        didSelect(.suggestion(text))
+        let content: SuggestionType
+        if text.looksLikeAURL() {
+            content = .looksLikeURL(text)
+        } else {
+            // need to open web view with url of search engine
+            // and specific search queue
+            content = .suggestion(text)
+        }
+        didSelect(content)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -298,7 +310,7 @@ extension LinksRouter: UISearchBarDelegate {
     }
 }
 
-extension LinksRouter: DonwloadPanelDelegate {
+extension MasterRouter: DonwloadPanelDelegate {
     func didPressDownloads(to hide: Bool) {
         if hide {
             hideFilesGreedIfNeeded()

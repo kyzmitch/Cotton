@@ -15,6 +15,7 @@ fileprivate extension String {
 enum SuggestionType {
     case suggestion(String)
     case knownDomain(String)
+    case looksLikeURL(String)
 }
 
 protocol SearchSuggestionsListDelegate: class {
