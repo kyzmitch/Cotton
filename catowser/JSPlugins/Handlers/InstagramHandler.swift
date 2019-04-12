@@ -79,12 +79,8 @@ extension InstagramHandler: WKScriptMessageHandler {
                     break
                 }
                 do {
-                    let decoded = try JSONDecoder().decode(InstagramVideoArray.self, from: jsonObject)
-                    if decoded.nodes.count > 0 {
-                        delegate?.didReceiveVideoNodes(decoded.nodes)
-                    } else {
-                        print("no any video node was found during decoding")
-                    }
+                    let decoded = try JSONDecoder().decode([InstagramVideoNode].self, from: jsonObject)
+                    delegate?.didReceiveVideoNodes(decoded)
                 } catch {
                     print("failed decode video nodes array: \(error)")
                 }

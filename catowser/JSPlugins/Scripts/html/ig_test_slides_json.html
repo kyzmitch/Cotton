@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Test Instagram json slides</title>
+    <script src="/js/ig.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
+</head>
+<body>
+    <script>
+        function analyseInput(){
+            // The maximum number of characters allowed in the <input> element. Default value is 524288
+            let jsonInput = document.getElementById("jsonInput").value;
+            console.log('json loaded');
+            let filteredNodes = cottonTryExtractAdditionalDataNodes(jsonInput);
+            console.log(JSON.stringify(filteredNodes));
+        }
+    </script>
+    <form>
+        JSON content:<br>
+        <input type="text" name="jsonField" id="jsonInput"><br>
+        <input type="button" value="Search for video nodes" onclick="analyseInput();">
+    </form>
+</body>
