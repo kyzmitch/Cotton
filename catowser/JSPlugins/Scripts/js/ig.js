@@ -1,7 +1,7 @@
 "use strict";
 
 window.addEventListener("load", function() {
-	window.setTimeout(cottonDelayedVideoLinksSearch, 2000);
+	window.setTimeout(cottonVideoLinksSearch, 2000);
 }, false); 
 
 XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
@@ -41,20 +41,37 @@ function cottonHandleHttpResponseText(text) {
 	}
 }
 
-function cottonDelayedVideoLinksSearch() {
-	let additionalDataJSON = window.__additionalData['feed'].data;
-	if (typeof additionalDataJSON !== 'undefined') {
-		let feedEdges = cottonTryExtractAdditionalDataNodes(additionalDataJSON);
-		if(feedEdges.length != 0){
-			cottonLog('going to send nodes from __additionalData');
-			sendVideoNodesToNativeApp(feedEdges);
-		} else {
-			cottonLog('__additionalData doesn`t contain edge nodes');
-		}
-	} else {
+function cottonVideoLinksSearch() {
+	cottonSearchAdditionalData();
+	cottonSearchSharedData();
+}
+
+function cottonSearchAdditionalData() {
+	if(typeof window.__additionalData === 'undefined'){
 		cottonLog('__additionalData isn`t defined');
+		return;
+	}
+	if(typeof window.__additionalData['feed'] === 'undefined'){
+		cottonLog('__additionalData[feed] isn`t defined');
+		return;
 	}
 	
+	let additionalDataJSON = window.__additionalData['feed'].data;
+	if (typeof additionalDataJSON === 'undefined'){
+		cottonLog('__additionalData[feed] data isn`t defined');
+		return;
+	}
+
+	let feedEdges = cottonTryExtractAdditionalDataNodes(additionalDataJSON);
+	if(feedEdges.length != 0){
+		cottonLog('going to send nodes from __additionalData');
+		sendVideoNodesToNativeApp(feedEdges);
+	} else {
+		cottonLog('__additionalData doesn`t contain video nodes');
+	}
+}
+
+function cottonSearchSharedData() {
 	let sharedDataJSON = window._sharedData;
 	if (typeof sharedDataJSON !== 'undefined') {
 		// even if it is not empty it not always contains nodes with urls
@@ -73,8 +90,8 @@ function cottonDelayedVideoLinksSearch() {
 function cottonTryExtractVideoTags(){
 	let videoTags = document.getElementsByTagName('video')
 	let resultTags = new Array();
-    // videoTags is an HTMLCollection, so, can't use map
-    for(let i = 0; i < videoTags.length; i++) {
+	// videoTags is an HTMLCollection, so, can't use map
+	for(let i = 0; i < videoTags.length; i++) {
 		let tag = videoTags.item(i);
 		let videoObject = {"src": tag.src, "poster": tag.poster};
 		resultTags.push(videoObject);
@@ -106,7 +123,7 @@ function cottonTryExtractAdditionalDataNodes(json) {
 		return result;
 	}
 
-	return edges;
+	return filterVideoEdges(edges);
 }
 
 function tryExtractVideoNodes(json){
@@ -143,7 +160,43 @@ function tryExtractVideoNodes(json){
 
 	// link should be edges[i]['node']['video_url']
 	// returning whole object with previews instead of just video url
-	return edges;
+	return filterVideoEdges(edges);
+}
+
+function filterVideoEdges(edges) {
+	let filtered = new Array();
+	for(let i=0; i<edges.length; i++){
+		let edge = edges[i];
+		let node = edge['node'];
+		if(typeof node === 'undefined'){
+			continue;
+		}
+		let __typename = node['__typename'];
+		if(typeof __typename === 'undefined'){
+			continue;
+		}
+		switch (__typename) {
+			case "GraphVideo":
+				filtered.push(node);
+				break;
+			case "GraphSidecar":
+				let edge_sidecar_to_children = node['edge_sidecar_to_children'];
+				if(typeof edge_sidecar_to_children === 'undefined'){
+					continue;
+				}
+				let childrenEdges = edge_sidecar_to_children['edges'];
+				if(typeof childrenEdges === 'undefined'){
+					continue;
+				}
+				let childrenFilteredEdges = filterVideoEdges(childrenEdges);
+				// https://stackoverflow.com/a/30846567/483101
+				filtered = filtered.concat(childrenFilteredEdges);
+				break;
+			default:
+				continue;
+		}
+	}
+	return filtered;
 }
 
 function tryExtractVideoLinkFromMeta() {
@@ -161,43 +214,43 @@ function tryExtractVideoLinkFromMeta() {
 
 function sendLinkToNativeApp(link) {
 	console.log('video url: ' + link);
-    try {
-        webkit.messageHandlers.igHandler.postMessage({"url": link});
-    } catch(err) {
-        console.log('the native context does not exist yet');
-    }
+	try {
+		webkit.messageHandlers.igHandler.postMessage({"url": link});
+	} catch(err) {
+		console.log('the native context does not exist yet');
+	}
 }
 
 function cottonNativeAppSendSingleNode(node) {
 	console.log('video node: ' + node);
 	try {
-        webkit.messageHandlers.igHandler.postMessage({"singleVideoNode": JSON.stringify(node)});
-    } catch(err) {
-        console.log('the native context does not exist yet');
-    }
+		webkit.messageHandlers.igHandler.postMessage({"singleVideoNode": JSON.stringify(node)});
+	} catch(err) {
+		console.log('the native context does not exist yet');
+	}
 }
 
 function sendVideoNodesToNativeApp(nodes) {
 	for (let i=0; i<nodes.length; i++) {
 		console.log('video node[' + i + ']with url: ' + nodes[i]['node']['video_url']);
 	}
-    try {
+	try {
 		// JSON.stringify doesn't work, it returns the same array
-        webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
-    } catch(err) {
-        console.log('the native context does not exist yet');
-    }
+		webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
+	} catch(err) {
+		console.log('the native context does not exist yet');
+	}
 }
 
 function sendVideoTagsToNativeApp(tags) {
 	for (let i=0; i<tags.length; i++) {
 		console.log('video tag with src: ' + tags[i]['src'])
 	}
-    try {
-        webkit.messageHandlers.igHandler.postMessage({"videoTags": tags});
-    } catch(err) {
-        console.log('the native context does not exist yet');
-    }
+	try {
+		webkit.messageHandlers.igHandler.postMessage({"videoTags": tags});
+	} catch(err) {
+		console.log('the native context does not exist yet');
+	}
 }
 
 function cottonLog(message) {
