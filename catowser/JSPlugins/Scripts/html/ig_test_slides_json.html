@@ -3,21 +3,46 @@
     <meta charset="utf-8">
     <title>Test Instagram json slides</title>
     <script src="/js/ig.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.js"></script>
 </head>
 <body>
     <script>
-        function analyseInput(){
-            // The maximum number of characters allowed in the <input> element. Default value is 524288
-            let jsonInput = document.getElementById("jsonInput").value;
-            console.log('json loaded');
-            let filteredNodes = cottonTryExtractAdditionalDataNodes(jsonInput);
+        function handleNewJsonFile(input) {
+            let files = input.files;
+            if(typeof files === 'undefined'){
+                return
+            }
+            let selectedFileName = files[0];
+            if(typeof selectedFileName === 'undefined'){
+                return
+            }
+
+            getAsText(selectedFileName)
+        }
+
+        function getAsText(readFile) {
+            var reader = new FileReader();
+            // Read file into memory as UTF-16
+            reader.readAsText(readFile, "UTF-8");
+
+            // Handle progress, success, and errors
+            reader.onload = loaded;
+            reader.onerror = errorHandler;
+        }
+
+        function loaded(evt) {
+            // Obtain the read file data
+            let fileString = evt.target.result;
+            let filteredNodes = cottonTryExtractGrapthVideoNodes(JSON.parse(fileString));
             console.log(JSON.stringify(filteredNodes));
+        }
+
+        function errorHandler(evt) {
+            console.log('file read: ' + evt.target.error.name);
         }
     </script>
     <form>
-        JSON content:<br>
-        <input type="text" name="jsonField" id="jsonInput"><br>
-        <input type="button" value="Search for video nodes" onclick="analyseInput();">
+        <form>
+            Select JSON file: <input type="file" accept=".json" name="igJsonFile" onchange="handleNewJsonFile(this)">
+        </form>
     </form>
 </body>
