@@ -1,7 +1,7 @@
 "use strict";
 
 window.addEventListener("load", function() {
-	window.setTimeout(cottonVideoLinksSearch, 2000);
+	window.setTimeout(cottonSearchAdditionalData, 1000);
 }, false); 
 
 XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
@@ -26,24 +26,21 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 function cottonHandleHttpResponseText(text) {
+	console.log('HttpResponse JSON: ' + JSON.stringify(text));
+
 	// 1) attempt to extract from concrete user post
 	let singleNode = text['graphql']['shortcode_media'];
 	if(typeof singleNode !== 'undefined'){
 		cottonNativeAppSendSingleNode(singleNode);
 		return;
 	}
-	let feedEdges = cottonTryExtractAdditionalDataNodes(text);
+	let feedEdges = cottonTryExtractGrapthVideoNodes(text);
 	if(feedEdges.length != 0){
 		cottonLog('going to send nodes from http response');
 		sendVideoNodesToNativeApp(feedEdges);
 	} else {
 		cottonLog('http response doesn`t contain edge nodes');
 	}
-}
-
-function cottonVideoLinksSearch() {
-	cottonSearchAdditionalData();
-	cottonSearchSharedData();
 }
 
 function cottonSearchAdditionalData() {
@@ -62,7 +59,8 @@ function cottonSearchAdditionalData() {
 		return;
 	}
 
-	let feedEdges = cottonTryExtractAdditionalDataNodes(additionalDataJSON);
+	cottonLog('__additionalData JSON: ' + JSON.stringify(additionalDataJSON));
+	let feedEdges = cottonTryExtractGrapthVideoNodes(additionalDataJSON);
 	if(feedEdges.length != 0){
 		cottonLog('going to send nodes from __additionalData');
 		sendVideoNodesToNativeApp(feedEdges);
@@ -71,36 +69,8 @@ function cottonSearchAdditionalData() {
 	}
 }
 
-function cottonSearchSharedData() {
-	let sharedDataJSON = window._sharedData;
-	if (typeof sharedDataJSON !== 'undefined') {
-		// even if it is not empty it not always contains nodes with urls
-		let nodes = tryExtractVideoNodes(sharedDataJSON);
-		if(nodes.length != 0){
-			cottonLog('going to send nodes from _sharedData');
-			sendVideoNodesToNativeApp(nodes);
-		} else {
-			cottonLog('_sharedData doesn`t contain edge nodes');
-		}
-	} else {
-		cottonLog('_sharedData isn`t defined');
-	}
-}
-
-function cottonTryExtractVideoTags(){
-	let videoTags = document.getElementsByTagName('video')
-	let resultTags = new Array();
-	// videoTags is an HTMLCollection, so, can't use map
-	for(let i = 0; i < videoTags.length; i++) {
-		let tag = videoTags.item(i);
-		let videoObject = {"src": tag.src, "poster": tag.poster};
-		resultTags.push(videoObject);
-	}
-	return resultTags;
-}
-
-function cottonTryExtractAdditionalDataNodes(json) {
-	let user = json['user'];
+function cottonTryExtractGrapthVideoNodes(json) {
+	let user = json["user"];
 	let result = new Array();
 	if(typeof user === 'undefined'){
 		user = json['data']['user'];
@@ -123,43 +93,6 @@ function cottonTryExtractAdditionalDataNodes(json) {
 		return result;
 	}
 
-	return filterVideoEdges(edges);
-}
-
-function tryExtractVideoNodes(json){
-	// const edges = json['entry_data']['PostPage'][0]['graphql']['shortcode_media']['edge_sidecar_to_children']['edges'];
-	let entry_data = json['entry_data'];
-	let result = new Array();
-	if(typeof entry_data === 'undefined'){
-		return result;
-	}
-	let PostPage = entry_data['PostPage'];
-	if(typeof PostPage === 'undefined'){
-		return result;
-	}
-	let firstPage = PostPage[0];
-	if(typeof firstPage === 'undefined'){
-		return result;
-	}
-	let graphql = firstPage['graphql'];
-	if(typeof graphql === 'undefined'){
-		return result;
-	}
-	let shortcode_media = graphql['shortcode_media'];
-	if(typeof shortcode_media === 'undefined'){
-		return result;
-	}
-	let edge_sidecar_to_children = shortcode_media['edge_sidecar_to_children'];
-	if(typeof edge_sidecar_to_children === 'undefined'){
-		return result;
-	}
-	let edges = edge_sidecar_to_children['edges'];
-	if(typeof edges === 'undefined'){
-		return result;
-	}
-
-	// link should be edges[i]['node']['video_url']
-	// returning whole object with previews instead of just video url
 	return filterVideoEdges(edges);
 }
 
@@ -191,34 +124,12 @@ function filterVideoEdges(edges) {
 				let childrenFilteredEdges = filterVideoEdges(childrenEdges);
 				// https://stackoverflow.com/a/30846567/483101
 				filtered = filtered.concat(childrenFilteredEdges);
-				break;
+				continue;
 			default:
 				continue;
 		}
 	}
 	return filtered;
-}
-
-function tryExtractVideoLinkFromMeta() {
-	let metas = document.getElementsByTagName('meta');
-
-	for (let i=0; i<metas.length; i++){
-		let meta = metas[i];
-		if (meta.getAttribute("property") == 'og:video'){
-			return meta.getAttribute("content");
-		}
-	}
-
-	return '';
-}
-
-function sendLinkToNativeApp(link) {
-	console.log('video url: ' + link);
-	try {
-		webkit.messageHandlers.igHandler.postMessage({"url": link});
-	} catch(err) {
-		console.log('the native context does not exist yet');
-	}
 }
 
 function cottonNativeAppSendSingleNode(node) {
@@ -237,17 +148,6 @@ function sendVideoNodesToNativeApp(nodes) {
 	try {
 		// JSON.stringify doesn't work, it returns the same array
 		webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
-	} catch(err) {
-		console.log('the native context does not exist yet');
-	}
-}
-
-function sendVideoTagsToNativeApp(tags) {
-	for (let i=0; i<tags.length; i++) {
-		console.log('video tag with src: ' + tags[i]['src'])
-	}
-	try {
-		webkit.messageHandlers.igHandler.postMessage({"videoTags": tags});
 	} catch(err) {
 		console.log('the native context does not exist yet');
 	}
