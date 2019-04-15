@@ -26,7 +26,7 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 function cottonHandleHttpResponseText(text) {
-	console.log('HttpResponse JSON: ' + JSON.stringify(text));
+	cottonLog('HttpResponse JSON: ' + text);
 
 	// 1) attempt to extract from concrete user post
 	let singleNode = text['graphql']['shortcode_media'];
@@ -70,7 +70,7 @@ function cottonSearchAdditionalData() {
 }
 
 function cottonTryExtractGrapthVideoNodes(json) {
-	let user = json["user"];
+	let user = json['user'];
 	let result = new Array();
 	if(typeof user === 'undefined'){
 		user = json['data']['user'];
@@ -93,7 +93,8 @@ function cottonTryExtractGrapthVideoNodes(json) {
 		return result;
 	}
 
-	return filterVideoEdges(edges);
+	let filteredEdges = filterVideoEdges(edges);
+	return filteredEdges;
 }
 
 function filterVideoEdges(edges) {
@@ -111,7 +112,6 @@ function filterVideoEdges(edges) {
 		switch (__typename) {
 			case "GraphVideo":
 				filtered.push(node);
-				break;
 			case "GraphSidecar":
 				let edge_sidecar_to_children = node['edge_sidecar_to_children'];
 				if(typeof edge_sidecar_to_children === 'undefined'){
@@ -124,7 +124,6 @@ function filterVideoEdges(edges) {
 				let childrenFilteredEdges = filterVideoEdges(childrenEdges);
 				// https://stackoverflow.com/a/30846567/483101
 				filtered = filtered.concat(childrenFilteredEdges);
-				continue;
 			default:
 				continue;
 		}
@@ -146,7 +145,6 @@ function sendVideoNodesToNativeApp(nodes) {
 		console.log('video node[' + i + ']with url: ' + nodes[i]['node']['video_url']);
 	}
 	try {
-		// JSON.stringify doesn't work, it returns the same array
 		webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
 	} catch(err) {
 		console.log('the native context does not exist yet');
