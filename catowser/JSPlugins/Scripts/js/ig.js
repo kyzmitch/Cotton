@@ -1,7 +1,7 @@
 "use strict";
 
 window.addEventListener("load", function() {
-	window.setTimeout(cottonSearchAdditionalData, 1000);
+	window.setTimeout(cottonHandleHtml, 1000);
 }, false); 
 
 XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
@@ -46,6 +46,16 @@ function cottonHandleHttpResponseText(text) {
 	}
 }
 
+function cottonHandleHtml() {
+	cottonSearchAdditionalData();
+	let sharedData = window._sharedData;
+	if (typeof sharedData === 'undefined') {
+		return;
+	}
+
+	cottonSearchSharedData(sharedData);
+}
+
 function cottonSearchAdditionalData() {
 	if(typeof window.__additionalData === 'undefined'){
 		cottonLog('__additionalData isn`t defined');
@@ -68,6 +78,40 @@ function cottonSearchAdditionalData() {
 		sendVideoNodesToNativeApp(feedEdges);
 	} else {
 		cottonLog('__additionalData doesn`t contain video nodes');
+	}
+}
+
+function cottonSearchSharedData(sharedDataJSON) {
+	// Shared data used for specific user posts
+
+	let entry_data = sharedDataJSON['entry_data'];
+	if(typeof entry_data === 'undefined') {
+		return;
+	}
+
+	let PostPage = entry_data['PostPage'];
+	if(typeof PostPage === 'undefined'){
+		return;
+	}
+	let firstPage = PostPage[0];
+	if(typeof firstPage === 'undefined'){
+		return;
+	}
+	let graphql = firstPage['graphql'];
+	if(typeof graphql === 'undefined'){
+		return;
+	}
+	let shortcode_media = graphql['shortcode_media'];
+	if(typeof shortcode_media === 'undefined'){
+		return;
+	}
+
+	let nodes = cottonTryExtractVideoNodesFrom(shortcode_media);
+	if(nodes.length != 0){
+		cottonLog('going to send nodes from _sharedData');
+		sendVideoNodesToNativeApp(nodes);
+	} else {
+		cottonLog('_sharedData doesn`t contain edge nodes');
 	}
 }
 
@@ -114,30 +158,37 @@ function filterVideoEdges(edges) {
 		if(typeof node === 'undefined'){
 			continue;
 		}
-		let __typename = node['__typename'];
-		if(typeof __typename === 'undefined'){
-			continue;
-		}
-		switch (__typename) {
-			case "GraphVideo":
-				filtered.push(node);
-			case "GraphSidecar":
-				let edge_sidecar_to_children = node['edge_sidecar_to_children'];
-				if(typeof edge_sidecar_to_children === 'undefined'){
-					continue;
-				}
-				let childrenEdges = edge_sidecar_to_children['edges'];
-				if(typeof childrenEdges === 'undefined'){
-					continue;
-				}
-				let childrenFilteredEdges = filterVideoEdges(childrenEdges);
-				// https://stackoverflow.com/a/30846567/483101
-				filtered = filtered.concat(childrenFilteredEdges);
-			default:
-				continue;
+		let videos = cottonTryExtractVideoNodesFrom(node);
+		// https://stackoverflow.com/a/30846567/483101
+		if(videos.length > 0) {
+			filtered = filtered.concat(videos);
 		}
 	}
 	return filtered;
+}
+
+function cottonTryExtractVideoNodesFrom(node) {
+	let filtered = new Array();
+	let __typename = node['__typename'];
+	if(typeof __typename === 'undefined'){
+		return filtered;
+	}
+	switch (__typename) {
+		case "GraphVideo":
+			return [node];
+		case "GraphSidecar":
+			let edge_sidecar_to_children = node['edge_sidecar_to_children'];
+			if(typeof edge_sidecar_to_children === 'undefined'){
+				return filtered;
+			}
+			let childrenEdges = edge_sidecar_to_children['edges'];
+			if(typeof childrenEdges === 'undefined'){
+				return filtered;
+			}
+			return filterVideoEdges(childrenEdges);
+		default:
+			return filtered;
+	}
 }
 
 function cottonNativeAppSendSingleNode(node) {

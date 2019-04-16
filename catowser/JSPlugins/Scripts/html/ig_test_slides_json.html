@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <head>
     <meta charset="utf-8">
-    <title>Test Instagram json slides</title>
+    <title>Test Instagram json</title>
     <script src="/js/ig.js"></script>
 </head>
 <body>
     <script>
-        function handleNewJsonFile(input) {
+        function handleHttpResponse(input) {
             let files = input.files;
             if(typeof files === 'undefined'){
                 return
@@ -16,23 +16,37 @@
                 return
             }
 
-            getAsText(selectedFileName)
-        }
-
-        function getAsText(readFile) {
             var reader = new FileReader();
-            // Read file into memory as UTF-16
-            reader.readAsText(readFile, "UTF-8");
-
-            // Handle progress, success, and errors
-            reader.onload = loaded;
+            reader.onload = httpResponseLoaded;
             reader.onerror = errorHandler;
+            reader.readAsText(selectedFileName, "UTF-8");
         }
 
-        function loaded(evt) {
+        function handleSharedData(input) {
+            let files = input.files;
+            if(typeof files === 'undefined'){
+                return
+            }
+            let selectedFileName = files[0];
+            if(typeof selectedFileName === 'undefined'){
+                return
+            }
+
+            var reader = new FileReader();
+            reader.onload = sharedDataLoaded;
+            reader.onerror = errorHandler;
+            reader.readAsText(selectedFileName, "UTF-8");
+        }
+
+        function httpResponseLoaded(evt) {
             // Obtain the read file data
             let fileString = evt.target.result;
             let feedEdges = cottonHandleHttpResponseText(JSON.parse(fileString));
+        }
+
+        function sharedDataLoaded(evt) {
+            let fileString = evt.target.result;
+            let edges = cottonSearchSharedData(JSON.parse(fileString));
         }
 
         function errorHandler(evt) {
@@ -41,7 +55,9 @@
     </script>
     <form>
         <form>
-            Select JSON file: <input type="file" accept=".json" name="igJsonFile" onchange="handleNewJsonFile(this)">
+            <label>Select JSON file</label><br>
+            to verify HTTP response: <input type="file" accept=".json" onchange="handleHttpResponse(this)"><br>
+            to verify Shared Data: <input type="file" accept=".json" onchange="handleSharedData(this)">
         </form>
     </form>
 </body>
