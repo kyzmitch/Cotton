@@ -32,8 +32,7 @@
         function loaded(evt) {
             // Obtain the read file data
             let fileString = evt.target.result;
-            let filteredNodes = cottonTryExtractGrapthVideoNodes(JSON.parse(fileString));
-            console.log('filtered result: ' + JSON.stringify(filteredNodes));
+            let feedEdges = cottonHandleHttpResponseText(JSON.parse(fileString));
         }
 
         function errorHandler(evt) {
