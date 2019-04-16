@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(*, deprecated, message: "Parsing logic moved to JavaScript extension")
 public struct InstagramVideoArray: Decodable {
     public let nodes: [InstagramVideoNode]
     
