@@ -19,7 +19,7 @@ final class WebViewsReuseManager {
     /// Needed to store index of last returned view
     private var lastSelectedIndex: Int?
 
-    private init(_ viewsLimit: Int = 2) {
+    private init(_ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
         views = [WebViewController]()
         if viewsLimit >= 1 {

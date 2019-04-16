@@ -1,3 +1,10 @@
+opennet.ru
+4pda.ru
+xakep.ru
+twitter.com
+reddit.com
+meduza.io
+newsru.co.il
 google.com
 facebook.com
 amazon.com
@@ -5,8 +12,6 @@ youtube.com
 yahoo.com
 ebay.com
 wikipedia.org
-twitter.com
-reddit.com
 go.com
 craigslist.org
 live.com
