@@ -26,20 +26,23 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 function cottonHandleHttpResponseText(text) {
-	cottonLog('HttpResponse JSON: ' + text);
 
 	// 1) attempt to extract from concrete user post
-	let singleNode = text['graphql']['shortcode_media'];
-	if(typeof singleNode !== 'undefined'){
-		cottonNativeAppSendSingleNode(singleNode);
-		return;
+	let graphql = text['graphql'];
+	if(typeof graphql !== 'undefined'){
+		let singleNode = graphql['shortcode_media'];
+		if(typeof singleNode !== 'undefined'){
+			cottonNativeAppSendSingleNode(singleNode);
+			return;
+		}
 	}
-	let feedEdges = cottonTryExtractGrapthVideoNodes(text);
+
+	let feedEdges = cottonTryExtractGrapthVideoNodes(JSON.parse(text));
 	if(feedEdges.length != 0){
-		cottonLog('going to send nodes from http response');
+		cottonLog('HttpResponse: going to send nodes');
 		sendVideoNodesToNativeApp(feedEdges);
 	} else {
-		cottonLog('http response doesn`t contain edge nodes');
+		cottonLog('HttpResponse: doesn`t contain edge nodes');
 	}
 }
 
@@ -59,7 +62,6 @@ function cottonSearchAdditionalData() {
 		return;
 	}
 
-	cottonLog('__additionalData JSON: ' + JSON.stringify(additionalDataJSON));
 	let feedEdges = cottonTryExtractGrapthVideoNodes(additionalDataJSON);
 	if(feedEdges.length != 0){
 		cottonLog('going to send nodes from __additionalData');
@@ -85,7 +87,14 @@ function cottonTryExtractGrapthVideoNodes(json) {
 	if(typeof edge_web_feed_timeline === 'undefined'){
 		edge_web_feed_timeline = user['edge_owner_to_timeline_media']
 		if(typeof edge_web_feed_timeline === 'undefined'){
-			return result;
+			let feed_reels_tray = user['feed_reels_tray'];
+			if(typeof feed_reels_tray === 'undefined'){
+				return result;
+			}
+			edge_web_feed_timeline = feed_reels_tray['edge_reels_tray_to_reel'];
+			if(typeof edge_web_feed_timeline === 'undefined'){
+				return result;
+			}
 		}
 	}
 	let edges = edge_web_feed_timeline['edges'];
@@ -142,7 +151,7 @@ function cottonNativeAppSendSingleNode(node) {
 
 function sendVideoNodesToNativeApp(nodes) {
 	for (let i=0; i<nodes.length; i++) {
-		console.log('video node[' + i + ']with url: ' + nodes[i]['node']['video_url']);
+		console.log('video node[' + i + '] with url: ' + nodes[i]['video_url']);
 	}
 	try {
 		webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
