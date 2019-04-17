@@ -103,6 +103,7 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension FilesGreedViewController: VideoFileCellDelegate {
+    @available(*, deprecated, message: "Usage of Photo Gallery for media files from internet probably isn't allowed")
     func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void) {
         let title = NSLocalizedString("txt_where_save", comment: "Text to ask where need to save the file")
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
