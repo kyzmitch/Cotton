@@ -17,7 +17,9 @@
 "txt_pdf_tag" = "pdf";
 
 "ttl_download_button" = "Скачать";
-"ttl_downloaded_button" = "Репост";
+"ttl_downloaded_button" = "Поделиться";
+
+"ttl_video_share" = "Поделиться";
 
 "txt_where_save" = "Где сохранить?";
 "txt_app_sandbox" = "Файлы";

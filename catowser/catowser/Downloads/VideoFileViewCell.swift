@@ -15,6 +15,7 @@ import ReactiveSwift
 protocol VideoFileCellDelegate: class {
     func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void)
     func didStartDownload(for cell: VideoFileViewCell) -> Downloadable?
+    func didPressOpenFile(withLocal url: URL, from cell: VideoFileViewCell)
 }
 
 final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
@@ -37,12 +38,15 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 
     fileprivate var downloadURL: URL? {
         didSet {
+            localDownloadedFileURL = nil
             downloadButton.state = .startDownload
             downloadButton.progress = 0
         }
     }
 
     weak var delegate: VideoFileCellDelegate?
+
+    fileprivate var localDownloadedFileURL: URL?
 
     func setupWith(previewURL: URL, downloadURL: URL) {
         self.previewURL = previewURL
@@ -132,7 +136,8 @@ fileprivate extension VideoFileViewCell {
                 case .progress(let progress):
                     let converted = CGFloat(progress.fractionCompleted)
                     self.downloadButton.progress = converted
-                case .complete:
+                case .complete(let localURL):
+                    self.localDownloadedFileURL = localURL
                     self.downloadButton.state = .downloaded
                 }
             case .failure(let error):
@@ -173,7 +178,10 @@ extension VideoFileViewCell: AHDownloadButtonDelegate {
         case .downloading:
             stopDownload()
         case .downloaded:
-
+            guard let url = localDownloadedFileURL else {
+                return
+            }
+            delegate?.didPressOpenFile(withLocal: url, from: self)
             break
         }
     }

@@ -103,6 +103,21 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension FilesGreedViewController: VideoFileCellDelegate {
+    func didPressOpenFile(withLocal url: URL, from cell: VideoFileViewCell) {
+        let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+        activity.title = NSLocalizedString("ttl_video_share", comment: "Share video")
+
+        if let popoverPresenter = activity.popoverPresentationController {
+            let rect = CGRect(x: cell.frame.origin.x,
+                              y: cell.frame.origin.y,
+                              width: cell.bounds.width,
+                              height: cell.bounds.height)
+            popoverPresenter.sourceView = cell
+            popoverPresenter.sourceRect = rect
+        }
+        present(activity, animated: true)
+    }
+
     @available(*, deprecated, message: "Usage of Photo Gallery for media files from internet probably isn't allowed")
     func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void) {
         let title = NSLocalizedString("txt_where_save", comment: "Text to ask where need to save the file")
