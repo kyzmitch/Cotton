@@ -11,7 +11,6 @@ import CoreBrowser
 import AHDownloadButton
 import AlamofireImage
 import ReactiveSwift
-import SnapKit
 
 protocol VideoFileCellDelegate: class {
     func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void)
@@ -73,14 +72,13 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         super.awakeFromNib()
 
         buttonContainer.addSubview(downloadButton)
-        downloadButton.snp.makeConstraints { (maker) in
-            maker.leading.trailing.equalToSuperview()
-            maker.top.equalToSuperview().offset(2)
-            maker.bottom.equalToSuperview().offset(2)
-        }
+        downloadButton.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor).isActive = true
+        downloadButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor).isActive = true
+        downloadButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 1).isActive = true
+        downloadButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: 1).isActive = true
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if touch.view == downloadButton {
                 downloadButton(downloadButton, tappedWithState: downloadButton.state)
@@ -89,8 +87,33 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         }
     }
 
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        // http://khanlou.com/2018/09/hacking-hit-tests/
+
+        guard isUserInteractionEnabled else { return nil }
+
+        guard !isHidden else { return nil }
+
+        guard alpha >= 0.01 else { return nil }
+
+        guard self.point(inside: point, with: event) else { return nil }
+
+        if downloadButton.point(inside: convert(point, to: downloadButton), with: event) {
+            return downloadButton
+        }
+
+        for subview in subviews.reversed() {
+            let convertedPoint = subview.convert(point, from: self)
+            if let candidate = subview.hitTest(convertedPoint, with: event) {
+                return candidate
+            }
+        }
+
+        return super.hitTest(point, with: event)
+    }
+
     private struct Sizes {
-        static let downloadButtonHeight: CGFloat = 44.0
+        static let downloadButtonHeight: CGFloat = 34.0
     }
 }
 
@@ -144,20 +167,13 @@ extension VideoFileViewCell: AHDownloadButtonDelegate {
             guard let batch = delegate?.didStartDownload(for: self) else {
                 return setInitialButtonState()
             }
-            delegate?.didPressDownload(callback: { [weak self] (location) in
-                guard let self = self else {
-                    return
-                }
-                guard let location = location else {
-                    return self.setInitialButtonState()
-                }
-                self.download(batch, andSaveTo: location)
-            })
+            self.download(batch, andSaveTo: .sandboxFiles)
         case .pending:
             break
         case .downloading:
             stopDownload()
         case .downloaded:
+
             break
         }
     }
