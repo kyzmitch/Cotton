@@ -178,6 +178,8 @@
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60A82C522254E1F7008210D9 /* MasterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterRouter.swift; sourceTree = "<group>"; };
 		60A82C5422562D3B008210D9 /* VideoFileViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFileViewCell.swift; sourceTree = "<group>"; };
+		60C12BE2226746EC004FCB14 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
+		60C12BE42267480C004FCB14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewInterface.swift; sourceTree = "<group>"; };
 		60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadFacade.swift; sourceTree = "<group>"; };
 		60D52D20225B526B00CB56F0 /* Namespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 		60D52D3D225F47DB00CB56F0 /* InMemoryDomainSearchProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDomainSearchProvider.swift; sourceTree = "<group>"; };
 		60D52D40225F542E00CB56F0 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
 		60D52D42225F55B400CB56F0 /* topdomains.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topdomains.txt; sourceTree = "<group>"; };
+		60D52D5422673C6300CB56F0 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
 		841022C0224788F80021516F /* LinkTagsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LinkTagsViewController.storyboard; sourceTree = "<group>"; };
@@ -202,7 +205,6 @@
 		8435A49C1EED5E700020102F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		8435A4A11EED5E700020102F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8435A4A41EED5E700020102F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8435A4A61EED5E700020102F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		846220AE1EEE9B6C00B84C73 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				60D52D5422673C6300CB56F0 /* Photos.framework */,
 				6094E73E221FE65F004269A2 /* ReactiveSwift.framework */,
 				6094E73C221FE3FF004269A2 /* Alamofire.framework */,
 				6094E73A221FE3FD004269A2 /* Result.framework */,
@@ -471,7 +474,7 @@
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
 				60724F78221694A30071BECF /* SearchPlugins */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
-				8435A4A61EED5E700020102F /* Info.plist */,
+				60C12BE1226746EB004FCB14 /* Info.plist */,
 				C27371191F7A341900900F03 /* Localizable.strings */,
 			);
 			path = catowser;
@@ -896,6 +899,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		60C12BE1226746EB004FCB14 /* Info.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				60C12BE2226746EC004FCB14 /* ru */,
+				60C12BE42267480C004FCB14 /* Base */,
+			);
+			name = Info.plist;
+			sourceTree = "<group>";
+		};
 		8435A4A31EED5E700020102F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1155,7 +1167,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = ERT5B59458;
-				INFOPLIST_FILE = catowser/Info.plist;
+				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
@@ -1176,7 +1188,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = catowser/Info.plist;
+				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";

@@ -52,5 +52,7 @@
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access is required if it will be needed to save files for repost</string>
 </dict>
 </plist>

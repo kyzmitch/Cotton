@@ -33,7 +33,7 @@ extension CoreBrowser {
 }
 
 extension CoreBrowser.DownloadFacade {
-    public typealias DownloadWithProgressSignalProducer = SignalProducer<CoreBrowser.ProgressResponse<Void>, DownloadError>
+    public typealias DownloadWithProgressSignalProducer = SignalProducer<CoreBrowser.ProgressResponse<URL>, DownloadError>
 
     /// Sends download request and saves file
     ///
@@ -64,7 +64,7 @@ extension CoreBrowser.DownloadFacade {
                 observer.send(value: .progress(progress))
             }).responseData(queue: nil) { (response: DownloadResponse<Data>) in
                 switch response.result {
-                case .success(_):
+                case .success:
                     guard var destinationURL = response.destinationURL else {
                         observer.send(error: .noCorrectDownloadDestination)
                         return
@@ -79,8 +79,7 @@ extension CoreBrowser.DownloadFacade {
                         observer.send(error: .failedExcludeFromBackup(error))
                     }
 
-                    let void: (Void) = ()
-                    observer.send(value: .complete(void))
+                    observer.send(value: .complete(destinationURL))
                     observer.sendCompleted()
                     break
                 case .failure(let error):
