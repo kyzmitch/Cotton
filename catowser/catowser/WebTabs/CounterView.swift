@@ -42,4 +42,9 @@ final class CounterView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let expandedBounds = self.bounds.inset(by: UIEdgeInsets(equalInset: -6))
+        return expandedBounds.contains(point)
+    }
 }

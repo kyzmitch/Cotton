@@ -20,7 +20,7 @@ protocol DonwloadPanelDelegate: class {
     func didPressDownloads(to hide: Bool)
 }
 
-final class WebBrowserToolbarController: BaseViewController {
+final class WebBrowserToolbarController: UIViewController {
 
     /// Site navigation delegate
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
@@ -52,8 +52,8 @@ final class WebBrowserToolbarController: BaseViewController {
         }
     }
 
-    private lazy var toolbarView: UIToolbar = {
-        let toolbar = UIToolbar()
+    private lazy var toolbarView: CottonToolbarView = {
+        let toolbar = CottonToolbarView()
 
         ThemeProvider.shared.setup(toolbar)
         
@@ -68,9 +68,11 @@ final class WebBrowserToolbarController: BaseViewController {
         let space3 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         barItems.append(space3)
         barItems.append(openedTabsButton)
+        toolbar.counterView = counterView
         let space4 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         barItems.append(space4)
         barItems.append(downloadLinksButton)
+        toolbar.downloadsView = downloadsView
         toolbar.setItems(barItems, animated: false)
         return toolbar
     }()
@@ -135,9 +137,7 @@ final class WebBrowserToolbarController: BaseViewController {
     }
 
     override func loadView() {
-        view = UIView()
-        
-        view.addSubview(toolbarView)
+        view = toolbarView
     }
     
     override func viewDidLoad() {
@@ -160,8 +160,10 @@ final class WebBrowserToolbarController: BaseViewController {
         for touch in touches {
             if touch.view == counterView {
                 handleShowOpenedTabsPressed()
+                break
             } else if touch.view == downloadsView {
                 handleDownloadsPressed()
+                break
             }
         }
     }
