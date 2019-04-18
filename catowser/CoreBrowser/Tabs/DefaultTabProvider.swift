@@ -27,7 +27,10 @@ public final class DefaultTabProvider {
         // TODO: finish implementation and store it somewhere
         // maybe in UserDefaults plist
         // this method should be not async
-        return .blank
+        guard let site = Site(urlString: "https://www.instagram.com/uzbekspotter/") else {
+            return .blank
+        }
+        return .site(site)
     }
     
     public var selected: Bool {
