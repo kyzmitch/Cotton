@@ -59,10 +59,15 @@ public struct InstagramVideoNode: Decodable {
         }
         dimensions = nil
 
-        if let mediaCaption = try container.decodeIfPresent(IgEdgeMediaCaption.self, forKey: .mediaCaption),
-           let edge = mediaCaption.edges.first {
-            name = edge.node.text
-        } else {
+        do {
+            let mediaCaption = try container.decode(IgEdgeMediaCaption.self, forKey: .mediaCaption)
+            if let edge = mediaCaption.edges.first {
+                name = edge.node.text
+            } else {
+                name = UUID().uuidString
+            }
+        } catch {
+            print("Media caption isn't set for post")
             name = UUID().uuidString
         }
     }

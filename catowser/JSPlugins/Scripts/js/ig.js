@@ -121,6 +121,7 @@ function cottonTryExtractGrapthVideoNodes(json) {
 	if(typeof user === 'undefined'){
 		user = json['data']['user'];
 		if(typeof user === 'undefined'){
+			// user profile http response format
 			user = json['graphql']['user']
 			if(typeof user === 'undefined'){
 				return result;
@@ -129,6 +130,7 @@ function cottonTryExtractGrapthVideoNodes(json) {
 	}
 	let edge_web_feed_timeline = user['edge_web_feed_timeline'];
 	if(typeof edge_web_feed_timeline === 'undefined'){
+		// user profile http response format
 		edge_web_feed_timeline = user['edge_owner_to_timeline_media']
 		if(typeof edge_web_feed_timeline === 'undefined'){
 			let feed_reels_tray = user['feed_reels_tray'];
@@ -150,7 +152,7 @@ function cottonTryExtractGrapthVideoNodes(json) {
 	return filteredEdges;
 }
 
-function filterVideoEdges(edges) {
+function filterVideoEdges(edges, sidecarTitle) {
 	let filtered = new Array();
 	for(let i=0; i<edges.length; i++){
 		let edge = edges[i];
@@ -158,7 +160,7 @@ function filterVideoEdges(edges) {
 		if(typeof node === 'undefined'){
 			continue;
 		}
-		let videos = cottonTryExtractVideoNodesFrom(node);
+		let videos = cottonTryExtractVideoNodesFrom(node, sidecarTitle);
 		// https://stackoverflow.com/a/30846567/483101
 		if(videos.length > 0) {
 			filtered = filtered.concat(videos);
@@ -167,7 +169,7 @@ function filterVideoEdges(edges) {
 	return filtered;
 }
 
-function cottonTryExtractVideoNodesFrom(node) {
+function cottonTryExtractVideoNodesFrom(node, sidecarTitle) {
 	let filtered = new Array();
 	let __typename = node['__typename'];
 	if(typeof __typename === 'undefined'){
@@ -175,6 +177,13 @@ function cottonTryExtractVideoNodesFrom(node) {
 	}
 	switch (__typename) {
 		case "GraphVideo":
+			if(typeof sidecarTitle !== 'undefined'){
+				let captionEdges = new Array();
+				let captionText = {'text': sidecarTitle};
+				let captionNode = {'node': captionText};
+				captionEdges.push(captionNode);
+				node['edge_media_to_caption'] = captionEdges;
+			}
 			return [node];
 		case "GraphSidecar":
 			let edge_sidecar_to_children = node['edge_sidecar_to_children'];
@@ -185,10 +194,45 @@ function cottonTryExtractVideoNodesFrom(node) {
 			if(typeof childrenEdges === 'undefined'){
 				return filtered;
 			}
-			return filterVideoEdges(childrenEdges);
+			
+			let title = cottonFindTitleFromNode(node);
+			if(typeof title !== 'undefined'){
+				cottonLog(title);
+			}
+			return filterVideoEdges(childrenEdges, title);
 		default:
 			return filtered;
 	}
+}
+
+function cottonFindTitleFromNode(node) {
+	let title;
+	let edge_media_to_caption = node['edge_media_to_caption'];
+	if(typeof edge_media_to_caption === 'undefined'){
+		return title;
+	}
+
+	let edges = edge_media_to_caption['edges'];
+	if(typeof edges === 'undefined'){
+		return title;
+	}
+
+	if(edges.length == 0){
+		return title;
+	}
+
+	let edge = edges[0];
+	if(typeof edge === 'undefined'){
+		return title;
+	}
+
+	let captionNode = edge['node'];
+	if(typeof captionNode === 'undefined'){
+		return title;
+	}
+
+	let text = captionNode['text'];
+	return text;
 }
 
 function cottonNativeAppSendSingleNode(node) {
