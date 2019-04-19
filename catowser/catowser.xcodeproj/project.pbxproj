@@ -202,7 +202,7 @@
 		841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewController.swift; sourceTree = "<group>"; };
 		841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartphoneSearchBarViewController.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarBaseViewController.swift; sourceTree = "<group>"; };
-		8435A4971EED5E700020102F /* catowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = catowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8435A4971EED5E700020102F /* Cotton Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cotton Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8435A49A1EED5E700020102F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8435A49C1EED5E700020102F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		8435A4A11EED5E700020102F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -453,7 +453,7 @@
 		8435A4981EED5E700020102F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8435A4971EED5E700020102F /* catowser.app */,
+				8435A4971EED5E700020102F /* Cotton Dev.app */,
 				6094E71C221FD2B9004269A2 /* CoreBrowser.framework */,
 				608DA74A223A3BD4009F75BD /* JSPlugins.framework */,
 			);
@@ -647,7 +647,7 @@
 			);
 			name = catowser;
 			productName = catowser;
-			productReference = 8435A4971EED5E700020102F /* catowser.app */;
+			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1170,12 +1170,14 @@
 				CODE_SIGN_ENTITLEMENTS = catowser/catowser.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				COTTON_APP_NAME = "Cotton Dev";
+				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
+				PRODUCT_NAME = "$(COTTON_APP_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton browser develop";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1191,12 +1193,14 @@
 				CODE_SIGN_ENTITLEMENTS = catowser/catowser.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				COTTON_APP_NAME = Cotton;
+				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "$(COTTON_APP_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton browser AdHoc";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
