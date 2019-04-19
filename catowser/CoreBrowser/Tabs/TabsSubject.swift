@@ -17,6 +17,10 @@ public protocol TabsObserver {
     ///
     /// - Parameter tabsCount: New number of tabs.
     func update(with tabsCount: Int)
+    /// Prodive necessary data to render UI on tablets
+    ///
+    /// - Parameter tabs: Tabs from cache at application start.
+    func initializeObserver(with tabs: [Tab])
     /// Tells other observers about new tab.
     /// We can pause drawing new tab on view layer
     /// to be able firstly determine type of initial tab state.
@@ -56,6 +60,8 @@ public extension TabsObserver {
     /* optional */ func tabDidReplace(_ tab: Tab, at index: Int) {}
 
     /* optional */ func update(with tabsCount: Int) {}
+
+    /* optional */ func initializeObserver(with tabs: [Tab]) {}
 }
 
 public protocol TabsSubject {
@@ -131,6 +137,17 @@ public final class TabsListManager {
                 case .success(let tabsArray):
                     guard let `self` = self else { return }
                     self.tabs.value = tabsArray
+                    // for .pad tabs view observable to render all tabs at once
+                    // this isn't necessary for .phone because different tabs screen is used
+                    // also, it's better than adding tab one by one
+                    let disposable = UIScheduler().schedule({ [weak self] in
+                        // actually only one observer will use it
+                        self?.observers.forEach { $0.initializeObserver(with: tabsArray) }
+                    })
+                    guard let initialDisposable = disposable else {
+                        return
+                    }
+                    self.disposables.append(initialDisposable)
                 case .failure(let error):
                     print("not complete async init of \(TabsListManager.self): \(error)")
                 }

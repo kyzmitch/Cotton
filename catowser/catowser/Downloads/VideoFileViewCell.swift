@@ -53,7 +53,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         self.downloadURL = downloadURL
     }
 
-    private lazy var downloadButton: AHDownloadButton = {
+    lazy var downloadButton: AHDownloadButton = {
         let btn = AHDownloadButton(frame: .zero)
         btn.isUserInteractionEnabled = true
         btn.delegate = self

@@ -108,11 +108,13 @@ extension FilesGreedViewController: VideoFileCellDelegate {
         activity.title = NSLocalizedString("ttl_video_share", comment: "Share video")
 
         if let popoverPresenter = activity.popoverPresentationController {
-            let rect = CGRect(x: cell.frame.origin.x,
-                              y: cell.frame.origin.y,
-                              width: cell.bounds.width,
-                              height: cell.bounds.height)
-            popoverPresenter.sourceView = cell
+            let btnBounds = cell.downloadButton.bounds
+            let btnOrigin = cell.downloadButton.frame.origin
+            let rect = CGRect(x: btnOrigin.x,
+                              y: btnOrigin.y,
+                              width: btnBounds.width,
+                              height: btnBounds.height)
+            popoverPresenter.sourceView = cell.downloadButton
             popoverPresenter.sourceRect = rect
         }
         present(activity, animated: true)

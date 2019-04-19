@@ -229,6 +229,14 @@ extension TabsViewController: TabsObserver {
     func update(with tabsCount: Int) {
         showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
     }
+
+    func initializeObserver(with tabs: [Tab]) {
+        for (i, tab) in tabs.enumerated() {
+            let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
+            tabsStackView.insertArrangedSubview(tabView, at:i)
+        }
+        view.layoutIfNeeded()
+    }
     
     func tabDidAdd(_ tab: Tab, at index: Int) {
         let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
