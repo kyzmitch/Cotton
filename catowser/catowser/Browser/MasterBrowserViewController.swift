@@ -110,9 +110,10 @@ final class MasterBrowserViewController: BaseViewController {
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)
 
+        add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
+
         switch UIDevice.current.userInterfaceIdiom {
         case .phone:
-            add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to:view)
@@ -221,22 +222,21 @@ final class MasterBrowserViewController: BaseViewController {
             
             linksRouter.hiddenTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: .linkTagsHeight)
             linksRouter.showedTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
-
-            linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-            linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-            // temporarily use 0 height because actual height of free space is unknown at the moment
-            let greedHeight: CGFloat = 0
-            linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
-            linksRouter.hiddenFilesGreedConstraint?.isActive = true
-            linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
-            linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
-            linksRouter.filesGreedHeightConstraint?.isActive = true
         }
         
         linksRouter.hiddenTagsConstraint?.isActive = true
         linksRouter.linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         linksRouter.linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     linksRouter.linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
+        linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        // temporarily use 0 height because actual height of free space is unknown at the moment
+        let greedHeight: CGFloat = 0
+        linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
+        linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
+        linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
+        linksRouter.hiddenFilesGreedConstraint?.isActive = true
+        linksRouter.filesGreedHeightConstraint?.isActive = true
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
@@ -267,15 +267,16 @@ final class MasterBrowserViewController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        let freeHeight: CGFloat
+        let allHeight = containerView.bounds.height
         if isPad {
-
+            freeHeight = (allHeight - .linkTagsHeight) / 2
         } else {
-            let allHeight = containerView.bounds.height
-            let freeHeight = allHeight - .linkTagsHeight
-            linksRouter.filesGreedHeightConstraint?.constant = freeHeight
-            linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
+            freeHeight = allHeight - .linkTagsHeight
         }
 
+        linksRouter.filesGreedHeightConstraint?.constant = freeHeight
+        linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
         linksRouter.filesGreedController.view.setNeedsLayout()
         linksRouter.filesGreedController.view.layoutIfNeeded()
     }
