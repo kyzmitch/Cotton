@@ -1,0 +1,22 @@
+{
+    "240": {
+        "status": "success",
+        "token": "https://cdn1-video-m-ht.4tube.com/default/videos/8/0/0/3/9/3/0/5/4/p240.mp4?sr=767&nvb=20190419121913&nva=20190419211913&hash=003b115172383eb70587d"
+    },
+    "360": {
+        "status": "success",
+        "token": "https://cdn1-video-m-ht.4tube.com/default/videos/8/0/0/3/9/3/0/5/4/p360.mp4?sr=1335&nvb=20190419121913&nva=20190419211913&hash=08148e16ddda5f63f1948"
+    },
+    "480": {
+        "status": "success",
+        "token": "https://cdn1-video-m-ht.4tube.com/default/videos/8/0/0/3/9/3/0/5/4/p480.mp4?sr=1959&nvb=20190419121913&nva=20190419211913&hash=0c487b5b9ae2edc388a24"
+    },
+    "720": {
+        "status": "success",
+        "token": "https://cdn1-video-m-ht.4tube.com/default/videos/8/0/0/3/9/3/0/5/4/p720.mp4?sr=3252&nvb=20190419121913&nva=20190419211913&hash=0120113fcf2d9d5657cbc"
+    },
+    "1080": {
+        "status": "success",
+        "token": "https://cdn1-video-m-ht.4tube.com/default/videos/8/0/0/3/9/3/0/5/4/p1080.mp4?sr=5715&nvb=20190419121913&nva=20190419211913&hash=09da3d2b247d281e4f94f"
+    }
+}
