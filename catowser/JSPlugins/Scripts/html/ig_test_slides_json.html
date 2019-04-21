@@ -2,11 +2,11 @@
 <head>
     <meta charset="utf-8">
     <title>Test Instagram json</title>
-    <script src="/js/ig.js"></script>
+    <script src="/js/t4.js"></script>
 </head>
 <body>
     <script>
-        function handleHttpResponse(input) {
+        function readInputWithOnload(input, onloadCallback){
             let files = input.files;
             if(typeof files === 'undefined'){
                 return
@@ -16,26 +16,22 @@
                 return
             }
 
-            var reader = new FileReader();
-            reader.onload = httpResponseLoaded;
+            let reader = new FileReader();
+            reader.onload = onloadCallback;
             reader.onerror = errorHandler;
             reader.readAsText(selectedFileName, "UTF-8");
         }
 
-        function handleSharedData(input) {
-            let files = input.files;
-            if(typeof files === 'undefined'){
-                return
-            }
-            let selectedFileName = files[0];
-            if(typeof selectedFileName === 'undefined'){
-                return
-            }
+        function handleHttpResponse(input) {
+            readInputWithOnload(input, httpResponseLoaded);
+        }
 
-            var reader = new FileReader();
-            reader.onload = sharedDataLoaded;
-            reader.onerror = errorHandler;
-            reader.readAsText(selectedFileName, "UTF-8");
+        function handleSharedData(input) {
+            readInputWithOnload(input, sharedDataLoaded);
+        }
+
+        function handleT4HttpResponse(input){
+            readInputWithOnload(input, t4HttpResponseLoaded);
         }
 
         function httpResponseLoaded(evt) {
@@ -49,6 +45,10 @@
             let edges = cottonSearchSharedData(JSON.parse(fileString));
         }
 
+        function t4HttpResponseLoaded(evt){
+
+        }
+
         function errorHandler(evt) {
             console.log('file read: ' + evt.target.error.name);
         }
@@ -58,6 +58,7 @@
             <label>Select JSON file</label><br>
             to verify HTTP response: <input type="file" accept=".json" onchange="handleHttpResponse(this)"><br>
             to verify Shared Data: <input type="file" accept=".json" onchange="handleSharedData(this)">
+            to verify T4 Http response: <input type="file" accept=".json" onchange="handleT4HttpResponse(this)">
         </form>
     </form>
 </body>
