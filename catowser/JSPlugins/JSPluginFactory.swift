@@ -16,7 +16,7 @@ import WebKit
 
 public enum PluginHandlerDelegateType {
     case instagram(InstagramContentDelegate)
-    case jQueryAjax
+    case t4
 }
 
 public protocol CottonJSPlugin {
