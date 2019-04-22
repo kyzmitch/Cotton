@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 import WebKit
 import CoreBrowser
 import JSPlugins
@@ -129,9 +128,11 @@ final class WebViewController: BaseViewController {
         view.addSubview(webView)
         isWebViewLoaded = true
         webView.navigationDelegate = self
-        webView.snp.makeConstraints { (maker) in
-            maker.leading.trailing.top.bottom.equalTo(view)
-        }
+
+        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
