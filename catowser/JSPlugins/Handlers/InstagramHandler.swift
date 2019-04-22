@@ -75,7 +75,7 @@ extension InstagramHandler: WKScriptMessageHandler {
             case .log? where value is String:
                 print("JS log: \(value as! String)")
             case .videoNodes?:
-                guard let jsonObject = dataFrom(value) else {
+                guard let jsonObject = Data.dataFrom(value) else {
                     break
                 }
                 do {
@@ -85,7 +85,7 @@ extension InstagramHandler: WKScriptMessageHandler {
                     print("failed decode video nodes array: \(error)")
                 }
             case .singleVideoNode?:
-                guard let jsonObject = dataFrom(value) else {
+                guard let jsonObject = Data.dataFrom(value) else {
                     break
                 }
                 do {
@@ -98,17 +98,5 @@ extension InstagramHandler: WKScriptMessageHandler {
                 print("unexpected key \(key)")
             }
         }
-    }
-    
-    func dataFrom(_ value: Any) -> Data? {
-        guard let jsArrayString =  value as? String else {
-            print("js value is not a string")
-            return nil
-        }
-        guard let jsonObject = jsArrayString.data(using: .utf8, allowLossyConversion: true) else {
-            print("failed to convert string to data")
-            return nil
-        }
-        return jsonObject
     }
 }
