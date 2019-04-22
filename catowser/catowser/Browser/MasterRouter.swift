@@ -21,7 +21,8 @@ protocol MasterDelegate: class {
 }
 
 protocol LinksRouterInterface: class {
-    func openTagsFor(instagramVideo nodes: [InstagramVideoNode])
+    func openTagsFor(instagram nodes: [InstagramVideoNode])
+    func openTagsFor(t4 video: T4Video)
     func closeTags()
 }
 
@@ -73,7 +74,7 @@ final class MasterRouter: NSObject {
 
     private var isFilesGreedShowed: Bool = false
 
-    private var instagramVideos: [InstagramVideoNode]?
+    fileprivate var dataSource: TagsSiteDataSource
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
     
@@ -102,14 +103,20 @@ final class MasterRouter: NSObject {
 }
 
 extension MasterRouter: LinksRouterInterface {
-    func openTagsFor(instagramVideo nodes: [InstagramVideoNode]) {
-        instagramVideos = nodes
+    func openTagsFor(instagram nodes: [InstagramVideoNode]) {
+        dataSource = .instagram(nodes)
         linkTagsController.setLinks(nodes.count, for: .video)
+        showLinkTagsControllerIfNeeded()
+    }
+    
+    func openTagsFor(t4 video: T4Video) {
+        dataSource = .t4(video)
+        linkTagsController.setLinks(1, for: .video)
         showLinkTagsControllerIfNeeded()
     }
 
     func closeTags() {
-        instagramVideos = nil
+        dataSource = .nothing
         hideFilesGreedIfNeeded()
         hideLinkTagsController()
     }
@@ -231,11 +238,11 @@ fileprivate extension MasterRouter {
 
 extension MasterRouter: LinkTagsDelegate {
     func didSelect(type: LinksType) {
-        if type == .video, let nodes = instagramVideos {
+        if type == .video, dataSource != .nothing {
             if isFilesGreedShowed {
                 hideFilesGreedIfNeeded()
             } else {
-                filesGreedController.setInstagramVideo(nodes)
+                filesGreedController.reloadWith(source: dataSource)
                 showFilesGreedIfNeeded()
             }
         }

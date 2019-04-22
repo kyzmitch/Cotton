@@ -11,7 +11,7 @@ import CoreBrowser
 import JSPlugins
 
 protocol FilesGreedPresenter: class {
-    func setInstagramVideo(_ nodes: [InstagramVideoNode])
+    func reloadWith(source: TagsSiteDataSource)
 }
 
 final class FilesGreedViewController: UICollectionViewController, CollectionViewInterface {
@@ -22,8 +22,7 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
     private var backLayer: CAGradientLayer?
 
-    /// Array with objects to store URLs for Instagram resources
-    private var instagramVideos = [InstagramVideoNode]()
+    private var source: TagsSiteDataSource
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,14 +60,24 @@ extension FilesGreedViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return instagramVideos.count
+        return source.itemsCount
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(at: indexPath, type: VideoFileViewCell.self)
         cell.delegate = self
-        let node = instagramVideos[indexPath.item]
-        cell.setupWith(previewURL: node.thumbnailUrl, downloadURL: node.videUrl)
+        switch source {
+        case .instagram(let nodes):
+            let node = nodes[indexPath.item]
+            cell.setupWith(previewURL: node.thumbnailUrl, downloadURL: node.videUrl)
+        case .t4(let video):
+            let key = video.variants.keys[indexPath.item]
+            let url = video.variants.values[key]
+            cell.setupWith(previewURL: nil, downloadURL: url)
+        default:
+            return cell
+        }
+        
         return cell
     }
 }
@@ -76,8 +85,8 @@ extension FilesGreedViewController {
 extension FilesGreedViewController: AnyViewController {}
 
 extension FilesGreedViewController: FilesGreedPresenter {
-    func setInstagramVideo(_ nodes: [InstagramVideoNode]) {
-        instagramVideos = nodes
+    func reloadWith(source: TagsSiteDataSource) {
+        self.source = source
         collectionView.reloadData()
     }
 }
@@ -147,8 +156,17 @@ extension FilesGreedViewController: VideoFileCellDelegate {
             return nil
         }
 
-        let node = instagramVideos[indexPath.item]
-        return node
+        switch source {
+        case .instagram(let nodes):
+            let node = nodes[indexPath.item]
+            return node
+        case .t4(let video):
+            let url = video.variants.values[indexPath.item]
+            assertionFailure("Not finished impl")
+            return nil
+        default:
+            return nil
+        }
     }
 }
 

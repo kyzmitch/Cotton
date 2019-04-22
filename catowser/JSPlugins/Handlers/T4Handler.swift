@@ -1,5 +1,5 @@
 //
-//  t4Handler.swift
+//  T4Handler.swift
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 4/19/19.
@@ -9,7 +9,11 @@
 import Foundation
 import WebKit
 
-public struct t4ContentPlugin: CottonJSPlugin {
+public protocol T4ContentDelegate: class {
+    func didReceiveVideo(_ video: T4Video)
+}
+
+public struct T4ContentPlugin: CottonJSPlugin {
     public let handler: WKScriptMessageHandler
 
     public let delegate: PluginHandlerDelegateType
@@ -21,21 +25,33 @@ public struct t4ContentPlugin: CottonJSPlugin {
     public let isMainFrameOnly: Bool = true
 
     public init?(delegate: PluginHandlerDelegateType) {
-        guard case .t4 = delegate else {
+        guard case let .t4(actualDelegate) = delegate else {
             assertionFailure("failed to create object")
             return nil
         }
         self.delegate = delegate
-        handler = T4Handler()
+        handler = T4Handler(actualDelegate)
     }
 
     public init?(anyProtocol: Any) {
-        delegate = .t4
-        handler = T4Handler()
+        guard let t4Delegate = anyProtocol as? T4ContentDelegate else {
+            return nil
+        }
+        delegate = .t4(t4Delegate)
+        handler = T4Handler(t4Delegate)
     }
 }
 
 public final class T4Handler: NSObject {
+    private weak var delegate: T4ContentDelegate?
+    public init(_ delegate: T4ContentDelegate) {
+        self.delegate = delegate
+        super.init()
+    }
+    
+    private override init() {
+        super.init()
+    }
 }
 
 fileprivate extension T4Handler {
@@ -55,13 +71,14 @@ extension T4Handler: WKScriptMessageHandler {
         for (key, value) in args {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
-                print("JS log: \(value as! String)")
+                print("JS T4 log: \(value as! String)")
             case .videos?:
                 guard let jsonObject = Data.dataFrom(value) else {
                     break
                 }
                 do {
-                    let decoded = try JSONDecoder().decode(T4VideoDictionary.self, from: jsonObject)
+                    let decoded = try JSONDecoder().decode(T4Video.self, from: jsonObject)
+                    delegate?.didReceiveVideo(decoded)
                 } catch {
                     print("failed decode videos: \(error)")
                 }

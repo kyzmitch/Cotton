@@ -16,7 +16,7 @@ import WebKit
 
 public enum PluginHandlerDelegateType {
     case instagram(InstagramContentDelegate)
-    case t4
+    case t4(T4ContentDelegate)
 }
 
 public protocol CottonJSPlugin {
