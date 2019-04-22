@@ -55,6 +55,9 @@
 		60A82C5522562D3B008210D9 /* VideoFileViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5422562D3B008210D9 /* VideoFileViewCell.swift */; };
 		60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
+		60C2C8D4226DD9D300F5D869 /* T4VideoDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D3226DD9D300F5D869 /* T4VideoDictionary.swift */; };
+		60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D5226DDA0F00F5D869 /* T4Video.swift */; };
+		60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */; };
 		60D52CEE22572F2300CB56F0 /* CollectionViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */; };
 		60D52D0B225B2E2B00CB56F0 /* DownloadFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */; };
 		60D52D21225B526B00CB56F0 /* Namespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D20225B526B00CB56F0 /* Namespace.swift */; };
@@ -183,6 +186,9 @@
 		60C12BE42267480C004FCB14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CottonToolbarView.swift; sourceTree = "<group>"; };
 		60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewController.swift; sourceTree = "<group>"; };
+		60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+CatowserExtension.swift"; sourceTree = "<group>"; };
+		60C2C8D3226DD9D300F5D869 /* T4VideoDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = T4VideoDictionary.swift; sourceTree = "<group>"; };
+		60C2C8D5226DDA0F00F5D869 /* T4Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = T4Video.swift; sourceTree = "<group>"; };
 		60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewInterface.swift; sourceTree = "<group>"; };
 		60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadFacade.swift; sourceTree = "<group>"; };
 		60D52D20225B526B00CB56F0 /* Namespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
@@ -339,6 +345,7 @@
 				8A012FA52240110000041487 /* Handlers */,
 				608DA7422238FE33009F75BD /* Scripts */,
 				608DA74C223A3BD5009F75BD /* JSPlugins.h */,
+				60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */,
 				608DA74D223A3BD5009F75BD /* Info.plist */,
 				608DA759223FBB3E009F75BD /* JSPluginFactory.swift */,
 				608DA75F223FD826009F75BD /* WebViewJSPluginsFacade.swift */,
@@ -511,6 +518,8 @@
 				8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */,
 				8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */,
 				8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */,
+				60C2C8D3226DD9D300F5D869 /* T4VideoDictionary.swift */,
+				60C2C8D5226DDA0F00F5D869 /* T4Video.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -811,12 +820,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */,
+				60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */,
 				8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */,
 				8A012FA72240111700041487 /* t4Handler.swift in Sources */,
+				60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* WebViewJSPluginsFacade.swift in Sources */,
 				8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */,
 				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
+				60C2C8D4226DD9D300F5D869 /* T4VideoDictionary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

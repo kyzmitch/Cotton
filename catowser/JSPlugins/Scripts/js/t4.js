@@ -10,13 +10,12 @@ XMLHttpRequest.prototype.send = function(body) {
 		
 		// this.responseType is empty for some reason, so it's not possible to parse 
 		// for json specifically
-		cottonLog('HttpResponse 200 OK:' + this.responseURL);
+		cottonT4Log('HttpResponse 200 OK:' + this.responseURL);
 		cottonHandleT4HttpResponseText(this.responseText);
 	});
 };
 
-function cottonHandleT4HttpResponseText(text) {
-    let json = JSON.parse(text);
+function cottonHandleT4HttpResponseText(json) {
     if(typeof json === 'undefined'){
         return;
     }
@@ -24,15 +23,31 @@ function cottonHandleT4HttpResponseText(text) {
         return;
     }
 
-    for (let i=0; i<json.length; i++) {
-        console.log('video node[' + i + '] with url: ' + nodes[i]['video_url']);
+    for (let mainKey in json) {
+        let t4video = json[mainKey];
+        let url = t4video['token'];
+        if(typeof url === 'undefined') {
+            console.log('resolution without token is ' + mainKey);
+        } else {
+            console.log('resolution is ' + mainKey + ', url: ' + url);
+        }
     }
+
+    cottonT4SendVideosToNativeApp(json);
 }
 
 function cottonT4SendVideosToNativeApp(nodes) {
     try {
-        webkit.messageHandlers.t4Handler.postMessage({"videoNodes": JSON.stringify(nodes)});
+        webkit.messageHandlers.t4Handler.postMessage({"videos": JSON.stringify(nodes)});
     } catch(err) {
         console.log('the native context does not exist yet');
     }
+}
+
+function cottonT4Log(message) {
+	try {
+		webkit.messageHandlers.igHandler.postMessage({"log": message});
+	} catch(err) {
+		console.log(message);
+	}
 }
