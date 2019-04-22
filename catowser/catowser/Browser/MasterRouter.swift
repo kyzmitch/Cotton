@@ -123,7 +123,7 @@ fileprivate extension MasterRouter {
         hiddenFilesGreedConstraint?.isActive = false
         showedFilesGreedConstraint?.isActive = true
 
-        UIView.animate(withDuration: 0.33) {
+        UIView.animate(withDuration: 0.6) {
             self.filesGreedController.view.layoutIfNeeded()
         }
         isFilesGreedShowed = true
@@ -231,11 +231,13 @@ fileprivate extension MasterRouter {
 
 extension MasterRouter: LinkTagsDelegate {
     func didSelect(type: LinksType) {
-        hideFilesGreedIfNeeded()
-
         if type == .video, let nodes = instagramVideos {
-            filesGreedController.setInstagramVideo(nodes)
-            showFilesGreedIfNeeded()
+            if isFilesGreedShowed {
+                hideFilesGreedIfNeeded()
+            } else {
+                filesGreedController.setInstagramVideo(nodes)
+                showFilesGreedIfNeeded()
+            }
         }
     }
 }

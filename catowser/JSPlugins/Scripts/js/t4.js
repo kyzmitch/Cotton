@@ -27,13 +27,12 @@ function cottonHandleT4HttpResponseText(text) {
     for (let i=0; i<json.length; i++) {
         console.log('video node[' + i + '] with url: ' + nodes[i]['video_url']);
     }
+}
 
-    function sendVideoNodesToNativeApp(nodes) {
-        
-        try {
-            webkit.messageHandlers.igHandler.postMessage({"videoNodes": JSON.stringify(nodes)});
-        } catch(err) {
-            console.log('the native context does not exist yet');
-        }
+function cottonT4SendVideosToNativeApp(nodes) {
+    try {
+        webkit.messageHandlers.t4Handler.postMessage({"videoNodes": JSON.stringify(nodes)});
+    } catch(err) {
+        console.log('the native context does not exist yet');
     }
 }

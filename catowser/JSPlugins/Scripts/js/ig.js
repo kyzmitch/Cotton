@@ -21,14 +21,15 @@ XMLHttpRequest.prototype.send = function(body) {
 		// this.responseType is empty for some reason, so it's not possible to parse 
 		// for json specifically
 		cottonLog('HttpResponse 200 OK:' + this.responseURL);
-		cottonHandleHttpResponseText(this.responseText);
+		let json = JSON.parse(this.responseText);
+		cottonHandleHttpResponseText(json);
 	});
 };
 
-function cottonHandleHttpResponseText(text) {
+function cottonHandleHttpResponseText(json) {
 
 	// 1) attempt to extract from concrete user post
-	let graphql = text['graphql'];
+	let graphql = json['graphql'];
 	if(typeof graphql !== 'undefined'){
 		let singleNode = graphql['shortcode_media'];
 		if(typeof singleNode !== 'undefined'){
@@ -37,7 +38,7 @@ function cottonHandleHttpResponseText(text) {
 		}
 	}
 
-	let feedEdges = cottonTryExtractGrapthVideoNodes(JSON.parse(text));
+	let feedEdges = cottonTryExtractGrapthVideoNodes(json);
 	if(feedEdges.length != 0){
 		cottonLog('HttpResponse: going to send nodes');
 		sendVideoNodesToNativeApp(feedEdges);
@@ -178,6 +179,7 @@ function cottonTryExtractVideoNodesFrom(node, sidecarTitle) {
 	switch (__typename) {
 		case "GraphVideo":
 			if(typeof sidecarTitle !== 'undefined'){
+				cottonLog('GraphVideo title: ' + sidecarTitle);
 				let captionEdges = new Array();
 				let captionText = {'text': sidecarTitle};
 				let captionNode = {'node': captionText};
@@ -196,9 +198,6 @@ function cottonTryExtractVideoNodesFrom(node, sidecarTitle) {
 			}
 			
 			let title = cottonFindTitleFromNode(node);
-			if(typeof title !== 'undefined'){
-				cottonLog(title);
-			}
 			return filterVideoEdges(childrenEdges, title);
 		default:
 			return filtered;
@@ -236,7 +235,7 @@ function cottonFindTitleFromNode(node) {
 }
 
 function cottonNativeAppSendSingleNode(node) {
-	console.log('video node: ' + node);
+	console.log('signle video node with url: ' + node['video_url']);
 	try {
 		webkit.messageHandlers.igHandler.postMessage({"singleVideoNode": JSON.stringify(node)});
 	} catch(err) {

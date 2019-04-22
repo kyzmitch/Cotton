@@ -2,6 +2,7 @@
 <head>
     <meta charset="utf-8">
     <title>Test Instagram json</title>
+    <script src="/js/ig.js"></script>
     <script src="/js/t4.js"></script>
 </head>
 <body>
@@ -46,7 +47,8 @@
         }
 
         function t4HttpResponseLoaded(evt){
-
+            let fileString = evt.target.result;
+            let videos = cottonHandleT4HttpResponseText(JSON.parse(fileString));
         }
 
         function errorHandler(evt) {
@@ -57,7 +59,7 @@
         <form>
             <label>Select JSON file</label><br>
             to verify HTTP response: <input type="file" accept=".json" onchange="handleHttpResponse(this)"><br>
-            to verify Shared Data: <input type="file" accept=".json" onchange="handleSharedData(this)">
+            to verify Shared Data: <input type="file" accept=".json" onchange="handleSharedData(this)"><br>
             to verify T4 Http response: <input type="file" accept=".json" onchange="handleT4HttpResponse(this)">
         </form>
     </form>
