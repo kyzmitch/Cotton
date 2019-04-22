@@ -47,6 +47,7 @@ final class MasterBrowserViewController: BaseViewController {
     /// The view needed to hold tab content like WebView or favorites table view.
     private let containerView: UIView = {
         let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .white
         return v
     }()
