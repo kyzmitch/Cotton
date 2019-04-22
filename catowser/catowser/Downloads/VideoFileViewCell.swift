@@ -30,8 +30,11 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 
     fileprivate var previewURL: URL? {
         didSet {
+            imageView.af_cancelImageRequest()
             if let url = previewURL {
                 imageView.af_setImage(withURL: url)
+            } else {
+                imageView.image = nil
             }
         }
     }
@@ -48,7 +51,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
 
     fileprivate var localDownloadedFileURL: URL?
 
-    func setupWith(previewURL: URL, downloadURL: URL) {
+    func setupWith(previewURL: URL?, downloadURL: URL) {
         self.previewURL = previewURL
         self.downloadURL = downloadURL
     }

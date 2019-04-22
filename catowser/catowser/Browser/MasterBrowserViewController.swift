@@ -92,6 +92,9 @@ final class MasterBrowserViewController: BaseViewController {
         if let igPlugin = InstagramContentPlugin(delegate: .instagram(self)) {
             array.append(igPlugin)
         }
+        if let t4Plugin = T4ContentPlugin(delegate: .t4(self)) {
+            array.append(t4Plugin)
+        }
         return array
     }()
     
@@ -447,8 +450,14 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 
 extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
-        linksRouter.openTagsFor(instagramVideo: nodes)
+        linksRouter.openTagsFor(instagram: nodes)
         reloadNavigationElements(true, downloadsAvailable: true)
+    }
+}
+
+extension MasterBrowserViewController: T4ContentDelegate {
+    func didReceiveVideo(_ video: T4Video) {
+        
     }
 }
 

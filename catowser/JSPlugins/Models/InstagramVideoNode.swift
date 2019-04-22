@@ -104,3 +104,5 @@ fileprivate struct IgEdgeMediaCaption: Decodable {
         let node: IgMediaCaptionNodeText
     }
 }
+
+extension InstagramVideoNode: Equatable {}
