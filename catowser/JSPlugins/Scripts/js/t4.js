@@ -33,12 +33,8 @@ function cottonHandleT4HttpResponseText(json) {
         }
     }
 
-    cottonT4SendVideosToNativeApp(json);
-}
-
-function cottonT4SendVideosToNativeApp(nodes) {
     try {
-        webkit.messageHandlers.t4Handler.postMessage({"videos": JSON.stringify(nodes)});
+        webkit.messageHandlers.t4Handler.postMessage({"video": JSON.stringify(json)});
     } catch(err) {
         console.log('the native context does not exist yet');
     }

@@ -74,7 +74,7 @@ final class MasterRouter: NSObject {
 
     private var isFilesGreedShowed: Bool = false
 
-    fileprivate var dataSource: TagsSiteDataSource
+    fileprivate var dataSource: TagsSiteDataSource?
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
     
@@ -116,7 +116,7 @@ extension MasterRouter: LinksRouterInterface {
     }
 
     func closeTags() {
-        dataSource = .nothing
+        dataSource = nil
         hideFilesGreedIfNeeded()
         hideLinkTagsController()
     }
@@ -238,11 +238,11 @@ fileprivate extension MasterRouter {
 
 extension MasterRouter: LinkTagsDelegate {
     func didSelect(type: LinksType) {
-        if type == .video, dataSource != .nothing {
+        if type == .video, let source = dataSource {
             if isFilesGreedShowed {
                 hideFilesGreedIfNeeded()
             } else {
-                filesGreedController.reloadWith(source: dataSource)
+                filesGreedController.reloadWith(source: source)
                 showFilesGreedIfNeeded()
             }
         }

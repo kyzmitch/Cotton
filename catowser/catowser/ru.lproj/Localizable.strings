@@ -21,9 +21,7 @@
 
 "ttl_video_share" = "Поделиться";
 
-"txt_where_save" = "Где сохранить?";
-"txt_app_sandbox" = "Файлы";
-"txt_gallery" = "Фото Галерея";
+"ttl_video_quality_selection" = "Выберите качество видео";
 
 "ttl_common_cancel" = "Отмена";
 

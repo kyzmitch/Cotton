@@ -10,7 +10,6 @@ import Foundation
 import JSPlugins
 
 enum TagsSiteDataSource {
-    case nothing
     case instagram([InstagramVideoNode])
     case t4(T4Video)
     
@@ -18,10 +17,8 @@ enum TagsSiteDataSource {
         switch self {
         case .instagram(let nodes):
             return nodes.count
-        case .t4(let video):
-            return video.variants.keys.count
-        default:
-            return 0
+        case .t4:
+            return 1
         }
     }
 }

@@ -14,6 +14,11 @@ protocol FilesGreedPresenter: class {
     func reloadWith(source: TagsSiteDataSource)
 }
 
+protocol FileDownloadViewDelegate: class {
+    func open(local url: URL, from view: UIView)
+    func didPressDownload(callback: @escaping (URL?) -> Void)
+}
+
 final class FilesGreedViewController: UICollectionViewController, CollectionViewInterface {
     static func newFromStoryboard() -> FilesGreedViewController {
         let name = String(describing: self)
@@ -22,7 +27,11 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
     private var backLayer: CAGradientLayer?
 
-    private var source: TagsSiteDataSource
+    private var source: TagsSiteDataSource? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,22 +69,24 @@ extension FilesGreedViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return source.itemsCount
+        return source?.itemsCount ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(at: indexPath, type: VideoFileViewCell.self)
-        cell.delegate = self
+        let cell = collectionView.dequeueCell(at: indexPath, type: VideoDownloadViewCell.self)
+
         switch source {
-        case .instagram(let nodes):
+        case .instagram(let nodes)?:
             let node = nodes[indexPath.item]
-            cell.setupWith(previewURL: node.thumbnailUrl, downloadURL: node.videUrl)
-        case .t4(let video):
-            let key = video.variants.keys[indexPath.item]
-            let url = video.variants.values[key]
-            cell.setupWith(previewURL: nil, downloadURL: url)
+            cell.viewModel = FileDownloadViewModel(with: node)
+            cell.previewURL = node.thumbnailUrl
+        case .t4?:
+            cell.previewURL = nil
+            // for this type we can only load preview and title
+            // download URL should be chosen e.g. by using action sheet
+            break
         default:
-            return cell
+            break
         }
         
         return cell
@@ -87,7 +98,6 @@ extension FilesGreedViewController: AnyViewController {}
 extension FilesGreedViewController: FilesGreedPresenter {
     func reloadWith(source: TagsSiteDataSource) {
         self.source = source
-        collectionView.reloadData()
     }
 }
 
@@ -98,7 +108,7 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = floor((collectionView.bounds.width - Sizes.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
-        let cellHeight = VideoFileViewCell.cellHeight(basedOn: cellWidth, traitCollection)
+        let cellHeight = VideoDownloadViewCell.cellHeight(basedOn: cellWidth, traitCollection)
         return CGSize(width: cellWidth, height: cellHeight)
     }
 
@@ -111,38 +121,38 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension FilesGreedViewController: VideoFileCellDelegate {
-    func didPressOpenFile(withLocal url: URL, from cell: VideoFileViewCell) {
+extension FilesGreedViewController: FileDownloadViewDelegate {
+    func open(local url: URL, from view: UIView) {
         let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activity.title = NSLocalizedString("ttl_video_share", comment: "Share video")
 
         if let popoverPresenter = activity.popoverPresentationController {
-            let btnBounds = cell.downloadButton.bounds
-            let btnOrigin = cell.downloadButton.frame.origin
+            let btnBounds = view.bounds
+            let btnOrigin = view.frame.origin
             let rect = CGRect(x: btnOrigin.x,
                               y: btnOrigin.y,
                               width: btnBounds.width,
                               height: btnBounds.height)
-            popoverPresenter.sourceView = cell.downloadButton
+            popoverPresenter.sourceView = view
             popoverPresenter.sourceRect = rect
         }
         present(activity, animated: true)
     }
 
-    @available(*, deprecated, message: "Usage of Photo Gallery for media files from internet probably isn't allowed")
-    func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void) {
-        let title = NSLocalizedString("txt_where_save", comment: "Text to ask where need to save the file")
+    func didPressDownload(callback: @escaping (URL?) -> Void) {
+        let title = NSLocalizedString("ttl_video_quality_selection", comment: "Text to ask about video quality")
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        let sandBoxTitle = NSLocalizedString("txt_app_sandbox", comment: "Application sandbox which is visible using Files.app")
-        let sandBox = UIAlertAction(title: sandBoxTitle, style: .default) { (_) in
-            callback(.sandboxFiles)
+        guard case let .t4(videoContainer)? = source else {
+            callback(nil)
+            return
         }
-        alert.addAction(sandBox)
-        let galleryTitle = NSLocalizedString("txt_gallery", comment: "iOS Gallery which can be checked using Photos.app")
-        let gallery = UIAlertAction(title: galleryTitle, style: .default) { (_) in
-            callback(.globalGallery)
+        for (quality, url) in videoContainer.variants {
+            let action = UIAlertAction(title: quality.rawValue, style: .default) { (_) in
+                callback(url)
+            }
+            alert.addAction(action)
         }
-        alert.addAction(gallery)
+
         let cancelTtl = NSLocalizedString("ttl_common_cancel", comment: "Button title when need dismiss alert")
         let cancel = UIAlertAction(title: cancelTtl, style: .cancel) { (_) in
             callback(nil)
@@ -150,30 +160,12 @@ extension FilesGreedViewController: VideoFileCellDelegate {
         alert.addAction(cancel)
         present(alert, animated: true)
     }
-
-    func didStartDownload(for cell: VideoFileViewCell) -> Downloadable? {
-        guard let indexPath = collectionView.indexPath(for: cell) else {
-            return nil
-        }
-
-        switch source {
-        case .instagram(let nodes):
-            let node = nodes[indexPath.item]
-            return node
-        case .t4(let video):
-            let url = video.variants.values[indexPath.item]
-            assertionFailure("Not finished impl")
-            return nil
-        default:
-            return nil
-        }
-    }
 }
 
 /// Declaring following properties here, because type and protocol are from different frameworks.
 /// So, this place is neutral.
 extension InstagramVideoNode: Downloadable {
     public var url: URL {
-        return videUrl
+        return videoUrl
     }
 }
