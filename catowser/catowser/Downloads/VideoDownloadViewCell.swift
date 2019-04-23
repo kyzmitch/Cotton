@@ -1,5 +1,5 @@
 //
-//  VideoFileViewCell.swift
+//  VideoDownloadViewCell.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 04/04/2019.
@@ -12,13 +12,7 @@ import AHDownloadButton
 import AlamofireImage
 import ReactiveSwift
 
-protocol VideoFileCellDelegate: class {
-    func didPressDownload(callback: @escaping (CoreBrowser.FileSaveLocation?) -> Void)
-    func didStartDownload(for cell: VideoFileViewCell) -> Downloadable?
-    func didPressOpenFile(withLocal url: URL, from cell: VideoFileViewCell)
-}
-
-final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
+final class VideoDownloadViewCell: UICollectionViewCell, ReusableItem {
     /// Video preview
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
@@ -28,7 +22,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     /// Container for download button which will be added programmatically
     @IBOutlet weak var buttonContainer: UIView!
 
-    fileprivate var previewURL: URL? {
+    var previewURL: URL? {
         didSet {
             imageView.af_cancelImageRequest()
             if let url = previewURL {
@@ -36,30 +30,44 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
             } else {
                 imageView.image = nil
             }
-        }
-    }
-
-    fileprivate var downloadURL: URL? {
-        didSet {
-            localDownloadedFileURL = nil
             downloadButton.state = .startDownload
             downloadButton.progress = 0
         }
     }
 
-    weak var delegate: VideoFileCellDelegate?
+    var viewModel: FileDownloadViewModel! {
+        didSet {
+            viewModel.delegate = self
 
-    fileprivate var localDownloadedFileURL: URL?
-
-    func setupWith(previewURL: URL?, downloadURL: URL) {
-        self.previewURL = previewURL
-        self.downloadURL = downloadURL
+            disposable?.dispose()
+            disposable = viewModel.stateSignal
+                .observe(on: UIScheduler())
+                .observeValues { [weak self] state in
+                    guard let self = self else { return }
+                    switch state {
+                    case .initial:
+                        self.setInitialButtonState()
+                    case .started:
+                        self.setPendingButtonState()
+                    case .in(let progress):
+                        self.downloadButton.progress = progress
+                    case .finished(_):
+                        self.downloadButton.state = .downloaded
+                    case .error(_):
+                        self.setInitialButtonState()
+                    }
+            }
+        }
     }
+
+    weak var delegate: FileDownloadViewDelegate?
+
+    private var disposable: Disposable?
 
     lazy var downloadButton: AHDownloadButton = {
         let btn = AHDownloadButton(frame: .zero)
         btn.isUserInteractionEnabled = true
-        btn.delegate = self
+        btn.delegate = viewModel
         btn.translatesAutoresizingMaskIntoConstraints = false
 
         let beforeTtl = NSLocalizedString("ttl_download_button", comment: "The title of download button")
@@ -85,10 +93,14 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
         downloadButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: 1).isActive = true
     }
 
+    deinit {
+        disposable?.dispose()
+    }
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if touch.view == downloadButton {
-                downloadButton(downloadButton, tappedWithState: downloadButton.state)
+                viewModel.downloadButton(downloadButton, tappedWithState: downloadButton.state)
                 break
             }
         }
@@ -124,37 +136,7 @@ final class VideoFileViewCell: UICollectionViewCell, ReusableItem {
     }
 }
 
-fileprivate extension VideoFileViewCell {
-    func download(_ batch: Downloadable, andSaveTo location: CoreBrowser.FileSaveLocation) {
-        downloadButton.state = .downloading
-        CoreBrowser.DownloadFacade.shared.download(file: batch, saveTo: location)
-            .observe(on: QueueScheduler.main)
-            .startWithResult { [weak self] (result) in
-            guard let self = self else {
-                return
-            }
-            switch result {
-            case .success(let value):
-                switch value {
-                case .progress(let progress):
-                    let converted = CGFloat(progress.fractionCompleted)
-                    self.downloadButton.progress = converted
-                case .complete(let localURL):
-                    self.localDownloadedFileURL = localURL
-                    self.downloadButton.state = .downloaded
-                }
-            case .failure(let error):
-                print("File download error: \(error)")
-                self.setInitialButtonState()
-            }
-        }
-    }
-    
-    func stopDownload() {
-        downloadButton.progress = 0
-        downloadButton.state = .startDownload
-    }
-
+fileprivate extension VideoDownloadViewCell {
     func setInitialButtonState() {
         downloadButton.progress = 0
         downloadButton.state = .startDownload
@@ -166,26 +148,8 @@ fileprivate extension VideoFileViewCell {
     }
 }
 
-extension VideoFileViewCell: AHDownloadButtonDelegate {
-    func downloadButton(_ downloadButton: AHDownloadButton, tappedWithState state: AHDownloadButton.State) {
-        switch state {
-        case .startDownload:
-            setPendingButtonState()
-
-            guard let batch = delegate?.didStartDownload(for: self) else {
-                return setInitialButtonState()
-            }
-            self.download(batch, andSaveTo: .sandboxFiles)
-        case .pending:
-            break
-        case .downloading:
-            stopDownload()
-        case .downloaded:
-            guard let url = localDownloadedFileURL else {
-                return
-            }
-            delegate?.didPressOpenFile(withLocal: url, from: self)
-            break
-        }
+extension VideoDownloadViewCell: FileDownloadDelegate {
+    func didPressOpenFile(withLocal url: URL) {
+        delegate?.open(local: url, from: downloadButton)
     }
 }

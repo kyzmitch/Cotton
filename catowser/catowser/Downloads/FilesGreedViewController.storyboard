@@ -12,7 +12,7 @@
         <!--Files Greed View Controller-->
         <scene sceneID="bCK-sx-jsj">
             <objects>
-                <collectionViewController storyboardIdentifier="FilesGreedViewController" id="kP1-LY-2Dc" customClass="FilesGreedViewController" customModule="catowser" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="FilesGreedViewController" id="kP1-LY-2Dc" customClass="FilesGreedViewController" customModule="Cotton" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dq7-IO-yz9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -24,8 +24,8 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VideoFileViewCell" id="NKS-pE-QzE" customClass="VideoFileViewCell" customModule="catowser" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="158" height="156"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VideoDownloadViewCell" id="NKS-pE-QzE" customClass="VideoDownloadViewCell" customModule="Cotton" customModuleProvider="target">
+                                <rect key="frame" x="108.5" y="0.0" width="158" height="156"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="158" height="156"/>
@@ -55,6 +55,53 @@
                                 <connections>
                                     <outlet property="buttonContainer" destination="RgF-9g-0ee" id="0uh-ca-nsZ"/>
                                     <outlet property="imageView" destination="7iX-xN-SGl" id="hMF-F3-78h"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NamedVideoDownloadViewCell" id="XTL-pz-K6G" customClass="NamedVideoDownloadViewCell" customModule="Cotton" customModuleProvider="target">
+                                <rect key="frame" x="2.5" y="166" width="370" height="156"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="370" height="156"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6iB-n9-J8n">
+                                            <rect key="frame" x="0.0" y="0.0" width="156" height="156"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="6iB-n9-J8n" secondAttribute="height" multiplier="1:1" id="eEU-Df-ZX3"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fI-B2-Jfk">
+                                            <rect key="frame" x="156" y="28" width="206" height="80"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cxn-8c-h4j">
+                                            <rect key="frame" x="156" y="108" width="206" height="40"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="40" id="rVW-iu-r1a"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottomMargin" secondItem="cxn-8c-h4j" secondAttribute="bottom" id="3CM-fw-13d"/>
+                                    <constraint firstItem="cxn-8c-h4j" firstAttribute="leading" secondItem="6iB-n9-J8n" secondAttribute="trailing" id="5Ym-ie-b5e"/>
+                                    <constraint firstItem="0fI-B2-Jfk" firstAttribute="leading" secondItem="6iB-n9-J8n" secondAttribute="trailing" id="7z1-wJ-uhc"/>
+                                    <constraint firstItem="6iB-n9-J8n" firstAttribute="leading" secondItem="XTL-pz-K6G" secondAttribute="leading" id="8Fj-dv-3Hc"/>
+                                    <constraint firstItem="0fI-B2-Jfk" firstAttribute="top" secondItem="XTL-pz-K6G" secondAttribute="topMargin" id="C8S-fm-eW7"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="cxn-8c-h4j" secondAttribute="trailing" id="EyM-7I-sxc"/>
+                                    <constraint firstItem="cxn-8c-h4j" firstAttribute="top" secondItem="0fI-B2-Jfk" secondAttribute="bottom" id="JLb-dh-jiD"/>
+                                    <constraint firstItem="6iB-n9-J8n" firstAttribute="top" secondItem="XTL-pz-K6G" secondAttribute="top" id="O2i-ky-D0O"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="0fI-B2-Jfk" secondAttribute="trailing" id="e2B-cP-j9r"/>
+                                    <constraint firstAttribute="bottom" secondItem="6iB-n9-J8n" secondAttribute="bottom" id="os4-2h-dm9"/>
+                                </constraints>
+                                <size key="customSize" width="370" height="156"/>
+                                <connections>
+                                    <outlet property="buttonContainer" destination="cxn-8c-h4j" id="XEm-pK-AIO"/>
+                                    <outlet property="imageView" destination="6iB-n9-J8n" id="RF9-Rh-YDX"/>
+                                    <outlet property="titleLabel" destination="0fI-B2-Jfk" id="Ebd-KM-AlG"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

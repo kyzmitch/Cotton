@@ -57,7 +57,7 @@ public final class T4Handler: NSObject {
 fileprivate extension T4Handler {
     enum MessageKey: String {
         case log = "log"
-        case videos = "videos"
+        case video = "video"
     }
 }
 
@@ -72,7 +72,7 @@ extension T4Handler: WKScriptMessageHandler {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
                 print("JS T4 log: \(value as! String)")
-            case .videos?:
+            case .video?:
                 guard let jsonObject = Data.dataFrom(value) else {
                     break
                 }

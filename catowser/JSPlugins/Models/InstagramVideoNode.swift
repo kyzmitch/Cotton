@@ -11,7 +11,7 @@ import Foundation
 /// Describes INSTAGRAM video post json object
 public struct InstagramVideoNode: Decodable {
     /// The URL which points to remote video file
-    public let videUrl: URL
+    public let videoUrl: URL
     /// The URL which points to remote image file for the video preview
     public let thumbnailUrl: URL
 
@@ -47,7 +47,7 @@ public struct InstagramVideoNode: Decodable {
 
         // Using `try` to automatically send exception, because video is mandatory key
 
-        videUrl = try container.decode(URL.self, forKey: .videUrl)
+        videoUrl = try container.decode(URL.self, forKey: .videoUrl)
 
         if  let closedBase64String = try? container.decodeIfPresent(String.self, forKey: .mediaPreview),
             let base64String = closedBase64String,
@@ -80,7 +80,7 @@ extension InstagramVideoNode {
         case thumbnailSrc = "thumbnail_src"
         case isVideo = "is_video"
         case typeName = "__typename"
-        case videUrl = "video_url"
+        case videoUrl = "video_url"
         case videoDuration = "video_duration"
         case mediaCaption = "edge_media_to_caption"
     }

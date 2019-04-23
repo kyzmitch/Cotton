@@ -16,13 +16,6 @@ public protocol Downloadable {
 }
 
 extension CoreBrowser {
-    public enum FileSaveLocation {
-        case globalGallery
-        case sandboxFiles
-    }
-}
-
-extension CoreBrowser {
     public final class DownloadFacade {
         public static let shared = DownloadFacade()
 
@@ -38,9 +31,8 @@ extension CoreBrowser.DownloadFacade {
     /// Sends download request and saves file
     ///
     /// - Parameter file: All info about remote file and info about how it should be saved
-    /// - Parameter location: Where to save the file
     /// - Returns: Signal Producer with progress
-    public func download(file: Downloadable, saveTo location: CoreBrowser.FileSaveLocation) -> DownloadWithProgressSignalProducer {
+    public func download(file: Downloadable) -> DownloadWithProgressSignalProducer {
         let producer = DownloadWithProgressSignalProducer { [weak self] (observer, _) in
             guard let `self` = self else {
                 observer.send(error: .zombyInstance)
