@@ -67,11 +67,11 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6iB-n9-J8n">
                                             <rect key="frame" x="0.0" y="0.0" width="156" height="156"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="6iB-n9-J8n" secondAttribute="height" multiplier="1:1" id="eEU-Df-ZX3"/>
+                                                <constraint firstAttribute="width" secondItem="6iB-n9-J8n" secondAttribute="height" multiplier="1:1" id="ecs-Kh-cUo"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video title" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fI-B2-Jfk">
-                                            <rect key="frame" x="156" y="28" width="206" height="80"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Video title Video " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fI-B2-Jfk">
+                                            <rect key="frame" x="166" y="0.0" width="196" height="108"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -88,9 +88,9 @@
                                 <constraints>
                                     <constraint firstAttribute="bottomMargin" secondItem="cxn-8c-h4j" secondAttribute="bottom" id="3CM-fw-13d"/>
                                     <constraint firstItem="cxn-8c-h4j" firstAttribute="leading" secondItem="6iB-n9-J8n" secondAttribute="trailing" id="5Ym-ie-b5e"/>
-                                    <constraint firstItem="0fI-B2-Jfk" firstAttribute="leading" secondItem="6iB-n9-J8n" secondAttribute="trailing" id="7z1-wJ-uhc"/>
+                                    <constraint firstItem="0fI-B2-Jfk" firstAttribute="leading" secondItem="6iB-n9-J8n" secondAttribute="trailing" constant="10" id="7z1-wJ-uhc"/>
                                     <constraint firstItem="6iB-n9-J8n" firstAttribute="leading" secondItem="XTL-pz-K6G" secondAttribute="leading" id="8Fj-dv-3Hc"/>
-                                    <constraint firstItem="0fI-B2-Jfk" firstAttribute="top" secondItem="XTL-pz-K6G" secondAttribute="topMargin" id="C8S-fm-eW7"/>
+                                    <constraint firstItem="0fI-B2-Jfk" firstAttribute="top" secondItem="XTL-pz-K6G" secondAttribute="top" id="C8S-fm-eW7"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="cxn-8c-h4j" secondAttribute="trailing" id="EyM-7I-sxc"/>
                                     <constraint firstItem="cxn-8c-h4j" firstAttribute="top" secondItem="0fI-B2-Jfk" secondAttribute="bottom" id="JLb-dh-jiD"/>
                                     <constraint firstItem="6iB-n9-J8n" firstAttribute="top" secondItem="XTL-pz-K6G" secondAttribute="top" id="O2i-ky-D0O"/>
