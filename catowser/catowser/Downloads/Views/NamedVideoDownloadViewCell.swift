@@ -11,7 +11,7 @@ import CoreBrowser
 import AHDownloadButton
 import AlamofireImage
 
-final class NamedVideoDownloadViewCell: UICollectionViewCell, ReusableItem {
+final class NamedVideoDownloadViewCell: DownloadButtonCellView, ReusableItem {
     /// Video preview
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
@@ -36,22 +36,6 @@ final class NamedVideoDownloadViewCell: UICollectionViewCell, ReusableItem {
         }
     }
 
-    weak var delegate: FileDownloadViewDelegate?
-
-    lazy var downloadButton: AHDownloadButton = {
-        let btn = AHDownloadButton(frame: .zero)
-        btn.isUserInteractionEnabled = true
-        // btn.delegate = self
-        btn.translatesAutoresizingMaskIntoConstraints = false
-
-        let beforeTtl = NSLocalizedString("ttl_download_button", comment: "The title of download button")
-        btn.startDownloadButtonTitle = beforeTtl
-        let afterTtl = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
-        btn.downloadedButtonTitle = afterTtl
-
-        return btn
-    }()
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -60,14 +44,6 @@ final class NamedVideoDownloadViewCell: UICollectionViewCell, ReusableItem {
         downloadButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor).isActive = true
         downloadButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 1).isActive = true
         downloadButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: 1).isActive = true
-    }
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            if touch.view == downloadButton {
-                break
-            }
-        }
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -93,17 +69,5 @@ final class NamedVideoDownloadViewCell: UICollectionViewCell, ReusableItem {
         }
 
         return super.hitTest(point, with: event)
-    }
-}
-
-fileprivate extension NamedVideoDownloadViewCell {
-    func setInitialButtonState() {
-        downloadButton.progress = 0
-        downloadButton.state = .startDownload
-    }
-
-    func setPendingButtonState() {
-        downloadButton.progress = 0
-        downloadButton.state = .pending
     }
 }
