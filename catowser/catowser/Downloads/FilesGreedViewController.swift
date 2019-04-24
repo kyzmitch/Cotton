@@ -29,13 +29,7 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
     fileprivate var filesDataSource: TagsSiteDataSource?
 
-    fileprivate var contentMode: CellViewsContentMode = .onlyPreview {
-        didSet {
-            if oldValue != contentMode {
-                collectionViewLayout.invalidateLayout()
-            }
-        }
-    }
+    fileprivate var contentMode: CellViewsContentMode = .onlyPreview
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +98,9 @@ extension FilesGreedViewController {
             }
         case .withText:
             let cell = collectionView.dequeueCell(at: indexPath, type: NamedVideoDownloadViewCell.self)
+            let cellWidth = cell.bounds.width
+            let imageViewWidth = cell.imageView.bounds.width
+            cell.titleLabel.preferredMaxLayoutWidth = cellWidth - imageViewWidth
             resultCell = cell
             cell.delegate = self
 
@@ -131,6 +128,10 @@ extension FilesGreedViewController: AnyViewController {}
 
 extension FilesGreedViewController: FilesGreedPresenter {
     func reloadWith(source: TagsSiteDataSource, completion: @escaping (() -> Void)) {
+        guard filesDataSource != source else {
+            completion()
+            return
+        }
         filesDataSource = source
         contentMode = .withText
         collectionView.reloadData(completion)
