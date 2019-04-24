@@ -11,7 +11,7 @@ import CoreBrowser
 import JSPlugins
 
 protocol FilesGreedPresenter: class {
-    func reloadWith(source: TagsSiteDataSource)
+    func reloadWith(source: TagsSiteDataSource, completion: @escaping (() -> Void))
 }
 
 protocol FileDownloadViewDelegate: class {
@@ -27,9 +27,13 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
     private var backLayer: CAGradientLayer?
 
-    private var source: TagsSiteDataSource? {
+    fileprivate var filesDataSource: TagsSiteDataSource?
+
+    fileprivate var contentMode: CellViewsContentMode = .onlyPreview {
         didSet {
-            collectionView.reloadData()
+            if oldValue != contentMode {
+                collectionViewLayout.invalidateLayout()
+            }
         }
     }
 
@@ -54,6 +58,11 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
         backLayer = .lightBackgroundGradientLayer(bounds: view.bounds, lightTop: false)
         collectionView.layer.insertSublayer(backLayer!, at: 0)
     }
+
+    enum CellViewsContentMode {
+        case withText
+        case onlyPreview
+    }
 }
 
 fileprivate extension FilesGreedViewController {
@@ -69,14 +78,14 @@ extension FilesGreedViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return source?.itemsCount ?? 0
+        return filesDataSource?.itemsCount ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(at: indexPath, type: VideoDownloadViewCell.self)
         cell.delegate = self
 
-        switch source {
+        switch filesDataSource {
         case .instagram(let nodes)?:
             let node = nodes[indexPath.item]
             cell.viewModel = FileDownloadViewModel(with: node)
@@ -97,8 +106,10 @@ extension FilesGreedViewController {
 extension FilesGreedViewController: AnyViewController {}
 
 extension FilesGreedViewController: FilesGreedPresenter {
-    func reloadWith(source: TagsSiteDataSource) {
-        self.source = source
+    func reloadWith(source: TagsSiteDataSource, completion: @escaping (() -> Void)) {
+        contentMode = .withText
+        filesDataSource = source
+        collectionView.reloadData(completion)
     }
 }
 
@@ -108,9 +119,18 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = floor((collectionView.bounds.width - Sizes.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
-        let cellHeight = VideoDownloadViewCell.cellHeight(basedOn: cellWidth, traitCollection)
-        return CGSize(width: cellWidth, height: cellHeight)
+        switch filesDataSource {
+        case .instagram(_)?:
+            let cellWidth = floor((collectionView.bounds.width - Sizes.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
+            let cellHeight = VideoDownloadViewCell.cellHeight(basedOn: cellWidth, traitCollection)
+            return CGSize(width: cellWidth, height: cellHeight)
+        case .t4(_)?:
+            let width = collectionView.bounds.width - Sizes.margin
+            return CGSize(width: width, height: 156.0)
+        default:
+            return CGSize.zero
+        }
+
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -143,7 +163,7 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
     func didPressDownload(callback: @escaping (URL?) -> Void) {
         let title = NSLocalizedString("ttl_video_quality_selection", comment: "Text to ask about video quality")
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        guard case let .t4(videoContainer)? = source else {
+        guard case let .t4(videoContainer)? = filesDataSource else {
             callback(nil)
             return
         }

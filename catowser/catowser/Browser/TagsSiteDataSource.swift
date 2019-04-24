@@ -23,6 +23,4 @@ enum TagsSiteDataSource {
     }
 }
 
-extension TagsSiteDataSource: Equatable {
-    
-}
+extension TagsSiteDataSource: Equatable {}

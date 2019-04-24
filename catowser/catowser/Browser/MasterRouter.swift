@@ -242,8 +242,9 @@ extension MasterRouter: LinkTagsDelegate {
             if isFilesGreedShowed {
                 hideFilesGreedIfNeeded()
             } else {
-                filesGreedController.reloadWith(source: source)
-                showFilesGreedIfNeeded()
+                filesGreedController.reloadWith(source: source) { [weak self] in
+                    self?.showFilesGreedIfNeeded()
+                }
             }
         }
     }

@@ -8,6 +8,7 @@
 
 import UIKit
 import AHDownloadButton
+import AlamofireImage
 import ReactiveSwift
 
 class DownloadButtonCellView: UICollectionViewCell {
@@ -36,9 +37,29 @@ class DownloadButtonCellView: UICollectionViewCell {
         }
     }
 
+    var previewURL: URL? {
+        didSet {
+            imageView.af_cancelImageRequest()
+            if let url = previewURL {
+                imageView.af_setImage(withURL: url)
+            } else {
+                imageView.image = nil
+            }
+            downloadButton.state = .startDownload
+            downloadButton.progress = 0
+        }
+    }
+
     weak var delegate: FileDownloadViewDelegate?
 
     private var disposable: Disposable?
+
+    /// Video preview
+    @IBOutlet weak var imageView: UIImageView! {
+        didSet {
+            imageView.backgroundColor = UIColor.white
+        }
+    }
 
     lazy var downloadButton: AHDownloadButton = {
         let btn = AHDownloadButton(frame: .zero)
