@@ -12,7 +12,7 @@ import AHDownloadButton
 import AlamofireImage
 import ReactiveSwift
 
-final class VideoDownloadViewCell: UICollectionViewCell, ReusableItem {
+final class VideoDownloadViewCell: DownloadButtonCellView, ReusableItem {
     /// Video preview
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
@@ -35,49 +35,6 @@ final class VideoDownloadViewCell: UICollectionViewCell, ReusableItem {
         }
     }
 
-    var viewModel: FileDownloadViewModel! {
-        didSet {
-            viewModel.delegate = self
-
-            disposable?.dispose()
-            disposable = viewModel.stateSignal
-                .observe(on: UIScheduler())
-                .observeValues { [weak self] state in
-                    guard let self = self else { return }
-                    switch state {
-                    case .initial:
-                        self.setInitialButtonState()
-                    case .started:
-                        self.setPendingButtonState()
-                    case .in(let progress):
-                        self.downloadButton.progress = progress
-                    case .finished(_):
-                        self.downloadButton.state = .downloaded
-                    case .error(_):
-                        self.setInitialButtonState()
-                    }
-            }
-        }
-    }
-
-    weak var delegate: FileDownloadViewDelegate?
-
-    private var disposable: Disposable?
-
-    lazy var downloadButton: AHDownloadButton = {
-        let btn = AHDownloadButton(frame: .zero)
-        btn.isUserInteractionEnabled = true
-        btn.delegate = viewModel
-        btn.translatesAutoresizingMaskIntoConstraints = false
-
-        let beforeTtl = NSLocalizedString("ttl_download_button", comment: "The title of download button")
-        btn.startDownloadButtonTitle = beforeTtl
-        let afterTtl = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
-        btn.downloadedButtonTitle = afterTtl
-
-        return btn
-    }()
-
     static func cellHeight(basedOn cellWidth: CGFloat, _ traitCollection: UITraitCollection) -> CGFloat {
 
         return cellWidth + Sizes.downloadButtonHeight
@@ -91,19 +48,6 @@ final class VideoDownloadViewCell: UICollectionViewCell, ReusableItem {
         downloadButton.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor).isActive = true
         downloadButton.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 1).isActive = true
         downloadButton.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: 1).isActive = true
-    }
-
-    deinit {
-        disposable?.dispose()
-    }
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            if touch.view == downloadButton {
-                viewModel.downloadButton(downloadButton, tappedWithState: downloadButton.state)
-                break
-            }
-        }
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -133,23 +77,5 @@ final class VideoDownloadViewCell: UICollectionViewCell, ReusableItem {
 
     private struct Sizes {
         static let downloadButtonHeight: CGFloat = 34.0
-    }
-}
-
-fileprivate extension VideoDownloadViewCell {
-    func setInitialButtonState() {
-        downloadButton.progress = 0
-        downloadButton.state = .startDownload
-    }
-
-    func setPendingButtonState() {
-        downloadButton.progress = 0
-        downloadButton.state = .pending
-    }
-}
-
-extension VideoDownloadViewCell: FileDownloadDelegate {
-    func didPressOpenFile(withLocal url: URL) {
-        delegate?.open(local: url, from: downloadButton)
     }
 }

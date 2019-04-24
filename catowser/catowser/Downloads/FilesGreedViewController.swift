@@ -74,6 +74,7 @@ extension FilesGreedViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCell(at: indexPath, type: VideoDownloadViewCell.self)
+        cell.delegate = self
 
         switch source {
         case .instagram(let nodes)?:
