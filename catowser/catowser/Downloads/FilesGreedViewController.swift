@@ -82,24 +82,48 @@ extension FilesGreedViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(at: indexPath, type: VideoDownloadViewCell.self)
-        cell.delegate = self
+        let resultCell: UICollectionViewCell
+        switch contentMode {
+        case .onlyPreview:
+            let cell = collectionView.dequeueCell(at: indexPath, type: VideoDownloadViewCell.self)
+            resultCell = cell
+            cell.delegate = self
 
-        switch filesDataSource {
-        case .instagram(let nodes)?:
-            let node = nodes[indexPath.item]
-            cell.viewModel = FileDownloadViewModel(with: node)
-            cell.previewURL = node.thumbnailUrl
-        case .t4?:
-            cell.previewURL = nil
-            // for this type we can only load preview and title
-            // download URL should be chosen e.g. by using action sheet
-            break
-        default:
-            break
+            switch filesDataSource {
+            case .instagram(let nodes)?:
+                let node = nodes[indexPath.item]
+                cell.viewModel = FileDownloadViewModel(with: node)
+                cell.previewURL = node.thumbnailUrl
+            case .t4?:
+                cell.previewURL = nil
+                // for this type we can only load preview and title
+                // download URL should be chosen e.g. by using action sheet
+                break
+            default:
+                break
+            }
+        case .withText:
+            let cell = collectionView.dequeueCell(at: indexPath, type: NamedVideoDownloadViewCell.self)
+            resultCell = cell
+            cell.delegate = self
+
+            switch filesDataSource {
+            case .instagram(let nodes)?:
+                let node = nodes[indexPath.item]
+                cell.viewModel = FileDownloadViewModel(with: node)
+                cell.titleLabel.text = node.fileName
+                cell.previewURL = node.thumbnailUrl
+            case .t4?:
+                cell.previewURL = nil
+                // for this type we can only load preview and title
+                // download URL should be chosen e.g. by using action sheet
+                break
+            default:
+                break
+            }
         }
-        
-        return cell
+
+        return resultCell
     }
 }
 
@@ -107,8 +131,8 @@ extension FilesGreedViewController: AnyViewController {}
 
 extension FilesGreedViewController: FilesGreedPresenter {
     func reloadWith(source: TagsSiteDataSource, completion: @escaping (() -> Void)) {
-        contentMode = .withText
         filesDataSource = source
+        contentMode = .withText
         collectionView.reloadData(completion)
     }
 }
@@ -119,16 +143,14 @@ extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch filesDataSource {
-        case .instagram(_)?:
+        switch contentMode {
+        case .onlyPreview:
             let cellWidth = floor((collectionView.bounds.width - Sizes.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
             let cellHeight = VideoDownloadViewCell.cellHeight(basedOn: cellWidth, traitCollection)
             return CGSize(width: cellWidth, height: cellHeight)
-        case .t4(_)?:
+        case .withText:
             let width = collectionView.bounds.width - Sizes.margin
             return CGSize(width: width, height: 156.0)
-        default:
-            return CGSize.zero
         }
 
     }
