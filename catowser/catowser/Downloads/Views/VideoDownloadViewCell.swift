@@ -8,32 +8,10 @@
 
 import UIKit
 import CoreBrowser
-import AHDownloadButton
-import AlamofireImage
-import ReactiveSwift
 
 final class VideoDownloadViewCell: DownloadButtonCellView, ReusableItem {
-    /// Video preview
-    @IBOutlet weak var imageView: UIImageView! {
-        didSet {
-            imageView.backgroundColor = UIColor.white
-        }
-    }
     /// Container for download button which will be added programmatically
     @IBOutlet weak var buttonContainer: UIView!
-
-    var previewURL: URL? {
-        didSet {
-            imageView.af_cancelImageRequest()
-            if let url = previewURL {
-                imageView.af_setImage(withURL: url)
-            } else {
-                imageView.image = nil
-            }
-            downloadButton.state = .startDownload
-            downloadButton.progress = 0
-        }
-    }
 
     static func cellHeight(basedOn cellWidth: CGFloat, _ traitCollection: UITraitCollection) -> CGFloat {
 

@@ -8,33 +8,12 @@
 
 import UIKit
 import CoreBrowser
-import AHDownloadButton
-import AlamofireImage
 
 final class NamedVideoDownloadViewCell: DownloadButtonCellView, ReusableItem {
-    /// Video preview
-    @IBOutlet weak var imageView: UIImageView! {
-        didSet {
-            imageView.backgroundColor = UIColor.white
-        }
-    }
     /// Container for download button which will be added programmatically
     @IBOutlet weak var buttonContainer: UIView!
     /// Video title view
     @IBOutlet weak var titleLabel: UILabel!
-
-    var previewURL: URL? {
-        didSet {
-            imageView.af_cancelImageRequest()
-            if let url = previewURL {
-                imageView.af_setImage(withURL: url)
-            } else {
-                imageView.image = nil
-            }
-            downloadButton.state = .startDownload
-            downloadButton.progress = 0
-        }
-    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
