@@ -52,7 +52,6 @@
 		60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGreedViewController.swift */; };
 		60A82C5122549604008210D9 /* CAGradientLayer+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */; };
 		60A82C532254E1F7008210D9 /* MasterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C522254E1F7008210D9 /* MasterRouter.swift */; };
-		60A82C5522562D3B008210D9 /* VideoDownloadViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5422562D3B008210D9 /* VideoDownloadViewCell.swift */; };
 		60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
 		60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D5226DDA0F00F5D869 /* T4Video.swift */; };
@@ -185,7 +184,6 @@
 		60A82C4E22549453008210D9 /* FilesGreedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedViewController.swift; sourceTree = "<group>"; };
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60A82C522254E1F7008210D9 /* MasterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterRouter.swift; sourceTree = "<group>"; };
-		60A82C5422562D3B008210D9 /* VideoDownloadViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadViewCell.swift; sourceTree = "<group>"; };
 		60C12BE2226746EC004FCB14 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE42267480C004FCB14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CottonToolbarView.swift; sourceTree = "<group>"; };
@@ -384,7 +382,6 @@
 			isa = PBXGroup;
 			children = (
 				60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */,
-				60A82C5422562D3B008210D9 /* VideoDownloadViewCell.swift */,
 				60C2C8E9226F1F8C00F5D869 /* NamedVideoDownloadViewCell.swift */,
 			);
 			path = Views;
@@ -916,7 +913,6 @@
 				C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */,
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
 				841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */,
-				60A82C5522562D3B008210D9 /* VideoDownloadViewCell.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,

@@ -11,7 +11,7 @@ import AHDownloadButton
 import AlamofireImage
 import ReactiveSwift
 
-class DownloadButtonCellView: UICollectionViewCell {
+class DownloadButtonCellView: UITableViewCell {
     var viewModel: FileDownloadViewModel! {
         didSet {
             viewModel.delegate = self
@@ -101,6 +101,6 @@ class DownloadButtonCellView: UICollectionViewCell {
 
 extension DownloadButtonCellView: FileDownloadDelegate {
     func didPressOpenFile(withLocal url: URL) {
-        delegate?.open(local: url, from: downloadButton)
+        delegate?.didRequestOpen(local: url, from: downloadButton)
     }
 }
