@@ -260,7 +260,7 @@ extension MasterRouter: LinkTagsDelegate {
                     }
                 } else {
                     filesGreedController.viewController.modalPresentationStyle = .popover
-                    filesGreedController.viewController.preferredContentSize = CGSize(width: 400, height: 600)
+                    filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
                     if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
                         popoverPresenter.permittedArrowDirections = .down
                         popoverPresenter.sourceView = linkTagsController.view
