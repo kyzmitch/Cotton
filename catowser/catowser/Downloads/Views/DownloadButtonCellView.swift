@@ -22,9 +22,24 @@ final class DownloadButtonCellView: UITableViewCell {
     @IBOutlet weak var progressView: UIProgressView!
 
     /// Button to initiate download
-    @IBOutlet weak var downloadButton: UIButton!
+    @IBOutlet weak var downloadButton: UIButton! {
+        didSet {
+            downloadButton.addTarget(self, action: .downloadPressed, for: .touchUpInside)
+        }
+    }
     /// Video title view
     @IBOutlet weak var titleLabel: UILabel!
+
+    var buttonState: DownloadButtonState = .canDownload {
+        didSet {
+            switch buttonState {
+            case .canDownload:
+                <#code#>
+            default:
+                <#code#>
+            }
+        }
+    }
 
     var viewModel: FileDownloadViewModel! {
         didSet {
@@ -41,12 +56,9 @@ final class DownloadButtonCellView: UITableViewCell {
                     case .started:
                         self.setPendingButtonState()
                     case .in(let progress):
-                        // self.downloadButton.progress = progress
                         self.progressView.progress = Float(progress)
-                        break
                     case .finished(_):
-                        // self.downloadButton.state = .downloaded
-                        break
+                        self.buttonState = .downloaded
                     case .error(_):
                         self.setInitialButtonState()
                     }
@@ -62,8 +74,8 @@ final class DownloadButtonCellView: UITableViewCell {
             } else {
                 previewImageView.image = nil
             }
-            // downloadButton.state = .startDownload
             progressView.progress = 0
+            buttonState = .canDownload
         }
     }
 
@@ -71,27 +83,24 @@ final class DownloadButtonCellView: UITableViewCell {
 
     private var disposable: Disposable?
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            if touch.view == downloadButton {
-                //viewModel.downloadButton(downloadButton, tappedWithState: downloadButton.state)
-                break
-            }
-        }
-    }
-
     deinit {
         disposable?.dispose()
     }
 
     func setInitialButtonState() {
         progressView.progress = 0
-        //downloadButton.state = .startDownload
+        buttonState = .canDownload
     }
 
     func setPendingButtonState() {
         progressView.progress = 0
         //downloadButton.state = .pending
+    }
+
+    enum DownloadButtonState {
+        case canDownload
+        case downloading
+        case downloaded
     }
 }
 
@@ -101,4 +110,15 @@ extension DownloadButtonCellView: FileDownloadDelegate {
     func didPressOpenFile(withLocal url: URL) {
         delegate?.didRequestOpen(local: url, from: downloadButton)
     }
+}
+
+private extension DownloadButtonCellView {
+    @objc func downloadButtonPressed() {
+        buttonState = .downloading
+        viewModel.download()
+    }
+}
+
+fileprivate extension Selector {
+    static let downloadPressed = #selector(DownloadButtonCellView.downloadButtonPressed)
 }
