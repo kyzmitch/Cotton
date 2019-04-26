@@ -10,7 +10,11 @@ import UIKit
 import CoreBrowser
 
 final class LinksBadgeView: UICollectionViewCell, ReusableItem {
-    @IBOutlet weak var tagTypeLabel: UILabel!
+    @IBOutlet weak var tagTypeLabel: UILabel! {
+        didSet{
+            tagTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
 
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)

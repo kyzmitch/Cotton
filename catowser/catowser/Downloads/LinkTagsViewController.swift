@@ -70,7 +70,8 @@ final class LinkTagsViewController: UICollectionViewController {
 
         flowLayout.sectionInset = zeroInset
         let estimatedSize = CGSize(width: 128, height: .linkTagsHeight)
-        flowLayout.estimatedItemSize = estimatedSize /* UICollectionViewFlowLayout.automaticSize */
+        flowLayout.estimatedItemSize = estimatedSize
+        /* UICollectionViewFlowLayout.automaticSize */
         flowLayout.invalidateLayout()
     }
     
