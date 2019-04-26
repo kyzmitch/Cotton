@@ -49,6 +49,7 @@ final class FilesGreedViewController: UITableViewController, CollectionViewInter
 fileprivate extension FilesGreedViewController {
     struct Sizes {
         static let margin = CGFloat(8)
+        static let imageMargin = CGFloat(14)
         static let rowHeight = CGFloat(120)
     }
 }
@@ -66,7 +67,7 @@ extension FilesGreedViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(for: indexPath, type: DownloadButtonCellView.self)
 
-        let tableW = tableView.bounds.width - Sizes.margin * 2
+        let tableW = tableView.bounds.width - Sizes.margin * 2 - Sizes.imageMargin * 2
 
         let desiredLabelW = tableW - cell.previewImageView.center.x - cell.previewImageView.bounds.width / 2 - cell.downloadButton.bounds.width
         cell.titleLabel.preferredMaxLayoutWidth = desiredLabelW
