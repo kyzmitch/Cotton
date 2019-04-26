@@ -9,16 +9,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller-->
+        <!--Files Greed View Controller-->
         <scene sceneID="xOr-7v-NLu">
             <objects>
-                <tableViewController id="m11-of-Aed" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FilesGreedViewController" id="m11-of-Aed" customClass="FilesGreedViewController" customModule="Cotton" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="c55-KK-nBH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="120" id="VSC-5J-5AS">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DownloadButtonCellView" rowHeight="120" id="VSC-5J-5AS" customClass="DownloadButtonCellView" customModule="Cotton" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VSC-5J-5AS" id="iOc-gT-BJ6">
@@ -38,19 +38,19 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bFv-a4-ji9">
-                                            <rect key="frame" x="132" y="11.000000000000007" width="127" height="108.66666666666669"/>
+                                            <rect key="frame" x="132" y="11.000000000000007" width="141" height="108.66666666666669"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Hn8-99-anj">
-                                            <rect key="frame" x="0.0" y="117.66666666666667" width="359" height="2"/>
+                                            <rect key="frame" x="8" y="117.66666666666667" width="359" height="2"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="2" id="5ne-Wc-ue0"/>
                                             </constraints>
                                         </progressView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RP9-im-XUL">
-                                            <rect key="frame" x="259" y="45" width="94" height="30"/>
+                                            <rect key="frame" x="273" y="45" width="94" height="30"/>
                                             <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="94" id="oSV-tp-STj"/>
@@ -65,21 +65,27 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="RP9-im-XUL" secondAttribute="trailing" constant="6" id="IKS-T2-uTj"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="RP9-im-XUL" secondAttribute="trailingMargin" id="IKS-T2-uTj"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="3YA-QW-VQL" secondAttribute="bottomMargin" id="Rjp-Cy-Ybg"/>
                                         <constraint firstItem="3YA-QW-VQL" firstAttribute="topMargin" secondItem="iOc-gT-BJ6" secondAttribute="topMargin" id="S9e-g2-gmd"/>
                                         <constraint firstItem="bFv-a4-ji9" firstAttribute="leading" secondItem="3YA-QW-VQL" secondAttribute="trailing" constant="10" id="TwN-xI-unM"/>
                                         <constraint firstItem="Hn8-99-anj" firstAttribute="bottom" secondItem="iOc-gT-BJ6" secondAttribute="bottom" id="UeF-t9-tgj"/>
                                         <constraint firstItem="RP9-im-XUL" firstAttribute="leading" secondItem="bFv-a4-ji9" secondAttribute="trailing" id="Zze-tv-jtD"/>
                                         <constraint firstItem="RP9-im-XUL" firstAttribute="centerY" secondItem="iOc-gT-BJ6" secondAttribute="centerY" id="bCf-ft-q7y"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Hn8-99-anj" secondAttribute="trailing" id="d6a-1Z-r05"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Hn8-99-anj" secondAttribute="trailingMargin" id="d6a-1Z-r05"/>
                                         <constraint firstItem="bFv-a4-ji9" firstAttribute="top" secondItem="iOc-gT-BJ6" secondAttribute="topMargin" id="eje-ch-LVf"/>
-                                        <constraint firstItem="Hn8-99-anj" firstAttribute="leading" secondItem="iOc-gT-BJ6" secondAttribute="leading" id="heC-yF-0cQ"/>
+                                        <constraint firstItem="Hn8-99-anj" firstAttribute="leadingMargin" secondItem="iOc-gT-BJ6" secondAttribute="leadingMargin" id="heC-yF-0cQ"/>
                                         <constraint firstItem="bFv-a4-ji9" firstAttribute="bottom" secondItem="Hn8-99-anj" secondAttribute="bottom" id="hzQ-9W-Wvm"/>
                                         <constraint firstItem="3YA-QW-VQL" firstAttribute="leadingMargin" secondItem="iOc-gT-BJ6" secondAttribute="leadingMargin" id="onE-2y-QGU"/>
                                     </constraints>
                                     <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="downloadButton" destination="RP9-im-XUL" id="ljr-Zt-DLW"/>
+                                    <outlet property="previewImageView" destination="3YA-QW-VQL" id="iA0-Hh-SQX"/>
+                                    <outlet property="progressView" destination="Hn8-99-anj" id="NSk-9b-daF"/>
+                                    <outlet property="titleLabel" destination="bFv-a4-ji9" id="QHm-kp-X7j"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

@@ -105,7 +105,7 @@ final class MasterBrowserViewController: BaseViewController {
         // In that method, create your view hierarchy programmatically and assign
         // the root view of that hierarchy to the view controller’s view property.
         
-        if UIDevice.current.userInterfaceIdiom == .pad {
+        if isPad {
             add(asChildViewController: tabsViewController, to:view)
         }
 
@@ -114,23 +114,22 @@ final class MasterBrowserViewController: BaseViewController {
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
         view.addSubview(containerView)
 
-        add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
+        if !isPad {
+            add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
+        }
 
-        switch UIDevice.current.userInterfaceIdiom {
-        case .phone:
-            // should be added before iPhone toolbar
-            add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
-            add(asChildViewController: toolbarViewController, to:view)
-            // Need to not add it if it is not iPhone without home button
-            view.addSubview(underToolbarView)
-        case .pad:
+        if isPad {
             // no need to add files greed as a child
             // will try to show as popover
 
             view.addSubview(underLinkTagsView)
             add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
-        default:
-            break
+        } else {
+            // should be added before iPhone toolbar
+            add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
+            add(asChildViewController: toolbarViewController, to:view)
+            // Need to not add it if it is not iPhone without home button
+            view.addSubview(underToolbarView)
         }
     }
     
@@ -232,15 +231,18 @@ final class MasterBrowserViewController: BaseViewController {
         linksRouter.linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         linksRouter.linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
     linksRouter.linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
-        linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        // temporarily use 0 height because actual height of free space is unknown at the moment
-        let greedHeight: CGFloat = 0
-        linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
-        linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
-        linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
-        linksRouter.hiddenFilesGreedConstraint?.isActive = true
-        linksRouter.filesGreedHeightConstraint?.isActive = true
+
+        if !isPad {
+            linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+            linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+            // temporarily use 0 height because actual height of free space is unknown at the moment
+            let greedHeight: CGFloat = 0
+            linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
+            linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: 0)
+            linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
+            linksRouter.hiddenFilesGreedConstraint?.isActive = true
+            linksRouter.filesGreedHeightConstraint?.isActive = true
+        }
 
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
@@ -271,18 +273,20 @@ final class MasterBrowserViewController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        let freeHeight: CGFloat
-        let allHeight = containerView.bounds.height
-        if isPad {
-            freeHeight = (allHeight - .linkTagsHeight) / 2
-        } else {
-            freeHeight = allHeight - .linkTagsHeight
+        if !isPad {
+            let freeHeight: CGFloat
+            let allHeight = containerView.bounds.height
+            if isPad {
+                freeHeight = (allHeight - .linkTagsHeight) / 2
+            } else {
+                freeHeight = allHeight - .linkTagsHeight
+            }
+            
+            linksRouter.filesGreedHeightConstraint?.constant = freeHeight
+            linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
+            linksRouter.filesGreedController.view.setNeedsLayout()
+            linksRouter.filesGreedController.view.layoutIfNeeded()
         }
-
-        linksRouter.filesGreedHeightConstraint?.constant = freeHeight
-        linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
-        linksRouter.filesGreedController.view.setNeedsLayout()
-        linksRouter.filesGreedController.view.layoutIfNeeded()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -393,6 +397,10 @@ private extension MasterBrowserViewController {
 extension MasterBrowserViewController: AnyViewController {}
 
 extension MasterBrowserViewController: MasterDelegate {
+    var popoverSourceView: UIView {
+        return containerView
+    }
+
     var keyboardHeight: CGFloat? {
         get {
             return _keyboardHeight

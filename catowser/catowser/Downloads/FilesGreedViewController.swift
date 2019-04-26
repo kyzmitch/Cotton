@@ -11,7 +11,7 @@ import CoreBrowser
 import JSPlugins
 
 protocol FilesGreedPresenter: class {
-    func reloadWith(source: TagsSiteDataSource, completion: @escaping (() -> Void))
+    func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
 }
 
 protocol FileDownloadViewDelegate: class {
@@ -19,7 +19,7 @@ protocol FileDownloadViewDelegate: class {
     func didPressDownload(callback: @escaping (URL?) -> Void)
 }
 
-final class FilesGreedViewController: UICollectionViewController, CollectionViewInterface {
+final class FilesGreedViewController: UITableViewController, CollectionViewInterface {
     static func newFromStoryboard() -> FilesGreedViewController {
         let name = String(describing: self)
         return FilesGreedViewController.instantiateFromStoryboard(name, identifier: name)
@@ -33,14 +33,8 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
         super.viewDidLoad()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
-            assertionFailure("collection layout isn't flow")
-            return
-        }
-
-        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        flowLayout.invalidateLayout()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = Sizes.rowHeight
     }
 
     override func viewDidLayoutSubviews() {
@@ -48,34 +42,35 @@ final class FilesGreedViewController: UICollectionViewController, CollectionView
 
         backLayer?.removeFromSuperlayer()
         backLayer = .lightBackgroundGradientLayer(bounds: view.bounds, lightTop: false)
-        collectionView.layer.insertSublayer(backLayer!, at: 0)
+        tableView.layer.insertSublayer(backLayer!, at: 0)
     }
 }
 
 fileprivate extension FilesGreedViewController {
     struct Sizes {
-        static let margin = CGFloat(10)
+        static let margin = CGFloat(8)
+        static let rowHeight = CGFloat(120)
     }
 }
 
-// MARK: UICollectionViewDataSource
+// MARK: UITableViewDataSource
 extension FilesGreedViewController {
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filesDataSource?.itemsCount ?? 0
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let resultCell: UICollectionViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueCell(for: indexPath, type: DownloadButtonCellView.self)
 
-        let cell = collectionView.dequeueCell(at: indexPath, type: NamedVideoDownloadViewCell.self)
-        let cellWidth = cell.bounds.width
-        let imageViewWidth = cell.imageView.bounds.width
-        cell.titleLabel.preferredMaxLayoutWidth = cellWidth - imageViewWidth
-        resultCell = cell
+        let tableW = tableView.bounds.width - Sizes.margin * 2
+
+        let desiredLabelW = tableW - cell.previewImageView.center.x - cell.previewImageView.bounds.width / 2 - cell.downloadButton.bounds.width
+        cell.titleLabel.preferredMaxLayoutWidth = desiredLabelW
+
         cell.delegate = self
 
         switch filesDataSource {
@@ -93,43 +88,31 @@ extension FilesGreedViewController {
             break
         }
 
-        return resultCell
+        return cell
     }
 }
 
 extension FilesGreedViewController: AnyViewController {}
 
+// MARK: Files Greed Presenter
 extension FilesGreedViewController: FilesGreedPresenter {
-    func reloadWith(source: TagsSiteDataSource, completion: @escaping (() -> Void)) {
+    func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)? = nil) {
         guard filesDataSource != source else {
-            completion()
+            completion?()
             return
         }
+
         filesDataSource = source
-        collectionView.reloadData(completion)
+
+        if let afterReloadClosure = completion {
+            tableView.reloadData(afterReloadClosure)
+        } else {
+            tableView.reloadData()
+        }
     }
 }
 
-extension FilesGreedViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return Sizes.margin
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        let width = collectionView.bounds.width - Sizes.margin
-        return CGSize(width: width, height: 156.0)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(equalInset: Sizes.margin)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return Sizes.margin
-    }
-}
-
+// MARK: File Download View Delegate
 extension FilesGreedViewController: FileDownloadViewDelegate {
     func didRequestOpen(local url: URL, from view: UIView) {
         let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
