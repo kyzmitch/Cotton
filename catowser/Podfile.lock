@@ -1,5 +1,4 @@
 PODS:
-  - AHDownloadButton (1.1.0)
   - Alamofire (4.8.1)
   - AlamofireImage (3.5.0):
     - Alamofire (~> 4.8)
@@ -10,7 +9,6 @@ PODS:
   - SwiftLint (0.29.4)
 
 DEPENDENCIES:
-  - AHDownloadButton
   - Alamofire (~> 4.8)
   - AlamofireImage (~> 3.5)
   - ReactiveSwift (~> 3.0)
@@ -19,7 +17,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AHDownloadButton
     - Alamofire
     - AlamofireImage
     - ReactiveSwift
@@ -28,7 +25,6 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  AHDownloadButton: fd053efc7b15c4c35d2704c9a5336930f01abe1e
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   AlamofireImage: 1aea346f4dda2f6c67622fa5a89fcbb80d79cc16
   ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
@@ -36,6 +32,6 @@ SPEC CHECKSUMS:
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftLint: 73f2ecfd0f6d812c8cb9a73c00fe809bc2504585
 
-PODFILE CHECKSUM: 052a0c328c030637f2d125f82db181b0cefebc43
+PODFILE CHECKSUM: a56bceedbe98feb6a2db0b99c2ea130baf62a647
 
 COCOAPODS: 1.6.1

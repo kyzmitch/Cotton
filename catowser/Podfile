@@ -10,7 +10,6 @@ target 'catowser' do
   pod 'Alamofire', '~> 4.8'
   pod 'ReactiveSwift', '~> 3.0'
   pod 'SwiftLint'
-  pod 'AHDownloadButton'
   pod 'AlamofireImage', '~> 3.5'
 end
 

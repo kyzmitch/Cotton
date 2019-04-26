@@ -379,6 +379,7 @@
 		60C2C8EF227073B400F5D869 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				841022BC224785340021516F /* LinksBadgeView.swift */,
 				60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */,
 			);
 			path = Views;
@@ -406,7 +407,6 @@
 			children = (
 				60C2C8EF227073B400F5D869 /* Views */,
 				841022B8224781A20021516F /* LinkTagsViewController.swift */,
-				841022BC224785340021516F /* LinksBadgeView.swift */,
 				841022C0224788F80021516F /* LinkTagsViewController.storyboard */,
 				60A82C4E22549453008210D9 /* FilesGreedViewController.swift */,
 				60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */,
@@ -805,7 +805,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-catowser/Pods-catowser-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AHDownloadButton/AHDownloadButton.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
@@ -814,7 +813,6 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AHDownloadButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",

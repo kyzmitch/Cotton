@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AHDownloadButton
 import ReactiveSwift
 import Result
 import CoreBrowser
@@ -31,7 +30,7 @@ final class FileDownloadViewModel {
         self.batch = batch
     }
 
-    fileprivate func download(_ batch: Downloadable) {
+    func download() {
         CoreBrowser.DownloadFacade.shared.download(file: batch)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
@@ -63,7 +62,7 @@ final class FileDownloadViewModel {
     }
 }
 
-extension FileDownloadViewModel: AHDownloadButtonDelegate {
+extension FileDownloadViewModel {
     func downloadButton(_ downloadButton: AHDownloadButton, tappedWithState state: AHDownloadButton.State) {
         switch state {
         case .startDownload:
