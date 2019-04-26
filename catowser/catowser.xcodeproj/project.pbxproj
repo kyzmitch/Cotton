@@ -56,7 +56,6 @@
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
 		60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D5226DDA0F00F5D869 /* T4Video.swift */; };
 		60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */; };
-		60C2C8EA226F1F8C00F5D869 /* NamedVideoDownloadViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8E9226F1F8C00F5D869 /* NamedVideoDownloadViewCell.swift */; };
 		60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */; };
 		60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */; };
 		60C2C8F12270886A00F5D869 /* ReloadWithCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */; };
@@ -190,7 +189,6 @@
 		60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewController.swift; sourceTree = "<group>"; };
 		60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60C2C8D5226DDA0F00F5D869 /* T4Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = T4Video.swift; sourceTree = "<group>"; };
-		60C2C8E9226F1F8C00F5D869 /* NamedVideoDownloadViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedVideoDownloadViewCell.swift; sourceTree = "<group>"; };
 		60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadViewModel.swift; sourceTree = "<group>"; };
 		60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButtonCellView.swift; sourceTree = "<group>"; };
 		60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadWithCompletion.swift; sourceTree = "<group>"; };
@@ -382,7 +380,6 @@
 			isa = PBXGroup;
 			children = (
 				60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */,
-				60C2C8E9226F1F8C00F5D869 /* NamedVideoDownloadViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -901,7 +898,6 @@
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
-				60C2C8EA226F1F8C00F5D869 /* NamedVideoDownloadViewCell.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,

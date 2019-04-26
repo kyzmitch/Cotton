@@ -7,11 +7,25 @@
 //
 
 import UIKit
-import AHDownloadButton
 import AlamofireImage
 import ReactiveSwift
+import CoreBrowser
 
-class DownloadButtonCellView: UITableViewCell {
+final class DownloadButtonCellView: UITableViewCell {
+    /// Video preview
+    @IBOutlet weak var previewImageView: UIImageView! {
+        didSet {
+            previewImageView.backgroundColor = .white
+        }
+    }
+
+    @IBOutlet weak var progressView: UIProgressView!
+
+    /// Button to initiate download
+    @IBOutlet weak var downloadButton: UIButton!
+    /// Video title view
+    @IBOutlet weak var titleLabel: UILabel!
+
     var viewModel: FileDownloadViewModel! {
         didSet {
             viewModel.delegate = self
@@ -27,9 +41,12 @@ class DownloadButtonCellView: UITableViewCell {
                     case .started:
                         self.setPendingButtonState()
                     case .in(let progress):
-                        self.downloadButton.progress = progress
+                        // self.downloadButton.progress = progress
+                        self.progressView.progress = Float(progress)
+                        break
                     case .finished(_):
-                        self.downloadButton.state = .downloaded
+                        // self.downloadButton.state = .downloaded
+                        break
                     case .error(_):
                         self.setInitialButtonState()
                     }
@@ -39,14 +56,14 @@ class DownloadButtonCellView: UITableViewCell {
 
     var previewURL: URL? {
         didSet {
-            imageView.af_cancelImageRequest()
+            previewImageView.af_cancelImageRequest()
             if let url = previewURL {
-                imageView.af_setImage(withURL: url)
+                previewImageView.af_setImage(withURL: url)
             } else {
-                imageView.image = nil
+                previewImageView.image = nil
             }
-            downloadButton.state = .startDownload
-            downloadButton.progress = 0
+            // downloadButton.state = .startDownload
+            progressView.progress = 0
         }
     }
 
@@ -54,31 +71,10 @@ class DownloadButtonCellView: UITableViewCell {
 
     private var disposable: Disposable?
 
-    /// Video preview
-    @IBOutlet weak var imageView: UIImageView! {
-        didSet {
-            imageView.backgroundColor = UIColor.white
-        }
-    }
-
-    lazy var downloadButton: AHDownloadButton = {
-        let btn = AHDownloadButton(frame: .zero)
-        btn.isUserInteractionEnabled = true
-        btn.delegate = viewModel
-        btn.translatesAutoresizingMaskIntoConstraints = false
-
-        let beforeTtl = NSLocalizedString("ttl_download_button", comment: "The title of download button")
-        btn.startDownloadButtonTitle = beforeTtl
-        let afterTtl = NSLocalizedString("ttl_downloaded_button", comment: "The title when download is complete")
-        btn.downloadedButtonTitle = afterTtl
-
-        return btn
-    }()
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if touch.view == downloadButton {
-                viewModel.downloadButton(downloadButton, tappedWithState: downloadButton.state)
+                //viewModel.downloadButton(downloadButton, tappedWithState: downloadButton.state)
                 break
             }
         }
@@ -89,15 +85,17 @@ class DownloadButtonCellView: UITableViewCell {
     }
 
     func setInitialButtonState() {
-        downloadButton.progress = 0
-        downloadButton.state = .startDownload
+        progressView.progress = 0
+        //downloadButton.state = .startDownload
     }
 
     func setPendingButtonState() {
-        downloadButton.progress = 0
-        downloadButton.state = .pending
+        progressView.progress = 0
+        //downloadButton.state = .pending
     }
 }
+
+extension DownloadButtonCellView: ReusableItem {}
 
 extension DownloadButtonCellView: FileDownloadDelegate {
     func didPressOpenFile(withLocal url: URL) {

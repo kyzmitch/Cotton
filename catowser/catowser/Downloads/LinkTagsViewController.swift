@@ -103,6 +103,8 @@ fileprivate extension LinksBadgeView {
     func set(_ linksCount: Int, tagName: String) {
         let source = "\(linksCount) \(tagName)"
         tagTypeLabel.text = source
+        self.tagTypeLabel.layer.borderWidth = 2
+        self.tagTypeLabel.layer.borderColor = #colorLiteral(red: 0.9620149732, green: 0.9620149732, blue: 0.9620149732, alpha: 1)
     }
 }
 

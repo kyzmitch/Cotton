@@ -15,6 +15,7 @@ protocol MasterDelegate: class {
     var keyboardHeight: CGFloat? { get set }
     var toolbarHeight: CGFloat { get }
     var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
+    var popoverSourceView: UIView { get }
 
     func openSearchSuggestion(url: URL, suggestion: String)
     func openDomain(with url: URL)
@@ -127,12 +128,18 @@ fileprivate extension MasterRouter {
         guard !isFilesGreedShowed else {
             return
         }
-        hiddenFilesGreedConstraint?.isActive = false
-        showedFilesGreedConstraint?.isActive = true
 
-        UIView.animate(withDuration: 0.6) {
-            self.filesGreedController.view.layoutIfNeeded()
+        if !isPad {
+            hiddenFilesGreedConstraint?.isActive = false
+            showedFilesGreedConstraint?.isActive = true
+
+            UIView.animate(withDuration: 0.6) {
+                self.filesGreedController.view.layoutIfNeeded()
+            }
+        } else {
+
         }
+
         isFilesGreedShowed = true
     }
 
@@ -192,10 +199,15 @@ fileprivate extension MasterRouter {
             return
         }
 
-        showedFilesGreedConstraint?.isActive = false
-        hiddenFilesGreedConstraint?.isActive = true
+        if !isPad {
+            showedFilesGreedConstraint?.isActive = false
+            hiddenFilesGreedConstraint?.isActive = true
 
-        filesGreedController.view.layoutIfNeeded()
+            filesGreedController.view.layoutIfNeeded()
+        } else {
+            filesGreedController.viewController.dismiss(animated: true, completion: nil)
+        }
+
         isFilesGreedShowed = false
     }
 
@@ -242,8 +254,19 @@ extension MasterRouter: LinkTagsDelegate {
             if isFilesGreedShowed {
                 hideFilesGreedIfNeeded()
             } else {
-                filesGreedController.reloadWith(source: source) { [weak self] in
-                    self?.showFilesGreedIfNeeded()
+                if !isPad {
+                    filesGreedController.reloadWith(source: source) { [weak self] in
+                        self?.showFilesGreedIfNeeded()
+                    }
+                } else {
+                    filesGreedController.viewController.modalPresentationStyle = .popover
+                    filesGreedController.viewController.preferredContentSize = CGSize(width: 400, height: 600)
+                    if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
+                        popoverPresenter.permittedArrowDirections = .down
+                        popoverPresenter.sourceView = linkTagsController.view
+                    }
+                    filesGreedController.reloadWith(source: source, completion: nil)
+                    presenter.viewController.present(filesGreedController.viewController, animated: true, completion: nil)
                 }
             }
         }
