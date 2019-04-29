@@ -59,6 +59,7 @@
 		60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */; };
 		60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */; };
 		60C2C8F12270886A00F5D869 /* ReloadWithCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */; };
+		60C2C8F722772FEF00F5D869 /* VideoFileNameble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8F622772FEF00F5D869 /* VideoFileNameble.swift */; };
 		60D52CEE22572F2300CB56F0 /* CollectionViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */; };
 		60D52D0B225B2E2B00CB56F0 /* DownloadFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */; };
 		60D52D21225B526B00CB56F0 /* Namespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D20225B526B00CB56F0 /* Namespace.swift */; };
@@ -192,6 +193,7 @@
 		60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadViewModel.swift; sourceTree = "<group>"; };
 		60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadButtonCellView.swift; sourceTree = "<group>"; };
 		60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReloadWithCompletion.swift; sourceTree = "<group>"; };
+		60C2C8F622772FEF00F5D869 /* VideoFileNameble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoFileNameble.swift; sourceTree = "<group>"; };
 		60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewInterface.swift; sourceTree = "<group>"; };
 		60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadFacade.swift; sourceTree = "<group>"; };
 		60D52D20225B526B00CB56F0 /* Namespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 				8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */,
 				8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */,
 				60C2C8D5226DDA0F00F5D869 /* T4Video.swift */,
+				60C2C8F622772FEF00F5D869 /* VideoFileNameble.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -839,6 +842,7 @@
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* WebViewJSPluginsFacade.swift in Sources */,
 				8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */,
+				60C2C8F722772FEF00F5D869 /* VideoFileNameble.swift in Sources */,
 				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

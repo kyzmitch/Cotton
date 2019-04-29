@@ -47,12 +47,16 @@ final class DownloadButtonCellView: UITableViewCell {
         }
     }
 
-    var viewModel: FileDownloadViewModel! {
+    var viewModel: FileDownloadViewModel? {
         didSet {
-            viewModel.delegate = self
+            guard let vm = viewModel else {
+                assertionFailure("Attempt to use view model when it is nil")
+                return
+            }
+            vm.delegate = self
 
             disposable?.dispose()
-            disposable = viewModel.stateSignal
+            disposable = vm.stateSignal
                 .observe(on: UIScheduler())
                 .observeValues { [weak self] state in
                     guard let self = self else { return }
@@ -123,7 +127,13 @@ private extension DownloadButtonCellView {
     @objc func downloadButtonPressed() {
         switch buttonState {
         case .canDownload:
-            viewModel.download()
+            if let vm = viewModel {
+                vm.download()
+            } else {
+                delegate?.didPressDownload(callback: { (possibleViewModel) in
+
+                })
+            }
         case .downloaded(let url):
             delegate?.didRequestOpen(local: url, from: self)
         default:

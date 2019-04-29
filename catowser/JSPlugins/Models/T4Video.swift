@@ -8,8 +8,10 @@
 
 import Foundation
 
-public struct T4Video: Decodable {
+public struct T4Video: Decodable, VideoFileNameble {
     public let variants: [Resolution: URL]
+    /// The name of video
+    public let name: String
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Resolution.self)
@@ -40,6 +42,7 @@ public struct T4Video: Decodable {
         }
         
         variants = set
+        name = "t4_\(UUID().uuidString)"
     }
 }
 
@@ -52,8 +55,9 @@ extension T4Video {
         case p1080 = "1080"
     }
     
-    enum CottonError: Error {
+    public enum CottonError: Error {
         case noVideos
+        case resolutionNotPresent
     }
 }
 

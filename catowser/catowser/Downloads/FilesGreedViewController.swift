@@ -16,7 +16,7 @@ protocol FilesGreedPresenter: class {
 
 protocol FileDownloadViewDelegate: class {
     func didRequestOpen(local url: URL, from view: UIView)
-    func didPressDownload(callback: @escaping (URL?) -> Void)
+    func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void)
 }
 
 final class FilesGreedViewController: UITableViewController, CollectionViewInterface {
@@ -132,16 +132,22 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
         present(activity, animated: true)
     }
 
-    func didPressDownload(callback: @escaping (URL?) -> Void) {
+    func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void) {
         let title = NSLocalizedString("ttl_video_quality_selection", comment: "Text to ask about video quality")
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         guard case let .t4(videoContainer)? = filesDataSource else {
             callback(nil)
             return
         }
-        for (quality, url) in videoContainer.variants {
+        for (quality, _) in videoContainer.variants {
             let action = UIAlertAction(title: quality.rawValue, style: .default) { (_) in
-                callback(url)
+
+                guard let t4Video = try? videoContainer.downloadable(for: quality) else {
+                    callback(nil)
+                    return
+                }
+                let viewModel = FileDownloadViewModel(with: t4Video)
+                callback(viewModel)
             }
             alert.addAction(action)
         }
@@ -160,5 +166,20 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
 extension InstagramVideoNode: Downloadable {
     public var url: URL {
         return videoUrl
+    }
+}
+
+fileprivate extension T4Video {
+    func downloadable(for resolution: Resolution) throws -> Downloadable {
+        guard let url = variants[resolution] else {
+            throw CottonError.resolutionNotPresent
+        }
+
+        struct T4Downloadable: Downloadable {
+            let url: URL
+            let fileName: String
+        }
+
+        return T4Downloadable(url: url, fileName: fileName)
     }
 }
