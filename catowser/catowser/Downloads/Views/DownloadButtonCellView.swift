@@ -34,10 +34,16 @@ final class DownloadButtonCellView: UITableViewCell {
         didSet {
             switch buttonState {
             case .canDownload:
-                <#code#>
-            default:
-                <#code#>
+                progressView.progress = 0
+                progressView.isHidden = false
+                downloadButton.isEnabled = true
+            case .downloading:
+                downloadButton.isEnabled = false
+            case .downloaded:
+                progressView.isHidden = true
+                downloadButton.isEnabled = true
             }
+            downloadButton.setTitle(buttonState.title, for: .normal)
         }
     }
 
@@ -52,15 +58,15 @@ final class DownloadButtonCellView: UITableViewCell {
                     guard let self = self else { return }
                     switch state {
                     case .initial:
-                        self.setInitialButtonState()
+                        self.buttonState = .canDownload
                     case .started:
-                        self.setPendingButtonState()
+                        self.buttonState = .downloading
                     case .in(let progress):
                         self.progressView.progress = Float(progress)
-                    case .finished(_):
-                        self.buttonState = .downloaded
+                    case .finished(let url):
+                        self.buttonState = .downloaded(url)
                     case .error(_):
-                        self.setInitialButtonState()
+                        self.buttonState = .canDownload
                     }
             }
         }
@@ -87,20 +93,21 @@ final class DownloadButtonCellView: UITableViewCell {
         disposable?.dispose()
     }
 
-    func setInitialButtonState() {
-        progressView.progress = 0
-        buttonState = .canDownload
-    }
-
-    func setPendingButtonState() {
-        progressView.progress = 0
-        //downloadButton.state = .pending
-    }
-
     enum DownloadButtonState {
         case canDownload
         case downloading
-        case downloaded
+        case downloaded(URL)
+
+        var title: String {
+            switch self {
+            case .canDownload:
+                return NSLocalizedString("btn_start_download", comment: "Can start download title")
+            case .downloading:
+                return NSLocalizedString("btn_downloading", comment: "Button title when download is in progress")
+            case .downloaded(_):
+                return NSLocalizedString("btn_downloaded", comment: "Can open or share file")
+            }
+        }
     }
 }
 
@@ -114,8 +121,14 @@ extension DownloadButtonCellView: FileDownloadDelegate {
 
 private extension DownloadButtonCellView {
     @objc func downloadButtonPressed() {
-        buttonState = .downloading
-        viewModel.download()
+        switch buttonState {
+        case .canDownload:
+            viewModel.download()
+        case .downloaded(let url):
+            delegate?.didRequestOpen(local: url, from: self)
+        default:
+            break
+        }
     }
 }
 

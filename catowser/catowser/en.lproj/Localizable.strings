@@ -27,3 +27,7 @@
 
 "ttl_search_history_domains" = "Top sites";
 "ttl_search_suggestions" = "Suggestions";
+
+"btn_start_download" = "Download";
+"btn_downloading" = "Downloading";
+"btn_downloaded" = "Share";
