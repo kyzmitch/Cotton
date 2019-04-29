@@ -61,22 +61,3 @@ final class FileDownloadViewModel {
         case error(Error)
     }
 }
-
-extension FileDownloadViewModel {
-    func downloadButton(_ downloadButton: AHDownloadButton, tappedWithState state: AHDownloadButton.State) {
-        switch state {
-        case .startDownload:
-            downloadOutput.value = .started
-            self.download(batch)
-        case .pending, .downloading:
-            break
-        case .downloaded:
-            guard case let .finished(url) = downloadOutput.value else {
-                assertionFailure("Unexpected state during opening")
-                return
-            }
-            delegate?.didPressOpenFile(withLocal: url)
-            break
-        }
-    }
-}

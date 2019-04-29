@@ -27,3 +27,7 @@
 
 "ttl_search_history_domains" = "Известные сайты";
 "ttl_search_suggestions" = "Предложения";
+
+"btn_start_download" = "Скачать";
+"btn_downloading" = "Скачивается";
+"btn_downloaded" = "Поделиться";
