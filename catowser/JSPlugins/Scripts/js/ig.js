@@ -40,7 +40,6 @@ function cottonHandleHttpResponseText(json) {
 
 	let feedEdges = cottonTryExtractGrapthVideoNodes(json);
 	if(feedEdges.length != 0){
-		cottonLog('HttpResponse: going to send nodes');
 		sendVideoNodesToNativeApp(feedEdges);
 	} else {
 		cottonLog('HttpResponse: doesn`t contain edge nodes');
@@ -75,7 +74,6 @@ function cottonSearchAdditionalData() {
 
 	let feedEdges = cottonTryExtractGrapthVideoNodes(additionalDataJSON);
 	if(feedEdges.length != 0){
-		cottonLog('going to send nodes from __additionalData');
 		sendVideoNodesToNativeApp(feedEdges);
 	} else {
 		cottonLog('__additionalData doesn`t contain video nodes');
@@ -109,7 +107,6 @@ function cottonSearchSharedData(sharedDataJSON) {
 
 	let nodes = cottonTryExtractVideoNodesFrom(shortcode_media);
 	if(nodes.length != 0){
-		cottonLog('going to send nodes from _sharedData');
 		sendVideoNodesToNativeApp(nodes);
 	} else {
 		cottonLog('_sharedData doesn`t contain edge nodes');
@@ -179,10 +176,8 @@ function cottonTryExtractVideoNodesFrom(node, sidecarTitle) {
 	switch (__typename) {
 		case "GraphVideo":
 			if(typeof sidecarTitle !== 'undefined'){
-				cottonLog('GraphVideo title: ' + sidecarTitle);
 				node['pageTitle'] = sidecarTitle;
 			} else {
-				cottonLog('Page title: ' + document.title);
 				node['pageTitle'] = document.title;
 			}
 			return [node];

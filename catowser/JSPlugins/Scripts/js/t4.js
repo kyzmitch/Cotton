@@ -1,8 +1,8 @@
 "use strict";
 
-XMLHttpRequest.prototype.cottonRealSend = XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.cottonT4RealSend = XMLHttpRequest.prototype.send;
 XMLHttpRequest.prototype.send = function(body) {
-	this.cottonRealSend(body);
+	this.cottonT4RealSend(body);
 	this.addEventListener('readystatechange', function() {
 		if (this.readyState !== 4 /* DONE */ || this.status !== 200) {
 			return;
@@ -42,7 +42,7 @@ function cottonHandleT4HttpResponseText(json) {
 
 function cottonT4Log(message) {
 	try {
-		webkit.messageHandlers.igHandler.postMessage({"log": message});
+		webkit.messageHandlers.t4Handler.postMessage({"log": message});
 	} catch(err) {
 		console.log(message);
 	}
