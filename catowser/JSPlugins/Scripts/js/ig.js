@@ -161,7 +161,7 @@ function filterVideoEdges(edges, sidecarTitle) {
 		if(typeof node === 'undefined'){
 			continue;
 		}
-		let videos = cottonTryExtractVideoNodesFrom(node, sidecarTitle);
+		let videos = cottonTryExtractVideoNodesFrom(node, i + " " + sidecarTitle);
 		// https://stackoverflow.com/a/30846567/483101
 		if(videos.length > 0) {
 			filtered = filtered.concat(videos);
@@ -180,11 +180,10 @@ function cottonTryExtractVideoNodesFrom(node, sidecarTitle) {
 		case "GraphVideo":
 			if(typeof sidecarTitle !== 'undefined'){
 				cottonLog('GraphVideo title: ' + sidecarTitle);
-				let captionEdges = new Array();
-				let captionText = {'text': sidecarTitle};
-				let captionNode = {'node': captionText};
-				captionEdges.push(captionNode);
-				node['edge_media_to_caption'] = captionEdges;
+				node['pageTitle'] = sidecarTitle;
+			} else {
+				cottonLog('Page title: ' + document.title);
+				node['pageTitle'] = document.title;
 			}
 			return [node];
 		case "GraphSidecar":

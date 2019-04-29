@@ -23,7 +23,13 @@ public struct InstagramVideoNode: Decodable {
     public let name: String
     /// Video file name
     public var fileName: String {
-        return "\(name).mp4"
+        let prefix: String
+        if let i = name.firstIndex(where: { $0 == "\n" }) {
+            prefix = String(name.prefix(upTo: i))
+        } else {
+            prefix = name
+        }
+        return "\(prefix).mp4"
     }
     
     public init(from decoder: Decoder) throws {
@@ -59,17 +65,12 @@ public struct InstagramVideoNode: Decodable {
         }
         dimensions = nil
 
-
-        let uuid: String = "instagram_\(UUID().uuidString)"
-        do {
-            let mediaCaption = try container.decode(IgEdgeMediaCaption.self, forKey: .mediaCaption)
-            if let edge = mediaCaption.edges.first {
-                name = edge.node.text
-            } else {
-                name = uuid
-            }
-        } catch {
-            print("Media caption isn't set for post")
+        if let pageTitle = try? container.decode(String.self, forKey: .pageTitle) {
+            name = pageTitle
+        } else if let mediaCaption = try? container.decode(IgEdgeMediaCaption.self,  forKey: .mediaCaption), let edge = mediaCaption.edges.first {
+            name = edge.node.text
+        } else {
+            let uuid: String = "instagram_\(UUID().uuidString)"
             name = uuid
         }
     }
@@ -85,6 +86,7 @@ extension InstagramVideoNode {
         case videoUrl = "video_url"
         case videoDuration = "video_duration"
         case mediaCaption = "edge_media_to_caption"
+        case pageTitle = "pageTitle"
     }
     
     enum DecodingError: Error {
