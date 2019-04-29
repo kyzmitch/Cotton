@@ -9,7 +9,7 @@
 import Foundation
 
 /// Describes INSTAGRAM video post json object
-public struct InstagramVideoNode: Decodable {
+public struct InstagramVideoNode: Decodable, VideoFileNameble {
     /// The URL which points to remote video file
     public let videoUrl: URL
     /// The URL which points to remote image file for the video preview
@@ -21,16 +21,6 @@ public struct InstagramVideoNode: Decodable {
     public let dimensions: CGSize?
     /// The name of video
     public let name: String
-    /// Video file name
-    public var fileName: String {
-        let prefix: String
-        if let i = name.firstIndex(where: { $0 == "\n" }) {
-            prefix = String(name.prefix(upTo: i))
-        } else {
-            prefix = name
-        }
-        return "\(prefix).mp4"
-    }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
