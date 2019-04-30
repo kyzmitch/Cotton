@@ -5,7 +5,7 @@ if (typeof window.__cotton__ !== 'undefined') {
         enumerable: false,
         configurable: false,
         writable: false,
-        value: {enabled: false}
+        value: {enabled: true}
     });
     
     Object.defineProperty(window.__cotton__.t4, "setEnabled", {
@@ -19,6 +19,8 @@ if (typeof window.__cotton__ !== 'undefined') {
 			window.__cotton__.t4.enabled = enabled;
 		}
 	});
+} else {
+    cottonT4Log('__cotton__ isn`t defined');
 }
 
 function cottonIsT4Enabled() {

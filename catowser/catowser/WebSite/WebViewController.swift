@@ -91,7 +91,6 @@ final class WebViewController: BaseViewController {
             return
         }
         facade.visit(configuration.userContentController)
-        facade.enablePlugins(for: webView, with: currentUrl.host ?? "site")
     }
 
     init(_ site: Site, pluginsProvider: CottonPluginsProvider, externalNavigationDelegate: SiteExternalNavigationDelegate) {
@@ -243,7 +242,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        
+        pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
     }
 }
 
