@@ -13,6 +13,13 @@ public struct BasePlugin: CottonJSPlugin {
 
     public let messageHandlerName: String = "cottonHandler"
 
+    /// Should be present on any web site no matter which host is it
+    public let hostKeyword: String = ""
+
+    public func setEnableJsString(_ enable: Bool) -> String {
+        return ""
+    }
+
     public let isMainFrameOnly: Bool = true
 
     public let delegate: PluginHandlerDelegateType = .base

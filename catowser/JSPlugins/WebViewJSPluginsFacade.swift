@@ -9,6 +9,10 @@
 import Foundation
 import WebKit
 
+public protocol JavaScriptEvaluateble: class {
+    func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
+}
+
 public final class WebViewJSPluginsFacade {
     private let plugins: [CottonJSPlugin]
 
@@ -30,6 +34,13 @@ public final class WebViewJSPluginsFacade {
             } catch {
                 print("\(#function) failed to load plugin \(plugin.jsFileName)")
             }
+        }
+    }
+
+    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: String) {
+        for plugin in plugins where !plugin.hostKeyword.isEmpty {
+            let jsScript = plugin.setEnableJsString(host.contains(plugin.hostKeyword))
+            webView.evaluateJavaScript(jsScript, completionHandler: nil)
         }
     }
 }

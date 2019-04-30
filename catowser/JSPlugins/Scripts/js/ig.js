@@ -11,21 +11,21 @@ if (typeof window.__cotton__ !== 'undefined') {
 
 function cottonIsIgEnabled() {
     if (typeof window.__cotton__ === 'undefined') {
-        console.log('window.__cotton__ isn`t defined');
+        cottonLog('window.__cotton__ isn`t defined');
         return false;
     }
     if (typeof window.__cotton__.ig === 'undefined') {
-        console.log('window.__cotton__.ig isn`t defined');
+        cottonLog('window.__cotton__.ig isn`t defined');
         return false;
     }
 
     let isEnabled = window.__cotton__.ig['enabled'];
     if (typeof isEnabled === 'undefined') {
-        console.log('ig enabled key isn`t defined');
+        cottonLog('ig enabled key isn`t defined');
         return false;
     }
     if (!isEnabled) {
-        console.log('ig parsing disabled');
+        cottonLog('ig parsing disabled');
         return false;
     }
 
