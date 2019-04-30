@@ -68,7 +68,6 @@ extension FilesGreedViewController {
         let cell = tableView.dequeueCell(for: indexPath, type: DownloadButtonCellView.self)
 
         let tableW = tableView.bounds.width - Sizes.margin * 2 - Sizes.imageMargin * 2
-
         let desiredLabelW = tableW - cell.previewImageView.center.x - cell.previewImageView.bounds.width / 2 - cell.downloadButton.bounds.width
         cell.titleLabel.preferredMaxLayoutWidth = desiredLabelW
 
@@ -78,10 +77,11 @@ extension FilesGreedViewController {
         case .instagram(let nodes)?:
             let node = nodes[indexPath.item]
             cell.viewModel = FileDownloadViewModel(with: node)
-            cell.titleLabel.text = node.fileName
+            cell.titleLabel.text = node.name
             cell.previewURL = node.thumbnailUrl
-        case .t4?:
+        case .t4(let video)?:
             cell.previewURL = nil
+            cell.titleLabel.text = video.name
             // for this type we can only load preview and title
             // download URL should be chosen e.g. by using action sheet
             break

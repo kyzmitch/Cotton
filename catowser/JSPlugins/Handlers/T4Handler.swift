@@ -42,9 +42,9 @@ public struct T4ContentPlugin: CottonJSPlugin {
     }
 }
 
-public final class T4Handler: NSObject {
+final class T4Handler: NSObject {
     private weak var delegate: T4ContentDelegate?
-    public init(_ delegate: T4ContentDelegate) {
+    init(_ delegate: T4ContentDelegate) {
         self.delegate = delegate
         super.init()
     }
@@ -62,7 +62,7 @@ fileprivate extension T4Handler {
 }
 
 extension T4Handler: WKScriptMessageHandler {
-    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let args = message.body as? [String: Any] else {
             print("\(#function) message.body has unexpected format")
             return

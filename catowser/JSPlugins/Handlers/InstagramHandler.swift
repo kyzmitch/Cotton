@@ -42,9 +42,9 @@ public struct InstagramContentPlugin: CottonJSPlugin {
     }
 }
 
-public final class InstagramHandler: NSObject {
+final class InstagramHandler: NSObject {
     private weak var delegate: InstagramContentDelegate?
-    public init(_ delegate: InstagramContentDelegate) {
+    init(_ delegate: InstagramContentDelegate) {
         self.delegate = delegate
         super.init()
     }
@@ -64,7 +64,7 @@ fileprivate extension InstagramHandler {
 }
 
 extension InstagramHandler: WKScriptMessageHandler {
-    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let args = message.body as? [String: Any] else {
             print("\(#function) message.body has unexpected format")
             return
