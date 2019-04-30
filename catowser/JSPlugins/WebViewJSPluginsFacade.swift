@@ -40,7 +40,13 @@ public final class WebViewJSPluginsFacade {
     public func enablePlugins(for webView: JavaScriptEvaluateble, with host: String) {
         for plugin in plugins where !plugin.hostKeyword.isEmpty {
             let jsScript = plugin.setEnableJsString(host.contains(plugin.hostKeyword))
-            webView.evaluateJavaScript(jsScript, completionHandler: nil)
+            webView.evaluateJavaScript(jsScript, completionHandler: {(something, error) in
+                if let err = error {
+                    print("Failed to use plugin enabled property: \(err)")
+                } else if let thing = something {
+                    print("Received response: \(thing)")
+                }
+            })
         }
     }
 }

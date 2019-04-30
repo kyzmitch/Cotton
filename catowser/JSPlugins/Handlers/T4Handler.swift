@@ -25,7 +25,7 @@ public struct T4ContentPlugin: CottonJSPlugin {
     public let hostKeyword: String = "4tube"
 
     public func setEnableJsString(_ enable: Bool) -> String {
-        return "__cotton__.t4['enabled'] = \(enable ? "true" : "false")"
+        return "__cotton__.t4.setEnabled(\(enable ? "true" : "false"));"
     }
 
     public let isMainFrameOnly: Bool = true

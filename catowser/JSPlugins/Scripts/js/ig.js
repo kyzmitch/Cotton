@@ -6,26 +6,37 @@ if (typeof window.__cotton__ !== 'undefined') {
         configurable: false,
         writable: false,
         value: {enabled: false}
-	})
+	});
+	Object.defineProperty(window.__cotton__.ig, "setEnabled", {
+		enumerable: false,
+		configurable: false,
+		writable: false,
+		value: function(enabled) {
+			if (enabled === window.__cotton__.ig.enabled) {
+				return;
+			}
+			window.__cotton__.ig.enabled = enabled;
+		}
+	});
 }
 
 function cottonIsIgEnabled() {
     if (typeof window.__cotton__ === 'undefined') {
-        cottonLog('window.__cotton__ isn`t defined');
+        console.log('window.__cotton__ isn`t defined');
         return false;
     }
     if (typeof window.__cotton__.ig === 'undefined') {
-        cottonLog('window.__cotton__.ig isn`t defined');
+        console.log('window.__cotton__.ig isn`t defined');
         return false;
     }
 
     let isEnabled = window.__cotton__.ig['enabled'];
     if (typeof isEnabled === 'undefined') {
-        cottonLog('ig enabled key isn`t defined');
+        console.log('ig enabled key isn`t defined');
         return false;
     }
     if (!isEnabled) {
-        cottonLog('ig parsing disabled');
+        console.log('ig parsing disabled');
         return false;
     }
 
@@ -160,10 +171,6 @@ function cottonSearchSharedData(sharedDataJSON) {
 }
 
 function cottonTryExtractGrapthVideoNodes(json) {
-	if (!cottonIsIgEnabled()) {
-		return;
-	}
-	
 	let user = json['user'];
 	let result = new Array();
 	if(typeof user === 'undefined'){
