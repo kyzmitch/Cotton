@@ -229,6 +229,7 @@ extension WebViewController: WKNavigationDelegate {
 
         currentUrl = webViewUrl
         let site: Site = .init(url: webViewUrl)
+        pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
 
         if let host = currentUrl.host {
             InMemoryDomainSearchProvider.shared.rememberDomain(name: host)
@@ -242,7 +243,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
+        
     }
 }
 

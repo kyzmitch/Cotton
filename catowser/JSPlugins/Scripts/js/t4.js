@@ -5,7 +5,7 @@ if (typeof window.__cotton__ !== 'undefined') {
         enumerable: false,
         configurable: false,
         writable: false,
-        value: {enabled: true}
+        value: {enabled: false}
     });
     
     Object.defineProperty(window.__cotton__.t4, "setEnabled", {
@@ -50,9 +50,6 @@ XMLHttpRequest.prototype.cottonT4RealSend = XMLHttpRequest.prototype.send;
 XMLHttpRequest.prototype.send = function(body) {
 	this.cottonT4RealSend(body);
 	this.addEventListener('readystatechange', function() {
-        if (!cottonIsT4Enabled()) {
-            return;
-        }
 		if (this.readyState !== 4 /* DONE */ || this.status !== 200) {
 			return;
 		}
@@ -65,9 +62,7 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 function cottonHandleT4HttpResponseText(json) {
-    if (!cottonIsT4Enabled()) {
-        return;
-    }
+    
     if(typeof json === 'undefined'){
         return;
     }
