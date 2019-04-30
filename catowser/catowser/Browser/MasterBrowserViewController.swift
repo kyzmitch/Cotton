@@ -465,7 +465,8 @@ extension MasterBrowserViewController: InstagramContentDelegate {
 
 extension MasterBrowserViewController: T4ContentDelegate {
     func didReceiveVideo(_ video: T4Video) {
-        
+        linksRouter.openTagsFor(t4: video)
+        reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
