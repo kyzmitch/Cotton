@@ -22,6 +22,12 @@ public struct T4ContentPlugin: CottonJSPlugin {
 
     public let messageHandlerName: String = "t4Handler"
 
+    public let hostKeyword: String = "4tube"
+
+    public func setEnableJsString(_ enable: Bool) -> String {
+        return "__cotton__.t4['enabled'] = \(enable ? "true" : "false")"
+    }
+
     public let isMainFrameOnly: Bool = true
 
     public init?(delegate: PluginHandlerDelegateType) {

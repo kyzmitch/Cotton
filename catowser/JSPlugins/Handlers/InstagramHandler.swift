@@ -22,6 +22,12 @@ public struct InstagramContentPlugin: CottonJSPlugin {
 
     public let messageHandlerName: String = "igHandler"
 
+    public let hostKeyword: String = "instagram"
+
+    public func setEnableJsString(_ enable: Bool) -> String {
+        return "__cotton__.ig['enabled'] = \(enable ? "true" : "false")"
+    }
+
     public let isMainFrameOnly: Bool = false
 
     public init?(delegate: PluginHandlerDelegateType) {

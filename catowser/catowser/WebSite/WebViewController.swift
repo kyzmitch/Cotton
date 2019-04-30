@@ -35,6 +35,8 @@ protocol SiteNavigationComponent {
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
 }
 
+extension WKWebView: JavaScriptEvaluateble {}
+
 final class WebViewController: BaseViewController {
     
     private(set) var currentUrl: URL
@@ -49,6 +51,8 @@ final class WebViewController: BaseViewController {
     fileprivate let igSiteName = "instagram.com"
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
+        currentUrl = url
+
         if canLoadPlugins {
             injectPlugins()
         } else if !canLoadPlugins {
@@ -73,9 +77,7 @@ final class WebViewController: BaseViewController {
             }
         }
         
-        if canLoadPlugins {
-            injectPlugins()
-        }
+        if canLoadPlugins { injectPlugins() }
         
         let request = URLRequest(url: currentUrl)
         webView.load(request)
@@ -85,7 +87,11 @@ final class WebViewController: BaseViewController {
         configuration.userContentController.removeAllUserScripts()
         // inject only for specific sites, to fix case
         // then instagram related plugin is injected to google site
-        pluginsFacade?.visit(configuration.userContentController)
+        guard let facade = pluginsFacade else {
+            return
+        }
+        facade.visit(configuration.userContentController)
+        facade.enablePlugins(for: webView, with: currentUrl.host ?? "site")
     }
 
     init(_ site: Site, pluginsProvider: CottonPluginsProvider, externalNavigationDelegate: SiteExternalNavigationDelegate) {

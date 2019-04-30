@@ -26,6 +26,8 @@ public protocol CottonJSPlugin {
     var isMainFrameOnly: Bool { get }
     var delegate: PluginHandlerDelegateType { get }
     var handler: WKScriptMessageHandler { get }
+    var hostKeyword: String { get }
+    func setEnableJsString(_ enable: Bool) -> String
     init?(delegate: PluginHandlerDelegateType)
     init?(anyProtocol: Any)
 }
