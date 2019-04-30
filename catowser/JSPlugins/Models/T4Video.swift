@@ -37,12 +37,18 @@ public struct T4Video: Decodable, VideoFileNameble {
             set[.p1080] = video1080p.token
             atleastOne = true
         }
+
         guard atleastOne else {
             throw CottonError.noVideos
         }
         
         variants = set
-        name = "t4_\(UUID().uuidString)"
+        
+        if let pageTitle = try? container.decodeIfPresent(String.self, forKey: .pageTitle), let title = pageTitle {
+            name = title
+        } else {
+            name = "t4_\(UUID().uuidString)"
+        }
     }
 }
 
@@ -53,6 +59,7 @@ extension T4Video {
         case p480 = "480"
         case p720 = "720"
         case p1080 = "1080"
+        case pageTitle = "pageTitle"
     }
     
     public enum CottonError: Error {

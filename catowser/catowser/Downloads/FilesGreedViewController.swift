@@ -140,7 +140,7 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
             return
         }
         for (quality, _) in videoContainer.variants {
-            let action = UIAlertAction(title: "\(quality.rawValue)", style: .default) { (_) in
+            let action = UIAlertAction(title: "\(quality.rawValue)p", style: .default) { (_) in
 
                 guard let t4Video = try? videoContainer.downloadable(for: quality) else {
                     callback(nil)

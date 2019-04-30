@@ -33,6 +33,10 @@ function cottonHandleT4HttpResponseText(json) {
         }
     }
 
+    if(typeof document.title !== 'undefined'){
+        json['pageTitle'] = document.title;
+    }
+
     try {
         webkit.messageHandlers.t4Handler.postMessage({"video": json});
     } catch(err) {
