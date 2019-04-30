@@ -39,13 +39,13 @@ final class JSPluginFactory {
 
     private init() {}
 
-    func script(for plugin: CottonJSPlugin) throws -> WKUserScript {
+    func script(for plugin: CottonJSPlugin, with injectionTime: WKUserScriptInjectionTime, isMainFrameOnly: Bool) throws -> WKUserScript {
         let typeName = plugin.jsFileName
         if let existingJS = scripts.object(forKey: typeName as NSString) {
             return existingJS
         } else {
             let source = try JSPluginFactory.loadScriptSource(typeName)
-            let wkScript = WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: plugin.isMainFrameOnly)
+            let wkScript = WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: isMainFrameOnly)
             scripts.setObject(wkScript, forKey: typeName as NSString)
             return wkScript
         }
