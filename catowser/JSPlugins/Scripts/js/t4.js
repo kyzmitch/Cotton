@@ -6,7 +6,19 @@ if (typeof window.__cotton__ !== 'undefined') {
         configurable: false,
         writable: false,
         value: {enabled: false}
-	})
+    });
+    
+    Object.defineProperty(window.__cotton__.t4, "setEnabled", {
+		enumerable: false,
+		configurable: false,
+		writable: false,
+		value: function(enabled) {
+			if (enabled === window.__cotton__.t4.enabled) {
+				return;
+			}
+			window.__cotton__.t4.enabled = enabled;
+		}
+	});
 }
 
 function cottonIsT4Enabled() {

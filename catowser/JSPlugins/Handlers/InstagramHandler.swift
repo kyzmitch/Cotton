@@ -25,10 +25,10 @@ public struct InstagramContentPlugin: CottonJSPlugin {
     public let hostKeyword: String = "instagram"
 
     public func setEnableJsString(_ enable: Bool) -> String {
-        return "__cotton__.ig['enabled'] = \(enable ? "true" : "false")"
+        return "__cotton__.ig.setEnabled(\(enable ? "true" : "false"));"
     }
 
-    public let isMainFrameOnly: Bool = false
+    public let isMainFrameOnly: Bool = true
 
     public init?(delegate: PluginHandlerDelegateType) {
         guard case let .instagram(actualDelegate) = delegate else {
@@ -64,7 +64,6 @@ fileprivate extension InstagramHandler {
     enum MessageKey: String {
         case log = "log"
         case singleVideoNode = "singleVideoNode"
-        case videoTags = "videoTags"
         case videoNodes = "videoNodes"
     }
 }

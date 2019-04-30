@@ -6,5 +6,5 @@ if (typeof window.__cotton__ === 'undefined') {
         configurable: false,
         writable: false,
         value: {}
-    })
+    });
 }
