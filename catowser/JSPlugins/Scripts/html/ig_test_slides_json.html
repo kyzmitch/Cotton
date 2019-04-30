@@ -2,6 +2,7 @@
 <head>
     <meta charset="utf-8">
     <title>Test Instagram json</title>
+    <script src="/js/__cotton__.js"></script>
     <script src="/js/ig.js"></script>
     <script src="/js/t4.js"></script>
 </head>
@@ -24,14 +25,17 @@
         }
 
         function handleHttpResponse(input) {
+            window.__cotton__.ig['enabled'] = true;
             readInputWithOnload(input, httpResponseLoaded);
         }
 
         function handleSharedData(input) {
+            window.__cotton__.ig['enabled'] = false;
             readInputWithOnload(input, sharedDataLoaded);
         }
 
         function handleT4HttpResponse(input){
+            window.__cotton__.t4['enabled'] = false;
             readInputWithOnload(input, t4HttpResponseLoaded);
         }
 

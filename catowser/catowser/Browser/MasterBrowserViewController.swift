@@ -89,8 +89,10 @@ final class MasterBrowserViewController: BaseViewController {
 
     fileprivate lazy var plugins: [CottonJSPlugin] = {
         var array = [CottonJSPlugin]()
+        array.append(BasePlugin())
+
         if let igPlugin = InstagramContentPlugin(delegate: .instagram(self)) {
-            // array.append(igPlugin)
+            array.append(igPlugin)
         }
         if let t4Plugin = T4ContentPlugin(delegate: .t4(self)) {
             array.append(t4Plugin)

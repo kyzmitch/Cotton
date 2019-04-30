@@ -1,11 +1,49 @@
 "use strict";
 
+if (typeof window.__cotton__ !== 'undefined') {
+	Object.defineProperty(window.__cotton__, "ig", {
+        enumerable: false,
+        configurable: false,
+        writable: false,
+        value: {enabled: false}
+	})
+}
+
+function cottonIsIgEnabled() {
+    if (typeof window.__cotton__ === 'undefined') {
+        console.log('window.__cotton__ isn`t defined');
+        return false;
+    }
+    if (typeof window.__cotton__.ig === 'undefined') {
+        console.log('window.__cotton__.ig isn`t defined');
+        return false;
+    }
+
+    let isEnabled = window.__cotton__.ig['enabled'];
+    if (typeof isEnabled === 'undefined') {
+        console.log('ig enabled key isn`t defined');
+        return false;
+    }
+    if (!isEnabled) {
+        console.log('ig parsing disabled');
+        return false;
+    }
+
+    return true;
+}
+
 window.addEventListener("load", function() {
+	if (!cottonIsIgEnabled()) {
+		return;
+	}
 	window.setTimeout(cottonHandleHtml, 1000);
 }, false); 
 
 XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
 XMLHttpRequest.prototype.open = function(method, url, async, username, password) {
+	if (!cottonIsIgEnabled()) {
+		return;
+	}
 	cottonLog('HttpRequest: ' + method  + ' url: ' + url);
 	this.cottonRealOpen(method, url, async, username, password);
 };
@@ -14,6 +52,9 @@ XMLHttpRequest.prototype.cottonRealSend = XMLHttpRequest.prototype.send;
 XMLHttpRequest.prototype.send = function(body) {
 	this.cottonRealSend(body);
 	this.addEventListener('readystatechange', function() {
+		if (!cottonIsIgEnabled()) {
+			return;
+		}
 		if (this.readyState !== 4 /* DONE */ || this.status !== 200) {
 			return;
 		}
@@ -27,7 +68,9 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 function cottonHandleHttpResponseText(json) {
-
+	if (!cottonIsIgEnabled()) {
+		return;
+	}
 	// 1) attempt to extract from concrete user post
 	let graphql = json['graphql'];
 	if(typeof graphql !== 'undefined'){
@@ -81,6 +124,9 @@ function cottonSearchAdditionalData() {
 }
 
 function cottonSearchSharedData(sharedDataJSON) {
+	if (!cottonIsIgEnabled()) {
+		return;
+	}
 	// Shared data used for specific user posts
 
 	let entry_data = sharedDataJSON['entry_data'];
@@ -114,6 +160,10 @@ function cottonSearchSharedData(sharedDataJSON) {
 }
 
 function cottonTryExtractGrapthVideoNodes(json) {
+	if (!cottonIsIgEnabled()) {
+		return;
+	}
+	
 	let user = json['user'];
 	let result = new Array();
 	if(typeof user === 'undefined'){
