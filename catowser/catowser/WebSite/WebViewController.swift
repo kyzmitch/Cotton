@@ -229,6 +229,7 @@ extension WebViewController: WKNavigationDelegate {
 
         currentUrl = webViewUrl
         let site: Site = .init(url: webViewUrl)
+        // enabling plugin works here for instagram, but not for t4 site
         pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
 
         if let host = currentUrl.host {
@@ -243,7 +244,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        
+        pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
     }
 }
 
