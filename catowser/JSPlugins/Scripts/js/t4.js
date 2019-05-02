@@ -1,28 +1,5 @@
 "use strict";
 
-if (typeof window.__cotton__ !== 'undefined') {
-	Object.defineProperty(window.__cotton__, "t4", {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: {enabled: false}
-    });
-    
-    Object.defineProperty(window.__cotton__.t4, "setEnabled", {
-		enumerable: false,
-		configurable: false,
-		writable: false,
-		value: function(enabled) {
-			if (enabled === window.__cotton__.t4.enabled) {
-				return;
-			}
-			window.__cotton__.t4.enabled = enabled;
-		}
-	});
-} else {
-    cottonT4Log('__cotton__ isn`t defined');
-}
-
 function cottonIsT4Enabled() {
     if (typeof window.__cotton__ === 'undefined') {
         console.log('window.__cotton__ isn`t defined');
@@ -46,23 +23,10 @@ function cottonIsT4Enabled() {
     return true;
 }
 
-XMLHttpRequest.prototype.cottonT4RealSend = XMLHttpRequest.prototype.send;
-XMLHttpRequest.prototype.send = function(body) {
-	this.cottonT4RealSend(body);
-	this.addEventListener('readystatechange', function() {
-		if (this.readyState !== 4 /* DONE */ || this.status !== 200) {
-			return;
-		}
-		
-		// this.responseType is empty for some reason, so it's not possible to parse 
-		// for json specifically
-		cottonT4Log('HttpResponse 200 OK:' + this.responseURL);
-		cottonHandleT4HttpResponseText(this.responseText);
-	});
-};
-
 function cottonHandleT4HttpResponseText(json) {
-    
+    if (!cottonIsT4Enabled()){
+        return;
+    }
     if(typeof json === 'undefined'){
         return;
     }

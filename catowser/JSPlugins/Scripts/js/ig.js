@@ -1,23 +1,14 @@
 "use strict";
 
 if (typeof window.__cotton__ !== 'undefined') {
-	Object.defineProperty(window.__cotton__, "ig", {
-        enumerable: false,
-        configurable: false,
-        writable: false,
-        value: {enabled: false}
-	});
-	Object.defineProperty(window.__cotton__.ig, "setEnabled", {
-		enumerable: false,
-		configurable: false,
-		writable: false,
-		value: function(enabled) {
-			if (enabled === window.__cotton__.ig.enabled) {
-				return;
-			}
-			window.__cotton__.ig.enabled = enabled;
-		}
-	});
+	if (typeof window.__cotton__.ig !== 'undefined') {
+        Object.defineProperty(window.__cotton__.ig, "httpResponsHandler", {
+			enumerable: false,
+			configurable: false,
+			writable: false,
+			value: cottonHandleHttpResponseText
+			});
+    }
 }
 
 function cottonIsIgEnabled() {
@@ -44,39 +35,8 @@ function cottonIsIgEnabled() {
 }
 
 window.addEventListener("load", function() {
-	if (!cottonIsIgEnabled()) {
-		return;
-	}
 	window.setTimeout(cottonHandleHtml, 1000);
-}, false); 
-
-XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
-XMLHttpRequest.prototype.open = function(method, url, async, username, password) {
-	if (!cottonIsIgEnabled()) {
-		return;
-	}
-	cottonLog('HttpRequest: ' + method  + ' url: ' + url);
-	this.cottonRealOpen(method, url, async, username, password);
-};
-
-XMLHttpRequest.prototype.cottonRealSend = XMLHttpRequest.prototype.send;
-XMLHttpRequest.prototype.send = function(body) {
-	this.cottonRealSend(body);
-	this.addEventListener('readystatechange', function() {
-		if (!cottonIsIgEnabled()) {
-			return;
-		}
-		if (this.readyState !== 4 /* DONE */ || this.status !== 200) {
-			return;
-		}
-		
-		// this.responseType is empty for some reason, so it's not possible to parse 
-		// for json specifically
-		cottonLog('HttpResponse 200 OK:' + this.responseURL);
-		let json = JSON.parse(this.responseText);
-		cottonHandleHttpResponseText(json);
-	});
-};
+}, false);
 
 function cottonHandleHttpResponseText(json) {
 	if (!cottonIsIgEnabled()) {
@@ -101,6 +61,9 @@ function cottonHandleHttpResponseText(json) {
 }
 
 function cottonHandleHtml() {
+	if (!cottonIsIgEnabled()) {
+		return;
+	}
 	cottonSearchAdditionalData();
 	let sharedData = window._sharedData;
 	if (typeof sharedData === 'undefined') {
@@ -135,9 +98,6 @@ function cottonSearchAdditionalData() {
 }
 
 function cottonSearchSharedData(sharedDataJSON) {
-	if (!cottonIsIgEnabled()) {
-		return;
-	}
 	// Shared data used for specific user posts
 
 	let entry_data = sharedDataJSON['entry_data'];
