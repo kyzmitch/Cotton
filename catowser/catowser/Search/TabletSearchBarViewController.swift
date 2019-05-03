@@ -19,11 +19,12 @@ final class TabletSearchBarViewController: BaseViewController {
             guard let _ = siteNavigationDelegate else {
                 goBackButton.isEnabled = false
                 goForwardButton.isEnabled = false
+                reloadButton.isEnabled = false
                 return
             }
 
             // this will be useful when user will change current web view
-            reloadNavigationElements(false)
+            reloadNavigationElements(true)
         }
     }
     

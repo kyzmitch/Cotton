@@ -30,6 +30,7 @@ protocol SiteExternalNavigationDelegate: class {
 }
 
 protocol SiteNavigationComponent {
+    /// Use `nil` to tell that navigation actions should be disabled
     func updateSiteNavigator(to navigator: SiteNavigationDelegate?)
     /// Reloads state of UI components
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
