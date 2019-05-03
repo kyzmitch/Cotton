@@ -28,12 +28,13 @@ final class WebBrowserToolbarController: UIViewController {
             guard let _ = siteNavigationDelegate else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
+                reloadButton.isEnabled = false
                 downloadsArrowDown = true
                 enableDownloadsButton = false
                 return
             }
 
-            reloadNavigationElements(false)
+            reloadNavigationElements(true)
         }
     }
 
