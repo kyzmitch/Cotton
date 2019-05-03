@@ -12,6 +12,7 @@ public struct T4Video: Decodable, VideoFileNameble {
     public let variants: [Resolution: URL]
     /// The name of video
     public let name: String
+    public let thumbnailURL: URL
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Resolution.self)
@@ -49,6 +50,8 @@ public struct T4Video: Decodable, VideoFileNameble {
         } else {
             name = "t4_\(UUID().uuidString)"
         }
+        
+        thumbnailURL = try container.decode(URL.self, forKey: .thumbnail)
     }
 }
 
@@ -60,6 +63,7 @@ extension T4Video {
         case p720 = "720"
         case p1080 = "1080"
         case pageTitle = "pageTitle"
+        case thumbnail = "thumbnail"
     }
     
     public enum CottonError: Error {

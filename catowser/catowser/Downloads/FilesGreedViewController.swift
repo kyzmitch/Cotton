@@ -80,7 +80,7 @@ extension FilesGreedViewController {
             cell.titleLabel.text = node.name
             cell.previewURL = node.thumbnailUrl
         case .t4(let video)?:
-            cell.previewURL = nil
+            cell.previewURL = video.thumbnailURL
             cell.titleLabel.text = video.name
             // for this type we can only load preview and title
             // download URL should be chosen e.g. by using action sheet
