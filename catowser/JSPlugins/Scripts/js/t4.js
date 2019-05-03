@@ -49,7 +49,7 @@ function cottonHandleT4HttpResponseText(json) {
     }
 
     try {
-        webkit.messageHandlers.t4Handler.postMessage({"video": json});
+        webkit.messageHandlers.t4Handler.postMessage({"video": JSON.stringify(json)});
     } catch(err) {
         console.log('the native context does not exist yet');
     }
