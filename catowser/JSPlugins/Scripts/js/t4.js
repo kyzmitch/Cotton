@@ -1,5 +1,16 @@
 "use strict";
 
+if (typeof window.__cotton__ !== 'undefined') {
+	if (typeof window.__cotton__.t4 !== 'undefined') {
+        Object.defineProperty(window.__cotton__.t4, "httpResponsHandler", {
+			enumerable: false,
+			configurable: false,
+			writable: false,
+			value: cottonHandleT4HttpResponseText
+			});
+    }
+}
+
 function cottonIsT4Enabled() {
     if (typeof window.__cotton__ === 'undefined') {
         console.log('window.__cotton__ isn`t defined');
@@ -46,6 +57,21 @@ function cottonHandleT4HttpResponseText(json) {
 
     if(typeof document.title !== 'undefined'){
         json['pageTitle'] = document.title;
+    }
+
+    let metaTags = document.getElementsByTagName('meta');
+
+    let thumbnail;
+	for (let i=0; i<metaTags.length; i++){
+		let meta = metaTags[i];
+		if (meta.getAttribute("property") == 'og:image'){
+            thumbnail = meta.getAttribute("content");
+		}
+	}
+    if (typeof thumbnail !== 'undefined') {
+        json['thumbnail'] = thumbnail;
+    } else {
+        
     }
 
     try {

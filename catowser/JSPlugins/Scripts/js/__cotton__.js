@@ -76,8 +76,11 @@ XMLHttpRequest.prototype.send = function(body) {
 		cottonBaseLog('HttpResponse 200 OK:' + this.responseURL);
         let json = JSON.parse(this.responseText);
         window.__cotton__.ig.httpResponsHandler(json);
-        if (typeof cottonHandleT4HttpResponseText !== 'undefined') {
-            cottonHandleT4HttpResponseText(json);
+        if (typeof window.__cotton__.ig.httpResponsHandler !== 'undefined') {
+            window.__cotton__.ig.httpResponsHandler(json);
+        }
+        if (typeof window.__cotton__.t4.httpResponsHandler !== 'undefined') {
+            window.__cotton__.t4.httpResponsHandler(json);
         }
 	});
 };
