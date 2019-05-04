@@ -38,6 +38,7 @@ fileprivate final class BaseJSHandler: NSObject {}
 fileprivate extension BaseJSHandler {
     enum MessageKey: String {
         case log = "log"
+        case html = "html"
     }
 }
 
@@ -52,6 +53,9 @@ extension BaseJSHandler: WKScriptMessageHandler {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
                 print("JS Base log: \(value as! String)")
+            case .html? where value is String:
+                // now need to parse to find video tags and extract urls
+                let _ = try? HTMLVideoTagsContainer(html: value as! String)
             default:
                 print("unexpected key \(key)")
             }
