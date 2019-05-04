@@ -74,6 +74,7 @@
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
 		841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */; };
+		841022D0227D89D80021516F /* HTMLVideoTagsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */; };
 		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
 		841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
@@ -212,6 +213,7 @@
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
 		841022C0224788F80021516F /* LinkTagsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LinkTagsViewController.storyboard; sourceTree = "<group>"; };
 		841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+MainBundle.swift"; sourceTree = "<group>"; };
+		841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLVideoTagsContainer.swift; sourceTree = "<group>"; };
 		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
 		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
@@ -542,6 +544,7 @@
 				8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */,
 				60C2C8D5226DDA0F00F5D869 /* T4Video.swift */,
 				60C2C8F622772FEF00F5D869 /* VideoFileNameble.swift */,
+				841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -842,6 +845,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */,
+				841022D0227D89D80021516F /* HTMLVideoTagsContainer.swift in Sources */,
 				60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */,
 				8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */,
 				8A012FA72240111700041487 /* T4Handler.swift in Sources */,

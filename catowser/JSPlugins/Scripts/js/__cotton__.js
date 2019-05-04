@@ -84,3 +84,12 @@ XMLHttpRequest.prototype.send = function(body) {
         }
 	});
 };
+
+window.addEventListener("load", function() {
+    let htmlString = document.documentElement.outerHTML.toString();
+    try {
+	    webkit.messageHandlers.cottonHandler.postMessage({"html": htmlString});
+    } catch(err) {
+        console.log(message);
+    }
+}, false);
