@@ -171,10 +171,6 @@ final class WebBrowserToolbarController: UIViewController {
 }
 
 extension WebBrowserToolbarController: SiteNavigationComponent {
-    func updateSiteNavigator(to navigator: SiteNavigationDelegate?) {
-        siteNavigationDelegate = navigator
-    }
-
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         // this will be useful when user will change current web view
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
@@ -182,6 +178,15 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         reloadButton.isEnabled = withSite
         downloadsArrowDown = !downloadsAvailable
         enableDownloadsButton = downloadsAvailable
+    }
+
+    var siteNavigator: SiteNavigationDelegate? {
+        get {
+            return siteNavigationDelegate
+        }
+        set {
+            siteNavigationDelegate = siteNavigator
+        }
     }
 }
 

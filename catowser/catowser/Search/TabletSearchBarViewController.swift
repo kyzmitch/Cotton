@@ -138,8 +138,13 @@ final class TabletSearchBarViewController: BaseViewController {
 }
 
 extension TabletSearchBarViewController: SiteNavigationComponent {
-    func updateSiteNavigator(to navigator: SiteNavigationDelegate?) {
-        siteNavigationDelegate = navigator
+    var siteNavigator: SiteNavigationDelegate? {
+        get {
+            return siteNavigationDelegate
+        }
+        set {
+            siteNavigationDelegate = siteNavigator
+        }
     }
 
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {

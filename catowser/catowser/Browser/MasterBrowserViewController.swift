@@ -332,24 +332,38 @@ extension MasterBrowserViewController: TabRendererInterface {
                 return
             }
 
-            updateSiteNavigator(to: webViewController)
+            siteNavigator = webViewController
+
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
+            topSitesController.removeFromChild()
+
             add(asChildViewController: webViewController, to: containerView)
             webViewController.view.snp.makeConstraints { make in
                 make.left.right.top.bottom.equalTo(containerView)
             }
-        //case .topSites:
-
-        default:
-            updateSiteNavigator(to: nil)
+        case .topSites:
+            siteNavigator = nil
             linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
+
             currentWebViewController?.removeFromChild()
+            blankWebPageController.removeFromChild()
+
+            add(asChildViewController: topSitesController, to: containerView)
+            topSitesController.view.snp.makeConstraints { maker in
+                maker.left.right.top.bottom.equalTo(containerView)
+            }
+        default:
+            siteNavigator = nil
+            linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
+
+            currentWebViewController?.removeFromChild()
+            topSitesController.removeFromChild()
+
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in
                 maker.left.right.top.bottom.equalTo(containerView)
             }
-            break
         }
 
         previousTabContent = tabContent
@@ -456,12 +470,18 @@ extension MasterBrowserViewController: TabsObserver {
 }
 
 extension MasterBrowserViewController: SiteNavigationComponent {
-    func updateSiteNavigator(to navigator: SiteNavigationDelegate?) {
-        navigationComponent()?.updateSiteNavigator(to: navigator)
-    }
-
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         navigationComponent()?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
+    }
+
+    var siteNavigator: SiteNavigationDelegate? {
+        get {
+            return nil
+        }
+        set {
+            var holder = navigationComponent()
+            holder?.siteNavigator = siteNavigator
+        }
     }
 }
 
