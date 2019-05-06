@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="l5R-0j-t8G">
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="l5R-0j-t8G">
                         <rect key="frame" x="0.0" y="258" width="375" height="409"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="EST-oH-qWj">
@@ -48,6 +48,7 @@
             </view>
             <connections>
                 <outlet property="collectionView" destination="l5R-0j-t8G" id="cBH-PN-9dB"/>
+                <outlet property="view" destination="hA2-Ic-Q00" id="fIS-3I-b61"/>
             </connections>
             <point key="canvasLocation" x="-12" y="-199.25037481259372"/>
         </viewController>
