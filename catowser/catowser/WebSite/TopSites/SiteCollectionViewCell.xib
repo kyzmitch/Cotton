@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SiteCollectionViewCell" id="Akp-co-XIe" customClass="SiteCollectionViewCell" customModule="Cotton" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="199" height="222"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                <rect key="frame" x="0.0" y="0.0" width="199" height="222"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PXg-40-3Ey">
+                        <rect key="frame" x="0.0" y="0.0" width="199" height="191"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJB-oS-HtT">
+                        <rect key="frame" x="0.0" y="201" width="199" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="D7k-3K-sat"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="dJB-oS-HtT" secondAttribute="bottom" id="6I7-1p-7Xd"/>
+                <constraint firstItem="PXg-40-3Ey" firstAttribute="leading" secondItem="Akp-co-XIe" secondAttribute="leading" id="QSc-Fi-qX2"/>
+                <constraint firstItem="dJB-oS-HtT" firstAttribute="leading" secondItem="Akp-co-XIe" secondAttribute="leading" id="feO-cn-vpn"/>
+                <constraint firstItem="PXg-40-3Ey" firstAttribute="top" secondItem="Akp-co-XIe" secondAttribute="top" id="gdZ-AZ-Gc0"/>
+                <constraint firstAttribute="trailing" secondItem="PXg-40-3Ey" secondAttribute="trailing" id="nkb-Dd-YQ6"/>
+                <constraint firstAttribute="trailing" secondItem="dJB-oS-HtT" secondAttribute="trailing" id="oIf-BD-5p7"/>
+                <constraint firstItem="dJB-oS-HtT" firstAttribute="top" secondItem="PXg-40-3Ey" secondAttribute="bottom" constant="10" id="oXu-C2-9P8"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="IPK-8x-rn6"/>
+            <size key="customSize" width="184" height="222"/>
+            <connections>
+                <outlet property="imageView" destination="PXg-40-3Ey" id="8bc-Bk-TjS"/>
+                <outlet property="titleLabel" destination="dJB-oS-HtT" id="qZ5-6e-PA3"/>
+            </connections>
+            <point key="canvasLocation" x="-13.6" y="264.46776611694156"/>
+        </collectionViewCell>
+    </objects>
+</document>

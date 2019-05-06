@@ -44,6 +44,8 @@ final class MasterBrowserViewController: BaseViewController {
     /// to support favorite sites list.
     private let blankWebPageController = BlankWebPageViewController()
 
+    private let topSitesController: TopSitesViewController = TopSitesViewController.newFromNib()
+
     /// The view needed to hold tab content like WebView or favorites table view.
     private let containerView: UIView = {
         let v = UIView()
@@ -337,6 +339,7 @@ extension MasterBrowserViewController: TabRendererInterface {
             webViewController.view.snp.makeConstraints { make in
                 make.left.right.top.bottom.equalTo(containerView)
             }
+        //case .topSites:
 
         default:
             updateSiteNavigator(to: nil)
