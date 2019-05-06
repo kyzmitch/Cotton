@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-final class BlankWebPageViewController: BaseViewController {
+final class BlankWebPageViewController: UIViewController {
     private let logo: UIImageView = {
         let img = UIImage(named: "Logo")
         let imgView = UIImageView(image: img)

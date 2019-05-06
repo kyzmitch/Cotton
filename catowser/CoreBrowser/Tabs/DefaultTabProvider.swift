@@ -24,13 +24,7 @@ public final class DefaultTabProvider {
     private init() {}
 
     public var contentState: Tab.ContentType {
-        // TODO: finish implementation and store it somewhere
-        // maybe in UserDefaults plist
-        // this method should be not async
-        guard let site = Site(urlString: "https://www.instagram.com/p/BwP21kxH0S2/") else {
-            return .blank
-        }
-        return .site(site)
+        return .topSites
     }
     
     public var selected: Bool {

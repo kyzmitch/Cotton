@@ -20,11 +20,6 @@ protocol FileDownloadViewDelegate: class {
 }
 
 final class FilesGreedViewController: UITableViewController, CollectionViewInterface {
-    static func newFromStoryboard() -> FilesGreedViewController {
-        let name = String(describing: self)
-        return FilesGreedViewController.instantiateFromStoryboard(name, identifier: name)
-    }
-
     private var backLayer: CAGradientLayer?
 
     fileprivate var filesDataSource: TagsSiteDataSource?
