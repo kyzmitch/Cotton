@@ -13,6 +13,7 @@ public struct Site {
     /// Initial url
     public let url: URL
     public let host: String
+    public let faviconURL: URL
 
     /// String associated with site if site was created from search engine.
     /// This convinient property to transfer/save search query to use it for search view.
@@ -42,6 +43,10 @@ public struct Site {
             return nil
         }
         host = decodedHost
+        guard let faviconURL = URL(faviconHost: host) else {
+            return nil
+        }
+        self.faviconURL = faviconURL
         self.url = url
         self.searchSuggestion = searchSuggestion
     }
@@ -59,6 +64,10 @@ public struct Site {
             return nil
         }
         host = decodedHost
+        guard let faviconURL = URL(faviconHost: host) else {
+            return nil
+        }
+        self.faviconURL = faviconURL
         searchSuggestion = nil
     }
 
@@ -80,3 +89,10 @@ public struct Site {
 }
 
 extension Site: Equatable {}
+
+fileprivate extension URL {
+    init?(faviconHost: String) {
+        let format = "http://\(faviconHost)/favicon.ico"
+        self.init(string: format)
+    }
+}
