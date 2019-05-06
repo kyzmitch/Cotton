@@ -389,7 +389,11 @@ private extension MasterBrowserViewController {
     }
 
     func replaceTab(with url: URL, with suggestion: String? = nil) {
-        let siteContent: Tab.ContentType = .site(Site(url: url, searchSuggestion: suggestion))
+        guard let site = Site(url: url, searchSuggestion: suggestion) else {
+            assertionFailure("\(#function) failed to replace current tab - failed create site")
+            return
+        }
+        let siteContent: Tab.ContentType = .site(site)
         do {
             try TabsListManager.shared.replaceSelected(tabContent: siteContent)
             open(tabContent: siteContent)

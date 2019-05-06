@@ -12,14 +12,7 @@ import WebKit
 public struct Site {
     /// Initial url
     public let url: URL
-
-    public var host: String {
-        // For http://www.opennet.ru/opennews/art.shtml?num=50072
-        // it should be "www.opennet.ru"
-        // Add parsing of host https://tools.ietf.org/html/rfc1738#section-3.1
-        // in case if iOS sdk returns nil
-        return url.host ?? "site"
-    }
+    public let host: String
 
     /// String associated with site if site was created from search engine.
     /// This convinient property to transfer/save search query to use it for search view.
@@ -44,7 +37,11 @@ public struct Site {
 
     public let canLoadPlugins: Bool = true
     
-    public init(url: URL, searchSuggestion: String? = nil) {
+    public init?(url: URL, searchSuggestion: String? = nil) {
+        guard let decodedHost = url.host else {
+            return nil
+        }
+        host = decodedHost
         self.url = url
         self.searchSuggestion = searchSuggestion
     }
@@ -54,6 +51,14 @@ public struct Site {
             return nil
         }
         url = decodedUrl
+        // For http://www.opennet.ru/opennews/art.shtml?num=50072
+        // it should be "www.opennet.ru"
+        // Add parsing of host https://tools.ietf.org/html/rfc1738#section-3.1
+        // in case if iOS sdk returns nil
+        guard let decodedHost = url.host else {
+            return nil
+        }
+        host = decodedHost
         searchSuggestion = nil
     }
 

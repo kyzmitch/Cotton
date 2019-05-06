@@ -229,13 +229,13 @@ extension WebViewController: WKNavigationDelegate {
         }
 
         currentUrl = webViewUrl
-        let site: Site = .init(url: webViewUrl)
+        guard let site = Site(url: webViewUrl) else {
+            assertionFailure("failed create site from URL")
+            return
+        }
         // enabling plugin works here for instagram, but not for t4 site
         pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
-
-        if let host = currentUrl.host {
-            InMemoryDomainSearchProvider.shared.rememberDomain(name: host)
-        }
+        InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
 
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
