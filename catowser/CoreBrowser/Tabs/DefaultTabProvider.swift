@@ -43,4 +43,16 @@ public final class DefaultTabProvider {
     public var addSpeed: TabAddSpeed {
         return .after(.milliseconds(300))
     }
+
+    public var topSites: [Site] {
+        var array: [Site] = []
+
+        if let ig = Site(urlString: "https://www.instagram.com", customTitle: "Instagram") {
+            array.append(ig)
+        }
+        if let opennet = Site(urlString: "https://opennet.ru", customTitle: "OpenNet") {
+            array.append(opennet)
+        }
+        return array
+    }
 }

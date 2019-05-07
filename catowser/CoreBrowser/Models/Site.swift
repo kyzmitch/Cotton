@@ -23,10 +23,14 @@ public struct Site {
     public var title: String {
         if let search = searchSuggestion {
             return search
+        } else if let userSpecific = userSpecifiedTitle {
+            return userSpecific
         } else {
             return host
         }
     }
+
+    public let userSpecifiedTitle: String?
 
     public var searchBarContent: String {
         return searchSuggestion ?? url.absoluteString
@@ -49,9 +53,10 @@ public struct Site {
         self.faviconURL = faviconURL
         self.url = url
         self.searchSuggestion = searchSuggestion
+        userSpecifiedTitle = nil
     }
 
-    public init?(urlString: String) {
+    public init?(urlString: String, customTitle: String? = nil) {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
@@ -69,6 +74,7 @@ public struct Site {
         }
         self.faviconURL = faviconURL
         searchSuggestion = nil
+        userSpecifiedTitle = customTitle
     }
 
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
@@ -92,7 +98,7 @@ extension Site: Equatable {}
 
 fileprivate extension URL {
     init?(faviconHost: String) {
-        let format = "http://\(faviconHost)/favicon.ico"
+        let format = "https://\(faviconHost)/favicon.ico"
         self.init(string: format)
     }
 }

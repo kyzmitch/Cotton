@@ -44,7 +44,7 @@ final class MasterBrowserViewController: BaseViewController {
     /// to support favorite sites list.
     private let blankWebPageController = BlankWebPageViewController()
 
-    private let topSitesController: TopSitesViewController = TopSitesViewController.newFromNib()
+    private let topSitesController: AnyViewController & TopSitesInterface = TopSitesViewController.newFromNib()
 
     /// The view needed to hold tab content like WebView or favorites table view.
     private let containerView: UIView = {
@@ -336,7 +336,7 @@ extension MasterBrowserViewController: TabRendererInterface {
 
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
-            topSitesController.removeFromChild()
+            topSitesController.viewController.removeFromChild()
 
             add(asChildViewController: webViewController, to: containerView)
             webViewController.view.snp.makeConstraints { make in
@@ -349,7 +349,8 @@ extension MasterBrowserViewController: TabRendererInterface {
             currentWebViewController?.removeFromChild()
             blankWebPageController.removeFromChild()
 
-            add(asChildViewController: topSitesController, to: containerView)
+            topSitesController.reload(with: DefaultTabProvider.shared.topSites)
+            add(asChildViewController: topSitesController.viewController, to: containerView)
             topSitesController.view.snp.makeConstraints { maker in
                 maker.left.right.top.bottom.equalTo(containerView)
             }
@@ -358,7 +359,7 @@ extension MasterBrowserViewController: TabRendererInterface {
             linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
 
             currentWebViewController?.removeFromChild()
-            topSitesController.removeFromChild()
+            topSitesController.viewController.removeFromChild()
 
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in

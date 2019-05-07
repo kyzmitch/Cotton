@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreImage
 
 public extension UIImage {
     convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
@@ -38,5 +39,49 @@ public extension UIImage {
         UIGraphicsEndImageContext();
         
         return image;
+    }
+
+    fileprivate var averageColorImage: CGImage? {
+        guard let cgImage = self.cgImage else {
+            return nil
+        }
+        let inputImage = CIImage(cgImage: cgImage)
+        guard let avgFilter = CIFilter(name: "CIAreaAverage") else {
+            return nil
+        }
+        avgFilter.setValue(inputImage, forKey: kCIInputImageKey)
+        let imageRect = inputImage.extent
+        avgFilter.setValue(CIVector(cgRect: imageRect), forKey: kCIInputExtentKey)
+
+        guard let outputImage = avgFilter.outputImage else {
+            return nil
+        }
+        let cgOutput = outputImage.cgImage
+        return cgOutput
+    }
+
+    public var firstPixelColor: UIColor? {
+        let point = CGPoint(x: 0, y: 0)
+        return averageColorImage?.getPixelColor(pos: point)
+    }
+}
+
+fileprivate extension CGImage {
+    fileprivate func getPixelColor(pos: CGPoint) -> UIColor? {
+        guard let dataProvider = dataProvider else {
+            return nil
+        }
+        guard let pixelData = dataProvider.data else {
+            return nil
+        }
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        let pixelInfo: Int = ((Int(width) * Int(pos.y)) + Int(pos.x)) * 4
+
+        let r = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let b = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+
+        return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }
