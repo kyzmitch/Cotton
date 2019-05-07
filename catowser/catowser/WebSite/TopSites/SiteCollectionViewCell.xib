@@ -10,7 +10,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SiteCollectionViewCell" customModule="Cotton" customModuleProvider="target">
+            <connections>
+                <outlet property="imageView" destination="PXg-40-3Ey" id="2ve-qp-51s"/>
+                <outlet property="titleLabel" destination="dJB-oS-HtT" id="NAx-Mv-tNb"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SiteCollectionViewCell" id="Akp-co-XIe" customClass="SiteCollectionViewCell" customModule="Cotton" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="199" height="222"/>
@@ -22,7 +27,7 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PXg-40-3Ey">
                         <rect key="frame" x="0.0" y="0.0" width="199" height="191"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJB-oS-HtT">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJB-oS-HtT" customClass="SiteColle">
                         <rect key="frame" x="0.0" y="201" width="199" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="D7k-3K-sat"/>
@@ -44,10 +49,6 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="IPK-8x-rn6"/>
             <size key="customSize" width="184" height="222"/>
-            <connections>
-                <outlet property="imageView" destination="PXg-40-3Ey" id="8bc-Bk-TjS"/>
-                <outlet property="titleLabel" destination="dJB-oS-HtT" id="qZ5-6e-PA3"/>
-            </connections>
             <point key="canvasLocation" x="-13.6" y="264.46776611694156"/>
         </collectionViewCell>
     </objects>
