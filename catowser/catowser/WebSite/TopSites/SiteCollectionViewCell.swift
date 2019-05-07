@@ -10,17 +10,22 @@ import UIKit
 import CoreBrowser
 
 final class SiteCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var faviconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+    }
 
     static func size(for traitCollection: UITraitCollection) -> CGSize {
         let imageViewHeight: CGFloat
         if traitCollection.verticalSizeClass == .compact {
-            imageViewHeight = 128
+            imageViewHeight = 96
         } else if traitCollection.horizontalSizeClass == .compact {
-            imageViewHeight = 256
+            imageViewHeight = 96
         } else {
-            imageViewHeight = 128
+            imageViewHeight = 96
         }
 
         return CGSize(width: imageViewHeight, height: imageViewHeight + 22)

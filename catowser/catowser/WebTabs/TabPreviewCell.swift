@@ -63,7 +63,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     private let backgroundHolder: UIView = {
         let view = UIView()
         view.layer.cornerRadius = .cornerRadius
-        view.clipsToBounds = true
+        view.layer.masksToBounds = true
         view.backgroundColor = .cellBackground
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
