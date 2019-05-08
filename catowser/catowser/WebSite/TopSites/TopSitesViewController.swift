@@ -81,8 +81,7 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
             return
         }
 
-        let tab: Tab = Tab(contentType: .site(site), selected: true)
-        TabsListManager.shared.add(tab: tab)
+        try? TabsListManager.shared.replaceSelected(tabContent: .site(site))
     }
 }
 

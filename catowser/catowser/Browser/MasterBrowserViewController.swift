@@ -465,6 +465,15 @@ extension MasterBrowserViewController: TabsObserver {
     }
 
     func tabDidReplace(_ tab: Tab, at index: Int) {
+        if let currentContentType = previousTabContent {
+            switch currentContentType {
+            case .site:
+                break
+            default:
+                open(tabContent: tab.contentType)
+            }
+        }
+
         // need update navigation if the same tab was updated
         let withSite: Bool
         if case .site = tab.contentType {

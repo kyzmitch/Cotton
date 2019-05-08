@@ -24,6 +24,8 @@ public extension Tab {
                 return .defaultTitle
             case .site(let someSite):
                 return someSite.title
+            case .topSites:
+                return .topSitesTitle
             default:
                 return "Not implemented"
             }
@@ -149,5 +151,5 @@ fileprivate extension UIColor {
 
 fileprivate extension String {
     static let defaultTitle = NSLocalizedString("ttl_tab_short_blank", comment: "Title for tab without any URL or search string")
-    static let favoriteSitesTitle = NSLocalizedString("ttl_tab_short_favorites", comment: "Title for tab with list of favorite sites")
+    static let topSitesTitle = NSLocalizedString("ttl_tab_short_top_sites", comment: "Title for tab with list of favorite sites")
 }

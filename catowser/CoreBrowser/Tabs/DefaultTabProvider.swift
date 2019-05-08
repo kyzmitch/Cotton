@@ -32,7 +32,7 @@ public final class DefaultTabProvider {
         case .pad:
             return true
         default:
-            return true
+            return false
         }
     }
 
