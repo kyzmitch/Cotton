@@ -10,6 +10,7 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 import JSPlugins
+import Alamofire
 
 /// An interface for component which suppose to render tabs
 ///
@@ -141,6 +142,9 @@ final class MasterBrowserViewController: BaseViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
+
+        // This is to fix favicon.ico for Instagram site, calling it once
+        DataRequest.addAcceptableImageContentTypes(["image/vnd.microsoft.icon"])
         
         if isPad {
             tabsViewController.view.snp.makeConstraints { (maker) in
