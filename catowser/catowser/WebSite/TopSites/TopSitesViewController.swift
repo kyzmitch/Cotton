@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import AlamofireImage
+import Alamofire
 
 protocol TopSitesInterface {
     func reload(with sites: [Site])
@@ -89,6 +90,8 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 extension SiteCollectionViewCell {
     func reload(with site: Site) {
         titleLabel.text = site.title
+
+        DataRequest.addAcceptableImageContentTypes(["image/vnd.microsoft.icon"])
 
         faviconImageView.af_setImage(withURL: site.faviconURL, placeholderImage: nil, filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false) { [weak self] dataResponse in
             guard let favicon = dataResponse.value else {
