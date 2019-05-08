@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="fR2-xc-tpd">
-                    <rect key="frame" x="0.0" y="258" width="375" height="409"/>
+                    <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Ch5-cf-Z3H">
                         <size key="itemSize" width="50" height="50"/>
@@ -31,27 +31,15 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="wUr-rq-52P">
-                    <rect key="frame" x="123.5" y="50" width="128" height="128"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="128" id="NzC-Uk-Qv9"/>
-                        <constraint firstAttribute="width" secondItem="wUr-rq-52P" secondAttribute="height" multiplier="1:1" id="qgQ-l6-hDf"/>
-                    </constraints>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="iHN-5V-bwt" firstAttribute="trailing" secondItem="fR2-xc-tpd" secondAttribute="trailing" id="71n-yu-R3Y"/>
-                <constraint firstItem="wUr-rq-52P" firstAttribute="top" secondItem="iHN-5V-bwt" secondAttribute="top" constant="30" id="D9h-9O-lb0"/>
+                <constraint firstItem="fR2-xc-tpd" firstAttribute="top" secondItem="iHN-5V-bwt" secondAttribute="top" id="E9v-Pf-tfE"/>
                 <constraint firstItem="iHN-5V-bwt" firstAttribute="bottom" secondItem="fR2-xc-tpd" secondAttribute="bottom" id="UBo-I3-aW1"/>
-                <constraint firstItem="wUr-rq-52P" firstAttribute="centerX" secondItem="Tp7-HV-PK1" secondAttribute="centerX" id="hFf-Di-1FC"/>
-                <constraint firstItem="fR2-xc-tpd" firstAttribute="top" secondItem="wUr-rq-52P" secondAttribute="bottom" constant="80" id="ifJ-BU-jtr"/>
                 <constraint firstItem="fR2-xc-tpd" firstAttribute="leading" secondItem="iHN-5V-bwt" secondAttribute="leading" id="u8S-oZ-j4s"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="iHN-5V-bwt"/>
         </view>
     </objects>
-    <resources>
-        <image name="Logo" width="76" height="76"/>
-    </resources>
 </document>
