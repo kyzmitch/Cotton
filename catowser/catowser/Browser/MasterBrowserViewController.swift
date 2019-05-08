@@ -325,18 +325,27 @@ extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
         linksRouter.closeTags()
 
+        if let currentTabContentType = previousTabContent {
+            switch currentTabContentType {
+            case .site:
+                currentWebViewController?.removeFromChild()
+            case .topSites:
+                topSitesController.viewController.removeFromChild()
+            default:
+                blankWebPageController.removeFromChild()
+            }
+        }
+
         switch tabContent {
         case .site(let site):
-            guard let webViewController = try?
-                WebViewsReuseManager.shared.controllerFor(site, pluginsProvider: self, delegate: self) else {
+            let viewController = try? WebViewsReuseManager.shared.controllerFor(site, pluginsProvider: self, delegate: self)
+            guard let webViewController = viewController else {
+                assertionFailure("Failed create new web view for tab")
+                open(tabContent: .blank)
                 return
             }
 
             siteNavigator = webViewController
-
-            currentWebViewController?.removeFromChild()
-            blankWebPageController.removeFromChild()
-            topSitesController.viewController.removeFromChild()
 
             add(asChildViewController: webViewController, to: containerView)
             webViewController.view.snp.makeConstraints { make in
@@ -345,11 +354,8 @@ extension MasterBrowserViewController: TabRendererInterface {
         case .topSites:
             siteNavigator = nil
             linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
-
-            currentWebViewController?.removeFromChild()
-            blankWebPageController.removeFromChild()
-
             topSitesController.reload(with: DefaultTabProvider.shared.topSites)
+
             add(asChildViewController: topSitesController.viewController, to: containerView)
             topSitesController.view.snp.makeConstraints { maker in
                 maker.left.right.top.bottom.equalTo(containerView)
@@ -357,9 +363,6 @@ extension MasterBrowserViewController: TabRendererInterface {
         default:
             siteNavigator = nil
             linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
-
-            currentWebViewController?.removeFromChild()
-            topSitesController.viewController.removeFromChild()
 
             add(asChildViewController: blankWebPageController, to: containerView)
             blankWebPageController.view.snp.makeConstraints { maker in
@@ -465,6 +468,7 @@ extension MasterBrowserViewController: TabsObserver {
         } else {
             withSite = false
         }
+
         linksRouter.closeTags()
         reloadNavigationElements(withSite)
     }
