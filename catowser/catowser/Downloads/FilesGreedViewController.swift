@@ -61,6 +61,7 @@ extension FilesGreedViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(for: indexPath, type: DownloadButtonCellView.self)
+        cell.selectionStyle = .none
 
         let tableW = tableView.bounds.width - Sizes.margin * 2 - Sizes.imageMargin * 2
         let desiredLabelW = tableW - cell.previewImageView.center.x - cell.previewImageView.bounds.width / 2 - cell.downloadButton.bounds.width

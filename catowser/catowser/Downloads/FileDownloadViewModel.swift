@@ -31,10 +31,13 @@ final class FileDownloadViewModel {
     }
 
     func download() {
+        downloadOutput.value = .started
+        
         CoreBrowser.DownloadFacade.shared.download(file: batch)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 guard let self = self else {
+                    assertionFailure("Zomby self")
                     return
                 }
                 switch result {

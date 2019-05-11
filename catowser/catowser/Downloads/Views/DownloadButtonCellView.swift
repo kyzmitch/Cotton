@@ -65,6 +65,7 @@ final class DownloadButtonCellView: UITableViewCell {
                     case .started:
                         self.buttonState = .downloading
                     case .in(let progress):
+                        // .downloading
                         self.progressView.progress = Float(progress)
                     case .finished(let url):
                         self.buttonState = .downloaded(url)
