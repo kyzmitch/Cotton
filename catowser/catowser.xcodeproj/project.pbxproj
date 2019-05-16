@@ -103,6 +103,7 @@
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
+		C7519626228DE21E0071CE0C /* String+JSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7519625228DE21E0071CE0C /* String+JSExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -255,6 +256,7 @@
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColour+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewController.swift; sourceTree = "<group>"; };
+		C7519625228DE21E0071CE0C /* String+JSExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+JSExtensions.swift"; sourceTree = "<group>"; };
 		C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -364,6 +366,7 @@
 		608DA74B223A3BD5009F75BD /* JSPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				C7519624228DE1EF0071CE0C /* Extensions */,
 				8A0E0EA9224A94BE00D86CD7 /* Models */,
 				8A012FA52240110000041487 /* Handlers */,
 				608DA7422238FE33009F75BD /* Scripts */,
@@ -592,6 +595,14 @@
 				60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */,
 				60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */,
 				60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C7519624228DE1EF0071CE0C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C7519625228DE21E0071CE0C /* String+JSExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -872,6 +883,7 @@
 				60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */,
 				8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */,
 				8A012FA72240111700041487 /* T4Handler.swift in Sources */,
+				C7519626228DE21E0071CE0C /* String+JSExtensions.swift in Sources */,
 				60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* WebViewJSPluginsFacade.swift in Sources */,
