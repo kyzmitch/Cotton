@@ -94,7 +94,8 @@ extension SiteCollectionViewCell {
                 return
             }
 
-            guard let color = favicon.firstPixelColor else {
+            let averageColor = favicon.firstPixelColor
+            guard let color = averageColor else {
                 return
             }
 
