@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftSoup
 
 public struct HTMLVideoTagsContainer {
     public let videoURLs: [URL]
@@ -15,31 +16,27 @@ public struct HTMLVideoTagsContainer {
             throw CottonError.emptyHtml
         }
         
-        let tagsStartIndexes = html.indices(of: "<video")
-        let tagsEndIndexes = html.indices(of: "</video>")
-        let count = tagsStartIndexes.count
-        guard count != 0, count == tagsEndIndexes.count else {
-            assertionFailure("Unexpected tags count start: \(tagsStartIndexes.count) end: \(tagsEndIndexes.count)")
-            throw CottonError.noVideoTags
-        }
-        
-        let sourcURLParam = "src=\""
-        for i in (0..<count) {
-            let sIndex = tagsStartIndexes[i]
-            let eIndex = tagsEndIndexes[i]
-            let videoTagString = html[sIndex..<eIndex]
+        do {
+            let doc: Document = try SwiftSoup.parse(html)
+            let videoTags: Elements = try doc.select("video")
             
-            guard let sourceURLParamRange = videoTagString.range(of: sourcURLParam) else {
-                continue
+            for videoTag in videoTags {
+                let videoUrl: String = try videoTag.attr("src")
+                let thumanailURL: String = try videoTag.attr("poster")
             }
-            
-            let sourceSubstring = html[sourceURLParamRange.lowerBound..<eIndex]
+        } catch Exception.Error(let type, let message) {
+            print("Failed parse html: \(message)")
+            throw CottonError.parseError
+        } catch {
+            print("Failed to parse html")
+            throw CottonError.parseError
         }
     }
 }
 
 extension HTMLVideoTagsContainer {
     enum CottonError: Error {
+        case parseError
         case emptyHtml
         case noVideoTags
     }

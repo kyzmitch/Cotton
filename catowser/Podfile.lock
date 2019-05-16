@@ -7,6 +7,7 @@ PODS:
   - Result (3.2.4)
   - SnapKit (4.2.0)
   - SwiftLint (0.29.4)
+  - SwiftSoup (2.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.8)
@@ -14,6 +15,7 @@ DEPENDENCIES:
   - ReactiveSwift (~> 3.0)
   - SnapKit (~> 4.2.0)
   - SwiftLint
+  - SwiftSoup
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -23,6 +25,7 @@ SPEC REPOS:
     - Result
     - SnapKit
     - SwiftLint
+    - SwiftSoup
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
@@ -31,7 +34,8 @@ SPEC CHECKSUMS:
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftLint: 73f2ecfd0f6d812c8cb9a73c00fe809bc2504585
+  SwiftSoup: 4fe21f65cdbfa3a40559047016b7962b88d29279
 
-PODFILE CHECKSUM: a56bceedbe98feb6a2db0b99c2ea130baf62a647
+PODFILE CHECKSUM: 26ba2065e6854d44ecf369a54c70bffcdf729ee4
 
 COCOAPODS: 1.6.1

@@ -22,3 +22,10 @@ target 'CoreBrowser' do
   pod 'ReactiveSwift', '~> 3.0'
   pod 'SwiftLint'
 end
+
+target 'JSPlugins' do
+  use_frameworks!
+
+  pod 'SwiftSoup'
+end
+
