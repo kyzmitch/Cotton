@@ -106,6 +106,7 @@
 		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
 		C7519626228DE21E0071CE0C /* String+JSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7519625228DE21E0071CE0C /* String+JSExtensions.swift */; };
 		C7519628228DEC190071CE0C /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7519627228DEC190071CE0C /* SwiftSoup.framework */; };
+		C7796FF3228E70590071E69C /* HTMLVideoTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7796FF2228E70590071E69C /* HTMLVideoTag.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,6 +263,7 @@
 		C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewController.swift; sourceTree = "<group>"; };
 		C7519625228DE21E0071CE0C /* String+JSExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+JSExtensions.swift"; sourceTree = "<group>"; };
 		C7519627228DEC190071CE0C /* SwiftSoup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftSoup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C7796FF2228E70590071E69C /* HTMLVideoTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLVideoTag.swift; sourceTree = "<group>"; };
 		C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		C91526EEB8C937969BDA1E7B /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 		D784585EBE40B8C157609F97 /* Pods-JSPlugins.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JSPlugins.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JSPlugins/Pods-JSPlugins.debug.xcconfig"; sourceTree = "<group>"; };
@@ -579,6 +581,7 @@
 				60C2C8D5226DDA0F00F5D869 /* T4Video.swift */,
 				60C2C8F622772FEF00F5D869 /* VideoFileNameble.swift */,
 				841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */,
+				C7796FF2228E70590071E69C /* HTMLVideoTag.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -922,6 +925,7 @@
 				8A012FA72240111700041487 /* T4Handler.swift in Sources */,
 				C7519626228DE21E0071CE0C /* String+JSExtensions.swift in Sources */,
 				60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */,
+				C7796FF3228E70590071E69C /* HTMLVideoTag.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* WebViewJSPluginsFacade.swift in Sources */,
 				8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */,
