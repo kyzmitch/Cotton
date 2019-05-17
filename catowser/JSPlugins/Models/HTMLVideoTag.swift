@@ -10,5 +10,18 @@ import Foundation
 
 public struct HTMLVideoTag {
     let src: URL
-    let poster: URL
+    let poster: URL?
+    
+    init?(srcString: String, posterString: String?) {
+        guard let srcURL = URL(string: srcString) else {
+            return nil
+        }
+        
+        src = srcURL
+        if let posterURLString = posterString {
+            poster = URL(string: posterURLString)
+        } else {
+            poster = nil
+        }
+    }
 }
