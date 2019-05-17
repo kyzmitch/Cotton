@@ -16,15 +16,17 @@ public extension String {
     public static func queueNameWith(suffix: String) -> String {
         return .mainBundleName() + ".\(suffix)"
     }
-}
-
-extension String {
+    
     func looksLikeAURL() -> Bool {
         // The assumption here is that if the user is typing in a forward slash and there are no spaces
         // involved, it's going to be a URL. If we type a space, any url would be invalid.
         // See https://bugzilla.mozilla.org/show_bug.cgi?id=1192155 for additional details.
         return self.contains("/") && !self.contains(" ")
     }
+}
+
+extension String {
+    
     
     func withoutPrefix(_ prefix: String) -> String? {
         guard self.hasPrefix(prefix) else { return nil }
