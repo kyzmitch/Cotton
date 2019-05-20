@@ -21,7 +21,7 @@ public struct HTMLVideoTagsContainer {
         do {
             let doc: Document = try SwiftSoup.parse(html)
             videoElements = try doc.select("video")
-        } catch Exception.Error(let type, let message) {
+        } catch Exception.Error(let _, let message) {
             print("Failed parse html video tags: \(message)")
             throw CottonError.parseError
         } catch {
@@ -29,6 +29,9 @@ public struct HTMLVideoTagsContainer {
             throw CottonError.parseError
         }
         
+        guard videoElements.size() > 0 else {
+            throw CottonError.noVideoTags
+        }
         var result: [HTMLVideoTag] = []
         for videoElement in videoElements {
             // The URL of the video to embed. This is optional;

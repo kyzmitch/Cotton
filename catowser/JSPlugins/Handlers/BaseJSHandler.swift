@@ -55,7 +55,13 @@ extension BaseJSHandler: WKScriptMessageHandler {
                 print("JS Base log: \(value as! String)")
             case .html? where value is String:
                 // now need to parse to find video tags and extract urls
-                let _ = try? HTMLVideoTagsContainer(html: value as! String)
+                do {
+                    let videoTags = try HTMLVideoTagsContainer(html: value as! String)
+                    print("video tags: \(videoTags.videoTags.count)")
+                } catch {
+                    print("failed to parse video tags: \(error)")
+                }
+                
             default:
                 print("unexpected key \(key)")
             }
