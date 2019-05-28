@@ -25,3 +25,22 @@ public struct HTMLVideoTag {
         }
     }
 }
+
+extension HTMLVideoTag: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        src = try container.decode(URL.self, forKey: .src)
+        if let thumbnailURL = try? container.decodeIfPresent(URL.self, forKey: .poster) {
+            poster = thumbnailURL
+        } else {
+            poster = nil
+        }
+    }
+}
+
+extension HTMLVideoTag {
+    enum CodingKeys: String, CodingKey {
+        case src
+        case poster
+    }
+}

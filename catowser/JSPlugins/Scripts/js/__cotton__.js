@@ -59,7 +59,7 @@ function cottonBaseLog(message) {
 
 XMLHttpRequest.prototype.cottonRealOpen = XMLHttpRequest.prototype.open;
 XMLHttpRequest.prototype.open = function(method, url, async, username, password) {
-	cottonBaseLog('HttpRequest: ' + method  + ' url: ' + url);
+	// cottonBaseLog('HttpRequest: ' + method  + ' url: ' + url);
 	this.cottonRealOpen(method, url, async, username, password);
 };
 
@@ -73,7 +73,7 @@ XMLHttpRequest.prototype.send = function(body) {
 		
 		// this.responseType is empty for some reason, so it's not possible to parse 
 		// for json specifically
-		cottonBaseLog('HttpResponse 200 OK:' + this.responseURL);
+		// cottonBaseLog('HttpResponse 200 OK: ' + this.responseURL);
         let json = JSON.parse(this.responseText);
         window.__cotton__.ig.httpResponsHandler(json);
         if (typeof window.__cotton__.ig.httpResponsHandler !== 'undefined') {
@@ -93,3 +93,52 @@ window.addEventListener("load", function() {
         console.log(message);
     }
 }, false);
+
+(function () {
+    let callback = function(mutationsList, observer) {
+        cottonBaseLog('HTML DOM change detected');
+        let tags = [];
+        for(let mutation of mutationsList) {
+            // https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
+            // https://developer.mozilla.org/en-US/docs/Web/API/NodeList
+
+            for(let node of mutation.addedNodes) {
+                if (!(node instanceof HTMLElement)) {
+                    cottonBaseLog('added non HTMLElement');
+                    continue;
+                }
+                if (!(node.tagName == 'video')) {
+                    cottonBaseLog('non video tag was added');
+                    continue;
+                }
+                cottonBaseLog('video tag added to html');
+
+                let srcURL = node.getAttribute('src');
+                let posterURL = node.getAttribute('poster');
+                if (typeof srcURL === 'undefined'){
+                    cottonBaseLog('video tag without source URL');
+                    continue;
+                }
+                let videoTag = {};
+                videoTag['src'] = srcURL;
+                if (typeof posterURL !== 'undefined') {
+                    videoTag['poster'] = posterURL;
+                }
+                tags.push(videoTag);
+            }
+        }
+
+        if (tags.length > 0) {
+            webkit.messageHandlers.cottonHandler.postMessage({"domVideos": tags});
+        }
+    };
+    
+    let observer = new MutationObserver(callback);
+    let bodyObserverConfig = {
+        attributes: true,
+        childList: true,
+        subtree: true,
+        characterData: true
+      };
+    observer.observe(document.body, bodyObserverConfig);
+}());
