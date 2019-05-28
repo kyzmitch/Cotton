@@ -55,8 +55,6 @@ function cottonHandleHttpResponseText(json) {
 	let feedEdges = cottonTryExtractGrapthVideoNodes(json);
 	if(feedEdges.length != 0){
 		sendVideoNodesToNativeApp(feedEdges);
-	} else {
-		cottonLog('HttpResponse: doesn`t contain edge nodes');
 	}
 }
 

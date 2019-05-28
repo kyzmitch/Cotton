@@ -39,6 +39,7 @@ fileprivate extension BaseJSHandler {
     enum MessageKey: String {
         case log = "log"
         case html = "html"
+        case DOMVideoTags = "domVideos"
     }
 }
 
@@ -61,7 +62,16 @@ extension BaseJSHandler: WKScriptMessageHandler {
                 } catch {
                     print("failed to parse video tags: \(error)")
                 }
-                
+            case .DOMVideoTags?:
+                guard let jsonObject = Data.dataFrom(value) else {
+                    break
+                }
+                do {
+                    let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
+                    print("DOM video tags: \(decoded.count)")
+                } catch {
+                    print("failed decode DOM videos: \(error)")
+                }
             default:
                 print("unexpected key \(key)")
             }

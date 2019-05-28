@@ -21,7 +21,7 @@ public struct HTMLVideoTagsContainer {
         do {
             let doc: Document = try SwiftSoup.parse(html)
             videoElements = try doc.select("video")
-        } catch Exception.Error(let _, let message) {
+        } catch Exception.Error( _, let message) {
             print("Failed parse html video tags: \(message)")
             throw CottonError.parseError
         } catch {
