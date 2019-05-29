@@ -436,8 +436,8 @@ extension MasterBrowserViewController: MasterDelegate {
         get {
             return _keyboardHeight
         }
-        set {
-            _keyboardHeight = keyboardHeight
+        set (newValue) {
+            _keyboardHeight = newValue
         }
     }
 
@@ -496,9 +496,9 @@ extension MasterBrowserViewController: SiteNavigationComponent {
         get {
             return nil
         }
-        set {
-            var holder = navigationComponent()
-            holder?.siteNavigator = siteNavigator
+        set(newValue) {
+            let holder = navigationComponent()
+            holder?.siteNavigator = newValue
         }
     }
 }

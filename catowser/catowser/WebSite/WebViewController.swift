@@ -29,7 +29,7 @@ protocol SiteExternalNavigationDelegate: class {
     func didOpenSiteWith(appName: String)
 }
 
-protocol SiteNavigationComponent {
+protocol SiteNavigationComponent: class {
     /// Use `nil` to tell that navigation actions should be disabled
     var siteNavigator: SiteNavigationDelegate? { get set }
     /// Reloads state of UI components
