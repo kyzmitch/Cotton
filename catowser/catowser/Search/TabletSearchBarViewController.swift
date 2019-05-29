@@ -142,8 +142,8 @@ extension TabletSearchBarViewController: SiteNavigationComponent {
         get {
             return siteNavigationDelegate
         }
-        set {
-            siteNavigationDelegate = siteNavigator
+        set (newValue) {
+            siteNavigationDelegate = newValue
         }
     }
 
