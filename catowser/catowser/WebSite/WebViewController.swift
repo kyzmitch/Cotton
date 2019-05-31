@@ -11,10 +11,6 @@ import WebKit
 import CoreBrowser
 import JSPlugins
 
-protocol CottonPluginsProvider: class {
-    func defaultPlugins() -> [CottonJSPlugin]
-}
-
 protocol SiteNavigationDelegate: class {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
@@ -94,12 +90,12 @@ final class WebViewController: BaseViewController {
         facade.visit(configuration.userContentController)
     }
 
-    init(_ site: Site, pluginsProvider: CottonPluginsProvider, externalNavigationDelegate: SiteExternalNavigationDelegate) {
+    init(_ site: Site, plugins: [CottonJSPlugin], externalNavigationDelegate: SiteExternalNavigationDelegate) {
         self.externalNavigationDelegate = externalNavigationDelegate
         currentUrl = site.url
         configuration = site.webViewConfig
         if site.canLoadPlugins {
-            pluginsFacade = WebViewJSPluginsFacade(pluginsProvider.defaultPlugins())
+            pluginsFacade = WebViewJSPluginsFacade(plugins)
         }
 
         super.init(nibName: nil, bundle: nil)
