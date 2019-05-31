@@ -86,23 +86,11 @@ final class MasterBrowserViewController: BaseViewController {
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
+    private var jsPluginsBuilder: PluginsBuilder?
+
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private var previousTabContent: Tab.ContentType?
-
-    fileprivate lazy var plugins: [CottonJSPlugin] = {
-        var array = [CottonJSPlugin]()
-        if let basePlugin = BasePlugin(delegate: .base(self)) {
-            array.append(basePlugin)
-        }
-        if let igPlugin = InstagramContentPlugin(delegate: .instagram(self)) {
-            array.append(igPlugin)
-        }
-        if let t4Plugin = T4ContentPlugin(delegate: .t4(self)) {
-            array.append(t4Plugin)
-        }
-        return array
-    }()
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -253,6 +241,8 @@ final class MasterBrowserViewController: BaseViewController {
             linksRouter.filesGreedHeightConstraint?.isActive = true
         }
 
+        jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self, t4Delegate: self)
+
         NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: nil, using: keyboardWillHideClosure())
 
         let disposeA = NotificationCenter.default.reactive
@@ -320,12 +310,6 @@ final class MasterBrowserViewController: BaseViewController {
     }
 }
 
-extension MasterBrowserViewController: CottonPluginsProvider {
-    func defaultPlugins() -> [CottonJSPlugin] {
-        return plugins
-    }
-}
-
 extension MasterBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
         linksRouter.closeTags()
@@ -343,7 +327,12 @@ extension MasterBrowserViewController: TabRendererInterface {
 
         switch tabContent {
         case .site(let site):
-            let viewController = try? WebViewsReuseManager.shared.controllerFor(site, pluginsProvider: self, delegate: self)
+            guard let pluginsBuilder = jsPluginsBuilder else {
+                assertionFailure("Failed show site - no plugins")
+                open(tabContent: .blank)
+                return
+            }
+            let viewController = try? WebViewsReuseManager.shared.controllerFor(site, pluginsBuilder: pluginsBuilder, delegate: self)
             guard let webViewController = viewController else {
                 assertionFailure("Failed create new web view for tab")
                 open(tabContent: .blank)

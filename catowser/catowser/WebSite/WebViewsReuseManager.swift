@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import JSPlugins
 
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
@@ -32,8 +33,10 @@ final class WebViewsReuseManager {
     /// Returns already created view with updated site or creates new one.
     ///
     /// - Parameter site: The site object with all info for WebView.
+    /// - Parameter pluginsBuilder: Builder for plugins.
+    /// - Parameter delegate: navigation delegate.
     /// - Returns: Web view controller configured with `Site`.
-    func controllerFor(_ site: Site, pluginsProvider: CottonPluginsProvider, delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
+    func controllerFor(_ site: Site, pluginsBuilder: PluginsBuilder, delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
         for (i, vc) in views.enumerated() {
             let currentUrl = vc.currentUrl
@@ -48,7 +51,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let vc = WebViewController(site, pluginsProvider: pluginsProvider, externalNavigationDelegate: delegate)
+            let vc = WebViewController(site, plugins: pluginsBuilder.plugins, externalNavigationDelegate: delegate)
             views.append(vc)
             lastSelectedIndex = count
             return vc
