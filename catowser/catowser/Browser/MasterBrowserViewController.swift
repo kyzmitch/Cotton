@@ -92,8 +92,9 @@ final class MasterBrowserViewController: BaseViewController {
 
     fileprivate lazy var plugins: [CottonJSPlugin] = {
         var array = [CottonJSPlugin]()
-        array.append(BasePlugin())
-
+        if let basePlugin = BasePlugin(delegate: .base(self)) {
+            array.append(basePlugin)
+        }
         if let igPlugin = InstagramContentPlugin(delegate: .instagram(self)) {
             array.append(igPlugin)
         }
@@ -514,6 +515,12 @@ extension MasterBrowserViewController: T4ContentDelegate {
     func didReceiveVideo(_ video: T4Video) {
         linksRouter.openTagsFor(t4: video)
         reloadNavigationElements(true, downloadsAvailable: true)
+    }
+}
+
+extension MasterBrowserViewController: BasePluginContentDelegate {
+    func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
+
     }
 }
 

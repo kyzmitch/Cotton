@@ -15,7 +15,7 @@ import WebKit
 // because every handler will have own delegate protocol
 
 public enum PluginHandlerDelegateType {
-    case base
+    case base(BasePluginContentDelegate)
     case instagram(InstagramContentDelegate)
     case t4(T4ContentDelegate)
 }

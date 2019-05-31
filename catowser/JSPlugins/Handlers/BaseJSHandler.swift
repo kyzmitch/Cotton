@@ -8,6 +8,10 @@
 
 import WebKit
 
+public protocol BasePluginContentDelegate: class {
+    func didReceiveVideoTags(_ tags: [HTMLVideoTag])
+}
+
 public struct BasePlugin: CottonJSPlugin {
     public let jsFileName: String = "__cotton__"
 
@@ -22,18 +26,40 @@ public struct BasePlugin: CottonJSPlugin {
 
     public let isMainFrameOnly: Bool = true
 
-    public let delegate: PluginHandlerDelegateType = .base
+    public let delegate: PluginHandlerDelegateType
 
-    public let handler: WKScriptMessageHandler = BaseJSHandler()
+    public let handler: WKScriptMessageHandler
 
-    public init?(delegate: PluginHandlerDelegateType) {}
+    public init?(delegate: PluginHandlerDelegateType) {
+        guard case let .base(actualDelegate) = delegate else {
+            assertionFailure("failed to create BasePlugin because of wrong delegate")
+            return nil
+        }
+        self.delegate = delegate
+        handler = BaseJSHandler(actualDelegate)
+    }
 
-    public init?(anyProtocol: Any) {}
-
-    public init() {}
+    public init?(anyProtocol: Any) {
+        guard let baseDelegate = anyProtocol as? BasePluginContentDelegate else {
+            return nil
+        }
+        delegate = .base(baseDelegate)
+        handler = BaseJSHandler(baseDelegate)
+    }
 }
 
-fileprivate final class BaseJSHandler: NSObject {}
+fileprivate final class BaseJSHandler: NSObject {
+    private weak var delegate: BasePluginContentDelegate?
+
+    init(_ delegate: BasePluginContentDelegate) {
+        self.delegate = delegate
+        super.init()
+    }
+
+    private override init() {
+        super.init()
+    }
+}
 
 fileprivate extension BaseJSHandler {
     enum MessageKey: String {
