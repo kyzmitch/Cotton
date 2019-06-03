@@ -24,6 +24,7 @@ protocol MasterDelegate: class {
 protocol LinksRouterInterface: class {
     func openTagsFor(instagram nodes: [InstagramVideoNode])
     func openTagsFor(t4 video: T4Video)
+    func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
 }
 
@@ -113,6 +114,12 @@ extension MasterRouter: LinksRouterInterface {
     func openTagsFor(t4 video: T4Video) {
         dataSource = .t4(video)
         linkTagsController.setLinks(1, for: .video)
+        showLinkTagsControllerIfNeeded()
+    }
+
+    func openTagsFor(html tags: [HTMLVideoTag]) {
+        dataSource = .htmlVideos(tags)
+        linkTagsController.setLinks(tags.count, for: .video)
         showLinkTagsControllerIfNeeded()
     }
 
