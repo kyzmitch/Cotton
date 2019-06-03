@@ -8,12 +8,15 @@
 
 import Foundation
 import WebKit
+import UIKit
 
 public struct Site {
     /// Initial url
     public let url: URL
     public let host: String
     public let faviconURL: URL
+    /// Only used by top sites by loading image from Assets
+    public let faviconImage: UIImage?
 
     /// String associated with site if site was created from search engine.
     /// This convinient property to transfer/save search query to use it for search view.
@@ -54,9 +57,10 @@ public struct Site {
         self.url = url
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
+        faviconImage = nil
     }
 
-    public init?(urlString: String, customTitle: String? = nil) {
+    public init?(urlString: String, customTitle: String? = nil, image: UIImage? = nil) {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
@@ -75,6 +79,7 @@ public struct Site {
         self.faviconURL = faviconURL
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
+        faviconImage = image
     }
 
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
