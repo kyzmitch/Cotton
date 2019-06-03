@@ -509,7 +509,8 @@ extension MasterBrowserViewController: T4ContentDelegate {
 
 extension MasterBrowserViewController: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
-
+        linksRouter.openTagsFor(html: tags)
+        reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 

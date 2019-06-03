@@ -44,3 +44,5 @@ extension HTMLVideoTag {
         case poster
     }
 }
+
+extension HTMLVideoTag: Equatable {}

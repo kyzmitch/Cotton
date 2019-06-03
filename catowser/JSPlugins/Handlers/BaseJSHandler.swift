@@ -84,7 +84,7 @@ extension BaseJSHandler: WKScriptMessageHandler {
                 // now need to parse to find video tags and extract urls
                 do {
                     let videoTags = try HTMLVideoTagsContainer(html: value as! String)
-                    print("video tags: \(videoTags.videoTags.count)")
+                    delegate?.didReceiveVideoTags(videoTags.videoTags)
                 } catch {
                     print("failed to parse video tags: \(error)")
                 }

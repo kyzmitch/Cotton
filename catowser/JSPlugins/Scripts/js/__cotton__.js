@@ -94,6 +94,10 @@ window.addEventListener("load", function() {
     }
 }, false);
 
+document.body.addEventListener('DOMSubtreeModified', function(event) {
+    cottonBaseLog('DOMSubtreeModified triggered');
+}, false);
+
 (function () {
     let callback = function(mutationsList, observer) {
         cottonBaseLog('HTML DOM change detected');
@@ -133,12 +137,10 @@ window.addEventListener("load", function() {
         }
     };
     
-    let observer = new MutationObserver(callback);
-    let bodyObserverConfig = {
-        attributes: true,
-        childList: true,
-        subtree: true,
-        characterData: true
-      };
-    observer.observe(document.body, bodyObserverConfig);
+    var videoTagsDOMobserver = new MutationObserver(callback);
+    if (typeof videoTagsDOMobserver === 'undefined') {
+        cottonBaseLog('failed create DOM observer');
+    }
+    let bodyObserverConfig = {'attributes': false, 'childList': true, 'subtree': true, 'characterData': false};
+    videoTagsDOMobserver.observe(document, bodyObserverConfig);
 }());
