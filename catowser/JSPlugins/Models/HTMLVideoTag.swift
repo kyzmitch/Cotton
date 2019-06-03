@@ -11,7 +11,7 @@ import Foundation
 public struct HTMLVideoTag {
     public let src: URL
     public let poster: URL?
-    public let fileName: String
+    public let name: String
     
     init?(srcString: String, posterString: String?, name: String) {
         guard let srcURL = URL(string: srcString) else {
@@ -25,9 +25,11 @@ public struct HTMLVideoTag {
             poster = nil
         }
 
-        fileName = name
+        self.name = name
     }
 }
+
+extension HTMLVideoTag: VideoFileNameble {}
 
 extension HTMLVideoTag: Decodable {
     public init(from decoder: Decoder) throws {
@@ -39,7 +41,7 @@ extension HTMLVideoTag: Decodable {
             poster = nil
         }
 
-        fileName = "\(UUID().uuidString)-decoded"
+        name = "\(UUID().uuidString)-decoded"
     }
 }
 
