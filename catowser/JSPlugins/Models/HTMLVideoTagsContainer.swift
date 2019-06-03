@@ -18,9 +18,16 @@ public struct HTMLVideoTagsContainer {
         }
         
         let videoElements: Elements
+        let docTitle: String
         do {
             let doc: Document = try SwiftSoup.parse(html)
             videoElements = try doc.select("video")
+
+            if let title = try? doc.title() {
+                docTitle = title
+            } else {
+                docTitle = UUID().uuidString
+            }
         } catch Exception.Error( _, let message) {
             print("Failed parse html video tags: \(message)")
             throw CottonError.parseError
@@ -33,7 +40,7 @@ public struct HTMLVideoTagsContainer {
             throw CottonError.noVideoTags
         }
         var result: [HTMLVideoTag] = []
-        for videoElement in videoElements {
+        for (i, videoElement) in videoElements.enumerated() {
             // The URL of the video to embed. This is optional;
             // you may instead use the <source> element within the video block
             // to specify the video to embed.
@@ -50,7 +57,9 @@ public struct HTMLVideoTagsContainer {
             }
             // The poster URL is optional too
             let thumbnailURL: String? = try? videoElement.attr("poster")
-            guard let tag = HTMLVideoTag(srcString: videoUrl, posterString: thumbnailURL) else {
+
+            let tagName = "\(docTitle)-\(i)"
+            guard let tag = HTMLVideoTag(srcString: videoUrl, posterString: thumbnailURL, name: tagName) else {
                 print("Failed create video tag object with URLs")
                 continue
             }
