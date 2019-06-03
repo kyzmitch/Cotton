@@ -45,8 +45,6 @@ final class WebViewController: BaseViewController {
 
     private weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
 
-    fileprivate let igSiteName = "instagram.com"
-
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         currentUrl = url
 
@@ -198,8 +196,8 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if url.absoluteString.contains(igSiteName) {
-            externalNavigationDelegate?.didOpenSiteWith(appName: igSiteName)
+        if let checker = try? DomainNativeAppChecker(url: url.absoluteString) {
+            externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
 
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
             guard let _ = WKNavigationActionPolicy(rawValue: ignoreAppRawValue) else {
