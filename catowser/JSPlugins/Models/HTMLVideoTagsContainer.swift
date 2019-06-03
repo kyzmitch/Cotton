@@ -56,7 +56,12 @@ public struct HTMLVideoTagsContainer {
                 videoUrl = sourceURL
             }
             // The poster URL is optional too
-            let thumbnailURL: String? = try? videoElement.attr("poster")
+            let thumbnailURL: String?
+            if let posterString = try? videoElement.attr("poster") {
+                thumbnailURL = posterString.isEmpty ? nil : posterString
+            } else {
+                thumbnailURL = nil
+            }
 
             let tagName = "\(docTitle)-\(i)"
             guard let tag = HTMLVideoTag(srcString: videoUrl, posterString: thumbnailURL, name: tagName) else {
