@@ -53,6 +53,9 @@ public final class DefaultTabProvider {
         if let opennet = Site(urlString: "https://opennet.ru", customTitle: "OpenNet") {
             array.append(opennet)
         }
+        if let tube = Site(urlString: "https://m.youtube.com", customTitle: "Youtube") {
+            array.append(tube)
+        }
         return array
     }
 }

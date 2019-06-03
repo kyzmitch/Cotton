@@ -80,7 +80,11 @@ extension FilesGreedViewController {
             cell.titleLabel.text = video.name
             // for this type we can only load preview and title
             // download URL should be chosen e.g. by using action sheet
-            break
+        case .htmlVideos(let tags)?:
+            let tag = tags[indexPath.item]
+            cell.viewModel = FileDownloadViewModel(with: tag)
+            cell.titleLabel.text = tag.fileName
+            cell.previewURL = tag.poster
         default:
             break
         }
@@ -177,5 +181,11 @@ fileprivate extension T4Video {
         }
 
         return T4Downloadable(url: url, fileName: fileName)
+    }
+}
+
+extension HTMLVideoTag: Downloadable {
+    public var url: URL {
+        return src
     }
 }
