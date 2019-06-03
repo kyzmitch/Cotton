@@ -47,14 +47,17 @@ public final class DefaultTabProvider {
     public var topSites: [Site] {
         var array: [Site] = []
 
-        if let ig = Site(urlString: "https://www.instagram.com", customTitle: "Instagram") {
+        let instagramImage = UIImage(named: "instagram")
+        if let ig = Site(urlString: "https://www.instagram.com", customTitle: "Instagram", image: instagramImage) {
             array.append(ig)
         }
+        let youtubeImage = UIImage(named: "youtube")
+        if let tube = Site(urlString: "https://m.youtube.com", customTitle: "Youtube", image: youtubeImage) {
+            array.append(tube)
+        }
+        
         if let opennet = Site(urlString: "https://opennet.ru", customTitle: "OpenNet") {
             array.append(opennet)
-        }
-        if let tube = Site(urlString: "https://m.youtube.com", customTitle: "Youtube") {
-            array.append(tube)
         }
         return array
     }
