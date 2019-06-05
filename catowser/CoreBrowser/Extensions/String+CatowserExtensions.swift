@@ -9,11 +9,11 @@
 import Foundation
 
 public extension String {
-    public static func mainBundleName() -> String {
+    static func mainBundleName() -> String {
         return Bundle.main.bundleIdentifier ?? "com.ae.catowser"
     }
 
-    public static func queueNameWith(suffix: String) -> String {
+    static func queueNameWith(suffix: String) -> String {
         return .mainBundleName() + ".\(suffix)"
     }
     

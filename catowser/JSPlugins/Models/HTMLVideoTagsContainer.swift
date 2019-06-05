@@ -49,7 +49,7 @@ public struct HTMLVideoTagsContainer {
                 videoUrl = srcURLString
             } else {
                 let sources = try? videoElement.select("source")
-                guard let srcURL = try? sources?.first()?.attr("src"), let sourceURL = srcURL else {
+                guard let sourceURL = try? sources?.first()?.attr("src") else {
                     print("Found video tag source subtag but without URL")
                     continue
                 }
