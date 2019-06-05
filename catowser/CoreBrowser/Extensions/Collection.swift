@@ -9,7 +9,7 @@
 import Foundation
 
 public extension Collection {
-    public subscript (safe index: Index) -> Iterator.Element? {
+    subscript (safe index: Index) -> Iterator.Element? {
         return indices.contains(index) ? self[index] : nil
     }
 }
