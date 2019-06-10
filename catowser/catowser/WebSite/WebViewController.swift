@@ -23,6 +23,8 @@ protocol SiteNavigationDelegate: class {
 protocol SiteExternalNavigationDelegate: class {
     func didStartProvisionalNavigation()
     func didOpenSiteWith(appName: String)
+    func displayProgress(_ progress: Double)
+    func hideProgress()
 }
 
 protocol SiteNavigationComponent: class {
@@ -44,6 +46,8 @@ final class WebViewController: BaseViewController {
     private var pluginsFacade: WebViewJSPluginsFacade?
 
     private weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
+    
+    private var webViewProgressObserverAdded = false
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         currentUrl = url
@@ -54,6 +58,10 @@ final class WebViewController: BaseViewController {
             configuration.userContentController.removeAllUserScripts()
         }
 
+        if !webViewProgressObserverAdded {
+            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        }
+        
         let request = URLRequest(url: url)
         webView.load(request)
     }
@@ -74,6 +82,9 @@ final class WebViewController: BaseViewController {
         
         if canLoadPlugins { injectPlugins() }
         
+        if !webViewProgressObserverAdded {
+            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+        }
         let request = URLRequest(url: currentUrl)
         webView.load(request)
     }
@@ -114,6 +125,12 @@ final class WebViewController: BaseViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
         return webView
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "estimatedProgress" {
+            externalNavigationDelegate?.displayProgress(webView.estimatedProgress)
+        }
     }
     
     override func loadView() {
@@ -217,6 +234,8 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        externalNavigationDelegate?.hideProgress()
+        
         guard let webViewUrl = webView.url else {
             print("web view without url")
             return

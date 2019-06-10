@@ -540,4 +540,13 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
         // notify user to remove speicifc application from iOS
         // to be able to use Cotton browser features
     }
+    
+    func displayProgress(_ progress: Double) {
+        webLoadProgressView.setProgress(Float(progress), animated: true)
+    }
+    
+    func hideProgress() {
+        linksRouter.showProgress(false)
+        webLoadProgressView.setProgress(0, animated: false)
+    }
 }
