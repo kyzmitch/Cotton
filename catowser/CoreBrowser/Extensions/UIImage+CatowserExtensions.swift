@@ -60,14 +60,14 @@ public extension UIImage {
         return cgOutput
     }
 
-    public var firstPixelColor: UIColor? {
+    var firstPixelColor: UIColor? {
         let point = CGPoint(x: 0, y: 0)
         return averageColorImage?.getPixelColor(pos: point)
     }
 }
 
 fileprivate extension CGImage {
-    fileprivate func getPixelColor(pos: CGPoint) -> UIColor? {
+    func getPixelColor(pos: CGPoint) -> UIColor? {
         guard let dataProvider = dataProvider else {
             return nil
         }

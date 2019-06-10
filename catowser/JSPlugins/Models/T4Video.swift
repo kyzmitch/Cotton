@@ -45,7 +45,7 @@ public struct T4Video: Decodable, VideoFileNameble {
         
         variants = set
         
-        if let pageTitle = try? container.decodeIfPresent(String.self, forKey: .pageTitle), let title = pageTitle {
+        if let title = try? container.decodeIfPresent(String.self, forKey: .pageTitle) {
             name = title
         } else {
             name = "t4_\(UUID().uuidString)"

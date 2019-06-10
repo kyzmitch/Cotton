@@ -29,7 +29,7 @@ public extension ReloadableCollection  {
     ///
     /// This method uses CATransaction to schedule the closure.
 
-    public func reloadData(_ closure: @escaping (() -> Void))
+    func reloadData(_ closure: @escaping (() -> Void))
     {
         CATransaction.begin()
         CATransaction.setCompletionBlock(closure)
