@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 public enum TabStorageError: Swift.Error {
     case unknown

@@ -8,7 +8,6 @@
 
 import UIKit
 import ReactiveSwift
-import Result
 
 public extension Tab {
     enum ContentType {
@@ -80,7 +79,7 @@ public struct Tab {
     /// Should be set to constants based on initial tab state (blank, top sites, etc.)
     /// `String` type probably should be replaced with Signal to be able to
     /// react on async title fetch from a real Site.
-    public let (titleSignal, titleObserver) = Signal<String, NoError>.pipe()
+    public let (titleSignal, titleObserver) = Signal<String, Never>.pipe()
 
     public var title: String {
         return contentType.title

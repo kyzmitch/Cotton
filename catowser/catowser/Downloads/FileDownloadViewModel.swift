@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 import CoreBrowser
 
 protocol FileDownloadDelegate: class {
@@ -18,7 +17,7 @@ protocol FileDownloadDelegate: class {
 final class FileDownloadViewModel {
     fileprivate let downloadOutput = MutableProperty<DownloadState>(.initial)
 
-    lazy var stateSignal: Signal<DownloadState, NoError> = {
+    lazy var stateSignal: Signal<DownloadState, Never> = {
         return downloadOutput.signal
     }()
 
