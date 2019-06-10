@@ -58,10 +58,7 @@ final class WebViewController: BaseViewController {
             configuration.userContentController.removeAllUserScripts()
         }
 
-        if !webViewProgressObserverAdded {
-            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-        }
-        
+        addWebViewProgressObserver()
         let request = URLRequest(url: url)
         webView.load(request)
     }
@@ -82,9 +79,7 @@ final class WebViewController: BaseViewController {
         
         if canLoadPlugins { injectPlugins() }
         
-        if !webViewProgressObserverAdded {
-            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
-        }
+        addWebViewProgressObserver()
         let request = URLRequest(url: currentUrl)
         webView.load(request)
     }
@@ -158,6 +153,15 @@ final class WebViewController: BaseViewController {
             if touchedView === webView {
                 webView.becomeFirstResponder()
             }
+        }
+    }
+}
+
+private extension WebViewController {
+    func addWebViewProgressObserver() {
+        if !webViewProgressObserverAdded {
+            webViewProgressObserverAdded = true
+            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         }
     }
 }
