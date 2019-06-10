@@ -545,8 +545,8 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
         webLoadProgressView.setProgress(Float(progress), animated: true)
     }
     
-    func hideProgress() {
-        linksRouter.showProgress(false)
+    func showProgress(_ show: Bool) {
+        linksRouter.showProgress(show)
         webLoadProgressView.setProgress(0, animated: false)
     }
 }
