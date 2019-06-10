@@ -78,7 +78,7 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
         view.addSubview(collectionView)
         view.addSubview(toolbar)
 
-        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: toolbar.topAnchor, constant: 0).isActive = true
         collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
@@ -104,6 +104,10 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
         let tabsBox: TabsBox = TabsBox(tabs)
         uxState.value = .tabs(dataSource: tabsBox)
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 
     deinit {
         TabsListManager.shared.detach(self)
@@ -113,7 +117,6 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
 
 fileprivate extension TabsPreviewsViewController {
     struct Sizes {
-        static let textBoxHeight = CGFloat(32.0)
         static let margin = CGFloat(15)
     }
 }
