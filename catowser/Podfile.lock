@@ -1,18 +1,16 @@
 PODS:
-  - Alamofire (4.8.1)
-  - AlamofireImage (3.5.0):
+  - Alamofire (4.8.2)
+  - AlamofireImage (3.5.2):
     - Alamofire (~> 4.8)
-  - ReactiveSwift (3.1.0):
-    - Result (~> 3.2)
-  - Result (3.2.4)
+  - ReactiveSwift (6.0.0)
   - SnapKit (4.2.0)
-  - SwiftLint (0.29.4)
+  - SwiftLint (0.32.0)
   - SwiftSoup (2.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.8)
   - AlamofireImage (~> 3.5)
-  - ReactiveSwift (~> 3.0)
+  - ReactiveSwift (~> 6.0.0)
   - SnapKit (~> 4.2.0)
   - SwiftLint
   - SwiftSoup
@@ -22,20 +20,18 @@ SPEC REPOS:
     - Alamofire
     - AlamofireImage
     - ReactiveSwift
-    - Result
     - SnapKit
     - SwiftLint
     - SwiftSoup
 
 SPEC CHECKSUMS:
-  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
-  AlamofireImage: 1aea346f4dda2f6c67622fa5a89fcbb80d79cc16
-  ReactiveSwift: 5b26d2e988fe0eed2daf48c4054d1de74db50184
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
+  ReactiveSwift: 24b7ed245617bbfd30ee0c87779b6c64ac1b4518
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  SwiftLint: 73f2ecfd0f6d812c8cb9a73c00fe809bc2504585
+  SwiftLint: 009a898ef2a1c851f45e1b59349bf6ff2ddc990d
   SwiftSoup: 4fe21f65cdbfa3a40559047016b7962b88d29279
 
-PODFILE CHECKSUM: 26ba2065e6854d44ecf369a54c70bffcdf729ee4
+PODFILE CHECKSUM: 70efeeac0fdf792350ebd0967ed140f7581a2c59
 
 COCOAPODS: 1.7.1

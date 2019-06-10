@@ -8,7 +8,7 @@ target 'catowser' do
   # Pods for catowser
   pod 'SnapKit', '~>4.2.0'
   pod 'Alamofire', '~> 4.8'
-  pod 'ReactiveSwift', '~> 3.0'
+  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
   pod 'AlamofireImage', '~> 3.5'
 end
@@ -19,7 +19,7 @@ target 'CoreBrowser' do
 
   # Pods for CoreBrowser
   pod 'Alamofire', '~> 4.8'
-  pod 'ReactiveSwift', '~> 3.0'
+  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
 end
 
@@ -27,5 +27,6 @@ target 'JSPlugins' do
   use_frameworks!
 
   pod 'SwiftSoup'
+  pod 'SwiftLint'
 end
 
