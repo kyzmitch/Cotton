@@ -26,6 +26,7 @@ protocol LinksRouterInterface: class {
     func openTagsFor(t4 video: T4Video)
     func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
+    func showProgress(_ show: Bool)
 }
 
 /// Should contain copies for references to all needed constraints and view controllers. NSObject subclass to support system delegate protocol.
@@ -61,6 +62,10 @@ final class MasterRouter: NSObject {
     var hiddenTagsConstraint: NSLayoutConstraint?
 
     var showedTagsConstraint: NSLayoutConstraint?
+    
+    var hiddenWebLoadConstraint: NSLayoutConstraint?
+    
+    var showedWebLoadConstraint: NSLayoutConstraint?
 
     var hiddenFilesGreedConstraint: NSLayoutConstraint?
 
@@ -127,6 +132,16 @@ extension MasterRouter: LinksRouterInterface {
         dataSource = nil
         hideFilesGreedIfNeeded()
         hideLinkTagsController()
+    }
+    
+    func showProgress(_ show: Bool) {
+        if show {
+            hiddenWebLoadConstraint?.isActive = false
+            showedWebLoadConstraint?.isActive = true
+        } else {
+            showedWebLoadConstraint?.isActive = false
+            hiddenWebLoadConstraint?.isActive = true
+        }
     }
 }
 
