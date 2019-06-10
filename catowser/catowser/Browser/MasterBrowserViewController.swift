@@ -542,7 +542,7 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
     }
     
     func displayProgress(_ progress: Double) {
-        webLoadProgressView.setProgress(Float(progress), animated: true)
+        webLoadProgressView.setProgress(Float(progress), animated: false)
     }
     
     func showProgress(_ show: Bool) {
