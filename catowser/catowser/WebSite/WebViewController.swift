@@ -24,7 +24,7 @@ protocol SiteExternalNavigationDelegate: class {
     func didStartProvisionalNavigation()
     func didOpenSiteWith(appName: String)
     func displayProgress(_ progress: Double)
-    func hideProgress()
+    func showProgress(_ show: Bool)
 }
 
 protocol SiteNavigationComponent: class {
@@ -218,14 +218,17 @@ extension WebViewController: WKNavigationDelegate {
 
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
             guard let _ = WKNavigationActionPolicy(rawValue: ignoreAppRawValue) else {
+                externalNavigationDelegate?.showProgress(true)
                 decisionHandler(.allow)
                 return
             }
+            externalNavigationDelegate?.showProgress(true)
             decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
             return
         }
 
         if ["http", "https"].contains(url.scheme) {
+            externalNavigationDelegate?.showProgress(true)
             decisionHandler(.allow)
             return
         }
@@ -234,8 +237,6 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.hideProgress()
-        
         guard let webViewUrl = webView.url else {
             print("web view without url")
             return
@@ -258,6 +259,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        externalNavigationDelegate?.showProgress(false)
         pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
     }
 }
