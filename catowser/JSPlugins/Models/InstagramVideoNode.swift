@@ -33,9 +33,9 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
         // Using `try?` to ignore exceptions for these optional keys.
         // And sending an exception if both possible keys are not present.
 
-        if let closedDisplayURL = try? container.decodeIfPresent(URL.self, forKey: .displayUrl), let displayURL = closedDisplayURL {
+        if let displayURL = try? container.decodeIfPresent(URL.self, forKey: .displayUrl) {
             thumbnailUrl = displayURL
-        } else if let closedThumbnailSrc = try? container.decodeIfPresent(URL.self, forKey: .thumbnailSrc), let thumbnailSrc = closedThumbnailSrc {
+        } else if let thumbnailSrc = try? container.decodeIfPresent(URL.self, forKey: .thumbnailSrc) {
             thumbnailUrl = thumbnailSrc
         } else {
             throw DecodingError.missingPreviewURL
@@ -45,8 +45,7 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
 
         videoUrl = try container.decode(URL.self, forKey: .videoUrl)
 
-        if  let closedBase64String = try? container.decodeIfPresent(String.self, forKey: .mediaPreview),
-            let base64String = closedBase64String,
+        if  let base64String = try? container.decodeIfPresent(String.self, forKey: .mediaPreview),
             let mediaPreviewData = Data(base64Encoded: base64String) {
             // UIImage can't be created with base64 value for some reason
             mediaPreview = UIImage(data: mediaPreviewData)

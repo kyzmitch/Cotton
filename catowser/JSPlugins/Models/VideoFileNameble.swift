@@ -14,7 +14,7 @@ public protocol VideoFileNameble {
 }
 
 public extension VideoFileNameble {
-    public var fileName: String {
+    var fileName: String {
         let prefix: String
         if let i = name.firstIndex(where: { $0 == "\n" }) {
             prefix = String(name.prefix(upTo: i))
