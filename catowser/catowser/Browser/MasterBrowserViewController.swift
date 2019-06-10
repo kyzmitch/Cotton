@@ -53,6 +53,13 @@ final class MasterBrowserViewController: BaseViewController {
         v.backgroundColor = .white
         return v
     }()
+    
+    /// The view required to demonstrait web content load process.
+    private let webLoadProgressView: UIProgressView = {
+        let v = UIProgressView(progressViewStyle: .default)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
 
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
@@ -105,6 +112,7 @@ final class MasterBrowserViewController: BaseViewController {
         linksRouter = MasterRouter(viewController: self)
 
         add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
+        view.addSubview(webLoadProgressView)
         view.addSubview(containerView)
 
         if !isPad {
@@ -155,12 +163,14 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.height.equalTo(CGFloat.searchViewHeight)
             })
             
+            webLoadProgressView.topAnchor.constraint(equalTo: linksRouter.searchBarController.view.bottomAnchor, constant: 0).isActive = true
+            
             // Need to have not simple view controller view but container view
             // to have ability to insert to it and show view controller with
             // bookmarks in case if search bar has no any address entered or
             // webpage controller with web view if some address entered in search bar
             containerView.snp.makeConstraints { (maker) in
-                maker.top.equalTo(linksRouter.searchBarController.view.snp.bottom)
+                maker.top.equalTo(webLoadProgressView.snp.bottom)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
                 maker.bottom.equalTo(view)
@@ -189,8 +199,10 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.height.equalTo(CGFloat.searchViewHeight)
             })
             
+            webLoadProgressView.topAnchor.constraint(equalTo: linksRouter.searchBarController.view.bottomAnchor, constant: 0).isActive = true
+            
             containerView.snp.makeConstraints { (maker) in
-                maker.top.equalTo(linksRouter.searchBarController.view.snp.bottom)
+                maker.top.equalTo(webLoadProgressView.snp.bottom)
                 maker.bottom.equalTo(toolbarViewController.view.snp.top)
                 maker.leading.equalTo(view)
                 maker.trailing.equalTo(view)
@@ -219,6 +231,13 @@ final class MasterBrowserViewController: BaseViewController {
             linksRouter.hiddenTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: .linkTagsHeight)
             linksRouter.showedTagsConstraint = linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor, constant: 0)
         }
+        
+        linksRouter.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
+        linksRouter.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 2)
+        linksRouter.hiddenWebLoadConstraint?.isActive = true
+        webLoadProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        webLoadProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        
         
         linksRouter.hiddenTagsConstraint?.isActive = true
         linksRouter.linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
@@ -328,6 +347,8 @@ extension MasterBrowserViewController: TabRendererInterface {
                 open(tabContent: .blank)
                 return
             }
+            // need to display progress view before load start
+            linksRouter.showProgress(true)
             let viewController = try? WebViewsReuseManager.shared.controllerFor(site, pluginsBuilder: pluginsBuilder, delegate: self)
             guard let webViewController = viewController else {
                 assertionFailure("Failed create new web view for tab")
