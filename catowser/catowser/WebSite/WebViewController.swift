@@ -25,6 +25,7 @@ protocol SiteExternalNavigationDelegate: class {
     func didOpenSiteWith(appName: String)
     func displayProgress(_ progress: Double)
     func showProgress(_ show: Bool)
+    func updateTabPreview(_ screenshot: UIImage)
 }
 
 protocol SiteNavigationComponent: class {
@@ -268,6 +269,22 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(false)
         pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
+        
+        let snapshotConfig = WKSnapshotConfiguration()
+        let w = webView.bounds.size.width
+        let h = webView.bounds.size.height
+        snapshotConfig.rect = CGRect(x: 0, y: 0, width: w, height: h)
+        snapshotConfig.snapshotWidth = NSNumber(integerLiteral: 256)
+        webView.takeSnapshot(with: snapshotConfig) { [weak self] (image, error) in
+            switch (image, error) {
+            case (_, let err?):
+                print("failed to take a screenshot \(err)")
+            case (let img?, _):
+                self?.externalNavigationDelegate?.updateTabPreview(img)
+            case (.none, .none):
+                print("failed to take a screenshot")
+            }
+        }
     }
 }
 

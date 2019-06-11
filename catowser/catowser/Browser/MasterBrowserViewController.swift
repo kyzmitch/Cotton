@@ -549,4 +549,8 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
         linksRouter.showProgress(show)
         webLoadProgressView.setProgress(0, animated: false)
     }
+    
+    func updateTabPreview(_ screenshot: UIImage) {
+        try? TabsListManager.shared.setSelectedPreview(screenshot)
+    }
 }

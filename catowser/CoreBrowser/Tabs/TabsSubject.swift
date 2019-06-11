@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveSwift
+import UIKit
 
 /// MARK: Tabs observer protocol.
 public protocol TabsObserver {
@@ -293,6 +294,8 @@ extension TabsListManager: TabsSubject {
         }
 
         selectedTab.contentType = tabContent
+        // we must reset preview
+        selectedTab.preview = nil
         tabs.value[index] = selectedTab
 
         // Need to notify observers to allow them
@@ -300,6 +303,23 @@ extension TabsListManager: TabsSubject {
         DispatchQueue.main.async {
             self.observers.forEach { $0.tabDidReplace(selectedTab, at: index) }
         }
+    }
+    
+    /// Updates preview image for selected tab if it has site content.
+    ///
+    /// - Parameter image: `UIImage` usually a screenshot of WKWebView.
+    public func setSelectedPreview(_ image: UIImage?) throws {
+        let index = selectedTabIndex.value
+        
+        guard var selectedTab = tabs.value[safe: index] else {
+            throw NotInitializedYet()
+        }
+        if case .site = selectedTab.contentType, image == nil {
+            struct WrongTabContent: Error {}
+            throw WrongTabContent()
+        }
+        selectedTab.preview = image
+        tabs.value[index] = selectedTab
     }
 
     public func selectTab(at indexPath: IndexPath) -> Tab? {
