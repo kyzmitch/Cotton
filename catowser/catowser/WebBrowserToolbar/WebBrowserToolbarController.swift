@@ -148,6 +148,7 @@ final class WebBrowserToolbarController: UIViewController {
         backButton.isEnabled = false
         forwardButton.isEnabled = false
         reloadButton.isEnabled = false
+        downloadLinksButton.isEnabled = false
 
         toolbarView.snp.makeConstraints { (maker) in
             maker.left.right.top.bottom.equalTo(view)
@@ -162,7 +163,7 @@ final class WebBrowserToolbarController: UIViewController {
             if touch.view == counterView {
                 handleShowOpenedTabsPressed()
                 break
-            } else if touch.view == downloadsView {
+            } else if touch.view == downloadsView && enableDownloadsButton {
                 handleDownloadsPressed()
                 break
             }
