@@ -15,8 +15,9 @@ public struct Site {
     public let url: URL
     public let host: String
     public let faviconURL: URL
-    /// Only used by top sites by loading image from Assets
-    public let faviconImage: UIImage?
+    /// Used by top sites by loading high quality image from Assets,
+    /// or by all other sites by loading from favicon URL
+    public var faviconImage: UIImage?
 
     /// String associated with site if site was created from search engine.
     /// This convinient property to transfer/save search query to use it for search view.
