@@ -69,7 +69,9 @@ final class WebViewController: BaseViewController {
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
+            webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
             webView.removeFromSuperview()
+            webViewProgressObserverAdded = false
             webView = WebViewController.createWebView(with: configuration)
             view.addSubview(webView)
             webView.snp.makeConstraints { (maker) in
@@ -112,6 +114,7 @@ final class WebViewController: BaseViewController {
     private var isWebViewLoaded: Bool = false
 
     private lazy var webView: WKWebView = {
+        webViewProgressObserverAdded = false
         return WebViewController.createWebView(with: configuration)
     }()
     
