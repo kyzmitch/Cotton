@@ -116,8 +116,6 @@ public struct Tab {
         }
     }
     public let realBackgroundColour = UIColor.clear
-    
-    private(set) var faviconImage: UIImage?
 
     public init(contentType: ContentType, selected: Bool = true) {
         self.contentType = contentType

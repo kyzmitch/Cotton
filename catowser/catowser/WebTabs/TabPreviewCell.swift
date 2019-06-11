@@ -171,6 +171,10 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
         self.tabIndex = index
         self.delegate = delegate
+        if case let .site(site) = tab.contentType {
+            site.setFaviconFor(favicon)
+        }
+        
         // TODO: learn how exactly Signal works
         // is it possible to fetch very first pushed value to it
         // if push was before call to `observeValues`?

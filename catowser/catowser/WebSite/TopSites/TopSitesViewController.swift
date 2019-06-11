@@ -88,24 +88,6 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 extension SiteCollectionViewCell {
     func reload(with site: Site) {
         titleLabel.text = site.title
-
-        faviconImageView.af_cancelImageRequest()
-        
-        if let favicon = site.faviconImage {
-            faviconImageView.image = favicon
-        } else {
-            faviconImageView.af_setImage(withURL: site.faviconURL, placeholderImage: nil, filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false) { [weak self] dataResponse in
-                guard let favicon = dataResponse.value else {
-                    return
-                }
-
-                let averageColor = favicon.firstPixelColor
-                guard let color = averageColor else {
-                    return
-                }
-
-                self?.faviconImageView.backgroundColor = color
-            }
-        }
+        site.setFaviconFor(faviconImageView)
     }
 }
