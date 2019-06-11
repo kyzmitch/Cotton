@@ -89,7 +89,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         return label
     }()
 
-    private let favicon: UIImageView = {
+    private let faviconImageView: UIImageView = {
         let favicon = UIImageView()
         favicon.backgroundColor = UIColor.clear
         favicon.layer.cornerRadius = 2.0
@@ -130,21 +130,21 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         backgroundHolder.addSubview(title)
         title.contentView.addSubview(self.closeButton)
         title.contentView.addSubview(self.titleText)
-        title.contentView.addSubview(self.favicon)
+        title.contentView.addSubview(self.faviconImageView)
 
         title.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(backgroundHolder)
             make.height.equalTo(CGFloat.textBoxHeight)
         }
 
-        favicon.snp.makeConstraints { make in
+        faviconImageView.snp.makeConstraints { make in
             make.leading.equalTo(title.contentView).offset(6)
             make.top.equalTo((.textBoxHeight - .faviconSize) / 2)
             make.size.equalTo(CGFloat.faviconSize)
         }
 
         titleText.snp.makeConstraints { (make) in
-            make.leading.equalTo(favicon.snp.trailing).offset(6)
+            make.leading.equalTo(faviconImageView.snp.trailing).offset(6)
             make.trailing.equalTo(closeButton.snp.leading).offset(-6)
             make.centerY.equalTo(title.contentView)
         }
@@ -172,7 +172,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         self.tabIndex = index
         self.delegate = delegate
         if case let .site(site) = tab.contentType {
-            site.setFaviconFor(favicon)
+            site.setFaviconFor(faviconImageView)
         }
         
         // TODO: learn how exactly Signal works
