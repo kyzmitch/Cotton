@@ -84,6 +84,9 @@ public struct Tab {
     public var title: String {
         return contentType.title
     }
+    
+    /// Preview image of the site if content is .site
+    public var preview: UIImage?
 
     public var searchBarContent: String {
         return contentType.searchBarContent

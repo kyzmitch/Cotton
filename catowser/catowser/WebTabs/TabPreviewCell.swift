@@ -173,7 +173,10 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         self.delegate = delegate
         if case let .site(site) = tab.contentType {
             site.setFaviconFor(faviconImageView)
+        } else {
+            faviconImageView.image = nil
         }
+        screenshotView.image = tab.preview
         
         // TODO: learn how exactly Signal works
         // is it possible to fetch very first pushed value to it
