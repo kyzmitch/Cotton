@@ -335,6 +335,8 @@ extension MasterBrowserViewController: TabRendererInterface {
                 // need to stop any video/audio on corresponding web view
                 // before removing it from parent view controller.
                 // on iphones the video is always played in full-screen (probably need to invent workaround)
+                // https://webkit.org/blog/6784/new-video-policies-for-ios/
+                // "and, on iPhone, the <video> will enter fullscreen when starting playback."
                 // on ipads it is played in normal mode, so, this is why need to stop/pause it
                 if let currentWebViewVC = currentWebViewController {
                     // currentWebViewVC.

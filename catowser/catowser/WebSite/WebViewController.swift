@@ -188,6 +188,28 @@ fileprivate extension WebViewController {
         }
         return false
     }
+    
+    func handleNavigationCommit(_ wkView: WKWebView) {
+        guard let webViewUrl = wkView.url else {
+            print("web view without url")
+            return
+        }
+        
+        currentUrl = webViewUrl
+        guard let site = Site(url: webViewUrl) else {
+            assertionFailure("failed create site from URL")
+            return
+        }
+        // enabling plugin works here for instagram, but not for t4 site
+        pluginsFacade?.enablePlugins(for: wkView, with: currentUrl.host)
+        InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
+        
+        do {
+            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        } catch {
+            print("\(#function) - failed to replace current tab")
+        }
+    }
 }
 
 extension WebViewController: WKNavigationDelegate {
@@ -197,6 +219,16 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
+        if url.absoluteString == "about:blank" {
+            // sometimes url can be unexpected
+            // this one is when you tap on some youtube video
+            // when you was browsing youtube
+            // also, you can get url to Ad when you're browsing it
+            decisionHandler(.allow)
+            handleNavigationCommit(webView)
+            return
+        }
+        
         if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" {
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
@@ -245,25 +277,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        guard let webViewUrl = webView.url else {
-            print("web view without url")
-            return
-        }
-
-        currentUrl = webViewUrl
-        guard let site = Site(url: webViewUrl) else {
-            assertionFailure("failed create site from URL")
-            return
-        }
-        // enabling plugin works here for instagram, but not for t4 site
-        pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
-        InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
-
-        do {
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
-        } catch {
-            print("\(#function) - failed to replace current tab")
-        }
+        handleNavigationCommit(webView)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
