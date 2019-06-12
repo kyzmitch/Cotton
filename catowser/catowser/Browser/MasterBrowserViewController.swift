@@ -332,7 +332,14 @@ extension MasterBrowserViewController: TabRendererInterface {
         if let currentTabContentType = previousTabContent {
             switch currentTabContentType {
             case .site:
-                currentWebViewController?.removeFromChild()
+                // need to stop any video/audio on corresponding web view
+                // before removing it from parent view controller.
+                // on iphones the video is always played in full-screen (probably need to invent workaround)
+                // on ipads it is played in normal mode, so, this is why need to stop/pause it
+                if let currentWebViewVC = currentWebViewController {
+                    // currentWebViewVC.
+                    currentWebViewVC.removeFromChild()
+                }
             case .topSites:
                 topSitesController.viewController.removeFromChild()
             default:
@@ -357,6 +364,7 @@ extension MasterBrowserViewController: TabRendererInterface {
             }
 
             siteNavigator = webViewController
+            currentWebViewController = webViewController
 
             add(asChildViewController: webViewController, to: containerView)
             webViewController.view.snp.makeConstraints { make in
