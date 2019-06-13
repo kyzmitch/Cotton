@@ -203,10 +203,12 @@ private extension WebBrowserToolbarController {
 
     @objc func handleBackPressed() {
         siteNavigationDelegate?.goBack()
+        refreshNavigation()
     }
 
     @objc func handleForwardPressed() {
         siteNavigationDelegate?.goForward()
+        refreshNavigation()
     }
 
     @objc func handleReloadPressed() {
@@ -220,6 +222,11 @@ private extension WebBrowserToolbarController {
     @objc func handleDownloadsPressed() {
         downloadsArrowDown = !downloadsArrowDown
         delegate?.didPressDownloads(to: downloadsArrowDown)
+    }
+    
+    private func refreshNavigation() {
+        forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+        backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
     }
 }
 

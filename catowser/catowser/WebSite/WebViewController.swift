@@ -224,8 +224,13 @@ extension WebViewController: WKNavigationDelegate {
             // this one is when you tap on some youtube video
             // when you was browsing youtube
             // also, you can get url to Ad when you're browsing it
-            decisionHandler(.allow)
-            handleNavigationCommit(webView)
+            // https://accounts.google.com/ServiceLogin?
+            
+            decisionHandler(.cancel)
+            if let hiddenURL = webView.url {
+                let req = URLRequest(url: hiddenURL)
+                let _ = webView.load(req)
+            }
             return
         }
         

@@ -126,14 +126,21 @@ final class TabletSearchBarViewController: BaseViewController {
 
     @objc fileprivate func backPressed() {
         siteNavigationDelegate?.goBack()
+        refreshNavigation()
     }
 
     @objc fileprivate func forwardPressed() {
         siteNavigationDelegate?.goForward()
+        refreshNavigation()
     }
     
     @objc fileprivate func reloadPressed() {
         siteNavigationDelegate?.reload()
+    }
+    
+    private func refreshNavigation() {
+        goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
+        goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
     }
 }
 
