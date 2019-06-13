@@ -233,7 +233,7 @@ final class MasterBrowserViewController: BaseViewController {
         }
         
         linksRouter.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
-        linksRouter.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 2)
+        linksRouter.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
         linksRouter.hiddenWebLoadConstraint?.isActive = true
         webLoadProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         webLoadProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
