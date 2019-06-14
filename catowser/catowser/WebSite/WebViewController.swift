@@ -74,6 +74,7 @@ final class WebViewController: BaseViewController {
             webView.removeFromSuperview()
             webViewProgressObserverAdded = false
             webView = WebViewController.createWebView(with: configuration)
+            webView.navigationDelegate = self
             view.addSubview(webView)
             webView.snp.makeConstraints { (maker) in
                 maker.leading.trailing.top.bottom.equalTo(view)
@@ -144,7 +145,6 @@ final class WebViewController: BaseViewController {
         view.addSubview(webView)
         isWebViewLoaded = true
         webView.navigationDelegate = self
-
         webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -195,14 +195,19 @@ fileprivate extension WebViewController {
             return
         }
         
+        let sameHost: Bool = currentUrl.host == webViewUrl.host
+        
         currentUrl = webViewUrl
         guard let site = Site(url: webViewUrl) else {
             assertionFailure("failed create site from URL")
             return
         }
-        // enabling plugin works here for instagram, but not for t4 site
-        pluginsFacade?.enablePlugins(for: wkView, with: currentUrl.host)
-        InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
+        
+        if !sameHost {
+            // enabling plugin works here for instagram, but not for t4 site
+            pluginsFacade?.enablePlugins(for: wkView, with: currentUrl.host)
+            InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
+        }
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
@@ -219,17 +224,26 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if url.absoluteString == "about:blank" {
+        if url.scheme == "about" {
+            // This will handle about:blank from youtube.
+            
             // sometimes url can be unexpected
             // this one is when you tap on some youtube video
             // when you was browsing youtube
             // also, you can get url to Ad when you're browsing it
-            // https://accounts.google.com/ServiceLogin?
+            // https://accounts.google.com/ServiceLogin.....
             
+            // using `.cancel` actually has no difference with `.allow`
             decisionHandler(.cancel)
             if let hiddenURL = webView.url {
                 let req = URLRequest(url: hiddenURL)
-                let _ = webView.load(req)
+                _ = webView.load(req)
+                // this will give next:
+                // 1) page reload to trigger JS plugin
+                // 2) trigger URL update in address field
+                // it will not fix:
+                // - double item in backForwardList
+                // - wrong URL after tap on back, only web view reload will
             }
             return
         }
