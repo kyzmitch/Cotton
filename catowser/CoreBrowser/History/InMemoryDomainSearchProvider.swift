@@ -12,29 +12,22 @@ public final class InMemoryDomainSearchProvider {
     public static let shared = InMemoryDomainSearchProvider()
     
     fileprivate let storage: Trie
-    fileprivate let topDomains: [String]
+    fileprivate let filename = "topdomains"
 
     private init() {
         storage = Trie()
-
-        guard let bundle = Bundle(identifier: "ae.CoreBrowser") else {
-            assertionFailure("Bundle id was changed")
-            topDomains = [String]()
-            return
-        }
-
-        guard let filePath = bundle.path(forResource: "topdomains", ofType: "txt") else {
-            assertionFailure("Failed to find \"topdomains\" file in framework bundle")
-            topDomains = [String]()
+        let bundle = Bundle(for: InMemoryDomainSearchProvider.self)
+        
+        guard let filePath = bundle.path(forResource: filename, ofType: "txt") else {
+            assertionFailure("Failed to find \"\(filename)\" file in framework bundle")
             return
         }
 
         do {
-            topDomains = try String(contentsOfFile: filePath).components(separatedBy: "\n")
+            let topDomains: [String] = try String(contentsOfFile: filePath).components(separatedBy: "\n")
             topDomains.forEach { self.storage.insert(word: $0) }
         } catch {
             assertionFailure("Failed to create string from file")
-            topDomains = [String]()
         }
     }
 }

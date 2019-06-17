@@ -145,6 +145,7 @@ final class WebViewController: BaseViewController {
         view.addSubview(webView)
         isWebViewLoaded = true
         webView.navigationDelegate = self
+        webView.uiDelegate = self
         webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -213,6 +214,12 @@ fileprivate extension WebViewController {
     }
 }
 
+extension WebViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        return nil
+    }
+}
+
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
@@ -220,32 +227,23 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
+        if let protector = RedirectProtector(current: currentUrl, next: url), protector.shouldCancelRedirect {
+            decisionHandler(.cancel)
+            return
+        }
+        
         if url.scheme == "about" {
             // This will handle about:blank from youtube.
-            
             // sometimes url can be unexpected
             // this one is when you tap on some youtube video
             // when you was browsing youtube
-            // also, you can get url to Ad when you're browsing it
-            // https://accounts.google.com/ServiceLogin.....
             
-            if let aboutHost = navigationAction.request.mainDocumentURL?.host, let currentHost = currentUrl.host {
-                if aboutHost.contains(currentHost) || aboutHost == currentHost {
+            if let mainURL = navigationAction.request.mainDocumentURL, let hostComparator = RedirectProtector(current: currentUrl, next: mainURL) {
+                if hostComparator.isPendingSame {
                     decisionHandler(.allow)
                 } else {
                     decisionHandler(.cancel)
                 }
-            } else if let hiddenURL = webView.url {
-                decisionHandler(.cancel)
-                let req = URLRequest(url: hiddenURL)
-                _ = webView.load(req)
-                // this will give next:
-                // 1) page reload to trigger JS plugin
-                // 2) trigger URL update in address field
-                // it will not fix:
-                // - double item in backForwardList
-                // - wrong URL after tap on back, only web view reload will
-                // THIS triggers infinite reload for 4tube site
             } else {
                 decisionHandler(.allow)
             }

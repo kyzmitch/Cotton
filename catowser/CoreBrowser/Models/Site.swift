@@ -42,7 +42,7 @@ public struct Site {
 
     private let isPrivate: Bool = false
 
-    private let blockPopups: Bool = true
+    private let blockPopups: Bool = DefaultTabProvider.shared.blockPopups
 
     public let canLoadPlugins: Bool = true
     
