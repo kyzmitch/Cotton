@@ -36,6 +36,7 @@ final class SearchBarBaseViewController: BaseViewController {
         let view = UISearchBar(frame: CGRect.zero)
         ThemeProvider.shared.setup(view)
         view.placeholder = .placeholderText
+        view.autocapitalizationType = .none
         return view
     }()
 
