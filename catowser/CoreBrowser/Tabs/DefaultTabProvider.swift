@@ -43,6 +43,10 @@ public final class DefaultTabProvider {
     public var addSpeed: TabAddSpeed {
         return .after(.milliseconds(300))
     }
+    
+    public var blockPopups: Bool {
+        return false
+    }
 
     public var topSites: [Site] {
         var array: [Site] = []
