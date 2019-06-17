@@ -45,6 +45,22 @@ if (typeof window.__cotton__ !== 'undefined') {
                             window.__cotton__.ig.enabled = enabled;
                             }
                           });
+
+    Object.defineProperty(window.__cotton__, "isHandledHost", {
+                            enumerable: false,
+                            configurable: false,
+                            writable: false,
+                            value: function() {
+                                let currentHost = window.location.hostname;
+                                let on4Tube = currentHost.includes("4tube.com");
+                                let onIg = currentHost.includes("instagram.com");
+                                if (on4Tube || onIg) {
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            }
+                        });
 } else {
     cottonBaseLog('__cotton__ isn`t defined');
 }
@@ -86,6 +102,9 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 window.addEventListener("load", function() {
+    if (!window.__cotton__.isHandledHost()) {
+        return;
+    }
     let htmlString = document.documentElement.outerHTML.toString();
     try {
 	    webkit.messageHandlers.cottonHandler.postMessage({"html": htmlString});
@@ -95,6 +114,9 @@ window.addEventListener("load", function() {
 }, false);
 
 document.body.addEventListener('DOMSubtreeModified', function(event) {
+    if (!window.__cotton__.isHandledHost()) {
+        return;
+    }
     cottonBaseLog('DOMSubtreeModified triggered');
 }, false);
 
