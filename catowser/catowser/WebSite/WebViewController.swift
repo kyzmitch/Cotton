@@ -233,9 +233,14 @@ extension WebViewController: WKNavigationDelegate {
             // also, you can get url to Ad when you're browsing it
             // https://accounts.google.com/ServiceLogin.....
             
-            // using `.cancel` actually has no difference with `.allow`
-            decisionHandler(.cancel)
-            if let hiddenURL = webView.url {
+            if let aboutHost = navigationAction.request.mainDocumentURL?.host, let currentHost = currentUrl.host {
+                if aboutHost.contains(currentHost) || aboutHost == currentHost {
+                    decisionHandler(.allow)
+                } else {
+                    decisionHandler(.cancel)
+                }
+            } else if let hiddenURL = webView.url {
+                decisionHandler(.cancel)
                 let req = URLRequest(url: hiddenURL)
                 _ = webView.load(req)
                 // this will give next:
@@ -244,6 +249,9 @@ extension WebViewController: WKNavigationDelegate {
                 // it will not fix:
                 // - double item in backForwardList
                 // - wrong URL after tap on back, only web view reload will
+                // THIS triggers infinite reload for 4tube site
+            } else {
+                decisionHandler(.allow)
             }
             return
         }
