@@ -195,19 +195,15 @@ fileprivate extension WebViewController {
             return
         }
         
-        let sameHost: Bool = currentUrl.host == webViewUrl.host
-        
         currentUrl = webViewUrl
         guard let site = Site(url: webViewUrl) else {
             assertionFailure("failed create site from URL")
             return
         }
         
-        if !sameHost {
-            // enabling plugin works here for instagram, but not for t4 site
-            pluginsFacade?.enablePlugins(for: wkView, with: currentUrl.host)
-            InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
-        }
+        // you must inject re-enable plugins even if web view loaded page from same Host
+        pluginsFacade?.enablePlugins(for: wkView, with: currentUrl.host)
+        InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
