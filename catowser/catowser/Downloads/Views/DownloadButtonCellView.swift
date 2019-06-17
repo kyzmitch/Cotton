@@ -71,6 +71,7 @@ final class DownloadButtonCellView: UITableViewCell {
                         self.buttonState = .downloaded(url)
                     case .error(_):
                         self.buttonState = .canDownload
+                        self.viewModel = nil
                     }
             }
         }
@@ -131,7 +132,16 @@ private extension DownloadButtonCellView {
                 vm.download()
             } else {
                 delegate?.didPressDownload(callback: { [weak self] possibleViewModel in
-                    self?.viewModel = possibleViewModel
+                    guard let self = self else {
+                        print("\(#function) - zomby self")
+                        return
+                    }
+                    self.viewModel = possibleViewModel
+                    guard let vm = self.viewModel else {
+                        print("selected view model is nil")
+                        return
+                    }
+                    vm.download()
                 })
             }
         case .downloaded(let url):
