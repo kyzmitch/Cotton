@@ -1,5 +1,5 @@
 //
-//  RedirectProtector.swift
+//  HostsComparator.swift
 //  CoreBrowser
 //
 //  Created by Andrei Ermoshin on 6/17/19.
@@ -15,7 +15,7 @@ import Foundation
 // or
 // https://crptgate.com/pu/?
 
-public struct RedirectProtector {
+public struct HostsComparator {
     private let currentHost: String
     private let pendingHost: String
     

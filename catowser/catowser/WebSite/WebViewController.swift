@@ -227,7 +227,7 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if let protector = RedirectProtector(current: currentUrl, next: url), protector.shouldCancelRedirect {
+        if let protector = HostsComparator(current: currentUrl, next: url), protector.shouldCancelRedirect {
             decisionHandler(.cancel)
             return
         }
@@ -238,13 +238,15 @@ extension WebViewController: WKNavigationDelegate {
             // this one is when you tap on some youtube video
             // when you was browsing youtube
             
-            if let mainURL = navigationAction.request.mainDocumentURL, let hostComparator = RedirectProtector(current: currentUrl, next: mainURL) {
+            if let mainURL = navigationAction.request.mainDocumentURL, let hostComparator = HostsComparator(current: currentUrl, next: mainURL) {
                 if hostComparator.isPendingSame {
+                    externalNavigationDelegate?.showProgress(true)
                     decisionHandler(.allow)
                 } else {
                     decisionHandler(.cancel)
                 }
             } else {
+                externalNavigationDelegate?.showProgress(true)
                 decisionHandler(.allow)
             }
             return
@@ -320,6 +322,10 @@ extension WebViewController: WKNavigationDelegate {
                 print("failed to take a screenshot")
             }
         }
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        externalNavigationDelegate?.showProgress(false)
     }
 }
 
