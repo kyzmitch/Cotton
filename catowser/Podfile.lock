@@ -3,15 +3,15 @@ PODS:
   - AlamofireImage (3.5.2):
     - Alamofire (~> 4.8)
   - ReactiveSwift (6.0.0)
-  - SnapKit (4.2.0)
-  - SwiftLint (0.32.0)
-  - SwiftSoup (2.0.0)
+  - SnapKit (5.0.0)
+  - SwiftLint (0.33.0)
+  - SwiftSoup (2.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.8)
   - AlamofireImage (~> 3.5)
   - ReactiveSwift (~> 6.0.0)
-  - SnapKit (~> 4.2.0)
+  - SnapKit (~> 5.0.0)
   - SwiftLint
   - SwiftSoup
 
@@ -28,10 +28,10 @@ SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   ReactiveSwift: 24b7ed245617bbfd30ee0c87779b6c64ac1b4518
-  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  SwiftLint: 009a898ef2a1c851f45e1b59349bf6ff2ddc990d
-  SwiftSoup: 4fe21f65cdbfa3a40559047016b7962b88d29279
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
+  SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
+  SwiftSoup: 230991361c5ba249d140161860a3864a28b63860
 
-PODFILE CHECKSUM: 50fd7637115766f118539dead518411b4b72ab03
+PODFILE CHECKSUM: 14c86a89db6c5970b071e505e41de056009eaf67
 
 COCOAPODS: 1.7.2
