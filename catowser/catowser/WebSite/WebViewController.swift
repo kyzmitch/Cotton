@@ -240,13 +240,12 @@ extension WebViewController: WKNavigationDelegate {
             
             if let mainURL = navigationAction.request.mainDocumentURL, let hostComparator = HostsComparator(current: currentUrl, next: mainURL) {
                 if hostComparator.isPendingSame {
-                    externalNavigationDelegate?.showProgress(true)
                     decisionHandler(.allow)
                 } else {
                     decisionHandler(.cancel)
                 }
             } else {
-                externalNavigationDelegate?.showProgress(true)
+                // don't show progress for requests to about scheme
                 decisionHandler(.allow)
             }
             return
@@ -281,17 +280,14 @@ extension WebViewController: WKNavigationDelegate {
 
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
             guard let _ = WKNavigationActionPolicy(rawValue: ignoreAppRawValue) else {
-                externalNavigationDelegate?.showProgress(true)
                 decisionHandler(.allow)
                 return
             }
-            externalNavigationDelegate?.showProgress(true)
             decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
             return
         }
 
         if ["http", "https"].contains(url.scheme) {
-            externalNavigationDelegate?.showProgress(true)
             decisionHandler(.allow)
             return
         }
@@ -300,6 +296,7 @@ extension WebViewController: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+        externalNavigationDelegate?.showProgress(true)
         handleNavigationCommit(webView)
     }
 
