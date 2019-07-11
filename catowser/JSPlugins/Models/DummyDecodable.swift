@@ -11,4 +11,4 @@ import Foundation
 // https://stackoverflow.com/a/46713058
 
 /// Type to be able to skip some optional json parts during decoding
-public struct CottonDummyDecodable: Decodable {}
+struct CottonDummyDecodable: Decodable {}
