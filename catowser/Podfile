@@ -7,10 +7,11 @@ target 'catowser' do
 
   # Pods for catowser
   pod 'SnapKit', '~>5.0.0'
-  pod 'Alamofire', '~> 4.8'
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
   pod 'AlamofireImage', '~> 3.5'
+  # TODO: remove alamofire from main target
+  pod 'Alamofire', '~> 4.8'
 end
 
 target 'CoreBrowser' do
@@ -30,3 +31,8 @@ target 'JSPlugins' do
   pod 'SwiftLint'
 end
 
+target 'HttpKit' do
+  use_frameworks!
+
+  pod 'Alamofire', '~> 4.8'
+end
