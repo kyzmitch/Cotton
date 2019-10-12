@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HttpKit
 import CoreBrowser
 import JSPlugins
 import ReactiveSwift

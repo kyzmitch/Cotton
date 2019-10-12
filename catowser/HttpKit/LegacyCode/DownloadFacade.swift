@@ -15,7 +15,7 @@ public protocol Downloadable {
     var fileName: String { get }
 }
 
-extension CoreBrowser {
+extension HttpKit {
     public final class DownloadFacade {
         public static let shared = DownloadFacade()
 
@@ -25,8 +25,8 @@ extension CoreBrowser {
     }
 }
 
-extension CoreBrowser.DownloadFacade {
-    public typealias DownloadWithProgressSignalProducer = SignalProducer<CoreBrowser.ProgressResponse<URL>, DownloadError>
+extension HttpKit.DownloadFacade {
+    public typealias DownloadWithProgressSignalProducer = SignalProducer<HttpKit.ProgressResponse<URL>, DownloadError>
 
     /// Sends download request and saves file
     ///
@@ -84,7 +84,7 @@ extension CoreBrowser.DownloadFacade {
     }
 }
 
-extension CoreBrowser.DownloadFacade {
+extension HttpKit.DownloadFacade {
     public enum DownloadError: Error, CustomStringConvertible {
         case zombyInstance
         case noDocumentsDirectory
@@ -115,7 +115,7 @@ extension CoreBrowser.DownloadFacade {
     }
 }
 
-fileprivate extension CoreBrowser.DownloadFacade {
+fileprivate extension HttpKit.DownloadFacade {
     /// Path to temporary file to not waste RAM
     func sandboxDestination(from name: String) throws -> DownloadRequest.DownloadFileDestination {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)

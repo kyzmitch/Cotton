@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import HttpKit
 import JSPlugins
 
 protocol FilesGreedPresenter: class {

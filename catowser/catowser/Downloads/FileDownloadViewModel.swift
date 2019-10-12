@@ -8,7 +8,7 @@
 
 import Foundation
 import ReactiveSwift
-import CoreBrowser
+import HttpKit
 
 protocol FileDownloadDelegate: class {
     func didPressOpenFile(withLocal url: URL)
@@ -32,7 +32,7 @@ final class FileDownloadViewModel {
     func download() {
         downloadOutput.value = .started
         
-        CoreBrowser.DownloadFacade.shared.download(file: batch)
+        HttpKit.DownloadFacade.shared.download(file: batch)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 guard let self = self else {

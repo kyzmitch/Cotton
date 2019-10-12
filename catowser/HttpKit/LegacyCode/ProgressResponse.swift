@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-extension CoreBrowser {
+extension HttpKit {
     public enum ProgressResponse<T> {
         case progress(Progress)
         case complete(T)
