@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import UIKit
 
 /// MARK: Tabs observer protocol.
 public protocol TabsObserver {

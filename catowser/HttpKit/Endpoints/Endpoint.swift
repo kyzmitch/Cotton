@@ -7,18 +7,36 @@
 //
 
 import Foundation
+// Alamofire only needed for `HTTPMethod` type
 import Alamofire
 
 extension HttpKit {
-    struct Endpoint<T: Decodable> {
+    struct Endpoint<T: Decodable, Server: ServerDescription> {
         let method: HTTPMethod
         let path: String
         let queryItems: [URLQueryItem]
-        // let headers: [HttpHeader]?
+        let headers: [HttpHeader]?
         
         /// This is needed to associate type of response with endpoint
         let responseType: T.Type = T.self
+        /// To link endpoint to specific server, since it doesn't make sense to use endpoint for different host or something
+        let serverType: Server.Type = Server.self
         let encodingMethod: ParametersEncodingDestination
+        
+        /// Constructs a URL based on endpoint info and host name from provided server.
+        ///
+        /// - Parameters:
+        ///     - server: server should be used from HttpClient inside its makeRequest functions.
+        func url(_ server: Server) -> URL? {
+            var components = URLComponents()
+            components.scheme = server.scheme
+            components.host = server.hostString
+            components.path = path
+            components.queryItems = queryItems
+            
+            let resultURL = components.url
+            return resultURL
+        }
     }
     
     enum ParametersEncodingDestination {

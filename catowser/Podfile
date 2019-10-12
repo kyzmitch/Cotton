@@ -10,8 +10,6 @@ target 'catowser' do
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
   pod 'AlamofireImage', '~> 3.5'
-  # TODO: remove alamofire from main target
-  pod 'Alamofire', '~> 4.8'
 end
 
 target 'CoreBrowser' do
@@ -19,7 +17,6 @@ target 'CoreBrowser' do
   use_frameworks!
 
   # Pods for CoreBrowser
-  pod 'Alamofire', '~> 4.8'
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
 end
@@ -35,4 +32,6 @@ target 'HttpKit' do
   use_frameworks!
 
   pod 'Alamofire', '~> 4.8'
+  pod 'ReactiveSwift', '~> 6.0.0'
+  pod 'SwiftLint'
 end

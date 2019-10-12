@@ -9,5 +9,5 @@
 import Foundation
 
 /// Main namespace for Kit
-enum HttpKit {}
+public enum HttpKit {}
 
