@@ -14,8 +14,8 @@ import ReactiveSwift
 public enum HttpKit {}
 
 extension HttpKit {
-    public class Client {
-        private let server: ServerDescription
+    public class Client<Server: ServerDescription> {
+        private let server: Server
         
         private let connectivityManager: NetworkReachabilityManager?
         
@@ -28,7 +28,7 @@ extension HttpKit {
             // TODO: set connectionStateStream.value
         }
         
-        public init(server: ServerDescription, httpTimeout: TimeInterval = 60) {
+        public init(server: Server, httpTimeout: TimeInterval = 60) {
             self.server = server
             self.httpTimeout = httpTimeout
             
@@ -40,8 +40,39 @@ extension HttpKit {
                 connectivityManager = nil
                 assertionFailure("No connectivity manager for: \(server.hostString)")
             }
+            
+            connectivityManager?.listener = hostListener
+            _ = connectivityManager?.startListening()
         }
         
+        private func makeRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
+                                               withAccessToken accessToken: String?,
+                                               responseType: T.Type) -> SignalProducer<T, HttpError> {
+            let producer = SignalProducer<T, HttpError>.init { [weak self] (observer, _) in
+                guard let self = self else {
+                    observer.send(error: .zombySelf)
+                    return
+                }
+                guard let url = endpoint.url(self.server) else {
+                    observer.send(error: .failedConstructUrl)
+                    return
+                }
+                
+            }
+            return producer
+        }
         
+        func makePublicRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
+                                             responseType: T.Type) -> SignalProducer<T, HttpError> {
+            let producer = makeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
+            return producer
+        }
+        
+        func makeAuthorizedRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
+                                                 withAccessToken accessToken: String,
+                                                 responseType: T.Type) -> SignalProducer<T, HttpError> {
+            let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
+            return producer
+        }
     }
 }
