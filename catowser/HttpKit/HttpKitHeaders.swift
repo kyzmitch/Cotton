@@ -34,6 +34,9 @@ extension HttpKit {
     
     enum ContentType: String {
         case json = "application/json"
+        /// The following type is used to indicate that the response will contain search suggestions.
+        /// Link: [doc](http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.0)
+        case jsonSuggestions = "application/x-suggestions+json"
         case url = "application/x-www-form-urlencoded"
     }
 }

@@ -7,26 +7,43 @@
 //
 
 import Foundation
+import ReactiveSwift
 
+extension HttpKit {
+    typealias GSearchEndpoint = HttpKit.Endpoint<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.GoogleServer>
+    public typealias GSearchProducer = SignalProducer<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+}
 
 extension HttpKit.Endpoint {
-    typealias GSearchEndpoint = HttpKit.Endpoint<HttpKit.GoogleSearchResult, HttpKit.GoogleServer>
-    static func googleSearch(query: String) throws -> GSearchEndpoint {
+    static func googleSearchSuggestions(query: String) throws -> HttpKit.GSearchEndpoint {
         let items: [URLQueryItem] = [
             URLQueryItem(name: "q", value: query),
-            URLQueryItem(name: "ie", value: "utf-8"),
             URLQueryItem(name: "client", value: "firefox")
         ]
-        return GSearchEndpoint(method: .get,
-                               path: "search",
-                               queryItems: items,
-                               headers: nil,
-                               encodingMethod: .queryString)
+        return HttpKit.GSearchEndpoint(method: .get,
+                                       path: "complete/search",
+                                       queryItems: items,
+                                       headers: nil,
+                                       encodingMethod: .queryString)
     }
 }
 
 extension HttpKit {
-    public struct GoogleSearchResult: Decodable {
+    public struct GoogleSearchSuggestionsResponse: Decodable {
         
+    }
+}
+
+extension HttpKit.Client where Server == HttpKit.GoogleServer {
+    public func searchSuggestions(for text: String) -> HttpKit.GSearchProducer {
+        let endpoint: HttpKit.GSearchEndpoint
+        do {
+            endpoint = try .googleSearchSuggestions(query: text)
+        } catch {
+            return HttpKit.GSearchProducer.init(error: .failedConstructRequestParameters)
+        }
+        
+        let producer = self.makePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        return producer
     }
 }
