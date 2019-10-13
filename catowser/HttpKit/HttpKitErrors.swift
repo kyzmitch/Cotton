@@ -9,7 +9,7 @@
 import Foundation
 
 extension HttpKit {
-    enum HttpError: Swift.Error {
+    public enum HttpError: Swift.Error {
         /* Comon errprs related to http client */
         
         case zombySelf

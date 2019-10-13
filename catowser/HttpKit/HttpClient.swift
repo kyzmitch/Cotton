@@ -58,6 +58,14 @@ extension HttpKit {
                     return
                 }
                 
+                var httpRequest = URLRequest(url: url,
+                                             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                                             timeoutInterval: self.httpTimeout)
+                httpRequest.httpMethod = endpoint.method.rawValue
+                // httpRequest.allHTTPHeaderFields = endpoint.headers
+                
+                
+                observer.sendCompleted()
             }
             return producer
         }
