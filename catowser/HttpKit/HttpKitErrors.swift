@@ -15,21 +15,21 @@ extension HttpKit {
         case zombySelf
         case failedConstructUrl
         
-        case httpFailure(error: Error)
+        case httpFailure(error: Error, request: URLRequest?)
         case jsonSerialization(error: Error)
         case jsonDecoding(error: Error)
         /// can add String assiciated vakue for missed params
         case missingRequestParameters
         case noAuthenticationToken
         case failedConstructRequestParameters
-        case failedEncodeJSONRequestParameters
+        case failedEncodeJSONRequestParameters(Error)
         case failedEncodeEncodable
         case noInternetConnectionWithHost
         case noHttpResponse
         
         var localizedDescription: String {
             switch self {
-            case .httpFailure(error: let error):
+            case .httpFailure(error: let error, request: _):
                 return "http failure: \(error.localizedDescription)"
             case .jsonSerialization(error: let error):
                 return "json serialization: \(error.localizedDescription)"

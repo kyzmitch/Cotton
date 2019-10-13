@@ -20,10 +20,14 @@ extension HttpKit.Endpoint {
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "client", value: "firefox")
         ]
+        // Actually it's possible to get correct response even without any headers
+        let headers: [HttpKit.HttpHeader] = [.contentType(.jsonSuggestions),
+                                             .accept(.jsonSuggestions)]
+        
         return HttpKit.GSearchEndpoint(method: .get,
                                        path: "complete/search",
                                        queryItems: items,
-                                       headers: nil,
+                                       headers: headers,
                                        encodingMethod: .queryString)
     }
 }
