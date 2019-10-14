@@ -48,39 +48,39 @@ extension HttpKit {
         private func makeRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
                                                withAccessToken accessToken: String?,
                                                responseType: T.Type) -> SignalProducer<T, HttpError> {
-            let producer: SignalProducer<T, HttpError> = .init { (observer, _) in
+            let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, _) in
+                guard let self = self else {
+                    observer.send(error: .zombySelf)
+                    return
+                }
+                guard let url = endpoint.url(self.server) else {
+                    observer.send(error: .failedConstructUrl)
+                    return
+                }
                 
+                var httpRequest = URLRequest(url: url,
+                                             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                                             timeoutInterval: self.httpTimeout)
+                httpRequest.httpMethod = endpoint.method.rawValue
+                httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
+                if let token = accessToken {
+                    let auth: HttpHeader = .authorization(token: token)
+                    httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
+                }
+                
+                do {
+                     try httpRequest.addParameters(from: endpoint)
+                } catch let error as HttpError {
+                    observer.send(error: error)
+                    return
+                } catch {
+                    observer.send(error: .httpFailure(error: error, request: httpRequest))
+                    return
+                }
+                
+                observer.sendCompleted()
             }
-            /*
-             guard let self = self else {
-                  observer.send(error: .zombySelf)
-                  return
-              }
-              guard let url = endpoint.url(self.server) else {
-                  observer.send(error: .failedConstructUrl)
-                  return
-              }
-              
-              var httpRequest = URLRequest(url: url,
-                                           cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-                                           timeoutInterval: self.httpTimeout)
-              httpRequest.httpMethod = endpoint.method.rawValue
-              httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
-              if let token = accessToken {
-                  let auth: HttpHeader = .authorization(token: token)
-                  httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
-              }
-              
-              do {
-                  try httpRequest.addParameters(from: endpoint)
-              } catch is HttpError {
-                 observer.send(error: error)
-                 return
-              }
-             
-              
-              observer.sendCompleted()
-             */
+            
             return producer
         }
         
