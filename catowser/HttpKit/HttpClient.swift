@@ -78,6 +78,9 @@ extension HttpKit {
                     return
                 }
                 
+                Alamofire.request(httpRequest)
+                    .validate(statusCode: endpoint.successResponseCodes)
+                
                 observer.sendCompleted()
             }
             
