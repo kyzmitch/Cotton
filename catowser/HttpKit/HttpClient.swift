@@ -48,7 +48,7 @@ extension HttpKit {
         private func makeRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
                                                withAccessToken accessToken: String?,
                                                responseType: T.Type) -> SignalProducer<T, HttpError> {
-            let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, _) in
+            let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
                     observer.send(error: .zombySelf)
                     return
@@ -78,10 +78,24 @@ extension HttpKit {
                     return
                 }
                 
-                Alamofire.request(httpRequest)
+                let dataRequest: DataRequest = Alamofire.request(httpRequest)
                     .validate(statusCode: endpoint.successResponseCodes)
+                    .responseDecodableObject(queue: nil, completionHandler: { (response: DataResponse<T>) in
+                        switch response.result {
+                        case .success(let value):
+                            observer.send(value: value)
+                            observer.sendCompleted()
+                        case .failure(let error) where error is HttpKit.HttpError:
+                            let kitError = error as! HttpError
+                            observer.send(error: kitError)
+                        case .failure(let error):
+                            observer.send(error: .httpFailure(error: error, request: httpRequest))
+                        }
+                    })
                 
-                observer.sendCompleted()
+                lifetime.observeEnded({
+                    dataRequest.cancel()
+                })
             }
             
             return producer

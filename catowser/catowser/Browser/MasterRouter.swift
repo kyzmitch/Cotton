@@ -87,6 +87,11 @@ final class MasterRouter: NSObject {
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
     
     private var searchSuggestionsDisposable: Disposable?
+    
+    private lazy var googleClient: HttpKit.Client<HttpKit.GoogleServer> = {
+        let description = HttpKit.GoogleServer()
+        return HttpKit.Client(server: description)
+    }()
 
     private let searchSuggestClient: SearchSuggestClient = {
         // TODO: implement parsing e.g. google.xml
@@ -256,15 +261,15 @@ fileprivate extension MasterRouter {
         searchSuggestionsController.knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
 
         searchSuggestionsDisposable?.dispose()
-        searchSuggestionsDisposable = searchSuggestClient.suggestionsProducer(basedOn: searchText)
+        searchSuggestionsDisposable = googleClient.searchSuggestions(for: searchText)
             .throttle(0.5, on: QueueScheduler.main)
-            .observe(on: UIScheduler())
-            .startWithResult { [weak self] result in
+            .observe(on: QueueScheduler.main)
+            .startWithResult { (result) in
                 switch result {
-                case .success(let suggestions):
-                    self?.searchSuggestionsController.suggestions = suggestions
+                case .success(let response):
+                    // self?.searchSuggestionsController.suggestions = suggestions
                     break
-                case .failure:
+                case .failure(let error):
                     break
                 }
         }

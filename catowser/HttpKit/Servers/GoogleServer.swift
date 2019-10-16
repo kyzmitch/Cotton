@@ -17,5 +17,7 @@ extension HttpKit {
         public let domain: String = "google.com"
         
         private let prefix = "www"
+        
+        public init() {}
     }
 }

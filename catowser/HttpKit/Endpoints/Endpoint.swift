@@ -16,11 +16,12 @@ protocol EndpointDescription {
 
 extension EndpointDescription {
     var successResponseCodes: [Int] {
-        return [200]
+        return [200, 201]
     }
 }
 
-extension HttpKit.Endpoint: EndpointDescription {}
+extension HttpKit.Endpoint: EndpointDescription {
+}
 
 extension HttpKit {
     struct Endpoint<T: Decodable, Server: ServerDescription> {
