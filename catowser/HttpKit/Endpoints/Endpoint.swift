@@ -44,7 +44,7 @@ extension HttpKit {
             var components = URLComponents()
             components.scheme = server.scheme
             components.host = server.hostString
-            components.path = path
+            components.path = "/\(path)"
             components.queryItems = queryItems
             
             let resultURL = components.url

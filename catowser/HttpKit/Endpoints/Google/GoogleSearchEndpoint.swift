@@ -43,13 +43,13 @@ extension HttpKit {
         /*
          ["test",["test","testrail","test drive unlimited 2","test drive unlimited","testometrika","testlink","testdisk","test yourself","tests lunn","testflight"]]
          */
-        let queryText: String
-        let textResults: [String]
+        public let queryText: String
+        public let textResults: [String]
         
         public init(from decoder: Decoder) throws {
             var container = try decoder.unkeyedContainer()
-            let array = try container.decode([String, [String]].self)
-            
+            queryText = try container.decode(String.self)
+            textResults = try container.decode([String].self)
         }
     }
 }
@@ -63,7 +63,6 @@ extension HttpKit.Client where Server == HttpKit.GoogleServer {
             return HttpKit.GSearchProducer.init(error: .failedConstructRequestParameters)
         }
         
-        print("Prove for extension: \(endpoint.successResponseCodes)")
         let producer = self.makePublicRequest(for: endpoint, responseType: endpoint.responseType)
         return producer
     }

@@ -264,10 +264,10 @@ fileprivate extension MasterRouter {
         searchSuggestionsDisposable = googleClient.searchSuggestions(for: searchText)
             .throttle(0.5, on: QueueScheduler.main)
             .observe(on: QueueScheduler.main)
-            .startWithResult { (result) in
+            .startWithResult { [weak self] (result) in
                 switch result {
                 case .success(let response):
-                    // self?.searchSuggestionsController.suggestions = suggestions
+                    self?.searchSuggestionsController.suggestions = response.textResults
                     break
                 case .failure(let error):
                     break
