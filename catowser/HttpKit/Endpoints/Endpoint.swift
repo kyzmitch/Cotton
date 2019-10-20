@@ -10,21 +10,8 @@ import Foundation
 // Alamofire only needed for `HTTPMethod` type
 import Alamofire
 
-protocol EndpointDescription {
-    var successResponseCodes: [Int] {get}
-}
-
-extension EndpointDescription {
-    var successResponseCodes: [Int] {
-        return [200, 201]
-    }
-}
-
-extension HttpKit.Endpoint: EndpointDescription {
-}
-
 extension HttpKit {
-    struct Endpoint<T: Decodable, Server: ServerDescription> {
+    struct Endpoint<T: ResponseType, Server: ServerDescription> {
         let method: HTTPMethod
         let path: String
         let queryItems: [URLQueryItem]
@@ -59,6 +46,16 @@ extension HttpKit {
         case httpBody(encodedData: Data)
     }
     
-    struct VoidResponse: Decodable {
+    struct VoidResponse: ResponseType {
+    }
+}
+
+protocol ResponseType: Decodable {
+    static var successCodes: [Int] { get }
+}
+
+extension ResponseType {
+    static var successCodes: [Int] {
+        return [200, 201]
     }
 }
