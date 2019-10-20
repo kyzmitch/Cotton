@@ -45,7 +45,7 @@ extension HttpKit {
             _ = connectivityManager?.startListening()
         }
         
-        private func makeRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
+        private func makeRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
                                                withAccessToken accessToken: String?,
                                                responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, lifetime) in
@@ -78,8 +78,11 @@ extension HttpKit {
                     return
                 }
                 
+                let codes = T.successCodes
+                print("prove \(codes)")
+                
                 let dataRequest: DataRequest = Alamofire.request(httpRequest)
-                    .validate(statusCode: endpoint.successResponseCodes)
+                    .validate(statusCode: codes)
                     .responseDecodableObject(queue: nil, completionHandler: { (response: DataResponse<T>) in
                         switch response.result {
                         case .success(let value):
@@ -101,13 +104,13 @@ extension HttpKit {
             return producer
         }
         
-        func makePublicRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
+        func makePublicRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
                                              responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
             return producer
         }
         
-        func makeAuthorizedRequest<T: Decodable>(for endpoint: Endpoint<T, Server>,
+        func makeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
                                                  withAccessToken accessToken: String,
                                                  responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)

@@ -14,12 +14,6 @@ extension HttpKit {
     public typealias GSearchProducer = SignalProducer<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
 }
 
-fileprivate extension HttpKit.Endpoint {
-    var successResponseCodes: [Int] {
-        return [200]
-    }
-}
-
 extension HttpKit.Endpoint {
     static func googleSearchSuggestions(query: String) throws -> HttpKit.GSearchEndpoint {
         let items: [URLQueryItem] = [
@@ -39,7 +33,11 @@ extension HttpKit.Endpoint {
 }
 
 extension HttpKit {
-    public struct GoogleSearchSuggestionsResponse: Decodable {
+    public struct GoogleSearchSuggestionsResponse: ResponseType {
+        static var successCodes: [Int] {
+            return [200]
+        }
+        
         /*
          ["test",["test","testrail","test drive unlimited 2","test drive unlimited","testometrika","testlink","testdisk","test yourself","tests lunn","testflight"]]
          */
