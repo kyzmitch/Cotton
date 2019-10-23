@@ -262,7 +262,6 @@ fileprivate extension MasterRouter {
 
         searchSuggestionsDisposable?.dispose()
         searchSuggestionsDisposable = googleClient.searchSuggestions(for: searchText)
-            .throttle(0.5, on: QueueScheduler.main)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 switch result {
