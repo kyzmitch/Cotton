@@ -79,7 +79,6 @@ extension HttpKit {
                 }
                 
                 let codes = T.successCodes
-                print("prove \(codes)")
                 
                 let dataRequest: DataRequest = Alamofire.request(httpRequest)
                     .validate(statusCode: codes)
