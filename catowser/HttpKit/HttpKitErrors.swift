@@ -10,7 +10,7 @@ import Foundation
 
 extension HttpKit {
     public enum HttpError: Swift.Error {
-        /* Comon errprs related to http client */
+        /* Comon errors related to http client */
         
         case zombySelf
         case failedConstructUrl
