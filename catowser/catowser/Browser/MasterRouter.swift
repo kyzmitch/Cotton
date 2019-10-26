@@ -269,7 +269,7 @@ fileprivate extension MasterRouter {
                     self?.searchSuggestionsController.suggestions = response.textResults
                     break
                 case .failure(let error):
-                    break
+                    print("Fail to fetch search suggestions \(error.localizedDescription)")
                 }
         }
     }
