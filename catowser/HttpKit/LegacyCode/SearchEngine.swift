@@ -50,11 +50,10 @@ fileprivate extension URL {
     static func getURLFromTemplate(_ searchTemplate: String, query: String) -> URL? {
         if let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .SearchTermsAllowed) {
             // Escape the search template as well in case it contains not-safe characters like symbols
-            let templateAllowedSet = NSMutableCharacterSet()
-            templateAllowedSet.formUnion(with: .URLAllowed)
+            var templateAllowedSet = CharacterSet.urlPathAllowed
 
             // Allow brackets since we use them in our template as our insertion point
-            templateAllowedSet.formUnion(with: CharacterSet(charactersIn: "{}"))
+            templateAllowedSet.formUnion(CharacterSet(charactersIn: "{}"))
 
             if let encodedSearchTemplate = searchTemplate.addingPercentEncoding(withAllowedCharacters: templateAllowedSet as CharacterSet) {
                 let urlString = encodedSearchTemplate
