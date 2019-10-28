@@ -46,11 +46,24 @@ extension HttpKit {
             }
             
             // Non-ASCII characters should be punycoded (xn--qxam, not ελ).
-            
+            var containsNonASCII = false
             for character in name {
-                if CharacterSet.urlHostAllowed.co
+                // CharacterSet.urlHostAllowed
+                guard let _ = character.asciiValue else {
+                    containsNonASCII = true
+                    break
+                }
             }
-            self.string = name
+            
+            if containsNonASCII {
+                let fixedName =  name.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
+                guard let fixed = fixedName else {
+                    throw DomainNameError.punycodingFailed
+                }
+                self.string = fixed
+            } else {
+                self.string = name
+            }
         }
     }
 }
@@ -64,5 +77,6 @@ extension HttpKit {
         case dotAtBeginning
         case doubleDots
         case wrongPartSize(Int)
+        case punycodingFailed
     }
 }
