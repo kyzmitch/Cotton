@@ -12,6 +12,6 @@ import Foundation
 
 extension HttpKit.Endpoint {
     static func googleDnsOverHTTPSJson(name: HttpKit.DomainName) throws -> HttpKit.GSearchEndpoint {
-        
+        throw HttpKit.HttpError.failedConstructRequestParameters
     }
 }
