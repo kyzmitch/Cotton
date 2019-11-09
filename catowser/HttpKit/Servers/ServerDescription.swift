@@ -11,12 +11,17 @@ import Foundation
 public protocol ServerDescription {
     var hostString: String {get}
     var domain: String {get}
-    var scheme: String {get}
+    var scheme: HttpScheme {get}
+}
+
+public enum HttpScheme: String {
+    case https
+    case http
 }
 
 extension ServerDescription {
-    public var scheme: String {
-        return "https"
+    public var scheme: HttpScheme {
+        return .https
     }
 }
 

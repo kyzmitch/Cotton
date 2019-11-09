@@ -101,6 +101,7 @@
 		8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */; };
 		8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */; };
 		8A46AB9B237721FD00DC03E6 /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
+		8A46AB9D2377260300DC03E6 /* GoogleDnsServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */; };
 		8A571D1B226A1C53008917D5 /* t4.js in Resources */ = {isa = PBXBuildFile; fileRef = 8A571D1A226A1C53008917D5 /* t4.js */; };
 		8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AED82351CD2D001A9C83 /* ServerDescription.swift */; };
 		8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */; };
@@ -290,6 +291,7 @@
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
 		8A46AB9A237721FD00DC03E6 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Network.framework; sourceTree = DEVELOPER_DIR; };
+		8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDnsServer.swift; sourceTree = "<group>"; };
 		8A571D1A226A1C53008917D5 /* t4.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = t4.js; path = js/t4.js; sourceTree = "<group>"; };
 		8A62AED82351CD2D001A9C83 /* ServerDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDescription.swift; sourceTree = "<group>"; };
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 			children = (
 				8A62AED82351CD2D001A9C83 /* ServerDescription.swift */,
 				8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */,
+				8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */,
 			);
 			path = Servers;
 			sourceTree = "<group>";
@@ -1243,6 +1246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A46AB9D2377260300DC03E6 /* GoogleDnsServer.swift in Sources */,
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
 				8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */,
