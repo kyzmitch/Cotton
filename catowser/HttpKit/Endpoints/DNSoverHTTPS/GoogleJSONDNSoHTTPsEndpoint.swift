@@ -19,23 +19,23 @@ extension HttpKit {
      This is wrapper around `String` type.
      https://twitter.com/nicklockwood/status/1192365612661706752?s=20
      */
-    struct DnsRRType: RawRepresentable {
-        init?(rawValue: String) {
+    public struct DnsRRType: RawRepresentable {
+        public init?(rawValue: String) {
             return nil
         }
         
-        let rawValue: String
+        public let rawValue: String
         
-        typealias RawValue = String
+        public typealias RawValue = String
         
-        init?(_ number: UInt32 = 1) {
+        public init?(_ number: UInt32 = 1) {
             guard (1...65535).contains(number) else {
                 return nil
             }
             rawValue = "\(number)"
         }
     }
-    struct GDNSRequestParams {
+    public struct GDNSRequestParams {
         /**
          string, required
 
@@ -88,7 +88,7 @@ extension HttpKit {
          */
         let random_padding: String
         
-        init?(domainName: DomainName) {
+        public init?(domainName: DomainName) {
             name = domainName
             guard let rrType = DnsRRType() else {
                 return nil
@@ -103,11 +103,33 @@ extension HttpKit {
             edns_client_subnet = address
             random_padding = ""
         }
+        
+        var urlQueryItems: [URLQueryItem] {
+            let subnetStr = String(data: edns_client_subnet.rawValue,
+                                   encoding: .ascii)
+            
+            let items: [URLQueryItem] = [
+                URLQueryItem(name: "name", value: name.string),
+                URLQueryItem(name: "type", value: type.rawValue),
+                URLQueryItem(name: "cd", value: "\(cd)"),
+                URLQueryItem(name: "ct", value: ct),
+                URLQueryItem(name: "do", value: "\(self.do)"),
+                URLQueryItem(name: "edns_client_subnet", value: subnetStr),
+                URLQueryItem(name: "random_padding", value: random_padding)
+            ]
+            return items
+        }
     }
 }
 
 extension HttpKit.Endpoint {
+    
     static func googleDnsOverHTTPSJson(_ params: HttpKit.GDNSRequestParams) throws -> HttpKit.GSearchEndpoint {
-        throw HttpKit.HttpError.failedConstructRequestParameters
+        // throw HttpKit.HttpError.failedConstructRequestParameters
+        return HttpKit.GSearchEndpoint(method: .get,
+                                       path: "resolve",
+                                       queryItems: params.urlQueryItems,
+                                       headers: nil,
+                                       encodingMethod: .queryString)
     }
 }
