@@ -20,11 +20,9 @@ extension CGFloat {
     static var tabWidth: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return 40.0
-        }
-        else if UIDevice.current.userInterfaceIdiom == .pad {
+        } else if UIDevice.current.userInterfaceIdiom == .pad {
             return 180.0
-        }
-        else {
+        } else {
             return 180.0
         }
     }

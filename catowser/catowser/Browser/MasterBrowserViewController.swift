@@ -83,7 +83,7 @@ final class MasterBrowserViewController: BaseViewController {
         return v
     }()
 
-    var _keyboardHeight: CGFloat?
+    var mKeyboardHeight: CGFloat?
 
     /// The current holder for WebView (controller) if browser has at least one
     private var currentWebViewController: WebViewController?
@@ -413,7 +413,7 @@ private extension MasterBrowserViewController {
             let rect = value.cgRectValue
 
             // need to reduce search suggestions list height
-            _keyboardHeight = rect.size.height
+            mKeyboardHeight = rect.size.height
         }
 
         return handling
@@ -421,7 +421,7 @@ private extension MasterBrowserViewController {
 
     func keyboardWillHideClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
-            _keyboardHeight = nil
+            mKeyboardHeight = nil
         }
 
         return handling
@@ -451,10 +451,10 @@ extension MasterBrowserViewController: MasterDelegate {
 
     var keyboardHeight: CGFloat? {
         get {
-            return _keyboardHeight
+            return mKeyboardHeight
         }
         set (newValue) {
-            _keyboardHeight = newValue
+            mKeyboardHeight = newValue
         }
     }
 

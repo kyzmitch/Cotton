@@ -9,7 +9,7 @@
 import Foundation
 
 extension String {
-    func indices(of searchTerm:String) -> [Int] {
+    func indices(of searchTerm: String) -> [Int] {
         var indices: [String.IndexDistance] = []
         var pos: String.Index = startIndex
         while let range = range(of: searchTerm, range: pos ..< endIndex) {

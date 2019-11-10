@@ -116,6 +116,7 @@ public final class TabsListManager {
 
     private var disposables = [Disposable?]()
 
+    // swiftlint:disable:next function_body_length
     init(storage: TabsStorage) {
         selectionStrategy = NearbySelectionStrategy()
 

@@ -62,9 +62,9 @@ final class InstagramHandler: NSObject {
 
 fileprivate extension InstagramHandler {
     enum MessageKey: String {
-        case log = "log"
-        case singleVideoNode = "singleVideoNode"
-        case videoNodes = "videoNodes"
+        case log
+        case singleVideoNode
+        case videoNodes
     }
 }
 
@@ -78,6 +78,7 @@ extension InstagramHandler: WKScriptMessageHandler {
         for (key, value) in args {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
+                // swiftlint:disable:next force_cast
                 print("JS Instagram log: \(value as! String)")
             case .videoNodes?:
                 guard let jsonObject = Data.dataFrom(value) else {

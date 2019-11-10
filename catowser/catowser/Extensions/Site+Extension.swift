@@ -17,7 +17,13 @@ extension Site {
         if let favicon = faviconImage {
             imageView.image = favicon
         } else {
-            imageView.af_setImage(withURL: faviconURL, placeholderImage: nil, filter: nil, progress: nil, progressQueue: DispatchQueue.main, imageTransition: .crossDissolve(0.5), runImageTransitionIfCached: false) { dataResponse in
+            imageView.af_setImage(withURL: faviconURL,
+                                  placeholderImage: nil,
+                                  filter: nil,
+                                  progress: nil,
+                                  progressQueue: .main,
+                                  imageTransition: .crossDissolve(0.5),
+                                  runImageTransitionIfCached: false) { dataResponse in
                 guard let favicon = dataResponse.value else {
                     return
                 }

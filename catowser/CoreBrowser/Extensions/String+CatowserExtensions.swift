@@ -26,8 +26,6 @@ public extension String {
 }
 
 extension String {
-    
-    
     func withoutPrefix(_ prefix: String) -> String? {
         guard self.hasPrefix(prefix) else { return nil }
         return String(self.dropFirst(prefix.count))

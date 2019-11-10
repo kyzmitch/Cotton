@@ -1,4 +1,3 @@
-
 //
 //  JSPluginFactory.swift
 //  JSPlugins
@@ -39,7 +38,9 @@ final class JSPluginFactory {
 
     private init() {}
 
-    func script(for plugin: CottonJSPlugin, with injectionTime: WKUserScriptInjectionTime, isMainFrameOnly: Bool) throws -> WKUserScript {
+    func script(for plugin: CottonJSPlugin,
+                with injectionTime: WKUserScriptInjectionTime,
+                isMainFrameOnly: Bool) throws -> WKUserScript {
         let typeName = plugin.jsFileName
         if let existingJS = scripts.object(forKey: typeName as NSString) {
             return existingJS

@@ -76,6 +76,6 @@ extension T4Video: Equatable {}
 
 extension T4Video.Resolution: CodingKey {}
 
-fileprivate struct T4VideoContainer: Decodable {
+private struct T4VideoContainer: Decodable {
     let token: URL
 }

@@ -28,10 +28,18 @@ public final class WebViewJSPluginsFacade {
         for plugin in plugins {
             do {
                 if plugin is BasePlugin {
-                    let wkScript1 = try JSPluginFactory.shared.script(for: plugin, with: .atDocumentStart, isMainFrameOnly: true)
-                    let wkScript2 = try JSPluginFactory.shared.script(for: plugin, with: .atDocumentEnd, isMainFrameOnly: true)
-                    let wkScript3 = try JSPluginFactory.shared.script(for: plugin, with: .atDocumentStart, isMainFrameOnly: false)
-                    let wkScript4 = try JSPluginFactory.shared.script(for: plugin, with: .atDocumentEnd, isMainFrameOnly: false)
+                    let wkScript1 = try JSPluginFactory.shared.script(for: plugin,
+                                                                      with: .atDocumentStart,
+                                                                      isMainFrameOnly: true)
+                    let wkScript2 = try JSPluginFactory.shared.script(for: plugin,
+                                                                      with: .atDocumentEnd,
+                                                                      isMainFrameOnly: true)
+                    let wkScript3 = try JSPluginFactory.shared.script(for: plugin,
+                                                                      with: .atDocumentStart,
+                                                                      isMainFrameOnly: false)
+                    let wkScript4 = try JSPluginFactory.shared.script(for: plugin,
+                                                                      with: .atDocumentEnd,
+                                                                      isMainFrameOnly: false)
                     userContentController.addUserScript(wkScript1)
                     userContentController.addUserScript(wkScript2)
                     userContentController.addUserScript(wkScript3)
@@ -40,7 +48,9 @@ public final class WebViewJSPluginsFacade {
                     userContentController.removeScriptMessageHandler(forName: plugin.messageHandlerName)
                     userContentController.add(plugin.handler, name: plugin.messageHandlerName)
                 } else {
-                    let wkScript = try JSPluginFactory.shared.script(for: plugin, with: .atDocumentStart, isMainFrameOnly: plugin.isMainFrameOnly)
+                    let wkScript = try JSPluginFactory.shared.script(for: plugin,
+                                                                     with: .atDocumentStart,
+                                                                     isMainFrameOnly: plugin.isMainFrameOnly)
                     userContentController.addUserScript(wkScript)
                     userContentController.removeScriptMessageHandler(forName: plugin.messageHandlerName)
                     userContentController.add(plugin.handler, name: plugin.messageHandlerName)

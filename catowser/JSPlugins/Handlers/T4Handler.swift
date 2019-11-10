@@ -62,8 +62,8 @@ final class T4Handler: NSObject {
 
 fileprivate extension T4Handler {
     enum MessageKey: String {
-        case log = "log"
-        case video = "video"
+        case log
+        case video
     }
 }
 
@@ -77,6 +77,7 @@ extension T4Handler: WKScriptMessageHandler {
         for (key, value) in args {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
+                // swiftlint:disable:next force_cast
                 print("JS T4 log: \(value as! String)")
             case .video?:
                 guard let jsonObject = Data.dataFrom(value) else {

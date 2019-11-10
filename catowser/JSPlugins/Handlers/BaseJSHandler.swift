@@ -79,10 +79,12 @@ extension BaseJSHandler: WKScriptMessageHandler {
         for (key, value) in args {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
+                // swiftlint:disable:next force_cast
                 print("JS Base log: \(value as! String)")
             case .html? where value is String:
                 // now need to parse to find video tags and extract urls
                 do {
+                    // swiftlint:disable:next force_cast
                     let videoTags = try HTMLVideoTagsContainer(html: value as! String)
                     delegate?.didReceiveVideoTags(videoTags.videoTags)
                 } catch {
