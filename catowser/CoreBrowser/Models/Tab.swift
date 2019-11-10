@@ -41,7 +41,6 @@ public extension Tab {
     }
 }
 
-
 extension Tab.ContentType: Equatable {
     public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
@@ -150,6 +149,8 @@ fileprivate extension UIColor {
 }
 
 fileprivate extension String {
-    static let defaultTitle = NSLocalizedString("ttl_tab_short_blank", comment: "Title for tab without any URL or search string")
-    static let topSitesTitle = NSLocalizedString("ttl_tab_short_top_sites", comment: "Title for tab with list of favorite sites")
+    static let defaultTitle = NSLocalizedString("ttl_tab_short_blank",
+                                                comment: "Title for tab without any URL or search string")
+    static let topSitesTitle = NSLocalizedString("ttl_tab_short_top_sites",
+                                                 comment: "Title for tab with list of favorite sites")
 }

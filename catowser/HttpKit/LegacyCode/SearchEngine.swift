@@ -69,7 +69,10 @@ fileprivate extension URL {
 public extension SearchEngine {
     /// Search engine configured for google endpoints, but firefox used as a client.
     /// Can't use own `catowser` param because it is ignored by Google with Http 400 error
-    static let googleEngine: SearchEngine = SearchEngine(shortName: "Google", image: .googleImage, searchTemplate: "https://www.google.com/search?q={searchTerms}&ie=utf-8&oe=utf-8&client=firefox", suggestTemplate: "https://www.google.com/complete/search?client=firefox&q={searchTerms}")
+    static let googleEngine: SearchEngine = SearchEngine(shortName: "Google",
+                                                         image: .googleImage,
+                                                         searchTemplate: "https://www.google.com/search?q={searchTerms}&ie=utf-8&oe=utf-8&client=firefox",
+                                                         suggestTemplate: "https://www.google.com/complete/search?client=firefox&q={searchTerms}")
 }
 
 extension UIImage {

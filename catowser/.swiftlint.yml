@@ -1,0 +1,8 @@
+disabled_rules:
+    - trailing_whitespace
+excluded:
+- Carthage
+- Pods
+
+identifier_name:
+    min_length: 1 # warning

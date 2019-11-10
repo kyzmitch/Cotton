@@ -56,7 +56,9 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
 
         if let pageTitle = try? container.decode(String.self, forKey: .pageTitle) {
             name = pageTitle
-        } else if let mediaCaption = try? container.decode(IgEdgeMediaCaption.self,  forKey: .mediaCaption), let edge = mediaCaption.edges.first {
+        } else if let mediaCaption = try? container.decode(IgEdgeMediaCaption.self,
+                                                           forKey: .mediaCaption),
+            let edge = mediaCaption.edges.first {
             name = edge.node.text
         } else {
             let uuid: String = "instagram_\(UUID().uuidString)"
@@ -86,7 +88,7 @@ extension InstagramVideoNode {
     }
 }
 
-fileprivate struct IgEdgeMediaCaption: Decodable {
+private struct IgEdgeMediaCaption: Decodable {
     let edges: [IgMediaCaptionEdge]
 
     fileprivate struct IgMediaCaptionNodeText: Decodable {

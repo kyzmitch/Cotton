@@ -12,6 +12,7 @@ import SwiftSoup
 public struct HTMLVideoTagsContainer {
     public let videoTags: [HTMLVideoTag]
     
+    // swiftlint:disable:next function_body_length
     init(html: String) throws {
         guard html.count > 0 else {
             throw CottonError.emptyHtml

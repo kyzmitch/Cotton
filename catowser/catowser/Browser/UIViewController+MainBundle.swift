@@ -29,6 +29,7 @@ extension UIViewController {
     fileprivate static func instantiateFromStoryboardHelper<T>(_ storyboardName: String, identifier: String) -> T {
         let currentBundle = Bundle(for: self)
         let storyboard = UIStoryboard(name: storyboardName, bundle: currentBundle)
+        // swiftlint:disable:next force_cast
         let controller = storyboard.instantiateViewController(withIdentifier: identifier) as! T
         return controller
     }

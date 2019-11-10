@@ -36,9 +36,9 @@ public extension UIImage {
         draw(at: CGPoint.zero)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
+        UIGraphicsEndImageContext()
         
-        return image;
+        return image
     }
 
     fileprivate var averageColorImage: CGImage? {

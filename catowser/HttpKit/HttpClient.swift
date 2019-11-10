@@ -88,6 +88,7 @@ extension HttpKit {
                             observer.send(value: value)
                             observer.sendCompleted()
                         case .failure(let error) where error is HttpKit.HttpError:
+                            // swiftlint:disable:next force_cast
                             let kitError = error as! HttpError
                             observer.send(error: kitError)
                         case .failure(let error):
