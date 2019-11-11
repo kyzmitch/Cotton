@@ -19,7 +19,7 @@ extension HttpKit {
         case jsonSerialization(error: Error)
         case jsonDecoding(error: Error)
         /// can add String assiciated vakue for missed params
-        case missingRequestParameters
+        case missingRequestParameters(String)
         case noAuthenticationToken
         case failedConstructRequestParameters
         case failedEncodeJSONRequestParameters(Error)
