@@ -53,7 +53,8 @@ extension HttpKit {
         /**
          boolean, default: false
 
-         The CD (Checking Disabled) flag. Use cd=1, or cd=true to disable DNSSEC validation; use cd=0, cd=false, or no cd parameter to enable DNSSEC validation.
+         The CD (Checking Disabled) flag. Use cd=1, or cd=true to disable DNSSEC validation;
+         use cd=0, cd=false, or no cd parameter to enable DNSSEC validation.
          */
         let cd: Bool
         
@@ -69,7 +70,8 @@ extension HttpKit {
         /**
          boolean, default: false
 
-         The DO (DNSSEC OK) flag. Use do=1, or do=true to include DNSSEC records (RRSIG, NSEC, NSEC3); use do=0, do=false, or no do parameter to omit DNSSEC records.
+         The DO (DNSSEC OK) flag. Use do=1, or do=true to include DNSSEC records
+         (RRSIG, NSEC, NSEC3); use do=0, do=false, or no do parameter to omit DNSSEC records.
 
          Applications should always handle (and ignore, if necessary) any DNSSEC records in JSON responses
          as other implementations may always include them, and we may change the default behavior for JSON
@@ -138,11 +140,19 @@ extension HttpKit {
 extension HttpKit.Endpoint {
     
     static func googleDnsOverHTTPSJson(_ params: HttpKit.GDNSRequestParams) throws -> HttpKit.GSearchEndpoint {
-        // throw HttpKit.HttpError.failedConstructRequestParameters
         return HttpKit.GSearchEndpoint(method: .get,
                                        path: "resolve",
                                        queryItems: params.urlQueryItems,
                                        headers: nil,
                                        encodingMethod: .queryString)
+    }
+    
+    static func googleDnsOverHTTPSJson(_ domainName: String) throws -> HttpKit.GSearchEndpoint {
+        let domainObject = try HttpKit.DomainName(domainName)
+        guard let params = HttpKit.GDNSRequestParams(domainName: domainObject) else {
+            throw HttpKit.HttpError.missingRequestParameters("google dns params")
+        }
+        
+        return try .googleDnsOverHTTPSJson(params)
     }
 }
