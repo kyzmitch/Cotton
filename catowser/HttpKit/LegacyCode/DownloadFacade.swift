@@ -73,7 +73,6 @@ extension HttpKit.DownloadFacade {
 
                     observer.send(value: .complete(destinationURL))
                     observer.sendCompleted()
-                    break
                 case .failure(let error):
                     observer.send(error: .networkError(error))
                 }

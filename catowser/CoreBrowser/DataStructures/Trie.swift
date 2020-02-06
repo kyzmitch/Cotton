@@ -6,6 +6,8 @@
 //  Copyright © 2016 Rick Zaccone. All rights reserved.
 //
 
+// FIXME: modify to not use NSObject subclass
+
 import Foundation
 
 /// A node in the trie
@@ -74,6 +76,7 @@ final class Trie: NSObject, NSCoding {
     required convenience init?(coder decoder: NSCoder) {
         self.init()
         let words = decoder.decodeObject(forKey: "words") as? [String]
+        // swiftlint:disable:next force_unwrapping
         for word in words! {
             self.insert(word: word)
         }
@@ -104,6 +107,7 @@ extension Trie {
                 currentNode = childNode
             } else {
                 currentNode.add(value: character)
+                // swiftlint:disable:next force_unwrapping
                 currentNode = currentNode.children[character]!
             }
         }
@@ -175,6 +179,7 @@ extension Trie {
         var character = lastNode.value
         while lastNode.isLeaf, let parentNode = lastNode.parentNode {
             lastNode = parentNode
+            // swiftlint:disable:next force_unwrapping
             lastNode.children[character!] = nil
             character = lastNode.value
             if lastNode.isTerminating {

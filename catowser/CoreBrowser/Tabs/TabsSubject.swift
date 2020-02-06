@@ -233,8 +233,8 @@ extension TabsListManager: TabsSubject {
 
     public func close(tab: Tab) {
         // if it is last tab - replace it with blank one
-        if tabs.value.count == 1 {
-            assert(tab == tabs.value.first!, "closing unexpected tab")
+        if tabs.value.count == 1, let firstTab = tabs.value.first {
+            assert(tab == firstTab, "closing unexpected tab")
             resetToOneTab()
             return
         }

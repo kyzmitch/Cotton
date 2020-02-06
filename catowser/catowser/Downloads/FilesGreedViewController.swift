@@ -37,8 +37,9 @@ final class FilesGreedViewController: UITableViewController, CollectionViewInter
         super.viewDidLayoutSubviews()
 
         backLayer?.removeFromSuperlayer()
-        backLayer = .lightBackgroundGradientLayer(bounds: view.bounds, lightTop: false)
-        tableView.layer.insertSublayer(backLayer!, at: 0)
+        let backLayer: CAGradientLayer = .lightBackgroundGradientLayer(bounds: view.bounds, lightTop: false)
+        self.backLayer = backLayer
+        tableView.layer.insertSublayer(backLayer, at: 0)
     }
 }
 
