@@ -279,10 +279,11 @@ extension WebViewController: WKNavigationDelegate {
             externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
 
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
-            guard let _ = WKNavigationActionPolicy(rawValue: ignoreAppRawValue) else {
+            guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
                 decisionHandler(.allow)
                 return
             }
+            // swiftlint:disable:next force_unwrapping
             decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
             return
         }

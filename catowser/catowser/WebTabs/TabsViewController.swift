@@ -192,8 +192,9 @@ private extension TabsViewController {
         tabsViewBackLayer?.removeFromSuperlayer()
         var bounds = view.bounds
         bounds.size.width = width
-        tabsViewBackLayer = .lightBackgroundGradientLayer(bounds: bounds)
-        view.layer.insertSublayer(tabsViewBackLayer!, at: 0)
+        let backLayer: CAGradientLayer = .lightBackgroundGradientLayer(bounds: bounds)
+        tabsViewBackLayer = backLayer
+        view.layer.insertSublayer(backLayer, at: 0)
     }
 
     func resizeTabsWidthBasedOnCurrentHorizontalSizeClass() {

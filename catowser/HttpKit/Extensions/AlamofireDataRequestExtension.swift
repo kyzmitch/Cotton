@@ -19,12 +19,14 @@ extension Alamofire.DataRequest {
     
     let responseSerializer = DataResponseSerializer<T> { request, response, data, error in
       guard error == nil else {
+        // swiftlint:disable:next force_unwrapping
         let httpKitError: HttpKit.HttpError = .httpFailure(error: error!, request: request)
         return .failure(httpKitError)
       }
       
       let result = DataRequest.serializeResponseData(response: response, data: data, error: error)
       guard case let .success(jsonData) = result else {
+        // swiftlint:disable:next force_unwrapping
         let httpKitError: HttpKit.HttpError = .jsonSerialization(error: result.error!)
         return .failure(httpKitError)
       }
@@ -53,12 +55,14 @@ extension Alamofire.DataRequest {
     
     let responseSerializer = DataResponseSerializer<[T]> { request, response, data, error in
       guard error == nil else {
+        // swiftlint:disable:next force_unwrapping
         let httpKitError: HttpKit.HttpError = .httpFailure(error: error!, request: request)
         return .failure(httpKitError)
       }
       
       let result = DataRequest.serializeResponseData(response: response, data: data, error: error)
       guard case let .success(jsonData) = result else {
+        // swiftlint:disable:next force_unwrapping
         let httpKitError: HttpKit.HttpError = .jsonSerialization(error: result.error!)
         return .failure(httpKitError)
       }

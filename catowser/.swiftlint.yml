@@ -6,3 +6,12 @@ excluded:
 
 identifier_name:
     min_length: 1 # warning
+nesting:
+    type_level: 3
+
+opt_in_rules:
+    - force_unwrapping
+
+force_unwrapping: error
+unneeded_break_in_switch: error
+
