@@ -8,6 +8,7 @@
 
 import Foundation
 import Network
+import ReactiveSwift
 
 // https://developers.google.com/speed/public-dns/docs/doh/json
 
@@ -82,7 +83,8 @@ extension HttpKit {
         /**
          string, default: empty
 
-         The edns0-client-subnet option. Format is an IP address with a subnet mask. Examples: 1.2.3.4/24, 2001:700:300::/48.
+         The edns0-client-subnet option. Format is an IP address with a subnet mask.
+         Examples: 1.2.3.4/24, 2001:700:300::/48.
 
          If you are using DNS-over-HTTPS because of privacy concerns, and do not want any part of your IP
          address to be sent to authoritative name servers for geographic location accuracy, use
@@ -137,22 +139,97 @@ extension HttpKit {
     }
 }
 
+extension HttpKit {
+    typealias GDNSjsonEndpoint = HttpKit.Endpoint<HttpKit.GoogleDNSOverJSONResponse, HttpKit.GoogleDnsServer>
+    public typealias GDNSjsonProducer = SignalProducer<HttpKit.GoogleDNSOverJSONResponse, HttpKit.HttpError>
+}
+
 extension HttpKit.Endpoint {
     
-    static func googleDnsOverHTTPSJson(_ params: HttpKit.GDNSRequestParams) throws -> HttpKit.GSearchEndpoint {
-        return HttpKit.GSearchEndpoint(method: .get,
-                                       path: "resolve",
-                                       queryItems: params.urlQueryItems,
-                                       headers: nil,
-                                       encodingMethod: .queryString)
+    static func googleDnsOverHTTPSJson(_ params: HttpKit.GDNSRequestParams) throws -> HttpKit.GDNSjsonEndpoint {
+        return HttpKit.GDNSjsonEndpoint(method: .get,
+                                        path: "resolve",
+                                        queryItems: params.urlQueryItems,
+                                        headers: nil,
+                                        encodingMethod: .queryString)
     }
     
-    static func googleDnsOverHTTPSJson(_ domainName: String) throws -> HttpKit.GSearchEndpoint {
+    static func googleDnsOverHTTPSJson(_ domainName: String) throws -> HttpKit.GDNSjsonEndpoint {
         let domainObject = try HttpKit.DomainName(domainName)
         guard let params = HttpKit.GDNSRequestParams(domainName: domainObject) else {
             throw HttpKit.HttpError.missingRequestParameters("google dns params")
         }
         
         return try .googleDnsOverHTTPSJson(params)
+    }
+}
+
+
+extension HttpKit {
+    public struct GoogleDNSOverJSONResponse: ResponseType {
+        static var successCodes: [Int] {
+            return [200]
+        }
+        
+        fileprivate let answer: [Answer]
+        
+        public let ipAddress: String
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            answer = try container.decode([Answer].self, forKey: .answer)
+            guard let firstAddress = answer.first?.ipAddress else {
+                throw GoogleDNSEndpointError.emptyAnswers
+            }
+            ipAddress = firstAddress
+        }
+        
+        fileprivate enum CodingKeys: String, CodingKey {
+            case answer = "Answer"
+        }
+    }
+}
+
+extension HttpKit {
+    public enum GoogleDNSEndpointError: LocalizedError {
+        case emptyAnswers
+        
+        public var errorDescription: String? {
+            return "Google DSN over JSON `\(self)`"
+        }
+    }
+}
+
+fileprivate struct Answer: Decodable {
+    // "apple.com.", Always matches name in the Question section
+    let name: String
+    // Data for A - IP address as text
+    let ipAddress: String
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        ipAddress = try container.decode(String.self, forKey: .ipAddress)
+    }
+    
+    fileprivate enum CodingKeys: String, CodingKey {
+        case name
+        case ipAddress = "data"
+    }
+}
+
+extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
+    public func getIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonProducer {
+        let endpoint: HttpKit.GDNSjsonEndpoint
+        do {
+            endpoint = try .googleDnsOverHTTPSJson(domainName)
+        } catch let error as HttpKit.HttpError {
+            return HttpKit.GDNSjsonProducer(error: error)
+        } catch {
+            return HttpKit.GDNSjsonProducer(error: HttpKit.HttpError.failedConstructRequestParameters)
+        }
+        
+        let producer = self.makePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        return producer
     }
 }

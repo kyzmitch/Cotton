@@ -57,6 +57,8 @@ extension HttpKit.Client where Server == HttpKit.GoogleServer {
         let endpoint: HttpKit.GSearchEndpoint
         do {
             endpoint = try .googleSearchSuggestions(query: text)
+        } catch let error as HttpKit.HttpError {
+            return HttpKit.GSearchProducer.init(error: error)
         } catch {
             return HttpKit.GSearchProducer.init(error: .failedConstructRequestParameters)
         }
