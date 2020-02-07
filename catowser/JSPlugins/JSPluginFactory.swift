@@ -23,7 +23,6 @@ public protocol CottonJSPlugin {
     var jsFileName: String { get }
     var messageHandlerName: String { get }
     var isMainFrameOnly: Bool { get }
-    var delegate: PluginHandlerDelegateType { get }
     var handler: WKScriptMessageHandler { get }
     var hostKeyword: String { get }
     func setEnableJsString(_ enable: Bool) -> String

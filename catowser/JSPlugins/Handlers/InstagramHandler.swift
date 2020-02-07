@@ -16,8 +16,6 @@ public protocol InstagramContentDelegate: class {
 public struct InstagramContentPlugin: CottonJSPlugin {
     public let handler: WKScriptMessageHandler
 
-    public let delegate: PluginHandlerDelegateType
-
     public let jsFileName: String = "ig"
 
     public let messageHandlerName: String = "igHandler"
@@ -35,7 +33,6 @@ public struct InstagramContentPlugin: CottonJSPlugin {
             assertionFailure("failed to create object")
             return nil
         }
-        self.delegate = delegate
         handler = InstagramHandler(actualDelegate)
     }
 
@@ -43,7 +40,6 @@ public struct InstagramContentPlugin: CottonJSPlugin {
         guard let igDelegate = anyProtocol as? InstagramContentDelegate else {
             return nil
         }
-        delegate = .instagram(igDelegate)
         handler = InstagramHandler(igDelegate)
     }
 }

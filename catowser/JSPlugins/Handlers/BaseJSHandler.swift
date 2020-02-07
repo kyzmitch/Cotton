@@ -26,8 +26,6 @@ public struct BasePlugin: CottonJSPlugin {
 
     public let isMainFrameOnly: Bool = true
 
-    public let delegate: PluginHandlerDelegateType
-
     public let handler: WKScriptMessageHandler
 
     public init?(delegate: PluginHandlerDelegateType) {
@@ -35,7 +33,6 @@ public struct BasePlugin: CottonJSPlugin {
             assertionFailure("failed to create BasePlugin because of wrong delegate")
             return nil
         }
-        self.delegate = delegate
         handler = BaseJSHandler(actualDelegate)
     }
 
@@ -43,7 +40,6 @@ public struct BasePlugin: CottonJSPlugin {
         guard let baseDelegate = anyProtocol as? BasePluginContentDelegate else {
             return nil
         }
-        delegate = .base(baseDelegate)
         handler = BaseJSHandler(baseDelegate)
     }
 }
