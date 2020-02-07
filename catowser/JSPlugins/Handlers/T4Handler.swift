@@ -16,8 +16,6 @@ public protocol T4ContentDelegate: class {
 public struct T4ContentPlugin: CottonJSPlugin {
     public let handler: WKScriptMessageHandler
 
-    public let delegate: PluginHandlerDelegateType
-
     public let jsFileName: String = "t4"
 
     public let messageHandlerName: String = "t4Handler"
@@ -35,7 +33,6 @@ public struct T4ContentPlugin: CottonJSPlugin {
             assertionFailure("failed to create object")
             return nil
         }
-        self.delegate = delegate
         handler = T4Handler(actualDelegate)
     }
 
@@ -43,7 +40,6 @@ public struct T4ContentPlugin: CottonJSPlugin {
         guard let t4Delegate = anyProtocol as? T4ContentDelegate else {
             return nil
         }
-        delegate = .t4(t4Delegate)
         handler = T4Handler(t4Delegate)
     }
 }
