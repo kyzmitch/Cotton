@@ -52,7 +52,7 @@ final class WebViewController: BaseViewController {
     
     private var loadingProgressObservation: NSKeyValueObservation?
 
-    func load(_ url: URL, canLoadPlugins: Bool = true) {
+    func load(url: URL, canLoadPlugins: Bool = true) {
         currentUrl = url
 
         if canLoadPlugins {
@@ -140,7 +140,7 @@ final class WebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        load(currentUrl)
+        load(url: currentUrl)
         // try create web view only after creating
         view.addSubview(webView)
         isWebViewLoaded = true

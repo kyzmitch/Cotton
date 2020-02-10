@@ -27,7 +27,7 @@ extension HttpKit {
         ///
         /// - Parameters:
         ///     - server: server should be used from HttpClient inside its makeRequest functions.
-        func url(_ server: Server) -> URL? {
+        func url(relatedTo server: Server) -> URL? {
             var components = URLComponents()
             components.scheme = server.scheme.rawValue
             components.host = server.hostString
