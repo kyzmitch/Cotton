@@ -54,11 +54,7 @@ public final class TabsCacheProvider {
 
 extension TabsCacheProvider: TabsStorage {
     public func fetchSelectedIndex() -> SignalProducer<Int, TabStorageError> {
-        let producer = SignalProducer<Int, TabStorageError>.init { (observer, _ /* lifetime */) in
-            observer.send(value: 0)
-            observer.sendCompleted()
-        }
-        return producer.start(on: scheduler)
+        return SignalProducer<Int, TabStorageError>.init(value: 0).start(on: scheduler)
     }
 
     public func select(tab: Tab) -> Int? {
