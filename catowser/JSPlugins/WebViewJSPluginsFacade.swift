@@ -68,6 +68,7 @@ public final class WebViewJSPluginsFacade {
         for plugin in plugins where !plugin.hostKeyword.isEmpty {
             let jsScript = plugin.setEnableJsString(host.contains(plugin.hostKeyword))
             
+            // swiftlint:disable:next line_length
             // https://github.com/WebKit/webkit/blob/39a299616172a4d4fe1f7aaf573b41020a1d7358/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm#L1009
             
             webView.evaluateJavaScript(jsScript, completionHandler: {(something, error) in

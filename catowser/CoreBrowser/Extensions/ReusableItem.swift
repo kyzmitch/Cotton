@@ -22,13 +22,17 @@ public extension ReusableItem {
 }
 
 public extension UICollectionView {
-    func dequeueCell<Cell: UICollectionViewCell>(at indexPath: IndexPath, type: Cell.Type) -> Cell where Cell: ReusableItem {
+    func dequeueCell<Cell: UICollectionViewCell>(at indexPath: IndexPath,
+                                                 type: Cell.Type) -> Cell where Cell: ReusableItem {
         return dequeueReusableCell(withReuseIdentifier: Cell.reuseID, for: indexPath) as! Cell
     }
 
-    func dequeueSupplementaryView<View: UICollectionReusableView>(at indexPath: IndexPath, ofKind kind: String, type: View.Type) -> View
+    func dequeueSupplementaryView<View: UICollectionReusableView>(at indexPath: IndexPath,
+                                                                  ofKind kind: String, type: View.Type) -> View
         where View: ReusableItem {
-            return dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: View.reuseID, for: indexPath) as! View
+            return dequeueReusableSupplementaryView(ofKind: kind,
+                                                    withReuseIdentifier: View.reuseID,
+                                                    for: indexPath) as! View
     }
 
     func register<Cell: UICollectionViewCell>(_ type: Cell.Type) where Cell: ReusableItem {
@@ -40,13 +44,15 @@ public extension UICollectionView {
         register(nib, forCellWithReuseIdentifier: Cell.reuseID)
     }
 
-    func registerSupplementaryView<View: UICollectionReusableView>(_ type: View.Type, ofKind kind: String) where View: ReusableItem {
+    func registerSupplementaryView<View: UICollectionReusableView>(_ type: View.Type,
+                                                                   ofKind kind: String) where View: ReusableItem {
         register(type, forSupplementaryViewOfKind: kind, withReuseIdentifier: View.reuseID)
     }
 }
 
 public extension UITableView {
-    func dequeueCell<Cell: UITableViewCell>(for indexPath: IndexPath, type: Cell.Type) -> Cell where Cell: ReusableItem {
+    func dequeueCell<Cell: UITableViewCell>(for indexPath: IndexPath,
+                                            type: Cell.Type) -> Cell where Cell: ReusableItem {
         return dequeueReusableCell(withIdentifier: Cell.reuseID, for: indexPath) as! Cell
     }
 

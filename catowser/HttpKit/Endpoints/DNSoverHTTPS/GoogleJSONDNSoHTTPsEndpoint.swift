@@ -11,6 +11,8 @@ import Network
 import ReactiveSwift
 
 // https://developers.google.com/speed/public-dns/docs/doh/json
+// https://github.com/chromium/chromium/commit/786929ad1cfbc97962ff5672e2469460ff535f41
+
 
 extension HttpKit {
     /**
@@ -23,7 +25,7 @@ extension HttpKit {
      This is wrapper around `String` type.
      https://twitter.com/nicklockwood/status/1192365612661706752?s=20
      */
-    public struct DnsRRType: RawRepresentable {
+    public struct DnsRR: RawRepresentable {
         public init?(rawValue: String) {
             return nil
         }
@@ -49,7 +51,7 @@ extension HttpKit {
         /**
          string, default: 1
          */
-        let type: DnsRRType
+        let type: DnsRR
         
         /**
          boolean, default: false
@@ -107,7 +109,7 @@ extension HttpKit {
         
         public init?(domainName: DomainName) {
             name = domainName
-            guard let rrType = DnsRRType() else {
+            guard let rrType = DnsRR() else {
                 return nil
             }
             type = rrType
@@ -164,7 +166,6 @@ extension HttpKit.Endpoint {
     }
 }
 
-
 extension HttpKit {
     public struct GoogleDNSOverJSONResponse: ResponseType {
         static var successCodes: [Int] {
@@ -200,7 +201,7 @@ extension HttpKit {
     }
 }
 
-fileprivate struct Answer: Decodable {
+private struct Answer: Decodable {
     // "apple.com.", Always matches name in the Question section
     let name: String
     // Data for A - IP address as text
