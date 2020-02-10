@@ -46,14 +46,14 @@ extension HttpKit {
         }
         
         private func makeRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                               withAccessToken accessToken: String?,
-                                               responseType: T.Type) -> SignalProducer<T, HttpError> {
+                                                  withAccessToken accessToken: String?,
+                                                  responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
                     observer.send(error: .zombySelf)
                     return
                 }
-                guard let url = endpoint.url(self.server) else {
+                guard let url = endpoint.url(relatedTo: self.server) else {
                     observer.send(error: .failedConstructUrl)
                     return
                 }
@@ -69,7 +69,7 @@ extension HttpKit {
                 }
                 
                 do {
-                     try httpRequest.addParameters(from: endpoint)
+                    try httpRequest.addParameters(from: endpoint)
                 } catch let error as HttpError {
                     observer.send(error: error)
                     return
@@ -105,14 +105,14 @@ extension HttpKit {
         }
         
         func makePublicRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                             responseType: T.Type) -> SignalProducer<T, HttpError> {
+                                                responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
             return producer
         }
         
         func makeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                                 withAccessToken accessToken: String,
-                                                 responseType: T.Type) -> SignalProducer<T, HttpError> {
+                                                    withAccessToken accessToken: String,
+                                                    responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
             return producer
         }

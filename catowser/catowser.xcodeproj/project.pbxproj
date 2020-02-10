@@ -114,6 +114,7 @@
 		8A62AEE82351EECE001A9C83 /* OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F7C221698AF0071BECF /* OpenSearchParser.swift */; };
 		8A62AEE92351EF30001A9C83 /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
 		8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */; };
+		8A7A9BAC23F1C477008850B6 /* DnsLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* DnsLookupService.swift */; };
 		8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */; };
 		8A7DCCD0236432B5006AAEE2 /* DomainName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCF236432B5006AAEE2 /* DomainName.swift */; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
@@ -298,6 +299,7 @@
 		8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitHeaders.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
 		8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireDataRequestExtension.swift; sourceTree = "<group>"; };
+		8A7A9BAB23F1C477008850B6 /* DnsLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DnsLookupService.swift; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
 		8A7DCCCF236432B5006AAEE2 /* DomainName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainName.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
@@ -715,6 +717,14 @@
 			path = LegacyCode;
 			sourceTree = "<group>";
 		};
+		8A7A9BAA23F1C453008850B6 /* DNS */ = {
+			isa = PBXGroup;
+			children = (
+				8A7A9BAB23F1C477008850B6 /* DnsLookupService.swift */,
+			);
+			path = DNS;
+			sourceTree = "<group>";
+		};
 		8A7DCCCB23642FEF006AAEE2 /* DNSoverHTTPS */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +752,7 @@
 		8AE6D16A2350FF35006316AD /* HttpKit */ = {
 			isa = PBXGroup;
 			children = (
+				8A7A9BAA23F1C453008850B6 /* DNS */,
 				8A7DCCCE236432AA006AAEE2 /* Models */,
 				8A62AEE32351EC5F001A9C83 /* LegacyCode */,
 				8A62AEE22351E684001A9C83 /* Extensions */,
@@ -1325,6 +1336,7 @@
 				8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */,
 				8A7DCCD0236432B5006AAEE2 /* DomainName.swift in Sources */,
 				8A62AEDE2351CF76001A9C83 /* HttpKitHeaders.swift in Sources */,
+				8A7A9BAC23F1C477008850B6 /* DnsLookupService.swift in Sources */,
 				8A62AEE92351EF30001A9C83 /* CharacterSet+CatowserExtensions.swift in Sources */,
 				8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */,
 				8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */,
