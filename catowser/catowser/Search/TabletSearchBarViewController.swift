@@ -16,7 +16,7 @@ final class TabletSearchBarViewController: BaseViewController {
     /// Site navigation delegate. It is always `nil` during initialization because no active web view is present
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
         didSet {
-            guard let _ = siteNavigationDelegate else {
+            guard siteNavigationDelegate != nil else {
                 goBackButton.isEnabled = false
                 goForwardButton.isEnabled = false
                 reloadButton.isEnabled = false
