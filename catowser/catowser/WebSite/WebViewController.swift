@@ -173,6 +173,10 @@ private extension WebViewController {
                                 options: .new,
                                 context: nil)
              */
+            
+            // swiftlint:disable:next line_length
+            // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
+            
             loadingProgressObservation?.invalidate()
             loadingProgressObservation = webView.observe(\.estimatedProgress,
                                                          options: [.new]) { [weak self] (_, change) in
@@ -181,12 +185,6 @@ private extension WebViewController {
                 self.externalNavigationDelegate?.displayProgress(value)
             }
         }
-    }
-    
-    func observeUsingSafeKVO() {
-        // swiftlint:disable:next line_length
-        // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
-        
     }
 }
 

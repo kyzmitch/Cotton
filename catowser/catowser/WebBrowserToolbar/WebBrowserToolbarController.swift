@@ -25,7 +25,7 @@ final class WebBrowserToolbarController: UIViewController {
     /// Site navigation delegate
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
         didSet {
-            guard let _ = siteNavigationDelegate else {
+            guard siteNavigationDelegate != nil else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
                 reloadButton.isEnabled = false
