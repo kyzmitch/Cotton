@@ -49,6 +49,8 @@ final class WebViewController: BaseViewController {
     private weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     
     private var webViewProgressObserverAdded = false
+    
+    private var loadingProgressObservation: NSKeyValueObservation?
 
     func load(_ url: URL, canLoadPlugins: Bool = true) {
         currentUrl = url
@@ -70,9 +72,12 @@ final class WebViewController: BaseViewController {
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
-            webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
-            webView.removeFromSuperview()
+            // legacy KVO
+            // webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
+            loadingProgressObservation?.invalidate()
             webViewProgressObserverAdded = false
+            
+            webView.removeFromSuperview()
             webView = WebViewController.createWebView(with: configuration)
             webView.navigationDelegate = self
             view.addSubview(webView)
@@ -117,6 +122,7 @@ final class WebViewController: BaseViewController {
 
     private lazy var webView: WKWebView = {
         webViewProgressObserverAdded = false
+        loadingProgressObservation?.invalidate()
         return WebViewController.createWebView(with: configuration)
     }()
     
@@ -125,12 +131,6 @@ final class WebViewController: BaseViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
         return webView
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "estimatedProgress" {
-            externalNavigationDelegate?.displayProgress(webView.estimatedProgress)
-        }
     }
     
     override func loadView() {
@@ -166,8 +166,27 @@ private extension WebViewController {
     func addWebViewProgressObserver() {
         if !webViewProgressObserverAdded {
             webViewProgressObserverAdded = true
-            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
+            // legacy KVO was left for comparison with new API
+            /*
+            webView.addObserver(self,
+                                forKeyPath: #keyPath(WKWebView.estimatedProgress),
+                                options: .new,
+                                context: nil)
+             */
+            loadingProgressObservation?.invalidate()
+            loadingProgressObservation = webView.observe(\.estimatedProgress,
+                                                         options: [.new]) { [weak self] (_, change) in
+                guard let self = self else { return }
+                guard let value = change.newValue else { return }
+                self.externalNavigationDelegate?.displayProgress(value)
+            }
         }
+    }
+    
+    func observeUsingSafeKVO() {
+        // swiftlint:disable:next line_length
+        // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
+        
     }
 }
 
