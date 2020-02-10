@@ -32,7 +32,7 @@ final class SmartphoneSearchBarViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        add(asChildViewController: searchBarViewController, to:view)
+        add(asChildViewController: searchBarViewController, to: view)
         view.addSubview(lineView)
 
         searchBarViewController.view.translatesAutoresizingMaskIntoConstraints = false

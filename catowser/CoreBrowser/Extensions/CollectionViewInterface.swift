@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate struct CollectionViewSizes {
+private struct CollectionViewSizes {
     static let compactNumberOfColumnsThin = 2
     static let numberOfColumnsWide = 3
 }
