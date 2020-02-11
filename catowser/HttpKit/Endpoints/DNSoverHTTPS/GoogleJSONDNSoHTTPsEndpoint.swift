@@ -7,7 +7,9 @@
 //
 
 import Foundation
-import Network
+// only for `IPv4Address` typ, but it's not possible to store mask in it
+// maybe better remove this dependency
+// import Network
 import ReactiveSwift
 
 // https://developers.google.com/speed/public-dns/docs/doh/json
@@ -93,7 +95,7 @@ extension HttpKit {
          edns_client_subnet=0.0.0.0/0. Google Public DNS normally sends approximate network
          information (usually zeroing out the last part of your IPv4 address).
          */
-        let ednsClientSubnet: IPv4Address
+        let ednsClientSubnet: String // IPv4Address
         
         /**
          string, ignored
@@ -116,16 +118,11 @@ extension HttpKit {
             cd = false
             ct = ""
             self.do = false
-            guard let address = IPv4Address("0.0.0.0/0") else {
-                return nil
-            }
-            ednsClientSubnet = address
+            ednsClientSubnet = "0.0.0.0/0"
             randomPadding = ""
         }
         
         var urlQueryItems: [URLQueryItem] {
-            let subnetStr = String(data: ednsClientSubnet.rawValue,
-                                   encoding: .ascii)
             
             let items: [URLQueryItem] = [
                 URLQueryItem(name: "name", value: name.string),
@@ -133,7 +130,7 @@ extension HttpKit {
                 URLQueryItem(name: "cd", value: "\(cd)"),
                 URLQueryItem(name: "ct", value: ct),
                 URLQueryItem(name: "do", value: "\(self.do)"),
-                URLQueryItem(name: "edns_client_subnet", value: subnetStr),
+                URLQueryItem(name: "edns_client_subnet", value: ednsClientSubnet),
                 URLQueryItem(name: "random_padding", value: randomPadding)
             ]
             return items
@@ -149,6 +146,11 @@ extension HttpKit {
 extension HttpKit.Endpoint {
     
     static func googleDnsOverHTTPSJson(_ params: HttpKit.GDNSRequestParams) throws -> HttpKit.GDNSjsonEndpoint {
+        /**
+         To minimize this risk, send only the HTTP headers required for DoH:
+         Host, Content-Type (for POST), and if necessary, Accept.
+         User-Agent should be included in any development or testing versions.
+         */
         return HttpKit.GDNSjsonEndpoint(method: .get,
                                         path: "resolve",
                                         queryItems: params.urlQueryItems,
@@ -168,17 +170,35 @@ extension HttpKit.Endpoint {
 
 extension HttpKit {
     public struct GoogleDNSOverJSONResponse: ResponseType {
+        /**
+         200 OK
+         HTTP parsing and communication with DNS resolver was successful,
+         and the response body content is a DNS response in either binary or JSON encoding,
+         depending on the query endpoint, Accept header and GET parameters.
+         */
         static var successCodes: [Int] {
             return [200]
         }
         
         fileprivate let answer: [Answer]
+        /**
+         Note: An HTTP success may still be a DNS failure.
+         Check the DNS response code (JSON "Status" field) for the
+         DNS errors SERVFAIL, FORMERR, REFUSED, and NOTIMP.
+        */
+        let status: Int32
+        /// NOERROR - Standard DNS response code (32 bit integer).
+        let noError: Int32 = 0
         
         public let ipAddress: String
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             answer = try container.decode([Answer].self, forKey: .answer)
+            status = try container.decode(Int32.self, forKey: .status)
+            guard status == noError else {
+                throw GoogleDNSEndpointError.dnsStatusError(status)
+            }
             guard let firstAddress = answer.first?.ipAddress else {
                 throw GoogleDNSEndpointError.emptyAnswers
             }
@@ -187,6 +207,7 @@ extension HttpKit {
         
         fileprivate enum CodingKeys: String, CodingKey {
             case answer = "Answer"
+            case status = "Status"
         }
     }
 }
@@ -194,6 +215,7 @@ extension HttpKit {
 extension HttpKit {
     public enum GoogleDNSEndpointError: LocalizedError {
         case emptyAnswers
+        case dnsStatusError(Int32)
         
         public var errorDescription: String? {
             return "Google DSN over JSON `\(self)`"

@@ -35,6 +35,8 @@ extension HttpKit {
                 return "json serialization: \(error.localizedDescription)"
             case .jsonDecoding(error: let error):
                 return "json decoding: \(error.localizedDescription)"
+            case .missingRequestParameters(let message):
+                return "missing parameters: \(message)"
             default:
                 return "\(self)"
             }

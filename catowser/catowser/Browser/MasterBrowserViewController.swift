@@ -358,7 +358,9 @@ extension MasterBrowserViewController: TabRendererInterface {
             }
             // need to display progress view before load start
             linksRouter.showProgress(true)
-            let viewController = try? WebViewsReuseManager.shared.controllerFor(site, pluginsBuilder: pluginsBuilder, delegate: self)
+            let viewController = try? WebViewsReuseManager.shared.controllerFor(site,
+                                                                                pluginsBuilder: pluginsBuilder,
+                                                                                delegate: self)
             guard let webViewController = viewController else {
                 assertionFailure("Failed create new web view for tab")
                 open(tabContent: .blank)

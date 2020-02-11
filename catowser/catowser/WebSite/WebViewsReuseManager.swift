@@ -36,7 +36,9 @@ final class WebViewsReuseManager {
     /// - Parameter pluginsBuilder: Builder for plugins.
     /// - Parameter delegate: navigation delegate.
     /// - Returns: Web view controller configured with `Site`.
-    func controllerFor(_ site: Site, pluginsBuilder: PluginsBuilder, delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
+    func controllerFor(_ site: Site,
+                       pluginsBuilder: PluginsBuilder,
+                       delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
         for (i, vc) in views.enumerated() {
             let currentUrl = vc.currentUrl

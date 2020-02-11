@@ -10,6 +10,8 @@ import UIKit
 import WebKit
 import CoreBrowser
 import JSPlugins
+import HttpKit
+import ReactiveSwift
 
 protocol SiteNavigationDelegate: class {
     var canGoBack: Bool { get }
@@ -51,6 +53,30 @@ final class WebViewController: BaseViewController {
     private var webViewProgressObserverAdded = false
     
     private var loadingProgressObservation: NSKeyValueObservation?
+    
+    private var dnsRequestSubsciption: Disposable?
+    
+    private func internalLoad(url: URL) {
+        dnsRequestSubsciption?.dispose()
+        dnsRequestSubsciption = DnsLookupService.shared.replaceHostWithIP(inURL: url)
+            .flatMapError({ (error) -> SignalProducer<URL, Error> in
+                print("DNS lookup error: \(error.localizedDescription)")
+                // return unsafe URL with naked host
+                // TODO: use different state for that case on UI and use FeatureManager to ignore this only when feature enabled
+                return .init(value: url)
+            })
+            .observe(on: UIScheduler())
+            .startWithResult({ [weak self] (result) in
+                guard let self = self else {
+                    return
+                }
+                guard case .success(let urlWithIP) = result else {
+                    return
+                }
+                let request = URLRequest(url: urlWithIP)
+                self.webView.load(request)
+            })
+    }
 
     func load(url: URL, canLoadPlugins: Bool = true) {
         currentUrl = url
@@ -62,8 +88,7 @@ final class WebViewController: BaseViewController {
         }
 
         addWebViewProgressObserver()
-        let request = URLRequest(url: url)
-        webView.load(request)
+        internalLoad(url: url)
     }
 
     /// Reload by creating new webview
@@ -89,8 +114,7 @@ final class WebViewController: BaseViewController {
         if canLoadPlugins { injectPlugins() }
         
         addWebViewProgressObserver()
-        let request = URLRequest(url: currentUrl)
-        webView.load(request)
+        internalLoad(url: currentUrl)
     }
 
     private func injectPlugins() {
