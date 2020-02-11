@@ -103,8 +103,7 @@ final class WebViewController: BaseViewController {
             webViewProgressObserverAdded = false
             
             webView.removeFromSuperview()
-            webView = WebViewController.createWebView(with: configuration)
-            webView.navigationDelegate = self
+            webView = createWebView(with: configuration)
             view.addSubview(webView)
             webView.snp.makeConstraints { (maker) in
                 maker.leading.trailing.top.bottom.equalTo(view)
@@ -147,13 +146,14 @@ final class WebViewController: BaseViewController {
     private lazy var webView: WKWebView = {
         webViewProgressObserverAdded = false
         loadingProgressObservation?.invalidate()
-        return WebViewController.createWebView(with: configuration)
+        return createWebView(with: configuration)
     }()
     
-    private static func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
+    private func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
+        webView.navigationDelegate = self
         return webView
     }
     
@@ -364,6 +364,7 @@ extension WebViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        print("Fail to load URL request: \(error.localizedDescription)")
         externalNavigationDelegate?.showProgress(false)
     }
 }
