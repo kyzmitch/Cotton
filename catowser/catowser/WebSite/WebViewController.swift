@@ -42,6 +42,8 @@ extension WKWebView: JavaScriptEvaluateble {}
 final class WebViewController: BaseViewController {
     
     private(set) var currentUrl: URL
+    
+    private var ipAddress: String?
 
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
@@ -56,24 +58,39 @@ final class WebViewController: BaseViewController {
     
     private var dnsRequestSubsciption: Disposable?
     
+    private static let dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer> = {
+        let server = HttpKit.GoogleDnsServer()
+        return .init(server: server)
+    }()
+    
     private func internalLoad(url: URL) {
         dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = DnsLookupService.shared.replaceHostWithIP(inURL: url)
-            .flatMapError({ (error) -> SignalProducer<URL, Error> in
-                print("DNS lookup error: \(error.localizedDescription)")
-                // return unsafe URL with naked host
-                // TODO: use different state for that case on UI and use FeatureManager to ignore this only when feature enabled
-                return .init(value: url)
+        dnsRequestSubsciption = url.rxHttpHost
+            .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
+                print("Host error: \(dnsErr.localizedDescription)")
+                return .init(error: .failedConstructRequestParameters)
             })
-            .observe(on: UIScheduler())
+            .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
+                return WebViewController.dnsClient.getIPaddress(ofDomain: host)
+            })
+            .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, DnsError> in
+                print("Http error: \(kitErr.localizedDescription)")
+                return .init(error: .httpError(kitErr))
+            })
+            .flatMap(.latest, { [weak self] (response) -> UrlConvertProducer in
+                self?.ipAddress = response.ipAddress
+                return url.updateHost(with: response.ipAddress)
+            })
+            .start(on: UIScheduler())
             .startWithResult({ [weak self] (result) in
                 guard let self = self else {
                     return
                 }
-                guard case .success(let urlWithIP) = result else {
+                guard case .success(let finalURL) = result else {
                     return
                 }
-                let request = URLRequest(url: urlWithIP)
+                
+                let request = URLRequest(url: finalURL)
                 self.webView.load(request)
             })
     }
@@ -256,13 +273,18 @@ fileprivate extension WebViewController {
 }
 
 extension WebViewController: WKUIDelegate {
-    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    func webView(_ webView: WKWebView,
+                 createWebViewWith configuration: WKWebViewConfiguration,
+                 for navigationAction: WKNavigationAction,
+                 windowFeatures: WKWindowFeatures) -> WKWebView? {
         return nil
     }
 }
 
 extension WebViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
             return
@@ -279,7 +301,8 @@ extension WebViewController: WKNavigationDelegate {
             // this one is when you tap on some youtube video
             // when you was browsing youtube
             
-            if let mainURL = navigationAction.request.mainDocumentURL, let hostComparator = HostsComparator(current: currentUrl, next: mainURL) {
+            if let mainURL = navigationAction.request.mainDocumentURL,
+                let hostComparator = HostsComparator(current: currentUrl, next: mainURL) {
                 if hostComparator.isPendingSame {
                     decisionHandler(.allow)
                 } else {
@@ -366,6 +389,34 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Fail to load URL request: \(error.localizedDescription)")
         externalNavigationDelegate?.showProgress(false)
+    }
+    
+    func webView(_ webView: WKWebView,
+                 didReceive challenge: URLAuthenticationChallenge,
+                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        let host = challenge.protectionSpace.host
+        guard host == currentUrl.host || host == ipAddress else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        // https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication
+        
+        guard let serverTrust = challenge.protectionSpace.serverTrust else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        if HttpKit.checkValidity(of: serverTrust) {
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
+        } else {
+            // Show a UI here warning the user the server credentials are
+            // invalid, and cancel the load.
+            completionHandler(.cancelAuthenticationChallenge, nil)
+        }
     }
 }
 
