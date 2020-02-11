@@ -13,6 +13,7 @@ extension HttpKit {
         let string: String
         
         /// https://developers.google.com/speed/public-dns/docs/doh/json
+        // swiftlint:disable:next cyclomatic_complexity
         public init(_ name: String) throws {
             // Invalid names like .example.com, example..com or empty string get 400 Bad Request.
             
@@ -49,7 +50,7 @@ extension HttpKit {
             var containsNonASCII = false
             for character in name {
                 // CharacterSet.urlHostAllowed
-                guard let _ = character.asciiValue else {
+                guard character.asciiValue != nil else {
                     containsNonASCII = true
                     break
                 }
