@@ -409,7 +409,7 @@ extension WebViewController: WKNavigationDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        if HttpKit.checkValidity(of: serverTrust) {
+        if let initialHost = currentUrl.host, serverTrust.checkValidity(ofHost: initialHost) {
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } else {

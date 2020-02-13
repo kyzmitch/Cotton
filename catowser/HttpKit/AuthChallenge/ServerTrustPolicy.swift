@@ -125,6 +125,7 @@ public final class DefaultTrustEvaluator: ServerTrustEvaluating {
 /// environments to guarantee the validity of the server's certificate chain.
 public final class RevocationTrustEvaluator: ServerTrustEvaluating {
     /// Represents the options to be use when evaluating the status of a certificate.
+    // swiftlint:disable:next line_length
     /// Only Revocation Policy Constants are valid, and can be found in [Apple's documentation](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/policies/1563600-revocation_policy_constants).
     public struct Options: OptionSet {
         /// The raw value of the option.
