@@ -113,6 +113,7 @@
 		8A62AEE72351EC85001A9C83 /* ProgressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D24225CA81E00CB56F0 /* ProgressResponse.swift */; };
 		8A62AEE82351EECE001A9C83 /* OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F7C221698AF0071BECF /* OpenSearchParser.swift */; };
 		8A62AEE92351EF30001A9C83 /* CharacterSet+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */; };
+		8A6FE88E23F5A7C200BF74A0 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */; };
 		8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */; };
 		8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */; };
 		8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */; };
@@ -300,6 +301,7 @@
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
 		8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitHeaders.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
+		8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
 		8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireDataRequestExtension.swift; sourceTree = "<group>"; };
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
@@ -758,6 +760,7 @@
 		8A978D4723F348CB007ECB0C /* AuthChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */,
 				8A978D4823F34909007ECB0C /* AuthChallenge.swift */,
 			);
 			path = AuthChallenge;
@@ -1351,6 +1354,7 @@
 				8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */,
 				8A7DCCD0236432B5006AAEE2 /* DomainName.swift in Sources */,
 				8A62AEDE2351CF76001A9C83 /* HttpKitHeaders.swift in Sources */,
+				8A6FE88E23F5A7C200BF74A0 /* ServerTrustPolicy.swift in Sources */,
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
 				8A62AEE92351EF30001A9C83 /* CharacterSet+CatowserExtensions.swift in Sources */,
 				8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */,
