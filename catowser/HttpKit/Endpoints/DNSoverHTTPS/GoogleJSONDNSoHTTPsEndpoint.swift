@@ -34,15 +34,19 @@ extension HttpKit {
         
         public let rawValue: String
         
+        let numericValue: UInt32
+        
         public typealias RawValue = String
         
         public init?(_ number: UInt32 = 1) {
             guard (1...65535).contains(number) else {
                 return nil
             }
+            numericValue = number
             rawValue = "\(number)"
         }
     }
+    
     public struct GDNSRequestParams {
         /**
          string, required
@@ -199,7 +203,8 @@ extension HttpKit {
             guard status == noError else {
                 throw GoogleDNSEndpointError.dnsStatusError(status)
             }
-            guard let firstAddress = answer.first?.ipAddress else {
+            let ipv4array = answer.filter { $0.recordType.knownCase == .addressRecord }
+            guard let firstAddress = ipv4array.first?.ipAddress else {
                 throw GoogleDNSEndpointError.emptyAnswers
             }
             ipAddress = firstAddress
@@ -216,6 +221,7 @@ extension HttpKit {
     public enum GoogleDNSEndpointError: LocalizedError {
         case emptyAnswers
         case dnsStatusError(Int32)
+        case recordTypeParsing(UInt32)
         
         public var errorDescription: String? {
             return "Google DSN over JSON `\(self)`"
@@ -224,20 +230,42 @@ extension HttpKit {
 }
 
 private struct Answer: Decodable {
-    // "apple.com.", Always matches name in the Question section
+    /// "apple.com.", Always matches name in the Question section
     let name: String
-    // Data for A - IP address as text
+    /// https://en.wikipedia.org/wiki/List_of_DNS_record_types
+    /// Not sure how many bytes for it
+    /// 1 - A - Standard DNS RR type
+    /// 99 - SPF - Standard DNS RR type
+    let recordType: HttpKit.DnsRR
+    /// Data for A - IP address as text or some different thing like `z-p42-instagram.c10r.facebook.com.`
     let ipAddress: String
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         ipAddress = try container.decode(String.self, forKey: .ipAddress)
+        let rr = try container.decode(UInt32.self, forKey: .type)
+        guard let dnsRR = HttpKit.DnsRR(rr) else {
+            throw HttpKit.GoogleDNSEndpointError.recordTypeParsing(rr)
+        }
+        recordType = dnsRR
     }
     
     fileprivate enum CodingKeys: String, CodingKey {
         case name
         case ipAddress = "data"
+        case type
+    }
+}
+
+private enum DNSRecordType: UInt32 {
+    case addressRecord = 1
+    case canonicalName = 5
+}
+
+extension HttpKit.DnsRR {
+    fileprivate var knownCase: DNSRecordType? {
+        return DNSRecordType(rawValue: self.numericValue)
     }
 }
 

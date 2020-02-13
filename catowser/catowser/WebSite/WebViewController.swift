@@ -41,7 +41,11 @@ extension WKWebView: JavaScriptEvaluateble {}
 
 final class WebViewController: BaseViewController {
     
-    private(set) var currentUrl: URL
+    private(set) var currentUrl: URL {
+        willSet {
+            print("current URL update from: \(currentUrl.absoluteString) to: \(newValue.absoluteString)")
+        }
+    }
     
     private var ipAddress: String?
 
@@ -254,7 +258,9 @@ fileprivate extension WebViewController {
             return
         }
         
-        currentUrl = webViewUrl
+        // Why this change was needed? It introduce complexity for DNS
+        // when we use IP address and after this assignment we don't know host name anymore
+        // currentUrl = webViewUrl
         guard let site = Site(url: webViewUrl) else {
             assertionFailure("failed create site from URL")
             return
