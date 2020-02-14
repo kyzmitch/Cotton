@@ -8,6 +8,11 @@
 
 import WebKit
 
+extension String {
+    /// Always should be enabled
+    static let basePluginHName = "cottonHandler"
+}
+
 public protocol BasePluginContentDelegate: class {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag])
 }
@@ -15,13 +20,13 @@ public protocol BasePluginContentDelegate: class {
 public struct BasePlugin: CottonJSPlugin {
     public let jsFileName: String = "__cotton__"
 
-    public let messageHandlerName: String = "cottonHandler"
+    public let messageHandlerName: String = .basePluginHName
 
     /// Should be present on any web site no matter which host is it
     public let hostKeyword: String = ""
 
-    public func setEnableJsString(_ enable: Bool) -> String {
-        return ""
+    public func scriptString(_ enable: Bool) -> String? {
+        return nil
     }
 
     public let isMainFrameOnly: Bool = true

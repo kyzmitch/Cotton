@@ -257,17 +257,14 @@ fileprivate extension WebViewController {
             print("web view without url")
             return
         }
-        
-        // Why this change was needed? It introduce complexity for DNS
-        // when we use IP address and after this assignment we don't know host name anymore
-        // currentUrl = webViewUrl
+
         guard let site = Site(url: webViewUrl) else {
             assertionFailure("failed create site from URL")
             return
         }
         
         // you must inject re-enable plugins even if web view loaded page from same Host
-        pluginsFacade?.enablePlugins(for: wkView, with: currentUrl.host)
+        pluginsFacade?.enablePlugins(for: wkView, with: site.host)
         InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
         
         do {
@@ -287,6 +284,8 @@ extension WebViewController: WKUIDelegate {
     }
 }
 
+// MARK: - WKNavigationDelegate
+
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
@@ -296,7 +295,8 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if let protector = HostsComparator(current: currentUrl, next: url), protector.shouldCancelRedirect {
+        if let protector = HostsComparator(current: currentUrl, next: url),
+            (protector.shouldCancelRedirect && url.host != ipAddress) {
             decisionHandler(.cancel)
             return
         }

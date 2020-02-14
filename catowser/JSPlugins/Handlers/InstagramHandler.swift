@@ -22,7 +22,7 @@ public struct InstagramContentPlugin: CottonJSPlugin {
 
     public let hostKeyword: String = "instagram"
 
-    public func setEnableJsString(_ enable: Bool) -> String {
+    public func scriptString(_ enable: Bool) -> String? {
         return "__cotton__.ig.setEnabled(\(enable ? "true" : "false"));"
     }
 
