@@ -61,23 +61,24 @@ public final class WebViewJSPluginsFacade {
         }
     }
 
-    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: String?) {
-        guard let host = host else {
-            return
-        }
-        for plugin in plugins where !plugin.hostKeyword.isEmpty {
-            let jsScript = plugin.setEnableJsString(host.contains(plugin.hostKeyword))
-            
-            // swiftlint:disable:next line_length
-            // https://github.com/WebKit/webkit/blob/39a299616172a4d4fe1f7aaf573b41020a1d7358/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm#L1009
-            
-            webView.evaluateJavaScript(jsScript, completionHandler: {(something, error) in
-                if let err = error {
-                    print("Error evaluating JavaScript: \(err)")
-                } else if let thing = something {
-                    print("Received value after evaluating: \(thing)")
-                }
-            })
-        }
+    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: String) {
+        plugins
+            .filter { !$0.hostKeyword.isEmpty || $0.messageHandlerName == .basePluginHName}
+            .compactMap { $0.scriptString(host.contains($0.hostKeyword))}
+            .forEach { webView.evaluate(jsScript: $0)}
+    }
+}
+
+extension JavaScriptEvaluateble {
+    func evaluate(jsScript: String) {
+        // swiftlint:disable:next line_length
+        // https://github.com/WebKit/webkit/blob/39a299616172a4d4fe1f7aaf573b41020a1d7358/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm#L1009
+        evaluateJavaScript(jsScript, completionHandler: {(something, error) in
+            if let err = error {
+                print("Error evaluating JavaScript: \(err)")
+            } else if let thing = something {
+                print("Received value after evaluating: \(thing)")
+            }
+        })
     }
 }
