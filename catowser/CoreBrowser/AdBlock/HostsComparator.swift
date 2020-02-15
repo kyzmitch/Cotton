@@ -19,7 +19,7 @@ public struct HostsComparator {
     private let currentHost: String
     private let pendingHost: String
     
-    public init?(current: URL, next: URL) {
+    public init?(_ current: URL, _ next: URL) {
         guard let hostC = current.host else { return nil }
         guard let hostP = next.host else { return nil }
         currentHost = hostC

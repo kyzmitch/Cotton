@@ -39,15 +39,19 @@ protocol SiteNavigationComponent: class {
 
 extension WKWebView: JavaScriptEvaluateble {}
 
+struct URLInfo {
+    let url: URL
+    var ipAddress: String?
+    
+    init(_ url: URL) {
+        self.url = url
+        ipAddress = nil
+    }
+}
+
 final class WebViewController: BaseViewController {
     
-    private(set) var currentUrl: URL {
-        willSet {
-            print("current URL update from: \(currentUrl.absoluteString) to: \(newValue.absoluteString)")
-        }
-    }
-    
-    private var ipAddress: String?
+    private(set) var urlInfo: URLInfo
 
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
@@ -82,7 +86,12 @@ final class WebViewController: BaseViewController {
                 return .init(error: .httpError(kitErr))
             })
             .flatMap(.latest, { [weak self] (response) -> UrlConvertProducer in
-                self?.ipAddress = response.ipAddress
+                guard let self = self else {
+                    return .init(error: .zombieSelf)
+                }
+                var mutableInfo = self.urlInfo
+                mutableInfo.ipAddress = response.ipAddress
+                self.urlInfo = mutableInfo
                 return url.updateHost(with: response.ipAddress)
             })
             .start(on: UIScheduler())
@@ -100,7 +109,7 @@ final class WebViewController: BaseViewController {
     }
 
     func load(url: URL, canLoadPlugins: Bool = true) {
-        currentUrl = url
+        urlInfo = URLInfo(url)
 
         if canLoadPlugins {
             injectPlugins()
@@ -114,7 +123,7 @@ final class WebViewController: BaseViewController {
 
     /// Reload by creating new webview
     func load(site: Site, canLoadPlugins: Bool = true) {
-        currentUrl = site.url
+        urlInfo = URLInfo(site.url)
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
@@ -134,7 +143,7 @@ final class WebViewController: BaseViewController {
         if canLoadPlugins { injectPlugins() }
         
         addWebViewProgressObserver()
-        internalLoad(url: currentUrl)
+        internalLoad(url: urlInfo.url)
     }
 
     private func injectPlugins() {
@@ -149,7 +158,7 @@ final class WebViewController: BaseViewController {
 
     init(_ site: Site, plugins: [CottonJSPlugin], externalNavigationDelegate: SiteExternalNavigationDelegate) {
         self.externalNavigationDelegate = externalNavigationDelegate
-        currentUrl = site.url
+        urlInfo = URLInfo(site.url)
         configuration = site.webViewConfig
         if site.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)
@@ -185,7 +194,7 @@ final class WebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        load(url: currentUrl)
+        load(url: urlInfo.url)
         // try create web view only after creating
         view.addSubview(webView)
         isWebViewLoaded = true
@@ -234,24 +243,6 @@ private extension WebViewController {
 }
 
 fileprivate extension WebViewController {
-    func isAppleMapsURL(_ url: URL) -> Bool {
-        if url.scheme == "http" || url.scheme == "https" {
-            if url.host == "maps.apple.com" && url.query != nil {
-                return true
-            }
-        }
-        return false
-    }
-
-    func isStoreURL(_ url: URL) -> Bool {
-        if url.scheme == "http" || url.scheme == "https" || url.scheme == "itms-apps" {
-            if url.host == "itunes.apple.com" {
-                return true
-            }
-        }
-        return false
-    }
-    
     func handleNavigationCommit(_ wkView: WKWebView) {
         guard let webViewUrl = wkView.url else {
             print("web view without url")
@@ -264,6 +255,7 @@ fileprivate extension WebViewController {
         }
         
         // you must inject re-enable plugins even if web view loaded page from same Host
+        
         pluginsFacade?.enablePlugins(for: wkView, with: site.host)
         InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
         
@@ -295,8 +287,8 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if let protector = HostsComparator(current: currentUrl, next: url),
-            (protector.shouldCancelRedirect && url.host != ipAddress) {
+        if !urlInfo.url.hasIPHost,
+            HostsComparator(urlInfo.url, url)?.shouldCancelRedirect ?? false {
             decisionHandler(.cancel)
             return
         }
@@ -308,8 +300,8 @@ extension WebViewController: WKNavigationDelegate {
             // when you was browsing youtube
             
             if let mainURL = navigationAction.request.mainDocumentURL,
-                let hostComparator = HostsComparator(current: currentUrl, next: mainURL) {
-                if hostComparator.isPendingSame {
+                let comparator = HostsComparator(urlInfo.url, mainURL) {
+                if comparator.isPendingSame {
                     decisionHandler(.allow)
                 } else {
                     decisionHandler(.cancel)
@@ -327,13 +319,13 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if isAppleMapsURL(url) {
+        if url.isAppleMapsURL {
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
             return
         }
 
-        if isStoreURL(url) {
+        if url.isStoreURL {
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
             return
@@ -345,7 +337,9 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if let checker = try? DomainNativeAppChecker(url: url.absoluteString) {
+        if !url.hasIPHost,
+            let newHost = url.host,
+            let checker = try? DomainNativeAppChecker(url: newHost) {
             externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
 
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
@@ -373,13 +367,15 @@ extension WebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(false)
-        pluginsFacade?.enablePlugins(for: webView, with: currentUrl.host)
+        if let actualHost = urlInfo.url.host {
+            pluginsFacade?.enablePlugins(for: webView, with: actualHost)
+        }
         
         let snapshotConfig = WKSnapshotConfiguration()
         let w = webView.bounds.size.width
         let h = webView.bounds.size.height
         snapshotConfig.rect = CGRect(x: 0, y: 0, width: w, height: h)
-        snapshotConfig.snapshotWidth = NSNumber(integerLiteral: 256)
+        snapshotConfig.snapshotWidth = 256
         webView.takeSnapshot(with: snapshotConfig) { [weak self] (image, error) in
             switch (image, error) {
             case (_, let err?):
@@ -405,7 +401,7 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
         let host = challenge.protectionSpace.host
-        guard host == currentUrl.host || host == ipAddress else {
+        guard host == urlInfo.url.host || host == urlInfo.ipAddress else {
             completionHandler(.performDefaultHandling, nil)
             return
         }
@@ -415,7 +411,7 @@ extension WebViewController: WKNavigationDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        if let initialHost = currentUrl.host, serverTrust.checkValidity(ofHost: initialHost) {
+        if let initialHost = urlInfo.url.host, serverTrust.checkValidity(ofHost: initialHost) {
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } else {
