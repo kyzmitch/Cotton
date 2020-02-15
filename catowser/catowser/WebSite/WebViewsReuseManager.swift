@@ -41,7 +41,7 @@ final class WebViewsReuseManager {
                        delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
         for (i, vc) in views.enumerated() {
-            let currentUrl = vc.currentUrl
+            let currentUrl = vc.urlInfo.url
             if currentUrl == site.url {
                 lastSelectedIndex = i
                 return vc
