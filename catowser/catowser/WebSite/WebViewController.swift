@@ -72,6 +72,11 @@ final class WebViewController: BaseViewController {
     }()
     
     private func internalLoad(url: URL) {
+        guard FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) else {
+            let request = URLRequest(url: url)
+            webView.load(request)
+            return
+        }
         dnsRequestSubsciption?.dispose()
         dnsRequestSubsciption = url.rxHttpHost
             .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
@@ -256,8 +261,10 @@ fileprivate extension WebViewController {
         
         // you must inject re-enable plugins even if web view loaded page from same Host
         
-        pluginsFacade?.enablePlugins(for: wkView, with: site.host)
-        InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
+        if !site.url.hasIPHost {
+            pluginsFacade?.enablePlugins(for: wkView, with: site.host)
+            InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
+        }
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
@@ -288,6 +295,7 @@ extension WebViewController: WKNavigationDelegate {
         }
 
         if !urlInfo.url.hasIPHost,
+            !url.hasIPHost,
             HostsComparator(urlInfo.url, url)?.shouldCancelRedirect ?? false {
             decisionHandler(.cancel)
             return
@@ -367,7 +375,7 @@ extension WebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(false)
-        if let actualHost = urlInfo.url.host {
+        if !urlInfo.url.hasIPHost, let actualHost = urlInfo.url.host {
             pluginsFacade?.enablePlugins(for: webView, with: actualHost)
         }
         
@@ -400,18 +408,23 @@ extension WebViewController: WKNavigationDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        let host = challenge.protectionSpace.host
-        guard host == urlInfo.url.host || host == urlInfo.ipAddress else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        // https://developer.apple.com/documentation/foundation/url_loading_system/handling_an_authentication_challenge/performing_manual_server_trust_authentication
-        
         guard let serverTrust = challenge.protectionSpace.serverTrust else {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        if let initialHost = urlInfo.url.host, serverTrust.checkValidity(ofHost: initialHost) {
+        guard let oldHost = urlInfo.url.host else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        let host = challenge.protectionSpace.host
+        guard host.contains(oldHost)
+            || oldHost.contains(host)
+            || host == urlInfo.ipAddress else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+        
+        if serverTrust.checkValidity(ofHost: oldHost) {
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } else {
