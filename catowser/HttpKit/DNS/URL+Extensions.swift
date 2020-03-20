@@ -35,6 +35,24 @@ public extension URL {
         return .init(value: host)
     }
     
+    func rxReplaceHostWithIPAddress(dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer>) -> UrlConvertProducer {
+        return rxHttpHost
+        .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
+            print("Host error: \(dnsErr.localizedDescription)")
+            return .init(error: .failedConstructRequestParameters)
+        })
+        .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
+            return dnsClient.getIPaddress(ofDomain: host)
+        })
+        .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, DnsError> in
+            print("Http error: \(kitErr.localizedDescription)")
+            return .init(error: .httpError(kitErr))
+        })
+        .flatMap(.latest, { (response) -> UrlConvertProducer in
+            return self.updateHost(with: response.ipAddress)
+        })
+    }
+    
     func updateHost(with ipAddress: String) -> UrlConvertProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return .init(error: .urlComponentsFail)
