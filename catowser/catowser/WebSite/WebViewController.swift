@@ -13,41 +13,7 @@ import JSPlugins
 import HttpKit
 import ReactiveSwift
 
-protocol SiteNavigationDelegate: class {
-    var canGoBack: Bool { get }
-    var canGoForward: Bool { get }
-
-    func goForward()
-    func goBack()
-    func reload()
-}
-
-protocol SiteExternalNavigationDelegate: class {
-    func didStartProvisionalNavigation()
-    func didOpenSiteWith(appName: String)
-    func displayProgress(_ progress: Double)
-    func showProgress(_ show: Bool)
-    func updateTabPreview(_ screenshot: UIImage)
-}
-
-protocol SiteNavigationComponent: class {
-    /// Use `nil` to tell that navigation actions should be disabled
-    var siteNavigator: SiteNavigationDelegate? { get set }
-    /// Reloads state of UI components
-    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
-}
-
 extension WKWebView: JavaScriptEvaluateble {}
-
-struct URLInfo {
-    let url: URL
-    var ipAddress: String?
-    
-    init(_ url: URL) {
-        self.url = url
-        ipAddress = nil
-    }
-}
 
 final class WebViewController: BaseViewController {
     
