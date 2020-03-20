@@ -16,68 +16,28 @@ import ReactiveSwift
 extension WKWebView: JavaScriptEvaluateble {}
 
 final class WebViewController: BaseViewController {
-    
+    /// URL with info about ip address
     private(set) var urlInfo: URLIpInfo
-
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
-
-    private var pluginsFacade: WebViewJSPluginsFacade?
-
-    private weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
-    
+    /// JavaScript Plugins holder
+    private(set) var pluginsFacade: WebViewJSPluginsFacade?
+    /// Own navigation delegate
+    private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     private var webViewProgressObserverAdded = false
-    
     private var loadingProgressObservation: NSKeyValueObservation?
-    
     private var dnsRequestSubsciption: Disposable?
-    
+    /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
     private static let dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer> = {
         let server = HttpKit.GoogleDnsServer()
         return .init(server: server)
     }()
-    
-    private func internalLoad(url: URL) {
-        guard FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) else {
-            let request = URLRequest(url: url)
-            webView.load(request)
-            return
-        }
-        dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = url.rxHttpHost
-            .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
-                print("Host error: \(dnsErr.localizedDescription)")
-                return .init(error: .failedConstructRequestParameters)
-            })
-            .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
-                return WebViewController.dnsClient.getIPaddress(ofDomain: host)
-            })
-            .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, DnsError> in
-                print("Http error: \(kitErr.localizedDescription)")
-                return .init(error: .httpError(kitErr))
-            })
-            .flatMap(.latest, { [weak self] (response) -> UrlConvertProducer in
-                guard let self = self else {
-                    return .init(error: .zombieSelf)
-                }
-                var mutableInfo = self.urlInfo
-                mutableInfo.ipAddress = response.ipAddress
-                self.urlInfo = mutableInfo
-                return url.updateHost(with: response.ipAddress)
-            })
-            .start(on: UIScheduler())
-            .startWithResult({ [weak self] (result) in
-                guard let self = self else {
-                    return
-                }
-                guard case .success(let finalURL) = result else {
-                    return
-                }
-                
-                let request = URLRequest(url: finalURL)
-                self.webView.load(request)
-            })
-    }
+    private var isWebViewLoaded: Bool = false
+    private lazy var webView: WKWebView = {
+        webViewProgressObserverAdded = false
+        loadingProgressObservation?.invalidate()
+        return createWebView(with: configuration)
+    }()
 
     func load(url: URL, canLoadPlugins: Bool = true) {
         urlInfo = URLIpInfo(url)
@@ -117,17 +77,12 @@ final class WebViewController: BaseViewController {
         internalLoad(url: urlInfo.url)
     }
 
-    private func injectPlugins() {
-        configuration.userContentController.removeAllUserScripts()
-        // inject only for specific sites, to fix case
-        // then instagram related plugin is injected to google site
-        guard let facade = pluginsFacade else {
-            return
-        }
-        facade.visit(configuration.userContentController)
-    }
-
-    init(_ site: Site, plugins: [CottonJSPlugin], externalNavigationDelegate: SiteExternalNavigationDelegate) {
+    /**
+     Constructs web view controller for specific site with set of plugins and navigation handler
+     */
+    init(_ site: Site,
+         plugins: [CottonJSPlugin],
+         externalNavigationDelegate: SiteExternalNavigationDelegate) {
         self.externalNavigationDelegate = externalNavigationDelegate
         urlInfo = URLIpInfo(site.url)
         configuration = site.webViewConfig
@@ -140,22 +95,6 @@ final class WebViewController: BaseViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private var isWebViewLoaded: Bool = false
-
-    private lazy var webView: WKWebView = {
-        webViewProgressObserverAdded = false
-        loadingProgressObservation?.invalidate()
-        return createWebView(with: configuration)
-    }()
-    
-    private func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
-        let webView = WKWebView(frame: .zero, configuration: config)
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.backgroundColor = .white
-        webView.navigationDelegate = self
-        return webView
     }
     
     override func loadView() {
@@ -178,9 +117,9 @@ final class WebViewController: BaseViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // TODO: don't remember why it is needed
         if let touchedView = touches.first?.view {
             if touchedView === webView {
+                // to fix keypad for textfields on websites
                 webView.becomeFirstResponder()
             }
         }
@@ -188,6 +127,24 @@ final class WebViewController: BaseViewController {
 }
 
 private extension WebViewController {
+    func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
+        let webView = WKWebView(frame: .zero, configuration: config)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.backgroundColor = .white
+        webView.navigationDelegate = self
+        return webView
+    }
+    
+    func injectPlugins() {
+        configuration.userContentController.removeAllUserScripts()
+        // inject only for specific sites, to fix case
+        // then instagram related plugin is injected to google site
+        guard let facade = pluginsFacade else {
+            return
+        }
+        facade.visit(configuration.userContentController)
+    }
+    
     func addWebViewProgressObserver() {
         if !webViewProgressObserverAdded {
             webViewProgressObserverAdded = true
@@ -211,193 +168,33 @@ private extension WebViewController {
             }
         }
     }
-}
-
-fileprivate extension WebViewController {
-    func handleNavigationCommit(_ wkView: WKWebView) {
-        guard let webViewUrl = wkView.url else {
-            print("web view without url")
+    
+    func internalLoad(url: URL) {
+        guard FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) else {
+            let request = URLRequest(url: url)
+            webView.load(request)
             return
         }
-
-        guard let site = Site(url: webViewUrl) else {
-            assertionFailure("failed create site from URL")
-            return
-        }
-        
-        // you must inject re-enable plugins even if web view loaded page from same Host
-        
-        if !site.url.hasIPHost {
-            pluginsFacade?.enablePlugins(for: wkView, with: site.host)
-            InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
-        }
-        
-        do {
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
-        } catch {
-            print("\(#function) - failed to replace current tab")
-        }
-    }
-}
-
-extension WebViewController: WKUIDelegate {
-    func webView(_ webView: WKWebView,
-                 createWebViewWith configuration: WKWebViewConfiguration,
-                 for navigationAction: WKNavigationAction,
-                 windowFeatures: WKWindowFeatures) -> WKWebView? {
-        return nil
-    }
-}
-
-// MARK: - WKNavigationDelegate
-
-extension WebViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else {
-            decisionHandler(.cancel)
-            return
-        }
-
-        if !urlInfo.url.hasIPHost,
-            !url.hasIPHost,
-            HostsComparator(urlInfo.url, url)?.shouldCancelRedirect ?? false {
-            decisionHandler(.cancel)
-            return
-        }
-        
-        if url.scheme == "about" {
-            // This will handle about:blank from youtube.
-            // sometimes url can be unexpected
-            // this one is when you tap on some youtube video
-            // when you was browsing youtube
-            
-            if let mainURL = navigationAction.request.mainDocumentURL,
-                let comparator = HostsComparator(urlInfo.url, mainURL) {
-                if comparator.isPendingSame {
-                    decisionHandler(.allow)
-                } else {
-                    decisionHandler(.cancel)
+        dnsRequestSubsciption?.dispose()
+        dnsRequestSubsciption = url.rxReplaceHostWithIPAddress(dnsClient: WebViewController.dnsClient)
+            .start(on: UIScheduler())
+            .startWithResult({ [weak self] (result) in
+                guard let self = self else {
+                    return
                 }
-            } else {
-                // don't show progress for requests to about scheme
-                decisionHandler(.allow)
-            }
-            return
-        }
-        
-        if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
+                guard case .success(let finalURL) = result else {
+                    return
+                }
+                
+                if finalURL.hasIPHost {
+                    var mutableInfo = self.urlInfo
+                    mutableInfo.ipAddress = finalURL.host
+                    self.urlInfo = mutableInfo
+                }
 
-        if url.isAppleMapsURL {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-
-        if url.isStoreURL {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-
-        if url.scheme == "mailto" {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-
-        if !url.hasIPHost,
-            let newHost = url.host,
-            let checker = try? DomainNativeAppChecker(url: newHost) {
-            externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
-
-            let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
-            guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
-                decisionHandler(.allow)
-                return
-            }
-            // swiftlint:disable:next force_unwrapping
-            decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
-            return
-        }
-
-        if ["http", "https"].contains(url.scheme) {
-            decisionHandler(.allow)
-            return
-        }
-
-        decisionHandler(.cancel)
-    }
-
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.showProgress(true)
-        handleNavigationCommit(webView)
-    }
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        externalNavigationDelegate?.showProgress(false)
-        if !urlInfo.url.hasIPHost, let actualHost = urlInfo.url.host {
-            pluginsFacade?.enablePlugins(for: webView, with: actualHost)
-        }
-        
-        let snapshotConfig = WKSnapshotConfiguration()
-        let w = webView.bounds.size.width
-        let h = webView.bounds.size.height
-        snapshotConfig.rect = CGRect(x: 0, y: 0, width: w, height: h)
-        snapshotConfig.snapshotWidth = 256
-        webView.takeSnapshot(with: snapshotConfig) { [weak self] (image, error) in
-            switch (image, error) {
-            case (_, let err?):
-                print("failed to take a screenshot \(err)")
-            case (let img?, _):
-                self?.externalNavigationDelegate?.updateTabPreview(img)
-            case (.none, .none):
-                print("failed to take a screenshot")
-            }
-        }
-    }
-    
-    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print("Fail to load URL request: \(error.localizedDescription)")
-        externalNavigationDelegate?.showProgress(false)
-    }
-    
-    func webView(_ webView: WKWebView,
-                 didReceive challenge: URLAuthenticationChallenge,
-                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        guard let serverTrust = challenge.protectionSpace.serverTrust else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        guard let oldHost = urlInfo.url.host else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        let host = challenge.protectionSpace.host
-        guard host.contains(oldHost)
-            || oldHost.contains(host)
-            || host == urlInfo.ipAddress else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        
-        if serverTrust.checkValidity(ofHost: oldHost) {
-            let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
-        } else {
-            // Show a UI here warning the user the server credentials are
-            // invalid, and cancel the load.
-            completionHandler(.cancelAuthenticationChallenge, nil)
-        }
+                let request = URLRequest(url: finalURL)
+                self.webView.load(request)
+            })
     }
 }
 

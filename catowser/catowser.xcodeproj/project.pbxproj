@@ -104,6 +104,7 @@
 		8A46AB9D2377260300DC03E6 /* GoogleDnsServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */; };
 		8A510F632424ADC30070503C /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
 		8A510F652424AE000070503C /* URLInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F642424AE000070503C /* URLInfo.swift */; };
+		8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */; };
 		8A571D1B226A1C53008917D5 /* t4.js in Resources */ = {isa = PBXBuildFile; fileRef = 8A571D1A226A1C53008917D5 /* t4.js */; };
 		8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AED82351CD2D001A9C83 /* ServerDescription.swift */; };
 		8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */; };
@@ -304,6 +305,7 @@
 		8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDnsServer.swift; sourceTree = "<group>"; };
 		8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNavigationProtocols.swift; sourceTree = "<group>"; };
 		8A510F642424AE000070503C /* URLInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfo.swift; sourceTree = "<group>"; };
+		8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SystemExtensions.swift"; sourceTree = "<group>"; };
 		8A571D1A226A1C53008917D5 /* t4.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = t4.js; path = js/t4.js; sourceTree = "<group>"; };
 		8A62AED82351CD2D001A9C83 /* ServerDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDescription.swift; sourceTree = "<group>"; };
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
@@ -596,6 +598,7 @@
 			children = (
 				60C2C90122801C7600F5D869 /* TopSites */,
 				C22599621F7BEF6D000E4C3A /* WebViewController.swift */,
+				8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */,
 				8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */,
 				841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */,
 				C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */,
@@ -1373,6 +1376,7 @@
 				60380EF722A15504007F06FB /* PluginsBuilder.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
+				8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
