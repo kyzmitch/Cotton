@@ -17,7 +17,7 @@ extension WKWebView: JavaScriptEvaluateble {}
 
 final class WebViewController: BaseViewController {
     
-    private(set) var urlInfo: URLInfo
+    private(set) var urlInfo: URLIpInfo
 
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
@@ -80,7 +80,7 @@ final class WebViewController: BaseViewController {
     }
 
     func load(url: URL, canLoadPlugins: Bool = true) {
-        urlInfo = URLInfo(url)
+        urlInfo = URLIpInfo(url)
 
         if canLoadPlugins {
             injectPlugins()
@@ -94,7 +94,7 @@ final class WebViewController: BaseViewController {
 
     /// Reload by creating new webview
     func load(site: Site, canLoadPlugins: Bool = true) {
-        urlInfo = URLInfo(site.url)
+        urlInfo = URLIpInfo(site.url)
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
@@ -129,7 +129,7 @@ final class WebViewController: BaseViewController {
 
     init(_ site: Site, plugins: [CottonJSPlugin], externalNavigationDelegate: SiteExternalNavigationDelegate) {
         self.externalNavigationDelegate = externalNavigationDelegate
-        urlInfo = URLInfo(site.url)
+        urlInfo = URLIpInfo(site.url)
         configuration = site.webViewConfig
         if site.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)

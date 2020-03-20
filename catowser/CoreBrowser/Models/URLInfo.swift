@@ -1,5 +1,5 @@
 //
-//  URLInfo.swift
+//  URLIpInfo.swift
 //  CoreBrowser
 //
 //  Created by Andrei Ermoshin on 3/20/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct URLInfo {
+public struct URLIpInfo {
     public let url: URL
     public var ipAddress: String?
     
