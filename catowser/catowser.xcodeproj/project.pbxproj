@@ -122,6 +122,8 @@
 		8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */; };
 		8A7DCCD0236432B5006AAEE2 /* DomainName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCF236432B5006AAEE2 /* DomainName.swift */; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
+		8A8678AC2430F6AA00450666 /* WildcardHostTrustEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */; };
+		8A8678AE2430F7D400450666 /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AD2430F7D400450666 /* Host.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
@@ -317,6 +319,8 @@
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
 		8A7DCCCF236432B5006AAEE2 /* DomainName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainName.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildcardHostTrustEvaluator.swift; sourceTree = "<group>"; };
+		8A8678AD2430F7D400450666 /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A978D4823F34909007ECB0C /* AuthChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChallenge.swift; sourceTree = "<group>"; };
@@ -763,6 +767,7 @@
 			isa = PBXGroup;
 			children = (
 				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
+				8A8678AD2430F7D400450666 /* Host.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -780,6 +785,7 @@
 			children = (
 				8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */,
 				8A978D4823F34909007ECB0C /* AuthChallenge.swift */,
+				8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */,
 			);
 			path = AuthChallenge;
 			sourceTree = "<group>";
@@ -1393,6 +1399,7 @@
 			files = (
 				8A46AB9D2377260300DC03E6 /* GoogleDnsServer.swift in Sources */,
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
+				8A8678AC2430F6AA00450666 /* WildcardHostTrustEvaluator.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
 				8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */,
 				8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */,
@@ -1405,6 +1412,7 @@
 				8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
 				8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */,
+				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
 				8A62AEE62351EC81001A9C83 /* DownloadFacade.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 				8A62AEE72351EC85001A9C83 /* ProgressResponse.swift in Sources */,
