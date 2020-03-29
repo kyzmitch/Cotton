@@ -16,7 +16,11 @@ extension SecTrust {
         // https://alamofire.github.io/Alamofire/Classes/DefaultTrustEvaluator.html#/s:9Alamofire21ServerTrustEvaluatingP8evaluate_7forHostySo03SecC3Refa_SStKF
         // swiftlint:disable:next line_length
         // https://github.com/Alamofire/Alamofire/blob/6fc79382515e26a2328ab24c75a777128d234248/Source/ServerTrustEvaluation.swift
-        let serverTrustPolicy = DefaultTrustEvaluator(validateHost: true)
-        return serverTrustPolicy.evaluate(self, forHost: host)
+        let serverTrustPolicy = WildcardHostTrustEvaluator(validateHost: true)
+        guard let kitHost = HttpKit.Host(rawValue: host) else {
+            return serverTrustPolicy.evaluate(self, forHost: host)
+        }
+        
+        return serverTrustPolicy.evaluate(self, forHost: kitHost.onlySecondLevelDomain)
     }
 }

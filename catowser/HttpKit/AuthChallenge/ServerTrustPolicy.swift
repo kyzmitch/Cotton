@@ -94,8 +94,8 @@ extension Array where Element == ServerTrustEvaluating {
 /// An evaluator which uses the default server trust evaluation while allowing you to control whether to validate the
 /// host provided by the challenge. Applications are encouraged to always validate the host in production environments
 /// to guarantee the validity of the server's certificate chain.
-public final class DefaultTrustEvaluator: ServerTrustEvaluating {
-    private let validateHost: Bool
+public class DefaultTrustEvaluator: ServerTrustEvaluating {
+    let validateHost: Bool
     
     /// Creates a `DefaultTrustEvalutor`.
     ///
