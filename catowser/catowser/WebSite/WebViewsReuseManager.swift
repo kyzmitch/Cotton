@@ -53,7 +53,9 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let vc = WebViewController(site, plugins: pluginsBuilder.plugins, externalNavigationDelegate: delegate)
+            let vc = WebViewController(site,
+                                       plugins: pluginsBuilder.plugins,
+                                       externalNavigationDelegate: delegate)
             views.append(vc)
             lastSelectedIndex = count
             return vc
@@ -64,13 +66,15 @@ final class WebViewsReuseManager {
             // and at the same time creating view controller here is not good.
             // Also, need to have non Optional return value.
             // Another option is to initialize `lastSelectedIndex` with any number
-            // anyway it will be changed to correct one in check above when
+            // anyway it will be changed to correct one in a check above when
             // collection is not full.
             struct NotSelectedIndex: Error {}
             throw NotSelectedIndex()
         }
 
         // if the limit is already reached, then need reuse oldest tab
+        // but, after testing it turns out that sometimes it is buggy
+        // to use old web view for new entered query
         let nextIndex: Int
         if selectedIndex + 1 < count - 1 {
             nextIndex = selectedIndex + 1

@@ -33,6 +33,7 @@ final class WebViewController: BaseViewController {
         return .init(server: server)
     }()
     private var isWebViewLoaded: Bool = false
+    /// lazy loaded web view to use correct config
     private lazy var webView: WKWebView = {
         webViewProgressObserverAdded = false
         loadingProgressObservation?.invalidate()
@@ -40,14 +41,9 @@ final class WebViewController: BaseViewController {
     }()
 
     func load(url: URL, canLoadPlugins: Bool = true) {
+        // TODO: actually this func is called using URLIpInfo, so, maybe no need to update it
         urlInfo = URLIpInfo(url)
-
-        if canLoadPlugins {
-            injectPlugins()
-        } else if !canLoadPlugins {
-            configuration.userContentController.removeAllUserScripts()
-        }
-
+        setupScripts(canLoadPlugins: canLoadPlugins)
         addWebViewProgressObserver()
         internalLoad(url: url)
     }
@@ -58,8 +54,6 @@ final class WebViewController: BaseViewController {
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
-            // legacy KVO
-            // webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
             loadingProgressObservation?.invalidate()
             webViewProgressObserverAdded = false
             
@@ -71,8 +65,7 @@ final class WebViewController: BaseViewController {
             }
         }
         
-        if canLoadPlugins { injectPlugins() }
-        
+        setupScripts(canLoadPlugins: canLoadPlugins)
         addWebViewProgressObserver()
         internalLoad(url: urlInfo.url)
     }
@@ -127,6 +120,14 @@ final class WebViewController: BaseViewController {
 }
 
 private extension WebViewController {
+    func setupScripts(canLoadPlugins: Bool) {
+        if canLoadPlugins {
+            injectPlugins()
+        } else {
+            configuration.userContentController.removeAllUserScripts()
+        }
+    }
+    
     func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,24 +139,13 @@ private extension WebViewController {
     func injectPlugins() {
         configuration.userContentController.removeAllUserScripts()
         // inject only for specific sites, to fix case
-        // then instagram related plugin is injected to google site
-        guard let facade = pluginsFacade else {
-            return
-        }
-        facade.visit(configuration.userContentController)
+        // when instagram related plugin is injected to webview with google site
+        pluginsFacade?.visit(configuration.userContentController)
     }
     
     func addWebViewProgressObserver() {
         if !webViewProgressObserverAdded {
             webViewProgressObserverAdded = true
-            // legacy KVO was left for comparison with new API
-            /*
-            webView.addObserver(self,
-                                forKeyPath: #keyPath(WKWebView.estimatedProgress),
-                                options: .new,
-                                context: nil)
-             */
-            
             // swiftlint:disable:next line_length
             // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
             
@@ -175,23 +165,24 @@ private extension WebViewController {
             webView.load(request)
             return
         }
+        
         dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = url.rxReplaceHostWithIPAddress(dnsClient: WebViewController.dnsClient)
+        dnsRequestSubsciption = url.rxReplaceHostWithIPAddress(using: WebViewController.dnsClient)
             .start(on: UIScheduler())
             .startWithResult({ [weak self] (result) in
                 guard let self = self else {
                     return
                 }
                 guard case .success(let finalURL) = result else {
+                    print("fail to resolve host with DNS")
                     return
                 }
                 
-                if finalURL.hasIPHost {
-                    var mutableInfo = self.urlInfo
-                    mutableInfo.ipAddress = finalURL.host
-                    self.urlInfo = mutableInfo
+                guard finalURL.hasIPHost else {
+                    print("Alert - host wasn't replaced on IP address after operation")
+                    return
                 }
-
+                self.urlInfo.ipAddress = finalURL.host
                 let request = URLRequest(url: finalURL)
                 self.webView.load(request)
             })
