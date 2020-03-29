@@ -35,7 +35,7 @@ public extension URL {
         return .init(value: host)
     }
     
-    func rxReplaceHostWithIPAddress(dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer>) -> UrlConvertProducer {
+    func rxReplaceHostWithIPAddress(using dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer>) -> UrlConvertProducer {
         return rxHttpHost
         .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
             print("Host error: \(dnsErr.localizedDescription)")
