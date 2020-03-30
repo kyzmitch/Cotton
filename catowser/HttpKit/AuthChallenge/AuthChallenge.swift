@@ -21,6 +21,8 @@ extension SecTrust {
             return serverTrustPolicy.evaluate(self, forHost: host)
         }
         
-        return serverTrustPolicy.evaluate(self, forHost: kitHost.onlySecondLevelDomain)
+        let wildcardCheck = serverTrustPolicy.evaluate(self, forHost: kitHost.onlySecondLevelDomain)
+        let originalCheck = serverTrustPolicy.evaluate(self, forHost: host)
+        return wildcardCheck || originalCheck
     }
 }
