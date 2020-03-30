@@ -16,6 +16,16 @@ private extension WebViewController {
             print("web view without url")
             return
         }
+        
+        if webViewUrl.hasIPHost {
+            if urlInfo.ipAddress == webViewUrl.host {
+                // commited web page for same host
+                urlInfo.update(url: webViewUrl)
+            }
+        } else {
+            
+        }
+        
 
         guard let site = Site(url: webViewUrl) else {
             assertionFailure("failed create site from URL")
@@ -24,7 +34,7 @@ private extension WebViewController {
         
         // you must inject re-enable plugins even if web view loaded page from same Host
         
-        if !site.url.hasIPHost {
+        if !webViewUrl.hasIPHost {
             pluginsFacade?.enablePlugins(for: wkView, with: site.host)
             InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
         }
@@ -140,8 +150,8 @@ extension WebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(false)
-        if !urlInfo.url.hasIPHost, let actualHost = urlInfo.url.host {
-            pluginsFacade?.enablePlugins(for: webView, with: actualHost)
+        if !urlInfo.url.hasIPHost {
+            pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
         }
         
         let snapshotConfig = WKSnapshotConfiguration()
@@ -177,10 +187,7 @@ extension WebViewController: WKNavigationDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        guard let oldHost = urlInfo.url.host else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
+        let oldHost = urlInfo.host
         let host = challenge.protectionSpace.host
         guard host.contains(oldHost)
             || oldHost.contains(host)
