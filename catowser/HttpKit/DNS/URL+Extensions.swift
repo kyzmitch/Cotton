@@ -22,8 +22,8 @@ public enum DnsError: LocalizedError {
 public typealias HostProducer = SignalProducer<String, DnsError>
 public typealias UrlConvertProducer = SignalProducer<URL, DnsError>
 
-public extension URL {
-    var rxHttpHost: HostProducer {
+extension URL {
+    public var rxHttpHost: HostProducer {
         guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
             return .init(error: .notHttpScheme)
         }
@@ -35,7 +35,9 @@ public extension URL {
         return .init(value: host)
     }
     
-    func rxReplaceHostWithIPAddress(using dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer>) -> UrlConvertProducer {
+    public typealias GoogleDnsClient = HttpKit.Client<HttpKit.GoogleDnsServer>
+    
+    public func rxReplaceHostWithIPAddress(using dnsClient: GoogleDnsClient) -> UrlConvertProducer {
         return rxHttpHost
         .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
             print("Host error: \(dnsErr.localizedDescription)")
@@ -53,7 +55,7 @@ public extension URL {
         })
     }
     
-    func updateHost(with ipAddress: String) -> UrlConvertProducer {
+    public func updateHost(with ipAddress: String) -> UrlConvertProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return .init(error: .urlComponentsFail)
         }
@@ -88,23 +90,5 @@ public extension URL {
     
     var hasIPHost: Bool {
         return hasIPv4Host || hasIPv6Host
-    }
-    
-    var isAppleMapsURL: Bool {
-        if scheme == "http" || scheme == "https" {
-            if host == "maps.apple.com" && query != nil {
-                return true
-            }
-        }
-        return false
-    }
-
-    var isStoreURL: Bool {
-        if scheme == "http" || scheme == "https" || scheme == "itms-apps" {
-            if host == "itunes.apple.com" {
-                return true
-            }
-        }
-        return false
     }
 }

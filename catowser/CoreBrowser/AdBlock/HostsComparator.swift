@@ -26,6 +26,11 @@ public struct HostsComparator {
         pendingHost = hostP
     }
     
+    public init(_ currentHost: String, _ nextHost: String) {
+        self.currentHost = currentHost
+        self.pendingHost = nextHost
+    }
+    
     public var isPendingSame: Bool {
         return pendingHost == currentHost || pendingHost.contains(currentHost)
     }

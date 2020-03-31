@@ -61,4 +61,14 @@ public struct URLIpInfo {
         }
         internalUrl = url
     }
+    
+    public func sameHost(with url: URL) -> Bool {
+        let isSameHost: Bool
+        if url.hasIPHost {
+            isSameHost = ipAddress == url.host
+        } else {
+            isSameHost = host == url.host
+        }
+        return isSameHost
+    }
 }
