@@ -18,26 +18,20 @@ private extension WebViewController {
         }
         
         if webViewUrl.hasIPHost {
-            if urlInfo.ipAddress == webViewUrl.host {
-                // commited web page for same host
-                urlInfo.update(url: webViewUrl)
-            }
+            urlInfo.updateURLForSameIP(url: webViewUrl)
         } else {
-            
+            urlInfo.updateURLForSameHost(url: webViewUrl)
         }
         
-
-        guard let site = Site(url: webViewUrl) else {
+        guard let site = Site(url: urlInfo.domainURL) else {
             assertionFailure("failed create site from URL")
             return
         }
         
         // you must inject re-enable plugins even if web view loaded page from same Host
-        
-        if !webViewUrl.hasIPHost {
-            pluginsFacade?.enablePlugins(for: wkView, with: site.host)
-            InMemoryDomainSearchProvider.shared.rememberDomain(name: site.host)
-        }
+        // and even if ip address is used instead of domain name
+        pluginsFacade?.enablePlugins(for: wkView, with: urlInfo.host)
+        InMemoryDomainSearchProvider.shared.rememberDomain(name: urlInfo.host)
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))

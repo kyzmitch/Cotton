@@ -44,8 +44,19 @@ public struct URLIpInfo {
         return clearURL
     }
     
-    public mutating func update(url: URL) {
-        guard url.host == host else {
+    public var domainURL: URL {
+        return internalUrl
+    }
+    
+    public mutating func updateURLForSameIP(url: URL) {
+        guard ipAddress == url.host else {
+            return
+        }
+        internalUrl = url
+    }
+    
+    public mutating func updateURLForSameHost(url: URL) {
+        guard host == url.host else {
             return
         }
         internalUrl = url
