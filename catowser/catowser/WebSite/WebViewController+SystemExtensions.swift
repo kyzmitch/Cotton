@@ -41,7 +41,7 @@ private extension WebViewController {
     }
     
     func handleAboutSchemeRedirect(_ mainDocumentURL: URL?,
-                           _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                                   _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         // This will handles about:blank from youtube
         // sometimes url can be unexpected
         // this one is when you tap on link on youtube
@@ -57,6 +57,52 @@ private extension WebViewController {
             // don't show progress for requests to about scheme
             decisionHandler(.allow)
         }
+    }
+    
+    func handleNativeAppSchemeRedirect(_ url: URL,
+                                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) -> Bool {
+        // TODO: don't remember why it's required to check if it is same host before checking if it is native app scheme or not
+        let isSameHost = urlInfo.sameHost(with: url)
+        guard isSameHost else {
+            decisionHandler(.allow)
+            return false
+        }
+        guard let checker = try? DomainNativeAppChecker(host: urlInfo.host) else {
+            decisionHandler(.allow)
+            return false
+        }
+        externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
+
+        let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
+        guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
+            decisionHandler(.allow)
+            return false
+        }
+        // swiftlint:disable:next force_unwrapping
+        decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
+        return true
+    }
+    
+    func handleUnwantedRedirect(_ url: URL,
+                                _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) -> Bool {
+        guard let pendingHost = url.host else {
+            decisionHandler(.cancel)
+            return true
+        }
+        let unwantedRedirect: Bool
+        if url.hasIPHost {
+            let sameIPaddress = pendingHost == urlInfo.ipAddress
+            unwantedRedirect = !sameIPaddress
+        } else {
+            let comparator = HostsComparator(urlInfo.host, pendingHost)
+            unwantedRedirect = comparator.shouldCancelRedirect
+        }
+        if unwantedRedirect {
+            decisionHandler(.cancel)
+            return true
+        }
+        
+        return false
     }
 }
 
@@ -77,25 +123,20 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url, let pendingHost = url.host else {
+        guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
             return
         }
 
-        let sameIPaddress = pendingHost == urlInfo.ipAddress
-        let comparator = HostsComparator(urlInfo.host, pendingHost)
-        if sameIPaddress || comparator.shouldCancelRedirect {
-            decisionHandler(.cancel)
-            return
-        }
-        
-        if url.scheme == "about" {
-            handleAboutSchemeRedirect(navigationAction.request.mainDocumentURL,
-                                      decisionHandler)
+        guard !handleUnwantedRedirect(url, decisionHandler) else {
             return
         }
         
         switch url.scheme {
+        case "about":
+            let mainURL = navigationAction.request.mainDocumentURL
+            handleAboutSchemeRedirect(mainURL, decisionHandler)
+            return
         case "tel", "facetime", "facetime-audio", "mailto":
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
@@ -104,38 +145,28 @@ extension WebViewController: WKNavigationDelegate {
             break
         }
 
-        if url.isAppleMapsURL {
+        guard !url.isAppleMapsURL else {
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
             return
         }
 
-        if url.isStoreURL {
+        guard !url.isStoreURL else {
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
             return
         }
 
-        let isSameHost = urlInfo.sameHost(with: url)
-        if isSameHost, let checker = try? DomainNativeAppChecker(host: urlInfo.host) {
-            externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
-
-            let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
-            guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
-                decisionHandler(.allow)
-                return
-            }
-            // swiftlint:disable:next force_unwrapping
-            decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
+        guard !handleNativeAppSchemeRedirect(url, decisionHandler) else {
             return
         }
 
-        if ["http", "https"].contains(url.scheme) {
+        switch url.scheme {
+        case "http", "https":
             decisionHandler(.allow)
-            return
+        default:
+            decisionHandler(.cancel)
         }
-
-        decisionHandler(.cancel)
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
