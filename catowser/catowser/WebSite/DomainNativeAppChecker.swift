@@ -12,9 +12,9 @@ final class DomainNativeAppChecker {
     private static let domains: [String] = ["instagram.com", "youtube.com"]
     let correspondingDomain: String
 
-    init(url string: String) throws {
+    init(host: String) throws {
         for domain in DomainNativeAppChecker.domains {
-            if string.contains(domain) {
+            if host.contains(domain) {
                 correspondingDomain = domain
                 return
             }

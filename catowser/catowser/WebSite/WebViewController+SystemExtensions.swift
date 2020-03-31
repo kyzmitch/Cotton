@@ -39,6 +39,25 @@ private extension WebViewController {
             print("\(#function) - failed to replace current tab")
         }
     }
+    
+    func handleAboutSchemeRedirect(_ mainDocumentURL: URL?,
+                           _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        // This will handles about:blank from youtube
+        // sometimes url can be unexpected
+        // this one is when you tap on link on youtube
+        
+        if let mainURL = mainDocumentURL,
+            let comparator = HostsComparator(urlInfo.url, mainURL) {
+            if comparator.isPendingSame {
+                decisionHandler(.allow)
+            } else {
+                decisionHandler(.cancel)
+            }
+        } else {
+            // don't show progress for requests to about scheme
+            decisionHandler(.allow)
+        }
+    }
 }
 
 // MARK: - WKUIDelegate
@@ -58,42 +77,31 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else {
+        guard let url = navigationAction.request.url, let pendingHost = url.host else {
             decisionHandler(.cancel)
             return
         }
 
-        if !urlInfo.url.hasIPHost,
-            !url.hasIPHost,
-            HostsComparator(urlInfo.url, url)?.shouldCancelRedirect ?? false {
+        let sameIPaddress = pendingHost == urlInfo.ipAddress
+        let comparator = HostsComparator(urlInfo.host, pendingHost)
+        if sameIPaddress || comparator.shouldCancelRedirect {
             decisionHandler(.cancel)
             return
         }
         
         if url.scheme == "about" {
-            // This will handle about:blank from youtube.
-            // sometimes url can be unexpected
-            // this one is when you tap on some youtube video
-            // when you was browsing youtube
-            
-            if let mainURL = navigationAction.request.mainDocumentURL,
-                let comparator = HostsComparator(urlInfo.url, mainURL) {
-                if comparator.isPendingSame {
-                    decisionHandler(.allow)
-                } else {
-                    decisionHandler(.cancel)
-                }
-            } else {
-                // don't show progress for requests to about scheme
-                decisionHandler(.allow)
-            }
+            handleAboutSchemeRedirect(navigationAction.request.mainDocumentURL,
+                                      decisionHandler)
             return
         }
         
-        if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" {
+        switch url.scheme {
+        case "tel", "facetime", "facetime-audio", "mailto":
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
             return
+        default:
+            break
         }
 
         if url.isAppleMapsURL {
@@ -108,15 +116,8 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
 
-        if url.scheme == "mailto" {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-
-        if !url.hasIPHost,
-            let newHost = url.host,
-            let checker = try? DomainNativeAppChecker(url: newHost) {
+        let isSameHost = urlInfo.sameHost(with: url)
+        if isSameHost, let checker = try? DomainNativeAppChecker(host: urlInfo.host) {
             externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
 
             let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
