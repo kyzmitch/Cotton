@@ -11,35 +11,6 @@ import WebKit
 import CoreBrowser
 
 private extension WebViewController {
-    func handleNavigationCommit(_ wkView: WKWebView) {
-        guard let webViewUrl = wkView.url else {
-            print("web view without url")
-            return
-        }
-        
-        if webViewUrl.hasIPHost {
-            urlInfo.updateURLForSameIP(url: webViewUrl)
-        } else {
-            urlInfo.updateURLForSameHost(url: webViewUrl)
-        }
-        
-        guard let site = Site(url: urlInfo.domainURL) else {
-            assertionFailure("failed create site from URL")
-            return
-        }
-        
-        // you must inject re-enable plugins even if web view loaded page from same Host
-        // and even if ip address is used instead of domain name
-        pluginsFacade?.enablePlugins(for: wkView, with: urlInfo.host)
-        InMemoryDomainSearchProvider.shared.rememberDomain(name: urlInfo.host)
-        
-        do {
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
-        } catch {
-            print("\(#function) - failed to replace current tab")
-        }
-    }
-    
     func handleAboutSchemeRedirect(_ mainDocumentURL: URL?,
                                    _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         // This will handles about:blank from youtube
@@ -61,21 +32,17 @@ private extension WebViewController {
     
     func handleNativeAppSchemeRedirect(_ url: URL,
                                        _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) -> Bool {
-        // TODO: don't remember why it's required to check if it is same host before checking if it is native app scheme or not
         let isSameHost = urlInfo.sameHost(with: url)
         guard isSameHost else {
-            decisionHandler(.allow)
             return false
         }
         guard let checker = try? DomainNativeAppChecker(host: urlInfo.host) else {
-            decisionHandler(.allow)
             return false
         }
         externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
 
         let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
         guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
-            decisionHandler(.allow)
             return false
         }
         // swiftlint:disable:next force_unwrapping
@@ -127,10 +94,6 @@ extension WebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-
-        guard !handleUnwantedRedirect(url, decisionHandler) else {
-            return
-        }
         
         switch url.scheme {
         case "about":
@@ -156,6 +119,10 @@ extension WebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
+        
+        guard !handleUnwantedRedirect(url, decisionHandler) else {
+            return
+        }
 
         guard !handleNativeAppSchemeRedirect(url, decisionHandler) else {
             return
@@ -171,14 +138,37 @@ extension WebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(true)
-        handleNavigationCommit(webView)
+        
+        guard let webViewUrl = webView.url else {
+            print("web view without url")
+            return
+        }
+        
+        if webViewUrl.hasIPHost {
+            urlInfo.updateURLForSameIP(url: webViewUrl)
+        } else {
+            urlInfo.updateURLForSameHost(url: webViewUrl)
+        }
+        
+        guard let site = Site(url: urlInfo.domainURL) else {
+            assertionFailure("failed create site from URL")
+            return
+        }
+        
+        // you must inject re-enable plugins even if web view loaded page from same Host
+        // and even if ip address is used instead of domain name
+        pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
+        InMemoryDomainSearchProvider.shared.rememberDomain(name: urlInfo.host)
+        
+        do {
+            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        } catch {
+            print("\(#function) - failed to replace current tab")
+        }
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(false)
-        if !urlInfo.url.hasIPHost {
-            pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
-        }
         
         let snapshotConfig = WKSnapshotConfiguration()
         let w = webView.bounds.size.width
@@ -217,11 +207,11 @@ extension WebViewController: WKNavigationDelegate {
         let host = challenge.protectionSpace.host
         guard host.contains(oldHost)
             || oldHost.contains(host)
-            || host == urlInfo.ipAddress else {
+            || host == urlInfo.host else {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        
+
         if serverTrust.checkValidity(ofHost: oldHost) {
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
@@ -229,6 +219,7 @@ extension WebViewController: WKNavigationDelegate {
             // Show a UI here warning the user the server credentials are
             // invalid, and cancel the load.
             completionHandler(.cancelAuthenticationChallenge, nil)
+            externalNavigationDelegate?.showProgress(false)
         }
     }
 }

@@ -40,6 +40,12 @@ extension HttpKit {
             return "*.\(onlySecondLevelDomain)"
         }
         
+        /// Custom name to fix e.g. google.com when certificate from google only has www.google.com DNS name in it
+        /// Not sure why and how auth challenge was made before that
+        var wwwName: String {
+            return "www.\(onlySecondLevelDomain)"
+        }
+        
         var onlySecondLevelDomain: String {
             var domainComponents = rawValue.split(separator: ".")
             guard domainComponents.count > 1 else {
