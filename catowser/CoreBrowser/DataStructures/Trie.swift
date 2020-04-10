@@ -42,6 +42,28 @@ final class TrieNode<T: Hashable> {
     }
 }
 
+extension TrieNode: CustomDebugStringConvertible where T: CustomDebugStringConvertible {
+    var debugDescription: String {
+        if parentNode != nil {
+            var nodesDescription = ""
+            for node in children.values {
+                nodesDescription += "\(node.debugDescription),"
+            }
+            if let actualValue = value {
+                return "[\(actualValue.debugDescription)]{\(nodesDescription)}"
+            } else {
+                return "no value - \(nodesDescription)"
+            }
+        } else {
+            var nodesDescription = ""
+            for node in children.values {
+                nodesDescription += "\(node.debugDescription),"
+            }
+            return "root {\(nodesDescription)}"
+        }
+    }
+}
+
 /// A trie data structure containing words.  Each node is a single
 /// character of a word.
 final class Trie: NSObject, NSCoding {
@@ -88,6 +110,15 @@ final class Trie: NSObject, NSCoding {
     /// - Parameter coder: The object that will encode the array
     func encode(with coder: NSCoder) {
         coder.encode(self.words, forKey: "words")
+    }
+    
+    // MARK: - CustomDebugStringConvertible
+    
+    public override var debugDescription: String {
+        guard !isEmpty else {
+            return "empty trie"
+        }
+        return root.debugDescription
     }
 }
 
