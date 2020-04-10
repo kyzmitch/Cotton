@@ -46,7 +46,8 @@ public final class InMemoryRedirectsList {
         }
     }
     
-    public func isBlacklisted(_ host: String) -> Bool {
+    public func isSupported(_ host: String) -> Bool {
+        // print("supported list: \(storageBlack.debugDescription)")
         return storageBlack.contains(word: host)
     }
     

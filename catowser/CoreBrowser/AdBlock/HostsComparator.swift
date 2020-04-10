@@ -40,8 +40,14 @@ public struct HostsComparator {
             return false
         }
         
-        guard InMemoryRedirectsList.shared.isBlacklisted(currentHost) else {
-            // e.g. (exempli gratia) if original host was google.com
+        guard InMemoryRedirectsList.shared.isSupported(currentHost) else {
+            // host is not supported by redirects list
+            return false
+        }
+        
+        guard !InMemoryRedirectsList.shared.isSupported(pendingHost) else {
+            // same variation of host like it was "m.youtube.com"
+            // and wants to change to "www.youtube.com"
             return false
         }
         
