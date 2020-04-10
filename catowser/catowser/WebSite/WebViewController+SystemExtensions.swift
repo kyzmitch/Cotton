@@ -9,6 +9,7 @@
 import Foundation
 import WebKit
 import CoreBrowser
+import HttpKit
 
 private extension WebViewController {
     func handleAboutSchemeRedirect(_ mainDocumentURL: URL?,
@@ -70,6 +71,20 @@ private extension WebViewController {
         }
         
         return false
+    }
+    
+    func handleServerTrust(_ serverTrust: SecTrust,
+                           host: String,
+                           completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        if serverTrust.checkValidity(ofHost: host) {
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
+        } else {
+            // Show a UI here warning the user the server credentials are
+            // invalid, and cancel the load.
+            completionHandler(.cancelAuthenticationChallenge, nil)
+            externalNavigationDelegate?.showProgress(false)
+        }
     }
 }
 
@@ -203,23 +218,33 @@ extension WebViewController: WKNavigationDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        let oldHost = urlInfo.host
-        let host = challenge.protectionSpace.host
-        guard host.contains(oldHost)
-            || oldHost.contains(host)
-            || host == urlInfo.host else {
+        guard let nextUrl = webView.url else {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-
-        if serverTrust.checkValidity(ofHost: oldHost) {
-            let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
+        if let currentIPAddress = urlInfo.ipAddress, nextUrl.hasIPHost {
+            if currentIPAddress == nextUrl.host {
+                handleServerTrust(serverTrust,
+                                  host: urlInfo.host,
+                                  completionHandler: completionHandler)
+                return
+            } else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
         } else {
-            // Show a UI here warning the user the server credentials are
-            // invalid, and cancel the load.
-            completionHandler(.cancelAuthenticationChallenge, nil)
-            externalNavigationDelegate?.showProgress(false)
+            guard let kitHost = HttpKit.Host(rawValue: urlInfo.host) else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+            guard kitHost.isSimilar(with: challenge.protectionSpace.host) else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+
+            handleServerTrust(serverTrust,
+                              host: kitHost.rawValue,
+                              completionHandler: completionHandler)
         }
     }
 }

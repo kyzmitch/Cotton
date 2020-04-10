@@ -22,8 +22,10 @@ extension SecTrust {
         }
         
         let originalCheck = serverTrustPolicy.evaluate(self, forHost: host)
-        let wildcardCheck = serverTrustPolicy.evaluate(self, forHost: kitHost.wildcardName)
-        let wwwCheck = serverTrustPolicy.evaluate(self, forHost: kitHost.wwwName)
+        let wildcardName = kitHost.wildcardName
+        let wildcardCheck = serverTrustPolicy.evaluate(self, forHost: wildcardName)
+        let wwwName = kitHost.wwwName
+        let wwwCheck = serverTrustPolicy.evaluate(self, forHost: wwwName)
         return wildcardCheck || originalCheck || wwwCheck
     }
 }
