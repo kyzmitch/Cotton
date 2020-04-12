@@ -218,12 +218,13 @@ extension WebViewController: WKNavigationDelegate {
             completionHandler(.performDefaultHandling, nil)
             return
         }
+        let realHost = challenge.protectionSpace.host
         guard let nextUrl = webView.url else {
             completionHandler(.performDefaultHandling, nil)
             return
         }
         if let currentIPAddress = urlInfo.ipAddress, nextUrl.hasIPHost {
-            if currentIPAddress == nextUrl.host {
+            if currentIPAddress == realHost {
                 handleServerTrust(serverTrust,
                                   host: urlInfo.host,
                                   completionHandler: completionHandler)
