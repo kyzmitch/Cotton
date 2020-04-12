@@ -358,9 +358,31 @@ public extension SecTrust {
     /// Evaluates `self` and returns `true` if the evaluation succeeds with a value of `.unspecified` or `.proceed`.
     var isValid: Bool {
         var result = SecTrustResultType.invalid
-        let status = SecTrustEvaluate(self, &result)
+        let status: OSStatus
+        var evaulationError: CFError?
+        if #available(iOS 12, *) {
+            let trusted = SecTrustEvaluateWithError(self, &evaulationError)
+            status = trusted ? errSecSuccess : errSecNotTrusted
+        } else {
+            status = SecTrustEvaluate(self, &result)
+        }
         
-        return (status == errSecSuccess) ? result == .unspecified || result == .proceed : false
+        guard status == errSecSuccess else {
+            let errString = evaulationError?.localizedDescription ?? "no error"
+            print("SecTrustEvaluate status: \(status) \(errString)")
+            return false
+        }
+        
+        switch result {
+        case .recoverableTrustFailure:
+            print("SecTrustEvaluate result: \(result.rawValue)")
+            return true
+        case .unspecified, .proceed:
+            return true
+        default:
+            print("SecTrustEvaluate fails: \(result.rawValue)")
+            return false
+        }
     }
     
     /// The public keys contained in `self`.

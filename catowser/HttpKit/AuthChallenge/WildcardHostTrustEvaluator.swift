@@ -18,6 +18,7 @@ class WildcardHostTrustEvaluator: DefaultTrustEvaluator {
         let policy = SecPolicyCreateSSL(true, validateHost ? host as CFString : nil)
         SecTrustSetPolicies(trust, policy)
         
+        print("Checking secTrut for: \(host)")
         return trust.isValid
     }
 }
