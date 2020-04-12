@@ -357,8 +357,8 @@ public extension Bundle {
 public extension SecTrust {
     /// Evaluates `self` and returns `true` if the evaluation succeeds with a value of `.unspecified` or `.proceed`.
     var isValid: Bool {
-        var result = SecTrustResultType.invalid
-        let status: OSStatus
+        var result: SecTrustResultType = .invalid
+        var status: OSStatus
         var evaulationError: CFError?
         if #available(iOS 12, *) {
             let trusted = SecTrustEvaluateWithError(self, &evaulationError)
@@ -369,14 +369,35 @@ public extension SecTrust {
         
         guard status == errSecSuccess else {
             let errString = evaulationError?.localizedDescription ?? "no error"
-            print("SecTrustEvaluate status: \(status) \(errString)")
+            SecTrustGetTrustResult(self, &result)
+            print("SecTrustEvaluate fails with error: \(result.rawValue) \(status) \(errString)")
             return false
         }
         
         switch result {
         case .recoverableTrustFailure:
-            print("SecTrustEvaluate result: \(result.rawValue)")
-            return true
+            print("SecTrustEvaluate recoverable failure: \(result.rawValue)")
+            let exceptions: CFData = SecTrustCopyExceptions(self)
+            // TODO: how to change exceptions???
+            SecTrustSetExceptions(self, exceptions)
+            if SecTrustSetExceptions(self, exceptions) {
+                // evaulate one more time
+                if #available(iOS 12, *) {
+                    let trusted = SecTrustEvaluateWithError(self, &evaulationError)
+                    status = trusted ? errSecSuccess : errSecNotTrusted
+                } else {
+                    status = SecTrustEvaluate(self, &result)
+                }
+                guard status == errSecSuccess else {
+                    let errString = evaulationError?.localizedDescription ?? "no error"
+                    SecTrustGetTrustResult(self, &result)
+                    print("SecTrustEvaluate fails 2nd time with error: \(result.rawValue) \(status) \(errString)")
+                    return false
+                }
+                return result == .unspecified || result == .proceed
+            } else {
+                return false
+            }
         case .unspecified, .proceed:
             return true
         default:
