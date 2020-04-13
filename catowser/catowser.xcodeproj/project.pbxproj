@@ -749,6 +749,8 @@
 		8435A48E1EED5E700020102F = {
 			isa = PBXGroup;
 			children = (
+				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
+				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
 				8435A4991EED5E700020102F /* catowser */,
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,
 				608DA74B223A3BD5009F75BD /* JSPlugins */,
@@ -789,8 +791,6 @@
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
 				60724F78221694A30071BECF /* SearchPlugins */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
-				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
-				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
 				60C12BE1226746EB004FCB14 /* Info.plist */,
 				8A8035E724442F0F000E035F /* Info-dnsext.plist */,
 				C27371191F7A341900900F03 /* Localizable.strings */,
