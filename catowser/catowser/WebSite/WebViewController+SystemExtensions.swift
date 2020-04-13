@@ -226,7 +226,7 @@ extension WebViewController: WKNavigationDelegate {
         if let currentIPAddress = urlInfo.ipAddress, nextUrl.hasIPHost {
             if currentIPAddress == realHost {
                 handleServerTrust(serverTrust,
-                                  host: urlInfo.host,
+                                  host: realHost,
                                   completionHandler: completionHandler)
                 return
             } else {

@@ -370,13 +370,13 @@ public extension SecTrust {
         guard status == errSecSuccess else {
             let errString = evaulationError?.localizedDescription ?? "no error"
             SecTrustGetTrustResult(self, &result)
-            print("SecTrustEvaluate fails with error: \(result.rawValue) \(status) \(errString)")
+            print("SecTrustEvaluate fails: \(result.description) \(status) \(errString)")
             return false
         }
         
         switch result {
         case .recoverableTrustFailure:
-            print("SecTrustEvaluate recoverable failure: \(result.rawValue)")
+            print("SecTrustEvaluate fails: \(result.description)")
             let exceptions: CFData = SecTrustCopyExceptions(self)
             // TODO: how to change exceptions???
             SecTrustSetExceptions(self, exceptions)
@@ -391,7 +391,7 @@ public extension SecTrust {
                 guard status == errSecSuccess else {
                     let errString = evaulationError?.localizedDescription ?? "no error"
                     SecTrustGetTrustResult(self, &result)
-                    print("SecTrustEvaluate fails 2nd time with error: \(result.rawValue) \(status) \(errString)")
+                    print("SecTrustEvaluate fails 2nd time with error: \(result.description) \(status) \(errString)")
                     return false
                 }
                 return result == .unspecified || result == .proceed
@@ -401,7 +401,7 @@ public extension SecTrust {
         case .unspecified, .proceed:
             return true
         default:
-            print("SecTrustEvaluate fails: \(result.rawValue)")
+            print("SecTrustEvaluate fails with result: \(result.description)")
             return false
         }
     }
@@ -438,5 +438,28 @@ public extension SecCertificate {
         guard let createdTrust = trust, trustCreationStatus == errSecSuccess else { return nil }
         
         return SecTrustCopyPublicKey(createdTrust)
+    }
+}
+
+extension SecTrustResultType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .invalid:
+            return "invalid"
+        case .proceed:
+            return "proceed"
+        case .fatalTrustFailure:
+            return "fatalTrustFailure"
+        case .deny:
+            return "deny"
+        case .unspecified:
+            return "unspecified"
+        case .recoverableTrustFailure:
+            return "recoverableTrustFailure"
+        case .otherError:
+            return "otherError"
+        @unknown default:
+            return "unknown"
+        }
     }
 }

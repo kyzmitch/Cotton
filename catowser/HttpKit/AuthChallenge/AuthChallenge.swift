@@ -22,10 +22,15 @@ extension SecTrust {
         }
         
         let originalCheck = serverTrustPolicy.evaluate(self, forHost: host)
+        
+        var additionalHostChecks = originalCheck
+        #if false
         let wildcardName = kitHost.wildcardName
         let wildcardCheck = serverTrustPolicy.evaluate(self, forHost: wildcardName)
         let wwwName = kitHost.wwwName
         let wwwCheck = serverTrustPolicy.evaluate(self, forHost: wwwName)
-        return wildcardCheck || originalCheck || wwwCheck
+        additionalHostChecks = wildcardCheck || wwwCheck
+        #endif
+        return originalCheck || additionalHostChecks
     }
 }

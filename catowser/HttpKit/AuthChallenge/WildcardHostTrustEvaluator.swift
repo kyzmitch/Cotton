@@ -43,20 +43,22 @@ class WildcardHostTrustEvaluator: DefaultTrustEvaluator {
             #if true
             let cfHost: CFString = host as CFString
             policy = SecPolicyCreateSSL(true, cfHost)
+            #else
+             let properties: CFDictionary = [kSecPolicyName as String: host] as CFDictionary
+             let identifier: CFTypeRef = CFStr
+             guard let propertyPolicy = SecPolicyCreateWithProperties(nil, properties) else {
+                 return trust.isValid
+             }
+             policy = propertyPolicy
+            #endif
+            
             let status = SecTrustSetPolicies(trust, policy)
             if status == errSecSuccess {
-                print("SecTrut checking for: \(host)")
+                print("Updated host policy with: \(host)")
             } else {
-                print("SecTrut failed to update host policy for: \(host) \(status)")
+                // https://www.osstatus.com/search/results?platform=all&framework=all&search=-67843
+                print("Failed to update host policy for: \(host) \(status)")
             }
-            #else
-            let properties: CFDictionary = [kSecPolicyName as String: host] as CFDictionary
-            let identifier: CFTypeRef = CFStr
-            guard let propertyPolicy = SecPolicyCreateWithProperties(nil, properties) else {
-                return trust.isValid
-            }
-            policy = propertyPolicy
-            #endif
         }
         
         return trust.isValid
