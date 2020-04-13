@@ -2081,7 +2081,7 @@
 				INFOPLIST_FILE = "Info-dnsext.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton browser AdHoc";
 				SWIFT_VERSION = 5.0;
