@@ -180,6 +180,8 @@
 		8A8035DF24442F0F000E035F /* CoreBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A8035E024442F0F000E035F /* HttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8035E924442F45000E035F /* NetworkExtension.framework */; };
+		8A8035F224446234000E035F /* AppProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8035F124446234000E035F /* AppProxyProvider.swift */; };
+		8A8035F724446234000E035F /* DNSProxy.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8A8035EF24446234000E035F /* DNSProxy.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
 		8A8678AC2430F6AA00450666 /* WildcardHostTrustEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */; };
 		8A8678AE2430F7D400450666 /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AD2430F7D400450666 /* Host.swift */; };
@@ -244,6 +246,13 @@
 			remoteGlobalIDString = 8AE6D1682350FF35006316AD;
 			remoteInfo = HttpKit;
 		};
+		8A8035F524446234000E035F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8A8035EE24446234000E035F;
+			remoteInfo = DNSProxy;
+		};
 		8AE6D16E2350FF35006316AD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -296,6 +305,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				8A8035F724446234000E035F /* DNSProxy.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -428,6 +438,10 @@
 		8A8035E724442F0F000E035F /* Info-dnsext.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-dnsext.plist"; path = "/Users/aermoshin/prj/catowser/catowser/Info-dnsext.plist"; sourceTree = "<absolute>"; };
 		8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "catowser dnsextDebug.entitlements"; sourceTree = "<group>"; };
 		8A8035E924442F45000E035F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		8A8035EF24446234000E035F /* DNSProxy.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DNSProxy.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A8035F124446234000E035F /* AppProxyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProxyProvider.swift; sourceTree = "<group>"; };
+		8A8035F324446234000E035F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8A8035F424446234000E035F /* DNSProxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DNSProxy.entitlements; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
 		8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildcardHostTrustEvaluator.swift; sourceTree = "<group>"; };
 		8A8678AD2430F7D400450666 /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
@@ -507,6 +521,13 @@
 				8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */,
 				8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */,
 				8A8035D224442F0F000E035F /* Pods_catowser.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A8035EC24446234000E035F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,6 +776,7 @@
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,
 				608DA74B223A3BD5009F75BD /* JSPlugins */,
 				8AE6D16A2350FF35006316AD /* HttpKit */,
+				8A8035F024446234000E035F /* DNSProxy */,
 				8435A4981EED5E700020102F /* Products */,
 				E35CED317EE4DF68ED3EDD9C /* Pods */,
 				5906B47E95A37FC0872DBD1A /* Frameworks */,
@@ -769,6 +791,7 @@
 				608DA74A223A3BD4009F75BD /* JSPlugins.framework */,
 				8AE6D1692350FF35006316AD /* HttpKit.framework */,
 				8A8035E624442F0F000E035F /* catowser dnsext.app */,
+				8A8035EF24446234000E035F /* DNSProxy.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -897,6 +920,16 @@
 				8A8678AD2430F7D400450666 /* Host.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		8A8035F024446234000E035F /* DNSProxy */ = {
+			isa = PBXGroup;
+			children = (
+				8A8035F124446234000E035F /* AppProxyProvider.swift */,
+				8A8035F324446234000E035F /* Info.plist */,
+				8A8035F424446234000E035F /* DNSProxy.entitlements */,
+			);
+			path = DNSProxy;
 			sourceTree = "<group>";
 		};
 		8A95D7AF221F16E90032C156 /* Primitives */ = {
@@ -1128,11 +1161,29 @@
 				8A80359A24442F0F000E035F /* PBXTargetDependency */,
 				8A80359C24442F0F000E035F /* PBXTargetDependency */,
 				8A80359E24442F0F000E035F /* PBXTargetDependency */,
+				8A8035F624446234000E035F /* PBXTargetDependency */,
 			);
 			name = "catowser dnsext";
 			productName = catowser;
 			productReference = 8A8035E624442F0F000E035F /* catowser dnsext.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8A8035EE24446234000E035F /* DNSProxy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A8035F824446234000E035F /* Build configuration list for PBXNativeTarget "DNSProxy" */;
+			buildPhases = (
+				8A8035EB24446234000E035F /* Sources */,
+				8A8035EC24446234000E035F /* Frameworks */,
+				8A8035ED24446234000E035F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DNSProxy;
+			productName = DNSProxy;
+			productReference = 8A8035EF24446234000E035F /* DNSProxy.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		8AE6D1682350FF35006316AD /* HttpKit */ = {
 			isa = PBXNativeTarget;
@@ -1160,7 +1211,7 @@
 		8435A48F1EED5E700020102F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1140;
 				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
@@ -1186,6 +1237,10 @@
 					};
 					8A80359924442F0F000E035F = {
 						ProvisioningStyle = Manual;
+					};
+					8A8035EE24446234000E035F = {
+						CreatedOnToolsVersion = 11.4;
+						ProvisioningStyle = Automatic;
 					};
 					8AE6D1682350FF35006316AD = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -1213,6 +1268,7 @@
 				6094E71B221FD2B9004269A2 /* CoreBrowser */,
 				608DA749223A3BD4009F75BD /* JSPlugins */,
 				8AE6D1682350FF35006316AD /* HttpKit */,
+				8A8035EE24446234000E035F /* DNSProxy */,
 			);
 		};
 /* End PBXProject section */
@@ -1265,6 +1321,13 @@
 				8A8035D924442F0F000E035F /* Assets.xcassets in Resources */,
 				8A8035DA24442F0F000E035F /* TopSitesViewController.xib in Resources */,
 				8A8035DB24442F0F000E035F /* SiteCollectionViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A8035ED24446234000E035F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1671,6 +1734,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8A8035EB24446234000E035F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A8035F224446234000E035F /* AppProxyProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AE6D1652350FF35006316AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1727,6 +1798,11 @@
 			isa = PBXTargetDependency;
 			target = 8AE6D1682350FF35006316AD /* HttpKit */;
 			targetProxy = 8A80359F24442F0F000E035F /* PBXContainerItemProxy */;
+		};
+		8A8035F624446234000E035F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8A8035EE24446234000E035F /* DNSProxy */;
+			targetProxy = 8A8035F524446234000E035F /* PBXContainerItemProxy */;
 		};
 		8AE6D16F2350FF35006316AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2089,6 +2165,47 @@
 			};
 			name = Release;
 		};
+		8A8035F924446234000E035F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = DNSProxy/DNSProxy.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				INFOPLIST_FILE = DNSProxy/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext.debug.DNSProxy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8A8035FA24446234000E035F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = DNSProxy/DNSProxy.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				INFOPLIST_FILE = DNSProxy/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext.DNSProxy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8AE6D1722350FF35006316AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 53991962ADE5A7D563B17450 /* Pods-HttpKit.debug.xcconfig */;
@@ -2193,6 +2310,15 @@
 			buildConfigurations = (
 				8A8035E424442F0F000E035F /* Debug */,
 				8A8035E524442F0F000E035F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A8035F824446234000E035F /* Build configuration list for PBXNativeTarget "DNSProxy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A8035F924446234000E035F /* Debug */,
+				8A8035FA24446234000E035F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
