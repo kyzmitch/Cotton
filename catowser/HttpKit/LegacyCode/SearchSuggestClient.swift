@@ -10,9 +10,9 @@ import Foundation
 import ReactiveSwift
 
 public final class SearchSuggestClient {
-    private let searchEngine: SearchEngine
+    private let searchEngine: HttpKit.SearchEngine
 
-    public init(_ searchEngine: SearchEngine) {
+    public init(_ searchEngine: HttpKit.SearchEngine) {
         self.searchEngine = searchEngine
     }
 

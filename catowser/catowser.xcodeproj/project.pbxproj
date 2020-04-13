@@ -182,6 +182,7 @@
 		8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8035E924442F45000E035F /* NetworkExtension.framework */; };
 		8A8035F224446234000E035F /* AppProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8035F124446234000E035F /* AppProxyProvider.swift */; };
 		8A8035F724446234000E035F /* DNSProxy.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8A8035EF24446234000E035F /* DNSProxy.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8A8035FD24449C9D000E035F /* GoogleSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
 		8A8678AC2430F6AA00450666 /* WildcardHostTrustEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */; };
 		8A8678AE2430F7D400450666 /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AD2430F7D400450666 /* Host.swift */; };
@@ -442,6 +443,7 @@
 		8A8035F124446234000E035F /* AppProxyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProxyProvider.swift; sourceTree = "<group>"; };
 		8A8035F324446234000E035F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A8035F424446234000E035F /* DNSProxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DNSProxy.entitlements; sourceTree = "<group>"; };
+		8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEngine.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
 		8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WildcardHostTrustEvaluator.swift; sourceTree = "<group>"; };
 		8A8678AD2430F7D400450666 /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
@@ -890,7 +892,6 @@
 				C7BE4FAE2044310B00FC761B /* CharacterSet+CatowserExtensions.swift */,
 				60724F7C221698AF0071BECF /* OpenSearchParser.swift */,
 				60724F742215AABB0071BECF /* SearchSuggestClient.swift */,
-				60724F76221693670071BECF /* SearchEngine.swift */,
 				60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */,
 				60D52D24225CA81E00CB56F0 /* ProgressResponse.swift */,
 			);
@@ -930,6 +931,15 @@
 				8A8035F424446234000E035F /* DNSProxy.entitlements */,
 			);
 			path = DNSProxy;
+			sourceTree = "<group>";
+		};
+		8A8035FB24449C72000E035F /* SearchEngines */ = {
+			isa = PBXGroup;
+			children = (
+				60724F76221693670071BECF /* SearchEngine.swift */,
+				8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */,
+			);
+			path = SearchEngines;
 			sourceTree = "<group>";
 		};
 		8A95D7AF221F16E90032C156 /* Primitives */ = {
@@ -972,6 +982,7 @@
 		8AE6D16A2350FF35006316AD /* HttpKit */ = {
 			isa = PBXGroup;
 			children = (
+				8A8035FB24449C72000E035F /* SearchEngines */,
 				8A978D4723F348CB007ECB0C /* AuthChallenge */,
 				8A7A9BAA23F1C453008850B6 /* DNS */,
 				8A7DCCCE236432AA006AAEE2 /* Models */,
@@ -1758,6 +1769,7 @@
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
 				8A62AEE92351EF30001A9C83 /* CharacterSet+CatowserExtensions.swift in Sources */,
 				8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */,
+				8A8035FD24449C9D000E035F /* GoogleSearchEngine.swift in Sources */,
 				8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
 				8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */,
