@@ -6,6 +6,7 @@ PODS:
   - SnapKit (5.0.0)
   - SwiftLint (0.33.0)
   - SwiftSoup (2.2.0)
+  - SWXMLHash (5.0.1)
 
 DEPENDENCIES:
   - Alamofire (~> 4.8)
@@ -14,6 +15,7 @@ DEPENDENCIES:
   - SnapKit (~> 5.0.0)
   - SwiftLint
   - SwiftSoup
+  - SWXMLHash (~> 5.0.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -23,6 +25,8 @@ SPEC REPOS:
     - SnapKit
     - SwiftLint
     - SwiftSoup
+  trunk:
+    - SWXMLHash
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -31,7 +35,8 @@ SPEC CHECKSUMS:
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
   SwiftSoup: 230991361c5ba249d140161860a3864a28b63860
+  SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
 
-PODFILE CHECKSUM: 8af40cea47dd6997bbe89e0c67dfc0134f850d30
+PODFILE CHECKSUM: a5f87e6312614b85d8928215c793ab6f74d77679
 
 COCOAPODS: 1.8.3
