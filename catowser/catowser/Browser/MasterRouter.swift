@@ -94,11 +94,10 @@ final class MasterRouter: NSObject {
     }()
 
     private let searchSuggestClient: SearchSuggestClient = {
-        // TODO: implement parsing e.g. google.xml
-        guard let sEngine = try? OpenSearchParser.parse("", engineID: "") else {
+        guard let currentEngine = try? HttpKit.SearchEngine("", engineID: "") else {
             return SearchSuggestClient(.googleSearchEngine())
         }
-        let client = SearchSuggestClient(sEngine)
+        let client = SearchSuggestClient(currentEngine)
         return client
     }()
 
