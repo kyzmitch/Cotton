@@ -44,6 +44,7 @@ extension HttpKit {
         /// Link: [doc](http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.0)
         case jsonSuggestions = "application/x-suggestions+json"
         case url = "application/x-www-form-urlencoded"
+        case html = "text/html"
     }
 }
 

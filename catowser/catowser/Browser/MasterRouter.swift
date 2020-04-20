@@ -94,10 +94,20 @@ final class MasterRouter: NSObject {
     }()
 
     private let searchSuggestClient: SearchSuggestClient = {
-        guard let currentEngine = try? HttpKit.SearchEngine("", engineID: "") else {
+        let optionalXmlData = ResourceReader.readSearchPlugin(with: "google.xml", on: .main)
+        guard let xmlData = optionalXmlData else {
             return SearchSuggestClient(.googleSearchEngine())
         }
-        let client = SearchSuggestClient(currentEngine)
+        
+        let osDescription: OpenSearchDescription
+        do {
+            osDescription = try OpenSearchParser.parsedOpenSearchXml(data: xmlData)
+        } catch {
+            print("Open search xml parser error: \(error.localizedDescription)")
+            return SearchSuggestClient(.googleSearchEngine())
+        }
+        
+        let client = SearchSuggestClient(osDescription.html)
         return client
     }()
 
