@@ -8,19 +8,18 @@
 
 import Foundation
 
+public enum KnownSearchPluginName: String {
+    case google
+    case duckduckgo
+}
+
 public enum ResourceReader {
-    public static func readSearchPlugin(with name: String, on bundle: Bundle) -> Data? {
-        guard let bundleURL = bundle.resourceURL else {
+    public static func readXmlSearchPlugin(with name: KnownSearchPluginName,
+                                           on bundle: Bundle) -> Data? {
+        guard let fileURL = bundle.url(forResource: name.rawValue, withExtension: "xml") else {
             return nil
         }
-        let pluginDirectory = bundleURL.appendingPathComponent(.searchPluginsFolder)
-        let filePath = pluginDirectory.appendingPathComponent("\(name).xml").path
-        let isExist = FileManager.default.fileExists(atPath: filePath)
-        guard isExist else {
-            return nil
-        }
-        let url = URL(fileURLWithPath: filePath)
-        guard let data = try? Data(contentsOf: url) else {
+        guard let data = try? Data(contentsOf: fileURL) else {
             return nil
         }
         return data
