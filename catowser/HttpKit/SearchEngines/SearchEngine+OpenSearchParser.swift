@@ -29,7 +29,7 @@ enum ImageEncoding: String {
 }
 
 public extension HttpKit.SearchEngine {
-    init(xml element: XMLElement, shortName: String, imageData: Data? = nil) throws {
+    init(xml element: XMLElement, indexer: XMLIndexer, shortName: String, imageData: Data? = nil) throws {
         self.shortName = shortName
         self.imageData = imageData
         
@@ -53,14 +53,34 @@ public extension HttpKit.SearchEngine {
             throw OpenSearchError.notValidURL
         }
         self.components = components
-        
-        // TODO: parse Params from xml as well
-        self.queryItems = components.queryItems ?? []
+        let optionalItems = HttpKit.SearchEngine.parseURLParams(indexer: indexer)
+        if let items = optionalItems {
+            self.queryItems = items
+        } else {
+            self.queryItems = components.queryItems ?? []
+        }
     }
     
-    private static func parseOpenSearchURLParams() -> [URLQueryItem]? {
-        // TODO: implement
-        return nil
+    private static func parseURLParams(indexer: XMLIndexer) -> [URLQueryItem]? {
+        let paramsObjects = indexer["Param"].all
+        guard !paramsObjects.isEmpty else {
+            return nil
+        }
+        
+        var items = [URLQueryItem]()
+        for paramXml in paramsObjects {
+            guard let element = paramXml.element else {
+                continue
+            }
+            guard let paramName = element.attribute(by: "name")?.text else {
+                continue
+            }
+            guard let paramValue = element.attribute(by: "value")?.text else {
+                continue
+            }
+            items.append(.init(name: paramName, value: paramValue))
+        }
+        return items.isEmpty ? nil : items
     }
 }
 
