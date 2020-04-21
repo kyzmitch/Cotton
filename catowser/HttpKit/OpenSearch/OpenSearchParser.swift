@@ -47,10 +47,12 @@ public enum OpenSearchParser {
             switch contentType {
             case .html:
                 htmlSearchEngine = try .init(xml: urlElement,
+                                             indexer: urlXml,
                                              shortName: shortName,
                                              imageData: imageData)
             case .jsonSuggestions:
                 jsonSearchEngine = try .init(xml: urlElement,
+                                             indexer: urlXml,
                                              shortName: shortName,
                                              imageData: imageData)
             default:

@@ -30,7 +30,8 @@ protocol LinksRouterInterface: class {
     func showProgress(_ show: Bool)
 }
 
-/// Should contain copies for references to all needed constraints and view controllers. NSObject subclass to support system delegate protocol.
+/// Should contain copies for references to all needed constraints and view controllers.
+/// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
     let searchSuggestionsController: SearchSuggestionsViewController = {
