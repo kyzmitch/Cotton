@@ -95,7 +95,7 @@ final class MasterRouter: NSObject {
     }()
 
     private let searchSuggestClient: SearchSuggestClient = {
-        let optionalXmlData = ResourceReader.readSearchPlugin(with: "google.xml", on: .main)
+        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: .google, on: .main)
         guard let xmlData = optionalXmlData else {
             return SearchSuggestClient(.googleSearchEngine())
         }

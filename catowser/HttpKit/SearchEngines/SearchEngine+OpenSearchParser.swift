@@ -12,8 +12,6 @@ import Alamofire // for HTTPMethod type
 
 /**
  https://developer.mozilla.org/en-US/docs/Web/OpenSearch
- 
- 
  */
 
 public enum OpenSearchError: LocalizedError {
@@ -26,6 +24,10 @@ public enum OpenSearchError: LocalizedError {
 
 enum ImageEncoding: String {
     case xIcon = "image/x-icon"
+}
+
+extension String {
+    static let queryTemplate = "{searchTerms}"
 }
 
 public extension HttpKit.SearchEngine {
@@ -42,12 +44,16 @@ public extension HttpKit.SearchEngine {
         self.httpMethod = httpMethod
         
         let optionalTemplateString = element.attribute(by: "template")?.text
-        guard let templateString = optionalTemplateString else {
+        guard var templateString = optionalTemplateString else {
             throw OpenSearchError.noTemplateParameter
+        }
+        if templateString.contains(String.queryTemplate) {
+            templateString = templateString.replacingOccurrences(of: String.queryTemplate, with: "")
         }
         guard let url = URL(string: templateString) else {
             throw OpenSearchError.templateIsNotURL
         }
+        
         let optionalComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
         guard let components = optionalComponents else {
             throw OpenSearchError.notValidURL
@@ -57,7 +63,7 @@ public extension HttpKit.SearchEngine {
         if let items = optionalItems {
             self.queryItems = items
         } else {
-            self.queryItems = components.queryItems ?? []
+            self.queryItems = components.queryItems?.filter {!($0.value?.isEmpty ?? true)} ?? []
         }
     }
     
@@ -76,6 +82,10 @@ public extension HttpKit.SearchEngine {
                 continue
             }
             guard let paramValue = element.attribute(by: "value")?.text else {
+                continue
+            }
+            guard paramValue != String.queryTemplate else {
+                // to not include template value
                 continue
             }
             items.append(.init(name: paramName, value: paramValue))
