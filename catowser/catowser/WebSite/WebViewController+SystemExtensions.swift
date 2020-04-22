@@ -228,10 +228,8 @@ extension WebViewController: WKNavigationDelegate {
                 handleServerTrust(serverTrust,
                                   host: realHost,
                                   completionHandler: completionHandler)
-                return
             } else {
                 completionHandler(.performDefaultHandling, nil)
-                return
             }
         } else {
             guard let kitHost = HttpKit.Host(rawValue: urlInfo.host) else {
