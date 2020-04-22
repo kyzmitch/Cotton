@@ -34,7 +34,7 @@ extension HttpKit.SearchEngine {
     init(xml element: XMLElement,
          indexer: XMLIndexer,
          shortName: String,
-         imageData: OpenSearch.ImageParseResult? = nil) throws {
+         imageData: OpenSearch.ImageParseResult) throws {
         
         self.shortName = shortName
         self.imageData = imageData
@@ -108,10 +108,12 @@ extension OpenSearch {
     public enum ImageParseResult {
         case base64(Data)
         case url(URL)
+        case none
         
-        init?(image xmlIndexer: XMLIndexer) {
+        init(image xmlIndexer: XMLIndexer) {
             guard let encodedImageString = xmlIndexer.element?.text else {
-                return nil
+                self = .none
+                return
             }
             let imgWidthStr = xmlIndexer.element?.attribute(by: "width")?.text ?? "16"
             let imgHeightStr = xmlIndexer.element?.attribute(by: "height")?.text ?? "16"
@@ -120,13 +122,15 @@ extension OpenSearch {
             let imgEncodingTypeStr = xmlIndexer.element?.attribute(by: "type")?.text
             guard let encodingTypeStr = imgEncodingTypeStr else {
                 guard let imgData = ImageParseResult.parseImageXmlTag(content: encodedImageString) else {
-                    return nil
+                    self = .none
+                    return
                 }
                 self = .base64(imgData)
                 return
             }
             guard let knownType = OpenSearch.ImageEncoding(rawValue: encodingTypeStr) else {
-                return nil
+                self = .none
+                return
             }
             
             var imgURL: URL?
@@ -136,7 +140,8 @@ extension OpenSearch {
             }
             
             guard let iconURL = imgURL else {
-                return nil
+                self = .none
+                return
             }
             self = .url(iconURL)
         }

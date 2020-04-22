@@ -19,6 +19,7 @@ extension HttpKit.SearchEngine {
         return HttpKit.SearchEngine(shortName: "Google",
                                     domainName: "www.google.com",
                                     path: "search",
-                                    queryItems: items, imageData: nil)
+                                    queryItems: items,
+                                    imageData: .none)
     }
 }

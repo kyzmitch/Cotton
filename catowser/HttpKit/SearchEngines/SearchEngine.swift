@@ -19,7 +19,7 @@ extension HttpKit {
         /// Original query items
         let queryItems: [URLQueryItem]
         /// Data or URL for site image/icon
-        let imageData: OpenSearch.ImageParseResult?
+        let imageData: OpenSearch.ImageParseResult
         /// So far not used parameter,  but it is present in OpenSearch format
         let httpMethod: HTTPMethod
         
@@ -27,7 +27,7 @@ extension HttpKit {
              domainName: String,
              path: String,
              queryItems: [URLQueryItem],
-             imageData: OpenSearch.ImageParseResult?,
+             imageData: OpenSearch.ImageParseResult = .none,
              httpMethod: HTTPMethod = .get) {
             self.shortName = shortName
             
