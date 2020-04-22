@@ -119,11 +119,10 @@ extension OpenSearch {
             _ = Int(imgHeightStr, radix: 10) ?? 16
             let imgEncodingTypeStr = xmlIndexer.element?.attribute(by: "type")?.text
             guard let encodingTypeStr = imgEncodingTypeStr else {
-                let imgData = Data(base64Encoded: encodedImageString)
-                guard let data = imgData else {
+                guard let imgData = ImageParseResult.parseImageXmlTag(content: encodedImageString) else {
                     return nil
                 }
-                self = .base64(data)
+                self = .base64(imgData)
                 return
             }
             guard let knownType = OpenSearch.ImageEncoding(rawValue: encodingTypeStr) else {
@@ -140,6 +139,20 @@ extension OpenSearch {
                 return nil
             }
             self = .url(iconURL)
+        }
+        
+        private static func parseImageXmlTag(content: String) -> Data? {
+            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+            // data:[<mediatype>][;base64],<data>
+            // data:image/png;base64, -----
+            // no need to use specific initializer like Data(base64Encoded:)
+            guard let dataURL = URL(string: content) else {
+                return nil
+            }
+            guard let imageData = try? Data(contentsOf: dataURL) else {
+                return nil
+            }
+            return imageData
         }
     }
 }
