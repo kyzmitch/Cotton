@@ -243,9 +243,8 @@ extension WebViewController: WKNavigationDelegate {
                 return
             }
 
-            handleServerTrust(serverTrust,
-                              host: kitHost.rawValue,
-                              completionHandler: completionHandler)
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
         }
     }
 }
