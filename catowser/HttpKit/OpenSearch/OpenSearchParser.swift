@@ -12,6 +12,11 @@ import SWXMLHash
 public struct OpenSearchDescription {
     public let html: HttpKit.SearchEngine
     public let json: HttpKit.SearchEngine?
+    
+    init(html: HttpKit.SearchEngine, json: HttpKit.SearchEngine?) {
+        self.html = html
+        self.json = json
+    }
 }
 
 public enum OpenSearchParser {
@@ -63,6 +68,10 @@ public enum OpenSearchParser {
         guard let html = htmlSearchEngine else {
             throw OpenSearchError.htmlTemplateUrlNotFound
         }
-        return OpenSearchDescription(html: html, json: jsonSearchEngine)
+        if let json = jsonSearchEngine {
+            return OpenSearchDescription(html: html, json: json)
+        } else {
+            return OpenSearchDescription(html: html, json: jsonSearchEngine)
+        }
     }
 }
