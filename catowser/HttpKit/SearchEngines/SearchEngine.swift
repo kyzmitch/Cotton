@@ -27,7 +27,7 @@ extension HttpKit {
              domainName: String,
              path: String,
              queryItems: [URLQueryItem],
-             imageData: OpenSearch.ImageParseResult? = nil,
+             imageData: OpenSearch.ImageParseResult?,
              httpMethod: HTTPMethod = .get) {
             self.shortName = shortName
             
