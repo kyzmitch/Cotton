@@ -100,9 +100,9 @@ final class MasterRouter: NSObject {
             return SearchSuggestClient(.googleSearchEngine())
         }
         
-        let osDescription: OpenSearchDescription
+        let osDescription: OpenSearch.Description
         do {
-            osDescription = try OpenSearchParser.parsedOpenSearchXml(data: xmlData)
+            osDescription = try OpenSearch.Description(data: xmlData)
         } catch {
             print("Open search xml parser error: \(error.localizedDescription)")
             return SearchSuggestClient(.googleSearchEngine())

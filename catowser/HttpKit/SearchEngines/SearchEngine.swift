@@ -10,7 +10,7 @@ import Foundation
 import Alamofire // only for Http method type
 
 extension HttpKit {
-    /// Provides URLs for HTML content type to use it in web views
+    /// The model for OpenSearch format URL
     public struct SearchEngine {
         /// Name e.g. "DuckDuckGo"
         let shortName: String
@@ -18,16 +18,16 @@ extension HttpKit {
         let components: URLComponents
         /// Original query items
         let queryItems: [URLQueryItem]
-        /// Data for site image/icon
-        let imageData: Data?
-        /// So far not used parameter,  but it present in OpenSearch format
+        /// Data or URL for site image/icon
+        let imageData: OpenSearch.ImageParseResult?
+        /// So far not used parameter,  but it is present in OpenSearch format
         let httpMethod: HTTPMethod
         
         init(shortName: String,
              domainName: String,
              path: String,
              queryItems: [URLQueryItem],
-             imageData: Data? = nil,
+             imageData: OpenSearch.ImageParseResult? = nil,
              httpMethod: HTTPMethod = .get) {
             self.shortName = shortName
             
