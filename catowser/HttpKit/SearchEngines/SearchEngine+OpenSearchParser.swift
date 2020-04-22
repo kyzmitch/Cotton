@@ -47,6 +47,7 @@ public extension HttpKit.SearchEngine {
         guard var templateString = optionalTemplateString else {
             throw OpenSearchError.noTemplateParameter
         }
+        // FIXME: avoid direct handling of template value in query parameter
         if templateString.contains(String.queryTemplate) {
             templateString = templateString.replacingOccurrences(of: String.queryTemplate, with: "")
         }
@@ -63,6 +64,7 @@ public extension HttpKit.SearchEngine {
         if let items = optionalItems {
             self.queryItems = items
         } else {
+            // filter items to not include 'q' item with template value
             self.queryItems = components.queryItems?.filter {!($0.value?.isEmpty ?? true)} ?? []
         }
     }

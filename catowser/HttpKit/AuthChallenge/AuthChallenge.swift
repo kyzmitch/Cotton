@@ -24,7 +24,7 @@ extension SecTrust {
         let originalCheck = serverTrustPolicy.evaluate(self, forHost: host)
         
         var additionalHostChecks = originalCheck
-        #if false
+        #if true
         let wildcardName = kitHost.wildcardName
         let wildcardCheck = serverTrustPolicy.evaluate(self, forHost: wildcardName)
         let wwwName = kitHost.wwwName
