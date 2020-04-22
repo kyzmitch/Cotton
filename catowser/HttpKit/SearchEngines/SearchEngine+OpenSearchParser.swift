@@ -14,24 +14,28 @@ import Alamofire // for HTTPMethod type
  https://developer.mozilla.org/en-US/docs/Web/OpenSearch
  */
 
-public enum OpenSearchError: LocalizedError {
-    case noAnyURLXml
-    case noTemplateParameter
-    case templateIsNotURL
-    case notValidURL
-    case htmlTemplateUrlNotFound
-}
+public enum OpenSearch {}
 
-enum ImageEncoding: String {
-    case xIcon = "image/x-icon"
+extension OpenSearch {
+    public enum Error: LocalizedError {
+        case noAnyURLXml
+        case noTemplateParameter
+        case templateIsNotURL
+        case notValidURL
+        case htmlTemplateUrlNotFound
+    }
 }
 
 extension String {
     static let queryTemplate = "{searchTerms}"
 }
 
-public extension HttpKit.SearchEngine {
-    init(xml element: XMLElement, indexer: XMLIndexer, shortName: String, imageData: Data? = nil) throws {
+extension HttpKit.SearchEngine {
+    init(xml element: XMLElement,
+         indexer: XMLIndexer,
+         shortName: String,
+         imageData: OpenSearch.ImageParseResult? = nil) throws {
+        
         self.shortName = shortName
         self.imageData = imageData
         
@@ -45,19 +49,19 @@ public extension HttpKit.SearchEngine {
         
         let optionalTemplateString = element.attribute(by: "template")?.text
         guard var templateString = optionalTemplateString else {
-            throw OpenSearchError.noTemplateParameter
+            throw OpenSearch.Error.noTemplateParameter
         }
-        // FIXME: avoid direct handling of template value in query parameter
+        // FIXME: this is to fix URL initialization below
         if templateString.contains(String.queryTemplate) {
             templateString = templateString.replacingOccurrences(of: String.queryTemplate, with: "")
         }
         guard let url = URL(string: templateString) else {
-            throw OpenSearchError.templateIsNotURL
+            throw OpenSearch.Error.templateIsNotURL
         }
         
         let optionalComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
         guard let components = optionalComponents else {
-            throw OpenSearchError.notValidURL
+            throw OpenSearch.Error.notValidURL
         }
         self.components = components
         let optionalItems = HttpKit.SearchEngine.parseURLParams(indexer: indexer)
@@ -96,29 +100,46 @@ public extension HttpKit.SearchEngine {
     }
 }
 
-extension Data {
-    static func parseOpenSearchImage(_ imageXmlElement: XMLIndexer) -> Data? {
-        let imageData: Data?
+extension OpenSearch {
+    enum ImageEncoding: String {
+        case xIcon = "image/x-icon"
+    }
+    
+    public enum ImageParseResult {
+        case base64(Data)
+        case url(URL)
         
-        if let encodedImageString = imageXmlElement.element?.text {
-            let imgWidthStr = imageXmlElement.element?.attribute(by: "width")?.text ?? "16"
-            let imgHeightStr = imageXmlElement.element?.attribute(by: "height")?.text ?? "16"
+        init?(image xmlIndexer: XMLIndexer) {
+            guard let encodedImageString = xmlIndexer.element?.text else {
+                return nil
+            }
+            let imgWidthStr = xmlIndexer.element?.attribute(by: "width")?.text ?? "16"
+            let imgHeightStr = xmlIndexer.element?.attribute(by: "height")?.text ?? "16"
             _ = Int(imgWidthStr, radix: 10) ?? 16
             _ = Int(imgHeightStr, radix: 10) ?? 16
-            let imgEncodingTypeStr = imageXmlElement.element?.attribute(by: "type")?.text
-            if let encodingTypeStr = imgEncodingTypeStr,
-                let _ = ImageEncoding(rawValue: encodingTypeStr) {
-                // TODO: add handling for x-icon and for other formats
-                imageData = Data(base64Encoded: encodedImageString)
-            } else {
-                // probably base64
-                imageData = Data(base64Encoded: encodedImageString)
+            let imgEncodingTypeStr = xmlIndexer.element?.attribute(by: "type")?.text
+            guard let encodingTypeStr = imgEncodingTypeStr else {
+                let imgData = Data(base64Encoded: encodedImageString)
+                guard let data = imgData else {
+                    return nil
+                }
+                self = .base64(data)
+                return
             }
-        } else {
-            imageData = nil
+            guard let knownType = OpenSearch.ImageEncoding(rawValue: encodingTypeStr) else {
+                return nil
+            }
+            
+            var imgURL: URL?
+            switch knownType {
+            case .xIcon:
+                imgURL = URL(string: encodedImageString)
+            }
+            
+            guard let iconURL = imgURL else {
+                return nil
+            }
+            self = .url(iconURL)
         }
-        
-        return imageData
     }
 }
-
