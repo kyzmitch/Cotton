@@ -32,7 +32,7 @@ final class FileDownloadViewModel {
     func download() {
         downloadOutput.value = .started
         
-        HttpKit.DownloadFacade.shared.download(file: batch)
+        HttpKit.download(file: batch)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 guard let self = self else {

@@ -110,9 +110,8 @@
 		8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */; };
 		8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
 		8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
-		8A62AEE62351EC81001A9C83 /* DownloadFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */; };
-		8A62AEE72351EC85001A9C83 /* ProgressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D24225CA81E00CB56F0 /* ProgressResponse.swift */; };
 		8A6FE88E23F5A7C200BF74A0 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */; };
+		8A74188C245086330019695E /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A74188B245086330019695E /* Downloadable.swift */; };
 		8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */; };
 		8A7A968D24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */; };
 		8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */; };
@@ -384,9 +383,7 @@
 		60C2C9062280265F00F5D869 /* SiteCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SiteCollectionViewCell.xib; sourceTree = "<group>"; };
 		60C2C92022819AE200F5D869 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewInterface.swift; sourceTree = "<group>"; };
-		60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadFacade.swift; sourceTree = "<group>"; };
 		60D52D20225B526B00CB56F0 /* Namespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Namespace.swift; sourceTree = "<group>"; };
-		60D52D24225CA81E00CB56F0 /* ProgressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressResponse.swift; sourceTree = "<group>"; };
 		60D52D26225CAE0300CB56F0 /* catowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = catowser.entitlements; sourceTree = "<group>"; };
 		60D52D3B225F317C00CB56F0 /* DomainsHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsHistory.swift; sourceTree = "<group>"; };
 		60D52D3D225F47DB00CB56F0 /* InMemoryDomainSearchProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDomainSearchProvider.swift; sourceTree = "<group>"; };
@@ -433,6 +430,7 @@
 		8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitHeaders.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
 		8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
+		8A74188B245086330019695E /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireDataRequestExtension.swift; sourceTree = "<group>"; };
 		8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchEngine+OpenSearchParser.swift"; sourceTree = "<group>"; };
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
@@ -893,15 +891,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		8A62AEE32351EC5F001A9C83 /* LegacyCode */ = {
-			isa = PBXGroup;
-			children = (
-				60D52D0A225B2E2B00CB56F0 /* DownloadFacade.swift */,
-				60D52D24225CA81E00CB56F0 /* ProgressResponse.swift */,
-			);
-			path = LegacyCode;
-			sourceTree = "<group>";
-		};
 		8A7A9BAA23F1C453008850B6 /* DNS */ = {
 			isa = PBXGroup;
 			children = (
@@ -942,7 +931,6 @@
 			children = (
 				60724F742215AABB0071BECF /* SearchSuggestClient.swift */,
 				60724F76221693670071BECF /* SearchEngine.swift */,
-				8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */,
 				8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */,
 			);
 			path = SearchEngines;
@@ -997,6 +985,7 @@
 			isa = PBXGroup;
 			children = (
 				8AE46353244E07E600C8E063 /* OpenSearchParser.swift */,
+				8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */,
 			);
 			path = OpenSearch;
 			sourceTree = "<group>";
@@ -1009,7 +998,6 @@
 				8A978D4723F348CB007ECB0C /* AuthChallenge */,
 				8A7A9BAA23F1C453008850B6 /* DNS */,
 				8A7DCCCE236432AA006AAEE2 /* Models */,
-				8A62AEE32351EC5F001A9C83 /* LegacyCode */,
 				8A62AEE22351E684001A9C83 /* Extensions */,
 				8A62AEDA2351CDDB001A9C83 /* Servers */,
 				8AE6D1752350FF52006316AD /* Endpoints */,
@@ -1028,6 +1016,7 @@
 				8A7DCCCB23642FEF006AAEE2 /* DNSoverHTTPS */,
 				8A62AEDF2351D1B8001A9C83 /* Google */,
 				8AE6D1762350FF65006316AD /* Endpoint.swift */,
+				8A74188B245086330019695E /* Downloadable.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -1756,10 +1745,9 @@
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
 				8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
-				8A62AEE62351EC81001A9C83 /* DownloadFacade.swift in Sources */,
+				8A74188C245086330019695E /* Downloadable.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 				8A7A968D24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift in Sources */,
-				8A62AEE72351EC85001A9C83 /* ProgressResponse.swift in Sources */,
 				8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */,
 				8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */,
 			);
