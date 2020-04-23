@@ -173,7 +173,7 @@ extension WebViewController: WKNavigationDelegate {
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name
         pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
-        InMemoryDomainSearchProvider.shared.rememberDomain(name: urlInfo.host)
+        InMemoryDomainSearchProvider.shared.remember(domainName: urlInfo.host)
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
@@ -232,11 +232,7 @@ extension WebViewController: WKNavigationDelegate {
                 completionHandler(.performDefaultHandling, nil)
             }
         } else {
-            guard let kitHost = HttpKit.Host(rawValue: urlInfo.host) else {
-                completionHandler(.performDefaultHandling, nil)
-                return
-            }
-            guard kitHost.isSimilar(with: challenge.protectionSpace.host) else {
+            guard urlInfo.host.isSimilar(with: challenge.protectionSpace.host) else {
                 completionHandler(.performDefaultHandling, nil)
                 return
             }

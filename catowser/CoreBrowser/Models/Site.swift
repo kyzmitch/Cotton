@@ -9,11 +9,12 @@
 import Foundation
 import WebKit
 import UIKit
+import HttpKit
 
 public struct Site {
     /// Initial url
     public let url: URL
-    public let host: String
+    public let host: HttpKit.Host
     public let faviconURL: URL
     /// Used by top sites by loading high quality image from Assets,
     /// or by all other sites by loading from favicon URL
@@ -30,7 +31,7 @@ public struct Site {
         } else if let userSpecific = userSpecifiedTitle {
             return userSpecific
         } else {
-            return host
+            return host.rawValue
         }
     }
 
@@ -47,7 +48,7 @@ public struct Site {
     public let canLoadPlugins: Bool = true
     
     public init?(url: URL, searchSuggestion: String? = nil) {
-        guard let decodedHost = url.host else {
+        guard let decodedHost = url.kitHost else {
             return nil
         }
         host = decodedHost
@@ -70,7 +71,7 @@ public struct Site {
         // it should be "www.opennet.ru"
         // Add parsing of host https://tools.ietf.org/html/rfc1738#section-3.1
         // in case if iOS sdk returns nil
-        guard let decodedHost = url.host else {
+        guard let decodedHost = url.kitHost else {
             return nil
         }
         host = decodedHost
@@ -103,8 +104,8 @@ public struct Site {
 extension Site: Equatable {}
 
 fileprivate extension URL {
-    init?(faviconHost: String) {
-        let format = "https://\(faviconHost)/favicon.ico"
+    init?(faviconHost: HttpKit.Host) {
+        let format = "https://\(faviconHost.rawValue)/favicon.ico"
         self.init(string: format)
     }
 }

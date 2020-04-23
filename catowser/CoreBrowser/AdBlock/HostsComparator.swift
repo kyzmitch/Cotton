@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HttpKit
 
 // Handling redirects to sites with Advertises
 // eg first request could be to some page on original site  https://xxx/ad_detail.html
@@ -14,6 +15,8 @@ import Foundation
 // https://ads.exosrv.com/iframe.php?
 // or
 // https://crptgate.com/pu/?
+
+// TODO: move functionality to HttpKit Host type
 
 public struct HostsComparator {
     private let currentHost: String
@@ -26,8 +29,8 @@ public struct HostsComparator {
         pendingHost = hostP
     }
     
-    public init(_ currentHost: String, _ nextHost: String) {
-        self.currentHost = currentHost
+    public init(_ currentHost: HttpKit.Host, _ nextHost: String) {
+        self.currentHost = currentHost.rawValue
         self.pendingHost = nextHost
     }
     

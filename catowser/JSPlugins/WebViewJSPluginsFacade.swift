@@ -8,6 +8,7 @@
 
 import Foundation
 import WebKit
+import HttpKit
 
 public protocol JavaScriptEvaluateble: class {
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
@@ -61,10 +62,10 @@ public final class WebViewJSPluginsFacade {
         }
     }
 
-    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: String) {
+    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: HttpKit.Host) {
         plugins
             .filter { !$0.hostKeyword.isEmpty || $0.messageHandlerName == .basePluginHName}
-            .compactMap { $0.scriptString(host.contains($0.hostKeyword))}
+            .compactMap { $0.scriptString(host.rawValue.contains($0.hostKeyword))}
             .forEach { webView.evaluate(jsScript: $0)}
     }
 }
