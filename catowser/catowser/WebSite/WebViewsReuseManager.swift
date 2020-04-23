@@ -19,6 +19,8 @@ final class WebViewsReuseManager {
     private let viewsLimit: Int
     /// Needed to store index of last returned view
     private var lastSelectedIndex: Int?
+    
+    private let useLimitedCache = false
 
     private init(_ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
@@ -40,11 +42,13 @@ final class WebViewsReuseManager {
                        pluginsBuilder: PluginsBuilder,
                        delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
-        for (i, vc) in views.enumerated() {
-            let currentUrl = vc.urlInfo.url
-            if currentUrl == site.url {
-                lastSelectedIndex = i
-                return vc
+        if useLimitedCache {
+            for (i, vc) in views.enumerated() {
+                let currentUrl = vc.urlInfo.url
+                if currentUrl == site.url {
+                    lastSelectedIndex = i
+                    return vc
+                }
             }
         }
 
@@ -88,5 +92,9 @@ final class WebViewsReuseManager {
         }
         vc.load(site: site)
         return vc
+    }
+    
+    func closeController() {
+        
     }
 }

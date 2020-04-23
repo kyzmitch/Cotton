@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HttpKit
 
 public final class InMemoryDomainSearchProvider {
     public static let shared = InMemoryDomainSearchProvider()
@@ -38,9 +39,9 @@ extension InMemoryDomainSearchProvider: DomainsHistory {
         return words
     }
 
-    public func rememberDomain(name: String) {
-        storage.insert(word: name)
-        if let withoutWww = name.withoutPrefix("www.") {
+    public func remember(domainName: HttpKit.Host) {
+        storage.insert(word: domainName.rawValue)
+        if let withoutWww = domainName.rawValue.withoutPrefix("www.") {
             storage.insert(word: withoutWww)
         }
     }

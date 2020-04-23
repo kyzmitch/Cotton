@@ -12,10 +12,10 @@ public struct URLIpInfo {
     var internalUrl: URL
     /// IP address for a host after using DNS request
     public var ipAddress: String?
-    public let host: String
+    public let host: HttpKit.Host
     
     public init?(_ url: URL) {
-        guard let host = url.host else {
+        guard let host = url.kitHost else {
             return nil
         }
         self.host = host
@@ -23,7 +23,7 @@ public struct URLIpInfo {
         ipAddress = nil
     }
     
-    public init(_ url: URL, _ host: String) {
+    public init(_ url: URL, _ host: HttpKit.Host) {
         self.host = host
         internalUrl = url
         ipAddress = nil
@@ -56,7 +56,7 @@ public struct URLIpInfo {
     }
     
     public mutating func updateURLForSameHost(url: URL) {
-        guard host == url.host else {
+        guard host.rawValue == url.host else {
             return
         }
         internalUrl = url
@@ -67,7 +67,7 @@ public struct URLIpInfo {
         if url.hasIPHost {
             isSameHost = ipAddress == url.host
         } else {
-            isSameHost = host == url.host
+            isSameHost = host.rawValue == url.host
         }
         return isSameHost
     }

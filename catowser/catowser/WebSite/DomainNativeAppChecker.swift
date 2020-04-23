@@ -7,14 +7,15 @@
 //
 
 import Foundation
+import HttpKit
 
 final class DomainNativeAppChecker {
     private static let domains: [String] = ["instagram.com", "youtube.com"]
     let correspondingDomain: String
 
-    init(host: String) throws {
+    init(host: HttpKit.Host) throws {
         for domain in DomainNativeAppChecker.domains {
-            if host.contains(domain) {
+            if host.rawValue.contains(domain) {
                 correspondingDomain = domain
                 return
             }

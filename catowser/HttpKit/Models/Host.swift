@@ -9,7 +9,7 @@
 import Foundation
 
 extension HttpKit {
-    public struct Host: RawRepresentable {
+    public struct Host: RawRepresentable, Equatable {
         /// Use host name as a `rawValue`
         public init?(rawValue: String) {
             // https://tools.ietf.org/html/rfc1808#section-2.4
@@ -69,4 +69,8 @@ extension HttpKit {
             return host.contains(rawValue) || rawValue.contains(host) || host == rawValue
         }
     }
+}
+
+public func == (lhs: HttpKit.Host, rhs: String) -> Bool {
+    return lhs.rawValue == rhs
 }

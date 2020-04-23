@@ -23,6 +23,15 @@ public typealias HostProducer = SignalProducer<String, DnsError>
 public typealias UrlConvertProducer = SignalProducer<URL, DnsError>
 
 extension URL {
+    public var kitHost: HttpKit.Host? {
+        guard let hostString = host else {
+            return nil
+        }
+        
+        let value = HttpKit.Host(rawValue: hostString)
+        return value
+    }
+    
     public var rxHttpHost: HostProducer {
         guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
             return .init(error: .notHttpScheme)
