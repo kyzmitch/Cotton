@@ -82,7 +82,8 @@ private extension WebViewController {
         } else {
             // Show a UI here warning the user the server credentials are
             // invalid, and cancel the load.
-            completionHandler(.cancelAuthenticationChallenge, nil)
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
             externalNavigationDelegate?.showProgress(false)
         }
     }
