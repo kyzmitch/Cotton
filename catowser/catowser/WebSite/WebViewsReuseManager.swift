@@ -35,8 +35,8 @@ final class WebViewsReuseManager {
     
     private func searchWebViewIndex(for site: Site) -> Int? {
         for (i, vc) in views.enumerated() {
-            let currentUrl = vc.urlInfo.url
-            if currentUrl == site.url {
+            let currentUrl = vc.urlInfo.domainURL
+            if currentUrl == site.url.domainURL {
                 return i
             }
         }
