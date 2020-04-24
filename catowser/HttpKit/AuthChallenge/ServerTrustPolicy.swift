@@ -361,37 +361,39 @@ public extension SecTrust {
         var status: OSStatus
         var evaulationError: CFError?
         if #available(iOS 12, *) {
+            // FIXME: use asyn version or use background queue
             let trusted = SecTrustEvaluateWithError(self, &evaulationError)
             status = trusted ? errSecSuccess : errSecNotTrusted
+            SecTrustGetTrustResult(self, &result)
         } else {
             status = SecTrustEvaluate(self, &result)
         }
         
-        guard status == errSecSuccess else {
+        if status != errSecSuccess {
             let errString = evaulationError?.localizedDescription ?? "no error"
-            SecTrustGetTrustResult(self, &result)
-            print("SecTrustEvaluate fails: \(result.description) \(status) \(errString)")
-            return false
+            let allParams = " \(result.description) \(status) \(errString) \(errString)"
+            print("SecTrustEvaluate fails: \(allParams)")
         }
         
         switch result {
         case .recoverableTrustFailure:
-            print("SecTrustEvaluate fails: \(result.description)")
+            print("SecTrustEvaluate recoverableTrustFailure: \(result.description)")
             let exceptions: CFData = SecTrustCopyExceptions(self)
-            // TODO: how to change exceptions???
             SecTrustSetExceptions(self, exceptions)
             if SecTrustSetExceptions(self, exceptions) {
                 // evaulate one more time
                 if #available(iOS 12, *) {
+                    // FIXME: use async version or use background queue
                     let trusted = SecTrustEvaluateWithError(self, &evaulationError)
                     status = trusted ? errSecSuccess : errSecNotTrusted
+                    SecTrustGetTrustResult(self, &result)
                 } else {
                     status = SecTrustEvaluate(self, &result)
                 }
                 guard status == errSecSuccess else {
                     let errString = evaulationError?.localizedDescription ?? "no error"
-                    SecTrustGetTrustResult(self, &result)
-                    print("SecTrustEvaluate fails 2nd time with error: \(result.description) \(status) \(errString)")
+                    let allParams = " \(result.description) \(status) \(errString) \(errString)"
+                    print("SecTrustEvaluate fails #2: \(allParams)")
                     return false
                 }
                 return result == .unspecified || result == .proceed
@@ -401,7 +403,9 @@ public extension SecTrust {
         case .unspecified, .proceed:
             return true
         default:
-            print("SecTrustEvaluate fails with result: \(result.description)")
+            let errString = evaulationError?.localizedDescription ?? "no error"
+            let allParams = " \(result.description) \(status) \(errString) \(errString)"
+            print("SecTrustEvaluate not recoverable fail: \(allParams)")
             return false
         }
     }
