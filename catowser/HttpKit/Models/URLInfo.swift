@@ -48,11 +48,20 @@ public struct URLIpInfo {
         return internalUrl
     }
     
+    /// Call this function only after checking that `url.host` is IP address.
     public mutating func updateURLForSameIP(url: URL) {
+        guard url.hasIPHost else {
+            return
+        }
         guard ipAddress == url.host else {
             return
         }
-        internalUrl = url
+        // need to update URL without changing host from domain name to ip address
+        let newComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        guard var components = newComponents else { return }
+        components.host = host.rawValue
+        guard let updatedURL = components.url else { return }
+        internalUrl = updatedURL
     }
     
     public mutating func updateURLForSameHost(url: URL) {
