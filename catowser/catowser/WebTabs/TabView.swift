@@ -185,11 +185,11 @@ private extension TabView {
         titleText.textColor = viewModel.titleColor
     }
     
-    @objc func handleClosePressed() -> Void {
+    @objc func handleClosePressed() {
         delegate?.tabViewDidClose(self, was: viewModel.visualState == .selected)
     }
     
-    func handleTapGesture() -> Void {
+    func handleTapGesture() {
         delegate?.tabDidBecomeActive(viewModel)
     }
 }

@@ -38,6 +38,14 @@ public extension Tab {
                 return ""
             }
         }
+        
+        var site: Site? {
+            guard case let .site(site) = self else {
+                return nil
+            }
+            
+            return site
+        }
     }
 }
 
@@ -89,6 +97,10 @@ public struct Tab {
 
     public var searchBarContent: String {
         return contentType.searchBarContent
+    }
+    
+    public var site: Site? {
+        return contentType.site
     }
 
     public var titleColor: UIColor {

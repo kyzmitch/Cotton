@@ -157,6 +157,9 @@ extension TabsPreviewsViewController: TabPreviewCellDelegate {
 
         let tab = box.value.remove(at: index)
         render(state: uxState.value)
+        if let site = tab.site {
+            WebViewsReuseManager.shared.removeController(for: site)
+        }
         TabsListManager.shared.close(tab: tab)
     }
 }
