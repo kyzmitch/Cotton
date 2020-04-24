@@ -13,7 +13,8 @@ import JSPlugins
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
     static let shared = WebViewsReuseManager()
-    /// Web view controllers array
+    /// Web view controllers array, array is used to have ordering and current index
+    /// But NSMapTable could be better by using Sites as keys for web views.
     private var views: [WebViewController]
     /// How many views to store
     private let viewsLimit: Int
@@ -31,6 +32,16 @@ final class WebViewsReuseManager {
             self.viewsLimit = 2
         }
     }
+    
+    private func searchWebViewIndex(for site: Site) -> Int? {
+        for (i, vc) in views.enumerated() {
+            let currentUrl = vc.urlInfo.url
+            if currentUrl == site.url {
+                return i
+            }
+        }
+        return nil
+    }
 
     /// Returns already created view with updated site or creates new one.
     ///
@@ -42,14 +53,11 @@ final class WebViewsReuseManager {
                        pluginsBuilder: PluginsBuilder,
                        delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
-        if useLimitedCache {
-            for (i, vc) in views.enumerated() {
-                let currentUrl = vc.urlInfo.url
-                if currentUrl == site.url {
-                    lastSelectedIndex = i
-                    return vc
-                }
-            }
+        if useLimitedCache,
+            let index = searchWebViewIndex(for: site),
+            let vc = views[safe: index] {
+            lastSelectedIndex = index
+            return vc
         }
 
         // if that url is not present in any of existing web views, then
@@ -94,7 +102,10 @@ final class WebViewsReuseManager {
         return vc
     }
     
-    func closeController() {
-        
+    @discardableResult
+    func removeController(for site: Site) -> Bool {
+        guard let index = searchWebViewIndex(for: site) else { return false }
+        views.remove(at: index)
+        return true
     }
 }

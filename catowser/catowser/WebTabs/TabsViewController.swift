@@ -123,7 +123,7 @@ private extension TabsViewController {
         // to show tab previews collection view modally
     }
 
-    @objc func addTabPressed() -> Void {
+    @objc func addTabPressed() {
         print("\(#function): add pressed")
 
         let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: DefaultTabProvider.shared.selected)
@@ -133,7 +133,7 @@ private extension TabsViewController {
     // MARK: Action response handlers
 
     func add(_ tabView: TabView, at index: Int) {
-        tabsStackView.insertArrangedSubview(tabView, at:index)
+        tabsStackView.insertArrangedSubview(tabView, at: index)
         view.layoutIfNeeded()
         stackViewScrollableContainer.scrollToVeryRight()
     }
@@ -258,6 +258,9 @@ extension TabsViewController: TabDelegate {
     func tabViewDidClose(_ tabView: TabView, was active: Bool) {
         print("\(#function): closed")
         removeTabView(tabView)
+        if let site = tabView.viewModel.site {
+            WebViewsReuseManager.shared.removeController(for: site)
+        }
         TabsListManager.shared.close(tab: tabView.viewModel)
     }
     
