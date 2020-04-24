@@ -9,6 +9,8 @@
 import Foundation
 
 extension HttpKit {
+    /// URL Host type instead of system String.
+    ///  https://tools.ietf.org/html/rfc1738#section-3.1
     public struct Host: RawRepresentable, Equatable {
         /// Use host name as a `rawValue`
         public init?(rawValue: String) {

@@ -13,8 +13,10 @@ import HttpKit
 
 public struct Site {
     /// Initial url
-    public let url: URL
-    public let host: HttpKit.Host
+    public let url: HttpKit.URLIpInfo
+    public var host: HttpKit.Host {
+        return url.host
+    }
     public let faviconURL: URL
     /// Used by top sites by loading high quality image from Assets,
     /// or by all other sites by loading from favicon URL
@@ -38,7 +40,7 @@ public struct Site {
     public let userSpecifiedTitle: String?
 
     public var searchBarContent: String {
-        return searchSuggestion ?? url.absoluteString
+        return searchSuggestion ?? url.domainURL.absoluteString
     }
 
     private let isPrivate: Bool = false
@@ -48,15 +50,14 @@ public struct Site {
     public let canLoadPlugins: Bool = true
     
     public init?(url: URL, searchSuggestion: String? = nil) {
-        guard let decodedHost = url.kitHost else {
+        guard let urlInfo = HttpKit.URLIpInfo(url) else {
             return nil
         }
-        host = decodedHost
-        guard let faviconURL = URL(faviconHost: host) else {
+        guard let faviconURL = URL(faviconHost: urlInfo.host) else {
             return nil
         }
         self.faviconURL = faviconURL
-        self.url = url
+        self.url = urlInfo
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         faviconImage = nil
@@ -66,16 +67,11 @@ public struct Site {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
-        url = decodedUrl
-        // For http://www.opennet.ru/opennews/art.shtml?num=50072
-        // it should be "www.opennet.ru"
-        // Add parsing of host https://tools.ietf.org/html/rfc1738#section-3.1
-        // in case if iOS sdk returns nil
-        guard let decodedHost = url.kitHost else {
+        guard let urlInfo = HttpKit.URLIpInfo(decodedUrl) else {
             return nil
         }
-        host = decodedHost
-        guard let faviconURL = URL(faviconHost: host) else {
+        url = urlInfo
+        guard let faviconURL = URL(faviconHost: urlInfo.host) else {
             return nil
         }
         self.faviconURL = faviconURL

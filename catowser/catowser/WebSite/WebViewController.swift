@@ -17,7 +17,7 @@ extension WKWebView: JavaScriptEvaluateble {}
 
 final class WebViewController: BaseViewController {
     /// URL with info about ip address
-    var urlInfo: URLIpInfo
+    var urlInfo: HttpKit.URLIpInfo
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
     /// JavaScript Plugins holder
@@ -42,7 +42,7 @@ final class WebViewController: BaseViewController {
 
     func load(url: URL, canLoadPlugins: Bool = true) {
         // TODO: actually this func is called using URLIpInfo, so, maybe no need to update it
-        guard let info = URLIpInfo(url) else {
+        guard let info = HttpKit.URLIpInfo(url) else {
             print("Fail create url info for raw URL")
             return
         }
@@ -54,11 +54,7 @@ final class WebViewController: BaseViewController {
 
     /// Reload by creating new webview
     func load(site: Site, canLoadPlugins: Bool = true) {
-        guard let info = URLIpInfo(site.url) else {
-            print("Fail create url info for Site")
-            return
-        }
-        urlInfo = info
+        urlInfo = site.url
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
@@ -85,7 +81,7 @@ final class WebViewController: BaseViewController {
          plugins: [CottonJSPlugin],
          externalNavigationDelegate: SiteExternalNavigationDelegate) {
         self.externalNavigationDelegate = externalNavigationDelegate
-        urlInfo = URLIpInfo(site.url, site.host)
+        urlInfo = site.url
         configuration = site.webViewConfig
         if site.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)
