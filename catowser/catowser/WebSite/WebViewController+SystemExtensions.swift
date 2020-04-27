@@ -12,25 +12,6 @@ import CoreBrowser
 import HttpKit
 
 private extension WebViewController {
-    func handleAboutSchemeRedirect(_ mainDocumentURL: URL?,
-                                   _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        // This will handles about:blank from youtube
-        // sometimes url can be unexpected
-        // this one is when you tap on link on youtube
-        
-        if let mainURL = mainDocumentURL,
-            let comparator = HostsComparator(urlInfo.url, mainURL) {
-            if comparator.isPendingSame {
-                decisionHandler(.allow)
-            } else {
-                decisionHandler(.cancel)
-            }
-        } else {
-            // don't show progress for requests to about scheme
-            decisionHandler(.allow)
-        }
-    }
-    
     func handleNativeAppSchemeRedirect(_ url: URL,
                                        _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) -> Bool {
         let isSameHost = urlInfo.sameHost(with: url)
@@ -49,28 +30,6 @@ private extension WebViewController {
         // swiftlint:disable:next force_unwrapping
         decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
         return true
-    }
-    
-    func handleUnwantedRedirect(_ url: URL,
-                                _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) -> Bool {
-        guard let pendingHost = url.host else {
-            decisionHandler(.cancel)
-            return true
-        }
-        let unwantedRedirect: Bool
-        if url.hasIPHost {
-            let sameIPaddress = pendingHost == urlInfo.ipAddress
-            unwantedRedirect = !sameIPaddress
-        } else {
-            let comparator = HostsComparator(urlInfo.host, pendingHost)
-            unwantedRedirect = comparator.shouldCancelRedirect
-        }
-        if unwantedRedirect {
-            decisionHandler(.cancel)
-            return true
-        }
-        
-        return false
     }
     
     func handleServerTrust(_ serverTrust: SecTrust,
@@ -112,10 +71,6 @@ extension WebViewController: WKNavigationDelegate {
         }
         
         switch url.scheme {
-        case "about":
-            let mainURL = navigationAction.request.mainDocumentURL
-            handleAboutSchemeRedirect(mainURL, decisionHandler)
-            return
         case "tel", "facetime", "facetime-audio", "mailto":
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
@@ -133,10 +88,6 @@ extension WebViewController: WKNavigationDelegate {
         guard !url.isStoreURL else {
             UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
-            return
-        }
-        
-        guard !handleUnwantedRedirect(url, decisionHandler) else {
             return
         }
 
