@@ -11,6 +11,9 @@ import HttpKit
 import CoreBrowser
 import JSPlugins
 import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 
 protocol MasterDelegate: class {
     var keyboardHeight: CGFloat? { get set }
@@ -86,6 +89,9 @@ final class MasterRouter: NSObject {
     fileprivate var dataSource: TagsSiteDataSource?
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+    
+    @available(iOS 13.0, *)
+    private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
     
     private var searchSuggestionsDisposable: Disposable?
     
@@ -270,16 +276,34 @@ fileprivate extension MasterRouter {
 
         searchSuggestionsController.knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
 
-        searchSuggestionsDisposable?.dispose()
-        searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
-            .observe(on: QueueScheduler.main)
-            .startWithResult { [weak self] (result) in
-                switch result {
-                case .success(let response):
-                    self?.searchSuggestionsController.suggestions = response.textResults
-                case .failure(let error):
-                    print("Fail to fetch search suggestions \(error.localizedDescription)")
-                }
+        if #available(iOS 13.0, *) {
+            searchSuggestionsCancellable?.cancel()
+            searchSuggestionsCancellable = googleClient.cGoogleSearchSuggestions(for: searchText)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (failure) in
+                    switch failure {
+                    case .failure(let error):
+                        print("Fail to fetch search suggestions \(error.localizedDescription)")
+                    case .finished:
+                        break
+                    }
+                    
+                }) { [weak self] (output) in
+                    self?.searchSuggestionsController.suggestions = output.textResults
+            }
+        } else {
+            // Should be replaced with not completable producer
+            searchSuggestionsDisposable?.dispose()
+            searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
+                .observe(on: QueueScheduler.main)
+                .startWithResult { [weak self] (result) in
+                    switch result {
+                    case .success(let response):
+                        self?.searchSuggestionsController.suggestions = response.textResults
+                    case .failure(let error):
+                        print("Fail to fetch search suggestions \(error.localizedDescription)")
+                    }
+            }
         }
     }
 }
