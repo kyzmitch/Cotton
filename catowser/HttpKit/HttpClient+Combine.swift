@@ -39,53 +39,51 @@ extension HttpKit.Client {
     private func cMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                withAccessToken accessToken: String?,
                                                responseType: T.Type) -> ResponseFuture<T> {
-        let subject: Future<T, HttpKit.HttpError> = .init { (promise) in
-            guard let url = endpoint.url(relatedTo: self.server) else {
-                promise(.failure(.failedConstructUrl))
-                return
-            }
-            var httpRequest = URLRequest(url: url,
-                                         cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-                                         timeoutInterval: self.httpTimeout)
-            httpRequest.httpMethod = endpoint.method.rawValue
-            httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
-            if let token = accessToken {
-                let auth: HttpKit.HttpHeader = .authorization(token: token)
-                httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
-            }
-            
-            do {
-                try httpRequest.addParameters(from: endpoint)
-            } catch let error as HttpKit.HttpError {
-                promise(.failure(error))
-                return
-            } catch {
-                promise(.failure(.httpFailure(error: error, request: httpRequest)))
-                return
-            }
-            
-            let codes = T.successCodes
-            
-            let _: DataRequest = Alamofire.request(httpRequest)
-                .validate(statusCode: codes)
-                .responseDecodableObject(queue: nil, completionHandler: { (response: DataResponse<T>) in
-                    switch response.result {
-                    case .success(let value):
-                        promise(.success(value))
-                    case .failure(let error) where error is HttpKit.HttpError:
-                        // swiftlint:disable:next force_cast
-                        let kitError = error as! HttpKit.HttpError
-                        promise(.failure(kitError))
-                    case .failure(let error):
-                        promise(.failure(.httpFailure(error: error, request: httpRequest)))
-                    }
-                })
-            
-            // TODO: find a way to react on subscribtion cancallation to cancel http request
-        }
-        
         return Combine.Deferred {
-            // maybe need to move creation of subject inside
+            let subject: Future<T, HttpKit.HttpError> = .init { (promise) in
+                guard let url = endpoint.url(relatedTo: self.server) else {
+                    promise(.failure(.failedConstructUrl))
+                    return
+                }
+                var httpRequest = URLRequest(url: url,
+                                             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                                             timeoutInterval: self.httpTimeout)
+                httpRequest.httpMethod = endpoint.method.rawValue
+                httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
+                if let token = accessToken {
+                    let auth: HttpKit.HttpHeader = .authorization(token: token)
+                    httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
+                }
+                
+                do {
+                    try httpRequest.addParameters(from: endpoint)
+                } catch let error as HttpKit.HttpError {
+                    promise(.failure(error))
+                    return
+                } catch {
+                    promise(.failure(.httpFailure(error: error, request: httpRequest)))
+                    return
+                }
+                
+                let codes = T.successCodes
+                
+                let _: DataRequest = Alamofire.request(httpRequest)
+                    .validate(statusCode: codes)
+                    .responseDecodableObject(queue: nil, completionHandler: { (response: DataResponse<T>) in
+                        switch response.result {
+                        case .success(let value):
+                            promise(.success(value))
+                        case .failure(let error) where error is HttpKit.HttpError:
+                            // swiftlint:disable:next force_cast
+                            let kitError = error as! HttpKit.HttpError
+                            promise(.failure(kitError))
+                        case .failure(let error):
+                            promise(.failure(.httpFailure(error: error, request: httpRequest)))
+                        }
+                    })
+                
+                // TODO: find a way to react on subscribtion cancallation to cancel http request
+            }
             return subject
         }
     }
