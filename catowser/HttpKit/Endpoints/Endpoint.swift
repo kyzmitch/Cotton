@@ -48,7 +48,12 @@ extension HttpKit {
     }
     
     struct VoidResponse: ResponseType {
+        static var successCodes: [Int] {
+            return [200, 201]
+        }
     }
+    
+    typealias VoidEndpoint<Server: ServerDescription> = Endpoint<VoidResponse, Server>
 }
 
 protocol ResponseType: Decodable {
