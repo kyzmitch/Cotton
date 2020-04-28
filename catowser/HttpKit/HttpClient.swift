@@ -117,7 +117,8 @@ extension HttpKit {
             return producer
         }
         
-        func makeVoidRequest(for endpoint: VoidEndpoint<Server>, withAccessToken accessToken: String?) -> SignalProducer<Void, HttpError> {
+        func makeVoidRequest(for endpoint: VoidEndpoint<Server>,
+                             withAccessToken accessToken: String?) -> SignalProducer<Void, HttpError> {
             let producer: SignalProducer<Void, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
                     observer.send(error: .zombySelf)
