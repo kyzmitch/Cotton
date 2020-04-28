@@ -64,9 +64,9 @@ final class SearchSuggestionsViewController: UITableViewController {
                         break
                     }
                     
-                }) { [weak self] (output) in
+                }, receiveValue: { [weak self] (output) in
                     self?.suggestions = output.textResults
-            }
+                })
         } else {
             // Should be replaced with not completable producer
             searchSuggestionsDisposable?.dispose()
