@@ -19,7 +19,8 @@ extension HttpKit {
         
         /// This is needed to associate type of response with endpoint
         let responseType: T.Type = T.self
-        /// To link endpoint to specific server, since it doesn't make sense to use endpoint for different host or something
+        /// To link endpoint to specific server, since it doesn't make sense to use endpoint
+        /// for different host or something
         let serverType: Server.Type = Server.self
         let encodingMethod: ParametersEncodingDestination
         

@@ -39,7 +39,9 @@ extension HttpKit {
         }
         
         /*
-         ["test",["test","testrail","test drive unlimited 2","test drive unlimited","testometrika","testlink","testdisk","test yourself","tests lunn","testflight"]]
+         ["test",["test","testrail","test drive unlimited 2",
+         "test drive unlimited","testometrika","testlink",
+         "testdisk","test yourself","tests lunn","testflight"]]
          */
         public let queryText: String
         public let textResults: [String]

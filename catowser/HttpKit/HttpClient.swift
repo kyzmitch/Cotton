@@ -15,11 +15,11 @@ public enum HttpKit {}
 
 extension HttpKit {
     public class Client<Server: ServerDescription> {
-        private let server: Server
+        let server: Server
         
         private let connectivityManager: NetworkReachabilityManager?
         
-        private let httpTimeout: TimeInterval
+        let httpTimeout: TimeInterval
         
         private lazy var hostListener: Alamofire.NetworkReachabilityManager.Listener = { [weak self] status in
             guard let self = self else {
