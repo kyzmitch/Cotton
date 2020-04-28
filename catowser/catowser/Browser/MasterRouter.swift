@@ -127,7 +127,11 @@ final class MasterRouter: NSObject {
     }
 
     deinit {
-        searchSuggestionsDisposable?.dispose()
+        if #available(iOS 13.0, *) {
+            searchSuggestionsCancellable?.cancel()
+        } else {
+            searchSuggestionsDisposable?.dispose()
+        }
     }
 }
 

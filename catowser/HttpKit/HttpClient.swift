@@ -116,6 +116,59 @@ extension HttpKit {
             let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
             return producer
         }
+        
+        func makeVoidRequest(for endpoint: VoidEndpoint<Server>, withAccessToken accessToken: String?) -> SignalProducer<Void, HttpError> {
+            let producer: SignalProducer<Void, HttpError> = .init { [weak self] (observer, lifetime) in
+                guard let self = self else {
+                    observer.send(error: .zombySelf)
+                    return
+                }
+                guard let url = endpoint.url(relatedTo: self.server) else {
+                    observer.send(error: .failedConstructUrl)
+                    return
+                }
+                
+                var httpRequest = URLRequest(url: url,
+                                             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                                             timeoutInterval: self.httpTimeout)
+                httpRequest.httpMethod = endpoint.method.rawValue
+                httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
+                if let token = accessToken {
+                    let auth: HttpHeader = .authorization(token: token)
+                    httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
+                }
+                
+                do {
+                    try httpRequest.addParameters(from: endpoint)
+                } catch let error as HttpError {
+                    observer.send(error: error)
+                    return
+                } catch {
+                    observer.send(error: .httpFailure(error: error, request: httpRequest))
+                    return
+                }
+                
+                let codes = VoidResponse.successCodes
+                
+                let dataRequest: DataRequest = Alamofire.request(httpRequest)
+                    .validate(statusCode: codes)
+                    .response { (defaultResponse: DefaultDataResponse) in
+                        if let error = defaultResponse.error {
+                            let localError = HttpError.httpFailure(error: error, request: httpRequest)
+                            observer.send(error: localError)
+                        } else {
+                            let value: Void = ()
+                            observer.send(value: value)
+                            observer.sendCompleted()
+                        }
+                }
+                
+                lifetime.observeEnded({
+                    dataRequest.cancel()
+                })
+            }
+            return producer
+        }
     }
 }
 
