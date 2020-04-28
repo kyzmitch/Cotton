@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import HttpKit
+import CoreBrowser
+import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 
 fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
@@ -37,6 +43,50 @@ final class SearchSuggestionsViewController: UITableViewController {
             tableView.reloadData()
         }
     }
+    
+    private lazy var googleClient: HttpKit.Client<HttpKit.GoogleServer> = {
+        let description = HttpKit.GoogleServer()
+        return HttpKit.Client(server: description)
+    }()
+    
+    func prepareSearch(for searchText: String) {
+        suggestions.removeAll()
+        knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
+        if #available(iOS 13.0, *) {
+            searchSuggestionsCancellable?.cancel()
+            searchSuggestionsCancellable = googleClient.cGoogleSearchSuggestions(for: searchText)
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (failure) in
+                    switch failure {
+                    case .failure(let error):
+                        print("Fail to fetch search suggestions \(error.localizedDescription)")
+                    case .finished:
+                        break
+                    }
+                    
+                }) { [weak self] (output) in
+                    self?.suggestions = output.textResults
+            }
+        } else {
+            // Should be replaced with not completable producer
+            searchSuggestionsDisposable?.dispose()
+            searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
+                .observe(on: QueueScheduler.main)
+                .startWithResult { [weak self] (result) in
+                    switch result {
+                    case .success(let response):
+                        self?.suggestions = response.textResults
+                    case .failure(let error):
+                        print("Fail to fetch search suggestions \(error.localizedDescription)")
+                    }
+            }
+        }
+    }
+    
+    @available(iOS 13.0, *)
+    private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
+    
+    private var searchSuggestionsDisposable: Disposable?
 
     weak var delegate: SearchSuggestionsListDelegate?
 
@@ -47,6 +97,14 @@ final class SearchSuggestionsViewController: UITableViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         // https://www.hackingwithswift.com/example-code/uikit/how-to-register-a-cell-for-uitableviewcell-reuse
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: .searchSuggestionCellId)
+    }
+    
+    deinit {
+        if #available(iOS 13.0, *) {
+            searchSuggestionsCancellable?.cancel()
+        } else {
+            searchSuggestionsDisposable?.dispose()
+        }
     }
 
     fileprivate func value(from indexPath: IndexPath) -> String? {

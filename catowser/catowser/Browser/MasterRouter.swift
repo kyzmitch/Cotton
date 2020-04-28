@@ -7,13 +7,9 @@
 //
 
 import UIKit
-import HttpKit
 import CoreBrowser
 import JSPlugins
-import ReactiveSwift
-#if canImport(Combine)
-import Combine
-#endif
+import HttpKit
 
 protocol MasterDelegate: class {
     var keyboardHeight: CGFloat? { get set }
@@ -89,21 +85,11 @@ final class MasterRouter: NSObject {
     fileprivate var dataSource: TagsSiteDataSource?
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
-    
-    @available(iOS 13.0, *)
-    private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
-    
-    private var searchSuggestionsDisposable: Disposable?
-    
-    private lazy var googleClient: HttpKit.Client<HttpKit.GoogleServer> = {
-        let description = HttpKit.GoogleServer()
-        return HttpKit.Client(server: description)
-    }()
 
-    private let searchSuggestClient: SearchSuggestClient = {
+    private let searchSuggestClient: HttpKit.SearchEngine = {
         let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: .duckduckgo, on: .main)
         guard let xmlData = optionalXmlData else {
-            return SearchSuggestClient(.googleSearchEngine())
+            return .googleSearchEngine()
         }
         
         let osDescription: OpenSearch.Description
@@ -111,11 +97,10 @@ final class MasterRouter: NSObject {
             osDescription = try OpenSearch.Description(data: xmlData)
         } catch {
             print("Open search xml parser error: \(error.localizedDescription)")
-            return SearchSuggestClient(.googleSearchEngine())
+            return .googleSearchEngine()
         }
         
-        let client = SearchSuggestClient(osDescription.html)
-        return client
+        return osDescription.html
     }()
 
     typealias LinksRouterPresenter = AnyViewController & MasterDelegate
@@ -124,14 +109,6 @@ final class MasterRouter: NSObject {
 
     init(viewController: LinksRouterPresenter) {
         presenter = viewController
-    }
-
-    deinit {
-        if #available(iOS 13.0, *) {
-            searchSuggestionsCancellable?.cancel()
-        } else {
-            searchSuggestionsDisposable?.dispose()
-        }
     }
 }
 
@@ -275,40 +252,7 @@ fileprivate extension MasterRouter {
     }
 
     func startSearch(_ searchText: String) {
-        searchSuggestionsController.suggestions.removeAll()
-        searchSuggestionsController.knownDomains.removeAll()
-
-        searchSuggestionsController.knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
-
-        if #available(iOS 13.0, *) {
-            searchSuggestionsCancellable?.cancel()
-            searchSuggestionsCancellable = googleClient.cGoogleSearchSuggestions(for: searchText)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (failure) in
-                    switch failure {
-                    case .failure(let error):
-                        print("Fail to fetch search suggestions \(error.localizedDescription)")
-                    case .finished:
-                        break
-                    }
-                    
-                }) { [weak self] (output) in
-                    self?.searchSuggestionsController.suggestions = output.textResults
-            }
-        } else {
-            // Should be replaced with not completable producer
-            searchSuggestionsDisposable?.dispose()
-            searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
-                .observe(on: QueueScheduler.main)
-                .startWithResult { [weak self] (result) in
-                    switch result {
-                    case .success(let response):
-                        self?.searchSuggestionsController.suggestions = response.textResults
-                    case .failure(let error):
-                        print("Fail to fetch search suggestions \(error.localizedDescription)")
-                    }
-            }
-        }
+        searchSuggestionsController.prepareSearch(for: searchText)
     }
 }
 
@@ -355,7 +299,7 @@ extension MasterRouter: SearchSuggestionsListDelegate {
             }
             presenter.openDomain(with: url)
         case .suggestion(let suggestion):
-            guard let url = searchSuggestClient.searchURL(basedOn: suggestion) else {
+            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
                 assertionFailure("Failed construct search engine url from suggestion string")
                 return
             }

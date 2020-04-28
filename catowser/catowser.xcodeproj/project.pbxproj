@@ -107,7 +107,6 @@
 		8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */; };
 		8A62AEDE2351CF76001A9C83 /* HttpKitHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */; };
 		8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */; };
-		8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
 		8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
 		8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
 		8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
@@ -384,7 +383,6 @@
 		60724EE62209C8730071BECF /* TabsPreviewsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPreviewsRouter.swift; sourceTree = "<group>"; };
 		60724EE82209C9A20071BECF /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewsReuseManager.swift; sourceTree = "<group>"; };
-		60724F742215AABB0071BECF /* SearchSuggestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestClient.swift; sourceTree = "<group>"; };
 		60724F76221693670071BECF /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		60724F79221695C80071BECF /* google.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = google.xml; sourceTree = "<group>"; };
 		607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainNativeAppChecker.swift; sourceTree = "<group>"; };
@@ -983,7 +981,6 @@
 		8A8035FB24449C72000E035F /* SearchEngines */ = {
 			isa = PBXGroup;
 			children = (
-				60724F742215AABB0071BECF /* SearchSuggestClient.swift */,
 				60724F76221693670071BECF /* SearchEngine.swift */,
 				8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */,
 			);
@@ -1799,7 +1796,6 @@
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
 				8AE46354244E07E600C8E063 /* OpenSearchParser.swift in Sources */,
 				8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */,
-				8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */,
 				8A8035FD24449C9D000E035F /* GoogleSearchEngine.swift in Sources */,
 				8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,

@@ -82,7 +82,7 @@ extension HttpKit.Client {
                         }
                     })
                 
-                // TODO: find a way to react on subscribtion cancallation to cancel http request
+                // TODO: find a way to react on subscribtion cancellation to cancel http request
             }
             return subject
         }
