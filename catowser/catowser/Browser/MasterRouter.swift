@@ -271,7 +271,7 @@ fileprivate extension MasterRouter {
         searchSuggestionsController.knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
 
         searchSuggestionsDisposable?.dispose()
-        searchSuggestionsDisposable = googleClient.searchSuggestions(for: searchText)
+        searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 switch result {
