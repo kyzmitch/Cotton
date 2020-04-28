@@ -109,6 +109,8 @@
 		8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */; };
 		8A62AEE42351EC78001A9C83 /* SearchSuggestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F742215AABB0071BECF /* SearchSuggestClient.swift */; };
 		8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
+		8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
+		8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
 		8A6FE88E23F5A7C200BF74A0 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */; };
 		8A74188C245086330019695E /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A74188B245086330019695E /* Downloadable.swift */; };
 		8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */; };
@@ -471,6 +473,7 @@
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
 		8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitHeaders.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
+		8A6CD6D324585D830068ACB5 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
 		8A74188B245086330019695E /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireDataRequestExtension.swift; sourceTree = "<group>"; };
@@ -560,6 +563,7 @@
 				8AE6D1702350FF35006316AD /* HttpKit.framework in Frameworks */,
 				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
 				14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */,
+				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
 				BF232625BB55A4003BE809D1 /* Pods_catowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,6 +572,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */,
 				8A8035CF24442F0F000E035F /* JSPlugins.framework in Frameworks */,
 				8A8035D024442F0F000E035F /* HttpKit.framework in Frameworks */,
 				8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */,
@@ -600,6 +605,7 @@
 			isa = PBXGroup;
 			children = (
 				8AC45ECA24582453007E47EE /* Combine.framework */,
+				8A6CD6D324585D830068ACB5 /* Combine.framework */,
 				8A8035E924442F45000E035F /* NetworkExtension.framework */,
 				8A978D4A23F34942007ECB0C /* Security.framework */,
 				8A46AB9A237721FD00DC03E6 /* Network.framework */,
