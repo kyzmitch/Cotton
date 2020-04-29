@@ -56,19 +56,15 @@ final class SearchSuggestionsViewController: UITableViewController {
             searchSuggestionsCancellable?.cancel()
             searchSuggestionsCancellable = googleClient.cGoogleSearchSuggestions(for: searchText)
                 .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (failure) in
-                    switch failure {
-                    case .failure(let error):
-                        print("Fail to fetch search suggestions \(error.localizedDescription)")
-                    case .finished:
-                        break
-                    }
-                    
-                }, receiveValue: { [weak self] (output) in
-                    self?.suggestions = output.textResults
+                .map { $0.textResults }
+                .catch({ (failure) -> Just<[String]> in
+                    print("Fail to fetch search suggestions \(failure.localizedDescription)")
+                    return .init([])
+                })
+                .sink(receiveValue: { [weak self] (output) in
+                    self?.suggestions = output
                 })
         } else {
-            // Should be replaced with not completable producer
             searchSuggestionsDisposable?.dispose()
             searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
                 .observe(on: QueueScheduler.main)
