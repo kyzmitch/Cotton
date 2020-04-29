@@ -33,7 +33,7 @@ final class WebViewController: BaseViewController {
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     private var dnsRequestSubsciption: Disposable?
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
-    private static let dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer> = {
+    private static let dnsClient: GoogleDnsClient = {
         let server = HttpKit.GoogleDnsServer()
         return .init(server: server)
     }()
@@ -205,7 +205,7 @@ private extension WebViewController {
                 })
         } else {
             dnsRequestSubsciption?.dispose()
-            dnsRequestSubsciption = url.rxReplaceHostWithIPAddress(using: WebViewController.dnsClient)
+            dnsRequestSubsciption = Self.dnsClient.rxResolvedDomainName(in: url)
                 .start(on: UIScheduler())
                 .startWithResult({ [weak self] (result) in
                     guard let self = self else {
