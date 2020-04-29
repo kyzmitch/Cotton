@@ -27,9 +27,9 @@ extension HttpKit {
 public typealias HostProducer = SignalProducer<String, HttpKit.DnsError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 typealias HostPublisher = Result<String, HttpKit.DnsError>.Publisher
-public typealias UrlConvertProducer = SignalProducer<URL, HttpKit.DnsError>
+public typealias ResolvedURLProducer = SignalProducer<URL, HttpKit.DnsError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-typealias URLConverterPublisher = Result<URL, HttpKit.DnsError>.Publisher
+typealias ResolvedURLPublisher = Result<URL, HttpKit.DnsError>.Publisher
 
 extension URL {
     public var kitHost: HttpKit.Host? {
@@ -67,27 +67,7 @@ extension URL {
         return HostPublisher(.success(host)).eraseToAnyPublisher()
     }
     
-    public typealias GoogleDnsClient = HttpKit.Client<HttpKit.GoogleDnsServer>
-    
-    public func rxReplaceHostWithIPAddress(using dnsClient: GoogleDnsClient) -> UrlConvertProducer {
-        return rxHttpHost
-        .flatMapError({ (dnsErr) -> SignalProducer<String, HttpKit.HttpError> in
-            print("Host error: \(dnsErr.localizedDescription)")
-            return .init(error: .failedConstructRequestParameters)
-        })
-        .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
-            return dnsClient.getIPaddress(ofDomain: host)
-        })
-        .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, HttpKit.DnsError> in
-            print("Http error: \(kitErr.localizedDescription)")
-            return .init(error: .httpError(kitErr))
-        })
-        .flatMap(.latest, { (response) -> UrlConvertProducer in
-            return self.rxUpdateHost(with: response.ipAddress)
-        })
-    }
-    
-    func rxUpdateHost(with ipAddress: String) -> UrlConvertProducer {
+    func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return .init(error: .urlComponentsFail)
         }
@@ -99,15 +79,15 @@ extension URL {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func updateHost(with ipAddress: String) -> URLConverterPublisher {
+    func updatedHost(with ipAddress: String) -> ResolvedURLPublisher {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
-            return URLConverterPublisher(.failure(.urlComponentsFail))
+            return ResolvedURLPublisher(.failure(.urlComponentsFail))
         }
         components.host = ipAddress
         guard let clearURL = components.url else {
-            return URLConverterPublisher(.failure(.urlHostReplaceFail))
+            return ResolvedURLPublisher(.failure(.urlHostReplaceFail))
         }
-        return URLConverterPublisher(.success(clearURL))
+        return ResolvedURLPublisher(.success(clearURL))
     }
     
     var hasIPv4Host: Bool {

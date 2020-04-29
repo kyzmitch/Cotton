@@ -15,6 +15,8 @@ import ReactiveSwift
 import Combine
 #endif
 
+public typealias GoogleDnsClient = HttpKit.Client<HttpKit.GoogleDnsServer>
+
 extension HttpKit {
     typealias GDNSjsonEndpoint = HttpKit.Endpoint<GoogleDNSOverJSONResponse, GoogleDnsServer>
     public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, HttpError>
@@ -145,7 +147,7 @@ extension HttpKit.DnsRR {
 }
 
 extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
-    public func getIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonProducer {
+    public func rxGetIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonProducer {
         let endpoint: HttpKit.GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
@@ -157,6 +159,22 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
         
         let producer = self.makePublicRequest(for: endpoint, responseType: endpoint.responseType)
         return producer
+    }
+    
+    public func rxResolvedDomainName(in url: URL) -> ResolvedURLProducer {
+        return url.rxHttpHost
+            .flatMapError({ _ -> SignalProducer<String, HttpKit.HttpError> in
+                return .init(error: .failedConstructRequestParameters)
+            })
+            .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
+                return self.rxGetIPaddress(ofDomain: host)
+            })
+            .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, HttpKit.DnsError> in
+                return .init(error: .httpError(kitErr))
+            })
+            .flatMap(.latest, { (response) -> ResolvedURLProducer in
+                return url.rxUpdatedHost(with: response.ipAddress)
+            })
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -185,7 +203,7 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
         .mapError { (kitErr) -> HttpKit.DnsError in
             return .httpError(kitErr)
         }
-        .flatMap { url.updateHost(with: $0) }
+        .flatMap { url.updatedHost(with: $0) }
         .eraseToAnyPublisher()
     }
 }
