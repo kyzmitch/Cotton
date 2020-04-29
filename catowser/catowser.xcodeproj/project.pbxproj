@@ -109,6 +109,8 @@
 		8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */; };
 		8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
 		8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E40D245966190070F338 /* CombineExtensions.swift */; };
+		8A68E41024597E3B0070F338 /* GDNSRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E40F24597E3B0070F338 /* GDNSRequestParams.swift */; };
+		8A68E41224597E880070F338 /* DnsRR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E41124597E880070F338 /* DnsRR.swift */; };
 		8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
 		8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
 		8A6FE88E23F5A7C200BF74A0 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */; };
@@ -473,6 +475,8 @@
 		8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitHeaders.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
 		8A68E40D245966190070F338 /* CombineExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineExtensions.swift; sourceTree = "<group>"; };
+		8A68E40F24597E3B0070F338 /* GDNSRequestParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDNSRequestParams.swift; sourceTree = "<group>"; };
+		8A68E41124597E880070F338 /* DnsRR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DnsRR.swift; sourceTree = "<group>"; };
 		8A6CD6D324585D830068ACB5 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
 		8A74188B245086330019695E /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
@@ -967,6 +971,8 @@
 				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
 				8A8678AD2430F7D400450666 /* Host.swift */,
 				8A510F642424AE000070503C /* URLInfo.swift */,
+				8A68E40F24597E3B0070F338 /* GDNSRequestParams.swift */,
+				8A68E41124597E880070F338 /* DnsRR.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1790,6 +1796,8 @@
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */,
 				8A8678AC2430F6AA00450666 /* WildcardHostTrustEvaluator.swift in Sources */,
+				8A68E41024597E3B0070F338 /* GDNSRequestParams.swift in Sources */,
+				8A68E41224597E880070F338 /* DnsRR.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
 				8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */,
 				8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */,
