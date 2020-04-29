@@ -61,9 +61,7 @@ final class SearchSuggestionsViewController: UITableViewController {
                     print("Fail to fetch search suggestions \(failure.localizedDescription)")
                     return .init([])
                 })
-                .sink(receiveValue: { [weak self] (output) in
-                    self?.suggestions = output
-                })
+                .assign(to: \.suggestions, on: self)
         } else {
             searchSuggestionsDisposable?.dispose()
             searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
