@@ -8,19 +8,26 @@
 
 import Foundation
 import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 import Network
 
-public enum DnsError: LocalizedError {
-    case zombieSelf
-    case httpError(HttpKit.HttpError)
-    case notHttpScheme
-    case noHost
-    case urlComponentsFail
-    case urlHostReplaceFail
+extension HttpKit {
+    public enum DnsError: LocalizedError {
+        case zombieSelf
+        case httpError(HttpKit.HttpError)
+        case notHttpScheme
+        case noHost
+        case urlComponentsFail
+        case urlHostReplaceFail
+    }
 }
 
-public typealias HostProducer = SignalProducer<String, DnsError>
-public typealias UrlConvertProducer = SignalProducer<URL, DnsError>
+public typealias HostProducer = SignalProducer<String, HttpKit.DnsError>
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+typealias HostPublisher = Result<String, HttpKit.DnsError>.Publisher
+public typealias UrlConvertProducer = SignalProducer<URL, HttpKit.DnsError>
 
 extension URL {
     public var kitHost: HttpKit.Host? {
@@ -44,6 +51,20 @@ extension URL {
         return .init(value: host)
     }
     
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public var httpHost: AnyPublisher<String, HttpKit.DnsError> {
+        guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
+            return HostPublisher(.failure(.notHttpScheme)).eraseToAnyPublisher()
+        }
+        
+        guard let host = host else {
+            return HostPublisher(.failure(.noHost)).eraseToAnyPublisher()
+
+        }
+        
+        return HostPublisher(.success(host)).eraseToAnyPublisher()
+    }
+    
     public typealias GoogleDnsClient = HttpKit.Client<HttpKit.GoogleDnsServer>
     
     public func rxReplaceHostWithIPAddress(using dnsClient: GoogleDnsClient) -> UrlConvertProducer {
@@ -55,7 +76,7 @@ extension URL {
         .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
             return dnsClient.getIPaddress(ofDomain: host)
         })
-        .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, DnsError> in
+        .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, HttpKit.DnsError> in
             print("Http error: \(kitErr.localizedDescription)")
             return .init(error: .httpError(kitErr))
         })
