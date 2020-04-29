@@ -16,7 +16,7 @@ extension HttpKit {
     typealias GSearchEndpoint = Endpoint<GoogleSearchSuggestionsResponse, GoogleServer>
     public typealias GSearchProducer = SignalProducer<GoogleSearchSuggestionsResponse, HttpError>
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public typealias CGSearchPublisher = Deferred<Future<GoogleSearchSuggestionsResponse, HttpError>>
+    public typealias CGSearchPublisher = AnyPublisher<GoogleSearchSuggestionsResponse, HttpError>
 }
 
 extension HttpKit.Endpoint {
@@ -80,12 +80,12 @@ extension HttpKit.Client where Server == HttpKit.GoogleServer {
         do {
             endpoint = try .googleSearchSuggestions(query: text)
         } catch let error as HttpKit.HttpError {
-            return HttpKit.CGSearchPublisher(.failure(error))
+            return HttpKit.CGSearchPublisher(Future.failure(error))
         } catch {
-            return HttpKit.CGSearchPublisher(.failure(.failedConstructRequestParameters))
+            return HttpKit.CGSearchPublisher(Future.failure(.failedConstructRequestParameters))
         }
         
         let future = self.cMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
-        return future
+        return future.eraseToAnyPublisher()
     }
 }
