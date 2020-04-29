@@ -943,18 +943,11 @@
 		8A62AEE22351E684001A9C83 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */,
 				8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */,
 				8A68E40D245966190070F338 /* CombineExtensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		8A7A9BAA23F1C453008850B6 /* DNS */ = {
-			isa = PBXGroup;
-			children = (
-				8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */,
-			);
-			path = DNS;
 			sourceTree = "<group>";
 		};
 		8A7DCCCB23642FEF006AAEE2 /* DNSoverHTTPS */ = {
@@ -1056,7 +1049,6 @@
 				8AE46352244E07D600C8E063 /* OpenSearch */,
 				8A8035FB24449C72000E035F /* SearchEngines */,
 				8A978D4723F348CB007ECB0C /* AuthChallenge */,
-				8A7A9BAA23F1C453008850B6 /* DNS */,
 				8A7DCCCE236432AA006AAEE2 /* Models */,
 				8A62AEE22351E684001A9C83 /* Extensions */,
 				8A62AEDA2351CDDB001A9C83 /* Servers */,

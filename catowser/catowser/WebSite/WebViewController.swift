@@ -185,10 +185,9 @@ private extension WebViewController {
         
         if #available(iOS 13.0, *) {
             dnsRequestCancellable?.cancel()
-            dnsRequestCancellable = url.replaceHostWithIPAddress(using: WebViewController.dnsClient)
+            dnsRequestCancellable = Self.dnsClient.resolvedDomainName(in: url)
             .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
-                    
                     switch completion {
                     case .failure(let dnsErr):
                         print("fail to resolve host with DNS: \(dnsErr.localizedDescription)")

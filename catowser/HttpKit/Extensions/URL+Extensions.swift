@@ -86,22 +86,6 @@ extension URL {
             return self.rxUpdateHost(with: response.ipAddress)
         })
     }
-
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func replaceHostWithIPAddress(using dnsClient: GoogleDnsClient) -> AnyPublisher<URL, HttpKit.DnsError> {
-        return httpHost.mapError { (dnsErr) -> HttpKit.HttpError in
-            print("Host error: \(dnsErr.localizedDescription)")
-            return .failedConstructRequestParameters
-        }
-        .flatMap { dnsClient.cGetIPaddress(ofDomain: $0) }
-        .map { $0.ipAddress}
-        .mapError { (kitErr) -> HttpKit.DnsError in
-            print("Http error: \(kitErr.localizedDescription)")
-            return .httpError(kitErr)
-        }
-        .flatMap { self.updateHost(with: $0) }
-        .eraseToAnyPublisher()
-    }
     
     func rxUpdateHost(with ipAddress: String) -> UrlConvertProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {

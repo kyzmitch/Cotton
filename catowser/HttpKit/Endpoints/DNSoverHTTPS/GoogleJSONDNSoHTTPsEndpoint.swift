@@ -173,4 +173,19 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
         let future = self.cMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
         return future.eraseToAnyPublisher()
     }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public func resolvedDomainName(in url: URL) -> AnyPublisher<URL, HttpKit.DnsError> {
+        return url.httpHost
+        .mapError { _ -> HttpKit.HttpError in
+            return .failedConstructRequestParameters
+        }
+        .flatMap { self.cGetIPaddress(ofDomain: $0) }
+        .map { $0.ipAddress}
+        .mapError { (kitErr) -> HttpKit.DnsError in
+            return .httpError(kitErr)
+        }
+        .flatMap { url.updateHost(with: $0) }
+        .eraseToAnyPublisher()
+    }
 }
