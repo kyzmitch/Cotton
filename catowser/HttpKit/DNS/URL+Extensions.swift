@@ -93,9 +93,7 @@ extension URL {
             print("Host error: \(dnsErr.localizedDescription)")
             return .failedConstructRequestParameters
         }
-        .flatMap { (host) -> AnyPublisher<HttpKit.GoogleDNSOverJSONResponse, HttpKit.HttpError> in
-            return dnsClient.cGetIPaddress(ofDomain: host)
-        }
+        .flatMap { dnsClient.cGetIPaddress(ofDomain: $0) }
         .map { $0.ipAddress}
         .mapError { (kitErr) -> HttpKit.DnsError in
             print("Http error: \(kitErr.localizedDescription)")

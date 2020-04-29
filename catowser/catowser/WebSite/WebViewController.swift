@@ -12,6 +12,9 @@ import CoreBrowser
 import JSPlugins
 import HttpKit
 import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 
 extension WKWebView: JavaScriptEvaluateble {}
 
@@ -26,6 +29,8 @@ final class WebViewController: BaseViewController {
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     private var webViewProgressObserverAdded = false
     private var loadingProgressObservation: NSKeyValueObservation?
+    @available(iOS 13.0, *)
+    private lazy var dnsRequestCancellable: AnyCancellable? = nil
     private var dnsRequestSubsciption: Disposable?
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
     private static let dnsClient: HttpKit.Client<HttpKit.GoogleDnsServer> = {
@@ -92,6 +97,14 @@ final class WebViewController: BaseViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        if #available(iOS 13.0, *) {
+            dnsRequestCancellable?.cancel()
+        } else {
+            dnsRequestSubsciption?.dispose()
+        }
     }
     
     override func loadView() {
@@ -170,26 +183,49 @@ private extension WebViewController {
             return
         }
         
-        dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = url.rxReplaceHostWithIPAddress(using: WebViewController.dnsClient)
-            .start(on: UIScheduler())
-            .startWithResult({ [weak self] (result) in
-                guard let self = self else {
-                    return
-                }
-                guard case .success(let finalURL) = result else {
-                    print("fail to resolve host with DNS")
-                    return
-                }
-                
-                guard finalURL.hasIPHost else {
-                    print("Alert - host wasn't replaced on IP address after operation")
-                    return
-                }
-                self.urlInfo.ipAddress = finalURL.host
-                let request = URLRequest(url: finalURL)
-                self.webView.load(request)
-            })
+        if #available(iOS 13.0, *) {
+            dnsRequestCancellable?.cancel()
+            dnsRequestCancellable = url.replaceHostWithIPAddress(using: WebViewController.dnsClient)
+            .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    
+                    switch completion {
+                    case .failure(let dnsErr):
+                        print("fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                    default:
+                        break
+                    }
+                }, receiveValue: { (finalURL) in
+                    guard finalURL.hasIPHost else {
+                        print("Alert - host wasn't replaced on IP address after operation")
+                        return
+                    }
+                    self.urlInfo.ipAddress = finalURL.host
+                    let request = URLRequest(url: finalURL)
+                    self.webView.load(request)
+                })
+        } else {
+            dnsRequestSubsciption?.dispose()
+            dnsRequestSubsciption = url.rxReplaceHostWithIPAddress(using: WebViewController.dnsClient)
+                .start(on: UIScheduler())
+                .startWithResult({ [weak self] (result) in
+                    guard let self = self else {
+                        return
+                    }
+                    guard case .success(let finalURL) = result else {
+                        print("fail to resolve host with DNS")
+                        return
+                    }
+                    
+                    guard finalURL.hasIPHost else {
+                        print("Alert - host wasn't replaced on IP address after operation")
+                        return
+                    }
+                    self.urlInfo.ipAddress = finalURL.host
+                    let request = URLRequest(url: finalURL)
+                    self.webView.load(request)
+                })
+        }
     }
 }
 
