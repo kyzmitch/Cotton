@@ -102,8 +102,8 @@ extension HttpKit.Client {
                                                  withAccessToken accessToken: String,
                                                  responseType: T.Type) -> ResponseFuture<T> {
         let future = cMakeRequest(for: endpoint,
-                                    withAccessToken: accessToken,
-                                    responseType: responseType)
+                                  withAccessToken: accessToken,
+                                  responseType: responseType)
         return future
     }
 }
