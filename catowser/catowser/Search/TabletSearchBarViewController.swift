@@ -17,6 +17,7 @@ final class TabletSearchBarViewController: BaseViewController {
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
         didSet {
             guard siteNavigationDelegate != nil else {
+                actionsButton.isEnabled = false
                 goBackButton.isEnabled = false
                 goForwardButton.isEnabled = false
                 reloadButton.isEnabled = false
@@ -36,6 +37,24 @@ final class TabletSearchBarViewController: BaseViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private lazy var actionsButton: UIButton = {
+        let btn: UIButton
+        if #available(iOS 13.0, *) {
+            if let systemImage = UIImage(systemName: "square.and.arrow.up") {
+                btn = UIButton()
+                btn.setImage(systemImage, for: .normal)
+                btn.addTarget(self, action: .backPressed, for: .touchUpInside)
+            } else {
+                btn = .systemButton(with: .actions, target: self, action: .actionsPressed)
+            }
+        } else {
+            btn = UIButton(type: .infoLight)
+            btn.addTarget(self, action: .actionsPressed, for: .touchUpInside)
+        }
+        btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
+        return btn
+    }()
     
     private lazy var goBackButton: UIButton = {
         let btn = UIButton()
@@ -74,6 +93,7 @@ final class TabletSearchBarViewController: BaseViewController {
     override func loadView() {
         view = UIView()
         
+        view.addSubview(actionsButton)
         view.addSubview(goBackButton)
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
@@ -85,14 +105,22 @@ final class TabletSearchBarViewController: BaseViewController {
         super.viewDidLoad()
 
         // disabled after `init` because no web view is present
+        actionsButton.isEnabled = false
         goBackButton.isEnabled = false
         goForwardButton.isEnabled = false
         reloadButton.isEnabled = false
 
         view.backgroundColor = UIConstants.searchBarBackgroundColour
         
-        goBackButton.snp.makeConstraints { (maker) in
+        actionsButton.snp.makeConstraints { (maker) in
             maker.leading.equalTo(0)
+            maker.top.equalTo(0)
+            maker.bottom.equalTo(0)
+            maker.width.equalTo(view.snp.height)
+        }
+        
+        goBackButton.snp.makeConstraints { (maker) in
+            maker.leading.equalTo(actionsButton.snp.trailing)
             maker.top.equalTo(0)
             maker.bottom.equalTo(0)
             maker.width.equalTo(view.snp.height)
@@ -122,6 +150,10 @@ final class TabletSearchBarViewController: BaseViewController {
         lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    @objc fileprivate func actionsPressed() {
+        
     }
 
     @objc fileprivate func backPressed() {
@@ -175,4 +207,5 @@ fileprivate extension Selector {
     static let backPressed = #selector(TabletSearchBarViewController.backPressed)
     static let forwardPressed = #selector(TabletSearchBarViewController.forwardPressed)
     static let reloadPressed = #selector(TabletSearchBarViewController.reloadPressed)
+    static let actionsPressed = #selector(TabletSearchBarViewController.actionsPressed)
 }

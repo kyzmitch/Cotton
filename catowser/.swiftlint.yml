@@ -1,5 +1,6 @@
 disabled_rules:
     - trailing_whitespace
+    - implicit_getter
 excluded:
 - Carthage
 - Pods
