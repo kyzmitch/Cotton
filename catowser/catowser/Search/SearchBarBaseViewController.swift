@@ -227,10 +227,10 @@ private extension SearchBarBaseViewController {
         if showKeyboard {
             searchBarView.becomeFirstResponder()
         }
-
+        siteNameLabel.alpha = 0
+        
         UIView.animate(withDuration: 0.3) {
             self.siteNameLabel.layoutIfNeeded()
-            self.siteNameLabel.alpha = 0
             self.searchBarView.alpha = 1
         }
     }
