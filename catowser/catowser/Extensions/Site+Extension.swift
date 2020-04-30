@@ -11,16 +11,24 @@ import UIKit
 import AlamofireImage
 
 extension Site {
+    var faviconURL: URL? {
+        if FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) {
+            return URL(faviconIPInfo: url)
+        } else {
+            return URL(faviconHost: url.host)
+        }
+    }
+    
     func setFaviconFor(_ imageView: UIImageView) {
         imageView.af_cancelImageRequest()
         imageView.image = nil
-        guard let imageURL = faviconURL else {
-            return
-        }
         
         if let favicon = faviconImage {
             imageView.image = favicon
         } else {
+            guard let imageURL = faviconURL else {
+                return
+            }
             imageView.af_setImage(withURL: imageURL,
                                   placeholderImage: nil,
                                   filter: nil,
