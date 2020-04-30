@@ -171,6 +171,7 @@ final class TabletSearchBarViewController: BaseViewController {
     }
     
     private func refreshNavigation() {
+        actionsButton.isEnabled = siteNavigationDelegate != nil
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
     }
@@ -190,6 +191,8 @@ extension TabletSearchBarViewController: SiteNavigationComponent {
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
+        // Actions are only for web sites, other settings will be in global settings
+        actionsButton.isEnabled = withSite
 
         // tablet layout currently doesn't have downloads button
     }
