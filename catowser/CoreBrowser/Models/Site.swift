@@ -17,7 +17,6 @@ public struct Site {
     public var host: HttpKit.Host {
         return url.host
     }
-    public let faviconURL: URL
     /// Used by top sites by loading high quality image from Assets,
     /// or by all other sites by loading from favicon URL
     public var faviconImage: UIImage?
@@ -53,10 +52,6 @@ public struct Site {
         guard let urlInfo = HttpKit.URLIpInfo(url) else {
             return nil
         }
-        guard let faviconURL = URL(faviconHost: urlInfo.host) else {
-            return nil
-        }
-        self.faviconURL = faviconURL
         self.url = urlInfo
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
@@ -71,10 +66,6 @@ public struct Site {
             return nil
         }
         url = urlInfo
-        guard let faviconURL = URL(faviconHost: urlInfo.host) else {
-            return nil
-        }
-        self.faviconURL = faviconURL
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         faviconImage = image
@@ -99,9 +90,17 @@ public struct Site {
 
 extension Site: Equatable {}
 
-fileprivate extension URL {
-    init?(faviconHost: HttpKit.Host) {
+extension URL {
+    public init?(faviconHost: HttpKit.Host) {
         let format = "https://\(faviconHost.rawValue)/favicon.ico"
+        self.init(string: format)
+    }
+    
+    public init?(faviconIPInfo: HttpKit.URLIpInfo) {
+        guard let ipAddress = faviconIPInfo.ipAddress else {
+            return nil
+        }
+        let format = "https://\(ipAddress)/favicon.ico"
         self.init(string: format)
     }
 }
