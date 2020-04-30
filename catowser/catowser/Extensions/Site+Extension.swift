@@ -13,6 +13,7 @@ import AlamofireImage
 extension Site {
     func setFaviconFor(_ imageView: UIImageView) {
         imageView.af_cancelImageRequest()
+        imageView.image = nil
         
         if let favicon = faviconImage {
             imageView.image = favicon

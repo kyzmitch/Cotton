@@ -177,19 +177,25 @@ fileprivate extension MasterRouter {
         isSuggestionsShowed = true
         searchSuggestionsController.delegate = self
 
-        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor, constant: 0).isActive = true
-        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.view.leadingAnchor, constant: 0).isActive = true
-        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.view.trailingAnchor, constant: 0).isActive = true
+        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor,
+                                                              constant: 0).isActive = true
+        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.view.leadingAnchor,
+                                                                  constant: 0).isActive = true
+        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.view.trailingAnchor,
+                                                                   constant: 0).isActive = true
 
         if let bottomShift = presenter.keyboardHeight {
             // fix wrong height of keyboard on Simulator when keyboard partly visible
             let correctedShift = bottomShift < presenter.toolbarHeight ? presenter.toolbarHeight : bottomShift
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor, constant: -correctedShift).isActive = true
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
+                                                                     constant: -correctedShift).isActive = true
         } else {
             if isPad {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.toolbarTopAnchor, constant: 0).isActive = true
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.toolbarTopAnchor,
+                                                                         constant: 0).isActive = true
             } else {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor, constant: 0).isActive = true
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
+                                                                         constant: 0).isActive = true
             }
         }
     }
@@ -258,25 +264,28 @@ fileprivate extension MasterRouter {
 
 extension MasterRouter: LinkTagsDelegate {
     func didSelect(type: LinksType) {
-        if type == .video, let source = dataSource {
-            if isFilesGreedShowed {
-                hideFilesGreedIfNeeded()
-            } else {
-                if !isPad {
-                    filesGreedController.reloadWith(source: source) { [weak self] in
-                        self?.showFilesGreedIfNeeded()
-                    }
-                } else {
-                    filesGreedController.viewController.modalPresentationStyle = .popover
-                    filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
-                    if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
-                        popoverPresenter.permittedArrowDirections = .down
-                        popoverPresenter.sourceView = linkTagsController.view
-                    }
-                    filesGreedController.reloadWith(source: source, completion: nil)
-                    presenter.viewController.present(filesGreedController.viewController, animated: true, completion: nil)
-                }
+        guard type == .video, let source = dataSource else {
+            return
+        }
+        guard !isFilesGreedShowed else {
+            hideFilesGreedIfNeeded()
+            return
+        }
+        if !isPad {
+            filesGreedController.reloadWith(source: source) { [weak self] in
+                self?.showFilesGreedIfNeeded()
             }
+        } else {
+            filesGreedController.viewController.modalPresentationStyle = .popover
+            filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
+            if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
+                popoverPresenter.permittedArrowDirections = .down
+                popoverPresenter.sourceView = linkTagsController.view
+            }
+            filesGreedController.reloadWith(source: source, completion: nil)
+            presenter.viewController.present(filesGreedController.viewController,
+                                             animated: true,
+                                             completion: nil)
         }
     }
 }

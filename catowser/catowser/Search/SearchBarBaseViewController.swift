@@ -199,7 +199,9 @@ private extension SearchBarBaseViewController {
     }
 
     func prepareForViewMode(animated: Bool = true) {
-        // Order of disabling/enabling is important to not to cause errors in layout calculation. First need to disable and after that enable new one.
+        // Order of disabling/enabling is important
+        // to not to cause errors in layout calculation.
+        // First need to disable and after that enable new one.
         hiddenLabelConstraint.isActive = false
         showedLabelConstraint.isActive = true
         

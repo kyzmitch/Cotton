@@ -57,6 +57,6 @@ struct ApplicationFeature<F: Feature> {
 enum DoHAvailable: BasicFeature {
     typealias Value = Bool
     static let key = "ios.doh"
-    static let defaultValue = true
+    static let defaultValue = false
     static var source: FeatureSource.Type = LocalFeatureSource.self
 }

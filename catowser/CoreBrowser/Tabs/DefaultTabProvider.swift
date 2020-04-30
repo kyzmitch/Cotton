@@ -49,20 +49,20 @@ public final class DefaultTabProvider {
     }
 
     public var topSites: [Site] {
-        var array: [Site] = []
+        var array: [Site?] = []
 
         let instagramImage = UIImage(named: "instagram")
-        if let ig = Site(urlString: "https://www.instagram.com", customTitle: "Instagram", image: instagramImage) {
-            array.append(ig)
-        }
+        let ig = Site(urlString: "https://www.instagram.com", customTitle: "Instagram", image: instagramImage)
+        array.append(ig)
         let youtubeImage = UIImage(named: "youtube")
-        if let tube = Site(urlString: "https://m.youtube.com", customTitle: "Youtube", image: youtubeImage) {
-            array.append(tube)
-        }
-        
-        if let opennet = Site(urlString: "https://opennet.ru", customTitle: "OpenNet") {
-            array.append(opennet)
-        }
-        return array
+        let tube = Site(urlString: "https://youtube.com", customTitle: "Youtube", image: youtubeImage)
+        array.append(tube)
+        let opennet = Site(urlString: "https://opennet.ru", customTitle: "OpenNet")
+        array.append(opennet)
+        let newsruCoIl = Site(urlString: "https://newsru.co.il", customTitle: "Newsru.co.il")
+        array.append(newsruCoIl)
+        let newsruCom = Site(urlString: "https://m.newsru.com", customTitle: "Newsru.com")
+        array.append(newsruCom)
+        return array.compactMap {$0}
     }
 }
