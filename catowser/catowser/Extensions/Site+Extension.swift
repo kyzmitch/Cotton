@@ -14,11 +14,14 @@ extension Site {
     func setFaviconFor(_ imageView: UIImageView) {
         imageView.af_cancelImageRequest()
         imageView.image = nil
+        guard let imageURL = faviconURL else {
+            return
+        }
         
         if let favicon = faviconImage {
             imageView.image = favicon
         } else {
-            imageView.af_setImage(withURL: faviconURL,
+            imageView.af_setImage(withURL: imageURL,
                                   placeholderImage: nil,
                                   filter: nil,
                                   progress: nil,
@@ -29,7 +32,7 @@ extension Site {
                     return
                 }
                 
-                // TODO: fix, failed to calculate average color
+                // TODO: failed to calculate average color
                 let averageColor = favicon.firstPixelColor
                 guard let color = averageColor else {
                     return
