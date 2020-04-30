@@ -83,7 +83,8 @@ final class LinkTagsViewController: UICollectionViewController {
         return dataSource.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
         for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
             cell.set(tuple.value, tagName: tuple.key.description)

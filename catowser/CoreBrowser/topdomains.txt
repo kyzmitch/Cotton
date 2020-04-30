@@ -5,6 +5,7 @@ twitter.com
 reddit.com
 meduza.io
 newsru.co.il
+newsru.com
 google.com
 facebook.com
 amazon.com
