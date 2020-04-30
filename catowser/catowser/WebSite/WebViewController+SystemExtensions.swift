@@ -46,6 +46,16 @@ private extension WebViewController {
             externalNavigationDelegate?.showProgress(false)
         }
     }
+    
+    func checkIfWebContentProcessHasCrashed(_ webView: WKWebView, error: NSError) -> Bool {
+        if error.code == WKError.webContentProcessTerminated.rawValue && error.domain == "WebKitErrorDomain" {
+            print("WebContent process has crashed. Trying to reload to restart it.")
+            webView.reload()
+            return true
+        }
+
+        return false
+    }
 }
 
 // MARK: - WKUIDelegate
@@ -191,6 +201,25 @@ extension WebViewController: WKNavigationDelegate {
 
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
+        }
+    }
+    
+    func webView(_ webView: WKWebView,
+                 didFailProvisionalNavigation navigation: WKNavigation!,
+                 withError error: Error) {
+        print("Provisional fail: \(error.localizedDescription)")
+        let error = error as NSError
+        if checkIfWebContentProcessHasCrashed(webView, error: error) {
+            return
+        }
+        /**
+        Called when an error occurs while the web view is loading content.
+        In our case it happens on auth challenge fail when entered domain name doesn't match with one
+        in server SSL certificate or when ip address was used for DNS over HTTPS and it can't
+        be equal with domain names from SSL certificate.
+        */
+        if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+            // ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
         }
     }
 }
