@@ -172,7 +172,8 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         self.tabIndex = index
         self.delegate = delegate
         if case let .site(site) = tab.contentType {
-            site.setFaviconFor(faviconImageView)
+            faviconImageView.updateImage(fromURL: site.faviconURL,
+                                         cachedImage: site.faviconImage)
         } else {
             faviconImageView.image = nil
         }

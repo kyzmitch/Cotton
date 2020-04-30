@@ -92,6 +92,7 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 extension SiteCollectionViewCell {
     func reload(with site: Site) {
         titleLabel.text = site.title
-        site.setFaviconFor(faviconImageView)
+        faviconImageView.updateImage(fromURL: site.faviconURL,
+                                     cachedImage: site.faviconImage)
     }
 }
