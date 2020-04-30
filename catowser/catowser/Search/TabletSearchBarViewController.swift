@@ -77,7 +77,7 @@ final class TabletSearchBarViewController: BaseViewController {
         view.addSubview(goBackButton)
         view.addSubview(goForwardButton)
         view.addSubview(reloadButton)
-        add(asChildViewController: searchBarViewController, to:view)
+        add(asChildViewController: searchBarViewController, to: view)
         view.addSubview(lineView)
     }
     

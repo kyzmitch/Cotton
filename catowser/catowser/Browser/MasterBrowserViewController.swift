@@ -106,12 +106,12 @@ final class MasterBrowserViewController: BaseViewController {
         // the root view of that hierarchy to the view controller’s view property.
         
         if isPad {
-            add(asChildViewController: tabsViewController, to:view)
+            add(asChildViewController: tabsViewController, to: view)
         }
 
         linksRouter = MasterRouter(viewController: self)
 
-        add(asChildViewController: linksRouter.searchBarController.viewController, to:view)
+        add(asChildViewController: linksRouter.searchBarController.viewController, to: view)
         view.addSubview(webLoadProgressView)
         view.addSubview(containerView)
 
@@ -128,7 +128,7 @@ final class MasterBrowserViewController: BaseViewController {
         } else {
             // should be added before iPhone toolbar
             add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
-            add(asChildViewController: toolbarViewController, to:view)
+            add(asChildViewController: toolbarViewController, to: view)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }
@@ -163,7 +163,8 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.height.equalTo(CGFloat.searchViewHeight)
             })
             
-            webLoadProgressView.topAnchor.constraint(equalTo: linksRouter.searchBarController.view.bottomAnchor, constant: 0).isActive = true
+            let sbViewBottomAnchor = linksRouter.searchBarController.view.bottomAnchor
+            webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor, constant: 0).isActive = true
             
             // Need to have not simple view controller view but container view
             // to have ability to insert to it and show view controller with
