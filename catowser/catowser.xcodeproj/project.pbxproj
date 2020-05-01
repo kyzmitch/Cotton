@@ -115,7 +115,6 @@
 		8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
 		8A6FE88E23F5A7C200BF74A0 /* ServerTrustPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */; };
 		8A74188C245086330019695E /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A74188B245086330019695E /* Downloadable.swift */; };
-		8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */; };
 		8A7A968D24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */; };
 		8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */; };
 		8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */; };
@@ -483,7 +482,6 @@
 		8A6CD6D324585D830068ACB5 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		8A6FE88D23F5A7C200BF74A0 /* ServerTrustPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerTrustPolicy.swift; sourceTree = "<group>"; };
 		8A74188B245086330019695E /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
-		8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireDataRequestExtension.swift; sourceTree = "<group>"; };
 		8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchEngine+OpenSearchParser.swift"; sourceTree = "<group>"; };
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
@@ -950,7 +948,6 @@
 			isa = PBXGroup;
 			children = (
 				8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */,
-				8A7A1C672367508800E11BAD /* AlamofireDataRequestExtension.swift */,
 				8A68E40D245966190070F338 /* CombineExtensions.swift */,
 			);
 			path = Extensions;
@@ -1824,7 +1821,6 @@
 				8A74188C245086330019695E /* Downloadable.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 				8A7A968D24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift in Sources */,
-				8A7A1C682367508800E11BAD /* AlamofireDataRequestExtension.swift in Sources */,
 				8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

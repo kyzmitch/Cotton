@@ -41,8 +41,13 @@ extension HttpKit {
                 assertionFailure("No connectivity manager for: \(server.hostString)")
             }
             
-            connectivityManager?.listener = hostListener
-            _ = connectivityManager?.startListening()
+            guard let cManager = connectivityManager else {
+                return
+            }
+            guard cManager.startListening(onUpdatePerforming: hostListener) else {
+                print("Connectivity listening failed to start")
+                return
+            }
         }
         
         private func makeRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
@@ -80,17 +85,15 @@ extension HttpKit {
                 
                 let codes = T.successCodes
                 
-                let dataRequest: DataRequest = Alamofire.request(httpRequest)
+                let dataRequest: DataRequest = AF.request(httpRequest)
+                    
+                dataRequest
                     .validate(statusCode: codes)
-                    .responseDecodableObject(queue: nil, completionHandler: { (response: DataResponse<T>) in
+                    .responseDecodable(of: responseType, queue: .main, decoder: JSONDecoder(), completionHandler: { (response) in
                         switch response.result {
                         case .success(let value):
                             observer.send(value: value)
                             observer.sendCompleted()
-                        case .failure(let error) where error is HttpKit.HttpError:
-                            // swiftlint:disable:next force_cast
-                            let kitError = error as! HttpError
-                            observer.send(error: kitError)
                         case .failure(let error):
                             observer.send(error: .httpFailure(error: error, request: httpRequest))
                         }
@@ -150,10 +153,10 @@ extension HttpKit {
                 }
                 
                 let codes = VoidResponse.successCodes
-                
-                let dataRequest: DataRequest = Alamofire.request(httpRequest)
+                let dataRequest: DataRequest = AF.request(httpRequest)
+                dataRequest
                     .validate(statusCode: codes)
-                    .response { (defaultResponse: DefaultDataResponse) in
+                    .response { (defaultResponse) in
                         if let error = defaultResponse.error {
                             let localError = HttpError.httpFailure(error: error, request: httpRequest)
                             observer.send(error: localError)
@@ -162,6 +165,8 @@ extension HttpKit {
                             observer.send(value: value)
                             observer.sendCompleted()
                         }
+                
+
                 }
                 
                 lifetime.observeEnded({

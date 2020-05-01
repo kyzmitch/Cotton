@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+import AlamofireImage
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // This is to fix favicon.ico for Instagram site, calling it once
-        DataRequest.addAcceptableImageContentTypes(["image/vnd.microsoft.icon"])
+        // https://github.com/Alamofire/AlamofireImage/issues/378#issuecomment-537275604
+        
+        ImageResponseSerializer.addAcceptableImageContentTypes(["image/vnd.microsoft.icon", "application/octet-stream"])
         
         let rect = CGRect(x: 0,
                           y: 0,

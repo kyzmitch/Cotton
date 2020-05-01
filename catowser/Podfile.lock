@@ -1,7 +1,7 @@
 PODS:
-  - Alamofire (4.8.2)
-  - AlamofireImage (3.5.2):
-    - Alamofire (~> 4.8)
+  - Alamofire (5.1.0)
+  - AlamofireImage (4.1.0):
+    - Alamofire (~> 5.1)
   - ReactiveSwift (6.0.0)
   - SnapKit (5.0.0)
   - SwiftLint (0.33.0)
@@ -9,8 +9,8 @@ PODS:
   - SWXMLHash (5.0.1)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.8)
-  - AlamofireImage (~> 3.5)
+  - Alamofire (~> 5.1)
+  - AlamofireImage (~> 4.1)
   - ReactiveSwift (~> 6.0.0)
   - SnapKit (~> 5.0.0)
   - SwiftLint
@@ -19,24 +19,24 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Alamofire
-    - AlamofireImage
     - ReactiveSwift
     - SnapKit
     - SwiftLint
     - SwiftSoup
   trunk:
+    - Alamofire
+    - AlamofireImage
     - SWXMLHash
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
+  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
+  AlamofireImage: c4a2ba349885fb3064feb74d2e547bd42ce9be10
   ReactiveSwift: 24b7ed245617bbfd30ee0c87779b6c64ac1b4518
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
   SwiftSoup: 230991361c5ba249d140161860a3864a28b63860
   SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
 
-PODFILE CHECKSUM: a5f87e6312614b85d8928215c793ab6f74d77679
+PODFILE CHECKSUM: 51c7ce49c58872b99fbde2b63d80f4f8a713ec35
 
 COCOAPODS: 1.8.3
