@@ -23,7 +23,7 @@ extension Downloadable {
     /// Path to temporary file to not waste RAM.
     /// You can't participate in the files app (or iTunes File Sharing)
     /// if you don't store your files in the Documents folder.
-    func sandboxDestination() throws -> DownloadRequest.DownloadFileDestination {
+    func sandboxDestination() throws -> DownloadRequest.Destination {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         assert(urls.count != 0, "Failed to find documents directory")
         guard let documentsURL = urls.first else {
@@ -34,9 +34,9 @@ extension Downloadable {
 }
 
 fileprivate extension URL {
-    func destination(using name: String) -> DownloadRequest.DownloadFileDestination {
+    func destination(using name: String) -> DownloadRequest.Destination {
         let fileURL = self.appendingPathComponent(name)
-        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+        let destination: DownloadRequest.Destination = { _, _ in
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }
 
@@ -87,7 +87,7 @@ extension HttpKit {
     /// - Returns: Signal Producer with progress
     public static func download(file: Downloadable) -> FileDownloadProducer {
         let producer = FileDownloadProducer { (observer, _) in
-            let destination: DownloadRequest.DownloadFileDestination
+            let destination: DownloadRequest.Destination
 
             do {
                 destination = try file.sandboxDestination()
@@ -96,14 +96,13 @@ extension HttpKit {
                 return
             }
 
-            let request = Alamofire.download(file.url, method: .get, to: destination)
-
-            request.downloadProgress(queue: .main, closure: { (progress) in
+            let request = AF.download(file.url, method: .get, to: destination)
+            request.downloadProgress(queue: .main) { (progress) in
                 observer.send(value: .progress(progress))
-            }).responseData(queue: nil) { (response: DownloadResponse<Data>) in
+            }.responseData(queue: .main) { (response) in
                 switch response.result {
                 case .success:
-                    guard var destinationURL = response.destinationURL else {
+                    guard var destinationURL = response.fileURL else {
                         observer.send(error: .noCorrectDownloadDestination)
                         return
                     }

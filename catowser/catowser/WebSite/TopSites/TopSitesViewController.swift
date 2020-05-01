@@ -60,14 +60,15 @@ extension TopSitesViewController: UICollectionViewDataSource {
         }
         cell.faviconImageView.layer.cornerRadius = 3
         cell.faviconImageView.layer.masksToBounds = true
-        cell.reload(with: site)
+        cell.reloadSiteCell(with: site)
         return cell
     }
 }
 
 extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return SiteCollectionViewCell.size(for: traitCollection)
     }
 
@@ -90,8 +91,9 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension SiteCollectionViewCell {
-    func reload(with site: Site) {
+    func reloadSiteCell(with site: Site) {
         titleLabel.text = site.title
+        faviconImageView.image = nil
         faviconImageView.updateImage(fromURL: site.faviconURL,
                                      cachedImage: site.faviconImage)
     }

@@ -48,16 +48,15 @@ extension HttpKit.Client {
                 
                 let codes = T.successCodes
                 
-                let _: DataRequest = Alamofire.request(httpRequest)
+                let _: DataRequest = AF.request(httpRequest)
                     .validate(statusCode: codes)
-                    .responseDecodableObject(queue: nil, completionHandler: { (response: DataResponse<T>) in
+                    .responseDecodable(of: responseType,
+                                       queue: .main,
+                                       decoder: JSONDecoder(),
+                                       completionHandler: { (response) in
                         switch response.result {
                         case .success(let value):
                             promise(.success(value))
-                        case .failure(let error) where error is HttpKit.HttpError:
-                            // swiftlint:disable:next force_cast
-                            let kitError = error as! HttpKit.HttpError
-                            promise(.failure(kitError))
                         case .failure(let error):
                             promise(.failure(.httpFailure(error: error, request: httpRequest)))
                         }

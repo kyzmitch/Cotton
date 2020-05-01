@@ -6,10 +6,10 @@ target 'catowser' do
   use_frameworks!
 
   # Pods for catowser
-  pod 'SnapKit', '~>5.0.0'
+  pod 'SnapKit', '~> 5.0.0'
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
-  pod 'AlamofireImage', '~> 3.5'
+  pod 'AlamofireImage', '~> 4.1'
 end
 
 target 'CoreBrowser' do
@@ -31,7 +31,7 @@ end
 target 'HttpKit' do
   use_frameworks!
 
-  pod 'Alamofire', '~> 4.8'
+  pod 'Alamofire', '~> 5.1'
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
   pod 'SWXMLHash', '~> 5.0.0'
