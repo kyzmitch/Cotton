@@ -34,7 +34,7 @@ protocol LinksRouterInterface: class {
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
     let searchSuggestionsController: SearchSuggestionsViewController = {
-        let vc = SearchSuggestionsViewController()
+        let vc = SearchSuggestionsViewController(HttpKit.Environment.shared.googleClient)
         return vc
     }()
 

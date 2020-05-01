@@ -197,6 +197,8 @@
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
+		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
+		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
@@ -505,6 +507,7 @@
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AC45ECA24582453007E47EE /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Combine.framework; sourceTree = DEVELOPER_DIR; };
 		8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Combine.swift"; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
@@ -865,6 +868,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				8AA68A9D245BE45E00263E22 /* Environment */,
 				8ADAF545240123E000A0D233 /* Utils */,
 				7509BF9022AF830B00F4D701 /* Extensions */,
 				841022B72247816D0021516F /* Downloads */,
@@ -1007,6 +1011,14 @@
 				8A8678AB2430F6AA00450666 /* WildcardHostTrustEvaluator.swift */,
 			);
 			path = AuthChallenge;
+			sourceTree = "<group>";
+		};
+		8AA68A9D245BE45E00263E22 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 		8AD18E0E244757EC00224702 /* Filesystem */ = {
@@ -1713,6 +1725,7 @@
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
 				8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
+				8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				60A82C532254E1F7008210D9 /* MasterRouter.swift in Sources */,
@@ -1765,6 +1778,7 @@
 				8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */,
 				8A8035C624442F0F000E035F /* WebViewController+SystemExtensions.swift in Sources */,
 				8A8035C724442F0F000E035F /* UIConstants.swift in Sources */,
+				8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
 				8A8035CA24442F0F000E035F /* MasterRouter.swift in Sources */,

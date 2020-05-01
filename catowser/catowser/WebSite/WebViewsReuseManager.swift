@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import JSPlugins
+import HttpKit
 
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
@@ -67,7 +68,8 @@ final class WebViewsReuseManager {
         if count >= 0 && count < viewsLimit {
             let vc = WebViewController(site,
                                        plugins: pluginsBuilder.plugins,
-                                       externalNavigationDelegate: delegate)
+                                       externalNavigationDelegate: delegate,
+                                       dnsHttpClient: HttpKit.Environment.shared.dnsClient)
             views.append(vc)
             lastSelectedIndex = count
             return vc

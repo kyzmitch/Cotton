@@ -44,10 +44,16 @@ final class SearchSuggestionsViewController: UITableViewController {
         }
     }
     
-    private lazy var googleClient: HttpKit.Client<HttpKit.GoogleServer> = {
-        let description = HttpKit.GoogleServer()
-        return HttpKit.Client(server: description)
-    }()
+    private let googleClient: GoogleSuggestionsClient
+    
+    init(_ suggestionsHttpClient: GoogleSuggestionsClient) {
+        googleClient = suggestionsHttpClient
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     func prepareSearch(for searchText: String) {
         suggestions.removeAll()
