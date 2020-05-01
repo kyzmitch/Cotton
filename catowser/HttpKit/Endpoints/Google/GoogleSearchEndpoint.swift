@@ -12,6 +12,8 @@ import ReactiveSwift
 import Combine
 #endif
 
+public typealias GoogleSuggestionsClient = HttpKit.Client<HttpKit.GoogleServer>
+
 extension HttpKit {
     typealias GSearchEndpoint = Endpoint<GoogleSearchSuggestionsResponse, GoogleServer>
     public typealias GSearchProducer = SignalProducer<GoogleSearchSuggestionsResponse, HttpError>

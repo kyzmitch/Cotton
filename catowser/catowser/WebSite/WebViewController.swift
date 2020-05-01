@@ -33,10 +33,8 @@ final class WebViewController: BaseViewController {
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     private var dnsRequestSubsciption: Disposable?
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
-    private static let dnsClient: GoogleDnsClient = {
-        let server = HttpKit.GoogleDnsServer()
-        return .init(server: server)
-    }()
+    private let dnsClient: GoogleDnsClient
+    /// State of web view
     private var isWebViewLoaded: Bool = false
     /// lazy loaded web view to use correct config
     private lazy var webView: WKWebView = {
@@ -84,14 +82,15 @@ final class WebViewController: BaseViewController {
      */
     init(_ site: Site,
          plugins: [CottonJSPlugin],
-         externalNavigationDelegate: SiteExternalNavigationDelegate) {
+         externalNavigationDelegate: SiteExternalNavigationDelegate,
+         dnsHttpClient: GoogleDnsClient) {
         self.externalNavigationDelegate = externalNavigationDelegate
         urlInfo = site.url
         configuration = site.webViewConfig
         if site.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)
         }
-
+        dnsClient = dnsHttpClient
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -185,7 +184,7 @@ private extension WebViewController {
         
         if #available(iOS 13.0, *) {
             dnsRequestCancellable?.cancel()
-            dnsRequestCancellable = Self.dnsClient.resolvedDomainName(in: url)
+            dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
             .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {
@@ -205,7 +204,7 @@ private extension WebViewController {
                 })
         } else {
             dnsRequestSubsciption?.dispose()
-            dnsRequestSubsciption = Self.dnsClient.rxResolvedDomainName(in: url)
+            dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url)
                 .start(on: UIScheduler())
                 .startWithResult({ [weak self] (result) in
                     guard let self = self else {

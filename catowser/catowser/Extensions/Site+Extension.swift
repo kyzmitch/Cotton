@@ -7,6 +7,9 @@
 //
 
 import CoreBrowser
+#if canImport(Combine)
+import Combine
+#endif
 
 extension Site {
     var faviconURL: URL? {
@@ -15,5 +18,10 @@ extension Site {
         } else {
             return URL(faviconHost: url.host)
         }
+    }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    func fetchFaviconURL(_ fetch: Bool) -> AnyPublisher<URL, Error> {
+        return Result<URL, Error>.Publisher(.success(url.url)).eraseToAnyPublisher()
     }
 }
