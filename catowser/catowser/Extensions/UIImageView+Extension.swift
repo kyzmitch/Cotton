@@ -11,7 +11,7 @@ import UIKit
 
 extension UIImageView {
     func updateImage(fromURL url: URL?, cachedImage: UIImage? = nil) {
-        af_cancelImageRequest()
+        af.cancelImageRequest()
         image = nil
         
         if let favicon = cachedImage {
@@ -22,13 +22,18 @@ extension UIImageView {
             return
         }
         
-        af_setImage(withURL: imageURL,
+        // let imageDownloader = af.imageDownloader ?? UIImageView.af.sharedImageDownloader
+        // imageDownloader.addAuthentication(usingCredential: <#T##URLCredential#>)
+        
+        af.setImage(withURL: imageURL,
+                    cacheKey: nil,
                     placeholderImage: cachedImage,
+                    serializer: nil,
                     filter: nil,
                     progress: nil,
-                    progressQueue: .main,
-                    imageTransition: .crossDissolve(0.5),
-                    runImageTransitionIfCached: false) { [weak self] dataResponse in
+                    progressQueue: .global(qos: .userInteractive),
+                    imageTransition: .noTransition,
+                    runImageTransitionIfCached: false) { [weak self] (dataResponse) in
                         guard let favicon = dataResponse.value else {
                             return
                         }
