@@ -31,31 +31,6 @@ private extension WebViewController {
         decisionHandler(WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!)
         return true
     }
-    
-    func handleServerTrust(_ serverTrust: SecTrust,
-                           host: String,
-                           completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if serverTrust.checkValidity(ofHost: host) {
-            let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
-        } else {
-            // Show a UI here warning the user the server credentials are
-            // invalid, and cancel the load.
-            let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
-            externalNavigationDelegate?.showProgress(false)
-        }
-    }
-    
-    func checkIfWebContentProcessHasCrashed(_ webView: WKWebView, error: NSError) -> Bool {
-        if error.code == WKError.webContentProcessTerminated.rawValue && error.domain == "WebKitErrorDomain" {
-            print("WebContent process has crashed. Trying to reload to restart it.")
-            webView.reload()
-            return true
-        }
-
-        return false
-    }
 }
 
 // MARK: - WKUIDelegate
@@ -165,61 +140,25 @@ extension WebViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        print("Fail to load URL request: \(error.localizedDescription)")
+        print("Error occured during a committed main frame: \(error.localizedDescription)")
         externalNavigationDelegate?.showProgress(false)
     }
     
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        guard let serverTrust = challenge.protectionSpace.serverTrust else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        let realHost = challenge.protectionSpace.host
-        guard let nextUrl = webView.url else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        if let currentIPAddress = urlInfo.ipAddress, nextUrl.hasIPHost {
-            if currentIPAddress == realHost {
-                handleServerTrust(serverTrust,
-                                  host: urlInfo.host.rawValue,
-                                  completionHandler: completionHandler)
-            } else {
-                completionHandler(.performDefaultHandling, nil)
-            }
-        } else {
-            guard urlInfo.host.isSimilar(with: challenge.protectionSpace.host) else {
-                completionHandler(.performDefaultHandling, nil)
-                return
-            }
-
-            let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
+        let handler = WebViewAuthChallengeHandler(urlInfo, webView, challenge, completionHandler)
+        handler.solve { [weak self] in
+            self?.externalNavigationDelegate?.showProgress(false)
         }
     }
     
     func webView(_ webView: WKWebView,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
-        print("Provisional fail: \(error.localizedDescription)")
-        let error = error as NSError
-        if checkIfWebContentProcessHasCrashed(webView, error: error) {
-            return
-        }
-        /**
-        Called when an error occurs while the web view is loading content.
-        In our case it happens on auth challenge fail when entered domain name doesn't match with one
-        in server SSL certificate or when ip address was used for DNS over HTTPS and it can't
-        be equal with domain names from SSL certificate.
-        */
-        if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
-            // ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
-        }
+        print("Error occured while starting to load data: \(error.localizedDescription)")
+        externalNavigationDelegate?.showProgress(false)
+        let handler = WebViewLoadingErrorHandler(error, webView)
+        handler.recover(self)
     }
 }

@@ -23,7 +23,8 @@ extension UIImageView {
         }
         
         // let imageDownloader = af.imageDownloader ?? UIImageView.af.sharedImageDownloader
-        // imageDownloader.addAuthentication(usingCredential: <#T##URLCredential#>)
+        // imageDownloader.addAuthentication(usingCredential: )
+        // TODO: replace AlamofireImage with own implementation based just on Alamfore to handle TLS handshake errors
         
         af.setImage(withURL: imageURL,
                     cacheKey: nil,
