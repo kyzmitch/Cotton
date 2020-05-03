@@ -12,6 +12,13 @@ extension HttpKit {
     /// URL Host type instead of system String.
     ///  https://tools.ietf.org/html/rfc1738#section-3.1
     public struct Host: RawRepresentable, Equatable {
+        static let domainAccessibleOnlyHosts: Set<String> = {
+           let hosts = ["instagram.com",
+                        "youtube.com",
+                        "m.youtube.com"]
+            return Set(hosts)
+        }()
+        
         /// Use host name as a `rawValue`
         public init?(rawValue: String) {
             // https://tools.ietf.org/html/rfc1808#section-2.4
@@ -69,6 +76,13 @@ extension HttpKit {
         
         public func isSimilar(with host: String) -> Bool {
             return host.contains(rawValue) || rawValue.contains(host) || host == rawValue
+        }
+        
+        /// URLs with some hosts can't be loaded by ip address,
+        /// so that, DNS over HTTPS won't work for them using WKWebView
+        /// since there is no way to change how URLRequest is doing DNS requests and replace them.
+        public var isDoHSupported: Bool {
+            return !Self.domainAccessibleOnlyHosts.contains(rawValue)
         }
     }
 }

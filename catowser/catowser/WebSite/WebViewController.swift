@@ -176,7 +176,8 @@ private extension WebViewController {
     }
     
     func internalLoad(url: URL) {
-        guard FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) else {
+        guard FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            && url.kitHost?.isDoHSupported ?? false  else {
             let request = URLRequest(url: url)
             webView.load(request)
             return
