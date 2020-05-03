@@ -15,6 +15,8 @@ import ReactiveSwift
 import Combine
 #endif
 
+/// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
+
 public typealias GoogleDnsClient = HttpKit.Client<HttpKit.GoogleDnsServer>
 
 extension HttpKit {
