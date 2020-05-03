@@ -8,6 +8,7 @@
 
 import WebKit
 import HttpKit
+import Alamofire
 
 final class WebViewAuthChallengeHandler {
     typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
@@ -27,7 +28,7 @@ final class WebViewAuthChallengeHandler {
         self.completionHandler = completionHandler
     }
     
-    func solve(completion: @escaping () -> Void) {
+    func solve(_ presentationController: UIViewController, completion: @escaping () -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
             completionHandler(.performDefaultHandling, nil)
             return
@@ -42,7 +43,11 @@ final class WebViewAuthChallengeHandler {
         }
         if let currentIPAddress = urlInfo.ipAddress, nextUrl.hasIPHost {
             if currentIPAddress == challenge.protectionSpace.host {
-                handleServerTrust(serverTrust, urlInfo.host.rawValue, completionHandler, completion)
+                handleServerTrust(serverTrust,
+                                  urlInfo.host.rawValue,
+                                  presentationController,
+                                  completionHandler,
+                                  completion)
             } else {
                 completionHandler(.performDefaultHandling, nil)
             }
@@ -61,14 +66,18 @@ final class WebViewAuthChallengeHandler {
 private extension WebViewAuthChallengeHandler {
     func handleServerTrust(_ serverTrust: SecTrust,
                            _ host: String,
+                           _ presentationController: UIViewController,
                            _ completionHandler: @escaping AuthHandler,
                            _ completion: @escaping () -> Void) {
-        if serverTrust.checkValidity(ofHost: host) {
+        
+        do {
+            let evaluator: DefaultTrustEvaluator = .ipHostEvaluator()
+            try evaluator.evaluateWithRecovery(serverTrust, forHost: host)
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
-        } else {
-            // Show a UI here warning the user the server credentials are
-            // invalid, and cancel the load.
+        } catch {
+            let msg = "Server trust validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
+            AlertPresenter.present(on: presentationController, message: msg)
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
             completion()

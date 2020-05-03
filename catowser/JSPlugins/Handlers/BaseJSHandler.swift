@@ -89,7 +89,7 @@ extension BaseJSHandler: WKScriptMessageHandler {
                     let videoTags = try HTMLVideoTagsContainer(html: value as! String)
                     delegate?.didReceiveVideoTags(videoTags.videoTags)
                 } catch {
-                    print("failed to parse video tags: \(error)")
+                    print("HTML video tags: \(error)")
                 }
             case .DOMVideoTags?:
                 guard let jsonObject = Data.dataFrom(value) else {

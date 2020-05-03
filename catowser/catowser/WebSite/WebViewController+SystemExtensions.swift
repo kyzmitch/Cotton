@@ -148,7 +148,7 @@ extension WebViewController: WKNavigationDelegate {
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(urlInfo, webView, challenge, completionHandler)
-        handler.solve { [weak self] in
+        handler.solve(self) { [weak self] in
             self?.externalNavigationDelegate?.showProgress(false)
         }
     }

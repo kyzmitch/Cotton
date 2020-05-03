@@ -14,6 +14,7 @@ extension HttpKit {
     public struct Host: RawRepresentable, Equatable {
         static let domainAccessibleOnlyHosts: Set<String> = {
            let hosts = ["instagram.com",
+                        "www.instagram.com",
                         "youtube.com",
                         "m.youtube.com"]
             return Set(hosts)

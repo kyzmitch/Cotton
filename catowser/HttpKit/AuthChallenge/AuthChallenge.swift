@@ -8,29 +8,78 @@
 
 import Foundation
 import Security
+import Alamofire
 
-extension SecTrust {
-    public func checkValidity(ofHost host: String) -> Bool {
-        // re-implement with using Alamofire 5.x
-        // swiftlint:disable:next line_length
-        // https://alamofire.github.io/Alamofire/Classes/DefaultTrustEvaluator.html#/s:9Alamofire21ServerTrustEvaluatingP8evaluate_7forHostySo03SecC3Refa_SStKF
-        // swiftlint:disable:next line_length
-        // https://github.com/Alamofire/Alamofire/blob/6fc79382515e26a2328ab24c75a777128d234248/Source/ServerTrustEvaluation.swift
-        let serverTrustPolicy = WildcardHostTrustEvaluator(validateHost: true)
+/**
+ https://developer.apple.com/library/archive/technotes/tn2232/_index.html
+ 
+ The DNS name in the certificate might be a wildcard name, for example, "*.apple.com".
+ but `host` parameter could be specific address like "m.apple.com"
+ so that, it's required to convert it to wildcard name before check
+
+ If server trust evaluation fails because the server's DNS name does not match the DNS name in the certificate,
+ you can work around the failure by overriding the DNS name in the trust object.
+ To do this, call SecPolicyCreateSSL to create a new policy object with the correct server name
+ and then call SecTrustSetPolicies to apply it to the trust object.
+
+ Typically you would expect to find this DNS name in the subject's Common Name field,
+ but it can also be in a Subject Alternative Name extension. If a name is present in
+ the Subject Alternative Name extension, it takes priority over the Common Name.
+
+ https://support.apple.com/en-us/HT210176
+ TLS server certificates must present the DNS name of the server in the Subject Alternative Name extension
+ of the certificate. DNS names in the CommonName of a certificate are no longer trusted.
+ 
+ https://developer.apple.com/documentation/security/certificate_key_and_trust_services/trust/configuring_a_trust
+ */
+
+extension DefaultTrustEvaluator {
+    /// Creates server trust evaluator with disabled host validation
+    public static func ipHostEvaluator() -> Self {
+        return .init(validateHost: false)
+    }
+    
+    /// Evaluates server trust.
+    /// `host` is used only for error messages since it is ip address and should be used for evaluation
+    public func evaluateWithRecovery(_ trust: SecTrust, forHost host: String) throws {
         guard let kitHost = HttpKit.Host(rawValue: host) else {
-            return serverTrustPolicy.evaluate(self, forHost: host)
+            try evaluate(trust, forHost: host)
+            return
         }
         
-        let originalCheck = serverTrustPolicy.evaluate(self, forHost: host)
-        
-        var additionalHostChecks = originalCheck
-        #if true
-        let wildcardName = kitHost.wildcardName
-        let wildcardCheck = serverTrustPolicy.evaluate(self, forHost: wildcardName)
-        let wwwName = kitHost.wwwName
-        let wwwCheck = serverTrustPolicy.evaluate(self, forHost: wwwName)
-        additionalHostChecks = wildcardCheck || wwwCheck
-        #endif
-        return originalCheck || additionalHostChecks
+        do {
+            try evaluate(trust, forHost: kitHost.rawValue)
+        } catch AFError.serverTrustEvaluationFailed(let reason) {
+            var optionalOutput: AFError.ServerTrustFailureReason.Output?
+            switch reason {
+            case .defaultEvaluationFailed(output: let output):
+                optionalOutput = output
+            case .hostValidationFailed(output: let output):
+                optionalOutput = output
+            case .revocationCheckFailed(output: let output, options: _):
+                optionalOutput = output
+            default:
+                throw AFError.serverTrustEvaluationFailed(reason: reason)
+            }
+            
+            guard let output = optionalOutput else {
+                throw AFError.serverTrustEvaluationFailed(reason: reason)
+            }
+            
+            switch output.result {
+            case .recoverableTrustFailure:
+                let exceptions: CFData = SecTrustCopyExceptions(trust)
+                SecTrustSetExceptions(trust, exceptions)
+                guard SecTrustSetExceptions(trust, exceptions) else {
+                    throw AFError.serverTrustEvaluationFailed(reason: reason)
+                }
+                // evaulate one more time
+                try evaluate(trust, forHost: kitHost.rawValue)
+            default:
+                throw AFError.serverTrustEvaluationFailed(reason: reason)
+            }
+        } catch {
+            throw error
+        }
     }
 }
