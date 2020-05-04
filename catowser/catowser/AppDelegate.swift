@@ -24,10 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         ImageResponseSerializer.addAcceptableImageContentTypes(["image/vnd.microsoft.icon", "application/octet-stream"])
         
-        // Disable checks for SSL for favicons
+        // Disable checks for SSL for favicons, but it doesn't work for some reason
         let config: URLSessionConfiguration = ImageDownloader.defaultURLSessionConfiguration()
         let serverTrustManager: ServerTrustManager = .init(allHostsMustBeEvaluated: false, evaluators: [:])
-        let session = Session(configuration: config, startRequestsImmediately: false, serverTrustManager: serverTrustManager)
+        let session = Session(configuration: config,
+                              startRequestsImmediately: false,
+                              serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
         let rect = CGRect(x: 0,
