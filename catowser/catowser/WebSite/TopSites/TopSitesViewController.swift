@@ -94,7 +94,21 @@ extension SiteCollectionViewCell {
     func reloadSiteCell(with site: Site) {
         titleLabel.text = site.title
         faviconImageView.image = nil
-        faviconImageView.updateImage(fromURL: site.faviconURL,
-                                     cachedImage: site.faviconImage)
+        if #available(iOS 13.0, *) {
+            imageURLRequestCancellable?.cancel()
+            imageURLRequestCancellable = site.fetchFaviconURL()
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .failure(let error):
+                        print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
+                    default: break
+                    }
+                }, receiveValue: { [weak self] (url) in
+                    self?.faviconImageView.updateImage(fromURL: url)
+                })
+        } else {
+            faviconImageView.updateImage(fromURL: site.faviconURL, cachedImage: site.highQualityFaviconImage)
+        }
     }
 }

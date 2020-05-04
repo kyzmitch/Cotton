@@ -8,10 +8,16 @@
 
 import UIKit
 import CoreBrowser
+#if canImport(Combine)
+import Combine
+#endif
 
 final class SiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var faviconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    
+    @available(iOS 13.0, *)
+    lazy var imageURLRequestCancellable: AnyCancellable? = nil
 
     override func awakeFromNib() {
         super.awakeFromNib()

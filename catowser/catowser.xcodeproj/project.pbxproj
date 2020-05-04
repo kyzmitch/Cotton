@@ -124,7 +124,6 @@
 		8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
 		8A8035A424442F0F000E035F /* LocalFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */; };
 		8A8035A524442F0F000E035F /* LocalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54D240126F700A0D233 /* LocalSettings.swift */; };
-		8A8035A624442F0F000E035F /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
 		8A8035A724442F0F000E035F /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCA21F751B500972E28 /* LightTheme.swift */; };
 		8A8035A824442F0F000E035F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		8A8035A924442F0F000E035F /* TabletSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */; };
@@ -221,7 +220,6 @@
 		8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4922A235248CE00183579 /* HttpKitErrors.swift */; };
 		BF232625BB55A4003BE809D1 /* Pods_catowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A910B05602B21CB19029F7B9 /* Pods_catowser.framework */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
-		C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */; };
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
@@ -529,7 +527,6 @@
 		A910B05602B21CB19029F7B9 /* Pods_catowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_catowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE523E5A762180ED2678B7F8 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
 		C22599621F7BEF6D000E4C3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserViewModel.swift; sourceTree = "<group>"; };
 		C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterBrowserViewController.swift; sourceTree = "<group>"; };
 		C27371181F7A341900900F03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -822,7 +819,6 @@
 				8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */,
 				8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */,
 				841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */,
-				C22599641F7BF19B000E4C3A /* BrowserViewModel.swift */,
 				60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */,
 				607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */,
 				8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */,
@@ -1693,7 +1689,6 @@
 				8A510F632424ADC30070503C /* SiteNavigationProtocols.swift in Sources */,
 				8ADAF54C2401258000A0D233 /* LocalFeatureSource.swift in Sources */,
 				8ADAF54E240126F700A0D233 /* LocalSettings.swift in Sources */,
-				C22599651F7BF19B000E4C3A /* BrowserViewModel.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
@@ -1749,7 +1744,6 @@
 				8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */,
 				8A8035A424442F0F000E035F /* LocalFeatureSource.swift in Sources */,
 				8A8035A524442F0F000E035F /* LocalSettings.swift in Sources */,
-				8A8035A624442F0F000E035F /* BrowserViewModel.swift in Sources */,
 				8A8035A724442F0F000E035F /* LightTheme.swift in Sources */,
 				8A8035A824442F0F000E035F /* WebViewController.swift in Sources */,
 				8A8035A924442F0F000E035F /* TabletSearchBarViewController.swift in Sources */,

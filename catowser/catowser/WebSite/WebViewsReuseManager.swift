@@ -69,7 +69,7 @@ final class WebViewsReuseManager {
             let vc = WebViewController(site,
                                        plugins: pluginsBuilder.plugins,
                                        externalNavigationDelegate: delegate,
-                                       dnsHttpClient: HttpKit.Environment.shared.dnsClient)
+                                       dnsHttpClient: GoogleDnsClient.shared)
             views.append(vc)
             lastSelectedIndex = count
             return vc
