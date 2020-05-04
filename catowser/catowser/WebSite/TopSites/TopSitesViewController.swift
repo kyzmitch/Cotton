@@ -93,7 +93,12 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 extension SiteCollectionViewCell {
     func reloadSiteCell(with site: Site) {
         titleLabel.text = site.title
+        if let hqImage = site.highQualityFaviconImage {
+            faviconImageView.image = hqImage
+            return
+        }
         faviconImageView.image = nil
+
         if #available(iOS 13.0, *) {
             imageURLRequestCancellable?.cancel()
             imageURLRequestCancellable = site.fetchFaviconURL()
