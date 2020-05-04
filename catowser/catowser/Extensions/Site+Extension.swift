@@ -32,14 +32,19 @@ extension Site {
     /// - Throws:          Any `Error` from applying the `policy`, or the result of `errorProducer` if validation fails.
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     func fetchFaviconURL(_ resolve: Bool = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)) -> AnyPublisher<URL, Error> {
+        typealias URLResult = Result<URL, Error>
+        
         guard resolve else {
-            typealias URLResult = Result<URL, Error>
             let domainURL = URL(faviconHost: url.host)
             // swiftlint:disable:next force_unwrapping
             let result: URLResult = domainURL != nil ? .success(domainURL!) : .failure(HttpKit.HttpError.invalidURL)
             return URLResult.Publisher(result).eraseToAnyPublisher()
         }
-        return GoogleDnsClient.shared.resolvedDomainName(in: url.domainURL)
+        
+        guard let faviconDomainURL = URL(faviconHost: url.host) else {
+            return URLResult.Publisher(.failure(HttpKit.HttpError.invalidURL)).eraseToAnyPublisher()
+        }
+        return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL)
             .mapError { (dnsError) -> Error in
                 return dnsError
             }.eraseToAnyPublisher()
