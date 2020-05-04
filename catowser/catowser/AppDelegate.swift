@@ -8,6 +8,7 @@
 
 import UIKit
 import AlamofireImage
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // https://github.com/Alamofire/AlamofireImage/issues/378#issuecomment-537275604
         
         ImageResponseSerializer.addAcceptableImageContentTypes(["image/vnd.microsoft.icon", "application/octet-stream"])
+        
+        // Disable checks for SSL for favicons
+        let config: URLSessionConfiguration = ImageDownloader.defaultURLSessionConfiguration()
+        let serverTrustManager: ServerTrustManager = .init(allHostsMustBeEvaluated: false, evaluators: [:])
+        let session = Session(configuration: config, startRequestsImmediately: false, serverTrustManager: serverTrustManager)
+        UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
         let rect = CGRect(x: 0,
                           y: 0,
