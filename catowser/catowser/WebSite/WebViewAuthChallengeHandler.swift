@@ -37,20 +37,12 @@ final class WebViewAuthChallengeHandler {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        guard let nextUrl = webView.url else {
-            completionHandler(.performDefaultHandling, nil)
-            return
-        }
-        if let currentIPAddress = urlInfo.ipAddress, nextUrl.hasIPHost {
-            if currentIPAddress == challenge.protectionSpace.host {
-                handleServerTrust(serverTrust,
-                                  urlInfo.host.rawValue,
-                                  presentationController,
-                                  completionHandler,
-                                  completion)
-            } else {
-                completionHandler(.performDefaultHandling, nil)
-            }
+        if let currentIPAddress = urlInfo.ipAddress, currentIPAddress == challenge.protectionSpace.host {
+            handleServerTrust(serverTrust,
+                              urlInfo.host.rawValue,
+                              presentationController,
+                              completionHandler,
+                              completion)
         } else {
             guard urlInfo.host.isSimilar(with: challenge.protectionSpace.host) else {
                 completionHandler(.performDefaultHandling, nil)

@@ -17,9 +17,8 @@ public struct Site {
     public var host: HttpKit.Host {
         return url.host
     }
-    /// Used by top sites by loading high quality image from Assets,
-    /// or by all other sites by loading from favicon URL
-    public var faviconImage: UIImage?
+    /// Used by top sites by loading high quality image from Assets
+    public var highQualityFaviconImage: UIImage?
 
     /// String associated with site if site was created from search engine.
     /// This convinient property to transfer/save search query to use it for search view.
@@ -55,7 +54,7 @@ public struct Site {
         self.url = urlInfo
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
-        faviconImage = nil
+        highQualityFaviconImage = nil
     }
 
     public init?(urlString: String, customTitle: String? = nil, image: UIImage? = nil) {
@@ -68,7 +67,7 @@ public struct Site {
         url = urlInfo
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
-        faviconImage = image
+        highQualityFaviconImage = image
     }
 
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.

@@ -26,6 +26,7 @@ extension HttpKit {
         case failedEncodeEncodable
         case noInternetConnectionWithHost
         case noHttpResponse
+        case invalidURL
         
         var localizedDescription: String {
             switch self {
