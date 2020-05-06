@@ -27,7 +27,7 @@ final class WebViewController: BaseViewController {
     private(set) var pluginsFacade: WebViewJSPluginsFacade?
     /// Own navigation delegate
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
-    private var webViewProgressObserverAdded = false
+    private var webViewObserversAdded = false
     private var loadingProgressObservation: NSKeyValueObservation?
     @available(iOS 13.0, *)
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
@@ -38,10 +38,16 @@ final class WebViewController: BaseViewController {
     private var isWebViewLoaded: Bool = false
     /// lazy loaded web view to use correct config
     private lazy var webView: WKWebView = {
-        webViewProgressObserverAdded = false
+        webViewObserversAdded = false
         loadingProgressObservation?.invalidate()
         return createWebView(with: configuration)
     }()
+    
+    /// Need to use KVO for web view property because for some WKNavigations for
+    /// not usual URLs like about:srcdoc the didCommit and didFinish won't be called
+    /// and navigation button won't be updated based on state.
+    private var canGoBackObservation: NSKeyValueObservation?
+    private var canGoForwardObservation: NSKeyValueObservation?
 
     func load(url: URL, canLoadPlugins: Bool = true) {
         // TODO: actually this func is called using URLIpInfo, so, maybe no need to update it
@@ -51,7 +57,12 @@ final class WebViewController: BaseViewController {
         }
         urlInfo = info
         setupScripts(canLoadPlugins: canLoadPlugins)
-        addWebViewProgressObserver()
+        if !webViewObserversAdded {
+            webViewObserversAdded = true
+            addWebViewProgressObserver()
+            addWebViewCanGoBackObserver()
+            addWebViewCanGoForwardObserver()
+        }
         internalLoad(url: url)
     }
 
@@ -62,7 +73,7 @@ final class WebViewController: BaseViewController {
         
         if isWebViewLoaded {
             loadingProgressObservation?.invalidate()
-            webViewProgressObserverAdded = false
+            webViewObserversAdded = false
             
             webView.removeFromSuperview()
             webView = createWebView(with: configuration)
@@ -73,7 +84,12 @@ final class WebViewController: BaseViewController {
         }
         
         setupScripts(canLoadPlugins: canLoadPlugins)
-        addWebViewProgressObserver()
+        if !webViewObserversAdded {
+            webViewObserversAdded = true
+            addWebViewProgressObserver()
+            addWebViewCanGoBackObserver()
+            addWebViewCanGoForwardObserver()
+        }
         internalLoad(url: urlInfo.url)
     }
 
@@ -149,6 +165,8 @@ private extension WebViewController {
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
         webView.navigationDelegate = self
+        webView.allowsBackForwardNavigationGestures = true
+        
         return webView
     }
     
@@ -160,18 +178,33 @@ private extension WebViewController {
     }
     
     func addWebViewProgressObserver() {
-        if !webViewProgressObserverAdded {
-            webViewProgressObserverAdded = true
-            // swiftlint:disable:next line_length
-            // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
-            
-            loadingProgressObservation?.invalidate()
-            loadingProgressObservation = webView.observe(\.estimatedProgress,
-                                                         options: [.new]) { [weak self] (_, change) in
-                guard let self = self else { return }
-                guard let value = change.newValue else { return }
-                self.externalNavigationDelegate?.displayProgress(value)
-            }
+        // swiftlint:disable:next line_length
+        // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
+        
+        loadingProgressObservation?.invalidate()
+        loadingProgressObservation = webView.observe(\.estimatedProgress,
+                                                     options: [.new]) { [weak self] (_, change) in
+            guard let self = self else { return }
+            guard let value = change.newValue else { return }
+            self.externalNavigationDelegate?.displayProgress(value)
+        }
+    }
+    
+    func addWebViewCanGoBackObserver() {
+        canGoBackObservation?.invalidate()
+        canGoBackObservation = webView.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
+            guard let self = self else { return }
+            guard let value = change.newValue else { return }
+            // TODO: update navigation bar with instance of `SiteNavigationComponent` and `reloadNavigationElements` func
+        }
+    }
+    
+    func addWebViewCanGoForwardObserver() {
+        canGoForwardObservation?.invalidate()
+        canGoForwardObservation = webView.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
+            guard let self = self else { return }
+            guard let value = change.newValue else { return }
+            // TODO: update navigation bar with instance of `SiteNavigationComponent` and `reloadNavigationElements` func
         }
     }
     

@@ -59,7 +59,7 @@ public final class DefaultTabProvider {
         array.append(tube)
         let opennet = Site(urlString: "https://opennet.ru", customTitle: "OpenNet")
         array.append(opennet)
-        let newsruCoIl = Site(urlString: "https://newsru.co.il", customTitle: "Newsru.co.il")
+        let newsruCoIl = Site(urlString: "https://meduza.io", customTitle: "Meduza")
         array.append(newsruCoIl)
         let newsruCom = Site(urlString: "https://m.newsru.com", customTitle: "Newsru.com")
         array.append(newsruCom)
