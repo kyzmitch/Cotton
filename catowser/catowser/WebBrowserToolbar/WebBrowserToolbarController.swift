@@ -172,6 +172,14 @@ final class WebBrowserToolbarController: UIViewController {
 }
 
 extension WebBrowserToolbarController: SiteNavigationComponent {
+    func changeBackButton(to canGoBack: Bool) {
+        backButton.isEnabled = canGoBack
+    }
+    
+    func changeForwardButton(to canGoForward: Bool) {
+        forwardButton.isEnabled = canGoForward
+    }
+    
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         // this will be useful when user will change current web view
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
