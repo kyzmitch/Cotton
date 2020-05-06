@@ -9,6 +9,9 @@
 import UIKit
 import ReactiveSwift
 import CoreBrowser
+#if canImport(Combine)
+import Combine
+#endif
 
 fileprivate extension CGFloat {
     static let cornerRadius = CGFloat(6.0)
@@ -59,6 +62,9 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     private weak var delegate: TabPreviewCellDelegate?
 
     private var siteTitleDisposable: Disposable?
+    
+    @available(iOS 13.0, *)
+    private lazy var imageURLRequestCancellable: AnyCancellable? = nil
 
     private let backgroundHolder: UIView = {
         let view = UIView()
@@ -169,19 +175,8 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     }
 
     func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
-        self.tabIndex = index
-        self.delegate = delegate
-        if case let .site(site) = tab.contentType {
-            faviconImageView.updateImage(fromURL: site.faviconURL,
-                                         cachedImage: site.highQualityFaviconImage)
-        } else {
-            faviconImageView.image = nil
-        }
         screenshotView.image = tab.preview
         
-        // TODO: learn how exactly Signal works
-        // is it possible to fetch very first pushed value to it
-        // if push was before call to `observeValues`?
         titleText.text = tab.title
         siteTitleDisposable?.dispose()
         siteTitleDisposable = tab.titleSignal
@@ -189,5 +184,30 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
             .observeValues { [weak self] siteTitle in
                 self?.titleText.text = siteTitle
         }
+        
+        self.tabIndex = index
+        self.delegate = delegate
+        guard case let .site(site) = tab.contentType else {
+            faviconImageView.image = nil
+            return
+        }
+        
+        if #available(iOS 13.0, *) {
+            imageURLRequestCancellable?.cancel()
+            imageURLRequestCancellable = site.fetchFaviconURL()
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .failure(let error):
+                        print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
+                    default: break
+                    }
+                }, receiveValue: { [weak self] (url) in
+                    self?.faviconImageView.updateImage(fromURL: url)
+                })
+        } else {
+            faviconImageView.updateImage(fromURL: site.faviconURL, cachedImage: site.highQualityFaviconImage)
+        }
+        
     }
 }
