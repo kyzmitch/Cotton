@@ -508,6 +508,14 @@ extension MasterBrowserViewController: TabsObserver {
 }
 
 extension MasterBrowserViewController: SiteNavigationComponent {
+    func changeBackButton(to canGoBack: Bool) {
+        // TODO: change conformans to `SiteNavigationComponent` to not write protocol functions two times
+    }
+    
+    func changeForwardButton(to canGoForward: Bool) {
+        // TODO: change conformans to `SiteNavigationComponent` to not write protocol functions two times
+    }
+    
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         navigationComponent()?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
     }
@@ -545,6 +553,14 @@ extension MasterBrowserViewController: BasePluginContentDelegate {
 }
 
 extension MasterBrowserViewController: SiteExternalNavigationDelegate {
+    func didUpdateBackNavigation(to canGoBack: Bool) {
+        navigationComponent()?.changeBackButton(to: canGoBack)
+    }
+    
+    func didUpdateForwardNavigation(to canGoForward: Bool) {
+        navigationComponent()?.changeForwardButton(to: canGoForward)
+    }
+    
     func didStartProvisionalNavigation() {
         linksRouter.closeTags()
     }

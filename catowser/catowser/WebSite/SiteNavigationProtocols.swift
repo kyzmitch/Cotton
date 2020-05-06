@@ -22,6 +22,8 @@ protocol SiteExternalNavigationDelegate: class {
     func didStartProvisionalNavigation()
     func didOpenSiteWith(appName: String)
     func displayProgress(_ progress: Double)
+    func didUpdateBackNavigation(to canGoBack: Bool)
+    func didUpdateForwardNavigation(to canGoForward: Bool)
     func showProgress(_ show: Bool)
     func updateTabPreview(_ screenshot: UIImage)
 }
@@ -31,4 +33,6 @@ protocol SiteNavigationComponent: class {
     var siteNavigator: SiteNavigationDelegate? { get set }
     /// Reloads state of UI components
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
+    func changeBackButton(to canGoBack: Bool)
+    func changeForwardButton(to canGoForward: Bool)
 }

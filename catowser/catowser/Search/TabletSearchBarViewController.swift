@@ -178,6 +178,14 @@ final class TabletSearchBarViewController: BaseViewController {
 }
 
 extension TabletSearchBarViewController: SiteNavigationComponent {
+    func changeBackButton(to canGoBack: Bool) {
+        goBackButton.isEnabled = canGoBack
+    }
+    
+    func changeForwardButton(to canGoForward: Bool) {
+        goForwardButton.isEnabled = canGoForward
+    }
+    
     var siteNavigator: SiteNavigationDelegate? {
         get {
             return siteNavigationDelegate

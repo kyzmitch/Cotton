@@ -195,7 +195,7 @@ private extension WebViewController {
         canGoBackObservation = webView.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            // TODO: update navigation bar with instance of `SiteNavigationComponent` and `reloadNavigationElements` func
+            self.externalNavigationDelegate?.didUpdateBackNavigation(to: value)
         }
     }
     
@@ -204,7 +204,7 @@ private extension WebViewController {
         canGoForwardObservation = webView.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            // TODO: update navigation bar with instance of `SiteNavigationComponent` and `reloadNavigationElements` func
+            self.externalNavigationDelegate?.didUpdateForwardNavigation(to: value)
         }
     }
     
