@@ -40,6 +40,7 @@ extension WebViewController: WKUIDelegate {
                  createWebViewWith configuration: WKWebViewConfiguration,
                  for navigationAction: WKNavigationAction,
                  windowFeatures: WKWindowFeatures) -> WKWebView? {
+        
         return nil
     }
 }
@@ -54,6 +55,10 @@ extension WebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
+        
+#if false
+        print("navAction: \(navigationAction.navigationType.debugDescription) \(url)")
+#endif
         
         switch url.scheme {
         case "tel", "facetime", "facetime-audio", "mailto":
@@ -82,6 +87,8 @@ extension WebViewController: WKNavigationDelegate {
 
         switch url.scheme {
         case "http", "https":
+            decisionHandler(.allow)
+        case "about":
             decisionHandler(.allow)
         default:
             decisionHandler(.cancel)
@@ -133,7 +140,7 @@ extension WebViewController: WKNavigationDelegate {
                 print("failed to take a screenshot \(err)")
             case (let img?, _):
                 self?.externalNavigationDelegate?.updateTabPreview(img)
-            case (.none, .none):
+            default:
                 print("failed to take a screenshot")
             }
         }
@@ -160,5 +167,26 @@ extension WebViewController: WKNavigationDelegate {
         externalNavigationDelegate?.showProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
+    }
+}
+
+extension WKNavigationType: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .linkActivated:
+            return "linkActivated"
+        case .formSubmitted:
+            return "formSubmitted"
+        case .backForward:
+            return "backForward"
+        case .reload:
+            return "reload"
+        case .formResubmitted:
+            return "formResubmitted"
+        case .other:
+            return "other"
+        @unknown default:
+            return "default \(rawValue)"
+        }
     }
 }
