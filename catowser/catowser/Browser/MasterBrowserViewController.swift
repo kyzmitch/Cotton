@@ -437,7 +437,8 @@ private extension MasterBrowserViewController {
         }
         let siteContent: Tab.ContentType = .site(site)
         do {
-            try TabsListManager.shared.replaceSelected(tabContent: siteContent)
+            // TODO: remove tab content replacing below, because it will happen in `didCommit`
+            // try TabsListManager.shared.replaceSelected(tabContent: siteContent)
             open(tabContent: siteContent)
         } catch {
             print("\(#function) failed to replace current tab")

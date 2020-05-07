@@ -196,6 +196,7 @@ private extension WebViewController {
             guard let self = self else { return }
             guard let value = change.newValue else { return }
             self.externalNavigationDelegate?.didUpdateBackNavigation(to: value)
+            // webView.finalURLPublisher().catch { (error) -> Publisher in }
         }
     }
     

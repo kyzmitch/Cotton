@@ -9,6 +9,9 @@
 import Foundation
 import WebKit
 import HttpKit
+#if canImport(Combine)
+import Combine
+#endif
 
 public protocol JavaScriptEvaluateble: class {
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
@@ -82,4 +85,62 @@ extension JavaScriptEvaluateble {
             }
         })
     }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    func evaluatePublisher(jsScript: String) -> AnyPublisher<Any, Error> {
+        let p = Future<Any, Error> { [weak self] (promise) in
+            guard let self = self else {
+                promise(.failure(JSPluginsError.zombiError))
+                return
+            }
+            self.evaluateJavaScript(jsScript) { (something, error) in
+                if let realError = error {
+                    promise(.failure(realError))
+                    return
+                }
+                guard let anyResult = something else {
+                    promise(.failure(JSPluginsError.nilJSEvaluationResult))
+                    return
+                }
+                promise(.success(anyResult))
+            }
+        }
+        
+        return Deferred {
+            return p
+        }.eraseToAnyPublisher()
+    }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public func titlePublisher() -> AnyPublisher<String, Error> {
+        typealias StringResult = Result<String, Error>
+        return evaluatePublisher(jsScript: "document.title").flatMap { (anyResult) -> StringResult.Publisher in
+            guard let documentTitle = anyResult as? String else {
+                return StringResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotString))
+            }
+            return StringResult.Publisher(.success(documentTitle))
+        }.eraseToAnyPublisher()
+    }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public func finalURLPublisher() -> AnyPublisher<URL, Error> {
+        typealias URLResult = Result<URL, Error>
+        // If we have JavaScript blocked, these will be empty.
+        return evaluatePublisher(jsScript: "window.location.href").flatMap { (anyResult) -> URLResult.Publisher in
+            guard let urlString = anyResult as? String else {
+                return URLResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotString))
+            }
+            guard let url = URL(string: urlString) else {
+                return URLResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotURL))
+            }
+            return URLResult.Publisher(.success(url))
+        }.eraseToAnyPublisher()
+    }
+}
+
+enum JSPluginsError: LocalizedError {
+    case zombiError
+    case nilJSEvaluationResult
+    case jsEvaluationIsNotString
+    case jsEvaluationIsNotURL
 }

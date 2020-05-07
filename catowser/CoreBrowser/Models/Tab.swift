@@ -49,6 +49,23 @@ public extension Tab {
     }
 }
 
+extension Tab.ContentType: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .blank:
+            return ".blank"
+        case .site(let site):
+            return ".site(\(site.host.rawValue))"
+        case .homepage:
+            return ".homepage"
+        case .favorites:
+            return ".favorites"
+        case .topSites:
+            return ".topSites"
+        }
+    }
+}
+
 extension Tab.ContentType: Equatable {
     public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
