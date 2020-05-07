@@ -98,15 +98,25 @@ extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(true)
         
-        guard let webViewUrl = webView.url else {
+        // Can't perform below code in `didFinish` which should be right
+        // because for some websites (meduza.io) it isn't called
+        
+        guard let newURL = webView.url else {
             print("web view without url")
             return
         }
         
-        if webViewUrl.hasIPHost {
-            urlInfo.updateURLForSameIP(url: webViewUrl)
+        if newURL.hasIPHost {
+            urlInfo.updateURLForSameIP(url: newURL)
+        } else if urlInfo.sameHost(with: newURL) {
+            urlInfo.updateURLForSameHost(url: newURL)
+        } else if let newURLinfo = HttpKit.URLIpInfo(newURL) {
+            // if user moves from one host (search engine)
+            // to different (specific website)
+            // need to update host completely
+            urlInfo = newURLinfo
         } else {
-            urlInfo.updateURLForSameHost(url: webViewUrl)
+            assertionFailure("Impossible case with new URL: \(newURL)")
         }
         
         guard let site = Site(url: urlInfo.domainURL) else {
