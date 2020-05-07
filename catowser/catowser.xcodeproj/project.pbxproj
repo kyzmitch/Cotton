@@ -212,6 +212,7 @@
 		8ADAF54A240124D800A0D233 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF549240124D800A0D233 /* Feature.swift */; };
 		8ADAF54C2401258000A0D233 /* LocalFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */; };
 		8ADAF54E240126F700A0D233 /* LocalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54D240126F700A0D233 /* LocalSettings.swift */; };
+		8ADEC2D924642AA200FD389B /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8AE46354244E07E600C8E063 /* OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE46353244E07E600C8E063 /* OpenSearchParser.swift */; };
 		8AE6D16D2350FF35006316AD /* HttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE6D16B2350FF35006316AD /* HttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE6D1702350FF35006316AD /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
@@ -546,6 +547,7 @@
 			files = (
 				C7519628228DEC190071CE0C /* SwiftSoup.framework in Frameworks */,
 				721DF7B158CBE52302D9227B /* Pods_JSPlugins.framework in Frameworks */,
+				8ADEC2D924642AA200FD389B /* Combine.framework in Frameworks */,
 				8A80D0DA2451B3980025528D /* HttpKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
