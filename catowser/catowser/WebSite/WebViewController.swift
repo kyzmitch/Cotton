@@ -352,4 +352,8 @@ extension WebViewController: SiteNavigationDelegate {
         externalNavigationDelegate?.didStartProvisionalNavigation()
         _ = webView.reload()
     }
+    
+    func openTabMenu() {
+        externalNavigationDelegate?.openTabMenu()
+    }
 }

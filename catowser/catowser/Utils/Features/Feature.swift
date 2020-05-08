@@ -10,6 +10,7 @@ import Foundation
 
 protocol FeatureSource {
     func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value
+    func setValue<F: BasicFeature>(of feature: ApplicationFeature<F>, value: F.Value?)
 }
 
 protocol BasicFeature: Feature where Value: RawFeatureValue {

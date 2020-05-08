@@ -36,7 +36,7 @@ final class LocalFeatureSource: FeatureSource {
         }
     }
     
-    func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value) where F: BasicFeature {
+    func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F : BasicFeature {
         switch F.defaultValue {
         case is Bool:
             // TODO: Make implementation based on generics to not have conversions

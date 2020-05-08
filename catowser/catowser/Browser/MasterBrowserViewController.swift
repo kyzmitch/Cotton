@@ -583,4 +583,8 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
     func updateTabPreview(_ screenshot: UIImage) {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
+    
+    func openTabMenu() {
+        linksRouter.openTabMenu()
+    }
 }
