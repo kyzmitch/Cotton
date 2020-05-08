@@ -57,7 +57,7 @@ extension WebViewController: WKNavigationDelegate {
         }
         
 #if false
-        print("navAction: \(navigationAction.navigationType.debugDescription) \(url)")
+        print("navigation Action: \(navigationAction.navigationType.debugDescription) \(url)")
 #endif
         
         switch url.scheme {
@@ -97,63 +97,34 @@ extension WebViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(true)
-        
-        // Can't perform below code in `didFinish` which should be right
-        // because for some websites (meduza.io) it isn't called
-        
-        guard let newURL = webView.url else {
-            print("web view without url")
-            return
-        }
-        
-        if newURL.hasIPHost {
-            urlInfo.updateURLForSameIP(url: newURL)
-        } else if urlInfo.sameHost(with: newURL) {
-            urlInfo.updateURLForSameHost(url: newURL)
-        } else if let newURLinfo = HttpKit.URLIpInfo(newURL) {
-            // if user moves from one host (search engine)
-            // to different (specific website)
-            // need to update host completely
-            urlInfo = newURLinfo
-        } else {
-            assertionFailure("Impossible case with new URL: \(newURL)")
-        }
-        
-        guard let site = Site(url: urlInfo.domainURL) else {
-            assertionFailure("failed create site from URL")
-            return
-        }
-        
-        // you must inject re-enable plugins even if web view loaded page from same Host
-        // and even if ip address is used instead of domain name
-        pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
-        InMemoryDomainSearchProvider.shared.remember(domainName: urlInfo.host)
-        
-        do {
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
-        } catch {
-            print("\(#function) - failed to replace current tab")
-        }
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         externalNavigationDelegate?.showProgress(false)
         
-        let snapshotConfig = WKSnapshotConfiguration()
-        let w = webView.bounds.size.width
-        let h = webView.bounds.size.height
-        snapshotConfig.rect = CGRect(x: 0, y: 0, width: w, height: h)
-        snapshotConfig.snapshotWidth = 256
-        webView.takeSnapshot(with: snapshotConfig) { [weak self] (image, error) in
-            switch (image, error) {
-            case (_, let err?):
-                print("failed to take a screenshot \(err)")
-            case (let img?, _):
-                self?.externalNavigationDelegate?.updateTabPreview(img)
-            default:
-                print("failed to take a screenshot")
+        defer {
+            let snapshotConfig = WKSnapshotConfiguration()
+            let w = webView.bounds.size.width
+            let h = webView.bounds.size.height
+            snapshotConfig.rect = CGRect(x: 0, y: 0, width: w, height: h)
+            snapshotConfig.snapshotWidth = 256
+            webView.takeSnapshot(with: snapshotConfig) { [weak self] (image, error) in
+                switch (image, error) {
+                case (_, let err?):
+                    print("failed to take a screenshot \(err)")
+                case (let img?, _):
+                    self?.externalNavigationDelegate?.updateTabPreview(img)
+                default:
+                    print("failed to take a screenshot")
+                }
             }
         }
+        
+        guard let newURL = webView.url else {
+            print("web view without url")
+            return
+        }
+        handleLinkLoading(newURL, webView)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

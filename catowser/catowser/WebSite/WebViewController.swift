@@ -48,6 +48,8 @@ final class WebViewController: BaseViewController {
     /// and navigation button won't be updated based on state.
     private var canGoBackObservation: NSKeyValueObservation?
     private var canGoForwardObservation: NSKeyValueObservation?
+    @available(iOS 13.0, *)
+    private lazy var finalURLFetchCancellable: AnyCancellable? = nil
 
     func load(url: URL, canLoadPlugins: Bool = true) {
         // TODO: actually this func is called using URLIpInfo, so, maybe no need to update it
@@ -117,9 +119,13 @@ final class WebViewController: BaseViewController {
     deinit {
         if #available(iOS 13.0, *) {
             dnsRequestCancellable?.cancel()
+            finalURLFetchCancellable?.cancel()
         } else {
             dnsRequestSubsciption?.dispose()
         }
+        loadingProgressObservation?.invalidate()
+        canGoForwardObservation?.invalidate()
+        canGoBackObservation?.invalidate()
     }
     
     override func loadView() {
@@ -149,7 +155,40 @@ final class WebViewController: BaseViewController {
             }
         }
     }
+    
+    func handleLinkLoading(_ newURL: URL, _ webView: WKWebView) {
+        if newURL.hasIPHost {
+            urlInfo.updateURLForSameIP(url: newURL)
+        } else if urlInfo.sameHost(with: newURL) {
+            urlInfo.updateURLForSameHost(url: newURL)
+        } else if let newURLinfo = HttpKit.URLIpInfo(newURL) {
+            // if user moves from one host (search engine)
+            // to different (specific website)
+            // need to update host completely
+            urlInfo = newURLinfo
+        } else {
+            assertionFailure("Impossible case with new URL: \(newURL)")
+        }
+        
+        guard let site = Site(url: urlInfo.domainURL) else {
+            assertionFailure("failed create site from URL")
+            return
+        }
+        
+        // you must inject re-enable plugins even if web view loaded page from same Host
+        // and even if ip address is used instead of domain name
+        pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
+        InMemoryDomainSearchProvider.shared.remember(domainName: urlInfo.host)
+        
+        do {
+            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        } catch {
+            print("\(#function) - failed to replace current tab")
+        }
+    }
 }
+
+// MARK: - private functions
 
 private extension WebViewController {
     func setupScripts(canLoadPlugins: Bool) {
@@ -196,7 +235,7 @@ private extension WebViewController {
             guard let self = self else { return }
             guard let value = change.newValue else { return }
             self.externalNavigationDelegate?.didUpdateBackNavigation(to: value)
-            // webView.finalURLPublisher().catch { (error) -> Publisher in }
+            self.updateNavigatedURL(self.webView)
         }
     }
     
@@ -207,6 +246,29 @@ private extension WebViewController {
             guard let value = change.newValue else { return }
             self.externalNavigationDelegate?.didUpdateForwardNavigation(to: value)
         }
+    }
+    
+    func updateNavigatedURL(_ webView: WKWebView) {
+        if #available(iOS 13.0, *) {
+            fetchFinalURLFromJS(webView)
+        } else {
+            assertionFailure("Final URL update not implemented with ReactiveSwift")
+        }
+    }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    func fetchFinalURLFromJS(_ webView: WKWebView) {
+        finalURLFetchCancellable?.cancel()
+        finalURLFetchCancellable = webView.finalURLPublisher()
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let finalURLError):
+                    print("JS didn't return final url: \(finalURLError.localizedDescription)")
+                default: break
+                }
+            }, receiveValue: { [weak self] (url) in
+                self?.handleLinkLoading(url, webView)
+            })
     }
     
     func internalLoad(url: URL) {
@@ -261,6 +323,8 @@ private extension WebViewController {
         }
     }
 }
+
+// MARK: - SiteNavigationDelegate implementation
 
 extension WebViewController: SiteNavigationDelegate {
     var canGoBack: Bool {
