@@ -16,6 +16,7 @@ protocol SiteNavigationDelegate: class {
     func goForward()
     func goBack()
     func reload()
+    func openTabMenu()
 }
 
 protocol SiteExternalNavigationDelegate: class {
@@ -26,6 +27,7 @@ protocol SiteExternalNavigationDelegate: class {
     func didUpdateForwardNavigation(to canGoForward: Bool)
     func showProgress(_ show: Bool)
     func updateTabPreview(_ screenshot: UIImage)
+    func openTabMenu()
 }
 
 protocol SiteNavigationComponent: class {

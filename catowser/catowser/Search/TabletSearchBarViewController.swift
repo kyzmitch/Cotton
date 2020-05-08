@@ -44,7 +44,7 @@ final class TabletSearchBarViewController: BaseViewController {
             if let systemImage = UIImage(systemName: "square.and.arrow.up") {
                 btn = UIButton()
                 btn.setImage(systemImage, for: .normal)
-                btn.addTarget(self, action: .backPressed, for: .touchUpInside)
+                btn.addTarget(self, action: .actionsPressed, for: .touchUpInside)
             } else {
                 btn = .systemButton(with: .actions, target: self, action: .actionsPressed)
             }
@@ -153,7 +153,7 @@ final class TabletSearchBarViewController: BaseViewController {
     }
     
     @objc fileprivate func actionsPressed() {
-        
+        siteNavigationDelegate?.openTabMenu()
     }
 
     @objc fileprivate func backPressed() {

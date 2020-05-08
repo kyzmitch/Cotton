@@ -21,6 +21,15 @@ final class FeatureManager {
         return source.currentValue(of: feature)
     }
     
+    static func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) {
+        guard let source = source(for: feature) else {
+            return
+        }
+        source.setValue(of: feature, value: value)
+    }
+    
+    // TODO: implement feature state observer (e.g. needed to reload web view)
+    
     private static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
         return shared.sources.first(where: { type(of: $0) == F.source })
     }

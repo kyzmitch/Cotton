@@ -27,6 +27,7 @@ protocol LinksRouterInterface: class {
     func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
     func showProgress(_ show: Bool)
+    func openTabMenu()
 }
 
 /// Should contain copies for references to all needed constraints and view controllers.
@@ -146,6 +147,10 @@ extension MasterRouter: LinksRouterInterface {
             hiddenWebLoadConstraint?.isActive = true
         }
     }
+    
+    func openTabMenu() {
+        showTabMenuIfNeeded()
+    }
 }
 
 fileprivate extension MasterRouter {
@@ -255,6 +260,37 @@ fileprivate extension MasterRouter {
         UIView.animate(withDuration: 0.33) {
             self.linkTagsController.view.layoutIfNeeded()
         }
+    }
+    
+    func showTabMenuIfNeeded() {
+        let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+        let msg = "DNS over HTTPs currently \(isDoHEnabled ? "enabled" : "disabled")"
+        let alert: UIAlertController = .init(title: nil,
+                                             message: msg,
+                                             preferredStyle: .actionSheet)
+        let eAction = UIAlertAction(title: "Enable", style: .default) { (_) in
+            FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: true)
+        }
+        let dAction = UIAlertAction(title: "Disable", style: .default) { (_) in
+            FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: false)
+        }
+        alert.addAction(eAction)
+        alert.addAction(dAction)
+#if false
+        // TODO: implement for iPhone and tablet screens, use
+        if let popoverPresenter = alert.popoverPresentationController {
+            // for iPad
+            let btnBounds = self.presenter.view.bounds
+            let btnOrigin = self.presenter.view.frame.origin
+            let rect = CGRect(x: btnOrigin.x,
+                              y: btnOrigin.y,
+                              width: btnBounds.width,
+                              height: btnBounds.height)
+            popoverPresenter.sourceView = self.presenter.view
+            popoverPresenter.sourceRect = rect
+        }
+        self.presenter.viewController.present(alert, animated: true, completion: nil)
+#endif
     }
 
     func startSearch(_ searchText: String) {
