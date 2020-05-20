@@ -18,6 +18,9 @@ final class LocalFeatureSource: FeatureSource {
     /// Used to publish Feature changes
     private let (featureChangeSignal, featureObserver) = Signal<AnyFeature, Never>.pipe()
     
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    private lazy var featureSubject: PassthroughSubject<AnyFeature, Never> = .init()
+    
     init() {}
     
     func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value {
@@ -55,6 +58,12 @@ final class LocalFeatureSource: FeatureSource {
         default:
             assertionFailure("Not implemented")
         }
+        
+        let value = AnyFeature(feature)
+        if #available(iOS 13.0, *) {
+            self.featureSubject.send(value)
+        }
+        self.featureObserver.send(value: value)
     }
 }
 
@@ -65,7 +74,7 @@ extension LocalFeatureSource: ObservableFeatureSource {
 
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     var futureFeatureChanges: AnyPublisher<AnyFeature, Never> {
-        return Empty<AnyFeature, Never>(completeImmediately: false).eraseToAnyPublisher()
+        return featureSubject.eraseToAnyPublisher()
     }
 }
 
