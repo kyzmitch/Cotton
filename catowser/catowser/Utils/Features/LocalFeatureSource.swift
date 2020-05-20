@@ -7,9 +7,17 @@
 //
 
 import Foundation
+import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 
 // FeatureSource that uses UserDefaults
 final class LocalFeatureSource: FeatureSource {
+    
+    /// Used to publish Feature changes
+    private let (featureChangeSignal, featureObserver) = Signal<AnyFeature, Never>.pipe()
+    
     init() {}
     
     func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value {
@@ -36,7 +44,7 @@ final class LocalFeatureSource: FeatureSource {
         }
     }
     
-    func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F : BasicFeature {
+    func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F: BasicFeature {
         switch F.defaultValue {
         case is Bool:
             // TODO: Make implementation based on generics to not have conversions
@@ -47,6 +55,17 @@ final class LocalFeatureSource: FeatureSource {
         default:
             assertionFailure("Not implemented")
         }
+    }
+}
+
+extension LocalFeatureSource: ObservableFeatureSource {
+    var rxFutureFeatureChanges: Signal<AnyFeature, Never> {
+        return featureChangeSignal
+    }
+
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    var futureFeatureChanges: AnyPublisher<AnyFeature, Never> {
+        return Empty<AnyFeature, Never>(completeImmediately: false).eraseToAnyPublisher()
     }
 }
 
