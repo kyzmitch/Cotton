@@ -30,9 +30,12 @@ final class DownloadButtonCellView: UITableViewCell {
     /// Video title view
     @IBOutlet weak var titleLabel: UILabel!
 
-    var buttonState: DownloadButtonState = .canDownload {
+    var buttonState: DownloadButtonState? {
         didSet {
-            switch buttonState {
+            guard let bs = buttonState else {
+                return
+            }
+            switch bs {
             case .canDownload:
                 progressView.progress = 0
                 progressView.isHidden = false
@@ -43,7 +46,7 @@ final class DownloadButtonCellView: UITableViewCell {
                 progressView.isHidden = true
                 downloadButton.isEnabled = true
             }
-            downloadButton.setTitle(buttonState.title, for: .normal)
+            downloadButton.setTitle(bs.title, for: .normal)
         }
     }
 
@@ -53,28 +56,26 @@ final class DownloadButtonCellView: UITableViewCell {
                 return
             }
             vm.delegate = self
-            setButtonState(to: vm.downloadState)
+            setButtonState(toDownloadState: vm.downloadState)
 
             // subscribe to future changes
             disposable?.dispose()
             disposable = vm.stateSignal
                 .observe(on: UIScheduler())
                 .observeValues { [weak self] state in
-                    self?.setButtonState(to: state)
+                    self?.setButtonState(toDownloadState: state)
             }
         }
     }
 
-    var previewURL: URL? {
+    var mediaFilePreviewURL: URL? {
         didSet {
             previewImageView.af.cancelImageRequest()
-            if let url = previewURL {
+            if let url = mediaFilePreviewURL {
                 previewImageView.af.setImage(withURL: url)
             } else {
                 previewImageView.image = nil
             }
-            progressView.progress = 0
-            buttonState = .canDownload
         }
     }
 
@@ -82,7 +83,7 @@ final class DownloadButtonCellView: UITableViewCell {
 
     private var disposable: Disposable?
 
-    private func setButtonState(to state: DownloadState) {
+    private func setButtonState(toDownloadState state: DownloadState) {
         switch state {
         case .initial:
             self.buttonState = .canDownload
