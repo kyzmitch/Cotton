@@ -15,21 +15,25 @@ protocol FileDownloadDelegate: class {
 }
 
 final class FileDownloadViewModel {
+    fileprivate let batch: Downloadable
+    
     fileprivate let downloadOutput: MutableProperty<DownloadState>
 
     lazy var stateSignal: Signal<DownloadState, Never> = {
         return downloadOutput.signal
     }()
     
+    /// Current download state, can be used for download button state and progress indicator
     var downloadState: DownloadState {
         return downloadOutput.value
     }
-
-    fileprivate let batch: Downloadable
+    
+    /// Name of media file which can be used for label content
+    let labelText: String
 
     weak var delegate: FileDownloadDelegate?
 
-    init(with batch: Downloadable) {
+    init(with batch: Downloadable, name: String) {
         self.batch = batch
         let downloadState: DownloadState
         if let fileURL = batch.fileAtDestination() {
@@ -38,6 +42,7 @@ final class FileDownloadViewModel {
             downloadState = .initial
         }
         downloadOutput = .init(downloadState)
+        labelText = name
     }
 
     func download() {
