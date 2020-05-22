@@ -117,8 +117,25 @@ extension JavaScriptEvaluateble {
     }
     
     func rxEvaluate(jsScript: String) -> SignalProducer<Any, Error> {
-        assertionFailure("rxEvaluate isn't implemented")
-        return .init(error: EvalError())
+        let producer: SignalProducer<Any, Error> = .init { [weak self] (observer, _) in
+            guard let self = self else {
+                observer.send(error: JSPluginsError.zombiError)
+                return
+            }
+            self.evaluateJavaScript(jsScript) { (something, error) in
+                if let realError = error {
+                    observer.send(error: realError)
+                    return
+                }
+                guard let anyResult = something else {
+                    observer.send(error: JSPluginsError.nilJSEvaluationResult)
+                    return
+                }
+                observer.send(value: anyResult)
+                observer.sendCompleted()
+            }
+        }
+        return producer
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)

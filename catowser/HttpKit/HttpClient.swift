@@ -87,6 +87,7 @@ extension HttpKit {
                 
                 let dataRequest: DataRequest = AF.request(httpRequest)
                     
+                // swiftlint:disable:next line_length
                 dataRequest
                     .validate(statusCode: codes)
                     .responseDecodable(of: responseType, queue: .main, decoder: JSONDecoder(), completionHandler: { (response) in
@@ -165,8 +166,6 @@ extension HttpKit {
                             observer.send(value: value)
                             observer.sendCompleted()
                         }
-                
-
                 }
                 
                 lifetime.observeEnded({
