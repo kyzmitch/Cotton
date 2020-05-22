@@ -11,11 +11,12 @@ import CoreBrowser
 
 final class LinksBadgeView: UICollectionViewCell, ReusableItem {
     @IBOutlet weak var tagTypeLabel: UILabel! {
-        didSet{
+        didSet {
             tagTypeLabel.translatesAutoresizingMaskIntoConstraints = false
         }
     }
 
+    // swiftlint:disable:next line_length
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         let size = contentView.systemLayoutSizeFitting(layoutAttributes.size)
         var newFrame = layoutAttributes.frame

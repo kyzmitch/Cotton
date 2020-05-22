@@ -127,7 +127,7 @@ extension DownloadButtonCellView: ReusableItem {}
 
 extension DownloadButtonCellView: FileDownloadDelegate {
     func didPressOpenFile(withLocal url: URL) {
-        delegate?.didRequestOpen(local: url, from: downloadButton)
+        delegate?.didRequestOpen(local: url, from: self)
     }
 }
 
@@ -152,7 +152,7 @@ private extension DownloadButtonCellView {
                 })
             }
         case .downloaded(let url):
-            delegate?.didRequestOpen(local: url, from: downloadButton)
+            delegate?.didRequestOpen(local: url, from: self)
         default:
             break
         }
