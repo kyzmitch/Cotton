@@ -316,6 +316,7 @@ extension MasterRouter: LinkTagsDelegate {
             filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
             if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
                 popoverPresenter.permittedArrowDirections = .down
+                popoverPresenter.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
                 popoverPresenter.sourceView = linkTagsController.view
             }
             filesGreedController.reloadWith(source: source, completion: nil)
