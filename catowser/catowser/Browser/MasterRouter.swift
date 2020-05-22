@@ -136,6 +136,8 @@ extension MasterRouter: LinksRouterInterface {
         dataSource = nil
         hideFilesGreedIfNeeded()
         hideLinkTagsController()
+        filesGreedController.clearFiles()
+        linkTagsController.clearLinks()
     }
     
     func showProgress(_ show: Bool) {

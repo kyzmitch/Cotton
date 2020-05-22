@@ -13,6 +13,7 @@ import JSPlugins
 
 protocol FilesGreedPresenter: class {
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
+    func clearFiles()
 }
 
 protocol FileDownloadViewDelegate: class {
@@ -100,6 +101,11 @@ extension FilesGreedViewController: AnyViewController {}
 
 // MARK: Files Greed Presenter
 extension FilesGreedViewController: FilesGreedPresenter {
+    func clearFiles() {
+        filesDataSource = nil
+        tableView.reloadData()
+    }
+    
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)? = nil) {
         guard filesDataSource != source else {
             completion?()
