@@ -78,9 +78,9 @@ extension FilesGreedViewController {
             let node = nodes[indexPath.item]
             cell.viewModel = FileDownloadViewModel(with: node)
             cell.titleLabel.text = node.name
-            cell.previewURL = node.thumbnailUrl
+            cell.mediaFilePreviewURL = node.thumbnailUrl
         case .t4(let video)?:
-            cell.previewURL = video.thumbnailURL
+            cell.mediaFilePreviewURL = video.thumbnailURL
             cell.titleLabel.text = video.name
             // for this type we can only load preview and title
             // download URL should be chosen e.g. by using action sheet
@@ -88,7 +88,7 @@ extension FilesGreedViewController {
             let tag = tags[indexPath.item]
             cell.viewModel = FileDownloadViewModel(with: tag)
             cell.titleLabel.text = tag.fileName
-            cell.previewURL = tag.poster
+            cell.mediaFilePreviewURL = tag.poster
         default:
             break
         }
