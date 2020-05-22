@@ -56,6 +56,7 @@ final class DownloadButtonCellView: UITableViewCell {
                 return
             }
             vm.delegate = self
+            titleLabel.text = vm.labelText
             setButtonState(toDownloadState: vm.downloadState)
 
             // subscribe to future changes

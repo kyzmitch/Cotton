@@ -72,25 +72,23 @@ extension FilesGreedViewController {
         cell.titleLabel.preferredMaxLayoutWidth = desiredLabelW
 
         cell.delegate = self
+        
+        guard let source = filesDataSource else { return cell }
 
-        switch filesDataSource {
-        case .instagram(let nodes)?:
+        switch source {
+        case .instagram(let nodes):
             let node = nodes[indexPath.item]
-            cell.viewModel = FileDownloadViewModel(with: node)
-            cell.titleLabel.text = node.name
+            cell.viewModel = FileDownloadViewModel(with: node, name: node.name)
             cell.mediaFilePreviewURL = node.thumbnailUrl
-        case .t4(let video)?:
+        case .t4(let video):
             cell.mediaFilePreviewURL = video.thumbnailURL
             cell.titleLabel.text = video.name
             // for this type we can only load preview and title
             // download URL should be chosen e.g. by using action sheet
-        case .htmlVideos(let tags)?:
+        case .htmlVideos(let tags):
             let tag = tags[indexPath.item]
-            cell.viewModel = FileDownloadViewModel(with: tag)
-            cell.titleLabel.text = tag.fileName
+            cell.viewModel = FileDownloadViewModel(with: tag, name: tag.name)
             cell.mediaFilePreviewURL = tag.poster
-        default:
-            break
         }
 
         return cell
@@ -155,7 +153,7 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
                     callback(nil)
                     return
                 }
-                let viewModel = FileDownloadViewModel(with: t4Video)
+                let viewModel = FileDownloadViewModel(with: t4Video, name: videoContainer.name)
                 callback(viewModel)
             }
             alert.addAction(action)
