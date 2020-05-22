@@ -153,7 +153,8 @@ final class TabletSearchBarViewController: BaseViewController {
     }
     
     @objc fileprivate func actionsPressed() {
-        siteNavigationDelegate?.openTabMenu()
+        let sourceRect = actionsButton.frame
+        siteNavigationDelegate?.openTabMenu(from: view, and: sourceRect)
     }
 
     @objc fileprivate func backPressed() {
