@@ -152,7 +152,7 @@ private extension DownloadButtonCellView {
                 })
             }
         case .downloaded(let url):
-            delegate?.didRequestOpen(local: url, from: self)
+            delegate?.didRequestOpen(local: url, from: downloadButton)
         default:
             break
         }
