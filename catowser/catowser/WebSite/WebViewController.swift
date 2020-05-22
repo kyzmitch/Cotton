@@ -252,6 +252,7 @@ private extension WebViewController {
         if #available(iOS 13.0, *) {
             fetchFinalURLFromJS(webView)
         } else {
+            // TODO: implement
             assertionFailure("Final URL update not implemented with ReactiveSwift")
         }
     }
