@@ -26,8 +26,11 @@ protocol LinksRouterInterface: class {
     func openTagsFor(t4 video: T4Video)
     func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
+    
+    // TODO: probably need to move next interfaces to separate protocol
+    
     func showProgress(_ show: Bool)
-    func openTabMenu()
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect)
 }
 
 /// Should contain copies for references to all needed constraints and view controllers.
@@ -150,8 +153,8 @@ extension MasterRouter: LinksRouterInterface {
         }
     }
     
-    func openTabMenu() {
-        showTabMenuIfNeeded()
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
+        showTabMenuIfNeeded(from: sourceView, and: sourceRect)
     }
 }
 
@@ -264,7 +267,7 @@ fileprivate extension MasterRouter {
         }
     }
     
-    func showTabMenuIfNeeded() {
+    func showTabMenuIfNeeded(from sourceView: UIView, and sourceRect: CGRect) {
         let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         let msg = "DNS over HTTPs currently \(isDoHEnabled ? "enabled" : "disabled")"
         let alert: UIAlertController = .init(title: nil,
@@ -278,21 +281,18 @@ fileprivate extension MasterRouter {
         }
         alert.addAction(eAction)
         alert.addAction(dAction)
-#if false
-        // TODO: implement for iPhone and tablet screens, use
-        if let popoverPresenter = alert.popoverPresentationController {
-            // for iPad
-            let btnBounds = self.presenter.view.bounds
-            let btnOrigin = self.presenter.view.frame.origin
-            let rect = CGRect(x: btnOrigin.x,
-                              y: btnOrigin.y,
-                              width: btnBounds.width,
-                              height: btnBounds.height)
-            popoverPresenter.sourceView = self.presenter.view
-            popoverPresenter.sourceRect = rect
+
+        if isPad {
+            if let popoverPresenter = alert.popoverPresentationController {
+                // for iPad
+                popoverPresenter.sourceView = sourceView
+                popoverPresenter.sourceRect = sourceRect
+            }
+            self.presenter.viewController.present(alert, animated: true, completion: nil)
+        } else {
+            // TODO: implement for iPhone and tablet screens, use
+            assertionFailure("Site options menu isn't implemented yet")
         }
-        self.presenter.viewController.present(alert, animated: true, completion: nil)
-#endif
     }
 
     func startSearch(_ searchText: String) {
