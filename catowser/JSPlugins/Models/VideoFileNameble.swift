@@ -10,6 +10,7 @@ import Foundation
 
 public protocol VideoFileNameble {
     var name: String { get }
+    /// Used to provide same interface as `Downloadable` protocol  from HttpKit
     var fileName: String { get }
 }
 

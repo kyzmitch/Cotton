@@ -53,35 +53,23 @@ final class DownloadButtonCellView: UITableViewCell {
                 return
             }
             vm.delegate = self
+            setButtonState(to: vm.downloadState)
 
+            // subscribe to future changes
             disposable?.dispose()
             disposable = vm.stateSignal
                 .observe(on: UIScheduler())
                 .observeValues { [weak self] state in
-                    guard let self = self else { return }
-                    switch state {
-                    case .initial:
-                        self.buttonState = .canDownload
-                    case .started:
-                        self.buttonState = .downloading
-                    case .in(let progress):
-                        // .downloading
-                        self.progressView.progress = Float(progress)
-                    case .finished(let url):
-                        self.buttonState = .downloaded(url)
-                    case .error(_):
-                        self.buttonState = .canDownload
-                        self.viewModel = nil
-                    }
+                    self?.setButtonState(to: state)
             }
         }
     }
 
     var previewURL: URL? {
         didSet {
-            previewImageView.af_cancelImageRequest()
+            previewImageView.af.cancelImageRequest()
             if let url = previewURL {
-                previewImageView.af_setImage(withURL: url)
+                previewImageView.af.setImage(withURL: url)
             } else {
                 previewImageView.image = nil
             }
@@ -94,6 +82,23 @@ final class DownloadButtonCellView: UITableViewCell {
 
     private var disposable: Disposable?
 
+    private func setButtonState(to state: DownloadState) {
+        switch state {
+        case .initial:
+            self.buttonState = .canDownload
+        case .started:
+            self.buttonState = .downloading
+        case .in(let progress):
+            // .downloading
+            self.progressView.progress = Float(progress)
+        case .finished(let url):
+            self.buttonState = .downloaded(url)
+        case .error:
+            self.buttonState = .canDownload
+            self.viewModel = nil
+        }
+    }
+    
     deinit {
         disposable?.dispose()
     }
@@ -109,7 +114,7 @@ final class DownloadButtonCellView: UITableViewCell {
                 return NSLocalizedString("btn_start_download", comment: "Can start download title")
             case .downloading:
                 return NSLocalizedString("btn_downloading", comment: "Button title when download is in progress")
-            case .downloaded(_):
+            case .downloaded:
                 return NSLocalizedString("btn_downloaded", comment: "Can open or share file")
             }
         }

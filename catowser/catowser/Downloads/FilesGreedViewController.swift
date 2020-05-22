@@ -66,7 +66,8 @@ extension FilesGreedViewController {
         cell.selectionStyle = .none
 
         let tableW = tableView.bounds.width - Sizes.margin * 2 - Sizes.imageMargin * 2
-        let desiredLabelW = tableW - cell.previewImageView.center.x - cell.previewImageView.bounds.width / 2 - cell.downloadButton.bounds.width
+        var desiredLabelW = tableW - cell.previewImageView.center.x
+        desiredLabelW -= cell.previewImageView.bounds.width / 2 - cell.downloadButton.bounds.width
         cell.titleLabel.preferredMaxLayoutWidth = desiredLabelW
 
         cell.delegate = self
