@@ -12,6 +12,11 @@ import HttpKit
 #if canImport(Combine)
 import Combine
 #endif
+import ReactiveSwift
+
+fileprivate extension String {
+    static let locationHREF: String = "window.location.href"
+}
 
 public protocol JavaScriptEvaluateble: class {
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
@@ -111,6 +116,11 @@ extension JavaScriptEvaluateble {
         }.eraseToAnyPublisher()
     }
     
+    func rxEvaluate(jsScript: String) -> SignalProducer<Any, Error> {
+        assertionFailure("rxEvaluate isn't implemented")
+        return .init(error: EvalError())
+    }
+    
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func titlePublisher() -> AnyPublisher<String, Error> {
         typealias StringResult = Result<String, Error>
@@ -126,7 +136,7 @@ extension JavaScriptEvaluateble {
     public func finalURLPublisher() -> AnyPublisher<URL, Error> {
         typealias URLResult = Result<URL, Error>
         // If we have JavaScript blocked, these will be empty.
-        return evaluatePublisher(jsScript: "window.location.href").flatMap { (anyResult) -> URLResult.Publisher in
+        return evaluatePublisher(jsScript: .locationHREF).flatMap { (anyResult) -> URLResult.Publisher in
             guard let urlString = anyResult as? String else {
                 return URLResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotString))
             }
@@ -136,6 +146,19 @@ extension JavaScriptEvaluateble {
             return URLResult.Publisher(.success(url))
         }.eraseToAnyPublisher()
     }
+    
+    public func rxFinalURL() -> SignalProducer<URL, Error> {
+        return rxEvaluate(jsScript: .locationHREF)
+            .flatMap(.latest) { (anyResult) -> SignalProducer<URL, Error> in
+                guard let urlString = anyResult as? String else {
+                    return .init(error: JSPluginsError.jsEvaluationIsNotString)
+                }
+                guard let url = URL(string: urlString) else {
+                    return .init(error: JSPluginsError.jsEvaluationIsNotURL)
+                }
+                return .init(value: url)
+        }
+    }
 }
 
 enum JSPluginsError: LocalizedError {
@@ -144,3 +167,5 @@ enum JSPluginsError: LocalizedError {
     case jsEvaluationIsNotString
     case jsEvaluationIsNotURL
 }
+
+struct EvalError: Error {}

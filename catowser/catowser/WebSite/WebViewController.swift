@@ -50,6 +50,7 @@ final class WebViewController: BaseViewController {
     private var canGoForwardObservation: NSKeyValueObservation?
     @available(iOS 13.0, *)
     private lazy var finalURLFetchCancellable: AnyCancellable? = nil
+    private var finalURLFetchDisposable: Disposable?
 
     func load(url: URL, canLoadPlugins: Bool = true) {
         // TODO: actually this func is called using URLIpInfo, so, maybe no need to update it
@@ -122,6 +123,7 @@ final class WebViewController: BaseViewController {
             finalURLFetchCancellable?.cancel()
         } else {
             dnsRequestSubsciption?.dispose()
+            finalURLFetchDisposable?.dispose()
         }
         loadingProgressObservation?.invalidate()
         canGoForwardObservation?.invalidate()
@@ -252,8 +254,7 @@ private extension WebViewController {
         if #available(iOS 13.0, *) {
             fetchFinalURLFromJS(webView)
         } else {
-            // TODO: implement
-            assertionFailure("Final URL update not implemented with ReactiveSwift")
+            rxFetchFinalURLFromJS(webView)
         }
     }
     
@@ -261,6 +262,7 @@ private extension WebViewController {
     func fetchFinalURLFromJS(_ webView: WKWebView) {
         finalURLFetchCancellable?.cancel()
         finalURLFetchCancellable = webView.finalURLPublisher()
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
                 case .failure(let finalURLError):
@@ -270,6 +272,20 @@ private extension WebViewController {
             }, receiveValue: { [weak self] (url) in
                 self?.handleLinkLoading(url, webView)
             })
+    }
+    
+    func rxFetchFinalURLFromJS(_ webView: WKWebView) {
+        finalURLFetchDisposable?.dispose()
+        finalURLFetchDisposable = webView.rxFinalURL()
+            .observe(on: QueueScheduler.main)
+            .startWithResult { [weak self] (result) in
+                switch result {
+                case .failure(let finalURLError):
+                    print("JS didn't return final url: \(finalURLError.localizedDescription)")
+                case .success(let url):
+                    self?.handleLinkLoading(url, webView)
+                }
+        }
     }
     
     func internalLoad(url: URL) {
