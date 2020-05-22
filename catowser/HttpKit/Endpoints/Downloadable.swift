@@ -27,7 +27,7 @@ extension Downloadable {
             let dummyURL: URL = .init(fileURLWithPath: "")
             let dummyResponse: HTTPURLResponse = .init()
             let fileURL: URL = destination(dummyURL, dummyResponse).destinationURL
-            let isExist = FileManager.default.fileExists(atPath: fileURL.absoluteString)
+            let isExist = FileManager.default.fileExists(atPath: fileURL.path)
             return isExist ? fileURL : nil
         } catch {
             return nil
