@@ -17,7 +17,7 @@ protocol FilesGreedPresenter: class {
 }
 
 protocol FileDownloadViewDelegate: class {
-    func didRequestOpen(local url: URL, from view: UIView)
+    func didRequestOpen(local url: URL, from sourceView: UIView)
     func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void)
 }
 
@@ -122,19 +122,20 @@ extension FilesGreedViewController: FilesGreedPresenter {
 
 // MARK: File Download View Delegate
 extension FilesGreedViewController: FileDownloadViewDelegate {
-    func didRequestOpen(local url: URL, from view: UIView) {
+    func didRequestOpen(local url: URL, from sourceView: UIView) {
         let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activity.title = NSLocalizedString("ttl_video_share", comment: "Share video")
 
         if let popoverPresenter = activity.popoverPresentationController {
-            let btnBounds = view.bounds
-            let btnOrigin = view.frame.origin
+            let btnBounds = sourceView.bounds
+            let btnOrigin = sourceView.frame.origin
             let rect = CGRect(x: btnOrigin.x,
                               y: btnOrigin.y,
                               width: btnBounds.width,
                               height: btnBounds.height)
-            popoverPresenter.sourceView = view
+            popoverPresenter.sourceView = sourceView
             popoverPresenter.sourceRect = rect
+            popoverPresenter.permittedArrowDirections = .any
         }
         present(activity, animated: true)
     }
