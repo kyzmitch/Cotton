@@ -20,6 +20,20 @@ extension Downloadable {
     public var excludeFromBackup: Bool {
         return true
     }
+    
+    public func fileAtDestination() -> URL? {
+        do {
+            let destination = try sandboxDestination()
+            let dummyURL: URL = .init(fileURLWithPath: "")
+            let dummyResponse: HTTPURLResponse = .init()
+            let fileURL: URL = destination(dummyURL, dummyResponse).destinationURL
+            let isExist = FileManager.default.fileExists(atPath: fileURL.absoluteString)
+            return isExist ? fileURL : nil
+        } catch {
+            return nil
+        }
+    }
+    
     /// Path to temporary file to not waste RAM.
     /// You can't participate in the files app (or iTunes File Sharing)
     /// if you don't store your files in the Documents folder.
@@ -35,7 +49,8 @@ extension Downloadable {
 
 fileprivate extension URL {
     func destination(using name: String) -> DownloadRequest.Destination {
-        let fileURL = self.appendingPathComponent(name)
+        let nameWithoutSpaces = name.replacingOccurrences(of: " ", with: "_")
+        let fileURL = self.appendingPathComponent(nameWithoutSpaces, isDirectory: true)
         let destination: DownloadRequest.Destination = { _, _ in
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
         }

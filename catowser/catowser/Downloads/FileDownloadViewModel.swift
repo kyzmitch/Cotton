@@ -15,11 +15,15 @@ protocol FileDownloadDelegate: class {
 }
 
 final class FileDownloadViewModel {
-    fileprivate let downloadOutput = MutableProperty<DownloadState>(.initial)
+    fileprivate let downloadOutput: MutableProperty<DownloadState>
 
     lazy var stateSignal: Signal<DownloadState, Never> = {
         return downloadOutput.signal
     }()
+    
+    var downloadState: DownloadState {
+        return downloadOutput.value
+    }
 
     fileprivate let batch: Downloadable
 
@@ -27,6 +31,13 @@ final class FileDownloadViewModel {
 
     init(with batch: Downloadable) {
         self.batch = batch
+        let downloadState: DownloadState
+        if let fileURL = batch.fileAtDestination() {
+            downloadState = .finished(fileURL)
+        } else {
+            downloadState = .initial
+        }
+        downloadOutput = .init(downloadState)
     }
 
     func download() {
@@ -54,12 +65,12 @@ final class FileDownloadViewModel {
                 }
         }
     }
+}
 
-    enum DownloadState {
-        case initial
-        case started
-        case `in`(progress: CGFloat)
-        case finished(URL)
-        case error(Error)
-    }
+enum DownloadState {
+    case initial
+    case started
+    case `in`(progress: CGFloat)
+    case finished(URL)
+    case error(Error)
 }
