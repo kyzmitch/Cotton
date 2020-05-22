@@ -36,7 +36,7 @@ protocol LinkTagsPresenter: class {
 }
 
 protocol LinkTagsDelegate: class {
-    func didSelect(type: LinksType)
+    func didSelect(type: LinksType, from sourceView: UIView)
 }
 
 final class LinkTagsViewController: UICollectionViewController {
@@ -95,7 +95,8 @@ final class LinkTagsViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
-            delegate?.didSelect(type: tuple.key)
+            let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
+            delegate?.didSelect(type: tuple.key, from: cell)
             break
         }
     }

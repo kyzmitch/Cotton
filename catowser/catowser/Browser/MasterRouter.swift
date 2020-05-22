@@ -301,7 +301,7 @@ fileprivate extension MasterRouter {
 }
 
 extension MasterRouter: LinkTagsDelegate {
-    func didSelect(type: LinksType) {
+    func didSelect(type: LinksType, from sourceView: UIView) {
         guard type == .video, let source = dataSource else {
             return
         }
@@ -318,7 +318,9 @@ extension MasterRouter: LinkTagsDelegate {
             filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
             if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
                 popoverPresenter.permittedArrowDirections = .down
-                popoverPresenter.sourceRect = CGRect(x: 0, y: 0, width: 100, height: 100)
+                // no transforms, so frame can be used
+                let sourceRect = sourceView.frame
+                popoverPresenter.sourceRect = sourceRect
                 popoverPresenter.sourceView = linkTagsController.view
             }
             filesGreedController.reloadWith(source: source, completion: nil)
