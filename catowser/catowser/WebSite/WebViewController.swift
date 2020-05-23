@@ -53,12 +53,6 @@ final class WebViewController: BaseViewController {
     private var finalURLFetchDisposable: Disposable?
 
     func load(url: URL, canLoadPlugins: Bool = true) {
-        // TODO: actually this func is called using URLIpInfo, so, maybe no need to update it
-        guard let info = HttpKit.URLIpInfo(url) else {
-            print("Fail create url info for raw URL")
-            return
-        }
-        urlInfo = info
         setupScripts(canLoadPlugins: canLoadPlugins)
         if !webViewObserversAdded {
             webViewObserversAdded = true
