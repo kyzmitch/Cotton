@@ -41,7 +41,7 @@ extension HttpKit.SearchEngine {
         
         let httpMethod: HTTPMethod
         if let httpMethodString = element.attribute(by: "method")?.text {
-            httpMethod = HTTPMethod(rawValue: httpMethodString) ?? .get
+            httpMethod = HTTPMethod(rawValue: httpMethodString)
         } else {
             httpMethod = .get
         }

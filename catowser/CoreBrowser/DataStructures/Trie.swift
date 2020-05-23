@@ -6,8 +6,6 @@
 //  Copyright © 2016 Rick Zaccone. All rights reserved.
 //
 
-// FIXME: modify to not use NSObject subclass
-
 import Foundation
 
 /// A node in the trie
@@ -66,7 +64,7 @@ extension TrieNode: CustomDebugStringConvertible where T: CustomDebugStringConve
 
 /// A trie data structure containing words.  Each node is a single
 /// character of a word.
-final class Trie: NSObject, NSCoding {
+final class Trie {
     typealias Node = TrieNode<Character>
     /// The number of words in the trie
     public var count: Int {
@@ -84,41 +82,9 @@ final class Trie: NSObject, NSCoding {
     fileprivate var wordCount: Int
 
     /// Creates an empty trie.
-    override init() {
+    init() {
         root = Node()
         wordCount = 0
-        super.init()
-    }
-
-    // MARK: NSCoding
-
-    /// Initializes the trie with words from an archive
-    ///
-    /// - Parameter decoder: Decodes the archive
-    required convenience init?(coder decoder: NSCoder) {
-        self.init()
-        let words = decoder.decodeObject(forKey: "words") as? [String]
-        // swiftlint:disable:next force_unwrapping
-        for word in words! {
-            self.insert(word: word)
-        }
-    }
-
-    /// Encodes the words in the trie by putting them in an array then encoding
-    /// the array.
-    ///
-    /// - Parameter coder: The object that will encode the array
-    func encode(with coder: NSCoder) {
-        coder.encode(self.words, forKey: "words")
-    }
-    
-    // MARK: - CustomDebugStringConvertible
-    
-    public override var debugDescription: String {
-        guard !isEmpty else {
-            return "empty trie"
-        }
-        return root.debugDescription
     }
 }
 
