@@ -1,4 +1,0 @@
-accounts.google.com
-facebook.com
-www.facebook.com
-m.facebook.com
