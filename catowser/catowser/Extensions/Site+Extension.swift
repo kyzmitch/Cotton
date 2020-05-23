@@ -31,7 +31,7 @@ extension Site {
     ///   - errorProducer: The closure used transform the failed `OSStatus` and `SecTrustResultType`.
     /// - Throws:          Any `Error` from applying the `policy`, or the result of `errorProducer` if validation fails.
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func fetchFaviconURL(_ resolve: Bool = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)) -> AnyPublisher<URL, Error> {
+    func fetchFaviconURL(_ resolve: Bool) -> AnyPublisher<URL, Error> {
         typealias URLResult = Result<URL, Error>
         
         guard resolve else {

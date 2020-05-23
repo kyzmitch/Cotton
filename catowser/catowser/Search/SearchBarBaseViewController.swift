@@ -26,7 +26,8 @@ protocol SearchBarControllerInterface: class {
 }
 
 fileprivate extension String {
-    static let placeholderText: String = NSLocalizedString("placeholder_searchbar", comment: "The text which is displayed when search bar is empty")
+    static let placeholderText: String = NSLocalizedString("placeholder_searchbar",
+                                                           comment: "when search bar is empty")
 }
 
 final class SearchBarBaseViewController: BaseViewController {

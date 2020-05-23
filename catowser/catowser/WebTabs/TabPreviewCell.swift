@@ -194,7 +194,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         
         if #available(iOS 13.0, *) {
             imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL()
+            imageURLRequestCancellable = site.fetchFaviconURL(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {

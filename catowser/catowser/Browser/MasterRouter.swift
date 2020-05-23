@@ -21,14 +21,14 @@ protocol MasterDelegate: class {
     func openDomain(with url: URL)
 }
 
-protocol LinksRouterInterface: class {
+protocol TagsRouterInterface: class {
     func openTagsFor(instagram nodes: [InstagramVideoNode])
     func openTagsFor(t4 video: T4Video)
     func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
-    
-    // TODO: probably need to move next interfaces to separate protocol
-    
+}
+
+protocol SiteLifetimeInterface {
     func showProgress(_ show: Bool)
     func openTabMenu(from sourceView: UIView, and sourceRect: CGRect)
 }
@@ -116,7 +116,7 @@ final class MasterRouter: NSObject {
     }
 }
 
-extension MasterRouter: LinksRouterInterface {
+extension MasterRouter: TagsRouterInterface {
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
         dataSource = .instagram(nodes)
         linkTagsController.setLinks(nodes.count, for: .video)
@@ -142,7 +142,9 @@ extension MasterRouter: LinksRouterInterface {
         filesGreedController.clearFiles()
         linkTagsController.clearLinks()
     }
-    
+}
+
+extension MasterRouter: SiteLifetimeInterface {
     func showProgress(_ show: Bool) {
         if show {
             hiddenWebLoadConstraint?.isActive = false

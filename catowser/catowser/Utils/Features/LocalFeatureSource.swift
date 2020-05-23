@@ -50,10 +50,8 @@ final class LocalFeatureSource: FeatureSource {
     func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F: BasicFeature {
         switch F.defaultValue {
         case is Bool:
-            // TODO: Make implementation based on generics to not have conversions
-            guard let boolValue = value as? Bool else {
-                return
-            }
+            // swiftlint:disable:next force_cast
+            let boolValue = value as! Bool
             LocalSettings.setGlobalBoolSetting(for: F.key.prefixed(), value: boolValue)
         default:
             assertionFailure("Not implemented")

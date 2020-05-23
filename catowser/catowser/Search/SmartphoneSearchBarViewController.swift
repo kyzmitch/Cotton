@@ -40,7 +40,8 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         searchBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         searchBarViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         searchBarViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        searchBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        searchBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                               constant: 0).isActive = true
 
         lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
