@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -199,6 +199,9 @@
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
+		8AC4365E247910E1008DD663 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4365D247910E1008DD663 /* Alamofire */; };
+		8AC43661247911F6008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC43660247911F6008DD663 /* AlamofireImage */; };
+		8AC4366324791201008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4366224791201008DD663 /* AlamofireImage */; };
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
@@ -219,7 +222,6 @@
 		8AE6D1712350FF35006316AD /* HttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6D1762350FF65006316AD /* Endpoint.swift */; };
 		8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4922A235248CE00183579 /* HttpKitErrors.swift */; };
-		BF232625BB55A4003BE809D1 /* Pods_catowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A910B05602B21CB19029F7B9 /* Pods_catowser.framework */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
@@ -574,7 +576,7 @@
 				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
 				14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */,
 				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
-				BF232625BB55A4003BE809D1 /* Pods_catowser.framework in Frameworks */,
+				8AC43661247911F6008DD663 /* AlamofireImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,6 +589,7 @@
 				8A8035D024442F0F000E035F /* HttpKit.framework in Frameworks */,
 				8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */,
 				8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */,
+				8AC4366324791201008DD663 /* AlamofireImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -601,6 +604,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AC4365E247910E1008DD663 /* Alamofire in Frameworks */,
 				26EB2E2E0F1F30CEEBF26DD8 /* Pods_HttpKit.framework in Frameworks */,
 				8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */,
 				8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */,
@@ -1232,6 +1236,9 @@
 				8AE6D16F2350FF35006316AD /* PBXTargetDependency */,
 			);
 			name = catowser;
+			packageProductDependencies = (
+				8AC43660247911F6008DD663 /* AlamofireImage */,
+			);
 			productName = catowser;
 			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
 			productType = "com.apple.product-type.application";
@@ -1256,6 +1263,9 @@
 				8A8035F624446234000E035F /* PBXTargetDependency */,
 			);
 			name = "catowser dnsext";
+			packageProductDependencies = (
+				8AC4366224791201008DD663 /* AlamofireImage */,
+			);
 			productName = catowser;
 			productReference = 8A8035E624442F0F000E035F /* catowser dnsext.app */;
 			productType = "com.apple.product-type.application";
@@ -1293,6 +1303,9 @@
 			dependencies = (
 			);
 			name = HttpKit;
+			packageProductDependencies = (
+				8AC4365D247910E1008DD663 /* Alamofire */,
+			);
 			productName = HttpKit;
 			productReference = 8AE6D1692350FF35006316AD /* HttpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1304,7 +1317,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
 					608DA749223A3BD4009F75BD = {
@@ -1351,6 +1364,10 @@
 				ru,
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
+			packageReferences = (
+				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1605,23 +1622,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-catowser/Pods-catowser-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
-				"${BUILT_PRODUCTS_DIR}/SWXMLHash/SWXMLHash.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-catowser/Pods-catowser-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWXMLHash.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-catowser/Pods-catowser-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1929,7 +1935,11 @@
 				INFOPLIST_FILE = JSPlugins/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ae.JSPlugins;
@@ -1960,7 +1970,11 @@
 				INFOPLIST_FILE = JSPlugins/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ae.JSPlugins;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -1988,7 +2002,11 @@
 				INFOPLIST_FILE = CoreBrowser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ae.CoreBrowser;
@@ -2017,7 +2035,11 @@
 				INFOPLIST_FILE = CoreBrowser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = ae.CoreBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2137,7 +2159,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2154,9 +2177,13 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
+				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
 				PRODUCT_NAME = "$(COTTON_APP_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton browser develop";
@@ -2177,9 +2204,13 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
+				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
 				PRODUCT_NAME = "$(COTTON_APP_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton browser AdHoc";
@@ -2200,9 +2231,13 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
+				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = "Info-dnsext.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext.debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton debug with Network ext";
@@ -2222,9 +2257,13 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
+				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = "Info-dnsext.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Cotton browser AdHoc";
@@ -2243,7 +2282,11 @@
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = DNSProxy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext.debug.DNSProxy";
@@ -2264,7 +2307,11 @@
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = DNSProxy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.dns-ext.DNSProxy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2291,7 +2338,11 @@
 				INFOPLIST_FILE = HttpKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKit;
@@ -2322,7 +2373,11 @@
 				INFOPLIST_FILE = HttpKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -2401,6 +2456,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
+		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8AC4365D247910E1008DD663 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		8AC43660247911F6008DD663 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+		8AC4366224791201008DD663 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8435A48F1EED5E700020102F /* Project object */;
 }
