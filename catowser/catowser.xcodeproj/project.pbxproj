@@ -195,9 +195,16 @@
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
-		8AC4365E247910E1008DD663 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4365D247910E1008DD663 /* Alamofire */; };
-		8AC43661247911F6008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC43660247911F6008DD663 /* AlamofireImage */; };
 		8AC4366324791201008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4366224791201008DD663 /* AlamofireImage */; };
+		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AC4368124798BE2008DD663 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368024798BE2008DD663 /* Alamofire */; };
+		8AC4368324798BE7008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368224798BE7008DD663 /* AlamofireImage */; };
+		8AC4368424798BFC008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8AC4368524798BFC008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
@@ -283,6 +290,27 @@
 			remoteGlobalIDString = 8AE6D1682350FF35006316AD;
 			remoteInfo = HttpKit;
 		};
+		8AC4367924798BDB008DD663 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC4367324798BDB008DD663;
+			remoteInfo = SPMCommon;
+		};
+		8AC4368624798BFC008DD663 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC4367324798BDB008DD663;
+			remoteInfo = SPMCommon;
+		};
+		8AC4368B24798C09008DD663 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC4367324798BDB008DD663;
+			remoteInfo = SPMCommon;
+		};
 		8AE6D16E2350FF35006316AD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -299,6 +327,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */,
 				608DA752223A3BD5009F75BD /* JSPlugins.framework in Embed Frameworks */,
 				6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */,
 				8AE6D1712350FF35006316AD /* HttpKit.framework in Embed Frameworks */,
@@ -322,6 +351,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */,
 				8A8035DE24442F0F000E035F /* JSPlugins.framework in Embed Frameworks */,
 				8A8035DF24442F0F000E035F /* CoreBrowser.framework in Embed Frameworks */,
 				8A8035E024442F0F000E035F /* HttpKit.framework in Embed Frameworks */,
@@ -358,6 +388,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				8A80D0DB2451B3980025528D /* HttpKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AC4368824798BFC008DD663 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8AC4368524798BFC008DD663 /* SPMCommon.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,6 +544,10 @@
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
+		8AC4366A24798BC8008DD663 /* SPMCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMCommon.swift; sourceTree = "<group>"; };
+		8AC4367424798BDB008DD663 /* SPMCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AC4367624798BDB008DD663 /* SPMCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMCommon.h; sourceTree = "<group>"; };
+		8AC4367724798BDB008DD663 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AC45ECA24582453007E47EE /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Combine.framework; sourceTree = DEVELOPER_DIR; };
 		8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Combine.swift"; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
@@ -566,9 +611,9 @@
 				608DA751223A3BD5009F75BD /* JSPlugins.framework in Frameworks */,
 				8AE6D1702350FF35006316AD /* HttpKit.framework in Frameworks */,
 				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
+				8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */,
 				14458A1BE6CA408309DBB93F /* Pods_catowser.framework in Frameworks */,
 				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
-				8AC43661247911F6008DD663 /* AlamofireImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +624,7 @@
 				8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */,
 				8A8035CF24442F0F000E035F /* JSPlugins.framework in Frameworks */,
 				8A8035D024442F0F000E035F /* HttpKit.framework in Frameworks */,
+				8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */,
 				8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */,
 				8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */,
 				8AC4366324791201008DD663 /* AlamofireImage in Frameworks */,
@@ -592,15 +638,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8AC4367124798BDB008DD663 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8AC4368124798BE2008DD663 /* Alamofire in Frameworks */,
+				8AC4368324798BE7008DD663 /* AlamofireImage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AE6D1662350FF35006316AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AC4365E247910E1008DD663 /* Alamofire in Frameworks */,
 				26EB2E2E0F1F30CEEBF26DD8 /* Pods_HttpKit.framework in Frameworks */,
 				8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */,
 				8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */,
 				8A90636B24332452009D786E /* Network.framework in Frameworks */,
+				8AC4368424798BFC008DD663 /* SPMCommon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,6 +888,8 @@
 				608DA74B223A3BD5009F75BD /* JSPlugins */,
 				8AE6D16A2350FF35006316AD /* HttpKit */,
 				8A8035F024446234000E035F /* DNSProxy */,
+				8AC4366924798BC8008DD663 /* SPMCommon */,
+				8AC4367524798BDB008DD663 /* SPMCommon */,
 				8435A4981EED5E700020102F /* Products */,
 				E35CED317EE4DF68ED3EDD9C /* Pods */,
 				5906B47E95A37FC0872DBD1A /* Frameworks */,
@@ -848,6 +905,7 @@
 				8AE6D1692350FF35006316AD /* HttpKit.framework */,
 				8A8035E624442F0F000E035F /* catowser dnsext.app */,
 				8A8035EF24446234000E035F /* DNSProxy.appex */,
+				8AC4367424798BDB008DD663 /* SPMCommon.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1005,6 +1063,23 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
+		8AC4366924798BC8008DD663 /* SPMCommon */ = {
+			isa = PBXGroup;
+			children = (
+				8AC4366A24798BC8008DD663 /* SPMCommon.swift */,
+			);
+			path = SPMCommon;
+			sourceTree = "<group>";
+		};
+		8AC4367524798BDB008DD663 /* SPMCommon */ = {
+			isa = PBXGroup;
+			children = (
+				8AC4367624798BDB008DD663 /* SPMCommon.h */,
+				8AC4367724798BDB008DD663 /* Info.plist */,
+			);
+			path = SPMCommon;
+			sourceTree = "<group>";
+		};
 		8AD18E0E244757EC00224702 /* Filesystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -1140,6 +1215,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8AC4366F24798BDB008DD663 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AE6D1642350FF35006316AD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -1214,10 +1297,10 @@
 				6094E722221FD2B9004269A2 /* PBXTargetDependency */,
 				608DA750223A3BD5009F75BD /* PBXTargetDependency */,
 				8AE6D16F2350FF35006316AD /* PBXTargetDependency */,
+				8AC4367A24798BDB008DD663 /* PBXTargetDependency */,
 			);
 			name = catowser;
 			packageProductDependencies = (
-				8AC43660247911F6008DD663 /* AlamofireImage */,
 			);
 			productName = catowser;
 			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
@@ -1241,6 +1324,7 @@
 				8A80359C24442F0F000E035F /* PBXTargetDependency */,
 				8A80359E24442F0F000E035F /* PBXTargetDependency */,
 				8A8035F624446234000E035F /* PBXTargetDependency */,
+				8AC4368C24798C09008DD663 /* PBXTargetDependency */,
 			);
 			name = "catowser dnsext";
 			packageProductDependencies = (
@@ -1267,6 +1351,28 @@
 			productReference = 8A8035EF24446234000E035F /* DNSProxy.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		8AC4367324798BDB008DD663 /* SPMCommon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8AC4367D24798BDB008DD663 /* Build configuration list for PBXNativeTarget "SPMCommon" */;
+			buildPhases = (
+				8AC4366F24798BDB008DD663 /* Headers */,
+				8AC4367024798BDB008DD663 /* Sources */,
+				8AC4367124798BDB008DD663 /* Frameworks */,
+				8AC4367224798BDB008DD663 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SPMCommon;
+			packageProductDependencies = (
+				8AC4368024798BE2008DD663 /* Alamofire */,
+				8AC4368224798BE7008DD663 /* AlamofireImage */,
+			);
+			productName = SPMCommon;
+			productReference = 8AC4367424798BDB008DD663 /* SPMCommon.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		8AE6D1682350FF35006316AD /* HttpKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AE6D1742350FF35006316AD /* Build configuration list for PBXNativeTarget "HttpKit" */;
@@ -1277,14 +1383,15 @@
 				8AE6D1662350FF35006316AD /* Frameworks */,
 				8AE6D1672350FF35006316AD /* Resources */,
 				8A875AC223781FE6004FA50F /* ShellScript */,
+				8AC4368824798BFC008DD663 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				8AC4368724798BFC008DD663 /* PBXTargetDependency */,
 			);
 			name = HttpKit;
 			packageProductDependencies = (
-				8AC4365D247910E1008DD663 /* Alamofire */,
 			);
 			productName = HttpKit;
 			productReference = 8AE6D1692350FF35006316AD /* HttpKit.framework */;
@@ -1296,7 +1403,7 @@
 		8435A48F1EED5E700020102F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
+				LastSwiftUpdateCheck = 1150;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
@@ -1326,6 +1433,9 @@
 					8A8035EE24446234000E035F = {
 						CreatedOnToolsVersion = 11.4;
 						ProvisioningStyle = Automatic;
+					};
+					8AC4367324798BDB008DD663 = {
+						CreatedOnToolsVersion = 11.5;
 					};
 					8AE6D1682350FF35006316AD = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -1358,6 +1468,7 @@
 				608DA749223A3BD4009F75BD /* JSPlugins */,
 				8AE6D1682350FF35006316AD /* HttpKit */,
 				8A8035EE24446234000E035F /* DNSProxy */,
+				8AC4367324798BDB008DD663 /* SPMCommon */,
 			);
 		};
 /* End PBXProject section */
@@ -1414,6 +1525,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A8035ED24446234000E035F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AC4367224798BDB008DD663 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1783,6 +1901,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8AC4367024798BDB008DD663 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AE6D1652350FF35006316AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1855,6 +1980,21 @@
 			isa = PBXTargetDependency;
 			target = 8AE6D1682350FF35006316AD /* HttpKit */;
 			targetProxy = 8A80D0DC2451B3980025528D /* PBXContainerItemProxy */;
+		};
+		8AC4367A24798BDB008DD663 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC4367324798BDB008DD663 /* SPMCommon */;
+			targetProxy = 8AC4367924798BDB008DD663 /* PBXContainerItemProxy */;
+		};
+		8AC4368724798BFC008DD663 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC4367324798BDB008DD663 /* SPMCommon */;
+			targetProxy = 8AC4368624798BFC008DD663 /* PBXContainerItemProxy */;
+		};
+		8AC4368C24798C09008DD663 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC4367324798BDB008DD663 /* SPMCommon */;
+			targetProxy = 8AC4368B24798C09008DD663 /* PBXContainerItemProxy */;
 		};
 		8AE6D16F2350FF35006316AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2153,7 +2293,6 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
-				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2180,7 +2319,6 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
-				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2207,7 +2345,6 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
-				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = "Info-dnsext.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2233,7 +2370,6 @@
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
-				DISABLE_DIAMOND_PROBLEM_DIAGNOSTIC = 1;
 				INFOPLIST_FILE = "Info-dnsext.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2294,6 +2430,69 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8AC4367E24798BDB008DD663 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SPMCommon/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.SPMCommon;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8AC4367F24798BDB008DD663 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SPMCommon/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.SPMCommon;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -2422,6 +2621,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		8AC4367D24798BDB008DD663 /* Build configuration list for PBXNativeTarget "SPMCommon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8AC4367E24798BDB008DD663 /* Debug */,
+				8AC4367F24798BDB008DD663 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8AE6D1742350FF35006316AD /* Build configuration list for PBXNativeTarget "HttpKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2453,17 +2661,17 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8AC4365D247910E1008DD663 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-		8AC43660247911F6008DD663 /* AlamofireImage */ = {
+		8AC4366224791201008DD663 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
 		};
-		8AC4366224791201008DD663 /* AlamofireImage */ = {
+		8AC4368024798BE2008DD663 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		8AC4368224798BE7008DD663 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
