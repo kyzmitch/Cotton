@@ -174,7 +174,8 @@ fileprivate extension MasterRouter {
                 self.filesGreedController.view.layoutIfNeeded()
             }
         } else {
-
+            // TODO: implement
+            assertionFailure("Files greed not implemented for iPhone")
         }
 
         isFilesGreedShowed = true

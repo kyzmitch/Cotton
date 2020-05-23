@@ -115,10 +115,6 @@ final class MasterBrowserViewController: BaseViewController {
         view.addSubview(webLoadProgressView)
         view.addSubview(containerView)
 
-        if !isPad {
-            add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
-        }
-
         if isPad {
             // no need to add files greed as a child
             // will try to show as popover
@@ -126,6 +122,7 @@ final class MasterBrowserViewController: BaseViewController {
             view.addSubview(underLinkTagsView)
             add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
         } else {
+            add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to: view)
@@ -180,13 +177,17 @@ final class MasterBrowserViewController: BaseViewController {
             underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
             underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
-            linksRouter.underLinksViewHeightConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
+            let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
+            linksRouter.underLinksViewHeightConstraint = linksHConstraint
             linksRouter.underLinksViewHeightConstraint?.isActive = true
 
             let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
-            linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomMargin)
-            linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-            linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: underLinkTagsView.topAnchor, constant: 0).isActive = true
+            linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                                                         constant: bottomMargin)
+            linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                                                         constant: 0)
+            linksRouter.linkTagsController.view.bottomAnchor.constraint(equalTo: underLinkTagsView.topAnchor,
+                                                                        constant: 0).isActive = true
         } else {
             linksRouter.searchBarController.view.snp.makeConstraints({ (maker) in
                 if #available(iOS 11, *) {
@@ -200,7 +201,8 @@ final class MasterBrowserViewController: BaseViewController {
                 maker.height.equalTo(CGFloat.searchViewHeight)
             })
             
-            webLoadProgressView.topAnchor.constraint(equalTo: linksRouter.searchBarController.view.bottomAnchor, constant: 0).isActive = true
+            webLoadProgressView.topAnchor.constraint(equalTo: linksRouter.searchBarController.view.bottomAnchor,
+                                                     constant: 0).isActive = true
             
             containerView.snp.makeConstraints { (maker) in
                 maker.top.equalTo(webLoadProgressView.snp.bottom)
@@ -291,11 +293,7 @@ final class MasterBrowserViewController: BaseViewController {
         if !isPad {
             let freeHeight: CGFloat
             let allHeight = containerView.bounds.height
-            if isPad {
-                freeHeight = (allHeight - .linkTagsHeight) / 2
-            } else {
-                freeHeight = allHeight - .linkTagsHeight
-            }
+            freeHeight = allHeight - .linkTagsHeight
             
             linksRouter.filesGreedHeightConstraint?.constant = freeHeight
             linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
