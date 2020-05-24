@@ -131,32 +131,44 @@ final class MasterBrowserViewController: BaseViewController {
         }
     }
     
+    private func setupTabletConstraints() {
+        // TODO: move code here from viewDidLoad
+    }
+    
+    private func setupPhoneConstraints() {
+        // TODO: move code here from viewDidLoad
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
+        let tagsView = linksRouter.linkTagsController.view
+        tagsView.translatesAutoresizingMaskIntoConstraints = false
+        let searchView = linksRouter.searchBarController.view
+        searchView.translatesAutoresizingMaskIntoConstraints = false
         
         if isPad {
-            let tabsTop = tabsViewController.view.topAnchor
+            let tabsView: UIView = tabsViewController.view
+            tabsView.translatesAutoresizingMaskIntoConstraints = false
             // https://github.com/SnapKit/SnapKit/issues/448
             // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
             // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
             if #available(iOS 11, *) {
-                tabsTop.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+                tabsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
             } else {
-                tabsTop.constraint(equalTo: view.topAnchor).isActive = true
+                tabsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
             }
-            tabsViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            tabsViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            tabsViewController.view.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
+            tabsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            tabsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            tabsView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
             
-            let searchView = linksRouter.searchBarController.view
-            searchView.topAnchor.constraint(equalTo: tabsViewController.view.bottomAnchor).isActive = true
+            searchView.topAnchor.constraint(equalTo: tabsView.bottomAnchor).isActive = true
             searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
             
-            let sbViewBottomAnchor = linksRouter.searchBarController.view.bottomAnchor
+            let sbViewBottomAnchor = searchView.bottomAnchor
             webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
             
             // Need to have not simple view controller view but container view
@@ -168,8 +180,8 @@ final class MasterBrowserViewController: BaseViewController {
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
-            underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-            underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+            underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
             let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
             linksRouter.underLinksViewHeightConstraint = linksHConstraint
@@ -179,10 +191,9 @@ final class MasterBrowserViewController: BaseViewController {
             linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                                                                          constant: bottomMargin)
             linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            let tagsBottom = linksRouter.linkTagsController.view.bottomAnchor
+            let tagsBottom = tagsView.bottomAnchor
             tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
         } else {
-            let searchView = linksRouter.searchBarController.view
             if #available(iOS 11, *) {
                 searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
             } else {
@@ -192,15 +203,16 @@ final class MasterBrowserViewController: BaseViewController {
             searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
             
-            webLoadProgressView.topAnchor.constraint(equalTo: linksRouter.searchBarController.view.bottomAnchor,
-                                                     constant: 0).isActive = true
+            webLoadProgressView.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
+            
+            let toolbarView: UIView = toolbarViewController.view
+            toolbarView.translatesAutoresizingMaskIntoConstraints = false
             
             containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: toolbarViewController.view.topAnchor).isActive = true
+            containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             
-            let toolbarView: UIView = toolbarViewController.view
             toolbarView.topAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
             toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -216,29 +228,29 @@ final class MasterBrowserViewController: BaseViewController {
             underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
             
-            let tagsView = linksRouter.linkTagsController.view
-            linksRouter.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor, constant: .linkTagsHeight)
+            linksRouter.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor,
+                                                                                constant: .linkTagsHeight)
             linksRouter.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
         }
         
         linksRouter.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
         linksRouter.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
         linksRouter.hiddenWebLoadConstraint?.isActive = true
-        webLoadProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        webLoadProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        webLoadProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        webLoadProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         linksRouter.hiddenTagsConstraint?.isActive = true
-        linksRouter.linkTagsController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        linksRouter.linkTagsController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-    linksRouter.linkTagsController.view.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
+        tagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         if !isPad {
             linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             // temporarily use 0 height because actual height of free space is unknown at the moment
             let greedHeight: CGFloat = 0
-            linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor, constant: greedHeight)
-            linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: linksRouter.linkTagsController.view.topAnchor)
+            linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: tagsView.topAnchor, constant: greedHeight)
+            linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: tagsView.topAnchor)
             linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
             linksRouter.hiddenFilesGreedConstraint?.isActive = true
             linksRouter.filesGreedHeightConstraint?.isActive = true
