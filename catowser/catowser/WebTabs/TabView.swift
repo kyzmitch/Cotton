@@ -43,6 +43,7 @@ final class TabView: UIView {
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
+        centerBackground.translatesAutoresizingMaskIntoConstraints = false
         return centerBackground
     }()
     
@@ -51,6 +52,7 @@ final class TabView: UIView {
         closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControl.State())
         closeButton.tintColor = UIColor.lightGray
         closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
         return closeButton
     }()
     
@@ -60,6 +62,7 @@ final class TabView: UIView {
         titleText.isUserInteractionEnabled = false
         titleText.numberOfLines = 1
         titleText.font = UIFont.boldSystemFont(ofSize: 10.0)
+        titleText.translatesAutoresizingMaskIntoConstraints = false
         return titleText
     }()
     
@@ -67,6 +70,7 @@ final class TabView: UIView {
         let favicon = UIImageView()
         favicon.layer.cornerRadius = 2.0
         favicon.layer.masksToBounds = true
+        favicon.translatesAutoresizingMaskIntoConstraints = false
         return favicon
     }()
     
@@ -74,6 +78,7 @@ final class TabView: UIView {
         let line = UIView()
         line.backgroundColor = UIConstants.webSiteTabHighlitedLineColour
         line.isHidden = true
+        line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
     

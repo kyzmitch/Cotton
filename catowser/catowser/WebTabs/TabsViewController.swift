@@ -34,6 +34,7 @@ final class TabsViewController: BaseViewController {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bounces = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
@@ -42,6 +43,7 @@ final class TabsViewController: BaseViewController {
         let image = UIImage(imageLiteralResourceName: "newTabButton-Normal")
         addButton.setImage(image, for: .normal)
         addButton.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
         return addButton
     }()
     
@@ -51,6 +53,7 @@ final class TabsViewController: BaseViewController {
         showTabsButton.setTitleColor(.black, for: .normal)
         showTabsButton.setTitle("", for: .normal)
         showTabsButton.addTarget(self, action: #selector(showTabPreviewsPressed), for: .touchUpInside)
+        showTabsButton.translatesAutoresizingMaskIntoConstraints = false
         return showTabsButton
     }()
 
