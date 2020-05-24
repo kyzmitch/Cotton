@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 final class BlankWebPageViewController: UIViewController {
     private let logo: UIImageView = {
@@ -28,9 +27,9 @@ final class BlankWebPageViewController: UIViewController {
         
         view.backgroundColor = .white
 
-        logo.snp.makeConstraints { (make) in
-            make.center.equalTo(view)
-            make.width.height.equalTo(120)
-        }
+        logo.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        logo.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        logo.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        logo.heightAnchor.constraint(equalTo: logo.widthAnchor).isActive = true
     }
 }
