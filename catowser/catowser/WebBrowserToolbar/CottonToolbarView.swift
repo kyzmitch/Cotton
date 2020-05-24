@@ -11,7 +11,25 @@ import UIKit
 final class CottonToolbarView: UIToolbar {
     var counterView: CounterView?
     var downloadsView: UIImageView?
-
+    
+    override init(frame: CGRect) {
+        if frame.width <= 10 {
+            // iOS 13.x fix for layout errors for code
+            // which works on iOS 13.x on iPad
+            // and worked for iOS 12.x for all kind of devices
+            
+            // swiftlint:disable:next line_length
+            // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
+            super.init(frame: CGRect(x: 0, y: 0, width: 1000, height: 44))
+        } else {
+            super.init(frame: frame)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         guard isUserInteractionEnabled else { return nil }
 
