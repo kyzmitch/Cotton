@@ -31,7 +31,11 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
     }()
 
     private lazy var toolbar: UIToolbar = {
-        let toolbar = UIToolbar()
+        // iOS 13.x fix for phone layout error
+        // similar issue and fix:
+        // swiftlint:disable:next line_length
+        // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 1000, height: 44))
         ThemeProvider.shared.setup(toolbar)
 
         var barItems = [UIBarButtonItem]()

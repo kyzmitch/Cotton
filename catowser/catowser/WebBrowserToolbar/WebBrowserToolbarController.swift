@@ -54,7 +54,7 @@ final class WebBrowserToolbarController: UIViewController {
     }
 
     private lazy var toolbarView: CottonToolbarView = {
-        let toolbar = CottonToolbarView()
+        let toolbar = CottonToolbarView(frame: .zero)
 
         ThemeProvider.shared.setup(toolbar)
         
