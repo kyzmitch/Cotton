@@ -131,12 +131,114 @@ final class MasterBrowserViewController: BaseViewController {
         }
     }
     
-    private func setupTabletConstraints() {
-        // TODO: move code here from viewDidLoad
+    private func setupTabletConstraints(_ searchView: UIView, _ tagsView: UIView) {
+        let tabsView: UIView = tabsViewController.view
+        tabsView.translatesAutoresizingMaskIntoConstraints = false
+        // https://github.com/SnapKit/SnapKit/issues/448
+        // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
+        // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
+        if #available(iOS 11, *) {
+            tabsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        } else {
+            tabsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        }
+        tabsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tabsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        tabsView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
+        
+        searchView.topAnchor.constraint(equalTo: tabsView.bottomAnchor).isActive = true
+        searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
+        
+        let sbViewBottomAnchor = searchView.bottomAnchor
+        webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
+        
+        // Need to have not simple view controller view but container view
+        // to have ability to insert to it and show view controller with
+        // bookmarks in case if search bar has no any address entered or
+        // webpage controller with web view if some address entered in search bar
+        containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+
+        underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        let dummyViewHeight: CGFloat = .safeAreaBottomMargin
+        let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
+        linksRouter.underLinksViewHeightConstraint = linksHConstraint
+        linksRouter.underLinksViewHeightConstraint?.isActive = true
+
+        let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
+        linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                                                                     constant: bottomMargin)
+        linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let tagsBottom = tagsView.bottomAnchor
+        tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
     }
     
-    private func setupPhoneConstraints() {
-        // TODO: move code here from viewDidLoad
+    private func setupPhoneConstraints(_ searchView: UIView, _ tagsView: UIView) {
+        if #available(iOS 11, *) {
+            searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        } else {
+            searchView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        }
+        searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
+        
+        webLoadProgressView.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
+        
+        let toolbarView: UIView = toolbarViewController.view
+        toolbarView.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        toolbarView.topAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true
+        if #available(iOS 11, *) {
+            toolbarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        } else {
+            toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
+        
+        underToolbarView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor).isActive = true
+        underToolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        linksRouter.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor,
+                                                                            constant: .linkTagsHeight)
+        linksRouter.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
+    }
+    
+    private func setupObservers() {
+        jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self, t4Delegate: self)
+
+        let disposeB = NotificationCenter.default.reactive
+            .notifications(forName: UIResponder.keyboardWillHideNotification)
+            .observe(on: UIScheduler())
+            .observeValues { [weak self] (notification) in
+                self?.keyboardWillHideClosure()(notification)
+        }
+
+        let disposeA = NotificationCenter.default.reactive
+            .notifications(forName: UIResponder.keyboardDidChangeFrameNotification)
+            .observe(on: UIScheduler())
+            .observeValues { [weak self] notification in
+                self?.keyboardWillChangeFrameClosure()(notification)
+        }
+
+        disposables.append(disposeB)
+        disposables.append(disposeA)
+
+        TabsListManager.shared.attach(self)
     }
     
     override func viewDidLoad() {
@@ -149,88 +251,9 @@ final class MasterBrowserViewController: BaseViewController {
         searchView.translatesAutoresizingMaskIntoConstraints = false
         
         if isPad {
-            let tabsView: UIView = tabsViewController.view
-            tabsView.translatesAutoresizingMaskIntoConstraints = false
-            // https://github.com/SnapKit/SnapKit/issues/448
-            // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
-            // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
-            if #available(iOS 11, *) {
-                tabsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-            } else {
-                tabsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            }
-            tabsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            tabsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            tabsView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
-            
-            searchView.topAnchor.constraint(equalTo: tabsView.bottomAnchor).isActive = true
-            searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
-            
-            let sbViewBottomAnchor = searchView.bottomAnchor
-            webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
-            
-            // Need to have not simple view controller view but container view
-            // to have ability to insert to it and show view controller with
-            // bookmarks in case if search bar has no any address entered or
-            // webpage controller with web view if some address entered in search bar
-            containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-
-            underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            let dummyViewHeight: CGFloat = .safeAreaBottomMargin
-            let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
-            linksRouter.underLinksViewHeightConstraint = linksHConstraint
-            linksRouter.underLinksViewHeightConstraint?.isActive = true
-
-            let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
-            linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                                                                         constant: bottomMargin)
-            linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            let tagsBottom = tagsView.bottomAnchor
-            tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
+            setupTabletConstraints(searchView, tagsView)
         } else {
-            if #available(iOS 11, *) {
-                searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-            } else {
-                searchView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            }
-            searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
-            
-            webLoadProgressView.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
-            
-            let toolbarView: UIView = toolbarViewController.view
-            toolbarView.translatesAutoresizingMaskIntoConstraints = false
-            
-            containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            
-            toolbarView.topAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-            toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true
-            if #available(iOS 11, *) {
-                toolbarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-            } else {
-                toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            }
-            
-            underToolbarView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor).isActive = true
-            underToolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            
-            linksRouter.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor,
-                                                                                constant: .linkTagsHeight)
-            linksRouter.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
+            setupPhoneConstraints(searchView, tagsView)
         }
         
         linksRouter.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
@@ -245,34 +268,20 @@ final class MasterBrowserViewController: BaseViewController {
         tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         if !isPad {
-            linksRouter.filesGreedController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            linksRouter.filesGreedController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            let filesView: UIView = linksRouter.filesGreedController.view
+            filesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            filesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             // temporarily use 0 height because actual height of free space is unknown at the moment
             let greedHeight: CGFloat = 0
-            linksRouter.hiddenFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: tagsView.topAnchor, constant: greedHeight)
-            linksRouter.showedFilesGreedConstraint = linksRouter.filesGreedController.view.bottomAnchor.constraint(equalTo: tagsView.topAnchor)
-            linksRouter.filesGreedHeightConstraint = linksRouter.filesGreedController.view.heightAnchor.constraint(equalToConstant: greedHeight)
+            linksRouter.hiddenFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor,
+                                                                                       constant: greedHeight)
+            linksRouter.showedFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor)
+            linksRouter.filesGreedHeightConstraint = filesView.heightAnchor.constraint(equalToConstant: greedHeight)
             linksRouter.hiddenFilesGreedConstraint?.isActive = true
             linksRouter.filesGreedHeightConstraint?.isActive = true
         }
 
-        jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self, t4Delegate: self)
-
-        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification,
-                                               object: nil,
-                                               queue: nil,
-                                               using: keyboardWillHideClosure())
-
-        let disposeA = NotificationCenter.default.reactive
-            .notifications(forName: UIResponder.keyboardDidChangeFrameNotification)
-            .observe(on: UIScheduler())
-            .observeValues {[weak self] notification in
-                self?.keyboardWillChangeFrameClosure()(notification)
-        }
-
-        disposables.append(disposeA)
-
-        TabsListManager.shared.attach(self)
+        setupObservers()
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -297,8 +306,9 @@ final class MasterBrowserViewController: BaseViewController {
             
             linksRouter.filesGreedHeightConstraint?.constant = freeHeight
             linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
-            linksRouter.filesGreedController.view.setNeedsLayout()
-            linksRouter.filesGreedController.view.layoutIfNeeded()
+            let filesView: UIView = linksRouter.filesGreedController.view
+            filesView.setNeedsLayout()
+            filesView.layoutIfNeeded()
         }
     }
     
@@ -307,14 +317,10 @@ final class MasterBrowserViewController: BaseViewController {
             return ThemeProvider.shared.theme.statusBarStyle
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        NotificationCenter.default.removeObserver(self)
-    }
 
     deinit {
+        // was in `viewWillDisappear` before
+        NotificationCenter.default.removeObserver(self)
         TabsListManager.shared.detach(self)
         disposables.forEach { $0?.dispose() }
     }
