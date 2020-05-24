@@ -149,10 +149,6 @@ final class WebBrowserToolbarController: UIViewController {
         forwardButton.isEnabled = false
         reloadButton.isEnabled = false
         downloadLinksButton.isEnabled = false
-
-        toolbarView.snp.makeConstraints { (maker) in
-            maker.left.right.top.bottom.equalTo(view)
-        }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
