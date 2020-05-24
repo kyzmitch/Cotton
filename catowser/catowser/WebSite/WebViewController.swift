@@ -126,6 +126,7 @@ final class WebViewController: BaseViewController {
         if #available(iOS 13.0, *) {
             dnsRequestCancellable?.cancel()
             finalURLFetchCancellable?.cancel()
+            dnsFeatureChangeCancellable?.cancel()
         } else {
             dnsRequestSubsciption?.dispose()
             finalURLFetchDisposable?.dispose()
