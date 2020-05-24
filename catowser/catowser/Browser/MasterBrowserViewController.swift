@@ -356,58 +356,70 @@ extension MasterBrowserViewController: TabRendererInterface {
 
         switch tabContent {
         case .site(let site):
-            guard let pluginsBuilder = jsPluginsBuilder else {
-                assertionFailure("Failed show site - no plugins")
-                open(tabContent: .blank)
-                return
-            }
-            // need to display progress view before load start
-            linksRouter.showProgress(true)
-            let viewController = try? WebViewsReuseManager.shared.controllerFor(site,
-                                                                                pluginsBuilder: pluginsBuilder,
-                                                                                delegate: self)
-            guard let webViewController = viewController else {
-                assertionFailure("Failed create new web view for tab")
-                open(tabContent: .blank)
-                return
-            }
-
-            siteNavigator = webViewController
-            currentWebViewController = webViewController
-
-            add(asChildViewController: webViewController, to: containerView)
-            let webVContainer: UIView = webViewController.view
-            webVContainer.translatesAutoresizingMaskIntoConstraints = false
-            // originally left and right were used instead of leading and trailing
-            webVContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            webVContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            webVContainer.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            webVContainer.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+            openSiteTabContent(with: site)
         case .topSites:
-            siteNavigator = nil
-            linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
-            topSitesController.reload(with: DefaultTabProvider.shared.topSites)
-
-            add(asChildViewController: topSitesController.viewController, to: containerView)
-            let topSitesView: UIView = topSitesController.view
-            topSitesView.translatesAutoresizingMaskIntoConstraints = false
-            topSitesView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            topSitesView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            topSitesView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            topSitesView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+            openTopSitesTabContent()
         default:
-            siteNavigator = nil
-            linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
-
-            add(asChildViewController: blankWebPageController, to: containerView)
-            let blankView: UIView = blankWebPageController.view
-            blankView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            blankView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            blankView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            blankView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+            openBlankTabContent()
         }
 
         previousTabContent = tabContent
+    }
+    
+    private func openSiteTabContent(with site: Site) {
+        guard let pluginsBuilder = jsPluginsBuilder else {
+            assertionFailure("Failed show site - no plugins")
+            open(tabContent: .blank)
+            return
+        }
+        // need to display progress view before load start
+        linksRouter.showProgress(true)
+        let viewController = try? WebViewsReuseManager.shared.controllerFor(site,
+                                                                            pluginsBuilder: pluginsBuilder,
+                                                                            delegate: self)
+        guard let webViewController = viewController else {
+            assertionFailure("Failed create new web view for tab")
+            open(tabContent: .blank)
+            return
+        }
+
+        siteNavigator = webViewController
+        currentWebViewController = webViewController
+
+        add(asChildViewController: webViewController, to: containerView)
+        let webVContainer: UIView = webViewController.view
+        webVContainer.translatesAutoresizingMaskIntoConstraints = false
+        // originally left and right were used instead of leading and trailing
+        webVContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        webVContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        webVContainer.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        webVContainer.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+    }
+    
+    private func openTopSitesTabContent() {
+        siteNavigator = nil
+        linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
+        topSitesController.reload(with: DefaultTabProvider.shared.topSites)
+
+        add(asChildViewController: topSitesController.viewController, to: containerView)
+        let topSitesView: UIView = topSitesController.view
+        topSitesView.translatesAutoresizingMaskIntoConstraints = false
+        topSitesView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        topSitesView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        topSitesView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        topSitesView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+    }
+    
+    private func openBlankTabContent() {
+        siteNavigator = nil
+        linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
+
+        add(asChildViewController: blankWebPageController, to: containerView)
+        let blankView: UIView = blankWebPageController.view
+        blankView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        blankView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        blankView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        blankView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
 }
 
