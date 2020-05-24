@@ -38,6 +38,7 @@ final class SearchBarBaseViewController: BaseViewController {
         ThemeProvider.shared.setup(view)
         view.placeholder = .placeholderText
         view.autocapitalizationType = .none
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -48,7 +49,6 @@ final class SearchBarBaseViewController: BaseViewController {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
-
         return label
     }()
 
@@ -93,7 +93,6 @@ final class SearchBarBaseViewController: BaseViewController {
 
     override func loadView() {
         view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(searchBarView)
         view.addSubview(siteNameLabel)
@@ -105,13 +104,14 @@ final class SearchBarBaseViewController: BaseViewController {
         siteNameLabel.addGestureRecognizer(siteNameTapGesture)
         siteNameLabel.alpha = 0
 
-        searchBarView.snp.makeConstraints { (maker) in
-            maker.top.leading.trailing.bottom.equalTo(view)
-        }
+        searchBarView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        searchBarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        searchBarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        searchBarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
-        siteNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        siteNameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        siteNameLabel.widthAnchor.constraint(equalTo: searchBarView.widthAnchor, constant: 0).isActive = true
+        siteNameLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        siteNameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        siteNameLabel.widthAnchor.constraint(equalTo: searchBarView.widthAnchor).isActive = true
         hiddenLabelConstraint.isActive = true
 
         TabsListManager.shared.attach(self)

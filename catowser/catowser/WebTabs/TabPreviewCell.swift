@@ -115,7 +115,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         return button
     }()
 
-    private let title = UIVisualEffectView(effect: UIBlurEffect(style: .tabTitleBlur))
+    private let titleEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .tabTitleBlur))
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -133,32 +133,35 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
 
         backgroundHolder.addSubview(self.screenshotView)
 
-        backgroundHolder.addSubview(title)
-        title.contentView.addSubview(self.closeButton)
-        title.contentView.addSubview(self.titleText)
-        title.contentView.addSubview(self.faviconImageView)
+        titleEffectView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundHolder.addSubview(titleEffectView)
+        titleEffectView.contentView.addSubview(self.closeButton)
+        titleEffectView.contentView.addSubview(self.titleText)
+        titleEffectView.contentView.addSubview(self.faviconImageView)
 
-        title.snp.makeConstraints { (make) in
-            make.top.left.right.equalTo(backgroundHolder)
-            make.height.equalTo(CGFloat.textBoxHeight)
-        }
+        titleEffectView.topAnchor.constraint(equalTo: backgroundHolder.topAnchor).isActive = true
+        // using leading instead of original left
+        titleEffectView.leadingAnchor.constraint(equalTo: backgroundHolder.leadingAnchor).isActive = true
+        // using trailing instead of original right
+        titleEffectView.trailingAnchor.constraint(equalTo: backgroundHolder.trailingAnchor).isActive = true
+        titleEffectView.heightAnchor.constraint(equalToConstant: .textBoxHeight).isActive = true
 
-        faviconImageView.snp.makeConstraints { make in
-            make.leading.equalTo(title.contentView).offset(6)
-            make.top.equalTo((.textBoxHeight - .faviconSize) / 2)
-            make.size.equalTo(CGFloat.faviconSize)
-        }
+        let effectLeading = titleEffectView.contentView.leadingAnchor
+        faviconImageView.leadingAnchor.constraint(equalTo: effectLeading, constant: 6).isActive = true
+        let faviconTopShift: CGFloat = (.textBoxHeight - .faviconSize) / 2
+        let effectTop = titleEffectView.contentView.topAnchor
+        faviconImageView.topAnchor.constraint(equalTo: effectTop, constant: faviconTopShift).isActive = true
+        faviconImageView.widthAnchor.constraint(equalToConstant: .faviconSize).isActive = true
+        faviconImageView.heightAnchor.constraint(equalTo: faviconImageView.widthAnchor).isActive = true
 
-        titleText.snp.makeConstraints { (make) in
-            make.leading.equalTo(faviconImageView.snp.trailing).offset(6)
-            make.trailing.equalTo(closeButton.snp.leading).offset(-6)
-            make.centerY.equalTo(title.contentView)
-        }
+        titleText.leadingAnchor.constraint(equalTo: faviconImageView.trailingAnchor, constant: 6).isActive = true
+        titleText.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -6).isActive = true
+        titleText.centerYAnchor.constraint(equalTo: titleEffectView.contentView.centerYAnchor).isActive = true
 
-        closeButton.snp.makeConstraints { make in
-            make.size.equalTo(CGFloat.closeButtonSize)
-            make.centerY.trailing.equalTo(title.contentView)
-        }
+        closeButton.widthAnchor.constraint(equalToConstant: .closeButtonSize).isActive = true
+        closeButton.heightAnchor.constraint(equalTo: closeButton.widthAnchor).isActive = true
+        closeButton.centerYAnchor.constraint(equalTo: titleEffectView.contentView.centerYAnchor).isActive = true
+        closeButton.trailingAnchor.constraint(equalTo: titleEffectView.contentView.trailingAnchor).isActive = true
     }
 
     required init?(coder aDecoder: NSCoder) {

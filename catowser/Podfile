@@ -6,7 +6,6 @@ target 'catowser' do
   use_frameworks!
 
   # Pods for catowser
-  pod 'SnapKit', '~> 5.0.0'
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
 end

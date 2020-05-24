@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import SnapKit
 import CoreGraphics
 import CoreBrowser
 
@@ -28,6 +27,7 @@ final class TabView: UIView {
         }
     }
     
+    /// Allows change visual state without changing view model
     var visualState: Tab.VisualState {
         // Swift docs: You can name the parameter or use the default parameter name of `oldValue`.
         didSet(previousVisualState) {
@@ -43,6 +43,7 @@ final class TabView: UIView {
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
+        centerBackground.translatesAutoresizingMaskIntoConstraints = false
         return centerBackground
     }()
     
@@ -51,6 +52,7 @@ final class TabView: UIView {
         closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControl.State())
         closeButton.tintColor = UIColor.lightGray
         closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
         return closeButton
     }()
     
@@ -60,6 +62,7 @@ final class TabView: UIView {
         titleText.isUserInteractionEnabled = false
         titleText.numberOfLines = 1
         titleText.font = UIFont.boldSystemFont(ofSize: 10.0)
+        titleText.translatesAutoresizingMaskIntoConstraints = false
         return titleText
     }()
     
@@ -67,6 +70,7 @@ final class TabView: UIView {
         let favicon = UIImageView()
         favicon.layer.cornerRadius = 2.0
         favicon.layer.masksToBounds = true
+        favicon.translatesAutoresizingMaskIntoConstraints = false
         return favicon
     }()
     
@@ -74,6 +78,7 @@ final class TabView: UIView {
         let line = UIView()
         line.backgroundColor = UIConstants.webSiteTabHighlitedLineColour
         line.isHidden = true
+        line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
     
@@ -86,6 +91,7 @@ final class TabView: UIView {
         viewModel = tab
         visualState = tab.visualState
         // Call function not relying on didSet
+        // swiftlint:disable:next line_length
         // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
         updateColours()
         titleText.text = viewModel.title
@@ -98,8 +104,6 @@ final class TabView: UIView {
         visualState = viewModel.visualState
         
         super.init(frame: frame)
-        // Call function not relying on didSet
-        // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
         updateColours()
         titleText.text = viewModel.title
         
@@ -110,48 +114,43 @@ final class TabView: UIView {
         addSubview(closeButton)
         addSubview(highlightLine)
         
-        closeButton.addTarget(self, action: #selector(handleClosePressed), for: .touchUpInside)
+        closeButton.addTarget(self,
+                              action: #selector(handleClosePressed),
+                              for: .touchUpInside)
         
-        centerBackground.snp.makeConstraints { make in
-            make.leading.equalTo(self)
-            make.trailing.equalTo(self)
-            make.top.equalTo(self)
-            make.bottom.equalTo(self)
-        }
-        favicon.snp.makeConstraints { make in
-            make.centerY.equalTo(self)
-            make.size.equalTo(18.0)
-            make.leading.equalTo(self).offset(10)
-        }
-        titleText.snp.makeConstraints { make in
-            make.centerY.equalTo(self)
-            make.height.equalTo(self)
-            make.leading.equalTo(favicon.snp.trailing).offset(10)
-            make.trailing.equalTo(closeButton.snp.leading).offset(10)
-        }
-        closeButton.snp.makeConstraints { make in
-            make.centerY.equalTo(self)
-            make.height.equalTo(self.snp.height)
-            make.width.equalTo(self.snp.height)
-            make.trailing.equalTo(self).offset(-5)
-        }
-        highlightLine.snp.makeConstraints { make in
-            make.top.equalTo(self)
-            make.leading.equalTo(self).offset(-2)
-            make.trailing.equalTo(self).offset(2)
-            make.height.equalTo(CGFloat.highlightLineWidth)
-        }
+        centerBackground.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        centerBackground.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        centerBackground.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        centerBackground.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+
+        favicon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        favicon.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        favicon.heightAnchor.constraint(equalTo: favicon.widthAnchor).isActive = true
+        favicon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        
+        titleText.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        titleText.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+        titleText.leadingAnchor.constraint(equalTo: favicon.trailingAnchor, constant: 10).isActive = true
+        titleText.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: 10).isActive = true
+        
+        closeButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        closeButton.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
+        closeButton.widthAnchor.constraint(equalTo: heightAnchor).isActive = true
+        closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
+        
+        highlightLine.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        highlightLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -2).isActive = true
+        highlightLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2).isActive = true
+        highlightLine.heightAnchor.constraint(equalToConstant: .highlightLineWidth).isActive = true
     }
     
     override var intrinsicContentSize: CGSize {
         get {
             if traitCollection.horizontalSizeClass == .compact {
                 return CGSize(width: .compactTabWidth, height: .tabHeight)
-            }
-            else if traitCollection.horizontalSizeClass == .regular {
+            } else if traitCollection.horizontalSizeClass == .regular {
                 return CGSize(width: .regularTabWidth, height: .tabHeight)
-            }
-            else {
+            } else {
                 return CGSize(width: .tabWidth, height: .tabHeight)
             }
         }

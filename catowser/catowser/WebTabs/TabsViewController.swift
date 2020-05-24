@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreGraphics
-import SnapKit
 import CoreBrowser
 
 fileprivate extension TabsViewController {
@@ -35,6 +34,7 @@ final class TabsViewController: BaseViewController {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.bounces = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
@@ -43,6 +43,7 @@ final class TabsViewController: BaseViewController {
         let image = UIImage(imageLiteralResourceName: "newTabButton-Normal")
         addButton.setImage(image, for: .normal)
         addButton.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
         return addButton
     }()
     
@@ -52,6 +53,7 @@ final class TabsViewController: BaseViewController {
         showTabsButton.setTitleColor(.black, for: .normal)
         showTabsButton.setTitle("", for: .normal)
         showTabsButton.addTarget(self, action: #selector(showTabPreviewsPressed), for: .touchUpInside)
+        showTabsButton.translatesAutoresizingMaskIntoConstraints = false
         return showTabsButton
     }()
 
@@ -69,31 +71,26 @@ final class TabsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        stackViewScrollableContainer.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(view).offset(0)
-            maker.trailing.equalTo(addTabButton.snp.leading)
-            maker.bottom.equalTo(view).offset(0)
-            maker.top.equalTo(view).offset(0)
-        }
-        tabsStackView.snp.makeConstraints { (maker) in
-            maker.top.equalTo(stackViewScrollableContainer)
-            maker.bottom.equalTo(stackViewScrollableContainer)
-            maker.leading.equalTo(stackViewScrollableContainer)
-            maker.trailing.equalTo(stackViewScrollableContainer)
-        }
-        addTabButton.snp.makeConstraints { (maker) in
-            maker.bottom.equalTo(view)
-            maker.top.equalTo(view)
-            maker.leading.equalTo(stackViewScrollableContainer.snp.trailing)
-            maker.width.equalTo(view.snp.height)
-        }
-        showTabPreviewsButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(addTabButton.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.trailing.equalTo(view).offset(0)
-            maker.width.equalTo(view.snp.height)
-        }
+        stackViewScrollableContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        stackViewScrollableContainer.trailingAnchor.constraint(equalTo: addTabButton.leadingAnchor).isActive = true
+        stackViewScrollableContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stackViewScrollableContainer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        
+        tabsStackView.topAnchor.constraint(equalTo: stackViewScrollableContainer.topAnchor).isActive = true
+        tabsStackView.bottomAnchor.constraint(equalTo: stackViewScrollableContainer.bottomAnchor).isActive = true
+        tabsStackView.leadingAnchor.constraint(equalTo: stackViewScrollableContainer.leadingAnchor).isActive = true
+        tabsStackView.trailingAnchor.constraint(equalTo: stackViewScrollableContainer.trailingAnchor).isActive = true
+        
+        addTabButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        addTabButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        addTabButton.leadingAnchor.constraint(equalTo: stackViewScrollableContainer.trailingAnchor).isActive = true
+        addTabButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        
+        showTabPreviewsButton.leadingAnchor.constraint(equalTo: addTabButton.trailingAnchor).isActive = true
+        showTabPreviewsButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        showTabPreviewsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        showTabPreviewsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        showTabPreviewsButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
         TabsListManager.shared.attach(self)
     }

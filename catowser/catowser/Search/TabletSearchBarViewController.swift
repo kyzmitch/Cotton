@@ -53,6 +53,7 @@ final class TabletSearchBarViewController: BaseViewController {
             btn.addTarget(self, action: .actionsPressed, for: .touchUpInside)
         }
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
+        btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
     
@@ -62,6 +63,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
         btn.addTarget(self, action: .backPressed, for: .touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
     
@@ -71,6 +73,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
         btn.addTarget(self, action: .forwardPressed, for: .touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
     
@@ -80,6 +83,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.backgroundColor = ThemeProvider.shared.theme.searchBarButtonBackgroundColor
         btn.setImage(img, for: .normal)
         btn.addTarget(self, action: .reloadPressed, for: .touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
 
@@ -112,44 +116,37 @@ final class TabletSearchBarViewController: BaseViewController {
 
         view.backgroundColor = UIConstants.searchBarBackgroundColour
         
-        actionsButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(0)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.width.equalTo(view.snp.height)
-        }
+        actionsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        actionsButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        actionsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        actionsButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
-        goBackButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(actionsButton.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.width.equalTo(view.snp.height)
-        }
-        goForwardButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(goBackButton.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.width.equalTo(view.snp.height)
-        }
-        reloadButton.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(goForwardButton.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.width.equalTo(view.snp.height)
-        }
+        goBackButton.leadingAnchor.constraint(equalTo: actionsButton.trailingAnchor).isActive = true
+        goBackButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        goBackButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        goBackButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        
+        goForwardButton.leadingAnchor.constraint(equalTo: goBackButton.trailingAnchor).isActive = true
+        goForwardButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        goForwardButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        goForwardButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+        
+        reloadButton.leadingAnchor.constraint(equalTo: goForwardButton.trailingAnchor).isActive = true
+        reloadButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        reloadButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        reloadButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
         searchBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        searchBarViewController.view.snp.makeConstraints { (maker) in
-            maker.leading.equalTo(reloadButton.snp.trailing)
-            maker.top.equalTo(0)
-            maker.bottom.equalTo(0)
-            maker.trailing.equalTo(0)
-        }
+        
+        searchBarViewController.view.leadingAnchor.constraint(equalTo: reloadButton.trailingAnchor).isActive = true
+        searchBarViewController.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        searchBarViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        searchBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
 
         lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
-        lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
-        lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     @objc fileprivate func actionsPressed() {
