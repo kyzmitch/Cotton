@@ -10,6 +10,7 @@ import Foundation
 
 extension HttpKit {
     public struct URLIpInfo {
+        /// URL which always contains normal domain/host
         var internalUrl: URL
         /// IP address for a host after using DNS request
         public var ipAddress: String?
@@ -45,6 +46,7 @@ extension HttpKit {
             return clearURL
         }
         
+        /// Always provides URL with domain (never URL with ip address)
         public var domainURL: URL {
             return internalUrl
         }

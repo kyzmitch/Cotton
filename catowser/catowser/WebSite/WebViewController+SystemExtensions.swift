@@ -56,6 +56,8 @@ extension WebViewController: WKNavigationDelegate {
             return
         }
         
+        // FIXME: probably need to load using `internalLoad` to try use DoH again
+        
 #if false
         print("navigation Action: \(navigationAction.navigationType.debugDescription) \(url)")
 #endif
