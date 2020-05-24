@@ -10,6 +10,7 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 import JSPlugins
+import SnapKit
 
 /// An interface for component which suppose to render tabs
 ///
