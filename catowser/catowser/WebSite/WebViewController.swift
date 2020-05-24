@@ -31,9 +31,14 @@ final class WebViewController: BaseViewController {
     private var loadingProgressObservation: NSKeyValueObservation?
     @available(iOS 13.0, *)
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
+    @available(iOS 13.0, *)
+    private lazy var dnsFeatureChangeCancellable: AnyCancellable? = nil
     private var dnsRequestSubsciption: Disposable?
+    private var dnsFeatureChangeSubsciption: Disposable?
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
     private let dnsClient: GoogleDnsClient
+    /// Was DoH used to load URL in WebView
+    private var dohUsed: Bool
     /// State of web view
     private var isWebViewLoaded: Bool = false
     /// lazy loaded web view to use correct config
@@ -60,7 +65,8 @@ final class WebViewController: BaseViewController {
             addWebViewCanGoBackObserver()
             addWebViewCanGoForwardObserver()
         }
-        internalLoad(url: url)
+        dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+        internalLoad(url: url, enableDoH: dohUsed)
     }
 
     /// Reload by creating new webview
@@ -89,7 +95,8 @@ final class WebViewController: BaseViewController {
             addWebViewCanGoBackObserver()
             addWebViewCanGoForwardObserver()
         }
-        internalLoad(url: urlInfo.url)
+        dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+        internalLoad(url: urlInfo.url, enableDoH: dohUsed)
     }
 
     /**
@@ -106,7 +113,9 @@ final class WebViewController: BaseViewController {
             pluginsFacade = WebViewJSPluginsFacade(plugins)
         }
         dnsClient = dnsHttpClient
+        dohUsed = false
         super.init(nibName: nil, bundle: nil)
+        setupObservers()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -120,6 +129,7 @@ final class WebViewController: BaseViewController {
         } else {
             dnsRequestSubsciption?.dispose()
             finalURLFetchDisposable?.dispose()
+            dnsFeatureChangeSubsciption?.dispose()
         }
         loadingProgressObservation?.invalidate()
         canGoForwardObservation?.invalidate()
@@ -284,8 +294,8 @@ private extension WebViewController {
         }
     }
     
-    func internalLoad(url: URL) {
-        guard FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+    func internalLoad(url: URL, enableDoH: Bool) {
+        guard enableDoH
             && url.kitHost?.isDoHSupported ?? false  else {
             let request = URLRequest(url: url)
             webView.load(request)
@@ -334,6 +344,40 @@ private extension WebViewController {
                     self.webView.load(request)
                 })
         }
+    }
+    
+    func handleDoHFeatureChange(_ needToUseDoH: Bool) {
+        if needToUseDoH != dohUsed {
+            dohUsed = needToUseDoH
+            // maybe need to trigger UI webview reload state
+            externalNavigationDelegate?.didStartProvisionalNavigation()
+            if needToUseDoH && urlInfo.ipAddress != nil {
+                let request = URLRequest(url: urlInfo.url)
+                webView.load(request)
+            } else {
+                internalLoad(url: urlInfo.domainURL, enableDoH: needToUseDoH)
+            }
+        }
+    }
+    
+    /// Call only once at init
+    func setupObservers() {
+        if #available(iOS 13.0, *) {
+            dnsFeatureChangeCancellable = FeatureManager.featureChangesPublisher(for: .dnsOverHTTPSAvailable)
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] (feature) in
+                    let needToUseDoH = FeatureManager.boolValue(of: feature)
+                    self?.handleDoHFeatureChange(needToUseDoH)
+            }
+        } else {
+            dnsFeatureChangeSubsciption = FeatureManager.rxFeatureChanges(for: .dnsOverHTTPSAvailable)
+                .observe(on: UIScheduler())
+                .observeValues { [weak self] (feature) in
+                    let needToUseDoH = FeatureManager.boolValue(of: feature)
+                    self?.handleDoHFeatureChange(needToUseDoH)
+            }
+        }
+        
     }
 }
 

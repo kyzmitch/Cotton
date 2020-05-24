@@ -63,12 +63,14 @@ extension BasicFeature {
     }
 }
 
+/// For `syntatic sugar`
 struct ApplicationFeature<F: Feature> {
     static var dnsOverHTTPSAvailable: ApplicationFeature<DoHAvailable> {
         return ApplicationFeature<DoHAvailable>()
     }
 }
 
+/// Feature description.
 /// Wrapper around generic ApplicationFeature to get rid of template
 struct AnyFeature: Equatable {
     private let featureType: Any.Type
