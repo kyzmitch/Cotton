@@ -161,21 +161,22 @@ extension MasterRouter: SiteLifetimeInterface {
 }
 
 fileprivate extension MasterRouter {
-    func showFilesGreedIfNeeded() {
+    /// Shows files greed view, designed only for Phone layout
+    /// for Tablet layout we're using popover.
+    func showFilesGreedOnPhoneIfNeeded() {
+        guard !isPad else {
+            // only for Phone layout
+            return
+        }
         guard !isFilesGreedShowed else {
             return
         }
 
-        if !isPad {
-            hiddenFilesGreedConstraint?.isActive = false
-            showedFilesGreedConstraint?.isActive = true
+        hiddenFilesGreedConstraint?.isActive = false
+        showedFilesGreedConstraint?.isActive = true
 
-            UIView.animate(withDuration: 0.6) {
-                self.filesGreedController.view.layoutIfNeeded()
-            }
-        } else {
-            // TODO: implement
-            assertionFailure("Files greed not implemented for iPhone")
+        UIView.animate(withDuration: 0.6) {
+            self.filesGreedController.view.layoutIfNeeded()
         }
 
         isFilesGreedShowed = true
@@ -314,7 +315,7 @@ extension MasterRouter: LinkTagsDelegate {
         }
         if !isPad {
             filesGreedController.reloadWith(source: source) { [weak self] in
-                self?.showFilesGreedIfNeeded()
+                self?.showFilesGreedOnPhoneIfNeeded()
             }
         } else {
             filesGreedController.viewController.modalPresentationStyle = .popover
