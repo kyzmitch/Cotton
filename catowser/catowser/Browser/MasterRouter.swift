@@ -292,10 +292,10 @@ fileprivate extension MasterRouter {
                 popoverPresenter.sourceView = sourceView
                 popoverPresenter.sourceRect = sourceRect
             }
-            self.presenter.viewController.present(alert, animated: true, completion: nil)
+            presenter.viewController.present(alert, animated: true, completion: nil)
         } else {
-            // TODO: implement for iPhone and tablet screens, use
-            assertionFailure("Site options menu isn't implemented yet")
+            // FIXME: this causes layout error for some reason
+            presenter.viewController.present(alert, animated: true, completion: nil)
         }
     }
 

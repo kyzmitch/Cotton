@@ -41,7 +41,7 @@ final class TabletSearchBarViewController: BaseViewController {
     private lazy var actionsButton: UIButton = {
         let btn: UIButton
         if #available(iOS 13.0, *) {
-            if let systemImage = UIImage(systemName: "square.and.arrow.up") {
+            if let systemImage = UIImage.arropUp {
                 btn = UIButton()
                 btn.setImage(systemImage, for: .normal)
                 btn.addTarget(self, action: .actionsPressed, for: .touchUpInside)
