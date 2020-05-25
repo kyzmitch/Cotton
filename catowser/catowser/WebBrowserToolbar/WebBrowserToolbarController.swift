@@ -94,6 +94,20 @@ final class WebBrowserToolbarController: UIViewController {
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .reload)
         return btn
     }()
+    
+    private lazy var actionsButton: UIBarButtonItem = {
+        let btn: UIBarButtonItem
+        if #available(iOS 13.0, *) {
+            if let systemImage = UIImage(systemName: "square.and.arrow.up") {
+                btn = .init(image: systemImage, style: .plain, target: self, action: .actions)
+            } else {
+                btn = .init(barButtonSystemItem: .action, target: self, action: .actions)
+            }
+        } else {
+            btn = .init(barButtonSystemItem: .action, target: self, action: .actions)
+        }
+        return btn
+    }()
 
     private let counterView: CounterView = CounterView(frame: .zero)
     
@@ -182,7 +196,7 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
-        updateToolbar(downloadsAvailable: downloadsAvailable)
+        updateToolbar(downloadsAvailable: downloadsAvailable, actionsAvailable: withSite)
         downloadsArrowDown = !downloadsAvailable
         enableDownloadsButton = downloadsAvailable
     }
@@ -220,6 +234,10 @@ private extension WebBrowserToolbarController {
     @objc func handleReloadPressed() {
         siteNavigationDelegate?.reload()
     }
+    
+    @objc func handleActionsPressed() {
+        // TODO: actions are not implemented
+    }
 
     @objc func handleShowOpenedTabsPressed() {
         router.showTabs()
@@ -235,16 +253,19 @@ private extension WebBrowserToolbarController {
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
     }
     
-    func updateToolbar(downloadsAvailable: Bool) {
-        if downloadsAvailable {
-            var barItems = standardToolbarButtons
-            let space4 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-            barItems.append(space4)
-            barItems.append(downloadLinksButton)
-            toolbarView.setItems(barItems, animated: true)
-        } else {
-            toolbarView.setItems(standardToolbarButtons, animated: true)
+    func updateToolbar(downloadsAvailable: Bool, actionsAvailable: Bool) {
+        var barItems = standardToolbarButtons
+        if actionsAvailable {
+            let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            barItems.append(space)
+            barItems.append(actionsButton)
         }
+        if downloadsAvailable {
+            let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            barItems.append(space)
+            barItems.append(downloadLinksButton)
+        }
+        toolbarView.setItems(barItems, animated: true)
     }
 }
 
@@ -252,6 +273,7 @@ fileprivate extension Selector {
     static let back = #selector(WebBrowserToolbarController.handleBackPressed)
     static let forward = #selector(WebBrowserToolbarController.handleForwardPressed)
     static let reload = #selector(WebBrowserToolbarController.handleReloadPressed)
+    static let actions = #selector(WebBrowserToolbarController.handleActionsPressed)
     static let openTabs = #selector(WebBrowserToolbarController.handleShowOpenedTabsPressed)
     static let downloads = #selector(WebBrowserToolbarController.handleDownloadsPressed)
 }
@@ -266,9 +288,9 @@ extension WebBrowserToolbarController: TabsObserver {
     func didSelect(index: Int, content: Tab.ContentType) {
         switch content {
         case .site:
-            break
+            updateToolbar(downloadsAvailable: false, actionsAvailable: true)
         default:
-            updateToolbar(downloadsAvailable: false)
+            updateToolbar(downloadsAvailable: false, actionsAvailable: false)
         }
     }
 }
