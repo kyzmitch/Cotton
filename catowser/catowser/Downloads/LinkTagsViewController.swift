@@ -64,7 +64,7 @@ final class LinkTagsViewController: UICollectionViewController {
         collectionView.contentInset = zeroInset
 
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
-            assertionFailure("collection layout isn't flow")
+            assertionFailure("Collection layout isn't flow")
             return
         }
 

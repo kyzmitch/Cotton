@@ -54,7 +54,7 @@ final class LocalFeatureSource: FeatureSource {
             let boolValue = value as! Bool
             LocalSettings.setGlobalBoolSetting(for: F.key.prefixed(), value: boolValue)
         default:
-            assertionFailure("Not implemented")
+            assertionFailure("Value settings in Local source isn't implemented for other types")
         }
         
         let value = AnyFeature(feature)

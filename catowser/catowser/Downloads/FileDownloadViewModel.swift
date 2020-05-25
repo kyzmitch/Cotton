@@ -52,7 +52,7 @@ final class FileDownloadViewModel {
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 guard let self = self else {
-                    assertionFailure("Zomby self")
+                    assertionFailure("Fail to start file download - zomby self")
                     return
                 }
                 switch result {

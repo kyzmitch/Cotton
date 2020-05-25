@@ -33,7 +33,6 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
     private lazy var toolbar: UIToolbar = {
         // iOS 13.x fix for phone layout error
         // similar issue and fix:
-        // swiftlint:disable:next line_length
         // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 1000, height: 44))
         ThemeProvider.shared.setup(toolbar)
@@ -82,14 +81,14 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
         view.addSubview(collectionView)
         view.addSubview(toolbar)
 
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: toolbar.topAnchor, constant: 0).isActive = true
-        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: toolbar.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
 
-        toolbar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        toolbar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
-        toolbar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        toolbar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        toolbar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        toolbar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         disposables.append(uxState.signal
             .observe(on: UIScheduler())
