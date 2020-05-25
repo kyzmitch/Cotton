@@ -52,12 +52,8 @@ final class WebBrowserToolbarController: UIViewController {
             downloadsView.alpha = enableDownloadsButton ? 1.0 : 0.3
         }
     }
-
-    private lazy var toolbarView: CottonToolbarView = {
-        let toolbar = CottonToolbarView(frame: .zero)
-
-        ThemeProvider.shared.setup(toolbar)
-        
+    
+    private lazy var standardToolbarButtons: [UIBarButtonItem] = {
         var barItems = [UIBarButtonItem]()
         barItems.append(backButton)
         let space1 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -69,12 +65,15 @@ final class WebBrowserToolbarController: UIViewController {
         let space3 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         barItems.append(space3)
         barItems.append(openedTabsButton)
+        return barItems
+    }()
+
+    private lazy var toolbarView: CottonToolbarView = {
+        let toolbar = CottonToolbarView(frame: .zero)
+        ThemeProvider.shared.setup(toolbar)
         toolbar.counterView = counterView
-        let space4 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        barItems.append(space4)
-        barItems.append(downloadLinksButton)
         toolbar.downloadsView = downloadsView
-        toolbar.setItems(barItems, animated: false)
+        toolbar.setItems(standardToolbarButtons, animated: false)
         return toolbar
     }()
     
@@ -100,7 +99,6 @@ final class WebBrowserToolbarController: UIViewController {
     
     private lazy var openedTabsButton: UIBarButtonItem = {
         counterView.digit = TabsListManager.shared.tabsCount
-        TabsListManager.shared.attach(counterView)
         // Can't use simple bar button with text because it positioned incorrectly
         let btn = UIBarButtonItem(customView: counterView)
         return btn
@@ -127,9 +125,12 @@ final class WebBrowserToolbarController: UIViewController {
         downloadsArrowDown = true
         enableDownloadsButton = false
         super.init(nibName: nil, bundle: nil)
+        TabsListManager.shared.attach(counterView)
+        TabsListManager.shared.attach(self)
     }
 
     deinit {
+        TabsListManager.shared.detach(self)
         TabsListManager.shared.detach(counterView)
     }
 
@@ -181,6 +182,7 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
+        updateToolbar(downloadsAvailable: downloadsAvailable)
         downloadsArrowDown = !downloadsAvailable
         enableDownloadsButton = downloadsAvailable
     }
@@ -228,9 +230,21 @@ private extension WebBrowserToolbarController {
         delegate?.didPressDownloads(to: downloadsArrowDown)
     }
     
-    private func refreshNavigation() {
+    func refreshNavigation() {
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
+    }
+    
+    func updateToolbar(downloadsAvailable: Bool) {
+        if downloadsAvailable {
+            var barItems = standardToolbarButtons
+            let space4 = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            barItems.append(space4)
+            barItems.append(downloadLinksButton)
+            toolbarView.setItems(barItems, animated: true)
+        } else {
+            toolbarView.setItems(standardToolbarButtons, animated: true)
+        }
     }
 }
 
@@ -245,5 +259,16 @@ fileprivate extension Selector {
 extension CounterView: TabsObserver {
     func update(with tabsCount: Int) {
         self.digit = tabsCount
+    }
+}
+
+extension WebBrowserToolbarController: TabsObserver {
+    func didSelect(index: Int, content: Tab.ContentType) {
+        switch content {
+        case .site:
+            break
+        default:
+            updateToolbar(downloadsAvailable: false)
+        }
     }
 }
