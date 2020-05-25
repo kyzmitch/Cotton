@@ -126,13 +126,6 @@ fileprivate extension TabsPreviewsViewController {
 
 private extension TabsPreviewsViewController {
     func render(state: State) {
-        switch state {
-        case .loading: break
-
-        case .tabs:
-            break
-        }
-
         collectionView.reloadData()
     }
 }
@@ -145,10 +138,6 @@ extension TabsPreviewsViewController: TabsObserver {
 
         box.value.insert(tab, at: index)
         render(state: uxState.value)
-    }
-
-    func didSelect(index: Int, content: Tab.ContentType) {
-
     }
 }
 
