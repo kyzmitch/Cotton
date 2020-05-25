@@ -180,7 +180,7 @@ final class WebViewController: BaseViewController {
         }
         
         guard let site = Site(url: urlInfo.domainURL) else {
-            assertionFailure("failed create site from URL")
+            assertionFailure("Failed create site from URL")
             return
         }
         
