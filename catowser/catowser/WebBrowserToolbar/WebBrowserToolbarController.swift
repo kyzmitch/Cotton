@@ -98,7 +98,7 @@ final class WebBrowserToolbarController: UIViewController {
     private lazy var actionsButton: UIBarButtonItem = {
         let btn: UIBarButtonItem
         if #available(iOS 13.0, *) {
-            if let systemImage = UIImage(systemName: "square.and.arrow.up") {
+            if let systemImage = UIImage.arropUp {
                 btn = .init(image: systemImage, style: .plain, target: self, action: .actions)
             } else {
                 btn = .init(barButtonSystemItem: .action, target: self, action: .actions)
@@ -236,7 +236,7 @@ private extension WebBrowserToolbarController {
     }
     
     @objc func handleActionsPressed() {
-        // TODO: actions are not implemented
+        siteNavigationDelegate?.openTabMenu(from: toolbarView, and: .zero)
     }
 
     @objc func handleShowOpenedTabsPressed() {
