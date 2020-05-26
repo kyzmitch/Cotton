@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8A80359924442F0F000E035F"
-               BuildableName = "catowser dnsext.app"
-               BlueprintName = "catowser dnsext"
+               BuildableName = "Cotton dnsext.app"
+               BlueprintName = "Cotton dnsext"
                ReferencedContainer = "container:catowser.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8A80359924442F0F000E035F"
-            BuildableName = "catowser dnsext.app"
-            BlueprintName = "catowser dnsext"
+            BuildableName = "Cotton dnsext.app"
+            BlueprintName = "Cotton dnsext"
             ReferencedContainer = "container:catowser.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8A80359924442F0F000E035F"
-            BuildableName = "catowser dnsext.app"
-            BlueprintName = "catowser dnsext"
+            BuildableName = "Cotton dnsext.app"
+            BlueprintName = "Cotton dnsext"
             ReferencedContainer = "container:catowser.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
