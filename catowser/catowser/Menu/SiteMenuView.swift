@@ -12,8 +12,20 @@ import SwiftUI
 
 @available(iOS 13.0.0, *)
 struct SiteMenuView: View {
+    let titleText = NSLocalizedString("ttl_site_menu", comment: "Menu for tab")
+    let dohMenuTitle = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
+    
+    @State var isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(titleText)
+            List {
+                Toggle(isOn: $isDohEnabled) {
+                    Text(dohMenuTitle)
+                }
+            }
+        }
     }
 }
 
