@@ -10,6 +10,9 @@ import UIKit
 import CoreBrowser
 import JSPlugins
 import HttpKit
+#if canImport(SwiftUI)
+import SwiftUI
+#endif
 
 protocol MasterDelegate: class {
     var keyboardHeight: CGFloat? { get set }
@@ -273,7 +276,8 @@ fileprivate extension MasterRouter {
     
     func showTabMenuIfNeeded(from sourceView: UIView, and sourceRect: CGRect) {
         let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-        let msg = "DNS over HTTPs currently \(isDoHEnabled ? "enabled" : "disabled")"
+        let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
+        let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
         let alert: UIAlertController = .init(title: nil,
                                              message: msg,
                                              preferredStyle: .actionSheet)
@@ -292,10 +296,18 @@ fileprivate extension MasterRouter {
                 popoverPresenter.sourceView = sourceView
                 popoverPresenter.sourceRect = sourceRect
             }
-            presenter.viewController.present(alert, animated: true, completion: nil)
+            presenter.viewController.present(alert,
+                                             animated: true)
         } else {
-            // FIXME: this causes layout error for some reason
-            presenter.viewController.present(alert, animated: true, completion: nil)
+            if #available(iOS 13.0, *) {
+                let menuHostVC = UIHostingController(rootView: SiteMenuView())
+                presenter.viewController.present(menuHostVC,
+                                                 animated: true)
+            } else {
+                // FIXME: this causes layout error for some reason
+                presenter.viewController.present(alert,
+                                                 animated: true)
+            }
         }
     }
 
