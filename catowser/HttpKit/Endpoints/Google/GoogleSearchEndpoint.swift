@@ -23,6 +23,12 @@ extension HttpKit {
 
 extension HttpKit.Endpoint {
     static func googleSearchSuggestions(query: String) throws -> HttpKit.GSearchEndpoint {
+        guard !query.isEmpty else {
+            throw HttpKit.HttpError.emptyQueryParam
+        }
+        
+        // TODO: remove leading & trailing spaces
+        
         let items: [URLQueryItem] = [
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "client", value: "firefox")
