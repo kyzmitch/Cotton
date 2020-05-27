@@ -113,6 +113,10 @@ final class MasterRouter: NSObject {
     typealias LinksRouterPresenter = AnyViewController & MasterDelegate
 
     private weak var presenter: LinksRouterPresenter!
+    
+    /// Temporary property which automatically removes leading & trailing spaces.
+    /// Can't declare it private due to compiler error.
+    @LeadingTrimmed var tempSearchText: String = ""
 
     init(viewController: LinksRouterPresenter) {
         presenter = viewController
@@ -391,6 +395,25 @@ extension MasterRouter: UISearchBarDelegate {
             // or using Reactive api
             startSearch(searchText)
         }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar,
+                   shouldChangeTextIn range: NSRange,
+                   replacementText text: String) -> Bool {
+        guard let value = searchBar.text else {
+            return text != " "
+        }
+        // UIKit's searchbar delegate uses modern String type
+        // but at the same time legacy NSRange type
+        // which can't be used in String API,
+        // since it requires modern Range<String.Index>
+        // https://exceptionshub.com/nsrange-to-rangestring-index.html
+        let future = (value as NSString).replacingCharacters(in: range, with: text)
+        // Only need to check that no leading spaces
+        // trailing space is allowed to be able to construct
+        // query requests with more than one word.
+        tempSearchText = future
+        return tempSearchText == future
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
