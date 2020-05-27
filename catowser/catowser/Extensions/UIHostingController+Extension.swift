@@ -13,27 +13,15 @@ import SwiftUI
 @available(iOS 13.0, *)
 extension UIHostingController where Content == SiteMenuView {
     static func create(siteMenu model: SiteMenuModel) -> UIHostingController {
-        let menuView = SiteMenuView().environmentObject(model)
-        // Can't be compiled for some reason
-        // the view is opaque type and controller expects specific
-        // view type (SiteMenuView or Content).
-        // The very weird thing is that it compiles
-        // outside this extension.
-        #if false
+        let menuView = SiteMenuView(model: model)
         return UIHostingController(rootView: menuView)
-        #else
-        return UIHostingController(rootView: SiteMenuView())
-        #endif
     }
 }
 
 @available(iOS 13.0.0, *)
 final class SiteMenuViewController: UIHostingController<SiteMenuView> {
     init(model: SiteMenuModel) {
-        let viewWithModel = SiteMenuView()
-        // The problem is that this doesn't allow to set model
-        // using `environmentObject` because it returns opaque View type
-        // and for some strange reason it doens't compile here
+        let viewWithModel = SiteMenuView(model: model)
         super.init(rootView: viewWithModel)
     }
     

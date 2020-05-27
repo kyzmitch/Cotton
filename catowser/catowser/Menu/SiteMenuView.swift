@@ -19,8 +19,16 @@ private extension String {
     comment: "Button dismiss text")
 }
 
-@available(iOS 13.0.0, *)
+@available(iOS 13.0, *)
 struct SiteMenuView: View {
+    let model: SiteMenuModel
+    var body: some View {
+        _SiteMenuView().environmentObject(model)
+    }
+}
+
+@available(iOS 13.0.0, *)
+private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
     
     var body: some View {
@@ -44,7 +52,7 @@ struct SiteMenuView_Previews: PreviewProvider {
         let model = SiteMenuModel {
             print("Dismiss triggered")
         }
-        return SiteMenuView().environmentObject(model)
+        return _SiteMenuView().environmentObject(model)
     }
 }
 #endif
