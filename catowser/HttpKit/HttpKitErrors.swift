@@ -18,7 +18,7 @@ extension HttpKit {
         case httpFailure(error: Error, request: URLRequest?)
         case jsonSerialization(error: Error)
         case jsonDecoding(error: Error)
-        /// can add String assiciated vakue for missed params
+        /// can add String assiciated value for missed params
         case missingRequestParameters(String)
         case noAuthenticationToken
         case failedConstructRequestParameters
@@ -27,6 +27,10 @@ extension HttpKit {
         case noInternetConnectionWithHost
         case noHttpResponse
         case invalidURL
+        
+        /* Errors specific to endpoints */
+        
+        case emptyQueryParam
         
         var localizedDescription: String {
             switch self {
