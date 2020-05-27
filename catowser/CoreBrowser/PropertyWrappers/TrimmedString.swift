@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Constrains `String` value by filtering leading space symbols
+/// https://nshipster.com/propertywrapper/#constraining-values
 @propertyWrapper
 public struct LeadingTrimmed {
     private(set) var value: String = ""
