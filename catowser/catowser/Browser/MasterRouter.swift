@@ -413,6 +413,7 @@ extension MasterRouter: UISearchBarDelegate {
         // trailing space is allowed to be able to construct
         // query requests with more than one word.
         tempSearchText = future
+        // 400 IQ approach
         return tempSearchText == future
     }
 
