@@ -300,7 +300,14 @@ fileprivate extension MasterRouter {
                                              animated: true)
         } else {
             if #available(iOS 13.0, *) {
-                let menuHostVC = UIHostingController(rootView: SiteMenuView())
+                let menuModel = SiteMenuModel { [weak self] in
+                    self?.presenter
+                        .viewController
+                        .presentedViewController?
+                        .dismiss(animated: true)
+                }
+                let menuView = SiteMenuView().environmentObject(menuModel)
+                let menuHostVC = UIHostingController(rootView: menuView)
                 presenter.viewController.present(menuHostVC,
                                                  animated: true)
             } else {
