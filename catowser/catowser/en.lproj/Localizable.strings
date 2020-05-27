@@ -34,3 +34,4 @@
 
 "ttl_site_menu" = "Tab menu";
 "txt_doh_menu_item" = "DNS over HTTPs";
+"btn_dismiss" = "Done";

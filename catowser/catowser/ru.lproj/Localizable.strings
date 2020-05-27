@@ -33,3 +33,4 @@
 "btn_downloaded" = "Поделиться";
 "ttl_site_menu" = "Меню вкладки";
 "txt_doh_menu_item" = "DNS по HTTPs";
+"btn_dismiss" = "Закрыть";
