@@ -306,8 +306,7 @@ fileprivate extension MasterRouter {
                         .presentedViewController?
                         .dismiss(animated: true)
                 }
-                let menuView = SiteMenuView().environmentObject(menuModel)
-                let menuHostVC = UIHostingController(rootView: menuView)
+                let menuHostVC = SiteMenuViewController(model: menuModel)
                 presenter.viewController.present(menuHostVC,
                                                  animated: true)
             } else {
