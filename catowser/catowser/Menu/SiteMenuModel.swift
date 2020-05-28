@@ -9,6 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
+import HttpKit
 
 @available(iOS 13.0, *)
 final class SiteMenuModel: ObservableObject {
@@ -20,7 +21,10 @@ final class SiteMenuModel: ObservableObject {
     
     let dismissAction: DismissClosure
     
-    init(dismiss: @escaping DismissClosure) {
+    let host: HttpKit.Host
+    
+    init(host: HttpKit.Host, dismiss: @escaping DismissClosure) {
+        self.host = host
         dismissAction = dismiss
         dohChangesCancellable = $isDohEnabled.sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0)}
     }

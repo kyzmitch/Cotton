@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import HttpKit
 
 protocol SiteNavigationDelegate: class {
     var canGoBack: Bool { get }
@@ -27,7 +28,7 @@ protocol SiteExternalNavigationDelegate: class {
     func didUpdateForwardNavigation(to canGoForward: Bool)
     func showProgress(_ show: Bool)
     func updateTabPreview(_ screenshot: UIImage)
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect)
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host)
 }
 
 protocol SiteNavigationComponent: class {
