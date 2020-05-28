@@ -158,9 +158,6 @@ public struct Tab {
 
     public static let deselectedBlank: Tab = Tab(contentType: .blank, selected: false)
     public static let blank: Tab = Tab(contentType: .blank, selected: true)
-    public static var initial: Tab {
-        return Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
-    }
 }
 
 extension Tab: Equatable {

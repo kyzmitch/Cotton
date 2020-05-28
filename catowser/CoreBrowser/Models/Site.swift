@@ -43,11 +43,11 @@ public struct Site {
 
     private let isPrivate: Bool = false
 
-    private let blockPopups: Bool = DefaultTabProvider.shared.blockPopups
+    private let blockPopups: Bool
 
     public let canLoadPlugins: Bool = true
     
-    public init?(url: URL, searchSuggestion: String? = nil) {
+    public init?(url: URL, searchSuggestion: String? = nil, blockPopups: Bool) {
         guard let urlInfo = HttpKit.URLIpInfo(url) else {
             return nil
         }
@@ -55,9 +55,10 @@ public struct Site {
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
+        self.blockPopups = blockPopups
     }
 
-    public init?(urlString: String, customTitle: String? = nil, image: UIImage? = nil) {
+    public init?(urlString: String, customTitle: String? = nil, image: UIImage? = nil, blockPopups: Bool) {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
@@ -68,6 +69,7 @@ public struct Site {
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
+        self.blockPopups = blockPopups
     }
 
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.

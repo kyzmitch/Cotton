@@ -9,6 +9,18 @@
 import Foundation
 import ReactiveSwift
 
+/// Describes how new tab is added to the list.
+/// Uses `Int` as raw value to be able to store it in settings.
+public enum AddedTabPosition: Int {
+    case listEnd = 0
+    case afterSelected = 1
+}
+
+public enum TabAddSpeed {
+    case immediately
+    case after(DispatchTimeInterval)
+}
+
 /// MARK: Tabs observer protocol.
 public protocol TabsObserver {
     /// To be able to search specific observer.
@@ -64,7 +76,14 @@ public extension TabsObserver {
     /* optional */ func initializeObserver(with tabs: [Tab]) {}
 }
 
+public protocol TabsPositioning {
+    var defaultPosition: AddedTabPosition { get }
+    var contentState: Tab.ContentType { get }
+    var addSpeed: TabAddSpeed { get }
+}
+
 public protocol TabsSubject {
+    init(storage: TabsStorage, positioning: TabsPositioning)
     /// Add tabs observer.
     func attach(_ observer: TabsObserver)
     /// Removes tabs observer.
@@ -98,8 +117,6 @@ public final class TabsListManager {
     // One empty tab (`.blank` or even tab with favorite sites) will be good default
     // state for time before some cached tabs will be fetched from storage.
 
-    /// Instance.
-    public static let shared = TabsListManager(storage: TabsCacheProvider.shared)
     /// Current tab selection strategy
     public var selectionStrategy: TabSelectionStrategy
 
@@ -107,6 +124,7 @@ public final class TabsListManager {
     private let selectedTabIndex: MutableProperty<Int>
 
     private let storage: TabsStorage
+    private let positioning: TabsPositioning
     private var observers: [TabsObserver] = [TabsObserver]()
     private let queue: DispatchQueue
     private lazy var scheduler: QueueScheduler = {
@@ -117,13 +135,14 @@ public final class TabsListManager {
     private var disposables = [Disposable?]()
 
     // swiftlint:disable:next function_body_length
-    init(storage: TabsStorage) {
+    public init(storage: TabsStorage, positioning: TabsPositioning) {
         selectionStrategy = NearbySelectionStrategy()
 
         tabs = MutableProperty<[Tab]>([])
         selectedTabIndex = MutableProperty<Int>(-1)
 
         self.storage = storage
+        self.positioning = positioning
         queue = DispatchQueue(label: .queueNameWith(suffix: "tabsListSubject"))
 
         // Temporarily delay to wait before first `observer` will be added
@@ -257,7 +276,7 @@ extension TabsListManager: TabsSubject {
 
     public func add(tab: Tab) {
         let newIndex: Int
-        switch DefaultTabProvider.shared.defaultPosition {
+        switch positioning.defaultPosition {
         case .listEnd:
             tabs.value.append(tab)
             newIndex = tabs.value.count - 1
@@ -351,14 +370,14 @@ extension TabsListManager: TabsSubject {
 private extension TabsListManager {
     func resetToOneTab() {
         tabs.value.removeAll()
-        let tab: Tab = .initial
+        let tab: Tab = .init(contentType: positioning.contentState, selected: true)
 
         tabs.value.append(tab)
         // No need to change selected index because it is already 0
         // but it is needed to update web view content
         selectedTabIndex.value = 0
 
-        switch DefaultTabProvider.shared.addSpeed {
+        switch positioning.addSpeed {
         case .immediately:
             DispatchQueue.main.async { [weak self] in
                 self?.observers.forEach {
