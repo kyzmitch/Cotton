@@ -32,6 +32,6 @@
 "btn_downloading" = "Downloading";
 "btn_downloaded" = "Share";
 
-"ttl_site_menu" = "Tab menu";
+"ttl_site_menu" = "%@ menu";
 "txt_doh_menu_item" = "DNS over HTTPs";
 "btn_dismiss" = "Done";

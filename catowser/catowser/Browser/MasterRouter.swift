@@ -33,7 +33,7 @@ protocol TagsRouterInterface: class {
 
 protocol SiteLifetimeInterface {
     func showProgress(_ show: Bool)
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect)
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host)
 }
 
 /// Should contain copies for references to all needed constraints and view controllers.
@@ -162,8 +162,8 @@ extension MasterRouter: SiteLifetimeInterface {
         }
     }
     
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
-        showTabMenuIfNeeded(from: sourceView, and: sourceRect)
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host) {
+        showTabMenuIfNeeded(from: sourceView, and: sourceRect, for: host)
     }
 }
 
@@ -278,7 +278,9 @@ fileprivate extension MasterRouter {
         }
     }
     
-    func showTabMenuIfNeeded(from sourceView: UIView, and sourceRect: CGRect) {
+    func showTabMenuIfNeeded(from sourceView: UIView,
+                             and sourceRect: CGRect,
+                             for host: HttpKit.Host) {
         let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
         let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
@@ -304,7 +306,7 @@ fileprivate extension MasterRouter {
                                              animated: true)
         } else {
             if #available(iOS 13.0, *) {
-                let menuModel = SiteMenuModel { [weak self] in
+                let menuModel = SiteMenuModel(host: host) { [weak self] in
                     self?.presenter
                         .viewController
                         .presentedViewController?

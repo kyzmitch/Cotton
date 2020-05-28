@@ -10,6 +10,7 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 import JSPlugins
+import HttpKit
 
 /// An interface for component which suppose to render tabs
 ///
@@ -604,7 +605,7 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
     
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
-        linksRouter.openTabMenu(from: sourceView, and: sourceRect)
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host) {
+        linksRouter.openTabMenu(from: sourceView, and: sourceRect, for: host)
     }
 }

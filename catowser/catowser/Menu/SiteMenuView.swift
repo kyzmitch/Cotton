@@ -9,6 +9,7 @@
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
+import HttpKit
 
 private extension String {
     static let menuTtl = NSLocalizedString("ttl_site_menu",
@@ -27,9 +28,13 @@ struct SiteMenuView: View {
     }
 }
 
-@available(iOS 13.0.0, *)
+@available(iOS 13.0, *)
 private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
+    
+    private var viewTitle: String {
+        return String.localizedStringWithFormat(.menuTtl, model.host.rawValue)
+    }
     
     var body: some View {
         NavigationView {
@@ -38,7 +43,7 @@ private struct _SiteMenuView: View {
                     Text(verbatim: .dohMenuTitle)
                 }
             }
-            .navigationBarTitle(Text(verbatim: .menuTtl))
+            .navigationBarTitle(Text(verbatim: viewTitle))
             .navigationBarItems(trailing: Button<Text>(String.dismissBtn, action: model.dismissAction))
         }
     }
@@ -46,10 +51,12 @@ private struct _SiteMenuView: View {
 
 #if DEBUG
 // swiftlint:disable type_name
-@available(iOS 13.0.0, *)
+@available(iOS 13.0, *)
 struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = SiteMenuModel {
+        // swiftlint:disable force_unwrapping
+        let host = HttpKit.Host(rawValue: "example.com")!
+        let model = SiteMenuModel(host: host) {
             print("Dismiss triggered")
         }
         return _SiteMenuView().environmentObject(model)

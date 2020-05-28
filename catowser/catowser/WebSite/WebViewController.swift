@@ -412,6 +412,8 @@ extension WebViewController: SiteNavigationDelegate {
     }
     
     func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
-        externalNavigationDelegate?.openTabMenu(from: sourceView, and: sourceRect)
+        externalNavigationDelegate?.openTabMenu(from: sourceView,
+                                                and: sourceRect,
+                                                for: urlInfo.host)
     }
 }
