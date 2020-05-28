@@ -38,4 +38,8 @@ final class LocalSettings {
     static func setGlobalBoolSetting(for key: String, value: Bool) {
         shared.userDefaults.set(value, forKey: key)
     }
+    
+    static func setGlobalIntSetting(for key: String, value: Int) {
+        shared.userDefaults.set(value, forKey: key)
+    }
 }

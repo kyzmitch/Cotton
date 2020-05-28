@@ -11,6 +11,7 @@ import Foundation
 import Combine
 #endif
 import ReactiveSwift
+import CoreBrowser
 
 final class FeatureManager {
     private static let shared: FeatureManager = .init()
@@ -19,6 +20,13 @@ final class FeatureManager {
     private init() {}
     
     static func boolValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Bool where F.Value == Bool {
+        guard let source = source(for: feature) else {
+            return F.defaultValue
+        }
+        return source.currentValue(of: feature)
+    }
+    
+    static func intValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Int where F.Value == Int {
         guard let source = source(for: feature) else {
             return F.defaultValue
         }
@@ -56,5 +64,18 @@ final class FeatureManager {
     
     private static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
         return shared.sources.first(where: { type(of: $0) == F.source })
+    }
+}
+
+// MARK: - special methods specific to features
+extension FeatureManager {
+    static func tabAddPositionValue() -> AddedTabPosition {
+        let feature: ApplicationFeature = .tabAddPosition
+        // swiftlint:disable:next force_unwrapping
+        let defaultValue = AddedTabPosition(rawValue: feature.defaultValue)!
+        guard let source = source(for: feature) else {
+            return defaultValue
+        }
+        return AddedTabPosition(rawValue: source.currentValue(of: feature)) ?? defaultValue
     }
 }
