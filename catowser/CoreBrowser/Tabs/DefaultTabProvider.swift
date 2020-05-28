@@ -8,9 +8,11 @@
 
 import UIKit
 
-/// Describes how new tab is added to the list
-public enum AddedTabPosition {
-    case listEnd, afterSelected
+/// Describes how new tab is added to the list.
+/// Uses `Int` as raw value to be able to store it in settings.
+public enum AddedTabPosition: Int {
+    case listEnd = 0
+    case afterSelected = 1
 }
 
 public enum TabAddSpeed {

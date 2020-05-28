@@ -53,6 +53,10 @@ final class LocalFeatureSource: FeatureSource {
             // swiftlint:disable:next force_cast
             let boolValue = value as! Bool
             LocalSettings.setGlobalBoolSetting(for: F.key.prefixed(), value: boolValue)
+        case is Int:
+            // swiftlint:disable:next force_cast
+            let intValue = value as! Int
+            LocalSettings.setGlobalIntSetting(for: F.key.prefixed(), value: intValue)
         default:
             assertionFailure("Value settings in Local source isn't implemented for other types")
         }
