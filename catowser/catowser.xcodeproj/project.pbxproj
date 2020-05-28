@@ -44,7 +44,7 @@
 		6094E740221FE6CB004269A2 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D7B0221F17010032C156 /* Box.swift */; };
 		6094E741221FE706004269A2 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
 		6094E742221FE718004269A2 /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EDB220463D40071BECF /* Site.swift */; };
-		6094E743221FE72C004269A2 /* TabsSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsSubject.swift */; };
+		6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsListManager.swift */; };
 		60A82C4D22549446008210D9 /* FilesGreedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */; };
 		60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGreedViewController.swift */; };
 		60A82C5122549604008210D9 /* CAGradientLayer+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */; };
@@ -122,6 +122,7 @@
 		8A745C0F2480287700A379AD /* TabsCacheInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C0E2480287700A379AD /* TabsCacheInterface.swift */; };
 		8A745C112480295B00A379AD /* TabsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C102480295B00A379AD /* TabsEnvironment.swift */; };
 		8A745C122480295B00A379AD /* TabsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C102480295B00A379AD /* TabsEnvironment.swift */; };
+		8A745C1424802E4F00A379AD /* TabsSubjectObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C1324802E4F00A379AD /* TabsSubjectObserver.swift */; };
 		8A7A968D24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */; };
 		8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */; };
 		8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */; };
@@ -451,7 +452,7 @@
 		607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainNativeAppChecker.swift; sourceTree = "<group>"; };
 		607CC66622A5505F0037E5EC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarRouter.swift; sourceTree = "<group>"; };
-		607D02AE21FEF87F009FCD0B /* TabsSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubject.swift; sourceTree = "<group>"; };
+		607D02AE21FEF87F009FCD0B /* TabsListManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsListManager.swift; sourceTree = "<group>"; };
 		607D02B021FF1200009FCD0B /* String+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelectionStrategy.swift; sourceTree = "<group>"; };
 		608DA74A223A3BD4009F75BD /* JSPlugins.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSPlugins.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -541,6 +542,7 @@
 		8A74188B245086330019695E /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		8A745C0E2480287700A379AD /* TabsCacheInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsCacheInterface.swift; sourceTree = "<group>"; };
 		8A745C102480295B00A379AD /* TabsEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsEnvironment.swift; sourceTree = "<group>"; };
+		8A745C1324802E4F00A379AD /* TabsSubjectObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubjectObserver.swift; sourceTree = "<group>"; };
 		8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchEngine+OpenSearchParser.swift"; sourceTree = "<group>"; };
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
@@ -736,7 +738,8 @@
 		608DA70A222E7048009F75BD /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				607D02AE21FEF87F009FCD0B /* TabsSubject.swift */,
+				8A745C1324802E4F00A379AD /* TabsSubjectObserver.swift */,
+				607D02AE21FEF87F009FCD0B /* TabsListManager.swift */,
 				608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */,
 				8A745C0E2480287700A379AD /* TabsCacheInterface.swift */,
 			);
@@ -1812,7 +1815,7 @@
 				8A745C0F2480287700A379AD /* TabsCacheInterface.swift in Sources */,
 				8AD18E102447580A00224702 /* ResourceReader.swift in Sources */,
 				6094E741221FE706004269A2 /* Tab.swift in Sources */,
-				6094E743221FE72C004269A2 /* TabsSubject.swift in Sources */,
+				6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */,
 				8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */,
 				608DA709222E6F5E009F75BD /* TabSelectionStrategy.swift in Sources */,
 				60D52D41225F542E00CB56F0 /* Trie.swift in Sources */,
@@ -1822,6 +1825,7 @@
 				6094E731221FE2EC004269A2 /* ReusableItem.swift in Sources */,
 				60D52D21225B526B00CB56F0 /* Namespace.swift in Sources */,
 				60D52D3C225F317C00CB56F0 /* DomainsHistory.swift in Sources */,
+				8A745C1424802E4F00A379AD /* TabsSubjectObserver.swift in Sources */,
 				60D52D3E225F47DB00CB56F0 /* InMemoryDomainSearchProvider.swift in Sources */,
 				6094E740221FE6CB004269A2 /* Box.swift in Sources */,
 				6094E734221FE2F9004269A2 /* Protocols.swift in Sources */,
