@@ -114,7 +114,7 @@ final class MasterRouter: NSObject {
 
     private weak var presenter: LinksRouterPresenter!
     
-    /// Temporary property which automatically removes leading & trailing spaces.
+    /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed var tempSearchText: String = ""
 

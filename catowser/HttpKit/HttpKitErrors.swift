@@ -31,6 +31,7 @@ extension HttpKit {
         /* Errors specific to endpoints */
         
         case emptyQueryParam
+        case spacesInQueryParam
         
         var localizedDescription: String {
             switch self {
