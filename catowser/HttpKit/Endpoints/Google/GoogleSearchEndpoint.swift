@@ -27,7 +27,10 @@ extension HttpKit.Endpoint {
             throw HttpKit.HttpError.emptyQueryParam
         }
         
-        // TODO: remove leading & trailing spaces
+        let withoutSpaces = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !withoutSpaces.isEmpty else {
+            throw HttpKit.HttpError.spacesInQueryParam
+        }
         
         let items: [URLQueryItem] = [
             URLQueryItem(name: "q", value: query),

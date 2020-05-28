@@ -16,7 +16,7 @@ private extension String {
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
     static let dismissBtn = NSLocalizedString("btn_dismiss",
-    comment: "Button dismiss text")
+                                              comment: "Button dismiss text")
 }
 
 @available(iOS 13.0, *)
