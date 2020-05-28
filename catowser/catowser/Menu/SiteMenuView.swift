@@ -33,7 +33,7 @@ private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
     
     private var viewTitle: String {
-        return String.localizedStringWithFormat(.menuTtl, model.host.rawValue)
+        return .localizedStringWithFormat(.menuTtl, model.host.rawValue)
     }
     
     var body: some View {

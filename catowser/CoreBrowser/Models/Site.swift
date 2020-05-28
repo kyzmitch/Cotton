@@ -88,18 +88,3 @@ public struct Site {
 }
 
 extension Site: Equatable {}
-
-extension URL {
-    public init?(faviconHost: HttpKit.Host) {
-        let format = "https://\(faviconHost.rawValue)/favicon.ico"
-        self.init(string: format)
-    }
-    
-    public init?(faviconIPInfo: HttpKit.URLIpInfo) {
-        guard let ipAddress = faviconIPInfo.ipAddress else {
-            return nil
-        }
-        let format = "https://\(ipAddress)/favicon.ico"
-        self.init(string: format)
-    }
-}
