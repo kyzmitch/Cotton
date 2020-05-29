@@ -200,6 +200,8 @@
 		8A90636A243323C0009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
 		8A90636B24332452009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
+		8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
+		8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
 		8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
@@ -562,6 +564,7 @@
 		8A90636824332376009D786E /* URL+CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+CoreExtensions.swift"; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
+		8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificFeatures.swift; sourceTree = "<group>"; };
 		8A978D4823F34909007ECB0C /* AuthChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChallenge.swift; sourceTree = "<group>"; };
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
@@ -1146,6 +1149,7 @@
 			children = (
 				8ADAF547240123F600A0D233 /* FeatureManager.swift */,
 				8ADAF549240124D800A0D233 /* Feature.swift */,
+				8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */,
 				8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */,
 				60724ED92204332B0071BECF /* DefaultTabProvider.swift */,
 			);
@@ -1882,6 +1886,7 @@
 				8A745C112480295B00A379AD /* TabsEnvironment.swift in Sources */,
 				8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
+				8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				60A82C532254E1F7008210D9 /* MasterRouter.swift in Sources */,
@@ -1943,6 +1948,7 @@
 				8A745C122480295B00A379AD /* TabsEnvironment.swift in Sources */,
 				8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
+				8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
 				8A8035CA24442F0F000E035F /* MasterRouter.swift in Sources */,

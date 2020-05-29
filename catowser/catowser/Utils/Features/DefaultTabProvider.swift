@@ -11,17 +11,8 @@ import CoreBrowser
 
 final class DefaultTabProvider {
     static let shared = DefaultTabProvider()
-
-    private init() {}
     
-    var selected: Bool {
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
-            return true
-        default:
-            return false
-        }
-    }
+    let selected: Bool
     
     let blockPopups: Bool = false
 
@@ -49,14 +40,40 @@ final class DefaultTabProvider {
         array = [ig, tube, opennet, meduza, newsruCom]
         return array.compactMap {$0}
     }()
+    
+    private init() {
+        selected = UIDevice.current.userInterfaceIdiom == .pad
+    }
 }
 
 extension DefaultTabProvider: TabsPositioning {
-    var defaultPosition: AddedTabPosition {
+    var addPosition: AddedTabPosition {
         return FeatureManager.tabAddPositionValue()
     }
     
     var contentState: Tab.ContentType { .topSites }
     
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }
+}
+
+/// Twin type for `Tab.ContentType` to have `rawValue`
+/// and use it for settings.
+enum TabContentDefaultState: Int {
+    case blank
+    case homepage
+    case favorites
+    case topSites
+    
+    var contentType: Tab.ContentType {
+        switch self {
+        case .blank:
+            return .blank
+        case .homepage:
+            return .homepage
+        case .favorites:
+            return .favorites
+        case .topSites:
+            return .topSites
+        }
+    }
 }

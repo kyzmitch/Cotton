@@ -176,7 +176,7 @@ extension TabsListManager: TabsSubject {
 
     public func add(tab: Tab) {
         let newIndex: Int
-        switch positioning.defaultPosition {
+        switch positioning.addPosition {
         case .listEnd:
             tabs.value.append(tab)
             newIndex = tabs.value.count - 1

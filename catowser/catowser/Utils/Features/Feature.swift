@@ -11,7 +11,6 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
-import CoreBrowser
 
 protocol FeatureSource {
     func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value
@@ -66,13 +65,6 @@ extension BasicFeature {
 
 /// For `syntatic sugar`
 struct ApplicationFeature<F: Feature> {
-    static var dnsOverHTTPSAvailable: ApplicationFeature<DoHAvailable> {
-        return ApplicationFeature<DoHAvailable>()
-    }
-    static var tabAddPosition: ApplicationFeature<TabAddPosition> {
-        return ApplicationFeature<TabAddPosition>()
-    }
-    
     var defaultValue: F.Value {
         return F.defaultValue
     }
@@ -104,20 +96,4 @@ struct AnyFeature: Equatable {
     static func == <F>(lhs: ApplicationFeature<F>, rhs: AnyFeature) -> Bool {
         return AnyFeature(lhs) == rhs
     }
-}
-
-/// DNS over HTTPS
-enum DoHAvailable: BasicFeature {
-    typealias Value = Bool
-    static let key = "ios.doh"
-    static let defaultValue = false
-    static var source: FeatureSource.Type = LocalFeatureSource.self
-}
-
-/// Tab add strategy on UI
-enum TabAddPosition: BasicFeature {
-    typealias Value = AddedTabPosition.RawValue
-    static let key = "ios.tab.add_position"
-    static let defaultValue: AddedTabPosition.RawValue = AddedTabPosition.listEnd.rawValue
-    static var source: FeatureSource.Type = LocalFeatureSource.self
 }
