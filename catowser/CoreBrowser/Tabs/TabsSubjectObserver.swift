@@ -78,7 +78,7 @@ public extension TabsObserver {
 }
 
 public protocol TabsPositioning {
-    var defaultPosition: AddedTabPosition { get }
+    var addPosition: AddedTabPosition { get }
     var contentState: Tab.ContentType { get }
     var addSpeed: TabAddSpeed { get }
 }

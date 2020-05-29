@@ -78,4 +78,14 @@ extension FeatureManager {
         }
         return AddedTabPosition(rawValue: source.currentValue(of: feature)) ?? defaultValue
     }
+    
+    static func tabDefaultContentValue() -> TabContentDefaultState {
+        let feature: ApplicationFeature = .tabDefaultContent
+        // swiftlint:disable:next force_unwrapping
+        let defaultValue = TabContentDefaultState(rawValue: feature.defaultValue)!
+        guard let source = source(for: feature) else {
+            return defaultValue
+        }
+        return TabContentDefaultState(rawValue: source.currentValue(of: feature)) ?? defaultValue
+    }
 }
