@@ -12,12 +12,13 @@ import SwiftUI
 import HttpKit
 
 private extension String {
-    static let menuTtl = NSLocalizedString("ttl_site_menu",
-                                           comment: "Menu for tab")
+    static let siteSectionTtl = NSLocalizedString("ttl_site_menu",
+                                                  comment: "Menu for tab")
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
+    static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "")
 }
 
 @available(iOS 13.0, *)
@@ -32,15 +33,25 @@ struct SiteMenuView: View {
 private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
     
-    private var viewTitle: String {
-        return .localizedStringWithFormat(.menuTtl, model.host.rawValue)
+    private var siteSectionTitle: String {
+        return .localizedStringWithFormat(.siteSectionTtl, model.host.rawValue)
     }
+    
+    private let viewTitle = NSLocalizedString("ttl_common_menu", comment: "")
     
     var body: some View {
         NavigationView {
             List {
-                Toggle(isOn: $model.isDohEnabled) {
-                    Text(verbatim: .dohMenuTitle)
+                Section(header: Text(siteSectionTitle)) {
+                    EmptyView()
+                }
+                Section(header: Text("Global settings")) {
+                    Toggle(isOn: $model.isDohEnabled) {
+                        Text(verbatim: .dohMenuTitle)
+                    }
+                    NavigationLink(destination: TabAddPositionsView()) {
+                        Text(verbatim: .tabAddTxt)
+                    }
                 }
             }
             .navigationBarTitle(Text(verbatim: viewTitle))

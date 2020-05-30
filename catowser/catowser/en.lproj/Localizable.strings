@@ -32,6 +32,11 @@
 "btn_downloading" = "Downloading";
 "btn_downloaded" = "Share";
 
-"ttl_site_menu" = "%@ menu";
+"ttl_site_menu" = "%@ settings";
 "txt_doh_menu_item" = "DNS over HTTPs";
 "btn_dismiss" = "Done";
+"ttl_common_menu" = "Settings";
+
+"txt_tab_add_list_end" = "Append at the list end";
+"txt_tab_add_after_selected" = "Insert after selected tab";
+"ttl_tab_positions" = "How to add new tab";

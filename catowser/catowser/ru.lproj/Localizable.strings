@@ -31,6 +31,12 @@
 "btn_start_download" = "Скачать";
 "btn_downloading" = "Скачивается";
 "btn_downloaded" = "Поделиться";
-"ttl_site_menu" = "%@ меню";
+
+"ttl_site_menu" = "%@ настройки";
 "txt_doh_menu_item" = "DNS по HTTPs";
 "btn_dismiss" = "Закрыть";
+"ttl_common_menu" = "Настройки";
+
+"txt_tab_add_list_end" = "Добавлять в конец списка";
+"txt_tab_add_after_selected" = "Вставлять после выбранной вкладки";
+"ttl_tab_positions" = "Как добавлять вкладку";
