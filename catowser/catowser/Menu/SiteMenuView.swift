@@ -32,6 +32,7 @@ struct SiteMenuView: View {
 @available(iOS 13.0, *)
 private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
+    @State private var isShowingAddTabSetting = false
     
     private var siteSectionTitle: String {
         return .localizedStringWithFormat(.siteSectionTtl, model.host.rawValue)
@@ -49,7 +50,9 @@ private struct _SiteMenuView: View {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
                     }
-                    NavigationLink(destination: TabAddPositionsView()) {
+                    NavigationLink(destination: TabAddPositionsView(onPop: {
+                        self.isShowingAddTabSetting = false
+                    }), isActive: $isShowingAddTabSetting) {
                         Text(verbatim: .tabAddTxt)
                     }
                 }

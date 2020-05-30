@@ -11,6 +11,8 @@ import Combine
 #endif
 import HttpKit
 
+typealias DismissClosure = () -> Void
+
 @available(iOS 13.0, *)
 final class SiteMenuModel: ObservableObject {
     @Published var isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
@@ -18,8 +20,6 @@ final class SiteMenuModel: ObservableObject {
     @Published var tabDefaultContent = FeatureManager.tabDefaultContentValue()
     
     private var dohChangesCancellable: AnyCancellable?
-    
-    typealias DismissClosure = () -> Void
     
     let dismissAction: DismissClosure
     
