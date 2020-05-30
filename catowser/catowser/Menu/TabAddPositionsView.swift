@@ -42,10 +42,13 @@ struct TabAddPositionsView: View {
     
     private let viewTitle = NSLocalizedString("ttl_tab_positions", comment: "")
     
+    let onPop: DismissClosure
+    
     var body: some View {
         NavigationView {
             List(dataSource) { position in
                 Text(position.description)
+                    .onTapGesture(perform: self.onPop)
             }
             .navigationBarTitle(Text(verbatim: viewTitle))
         }
@@ -57,7 +60,9 @@ struct TabAddPositionsView: View {
 @available(iOS 13.0, *)
 struct TabAddPositionsView_Previews: PreviewProvider {
     static var previews: some View {
-        TabAddPositionsView()
+        TabAddPositionsView {
+            // pop from navigation stack
+        }
     }
 }
 #endif
