@@ -9,48 +9,26 @@
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
-import CoreBrowser
 
-/// Declare string representation for CoreBrowser enum
-/// in host app to use localized strings.
-extension AddedTabPosition: CustomStringConvertible {
-    public var description: String {
-        let key: String
-        
-        switch self {
-        case .listEnd:
-            key = "txt_tab_add_list_end"
-        case .afterSelected:
-            key = "txt_tab_add_after_selected"
-        }
-        return NSLocalizedString(key, comment: "")
-    }
-}
-
-extension AddedTabPosition: Identifiable {
-    public var id: RawValue {
-        return self.rawValue
-    }
-    
-    // swiftlint:disable:next type_name
-    public typealias ID = RawValue
-}
+typealias DismissClosure = () -> Void
 
 @available(iOS 13.0, *)
 struct TabAddPositionsView: View {
-    private let dataSource = AddedTabPosition.allCases
-    
-    private let viewTitle = NSLocalizedString("ttl_tab_positions", comment: "")
-    
-    let onPop: DismissClosure
+    let model: TabAddPositionsModel
     
     var body: some View {
         NavigationView {
-            List(dataSource) { position in
-                Text(position.description)
-                    .onTapGesture(perform: self.onPop)
+            List(model.dataSource) { position in
+                if position == self.model.selected {
+                    Text(position.description)
+                        .font(Font.headline)
+                        .onTapGesture(perform: self.model.onPop)
+                } else {
+                    Text(position.description)
+                        .onTapGesture(perform: self.model.onPop)
+                }
             }
-            .navigationBarTitle(Text(verbatim: viewTitle))
+            .navigationBarTitle(Text(verbatim: model.viewTitle))
         }
     }
 }
@@ -60,9 +38,10 @@ struct TabAddPositionsView: View {
 @available(iOS 13.0, *)
 struct TabAddPositionsView_Previews: PreviewProvider {
     static var previews: some View {
-        TabAddPositionsView {
-            // pop from navigation stack
+        let model: TabAddPositionsModel = .init {
+            // pop code
         }
+        return TabAddPositionsView(model: model)
     }
 }
 #endif
