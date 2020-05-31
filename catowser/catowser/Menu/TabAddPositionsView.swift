@@ -17,19 +17,17 @@ struct TabAddPositionsView: View {
     let model: TabAddPositionsModel
     
     var body: some View {
-        NavigationView {
-            List(model.dataSource) { position in
-                if position == self.model.selected {
-                    Text(position.description)
-                        .font(Font.headline)
-                        .onTapGesture(perform: self.model.onPop)
-                } else {
-                    Text(position.description)
-                        .onTapGesture(perform: self.model.onPop)
-                }
+        List(model.dataSource) { position in
+            if position == self.model.selected {
+                Text(position.description)
+                    .font(Font.headline)
+                    .onTapGesture(perform: self.model.onPop)
+            } else {
+                Text(position.description)
+                    .onTapGesture(perform: self.model.onPop)
             }
-            .navigationBarTitle(Text(verbatim: model.viewTitle))
         }
+        .navigationBarTitle(Text(verbatim: model.viewTitle))
     }
 }
 

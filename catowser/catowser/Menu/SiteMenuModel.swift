@@ -25,6 +25,16 @@ final class SiteMenuModel: ObservableObject {
     
     let host: HttpKit.Host
     
+    var siteSectionTitle: String {
+        return .localizedStringWithFormat(.siteSectionTtl, host.rawValue)
+    }
+    
+    var currentTabAddValue: String {
+        return FeatureManager.tabAddPositionValue().description
+    }
+    
+    let viewTitle: String = .menuTtl
+    
     init(host: HttpKit.Host, dismiss: @escaping DismissClosure) {
         self.host = host
         dismissAction = dismiss
@@ -34,4 +44,9 @@ final class SiteMenuModel: ObservableObject {
     deinit {
         dohChangesCancellable?.cancel()
     }
+}
+
+private extension String {
+    static let siteSectionTtl = NSLocalizedString("ttl_site_menu", comment: "Menu for tab")
+    static let menuTtl = NSLocalizedString("ttl_common_menu", comment: "")
 }
