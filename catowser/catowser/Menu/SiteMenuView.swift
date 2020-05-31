@@ -11,16 +11,6 @@ import SwiftUI
 #endif
 import HttpKit
 
-private extension String {
-    static let siteSectionTtl = NSLocalizedString("ttl_site_menu",
-                                                  comment: "Menu for tab")
-    static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
-                                                comment: "Title of DoH menu item")
-    static let dismissBtn = NSLocalizedString("btn_dismiss",
-                                              comment: "Button dismiss text")
-    static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "")
-}
-
 @available(iOS 13.0, *)
 struct SiteMenuView: View {
     let model: SiteMenuModel
@@ -38,6 +28,10 @@ private struct _SiteMenuView: View {
         return .localizedStringWithFormat(.siteSectionTtl, model.host.rawValue)
     }
     
+    private var currentTabAddValue: String {
+        return FeatureManager.tabAddPositionValue().description
+    }
+    
     private let viewTitle = NSLocalizedString("ttl_common_menu", comment: "")
     
     var body: some View {
@@ -50,10 +44,12 @@ private struct _SiteMenuView: View {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
                     }
-                    NavigationLink(destination: TabAddPositionsView(onPop: {
+                    NavigationLink(destination: TabAddPositionsView(model: .init(onPop: {
                         self.isShowingAddTabSetting = false
-                    }), isActive: $isShowingAddTabSetting) {
+                    })), isActive: $isShowingAddTabSetting) {
                         Text(verbatim: .tabAddTxt)
+                        Spacer()
+                        Text(verbatim: currentTabAddValue)
                     }
                 }
             }
@@ -61,6 +57,16 @@ private struct _SiteMenuView: View {
             .navigationBarItems(trailing: Button<Text>(String.dismissBtn, action: model.dismissAction))
         }
     }
+}
+
+private extension String {
+    static let siteSectionTtl = NSLocalizedString("ttl_site_menu",
+                                                  comment: "Menu for tab")
+    static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
+                                                comment: "Title of DoH menu item")
+    static let dismissBtn = NSLocalizedString("btn_dismiss",
+                                              comment: "Button dismiss text")
+    static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
 }
 
 #if DEBUG
