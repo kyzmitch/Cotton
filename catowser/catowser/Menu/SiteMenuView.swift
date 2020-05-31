@@ -34,9 +34,10 @@ private struct _SiteMenuView: View {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
                     }
-                    NavigationLink(destination: TabAddPositionsView(model: .init(onPop: {
+                    NavigationLink(destination: TabAddPositionsView(model: .init { (selected) in
+                        FeatureManager.setFeature(.tabAddPosition, value: selected.rawValue)
                         self.isShowingAddTabSetting = false
-                    })), isActive: $isShowingAddTabSetting) {
+                    }), isActive: $isShowingAddTabSetting) {
                         Text(verbatim: .tabAddTxt)
                         Spacer()
                         Text(verbatim: model.currentTabAddValue)

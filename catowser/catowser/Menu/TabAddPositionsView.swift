@@ -21,10 +21,14 @@ struct TabAddPositionsView: View {
             if position == self.model.selected {
                 Text(position.description)
                     .font(Font.headline)
-                    .onTapGesture(perform: self.model.onPop)
+                    .onTapGesture {
+                        self.model.onPop(position)
+                }
             } else {
                 Text(position.description)
-                    .onTapGesture(perform: self.model.onPop)
+                    .onTapGesture {
+                        self.model.onPop(position)
+                }
             }
         }
         .navigationBarTitle(Text(verbatim: model.viewTitle))
@@ -36,8 +40,8 @@ struct TabAddPositionsView: View {
 @available(iOS 13.0, *)
 struct TabAddPositionsView_Previews: PreviewProvider {
     static var previews: some View {
-        let model: TabAddPositionsModel = .init {
-            // pop code
+        let model: TabAddPositionsModel = .init { (_) in
+            // 
         }
         return TabAddPositionsView(model: model)
     }
