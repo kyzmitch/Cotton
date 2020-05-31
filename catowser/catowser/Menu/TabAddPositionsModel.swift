@@ -9,12 +9,14 @@
 import Foundation
 import CoreBrowser
 
+typealias TabAddPopClosure = (AddedTabPosition) -> Void
+
 struct TabAddPositionsModel {
     let dataSource = AddedTabPosition.allCases
     
     let viewTitle = NSLocalizedString("ttl_tab_positions", comment: "")
     
-    let onPop: DismissClosure
+    let onPop: TabAddPopClosure
     
     let selected: AddedTabPosition = FeatureManager.tabAddPositionValue()
 }
