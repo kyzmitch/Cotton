@@ -40,3 +40,9 @@
 "txt_tab_add_list_end" = "Append at the list end";
 "txt_tab_add_after_selected" = "Insert after selected tab";
 "ttl_tab_positions" = "How to add new tab";
+"ttl_tab_default_content" = "New tab content";
+
+"txt_tab_content_blank" = "Blank";
+"txt_tab_content_homepage" = "Homepage";
+"txt_tab_content_favorites" = "Favorites";
+"txt_tab_content_top_sites" = "Top sites";

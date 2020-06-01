@@ -58,7 +58,7 @@ extension DefaultTabProvider: TabsPositioning {
 
 /// Twin type for `Tab.ContentType` to have `rawValue`
 /// and use it for settings.
-enum TabContentDefaultState: Int {
+enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
     case blank
     case homepage
     case favorites
@@ -75,5 +75,21 @@ enum TabContentDefaultState: Int {
         case .topSites:
             return .topSites
         }
+    }
+    
+    public var description: String {
+        let key: String
+        
+        switch self {
+        case .blank:
+            key = "txt_tab_content_blank"
+        case .homepage:
+            key = "txt_tab_content_homepage"
+        case .favorites:
+            key = "txt_tab_content_favorites"
+        case .topSites:
+            key = "txt_tab_content_top_sites"
+        }
+        return NSLocalizedString(key, comment: "")
     }
 }

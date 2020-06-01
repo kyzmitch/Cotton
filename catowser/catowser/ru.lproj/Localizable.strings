@@ -40,3 +40,9 @@
 "txt_tab_add_list_end" = "Добавлять в конец списка";
 "txt_tab_add_after_selected" = "Вставлять после выбранной вкладки";
 "ttl_tab_positions" = "Как добавлять вкладку";
+"ttl_tab_default_content" = "Контент для новых вкладок";
+
+"txt_tab_content_blank" = "Пустая страница";
+"txt_tab_content_homepage" = "Домашняя страница";
+"txt_tab_content_favorites" = "Избранные сайты";
+"txt_tab_content_top_sites" = "Топ сайты";
