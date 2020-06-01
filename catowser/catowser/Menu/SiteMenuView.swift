@@ -23,6 +23,7 @@ struct SiteMenuView: View {
 private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
     @State private var isShowingAddTabSetting = false
+    @State private var isShowingDefaultTabContentSetting = false
     
     var body: some View {
         NavigationView {
@@ -42,6 +43,14 @@ private struct _SiteMenuView: View {
                         Spacer()
                         Text(verbatim: model.currentTabAddValue)
                     }
+                    NavigationLink(destination: TabDefaultContentView(model: .init { (selected) in
+                        FeatureManager.setFeature(.tabDefaultContent, value: selected.rawValue)
+                        self.isShowingDefaultTabContentSetting = false
+                    }), isActive: $isShowingDefaultTabContentSetting) {
+                        Text(verbatim: .tabContentTxt)
+                        Spacer()
+                        Text(verbatim: model.currentTabDefaultContent)
+                    }
                 }
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
@@ -56,6 +65,7 @@ private extension String {
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
+    static let tabContentTxt = NSLocalizedString("ttl_tab_default_content", comment: "")
 }
 
 #if DEBUG
