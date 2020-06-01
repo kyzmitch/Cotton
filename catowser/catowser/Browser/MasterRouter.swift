@@ -65,11 +65,11 @@ final class MasterRouter: NSObject {
 
     private var isLinkTagsShowed: Bool = false
 
-    private var isFilesGreedShowed: Bool = false
+    private(set) var isFilesGreedShowed: Bool = false
 
     var dataSource: TagsSiteDataSource?
 
-    private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+    let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
     private let searchSuggestClient: HttpKit.SearchEngine = {
         let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: .duckduckgo, on: .main)
@@ -90,7 +90,7 @@ final class MasterRouter: NSObject {
 
     typealias LinksRouterPresenter = AnyViewController & MasterDelegate
 
-    private weak var presenter: LinksRouterPresenter!
+    private(set) weak var presenter: LinksRouterPresenter!
     
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
@@ -194,25 +194,7 @@ final class MasterRouter: NSObject {
     func startSearch(_ searchText: String) {
         searchSuggestionsController.prepareSearch(for: searchText)
     }
-}
-
-extension MasterRouter: SiteLifetimeInterface {
-    func showProgress(_ show: Bool) {
-        if show {
-            hiddenWebLoadConstraint?.isActive = false
-            showedWebLoadConstraint?.isActive = true
-        } else {
-            showedWebLoadConstraint?.isActive = false
-            hiddenWebLoadConstraint?.isActive = true
-        }
-    }
     
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host) {
-        showTabMenuIfNeeded(from: sourceView, and: sourceRect, for: host)
-    }
-}
-
-fileprivate extension MasterRouter {
     /// Shows files greed view, designed only for Phone layout
     /// for Tablet layout we're using popover.
     func showFilesGreedOnPhoneIfNeeded() {
@@ -233,7 +215,25 @@ fileprivate extension MasterRouter {
 
         isFilesGreedShowed = true
     }
+}
+
+extension MasterRouter: SiteLifetimeInterface {
+    func showProgress(_ show: Bool) {
+        if show {
+            hiddenWebLoadConstraint?.isActive = false
+            showedWebLoadConstraint?.isActive = true
+        } else {
+            showedWebLoadConstraint?.isActive = false
+            hiddenWebLoadConstraint?.isActive = true
+        }
+    }
     
+    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host) {
+        showTabMenuIfNeeded(from: sourceView, and: sourceRect, for: host)
+    }
+}
+
+fileprivate extension MasterRouter {
     func showTabMenuIfNeeded(from sourceView: UIView,
                              and sourceRect: CGRect,
                              for host: HttpKit.Host) {
@@ -276,37 +276,6 @@ fileprivate extension MasterRouter {
                 presenter.viewController.present(alert,
                                                  animated: true)
             }
-        }
-    }
-}
-
-extension MasterRouter: LinkTagsDelegate {
-    func didSelect(type: LinksType, from sourceView: UIView) {
-        guard type == .video, let source = dataSource else {
-            return
-        }
-        guard !isFilesGreedShowed else {
-            hideFilesGreedIfNeeded()
-            return
-        }
-        if !isPad {
-            filesGreedController.reloadWith(source: source) { [weak self] in
-                self?.showFilesGreedOnPhoneIfNeeded()
-            }
-        } else {
-            filesGreedController.viewController.modalPresentationStyle = .popover
-            filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
-            if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
-                popoverPresenter.permittedArrowDirections = .down
-                // no transforms, so frame can be used
-                let sourceRect = sourceView.frame
-                popoverPresenter.sourceRect = sourceRect
-                popoverPresenter.sourceView = linkTagsController.view
-            }
-            filesGreedController.reloadWith(source: source, completion: nil)
-            presenter.viewController.present(filesGreedController.viewController,
-                                             animated: true,
-                                             completion: nil)
         }
     }
 }
