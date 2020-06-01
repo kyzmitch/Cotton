@@ -14,6 +14,7 @@ import HttpKit
 @available(iOS 13.0, *)
 final class SiteMenuModel: ObservableObject {
     @Published var isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+    @Published var isJavaScriptEnabled = true
     @Published var tabAddPosition = FeatureManager.tabAddPositionValue()
     @Published var tabDefaultContent = FeatureManager.tabDefaultContentValue()
     

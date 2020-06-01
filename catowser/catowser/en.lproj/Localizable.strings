@@ -33,7 +33,9 @@
 "btn_downloaded" = "Share";
 
 "ttl_site_menu" = "%@ settings";
+"ttl_global_menu" = "Global settings";
 "txt_doh_menu_item" = "DNS over HTTPs";
+"txt_javascript_enabled_for_tab" = "JavaScript in tab";
 "btn_dismiss" = "Done";
 "ttl_common_menu" = "Settings";
 

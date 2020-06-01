@@ -33,7 +33,9 @@
 "btn_downloaded" = "Поделиться";
 
 "ttl_site_menu" = "%@ настройки";
+"ttl_global_menu" = "Общие настройки";
 "txt_doh_menu_item" = "DNS по HTTPs";
+"txt_javascript_enabled_for_tab" = "JavaScript на вкладке";
 "btn_dismiss" = "Закрыть";
 "ttl_common_menu" = "Настройки";
 

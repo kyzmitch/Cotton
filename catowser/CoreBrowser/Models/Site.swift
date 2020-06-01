@@ -44,10 +44,15 @@ public struct Site {
     private let isPrivate: Bool = false
 
     private let blockPopups: Bool
+    
+    private let isJsEnabled: Bool
 
     public let canLoadPlugins: Bool = true
     
-    public init?(url: URL, searchSuggestion: String? = nil, blockPopups: Bool) {
+    public init?(url: URL,
+                 searchSuggestion: String? = nil,
+                 blockPopups: Bool,
+                 javaScriptEnabled: Bool = true) {
         guard let urlInfo = HttpKit.URLIpInfo(url) else {
             return nil
         }
@@ -56,9 +61,14 @@ public struct Site {
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
         self.blockPopups = blockPopups
+        isJsEnabled = javaScriptEnabled
     }
 
-    public init?(urlString: String, customTitle: String? = nil, image: UIImage? = nil, blockPopups: Bool) {
+    public init?(urlString: String,
+                 customTitle: String? = nil,
+                 image: UIImage? = nil,
+                 blockPopups: Bool,
+                 javaScriptEnabled: Bool = true) {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
@@ -70,12 +80,13 @@ public struct Site {
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
         self.blockPopups = blockPopups
+        isJsEnabled = javaScriptEnabled
     }
 
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
     public var webViewConfig: WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
-        configuration.preferences.javaScriptEnabled = true
+        configuration.preferences.javaScriptEnabled = isJsEnabled
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
         // We do this to go against the configuration of the <meta name="viewport">

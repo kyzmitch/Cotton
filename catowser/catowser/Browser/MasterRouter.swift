@@ -14,28 +14,6 @@ import HttpKit
 import SwiftUI
 #endif
 
-protocol MasterDelegate: class {
-    var keyboardHeight: CGFloat? { get set }
-    var toolbarHeight: CGFloat { get }
-    var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
-    var popoverSourceView: UIView { get }
-
-    func openSearchSuggestion(url: URL, suggestion: String)
-    func openDomain(with url: URL)
-}
-
-protocol TagsRouterInterface: class {
-    func openTagsFor(instagram nodes: [InstagramVideoNode])
-    func openTagsFor(t4 video: T4Video)
-    func openTagsFor(html tags: [HTMLVideoTag])
-    func closeTags()
-}
-
-protocol SiteLifetimeInterface {
-    func showProgress(_ show: Bool)
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host)
-}
-
 /// Should contain copies for references to all needed constraints and view controllers.
 /// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
@@ -89,7 +67,7 @@ final class MasterRouter: NSObject {
 
     private var isFilesGreedShowed: Bool = false
 
-    fileprivate var dataSource: TagsSiteDataSource?
+    var dataSource: TagsSiteDataSource?
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
@@ -121,33 +99,100 @@ final class MasterRouter: NSObject {
     init(viewController: LinksRouterPresenter) {
         presenter = viewController
     }
-}
+    
+    // MARK: - originally private methods
+    
+    func showLinkTagsControllerIfNeeded() {
+        guard !isLinkTagsShowed else {
+            return
+        }
 
-extension MasterRouter: TagsRouterInterface {
-    func openTagsFor(instagram nodes: [InstagramVideoNode]) {
-        dataSource = .instagram(nodes)
-        linkTagsController.setLinks(nodes.count, for: .video)
-        showLinkTagsControllerIfNeeded()
+        isLinkTagsShowed = true
+        // Order of disabling/enabling is important to not to cause errors in layout calculation.
+        hiddenTagsConstraint?.isActive = false
+        showedTagsConstraint?.isActive = true
+
+        UIView.animate(withDuration: 0.33) {
+            self.linkTagsController.view.layoutIfNeeded()
+        }
     }
     
-    func openTagsFor(t4 video: T4Video) {
-        dataSource = .t4(video)
-        linkTagsController.setLinks(1, for: .video)
-        showLinkTagsControllerIfNeeded()
-    }
+    func hideFilesGreedIfNeeded() {
+        guard isFilesGreedShowed else {
+            return
+        }
 
-    func openTagsFor(html tags: [HTMLVideoTag]) {
-        dataSource = .htmlVideos(tags)
-        linkTagsController.setLinks(tags.count, for: .video)
-        showLinkTagsControllerIfNeeded()
-    }
+        if !isPad {
+            showedFilesGreedConstraint?.isActive = false
+            hiddenFilesGreedConstraint?.isActive = true
 
-    func closeTags() {
-        dataSource = nil
-        hideFilesGreedIfNeeded()
-        hideLinkTagsController()
-        filesGreedController.clearFiles()
-        linkTagsController.clearLinks()
+            filesGreedController.view.layoutIfNeeded()
+        } else {
+            filesGreedController.viewController.dismiss(animated: true, completion: nil)
+        }
+
+        isFilesGreedShowed = false
+    }
+    
+    func hideLinkTagsController() {
+        guard isLinkTagsShowed else {
+            return
+        }
+        showedTagsConstraint?.isActive = false
+        hiddenTagsConstraint?.isActive = true
+
+        linkTagsController.view.layoutIfNeeded()
+        isLinkTagsShowed = false
+    }
+    
+    func hideSearchController() {
+        guard isSuggestionsShowed else {
+            print("Attempted to hide suggestions when they are not showed")
+            return
+        }
+
+        searchSuggestionsController.willMove(toParent: nil)
+        searchSuggestionsController.removeFromParent()
+        // remove view and constraints
+        searchSuggestionsController.view.removeFromSuperview()
+
+        isSuggestionsShowed = false
+    }
+    
+    func showSearchControllerIfNeeded() {
+        guard !isSuggestionsShowed else {
+            return
+        }
+
+        presenter.viewController.add(asChildViewController: searchSuggestionsController, to: presenter.view)
+        isSuggestionsShowed = true
+        searchSuggestionsController.delegate = self
+
+        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor,
+                                                              constant: 0).isActive = true
+        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.view.leadingAnchor,
+                                                                  constant: 0).isActive = true
+        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.view.trailingAnchor,
+                                                                   constant: 0).isActive = true
+
+        if let bottomShift = presenter.keyboardHeight {
+            // fix wrong height of keyboard on Simulator when keyboard partly visible
+            let correctedShift = bottomShift < presenter.toolbarHeight ? presenter.toolbarHeight : bottomShift
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
+                                                                     constant: -correctedShift).isActive = true
+        } else {
+            if isPad {
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.toolbarTopAnchor,
+                                                                         constant: 0).isActive = true
+            } else {
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
+                                                                         constant: 0).isActive = true
+            }
+        }
+    }
+    
+    func startSearch(_ searchText: String) {
+        searchSuggestionsController.prepareSearch(for: searchText)
     }
 }
 
@@ -187,95 +232,6 @@ fileprivate extension MasterRouter {
         }
 
         isFilesGreedShowed = true
-    }
-
-    func showSearchControllerIfNeeded() {
-        guard !isSuggestionsShowed else {
-            return
-        }
-
-        presenter.viewController.add(asChildViewController: searchSuggestionsController, to: presenter.view)
-        isSuggestionsShowed = true
-        searchSuggestionsController.delegate = self
-
-        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor,
-                                                              constant: 0).isActive = true
-        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.view.leadingAnchor,
-                                                                  constant: 0).isActive = true
-        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.view.trailingAnchor,
-                                                                   constant: 0).isActive = true
-
-        if let bottomShift = presenter.keyboardHeight {
-            // fix wrong height of keyboard on Simulator when keyboard partly visible
-            let correctedShift = bottomShift < presenter.toolbarHeight ? presenter.toolbarHeight : bottomShift
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
-                                                                     constant: -correctedShift).isActive = true
-        } else {
-            if isPad {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.toolbarTopAnchor,
-                                                                         constant: 0).isActive = true
-            } else {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
-                                                                         constant: 0).isActive = true
-            }
-        }
-    }
-
-    func hideSearchController() {
-        guard isSuggestionsShowed else {
-            print("Attempted to hide suggestions when they are not showed")
-            return
-        }
-
-        searchSuggestionsController.willMove(toParent: nil)
-        searchSuggestionsController.removeFromParent()
-        // remove view and constraints
-        searchSuggestionsController.view.removeFromSuperview()
-
-        isSuggestionsShowed = false
-    }
-
-    func hideLinkTagsController() {
-        guard isLinkTagsShowed else {
-            return
-        }
-        showedTagsConstraint?.isActive = false
-        hiddenTagsConstraint?.isActive = true
-
-        linkTagsController.view.layoutIfNeeded()
-        isLinkTagsShowed = false
-    }
-    
-    func hideFilesGreedIfNeeded() {
-        guard isFilesGreedShowed else {
-            return
-        }
-
-        if !isPad {
-            showedFilesGreedConstraint?.isActive = false
-            hiddenFilesGreedConstraint?.isActive = true
-
-            filesGreedController.view.layoutIfNeeded()
-        } else {
-            filesGreedController.viewController.dismiss(animated: true, completion: nil)
-        }
-
-        isFilesGreedShowed = false
-    }
-
-    func showLinkTagsControllerIfNeeded() {
-        guard !isLinkTagsShowed else {
-            return
-        }
-
-        isLinkTagsShowed = true
-        // Order of disabling/enabling is important to not to cause errors in layout calculation.
-        hiddenTagsConstraint?.isActive = false
-        showedTagsConstraint?.isActive = true
-
-        UIView.animate(withDuration: 0.33) {
-            self.linkTagsController.view.layoutIfNeeded()
-        }
     }
     
     func showTabMenuIfNeeded(from sourceView: UIView,
@@ -321,10 +277,6 @@ fileprivate extension MasterRouter {
                                                  animated: true)
             }
         }
-    }
-
-    func startSearch(_ searchText: String) {
-        searchSuggestionsController.prepareSearch(for: searchText)
     }
 }
 
@@ -383,69 +335,6 @@ extension MasterRouter: SearchSuggestionsListDelegate {
             }
             presenter.openSearchSuggestion(url: url, suggestion: suggestion)
         }
-    }
-}
-
-extension MasterRouter: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty || searchText.looksLikeAURL() {
-            hideSearchController()
-        } else {
-            showSearchControllerIfNeeded()
-            // TODO: How to delay network request
-            // https://stackoverflow.com/a/2471977/483101
-            // or using Reactive api
-            startSearch(searchText)
-        }
-    }
-    
-    func searchBar(_ searchBar: UISearchBar,
-                   shouldChangeTextIn range: NSRange,
-                   replacementText text: String) -> Bool {
-        guard let value = searchBar.text else {
-            return text != " "
-        }
-        // UIKit's searchbar delegate uses modern String type
-        // but at the same time legacy NSRange type
-        // which can't be used in String API,
-        // since it requires modern Range<String.Index>
-        // https://exceptionshub.com/nsrange-to-rangestring-index.html
-        let future = (value as NSString).replacingCharacters(in: range, with: text)
-        // Only need to check that no leading spaces
-        // trailing space is allowed to be able to construct
-        // query requests with more than one word.
-        tempSearchText = future
-        // 400 IQ approach
-        return tempSearchText == future
-    }
-
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarController.changeState(to: .startSearch, animated: true)
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        hideSearchController()
-        searchBar.resignFirstResponder()
-        searchBarController.changeState(to: .cancelTapped, animated: true)
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else {
-            return
-        }
-        let content: SuggestionType
-        if text.looksLikeAURL() {
-            content = .looksLikeURL(text)
-        } else {
-            // need to open web view with url of search engine
-            // and specific search queue
-            content = .suggestion(text)
-        }
-        didSelect(content)
-    }
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        // called when `Cancel` pressed or search bar no more a first responder
     }
 }
 
