@@ -10,8 +10,6 @@
 import SwiftUI
 #endif
 
-typealias DismissClosure = () -> Void
-
 @available(iOS 13.0, *)
 struct TabAddPositionsView: View {
     let model: TabAddPositionsModel
