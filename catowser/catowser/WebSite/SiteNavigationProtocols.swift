@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 import HttpKit
 
-protocol SiteNavigationDelegate: class {
+// base protocol already based on `class`
+// swiftlint:disable:next class_delegate_protocol
+protocol SiteNavigationDelegate: SiteSettingsInterface {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
 
@@ -18,6 +20,13 @@ protocol SiteNavigationDelegate: class {
     func goBack()
     func reload()
     func openTabMenu(from sourceView: UIView, and sourceRect: CGRect)
+    func reloadWithNewSettings(jsEnabled: Bool)
+}
+
+extension SiteNavigationDelegate {
+    func update(jsEnabled: Bool) {
+        reloadWithNewSettings(jsEnabled: false)
+    }
 }
 
 protocol SiteExternalNavigationDelegate: class {

@@ -79,7 +79,7 @@ struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {
         // swiftlint:disable force_unwrapping
         let host = HttpKit.Host(rawValue: "example.com")!
-        let model = SiteMenuModel(host: host) {
+        let model = SiteMenuModel(host: host, siteDelegate: nil) {
             print("Dismiss triggered")
         }
         return _SiteMenuView().environmentObject(model)

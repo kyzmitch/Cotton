@@ -91,6 +91,8 @@ final class MasterRouter: NSObject {
     typealias LinksRouterPresenter = AnyViewController & MasterDelegate
 
     private(set) weak var presenter: LinksRouterPresenter!
+    /// Need to update this navigation delegate each time it changes in router holder
+    weak var siteNavigationDelegate: SiteNavigationDelegate?
     
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
@@ -262,7 +264,7 @@ fileprivate extension MasterRouter {
                                              animated: true)
         } else {
             if #available(iOS 13.0, *) {
-                let menuModel = SiteMenuModel(host: host) { [weak self] in
+                let menuModel = SiteMenuModel(host: host, siteDelegate: siteNavigationDelegate) { [weak self] in
                     self?.presenter
                         .viewController
                         .presentedViewController?
