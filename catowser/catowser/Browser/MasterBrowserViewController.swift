@@ -551,6 +551,7 @@ extension MasterBrowserViewController: SiteNavigationComponent {
         set(newValue) {
             let holder = navigationComponent()
             holder?.siteNavigator = newValue
+            self.linksRouter.siteNavigationDelegate = newValue
         }
     }
 }

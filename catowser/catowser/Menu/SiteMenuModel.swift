@@ -11,20 +11,27 @@ import Combine
 #endif
 import HttpKit
 
+protocol SiteSettingsInterface: class {
+    func update(jsEnabled: Bool)
+}
+
 @available(iOS 13.0, *)
 final class SiteMenuModel: ObservableObject {
-    @Published var isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-    @Published var isJavaScriptEnabled = true
+    @Published var isDohEnabled: Bool = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+    @Published var isJavaScriptEnabled: Bool = true
     @Published var tabAddPosition = FeatureManager.tabAddPositionValue()
     @Published var tabDefaultContent = FeatureManager.tabDefaultContentValue()
     
     private var dohChangesCancellable: AnyCancellable?
+    private var jsEnabledOptionCancellable: AnyCancellable?
     
     typealias DismissClosure = () -> Void
     
     let dismissAction: DismissClosure
     
     let host: HttpKit.Host
+    
+    weak var siteSettingsDelegate: SiteSettingsInterface?
     
     var siteSectionTitle: String {
         return .localizedStringWithFormat(.siteSectionTtl, host.rawValue)
@@ -40,14 +47,21 @@ final class SiteMenuModel: ObservableObject {
     
     let viewTitle: String = .menuTtl
     
-    init(host: HttpKit.Host, dismiss: @escaping DismissClosure) {
+    init(host: HttpKit.Host,
+         siteDelegate: SiteSettingsInterface?,
+         dismiss: @escaping DismissClosure) {
         self.host = host
+        siteSettingsDelegate = siteDelegate
         dismissAction = dismiss
-        dohChangesCancellable = $isDohEnabled.sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0)}
+        dohChangesCancellable = $isDohEnabled.sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
+        jsEnabledOptionCancellable = $isJavaScriptEnabled.sink(receiveValue: { [weak self] (jsEnabledValue) in
+            self?.siteSettingsDelegate?.update(jsEnabled: jsEnabledValue)
+        })
     }
     
     deinit {
         dohChangesCancellable?.cancel()
+        jsEnabledOptionCancellable?.cancel()
     }
 }
 
