@@ -42,7 +42,7 @@ final class WebViewController: BaseViewController {
     /// State of web view
     private var isWebViewLoaded: Bool = false
     /// lazy loaded web view to use correct config
-    private lazy var webView: WKWebView = {
+    lazy var webView: WKWebView = {
         webViewObserversAdded = false
         loadingProgressObservation?.invalidate()
         return createWebView(with: configuration)
@@ -379,41 +379,5 @@ private extension WebViewController {
             }
         }
         
-    }
-}
-
-// MARK: - SiteNavigationDelegate implementation
-
-extension WebViewController: SiteNavigationDelegate {
-    var canGoBack: Bool {
-        return isViewLoaded ? webView.canGoBack : false
-    }
-
-    var canGoForward: Bool {
-        return isViewLoaded ? webView.canGoForward : false
-    }
-
-    func goForward() {
-        guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
-        _ = webView.goForward()
-    }
-
-    func goBack() {
-        guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
-        _ = webView.goBack()
-    }
-
-    func reload() {
-        guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
-        _ = webView.reload()
-    }
-    
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
-        externalNavigationDelegate?.openTabMenu(from: sourceView,
-                                                and: sourceRect,
-                                                for: urlInfo.host)
     }
 }
