@@ -33,6 +33,10 @@ final class SiteMenuModel: ObservableObject {
         return FeatureManager.tabAddPositionValue().description
     }
     
+    var currentTabDefaultContent: String {
+        return FeatureManager.tabDefaultContentValue().description
+    }
+    
     let viewTitle: String = .menuTtl
     
     init(host: HttpKit.Host, dismiss: @escaping DismissClosure) {
