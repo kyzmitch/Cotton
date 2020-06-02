@@ -7,34 +7,19 @@
 //
 
 import Foundation
-import WebKit
 import UIKit
 import HttpKit
 
 extension Site {
-    public struct Settings {
+    public struct Settings: Equatable {
         public let isPrivate: Bool = false
-
         public let blockPopups: Bool
-        
         public var isJsEnabled: Bool
-
         public let canLoadPlugins: Bool = true
         
-        /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
-        public var webViewConfig: WKWebViewConfiguration {
-            let configuration = WKWebViewConfiguration()
-            configuration.preferences.javaScriptEnabled = isJsEnabled
-            configuration.processPool = WKProcessPool()
-            configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
-            // We do this to go against the configuration of the <meta name="viewport">
-            // tag to behave the same way as Safari :-(
-            configuration.ignoresViewportScaleLimits = true
-            if isPrivate {
-                configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-            }
-
-            return configuration
+        public init(popupsBlock: Bool, javaScriptEnabled: Bool) {
+            blockPopups = popupsBlock
+            isJsEnabled = javaScriptEnabled
         }
     }
 }
@@ -73,8 +58,7 @@ public struct Site {
     
     public init?(url: URL,
                  searchSuggestion: String? = nil,
-                 blockPopups: Bool,
-                 javaScriptEnabled: Bool = true) {
+                 settings: Settings) {
         guard let urlInfo = HttpKit.URLIpInfo(url) else {
             return nil
         }
@@ -82,15 +66,13 @@ public struct Site {
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
-        settings = Settings(blockPopups: blockPopups,
-                            isJsEnabled: javaScriptEnabled)
+        self.settings = settings
     }
 
     public init?(urlString: String,
                  customTitle: String? = nil,
                  image: UIImage? = nil,
-                 blockPopups: Bool,
-                 javaScriptEnabled: Bool = true) {
+                 settings: Settings) {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
@@ -101,10 +83,8 @@ public struct Site {
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
-        settings = Settings(blockPopups: blockPopups,
-                            isJsEnabled: javaScriptEnabled)
+        self.settings = settings
     }
 }
 
-extension Site.Settings: Equatable {}
 extension Site: Equatable {}

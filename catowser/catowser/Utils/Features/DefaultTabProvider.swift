@@ -18,25 +18,28 @@ final class DefaultTabProvider {
 
     lazy var topSites: [Site] = {
         let array: [Site?]
+        let isJsEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        let settings: Site.Settings = .init(popupsBlock: blockPopups,
+                                            javaScriptEnabled: isJsEnabled)
         let instagramImage = UIImage(named: "instagram")
         let ig = Site(urlString: "https://www.instagram.com",
                       customTitle: "Instagram",
                       image: instagramImage,
-                      blockPopups: blockPopups)
+                      settings: settings)
         let youtubeImage = UIImage(named: "youtube")
         let tube = Site(urlString: "https://youtube.com",
                         customTitle: "Youtube",
                         image: youtubeImage,
-                        blockPopups: blockPopups)
+                        settings: settings)
         let opennet = Site(urlString: "https://opennet.ru",
                            customTitle: "OpenNet",
-                           blockPopups: blockPopups)
+                           settings: settings)
         let meduza = Site(urlString: "https://meduza.io",
                           customTitle: "Meduza",
-                          blockPopups: blockPopups)
+                          settings: settings)
         let newsruCom = Site(urlString: "https://m.newsru.com",
                              customTitle: "Newsru.com",
-                             blockPopups: blockPopups)
+                             settings: settings)
         array = [ig, tube, opennet, meduza, newsruCom]
         return array.compactMap {$0}
     }()
