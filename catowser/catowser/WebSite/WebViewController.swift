@@ -109,7 +109,7 @@ final class WebViewController: BaseViewController {
         self.externalNavigationDelegate = externalNavigationDelegate
         urlInfo = site.urlInfo
         configuration = site.webViewConfig
-        if site.canLoadPlugins {
+        if site.settings.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)
         }
         dnsClient = dnsHttpClient

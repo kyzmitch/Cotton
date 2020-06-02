@@ -11,6 +11,18 @@ import WebKit
 import UIKit
 import HttpKit
 
+extension Site {
+    public struct Settings {
+        public let isPrivate: Bool = false
+
+        public let blockPopups: Bool
+        
+        public let isJsEnabled: Bool
+
+        public let canLoadPlugins: Bool = true
+    }
+}
+
 public struct Site {
     /// Initial url
     public let urlInfo: HttpKit.URLIpInfo
@@ -41,13 +53,7 @@ public struct Site {
         return searchSuggestion ?? urlInfo.domainURL.absoluteString
     }
 
-    private let isPrivate: Bool = false
-
-    private let blockPopups: Bool
-    
-    private let isJsEnabled: Bool
-
-    public let canLoadPlugins: Bool = true
+    public let settings: Settings
     
     public init?(url: URL,
                  searchSuggestion: String? = nil,
@@ -60,8 +66,8 @@ public struct Site {
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
-        self.blockPopups = blockPopups
-        isJsEnabled = javaScriptEnabled
+        settings = Settings(blockPopups: blockPopups,
+                            isJsEnabled: javaScriptEnabled)
     }
 
     public init?(urlString: String,
@@ -79,20 +85,20 @@ public struct Site {
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
-        self.blockPopups = blockPopups
-        isJsEnabled = javaScriptEnabled
+        settings = Settings(blockPopups: blockPopups,
+                            isJsEnabled: javaScriptEnabled)
     }
 
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
     public var webViewConfig: WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
-        configuration.preferences.javaScriptEnabled = isJsEnabled
+        configuration.preferences.javaScriptEnabled = settings.isJsEnabled
         configuration.processPool = WKProcessPool()
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
+        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !settings.blockPopups
         // We do this to go against the configuration of the <meta name="viewport">
         // tag to behave the same way as Safari :-(
         configuration.ignoresViewportScaleLimits = true
-        if isPrivate {
+        if settings.isPrivate {
             configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         }
 
@@ -100,4 +106,5 @@ public struct Site {
     }
 }
 
+extension Site.Settings: Equatable {}
 extension Site: Equatable {}
