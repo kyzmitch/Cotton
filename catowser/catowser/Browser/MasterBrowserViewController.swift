@@ -457,9 +457,11 @@ private extension MasterBrowserViewController {
     }
 
     func replaceTab(with url: URL, with suggestion: String? = nil) {
+        let settings: Site.Settings = .init(popupsBlock: DefaultTabProvider.shared.blockPopups,
+                                            javaScriptEnabled: FeatureManager.boolValue(of: .javaScriptEnabled))
         guard let site = Site(url: url,
                               searchSuggestion: suggestion,
-                              blockPopups: DefaultTabProvider.shared.blockPopups) else {
+                              settings: settings) else {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }

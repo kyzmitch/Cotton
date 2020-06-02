@@ -165,7 +165,7 @@ final class WebViewController: BaseViewController {
             assertionFailure("Impossible case with new URL: \(newURL)")
         }
         
-        guard let site = Site(url: urlInfo.domainURL, blockPopups: DefaultTabProvider.shared.blockPopups) else {
+        guard let site = Site(url: urlInfo.domainURL, settings: siteSettings) else {
             assertionFailure("Failed create site from URL")
             return
         }
