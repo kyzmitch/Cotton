@@ -53,7 +53,7 @@ extension WebViewController: SiteNavigationDelegate {
         mutableSettings.isJsEnabled = jsEnabled
         siteSettings = mutableSettings
         recreateWebView(forceRecreate: true)
-        readWebViewObservers()
+        reattachWebViewObservers()
         internalLoad(url: urlInfo.url, enableDoH: dohUsed)
     }
 }

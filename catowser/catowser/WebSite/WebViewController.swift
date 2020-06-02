@@ -65,7 +65,7 @@ final class WebViewController: BaseViewController {
 
     func load(url: URL, canLoadPlugins: Bool) {
         setupScripts(canLoadPlugins: canLoadPlugins)
-        readWebViewObservers()
+        reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: url, enableDoH: dohUsed)
     }
@@ -77,7 +77,7 @@ final class WebViewController: BaseViewController {
         
         recreateWebView()
         setupScripts(canLoadPlugins: canLoadPlugins)
-        readWebViewObservers()
+        reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: urlInfo.url, enableDoH: dohUsed)
     }
@@ -202,7 +202,7 @@ final class WebViewController: BaseViewController {
         webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
-    func readWebViewObservers() {
+    func reattachWebViewObservers() {
         guard !webViewObserversAdded else {
             return
         }
