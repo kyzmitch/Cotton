@@ -23,6 +23,12 @@ final class WebViewController: BaseViewController {
     var urlInfo: HttpKit.URLIpInfo
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
+    ///
+    var siteSettings: Site.Settings {
+        didSet {
+            configuration = siteSettings.webViewConfig
+        }
+    }
     /// JavaScript Plugins holder
     private(set) var pluginsFacade: WebViewJSPluginsFacade?
     /// Own navigation delegate
@@ -38,7 +44,7 @@ final class WebViewController: BaseViewController {
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
     private let dnsClient: GoogleDnsClient
     /// Was DoH used to load URL in WebView
-    private var dohUsed: Bool
+    private(set) var dohUsed: Bool
     /// State of web view
     private var isWebViewLoaded: Bool = false
     /// lazy loaded web view to use correct config
@@ -57,44 +63,21 @@ final class WebViewController: BaseViewController {
     private lazy var finalURLFetchCancellable: AnyCancellable? = nil
     private var finalURLFetchDisposable: Disposable?
 
-    func load(url: URL, canLoadPlugins: Bool = true) {
+    func load(url: URL, canLoadPlugins: Bool) {
         setupScripts(canLoadPlugins: canLoadPlugins)
-        if !webViewObserversAdded {
-            webViewObserversAdded = true
-            addWebViewProgressObserver()
-            addWebViewCanGoBackObserver()
-            addWebViewCanGoForwardObserver()
-        }
+        readWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: url, enableDoH: dohUsed)
     }
 
     /// Reload by creating new webview
-    func load(site: Site, canLoadPlugins: Bool = true) {
+    func load(site: Site, canLoadPlugins: Bool) {
         urlInfo = site.urlInfo
-        configuration = site.webViewConfig
+        configuration = site.settings.webViewConfig
         
-        if isWebViewLoaded {
-            loadingProgressObservation?.invalidate()
-            webViewObserversAdded = false
-            
-            webView.removeFromSuperview()
-            webView = createWebView(with: configuration)
-            view.addSubview(webView)
-            
-            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        }
-        
+        recreateWebView()
         setupScripts(canLoadPlugins: canLoadPlugins)
-        if !webViewObserversAdded {
-            webViewObserversAdded = true
-            addWebViewProgressObserver()
-            addWebViewCanGoBackObserver()
-            addWebViewCanGoForwardObserver()
-        }
+        readWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: urlInfo.url, enableDoH: dohUsed)
     }
@@ -107,9 +90,12 @@ final class WebViewController: BaseViewController {
          externalNavigationDelegate: SiteExternalNavigationDelegate,
          dnsHttpClient: GoogleDnsClient) {
         self.externalNavigationDelegate = externalNavigationDelegate
+        // Don't use `Site` model because  it contains some
+        // properties which are not needed for web view
         urlInfo = site.urlInfo
-        configuration = site.webViewConfig
-        if site.settings.canLoadPlugins {
+        siteSettings = site.settings
+        configuration = siteSettings.webViewConfig
+        if siteSettings.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)
         }
         dnsClient = dnsHttpClient
@@ -144,7 +130,7 @@ final class WebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        load(url: urlInfo.url)
+        load(url: urlInfo.url, canLoadPlugins: siteSettings.canLoadPlugins)
         // try create web view only after creating
         view.addSubview(webView)
         isWebViewLoaded = true
@@ -193,6 +179,88 @@ final class WebViewController: BaseViewController {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
         } catch {
             print("\(#function) - failed to replace current tab")
+        }
+    }
+    
+    func recreateWebView(forceRecreate: Bool = false) {
+        if !forceRecreate {
+            guard !isWebViewLoaded else {
+                return
+            }
+        }
+        
+        loadingProgressObservation?.invalidate()
+        webViewObserversAdded = false
+        
+        webView.removeFromSuperview()
+        webView = createWebView(with: configuration)
+        view.addSubview(webView)
+        
+        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    func readWebViewObservers() {
+        guard !webViewObserversAdded else {
+            return
+        }
+        webViewObserversAdded = true
+        addWebViewProgressObserver()
+        addWebViewCanGoBackObserver()
+        addWebViewCanGoForwardObserver()
+    }
+    
+    func internalLoad(url: URL, enableDoH: Bool) {
+        guard enableDoH
+            && url.kitHost?.isDoHSupported ?? false  else {
+            let request = URLRequest(url: url)
+            webView.load(request)
+            return
+        }
+        
+        if #available(iOS 13.0, *) {
+            dnsRequestCancellable?.cancel()
+            dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
+            .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .failure(let dnsErr):
+                        print("fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                    default:
+                        break
+                    }
+                }, receiveValue: { (finalURL) in
+                    guard finalURL.hasIPHost else {
+                        print("Alert - host wasn't replaced on IP address after operation")
+                        return
+                    }
+                    self.urlInfo.ipAddress = finalURL.host
+                    let request = URLRequest(url: finalURL)
+                    self.webView.load(request)
+                })
+        } else {
+            dnsRequestSubsciption?.dispose()
+            dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url)
+                .start(on: UIScheduler())
+                .startWithResult({ [weak self] (result) in
+                    guard let self = self else {
+                        return
+                    }
+                    guard case .success(let finalURL) = result else {
+                        print("fail to resolve host with DNS")
+                        return
+                    }
+                    
+                    guard finalURL.hasIPHost else {
+                        print("Alert - host wasn't replaced on IP address after operation")
+                        return
+                    }
+                    self.urlInfo.ipAddress = finalURL.host
+                    let request = URLRequest(url: finalURL)
+                    self.webView.load(request)
+                })
         }
     }
 }
@@ -292,58 +360,6 @@ private extension WebViewController {
                 case .success(let url):
                     self?.handleLinkLoading(url, webView)
                 }
-        }
-    }
-    
-    func internalLoad(url: URL, enableDoH: Bool) {
-        guard enableDoH
-            && url.kitHost?.isDoHSupported ?? false  else {
-            let request = URLRequest(url: url)
-            webView.load(request)
-            return
-        }
-        
-        if #available(iOS 13.0, *) {
-            dnsRequestCancellable?.cancel()
-            dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
-            .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure(let dnsErr):
-                        print("fail to resolve host with DNS: \(dnsErr.localizedDescription)")
-                    default:
-                        break
-                    }
-                }, receiveValue: { (finalURL) in
-                    guard finalURL.hasIPHost else {
-                        print("Alert - host wasn't replaced on IP address after operation")
-                        return
-                    }
-                    self.urlInfo.ipAddress = finalURL.host
-                    let request = URLRequest(url: finalURL)
-                    self.webView.load(request)
-                })
-        } else {
-            dnsRequestSubsciption?.dispose()
-            dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url)
-                .start(on: UIScheduler())
-                .startWithResult({ [weak self] (result) in
-                    guard let self = self else {
-                        return
-                    }
-                    guard case .success(let finalURL) = result else {
-                        print("fail to resolve host with DNS")
-                        return
-                    }
-                    
-                    guard finalURL.hasIPHost else {
-                        print("Alert - host wasn't replaced on IP address after operation")
-                        return
-                    }
-                    self.urlInfo.ipAddress = finalURL.host
-                    let request = URLRequest(url: finalURL)
-                    self.webView.load(request)
-                })
         }
     }
     

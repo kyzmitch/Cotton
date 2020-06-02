@@ -17,9 +17,25 @@ extension Site {
 
         public let blockPopups: Bool
         
-        public let isJsEnabled: Bool
+        public var isJsEnabled: Bool
 
         public let canLoadPlugins: Bool = true
+        
+        /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
+        public var webViewConfig: WKWebViewConfiguration {
+            let configuration = WKWebViewConfiguration()
+            configuration.preferences.javaScriptEnabled = isJsEnabled
+            configuration.processPool = WKProcessPool()
+            configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
+            // We do this to go against the configuration of the <meta name="viewport">
+            // tag to behave the same way as Safari :-(
+            configuration.ignoresViewportScaleLimits = true
+            if isPrivate {
+                configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+            }
+
+            return configuration
+        }
     }
 }
 
@@ -87,22 +103,6 @@ public struct Site {
         highQualityFaviconImage = image
         settings = Settings(blockPopups: blockPopups,
                             isJsEnabled: javaScriptEnabled)
-    }
-
-    /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
-    public var webViewConfig: WKWebViewConfiguration {
-        let configuration = WKWebViewConfiguration()
-        configuration.preferences.javaScriptEnabled = settings.isJsEnabled
-        configuration.processPool = WKProcessPool()
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = !settings.blockPopups
-        // We do this to go against the configuration of the <meta name="viewport">
-        // tag to behave the same way as Safari :-(
-        configuration.ignoresViewportScaleLimits = true
-        if settings.isPrivate {
-            configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-        }
-
-        return configuration
     }
 }
 

@@ -100,7 +100,7 @@ final class WebViewsReuseManager {
             struct OutOfBoundsIndex: Error {}
             throw OutOfBoundsIndex()
         }
-        vc.load(site: site)
+        vc.load(site: site, canLoadPlugins: site.settings.canLoadPlugins)
         return vc
     }
     

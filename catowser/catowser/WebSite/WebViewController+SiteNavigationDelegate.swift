@@ -46,6 +46,14 @@ extension WebViewController: SiteNavigationDelegate {
     }
     
     func reloadWithNewSettings(jsEnabled: Bool) {
-        // TODO: implement
+        guard jsEnabled != siteSettings.isJsEnabled else {
+            return
+        }
+        var mutableSettings = siteSettings
+        mutableSettings.isJsEnabled = jsEnabled
+        siteSettings = mutableSettings
+        recreateWebView(forceRecreate: true)
+        readWebViewObservers()
+        internalLoad(url: urlInfo.url, enableDoH: dohUsed)
     }
 }
