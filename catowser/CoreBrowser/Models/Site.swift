@@ -13,9 +13,9 @@ import HttpKit
 
 public struct Site {
     /// Initial url
-    public let url: HttpKit.URLIpInfo
+    public let urlInfo: HttpKit.URLIpInfo
     public var host: HttpKit.Host {
-        return url.host
+        return urlInfo.host
     }
     /// Used by top sites by loading high quality image from Assets
     public var highQualityFaviconImage: UIImage?
@@ -38,7 +38,7 @@ public struct Site {
     public let userSpecifiedTitle: String?
 
     public var searchBarContent: String {
-        return searchSuggestion ?? url.domainURL.absoluteString
+        return searchSuggestion ?? urlInfo.domainURL.absoluteString
     }
 
     private let isPrivate: Bool = false
@@ -56,7 +56,7 @@ public struct Site {
         guard let urlInfo = HttpKit.URLIpInfo(url) else {
             return nil
         }
-        self.url = urlInfo
+        self.urlInfo = urlInfo
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
@@ -75,7 +75,7 @@ public struct Site {
         guard let urlInfo = HttpKit.URLIpInfo(decodedUrl) else {
             return nil
         }
-        url = urlInfo
+        self.urlInfo = urlInfo
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
