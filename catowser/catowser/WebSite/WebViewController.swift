@@ -71,7 +71,7 @@ final class WebViewController: BaseViewController {
 
     /// Reload by creating new webview
     func load(site: Site, canLoadPlugins: Bool = true) {
-        urlInfo = site.url
+        urlInfo = site.urlInfo
         configuration = site.webViewConfig
         
         if isWebViewLoaded {
@@ -107,7 +107,7 @@ final class WebViewController: BaseViewController {
          externalNavigationDelegate: SiteExternalNavigationDelegate,
          dnsHttpClient: GoogleDnsClient) {
         self.externalNavigationDelegate = externalNavigationDelegate
-        urlInfo = site.url
+        urlInfo = site.urlInfo
         configuration = site.webViewConfig
         if site.canLoadPlugins {
             pluginsFacade = WebViewJSPluginsFacade(plugins)

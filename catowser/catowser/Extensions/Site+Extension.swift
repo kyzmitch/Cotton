@@ -18,9 +18,9 @@ extension Site {
     /// Provides only local cached URL for favicon, nil if ipAddress is nil.
     var faviconURL: URL? {
         if FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) {
-            return URL(faviconIPInfo: url)
+            return URL(faviconIPInfo: urlInfo)
         } else {
-            return URL(faviconHost: url.host)
+            return URL(faviconHost: urlInfo.host)
         }
     }
     
@@ -30,13 +30,13 @@ extension Site {
         typealias URLResult = Result<URL, Error>
         
         guard resolve else {
-            let domainURL = URL(faviconHost: url.host)
+            let domainURL = URL(faviconHost: urlInfo.host)
             // swiftlint:disable:next force_unwrapping
             let result: URLResult = domainURL != nil ? .success(domainURL!) : .failure(HttpKit.HttpError.invalidURL)
             return URLResult.Publisher(result).eraseToAnyPublisher()
         }
         
-        guard let faviconDomainURL = URL(faviconHost: url.host) else {
+        guard let faviconDomainURL = URL(faviconHost: urlInfo.host) else {
             return URLResult.Publisher(.failure(HttpKit.HttpError.invalidURL)).eraseToAnyPublisher()
         }
         return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL)
