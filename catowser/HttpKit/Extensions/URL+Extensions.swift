@@ -21,6 +21,15 @@ extension HttpKit {
         case noHost
         case urlComponentsFail
         case urlHostReplaceFail
+        
+        public var localizedDescription: String {
+            switch self {
+            case .httpError(let httpErr):
+                return "dns err: \(httpErr.localizedDescription)"
+            default:
+                return "dns err: \(self)"
+            }
+        }
     }
 }
 
