@@ -213,8 +213,8 @@ final class WebViewController: BaseViewController {
     }
     
     func internalLoad(url: URL, enableDoH: Bool) {
-        guard enableDoH
-            && url.kitHost?.isDoHSupported ?? false  else {
+        let needResolveHost = enableDoH && url.kitHost?.isDoHSupported ?? false
+        guard needResolveHost && !url.hasIPHost else {
             let request = URLRequest(url: url)
             webView.load(request)
             return

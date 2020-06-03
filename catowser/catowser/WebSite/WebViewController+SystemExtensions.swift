@@ -55,9 +55,6 @@ extension WebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-        
-        // FIXME: probably need to load using `internalLoad` to try use DoH again
-        
 #if false
         print("navigation Action: \(navigationAction.navigationType.debugDescription) \(url)")
 #endif
@@ -89,7 +86,12 @@ extension WebViewController: WKNavigationDelegate {
 
         switch url.scheme {
         case "http", "https":
-            decisionHandler(.allow)
+            if dohUsed && !url.hasIPHost {
+                decisionHandler(.cancel)
+                internalLoad(url: url, enableDoH: dohUsed)
+            } else {
+                decisionHandler(.allow)
+            }
         case "about":
             decisionHandler(.allow)
         default:
