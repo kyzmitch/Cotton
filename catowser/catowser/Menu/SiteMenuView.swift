@@ -10,6 +10,7 @@
 import SwiftUI
 #endif
 import HttpKit
+import CoreBrowser
 
 @available(iOS 13.0, *)
 struct SiteMenuView: View {
@@ -79,7 +80,11 @@ struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {
         // swiftlint:disable force_unwrapping
         let host = HttpKit.Host(rawValue: "example.com")!
-        let model = SiteMenuModel(host: host, siteDelegate: nil) {
+        let settings = Site.Settings(popupsBlock: true,
+                                     javaScriptEnabled: true)
+        let model = SiteMenuModel(host: host,
+                                  settings: settings,
+                                  siteDelegate: nil) {
             print("Dismiss triggered")
         }
         return _SiteMenuView().environmentObject(model)

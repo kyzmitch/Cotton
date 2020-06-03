@@ -42,7 +42,8 @@ extension WebViewController: SiteNavigationDelegate {
     func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
         externalNavigationDelegate?.openTabMenu(from: sourceView,
                                                 and: sourceRect,
-                                                for: urlInfo.host)
+                                                for: urlInfo.host,
+                                                siteSettings: siteSettings)
     }
     
     func reloadWithNewSettings(jsEnabled: Bool) {
@@ -53,6 +54,7 @@ extension WebViewController: SiteNavigationDelegate {
         mutableSettings.isJsEnabled = jsEnabled
         siteSettings = mutableSettings
         recreateWebView(forceRecreate: true)
+        setupScripts(canLoadPlugins: siteSettings.canLoadPlugins)
         reattachWebViewObservers()
         internalLoad(url: urlInfo.url, enableDoH: dohUsed)
     }

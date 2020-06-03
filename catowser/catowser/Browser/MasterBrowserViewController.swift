@@ -610,7 +610,13 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
     
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host) {
-        linksRouter.openTabMenu(from: sourceView, and: sourceRect, for: host)
+    func openTabMenu(from sourceView: UIView,
+                     and sourceRect: CGRect,
+                     for host: HttpKit.Host,
+                     siteSettings: Site.Settings) {
+        linksRouter.openTabMenu(from: sourceView,
+                                and: sourceRect,
+                                for: host,
+                                siteSettings: siteSettings)
     }
 }
