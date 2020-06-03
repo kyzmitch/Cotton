@@ -32,7 +32,7 @@
 "btn_downloading" = "Скачивается";
 "btn_downloaded" = "Поделиться";
 
-"ttl_site_menu" = "%@ настройки";
+"ttl_site_menu" = "%@ настройки вкладки";
 "ttl_global_menu" = "Общие настройки";
 "txt_doh_menu_item" = "DNS по HTTPs";
 "txt_javascript_enabled_for_tab" = "JavaScript на вкладке";

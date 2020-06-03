@@ -51,6 +51,17 @@ final class SearchBarBaseViewController: BaseViewController {
         label.isUserInteractionEnabled = true
         return label
     }()
+    
+    private let dohStateIcon: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textColor = .black
+        label.font = .italicSystemFont(ofSize: 8)
+        label.backgroundColor = .white
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isUserInteractionEnabled = true
+        return label
+    }()
 
     /// To remember previously entered search query
     private var searchBarContent: String?
@@ -96,6 +107,7 @@ final class SearchBarBaseViewController: BaseViewController {
 
         view.addSubview(searchBarView)
         view.addSubview(siteNameLabel)
+        siteNameLabel.addSubview(dohStateIcon)
     }
     
     override func viewDidLoad() {
@@ -113,6 +125,11 @@ final class SearchBarBaseViewController: BaseViewController {
         siteNameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         siteNameLabel.widthAnchor.constraint(equalTo: searchBarView.widthAnchor).isActive = true
         hiddenLabelConstraint.isActive = true
+        
+        dohStateIcon.leadingAnchor.constraint(equalTo: siteNameLabel.leadingAnchor).isActive = true
+        dohStateIcon.topAnchor.constraint(equalTo: siteNameLabel.topAnchor).isActive = true
+        dohStateIcon.bottomAnchor.constraint(equalTo: siteNameLabel.bottomAnchor).isActive = true
+        dohStateIcon.widthAnchor.constraint(equalTo: dohStateIcon.heightAnchor).isActive = true
 
         TabsListManager.shared.attach(self)
     }
@@ -180,8 +197,10 @@ extension SearchBarBaseViewController: SearchBarControllerInterface {
         case .viewMode(let title, let searchBarContent):
             searchBarView.setShowsCancelButton(false, animated: animated)
             searchBarView.text = searchBarContent
+            let dohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
             siteNameLabel.text = title
-            prepareForViewMode(animated: animated)
+            prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)
 
             // remember search query in case if it will be edited
             self.searchBarContent = searchBarContent
@@ -199,7 +218,7 @@ private extension SearchBarBaseViewController {
         prepareForEditMode()
     }
 
-    func prepareForViewMode(animated: Bool = true) {
+    func prepareForViewMode(animated: Bool = true, animateSecurityView: Bool = false) {
         // Order of disabling/enabling is important
         // to not to cause errors in layout calculation.
         // First need to disable and after that enable new one.
@@ -210,6 +229,9 @@ private extension SearchBarBaseViewController {
             siteNameLabel.layoutIfNeeded()
             searchBarView.alpha = 0
             siteNameLabel.alpha = 1
+            if animateSecurityView {
+                dohStateIcon.alpha = 1
+            }
         }
         
         if animated {
@@ -231,6 +253,7 @@ private extension SearchBarBaseViewController {
             searchBarView.becomeFirstResponder()
         }
         siteNameLabel.alpha = 0
+        dohStateIcon.alpha = 0
         
         UIView.animate(withDuration: 0.3) {
             self.siteNameLabel.layoutIfNeeded()
