@@ -190,7 +190,9 @@ extension SearchBarBaseViewController: SearchBarControllerInterface {
                 break
             }
 
-            prepareForViewMode()
+            let dohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
+            prepareForViewMode(animated: true, animateSecurityView: dohEnabled)
             // even if search bar now is not visible and
             // it is under label, need to revert text content in it
             searchBarView.text = self.searchBarContent

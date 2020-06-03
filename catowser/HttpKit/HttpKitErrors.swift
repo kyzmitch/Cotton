@@ -9,7 +9,7 @@
 import Foundation
 
 extension HttpKit {
-    public enum HttpError: Swift.Error {
+    public enum HttpError: LocalizedError {
         /* Comon errors related to http client */
         
         case zombySelf
@@ -33,7 +33,7 @@ extension HttpKit {
         case emptyQueryParam
         case spacesInQueryParam
         
-        var localizedDescription: String {
+        public var localizedDescription: String {
             switch self {
             case .httpFailure(error: let error, request: _):
                 return "http failure: \(error.localizedDescription)"
