@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import HttpKit
+import CoreBrowser
 
 // base protocol already based on `class`
 // swiftlint:disable:next class_delegate_protocol
@@ -25,7 +26,7 @@ protocol SiteNavigationDelegate: SiteSettingsInterface {
 
 extension SiteNavigationDelegate {
     func update(jsEnabled: Bool) {
-        reloadWithNewSettings(jsEnabled: false)
+        reloadWithNewSettings(jsEnabled: jsEnabled)
     }
 }
 
@@ -37,7 +38,10 @@ protocol SiteExternalNavigationDelegate: class {
     func didUpdateForwardNavigation(to canGoForward: Bool)
     func showProgress(_ show: Bool)
     func updateTabPreview(_ screenshot: UIImage)
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host)
+    func openTabMenu(from sourceView: UIView,
+                     and sourceRect: CGRect,
+                     for host: HttpKit.Host,
+                     siteSettings: Site.Settings)
 }
 
 protocol SiteNavigationComponent: class {

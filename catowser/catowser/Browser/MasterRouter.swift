@@ -230,15 +230,22 @@ extension MasterRouter: SiteLifetimeInterface {
         }
     }
     
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host) {
-        showTabMenuIfNeeded(from: sourceView, and: sourceRect, for: host)
+    func openTabMenu(from sourceView: UIView,
+                     and sourceRect: CGRect,
+                     for host: HttpKit.Host,
+                     siteSettings: Site.Settings) {
+        showTabMenuIfNeeded(from: sourceView,
+                            and: sourceRect,
+                            for: host,
+                            siteSettings: siteSettings)
     }
 }
 
 fileprivate extension MasterRouter {
     func showTabMenuIfNeeded(from sourceView: UIView,
                              and sourceRect: CGRect,
-                             for host: HttpKit.Host) {
+                             for host: HttpKit.Host,
+                             siteSettings: Site.Settings) {
         let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
         let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
@@ -264,12 +271,16 @@ fileprivate extension MasterRouter {
                                              animated: true)
         } else {
             if #available(iOS 13.0, *) {
-                let menuModel = SiteMenuModel(host: host, siteDelegate: siteNavigationDelegate) { [weak self] in
+                let popClosure: DismissClosure = { [weak self] in
                     self?.presenter
                         .viewController
                         .presentedViewController?
                         .dismiss(animated: true)
                 }
+                let menuModel = SiteMenuModel(host: host,
+                                              settings: siteSettings,
+                                              siteDelegate: siteNavigationDelegate,
+                                              dismiss: popClosure)
                 let menuHostVC = SiteMenuViewController(model: menuModel)
                 presenter.viewController.present(menuHostVC,
                                                  animated: true)

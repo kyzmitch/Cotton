@@ -9,6 +9,7 @@
 import UIKit
 import JSPlugins
 import HttpKit
+import CoreBrowser
 
 protocol MasterDelegate: class {
     var keyboardHeight: CGFloat? { get set }
@@ -29,5 +30,9 @@ protocol TagsRouterInterface: class {
 
 protocol SiteLifetimeInterface {
     func showProgress(_ show: Bool)
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect, for host: HttpKit.Host)
+    
+    func openTabMenu(from sourceView: UIView,
+                     and sourceRect: CGRect,
+                     for host: HttpKit.Host,
+                     siteSettings: Site.Settings)
 }

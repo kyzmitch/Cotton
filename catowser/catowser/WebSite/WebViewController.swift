@@ -263,11 +263,7 @@ final class WebViewController: BaseViewController {
                 })
         }
     }
-}
-
-// MARK: - private functions
-
-private extension WebViewController {
+    
     func setupScripts(canLoadPlugins: Bool) {
         if canLoadPlugins {
             injectPlugins()
@@ -275,7 +271,11 @@ private extension WebViewController {
             configuration.userContentController.removeAllUserScripts()
         }
     }
-    
+}
+
+// MARK: - private functions
+
+private extension WebViewController {
     func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false

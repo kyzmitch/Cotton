@@ -10,26 +10,29 @@
 import Combine
 #endif
 import HttpKit
+import CoreBrowser
 
 protocol SiteSettingsInterface: class {
     func update(jsEnabled: Bool)
 }
 
+typealias DismissClosure = () -> Void
+
 @available(iOS 13.0, *)
 final class SiteMenuModel: ObservableObject {
     @Published var isDohEnabled: Bool = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-    @Published var isJavaScriptEnabled: Bool = true
+    @Published var isJavaScriptEnabled: Bool
     @Published var tabAddPosition = FeatureManager.tabAddPositionValue()
     @Published var tabDefaultContent = FeatureManager.tabDefaultContentValue()
     
     private var dohChangesCancellable: AnyCancellable?
     private var jsEnabledOptionCancellable: AnyCancellable?
     
-    typealias DismissClosure = () -> Void
-    
     let dismissAction: DismissClosure
     
     let host: HttpKit.Host
+    
+    let siteSettings: Site.Settings
     
     weak var siteSettingsDelegate: SiteSettingsInterface?
     
@@ -48,9 +51,12 @@ final class SiteMenuModel: ObservableObject {
     let viewTitle: String = .menuTtl
     
     init(host: HttpKit.Host,
+         settings: Site.Settings,
          siteDelegate: SiteSettingsInterface?,
          dismiss: @escaping DismissClosure) {
         self.host = host
+        self.siteSettings = settings
+        isJavaScriptEnabled = siteSettings.isJsEnabled
         siteSettingsDelegate = siteDelegate
         dismissAction = dismiss
         dohChangesCancellable = $isDohEnabled.sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
