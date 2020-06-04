@@ -252,43 +252,52 @@ fileprivate extension MasterRouter {
                              and sourceRect: CGRect,
                              for host: HttpKit.Host,
                              siteSettings: Site.Settings) {
-        let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-        let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
-        let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
-        let alert: UIAlertController = .init(title: nil,
-                                             message: msg,
-                                             preferredStyle: .actionSheet)
-        let eAction = UIAlertAction(title: "Enable", style: .default) { (_) in
-            FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: true)
-        }
-        let dAction = UIAlertAction(title: "Disable", style: .default) { (_) in
-            FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: false)
-        }
-        alert.addAction(eAction)
-        alert.addAction(dAction)
-
-        if isPad {
-            if let popoverPresenter = alert.popoverPresentationController {
-                // for iPad
-                popoverPresenter.sourceView = sourceView
-                popoverPresenter.sourceRect = sourceRect
+        if #available(iOS 13.0, *) {
+            let popClosure: DismissClosure = { [weak self] in
+                self?.presenter
+                    .viewController
+                    .presentedViewController?
+                    .dismiss(animated: true)
             }
-            presenter.viewController.present(alert,
-                                             animated: true)
-        } else {
-            if #available(iOS 13.0, *) {
-                let popClosure: DismissClosure = { [weak self] in
-                    self?.presenter
-                        .viewController
-                        .presentedViewController?
-                        .dismiss(animated: true)
+            let menuModel = SiteMenuModel(host: host,
+                                          settings: siteSettings,
+                                          siteDelegate: siteNavigationDelegate,
+                                          dismiss: popClosure)
+            let menuHostVC = SiteMenuViewController(model: menuModel)
+            
+            if isPad {
+                menuHostVC.modalPresentationStyle = .popover
+                menuHostVC.preferredContentSize = CGSize(width: 400, height: 600)
+                if let popoverPresenter = menuHostVC.popoverPresentationController {
+                    // for iPad
+                    popoverPresenter.sourceView = sourceView
+                    popoverPresenter.sourceRect = sourceRect
                 }
-                let menuModel = SiteMenuModel(host: host,
-                                              settings: siteSettings,
-                                              siteDelegate: siteNavigationDelegate,
-                                              dismiss: popClosure)
-                let menuHostVC = SiteMenuViewController(model: menuModel)
-                presenter.viewController.present(menuHostVC,
+            }
+            presenter.viewController.present(menuHostVC, animated: true)
+        } else {
+            let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
+            let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
+            let alert: UIAlertController = .init(title: nil,
+                                                 message: msg,
+                                                 preferredStyle: .actionSheet)
+            let eAction = UIAlertAction(title: "Enable", style: .default) { (_) in
+                FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: true)
+            }
+            let dAction = UIAlertAction(title: "Disable", style: .default) { (_) in
+                FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: false)
+            }
+            alert.addAction(eAction)
+            alert.addAction(dAction)
+            
+            if isPad {
+                if let popoverPresenter = alert.popoverPresentationController {
+                    // for iPad
+                    popoverPresenter.sourceView = sourceView
+                    popoverPresenter.sourceRect = sourceRect
+                }
+                presenter.viewController.present(alert,
                                                  animated: true)
             } else {
                 // FIXME: this causes layout error for some reason
