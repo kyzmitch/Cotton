@@ -234,24 +234,25 @@ extension MasterRouter: SiteLifetimeInterface {
                      and sourceRect: CGRect,
                      for host: HttpKit.Host,
                      siteSettings: Site.Settings) {
+        let style: MenuModelStyle = .siteMenu(host: host, siteSettings: siteSettings)
         showTabMenuIfNeeded(from: sourceView,
                             and: sourceRect,
-                            for: host,
-                            siteSettings: siteSettings)
+                            menuStyle: style)
     }
 }
 
 extension MasterRouter: GlobalMenuDelegate {
-    func didPressSettings() {
-        
+    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
+        showTabMenuIfNeeded(from: sourceView,
+                            and: sourceRect,
+                            menuStyle: .onlyGlobalMenu)
     }
 }
 
 fileprivate extension MasterRouter {
     func showTabMenuIfNeeded(from sourceView: UIView,
                              and sourceRect: CGRect,
-                             for host: HttpKit.Host,
-                             siteSettings: Site.Settings) {
+                             menuStyle: MenuModelStyle) {
         if #available(iOS 13.0, *) {
             let popClosure: DismissClosure = { [weak self] in
                 self?.presenter
@@ -259,10 +260,10 @@ fileprivate extension MasterRouter {
                     .presentedViewController?
                     .dismiss(animated: true)
             }
-            let menuModel = SiteMenuModel(host: host,
-                                          settings: siteSettings,
-                                          siteDelegate: siteNavigationDelegate,
-                                          dismiss: popClosure)
+            let menuModel: SiteMenuModel
+            menuModel = SiteMenuModel(menuStyle: menuStyle,
+                                      siteDelegate: siteNavigationDelegate,
+                                      dismiss: popClosure)
             let menuHostVC = SiteMenuViewController(model: menuModel)
             
             if isPad {

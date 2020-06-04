@@ -12,6 +12,11 @@ import Combine
 import HttpKit
 import CoreBrowser
 
+enum MenuModelStyle {
+    case siteMenu(host: HttpKit.Host, siteSettings: Site.Settings)
+    case onlyGlobalMenu
+}
+
 protocol SiteSettingsInterface: class {
     func update(jsEnabled: Bool)
 }
@@ -30,14 +35,15 @@ final class SiteMenuModel: ObservableObject {
     
     let dismissAction: DismissClosure
     
-    let host: HttpKit.Host
+    let host: HttpKit.Host?
     
-    let siteSettings: Site.Settings
+    let siteSettings: Site.Settings?
     
     weak var siteSettingsDelegate: SiteSettingsInterface?
     
     var siteSectionTitle: String {
-        return .localizedStringWithFormat(.siteSectionTtl, host.rawValue)
+        // site section is only available for site menu
+        return .localizedStringWithFormat(.siteSectionTtl, host?.rawValue ?? "")
     }
     
     var currentTabAddValue: String {
@@ -50,13 +56,20 @@ final class SiteMenuModel: ObservableObject {
     
     let viewTitle: String = .menuTtl
     
-    init(host: HttpKit.Host,
-         settings: Site.Settings,
+    init(menuStyle: MenuModelStyle,
          siteDelegate: SiteSettingsInterface?,
          dismiss: @escaping DismissClosure) {
-        self.host = host
-        self.siteSettings = settings
-        isJavaScriptEnabled = siteSettings.isJsEnabled
+        switch menuStyle {
+        case .siteMenu(host: let host, siteSettings: let settings):
+            self.host = host
+            self.siteSettings = settings
+            isJavaScriptEnabled = settings.isJsEnabled
+        case .onlyGlobalMenu:
+            host = nil
+            siteSettings = nil
+            // following properties can be removed later for only global kind of menues
+            isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        }
         siteSettingsDelegate = siteDelegate
         dismissAction = dismiss
         dohChangesCancellable = $isDohEnabled.sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
