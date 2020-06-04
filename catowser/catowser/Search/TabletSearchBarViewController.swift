@@ -17,7 +17,6 @@ final class TabletSearchBarViewController: BaseViewController {
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
         didSet {
             guard siteNavigationDelegate != nil else {
-                actionsButton.isEnabled = false
                 goBackButton.isEnabled = false
                 goForwardButton.isEnabled = false
                 reloadButton.isEnabled = false
@@ -29,8 +28,11 @@ final class TabletSearchBarViewController: BaseViewController {
         }
     }
     
-    init(_ searchBarDelegate: UISearchBarDelegate) {
+    private weak var globalSettingsDelegate: GlobalMenuDelegate?
+    
+    init(_ searchBarDelegate: UISearchBarDelegate, settingsDelegate: GlobalMenuDelegate) {
         searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
+        globalSettingsDelegate = settingsDelegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -108,8 +110,10 @@ final class TabletSearchBarViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // enable actions even for non site content
+        // to allow user to get to global settings
+        actionsButton.isEnabled = true
         // disabled after `init` because no web view is present
-        actionsButton.isEnabled = false
         goBackButton.isEnabled = false
         goForwardButton.isEnabled = false
         reloadButton.isEnabled = false
@@ -151,7 +155,11 @@ final class TabletSearchBarViewController: BaseViewController {
     
     @objc fileprivate func actionsPressed() {
         let sourceRect = actionsButton.frame
-        siteNavigationDelegate?.openTabMenu(from: view, and: sourceRect)
+        if let siteDelegate = siteNavigationDelegate {
+            siteDelegate.openTabMenu(from: view, and: sourceRect)
+        } else {
+            globalSettingsDelegate?.didPressSettings(from: view, and: sourceRect)
+        }
     }
 
     @objc fileprivate func backPressed() {
@@ -169,7 +177,8 @@ final class TabletSearchBarViewController: BaseViewController {
     }
     
     private func refreshNavigation() {
-        actionsButton.isEnabled = siteNavigationDelegate != nil
+        // actions should be always enabled to get to global settings
+        // actionsButton.isEnabled = siteNavigationDelegate != nil
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
     }
@@ -197,9 +206,6 @@ extension TabletSearchBarViewController: SiteNavigationComponent {
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
-        // show actions even for non site state to be able to
-        // get to global settings
-        actionsButton.isEnabled = true
 
         // tablet layout currently doesn't have downloads button
     }
