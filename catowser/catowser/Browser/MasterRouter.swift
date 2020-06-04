@@ -241,6 +241,12 @@ extension MasterRouter: SiteLifetimeInterface {
     }
 }
 
+extension MasterRouter: GlobalMenuDelegate {
+    func didPressSettings() {
+        
+    }
+}
+
 fileprivate extension MasterRouter {
     func showTabMenuIfNeeded(from sourceView: UIView,
                              and sourceRect: CGRect,

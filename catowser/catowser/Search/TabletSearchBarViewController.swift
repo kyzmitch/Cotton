@@ -197,8 +197,9 @@ extension TabletSearchBarViewController: SiteNavigationComponent {
         goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
-        // Actions are only for web sites, other settings will be in global settings
-        actionsButton.isEnabled = withSite
+        // show actions even for non site state to be able to
+        // get to global settings
+        actionsButton.isEnabled = true
 
         // tablet layout currently doesn't have downloads button
     }
