@@ -29,9 +29,11 @@ private struct _SiteMenuView: View {
     var body: some View {
         NavigationView {
             List {
-                Section(header: Text(model.siteSectionTitle)) {
-                    Toggle(isOn: $model.isJavaScriptEnabled) {
-                        Text(verbatim: .jsMenuTitle)
+                if model.host != nil {
+                    Section(header: Text(model.siteSectionTitle)) {
+                        Toggle(isOn: $model.isJavaScriptEnabled) {
+                            Text(verbatim: .jsMenuTitle)
+                        }
                     }
                 }
                 Section(header: Text(verbatim: .globalSectionTtl)) {
@@ -82,8 +84,7 @@ struct SiteMenuView_Previews: PreviewProvider {
         let host = HttpKit.Host(rawValue: "example.com")!
         let settings = Site.Settings(popupsBlock: true,
                                      javaScriptEnabled: true)
-        let model = SiteMenuModel(host: host,
-                                  settings: settings,
+        let model = SiteMenuModel(menuStyle: .siteMenu(host: host, siteSettings: settings),
                                   siteDelegate: nil) {
             print("Dismiss triggered")
         }

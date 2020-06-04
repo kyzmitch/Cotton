@@ -21,7 +21,7 @@ protocol DonwloadPanelDelegate: class {
 }
 
 protocol GlobalMenuDelegate: class {
-    func didPressSettings()
+    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect)
 }
 
 final class WebBrowserToolbarController: UIViewController {
@@ -248,7 +248,7 @@ private extension WebBrowserToolbarController {
         if let siteDelegate = siteNavigationDelegate {
             siteDelegate.openTabMenu(from: toolbarView, and: .zero)
         } else {
-            globalSettingsDelegate?.didPressSettings()
+            globalSettingsDelegate?.didPressSettings(from: toolbarView, and: .zero)
         }
     }
 
