@@ -42,9 +42,9 @@ final class WebBrowserToolbarController: UIViewController {
         }
     }
     
-    weak var downloadPanelDelegate: DonwloadPanelDelegate?
+    private weak var downloadPanelDelegate: DonwloadPanelDelegate?
     
-    weak var globalSettingsDelegate: GlobalMenuDelegate?
+    private weak var globalSettingsDelegate: GlobalMenuDelegate?
 
     fileprivate var downloadsArrowDown: Bool = true {
         didSet {

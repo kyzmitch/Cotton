@@ -37,7 +37,7 @@ final class MasterRouter: NSObject {
 
     lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            return TabletSearchBarViewController(self)
+            return TabletSearchBarViewController(self, settingsDelegate: self)
         } else {
             return SmartphoneSearchBarViewController(self)
         }
@@ -268,7 +268,7 @@ fileprivate extension MasterRouter {
             
             if isPad {
                 menuHostVC.modalPresentationStyle = .popover
-                menuHostVC.preferredContentSize = CGSize(width: 400, height: 600)
+                menuHostVC.preferredContentSize = CGSize(width: 400, height: 360)
                 if let popoverPresenter = menuHostVC.popoverPresentationController {
                     // for iPad
                     popoverPresenter.sourceView = sourceView
