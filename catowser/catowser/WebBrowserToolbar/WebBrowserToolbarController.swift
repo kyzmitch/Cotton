@@ -20,6 +20,10 @@ protocol DonwloadPanelDelegate: class {
     func didPressDownloads(to hide: Bool)
 }
 
+protocol GlobalMenuDelegate: class {
+    func didPressSettings()
+}
+
 final class WebBrowserToolbarController: UIViewController {
 
     /// Site navigation delegate
@@ -37,8 +41,10 @@ final class WebBrowserToolbarController: UIViewController {
             reloadNavigationElements(true)
         }
     }
-
-    weak var delegate: DonwloadPanelDelegate?
+    
+    weak var downloadPanelDelegate: DonwloadPanelDelegate?
+    
+    weak var globalSettingsDelegate: GlobalMenuDelegate?
 
     fileprivate var downloadsArrowDown: Bool = true {
         didSet {
@@ -133,9 +139,12 @@ final class WebBrowserToolbarController: UIViewController {
 
     private let router: ToolbarRouter
 
-    init(router: ToolbarRouter, delegate: DonwloadPanelDelegate) {
+    init(router: ToolbarRouter,
+         downloadDelegate: DonwloadPanelDelegate,
+         globalSettingsDelegate: GlobalMenuDelegate) {
         self.router = router
-        self.delegate = delegate
+        downloadPanelDelegate = downloadDelegate
+        self.globalSettingsDelegate = globalSettingsDelegate
         downloadsArrowDown = true
         enableDownloadsButton = false
         super.init(nibName: nil, bundle: nil)
@@ -196,7 +205,7 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
-        updateToolbar(downloadsAvailable: downloadsAvailable, actionsAvailable: withSite)
+        updateToolbar(downloadsAvailable: downloadsAvailable, actionsAvailable: true)
         downloadsArrowDown = !downloadsAvailable
         enableDownloadsButton = downloadsAvailable
     }
@@ -236,7 +245,11 @@ private extension WebBrowserToolbarController {
     }
     
     @objc func handleActionsPressed() {
-        siteNavigationDelegate?.openTabMenu(from: toolbarView, and: .zero)
+        if let siteDelegate = siteNavigationDelegate {
+            siteDelegate.openTabMenu(from: toolbarView, and: .zero)
+        } else {
+            globalSettingsDelegate?.didPressSettings()
+        }
     }
 
     @objc func handleShowOpenedTabsPressed() {
@@ -245,7 +258,7 @@ private extension WebBrowserToolbarController {
 
     @objc func handleDownloadsPressed() {
         downloadsArrowDown = !downloadsArrowDown
-        delegate?.didPressDownloads(to: downloadsArrowDown)
+        downloadPanelDelegate?.didPressDownloads(to: downloadsArrowDown)
     }
     
     func refreshNavigation() {
@@ -290,7 +303,9 @@ extension WebBrowserToolbarController: TabsObserver {
         case .site:
             updateToolbar(downloadsAvailable: false, actionsAvailable: true)
         default:
-            updateToolbar(downloadsAvailable: false, actionsAvailable: false)
+            // allow to show actions even for top sites view
+            // to be able for user to get to global settings
+            updateToolbar(downloadsAvailable: false, actionsAvailable: true)
         }
     }
 }
