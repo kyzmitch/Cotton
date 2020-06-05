@@ -106,7 +106,8 @@ extension SiteCollectionViewCell {
                 .sink(receiveCompletion: { (completion) in
                     switch completion {
                     case .failure(let error):
-                        print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
+                        // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
+                        break
                     default: break
                     }
                 }, receiveValue: { [weak self] (url) in

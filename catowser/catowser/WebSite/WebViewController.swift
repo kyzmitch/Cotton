@@ -154,6 +154,8 @@ final class WebViewController: BaseViewController {
         if isFirstAppearance {
             isFirstAppearance = false
         } else {
+            // so, reuse of web view controller isn't ready
+            // but probably not needed
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
     }

@@ -55,7 +55,7 @@ extension WebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-#if false
+#if true
         print("navigation Action: \(navigationAction.navigationType.debugDescription) \(url)")
 #endif
         
@@ -86,9 +86,31 @@ extension WebViewController: WKNavigationDelegate {
 
         switch url.scheme {
         case "http", "https":
-            if dohUsed && !url.hasIPHost {
+            if dohUsed &&
+                urlInfo.host.isSimilar(with: url) &&
+                !url.hasIPHost {
+                /**
+                 To avoid errors, when DoH is enabled, many sites
+                 uses additional requests but with different hosts
+                 it could be analytics or something else, some dependency.
+                 Turns out that implementation of DoH for these hosts isn't obvious, but
+                 there is one approach: we can allow side request to be made without DoH,
+                 because they're not initiated by browser user and can't describe
+                 what user likes or wanted to find on internet.
+                 
+                 So that, as initial solution will try to not do DoH operations for
+                 navigation requests related to analytics or any other not user initiated requests.
+                 This is also actually solves issue with site loading with DoH enabled,
+                 because analytics related requests are mandatory for sites for some reason
+                 and at least on iPad I see weird behaviour if analytics were loaded by IP address.
+                 
+                 only cancel immediate navigation with following conditions:
+                 - DoH is enabled
+                 - requested URL doesn't contain ip address instead of host (this means that DoH request MUST be performed if it's enabled)
+                 - pending navigation request is related to initial host or similar host used by user (search bar url)
+                 */
                 decisionHandler(.cancel)
-                internalLoad(url: url, enableDoH: dohUsed)
+                internalLoad(url: url, enableDoH: true)
             } else {
                 decisionHandler(.allow)
             }

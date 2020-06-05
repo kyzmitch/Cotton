@@ -79,6 +79,11 @@ extension HttpKit {
             return host.contains(rawValue) || rawValue.contains(host) || host == rawValue
         }
         
+        public func isSimilar(with url: URL) -> Bool {
+            guard let rHost = url.host else { return false }
+            return isSimilar(with: rHost)
+        }
+        
         /// URLs with some hosts can't be loaded by ip address,
         /// so that, DNS over HTTPS won't work for them using WKWebView
         /// since there is no way to change how URLRequest is doing DNS requests and replace them.
