@@ -47,6 +47,8 @@ final class WebViewController: BaseViewController {
     private(set) var dohUsed: Bool
     /// State of web view
     private var isWebViewLoaded: Bool = false
+    /// Controller first appearance
+    private var isFirstAppearance = true
     /// lazy loaded web view to use correct config
     lazy var webView: WKWebView = {
         webViewObserversAdded = false
@@ -109,6 +111,10 @@ final class WebViewController: BaseViewController {
     }
     
     deinit {
+        unsubscribe()
+    }
+    
+    private func unsubscribe() {
         if #available(iOS 13.0, *) {
             dnsRequestCancellable?.cancel()
             finalURLFetchCancellable?.cancel()
@@ -140,6 +146,22 @@ final class WebViewController: BaseViewController {
         webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if isFirstAppearance {
+            isFirstAppearance = false
+        } else {
+            assertionFailure("Resubscribtion for web view isn't implemented yet")
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        unsubscribe()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

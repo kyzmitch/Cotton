@@ -89,7 +89,7 @@ final class MasterBrowserViewController: BaseViewController {
     var mKeyboardHeight: CGFloat?
 
     /// The current holder for WebView (controller) if browser has at least one
-    private var currentWebViewController: WebViewController?
+    private weak var currentWebViewController: WebViewController?
 
     private var disposables = [Disposable?]()
 
@@ -347,7 +347,14 @@ extension MasterBrowserViewController: TabRendererInterface {
                 // "and, on iPhone, the <video> will enter fullscreen when starting playback."
                 // on ipads it is played in normal mode, so, this is why need to stop/pause it
                 if let currentWebViewVC = currentWebViewController {
-                    // currentWebViewVC.
+                    // also need to invalidate and cancel all observations
+                    // in viewDidDisappear, and not in dealloc,
+                    // because currently web view controller reference
+                    // stored in reuse manager which probably
+                    // not needed anymore even with unsolved memory issue when it's
+                    // a lot of tabs are opened.
+                    // It is because it's very tricky to save navigation history
+                    // for reused web view and for some other reasons.
                     currentWebViewVC.removeFromChild()
                 }
             case .topSites:
