@@ -72,9 +72,11 @@ final class SiteMenuModel: ObservableObject {
         }
         siteSettingsDelegate = siteDelegate
         dismissAction = dismiss
-        dohChangesCancellable = $isDohEnabled.sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
-        // for some reason below observer for js option gets triggered
+        // for some reason below observers gets triggered
         // right away in init
+        dohChangesCancellable = $isDohEnabled
+            .dropFirst()
+            .sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
         jsEnabledOptionCancellable = $isJavaScriptEnabled
             .dropFirst()
             .sink(receiveValue: { [weak self] (jsEnabledValue) in
