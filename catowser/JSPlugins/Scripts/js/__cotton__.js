@@ -102,16 +102,20 @@ XMLHttpRequest.prototype.send = function(body) {
 };
 
 window.addEventListener("load", function() {
+    window.setTimeout(cottonHandleIgHtml, 3000);
+}, false);
+
+function cottonHandleIgHtml() {
     if (!window.__cotton__.isHandledHost()) {
         return;
     }
     let htmlString = document.documentElement.outerHTML.toString();
     try {
-	    webkit.messageHandlers.cottonHandler.postMessage({"html": htmlString});
+        webkit.messageHandlers.cottonHandler.postMessage({"html": htmlString});
     } catch(err) {
         console.log(message);
     }
-}, false);
+}
 
 document.body.addEventListener('DOMSubtreeModified', function(event) {
     if (!window.__cotton__.isHandledHost()) {
