@@ -14,6 +14,10 @@ import HttpKit
 import SwiftUI
 #endif
 
+protocol MediaLinksPresenter: class {
+    func didReceiveMediaLinks()
+}
+
 /// Should contain copies for references to all needed constraints and view controllers.
 /// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
@@ -37,11 +41,17 @@ final class MasterRouter: NSObject {
 
     lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            return TabletSearchBarViewController(self, settingsDelegate: self)
+            let tabletController = TabletSearchBarViewController(self,
+                                                                 settingsDelegate: self,
+                                                                 downloadDelegate: self)
+            mediaLinksPresenter = tabletController
+            return tabletController
         } else {
             return SmartphoneSearchBarViewController(self)
         }
     }()
+    
+    private weak var mediaLinksPresenter: MediaLinksPresenter?
 
     // MARK: All constraints should be stored by strong references because they are removed during deactivation
 
@@ -67,6 +77,7 @@ final class MasterRouter: NSObject {
 
     private(set) var isFilesGreedShowed: Bool = false
 
+    // FIXME: move this dependency to delegate methods as a parameter (it is different for each site)
     var dataSource: TagsSiteDataSource?
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
@@ -103,6 +114,14 @@ final class MasterRouter: NSObject {
     }
     
     // MARK: - originally private methods
+    
+    func updateDownloadsViews() {
+        if isPad {
+            mediaLinksPresenter?.didReceiveMediaLinks()
+        } else {
+            showLinkTagsControllerIfNeeded()
+        }
+    }
     
     func showLinkTagsControllerIfNeeded() {
         guard !isLinkTagsShowed else {
@@ -216,6 +235,32 @@ final class MasterRouter: NSObject {
         }
 
         isFilesGreedShowed = true
+    }
+    
+    func presentVideoViews(using source: TagsSiteDataSource,
+                           from sourceView: UIView,
+                           and sourceRect: CGRect) {
+        guard !isFilesGreedShowed else {
+            hideFilesGreedIfNeeded()
+            return
+        }
+        if !isPad {
+            filesGreedController.reloadWith(source: source) { [weak self] in
+                self?.showFilesGreedOnPhoneIfNeeded()
+            }
+        } else {
+            filesGreedController.viewController.modalPresentationStyle = .popover
+            filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
+            if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
+                popoverPresenter.permittedArrowDirections = .any
+                popoverPresenter.sourceRect = sourceRect
+                popoverPresenter.sourceView = sourceView
+            }
+            filesGreedController.reloadWith(source: source, completion: nil)
+            presenter.viewController.present(filesGreedController.viewController,
+                                             animated: true,
+                                             completion: nil)
+        }
     }
 }
 
@@ -342,7 +387,14 @@ extension MasterRouter: DonwloadPanelDelegate {
             hideFilesGreedIfNeeded()
             hideLinkTagsController()
         } else {
-            showLinkTagsControllerIfNeeded()
+            // only can be used for phone layout
+            // for table need to use `didPressTabletLayoutDownloads`
+            updateDownloadsViews()
         }
+    }
+    
+    func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect) {
+        guard let source = dataSource else { return }
+        presentVideoViews(using: source, from: sourceView, and: sourceRect)
     }
 }

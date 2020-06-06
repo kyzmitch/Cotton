@@ -18,6 +18,7 @@ import CoreBrowser
 
 protocol DonwloadPanelDelegate: class {
     func didPressDownloads(to hide: Bool)
+    func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect)
 }
 
 protocol GlobalMenuDelegate: class {
@@ -33,7 +34,7 @@ final class WebBrowserToolbarController: UIViewController {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
                 reloadButton.isEnabled = false
-                downloadsArrowDown = true
+                downloadsViewHidden = true
                 enableDownloadsButton = false
                 return
             }
@@ -46,9 +47,9 @@ final class WebBrowserToolbarController: UIViewController {
     
     private weak var globalSettingsDelegate: GlobalMenuDelegate?
 
-    fileprivate var downloadsArrowDown: Bool = true {
+    fileprivate var downloadsViewHidden: Bool = true {
         didSet {
-            animateDownloadsArrow(down: !downloadsArrowDown)
+            animateDownloadsArrow(down: !downloadsViewHidden)
         }
     }
     
@@ -145,7 +146,7 @@ final class WebBrowserToolbarController: UIViewController {
         self.router = router
         downloadPanelDelegate = downloadDelegate
         self.globalSettingsDelegate = globalSettingsDelegate
-        downloadsArrowDown = true
+        downloadsViewHidden = true
         enableDownloadsButton = false
         super.init(nibName: nil, bundle: nil)
         TabsListManager.shared.attach(counterView)
@@ -206,7 +207,7 @@ extension WebBrowserToolbarController: SiteNavigationComponent {
         forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
         reloadButton.isEnabled = withSite
         updateToolbar(downloadsAvailable: downloadsAvailable, actionsAvailable: true)
-        downloadsArrowDown = !downloadsAvailable
+        downloadsViewHidden = !downloadsAvailable
         enableDownloadsButton = downloadsAvailable
     }
 
@@ -257,8 +258,8 @@ private extension WebBrowserToolbarController {
     }
 
     @objc func handleDownloadsPressed() {
-        downloadsArrowDown = !downloadsArrowDown
-        downloadPanelDelegate?.didPressDownloads(to: downloadsArrowDown)
+        downloadsViewHidden.toggle() // should call didSet
+        downloadPanelDelegate?.didPressDownloads(to: downloadsViewHidden)
     }
     
     func refreshNavigation() {
