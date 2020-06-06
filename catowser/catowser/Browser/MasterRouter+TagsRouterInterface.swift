@@ -12,19 +12,19 @@ extension MasterRouter: TagsRouterInterface {
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
         dataSource = .instagram(nodes)
         linkTagsController.setLinks(nodes.count, for: .video)
-        showLinkTagsControllerIfNeeded()
+        updateDownloadsViews()
     }
     
     func openTagsFor(t4 video: T4Video) {
         dataSource = .t4(video)
         linkTagsController.setLinks(1, for: .video)
-        showLinkTagsControllerIfNeeded()
+        updateDownloadsViews()
     }
 
     func openTagsFor(html tags: [HTMLVideoTag]) {
         dataSource = .htmlVideos(tags)
         linkTagsController.setLinks(tags.count, for: .video)
-        showLinkTagsControllerIfNeeded()
+        updateDownloadsViews()
     }
 
     func closeTags() {
