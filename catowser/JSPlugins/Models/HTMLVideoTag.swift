@@ -13,18 +13,9 @@ public struct HTMLVideoTag {
     public let poster: URL?
     public let name: String
     
-    init?(srcString: String, posterString: String?, name: String) {
-        guard let srcURL = URL(string: srcString) else {
-            return nil
-        }
-        
+    init?(srcURL: URL, posterURL: URL?, name: String) {
         src = srcURL
-        if let posterURLString = posterString {
-            poster = URL(string: posterURLString)
-        } else {
-            poster = nil
-        }
-
+        poster = posterURL
         self.name = name
     }
 }

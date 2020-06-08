@@ -82,11 +82,20 @@ extension BaseJSHandler: WKScriptMessageHandler {
             case .log? where value is String:
                 // swiftlint:disable:next force_cast
                 print("JS Base log: \(value as! String)")
-            case .html? where value is String:
+            case .html?:
+                guard let jsonObject = Data.dataFrom(value) else {
+                    break
+                }
+                let htmlContentMsg: HTMLContentMessage
+                do {
+                    htmlContentMsg = try JSONDecoder().decode(HTMLContentMessage.self, from: jsonObject)
+                } catch {
+                    print("HTML content is corrupted: \(error)")
+                    return
+                }
                 // now need to parse to find video tags and extract urls
                 do {
-                    // swiftlint:disable:next force_cast
-                    let videoTags = try HTMLVideoTagsContainer(html: value as! String)
+                    let videoTags = try HTMLVideoTagsContainer(htmlMessage: htmlContentMsg)
                     delegate?.didReceiveVideoTags(videoTags.videoTags)
                 } catch {
                     print("HTML video tags: \(error)")

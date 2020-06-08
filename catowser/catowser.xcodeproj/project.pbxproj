@@ -259,6 +259,7 @@
 		8AE6D1702350FF35006316AD /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8AE6D1712350FF35006316AD /* HttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE6D1762350FF65006316AD /* Endpoint.swift */; };
+		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4922A235248CE00183579 /* HttpKitErrors.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
@@ -584,6 +585,7 @@
 		8AE6D16B2350FF35006316AD /* HttpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpKit.h; sourceTree = "<group>"; };
 		8AE6D16C2350FF35006316AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AE6D1762350FF65006316AD /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		8AF4336B248E129F0047452B /* HTMLContentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentMessage.swift; sourceTree = "<group>"; };
 		8AF4922A235248CE00183579 /* HttpKitErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitErrors.swift; sourceTree = "<group>"; };
 		8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EF5304FC018F5159A692445 /* Pods-Cotton.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cotton.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cotton/Pods-Cotton.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1006,6 +1008,7 @@
 				60C2C8F622772FEF00F5D869 /* VideoFileNameble.swift */,
 				841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */,
 				C7796FF2228E70590071E69C /* HTMLVideoTag.swift */,
+				8AF4336B248E129F0047452B /* HTMLContentMessage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1794,6 +1797,7 @@
 				841022D0227D89D80021516F /* HTMLVideoTagsContainer.swift in Sources */,
 				60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */,
 				8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */,
+				8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */,
 				8A012FA72240111700041487 /* T4Handler.swift in Sources */,
 				60C2C8D6226DDA0F00F5D869 /* T4Video.swift in Sources */,
 				C7796FF3228E70590071E69C /* HTMLVideoTag.swift in Sources */,
