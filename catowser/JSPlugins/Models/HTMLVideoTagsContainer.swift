@@ -91,40 +91,13 @@ public struct HTMLVideoTagsContainer {
                 print("Failed to extract css style from youtube thumbnail \(error)")
                 return nil
             }
-            guard var cssString = thumbnailCssStyle else {
+            guard let cssString = thumbnailCssStyle else {
                 print("Empty string for youtube thumbnail css")
                 return nil
             }
-            return Self.parseCssBackgroundImage(cssString)
+            return CSSBackgroundImage(cssString: cssString)?.firstURL
         }
         return nil
-    }
-    
-    private static func parseCssBackgroundImage(_ cssString: String) -> URL? {
-        /**
-         Wanted to use SwiftCssParser library but it can't be integrated over CocoaPods
-         https://github.com/100mango/SwiftCssParser/issues/4
-         https://www.w3schools.com/cssref/pr_background-image.asp
-         CSS syntax: background-image: url|none|initial|inherit;
-         example: background-image: url("img_tree.gif"), url("paper.gif");
-         
-         So that, it's possible to find more than 1 url, but for youtube it's one.
-         */
-        guard let bgImageStringRange = cssString.range(of: "background-image") else {
-            return nil
-        }
-        guard let urlPrefixRange = cssString.range(of: "url(") else {
-            return nil
-        }
-        let urlStartIndex = cssString.index(bgImageStringRange.upperBound, offsetBy: 2)
-        guard urlStartIndex == urlPrefixRange.lowerBound else {
-            return nil
-        }
-        cssString.removeSubrange(bgImageStringRange)
-        cssString = cssString.replacingOccurrences(of: "&quot;", with: "\"")
-
-        // https://developer.mozilla.org/en-US/docs/Web/CSS/url()
-        // "background-image: url(&quot;https://i.ytimg.com/vi_webp/6YJyar9KRL8/maxresdefault.webp?v=5ed88256&quot;);"
     }
     
     private static func getFinalPosterURL(_ specificThumbnail: String?, _ mainPoster: URL?) -> URL? {
