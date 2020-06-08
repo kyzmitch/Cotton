@@ -29,6 +29,18 @@ target 'JSPlugins' do
   pod 'ReactiveSwift', '~> 6.0.0'
 end
 
+target 'JSPluginsTests' do
+  use_frameworks!
+
+# Probably it is not right way of fixing
+# unit tests only should require main framework 
+# as a dependency which is JSPlugins.framework
+  pod 'ReactiveSwift', '~> 6.0.0'
+  pod 'SWXMLHash', '~> 5.0.0'
+  pod 'SwiftLint'
+  pod 'SwiftSoup'
+end
+
 target 'HttpKit' do
   use_frameworks!
 
