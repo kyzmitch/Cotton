@@ -1,5 +1,6 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '11.0'
+# source 'https://github.com/100mango/SwiftCssParser.git'
 
 target 'Cotton' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -23,6 +24,7 @@ target 'JSPlugins' do
   use_frameworks!
 
   pod 'SwiftSoup'
+  # pod 'SwiftCssParser'
   pod 'SwiftLint'
   pod 'ReactiveSwift', '~> 6.0.0'
 end

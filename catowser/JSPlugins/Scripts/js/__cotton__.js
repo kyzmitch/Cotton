@@ -111,7 +111,8 @@ function cottonHandleIgHtml() {
     }
     let htmlString = document.documentElement.outerHTML.toString();
     try {
-        webkit.messageHandlers.cottonHandler.postMessage({"html": htmlString});
+        let json = {"hostname": location.hostname,"htmlString": htmlString};
+        webkit.messageHandlers.cottonHandler.postMessage({"html": JSON.stringify(json)});
     } catch(err) {
         console.log(message);
     }
