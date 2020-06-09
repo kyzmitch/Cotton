@@ -11,6 +11,7 @@ import Foundation
 extension HttpKit {
     enum HttpHeader {
         case contentType(ContentType)
+        case contentLength(Int)
         case accept(ContentType)
         case authorization(token: String)
         
@@ -18,6 +19,8 @@ extension HttpKit {
             switch self {
             case .contentType:
                 return "Content-Type"
+            case .contentLength:
+                return "Content-Length"
             case .accept:
                 return "Accept"
             case .authorization:
@@ -29,6 +32,8 @@ extension HttpKit {
             switch self {
             case .contentType(let type):
                 return type.rawValue
+            case .contentLength(let length):
+                return "\(length)"
             case .accept(let type):
                 return type.rawValue
             case .authorization(token: let token):
