@@ -25,6 +25,33 @@ struct HTMLContentMessage: Decodable {
         html = try SwiftSoup.parse(htmlString)
     }
     
+    var mainPosterURL: URL? {
+        if hostname.isSimilar(with: "youtube.com") {
+            let divs: Elements
+            do {
+                divs = try html.select("div[class*=ytp-cued-thumbnail-overlay-image]")
+                // or use `getElementsByClass` but it's not optimal and requires
+                // to fetch all divs which we don't need
+            } catch {
+                print("Failed to find poster for youtube: \(error)")
+                return nil
+            }
+            let thumbnailCssStyle: String?
+            do {
+                thumbnailCssStyle = try divs.first()?.attr("style")
+            } catch {
+                print("Failed to extract css style from youtube thumbnail \(error)")
+                return nil
+            }
+            guard let cssString = thumbnailCssStyle else {
+                print("Empty string for youtube thumbnail css")
+                return nil
+            }
+            return CSSBackgroundImage(cssString: cssString)?.firstURL
+        }
+        return nil
+    }
+    
     private enum CodingKeys: String, CodingKey {
         case hostname
         case htmlString

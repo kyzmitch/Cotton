@@ -29,8 +29,11 @@ final class DownloadButtonCellView: UITableViewCell {
             downloadButton.addTarget(self, action: .downloadPressed, for: .touchUpInside)
         }
     }
+    
     /// Video title label view
     @IBOutlet weak var titleLabel: UILabel!
+    /// Displays filename, can't use title because it's too complicated for file name
+    @IBOutlet weak var fileNameLabel: UILabel!
     /// Video size label view
     @IBOutlet weak var resourceSizeLabel: UILabel!
 

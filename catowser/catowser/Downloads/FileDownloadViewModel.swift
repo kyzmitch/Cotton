@@ -24,6 +24,7 @@ final class FileDownloadViewModel {
         return downloadOutput.signal
     }()
     
+    /// resource size value is async and requires http request to be made
     lazy var resourceSizeSignal: Signal<Int, Never> = {
         return resourceSizeOutput.signal
     }()
