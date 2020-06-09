@@ -32,6 +32,8 @@ struct CSSBackgroundImage {
         /**
          https://developer.mozilla.org/en-US/docs/Web/CSS/url()
          "background-image: url(&quot;https://example.com/picture.png&quot;);"
+         or
+         "background-image: url(\"https://example.com/picture.png\");"
          */
         
         guard cssString.range(of: "background-image") != nil else {
@@ -64,6 +66,9 @@ struct CSSBackgroundImage {
             default:
                 return nil
             }
+        }
+        guard !urls.isEmpty else {
+            return nil
         }
         self.urls = urls
     }
