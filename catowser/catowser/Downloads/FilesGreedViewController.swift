@@ -48,7 +48,7 @@ fileprivate extension FilesGreedViewController {
     struct Sizes {
         static let margin = CGFloat(8)
         static let imageMargin = CGFloat(14)
-        static let rowHeight = CGFloat(120)
+        static let rowHeight = CGFloat(160)
     }
 }
 

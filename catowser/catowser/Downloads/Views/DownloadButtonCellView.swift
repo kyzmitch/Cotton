@@ -12,6 +12,8 @@ import ReactiveSwift
 import CoreBrowser
 
 final class DownloadButtonCellView: UITableViewCell {
+    fileprivate static let bytesInMegabyte: Int = 1048576 // 1024 * 1024
+    
     /// Video preview
     @IBOutlet weak var previewImageView: UIImageView! {
         didSet {
@@ -27,8 +29,10 @@ final class DownloadButtonCellView: UITableViewCell {
             downloadButton.addTarget(self, action: .downloadPressed, for: .touchUpInside)
         }
     }
-    /// Video title view
+    /// Video title label view
     @IBOutlet weak var titleLabel: UILabel!
+    /// Video size label view
+    @IBOutlet weak var resourceSizeLabel: UILabel!
 
     var buttonState: DownloadButtonState? {
         didSet {
@@ -60,11 +64,19 @@ final class DownloadButtonCellView: UITableViewCell {
             setButtonState(toDownloadState: vm.downloadState)
 
             // subscribe to future changes
-            disposable?.dispose()
-            disposable = vm.stateSignal
+            downloadStateDisposable?.dispose()
+            downloadStateDisposable = vm.downloadStateSignal
                 .observe(on: UIScheduler())
                 .observeValues { [weak self] state in
                     self?.setButtonState(toDownloadState: state)
+            }
+            resourceSizeDisposable?.dispose()
+            resourceSizeDisposable = vm.resourceSizeSignal
+                .observe(on: UIScheduler())
+                .observeValues { [weak self] (bytesCount) in
+                    let rounted = bytesCount / Self.bytesInMegabyte
+                    let sizeInt = Int(rounted)
+                    self?.resourceSizeLabel.text = "\(sizeInt) mb"
             }
         }
     }
@@ -82,7 +94,8 @@ final class DownloadButtonCellView: UITableViewCell {
 
     weak var delegate: FileDownloadViewDelegate?
 
-    private var disposable: Disposable?
+    private var downloadStateDisposable: Disposable?
+    private var resourceSizeDisposable: Disposable?
 
     private func setButtonState(toDownloadState state: DownloadState) {
         switch state {
@@ -102,7 +115,8 @@ final class DownloadButtonCellView: UITableViewCell {
     }
     
     deinit {
-        disposable?.dispose()
+        downloadStateDisposable?.dispose()
+        resourceSizeDisposable?.dispose()
     }
 
     enum DownloadButtonState {

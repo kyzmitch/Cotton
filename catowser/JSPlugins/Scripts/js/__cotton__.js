@@ -139,7 +139,6 @@ document.body.addEventListener('DOMSubtreeModified', function(event) {
                     continue;
                 }
                 if (!(node.tagName == 'video')) {
-                    cottonBaseLog('non video tag was added');
                     continue;
                 }
                 cottonBaseLog('video tag added to html');

@@ -18,9 +18,14 @@ final class FileDownloadViewModel {
     fileprivate let batch: Downloadable
     
     fileprivate let downloadOutput: MutableProperty<DownloadState>
+    fileprivate let resourceSizeOutput: MutableProperty<Int>
 
-    lazy var stateSignal: Signal<DownloadState, Never> = {
+    lazy var downloadStateSignal: Signal<DownloadState, Never> = {
         return downloadOutput.signal
+    }()
+    
+    lazy var resourceSizeSignal: Signal<Int, Never> = {
+        return resourceSizeOutput.signal
     }()
     
     /// Current download state, can be used for download button state and progress indicator
@@ -42,7 +47,23 @@ final class FileDownloadViewModel {
             downloadState = .initial
         }
         downloadOutput = .init(downloadState)
+        resourceSizeOutput = .init(0)
         labelText = name
+        
+        HttpKit.fetchRemoteResourceInfo(url: batch.url)
+            .observe(on: QueueScheduler.main)
+            .startWithResult { [weak self] (result) in
+                guard let self = self else {
+                    assertionFailure("Fail to fetch file size - zomby self")
+                    return
+                }
+                switch result {
+                case .success(let bytesCount):
+                    self.resourceSizeOutput.value = bytesCount
+                case .failure(let error):
+                    print("Fail to fetch file size: \(error.localizedDescription)")
+                }
+        }
     }
 
     func download() {
