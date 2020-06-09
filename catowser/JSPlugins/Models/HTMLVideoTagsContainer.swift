@@ -27,43 +27,13 @@ public struct HTMLVideoTagsContainer {
         guard videoElements.size() > 0 else {
             throw CottonError.noVideoTags
         }
-        let docTitle = Self.parseTitle(htmlMessage.html)
-        let mainPoster: URL? = Self.parseMainPoster(from: htmlMessage)
+        let docTitle = htmlMessage.html.documentTitle
+        let mainPosterURL = htmlMessage.mainPosterURL
         
         var result: [HTMLVideoTag] = []
         for (i, videoElement) in videoElements.enumerated() {
-            // The URL of the video to embed. This is optional;
-            // you may instead use the <source> element within the video block
-            // to specify the video to embed.
-            let videoUrl: String
-            if let srcURLString: String = try? videoElement.attr("src") {
-                videoUrl = srcURLString
-            } else {
-                let sources = try? videoElement.select("source")
-                guard let sourceURL = try? sources?.first()?.attr("src") else {
-                    print("Found video tag source subtag but without URL")
-                    continue
-                }
-                videoUrl = sourceURL
-            }
-            // The poster URL is optional too
-            let thumbnailURLString: String?
-            if let posterString = try? videoElement.attr("poster") {
-                thumbnailURLString = posterString.isEmpty ? nil : posterString
-            } else {
-                thumbnailURLString = nil
-            }
-
-            let tagName = "\(docTitle)-\(i)"
-            guard let srcURL = URL(string: videoUrl) else {
-                continue
-            }
-            let posterURL = Self.getFinalPosterURL(thumbnailURLString, mainPoster)
-            let videoTag = HTMLVideoTag(srcURL: srcURL, posterURL: posterURL, name: tagName)
-            guard let tag = videoTag else {
-                print("Failed create video tag object with URLs")
-                continue
-            }
+            let htmlVideoTag = HTMLVideoTag(videoElement, i, docTitle, mainPosterURL)
+            guard let tag = htmlVideoTag else { continue }
             result.append(tag)
         }
         
@@ -72,51 +42,6 @@ public struct HTMLVideoTagsContainer {
         }
         videoTags = result
     }
-    
-    private static func parseMainPoster(from htmlMessage: HTMLContentMessage) -> URL? {
-        if htmlMessage.hostname.isSimilar(with: "youtube.com") {
-            let divs: Elements
-            do {
-                divs = try htmlMessage.html.select("div[class*=ytp-cued-thumbnail-overlay-image]")
-                // or use `getElementsByClass` but it's not optimal and requires
-                // to fetch all divs which we don't need
-            } catch {
-                print("Failed to find poster for youtube: \(error)")
-                return nil
-            }
-            let thumbnailCssStyle: String?
-            do {
-                thumbnailCssStyle = try divs.first()?.attr("style")
-            } catch {
-                print("Failed to extract css style from youtube thumbnail \(error)")
-                return nil
-            }
-            guard let cssString = thumbnailCssStyle else {
-                print("Empty string for youtube thumbnail css")
-                return nil
-            }
-            return CSSBackgroundImage(cssString: cssString)?.firstURL
-        }
-        return nil
-    }
-    
-    private static func getFinalPosterURL(_ specificThumbnail: String?, _ mainPoster: URL?) -> URL? {
-        if let bestThumbnail = specificThumbnail,
-            let thumbnailURL = URL(string: bestThumbnail) {
-            return thumbnailURL
-        }
-        return mainPoster
-    }
-    
-    private static func parseTitle(_ doc: Document) -> String {
-        let docTitle: String
-        if let title = try? doc.title() {
-            docTitle = title
-        } else {
-            docTitle = UUID().uuidString
-        }
-        return docTitle
-    }
 }
 
 enum CottonError: Error {
@@ -124,4 +49,19 @@ enum CottonError: Error {
     case emptyHtml
     case noVideoTags
     case parseHost
+}
+
+extension Document {
+    var documentTitle: String {
+        let docTitle: String
+        if let title = try? title() {
+            docTitle = title
+        } else if let docURL = URL(string: location()),
+            let hostname = docURL.host {
+            docTitle = hostname
+        } else {
+            docTitle = UUID().uuidString
+        }
+        return docTitle
+    }
 }
