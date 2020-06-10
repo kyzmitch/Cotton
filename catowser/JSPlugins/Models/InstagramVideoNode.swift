@@ -54,11 +54,12 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
         }
         dimensions = nil
 
-        if let pageTitle = try? container.decode(String.self, forKey: .pageTitle) {
+        let possiblePageTitle = try? container.decode(String.self, forKey: .pageTitle)
+        let possibleMediaCaption = try? container.decode(IgEdgeMediaCaption.self, forKey: .mediaCaption)
+        
+        if let pageTitle = possiblePageTitle, !pageTitle.contains("undefined") {
             name = pageTitle
-        } else if let mediaCaption = try? container.decode(IgEdgeMediaCaption.self,
-                                                           forKey: .mediaCaption),
-            let edge = mediaCaption.edges.first {
+        } else if let mediaCaption = possibleMediaCaption, let edge = mediaCaption.edges.first {
             name = edge.node.text
         } else {
             let uuid: String = "instagram_\(UUID().uuidString)"
