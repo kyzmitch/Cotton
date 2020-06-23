@@ -9,16 +9,44 @@
 import Foundation
 import Alamofire
 import ReactiveSwift
+#if canImport(CryptoKit)
+import CryptoKit
+#endif
 
+/// Represents a remote file which can be downloaded and stored locally
 public protocol Downloadable {
+    /// Remote address of a file
     var url: URL { get }
+    /// Site name or domain name where the remote object is located
+    var hostname: String { get }
+    /// Kind of name of the remote file which is usually not very filesystem friendly
+    var fileDescription: String { get }
+    /**
+     Local file name, must be the same for same file description and
+     hostname to be able to not re-download same resource
+     */
     var fileName: String { get }
+    /// iOS sandbox specific option which prevents iCloud from backing up the local file
     var excludeFromBackup: Bool { get }
 }
 
 extension Downloadable {
     public var excludeFromBackup: Bool {
         return true
+    }
+    
+    public var fileName: String {
+        if #available(iOS 13.0, *) {
+            var md5Hasher = Insecure.MD5()
+            let dataArray = fileDescription.utf8.map { UInt8($0)}
+            md5Hasher.update(data: dataArray)
+            let digest = md5Hasher.finalize()
+            return "\(hostname)_\(digest.description)"
+        } else {
+            var hasher: Hasher = .init()
+            fileDescription.hash(into: &hasher)
+            return "\(hostname)_\(hasher.finalize())"
+        }
     }
     
     public func fileAtDestination() -> URL? {

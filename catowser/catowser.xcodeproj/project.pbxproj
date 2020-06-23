@@ -114,6 +114,7 @@
 		8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */; };
 		8A437DA9247ED376001C1E8B /* TrimmedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA8247ED376001C1E8B /* TrimmedString.swift */; };
 		8A46AB9D2377260300DC03E6 /* GoogleDnsServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */; };
+		8A4D0D8224A279A9009B28A3 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */; };
 		8A510F632424ADC30070503C /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
 		8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */; };
 		8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A553519247D740900E3B330 /* SiteMenuModel.swift */; };
@@ -547,6 +548,7 @@
 		8A437DA8247ED376001C1E8B /* TrimmedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmedString.swift; sourceTree = "<group>"; };
 		8A46AB9A237721FD00DC03E6 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Network.framework; sourceTree = DEVELOPER_DIR; };
 		8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDnsServer.swift; sourceTree = "<group>"; };
+		8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CryptoKit.framework; sourceTree = DEVELOPER_DIR; };
 		8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNavigationProtocols.swift; sourceTree = "<group>"; };
 		8A510F642424AE000070503C /* URLInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfo.swift; sourceTree = "<group>"; };
 		8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SystemExtensions.swift"; sourceTree = "<group>"; };
@@ -569,7 +571,7 @@
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
 		8A7DCCCF236432B5006AAEE2 /* DomainName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainName.swift; sourceTree = "<group>"; };
-		8A8035E624442F0F000E035F /* Cotton dnsext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cotton dnsext.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A8035E624442F0F000E035F /* Cotton DNS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Cotton DNS.app"; path = "Cotton dnsext.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8035E724442F0F000E035F /* Info-dnsext.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-dnsext.plist"; path = "/Users/aermoshin/prj/catowser/catowser/Info-dnsext.plist"; sourceTree = "<absolute>"; };
 		8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "catowser dnsextDebug.entitlements"; sourceTree = "<group>"; };
 		8A8035E924442F45000E035F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -729,6 +731,7 @@
 			files = (
 				26EB2E2E0F1F30CEEBF26DD8 /* Pods_HttpKit.framework in Frameworks */,
 				8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */,
+				8A4D0D8224A279A9009B28A3 /* CryptoKit.framework in Frameworks */,
 				8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */,
 				8A90636B24332452009D786E /* Network.framework in Frameworks */,
 				8AC4368424798BFC008DD663 /* SPMCommon.framework in Frameworks */,
@@ -748,6 +751,7 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */,
 				8AE31135247C664600FF28B1 /* SwiftUI.framework */,
 				8AC45ECA24582453007E47EE /* Combine.framework */,
 				8A6CD6D324585D830068ACB5 /* Combine.framework */,
@@ -995,7 +999,7 @@
 				6094E71C221FD2B9004269A2 /* CoreBrowser.framework */,
 				608DA74A223A3BD4009F75BD /* JSPlugins.framework */,
 				8AE6D1692350FF35006316AD /* HttpKit.framework */,
-				8A8035E624442F0F000E035F /* Cotton dnsext.app */,
+				8A8035E624442F0F000E035F /* Cotton DNS.app */,
 				8A8035EF24446234000E035F /* DNSProxy.appex */,
 				8AC4367424798BDB008DD663 /* SPMCommon.framework */,
 				8AF43375248EBB2A0047452B /* CssParser.framework */,
@@ -1491,7 +1495,7 @@
 			);
 			name = "Cotton dnsext";
 			productName = catowser;
-			productReference = 8A8035E624442F0F000E035F /* Cotton dnsext.app */;
+			productReference = 8A8035E624442F0F000E035F /* Cotton DNS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8A8035EE24446234000E035F /* DNSProxy */ = {
