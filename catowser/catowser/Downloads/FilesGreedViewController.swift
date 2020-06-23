@@ -78,16 +78,16 @@ extension FilesGreedViewController {
         switch source {
         case .instagram(let nodes):
             let node = nodes[indexPath.item]
-            cell.viewModel = FileDownloadViewModel(with: node, name: node.name)
+            cell.viewModel = FileDownloadViewModel(with: node, name: node.fileDescription)
             cell.mediaFilePreviewURL = node.thumbnailUrl
         case .t4(let video):
             cell.mediaFilePreviewURL = video.thumbnailURL
-            cell.titleLabel.text = video.name
+            cell.titleLabel.text = video.fileDescription
             // for this type we can only load preview and title
             // download URL should be chosen e.g. by using action sheet
         case .htmlVideos(let tags):
             let tag = tags[indexPath.item]
-            cell.viewModel = FileDownloadViewModel(with: tag, name: tag.name)
+            cell.viewModel = FileDownloadViewModel(with: tag, name: tag.fileDescription)
             cell.mediaFilePreviewURL = tag.poster
         }
 
@@ -150,7 +150,7 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
                     callback(nil)
                     return
                 }
-                let viewModel = FileDownloadViewModel(with: t4Video, name: videoContainer.name)
+                let viewModel = FileDownloadViewModel(with: t4Video, name: videoContainer.fileDescription)
                 callback(viewModel)
             }
             alert.addAction(action)
@@ -171,6 +171,10 @@ extension InstagramVideoNode: Downloadable {
     public var url: URL {
         return videoUrl
     }
+    
+    public var hostname: String {
+        return "instagram.com"
+    }
 }
 
 fileprivate extension T4Video {
@@ -181,15 +185,20 @@ fileprivate extension T4Video {
 
         struct T4Downloadable: Downloadable {
             let url: URL
-            let fileName: String
+            let hostname: String = "4tube.com"
+            let fileDescription: String
         }
 
-        return T4Downloadable(url: url, fileName: fileName)
+        return T4Downloadable(url: url, fileDescription: fileDescription)
     }
 }
 
 extension HTMLVideoTag: Downloadable {
     public var url: URL {
         return src
+    }
+    
+    public var hostname: String {
+        return src.host ?? "unknown_host"
     }
 }

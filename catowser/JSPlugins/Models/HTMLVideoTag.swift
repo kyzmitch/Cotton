@@ -12,12 +12,12 @@ import SwiftSoup
 public struct HTMLVideoTag {
     public let src: URL
     public let poster: URL?
-    public let name: String
+    public let fileDescription: String
     
     init(srcURL: URL, posterURL: URL?, name: String) {
         src = srcURL
         poster = posterURL
-        self.name = name
+        self.fileDescription = name
     }
     
     init?(_ videoElement: Element,
@@ -53,7 +53,7 @@ public struct HTMLVideoTag {
         
         self.src = srcURL
         self.poster = Self.finalPosterURL(thumbnailURLString, mainPosterURL)
-        self.name = tagName
+        self.fileDescription = tagName
     }
     
     private static func finalPosterURL(_ specificThumbnail: String?, _ mainPosterURL: URL?) -> URL? {
@@ -77,7 +77,7 @@ extension HTMLVideoTag: Decodable {
             poster = nil
         }
 
-        name = "\(UUID().uuidString)-decoded"
+        fileDescription = "htmlVideoTag_\(src.path)"
     }
 }
 

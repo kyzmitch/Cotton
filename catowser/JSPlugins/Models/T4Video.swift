@@ -10,8 +10,7 @@ import Foundation
 
 public struct T4Video: Decodable, VideoFileNameble {
     public let variants: [Resolution: URL]
-    /// The name of video
-    public let name: String
+    public let fileDescription: String
     public let thumbnailURL: URL
 
     public init(from decoder: Decoder) throws {
@@ -44,14 +43,13 @@ public struct T4Video: Decodable, VideoFileNameble {
         }
         
         variants = set
+        thumbnailURL = try container.decode(URL.self, forKey: .thumbnail)
         
         if let title = try? container.decodeIfPresent(String.self, forKey: .pageTitle) {
-            name = title
+            fileDescription = title
         } else {
-            name = "t4_\(UUID().uuidString)"
+            fileDescription = "4tube_fileWithoutName_\(thumbnailURL.path)"
         }
-        
-        thumbnailURL = try container.decode(URL.self, forKey: .thumbnail)
     }
 }
 

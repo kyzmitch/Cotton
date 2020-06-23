@@ -8,20 +8,8 @@
 
 import Foundation
 
+/// Should have properties similar to ones from `Downloadable` protocol
 public protocol VideoFileNameble {
-    var name: String { get }
-    /// Used to provide same interface as `Downloadable` protocol  from HttpKit
-    var fileName: String { get }
-}
-
-public extension VideoFileNameble {
-    var fileName: String {
-        let prefix: String
-        if let i = name.firstIndex(where: { $0 == "\n" }) {
-            prefix = String(name.prefix(upTo: i))
-        } else {
-            prefix = name
-        }
-        return "\(prefix).mp4"
-    }
+    /// The name of the video (e.g. doc title of html)
+    var fileDescription: String { get }
 }

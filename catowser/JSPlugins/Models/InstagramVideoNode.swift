@@ -20,7 +20,7 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
     /// The resolution of the video clip
     public let dimensions: CGSize?
     /// The name of video
-    public let name: String
+    public let fileDescription: String
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -58,12 +58,11 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
         let possibleMediaCaption = try? container.decode(IgEdgeMediaCaption.self, forKey: .mediaCaption)
         
         if let pageTitle = possiblePageTitle, !pageTitle.contains("undefined") {
-            name = pageTitle
+            fileDescription = pageTitle
         } else if let mediaCaption = possibleMediaCaption, let edge = mediaCaption.edges.first {
-            name = edge.node.text
+            fileDescription = edge.node.text
         } else {
-            let uuid: String = "instagram_\(UUID().uuidString)"
-            name = uuid
+            fileDescription = "instagram_fileWithoutName_\(thumbnailUrl.path))"
         }
     }
 }
