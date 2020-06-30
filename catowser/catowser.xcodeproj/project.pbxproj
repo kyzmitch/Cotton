@@ -571,7 +571,7 @@
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
 		8A7DCCCF236432B5006AAEE2 /* DomainName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainName.swift; sourceTree = "<group>"; };
-		8A8035E624442F0F000E035F /* Cotton DNS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Cotton DNS.app"; path = "Cotton dnsext.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A8035E624442F0F000E035F /* Cotton dnsext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cotton dnsext.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8035E724442F0F000E035F /* Info-dnsext.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-dnsext.plist"; path = "/Users/aermoshin/prj/catowser/catowser/Info-dnsext.plist"; sourceTree = "<absolute>"; };
 		8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "catowser dnsextDebug.entitlements"; sourceTree = "<group>"; };
 		8A8035E924442F45000E035F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
@@ -999,7 +999,7 @@
 				6094E71C221FD2B9004269A2 /* CoreBrowser.framework */,
 				608DA74A223A3BD4009F75BD /* JSPlugins.framework */,
 				8AE6D1692350FF35006316AD /* HttpKit.framework */,
-				8A8035E624442F0F000E035F /* Cotton DNS.app */,
+				8A8035E624442F0F000E035F /* Cotton dnsext.app */,
 				8A8035EF24446234000E035F /* DNSProxy.appex */,
 				8AC4367424798BDB008DD663 /* SPMCommon.framework */,
 				8AF43375248EBB2A0047452B /* CssParser.framework */,
@@ -1495,7 +1495,7 @@
 			);
 			name = "Cotton dnsext";
 			productName = catowser;
-			productReference = 8A8035E624442F0F000E035F /* Cotton DNS.app */;
+			productReference = 8A8035E624442F0F000E035F /* Cotton dnsext.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8A8035EE24446234000E035F /* DNSProxy */ = {
@@ -2525,7 +2525,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2585,7 +2585,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2613,7 +2613,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = "Cotton Dev";
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
@@ -2641,7 +2641,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = Cotton;
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
@@ -2668,7 +2668,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "catowser dnsextDebug.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = "Cotton Dev";
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
@@ -2693,7 +2693,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = Cotton;
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
