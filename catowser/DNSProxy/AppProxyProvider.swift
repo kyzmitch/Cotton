@@ -10,7 +10,7 @@ import NetworkExtension
 
 class AppProxyProvider: NEAppProxyProvider {
 
-    override func startProxy(options: [String : Any]? = nil, completionHandler: @escaping (Error?) -> Void) {
+    override func startProxy(options: [String: Any]? = nil, completionHandler: @escaping (Error?) -> Void) {
         // Add code here to start the process of connecting the tunnel.
     }
     

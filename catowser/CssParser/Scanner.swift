@@ -137,7 +137,7 @@ public class Scanner {
         return tokens
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func scanToken() -> Token {
         let c = advance()
         switch c {
@@ -347,6 +347,7 @@ public class Scanner {
         return .ident(value: name)
     }
     
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     private func url() -> Token {
         func consumeRemnant() {
             while true {
@@ -526,4 +527,6 @@ public class Scanner {
     private func putback() {
         current = source.index(before: current)
     }
+    
+    // swiftlint:disable:next file_length
 }

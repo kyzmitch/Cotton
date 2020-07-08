@@ -163,8 +163,7 @@ private extension TabsViewController {
         // TODO: finish impl below
         if specificTabFrame.origin.x < 0 {
 
-        }
-        else if tabVeryRigthX > containerWidth {
+        } else if tabVeryRigthX > containerWidth {
 
         }
         stackViewScrollableContainer.scroll(on: 100)
@@ -210,8 +209,7 @@ private extension TabsViewController {
             let size: CGSize = CGSize(width: 0, height: Sizes.tabsContainerHeight)
 
             newlyAddedTabFrame = CGRect(origin: origin, size: size)
-        }
-        else {
+        } else {
             newlyAddedTabFrame = CGRect.zero
         }
         return newlyAddedTabFrame
@@ -231,7 +229,7 @@ extension TabsViewController: TabsObserver {
     func initializeObserver(with tabs: [Tab]) {
         for (i, tab) in tabs.enumerated() {
             let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
-            tabsStackView.insertArrangedSubview(tabView, at:i)
+            tabsStackView.insertArrangedSubview(tabView, at: i)
         }
         view.layoutIfNeeded()
     }
@@ -287,7 +285,7 @@ extension TabsViewController {
 }
 
 extension UIScrollView {
-    func scrollToVeryRight() -> Void {
+    func scrollToVeryRight() {
         if self.contentSize.width <= self.bounds.size.width {
             return
         }
@@ -295,7 +293,7 @@ extension UIScrollView {
         self.setContentOffset(bottomOffset, animated: true)
     }
     
-    func  scroll(on pixels: CGFloat) -> Void {
+    func  scroll(on pixels: CGFloat) {
         // pixels could be negative to scroll to the left
         // TODO
     }

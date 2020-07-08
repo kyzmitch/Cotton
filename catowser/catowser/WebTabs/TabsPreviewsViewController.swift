@@ -166,7 +166,10 @@ extension TabsPreviewsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = floor((collectionView.bounds.width - Sizes.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
+        let viewWidth = collectionView.bounds.width
+        let columnsNumber = CGFloat(numberOfColumns + 1)
+        let width = (viewWidth - Sizes.margin * columnsNumber) / CGFloat(numberOfColumns)
+        let cellWidth = floor(width)
         let cellHeight = TabPreviewCell.cellHeightForCurrent(traitCollection)
         return CGSize(width: cellWidth, height: cellHeight)
     }

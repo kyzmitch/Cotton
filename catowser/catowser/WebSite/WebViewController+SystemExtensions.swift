@@ -106,7 +106,8 @@ extension WebViewController: WKNavigationDelegate {
                  
                  only cancel immediate navigation with following conditions:
                  - DoH is enabled
-                 - requested URL doesn't contain ip address instead of host (this means that DoH request MUST be performed if it's enabled)
+                 - requested URL doesn't contain ip address instead of host
+                 (this means that DoH request MUST be performed if it's enabled)
                  - pending navigation request is related to initial host or similar host used by user (search bar url)
                  */
                 decisionHandler(.cancel)
