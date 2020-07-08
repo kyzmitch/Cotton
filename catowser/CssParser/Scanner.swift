@@ -72,6 +72,7 @@ private extension Character {
     }
 }
 
+// swiftlint:disable:next type_body_length
 public class Scanner {
     
     private let source: String
