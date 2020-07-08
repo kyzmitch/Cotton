@@ -21,11 +21,15 @@ extension HttpKit {
         
         let httpTimeout: TimeInterval
         
+        public typealias HostNetState = NetworkReachabilityManager.NetworkReachabilityStatus
+        
+        public let connectionStateStream: MutableProperty<HostNetState>
+        
         private lazy var hostListener: Alamofire.NetworkReachabilityManager.Listener = { [weak self] status in
             guard let self = self else {
                 return
             }
-            // TODO: set connectionStateStream.value
+            self.connectionStateStream.value = status
         }
         
         public init(server: Server, httpTimeout: TimeInterval = 60) {
@@ -40,7 +44,7 @@ extension HttpKit {
                 connectivityManager = nil
                 assertionFailure("No connectivity manager for: \(server.hostString)")
             }
-            
+            connectionStateStream = .init(.unknown)
             guard let cManager = connectivityManager else {
                 return
             }
@@ -86,11 +90,12 @@ extension HttpKit {
                 let codes = T.successCodes
                 
                 let dataRequest: DataRequest = AF.request(httpRequest)
-                    
-                // swiftlint:disable:next line_length
                 dataRequest
                     .validate(statusCode: codes)
-                    .responseDecodable(of: responseType, queue: .main, decoder: JSONDecoder(), completionHandler: { (response) in
+                    .responseDecodable(of: responseType,
+                                       queue: .main,
+                                       decoder: JSONDecoder(),
+                                       completionHandler: { (response) in
                         switch response.result {
                         case .success(let value):
                             observer.send(value: value)
