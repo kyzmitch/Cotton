@@ -201,7 +201,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {
-                    case .failure(let error):
+                    case .failure:
                         // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
                         break
                     default: break

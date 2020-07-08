@@ -79,7 +79,7 @@ private extension WebViewAuthChallengeHandler {
             var certificates = serverTrust.af.certificates
             print("\(host) has \(certificates.count) certificates")
             for cert in certificates {
-                let string = SecCertificateCopySubjectSummary(cert) as? String
+                let string: String? = SecCertificateCopySubjectSummary(cert) as String?
                 print("certificate info: \(string ?? "no info")")
             }
             _ = certificates.removeFirst()

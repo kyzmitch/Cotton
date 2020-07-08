@@ -66,7 +66,7 @@ public extension UIImage {
     }
     
     @available(iOS 13.0, *)
-    public static let arropUp = UIImage(systemName: "square.and.arrow.up")
+    static let arropUp = UIImage(systemName: "square.and.arrow.up")
 }
 
 fileprivate extension CGImage {
