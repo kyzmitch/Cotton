@@ -231,8 +231,8 @@ public class Scanner {
             putback()
             return number()
         
-        case "U" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"): fallthrough
-        case "u" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"):
+        case "U" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"),
+             "u" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"):
             _ = advance()
             return unicodeRange()
         
