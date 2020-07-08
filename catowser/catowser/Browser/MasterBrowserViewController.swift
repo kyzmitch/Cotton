@@ -628,4 +628,5 @@ extension MasterBrowserViewController: SiteExternalNavigationDelegate {
                                 for: host,
                                 siteSettings: siteSettings)
     }
+    // swiftlint:disable:next file_length
 }

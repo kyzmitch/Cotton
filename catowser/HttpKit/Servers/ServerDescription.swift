@@ -24,4 +24,3 @@ extension ServerDescription {
         return .https
     }
 }
-
