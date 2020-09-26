@@ -9,41 +9,55 @@
 import AlamofireImage
 import UIKit
 
+enum ImageSource {
+    case url(URL)
+    case image(UIImage)
+    case urlWithPlaceholder(URL, UIImage)
+}
+
 extension UIImageView {
-    func updateImage(fromURL url: URL?, cachedImage: UIImage? = nil) {
+    func updateImage(from source: ImageSource, calculateAverageColor: Bool = true) {
         af.cancelImageRequest()
         image = nil
         
-        if let favicon = cachedImage {
-            image = favicon
-            return
+        switch source {
+        case .image(let cachedImage):
+            image = cachedImage
+        case .url(let imageURL):
+            loadImageFrom(url: imageURL, calculateAverageColor: calculateAverageColor)
+        case .urlWithPlaceholder(let imageURL, let cachedImage):
+            loadImageFrom(url: imageURL, cachedImage: cachedImage, calculateAverageColor: calculateAverageColor)
         }
-        guard let imageURL = url else {
-            return
-        }
-        
+    }
+    
+    private func loadImageFrom(url: URL, cachedImage: UIImage? = nil, calculateAverageColor: Bool) {
         // https://github.com/Alamofire/AlamofireImage/issues/134#issuecomment-245177689
         // Can't solve image loading for URLs with invalid SSL certificate
         // because with AlamofireImage it's not possible to update evaluators
         // for ServerTrustManager, because it is required to update Session as well and
-        // which can't be done when more than one image downloads are happening in one time.
+        // which can't be done when more than one image downloads are happening at the same time.
         //  As an alternative, it's possible to reimplement image downloading based on Alamofire
         // but it requires too much work.
         //  Firefox for iOS doesn't load favicons for URLs with invalid certificates.
         
         // swiftlint:disable:next line_length
-        af.setImage(withURL: imageURL, placeholderImage: cachedImage, progressQueue: .global(qos: .userInteractive), imageTransition: .noTransition, runImageTransitionIfCached: false) { [weak self] (dataResponse) in
-            guard let favicon = dataResponse.value else {
+        af.setImage(withURL: url, placeholderImage: cachedImage, progressQueue: .global(qos: .userInteractive), imageTransition: .noTransition, runImageTransitionIfCached: false) { [weak self] (dataResponse) in
+            guard calculateAverageColor else {
                 return
             }
-            
-            // TODO: failed to calculate average color
-            let averageColor = favicon.firstPixelColor
-            guard let color = averageColor else {
-                return
+            switch dataResponse.result {
+            case .success(let downloadedFavicon):
+                // TODO: failed to calculate average color
+                let averageColor = downloadedFavicon.firstPixelColor
+                guard let color = averageColor else {
+                    return
+                }
+                
+                self?.backgroundColor = color
+            case .failure(let afError):
+                print("Failed to download image using url: \(afError.localizedDescription)")
             }
             
-            self?.backgroundColor = color
         }
     }
 }
