@@ -56,8 +56,16 @@ public extension UIImage {
         guard let outputImage = avgFilter.outputImage else {
             return nil
         }
-        let cgOutput = outputImage.cgImage
+        let cgOutput = convertCIImageToCGImage(inputImage: outputImage)
         return cgOutput
+    }
+    
+    fileprivate func convertCIImageToCGImage(inputImage: CIImage) -> CGImage? {
+        let context = CIContext(options: nil)
+        if let cgImage = context.createCGImage(inputImage, from: inputImage.extent) {
+            return cgImage
+        }
+        return nil
     }
 
     var firstPixelColor: UIColor? {
