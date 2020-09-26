@@ -128,10 +128,10 @@ public class Scanner {
         self.current = source.startIndex
     }
     
-    public func scanTokens() -> [Token] {
+    public func scanTokens() throws -> [Token] {
         while !isAtEnd {
             start = current
-            tokens.append(scanToken())
+            tokens.append(try scanToken())
         }
         
         tokens.append(.eof)
@@ -139,7 +139,7 @@ public class Scanner {
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func scanToken() -> Token {
+    func scanToken() throws -> Token {
         let c = advance()
         switch c {
         case _ where c.isWhitespace:
@@ -168,14 +168,14 @@ public class Scanner {
         
         case "+" where peek1.isDigit || (peek1 == "." && peek2.isDigit):
             putback()
-            return number()
+            return try number()
         
         case ",":
             return .comma
         
         case "-" where peek1.isDigit:
             putback()
-            return number()
+            return try number()
         
         case "-" where isStartIdentifier(c, peek1, peek2):
             putback()
@@ -186,7 +186,7 @@ public class Scanner {
         
         case "." where peek1.isDigit:
             putback()
-            return number()
+            return try number()
         
         case "/" where match("*"):
             while true {
@@ -195,7 +195,7 @@ public class Scanner {
                 if c == "*" && match("/") { break }
                 if c == "\n" { line += 1 }
             }
-            return scanToken()
+            return try scanToken()
         
         case ":":
             return .colon
@@ -230,7 +230,7 @@ public class Scanner {
             
         case _ where c.isDigit:
             putback()
-            return number()
+            return try number()
         
         case "U" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"),
              "u" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"):
@@ -290,7 +290,7 @@ public class Scanner {
         return .hash(value: name(), type: isStartIdentifier(peek1, peek2, peek3) ? .id : .unrestricted)
     }
     
-    private func number() -> Token {
+    private func number() throws -> Token {
         var repr = ""
         var type: Token.NumberType = .integer
         
@@ -327,9 +327,9 @@ public class Scanner {
             }
         }
         
-        // TODO: implement the conversion using the CSS algorithm
-        // swiftlint:disable:next force_unwrapping
-        let numeric = Double(repr)!
+        guard let numeric = Double(repr) else {
+            throw CssParseError.failConvertStringToDouble
+        }
         
         return .number(repr: repr, numeric: numeric, type: type)
     }
