@@ -47,7 +47,6 @@ extension UIImageView {
             }
             switch dataResponse.result {
             case .success(let downloadedFavicon):
-                // TODO: failed to calculate average color
                 let averageColor = downloadedFavicon.firstPixelColor
                 guard let color = averageColor else {
                     return
