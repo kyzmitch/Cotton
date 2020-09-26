@@ -207,10 +207,21 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
                     default: break
                     }
                 }, receiveValue: { [weak self] (url) in
-                    self?.faviconImageView.updateImage(fromURL: url)
+                    self?.faviconImageView.updateImage(from: .url(url))
                 })
         } else {
-            faviconImageView.updateImage(fromURL: site.faviconURL, cachedImage: site.highQualityFaviconImage)
+            let source: ImageSource
+            switch (site.faviconURL, site.highQualityFaviconImage) {
+            case (let url?, nil):
+                source = .url(url)
+            case (nil, let image?):
+                source = .image(image)
+            case (let url?, let image?):
+                source = .urlWithPlaceholder(url, image)
+            default:
+                return
+            }
+            faviconImageView.updateImage(from: source)
         }
         
     }
