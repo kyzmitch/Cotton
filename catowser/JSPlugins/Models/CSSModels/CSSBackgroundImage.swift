@@ -51,7 +51,14 @@ struct CSSBackgroundImage {
         // removing quotes probably caused by JSON.stringify
         let source = cssString.replacingOccurrences(of: "&quot;", with: "")
         let scanner = Scanner(source: source)
-        let urls = scanner.scanTokens()
+        let cssTokens: [Token]
+        do {
+            cssTokens = try scanner.scanTokens()
+        } catch {
+            assertionFailure("Fail to parse CSS: \(error.localizedDescription)")
+            return nil
+        }
+        let urls = cssTokens
             .filter {
                 switch $0 {
                 case .url:

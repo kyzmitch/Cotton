@@ -7,7 +7,7 @@
 //
 
 import Foundation
-// only for `IPv4Address` typ, but it's not possible to store mask in it
+// only for `IPv4Address` type, but it's not possible to store mask in it
 // maybe better remove this dependency
 // import Network
 import ReactiveSwift
