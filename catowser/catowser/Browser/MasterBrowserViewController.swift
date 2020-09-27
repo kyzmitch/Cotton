@@ -434,10 +434,10 @@ extension MasterBrowserViewController: TabRendererInterface {
 }
 
 private extension MasterBrowserViewController {
-    func navigationComponent() -> SiteNavigationComponent? {
+    func navigationComponent() -> FullSiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return toolbarViewController
-        } else if let tabletVc = linksRouter.searchBarController as? SiteNavigationComponent {
+        } else if let tabletVc = linksRouter.searchBarController as? FullSiteNavigationComponent {
             // complex type casting
             return tabletVc
         }
@@ -543,14 +543,6 @@ extension MasterBrowserViewController: TabsObserver {
 }
 
 extension MasterBrowserViewController: SiteNavigationComponent {
-    func changeBackButton(to canGoBack: Bool) {
-        // TODO: change conformans to `SiteNavigationComponent` to not write protocol functions two times
-    }
-    
-    func changeForwardButton(to canGoForward: Bool) {
-        // TODO: change conformans to `SiteNavigationComponent` to not write protocol functions two times
-    }
-    
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         navigationComponent()?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
     }

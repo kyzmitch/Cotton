@@ -77,8 +77,7 @@ final class MasterRouter: NSObject {
 
     private(set) var isFilesGreedShowed: Bool = false
 
-    // FIXME: move this dependency to delegate methods as a parameter (it is different for each site)
-    var dataSource: TagsSiteDataSource?
+    var tagsSiteDataSource: TagsSiteDataSource?
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
@@ -394,7 +393,7 @@ extension MasterRouter: DonwloadPanelDelegate {
     }
     
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect) {
-        guard let source = dataSource else { return }
+        guard let source = tagsSiteDataSource else { return }
         presentVideoViews(using: source, from: sourceView, and: sourceRect)
     }
 }

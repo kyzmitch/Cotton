@@ -49,6 +49,11 @@ protocol SiteNavigationComponent: class {
     var siteNavigator: SiteNavigationDelegate? { get set }
     /// Reloads state of UI components
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
+}
+
+protocol SiteNavigationChangable: class {
     func changeBackButton(to canGoBack: Bool)
     func changeForwardButton(to canGoForward: Bool)
 }
+
+typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable
