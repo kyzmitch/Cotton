@@ -46,7 +46,11 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     private let googleClient: GoogleSuggestionsClient
     
-    private let waitingScheduler = QueueScheduler(qos: .utility, name: String.queueNameWith(suffix: "searchThrottle"))
+    private let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
+    
+    private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated, name: waitingQueueName, targeting: waitingQueue)
+    
+    private lazy var waitingQueue = DispatchQueue(label: waitingQueueName)
     
     init(_ suggestionsHttpClient: GoogleSuggestionsClient) {
         googleClient = suggestionsHttpClient
@@ -62,7 +66,21 @@ final class SearchSuggestionsViewController: UITableViewController {
         knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
         if #available(iOS 13.0, *) {
             searchSuggestionsCancellable?.cancel()
-            searchSuggestionsCancellable = googleClient.cGoogleSearchSuggestions(for: searchText)
+            let source = Just<String>(searchText)
+            searchSuggestionsCancellable = source
+                .delay(for: 0.5, scheduler: waitingQueue)
+                .mapError({ (_) -> HttpKit.HttpError in
+                    // fix to be able compile case when Just has no error type for Failure
+                    return .zombySelf
+                })
+                .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
+                    guard let self = self else {
+                        typealias SuggestionsResult = Result<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+                        let errorResult: SuggestionsResult = .failure(.zombySelf)
+                        return errorResult.publisher.eraseToAnyPublisher()
+                    }
+                    return self.googleClient.cGoogleSearchSuggestions(for: text)
+                })
                 .receive(on: DispatchQueue.main)
                 .map { $0.textResults }
                 .catch({ (failure) -> Just<[String]> in
