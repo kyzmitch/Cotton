@@ -51,7 +51,6 @@ extension HttpKit.SearchEngine {
         guard var templateString = optionalTemplateString else {
             throw OpenSearch.Error.noTemplateParameter
         }
-        // FIXME: this is to fix URL initialization below
         if templateString.contains(String.queryTemplate) {
             templateString = templateString.replacingOccurrences(of: String.queryTemplate, with: "")
         }

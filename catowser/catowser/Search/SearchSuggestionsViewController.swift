@@ -46,6 +46,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     private let googleClient: GoogleSuggestionsClient
     
+    private let waitingScheduler = QueueScheduler(qos: .utility, name: String.queueNameWith(suffix: "searchThrottle"))
+    
     init(_ suggestionsHttpClient: GoogleSuggestionsClient) {
         googleClient = suggestionsHttpClient
         super.init(nibName: nil, bundle: nil)
@@ -70,7 +72,15 @@ final class SearchSuggestionsViewController: UITableViewController {
                 .assign(to: \.suggestions, on: self)
         } else {
             searchSuggestionsDisposable?.dispose()
-            searchSuggestionsDisposable = googleClient.googleSearchSuggestions(for: searchText)
+            let source = SignalProducer<String, Never>.init(value: searchText)
+            searchSuggestionsDisposable = source
+                .delay(0.5, on: waitingScheduler)
+                .flatMap(.latest, { [weak self] (text) -> HttpKit.GSearchProducer in
+                    guard let self = self else {
+                        return .init(error: .zombySelf)
+                    }
+                    return self.googleClient.googleSearchSuggestions(for: text)
+                })
                 .observe(on: QueueScheduler.main)
                 .startWithResult { [weak self] (result) in
                     switch result {

@@ -248,7 +248,7 @@ extension TabletSearchBarViewController: SearchBarControllerInterface {
 extension TabletSearchBarViewController: MediaLinksPresenter {
     func didReceiveMediaLinks() {
         downloadLinksButton.isEnabled = true
-        // TODO: animate button to make it more noticeable for user
+        // can animate button to make it more noticeable for user
     }
 }
 
