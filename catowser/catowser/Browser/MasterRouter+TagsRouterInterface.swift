@@ -10,25 +10,25 @@ import JSPlugins
 
 extension MasterRouter: TagsRouterInterface {
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
-        dataSource = .instagram(nodes)
+        tagsSiteDataSource = .instagram(nodes)
         linkTagsController.setLinks(nodes.count, for: .video)
         updateDownloadsViews()
     }
     
     func openTagsFor(t4 video: T4Video) {
-        dataSource = .t4(video)
+        tagsSiteDataSource = .t4(video)
         linkTagsController.setLinks(1, for: .video)
         updateDownloadsViews()
     }
 
     func openTagsFor(html tags: [HTMLVideoTag]) {
-        dataSource = .htmlVideos(tags)
+        tagsSiteDataSource = .htmlVideos(tags)
         linkTagsController.setLinks(tags.count, for: .video)
         updateDownloadsViews()
     }
 
     func closeTags() {
-        dataSource = nil
+        tagsSiteDataSource = nil
         hideFilesGreedIfNeeded()
         hideLinkTagsController()
         filesGreedController.clearFiles()

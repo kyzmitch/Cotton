@@ -14,9 +14,6 @@ extension MasterRouter: UISearchBarDelegate {
             hideSearchController()
         } else {
             showSearchControllerIfNeeded()
-            // TODO: How to delay network request
-            // https://stackoverflow.com/a/2471977/483101
-            // or using Reactive api
             startSearch(searchText)
         }
     }

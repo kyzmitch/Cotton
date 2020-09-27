@@ -10,7 +10,7 @@ import UIKit
 
 extension MasterRouter: LinkTagsDelegate {
     func didSelect(type: LinksType, from sourceView: UIView) {
-        guard type == .video, let source = dataSource else {
+        guard type == .video, let source = tagsSiteDataSource else {
             return
         }
         presentVideoViews(using: source, from: sourceView, and: sourceView.frame)

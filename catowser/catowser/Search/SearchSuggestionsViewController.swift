@@ -48,7 +48,9 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     private let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
     
-    private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated, name: waitingQueueName, targeting: waitingQueue)
+    private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated,
+                                                       name: waitingQueueName,
+                                                       targeting: waitingQueue)
     
     private lazy var waitingQueue = DispatchQueue(label: waitingQueueName)
     
@@ -70,8 +72,11 @@ final class SearchSuggestionsViewController: UITableViewController {
             searchSuggestionsCancellable = source
                 .delay(for: 0.5, scheduler: waitingQueue)
                 .mapError({ (_) -> HttpKit.HttpError in
-                    // fix to be able compile case when Just has no error type for Failure
-                    return .zombySelf
+                    // workaround to be able to compile case when `Just` has no error type for Failure
+                    // but it is required to be able to use `flatMap` in next call
+                    // another option is to use custom publisher which supports non Never Failure type
+                    let dummyError: HttpKit.HttpError = .zombySelf
+                    return dummyError
                 })
                 .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
                     guard let self = self else {

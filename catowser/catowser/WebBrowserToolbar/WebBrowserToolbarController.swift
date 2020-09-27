@@ -192,7 +192,7 @@ final class WebBrowserToolbarController: UIViewController {
     }
 }
 
-extension WebBrowserToolbarController: SiteNavigationComponent {
+extension WebBrowserToolbarController: FullSiteNavigationComponent {
     func changeBackButton(to canGoBack: Bool) {
         backButton.isEnabled = canGoBack
     }
