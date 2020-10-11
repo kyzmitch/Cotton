@@ -218,6 +218,8 @@
 		8A90B16C248246D6000618F5 /* TabAddPositionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
+		8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
+		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A964E3A24867A9400A0AABE /* SiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A964E3924867A9400A0AABE /* SiteSettings.swift */; };
 		8A964E3B24867A9400A0AABE /* SiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A964E3924867A9400A0AABE /* SiteSettings.swift */; };
 		8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
@@ -229,6 +231,14 @@
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
+		8ABA3CCF2522601800E304E2 /* TabsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsStore.swift */; };
+		8ABA3CD02522601800E304E2 /* TabsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsStore.swift */; };
+		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
+		8ABA3CD32522603000E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
+		8ABA3CD52522608000E304E2 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD42522608000E304E2 /* Database.swift */; };
+		8ABA3CD62522608000E304E2 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD42522608000E304E2 /* Database.swift */; };
+		8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD72522623200E304E2 /* TabsResource.swift */; };
+		8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD72522623200E304E2 /* TabsResource.swift */; };
 		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -588,6 +598,7 @@
 		8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsView.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
+		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
 		8A964E3924867A9400A0AABE /* SiteSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSettings.swift; sourceTree = "<group>"; };
 		8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificFeatures.swift; sourceTree = "<group>"; };
 		8A978D4823F34909007ECB0C /* AuthChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChallenge.swift; sourceTree = "<group>"; };
@@ -596,6 +607,10 @@
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		8ABA3CCE2522601800E304E2 /* TabsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStore.swift; sourceTree = "<group>"; };
+		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		8ABA3CD72522623200E304E2 /* TabsResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsResource.swift; sourceTree = "<group>"; };
 		8AC4366A24798BC8008DD663 /* SPMCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMCommon.swift; sourceTree = "<group>"; };
 		8AC4367424798BDB008DD663 /* SPMCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC4367624798BDB008DD663 /* SPMCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMCommon.h; sourceTree = "<group>"; };
@@ -682,6 +697,7 @@
 				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
 				8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */,
 				8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */,
+				8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */,
 				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
 				21C191D4EBF58D361A99B203 /* Pods_Cotton.framework in Frameworks */,
 			);
@@ -692,6 +708,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AE31137247C665300FF28B1 /* SwiftUI.framework in Frameworks */,
+				8ABA3CD32522603000E304E2 /* CoreData.framework in Frameworks */,
 				8AE31139247C667300FF28B1 /* UIKit.framework in Frameworks */,
 				8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */,
 				8A8035CF24442F0F000E035F /* JSPlugins.framework in Frameworks */,
@@ -753,6 +770,7 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8ABA3CD12522602900E304E2 /* CoreData.framework */,
 				8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */,
 				8AE31135247C664600FF28B1 /* SwiftUI.framework */,
 				8AC45ECA24582453007E47EE /* Combine.framework */,
@@ -1013,6 +1031,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				8A963C6F25212A63008EAB27 /* DB */,
 				8AA68A9D245BE45E00263E22 /* Environment */,
 				8ADAF545240123E000A0D233 /* Utils */,
 				7509BF9022AF830B00F4D701 /* Extensions */,
@@ -1160,6 +1179,17 @@
 				8A95D7B0221F17010032C156 /* Box.swift */,
 			);
 			path = Primitives;
+			sourceTree = "<group>";
+		};
+		8A963C6F25212A63008EAB27 /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */,
+				8ABA3CD42522608000E304E2 /* Database.swift */,
+				8ABA3CCE2522601800E304E2 /* TabsStore.swift */,
+				8ABA3CD72522623200E304E2 /* TabsResource.swift */,
+			);
+			path = DB;
 			sourceTree = "<group>";
 		};
 		8A978D4723F348CB007ECB0C /* AuthChallenge */ = {
@@ -2084,6 +2114,7 @@
 				8A90B16C248246D6000618F5 /* TabAddPositionsView.swift in Sources */,
 				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
 				8ADAF548240123F600A0D233 /* FeatureManager.swift in Sources */,
+				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
 				8A1C1C262485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
 				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
@@ -2104,10 +2135,12 @@
 				60380EF722A15504007F06FB /* PluginsBuilder.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
+				8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
 				8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				8A745C112480295B00A379AD /* TabsEnvironment.swift in Sources */,
 				8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */,
+				8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
@@ -2118,6 +2151,7 @@
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
 				8A1C1C292485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */,
+				8ABA3CCF2522601800E304E2 /* TabsStore.swift in Sources */,
 				8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2156,6 +2190,7 @@
 				8A90B16D248246D6000618F5 /* TabAddPositionsView.swift in Sources */,
 				8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */,
 				8A8035BA24442F0F000E035F /* FeatureManager.swift in Sources */,
+				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
 				8A1C1C272485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
 				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,
@@ -2176,10 +2211,12 @@
 				8A8035C324442F0F000E035F /* PluginsBuilder.swift in Sources */,
 				8A8035C424442F0F000E035F /* SearchSuggestionsViewController.swift in Sources */,
 				8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */,
+				8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
 				8A8035C624442F0F000E035F /* WebViewController+SystemExtensions.swift in Sources */,
 				8A8035C724442F0F000E035F /* UIConstants.swift in Sources */,
 				8A745C122480295B00A379AD /* TabsEnvironment.swift in Sources */,
 				8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */,
+				8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
@@ -2190,6 +2227,7 @@
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,
 				8A1C1C2A2485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */,
+				8ABA3CD02522601800E304E2 /* TabsStore.swift in Sources */,
 				8A566F80245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3138,6 +3176,19 @@
 			productName = AlamofireImage;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */,
+			);
+			currentVersion = 8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */;
+			path = CottonDbModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 8435A48F1EED5E700020102F /* Project object */;
 }

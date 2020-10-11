@@ -20,15 +20,18 @@ import CoreBrowser
 
 final class TabsCacheProvider {
     static let shared = TabsCacheProvider()
-    private init() {
-        queue = DispatchQueue(label: .queueNameWith(suffix: "tabsCache"))
-    }
-
+    
     private lazy var scheduler: QueueScheduler = {
         let s = QueueScheduler(targeting: queue)
         return s
     }()
     private let queue: DispatchQueue
+    private let tabsDbResource: TabsResource
+    
+    private init() {
+        queue = DispatchQueue(label: .queueNameWith(suffix: "tabsCache"))
+        tabsDbResource = .init()
+    }
 }
 
 extension TabsCacheProvider: TabsStorage {
