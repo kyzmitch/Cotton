@@ -11,8 +11,16 @@ import ReactiveSwift
 import CoreBrowser
 
 enum TabResourceError: Error {
+    case zombieSelf
+    case storeNotInitializedYet
     case dummyError
     case insertError(Error)
+    case deleteError(Error)
+    case fetchAllError(Error)
+}
+
+fileprivate extension String {
+    static let threadName = "tabsStore"
 }
 
 final class TabsResource {
@@ -22,7 +30,9 @@ final class TabsResource {
     /// functions can return empty data if it's not initialized state
     private var isStoreInitialized = false
     
-    private let queue: DispatchQueue = .init(label: .queueNameWith(suffix: "tabsStore"))
+    private let queue: DispatchQueue = .init(label: .queueNameWith(suffix: .threadName))
+    
+    private lazy var scheduler: QueueScheduler = .init(qos: .background, name: .threadName, targeting: queue)
     
     init() {
         // Creating temporary instance to be able to use background thread
@@ -40,17 +50,72 @@ final class TabsResource {
     }
     
     func remember(tab: Tab) -> SignalProducer<Void, TabResourceError> {
-        // TODO: use queue or scheduler and store
-        .init(error: .dummyError)
+        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
+            
+            do {
+                try self.store.insert(tab: tab)
+                observer.send(value: ())
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .insertError(error))
+            }
+            
+        }
+        
+        return producer.observe(on: scheduler)
     }
     
     func forget(tab: Tab) -> SignalProducer<Void, TabResourceError> {
-        // TODO: use queue or scheduler and store
-        .init(error: .dummyError)
+        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
+            
+            do {
+                try self.store.remove(tab: tab)
+                observer.send(value: ())
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .deleteError(error))
+            }
+            
+        }
+        return producer.observe(on: scheduler)
     }
     
-    func loadAllTabs() -> SignalProducer<[Tab], TabResourceError> {
-        // TODO: use queue or scheduler and store
-        .init(value: [])
+    func tabsFromLastSession() -> SignalProducer<[Tab], TabResourceError> {
+        let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, lifetime) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
+            
+            do {
+                let tabs = try self.store.fetchAllTabs()
+                observer.send(value: tabs)
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .fetchAllError(error))
+            }
+            
+        }
+        return producer.observe(on: scheduler)
     }
 }

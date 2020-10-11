@@ -29,4 +29,9 @@ final class TabsStore {
     func fetchAllTabs() throws -> [Tab] {
         return []
     }
+    
+    /// Should be only one tab record which has selected state
+    func selectedTabIndex() throws -> UInt {
+        return 0
+    }
 }
