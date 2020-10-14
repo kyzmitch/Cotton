@@ -132,7 +132,7 @@ class Database: NSObject {
             persistentContainer.persistentStoreDescriptions = [description]
         }
 
-        persistentContainer.loadPersistentStores { (storeDescription, error) in
+        persistentContainer.loadPersistentStores { (_, error) in
             if error == nil {
                 self.isStoreLoaded = true
                 self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
@@ -218,7 +218,7 @@ class Database: NSObject {
         return psc.managedObjectID(forURIRepresentation: storeURL)
     }
 
-    private let persistentContainer: NSPersistentContainer;
+    private let persistentContainer: NSPersistentContainer
 
     private func storeDescription(with url: URL) -> NSPersistentStoreDescription {
         let description = NSPersistentStoreDescription(url: url)

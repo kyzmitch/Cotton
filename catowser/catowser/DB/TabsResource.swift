@@ -32,7 +32,7 @@ final class TabsResource {
     
     private let queue: DispatchQueue = .init(label: .queueNameWith(suffix: .threadName))
     
-    private lazy var scheduler: QueueScheduler = .init(qos: .background, name: .threadName, targeting: queue)
+    private lazy var scheduler = QueueScheduler(targeting: queue)
     
     init() {
         // Creating temporary instance to be able to use background thread
