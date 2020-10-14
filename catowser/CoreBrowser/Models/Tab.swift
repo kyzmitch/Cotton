@@ -16,6 +16,22 @@ public extension Tab {
         case homepage
         case favorites
         case topSites
+        
+        /// Needed for database representation
+        public var rawValue: Int16 {
+            switch self {
+            case .blank:
+                return 0
+            case .site:
+                return 1
+            case .homepage:
+                return 2
+            case .favorites:
+                return 3
+            case .topSites:
+                return 4
+            }
+        }
 
         var title: String {
             switch self {
@@ -87,7 +103,7 @@ extension Tab.ContentType: Equatable {
 
 public extension Tab {
     /// Replacement for `Bool` type to provide more clarity during usage on `view` layer.
-    enum VisualState {
+    enum VisualState: Int16 {
         case selected, deselected
     }
 }
@@ -95,7 +111,7 @@ public extension Tab {
 /// View model for tab view which is a website representation for specific case
 public struct Tab {
     // The id to be able to compare e.g. blank tabs and avoid switch to ref. type
-    let id: UUID
+    public let id: UUID
     // Actual website info stored only for one case
     public var contentType: ContentType
     // Usually only one tab should be in selected state
@@ -148,12 +164,16 @@ public struct Tab {
     }
     public let realBackgroundColour = UIColor.clear
 
-    public init(contentType: ContentType, selected: Bool = true) {
+    public init(contentType: ContentType, selected: Bool = true, idenifier: UUID? = nil) {
         self.contentType = contentType
         // set default value
         titleObserver.send(value: contentType.title)
         visualState = selected ? .selected : .deselected
-        id = UUID()
+        if let incomingId = idenifier {
+            id = incomingId
+        } else {
+            id = UUID()
+        }
     }
 
     public static let deselectedBlank: Tab = Tab(contentType: .blank, selected: false)

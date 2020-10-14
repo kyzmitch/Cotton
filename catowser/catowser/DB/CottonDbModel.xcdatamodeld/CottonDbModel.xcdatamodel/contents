@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Site" representedClassName="CDSite" syncable="YES" codeGenerationType="class">
+        <attribute name="searchSuggestion" optional="YES" attributeType="String"/>
+        <attribute name="userSpecifiedTitle" optional="YES" attributeType="String"/>
+        <relationship name="settings" maxCount="1" deletionRule="Nullify" destinationEntity="SiteSettings" inverseName="site" inverseEntity="SiteSettings"/>
         <relationship name="tab" maxCount="1" deletionRule="Nullify" destinationEntity="Tab" inverseName="site" inverseEntity="Tab"/>
+        <relationship name="urlInfo" maxCount="1" deletionRule="Nullify" destinationEntity="URLIpInfo" inverseName="site" inverseEntity="URLIpInfo"/>
+    </entity>
+    <entity name="SiteSettings" representedClassName="CDSiteSettings" syncable="YES" codeGenerationType="class">
+        <attribute name="blockPopups" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="canLoadPlugins" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isJsEnabled" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isPrivate" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="site" maxCount="1" deletionRule="Nullify" destinationEntity="Site" inverseName="settings" inverseEntity="Site"/>
     </entity>
     <entity name="Tab" representedClassName="CDTab" syncable="YES" codeGenerationType="class">
         <attribute name="contentType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -9,8 +20,15 @@
         <attribute name="visualState" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="site" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Site" inverseName="tab" inverseEntity="Site"/>
     </entity>
+    <entity name="URLIpInfo" representedClassName="CDURLIpInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="internalUrl" optional="YES" attributeType="URI"/>
+        <attribute name="ipAddress" optional="YES" attributeType="String"/>
+        <relationship name="site" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Site" inverseName="urlInfo" inverseEntity="Site"/>
+    </entity>
     <elements>
-        <element name="Site" positionX="-54" positionY="9" width="128" height="58"/>
+        <element name="Site" positionX="-54" positionY="9" width="128" height="118"/>
         <element name="Tab" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="URLIpInfo" positionX="-54" positionY="18" width="128" height="88"/>
+        <element name="SiteSettings" positionX="-45" positionY="45" width="128" height="118"/>
     </elements>
 </model>
