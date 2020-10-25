@@ -11,7 +11,7 @@ import ReactiveSwift
 import CoreBrowser
 import CoreData
 
-enum TabResourceError: Error {
+enum TabResourceError: LocalizedError {
     case zombieSelf
     case storeNotInitializedYet
     case dummyError

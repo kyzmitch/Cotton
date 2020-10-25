@@ -44,12 +44,12 @@ extension TabsCacheProvider: TabsStorage {
     }
 
     func fetch() -> SignalProducer<[Tab], TabStorageError> {
-        let producer = SignalProducer<[Tab], TabStorageError>.init { (observer, _ /* lifetime */) in
-            let tab = Tab(contentType: .topSites /* DefaultTabProvider.shared.contentState */, selected: true)
-            observer.send(value: [tab])
-            observer.sendCompleted()
-        }
-        return producer.start(on: scheduler)
+        return tabsDbResource.tabsFromLastSession()
+            .flatMapError { (resourceError) -> SignalProducer<[Tab], TabStorageError> in
+                print("Failed to fetch tabs: \(resourceError.localizedDescription)")
+                let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: true)
+                return .init(value: [tab])
+        }.start(on: scheduler)
     }
 
     func add(tab: Tab) {
