@@ -75,8 +75,7 @@ final class SearchSuggestionsViewController: UITableViewController {
                     // workaround to be able to compile case when `Just` has no error type for Failure
                     // but it is required to be able to use `flatMap` in next call
                     // another option is to use custom publisher which supports non Never Failure type
-                    let dummyError: HttpKit.HttpError = .zombySelf
-                    return dummyError
+                    return HttpKit.HttpError.zombySelf
                 })
                 .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
                     guard let self = self else {

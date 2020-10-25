@@ -39,9 +39,8 @@ extension TabsCacheProvider: TabsStorage {
         return SignalProducer<Int, TabStorageError>.init(value: 0).start(on: scheduler)
     }
 
-    func select(tab: Tab) -> Int? {
-        // TODO: implement, temporary code
-        return nil
+    func select(tab: Tab) -> SignalProducer<Int, TabStorageError> {
+        return SignalProducer<Int, TabStorageError>.init(value: 0).start(on: scheduler)
     }
 
     func fetch() -> SignalProducer<[Tab], TabStorageError> {

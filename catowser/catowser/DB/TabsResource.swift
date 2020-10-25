@@ -41,7 +41,8 @@ final class TabsResource {
     ///   - temporaryContext: Temporary core data context to be able to compile init.
     ///   For valid instance we must create Core Data context on
     ///   specific thread to keep using it only with this thread.
-    ///   - privateContextCreator: We have to call this closure on specific thread and use same thread for any other usages of this context.
+    ///   - privateContextCreator: We have to call this closure on specific thread and
+    ///    use same thread for any other usages of this context.
     init(temporaryContext: NSManagedObjectContext, privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
