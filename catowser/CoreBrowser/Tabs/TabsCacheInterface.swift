@@ -26,7 +26,7 @@ public protocol TabsStorage {
     /// - Parameter tab: The tab object to be selected.
     ///
     /// - Returns: An integer index.
-    func select(tab: Tab) -> TabIndex?
+    func select(tab: Tab) -> SignalProducer<Int, TabStorageError>
 
     /// Loads tabs data from storage.
     ///
