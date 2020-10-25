@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 import CoreBrowser
+import CoreData
 
 /**
  Declare Tab storage type in host app instead of `CoreBrowser`
@@ -19,8 +20,6 @@ import CoreBrowser
  */
 
 final class TabsCacheProvider {
-    static let shared = TabsCacheProvider()
-    
     private lazy var scheduler: QueueScheduler = {
         let s = QueueScheduler(targeting: queue)
         return s
@@ -28,9 +27,10 @@ final class TabsCacheProvider {
     private let queue: DispatchQueue
     private let tabsDbResource: TabsResource
     
-    private init() {
+    init(temporaryContext: NSManagedObjectContext, privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         queue = DispatchQueue(label: .queueNameWith(suffix: "tabsCache"))
-        tabsDbResource = .init()
+        tabsDbResource = .init(temporaryContext: temporaryContext,
+                               privateContextCreator: privateContextCreator)
     }
 }
 

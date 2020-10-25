@@ -7,6 +7,7 @@
 //
 
 import CoreBrowser
+import CoreData
 
 final class TabsEnvironment {
     static let shared: TabsEnvironment = .init()
@@ -15,12 +16,20 @@ final class TabsEnvironment {
     let cottonDb: Database
     
     private init() {
-        cachedTabsManager = .init(storage: TabsCacheProvider.shared,
-                                  positioning: DefaultTabProvider.shared)
         guard let database = Database(name: "CottonDbModel") else {
             fatalError("Failed to initialize CoreData database")
         }
         cottonDb = database
+        let contextClosure = { [weak cottonDb] () -> NSManagedObjectContext? in
+            guard let dbInterface = cottonDb else {
+                fatalError("Cotton db reference is nil")
+            }
+            return dbInterface.newPrivateContext()
+        }
+        let tabsCacheProvider: TabsCacheProvider = .init(temporaryContext: cottonDb.viewContext,
+                                                         privateContextCreator: contextClosure)
+        cachedTabsManager = .init(storage: tabsCacheProvider,
+                                  positioning: DefaultTabProvider.shared)
     }
 }
 
