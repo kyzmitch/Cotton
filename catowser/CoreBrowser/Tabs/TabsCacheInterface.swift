@@ -11,6 +11,7 @@ import ReactiveSwift
 
 public enum TabStorageError: Swift.Error {
     case unknown
+    case tabsFetchFailed
 }
 
 public protocol TabsStorage {
