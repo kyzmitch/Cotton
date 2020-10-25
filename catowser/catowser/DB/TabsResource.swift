@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 import CoreBrowser
+import CoreData
 
 enum TabResourceError: Error {
     case zombieSelf
@@ -34,17 +35,26 @@ final class TabsResource {
     
     private lazy var scheduler = QueueScheduler(targeting: queue)
     
-    init() {
+    /// Creates an instance of TabsResource which is a wrapper around CoreData Store class
+    ///
+    /// - Parameters:
+    ///   - temporaryContext: Temporary core data context to be able to compile init.
+    ///   For valid instance we must create Core Data context on
+    ///   specific thread to keep using it only with this thread.
+    ///   - privateContextCreator: We have to call this closure on specific thread and use same thread for any other usages of this context.
+    init(temporaryContext: NSManagedObjectContext, privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
-        let dummyStore: TabsStore = .init(TabsEnvironment.shared.cottonDb.viewContext)
+        let dummyStore: TabsStore = .init(temporaryContext)
         store = dummyStore
-        queue.sync { [weak self] in
-            let privateContext = TabsEnvironment.shared.cottonDb.newPrivateContext()
+        queue.async { [weak self] in
             guard let self = self else {
-                return
+                fatalError("Tabs Resource is nil in init")
             }
-            self.store = .init(privateContext)
+            guard let correctContext = privateContextCreator() else {
+                fatalError("Tabs Resource closure returns no private CoreData context")
+            }
+            self.store = .init(correctContext)
             self.isStoreInitialized = true
         }
     }
