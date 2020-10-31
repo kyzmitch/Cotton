@@ -37,12 +37,69 @@ final class TabsStore {
     }
     
     func fetchAllTabs() throws -> [Tab] {
-        return []
+        var fetchError: Error?
+        var tabs = [Tab]()
+        managedContext.performAndWait {
+            let request: NSFetchRequest<CDTab> = CDTab.fetchRequest()
+            do {
+                let result = try managedContext.fetch(request)
+                tabs = result.compactMap {Tab(cdTab: $0)}
+            } catch {
+                fetchError = error
+            }
+        }
+        if let cdError = fetchError {
+            throw cdError
+        }
+        return tabs
     }
     
     /// Should be only one tab record which has selected state
     func selectedTabIndex() throws -> UInt {
         return 0
+    }
+}
+
+fileprivate extension Site.Settings {
+    init(cdSettings: CDSiteSettings) {
+        self.init(popupsBlock: cdSettings.blockPopups,
+                  javaScriptEnabled: cdSettings.canLoadPlugins,
+                  privateTab: cdSettings.isPrivate)
+        self.isJsEnabled = cdSettings.isJsEnabled
+    }
+}
+
+fileprivate extension Site {
+    init?(cdSite: CDSite) {
+        guard let url = cdSite.siteUrl else {
+            return nil
+        }
+        guard let cdSettings = cdSite.settings else {
+            return nil
+        }
+        let settings = Site.Settings(cdSettings: cdSettings)
+        self.init(url: url, searchSuggestion: cdSite.searchSuggestion, settings: settings)
+        highQualityFaviconImage = nil
+    }
+}
+
+fileprivate extension Tab {
+    init?(cdTab: CDTab) {
+        let cachedSite: Site?
+        if let cdSite = cdTab.site {
+            cachedSite = Site(cdSite: cdSite)
+        } else {
+            cachedSite = nil
+        }
+        
+        guard let cachedContentType = Tab.ContentType.create(rawValue: cdTab.contentType, site: cachedSite) else {
+            return nil
+        }
+        guard let visualState = Tab.VisualState(rawValue: cdTab.visualState) else {
+            return nil
+        }
+        self.init(contentType: cachedContentType, selected: visualState == .selected, idenifier: cdTab.id)
+        
     }
 }
 
@@ -63,14 +120,6 @@ fileprivate extension CDSite {
         self.init(context: context)
         searchSuggestion = site.searchSuggestion
         userSpecifiedTitle = site.userSpecifiedTitle
-        urlInfo = CDURLIpInfo(context: context, urlInfo: site.urlInfo)
-    }
-}
-
-fileprivate extension CDURLIpInfo {
-    convenience init(context: NSManagedObjectContext, urlInfo: HttpKit.URLIpInfo) {
-        self.init(context: context)
-        internalUrl = urlInfo.domainURL
-        ipAddress = urlInfo.ipAddress
+        siteUrl = site.urlInfo.domainURL
     }
 }
