@@ -32,6 +32,27 @@ public extension Tab {
                 return 4
             }
         }
+        
+        /// Returns .blank for wrong parameters
+        public static func create(rawValue: Int16, site: Site?) -> ContentType? {
+            switch rawValue {
+            case 0:
+                return .blank
+            case 1:
+                guard let actualSite = site else {
+                    print("No site instance for Tab.ContentType site \(rawValue)")
+                    return nil
+                }
+                return .site(actualSite)
+            case 2:
+                return .favorites
+            case 3:
+                return .topSites
+            default:
+                print("Unexpected Tab.ContentType \(rawValue)")
+                return nil
+            }
+        }
 
         var title: String {
             switch self {

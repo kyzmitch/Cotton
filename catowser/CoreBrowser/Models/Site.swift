@@ -12,14 +12,15 @@ import HttpKit
 
 extension Site {
     public struct Settings: Equatable {
-        public let isPrivate: Bool = false
+        public let isPrivate: Bool
         public let blockPopups: Bool
         public var isJsEnabled: Bool
         public let canLoadPlugins: Bool = true
         
-        public init(popupsBlock: Bool, javaScriptEnabled: Bool) {
+        public init(popupsBlock: Bool, javaScriptEnabled: Bool, privateTab: Bool = false) {
             blockPopups = popupsBlock
             isJsEnabled = javaScriptEnabled
+            isPrivate = privateTab
         }
     }
 }
