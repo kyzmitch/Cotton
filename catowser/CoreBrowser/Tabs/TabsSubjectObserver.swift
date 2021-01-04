@@ -84,7 +84,7 @@ public protocol TabsPositioning {
 }
 
 public protocol TabsSubject {
-    init(storage: TabsStorage, positioning: TabsPositioning)
+    init(storage: TabsStoragable, positioning: TabsPositioning)
     /// Add tabs observer.
     func attach(_ observer: TabsObserver)
     /// Removes tabs observer.

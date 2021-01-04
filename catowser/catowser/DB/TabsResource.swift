@@ -11,15 +11,6 @@ import ReactiveSwift
 import CoreBrowser
 import CoreData
 
-enum TabResourceError: LocalizedError {
-    case zombieSelf
-    case storeNotInitializedYet
-    case dummyError
-    case insertError(Error)
-    case deleteError(Error)
-    case fetchAllError(Error)
-}
-
 fileprivate extension String {
     static let threadName = "tabsStore"
 }
@@ -43,7 +34,8 @@ final class TabsResource {
     ///   specific thread to keep using it only with this thread.
     ///   - privateContextCreator: We have to call this closure on specific thread and
     ///    use same thread for any other usages of this context.
-    init(temporaryContext: NSManagedObjectContext, privateContextCreator: @escaping () -> NSManagedObjectContext?) {
+    init(temporaryContext: NSManagedObjectContext,
+         privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
         let dummyStore: TabsStore = .init(temporaryContext)
@@ -124,6 +116,29 @@ final class TabsResource {
                 observer.sendCompleted()
             } catch {
                 observer.send(error: .fetchAllError(error))
+            }
+            
+        }
+        return producer.observe(on: scheduler)
+    }
+    
+    func selectedTabIndex() -> SignalProducer<UInt, TabResourceError> {
+        let producer: SignalProducer<UInt, TabResourceError> = .init { [weak self] (observer, lifetime) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
+            
+            do {
+                let selectedIndex = try self.store.selectedTabIndex()
+                observer.send(value: selectedIndex)
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .selectedTabIndex(error))
             }
             
         }

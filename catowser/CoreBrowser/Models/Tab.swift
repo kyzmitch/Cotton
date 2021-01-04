@@ -137,6 +137,10 @@ public struct Tab {
     public var contentType: ContentType
     // Usually only one tab should be in selected state
     public var visualState: VisualState
+    /// Time when tab was added to provide sorting (including CoreData sorting)
+    /// Do not support moving tabs on UI, because it won't work now with timestamps
+    /// It will require to store indexes in a separate data structure
+    public let addedTimestamp: Date
     /// Should be set to constants based on initial tab state (blank, top sites, etc.)
     /// `String` type probably should be replaced with Signal to be able to
     /// react on async title fetch from a real Site.
@@ -185,16 +189,19 @@ public struct Tab {
     }
     public let realBackgroundColour = UIColor.clear
 
-    public init(contentType: ContentType, selected: Bool = true, idenifier: UUID? = nil) {
+    /**
+     Initializes an instance of `Tab` type.
+     */
+    public init(contentType: ContentType,
+                selected: Bool = true,
+                idenifier: UUID = .init(),
+                created: Date = .init()) {
         self.contentType = contentType
+        addedTimestamp = created
         // set default value
         titleObserver.send(value: contentType.title)
         visualState = selected ? .selected : .deselected
-        if let incomingId = idenifier {
-            id = incomingId
-        } else {
-            id = UUID()
-        }
+        id = idenifier
     }
 
     public static let deselectedBlank: Tab = Tab(contentType: .blank, selected: false)

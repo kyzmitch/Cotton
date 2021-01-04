@@ -137,7 +137,7 @@
 		8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
 		8A745C0C248027C600A379AD /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
 		8A745C0D248027C600A379AD /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
-		8A745C0F2480287700A379AD /* TabsCacheInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C0E2480287700A379AD /* TabsCacheInterface.swift */; };
+		8A745C0F2480287700A379AD /* TabsStoragable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C0E2480287700A379AD /* TabsStoragable.swift */; };
 		8A745C112480295B00A379AD /* TabsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C102480295B00A379AD /* TabsEnvironment.swift */; };
 		8A745C122480295B00A379AD /* TabsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C102480295B00A379AD /* TabsEnvironment.swift */; };
 		8A745C1424802E4F00A379AD /* TabsSubjectObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C1324802E4F00A379AD /* TabsSubjectObserver.swift */; };
@@ -228,6 +228,7 @@
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
+		8AA60B2225A33568002EF8AF /* TabCacheErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
@@ -575,7 +576,7 @@
 		8A68E41124597E880070F338 /* DnsRR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DnsRR.swift; sourceTree = "<group>"; };
 		8A6CD6D324585D830068ACB5 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		8A74188B245086330019695E /* Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
-		8A745C0E2480287700A379AD /* TabsCacheInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsCacheInterface.swift; sourceTree = "<group>"; };
+		8A745C0E2480287700A379AD /* TabsStoragable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStoragable.swift; sourceTree = "<group>"; };
 		8A745C102480295B00A379AD /* TabsEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsEnvironment.swift; sourceTree = "<group>"; };
 		8A745C1324802E4F00A379AD /* TabsSubjectObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsSubjectObserver.swift; sourceTree = "<group>"; };
 		8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchEngine+OpenSearchParser.swift"; sourceTree = "<group>"; };
@@ -605,6 +606,7 @@
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCacheErrors.swift; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		8ABA3CCE2522601800E304E2 /* TabsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStore.swift; sourceTree = "<group>"; };
@@ -820,7 +822,8 @@
 				8A745C1324802E4F00A379AD /* TabsSubjectObserver.swift */,
 				607D02AE21FEF87F009FCD0B /* TabsListManager.swift */,
 				608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */,
-				8A745C0E2480287700A379AD /* TabsCacheInterface.swift */,
+				8A745C0E2480287700A379AD /* TabsStoragable.swift */,
+				8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -2060,7 +2063,7 @@
 				6094E730221FE2E5004269A2 /* UIColour+CatowserExtensions.swift in Sources */,
 				60C2C8F12270886A00F5D869 /* ReloadWithCompletion.swift in Sources */,
 				6094E735221FE2FE004269A2 /* UIImage+CatowserExtensions.swift in Sources */,
-				8A745C0F2480287700A379AD /* TabsCacheInterface.swift in Sources */,
+				8A745C0F2480287700A379AD /* TabsStoragable.swift in Sources */,
 				8AD18E102447580A00224702 /* ResourceReader.swift in Sources */,
 				6094E741221FE706004269A2 /* Tab.swift in Sources */,
 				6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */,
@@ -2075,6 +2078,7 @@
 				60D52D3C225F317C00CB56F0 /* DomainsHistory.swift in Sources */,
 				8A745C1424802E4F00A379AD /* TabsSubjectObserver.swift in Sources */,
 				60D52D3E225F47DB00CB56F0 /* InMemoryDomainSearchProvider.swift in Sources */,
+				8AA60B2225A33568002EF8AF /* TabCacheErrors.swift in Sources */,
 				6094E740221FE6CB004269A2 /* Box.swift in Sources */,
 				6094E734221FE2F9004269A2 /* Protocols.swift in Sources */,
 			);
