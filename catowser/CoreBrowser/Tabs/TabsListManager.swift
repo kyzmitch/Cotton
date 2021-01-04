@@ -23,7 +23,7 @@ public final class TabsListManager {
     private let tabs: MutableProperty<[Tab]>
     private let selectedTabIndex: MutableProperty<Int>
 
-    private let storage: TabsStorage
+    private let storage: TabsStoragable
     private let positioning: TabsPositioning
     private var observers: [TabsObserver] = [TabsObserver]()
     private let queue: DispatchQueue
@@ -35,7 +35,7 @@ public final class TabsListManager {
     private var disposables = [Disposable?]()
 
     // swiftlint:disable:next function_body_length
-    public init(storage: TabsStorage, positioning: TabsPositioning) {
+    public init(storage: TabsStoragable, positioning: TabsPositioning) {
         selectionStrategy = NearbySelectionStrategy()
 
         tabs = MutableProperty<[Tab]>([])
@@ -49,7 +49,7 @@ public final class TabsListManager {
         // to send data from storage to it
         let delay = TimeInterval(1)
         
-        disposables.append(storage.fetch()
+        disposables.append(storage.fetchAllTabs()
             .delay(delay, on: scheduler)
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
@@ -81,7 +81,7 @@ public final class TabsListManager {
                 case .success(let index):
                     guard let `self` = self else { return }
                     // need to wait before tabs fetch will be finished
-                    self.selectedTabIndex.value = index
+                    self.selectedTabIndex.value = Int(index)
                 case .failure(let error):
                     print("not complete async init of \(TabsListManager.self): \(error)")
                 }

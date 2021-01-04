@@ -1,5 +1,5 @@
 //
-//  TabsCacheInterface.swift
+//  TabsStoragable.swift
 //  CoreBrowser
 //
 //  Created by Andrei Ermoshin on 5/28/20.
@@ -9,19 +9,14 @@
 import Foundation
 import ReactiveSwift
 
-public enum TabStorageError: Swift.Error {
-    case unknown
-    case tabsFetchFailed
-}
-
-public protocol TabsStorage {
+public protocol TabsStoragable {
     /// Defines human redable name for Int if it is describes index.
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int
 
     /// The selected index. Should be presented anyway, so,
     /// storage must contain at least one tab and it is `blank` tab.
-    func fetchSelectedIndex() -> SignalProducer<Int, TabStorageError>
+    func fetchSelectedIndex() -> SignalProducer<UInt, TabStorageError>
     /// Changes selected tab only if it is presented in storage.
     ///
     /// - Parameter tab: The tab object to be selected.
@@ -32,7 +27,7 @@ public protocol TabsStorage {
     /// Loads tabs data from storage.
     ///
     /// - Returns: A producer with tabs array or error.
-    func fetch() -> SignalProducer<[Tab], TabStorageError>
+    func fetchAllTabs() -> SignalProducer<[Tab], TabStorageError>
 
     /// Adds a tab to storage
     ///
