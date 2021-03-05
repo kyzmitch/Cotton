@@ -243,8 +243,8 @@
 		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8AC4368124798BE2008DD663 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368024798BE2008DD663 /* Alamofire */; };
-		8AC4368324798BE7008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368224798BE7008DD663 /* AlamofireImage */; };
+		8AC4368124798BE2008DD663 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368024798BE2008DD663 /* SwiftPackageProductDependency */; };
+		8AC4368324798BE7008DD663 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368224798BE7008DD663 /* SwiftPackageProductDependency */; };
 		8AC4368424798BFC008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -732,8 +732,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AC4368124798BE2008DD663 /* Alamofire in Frameworks */,
-				8AC4368324798BE7008DD663 /* AlamofireImage in Frameworks */,
+				8AC4368124798BE2008DD663 /* BuildFile in Frameworks */,
+				8AC4368324798BE7008DD663 /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1566,8 +1566,8 @@
 			);
 			name = SPMCommon;
 			packageProductDependencies = (
-				8AC4368024798BE2008DD663 /* Alamofire */,
-				8AC4368224798BE7008DD663 /* AlamofireImage */,
+				8AC4368024798BE2008DD663 /* SwiftPackageProductDependency */,
+				8AC4368224798BE7008DD663 /* SwiftPackageProductDependency */,
 			);
 			productName = SPMCommon;
 			productReference = 8AC4367424798BDB008DD663 /* SPMCommon.framework */;
@@ -1697,8 +1697,8 @@
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
 			packageReferences = (
-				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+				8AC4365C247910E1008DD663 /* RemoteSwiftPackageReference */,
+				8AC4365F247911F6008DD663 /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -1976,12 +1976,17 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
+				"${BUILT_PRODUCTS_DIR}/SWXMLHash/SWXMLHash.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWXMLHash.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1993,12 +1998,17 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Cotton/Pods-Cotton-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Cotton/Pods-Cotton-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
+				"${BUILT_PRODUCTS_DIR}/SWXMLHash/SWXMLHash.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Cotton/Pods-Cotton-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWXMLHash.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3150,7 +3160,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		8AC4365C247910E1008DD663 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -3158,7 +3168,7 @@
 				minimumVersion = 5.2.0;
 			};
 		};
-		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+		8AC4365F247911F6008DD663 /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
 			requirement = {
@@ -3169,14 +3179,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8AC4368024798BE2008DD663 /* Alamofire */ = {
+		8AC4368024798BE2008DD663 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 8AC4365C247910E1008DD663 /* RemoteSwiftPackageReference */;
 			productName = Alamofire;
 		};
-		8AC4368224798BE7008DD663 /* AlamofireImage */ = {
+		8AC4368224798BE7008DD663 /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			package = 8AC4365F247911F6008DD663 /* RemoteSwiftPackageReference */;
 			productName = AlamofireImage;
 		};
 /* End XCSwiftPackageProductDependency section */
