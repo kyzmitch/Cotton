@@ -83,6 +83,44 @@ public protocol TabsPositioning {
     var addSpeed: TabAddSpeed { get }
 }
 
+/// Twin type for `Tab.ContentType` to have `rawValue`
+/// and use it for settings.
+public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
+    case blank
+    case homepage
+    case favorites
+    case topSites
+    
+    public var contentType: Tab.ContentType {
+        switch self {
+        case .blank:
+            return .blank
+        case .homepage:
+            return .homepage
+        case .favorites:
+            return .favorites
+        case .topSites:
+            return .topSites
+        }
+    }
+    
+    public var description: String {
+        let key: String
+        
+        switch self {
+        case .blank:
+            key = "txt_tab_content_blank"
+        case .homepage:
+            key = "txt_tab_content_homepage"
+        case .favorites:
+            key = "txt_tab_content_favorites"
+        case .topSites:
+            key = "txt_tab_content_top_sites"
+        }
+        return NSLocalizedString(key, comment: "")
+    }
+}
+
 public protocol TabsSubject {
     init(storage: TabsStoragable, positioning: TabsPositioning)
     /// Add tabs observer.
