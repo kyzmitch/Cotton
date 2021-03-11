@@ -57,4 +57,10 @@ extension DefaultTabProvider: TabsPositioning {
     var contentState: Tab.ContentType { .topSites }
     
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }
+    
+    var defaultSelectedTabId: UUID { .notPossibleId }
+}
+
+private extension UUID {
+    static let notPossibleId: UUID = .init(uuid: (0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))
 }

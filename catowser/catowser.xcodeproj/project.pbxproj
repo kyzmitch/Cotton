@@ -232,8 +232,8 @@
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
-		8ABA3CCF2522601800E304E2 /* TabsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsStore.swift */; };
-		8ABA3CD02522601800E304E2 /* TabsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsStore.swift */; };
+		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
+		8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
 		8ABA3CD32522603000E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
 		8ABA3CD52522608000E304E2 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD42522608000E304E2 /* Database.swift */; };
@@ -243,8 +243,8 @@
 		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8AC4368124798BE2008DD663 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368024798BE2008DD663 /* SwiftPackageProductDependency */; };
-		8AC4368324798BE7008DD663 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368224798BE7008DD663 /* SwiftPackageProductDependency */; };
+		8AC4368124798BE2008DD663 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368024798BE2008DD663 /* Alamofire */; };
+		8AC4368324798BE7008DD663 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC4368224798BE7008DD663 /* AlamofireImage */; };
 		8AC4368424798BFC008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -609,7 +609,7 @@
 		8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCacheErrors.swift; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		8ABA3CCE2522601800E304E2 /* TabsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStore.swift; sourceTree = "<group>"; };
+		8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsDBClient.swift; sourceTree = "<group>"; };
 		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		8ABA3CD72522623200E304E2 /* TabsResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsResource.swift; sourceTree = "<group>"; };
@@ -732,8 +732,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AC4368124798BE2008DD663 /* BuildFile in Frameworks */,
-				8AC4368324798BE7008DD663 /* BuildFile in Frameworks */,
+				8AC4368124798BE2008DD663 /* Alamofire in Frameworks */,
+				8AC4368324798BE7008DD663 /* AlamofireImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1189,7 +1189,7 @@
 			children = (
 				8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */,
 				8ABA3CD42522608000E304E2 /* Database.swift */,
-				8ABA3CCE2522601800E304E2 /* TabsStore.swift */,
+				8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */,
 				8ABA3CD72522623200E304E2 /* TabsResource.swift */,
 			);
 			path = DB;
@@ -1566,8 +1566,8 @@
 			);
 			name = SPMCommon;
 			packageProductDependencies = (
-				8AC4368024798BE2008DD663 /* SwiftPackageProductDependency */,
-				8AC4368224798BE7008DD663 /* SwiftPackageProductDependency */,
+				8AC4368024798BE2008DD663 /* Alamofire */,
+				8AC4368224798BE7008DD663 /* AlamofireImage */,
 			);
 			productName = SPMCommon;
 			productReference = 8AC4367424798BDB008DD663 /* SPMCommon.framework */;
@@ -1697,8 +1697,8 @@
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
 			packageReferences = (
-				8AC4365C247910E1008DD663 /* RemoteSwiftPackageReference */,
-				8AC4365F247911F6008DD663 /* RemoteSwiftPackageReference */,
+				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -2165,7 +2165,7 @@
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
 				8A1C1C292485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */,
-				8ABA3CCF2522601800E304E2 /* TabsStore.swift in Sources */,
+				8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */,
 				8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2241,7 +2241,7 @@
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,
 				8A1C1C2A2485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */,
-				8ABA3CD02522601800E304E2 /* TabsStore.swift in Sources */,
+				8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */,
 				8A566F80245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3160,7 +3160,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8AC4365C247910E1008DD663 /* RemoteSwiftPackageReference */ = {
+		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -3168,7 +3168,7 @@
 				minimumVersion = 5.2.0;
 			};
 		};
-		8AC4365F247911F6008DD663 /* RemoteSwiftPackageReference */ = {
+		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
 			requirement = {
@@ -3179,14 +3179,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8AC4368024798BE2008DD663 /* SwiftPackageProductDependency */ = {
+		8AC4368024798BE2008DD663 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365C247910E1008DD663 /* RemoteSwiftPackageReference */;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		8AC4368224798BE7008DD663 /* SwiftPackageProductDependency */ = {
+		8AC4368224798BE7008DD663 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365F247911F6008DD663 /* RemoteSwiftPackageReference */;
+			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
 		};
 /* End XCSwiftPackageProductDependency section */

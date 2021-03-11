@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="20D74" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Settings" representedClassName="CDSettings" syncable="YES" codeGenerationType="class">
+        <attribute name="selectedTabId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
     <entity name="Site" representedClassName="CDSite" syncable="YES" codeGenerationType="class">
         <attribute name="searchSuggestion" optional="YES" attributeType="String"/>
         <attribute name="siteUrl" attributeType="URI"/>
@@ -18,12 +21,12 @@
         <attribute name="addedTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="contentType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="visualState" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="site" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Site" inverseName="tab" inverseEntity="Site"/>
     </entity>
     <elements>
         <element name="Site" positionX="-54" positionY="9" width="128" height="118"/>
         <element name="SiteSettings" positionX="-45" positionY="45" width="128" height="118"/>
-        <element name="Tab" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="Tab" positionX="-63" positionY="-18" width="128" height="89"/>
+        <element name="Settings" positionX="-63" positionY="63" width="128" height="44"/>
     </elements>
 </model>

@@ -21,7 +21,7 @@ public final class TabsListManager {
     public var selectionStrategy: TabSelectionStrategy
 
     private let tabs: MutableProperty<[Tab]>
-    private let selectedTabIndex: MutableProperty<Int>
+    private let selectedTabId: MutableProperty<UUID>
 
     private let storage: TabsStoragable
     private let positioning: TabsPositioning
@@ -34,12 +34,11 @@ public final class TabsListManager {
 
     private var disposables = [Disposable?]()
 
-    // swiftlint:disable:next function_body_length
     public init(storage: TabsStoragable, positioning: TabsPositioning) {
         selectionStrategy = NearbySelectionStrategy()
 
         tabs = MutableProperty<[Tab]>([])
-        selectedTabIndex = MutableProperty<Int>(-1)
+        selectedTabId = MutableProperty<UUID>(positioning.defaultSelectedTabId)
 
         self.storage = storage
         self.positioning = positioning
@@ -49,6 +48,17 @@ public final class TabsListManager {
         // to send data from storage to it
         let delay = TimeInterval(1)
         
+        subscribeForDbTabsChange(with: delay)
+        subscribeForDbSelectedTabIdChange(with: delay)
+        subscribeForTabsCountChange()
+        subscribeForSelectedTabIdChange()
+    }
+
+    deinit {
+        disposables.forEach { $0?.dispose() }
+    }
+    
+    func subscribeForDbTabsChange(with delay: TimeInterval) {
         disposables.append(storage.fetchAllTabs()
             .delay(delay, on: scheduler)
             .observe(on: scheduler)
@@ -72,21 +82,25 @@ public final class TabsListManager {
                     print("not complete async init of \(TabsListManager.self): \(error)")
                 }
         })
-
-        disposables.append(storage.fetchSelectedIndex()
+    }
+    
+    func subscribeForDbSelectedTabIdChange(with delay: TimeInterval) {
+        disposables.append(storage.fetchSelectedTabId()
             .delay(delay, on: scheduler)
             .observe(on: scheduler)
             .startWithResult({ [weak self] result in
                 switch result {
-                case .success(let index):
+                case .success(let tabIdentifier):
                     guard let `self` = self else { return }
                     // need to wait before tabs fetch will be finished
-                    self.selectedTabIndex.value = Int(index)
+                    self.selectedTabId.value = tabIdentifier
                 case .failure(let error):
                     print("not complete async init of \(TabsListManager.self): \(error)")
                 }
         }))
-
+    }
+    
+    func subscribeForTabsCountChange() {
         disposables.append(self.tabs.signal
             .map { $0.count }
             .observe(on: UIScheduler())
@@ -97,51 +111,59 @@ public final class TabsListManager {
 
                 self.observers.forEach { $0.update(with: tabsCount) }
         })
-
-        disposables.append(selectedTabIndex.signal
+    }
+    
+    func subscribeForSelectedTabIdChange() {
+        disposables.append(selectedTabId.signal
             .observe(on: UIScheduler())
-            .observeValues { [weak self] newIndex in
+            .observeValues { [weak self] newSelectedTabId in
                 guard let `self` = self else {
                     return
                 }
-                // already selected tab can be selected again
-                // so, need to think about Tab.visualState and remove it
-                // and use only selectedTabIndex or implement some check
-                // here to not notify observers
-                let tab = self.tabs.value[newIndex]
-                self.observers.forEach { $0.didSelect(index: newIndex, content: tab.contentType) }
+                if let tabTuple = self.tabs.value.element(by: newSelectedTabId) {
+                    self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType) }
+                }
         })
-    }
-
-    deinit {
-        disposables.forEach { $0?.dispose() }
     }
 
     public var tabsCount: Int {
         return self.tabs.value.count
     }
 
-    /// Returns currently selected tab. We have to use Optional type
+    /// Returns currently selected tab.
     public func selectedTab() throws -> Tab {
-        let index = selectedTabIndex.value
-        guard index >= 0 else {
+        let selectedId = selectedTabId.value
+        guard selectedId != self.positioning.defaultSelectedTabId else {
             throw NotInitializedYet()
         }
 
-        return tabs.value[index]
+        guard let tabTuple = tabs.value.element(by: selectedId) else {
+            throw SelectedNotFound()
+        }
+        return tabTuple.tab
     }
 
     fileprivate struct NotInitializedYet: Error {}
+    fileprivate struct SelectedNotFound: Error {}
 }
 
 extension TabsListManager: IndexSelectionContext {
     public var collectionLastIndex: Int {
         // -1 index is not possible because always should be at least 1 tab
-        return tabs.value.count - 1
+        let amount = tabs.value.count
+        assert(amount != 0, "Tabs amount shouldn't be 0")
+        return amount - 1
     }
 
     public var currentlySelectedIndex: Int {
-        return selectedTabIndex.value
+        assert(!tabs.value.isEmpty, "Tabs amount shouldn't be 0")
+        let tabId = selectedTabId.value
+        if let tabTuple = tabs.value.element(by: tabId) {
+            return tabTuple.index
+        }
+        // tabs collection should be empty, so,
+        // it is safe to return index of 1st element
+        return 0
     }
 }
 
@@ -151,7 +173,7 @@ extension TabsListManager: TabsSubject {
     }
 
     public func close(tab: Tab) {
-        // if it is last tab - replace it with blank one
+        // if it is last tab - replace it with a tab with default content
         if tabs.value.count == 1, let firstTab = tabs.value.first {
             assert(tab == firstTab, "closing unexpected tab")
             resetToOneTab()
@@ -166,31 +188,25 @@ extension TabsListManager: TabsSubject {
         // need to remove it before changing selected index
         // otherwise in one case the handler will select closed tab
         tabs.value.remove(at: tabIndex)
-        selectedTabIndex.value = newIndex
+        guard let selectedTab = tabs.value[safe: newIndex] else {
+            fatalError("Failed to find new selected tab")
+        }
+        selectedTabId.value = selectedTab.id
     }
 
     public func closeAll() {
         resetToOneTab()
-        selectedTabIndex.value = 0
+        selectedTabId.value = positioning.defaultSelectedTabId
     }
 
     public func add(tab: Tab) {
-        let newIndex: Int
-        switch positioning.addPosition {
-        case .listEnd:
-            tabs.value.append(tab)
-            newIndex = tabs.value.count - 1
-            if tab.visualState == .selected {
-                selectedTabIndex.value = newIndex
-            }
-        case .afterSelected:
-            newIndex = selectedTabIndex.value + 1
-            tabs.value.insert(tab, at: newIndex)
-            if tab.visualState == .selected {
-                selectedTabIndex.value = newIndex
-            }
+        let newIndex = positioning.addPosition.addTabAndReturnIndex(tab,
+                                                                    to: self.tabs,
+                                                                    currentlySelectedId: selectedTabId.value)
+        if tab.visualState == .selected {
+            selectedTabId.value = tab.id
         }
-
+        // TODO: start signal producer below
         storage.add(tab: tab)
         DispatchQueue.main.async {
             self.observers.forEach { $0.tabDidAdd(tab, at: newIndex) }
@@ -198,29 +214,27 @@ extension TabsListManager: TabsSubject {
     }
 
     public func select(tab: Tab) {
-        guard let index = tabs.value.firstIndex(of: tab) else {
-            return
-        }
+        // TODO: start signal producer below
         _ = storage.select(tab: tab)
-        selectedTabIndex.value = index
+        selectedTabId.value = tab.id
     }
 
     public func replaceSelected(tabContent: Tab.ContentType) throws {
-        let index = selectedTabIndex.value
+        let tabId = selectedTabId.value
 
-        guard var selectedTab = tabs.value[safe: index] else {
+        guard var tabTuple = tabs.value.element(by: tabId) else {
             throw NotInitializedYet()
         }
 
-        selectedTab.contentType = tabContent
+        tabTuple.tab.contentType = tabContent
         // we must reset preview
-        selectedTab.preview = nil
-        tabs.value[index] = selectedTab
+        tabTuple.tab.preview = nil
+        tabs.value[tabTuple.index] = tabTuple.tab
 
         // Need to notify observers to allow them
         // to update title for tab view
         DispatchQueue.main.async {
-            self.observers.forEach { $0.tabDidReplace(selectedTab, at: index) }
+            self.observers.forEach { $0.tabDidReplace(tabTuple.tab, at: tabTuple.index) }
         }
     }
     
@@ -228,28 +242,34 @@ extension TabsListManager: TabsSubject {
     ///
     /// - Parameter image: `UIImage` usually a screenshot of WKWebView.
     public func setSelectedPreview(_ image: UIImage?) throws {
-        let index = selectedTabIndex.value
+        let tabId = selectedTabId.value
         
-        guard var selectedTab = tabs.value[safe: index] else {
+        guard var tabTuple = tabs.value.element(by: tabId) else {
             throw NotInitializedYet()
         }
-        if case .site = selectedTab.contentType, image == nil {
+        if case .site = tabTuple.tab.contentType, image == nil {
             struct WrongTabContent: Error {}
             throw WrongTabContent()
         }
-        selectedTab.preview = image
-        tabs.value[index] = selectedTab
+        // TODO: not sure why it is possible to mutate property of constant tab object
+        tabTuple.tab.preview = image
+        tabs.value[tabTuple.index] = tabTuple.tab
     }
 
-    public func selectTab(at indexPath: IndexPath) -> Tab? {
+    public func selectTab(at indexPath: IndexPath) -> SignalProducer<Tab, TabSubjectError> {
         // item property is used because `UICollectionView` used
         guard let tab = tabs.value[safe: indexPath.item] else {
-            return nil
+            return .init(error: .noTabAtSpecifiedIndexToSelect)
         }
-
-        _ = storage.select(tab: tab)
-        selectedTabIndex.value = indexPath.item
-        return tab
+        
+        // Side effect
+        selectedTabId.value = tab.id
+        return storage.select(tab: tab)
+            .mapError { (_) -> TabSubjectError in
+                return .tabSelectionFailure
+            }.map { (_) -> Tab in
+                return tab
+            }
     }
 
     public func attach(_ observer: TabsObserver) {
@@ -275,7 +295,7 @@ private extension TabsListManager {
         tabs.value.append(tab)
         // No need to change selected index because it is already 0
         // but it is needed to update web view content
-        selectedTabIndex.value = 0
+        selectedTabId.value = self.positioning.defaultSelectedTabId
 
         switch positioning.addSpeed {
         case .immediately:
@@ -291,5 +311,15 @@ private extension TabsListManager {
                 }
             }
         }
+    }
+}
+
+extension Array where Element == Tab {
+    func element(by uuid: UUID) -> (tab: Tab, index: Int)? {
+        // TODO: fix linear search
+        for (ix, tab) in self.enumerated() where tab.id == uuid {
+            return (tab, ix)
+        }
+        return nil
     }
 }

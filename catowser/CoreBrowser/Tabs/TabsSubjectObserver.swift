@@ -14,6 +14,27 @@ import ReactiveSwift
 public enum AddedTabPosition: Int, CaseIterable {
     case listEnd = 0
     case afterSelected = 1
+    
+    func addTabAndReturnIndex(_ tab: Tab,
+                              to tabs: MutableProperty<[Tab]>,
+                              currentlySelectedId: UUID) -> Int {
+        let newIndex: Int
+        switch self {
+        case .listEnd:
+            tabs.value.append(tab)
+            newIndex = tabs.value.count - 1
+        case .afterSelected:
+            guard let tabTuple = tabs.value.element(by: currentlySelectedId) else {
+                assert(false, "Impossible case when there is no selected tab, adding at the end")
+                tabs.value.append(tab)
+                return tabs.value.count - 1
+            }
+            newIndex = tabTuple.index + 1
+            tabs.value.insert(tab, at: newIndex)
+        }
+        
+        return newIndex
+    }
 }
 
 public enum TabAddSpeed {
@@ -81,6 +102,7 @@ public protocol TabsPositioning {
     var addPosition: AddedTabPosition { get }
     var contentState: Tab.ContentType { get }
     var addSpeed: TabAddSpeed { get }
+    var defaultSelectedTabId: UUID { get }
 }
 
 /// Twin type for `Tab.ContentType` to have `rawValue`
@@ -121,6 +143,11 @@ public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
     }
 }
 
+public enum TabSubjectError: Error {
+    case tabSelectionFailure
+    case noTabAtSpecifiedIndexToSelect
+}
+
 public protocol TabsSubject {
     init(storage: TabsStoragable, positioning: TabsPositioning)
     /// Add tabs observer.
@@ -141,7 +168,7 @@ public protocol TabsSubject {
     /// Convinient method to select a tab when you don't have `Tab` object at place.
     ///
     /// - Returns: selected tab or nothing if it was not found.
-    func selectTab(at indexPath: IndexPath) -> Tab?
+    func selectTab(at indexPath: IndexPath) -> SignalProducer<Tab, TabSubjectError>
     /// Replaces currently active tab by combining two operations
     func replaceSelected(tabContent: Tab.ContentType) throws
     /// Fetches latest tabs.

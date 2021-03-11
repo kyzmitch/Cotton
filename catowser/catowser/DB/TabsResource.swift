@@ -16,9 +16,9 @@ fileprivate extension String {
 }
 
 final class TabsResource {
-    private var store: TabsStore
+    private var dbClient: TabsDBClient
     
-    /// Needs to be checked on every access to `store` to not use wrong context
+    /// Needs to be checked on every access to `dbClient` to not use wrong context
     /// functions can return empty data if it's not initialized state
     private var isStoreInitialized = false
     
@@ -38,8 +38,8 @@ final class TabsResource {
          privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
-        let dummyStore: TabsStore = .init(temporaryContext)
-        store = dummyStore
+        let dummyStore: TabsDBClient = .init(temporaryContext)
+        dbClient = dummyStore
         queue.async { [weak self] in
             guard let self = self else {
                 fatalError("Tabs Resource is nil in init")
@@ -47,7 +47,7 @@ final class TabsResource {
             guard let correctContext = privateContextCreator() else {
                 fatalError("Tabs Resource closure returns no private CoreData context")
             }
-            self.store = .init(correctContext)
+            self.dbClient = .init(correctContext)
             self.isStoreInitialized = true
         }
     }
@@ -64,7 +64,7 @@ final class TabsResource {
             }
             
             do {
-                try self.store.insert(tab: tab)
+                try self.dbClient.insert(tab: tab)
                 observer.send(value: ())
                 observer.sendCompleted()
             } catch {
@@ -88,7 +88,7 @@ final class TabsResource {
             }
             
             do {
-                try self.store.remove(tab: tab)
+                try self.dbClient.remove(tab: tab)
                 observer.send(value: ())
                 observer.sendCompleted()
             } catch {
@@ -111,7 +111,7 @@ final class TabsResource {
             }
             
             do {
-                let tabs = try self.store.fetchAllTabs()
+                let tabs = try self.dbClient.fetchAllTabs()
                 observer.send(value: tabs)
                 observer.sendCompleted()
             } catch {
@@ -122,8 +122,8 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
-    func selectedTabIndex() -> SignalProducer<UInt, TabResourceError> {
-        let producer: SignalProducer<UInt, TabResourceError> = .init { [weak self] (observer, lifetime) in
+    func selectedTabId() -> SignalProducer<UUID, TabResourceError> {
+        let producer: SignalProducer<UUID, TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -134,11 +134,11 @@ final class TabsResource {
             }
             
             do {
-                let selectedIndex = try self.store.selectedTabIndex()
+                let selectedIndex = try self.dbClient.selectedTabId()
                 observer.send(value: selectedIndex)
                 observer.sendCompleted()
             } catch {
-                observer.send(error: .selectedTabIndex(error))
+                observer.send(error: .selectedTabId(error))
             }
             
         }

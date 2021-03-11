@@ -14,9 +14,8 @@ public protocol TabsStoragable {
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int
 
-    /// The selected index. Should be presented anyway, so,
-    /// storage must contain at least one tab and it is `blank` tab.
-    func fetchSelectedIndex() -> SignalProducer<UInt, TabStorageError>
+    /// The identifier of selected tab.
+    func fetchSelectedTabId() -> SignalProducer<UUID, TabStorageError>
     /// Changes selected tab only if it is presented in storage.
     ///
     /// - Parameter tab: The tab object to be selected.

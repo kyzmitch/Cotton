@@ -39,8 +39,8 @@ final class TabsCacheProvider {
 }
 
 extension TabsCacheProvider: TabsStoragable {
-    func fetchSelectedIndex() -> SignalProducer<UInt, TabStorageError> {
-        return tabsDbResource.selectedTabIndex()
+    func fetchSelectedTabId() -> SignalProducer<UUID, TabStorageError> {
+        return tabsDbResource.selectedTabId()
             .mapError({ (resourceError) -> TabStorageError in
                 return .dbResourceError(resourceError)
             }).start(on: scheduler)

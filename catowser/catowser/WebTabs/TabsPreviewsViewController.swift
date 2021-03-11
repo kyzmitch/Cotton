@@ -60,6 +60,8 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
     }()
 
     private var disposables = [Disposable?]()
+    
+    private var tabSelectionDisposable: Disposable?
 
     private let router: TabsPreviewsRouter
 
@@ -214,10 +216,18 @@ extension TabsPreviewsViewController: UICollectionViewDataSource {
 
 extension TabsPreviewsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let tab = TabsListManager.shared.selectTab(at: indexPath) else {
-            return
-        }
-        router.dismiss(andLoad: tab.contentType)
+        tabSelectionDisposable?.dispose()
+        let manager = TabsListManager.shared
+        tabSelectionDisposable = manager
+            .selectTab(at: indexPath)
+            .startWithResult { [weak router] (result) in
+                switch result {
+                case .success(let tab):
+                    router?.dismiss(andLoad: tab.contentType)
+                case .failure:
+                    print("Failed to select tab")
+                }
+            }
     }
 }
 
