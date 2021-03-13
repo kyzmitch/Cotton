@@ -20,8 +20,8 @@ public protocol TabsStoragable {
     ///
     /// - Parameter tab: The tab object to be selected.
     ///
-    /// - Returns: An integer index.
-    func select(tab: Tab) -> SignalProducer<Int, TabStorageError>
+    /// - Returns: An identifier of the selected tab.
+    func select(tab: Tab) -> SignalProducer<UUID, TabStorageError>
 
     /// Loads tabs data from storage.
     ///
@@ -31,5 +31,5 @@ public protocol TabsStoragable {
     /// Adds a tab to storage
     ///
     /// - Parameter tab: The tab object to be added.
-    func add(tab: Tab)
+    func add(tab: Tab) -> SignalProducer<Void, TabStorageError>
 }

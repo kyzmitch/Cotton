@@ -23,6 +23,7 @@ final class TabsDBClient {
         self.managedContext = managedContext
     }
     
+    /// Adds the tab without selecting it
     func insert(tab: Tab) throws {
         var saveError: Error?
         managedContext.performAndWait {
@@ -38,6 +39,9 @@ final class TabsDBClient {
         }
     }
     
+    /// Removes the tab, if it was selected it doesn't do de-selection logic
+    /// De-selection should happen on application side because different auto-selection
+    /// strategies could be used and it shouldn't be performed as a side-effect
     func remove(tab: Tab) throws {
         var cdError: Error?
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDTab.fetchRequest()
@@ -56,6 +60,7 @@ final class TabsDBClient {
         }
     }
     
+    /// Gets all stored tabs
     func fetchAllTabs() throws -> [Tab] {
         var fetchError: Error?
         var tabs = [Tab]()
@@ -74,6 +79,7 @@ final class TabsDBClient {
         return tabs
     }
     
+    /// Gets currently selected tab identifier or throws an exception in case of error
     func selectedTabId() throws -> UUID {
         var fetchError: Error?
         var tabIdentifier: UUID?
@@ -105,12 +111,54 @@ final class TabsDBClient {
         return resultId
     }
     
+    /// Updates selected tab identifier using it from the `tab` provided as a argument
     func select(tab: Tab) throws {
         try setSelectedTab(uuid: tab.id)
     }
     
+    /// Updates selected tab identifier using `uuid` argument
     func setSelectedTab(uuid: UUID) throws {
+        var setError: Error?
         
+        managedContext.performAndWait {
+            do {
+                try setSettingsSelectedTabId(uuid)
+            } catch {
+                setError = error
+            }
+        }
+        if let cdError = setError {
+            throw cdError
+        }
+    }
+    
+    /// Updates existing db record or creates a brand new one for selected tab identifier
+    private func setSettingsSelectedTabId(_ uuid: UUID) throws {
+        var fetchError: Error?
+        let fetchRequest: NSFetchRequest<CDSettings> = CDSettings.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        managedContext.performAndWait {
+            do {
+                let result = try managedContext.fetch(fetchRequest)
+                if result.isEmpty {
+                    _ = CDSettings(context: managedContext, selectedTabIdentifier: uuid)
+                    try managedContext.save()
+                } else {
+                    if let existingCdSettings = result.first {
+                        existingCdSettings.selectedTabId = uuid
+                    } else {
+                        _ = CDSettings(context: managedContext, selectedTabIdentifier: uuid)
+                    }
+                    try managedContext.save()
+                }
+            } catch {
+                fetchError = error
+            }
+        }
+        
+        if let cdError = fetchError {
+            throw cdError
+        }
     }
 }
 
@@ -181,5 +229,12 @@ fileprivate extension CDSite {
         searchSuggestion = site.searchSuggestion
         userSpecifiedTitle = site.userSpecifiedTitle
         siteUrl = site.urlInfo.domainURL
+    }
+}
+
+fileprivate extension CDSettings {
+    convenience init(context: NSManagedObjectContext, selectedTabIdentifier: UUID) {
+        self.init(context: context)
+        self.selectedTabId = selectedTabIdentifier
     }
 }

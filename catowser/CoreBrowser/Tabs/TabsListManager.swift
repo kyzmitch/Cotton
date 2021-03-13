@@ -203,20 +203,30 @@ extension TabsListManager: TabsSubject {
         let newIndex = positioning.addPosition.addTabAndReturnIndex(tab,
                                                                     to: self.tabs,
                                                                     currentlySelectedId: selectedTabId.value)
-        if tab.visualState == .selected {
-            selectedTabId.value = tab.id
+        _ = storage.add(tab: tab).startWithResult { [weak self] (result) in
+            if case .failure(let storageError) = result {
+                print("Failed to add a tab to storage \(storageError)")
+            } else {
+                if tab.visualState == .selected {
+                    self?.selectedTabId.value = tab.id
+                }
+            }
         }
-        // TODO: start signal producer below
-        storage.add(tab: tab)
         DispatchQueue.main.async {
             self.observers.forEach { $0.tabDidAdd(tab, at: newIndex) }
         }
     }
 
     public func select(tab: Tab) {
-        // TODO: start signal producer below
-        _ = storage.select(tab: tab)
-        selectedTabId.value = tab.id
+        _ = storage.select(tab: tab).startWithResult({ [weak self] (result) in
+            switch result {
+            case .success(let identifier):
+                self?.selectedTabId.value = identifier
+            case .failure(let storageError):
+                print("Failed to select tab with id \(tab.id) \(storageError)")
+            }
+        })
+        
     }
 
     public func replaceSelected(tabContent: Tab.ContentType) throws {
