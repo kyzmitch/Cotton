@@ -68,6 +68,9 @@ final class TabsDBClient {
         managedContext.performAndWait {
             do {
                 let result = try managedContext.fetch(request)
+                guard !result.isEmpty else {
+                    throw TabsCoreDataError.fetchedNothing
+                }
                 tabs = result.compactMap {Tab(cdTab: $0)}
             } catch {
                 fetchError = error

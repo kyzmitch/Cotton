@@ -95,7 +95,7 @@ public final class TabsListManager {
                     // need to wait before tabs fetch will be finished
                     self.selectedTabId.value = tabIdentifier
                 case .failure(let error):
-                    print("not complete async init of \(TabsListManager.self): \(error)")
+                    print("Selected tab id wasn't found, probably it is first app start \(error)")
                 }
         }))
     }
@@ -254,16 +254,16 @@ extension TabsListManager: TabsSubject {
     public func setSelectedPreview(_ image: UIImage?) throws {
         let tabId = selectedTabId.value
         
-        guard var tabTuple = tabs.value.element(by: tabId) else {
+        guard let tabTuple = tabs.value.element(by: tabId) else {
             throw NotInitializedYet()
         }
         if case .site = tabTuple.tab.contentType, image == nil {
             struct WrongTabContent: Error {}
             throw WrongTabContent()
         }
-        // TODO: not sure why it is possible to mutate property of constant tab object
-        tabTuple.tab.preview = image
-        tabs.value[tabTuple.index] = tabTuple.tab
+        var tabCopy = tabTuple.tab
+        tabCopy.preview = image
+        tabs.value[tabTuple.index] = tabCopy
     }
 
     public func selectTab(at indexPath: IndexPath) -> SignalProducer<Tab, TabSubjectError> {

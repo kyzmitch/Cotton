@@ -150,8 +150,25 @@ public struct Tab {
         return contentType.title
     }
     
+    /// Since this is a reference type, we should make it private and use custom getter/setter to make a copy
+    /// To keep this Tab type as a value type
+    private var _preview: UIImage?
+    
     /// Preview image of the site if content is .site
-    public var preview: UIImage?
+    public var preview: UIImage? {
+        mutating get {
+            // https://www.hackingwithswift.com/example-code/language/
+            // how-to-safely-use-reference-types-inside-value-types-with-isknownuniquelyreferenced
+            if !isKnownUniquelyReferenced(&_preview) {
+                _preview = _preview?.copy() as? UIImage
+            }
+            return _preview
+        }
+        
+        set {
+            _preview = newValue
+        }
+    }
 
     public var searchBarContent: String {
         return contentType.searchBarContent
