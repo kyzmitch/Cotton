@@ -86,7 +86,7 @@ final class TabsDBClient {
     func selectedTabId() throws -> UUID {
         var fetchError: Error?
         var tabIdentifier: UUID?
-        let fetchRequest: NSFetchRequest<CDSettings> = CDSettings.fetchRequest()
+        let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
         fetchRequest.fetchLimit = 1
         managedContext.performAndWait {
             do {
@@ -138,19 +138,19 @@ final class TabsDBClient {
     /// Updates existing db record or creates a brand new one for selected tab identifier
     private func setSettingsSelectedTabId(_ uuid: UUID) throws {
         var fetchError: Error?
-        let fetchRequest: NSFetchRequest<CDSettings> = CDSettings.fetchRequest()
+        let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
         fetchRequest.fetchLimit = 1
         managedContext.performAndWait {
             do {
                 let result = try managedContext.fetch(fetchRequest)
                 if result.isEmpty {
-                    _ = CDSettings(context: managedContext, selectedTabIdentifier: uuid)
+                    _ = CDAppSettings(context: managedContext, selectedTabIdentifier: uuid)
                     try managedContext.save()
                 } else {
                     if let existingCdSettings = result.first {
                         existingCdSettings.selectedTabId = uuid
                     } else {
-                        _ = CDSettings(context: managedContext, selectedTabIdentifier: uuid)
+                        _ = CDAppSettings(context: managedContext, selectedTabIdentifier: uuid)
                     }
                     try managedContext.save()
                 }
@@ -235,7 +235,7 @@ fileprivate extension CDSite {
     }
 }
 
-fileprivate extension CDSettings {
+fileprivate extension CDAppSettings {
     convenience init(context: NSManagedObjectContext, selectedTabIdentifier: UUID) {
         self.init(context: context)
         self.selectedTabId = selectedTabIdentifier
