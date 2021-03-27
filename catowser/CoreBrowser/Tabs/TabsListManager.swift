@@ -61,6 +61,16 @@ public final class TabsListManager {
     func initTabs(with delay: TimeInterval) {
         let disposable = storage.fetchAllTabs()
             .delay(delay, on: scheduler)
+            .flatMap(.latest, { [weak self] (tabs) -> SignalProducer<[Tab], TabStorageError> in
+                guard let `self` = self else {
+                    return .init(error: .zombieSelf)
+                }
+                guard tabs.isEmpty else {
+                    return .init(value: tabs)
+                }
+                let tab = Tab(contentType: self.positioning.contentState)
+                return self.storage.add(tab: tab).map {[$0]}
+            })
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
                 switch result {

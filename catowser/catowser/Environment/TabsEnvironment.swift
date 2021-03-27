@@ -19,6 +19,12 @@ final class TabsEnvironment {
         guard let database = Database(name: "CottonDbModel") else {
             fatalError("Failed to initialize CoreData database")
         }
+        database.loadStore { (loadingError) in
+            guard let dbLoadingError = loadingError else {
+                return
+            }
+            fatalError("Failed to initialize Database \(dbLoadingError.localizedDescription)")
+        }
         cottonDb = database
         let contextClosure = { [weak cottonDb] () -> NSManagedObjectContext? in
             guard let dbInterface = cottonDb else {
