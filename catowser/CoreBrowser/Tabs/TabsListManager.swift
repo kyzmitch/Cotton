@@ -69,7 +69,11 @@ public final class TabsListManager {
                     return .init(value: tabs)
                 }
                 let tab = Tab(contentType: self.positioning.contentState)
-                return self.storage.add(tab: tab).map {[$0]}
+                return self.storage.add(tab: tab)
+                    .on(value: { [weak self] (addedTab) in
+                        self?.selectedTabId.value = addedTab.id
+                    })
+                    .map {[$0]}
             })
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
