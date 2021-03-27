@@ -11,7 +11,7 @@ import CoreBrowser
 import HttpKit
 
 enum TabsCoreDataError: Swift.Error {
-    case fetchedNothing
+    case noAppSettingsRecordWasFound
     case fetchedTooManyRecords
     case selectedTabIdNotPresent
 }
@@ -68,9 +68,8 @@ final class TabsDBClient {
         managedContext.performAndWait {
             do {
                 let result = try managedContext.fetch(request)
-                guard !result.isEmpty else {
-                    throw TabsCoreDataError.fetchedNothing
-                }
+                // return empty array instead of error when
+                // no records were found in db
                 tabs = result.compactMap {Tab(cdTab: $0)}
             } catch {
                 fetchError = error
@@ -92,7 +91,7 @@ final class TabsDBClient {
             do {
                 let result = try managedContext.fetch(fetchRequest)
                 guard !result.isEmpty else {
-                    throw TabsCoreDataError.fetchedNothing
+                    throw TabsCoreDataError.noAppSettingsRecordWasFound
                 }
                 guard let cdSettings = result.first else {
                     throw TabsCoreDataError.fetchedTooManyRecords

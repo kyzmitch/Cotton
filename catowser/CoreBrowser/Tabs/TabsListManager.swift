@@ -66,6 +66,9 @@ public final class TabsListManager {
                 switch result {
                 case .success(let tabsArray):
                     guard let `self` = self else { return }
+                    guard !tabsArray.isEmpty else {
+                        return
+                    }
                     self.tabs.value = tabsArray
                     // for .pad tabs view observable to render all tabs at once
                     // this isn't necessary for .phone because different tabs screen is used
@@ -79,7 +82,7 @@ public final class TabsListManager {
                     }
                     self.disposables.append(initialDisposable)
                 case .failure(let error):
-                    print("not complete async init of \(TabsListManager.self): \(error)")
+                    print("Failed to fetch tabs from storage or no tabs at all: \(TabsListManager.self): \(error)")
                 }
         }
         
