@@ -48,8 +48,8 @@ public final class TabsListManager {
         // to send data from storage to it
         let delay = TimeInterval(1)
         
-        subscribeForDbTabsChange(with: delay)
-        subscribeForDbSelectedTabIdChange(with: delay)
+        initTabs(with: delay)
+        initSelectedTabId(with: delay)
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
     }
@@ -58,8 +58,8 @@ public final class TabsListManager {
         disposables.forEach { $0?.dispose() }
     }
     
-    func subscribeForDbTabsChange(with delay: TimeInterval) {
-        disposables.append(storage.fetchAllTabs()
+    func initTabs(with delay: TimeInterval) {
+        let disposable = storage.fetchAllTabs()
             .delay(delay, on: scheduler)
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
@@ -81,11 +81,13 @@ public final class TabsListManager {
                 case .failure(let error):
                     print("not complete async init of \(TabsListManager.self): \(error)")
                 }
-        })
+        }
+        
+        disposables.append(disposable)
     }
     
-    func subscribeForDbSelectedTabIdChange(with delay: TimeInterval) {
-        disposables.append(storage.fetchSelectedTabId()
+    func initSelectedTabId(with delay: TimeInterval) {
+        let disposable = storage.fetchSelectedTabId()
             .delay(delay, on: scheduler)
             .observe(on: scheduler)
             .startWithResult({ [weak self] result in
@@ -97,11 +99,12 @@ public final class TabsListManager {
                 case .failure(let error):
                     print("Selected tab id wasn't found, probably it is first app start \(error)")
                 }
-        }))
+        })
+        disposables.append(disposable)
     }
     
     func subscribeForTabsCountChange() {
-        disposables.append(self.tabs.signal
+        let disposable = tabs.signal
             .map { $0.count }
             .observe(on: UIScheduler())
             .observeValues { [weak self] tabsCount in
@@ -110,11 +113,12 @@ public final class TabsListManager {
                 }
 
                 self.observers.forEach { $0.update(with: tabsCount) }
-        })
+        }
+        disposables.append(disposable)
     }
     
     func subscribeForSelectedTabIdChange() {
-        disposables.append(selectedTabId.signal
+        let disposable = selectedTabId.signal
             .observe(on: UIScheduler())
             .observeValues { [weak self] newSelectedTabId in
                 guard let `self` = self else {
@@ -123,7 +127,8 @@ public final class TabsListManager {
                 if let tabTuple = self.tabs.value.element(by: newSelectedTabId) {
                     self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType) }
                 }
-        })
+        }
+        disposables.append(disposable)
     }
 
     public var tabsCount: Int {

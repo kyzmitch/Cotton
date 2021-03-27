@@ -141,8 +141,8 @@ final class TabsResource {
             }
             
             do {
-                let selectedIndex = try self.dbClient.selectedTabId()
-                observer.send(value: selectedIndex)
+                let selectedTabId = try self.dbClient.selectedTabId()
+                observer.send(value: selectedTabId)
                 observer.sendCompleted()
             } catch {
                 observer.send(error: .selectedTabId(error))
@@ -152,6 +152,7 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
+    /// Remembers tab identifier as selected one
     func selectTab(_ tab: Tab) -> SignalProducer<Void, TabResourceError> {
         let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {

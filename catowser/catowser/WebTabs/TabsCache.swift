@@ -16,7 +16,7 @@ fileprivate extension String {
 }
 
 /**
- Declare Tab storage type in host app instead of `CoreBrowser`
+ Declaring Tab storage type in host app instead of `CoreBrowser`
  to allow use app settings like default tab content which only can be stored in host app,
  because it can't be passed as an argument to Tabs manager since it is a singleton.
  Anyway, now it's not a singletone, since we're passing tabs store instance to it, but
