@@ -45,8 +45,10 @@ public extension Tab {
                 }
                 return .site(actualSite)
             case 2:
-                return .favorites
+                return .homepage
             case 3:
+                return .favorites
+            case 4:
                 return .topSites
             default:
                 print("Unexpected Tab.ContentType \(rawValue)")
