@@ -49,7 +49,6 @@ public final class TabsListManager {
         let delay = TimeInterval(1)
         
         initTabs(with: delay)
-        initSelectedTabId(with: delay)
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
     }
@@ -69,24 +68,21 @@ public final class TabsListManager {
                     return .init(value: tabs)
                 }
                 let tab = Tab(contentType: self.positioning.contentState)
-                return self.storage.add(tab: tab)
-                    .on(value: { [weak self] (addedTab) in
-                        self?.selectedTabId.value = addedTab.id
-                    })
-                    .map {[$0]}
+                return self.storage.add(tab: tab, andSelect: true).map {[$0]}
             })
+            .combineLatest(with: storage.fetchSelectedTabId())
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
                 switch result {
-                case .success(let tabsArray):
+                case .success(let tuple):
                     guard let `self` = self else { return }
+                    let tabsArray = tuple.0
+                    let tabIdentifier = tuple.1
                     guard !tabsArray.isEmpty else {
                         return
                     }
                     self.tabs.value = tabsArray
-                    // for .pad tabs view observable to render all tabs at once
-                    // this isn't necessary for .phone because different tabs screen is used
-                    // also, it's better than adding tab one by one
+                    self.selectedTabId.value = tabIdentifier
                     let disposable = UIScheduler().schedule({ [weak self] in
                         // actually only one observer will use it
                         self?.observers.forEach { $0.initializeObserver(with: tabsArray) }
@@ -100,23 +96,6 @@ public final class TabsListManager {
                 }
         }
         
-        disposables.append(disposable)
-    }
-    
-    func initSelectedTabId(with delay: TimeInterval) {
-        let disposable = storage.fetchSelectedTabId()
-            .delay(delay, on: scheduler)
-            .observe(on: scheduler)
-            .startWithResult({ [weak self] result in
-                switch result {
-                case .success(let tabIdentifier):
-                    guard let `self` = self else { return }
-                    // need to wait before tabs fetch will be finished
-                    self.selectedTabId.value = tabIdentifier
-                case .failure(let error):
-                    print("Selected tab id wasn't found, probably it is first app start \(error)")
-                }
-        })
         disposables.append(disposable)
     }
     
@@ -225,7 +204,7 @@ extension TabsListManager: TabsSubject {
         let newIndex = positioning.addPosition.addTabAndReturnIndex(tab,
                                                                     to: self.tabs,
                                                                     currentlySelectedId: selectedTabId.value)
-        _ = storage.add(tab: tab).startWithResult { [weak self] (result) in
+        _ = storage.add(tab: tab, andSelect: false).startWithResult { [weak self] (result) in
             if case .failure(let storageError) = result {
                 print("Failed to add a tab to storage \(storageError)")
             } else {
