@@ -106,6 +106,9 @@ public final class TabsListManager {
     
     func subscribeForTabsCountChange() {
         let disposable = tabs.signal
+            .skipRepeats({ (old, new) -> Bool in
+                return old.count == new.count
+            })
             .map { $0.count }
             .observe(on: UIScheduler())
             .observeValues { [weak self] tabsCount in
