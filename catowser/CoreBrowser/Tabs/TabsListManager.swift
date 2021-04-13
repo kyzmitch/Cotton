@@ -154,6 +154,7 @@ public final class TabsListManager {
 
     fileprivate struct NotInitializedYet: Error {}
     fileprivate struct SelectedNotFound: Error {}
+    fileprivate struct WrongTabContent: Error {}
 }
 
 extension TabsListManager: IndexSelectionContext {
@@ -267,7 +268,6 @@ extension TabsListManager: TabsSubject {
             throw NotInitializedYet()
         }
         if case .site = tabTuple.tab.contentType, image == nil {
-            struct WrongTabContent: Error {}
             throw WrongTabContent()
         }
         var tabCopy = tabTuple.tab

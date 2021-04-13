@@ -232,6 +232,8 @@
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
+		8AB022EF26258B110053AFF0 /* CoreBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB022EE26258B110053AFF0 /* CoreBrowserTests.swift */; };
+		8AB022F126258B110053AFF0 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
@@ -348,6 +350,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8AE6D1682350FF35006316AD;
 			remoteInfo = HttpKit;
+		};
+		8AB022F226258B110053AFF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6094E71B221FD2B9004269A2;
+			remoteInfo = CoreBrowser;
 		};
 		8AC4367924798BDB008DD663 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -609,6 +618,9 @@
 		8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCacheErrors.swift; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		8AB022EC26258B110053AFF0 /* CoreBrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreBrowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AB022EE26258B110053AFF0 /* CoreBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBrowserTests.swift; sourceTree = "<group>"; };
+		8AB022F026258B110053AFF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsDBClient.swift; sourceTree = "<group>"; };
 		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -725,6 +737,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AB022E926258B110053AFF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8AB022F126258B110053AFF0 /* CoreBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1009,6 +1029,7 @@
 				8AC4366924798BC8008DD663 /* SPMCommon */,
 				8AC4367524798BDB008DD663 /* SPMCommon */,
 				8AF43376248EBB2A0047452B /* CssParser */,
+				8AB022ED26258B110053AFF0 /* CoreBrowserTests */,
 				8435A4981EED5E700020102F /* Products */,
 				E35CED317EE4DF68ED3EDD9C /* Pods */,
 				5906B47E95A37FC0872DBD1A /* Frameworks */,
@@ -1027,6 +1048,7 @@
 				8AC4367424798BDB008DD663 /* SPMCommon.framework */,
 				8AF43375248EBB2A0047452B /* CssParser.framework */,
 				8AE63B54248EC38300D6D2E4 /* JSPluginsTests.xctest */,
+				8AB022EC26258B110053AFF0 /* CoreBrowserTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1210,6 +1232,15 @@
 				8A745C102480295B00A379AD /* TabsEnvironment.swift */,
 			);
 			path = Environment;
+			sourceTree = "<group>";
+		};
+		8AB022ED26258B110053AFF0 /* CoreBrowserTests */ = {
+			isa = PBXGroup;
+			children = (
+				8AB022EE26258B110053AFF0 /* CoreBrowserTests.swift */,
+				8AB022F026258B110053AFF0 /* Info.plist */,
+			);
+			path = CoreBrowserTests;
 			sourceTree = "<group>";
 		};
 		8AC4366924798BC8008DD663 /* SPMCommon */ = {
@@ -1551,6 +1582,24 @@
 			productReference = 8A8035EF24446234000E035F /* DNSProxy.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		8AB022EB26258B110053AFF0 /* CoreBrowserTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8AB022F626258B110053AFF0 /* Build configuration list for PBXNativeTarget "CoreBrowserTests" */;
+			buildPhases = (
+				8AB022E826258B110053AFF0 /* Sources */,
+				8AB022E926258B110053AFF0 /* Frameworks */,
+				8AB022EA26258B110053AFF0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8AB022F326258B110053AFF0 /* PBXTargetDependency */,
+			);
+			name = CoreBrowserTests;
+			productName = CoreBrowserTests;
+			productReference = 8AB022EC26258B110053AFF0 /* CoreBrowserTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8AC4367324798BDB008DD663 /* SPMCommon */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AC4367D24798BDB008DD663 /* Build configuration list for PBXNativeTarget "SPMCommon" */;
@@ -1638,7 +1687,7 @@
 		8435A48F1EED5E700020102F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
@@ -1668,6 +1717,9 @@
 					8A8035EE24446234000E035F = {
 						CreatedOnToolsVersion = 11.4;
 						ProvisioningStyle = Automatic;
+					};
+					8AB022EB26258B110053AFF0 = {
+						CreatedOnToolsVersion = 12.3;
 					};
 					8AC4367324798BDB008DD663 = {
 						CreatedOnToolsVersion = 11.5;
@@ -1713,6 +1765,7 @@
 				8AC4367324798BDB008DD663 /* SPMCommon */,
 				8AF43374248EBB2A0047452B /* CssParser */,
 				8AE63B53248EC38300D6D2E4 /* JSPluginsTests */,
+				8AB022EB26258B110053AFF0 /* CoreBrowserTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1769,6 +1822,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A8035ED24446234000E035F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AB022EA26258B110053AFF0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2254,6 +2314,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8AB022E826258B110053AFF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8AB022EF26258B110053AFF0 /* CoreBrowserTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8AC4367024798BDB008DD663 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2352,6 +2420,11 @@
 			isa = PBXTargetDependency;
 			target = 8AE6D1682350FF35006316AD /* HttpKit */;
 			targetProxy = 8A80D0DC2451B3980025528D /* PBXContainerItemProxy */;
+		};
+		8AB022F326258B110053AFF0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
+			targetProxy = 8AB022F226258B110053AFF0 /* PBXContainerItemProxy */;
 		};
 		8AC4367A24798BDB008DD663 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2818,6 +2891,49 @@
 			};
 			name = Release;
 		};
+		8AB022F426258B110053AFF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CoreBrowserTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreBrowserTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8AB022F526258B110053AFF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = CoreBrowserTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreBrowserTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8AC4367E24798BDB008DD663 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3117,6 +3233,15 @@
 			buildConfigurations = (
 				8A8035F924446234000E035F /* Debug */,
 				8A8035FA24446234000E035F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8AB022F626258B110053AFF0 /* Build configuration list for PBXNativeTarget "CoreBrowserTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8AB022F426258B110053AFF0 /* Debug */,
+				8AB022F526258B110053AFF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
