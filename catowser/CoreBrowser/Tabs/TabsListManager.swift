@@ -48,9 +48,9 @@ public final class TabsListManager {
         // to send data from storage to it
         let delay = TimeInterval(1)
         
-        initTabs(with: delay)
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
+        initTabs(with: delay)
     }
 
     deinit {
@@ -70,7 +70,12 @@ public final class TabsListManager {
                 let tab = Tab(contentType: self.positioning.contentState)
                 return self.storage.add(tab: tab, andSelect: true).map {[$0]}
             })
-            .combineLatest(with: storage.fetchSelectedTabId())
+            .flatMap(.latest, { [weak self] (tabs) -> SignalProducer<([Tab], UUID), TabStorageError> in
+                guard let `self` = self else {
+                    return .init(error: .zombieSelf)
+                }
+                return self.storage.fetchSelectedTabId().map {(tabs, $0)}
+            })
             .observe(on: scheduler)
             .startWithResult { [weak self] result in
                 switch result {
