@@ -15,9 +15,10 @@ public enum TabResourceError: Swift.Error {
     case insertError(Error)
     case deleteError(Error)
     case fetchAllError(Error)
-    case selectedTabIndex(Error)
+    case selectedTabId(Error)
 }
 
 public enum TabStorageError: Swift.Error {
+    case zombieSelf
     case dbResourceError(TabResourceError)
 }

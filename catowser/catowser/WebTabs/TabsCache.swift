@@ -16,7 +16,7 @@ fileprivate extension String {
 }
 
 /**
- Declare Tab storage type in host app instead of `CoreBrowser`
+ Declaring Tab storage type in host app instead of `CoreBrowser`
  to allow use app settings like default tab content which only can be stored in host app,
  because it can't be passed as an argument to Tabs manager since it is a singleton.
  Anyway, now it's not a singletone, since we're passing tabs store instance to it, but
@@ -39,15 +39,23 @@ final class TabsCacheProvider {
 }
 
 extension TabsCacheProvider: TabsStoragable {
-    func fetchSelectedIndex() -> SignalProducer<UInt, TabStorageError> {
-        return tabsDbResource.selectedTabIndex()
+    func fetchSelectedTabId() -> SignalProducer<UUID, TabStorageError> {
+        return tabsDbResource.selectedTabId()
             .mapError({ (resourceError) -> TabStorageError in
                 return .dbResourceError(resourceError)
             }).start(on: scheduler)
     }
 
-    func select(tab: Tab) -> SignalProducer<Int, TabStorageError> {
-        return SignalProducer<Int, TabStorageError>.init(value: 0).start(on: scheduler)
+    func select(tab: Tab) -> SignalProducer<UUID, TabStorageError> {
+        return tabsDbResource
+            .selectTab(tab)
+            .mapError({ (resourceError) -> TabStorageError in
+                return .dbResourceError(resourceError)
+            })
+            .map({ _ -> UUID in
+                return tab.id
+            })
+            .start(on: scheduler)
     }
 
     func fetchAllTabs() -> SignalProducer<[Tab], TabStorageError> {
@@ -57,7 +65,11 @@ extension TabsCacheProvider: TabsStoragable {
             }).start(on: scheduler)
     }
 
-    func add(tab: Tab) {
-        // TODO: add code
+    func add(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabStorageError> {
+        return tabsDbResource
+            .remember(tab: tab, andSelect: select)
+            .mapError({ (resourceError) -> TabStorageError in
+                return .dbResourceError(resourceError)
+            }).start(on: scheduler)
     }
 }

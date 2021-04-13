@@ -14,15 +14,14 @@ public protocol TabsStoragable {
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int
 
-    /// The selected index. Should be presented anyway, so,
-    /// storage must contain at least one tab and it is `blank` tab.
-    func fetchSelectedIndex() -> SignalProducer<UInt, TabStorageError>
+    /// The identifier of selected tab.
+    func fetchSelectedTabId() -> SignalProducer<UUID, TabStorageError>
     /// Changes selected tab only if it is presented in storage.
     ///
     /// - Parameter tab: The tab object to be selected.
     ///
-    /// - Returns: An integer index.
-    func select(tab: Tab) -> SignalProducer<Int, TabStorageError>
+    /// - Returns: An identifier of the selected tab.
+    func select(tab: Tab) -> SignalProducer<UUID, TabStorageError>
 
     /// Loads tabs data from storage.
     ///
@@ -32,5 +31,5 @@ public protocol TabsStoragable {
     /// Adds a tab to storage
     ///
     /// - Parameter tab: The tab object to be added.
-    func add(tab: Tab)
+    func add(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabStorageError>
 }

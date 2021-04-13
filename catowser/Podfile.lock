@@ -11,11 +11,10 @@ DEPENDENCIES:
   - SWXMLHash (~> 5.0.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - ReactiveSwift
     - SwiftLint
     - SwiftSoup
-  trunk:
     - SWXMLHash
 
 SPEC CHECKSUMS:
