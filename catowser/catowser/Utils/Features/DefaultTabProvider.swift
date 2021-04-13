@@ -57,42 +57,10 @@ extension DefaultTabProvider: TabsPositioning {
     var contentState: Tab.ContentType { .topSites }
     
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }
+    
+    var defaultSelectedTabId: UUID { .notPossibleId }
 }
 
-/// Twin type for `Tab.ContentType` to have `rawValue`
-/// and use it for settings.
-enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
-    case blank
-    case homepage
-    case favorites
-    case topSites
-    
-    var contentType: Tab.ContentType {
-        switch self {
-        case .blank:
-            return .blank
-        case .homepage:
-            return .homepage
-        case .favorites:
-            return .favorites
-        case .topSites:
-            return .topSites
-        }
-    }
-    
-    public var description: String {
-        let key: String
-        
-        switch self {
-        case .blank:
-            key = "txt_tab_content_blank"
-        case .homepage:
-            key = "txt_tab_content_homepage"
-        case .favorites:
-            key = "txt_tab_content_favorites"
-        case .topSites:
-            key = "txt_tab_content_top_sites"
-        }
-        return NSLocalizedString(key, comment: "")
-    }
+private extension UUID {
+    static let notPossibleId: UUID = .init(uuid: (0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))
 }

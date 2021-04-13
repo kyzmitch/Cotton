@@ -178,7 +178,8 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     }
 
     func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
-        screenshotView.image = tab.preview
+        var tabCopy = tab
+        screenshotView.image = tabCopy.preview
         
         titleText.text = tab.title
         siteTitleDisposable?.dispose()

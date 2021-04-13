@@ -16,9 +16,9 @@ fileprivate extension String {
 }
 
 final class TabsResource {
-    private var store: TabsStore
+    private var dbClient: TabsDBClient
     
-    /// Needs to be checked on every access to `store` to not use wrong context
+    /// Needs to be checked on every access to `dbClient` to not use wrong context
     /// functions can return empty data if it's not initialized state
     private var isStoreInitialized = false
     
@@ -38,8 +38,8 @@ final class TabsResource {
          privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
-        let dummyStore: TabsStore = .init(temporaryContext)
-        store = dummyStore
+        let dummyStore: TabsDBClient = .init(temporaryContext)
+        dbClient = dummyStore
         queue.async { [weak self] in
             guard let self = self else {
                 fatalError("Tabs Resource is nil in init")
@@ -47,13 +47,14 @@ final class TabsResource {
             guard let correctContext = privateContextCreator() else {
                 fatalError("Tabs Resource closure returns no private CoreData context")
             }
-            self.store = .init(correctContext)
+            self.dbClient = .init(correctContext)
             self.isStoreInitialized = true
         }
     }
     
-    func remember(tab: Tab) -> SignalProducer<Void, TabResourceError> {
-        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
+    /// Saves the tab in DB without selecting it
+    func remember(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabResourceError> {
+        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -64,8 +65,11 @@ final class TabsResource {
             }
             
             do {
-                try self.store.insert(tab: tab)
-                observer.send(value: ())
+                try self.dbClient.insert(tab: tab)
+                if select {
+                    try self.dbClient.select(tab: tab)
+                }
+                observer.send(value: tab)
                 observer.sendCompleted()
             } catch {
                 observer.send(error: .insertError(error))
@@ -76,6 +80,7 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
+    /// Removes the tab from DB
     func forget(tab: Tab) -> SignalProducer<Void, TabResourceError> {
         let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
@@ -88,7 +93,7 @@ final class TabsResource {
             }
             
             do {
-                try self.store.remove(tab: tab)
+                try self.dbClient.remove(tab: tab)
                 observer.send(value: ())
                 observer.sendCompleted()
             } catch {
@@ -99,6 +104,9 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
+    /// Gets all tabs recorded in DB. Currently there is only one session, but later
+    /// it should be possible to store and read tabs from different sessions like
+    /// private browser session tabs & usual tabs.
     func tabsFromLastSession() -> SignalProducer<[Tab], TabResourceError> {
         let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
@@ -111,7 +119,7 @@ final class TabsResource {
             }
             
             do {
-                let tabs = try self.store.fetchAllTabs()
+                let tabs = try self.dbClient.fetchAllTabs()
                 observer.send(value: tabs)
                 observer.sendCompleted()
             } catch {
@@ -122,8 +130,10 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
-    func selectedTabIndex() -> SignalProducer<UInt, TabResourceError> {
-        let producer: SignalProducer<UInt, TabResourceError> = .init { [weak self] (observer, lifetime) in
+    /// Gets an identifier of a selected tab or an error if no tab is present which isn't possible
+    /// at least blank tab should be present.
+    func selectedTabId() -> SignalProducer<UUID, TabResourceError> {
+        let producer: SignalProducer<UUID, TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -134,11 +144,35 @@ final class TabsResource {
             }
             
             do {
-                let selectedIndex = try self.store.selectedTabIndex()
-                observer.send(value: selectedIndex)
+                let selectedTabId = try self.dbClient.selectedTabId()
+                observer.send(value: selectedTabId)
                 observer.sendCompleted()
             } catch {
-                observer.send(error: .selectedTabIndex(error))
+                observer.send(error: .selectedTabId(error))
+            }
+            
+        }
+        return producer.observe(on: scheduler)
+    }
+    
+    /// Remembers tab identifier as selected one
+    func selectTab(_ tab: Tab) -> SignalProducer<Void, TabResourceError> {
+        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
+            
+            do {
+                try self.dbClient.select(tab: tab)
+                observer.send(value: ())
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .selectedTabId(error))
             }
             
         }

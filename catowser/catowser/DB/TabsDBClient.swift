@@ -1,5 +1,5 @@
 //
-//  TabsStore.swift
+//  TabsDBClient.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 9/28/20.
@@ -11,17 +11,19 @@ import CoreBrowser
 import HttpKit
 
 enum TabsCoreDataError: Swift.Error {
-    case fetchedNothing
+    case noAppSettingsRecordWasFound
     case fetchedTooManyRecords
+    case selectedTabIdNotPresent
 }
 
-final class TabsStore {
+final class TabsDBClient {
     private let managedContext: NSManagedObjectContext
     
     init(_ managedContext: NSManagedObjectContext) {
         self.managedContext = managedContext
     }
     
+    /// Adds the tab without selecting it
     func insert(tab: Tab) throws {
         var saveError: Error?
         managedContext.performAndWait {
@@ -37,6 +39,9 @@ final class TabsStore {
         }
     }
     
+    /// Removes the tab, if it was selected it doesn't do de-selection logic
+    /// De-selection should happen on application side because different auto-selection
+    /// strategies could be used and it shouldn't be performed as a side-effect
     func remove(tab: Tab) throws {
         var cdError: Error?
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDTab.fetchRequest()
@@ -55,6 +60,7 @@ final class TabsStore {
         }
     }
     
+    /// Gets all stored tabs
     func fetchAllTabs() throws -> [Tab] {
         var fetchError: Error?
         var tabs = [Tab]()
@@ -62,6 +68,8 @@ final class TabsStore {
         managedContext.performAndWait {
             do {
                 let result = try managedContext.fetch(request)
+                // return empty array instead of error when
+                // no records were found in db
                 tabs = result.compactMap {Tab(cdTab: $0)}
             } catch {
                 fetchError = error
@@ -73,24 +81,25 @@ final class TabsStore {
         return tabs
     }
     
-    /// Should be only one tab record which has selected state
-    func selectedTabIndex() throws -> UInt {
+    /// Gets currently selected tab identifier or throws an exception in case of error
+    func selectedTabId() throws -> UUID {
         var fetchError: Error?
-        var tabIndex: UInt = 0
-        let fetchRequest: NSFetchRequest<CDTab> = CDTab.fetchRequest()
-        let query = NSPredicate(format: "%K = 1", "visualState")
+        var tabIdentifier: UUID?
+        let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
         fetchRequest.fetchLimit = 1
-        fetchRequest.predicate = query
         managedContext.performAndWait {
             do {
                 let result = try managedContext.fetch(fetchRequest)
                 guard !result.isEmpty else {
-                    throw TabsCoreDataError.fetchedNothing
+                    throw TabsCoreDataError.noAppSettingsRecordWasFound
                 }
-                guard let cdTab = result.first else {
+                guard let cdSettings = result.first else {
                     throw TabsCoreDataError.fetchedTooManyRecords
                 }
-                
+                guard let actualSelectedTabId = cdSettings.selectedTabId else {
+                    throw TabsCoreDataError.selectedTabIdNotPresent
+                }
+                tabIdentifier = actualSelectedTabId
             } catch {
                 fetchError = error
             }
@@ -98,7 +107,60 @@ final class TabsStore {
         if let cdError = fetchError {
             throw cdError
         }
-        return tabIndex
+        guard let resultId = tabIdentifier else {
+            throw TabsCoreDataError.selectedTabIdNotPresent
+        }
+        return resultId
+    }
+    
+    /// Updates selected tab identifier using it from the `tab` provided as a argument
+    func select(tab: Tab) throws {
+        try setSelectedTab(uuid: tab.id)
+    }
+    
+    /// Updates selected tab identifier using `uuid` argument
+    func setSelectedTab(uuid: UUID) throws {
+        var setError: Error?
+        
+        managedContext.performAndWait {
+            do {
+                try setSettingsSelectedTabId(uuid)
+            } catch {
+                setError = error
+            }
+        }
+        if let cdError = setError {
+            throw cdError
+        }
+    }
+    
+    /// Updates existing db record or creates a brand new one for selected tab identifier
+    private func setSettingsSelectedTabId(_ uuid: UUID) throws {
+        var fetchError: Error?
+        let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        managedContext.performAndWait {
+            do {
+                let result = try managedContext.fetch(fetchRequest)
+                if result.isEmpty {
+                    _ = CDAppSettings(context: managedContext, selectedTabIdentifier: uuid)
+                    try managedContext.save()
+                } else {
+                    if let existingCdSettings = result.first {
+                        existingCdSettings.selectedTabId = uuid
+                    } else {
+                        _ = CDAppSettings(context: managedContext, selectedTabIdentifier: uuid)
+                    }
+                    try managedContext.save()
+                }
+            } catch {
+                fetchError = error
+            }
+        }
+        
+        if let cdError = fetchError {
+            throw cdError
+        }
     }
 }
 
@@ -137,9 +199,6 @@ fileprivate extension Tab {
         guard let cachedContentType = Tab.ContentType.create(rawValue: cdTab.contentType, site: cachedSite) else {
             return nil
         }
-        guard let visualState = Tab.VisualState(rawValue: cdTab.visualState) else {
-            return nil
-        }
         guard let identifier = cdTab.id else {
             return nil
         }
@@ -147,7 +206,7 @@ fileprivate extension Tab {
             return nil
         }
         self.init(contentType: cachedContentType,
-                  selected: visualState == .selected,
+                  selected: false,
                   idenifier: identifier,
                   created: createdTime)
         
@@ -159,7 +218,6 @@ fileprivate extension CDTab {
         self.init(context: context)
         id = tab.id
         contentType = tab.contentType.rawValue
-        visualState = tab.visualState.rawValue
         addedTimestamp = tab.addedTimestamp
         if case .site(let siteContent) = tab.contentType {
             site = CDSite(context: context, site: siteContent)
@@ -173,5 +231,12 @@ fileprivate extension CDSite {
         searchSuggestion = site.searchSuggestion
         userSpecifiedTitle = site.userSpecifiedTitle
         siteUrl = site.urlInfo.domainURL
+    }
+}
+
+fileprivate extension CDAppSettings {
+    convenience init(context: NSManagedObjectContext, selectedTabIdentifier: UUID) {
+        self.init(context: context)
+        self.selectedTabId = selectedTabIdentifier
     }
 }
