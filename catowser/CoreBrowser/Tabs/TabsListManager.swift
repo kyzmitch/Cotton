@@ -87,11 +87,12 @@ public final class TabsListManager {
                         return
                     }
                     self.tabs.value = tabsArray
-                    self.selectedTabId.value = tabIdentifier
                     let disposable = UIScheduler().schedule({ [weak self] in
                         // actually only one observer will use it
                         self?.observers.forEach { $0.initializeObserver(with: tabsArray) }
                     })
+                    // update selected tab index only after initializing observers with current tabs
+                    self.selectedTabId.value = tabIdentifier
                     guard let initialDisposable = disposable else {
                         return
                     }
