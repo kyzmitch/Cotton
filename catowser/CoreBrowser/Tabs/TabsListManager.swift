@@ -129,9 +129,10 @@ public final class TabsListManager {
                 guard let `self` = self else {
                     return
                 }
-                if let tabTuple = self.tabs.value.element(by: newSelectedTabId) {
-                    self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType) }
+                guard let tabTuple = self.tabs.value.element(by: newSelectedTabId) else {
+                    return
                 }
+                self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType) }
         }
         disposables.append(disposable)
     }
@@ -310,12 +311,13 @@ extension TabsListManager: TabsSubject {
 private extension TabsListManager {
     func resetToOneTab() {
         tabs.value.removeAll()
-        let tab: Tab = .init(contentType: positioning.contentState, selected: true)
+        let newTabId = self.positioning.defaultSelectedTabId
+        let tab: Tab = .init(contentType: positioning.contentState, selected: true, idenifier: newTabId)
 
         tabs.value.append(tab)
         // No need to change selected index because it is already 0
         // but it is needed to update web view content
-        selectedTabId.value = self.positioning.defaultSelectedTabId
+        selectedTabId.value = newTabId
 
         switch positioning.addSpeed {
         case .immediately:
