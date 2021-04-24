@@ -74,7 +74,30 @@ final class TabsResource {
             } catch {
                 observer.send(error: .insertError(error))
             }
+        }
+        
+        return producer.observe(on: scheduler)
+    }
+    
+    /// Updates tab content if tab with same identifier was found in DB or creates completely new tab
+    func update(tab: Tab) -> SignalProducer<Tab, TabResourceError> {
+        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, lifetime) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
             
+            do {
+                try self.dbClient.update(tab: tab)
+                observer.send(value: tab)
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .insertError(error))
+            }
         }
         
         return producer.observe(on: scheduler)

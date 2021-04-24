@@ -32,4 +32,9 @@ public protocol TabsStoragable {
     ///
     /// - Parameter tab: The tab object to be added.
     func add(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabStorageError>
+    
+    /// Updates tab content
+    ///
+    /// - Parameter tab: The tab object to be updated. Usually only tab content needs to be updated.
+    func update(tab: Tab) -> SignalProducer<Tab, TabStorageError>
 }

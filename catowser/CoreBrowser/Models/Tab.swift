@@ -34,7 +34,7 @@ public extension Tab {
         }
         
         /// Returns .blank for wrong parameters
-        public static func create(rawValue: Int16, site: Site?) -> ContentType? {
+        public static func create(rawValue: Int16, site: Site? = nil) -> ContentType? {
             switch rawValue {
             case 0:
                 return .blank

@@ -253,6 +253,11 @@ extension TabsListManager: TabsSubject {
         tabTuple.tab.preview = nil
         tabs.value[tabTuple.index] = tabTuple.tab
 
+        _ = storage.update(tab: tabTuple.tab).startWithResult({ (result) in
+            if case .failure(let storageError) = result {
+                print("Failed to update tab content to storage \(storageError)")
+            }
+        })
         // Need to notify observers to allow them
         // to update title for tab view
         DispatchQueue.main.async {

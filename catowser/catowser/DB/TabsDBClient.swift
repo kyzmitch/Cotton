@@ -39,6 +39,37 @@ final class TabsDBClient {
         }
     }
     
+    /// Updates existing tab record with new content.
+    /// E.g. when it was topSites and now it is actual web site
+    func update(tab: Tab) throws {
+        var saveError: Error?
+        let fetchRequest: NSFetchRequest<CDTab> = CDTab.fetchRequest()
+        let query = NSPredicate(format: "%K = %@", "id", tab.id as CVarArg)
+        fetchRequest.predicate = query
+        
+        managedContext.performAndWait {
+            do {
+                let result = try managedContext.fetch(fetchRequest)
+                if !result.isEmpty, let cdTab = result.first {
+                    cdTab.contentType = tab.contentType.rawValue
+                    if let newSite = tab.site {
+                        let cdSite = CDSite(context: managedContext, site: newSite)
+                        cdSite.tab = cdTab
+                        cdTab.site = cdSite
+                    }
+                } else {
+                    _ = CDTab(context: managedContext, tab: tab)
+                }
+                try managedContext.save()
+            } catch {
+                saveError = error
+            }
+        }
+        if let actualError = saveError {
+            throw actualError
+        }
+    }
+    
     /// Removes the tab, if it was selected it doesn't do de-selection logic
     /// De-selection should happen on application side because different auto-selection
     /// strategies could be used and it shouldn't be performed as a side-effect
@@ -231,6 +262,17 @@ fileprivate extension CDSite {
         searchSuggestion = site.searchSuggestion
         userSpecifiedTitle = site.userSpecifiedTitle
         siteUrl = site.urlInfo.domainURL
+        settings = CDSiteSettings(context: context, siteSettings: site.settings)
+    }
+}
+
+fileprivate extension CDSiteSettings {
+    convenience init(context: NSManagedObjectContext, siteSettings: Site.Settings) {
+        self.init(context: context)
+        blockPopups = siteSettings.blockPopups
+        canLoadPlugins = siteSettings.canLoadPlugins
+        isJsEnabled = siteSettings.isJsEnabled
+        isPrivate = siteSettings.isPrivate
     }
 }
 

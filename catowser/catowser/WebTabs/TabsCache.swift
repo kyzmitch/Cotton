@@ -72,4 +72,12 @@ extension TabsCacheProvider: TabsStoragable {
                 return .dbResourceError(resourceError)
             }).start(on: scheduler)
     }
+    
+    func update(tab: Tab) -> SignalProducer<Tab, TabStorageError> {
+        return tabsDbResource
+            .update(tab: tab)
+            .mapError({ (resourceError) -> TabStorageError in
+                return .dbResourceError(resourceError)
+            }).start(on: scheduler)
+    }
 }
