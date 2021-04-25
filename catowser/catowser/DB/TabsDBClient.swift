@@ -52,6 +52,9 @@ final class TabsDBClient {
                 let result = try managedContext.fetch(fetchRequest)
                 if !result.isEmpty, let cdTab = result.first {
                     cdTab.contentType = tab.contentType.rawValue
+                    if let oldCdSite = cdTab.site {
+                        managedContext.delete(oldCdSite)
+                    }
                     if let newSite = tab.site {
                         let cdSite = CDSite(context: managedContext, site: newSite)
                         cdSite.tab = cdTab
