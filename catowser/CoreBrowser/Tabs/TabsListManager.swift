@@ -282,22 +282,6 @@ extension TabsListManager: TabsSubject {
         tabs.value[tabTuple.index] = tabCopy
     }
 
-    public func selectTab(at indexPath: IndexPath) -> SignalProducer<Tab, TabSubjectError> {
-        // item property is used because `UICollectionView` used
-        guard let tab = tabs.value[safe: indexPath.item] else {
-            return .init(error: .noTabAtSpecifiedIndexToSelect)
-        }
-        
-        // Side effect
-        selectedTabId.value = tab.id
-        return storage.select(tab: tab)
-            .mapError { (_) -> TabSubjectError in
-                return .tabSelectionFailure
-            }.map { (_) -> Tab in
-                return tab
-            }
-    }
-
     public func attach(_ observer: TabsObserver) {
         queue.async { [weak self] in
             self?.observers.append(observer)

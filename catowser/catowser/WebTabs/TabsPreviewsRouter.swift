@@ -19,8 +19,8 @@ final class TabsPreviewsRouter {
         self.animated = animated
     }
 
-    /// Asks presenter to open specific tab in web view
-    func dismiss(andLoad tabContent: Tab.ContentType) {
+    /// Asks presenter to close previews
+    func dismiss() {
         presenter?.viewController.dismiss(animated: false, completion: nil)
     }
 }
