@@ -220,6 +220,7 @@ extension TabsPreviewsViewController: UICollectionViewDelegate {
         let manager = TabsListManager.shared
         tabSelectionDisposable = manager
             .selectTab(at: indexPath)
+            .observe(on: UIScheduler())
             .startWithResult { [weak router] (result) in
                 switch result {
                 case .success(let tab):
