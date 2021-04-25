@@ -60,8 +60,6 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
     }()
 
     private var disposables = [Disposable?]()
-    
-    private var tabSelectionDisposable: Disposable?
 
     private let router: TabsPreviewsRouter
 
@@ -216,19 +214,20 @@ extension TabsPreviewsViewController: UICollectionViewDataSource {
 
 extension TabsPreviewsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tabSelectionDisposable?.dispose()
-        let manager = TabsListManager.shared
-        tabSelectionDisposable = manager
-            .selectTab(at: indexPath)
-            .observe(on: UIScheduler())
-            .startWithResult { [weak router] (result) in
-                switch result {
-                case .success(let tab):
-                    router?.dismiss(andLoad: tab.contentType)
-                case .failure:
-                    print("Failed to select tab")
-                }
-            }
+        var tab: Tab?
+        switch uxState.value {
+        case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
+            tab = dataSource.value[safe: indexPath.item]
+        default: break
+        }
+        
+        guard let correctTab = tab else {
+            assertionFailure("\(#function) selected tab wasn't found")
+            return
+        }
+        
+        TabsListManager.shared.select(tab: correctTab)
+        router.dismiss()
     }
 }
 
@@ -247,7 +246,7 @@ private extension TabsPreviewsViewController {
         // but user maybe don't want to move that tab right away
         TabsListManager.shared.add(tab: tab)
         if select {
-            router.dismiss(andLoad: tab.contentType)
+            router.dismiss()
         }
     }
 }

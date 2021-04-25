@@ -145,7 +145,6 @@ public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
 
 public enum TabSubjectError: Error {
     case tabSelectionFailure
-    case noTabAtSpecifiedIndexToSelect
 }
 
 public protocol TabsSubject {
@@ -165,10 +164,6 @@ public protocol TabsSubject {
     func closeAll()
     /// Remembers selected tab index. Can fail silently if `tab` will not be found in a list.
     func select(tab: Tab)
-    /// Convinient method to select a tab when you don't have `Tab` object at place.
-    ///
-    /// - Returns: selected tab or nothing if it was not found.
-    func selectTab(at indexPath: IndexPath) -> SignalProducer<Tab, TabSubjectError>
     /// Replaces currently active tab by combining two operations
     func replaceSelected(tabContent: Tab.ContentType) throws
     /// Fetches latest tabs.
