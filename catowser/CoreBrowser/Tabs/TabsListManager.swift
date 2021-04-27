@@ -185,25 +185,37 @@ extension TabsListManager: TabsSubject {
     }
 
     public func close(tab: Tab) {
-        // if it is last tab - replace it with a tab with default content
-        if tabs.value.count == 1, let firstTab = tabs.value.first {
-            assert(tab == firstTab, "closing unexpected tab")
-            resetToOneTab()
-            return
-        }
+        _ = storage
+            .remove(tab: tab)
+            .startWithResult({ [weak self] (result) in
+                switch result {
+                case .failure(let dbError):
+                    print("Failure to remove tab from cache: \(dbError)")
+                case .success:
+                    guard let self = self else { return }
+                    // if it is last tab - replace it with a tab with default content
+                    // browser can't function without at least one tab
+                    // so, this is kind of a side effect of removing the only one last tab
+                    if self.tabs.value.count == 1, let firstTab = self.tabs.value.first {
+                        assert(tab == firstTab, "closing unexpected tab")
+                        self.resetToOneTab()
+                        return
+                    }
 
-        guard let tabIndex = tabs.value.firstIndex(of: tab) else {
-            fatalError("closing non existing tab")
-        }
+                    guard let tabIndex = self.tabs.value.firstIndex(of: tab) else {
+                        fatalError("closing non existing tab")
+                    }
 
-        let newIndex = selectionStrategy.autoSelectedIndexBasedOn(self, removedIndex: tabIndex)
-        // need to remove it before changing selected index
-        // otherwise in one case the handler will select closed tab
-        tabs.value.remove(at: tabIndex)
-        guard let selectedTab = tabs.value[safe: newIndex] else {
-            fatalError("Failed to find new selected tab")
-        }
-        selectedTabId.value = selectedTab.id
+                    let newIndex = self.selectionStrategy.autoSelectedIndexBasedOn(self, removedIndex: tabIndex)
+                    // need to remove it before changing selected index
+                    // otherwise in one case the handler will select closed tab
+                    self.tabs.value.remove(at: tabIndex)
+                    guard let selectedTab = self.tabs.value[safe: newIndex] else {
+                        fatalError("Failed to find new selected tab")
+                    }
+                    self.selectedTabId.value = selectedTab.id
+                }
+        })
     }
 
     public func closeAll() {
