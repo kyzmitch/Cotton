@@ -80,4 +80,12 @@ extension TabsCacheProvider: TabsStoragable {
                 return .dbResourceError(resourceError)
             }).start(on: scheduler)
     }
+    
+    func remove(tab: Tab) -> SignalProducer<Tab, TabStorageError> {
+        return tabsDbResource
+            .forget(tab: tab)
+            .mapError({ (resourceError) -> TabStorageError in
+                return .dbResourceError(resourceError)
+            }).start(on: scheduler)
+    }
 }

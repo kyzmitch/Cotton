@@ -104,8 +104,8 @@ final class TabsResource {
     }
     
     /// Removes the tab from DB
-    func forget(tab: Tab) -> SignalProducer<Void, TabResourceError> {
-        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
+    func forget(tab: Tab) -> SignalProducer<Tab, TabResourceError> {
+        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -117,7 +117,7 @@ final class TabsResource {
             
             do {
                 try self.dbClient.remove(tab: tab)
-                observer.send(value: ())
+                observer.send(value: tab)
                 observer.sendCompleted()
             } catch {
                 observer.send(error: .deleteError(error))

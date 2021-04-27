@@ -37,4 +37,9 @@ public protocol TabsStoragable {
     ///
     /// - Parameter tab: The tab object to be updated. Usually only tab content needs to be updated.
     func update(tab: Tab) -> SignalProducer<Tab, TabStorageError>
+    
+    /// Removes tab from cache
+    ///
+    /// - Parameter tab: The tab object to be removed from databse.
+    func remove(tab: Tab) -> SignalProducer<Tab, TabStorageError>
 }
