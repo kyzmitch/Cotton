@@ -110,6 +110,7 @@
 		8A1C1C272485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C252485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift */; };
 		8A1C1C292485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */; };
 		8A1C1C2A2485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */; };
+		8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */; };
 		8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */; };
 		8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */; };
 		8A437DA9247ED376001C1E8B /* TrimmedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA8247ED376001C1E8B /* TrimmedString.swift */; };
@@ -242,6 +243,7 @@
 		8ABA3CD62522608000E304E2 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD42522608000E304E2 /* Database.swift */; };
 		8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD72522623200E304E2 /* TabsResource.swift */; };
 		8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD72522623200E304E2 /* TabsResource.swift */; };
+		8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */; };
 		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -565,6 +567,7 @@
 		8A1C1C22248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+TagsRouterInterface.swift"; sourceTree = "<group>"; };
 		8A1C1C252485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+LinkTagsDelegate.swift"; sourceTree = "<group>"; };
+		8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+URLSessionTaskDelegate.swift"; sourceTree = "<group>"; };
 		8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHostingController+Extension.swift"; sourceTree = "<group>"; };
 		8A437DA8247ED376001C1E8B /* TrimmedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmedString.swift; sourceTree = "<group>"; };
 		8A46AB9A237721FD00DC03E6 /* Network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Network.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Network.framework; sourceTree = DEVELOPER_DIR; };
@@ -625,6 +628,7 @@
 		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		8ABA3CD72522623200E304E2 /* TabsResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsResource.swift; sourceTree = "<group>"; };
+		8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8AC4366A24798BC8008DD663 /* SPMCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMCommon.swift; sourceTree = "<group>"; };
 		8AC4367424798BDB008DD663 /* SPMCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC4367624798BDB008DD663 /* SPMCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMCommon.h; sourceTree = "<group>"; };
@@ -1335,6 +1339,8 @@
 				8AE6D16C2350FF35006316AD /* Info.plist */,
 				8A82CDEF2351095700607162 /* HttpClient.swift */,
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
+				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
+				8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */,
 				8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */,
 				8AF4922A235248CE00183579 /* HttpKitErrors.swift */,
 			);
@@ -2345,6 +2351,7 @@
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */,
 				8A68E41024597E3B0070F338 /* GDNSRequestParams.swift in Sources */,
+				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
 				8A68E41224597E880070F338 /* DnsRR.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
 				8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */,
@@ -2358,6 +2365,7 @@
 				8A62AEE12351D1CE001A9C83 /* GoogleSearchEndpoint.swift in Sources */,
 				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
+				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
 				8A7DCCCD23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
 				8A74188C245086330019695E /* Downloadable.swift in Sources */,

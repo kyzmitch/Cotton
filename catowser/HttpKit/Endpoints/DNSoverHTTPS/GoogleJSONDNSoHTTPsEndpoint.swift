@@ -196,7 +196,7 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func resolvedDomainName(in url: URL) -> AnyPublisher<URL, HttpKit.DnsError> {
-        return url.httpHost
+        return url.cHttpHost
         .mapError { _ -> HttpKit.HttpError in
             return .failedConstructRequestParameters
         }
@@ -205,7 +205,27 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
         .mapError { (kitErr) -> HttpKit.DnsError in
             return .httpError(kitErr)
         }
-        .flatMap { url.updatedHost(with: $0) }
+        .flatMap { url.cUpdatedHost(with: $0) }
         .eraseToAnyPublisher()
     }
+    
+#if swift(>=5.5)
+    @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    public func aaGetIPaddress(ofDomain domainName: String) async throws -> HttpKit.GoogleDNSOverJSONResponse {
+        let endpoint: HttpKit.GDNSjsonEndpoint = try .googleDnsOverHTTPSJson(domainName)
+        let value = try await self.aaMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        return value
+    }
+    
+    @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    public func aaResolvedDomainName(in url: URL) async throws -> URL {
+        guard let hostString = url.httpHost else {
+            // TODO: better to use different error
+            throw HttpKit.HttpError.failedConstructRequestParameters
+        }
+        
+        let ipAddressResponse = try await self.aaGetIPaddress(ofDomain: hostString)
+        return try url.updatedHost(with: ipAddressResponse.ipAddress)
+    }
+#endif
 }

@@ -99,4 +99,13 @@ extension HttpKit.Client where Server == HttpKit.GoogleServer {
         let future = self.cMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
         return future.eraseToAnyPublisher()
     }
+    
+#if swift(>=5.5)
+    @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    public func aaGoogleSearchSuggestions(for text: String) async throws -> HttpKit.GoogleSearchSuggestionsResponse {
+        let endpoint: HttpKit.GSearchEndpoint = try .googleSearchSuggestions(query: text)
+        let value = try await self.aaMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        return value
+    }
+#endif
 }

@@ -19,6 +19,8 @@ extension HttpKit {
         
         private let connectivityManager: NetworkReachabilityManager?
         
+        let sessionTaskDelegate: HttpClientSessionTaskDelegate
+        
         let httpTimeout: TimeInterval
         
         public typealias HostNetState = NetworkReachabilityManager.NetworkReachabilityStatus
@@ -35,6 +37,7 @@ extension HttpKit {
         public init(server: Server, httpTimeout: TimeInterval = 60) {
             self.server = server
             self.httpTimeout = httpTimeout
+            sessionTaskDelegate = .init()
             
             if let manager = NetworkReachabilityManager(host: server.hostString) {
                 connectivityManager = manager

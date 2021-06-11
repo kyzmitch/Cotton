@@ -20,6 +20,7 @@ extension HttpKit {
         case notHttpScheme
         case noHost
         case urlComponentsFail
+        case failToGetUrlFromComponents
         case urlHostReplaceFail
         
         public var localizedDescription: String {
@@ -50,6 +51,15 @@ extension URL {
         return value
     }
     
+    public var httpHost: String? {
+        guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
+            return nil
+        }
+        
+        return host
+    }
+    
+    /// Not required to be public
     public var rxHttpHost: HostProducer {
         guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
             return .init(error: .notHttpScheme)
@@ -62,8 +72,9 @@ extension URL {
         return .init(value: host)
     }
     
+    /// Not required to be public
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public var httpHost: AnyPublisher<String, HttpKit.DnsError> {
+    public var cHttpHost: AnyPublisher<String, HttpKit.DnsError> {
         guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
             return HostPublisher(.failure(.notHttpScheme)).eraseToAnyPublisher()
         }
@@ -74,6 +85,17 @@ extension URL {
         }
         
         return HostPublisher(.success(host)).eraseToAnyPublisher()
+    }
+    
+    func updatedHost(with ipAddress: String) throws -> URL {
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
+            throw HttpKit.DnsError.urlComponentsFail
+        }
+        components.host = ipAddress
+        guard let clearURL = components.url else {
+            throw HttpKit.DnsError.failToGetUrlFromComponents
+        }
+        return clearURL
     }
     
     func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
@@ -88,7 +110,7 @@ extension URL {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func updatedHost(with ipAddress: String) -> ResolvedURLPublisher {
+    func cUpdatedHost(with ipAddress: String) -> ResolvedURLPublisher {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return ResolvedURLPublisher(.failure(.urlComponentsFail))
         }
