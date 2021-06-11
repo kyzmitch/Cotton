@@ -13,6 +13,7 @@ extension HttpKit {
         /* Comon errors related to http client */
         
         case zombySelf
+        case swiftVersionIsTooLowForAsyncAwait
         case failedConstructUrl
         
         case httpFailure(error: Error, request: URLRequest?)
@@ -26,7 +27,9 @@ extension HttpKit {
         case failedEncodeEncodable
         case noInternetConnectionWithHost
         case noHttpResponse
+        case notHttpUrlResponse
         case invalidURL
+        case notGoodStatusCode(Int)
         
         /* Errors specific to endpoints */
         
@@ -43,6 +46,8 @@ extension HttpKit {
                 return "json decoding: \(error.localizedDescription)"
             case .missingRequestParameters(let message):
                 return "missing parameters: \(message)"
+            case .notGoodStatusCode(let statusCode):
+                return "not valid http response status code: \(statusCode)"
             default:
                 return "\(self)"
             }
