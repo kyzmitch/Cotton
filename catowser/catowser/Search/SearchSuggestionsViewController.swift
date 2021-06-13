@@ -13,6 +13,10 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+#if canImport(_Concurrency)
+// this won't be needed after Swift 5.5 will be released
+import _Concurrency
+#endif
 
 fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
@@ -24,7 +28,7 @@ enum SuggestionType {
     case looksLikeURL(String)
 }
 
-protocol SearchSuggestionsListDelegate: class {
+protocol SearchSuggestionsListDelegate: AnyObject {
     func didSelect(_ content: SuggestionType)
 }
 
@@ -62,61 +66,111 @@ final class SearchSuggestionsViewController: UITableViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func prepareSearch(for searchText: String) {
         suggestions.removeAll()
         knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
-        if #available(iOS 13.0, *) {
-            searchSuggestionsCancellable?.cancel()
-            let source = Just<String>(searchText)
-            searchSuggestionsCancellable = source
-                .delay(for: 0.5, scheduler: waitingQueue)
-                .mapError({ (_) -> HttpKit.HttpError in
-                    // workaround to be able to compile case when `Just` has no error type for Failure
-                    // but it is required to be able to use `flatMap` in next call
-                    // another option is to use custom publisher which supports non Never Failure type
-                    return HttpKit.HttpError.zombySelf
-                })
-                .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
-                    guard let self = self else {
-                        typealias SuggestionsResult = Result<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
-                        let errorResult: SuggestionsResult = .failure(.zombySelf)
-                        return errorResult.publisher.eraseToAnyPublisher()
-                    }
-                    return self.googleClient.cGoogleSearchSuggestions(for: text)
-                })
-                .receive(on: DispatchQueue.main)
-                .map { $0.textResults }
-                .catch({ (failure) -> Just<[String]> in
-                    print("Fail to fetch search suggestions \(failure.localizedDescription)")
-                    return .init([])
-                })
-                .assign(to: \.suggestions, on: self)
+        if #available(iOS 15.0, *) {
+            async { await aaPrepareSearch(for: searchText) }
+        } else if #available(iOS 13.0, *) {
+            combinePrepareSearch(for: searchText)
         } else {
-            searchSuggestionsDisposable?.dispose()
-            let source = SignalProducer<String, Never>.init(value: searchText)
-            searchSuggestionsDisposable = source
-                .delay(0.5, on: waitingScheduler)
-                .flatMap(.latest, { [weak self] (text) -> HttpKit.GSearchProducer in
-                    guard let self = self else {
-                        return .init(error: .zombySelf)
-                    }
-                    return self.googleClient.googleSearchSuggestions(for: text)
-                })
-                .observe(on: QueueScheduler.main)
-                .startWithResult { [weak self] (result) in
-                    switch result {
-                    case .success(let response):
-                        self?.suggestions = response.textResults
-                    case .failure(let error):
-                        print("Fail to fetch search suggestions \(error.localizedDescription)")
-                    }
-            }
+            rxPrepareSearch(for: searchText)
+        }
+    }
+    
+    @Sendable
+    @available(iOS 15.0, *)
+    private func getSearchSuggestions(for searchText: String) async throws -> [String] {
+        let response: HttpKit.GoogleSearchSuggestionsResponse
+        response = try await googleClient.aaGoogleSearchSuggestions(for: searchText)
+        return response.textResults
+    }
+    
+    @MainActor
+    private func updateSuggestions(_ suggestions: [String]) async {
+        self.suggestions = suggestions
+    }
+    
+    @available(iOS 15.0, *)
+    private func aaPrepareSearch(for searchText: String) async {
+#if swift(>=5.5)
+        searchSuggestionTaskHandler?.cancel()
+        let taskHandler = detach(priority: .userInitiated) {
+            try await self.getSearchSuggestions(for: searchText)
+        }
+        searchSuggestionTaskHandler = taskHandler
+        do {
+            let strings = try await taskHandler.get()
+            await updateSuggestions(strings)
+        } catch {
+            print("Fail to fetch search suggestions \(error.localizedDescription)")
+            await updateSuggestions([])
+        }
+#else
+        assertionFailure("Swift version isn't 5.5 on ios 15")
+#endif
+    }
+    
+    @available(iOS 13.0, *)
+    private func combinePrepareSearch(for searchText: String) {
+        searchSuggestionsCancellable?.cancel()
+        let source = Just<String>(searchText)
+        searchSuggestionsCancellable = source
+            .delay(for: 0.5, scheduler: waitingQueue)
+            .mapError({ (_) -> HttpKit.HttpError in
+                // workaround to be able to compile case when `Just` has no error type for Failure
+                // but it is required to be able to use `flatMap` in next call
+                // another option is to use custom publisher which supports non Never Failure type
+                return HttpKit.HttpError.zombySelf
+            })
+            .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
+                guard let self = self else {
+                    typealias SuggestionsResult = Result<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+                    let errorResult: SuggestionsResult = .failure(.zombySelf)
+                    return errorResult.publisher.eraseToAnyPublisher()
+                }
+                return self.googleClient.cGoogleSearchSuggestions(for: text)
+            })
+            .receive(on: DispatchQueue.main)
+            .map { $0.textResults }
+            .catch({ (failure) -> Just<[String]> in
+                print("Fail to fetch search suggestions \(failure.localizedDescription)")
+                return .init([])
+            })
+            .assign(to: \.suggestions, on: self)
+    }
+    
+    private func rxPrepareSearch(for searchText: String) {
+        searchSuggestionsDisposable?.dispose()
+        let source = SignalProducer<String, Never>.init(value: searchText)
+        searchSuggestionsDisposable = source
+            .delay(0.5, on: waitingScheduler)
+            .flatMap(.latest, { [weak self] (text) -> HttpKit.GSearchProducer in
+                guard let self = self else {
+                    return .init(error: .zombySelf)
+                }
+                return self.googleClient.googleSearchSuggestions(for: text)
+            })
+            .observe(on: QueueScheduler.main)
+            .startWithResult { [weak self] (result) in
+                switch result {
+                case .success(let response):
+                    self?.suggestions = response.textResults
+                case .failure(let error):
+                    print("Fail to fetch search suggestions \(error.localizedDescription)")
+                }
         }
     }
     
     @available(iOS 13.0, *)
     private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
+    
+    @available(iOS 15.0, *)
+    private lazy var searchSuggestionTaskHandler: Task.Handle<[String], Error>? = nil
+    /// Temporary cancellable needed only for async/await login to be converted to Combine temporarily
+    @available(iOS 13.0, *)
+    private lazy var searchSuggestionTaskHandlerCancellable: AnyCancellable? = nil
     
     private var searchSuggestionsDisposable: Disposable?
 
