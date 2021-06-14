@@ -220,8 +220,7 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func aaResolvedDomainName(in url: URL) async throws -> URL {
         guard let hostString = url.httpHost else {
-            // TODO: better to use different error
-            throw HttpKit.HttpError.failedConstructRequestParameters
+            throw HttpKit.HttpError.noHostInUrl
         }
         
         let ipAddressResponse = try await self.aaGetIPaddress(ofDomain: hostString)

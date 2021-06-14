@@ -54,7 +54,7 @@ final class TabsResource {
     
     /// Saves the tab in DB without selecting it
     func remember(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabResourceError> {
-        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, _) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -81,7 +81,7 @@ final class TabsResource {
     
     /// Updates tab content if tab with same identifier was found in DB or creates completely new tab
     func update(tab: Tab) -> SignalProducer<Tab, TabResourceError> {
-        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, _) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -105,7 +105,7 @@ final class TabsResource {
     
     /// Removes the tab from DB
     func forget(tab: Tab) -> SignalProducer<Tab, TabResourceError> {
-        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, _) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -131,7 +131,7 @@ final class TabsResource {
     /// it should be possible to store and read tabs from different sessions like
     /// private browser session tabs & usual tabs.
     func tabsFromLastSession() -> SignalProducer<[Tab], TabResourceError> {
-        let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, _) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -156,7 +156,7 @@ final class TabsResource {
     /// Gets an identifier of a selected tab or an error if no tab is present which isn't possible
     /// at least blank tab should be present.
     func selectedTabId() -> SignalProducer<UUID, TabResourceError> {
-        let producer: SignalProducer<UUID, TabResourceError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<UUID, TabResourceError> = .init { [weak self] (observer, _) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -180,7 +180,7 @@ final class TabsResource {
     
     /// Remembers tab identifier as selected one
     func selectTab(_ tab: Tab) -> SignalProducer<Void, TabResourceError> {
-        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, _) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return

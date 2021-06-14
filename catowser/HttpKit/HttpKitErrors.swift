@@ -30,6 +30,7 @@ extension HttpKit {
         case notHttpUrlResponse
         case invalidURL
         case notGoodStatusCode(Int)
+        case noHostInUrl
         
         /* Errors specific to endpoints */
         
