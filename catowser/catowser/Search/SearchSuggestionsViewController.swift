@@ -79,15 +79,8 @@ final class SearchSuggestionsViewController: UITableViewController {
         }
     }
     
-    @Sendable
-    @available(iOS 15.0, *)
-    private func getSearchSuggestions(for searchText: String) async throws -> [String] {
-        let response: HttpKit.GoogleSearchSuggestionsResponse
-        response = try await googleClient.aaGoogleSearchSuggestions(for: searchText)
-        return response.textResults
-    }
-    
     @MainActor
+    @available(iOS 15.0, *)
     private func updateSuggestions(_ suggestions: [String]) async {
         self.suggestions = suggestions
     }
@@ -96,13 +89,16 @@ final class SearchSuggestionsViewController: UITableViewController {
     private func aaPrepareSearch(for searchText: String) async {
 #if swift(>=5.5)
         searchSuggestionTaskHandler?.cancel()
-        let taskHandler = detach(priority: .userInitiated) {
-            try await self.getSearchSuggestions(for: searchText)
+        let taskHandler = detach(priority: .userInitiated) { [weak self] () -> [String] in
+            guard let self = self else {
+                throw HttpKit.HttpError.zombySelf
+            }
+            let response = try await self.googleClient.aaGoogleSearchSuggestions(for: searchText)
+            return response.textResults
         }
         searchSuggestionTaskHandler = taskHandler
         do {
-            let strings = try await taskHandler.get()
-            await updateSuggestions(strings)
+            await updateSuggestions(try await taskHandler.get())
         } catch {
             print("Fail to fetch search suggestions \(error.localizedDescription)")
             await updateSuggestions([])
