@@ -40,7 +40,7 @@ extension HttpKit.Client {
         }
         
         let codes = T.successCodes
-        let (data, response) = try await URLSession.shared.data(for: httpRequest, delegate: self.sessionTaskDelegate)
+        let (data, response) = try await urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
         guard let urlResponse = response as? HTTPURLResponse else {
             throw HttpKit.HttpError.notHttpUrlResponse
         }

@@ -210,6 +210,7 @@
 		8A80D0D52451B2120025528D /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A80D0DA2451B3980025528D /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
+		8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */; };
 		8A8678AE2430F7D400450666 /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8678AD2430F7D400450666 /* Host.swift */; };
 		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
@@ -605,6 +606,7 @@
 		8A8035F424446234000E035F /* DNSProxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DNSProxy.entitlements; sourceTree = "<group>"; };
 		8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEngine.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+URLSessionDelegate.swift"; sourceTree = "<group>"; };
 		8A8678AD2430F7D400450666 /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
 		8A90636824332376009D786E /* URL+CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+CoreExtensions.swift"; sourceTree = "<group>"; };
@@ -1341,6 +1343,7 @@
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
 				8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */,
+				8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */,
 				8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */,
 				8AF4922A235248CE00183579 /* HttpKitErrors.swift */,
 			);
@@ -2359,6 +2362,7 @@
 				8A7DCCD0236432B5006AAEE2 /* DomainName.swift in Sources */,
 				8A62AEDE2351CF76001A9C83 /* HttpKitHeaders.swift in Sources */,
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
+				8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */,
 				8AE46354244E07E600C8E063 /* OpenSearchParser.swift in Sources */,
 				8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */,
 				8A8035FD24449C9D000E035F /* GoogleSearchEngine.swift in Sources */,

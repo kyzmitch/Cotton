@@ -13,13 +13,24 @@ import ReactiveSwift
 /// Main namespace for Kit
 public enum HttpKit {}
 
+fileprivate extension String {
+    static let threadName = "Client"
+}
+
 extension HttpKit {
     public class Client<Server: ServerDescription> {
         let server: Server
         
         private let connectivityManager: NetworkReachabilityManager?
         
-        let sessionTaskDelegate: HttpClientSessionTaskDelegate
+        let sessionTaskHandler: HttpClientSessionTaskDelegate?
+        
+        let urlSessionHandler: HttpClientUrlSessionDelegate?
+        
+        private let urlSessionQueue: DispatchQueue = .init(label: "com.ae.HttpKit." + .threadName)
+        
+        /// Used only for async/await implementation when Alamofire can't be used naturally
+        let urlSession: URLSession
         
         let httpTimeout: TimeInterval
         
@@ -37,7 +48,14 @@ extension HttpKit {
         public init(server: Server, httpTimeout: TimeInterval = 60) {
             self.server = server
             self.httpTimeout = httpTimeout
-            sessionTaskDelegate = .init()
+            let sessionConfiguration = URLSessionConfiguration.default
+            urlSessionHandler = .init()
+            let operationQueue: OperationQueue = .init()
+            operationQueue.underlyingQueue = urlSessionQueue
+            urlSession = URLSession(configuration: sessionConfiguration,
+                                    delegate: urlSessionHandler,
+                                    delegateQueue: operationQueue)
+            sessionTaskHandler = .init()
             
             if let manager = NetworkReachabilityManager(host: server.hostString) {
                 connectivityManager = manager

@@ -12,7 +12,7 @@ import UIKit
 /// which confirms to some protocol
 ///
 /// https://ilya.puchka.me/properties-of-types-conforming-to-protocols-in-swift/
-public protocol AnyViewController: class {
+public protocol AnyViewController: AnyObject {
     var viewController: UIViewController { get }
     var view: UIView { get }
 }
