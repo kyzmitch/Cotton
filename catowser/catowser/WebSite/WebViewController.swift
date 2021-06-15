@@ -35,8 +35,6 @@ final class WebViewController: BaseViewController {
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     private var webViewObserversAdded = false
     private var loadingProgressObservation: NSKeyValueObservation?
-    @available(iOS 15.0, *)
-    private lazy var dnsRequestTaskHandler: Task.Handle<URL, Error>? = nil
     @available(iOS 13.0, *)
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     @available(iOS 13.0, *)
@@ -44,7 +42,8 @@ final class WebViewController: BaseViewController {
     private var dnsRequestSubsciption: Disposable?
     private var dnsFeatureChangeSubsciption: Disposable?
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
-    private let dnsClient: GoogleDnsClient
+    /// Not private to allow access from extension
+    let dnsClient: GoogleDnsClient
     /// Was DoH used to load URL in WebView
     private(set) var dohUsed: Bool
     /// State of web view
@@ -63,6 +62,9 @@ final class WebViewController: BaseViewController {
     /// and navigation button won't be updated based on state.
     private var canGoBackObservation: NSKeyValueObservation?
     private var canGoForwardObservation: NSKeyValueObservation?
+    @available(swift 5.5)
+    @available(iOS 15.0, *)
+    lazy var dnsRequestTaskHandler: Task.Handle<URL, Error>? = nil
     @available(iOS 13.0, *)
     private lazy var finalURLFetchCancellable: AnyCancellable? = nil
     private var finalURLFetchDisposable: Disposable?
@@ -247,46 +249,14 @@ final class WebViewController: BaseViewController {
         }
         
         if #available(iOS 15.0, *) {
+#if swift(>=5.5)
             async { await aaResolveDomainName(url: url)}
+#endif
         } else if #available(iOS 13.0, *) {
             cResolveDomainName(url: url)
         } else {
             rxResolveDomainName(url: url)
         }
-    }
-    
-    @MainActor
-    @available(iOS 15.0, *)
-    private func updateWebView(url: URL) async {
-        urlInfo.ipAddress = url.host
-        webView.load(URLRequest(url: url))
-    }
-    
-    @available(iOS 15.0, *)
-    private func aaResolveDomainName(url: URL) async {
-#if swift(>=5.5)
-        dnsRequestTaskHandler?.cancel()
-        let taskHandler = detach(priority: .userInitiated) { [weak self] () -> URL in
-            guard let self = self else {
-                throw HttpKit.HttpError.zombySelf
-            }
-            let finalURL = try await self.dnsClient.aaResolvedDomainName(in: url)
-            return finalURL
-        }
-        dnsRequestTaskHandler = taskHandler
-        do {
-            let finalURL = try await taskHandler.get()
-            guard finalURL.hasIPHost else {
-                print("Alert - host wasn't replaced on IP address after operation")
-                return
-            }
-            await updateWebView(url: finalURL)
-        } catch {
-            print("Fail to resolve host with DNS: \(error.localizedDescription)")
-        }
-#else
-        assertionFailure("Swift version isn't 5.5")
-#endif
     }
     
     @available(iOS 13.0, *)

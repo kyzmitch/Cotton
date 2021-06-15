@@ -48,7 +48,8 @@ final class SearchSuggestionsViewController: UITableViewController {
         }
     }
     
-    private let googleClient: GoogleSuggestionsClient
+    /// Not private to allow access from extension
+    let googleClient: GoogleSuggestionsClient
     
     private let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
     
@@ -57,6 +58,11 @@ final class SearchSuggestionsViewController: UITableViewController {
                                                        targeting: waitingQueue)
     
     private lazy var waitingQueue = DispatchQueue(label: waitingQueueName)
+    
+    /// Not private to make it available for extension with async await
+    @available(swift 5.5)
+    @available(iOS 15.0, *)
+    lazy var searchSuggestionTaskHandler: Task.Handle<[String], Error>? = nil
     
     init(_ suggestionsHttpClient: GoogleSuggestionsClient) {
         googleClient = suggestionsHttpClient
@@ -81,35 +87,6 @@ final class SearchSuggestionsViewController: UITableViewController {
         } else {
             rxPrepareSearch(for: searchText)
         }
-    }
-    
-    @MainActor
-    @available(iOS 15.0, *)
-    private func updateSuggestions(_ suggestions: [String]) async {
-        self.suggestions = suggestions
-    }
-    
-    @available(iOS 15.0, *)
-    private func aaPrepareSearch(for searchText: String) async {
-#if swift(>=5.5)
-        searchSuggestionTaskHandler?.cancel()
-        let taskHandler = detach(priority: .userInitiated) { [weak self] () -> [String] in
-            guard let self = self else {
-                throw HttpKit.HttpError.zombySelf
-            }
-            let response = try await self.googleClient.aaGoogleSearchSuggestions(for: searchText)
-            return response.textResults
-        }
-        searchSuggestionTaskHandler = taskHandler
-        do {
-            await updateSuggestions(try await taskHandler.get())
-        } catch {
-            print("Fail to fetch search suggestions \(error.localizedDescription)")
-            await updateSuggestions([])
-        }
-#else
-        assertionFailure("Swift version isn't 5.5 on ios 15")
-#endif
     }
     
     @available(iOS 13.0, *)
@@ -165,12 +142,6 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     @available(iOS 13.0, *)
     private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
-    
-    @available(iOS 15.0, *)
-    private lazy var searchSuggestionTaskHandler: Task.Handle<[String], Error>? = nil
-    /// Temporary cancellable needed only for async/await login to be converted to Combine temporarily
-    @available(iOS 13.0, *)
-    private lazy var searchSuggestionTaskHandlerCancellable: AnyCancellable? = nil
     
     private var searchSuggestionsDisposable: Disposable?
 
