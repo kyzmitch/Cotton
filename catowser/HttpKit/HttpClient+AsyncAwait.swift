@@ -9,11 +9,16 @@
 #if swift(>=5.5)
 
 import Foundation
+#if canImport(_Concurrency)
+// this won't be needed after Swift 5.5 will be released
+import _Concurrency
+#endif
 
 // Swift Concurrency requires a deployment target of macOS 12, iOS 15, tvOS 15, and watchOS 8 or newer. (70738378)
 // source: https://developer.apple.com/documentation/xcode-release-notes/xcode-13-beta-release-notes
 
 extension HttpKit.Client {
+    @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     private func aaMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                 withAccessToken accessToken: String?,
@@ -40,7 +45,7 @@ extension HttpKit.Client {
         }
         
         let codes = T.successCodes
-        let (data, response) = try await urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
+        let (data, response) = await try urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
         guard let urlResponse = response as? HTTPURLResponse else {
             throw HttpKit.HttpError.notHttpUrlResponse
         }
@@ -52,20 +57,22 @@ extension HttpKit.Client {
         return decodedValue
     }
     
+    @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func aaMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                               responseType: T.Type) async throws -> T {
-        let value = try await aaMakeRequest(for: endpoint,
+        let value = await try aaMakeRequest(for: endpoint,
                                                withAccessToken: nil,
                                                responseType: responseType)
         return value
     }
     
+    @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                   withAccessToken accessToken: String,
                                                   responseType: T.Type) async throws -> T {
-        let value = try await aaMakeRequest(for: endpoint,
+        let value = await try aaMakeRequest(for: endpoint,
                                                withAccessToken: accessToken,
                                                responseType: responseType)
         return value
