@@ -71,7 +71,11 @@ final class SearchSuggestionsViewController: UITableViewController {
         suggestions.removeAll()
         knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
         if #available(iOS 15.0, *) {
+#if swift(>=5.5)
             async { await aaPrepareSearch(for: searchText) }
+#else
+            assertionFailure("Swift version isn't 5.5")
+#endif
         } else if #available(iOS 13.0, *) {
             combinePrepareSearch(for: searchText)
         } else {

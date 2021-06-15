@@ -149,7 +149,7 @@ extension HttpKit.DnsRR {
 }
 
 extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
-    public func rxGetIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonProducer {
+    func rxGetIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonProducer {
         let endpoint: HttpKit.GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
@@ -180,7 +180,7 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func cGetIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonPublisher {
+    func cGetIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonPublisher {
         let endpoint: HttpKit.GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
@@ -211,7 +211,7 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
     
 #if swift(>=5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    public func aaGetIPaddress(ofDomain domainName: String) async throws -> HttpKit.GoogleDNSOverJSONResponse {
+    func aaGetIPaddress(ofDomain domainName: String) async throws -> HttpKit.GoogleDNSOverJSONResponse {
         let endpoint: HttpKit.GDNSjsonEndpoint = try .googleDnsOverHTTPSJson(domainName)
         let value = try await self.aaMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
         return value

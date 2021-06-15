@@ -35,6 +35,8 @@ final class WebViewController: BaseViewController {
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     private var webViewObserversAdded = false
     private var loadingProgressObservation: NSKeyValueObservation?
+    @available(iOS 15.0, *)
+    private lazy var dnsRequestTaskHandler: Task.Handle<URL, Error>? = nil
     @available(iOS 13.0, *)
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     @available(iOS 13.0, *)
@@ -244,48 +246,93 @@ final class WebViewController: BaseViewController {
             return
         }
         
-        if #available(iOS 13.0, *) {
-            dnsRequestCancellable?.cancel()
-            dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
-            .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure(let dnsErr):
-                        print("fail to resolve host with DNS: \(dnsErr.localizedDescription)")
-                    default:
-                        break
-                    }
-                }, receiveValue: { (finalURL) in
-                    guard finalURL.hasIPHost else {
-                        print("Alert - host wasn't replaced on IP address after operation")
-                        return
-                    }
-                    self.urlInfo.ipAddress = finalURL.host
-                    let request = URLRequest(url: finalURL)
-                    self.webView.load(request)
-                })
+        if #available(iOS 15.0, *) {
+            async { await aaResolveDomainName(url: url)}
+        } else if #available(iOS 13.0, *) {
+            cResolveDomainName(url: url)
         } else {
-            dnsRequestSubsciption?.dispose()
-            dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url)
-                .start(on: UIScheduler())
-                .startWithResult({ [weak self] (result) in
-                    guard let self = self else {
-                        return
-                    }
-                    guard case .success(let finalURL) = result else {
-                        print("fail to resolve host with DNS")
-                        return
-                    }
-                    
-                    guard finalURL.hasIPHost else {
-                        print("Alert - host wasn't replaced on IP address after operation")
-                        return
-                    }
-                    self.urlInfo.ipAddress = finalURL.host
-                    let request = URLRequest(url: finalURL)
-                    self.webView.load(request)
-                })
+            rxResolveDomainName(url: url)
         }
+    }
+    
+    @MainActor
+    @available(iOS 15.0, *)
+    private func updateWebView(url: URL) async {
+        urlInfo.ipAddress = url.host
+        webView.load(URLRequest(url: url))
+    }
+    
+    @available(iOS 15.0, *)
+    private func aaResolveDomainName(url: URL) async {
+#if swift(>=5.5)
+        dnsRequestTaskHandler?.cancel()
+        let taskHandler = detach(priority: .userInitiated) { [weak self] () -> URL in
+            guard let self = self else {
+                throw HttpKit.HttpError.zombySelf
+            }
+            let finalURL = try await self.dnsClient.aaResolvedDomainName(in: url)
+            return finalURL
+        }
+        dnsRequestTaskHandler = taskHandler
+        do {
+            let finalURL = try await taskHandler.get()
+            guard finalURL.hasIPHost else {
+                print("Alert - host wasn't replaced on IP address after operation")
+                return
+            }
+            await updateWebView(url: finalURL)
+        } catch {
+            print("Fail to resolve host with DNS: \(error.localizedDescription)")
+        }
+#else
+        assertionFailure("Swift version isn't 5.5")
+#endif
+    }
+    
+    @available(iOS 13.0, *)
+    private func cResolveDomainName(url: URL) {
+        dnsRequestCancellable?.cancel()
+        dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
+        .receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { (completion) in
+                switch completion {
+                case .failure(let dnsErr):
+                    print("fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                default:
+                    break
+                }
+            }, receiveValue: { (finalURL) in
+                guard finalURL.hasIPHost else {
+                    print("Alert - host wasn't replaced on IP address after operation")
+                    return
+                }
+                self.urlInfo.ipAddress = finalURL.host
+                let request = URLRequest(url: finalURL)
+                self.webView.load(request)
+            })
+    }
+    
+    private func rxResolveDomainName(url: URL) {
+        dnsRequestSubsciption?.dispose()
+        dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url)
+            .start(on: UIScheduler())
+            .startWithResult({ [weak self] (result) in
+                guard let self = self else {
+                    return
+                }
+                guard case .success(let finalURL) = result else {
+                    print("fail to resolve host with DNS")
+                    return
+                }
+                
+                guard finalURL.hasIPHost else {
+                    print("Alert - host wasn't replaced on IP address after operation")
+                    return
+                }
+                self.urlInfo.ipAddress = finalURL.host
+                let request = URLRequest(url: finalURL)
+                self.webView.load(request)
+            })
     }
     
     func setupScripts(canLoadPlugins: Bool) {
