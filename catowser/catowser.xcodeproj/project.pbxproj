@@ -217,6 +217,8 @@
 		8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90636824332376009D786E /* URL+CoreExtensions.swift */; };
 		8A90636A243323C0009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
 		8A90636B24332452009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
+		8A9069DA267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */; };
+		8A9069EC267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */; };
 		8A90B16C248246D6000618F5 /* TabAddPositionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */; };
 		8A91A0E82678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */; };
@@ -614,6 +616,8 @@
 		8A8678AD2430F7D400450666 /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
 		8A90636824332376009D786E /* URL+CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+CoreExtensions.swift"; sourceTree = "<group>"; };
+		8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
+		8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsView.swift; sourceTree = "<group>"; };
 		8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchSuggestionsViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
@@ -1160,6 +1164,7 @@
 			isa = PBXGroup;
 			children = (
 				8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */,
+				8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */,
 			);
 			path = Google;
 			sourceTree = "<group>";
@@ -1177,6 +1182,7 @@
 			isa = PBXGroup;
 			children = (
 				8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */,
+				8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */,
 			);
 			path = DNSoverHTTPS;
 			sourceTree = "<group>";
@@ -2369,6 +2375,7 @@
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
 				8A68E41224597E880070F338 /* DnsRR.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
+				8A9069DA267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift in Sources */,
 				8A62AEE52351EC7C001A9C83 /* SearchEngine.swift in Sources */,
 				8A62AEDC2351CDEB001A9C83 /* GoogleServer.swift in Sources */,
 				8A7DCCD0236432B5006AAEE2 /* DomainName.swift in Sources */,
@@ -2388,6 +2395,7 @@
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 				8A7A968D24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift in Sources */,
 				8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */,
+				8A9069EC267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
