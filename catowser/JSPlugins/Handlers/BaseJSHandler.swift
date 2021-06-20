@@ -83,36 +83,52 @@ extension BaseJSHandler: WKScriptMessageHandler {
                 // swiftlint:disable:next force_cast
                 print("JS Base log: \(value as! String)")
             case .html?:
-                guard let jsonObject = Data.dataFrom(value) else {
+                if !handleHtmlKey(value) {
                     break
-                }
-                let htmlContentMsg: HTMLContentMessage
-                do {
-                    htmlContentMsg = try JSONDecoder().decode(HTMLContentMessage.self, from: jsonObject)
-                } catch {
-                    print("HTML content is corrupted: \(error)")
-                    return
-                }
-                // now need to parse to find video tags and extract urls
-                do {
-                    let videoTags = try HTMLVideoTagsContainer(htmlMessage: htmlContentMsg)
-                    delegate?.didReceiveVideoTags(videoTags.videoTags)
-                } catch {
-                    print("HTML video tags: \(error)")
                 }
             case .DOMVideoTags?:
-                guard let jsonObject = Data.dataFrom(value) else {
+                if !handleDOMVideoTags(value) {
                     break
-                }
-                do {
-                    let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
-                    print("DOM video tags: \(decoded.count)")
-                } catch {
-                    print("failed decode DOM videos: \(error)")
                 }
             default:
                 print("unexpected key \(key)")
             }
         }
+    }
+}
+
+private extension BaseJSHandler {
+    func handleHtmlKey(_ value: Any) -> Bool {
+        guard let jsonObject = Data.dataFrom(value) else {
+            return false
+        }
+        let htmlContentMsg: HTMLContentMessage
+        do {
+            htmlContentMsg = try JSONDecoder().decode(HTMLContentMessage.self, from: jsonObject)
+        } catch {
+            print("HTML content is corrupted: \(error)")
+            return false
+        }
+        // now need to parse to find video tags and extract urls
+        do {
+            let videoTags = try HTMLVideoTagsContainer(htmlMessage: htmlContentMsg)
+            delegate?.didReceiveVideoTags(videoTags.videoTags)
+        } catch {
+            print("HTML video tags: \(error)")
+        }
+        return true
+    }
+    
+    func handleDOMVideoTags(_ value: Any) -> Bool {
+        guard let jsonObject = Data.dataFrom(value) else {
+            return false
+        }
+        do {
+            let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
+            print("DOM video tags: \(decoded.count)")
+        } catch {
+            print("failed decode DOM videos: \(error)")
+        }
+        return true
     }
 }

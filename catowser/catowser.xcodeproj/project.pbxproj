@@ -886,7 +886,6 @@
 		608DA74B223A3BD5009F75BD /* JSPlugins */ = {
 			isa = PBXGroup;
 			children = (
-				C7519624228DE1EF0071CE0C /* Extensions */,
 				8A0E0EA9224A94BE00D86CD7 /* Models */,
 				8A012FA52240110000041487 /* Handlers */,
 				608DA7422238FE33009F75BD /* Scripts */,
@@ -1410,13 +1409,6 @@
 				60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */,
 				60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */,
 				8A90636824332376009D786E /* URL+CoreExtensions.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		C7519624228DE1EF0071CE0C /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Extensions;
 			sourceTree = "<group>";

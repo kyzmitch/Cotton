@@ -41,6 +41,7 @@ extension DefaultTrustEvaluator {
     
     /// Evaluates server trust.
     /// `host` is used only for error messages since it is ip address and should be used for evaluation
+    // swiftlint:disable:next cyclomatic_complexity
     public func evaluateWithRecovery(_ trust: SecTrust, forHost host: String) throws {
         guard let kitHost = HttpKit.Host(rawValue: host) else {
             try evaluate(trust, forHost: host)
