@@ -62,9 +62,13 @@ final class WebViewController: BaseViewController {
     /// and navigation button won't be updated based on state.
     private var canGoBackObservation: NSKeyValueObservation?
     private var canGoForwardObservation: NSKeyValueObservation?
-    @available(swift 5.5)
+    
+#if swift(>=5.5)
+    // @available(swift 5.5)
     @available(iOS 15.0, *)
     lazy var dnsRequestTaskHandler: Task.Handle<URL, Error>? = nil
+#endif
+
     @available(iOS 13.0, *)
     private lazy var finalURLFetchCancellable: AnyCancellable? = nil
     private var finalURLFetchDisposable: Disposable?
@@ -251,6 +255,8 @@ final class WebViewController: BaseViewController {
         if #available(iOS 15.0, *) {
 #if swift(>=5.5)
             async { await aaResolveDomainName(url: url)}
+#else
+            assertionFailure("Swift version isn't 5.5")
 #endif
         } else if #available(iOS 13.0, *) {
             cResolveDomainName(url: url)
