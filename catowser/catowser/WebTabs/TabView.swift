@@ -12,7 +12,7 @@ import CoreGraphics
 import CoreBrowser
 
 protocol TabDelegate: class {
-    func tabViewDidClose(_ tabView: TabView, was active: Bool)
+    func tabViewDidClose(_ tabView: TabView)
     func tabDidBecomeActive(_ tab: Tab)
 }
 
@@ -21,6 +21,7 @@ final class TabView: UIView {
     
     var viewModel: Tab {
         didSet {
+            visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
             titleText.text = viewModel.title
 
             // TODO: add UIImageView for site icon
@@ -34,7 +35,6 @@ final class TabView: UIView {
             if previousVisualState == visualState {
                 return
             }
-            viewModel.visualState = visualState
             updateColours()
         }
     }
@@ -89,7 +89,6 @@ final class TabView: UIView {
     convenience init(frame: CGRect, tab: Tab, delegate: TabDelegate) {
         self.init(frame: frame)
         viewModel = tab
-        visualState = tab.visualState
         // Call function not relying on didSet
         // swiftlint:disable:next line_length
         // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
@@ -100,8 +99,8 @@ final class TabView: UIView {
     
     override init(frame: CGRect) {
         // set temporarily values before calling required base init
-        viewModel = .deselectedBlank
-        visualState = viewModel.visualState
+        viewModel = .blank
+        visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
         
         super.init(frame: frame)
         updateColours()
@@ -178,14 +177,15 @@ final class TabView: UIView {
 
 private extension TabView {
     func updateColours() {
-        centerBackground.backgroundColor = viewModel.backgroundColor
+        let selectedTabId = TabsListManager.shared.selectedId
+        centerBackground.backgroundColor = viewModel.backgroundColor(selectedTabId)
         backgroundColor = viewModel.realBackgroundColour
-        highlightLine.isHidden =  viewModel.visualState == .deselected
-        titleText.textColor = viewModel.titleColor
+        highlightLine.isHidden = !viewModel.isSelected(selectedTabId)
+        titleText.textColor = viewModel.titleColor(selectedTabId)
     }
     
     @objc func handleClosePressed() {
-        delegate?.tabViewDidClose(self, was: viewModel.visualState == .selected)
+        delegate?.tabViewDidClose(self)
     }
     
     func handleTapGesture() {

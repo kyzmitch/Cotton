@@ -137,8 +137,6 @@ public struct Tab {
     public let id: UUID
     // Actual website info stored only for one case
     public var contentType: ContentType
-    // Usually only one tab should be in selected state
-    public var visualState: VisualState
     /// Time when tab was added to provide sorting (including CoreData sorting)
     /// Do not support moving tabs on UI, because it won't work now with timestamps
     /// It will require to store indexes in a separate data structure
@@ -180,51 +178,54 @@ public struct Tab {
         return contentType.site
     }
 
-    public var titleColor: UIColor {
-        switch visualState {
-        case .selected:
+    public func titleColor(_ selectedId: UUID) -> UIColor {
+        if selectedId == id {
             return .lightGrayText
-        case .deselected:
+        } else {
             return .darkGrayText
         }
     }
 
-    public var backgroundColor: UIColor {
-        switch visualState {
-        case .selected:
+    public func backgroundColor(_ selectedId: UUID) -> UIColor {
+        if selectedId == id {
             return .superLightGray
-        case .deselected:
+        } else {
             return .normallyLightGray
         }
     }
 
-    var tabCurvesColour: UIColor {
-        switch visualState {
-        case .selected:
+    func tabCurvesColour(_ selectedId: UUID) -> UIColor {
+        if selectedId == id {
             return .superLightGray
-        case .deselected:
+        } else {
             return .normallyLightGray
         }
     }
+    
+    public func isSelected(_ selectedId: UUID) -> Bool {
+        return selectedId == id
+    }
+    
+    public func getVisualState(_ selectedId: UUID) -> VisualState {
+        return isSelected(selectedId) ? .selected : .deselected
+    }
+    
     public let realBackgroundColour = UIColor.clear
 
     /**
      Initializes an instance of `Tab` type.
      */
     public init(contentType: ContentType,
-                selected: Bool = true,
                 idenifier: UUID = .init(),
                 created: Date = .init()) {
         self.contentType = contentType
         addedTimestamp = created
         // set default value
         titleObserver.send(value: contentType.title)
-        visualState = selected ? .selected : .deselected
         id = idenifier
     }
 
-    public static let deselectedBlank: Tab = Tab(contentType: .blank, selected: false)
-    public static let blank: Tab = Tab(contentType: .blank, selected: true)
+    public static let blank: Tab = Tab(contentType: .blank)
 }
 
 extension Tab: Equatable {

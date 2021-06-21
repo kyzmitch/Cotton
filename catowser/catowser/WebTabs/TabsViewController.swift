@@ -19,8 +19,6 @@ fileprivate extension TabsViewController {
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
     private let tabsStackView: UIStackView = {
-        // TODO: create a wrapper around UIStackView to provide
-        // more convinient interface instead of direct usage for `arrangedSubviews`
         let stackView = UIStackView()
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
@@ -123,7 +121,7 @@ private extension TabsViewController {
     @objc func addTabPressed() {
         print("\(#function): add pressed")
 
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: DefaultTabProvider.shared.selected)
+        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
         TabsListManager.shared.add(tab: tab)
     }
 
@@ -175,7 +173,6 @@ private extension TabsViewController {
                 assert(false, "unexpected view type")
                 return
             }
-            tabView.visualState = i == index ? .selected : .deselected
             if i == index {
                 // if tab which was selected was partly hidden for example under + button
                 // need to scroll it to make it fully visible
@@ -250,7 +247,7 @@ extension TabsViewController: TabsObserver {
 }
 
 extension TabsViewController: TabDelegate {
-    func tabViewDidClose(_ tabView: TabView, was active: Bool) {
+    func tabViewDidClose(_ tabView: TabView) {
         print("\(#function): closed")
         removeTabView(tabView)
         if let site = tabView.viewModel.site {

@@ -240,7 +240,6 @@ fileprivate extension Tab {
             return nil
         }
         self.init(contentType: cachedContentType,
-                  selected: false,
                   idenifier: identifier,
                   created: createdTime)
         

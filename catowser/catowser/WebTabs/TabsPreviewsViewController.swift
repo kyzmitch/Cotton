@@ -240,7 +240,7 @@ private extension TabsPreviewsViewController {
         // on previews screen will make new added tab always selected
         // same behaviour has Safari and Firefox
         let select = DefaultTabProvider.shared.selected
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: select)
+        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
         // newly added tab moves selection to itself
         // so, it is opened by manager by default
         // but user maybe don't want to move that tab right away

@@ -153,6 +153,10 @@ public final class TabsListManager {
         }
         return tabTuple.tab
     }
+    
+    public var selectedId: UUID {
+        return selectedTabId.value
+    }
 
     fileprivate struct NotInitializedYet: Error {}
     fileprivate struct SelectedNotFound: Error {}
@@ -225,13 +229,14 @@ extension TabsListManager: TabsSubject {
 
     public func add(tab: Tab) {
         let newIndex = positioning.addPosition.addTabAndReturnIndex(tab,
-                                                                    to: self.tabs,
+                                                                    to: tabs,
                                                                     currentlySelectedId: selectedTabId.value)
-        _ = storage.add(tab: tab, andSelect: false).startWithResult { [weak self] (result) in
+        let select = tab.id == selectedTabId.value
+        _ = storage.add(tab: tab, andSelect: select).startWithResult { [weak self] (result) in
             if case .failure(let storageError) = result {
                 print("Failed to add a tab to storage \(storageError)")
             } else {
-                if tab.visualState == .selected {
+                if select {
                     self?.selectedTabId.value = tab.id
                 }
             }
@@ -313,7 +318,7 @@ private extension TabsListManager {
     func resetToOneTab() {
         tabs.value.removeAll()
         let newTabId = self.positioning.defaultSelectedTabId
-        let tab: Tab = .init(contentType: positioning.contentState, selected: true, idenifier: newTabId)
+        let tab: Tab = .init(contentType: positioning.contentState, idenifier: newTabId)
 
         tabs.value.append(tab)
         // No need to change selected index because it is already 0
@@ -339,7 +344,6 @@ private extension TabsListManager {
 
 extension Array where Element == Tab {
     func element(by uuid: UUID) -> (tab: Tab, index: Int)? {
-        // TODO: fix linear search
         for (ix, tab) in self.enumerated() where tab.id == uuid {
             return (tab, ix)
         }
