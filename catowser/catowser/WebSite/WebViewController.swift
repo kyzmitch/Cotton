@@ -11,6 +11,7 @@ import WebKit
 import CoreBrowser
 import JSPlugins
 import HttpKit
+import BrowserNetworking
 import ReactiveSwift
 #if canImport(Combine)
 import Combine

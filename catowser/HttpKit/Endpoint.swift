@@ -11,24 +11,36 @@ import Foundation
 import Alamofire
 
 extension HttpKit {
-    struct Endpoint<T: ResponseType, Server: ServerDescription> {
-        let method: HTTPMethod
-        let path: String
-        let queryItems: [URLQueryItem]
-        let headers: [HttpHeader]?
+    public struct Endpoint<T: ResponseType, Server: ServerDescription> {
+        public let method: HTTPMethod
+        public let path: String
+        public let queryItems: [URLQueryItem]
+        public let headers: [HttpHeader]?
         
         /// This is needed to associate type of response with endpoint
-        let responseType: T.Type = T.self
+        public let responseType: T.Type = T.self
         /// To link endpoint to specific server, since it doesn't make sense to use endpoint
         /// for different host or something
-        let serverType: Server.Type = Server.self
-        let encodingMethod: ParametersEncodingDestination
+        public let serverType: Server.Type = Server.self
+        public let encodingMethod: ParametersEncodingDestination
+        
+        public init(method: HTTPMethod,
+                    path: String,
+                    queryItems: [URLQueryItem],
+                    headers: [HttpHeader]?,
+                    encodingMethod: ParametersEncodingDestination) {
+            self.method = method
+            self.path = path
+            self.queryItems = queryItems
+            self.headers = headers
+            self.encodingMethod = encodingMethod
+        }
         
         /// Constructs a URL based on endpoint info and host name from provided server.
         ///
         /// - Parameters:
         ///     - server: server should be used from HttpClient inside its makeRequest functions.
-        func url(relatedTo server: Server) -> URL? {
+        public func url(relatedTo server: Server) -> URL? {
             var components = URLComponents()
             components.scheme = server.scheme.rawValue
             components.host = server.hostString
@@ -40,23 +52,23 @@ extension HttpKit {
         }
     }
     
-    enum ParametersEncodingDestination {
+    public enum ParametersEncodingDestination {
         case queryString
         case httpBodyJSON(parameters: [String: Any])
         /// Data enoded from `Encodable`
         case httpBody(encodedData: Data)
     }
     
-    struct VoidResponse: ResponseType {
-        static var successCodes: [Int] {
+    public struct VoidResponse: ResponseType {
+        public static var successCodes: [Int] {
             return [200, 201]
         }
     }
     
-    typealias VoidEndpoint<Server: ServerDescription> = Endpoint<VoidResponse, Server>
+    public typealias VoidEndpoint<Server: ServerDescription> = Endpoint<VoidResponse, Server>
 }
 
-protocol ResponseType: Decodable {
+public protocol ResponseType: Decodable {
     static var successCodes: [Int] { get }
 }
 

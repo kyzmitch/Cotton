@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import JSPlugins
 import HttpKit
+import BrowserNetworking
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
@@ -81,7 +82,7 @@ final class MasterRouter: NSObject {
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
-    private let searchSuggestClient: HttpKit.SearchEngine = {
+    private let searchSuggestClient: SearchEngine = {
         let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: .duckduckgo, on: .main)
         guard let xmlData = optionalXmlData else {
             return .googleSearchEngine()

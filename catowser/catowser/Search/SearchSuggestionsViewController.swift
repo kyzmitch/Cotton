@@ -8,6 +8,7 @@
 
 import UIKit
 import HttpKit
+import BrowserNetworking
 import CoreBrowser
 import ReactiveSwift
 #if canImport(Combine)
@@ -103,9 +104,9 @@ final class SearchSuggestionsViewController: UITableViewController {
                 // another option is to use custom publisher which supports non Never Failure type
                 return HttpKit.HttpError.zombySelf
             })
-            .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
+            .flatMap({ [weak self] (text) -> CGSearchPublisher in
                 guard let self = self else {
-                    typealias SuggestionsResult = Result<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+                    typealias SuggestionsResult = Result<GoogleSearchSuggestionsResponse, HttpKit.HttpError>
                     let errorResult: SuggestionsResult = .failure(.zombySelf)
                     return errorResult.publisher.eraseToAnyPublisher()
                 }
@@ -125,7 +126,7 @@ final class SearchSuggestionsViewController: UITableViewController {
         let source = SignalProducer<String, Never>.init(value: searchText)
         searchSuggestionsDisposable = source
             .delay(0.5, on: waitingScheduler)
-            .flatMap(.latest, { [weak self] (text) -> HttpKit.GSearchProducer in
+            .flatMap(.latest, { [weak self] (text) -> GSearchProducer in
                 guard let self = self else {
                     return .init(error: .zombySelf)
                 }

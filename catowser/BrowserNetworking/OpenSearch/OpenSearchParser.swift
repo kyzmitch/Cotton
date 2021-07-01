@@ -6,15 +6,15 @@
 //  Copyright © 2020 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import HttpKit
 import SWXMLHash
 
 extension OpenSearch {
     public struct Description {
-        public let html: HttpKit.SearchEngine
-        public let json: HttpKit.SearchEngine?
+        public let html: SearchEngine
+        public let json: SearchEngine?
         
-        init(html: HttpKit.SearchEngine, json: HttpKit.SearchEngine?) {
+        init(html: SearchEngine, json: SearchEngine?) {
             self.html = html
             self.json = json
         }
@@ -35,8 +35,8 @@ extension OpenSearch {
                 throw OpenSearch.Error.noAnyURLXml
             }
             
-            var htmlSearchEngine: HttpKit.SearchEngine?
-            var jsonSearchEngine: HttpKit.SearchEngine?
+            var htmlSearchEngine: SearchEngine?
+            var jsonSearchEngine: SearchEngine?
             
             for urlXml in urlObjects {
                 guard let urlElement = urlXml.element else {

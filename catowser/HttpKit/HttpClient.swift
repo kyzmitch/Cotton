@@ -134,15 +134,15 @@ extension HttpKit {
             return producer
         }
         
-        func makePublicRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                                responseType: T.Type) -> SignalProducer<T, HttpError> {
+        public func makePublicRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
+                                                       responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
             return producer
         }
         
-        func makeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                                    withAccessToken accessToken: String,
-                                                    responseType: T.Type) -> SignalProducer<T, HttpError> {
+        public func makeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
+                                                           withAccessToken accessToken: String,
+                                                           responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
             return producer
         }

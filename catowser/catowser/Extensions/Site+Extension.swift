@@ -11,6 +11,7 @@ import CoreBrowser
 import Combine
 #endif
 import HttpKit
+import BrowserNetworking
 
 /// Client side extension for `CoreBrowser` `Site` type to be able to detect DoH usage
 /// and hide real domain name for favicon http requests.
