@@ -87,7 +87,7 @@ extension URL {
         return HostPublisher(.success(host)).eraseToAnyPublisher()
     }
     
-    func updatedHost(with ipAddress: String) throws -> URL {
+    public func updatedHost(with ipAddress: String) throws -> URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             throw HttpKit.DnsError.urlComponentsFail
         }
