@@ -13,7 +13,7 @@ extension String {
     static let basePluginHName = "cottonHandler"
 }
 
-public protocol BasePluginContentDelegate: class {
+public protocol BasePluginContentDelegate: AnyObject {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag])
 }
 

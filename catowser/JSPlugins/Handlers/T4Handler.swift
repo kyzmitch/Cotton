@@ -9,7 +9,7 @@
 import Foundation
 import WebKit
 
-public protocol T4ContentDelegate: class {
+public protocol T4ContentDelegate: AnyObject {
     func didReceiveVideo(_ video: T4Video)
 }
 

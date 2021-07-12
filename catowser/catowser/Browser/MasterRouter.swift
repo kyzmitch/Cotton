@@ -14,7 +14,7 @@ import HttpKit
 import SwiftUI
 #endif
 
-protocol MediaLinksPresenter: class {
+protocol MediaLinksPresenter: AnyObject {
     func didReceiveMediaLinks()
 }
 

@@ -11,7 +11,7 @@ import UIKit
 import CoreGraphics
 import CoreBrowser
 
-protocol TabDelegate: class {
+protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView, was active: Bool)
     func tabDidBecomeActive(_ tab: Tab)
 }

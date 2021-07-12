@@ -18,7 +18,7 @@ fileprivate extension String {
     static let locationHREF: String = "window.location.href"
 }
 
-public protocol JavaScriptEvaluateble: class {
+public protocol JavaScriptEvaluateble: AnyObject {
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
 }
 
