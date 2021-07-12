@@ -10,7 +10,7 @@ import Foundation
 import ReactiveSwift
 import HttpKit
 
-protocol FileDownloadDelegate: class {
+protocol FileDownloadDelegate: AnyObject {
     func didPressOpenFile(withLocal url: URL)
 }
 

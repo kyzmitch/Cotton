@@ -9,7 +9,7 @@
 import Foundation
 import WebKit
 
-public protocol InstagramContentDelegate: class {
+public protocol InstagramContentDelegate: AnyObject {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode])
 }
 
