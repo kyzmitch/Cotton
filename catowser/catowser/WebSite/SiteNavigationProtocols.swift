@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+// needed for `Host`
 import HttpKit
 import CoreBrowser
 

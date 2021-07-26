@@ -14,7 +14,7 @@ import Combine
 
 extension HttpKit.Client {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    typealias ResponseFuture<T> = Deferred<Future<T, HttpKit.HttpError>>
+    public typealias ResponseFuture<T> = Deferred<Future<T, HttpKit.HttpError>>
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     private func cMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
@@ -69,7 +69,7 @@ extension HttpKit.Client {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func cMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+    public func cMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                              responseType: T.Type) -> ResponseFuture<T> {
         let future = cMakeRequest(for: endpoint,
                                   withAccessToken: nil,
@@ -78,7 +78,7 @@ extension HttpKit.Client {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func cMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+    public func cMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                  withAccessToken accessToken: String,
                                                  responseType: T.Type) -> ResponseFuture<T> {
         let future = cMakeRequest(for: endpoint,

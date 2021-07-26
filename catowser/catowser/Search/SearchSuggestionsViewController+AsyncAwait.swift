@@ -30,7 +30,7 @@ extension SearchSuggestionsViewController {
         searchSuggestionTaskHandler?.cancel()
         let taskHandler = detach(priority: .userInitiated) { [weak self] () -> [String] in
             guard let self = self else {
-                throw HttpKit.HttpError.zombySelf
+                throw AppError.zombieSelf
             }
             let response = await try self.googleClient.aaGoogleSearchSuggestions(for: searchText)
             return response.textResults

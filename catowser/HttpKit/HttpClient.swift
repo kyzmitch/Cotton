@@ -80,7 +80,7 @@ extension HttpKit {
                                                   responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
-                    observer.send(error: .zombySelf)
+                    observer.send(error: .zombieSelf)
                     return
                 }
                 guard let url = endpoint.url(relatedTo: self.server) else {
@@ -134,15 +134,15 @@ extension HttpKit {
             return producer
         }
         
-        func makePublicRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                                responseType: T.Type) -> SignalProducer<T, HttpError> {
+        public func makePublicRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
+                                                       responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
             return producer
         }
         
-        func makeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
-                                                    withAccessToken accessToken: String,
-                                                    responseType: T.Type) -> SignalProducer<T, HttpError> {
+        public func makeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<T, Server>,
+                                                           withAccessToken accessToken: String,
+                                                           responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
             return producer
         }
@@ -151,7 +151,7 @@ extension HttpKit {
                              withAccessToken accessToken: String?) -> SignalProducer<Void, HttpError> {
             let producer: SignalProducer<Void, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
-                    observer.send(error: .zombySelf)
+                    observer.send(error: .zombieSelf)
                     return
                 }
                 guard let url = endpoint.url(relatedTo: self.server) else {

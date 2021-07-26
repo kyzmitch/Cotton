@@ -7,7 +7,10 @@
 //
 
 import UIKit
+// needed only for `HttpError`
 import HttpKit
+// needed for `GoogleSuggestionsClient`
+import BrowserNetworking
 import CoreBrowser
 import ReactiveSwift
 #if canImport(Combine)
@@ -101,12 +104,12 @@ final class SearchSuggestionsViewController: UITableViewController {
                 // workaround to be able to compile case when `Just` has no error type for Failure
                 // but it is required to be able to use `flatMap` in next call
                 // another option is to use custom publisher which supports non Never Failure type
-                return HttpKit.HttpError.zombySelf
+                return .zombieSelf
             })
-            .flatMap({ [weak self] (text) -> HttpKit.CGSearchPublisher in
+            .flatMap({ [weak self] (text) -> CGSearchPublisher in
                 guard let self = self else {
-                    typealias SuggestionsResult = Result<HttpKit.GoogleSearchSuggestionsResponse, HttpKit.HttpError>
-                    let errorResult: SuggestionsResult = .failure(.zombySelf)
+                    typealias SuggestionsResult = Result<GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+                    let errorResult: SuggestionsResult = .failure(.zombieSelf)
                     return errorResult.publisher.eraseToAnyPublisher()
                 }
                 return self.googleClient.cGoogleSearchSuggestions(for: text)
@@ -125,9 +128,9 @@ final class SearchSuggestionsViewController: UITableViewController {
         let source = SignalProducer<String, Never>.init(value: searchText)
         searchSuggestionsDisposable = source
             .delay(0.5, on: waitingScheduler)
-            .flatMap(.latest, { [weak self] (text) -> HttpKit.GSearchProducer in
+            .flatMap(.latest, { [weak self] (text) -> GSearchProducer in
                 guard let self = self else {
-                    return .init(error: .zombySelf)
+                    return .init(error: .zombieSelf)
                 }
                 return self.googleClient.googleSearchSuggestions(for: text)
             })

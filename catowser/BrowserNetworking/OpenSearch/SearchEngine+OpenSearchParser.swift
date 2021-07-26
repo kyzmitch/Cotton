@@ -30,7 +30,7 @@ extension String {
     static let queryTemplate = "{searchTerms}"
 }
 
-extension HttpKit.SearchEngine {
+extension SearchEngine {
     init(xml element: XMLElement,
          indexer: XMLIndexer,
          shortName: String,
@@ -63,7 +63,7 @@ extension HttpKit.SearchEngine {
             throw OpenSearch.Error.notValidURL
         }
         self.components = components
-        let optionalItems = HttpKit.SearchEngine.parseURLParams(indexer: indexer)
+        let optionalItems = SearchEngine.parseURLParams(indexer: indexer)
         if let items = optionalItems {
             self.queryItems = items
         } else {
