@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+// needed for `Host`
 import HttpKit
 import CoreBrowser
 
@@ -30,7 +31,7 @@ extension SiteNavigationDelegate {
     }
 }
 
-protocol SiteExternalNavigationDelegate: class {
+protocol SiteExternalNavigationDelegate: AnyObject {
     func didStartProvisionalNavigation()
     func didOpenSiteWith(appName: String)
     func displayProgress(_ progress: Double)
@@ -44,14 +45,14 @@ protocol SiteExternalNavigationDelegate: class {
                      siteSettings: Site.Settings)
 }
 
-protocol SiteNavigationComponent: class {
+protocol SiteNavigationComponent: AnyObject {
     /// Use `nil` to tell that navigation actions should be disabled
     var siteNavigator: SiteNavigationDelegate? { get set }
     /// Reloads state of UI components
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
 }
 
-protocol SiteNavigationChangable: class {
+protocol SiteNavigationChangable: AnyObject {
     func changeBackButton(to canGoBack: Bool)
     func changeForwardButton(to canGoForward: Bool)
 }

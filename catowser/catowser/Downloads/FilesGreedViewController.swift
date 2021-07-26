@@ -8,15 +8,16 @@
 
 import UIKit
 import CoreBrowser
+// needed for `Downloadable`
 import HttpKit
 import JSPlugins
 
-protocol FilesGreedPresenter: class {
+protocol FilesGreedPresenter: AnyObject {
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
     func clearFiles()
 }
 
-protocol FileDownloadViewDelegate: class {
+protocol FileDownloadViewDelegate: AnyObject {
     func didRequestOpen(local url: URL, from sourceView: DownloadButtonCellView)
     func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void)
 }

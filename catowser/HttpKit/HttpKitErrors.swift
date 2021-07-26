@@ -12,7 +12,7 @@ extension HttpKit {
     public enum HttpError: LocalizedError {
         /* Comon errors related to http client */
         
-        case zombySelf
+        case zombieSelf
         case swiftVersionIsTooLowForAsyncAwait
         case failedConstructUrl
         

@@ -10,11 +10,12 @@ import UIKit
 import CoreBrowser
 import JSPlugins
 import HttpKit
+import BrowserNetworking
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
 
-protocol MediaLinksPresenter: class {
+protocol MediaLinksPresenter: AnyObject {
     func didReceiveMediaLinks()
 }
 
@@ -22,7 +23,7 @@ protocol MediaLinksPresenter: class {
 /// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
-    let searchSuggestionsController: SearchSuggestionsViewController = {
+    lazy var searchSuggestionsController: SearchSuggestionsViewController = {
         let vc = SearchSuggestionsViewController(GoogleSuggestionsClient.shared)
         return vc
     }()
@@ -81,7 +82,7 @@ final class MasterRouter: NSObject {
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
-    private let searchSuggestClient: HttpKit.SearchEngine = {
+    private let searchSuggestClient: SearchEngine = {
         let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: .duckduckgo, on: .main)
         guard let xmlData = optionalXmlData else {
             return .googleSearchEngine()

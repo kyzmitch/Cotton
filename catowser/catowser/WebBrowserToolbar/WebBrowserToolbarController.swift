@@ -16,12 +16,12 @@
 import UIKit
 import CoreBrowser
 
-protocol DonwloadPanelDelegate: class {
+protocol DonwloadPanelDelegate: AnyObject {
     func didPressDownloads(to hide: Bool)
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect)
 }
 
-protocol GlobalMenuDelegate: class {
+protocol GlobalMenuDelegate: AnyObject {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect)
 }
 

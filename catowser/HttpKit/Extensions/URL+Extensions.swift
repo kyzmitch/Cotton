@@ -39,7 +39,7 @@ public typealias HostProducer = SignalProducer<String, HttpKit.DnsError>
 typealias HostPublisher = Result<String, HttpKit.DnsError>.Publisher
 public typealias ResolvedURLProducer = SignalProducer<URL, HttpKit.DnsError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-typealias ResolvedURLPublisher = Result<URL, HttpKit.DnsError>.Publisher
+public typealias ResolvedURLPublisher = Result<URL, HttpKit.DnsError>.Publisher
 
 extension URL {
     public var kitHost: HttpKit.Host? {
@@ -87,7 +87,7 @@ extension URL {
         return HostPublisher(.success(host)).eraseToAnyPublisher()
     }
     
-    func updatedHost(with ipAddress: String) throws -> URL {
+    public func updatedHost(with ipAddress: String) throws -> URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             throw HttpKit.DnsError.urlComponentsFail
         }
@@ -98,7 +98,7 @@ extension URL {
         return clearURL
     }
     
-    func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
+    public func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return .init(error: .urlComponentsFail)
         }
@@ -110,7 +110,7 @@ extension URL {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func cUpdatedHost(with ipAddress: String) -> ResolvedURLPublisher {
+    public func cUpdatedHost(with ipAddress: String) -> ResolvedURLPublisher {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return ResolvedURLPublisher(.failure(.urlComponentsFail))
         }

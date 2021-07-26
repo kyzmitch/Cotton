@@ -59,7 +59,7 @@ extension HttpKit.Client {
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    func aaMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+    public func aaMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                               responseType: T.Type) async throws -> T {
         let value = await try aaMakeRequest(for: endpoint,
                                                withAccessToken: nil,

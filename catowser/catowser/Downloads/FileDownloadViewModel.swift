@@ -8,9 +8,10 @@
 
 import Foundation
 import ReactiveSwift
+// needed for `Downloadable`
 import HttpKit
 
-protocol FileDownloadDelegate: class {
+protocol FileDownloadDelegate: AnyObject {
     func didPressOpenFile(withLocal url: URL)
 }
 

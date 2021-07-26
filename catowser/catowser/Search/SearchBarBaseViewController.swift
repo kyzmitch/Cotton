@@ -21,7 +21,7 @@ enum SearchBarState {
     case viewMode(title: String, searchAddressContent: String)
 }
 
-protocol SearchBarControllerInterface: class {
+protocol SearchBarControllerInterface: AnyObject {
     /* non optional */ func changeState(to state: SearchBarState, animated: Bool)
 }
 

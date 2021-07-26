@@ -8,7 +8,6 @@
 
 import CoreData
 import CoreBrowser
-import HttpKit
 
 enum TabsCoreDataError: Swift.Error {
     case noAppSettingsRecordWasFound

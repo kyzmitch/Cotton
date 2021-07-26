@@ -30,12 +30,12 @@ enum LinksType: CustomStringConvertible {
     case unrecognized
 }
 
-protocol LinkTagsPresenter: class {
+protocol LinkTagsPresenter: AnyObject {
     func setLinks(_ count: Int, for type: LinksType)
     func clearLinks()
 }
 
-protocol LinkTagsDelegate: class {
+protocol LinkTagsDelegate: AnyObject {
     func didSelect(type: LinksType, from sourceView: UIView)
 }
 
