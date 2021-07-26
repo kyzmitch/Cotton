@@ -15,7 +15,7 @@ import BrowserNetworking
 import SwiftUI
 #endif
 
-protocol MediaLinksPresenter: class {
+protocol MediaLinksPresenter: AnyObject {
     func didReceiveMediaLinks()
 }
 
@@ -23,7 +23,7 @@ protocol MediaLinksPresenter: class {
 /// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
-    let searchSuggestionsController: SearchSuggestionsViewController = {
+    lazy var searchSuggestionsController: SearchSuggestionsViewController = {
         let vc = SearchSuggestionsViewController(GoogleSuggestionsClient.shared)
         return vc
     }()

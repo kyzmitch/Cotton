@@ -11,7 +11,7 @@ import JSPlugins
 import HttpKit
 import CoreBrowser
 
-protocol MasterDelegate: class {
+protocol MasterDelegate: AnyObject {
     var keyboardHeight: CGFloat? { get set }
     var toolbarHeight: CGFloat { get }
     var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
@@ -21,7 +21,7 @@ protocol MasterDelegate: class {
     func openDomain(with url: URL)
 }
 
-protocol TagsRouterInterface: class {
+protocol TagsRouterInterface: AnyObject {
     func openTagsFor(instagram nodes: [InstagramVideoNode])
     func openTagsFor(t4 video: T4Video)
     func openTagsFor(html tags: [HTMLVideoTag])

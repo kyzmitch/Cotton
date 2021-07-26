@@ -17,7 +17,7 @@ enum MenuModelStyle {
     case onlyGlobalMenu
 }
 
-protocol SiteSettingsInterface: class {
+protocol SiteSettingsInterface: AnyObject {
     func update(jsEnabled: Bool)
 }
 
