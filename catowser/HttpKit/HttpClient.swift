@@ -80,7 +80,7 @@ extension HttpKit {
                                                   responseType: T.Type) -> SignalProducer<T, HttpError> {
             let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
-                    observer.send(error: .zombySelf)
+                    observer.send(error: .zombieSelf)
                     return
                 }
                 guard let url = endpoint.url(relatedTo: self.server) else {
@@ -151,7 +151,7 @@ extension HttpKit {
                              withAccessToken accessToken: String?) -> SignalProducer<Void, HttpError> {
             let producer: SignalProducer<Void, HttpError> = .init { [weak self] (observer, lifetime) in
                 guard let self = self else {
-                    observer.send(error: .zombySelf)
+                    observer.send(error: .zombieSelf)
                     return
                 }
                 guard let url = endpoint.url(relatedTo: self.server) else {

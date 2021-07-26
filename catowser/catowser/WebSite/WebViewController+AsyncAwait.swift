@@ -30,7 +30,7 @@ extension WebViewController {
         dnsRequestTaskHandler?.cancel()
         let taskHandler = detach(priority: .userInitiated) { [weak self] () -> URL in
             guard let self = self else {
-                throw HttpKit.HttpError.zombySelf
+                throw AppError.zombieSelf
             }
             let finalURL = await try self.dnsClient.aaResolvedDomainName(in: url)
             return finalURL

@@ -10,7 +10,9 @@ import UIKit
 import WebKit
 import CoreBrowser
 import JSPlugins
+// needed for `URLIpInfo`
 import HttpKit
+// needed for `GoogleDnsClient`
 import BrowserNetworking
 import ReactiveSwift
 #if canImport(Combine)

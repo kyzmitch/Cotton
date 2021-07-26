@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+// needed for `Downloadable`
 import HttpKit
 import JSPlugins
 

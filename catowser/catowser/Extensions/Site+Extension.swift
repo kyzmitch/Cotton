@@ -10,7 +10,6 @@ import CoreBrowser
 #if canImport(Combine)
 import Combine
 #endif
-import HttpKit
 import BrowserNetworking
 
 /// Client side extension for `CoreBrowser` `Site` type to be able to detect DoH usage
@@ -30,15 +29,17 @@ extension Site {
     func fetchFaviconURL(_ resolve: Bool) -> AnyPublisher<URL, Error> {
         typealias URLResult = Result<URL, Error>
         
+        struct InvalidUrlError: Error {}
+        
         guard resolve else {
             let domainURL = URL(faviconHost: urlInfo.host)
             // swiftlint:disable:next force_unwrapping
-            let result: URLResult = domainURL != nil ? .success(domainURL!) : .failure(HttpKit.HttpError.invalidURL)
+            let result: URLResult = domainURL != nil ? .success(domainURL!) : .failure(InvalidUrlError())
             return URLResult.Publisher(result).eraseToAnyPublisher()
         }
         
         guard let faviconDomainURL = URL(faviconHost: urlInfo.host) else {
-            return URLResult.Publisher(.failure(HttpKit.HttpError.invalidURL)).eraseToAnyPublisher()
+            return URLResult.Publisher(.failure(InvalidUrlError())).eraseToAnyPublisher()
         }
         return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL)
             .mapError { (dnsError) -> Error in
