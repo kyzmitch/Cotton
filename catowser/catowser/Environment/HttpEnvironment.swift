@@ -8,6 +8,7 @@
 
 import Foundation
 import HttpKit
+import BrowserNetworking
 
 final class HttpEnvironment {
     static let shared: HttpEnvironment = .init()
@@ -16,20 +17,20 @@ final class HttpEnvironment {
     let googleClient: GoogleSuggestionsClient
     
     private init() {
-        let googleDNSserver = HttpKit.GoogleDnsServer()
+        let googleDNSserver = GoogleDnsServer()
         dnsClient = .init(server: googleDNSserver, httpTimeout: 2)
-        let googleServer = HttpKit.GoogleServer()
+        let googleServer = GoogleServer()
         googleClient = .init(server: googleServer, httpTimeout: 10)
     }
 }
 
-extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
+extension HttpKit.Client where Server == GoogleDnsServer {
     static var shared: GoogleDnsClient {
         return HttpEnvironment.shared.dnsClient
     }
 }
 
-extension HttpKit.Client where Server == HttpKit.GoogleServer {
+extension HttpKit.Client where Server == GoogleServer {
     static var shared: GoogleSuggestionsClient {
         return HttpEnvironment.shared.googleClient
     }

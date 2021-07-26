@@ -8,7 +8,6 @@
 
 import WebKit
 import UIKit
-import HttpKit
 
 /**
 Called when an error occurs while the web view is loading content.

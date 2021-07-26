@@ -46,5 +46,11 @@ target 'HttpKit' do
 
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint'
+end
+
+target 'BrowserNetworking' do
+  use_frameworks!
+
+  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SWXMLHash', '~> 5.0.0'
 end

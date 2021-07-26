@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import HttpKit
 // only for `IPv4Address` type, but it's not possible to store mask in it
 // maybe better remove this dependency
 // import Network
@@ -17,10 +17,10 @@ import Combine
 
 /// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
 
-public typealias GoogleDnsClient = HttpKit.Client<HttpKit.GoogleDnsServer>
+public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer>
 
 extension HttpKit {
-    typealias GDNSjsonEndpoint = HttpKit.Endpoint<GoogleDNSOverJSONResponse, GoogleDnsServer>
+    typealias GDNSjsonEndpoint = Endpoint<GoogleDNSOverJSONResponse, GoogleDnsServer>
     public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, HttpError>
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpError>
@@ -28,7 +28,7 @@ extension HttpKit {
 
 extension HttpKit.Endpoint {
     
-    static func googleDnsOverHTTPSJson(_ params: HttpKit.GDNSRequestParams) throws -> HttpKit.GDNSjsonEndpoint {
+    static func googleDnsOverHTTPSJson(_ params: GDNSRequestParams) throws -> HttpKit.GDNSjsonEndpoint {
         /**
          To minimize this risk, send only the HTTP headers required for DoH:
          Host, Content-Type (for POST), and if necessary, Accept.
@@ -42,8 +42,8 @@ extension HttpKit.Endpoint {
     }
     
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> HttpKit.GDNSjsonEndpoint {
-        let domainObject = try HttpKit.DomainName(domainName)
-        guard let params = HttpKit.GDNSRequestParams(domainName: domainObject) else {
+        let domainObject = try DomainName(domainName)
+        guard let params = GDNSRequestParams(domainName: domainObject) else {
             throw HttpKit.HttpError.missingRequestParameters("google dns params")
         }
         
@@ -51,60 +51,56 @@ extension HttpKit.Endpoint {
     }
 }
 
-extension HttpKit {
-    public struct GoogleDNSOverJSONResponse: ResponseType {
-        /**
-         200 OK
-         HTTP parsing and communication with DNS resolver was successful,
-         and the response body content is a DNS response in either binary or JSON encoding,
-         depending on the query endpoint, Accept header and GET parameters.
-         */
-        static var successCodes: [Int] {
-            return [200]
+public struct GoogleDNSOverJSONResponse: ResponseType {
+    /**
+     200 OK
+     HTTP parsing and communication with DNS resolver was successful,
+     and the response body content is a DNS response in either binary or JSON encoding,
+     depending on the query endpoint, Accept header and GET parameters.
+     */
+    public static var successCodes: [Int] {
+        return [200]
+    }
+    
+    fileprivate let answer: [Answer]
+    /**
+     Note: An HTTP success may still be a DNS failure.
+     Check the DNS response code (JSON "Status" field) for the
+     DNS errors SERVFAIL, FORMERR, REFUSED, and NOTIMP.
+    */
+    let status: Int32
+    /// NOERROR - Standard DNS response code (32 bit integer).
+    let noError: Int32 = 0
+    
+    public let ipAddress: String
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        answer = try container.decode([Answer].self, forKey: .answer)
+        status = try container.decode(Int32.self, forKey: .status)
+        guard status == noError else {
+            throw GoogleDNSEndpointError.dnsStatusError(status)
         }
-        
-        fileprivate let answer: [Answer]
-        /**
-         Note: An HTTP success may still be a DNS failure.
-         Check the DNS response code (JSON "Status" field) for the
-         DNS errors SERVFAIL, FORMERR, REFUSED, and NOTIMP.
-        */
-        let status: Int32
-        /// NOERROR - Standard DNS response code (32 bit integer).
-        let noError: Int32 = 0
-        
-        public let ipAddress: String
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            answer = try container.decode([Answer].self, forKey: .answer)
-            status = try container.decode(Int32.self, forKey: .status)
-            guard status == noError else {
-                throw GoogleDNSEndpointError.dnsStatusError(status)
-            }
-            let ipv4array = answer.filter { $0.recordType.knownCase == .addressRecord }
-            guard let firstAddress = ipv4array.first?.ipAddress else {
-                throw GoogleDNSEndpointError.emptyAnswers
-            }
-            ipAddress = firstAddress
+        let ipv4array = answer.filter { $0.recordType.knownCase == .addressRecord }
+        guard let firstAddress = ipv4array.first?.ipAddress else {
+            throw GoogleDNSEndpointError.emptyAnswers
         }
-        
-        fileprivate enum CodingKeys: String, CodingKey {
-            case answer = "Answer"
-            case status = "Status"
-        }
+        ipAddress = firstAddress
+    }
+    
+    fileprivate enum CodingKeys: String, CodingKey {
+        case answer = "Answer"
+        case status = "Status"
     }
 }
 
-extension HttpKit {
-    public enum GoogleDNSEndpointError: LocalizedError {
-        case emptyAnswers
-        case dnsStatusError(Int32)
-        case recordTypeParsing(UInt32)
-        
-        public var errorDescription: String? {
-            return "Google DSN over JSON `\(self)`"
-        }
+public enum GoogleDNSEndpointError: LocalizedError {
+    case emptyAnswers
+    case dnsStatusError(Int32)
+    case recordTypeParsing(UInt32)
+    
+    public var errorDescription: String? {
+        return "Google DSN over JSON `\(self)`"
     }
 }
 
@@ -115,7 +111,7 @@ private struct Answer: Decodable {
     /// Not sure how many bytes for it
     /// 1 - A - Standard DNS RR type
     /// 99 - SPF - Standard DNS RR type
-    let recordType: HttpKit.DnsRR
+    let recordType: DnsRR
     /// Data for A - IP address as text or some different thing like `z-p42-instagram.c10r.facebook.com.`
     let ipAddress: String
     
@@ -124,8 +120,8 @@ private struct Answer: Decodable {
         name = try container.decode(String.self, forKey: .name)
         ipAddress = try container.decode(String.self, forKey: .ipAddress)
         let rr = try container.decode(UInt32.self, forKey: .type)
-        guard let dnsRR = HttpKit.DnsRR(rr) else {
-            throw HttpKit.GoogleDNSEndpointError.recordTypeParsing(rr)
+        guard let dnsRR = DnsRR(rr) else {
+            throw GoogleDNSEndpointError.recordTypeParsing(rr)
         }
         recordType = dnsRR
     }
@@ -142,13 +138,13 @@ private enum DNSRecordType: UInt32 {
     case canonicalName = 5
 }
 
-extension HttpKit.DnsRR {
+extension DnsRR {
     fileprivate var knownCase: DNSRecordType? {
         return DNSRecordType(rawValue: self.numericValue)
     }
 }
 
-extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
+extension HttpKit.Client where Server == GoogleDnsServer {
     func rxGetIPaddress(ofDomain domainName: String) -> HttpKit.GDNSjsonProducer {
         let endpoint: HttpKit.GDNSjsonEndpoint
         do {
@@ -171,7 +167,7 @@ extension HttpKit.Client where Server == HttpKit.GoogleDnsServer {
             .flatMap(.latest, { (host) -> HttpKit.GDNSjsonProducer in
                 return self.rxGetIPaddress(ofDomain: host)
             })
-            .flatMapError({ (kitErr) -> SignalProducer<HttpKit.GoogleDNSOverJSONResponse, HttpKit.DnsError> in
+            .flatMapError({ (kitErr) -> SignalProducer<GoogleDNSOverJSONResponse, HttpKit.DnsError> in
                 return .init(error: .httpError(kitErr))
             })
             .flatMap(.latest, { (response) -> ResolvedURLProducer in

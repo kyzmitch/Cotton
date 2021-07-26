@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveSwift
+// needed for `Downloadable`
 import HttpKit
 
 protocol FileDownloadDelegate: AnyObject {
