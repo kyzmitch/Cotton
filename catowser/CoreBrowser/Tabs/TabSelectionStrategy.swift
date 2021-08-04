@@ -14,13 +14,14 @@ public protocol IndexSelectionContext {
 }
 
 public protocol TabSelectionStrategy {
-    func autoSelectedIndexBasedOn(_ context: IndexSelectionContext, removedIndex: Int) -> Int
+    func autoSelectedIndexAfterTabRemove(_ context: IndexSelectionContext, removedIndex: Int) -> Int
+    func autoSelectedIndexAfterTabAdd(_ context: IndexSelectionContext, addedIndex: Int) -> Int
 }
 
 public struct NearbySelectionStrategy {}
 
 extension NearbySelectionStrategy: TabSelectionStrategy {
-    public func autoSelectedIndexBasedOn(_ context: IndexSelectionContext, removedIndex: Int) -> Int {
+    public func autoSelectedIndexAfterTabRemove(_ context: IndexSelectionContext, removedIndex: Int) -> Int {
         let value: Int
 
         if context.currentlySelectedIndex == removedIndex {
@@ -44,5 +45,9 @@ extension NearbySelectionStrategy: TabSelectionStrategy {
         }
 
         return value
+    }
+    
+    public func autoSelectedIndexAfterTabAdd(_ context: IndexSelectionContext, addedIndex: Int) -> Int {
+        return addedIndex
     }
 }

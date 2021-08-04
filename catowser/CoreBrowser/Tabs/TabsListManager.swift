@@ -28,11 +28,15 @@ public final class TabsListManager {
     private var observers: [TabsObserver] = [TabsObserver]()
     private let queue: DispatchQueue
     private lazy var scheduler: QueueScheduler = {
-        let s = QueueScheduler(targeting: queue)
-        return s
+        let internalSheduler = QueueScheduler(targeting: queue)
+        return internalSheduler
     }()
 
     private var disposables = [Disposable?]()
+    private var tabAddDisposable: Disposable?
+    private var tabCloseDisposable: Disposable?
+    private var tabSelectDisposable: Disposable?
+    private var tabContentUpdateDisposable: Disposable?
 
     public init(storage: TabsStoragable, positioning: TabsPositioning) {
         selectionStrategy = NearbySelectionStrategy()
@@ -144,11 +148,11 @@ public final class TabsListManager {
     /// Returns currently selected tab.
     public func selectedTab() throws -> Tab {
         guard selectedId != self.positioning.defaultSelectedTabId else {
-            throw NotInitializedYet()
+            throw TabsListError.notInitializedYet
         }
 
         guard let tabTuple = tabs.value.element(by: selectedId) else {
-            throw SelectedNotFound()
+            throw TabsListError.selectedNotFound
         }
         return tabTuple.tab
     }
@@ -157,9 +161,11 @@ public final class TabsListManager {
         return selectedTabId.value
     }
 
-    fileprivate struct NotInitializedYet: Error {}
-    fileprivate struct SelectedNotFound: Error {}
-    fileprivate struct WrongTabContent: Error {}
+    fileprivate enum TabsListError: LocalizedError {
+        case notInitializedYet
+        case selectedNotFound
+        case wrongTabContent
+    }
 }
 
 extension TabsListManager: IndexSelectionContext {
@@ -175,7 +181,7 @@ extension TabsListManager: IndexSelectionContext {
         if let tabTuple = tabs.value.element(by: selectedId) {
             return tabTuple.index
         }
-        // tabs collection should be empty, so,
+        // tabs collection shouldn't be empty, so,
         // it is safe to return index of 1st element
         return 0
     }
@@ -187,90 +193,91 @@ extension TabsListManager: TabsSubject {
     }
 
     public func close(tab: Tab) {
-        _ = storage
+        tabCloseDisposable?.dispose()
+        tabCloseDisposable = storage
             .remove(tab: tab)
             .startWithResult({ [weak self] (result) in
                 switch result {
-                case .failure(let dbError):
-                    print("Failure to remove tab from cache: \(dbError)")
-                case .success:
-                    guard let self = self else { return }
-                    // if it is last tab - replace it with a tab with default content
-                    // browser can't function without at least one tab
-                    // so, this is kind of a side effect of removing the only one last tab
-                    if self.tabs.value.count == 1, let firstTab = self.tabs.value.first {
-                        assert(tab == firstTab, "closing unexpected tab")
-                        self.resetToOneTab()
-                        return
-                    }
-
-                    guard let tabIndex = self.tabs.value.firstIndex(of: tab) else {
-                        fatalError("closing non existing tab")
-                    }
-
-                    let newIndex = self.selectionStrategy.autoSelectedIndexBasedOn(self, removedIndex: tabIndex)
-                    // need to remove it before changing selected index
-                    // otherwise in one case the handler will select closed tab
-                    self.tabs.value.remove(at: tabIndex)
-                    guard let selectedTab = self.tabs.value[safe: newIndex] else {
-                        fatalError("Failed to find new selected tab")
-                    }
-                    self.selectedTabId.value = selectedTab.id
+                case .failure(let storageError):
+                    // tab view should be removed immediately on view level anyway
+                    print("Failure to remove tab from cache: \(storageError)")
+                case .success(let removedTab):
+                    self?.handleCachedTabRemove(removedTab)
                 }
         })
     }
 
     public func closeAll() {
+        // Should always work, don't care about errors
         resetToOneTab()
         selectedTabId.value = positioning.defaultSelectedTabId
     }
 
     public func add(tab: Tab) {
-        let newIndex = positioning.addPosition.addTabAndReturnIndex(tab,
-                                                                    to: tabs,
-                                                                    currentlySelectedId: selectedId)
-        let select = tab.isSelected(selectedId)
-        _ = storage.add(tab: tab, andSelect: select).startWithResult { [weak self] (result) in
-            if case .failure(let storageError) = result {
-                print("Failed to add a tab to storage \(storageError)")
-            } else {
-                if select {
-                    self?.selectedTabId.value = tab.id
+        let newIndex = positioning.addPosition.addTab(tab, to: tabs, currentlySelectedId: selectedId)
+        let selectedIndexAfterAdd = selectionStrategy.autoSelectedIndexAfterTabAdd(self, addedIndex: newIndex)
+        let needSelect = selectedIndexAfterAdd == newIndex
+        tabAddDisposable?.dispose()
+        tabAddDisposable = storage
+            .add(tab: tab, andSelect: needSelect)
+            .startWithResult { [weak self] (result) in
+                switch result {
+                case .failure(let storageError):
+                    // It doesn't matter, on view level it must be added right away
+                    print("Failed to add this tab to cache: \(storageError)")
+                case .success(let addedTab):
+                    guard let self = self else { return }
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        self.observers.forEach { $0.tabDidAdd(tab, at: newIndex) }
+                        // can select new tab only after adding it
+                        // this is because corresponding view should be in the list
+                        // before that
+                        if needSelect {
+                            self.selectedTabId.value = addedTab.id
+                        }
+                    }
                 }
             }
-        }
-        DispatchQueue.main.async {
-            self.observers.forEach { $0.tabDidAdd(tab, at: newIndex) }
-        }
     }
 
     public func select(tab: Tab) {
-        _ = storage.select(tab: tab).startWithResult({ [weak self] (result) in
-            switch result {
-            case .success(let identifier):
-                self?.selectedTabId.value = identifier
-            case .failure(let storageError):
-                print("Failed to select tab with id \(tab.id) \(storageError)")
-            }
-        })
-        
+        tabSelectDisposable?.dispose()
+        tabSelectDisposable = storage
+            .select(tab: tab)
+            .startWithResult({ [weak self] (result) in
+                switch result {
+                case .success(let identifier):
+                    guard let self = self else { return }
+                    guard identifier != self.selectedId else {
+                        return
+                    }
+                    self.selectedTabId.value = identifier
+                case .failure(let storageError):
+                    print("Failed to select tab with id \(tab.id) \(storageError)")
+                }
+            })
     }
 
     public func replaceSelected(tabContent: Tab.ContentType) throws {
         guard var tabTuple = tabs.value.element(by: selectedId) else {
-            throw NotInitializedYet()
+            throw TabsListError.notInitializedYet
         }
-
+        
         tabTuple.tab.contentType = tabContent
         // we must reset preview
         tabTuple.tab.preview = nil
+        // TODO: not sure if it is needed
         tabs.value[tabTuple.index] = tabTuple.tab
-
-        _ = storage.update(tab: tabTuple.tab).startWithResult({ (result) in
-            if case .failure(let storageError) = result {
-                print("Failed to update tab content to storage \(storageError)")
-            }
-        })
+        
+        tabContentUpdateDisposable?.dispose()
+        tabContentUpdateDisposable = storage
+            .update(tab: tabTuple.tab)
+            .startWithResult({ (result) in
+                if case .failure(let storageError) = result {
+                    print("Failed to update tab content to storage \(storageError)")
+                }
+            })
         // Need to notify observers to allow them
         // to update title for tab view
         DispatchQueue.main.async {
@@ -283,10 +290,10 @@ extension TabsListManager: TabsSubject {
     /// - Parameter image: `UIImage` usually a screenshot of WKWebView.
     public func setSelectedPreview(_ image: UIImage?) throws {
         guard let tabTuple = tabs.value.element(by: selectedId) else {
-            throw NotInitializedYet()
+            throw TabsListError.notInitializedYet
         }
         if case .site = tabTuple.tab.contentType, image == nil {
-            throw WrongTabContent()
+            throw TabsListError.wrongTabContent
         }
         var tabCopy = tabTuple.tab
         tabCopy.preview = image
@@ -333,6 +340,30 @@ private extension TabsListManager {
                 }
             }
         }
+    }
+    
+    func handleCachedTabRemove(_ tab: Tab) {
+        // if it is a last tab - replace it with a tab with default content
+        // browser can't function without at least one tab
+        // so, this is kind of a side effect of removing the only one last tab
+        if tabs.value.count == 1, let firstTab = tabs.value.first {
+            assert(tab == firstTab, "closing unexpected tab")
+            resetToOneTab()
+            return
+        }
+
+        guard let closedTabIndex = tabs.value.firstIndex(of: tab) else {
+            fatalError("Closing non existing tab")
+        }
+
+        let newIndex = selectionStrategy.autoSelectedIndexAfterTabRemove(self, removedIndex: closedTabIndex)
+        // need to remove it before changing selected index
+        // otherwise in one case the handler will select closed tab
+        tabs.value.remove(at: closedTabIndex)
+        guard let selectedTab = tabs.value[safe: newIndex] else {
+            fatalError("Failed to find new selected tab")
+        }
+        self.selectedTabId.value = selectedTab.id
     }
 }
 

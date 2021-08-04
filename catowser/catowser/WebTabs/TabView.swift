@@ -189,6 +189,10 @@ private extension TabView {
     }
     
     func handleTapGesture() {
+        // Can mark it as selected on view layer right away
+        // with following code `visualState = .selected`
+        // but still need to update same state for
+        // previously selected tab (deselect it)
         delegate?.tabDidBecomeActive(viewModel)
     }
 }

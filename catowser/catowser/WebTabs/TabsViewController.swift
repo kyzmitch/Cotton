@@ -168,16 +168,29 @@ private extension TabsViewController {
     }
 
     func makeTabActive(at index: Int) {
-        for i in (0..<tabsStackView.arrangedSubviews.count) {
-            guard let tabView = tabsStackView.arrangedSubviews[i] as? TabView else {
-                assert(false, "unexpected view type")
-                return
+        guard !tabsStackView.arrangedSubviews.isEmpty else {
+            assertionFailure("Tried to make tab view active but there are no any of them")
+            return
+        }
+        var searchedView: TabView?
+        for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
+            // swiftlint:disable:next force_cast
+            let tabView = tuple.element as! TabView
+            
+            // TODO: probably it is better to have previously selected index here
+            if tuple.offset == index {
+                searchedView = tabView
+                tabView.visualState = .selected
+            } else {
+                tabView.visualState = .deselected
             }
-            if i == index {
-                // if tab which was selected was partly hidden for example under + button
-                // need to scroll it to make it fully visible
-                makeTabFullyVisibleIfNeeded(tabView)
-            }
+        }
+        if let tabView = searchedView {
+            // if tab which was selected was partly hidden for example under + button
+            // need to scroll it to make it fully visible
+            makeTabFullyVisibleIfNeeded(tabView)
+        } else {
+            assertionFailure("Tried to make not existing tab active")
         }
     }
 
@@ -257,7 +270,7 @@ extension TabsViewController: TabDelegate {
     }
     
     func tabDidBecomeActive(_ tab: Tab) {
-        print("\(#function): tapped")
+        print("\(#function): selected tab with id: \(tab.id)")
         TabsListManager.shared.select(tab: tab)
     }
 }

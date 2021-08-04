@@ -15,9 +15,9 @@ public enum AddedTabPosition: Int, CaseIterable {
     case listEnd = 0
     case afterSelected = 1
     
-    func addTabAndReturnIndex(_ tab: Tab,
-                              to tabs: MutableProperty<[Tab]>,
-                              currentlySelectedId: UUID) -> Int {
+    func addTab(_ tab: Tab,
+                to tabs: MutableProperty<[Tab]>,
+                currentlySelectedId: UUID) -> Int {
         let newIndex: Int
         switch self {
         case .listEnd:
