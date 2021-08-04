@@ -110,12 +110,10 @@ private extension BaseJSHandler {
             return false
         }
         // now need to parse to find video tags and extract urls
-        do {
-            let videoTags = try HTMLVideoTagsContainer(htmlMessage: htmlContentMsg)
-            delegate?.didReceiveVideoTags(videoTags.videoTags)
-        } catch {
-            print("HTML video tags: \(error)")
+        guard let videoTags = try? HTMLVideoTagsContainer(htmlMessage: htmlContentMsg) else {
+            return false
         }
+        delegate?.didReceiveVideoTags(videoTags.videoTags)
         return true
     }
     

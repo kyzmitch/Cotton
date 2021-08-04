@@ -122,12 +122,12 @@ document.body.addEventListener('DOMSubtreeModified', function(event) {
     if (!window.__cotton__.isHandledHost()) {
         return;
     }
-    cottonBaseLog('DOMSubtreeModified triggered');
+    // cottonBaseLog('DOMSubtreeModified triggered');
 }, false);
 
 (function () {
     let callback = function(mutationsList, observer) {
-        cottonBaseLog('HTML DOM change detected');
+        // cottonBaseLog('HTML DOM change detected');
         let tags = [];
         for(let mutation of mutationsList) {
             // https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
