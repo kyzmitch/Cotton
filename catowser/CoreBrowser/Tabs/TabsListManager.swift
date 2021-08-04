@@ -136,7 +136,7 @@ public final class TabsListManager {
                 guard let tabTuple = self.tabs.value.element(by: newSelectedTabId) else {
                     return
                 }
-                self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType) }
+                self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType, identifier: tabTuple.tab.id) }
         }
         disposables.append(disposable)
     }

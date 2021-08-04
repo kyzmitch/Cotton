@@ -299,7 +299,7 @@ extension CounterView: TabsObserver {
 }
 
 extension WebBrowserToolbarController: TabsObserver {
-    func didSelect(index: Int, content: Tab.ContentType) {
+    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         switch content {
         case .site:
             updateToolbar(downloadsAvailable: false, actionsAvailable: true)

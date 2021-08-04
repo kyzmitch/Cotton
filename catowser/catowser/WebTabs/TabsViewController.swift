@@ -167,7 +167,7 @@ private extension TabsViewController {
         stackViewScrollableContainer.scroll(on: 100)
     }
 
-    func makeTabActive(at index: Int) {
+    func makeTabActive(at index: Int, identifier: UUID) {
         guard !tabsStackView.arrangedSubviews.isEmpty else {
             assertionFailure("Tried to make tab view active but there are no any of them")
             return
@@ -176,14 +176,10 @@ private extension TabsViewController {
         for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
             // swiftlint:disable:next force_cast
             let tabView = tuple.element as! TabView
-            
-            // TODO: probably it is better to have previously selected index here
             if tuple.offset == index {
                 searchedView = tabView
-                tabView.visualState = .selected
-            } else {
-                tabView.visualState = .deselected
             }
+            tabView.visualState = tabView.viewModel.getVisualState(identifier)
         }
         if let tabView = searchedView {
             // if tab which was selected was partly hidden for example under + button
@@ -228,8 +224,8 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func didSelect(index: Int, content: Tab.ContentType) {
-        makeTabActive(at: index)
+    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+        makeTabActive(at: index, identifier: identifier)
     }
     
     func update(with tabsCount: Int) {
