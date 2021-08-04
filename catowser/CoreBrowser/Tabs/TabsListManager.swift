@@ -143,7 +143,6 @@ public final class TabsListManager {
 
     /// Returns currently selected tab.
     public func selectedTab() throws -> Tab {
-        let selectedId = selectedTabId.value
         guard selectedId != self.positioning.defaultSelectedTabId else {
             throw NotInitializedYet()
         }
@@ -173,8 +172,7 @@ extension TabsListManager: IndexSelectionContext {
 
     public var currentlySelectedIndex: Int {
         assert(!tabs.value.isEmpty, "Tabs amount shouldn't be 0")
-        let tabId = selectedTabId.value
-        if let tabTuple = tabs.value.element(by: tabId) {
+        if let tabTuple = tabs.value.element(by: selectedId) {
             return tabTuple.index
         }
         // tabs collection should be empty, so,
@@ -230,8 +228,8 @@ extension TabsListManager: TabsSubject {
     public func add(tab: Tab) {
         let newIndex = positioning.addPosition.addTabAndReturnIndex(tab,
                                                                     to: tabs,
-                                                                    currentlySelectedId: selectedTabId.value)
-        let select = tab.id == selectedTabId.value
+                                                                    currentlySelectedId: selectedId)
+        let select = tab.isSelected(selectedId)
         _ = storage.add(tab: tab, andSelect: select).startWithResult { [weak self] (result) in
             if case .failure(let storageError) = result {
                 print("Failed to add a tab to storage \(storageError)")
@@ -259,9 +257,7 @@ extension TabsListManager: TabsSubject {
     }
 
     public func replaceSelected(tabContent: Tab.ContentType) throws {
-        let tabId = selectedTabId.value
-
-        guard var tabTuple = tabs.value.element(by: tabId) else {
+        guard var tabTuple = tabs.value.element(by: selectedId) else {
             throw NotInitializedYet()
         }
 
@@ -286,9 +282,7 @@ extension TabsListManager: TabsSubject {
     ///
     /// - Parameter image: `UIImage` usually a screenshot of WKWebView.
     public func setSelectedPreview(_ image: UIImage?) throws {
-        let tabId = selectedTabId.value
-        
-        guard let tabTuple = tabs.value.element(by: tabId) else {
+        guard let tabTuple = tabs.value.element(by: selectedId) else {
             throw NotInitializedYet()
         }
         if case .site = tabTuple.tab.contentType, image == nil {
