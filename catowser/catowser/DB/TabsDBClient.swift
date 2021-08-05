@@ -93,6 +93,11 @@ final class TabsDBClient {
         }
     }
     
+    /// Removes all the records of tabs
+    func removeAll(tabs: [Tab]) throws {
+        // TODO: core data implementation
+    }
+    
     /// Gets all stored tabs
     func fetchAllTabs() throws -> [Tab] {
         var fetchError: Error?

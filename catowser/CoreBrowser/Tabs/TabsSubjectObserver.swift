@@ -25,7 +25,7 @@ public enum AddedTabPosition: Int, CaseIterable {
             newIndex = tabs.value.count - 1
         case .afterSelected:
             guard let tabTuple = tabs.value.element(by: currentlySelectedId) else {
-                assert(false, "Impossible case when there is no selected tab, adding at the end")
+                // no previously selected tab, probably when reset to one tab happend
                 tabs.value.append(tab)
                 return tabs.value.count - 1
             }

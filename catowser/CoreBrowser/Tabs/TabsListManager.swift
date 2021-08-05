@@ -35,6 +35,7 @@ public final class TabsListManager {
     private var disposables = [Disposable?]()
     private var tabAddDisposable: Disposable?
     private var tabCloseDisposable: Disposable?
+    private var closeAllTabsDisposable: Disposable?
     private var tabSelectDisposable: Disposable?
     private var tabContentUpdateDisposable: Disposable?
 
@@ -209,8 +210,30 @@ extension TabsListManager: TabsSubject {
 
     public func closeAll() {
         // Should always work, don't care about errors
-        resetToOneTab()
-        selectedTabId.value = positioning.defaultSelectedTabId
+        typealias TabAddProducer = SignalProducer<Tab, TabStorageError>
+        
+        closeAllTabsDisposable?.dispose()
+        closeAllTabsDisposable = storage
+            .remove(tabs: tabs.value)
+            .flatMap(.latest, { [weak self] _ -> TabAddProducer in
+                guard let self = self else {
+                    return .init(error: TabStorageError.zombieSelf)
+                }
+                self.tabs.value.removeAll()
+                let tab: Tab = .init(contentType: self.positioning.contentState)
+                return self.storage.add(tab: tab, andSelect: true)
+            })
+            .startWithResult({ [weak self] (result) in
+                switch result {
+                case .failure(let storageError):
+                    // tab view should be removed immediately on view level anyway
+                    print("Failure to remove tab and reset to one tab: \(storageError)")
+                case .success(let addedTab):
+                    guard let self = self else { return }
+                    self.handleTabAdded(addedTab, index: 0)
+                    self.selectedTabId.value = addedTab.id
+                }
+        })
     }
 
     public func add(tab: Tab) {
@@ -227,15 +250,12 @@ extension TabsListManager: TabsSubject {
                     print("Failed to add this tab to cache: \(storageError)")
                 case .success(let addedTab):
                     guard let self = self else { return }
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self = self else { return }
-                        self.observers.forEach { $0.tabDidAdd(tab, at: newIndex) }
-                        // can select new tab only after adding it
-                        // this is because corresponding view should be in the list
-                        // before that
-                        if needSelect {
-                            self.selectedTabId.value = addedTab.id
-                        }
+                    self.handleTabAdded(addedTab, index: newIndex)
+                    // can select new tab only after adding it
+                    // this is because corresponding view should be in the list
+                    // before that
+                    if needSelect {
+                        self.selectedTabId.value = addedTab.id
                     }
                 }
             }
@@ -316,27 +336,18 @@ extension TabsListManager: TabsSubject {
 }
 
 private extension TabsListManager {
-    func resetToOneTab() {
-        tabs.value.removeAll()
-        let newTabId = self.positioning.defaultSelectedTabId
-        let tab: Tab = .init(contentType: positioning.contentState, idenifier: newTabId)
-
-        tabs.value.append(tab)
-        // No need to change selected index because it is already 0
-        // but it is needed to update web view content
-        selectedTabId.value = newTabId
-
+    func handleTabAdded(_ tab: Tab, index: Int) {
         switch positioning.addSpeed {
         case .immediately:
             DispatchQueue.main.async { [weak self] in
                 self?.observers.forEach {
-                    $0.tabDidAdd(tab, at: 0)
+                    $0.tabDidAdd(tab, at: index)
                 }
             }
         case .after(let interval):
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + interval) { [weak self] in
                 self?.observers.forEach {
-                    $0.tabDidAdd(tab, at: 0)
+                    $0.tabDidAdd(tab, at: index)
                 }
             }
         }
@@ -346,24 +357,25 @@ private extension TabsListManager {
         // if it is a last tab - replace it with a tab with default content
         // browser can't function without at least one tab
         // so, this is kind of a side effect of removing the only one last tab
-        if tabs.value.count == 1, let firstTab = tabs.value.first {
-            assert(tab == firstTab, "closing unexpected tab")
-            resetToOneTab()
-            return
-        }
+        if tabs.value.count == 1 {
+            tabs.value.removeAll()
+            let tab: Tab = .init(contentType: positioning.contentState)
+            add(tab: tab)
+        } else {
+            guard let closedTabIndex = tabs.value.firstIndex(of: tab) else {
+                fatalError("Closing non existing tab")
+            }
 
-        guard let closedTabIndex = tabs.value.firstIndex(of: tab) else {
-            fatalError("Closing non existing tab")
+            let newIndex = selectionStrategy.autoSelectedIndexAfterTabRemove(self, removedIndex: closedTabIndex)
+            // need to remove it before changing selected index
+            // otherwise in one case the handler will select closed tab
+            tabs.value.remove(at: closedTabIndex)
+            
+            guard let selectedTab = tabs.value[safe: newIndex] else {
+                fatalError("Failed to find new selected tab")
+            }
+            self.selectedTabId.value = selectedTab.id
         }
-
-        let newIndex = selectionStrategy.autoSelectedIndexAfterTabRemove(self, removedIndex: closedTabIndex)
-        // need to remove it before changing selected index
-        // otherwise in one case the handler will select closed tab
-        tabs.value.remove(at: closedTabIndex)
-        guard let selectedTab = tabs.value[safe: newIndex] else {
-            fatalError("Failed to find new selected tab")
-        }
-        self.selectedTabId.value = selectedTab.id
     }
 }
 
