@@ -95,7 +95,21 @@ final class TabsDBClient {
     
     /// Removes all the records of tabs
     func removeAll(tabs: [Tab]) throws {
-        // TODO: core data implementation
+        var cdError: Error?
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDTab.fetchRequest()
+        let query = NSPredicate(format: "id = %@", argumentArray: tabs.map {$0.id})
+        fetchRequest.predicate = query
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        managedContext.performAndWait {
+            do {
+                try managedContext.execute(batchDeleteRequest)
+            } catch {
+                cdError = error
+            }
+        }
+        if let actualError = cdError {
+            throw actualError
+        }
     }
     
     /// Gets all stored tabs
