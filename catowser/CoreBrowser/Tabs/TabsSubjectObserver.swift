@@ -15,9 +15,9 @@ public enum AddedTabPosition: Int, CaseIterable {
     case listEnd = 0
     case afterSelected = 1
     
-    func addTabAndReturnIndex(_ tab: Tab,
-                              to tabs: MutableProperty<[Tab]>,
-                              currentlySelectedId: UUID) -> Int {
+    func addTab(_ tab: Tab,
+                to tabs: MutableProperty<[Tab]>,
+                currentlySelectedId: UUID) -> Int {
         let newIndex: Int
         switch self {
         case .listEnd:
@@ -25,7 +25,7 @@ public enum AddedTabPosition: Int, CaseIterable {
             newIndex = tabs.value.count - 1
         case .afterSelected:
             guard let tabTuple = tabs.value.element(by: currentlySelectedId) else {
-                assert(false, "Impossible case when there is no selected tab, adding at the end")
+                // no previously selected tab, probably when reset to one tab happend
                 tabs.value.append(tab)
                 return tabs.value.count - 1
             }
@@ -67,7 +67,8 @@ public protocol TabsObserver {
     /// - parameters:
     ///     - index: new selected index.
     ///     - content: Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
-    func didSelect(index: Int, content: Tab.ContentType)
+    ///     - identifier: needed to quickly determine visual state (selected view or not)
+    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID)
     /// Notifies about tab content type changes or `site` changes
     func tabDidReplace(_ tab: Tab, at index: Int)
 
@@ -82,7 +83,7 @@ public extension TabsObserver {
         return String(describing: self)
     }
 
-    func didSelect(index: Int, content: Tab.ContentType) {
+    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         // Only landscape/regular tabs list view use that
     }
 

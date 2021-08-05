@@ -127,6 +127,30 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
+    /// Remove all the tabs
+    func forget(tabs: [Tab]) -> SignalProducer<[Tab], TabResourceError> {
+        let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, _) in
+            guard let self = self else {
+                observer.send(error: .zombieSelf)
+                return
+            }
+            guard self.isStoreInitialized else {
+                observer.send(error: .storeNotInitializedYet)
+                return
+            }
+            
+            do {
+                try self.dbClient.removeAll(tabs: tabs)
+                observer.send(value: tabs)
+                observer.sendCompleted()
+            } catch {
+                observer.send(error: .deleteError(error))
+            }
+            
+        }
+        return producer.observe(on: scheduler)
+    }
+    
     /// Gets all tabs recorded in DB. Currently there is only one session, but later
     /// it should be possible to store and read tabs from different sessions like
     /// private browser session tabs & usual tabs.

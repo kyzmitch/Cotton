@@ -19,8 +19,6 @@ fileprivate extension TabsViewController {
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
     private let tabsStackView: UIStackView = {
-        // TODO: create a wrapper around UIStackView to provide
-        // more convinient interface instead of direct usage for `arrangedSubviews`
         let stackView = UIStackView()
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
@@ -123,7 +121,7 @@ private extension TabsViewController {
     @objc func addTabPressed() {
         print("\(#function): add pressed")
 
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState, selected: DefaultTabProvider.shared.selected)
+        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
         TabsListManager.shared.add(tab: tab)
     }
 
@@ -169,18 +167,26 @@ private extension TabsViewController {
         stackViewScrollableContainer.scroll(on: 100)
     }
 
-    func makeTabActive(at index: Int) {
-        for i in (0..<tabsStackView.arrangedSubviews.count) {
-            guard let tabView = tabsStackView.arrangedSubviews[i] as? TabView else {
-                assert(false, "unexpected view type")
-                return
+    func makeTabActive(at index: Int, identifier: UUID) {
+        guard !tabsStackView.arrangedSubviews.isEmpty else {
+            assertionFailure("Tried to make tab view active but there are no any of them")
+            return
+        }
+        var searchedView: TabView?
+        for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
+            // swiftlint:disable:next force_cast
+            let tabView = tuple.element as! TabView
+            if tuple.offset == index {
+                searchedView = tabView
             }
-            tabView.visualState = i == index ? .selected : .deselected
-            if i == index {
-                // if tab which was selected was partly hidden for example under + button
-                // need to scroll it to make it fully visible
-                makeTabFullyVisibleIfNeeded(tabView)
-            }
+            tabView.visualState = tabView.viewModel.getVisualState(identifier)
+        }
+        if let tabView = searchedView {
+            // if tab which was selected was partly hidden for example under + button
+            // need to scroll it to make it fully visible
+            makeTabFullyVisibleIfNeeded(tabView)
+        } else {
+            assertionFailure("Tried to make not existing tab active")
         }
     }
 
@@ -218,8 +224,8 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func didSelect(index: Int, content: Tab.ContentType) {
-        makeTabActive(at: index)
+    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+        makeTabActive(at: index, identifier: identifier)
     }
     
     func update(with tabsCount: Int) {
@@ -250,7 +256,7 @@ extension TabsViewController: TabsObserver {
 }
 
 extension TabsViewController: TabDelegate {
-    func tabViewDidClose(_ tabView: TabView, was active: Bool) {
+    func tabViewDidClose(_ tabView: TabView) {
         print("\(#function): closed")
         removeTabView(tabView)
         if let site = tabView.viewModel.site {
@@ -260,7 +266,7 @@ extension TabsViewController: TabDelegate {
     }
     
     func tabDidBecomeActive(_ tab: Tab) {
-        print("\(#function): tapped")
+        print("\(#function): selected tab with id: \(tab.id)")
         TabsListManager.shared.select(tab: tab)
     }
 }

@@ -515,7 +515,7 @@ extension MasterBrowserViewController: MasterDelegate {
 }
 
 extension MasterBrowserViewController: TabsObserver {
-    func didSelect(index: Int, content: Tab.ContentType) {
+    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         open(tabContent: content)
     }
 

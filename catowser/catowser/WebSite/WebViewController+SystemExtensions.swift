@@ -55,7 +55,7 @@ extension WebViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-#if true
+#if false
         print("navigation Action: \(navigationAction.navigationType.debugDescription) \(url)")
 #endif
         
