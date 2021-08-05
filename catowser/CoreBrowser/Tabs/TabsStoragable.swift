@@ -42,4 +42,7 @@ public protocol TabsStoragable {
     ///
     /// - Parameter tab: The tab object to be removed from databse.
     func remove(tab: Tab) -> SignalProducer<Tab, TabStorageError>
+    
+    /// Removes all the tabs for current session
+    func remove(tabs: [Tab]) -> SignalProducer<[Tab], TabStorageError>
 }
