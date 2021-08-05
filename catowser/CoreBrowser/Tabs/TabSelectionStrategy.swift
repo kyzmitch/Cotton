@@ -15,7 +15,7 @@ public protocol IndexSelectionContext {
 
 public protocol TabSelectionStrategy {
     func autoSelectedIndexAfterTabRemove(_ context: IndexSelectionContext, removedIndex: Int) -> Int
-    func autoSelectedIndexAfterTabAdd(_ context: IndexSelectionContext, addedIndex: Int) -> Int
+    var makeTabActiveAfterAdding: Bool { get }
 }
 
 public struct NearbySelectionStrategy {}
@@ -47,7 +47,5 @@ extension NearbySelectionStrategy: TabSelectionStrategy {
         return value
     }
     
-    public func autoSelectedIndexAfterTabAdd(_ context: IndexSelectionContext, addedIndex: Int) -> Int {
-        return addedIndex
-    }
+    public var makeTabActiveAfterAdding: Bool { true }
 }

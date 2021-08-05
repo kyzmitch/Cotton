@@ -137,7 +137,9 @@ public final class TabsListManager {
                 guard let tabTuple = self.tabs.value.element(by: newSelectedTabId) else {
                     return
                 }
-                self.observers.forEach { $0.didSelect(index: tabTuple.index, content: tabTuple.tab.contentType, identifier: tabTuple.tab.id) }
+                self.observers.forEach { $0.didSelect(index: tabTuple.index,
+                                                      content: tabTuple.tab.contentType,
+                                                      identifier: tabTuple.tab.id) }
         }
         disposables.append(disposable)
     }
@@ -197,6 +199,7 @@ extension TabsListManager: TabsSubject {
         tabCloseDisposable?.dispose()
         tabCloseDisposable = storage
             .remove(tab: tab)
+            .observe(on: scheduler)
             .startWithResult({ [weak self] (result) in
                 switch result {
                 case .failure(let storageError):
@@ -223,6 +226,7 @@ extension TabsListManager: TabsSubject {
                 let tab: Tab = .init(contentType: self.positioning.contentState)
                 return self.storage.add(tab: tab, andSelect: true)
             })
+            .observe(on: scheduler)
             .startWithResult({ [weak self] (result) in
                 switch result {
                 case .failure(let storageError):
@@ -230,19 +234,18 @@ extension TabsListManager: TabsSubject {
                     print("Failure to remove tab and reset to one tab: \(storageError)")
                 case .success(let addedTab):
                     guard let self = self else { return }
-                    self.handleTabAdded(addedTab, index: 0)
-                    self.selectedTabId.value = addedTab.id
+                    self.handleTabAdded(addedTab, index: 0, select: true)
                 }
         })
     }
 
     public func add(tab: Tab) {
         let newIndex = positioning.addPosition.addTab(tab, to: tabs, currentlySelectedId: selectedId)
-        let selectedIndexAfterAdd = selectionStrategy.autoSelectedIndexAfterTabAdd(self, addedIndex: newIndex)
-        let needSelect = selectedIndexAfterAdd == newIndex
+        let needSelect = selectionStrategy.makeTabActiveAfterAdding
         tabAddDisposable?.dispose()
         tabAddDisposable = storage
             .add(tab: tab, andSelect: needSelect)
+            .observe(on: scheduler)
             .startWithResult { [weak self] (result) in
                 switch result {
                 case .failure(let storageError):
@@ -250,13 +253,7 @@ extension TabsListManager: TabsSubject {
                     print("Failed to add this tab to cache: \(storageError)")
                 case .success(let addedTab):
                     guard let self = self else { return }
-                    self.handleTabAdded(addedTab, index: newIndex)
-                    // can select new tab only after adding it
-                    // this is because corresponding view should be in the list
-                    // before that
-                    if needSelect {
-                        self.selectedTabId.value = addedTab.id
-                    }
+                    self.handleTabAdded(addedTab, index: newIndex, select: needSelect)
                 }
             }
     }
@@ -265,6 +262,7 @@ extension TabsListManager: TabsSubject {
         tabSelectDisposable?.dispose()
         tabSelectDisposable = storage
             .select(tab: tab)
+            .observe(on: scheduler)
             .startWithResult({ [weak self] (result) in
                 switch result {
                 case .success(let identifier):
@@ -280,29 +278,32 @@ extension TabsListManager: TabsSubject {
     }
 
     public func replaceSelected(tabContent: Tab.ContentType) throws {
-        guard var tabTuple = tabs.value.element(by: selectedId) else {
+        guard let tabTuple = tabs.value.element(by: selectedId) else {
             throw TabsListError.notInitializedYet
         }
         
-        tabTuple.tab.contentType = tabContent
-        // we must reset preview
-        tabTuple.tab.preview = nil
-        // TODO: not sure if it is needed
-        tabs.value[tabTuple.index] = tabTuple.tab
+        var newTab = tabTuple.tab
+        let tabIndex = tabTuple.index
+        newTab.contentType = tabContent
+        newTab.preview = nil
         
         tabContentUpdateDisposable?.dispose()
         tabContentUpdateDisposable = storage
             .update(tab: tabTuple.tab)
-            .startWithResult({ (result) in
-                if case .failure(let storageError) = result {
+            .observe(on: scheduler)
+            .startWithResult({ [weak self] (result) in
+                switch result {
+                case .success:
+                    self?.tabs.value[tabIndex] = newTab
+                    // Need to notify observers to allow them
+                    // to update title for tab view
+                    DispatchQueue.main.async { [weak self] in
+                        self?.observers.forEach { $0.tabDidReplace(newTab, at: tabIndex) }
+                    }
+                case .failure(let storageError):
                     print("Failed to update tab content to storage \(storageError)")
                 }
             })
-        // Need to notify observers to allow them
-        // to update title for tab view
-        DispatchQueue.main.async {
-            self.observers.forEach { $0.tabDidReplace(tabTuple.tab, at: tabTuple.index) }
-        }
     }
     
     /// Updates preview image for selected tab if it has site content.
@@ -336,18 +337,27 @@ extension TabsListManager: TabsSubject {
 }
 
 private extension TabsListManager {
-    func handleTabAdded(_ tab: Tab, index: Int) {
+    func handleTabAdded(_ tab: Tab, index: Int, select: Bool) {
+        // can select new tab only after adding it
+        // this is because corresponding view should be in the list
+        
         switch positioning.addSpeed {
         case .immediately:
             DispatchQueue.main.async { [weak self] in
                 self?.observers.forEach {
                     $0.tabDidAdd(tab, at: index)
                 }
+                if select {
+                    self?.selectedTabId.value = tab.id
+                }
             }
         case .after(let interval):
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + interval) { [weak self] in
                 self?.observers.forEach {
                     $0.tabDidAdd(tab, at: index)
+                }
+                if select {
+                    self?.selectedTabId.value = tab.id
                 }
             }
         }
