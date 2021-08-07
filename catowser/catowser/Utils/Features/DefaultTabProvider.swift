@@ -37,10 +37,13 @@ final class DefaultTabProvider {
         let meduza = Site(urlString: "https://meduza.io",
                           customTitle: "Meduza",
                           settings: settings)
-        let newsruCom = Site(urlString: "https://m.newsru.com",
-                             customTitle: "Newsru.com",
-                             settings: settings)
-        array = [ig, tube, opennet, meduza, newsruCom]
+        let yahooFinance = Site(urlString: "https://finance.yahoo.com",
+                                customTitle: "Yahoo Finance",
+                                settings: settings)
+        let github = Site(urlString: "https://github.com",
+                          customTitle: "GitHub",
+                          settings: settings)
+        array = [ig, tube, opennet, meduza, yahooFinance, github]
         return array.compactMap {$0}
     }()
     
