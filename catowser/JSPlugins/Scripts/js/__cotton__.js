@@ -87,8 +87,7 @@ XMLHttpRequest.prototype.send = function(body) {
 			return;
 		}
 		
-		// this.responseType is empty for some reason, so it's not possible to parse 
-		// for json specifically
+		// this.responseType is empty for some reason, so it's not possible to parse for json specifically
 		// cottonBaseLog('HttpResponse 200 OK: ' + this.responseURL);
         let json = JSON.parse(this.responseText);
         window.__cotton__.ig.httpResponsHandler(json);
@@ -135,7 +134,6 @@ document.body.addEventListener('DOMSubtreeModified', function(event) {
 
             for(let node of mutation.addedNodes) {
                 if (!(node instanceof HTMLElement)) {
-                    cottonBaseLog('added non HTMLElement');
                     continue;
                 }
                 if (!(node.tagName == 'video')) {
