@@ -10,8 +10,11 @@ import Foundation
 import UIKit
 import CoreGraphics
 import CoreBrowser
+#if canImport(Combine)
+import Combine
+#endif
 
-protocol TabDelegate: class {
+protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView)
     func tabDidBecomeActive(_ tab: Tab)
 }
@@ -23,8 +26,7 @@ final class TabView: UIView {
         didSet {
             visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
             titleText.text = viewModel.title
-
-            // TODO: add UIImageView for site icon
+            reloadFavicon(viewModel.site)
         }
     }
     
@@ -81,6 +83,9 @@ final class TabView: UIView {
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
+    
+    @available(iOS 13.0, *)
+    lazy var imageURLRequestCancellable: AnyCancellable? = nil
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("\(#function): has not been implemented")
@@ -194,6 +199,47 @@ private extension TabView {
         // but still need to update same state for
         // previously selected tab (deselect it)
         delegate?.tabDidBecomeActive(viewModel)
+    }
+    
+    func reloadFavicon(_ site: Site?) {
+        guard let site = site else {
+            favicon.image = nil
+            return
+        }
+        if let hqImage = site.highQualityFaviconImage {
+            favicon.image = hqImage
+            return
+        }
+        favicon.image = nil
+        
+        if #available(iOS 13.0, *) {
+            imageURLRequestCancellable?.cancel()
+            imageURLRequestCancellable = site.fetchFaviconURL(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .failure:
+                        // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
+                        break
+                    default: break
+                    }
+                }, receiveValue: { [weak self] (url) in
+                    self?.favicon.updateImage(from: .url(url))
+                })
+        } else {
+            let source: ImageSource
+            switch (site.faviconURL, site.highQualityFaviconImage) {
+            case (let url?, nil):
+                source = .url(url)
+            case (nil, let image?):
+                source = .image(image)
+            case (let url?, let image?):
+                source = .urlWithPlaceholder(url, image)
+            default:
+                return
+            }
+            favicon.updateImage(from: source)
+        }
     }
 }
 
