@@ -96,12 +96,8 @@ final class TabsViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let tabs = TabsListManager.shared.fetch()
-        for (i, tab) in tabs.enumerated() {
-            let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
-            add(tabView, at: i)
-        }
-        // TODO: handle selected index
+        // initializeObserver will load all of the tabs
+        // and create views
     }
     
     deinit {

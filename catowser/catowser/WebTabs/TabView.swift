@@ -93,13 +93,15 @@ final class TabView: UIView {
     
     convenience init(frame: CGRect, tab: Tab, delegate: TabDelegate) {
         self.init(frame: frame)
+        // didSet for view model won't work in init
         viewModel = tab
         // Call function not relying on didSet
         // swiftlint:disable:next line_length
         // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
         updateColours()
-        titleText.text = viewModel.title
+        titleText.text = tab.title
         self.delegate = delegate
+        reloadFavicon(tab.site)
     }
     
     override init(frame: CGRect) {
