@@ -343,12 +343,10 @@ fileprivate extension MasterRouter {
                     popoverPresenter.sourceView = sourceView
                     popoverPresenter.sourceRect = sourceRect
                 }
-                presenter.viewController.present(alert,
-                                                 animated: true)
+                presenter.viewController.present(alert, animated: true)
             } else {
                 // FIXME: this causes layout error for some reason
-                presenter.viewController.present(alert,
-                                                 animated: true)
+                presenter.viewController.present(alert, animated: true)
             }
         }
     }
