@@ -45,7 +45,7 @@ extension HttpKit.Client {
         }
         
         let codes = T.successCodes
-        let (data, response) = await try urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
+        let (data, response) = try await urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
         guard let urlResponse = response as? HTTPURLResponse else {
             throw HttpKit.HttpError.notHttpUrlResponse
         }
@@ -61,7 +61,7 @@ extension HttpKit.Client {
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func aaMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                      responseType: T.Type) async throws -> T {
-        let value = await try aaMakeRequest(for: endpoint,
+        let value = try await aaMakeRequest(for: endpoint,
                                                withAccessToken: nil,
                                                responseType: responseType)
         return value
@@ -72,7 +72,7 @@ extension HttpKit.Client {
     func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                   withAccessToken accessToken: String,
                                                   responseType: T.Type) async throws -> T {
-        let value = await try aaMakeRequest(for: endpoint,
+        let value = try await aaMakeRequest(for: endpoint,
                                                withAccessToken: accessToken,
                                                responseType: responseType)
         return value
