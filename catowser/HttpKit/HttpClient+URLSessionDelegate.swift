@@ -10,6 +10,6 @@ import Foundation
 
 extension HttpKit {
     class HttpClientUrlSessionDelegate: NSObject, URLSessionDelegate {
-        // TODO: implement to use it in AsyncAwait extension
+        // https://github.com/kyzmitch/Cotton/issues/17
     }
 }

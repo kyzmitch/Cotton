@@ -345,7 +345,7 @@ fileprivate extension MasterRouter {
                 }
                 presenter.viewController.present(alert, animated: true)
             } else {
-                // FIXME: this causes layout error for some reason
+                // https://github.com/kyzmitch/Cotton/issues/13
                 presenter.viewController.present(alert, animated: true)
             }
         }
