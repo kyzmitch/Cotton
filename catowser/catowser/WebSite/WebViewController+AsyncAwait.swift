@@ -32,12 +32,12 @@ extension WebViewController {
             guard let self = self else {
                 throw AppError.zombieSelf
             }
-            let finalURL = await try self.dnsClient.aaResolvedDomainName(in: url)
+            let finalURL = try await self.dnsClient.aaResolvedDomainName(in: url)
             return finalURL
         }
         dnsRequestTaskHandler = taskHandler
         do {
-            let finalURL = await try taskHandler.get()
+            let finalURL = try await taskHandler.get()
             guard finalURL.hasIPHost else {
                 print("Alert - host wasn't replaced on IP address after operation")
                 return
