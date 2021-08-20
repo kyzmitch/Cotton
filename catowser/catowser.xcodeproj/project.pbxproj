@@ -111,7 +111,6 @@
 		8A1C1C292485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */; };
 		8A1C1C2A2485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */; };
 		8A27713B268E452000D8878C /* BrowserNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A277139268E452000D8878C /* BrowserNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A27713E268E452000D8878C /* BrowserNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; };
 		8A27713F268E452000D8878C /* BrowserNetworking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A27715A268E467500D8878C /* BrowserNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; };
 		8A27715D268E467D00D8878C /* BrowserNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; };
@@ -772,7 +771,6 @@
 				6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */,
 				8A5FD6A426AF31FE0019384A /* HttpKit.framework in Frameworks */,
 				8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */,
-				8A27713E268E452000D8878C /* BrowserNetworking.framework in Frameworks */,
 				8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */,
 				8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */,
 				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
@@ -1806,7 +1804,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
 					608DA749223A3BD4009F75BD = {
@@ -2841,6 +2839,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -2902,6 +2901,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -3202,7 +3202,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3237,7 +3237,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3385,7 +3385,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -3422,7 +3422,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
