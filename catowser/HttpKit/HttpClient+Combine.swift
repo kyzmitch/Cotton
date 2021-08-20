@@ -62,7 +62,7 @@ extension HttpKit.Client {
                         }
                     })
                 
-                // TODO: find a way to react on subscribtion cancellation to cancel http request
+                // https://github.com/kyzmitch/Cotton/issues/14
             }
             return subject
         }
@@ -70,7 +70,7 @@ extension HttpKit.Client {
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                             responseType: T.Type) -> ResponseFuture<T> {
+                                                    responseType: T.Type) -> ResponseFuture<T> {
         let future = cMakeRequest(for: endpoint,
                                   withAccessToken: nil,
                                   responseType: responseType)
@@ -79,8 +79,8 @@ extension HttpKit.Client {
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                 withAccessToken accessToken: String,
-                                                 responseType: T.Type) -> ResponseFuture<T> {
+                                                        withAccessToken accessToken: String,
+                                                        responseType: T.Type) -> ResponseFuture<T> {
         let future = cMakeRequest(for: endpoint,
                                   withAccessToken: accessToken,
                                   responseType: responseType)

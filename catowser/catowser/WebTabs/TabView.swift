@@ -164,15 +164,14 @@ final class TabView: UIView {
     
     override var canBecomeFirstResponder: Bool {
         get {
-            // NOTE: experimenting with UIResponder methods
-            // default is NO
+            // NOTE: experimenting with UIResponder methods, default is NO
             return false
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            // TODO: this is not working, need to think more
+            // https://github.com/kyzmitch/Cotton/issues/16
             let location = touch.location(in: self.superview)
             if self.frame.contains(location) {
                 handleTapGesture()

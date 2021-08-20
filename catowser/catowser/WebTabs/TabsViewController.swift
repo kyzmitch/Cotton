@@ -154,7 +154,7 @@ private extension TabsViewController {
         let specificTabFrame = tabView.frame
         let realOrigin = stackViewScrollableContainer.convert(specificTabFrame.origin, from: tabsStackView)
         let tabVeryRigthX = realOrigin.x + specificTabFrame.size.width
-        // TODO: finish impl below
+        // https://github.com/kyzmitch/Cotton/issues/15
         if specificTabFrame.origin.x < 0 {
 
         } else if tabVeryRigthX > containerWidth {
@@ -297,6 +297,6 @@ extension UIScrollView {
     
     func  scroll(on pixels: CGFloat) {
         // pixels could be negative to scroll to the left
-        // TODO
+        // https://github.com/kyzmitch/Cotton/issues/15
     }
 }
