@@ -8,7 +8,7 @@ target 'Cotton' do
 
   # Pods for Cotton
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'CoreBrowser' do
@@ -17,15 +17,15 @@ target 'CoreBrowser' do
 
   # Pods for CoreBrowser
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'JSPlugins' do
   use_frameworks!
 
-  pod 'SwiftSoup'
+  pod 'SwiftSoup', '~> 2.3.2'
   # pod 'SwiftCssParser'
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.33.0'
   pod 'ReactiveSwift', '~> 6.0.0'
 end
 
@@ -37,15 +37,15 @@ target 'JSPluginsTests' do
 # as a dependency which is JSPlugins.framework
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SWXMLHash', '~> 5.0.0'
-  pod 'SwiftLint'
-  pod 'SwiftSoup'
+  pod 'SwiftLint', '~> 0.33.0'
+  pod 'SwiftSoup', '~> 2.3.2'
 end
 
 target 'HttpKit' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint'
+  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'BrowserNetworking' do
