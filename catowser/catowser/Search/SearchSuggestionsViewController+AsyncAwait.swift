@@ -32,12 +32,12 @@ extension SearchSuggestionsViewController {
             guard let self = self else {
                 throw AppError.zombieSelf
             }
-            let response = await try self.googleClient.aaGoogleSearchSuggestions(for: searchText)
+            let response = try await self.googleClient.aaGoogleSearchSuggestions(for: searchText)
             return response.textResults
         }
         searchSuggestionTaskHandler = taskHandler
         do {
-            await updateSuggestions(await try taskHandler.get())
+            await updateSuggestions( try await taskHandler.get())
         } catch {
             print("Fail to fetch search suggestions \(error.localizedDescription)")
             await updateSuggestions([])
