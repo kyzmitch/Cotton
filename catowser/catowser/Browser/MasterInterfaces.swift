@@ -23,7 +23,6 @@ protocol MasterDelegate: AnyObject {
 
 protocol TagsRouterInterface: AnyObject {
     func openTagsFor(instagram nodes: [InstagramVideoNode])
-    func openTagsFor(t4 video: T4Video)
     func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
 }

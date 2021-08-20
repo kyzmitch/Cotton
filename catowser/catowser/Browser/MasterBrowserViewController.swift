@@ -222,7 +222,7 @@ final class MasterBrowserViewController: BaseViewController {
     }
     
     private func setupObservers() {
-        jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self, t4Delegate: self)
+        jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self)
 
         let disposeB = NotificationCenter.default.reactive
             .notifications(forName: UIResponder.keyboardWillHideNotification)
@@ -562,13 +562,6 @@ extension MasterBrowserViewController: SiteNavigationComponent {
 extension MasterBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linksRouter.openTagsFor(instagram: nodes)
-        reloadNavigationElements(true, downloadsAvailable: true)
-    }
-}
-
-extension MasterBrowserViewController: T4ContentDelegate {
-    func didReceiveVideo(_ video: T4Video) {
-        linksRouter.openTagsFor(t4: video)
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }

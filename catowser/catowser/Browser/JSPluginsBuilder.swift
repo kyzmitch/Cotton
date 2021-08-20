@@ -13,8 +13,7 @@ final class JSPluginsBuilder {
     fileprivate let _plugins: [CottonJSPlugin]
 
     init?(baseDelegate: BasePluginContentDelegate,
-          instagramDelegate: InstagramContentDelegate,
-          t4Delegate: T4ContentDelegate) {
+          instagramDelegate: InstagramContentDelegate) {
 
         var array = [CottonJSPlugin]()
         guard let basePlugin = BasePlugin(delegate: .base(baseDelegate)) else {
@@ -25,10 +24,6 @@ final class JSPluginsBuilder {
             return nil
         }
         array.append(igPlugin)
-        guard let t4Plugin = T4ContentPlugin(delegate: .t4(t4Delegate)) else {
-            return nil
-        }
-        array.append(t4Plugin)
         _plugins = array
     }
 }

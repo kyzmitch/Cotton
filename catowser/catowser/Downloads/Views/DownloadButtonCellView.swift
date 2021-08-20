@@ -155,6 +155,9 @@ private extension DownloadButtonCellView {
             if let vm = viewModel {
                 vm.download()
             } else {
+                // This code path was used only when there is more than one
+                // video quality option (more than one download link for the same resource)
+                // not it is not used
                 delegate?.didPressDownload(callback: { [weak self] possibleViewModel in
                     guard let self = self else {
                         print("\(#function) - zomby self")
