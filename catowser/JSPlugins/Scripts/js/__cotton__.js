@@ -10,24 +10,6 @@ if (typeof window.__cotton__ === 'undefined') {
 }
 
 if (typeof window.__cotton__ !== 'undefined') {
-    Object.defineProperty(window.__cotton__, "t4", {
-                          enumerable: false,
-                          configurable: false,
-                          writable: false,
-                          value: {enabled: false}
-                          });
-    
-    Object.defineProperty(window.__cotton__.t4, "setEnabled", {
-                          enumerable: false,
-                          configurable: false,
-                          writable: false,
-                          value: function(enabled) {
-                            if (enabled === window.__cotton__.t4.enabled) {
-                                return;
-                            }
-                            window.__cotton__.t4.enabled = enabled;
-                            }
-                          });
     Object.defineProperty(window.__cotton__, "ig", {
                           enumerable: false,
                           configurable: false,
@@ -93,9 +75,6 @@ XMLHttpRequest.prototype.send = function(body) {
         window.__cotton__.ig.httpResponsHandler(json);
         if (typeof window.__cotton__.ig.httpResponsHandler !== 'undefined') {
             window.__cotton__.ig.httpResponsHandler(json);
-        }
-        if (typeof window.__cotton__.t4.httpResponsHandler !== 'undefined') {
-            window.__cotton__.t4.httpResponsHandler(json);
         }
 	});
 };

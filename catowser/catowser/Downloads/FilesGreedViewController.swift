@@ -81,11 +81,6 @@ extension FilesGreedViewController {
             let node = nodes[indexPath.item]
             cell.viewModel = FileDownloadViewModel(with: node, name: node.fileDescription)
             cell.mediaFilePreviewURL = node.thumbnailUrl
-        case .t4(let video):
-            cell.mediaFilePreviewURL = video.thumbnailURL
-            cell.titleLabel.text = video.fileDescription
-            // for this type we can only load preview and title
-            // download URL should be chosen e.g. by using action sheet
         case .htmlVideos(let tags):
             let tag = tags[indexPath.item]
             cell.viewModel = FileDownloadViewModel(with: tag, name: tag.fileDescription)
@@ -138,31 +133,9 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
     }
 
     func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void) {
-        let title = NSLocalizedString("ttl_video_quality_selection", comment: "Text to ask about video quality")
-        let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        guard case let .t4(videoContainer)? = filesDataSource else {
-            callback(nil)
-            return
-        }
-        for (quality, _) in videoContainer.variants {
-            let action = UIAlertAction(title: "\(quality.rawValue)p", style: .default) { (_) in
-
-                guard let t4Video = try? videoContainer.downloadable(for: quality) else {
-                    callback(nil)
-                    return
-                }
-                let viewModel = FileDownloadViewModel(with: t4Video, name: videoContainer.fileDescription)
-                callback(viewModel)
-            }
-            alert.addAction(action)
-        }
-
-        let cancelTtl = NSLocalizedString("ttl_common_cancel", comment: "Button title when need dismiss alert")
-        let cancel = UIAlertAction(title: cancelTtl, style: .cancel) { (_) in
-            callback(nil)
-        }
-        alert.addAction(cancel)
-        present(alert, animated: true)
+        // can be removed, but can be used if we want to provide
+        // an interface for more than one links for the same resource
+        callback(nil)
     }
 }
 
@@ -175,22 +148,6 @@ extension InstagramVideoNode: Downloadable {
     
     public var hostname: String {
         return "instagram.com"
-    }
-}
-
-fileprivate extension T4Video {
-    func downloadable(for resolution: Resolution) throws -> Downloadable {
-        guard let url = variants[resolution] else {
-            throw CottonError.resolutionNotPresent
-        }
-
-        struct T4Downloadable: Downloadable {
-            let url: URL
-            let hostname: String = "4tube.com"
-            let fileDescription: String
-        }
-
-        return T4Downloadable(url: url, fileDescription: fileDescription)
     }
 }
 

@@ -14,12 +14,6 @@ extension MasterRouter: TagsRouterInterface {
         linkTagsController.setLinks(nodes.count, for: .video)
         updateDownloadsViews()
     }
-    
-    func openTagsFor(t4 video: T4Video) {
-        tagsSiteDataSource = .t4(video)
-        linkTagsController.setLinks(1, for: .video)
-        updateDownloadsViews()
-    }
 
     func openTagsFor(html tags: [HTMLVideoTag]) {
         tagsSiteDataSource = .htmlVideos(tags)

@@ -11,7 +11,6 @@ import JSPlugins
 
 enum TagsSiteDataSource {
     case instagram([InstagramVideoNode])
-    case t4(T4Video)
     case htmlVideos([HTMLVideoTag])
     
     var itemsCount: Int {
@@ -20,8 +19,6 @@ enum TagsSiteDataSource {
             return nodes.count
         case .htmlVideos(let tags):
             return tags.count
-        case .t4:
-            return 1
         }
     }
 }
