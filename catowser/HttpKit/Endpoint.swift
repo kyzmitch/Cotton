@@ -14,7 +14,7 @@ extension HttpKit {
     public struct Endpoint<T: ResponseType, Server: ServerDescription> {
         public let method: HTTPMethod
         public let path: String
-        public let queryItems: [URLQueryItem]
+        public let queryItems: [URLQueryItem]?
         public let headers: [HttpHeader]?
         
         /// This is needed to associate type of response with endpoint
@@ -26,7 +26,7 @@ extension HttpKit {
         
         public init(method: HTTPMethod,
                     path: String,
-                    queryItems: [URLQueryItem],
+                    queryItems: [URLQueryItem]?,
                     headers: [HttpHeader]?,
                     encodingMethod: ParametersEncodingDestination) {
             self.method = method

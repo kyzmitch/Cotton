@@ -278,6 +278,9 @@
 		8AD18E102447580A00224702 /* ResourceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD18E0F2447580A00224702 /* ResourceReader.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
+		8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */; };
+		8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8E1652739B74000628DB4 /* EndpointMocks.swift */; };
+		8AD8E1692739BA7500628DB4 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8ADAF548240123F600A0D233 /* FeatureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF547240123F600A0D233 /* FeatureManager.swift */; };
 		8ADAF54A240124D800A0D233 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF549240124D800A0D233 /* Feature.swift */; };
 		8ADAF54C2401258000A0D233 /* LocalFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */; };
@@ -704,6 +707,8 @@
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
+		8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
+		8AD8E1652739B74000628DB4 /* EndpointMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointMocks.swift; sourceTree = "<group>"; };
 		8ADAF547240123F600A0D233 /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
 		8ADAF549240124D800A0D233 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureSource.swift; sourceTree = "<group>"; };
@@ -805,6 +810,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AD8E1692739BA7500628DB4 /* SPMCommon.framework in Frameworks */,
 				8A7EF3D5273924EF0071BB89 /* HttpKit.framework in Frameworks */,
 				BD0665A164911A03D3509789 /* Pods_HttpKitTests.framework in Frameworks */,
 			);
@@ -1294,6 +1300,8 @@
 			isa = PBXGroup;
 			children = (
 				8A7EF3D3273924EF0071BB89 /* HostTests.swift */,
+				8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */,
+				8AD8E1652739B74000628DB4 /* EndpointMocks.swift */,
 			);
 			path = HttpKitTests;
 			sourceTree = "<group>";
@@ -2551,6 +2559,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */,
+				8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */,
 				8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
