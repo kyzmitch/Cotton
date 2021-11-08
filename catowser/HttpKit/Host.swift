@@ -28,6 +28,9 @@ extension HttpKit {
             guard let verifiedDomainName = try? DomainName(rawValue) else {
                 return nil
             }
+            guard !rawValue.contains("://") else {
+                return nil
+            }
             
             var components = URLComponents()
             components.scheme = "http"
