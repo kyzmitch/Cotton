@@ -10,10 +10,6 @@
 
 import Foundation
 import HttpKit
-#if canImport(_Concurrency)
-// this won't be needed after Swift 5.5 will be released
-import _Concurrency
-#endif
 
 extension WebViewController {
     @available(swift 5.5)

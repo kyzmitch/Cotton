@@ -24,9 +24,14 @@ extension HttpKit {
         public init?(rawValue: String) {
             // https://tools.ietf.org/html/rfc1808#section-2.4
             // temporarily using URL to validate host string
+            
+            guard let verifiedDomainName = try? DomainName(rawValue) else {
+                return nil
+            }
+            
             var components = URLComponents()
             components.scheme = "http"
-            components.host = rawValue
+            components.host = verifiedDomainName.string
             guard components.url != nil else {
                 return nil
             }

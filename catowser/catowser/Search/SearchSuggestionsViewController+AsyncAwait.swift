@@ -10,10 +10,6 @@
 
 import Foundation
 import HttpKit
-#if canImport(_Concurrency)
-// this won't be needed after Swift 5.5 will be released
-import _Concurrency
-#endif
 
 /// Can't make them private to allow compilation on Xcode 12.x
 extension SearchSuggestionsViewController {

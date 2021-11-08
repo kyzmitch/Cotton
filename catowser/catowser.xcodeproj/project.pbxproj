@@ -119,7 +119,6 @@
 		8A2771BD268E4AAF00D8878C /* GoogleSearchEndpoint+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */; };
 		8A2771CE268E4AB200D8878C /* GoogleServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */; };
 		8A2771D7268E4AB700D8878C /* GoogleDnsServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */; };
-		8A2771E0268E4ABA00D8878C /* DomainName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCF236432B5006AAEE2 /* DomainName.swift */; };
 		8A2771E9268E4AC200D8878C /* GDNSRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E40F24597E3B0070F338 /* GDNSRequestParams.swift */; };
 		8A2771F2268E4AC600D8878C /* DnsRR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E41124597E880070F338 /* DnsRR.swift */; };
 		8A2771FB268E4AC900D8878C /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
@@ -161,6 +160,9 @@
 		8A7ECCC026AF2BF9000C902F /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8A7ECCC326AF2C05000C902F /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A7ECCC626AF2C0D000C902F /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
+		8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF3D3273924EF0071BB89 /* HostTests.swift */; };
+		8A7EF3D5273924EF0071BB89 /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
+		8A7EF3DB27392BE00071BB89 /* DomainName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7DCCCF236432B5006AAEE2 /* DomainName.swift */; };
 		8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
 		8A8035A424442F0F000E035F /* LocalFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */; };
@@ -359,6 +361,13 @@
 			remoteInfo = SPMCommon;
 		};
 		8A5FD6A626AF31FE0019384A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AE6D1682350FF35006316AD;
+			remoteInfo = HttpKit;
+		};
+		8A7EF3D6273924EF0071BB89 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
 			proxyType = 1;
@@ -639,6 +648,8 @@
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
 		8A7DCCCF236432B5006AAEE2 /* DomainName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainName.swift; sourceTree = "<group>"; };
+		8A7EF3D1273924EF0071BB89 /* HttpKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HttpKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A7EF3D3273924EF0071BB89 /* HostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostTests.swift; sourceTree = "<group>"; };
 		8A8035E624442F0F000E035F /* Cotton dnsext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cotton dnsext.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8035E724442F0F000E035F /* Info-dnsext.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-dnsext.plist"; path = "/Users/aermoshin/prj/catowser/catowser/Info-dnsext.plist"; sourceTree = "<absolute>"; };
 		8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "catowser dnsextDebug.entitlements"; sourceTree = "<group>"; };
@@ -779,6 +790,14 @@
 				9E32AED5CC3F3BEF60EA5A51 /* Pods_BrowserNetworking.framework in Frameworks */,
 				8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */,
 				8A7ECCBE26AF2BF2000C902F /* SPMCommon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A7EF3CE273924EF0071BB89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A7EF3D5273924EF0071BB89 /* HttpKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1091,6 +1110,7 @@
 				608DA74B223A3BD5009F75BD /* JSPlugins */,
 				8AE63B55248EC38300D6D2E4 /* JSPluginsTests */,
 				8AE6D16A2350FF35006316AD /* HttpKit */,
+				8A7EF3D2273924EF0071BB89 /* HttpKitTests */,
 				8A277138268E452000D8878C /* BrowserNetworking */,
 				8A8035F024446234000E035F /* DNSProxy */,
 				8AC4366924798BC8008DD663 /* SPMCommon */,
@@ -1117,6 +1137,7 @@
 				8AE63B54248EC38300D6D2E4 /* JSPluginsTests.xctest */,
 				8AB022EC26258B110053AFF0 /* CoreBrowserTests.xctest */,
 				8A277137268E452000D8878C /* BrowserNetworking.framework */,
+				8A7EF3D1273924EF0071BB89 /* HttpKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1251,11 +1272,18 @@
 		8A7DCCCE236432AA006AAEE2 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
 				8A68E40F24597E3B0070F338 /* GDNSRequestParams.swift */,
 				8A68E41124597E880070F338 /* DnsRR.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		8A7EF3D2273924EF0071BB89 /* HttpKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				8A7EF3D3273924EF0071BB89 /* HostTests.swift */,
+			);
+			path = HttpKitTests;
 			sourceTree = "<group>";
 		};
 		8A8035F024446234000E035F /* DNSProxy */ = {
@@ -1407,6 +1435,7 @@
 				8A62AEE22351E684001A9C83 /* Extensions */,
 				8AE6D16B2350FF35006316AD /* HttpKit.h */,
 				8AE6D16C2350FF35006316AD /* Info.plist */,
+				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
 				8A8678AD2430F7D400450666 /* Host.swift */,
 				8A510F642424AE000070503C /* URLInfo.swift */,
 				8A74188B245086330019695E /* Downloadable.swift */,
@@ -1647,6 +1676,24 @@
 			productReference = 8A277137268E452000D8878C /* BrowserNetworking.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		8A7EF3D0273924EF0071BB89 /* HttpKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8A7EF3DA273924F00071BB89 /* Build configuration list for PBXNativeTarget "HttpKitTests" */;
+			buildPhases = (
+				8A7EF3CD273924EF0071BB89 /* Sources */,
+				8A7EF3CE273924EF0071BB89 /* Frameworks */,
+				8A7EF3CF273924EF0071BB89 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8A7EF3D7273924EF0071BB89 /* PBXTargetDependency */,
+			);
+			name = HttpKitTests;
+			productName = HttpKitTests;
+			productReference = 8A7EF3D1273924EF0071BB89 /* HttpKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		8A80359924442F0F000E035F /* Cotton dnsext */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A8035E324442F0F000E035F /* Build configuration list for PBXNativeTarget "Cotton dnsext" */;
@@ -1794,7 +1841,7 @@
 		8435A48F1EED5E700020102F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1230;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = andreiermoshin;
 				TargetAttributes = {
@@ -1820,6 +1867,9 @@
 					};
 					8A277136268E452000D8878C = {
 						CreatedOnToolsVersion = 12.4;
+					};
+					8A7EF3D0273924EF0071BB89 = {
+						CreatedOnToolsVersion = 13.0;
 					};
 					8A80359924442F0F000E035F = {
 						ProvisioningStyle = Manual;
@@ -1877,6 +1927,7 @@
 				8AF43374248EBB2A0047452B /* CssParser */,
 				8AE63B53248EC38300D6D2E4 /* JSPluginsTests */,
 				8AB022EB26258B110053AFF0 /* CoreBrowserTests */,
+				8A7EF3D0273924EF0071BB89 /* HttpKitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1916,6 +1967,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A277135268E452000D8878C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A7EF3CF273924EF0071BB89 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2375,7 +2433,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A2771CE268E4AB200D8878C /* GoogleServer.swift in Sources */,
-				8A2771E0268E4ABA00D8878C /* DomainName.swift in Sources */,
 				8A2771AC268E4AAC00D8878C /* GoogleSearchEndpoint.swift in Sources */,
 				8A2771E9268E4AC200D8878C /* GDNSRequestParams.swift in Sources */,
 				8A277192268E4AA400D8878C /* GoogleJSONDNSoHTTPsEndpoint.swift in Sources */,
@@ -2387,6 +2444,14 @@
 				8A2771F2268E4AC600D8878C /* DnsRR.swift in Sources */,
 				8A27721D268E4ACF00D8878C /* OpenSearchParser.swift in Sources */,
 				8A2771D7268E4AB700D8878C /* GoogleDnsServer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A7EF3CD273924EF0071BB89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2508,6 +2573,7 @@
 				8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */,
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
+				8A7EF3DB27392BE00071BB89 /* DomainName.swift in Sources */,
 				8A62AEDE2351CF76001A9C83 /* HttpKitHeaders.swift in Sources */,
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
 				8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */,
@@ -2575,6 +2641,11 @@
 			isa = PBXTargetDependency;
 			target = 8AE6D1682350FF35006316AD /* HttpKit */;
 			targetProxy = 8A5FD6A626AF31FE0019384A /* PBXContainerItemProxy */;
+		};
+		8A7EF3D7273924EF0071BB89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AE6D1682350FF35006316AD /* HttpKit */;
+			targetProxy = 8A7EF3D6273924EF0071BB89 /* PBXContainerItemProxy */;
 		};
 		8A80359A24442F0F000E035F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3043,6 +3114,56 @@
 			};
 			name = Release;
 		};
+		8A7EF3D8273924EF0071BB89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ERT5B59458;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8A7EF3D9273924EF0071BB89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8A8035E424442F0F000E035F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3261,6 +3382,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = JSPluginsTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3484,6 +3606,15 @@
 			buildConfigurations = (
 				8A277140268E452000D8878C /* Debug */,
 				8A277141268E452000D8878C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8A7EF3DA273924F00071BB89 /* Build configuration list for PBXNativeTarget "HttpKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8A7EF3D8273924EF0071BB89 /* Debug */,
+				8A7EF3D9273924EF0071BB89 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
