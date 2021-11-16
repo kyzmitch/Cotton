@@ -11,8 +11,8 @@ import Alamofire
 @testable import HttpKit
 
 class EndpointTests: XCTestCase {
-    
     let path = "players"
+    let goodServer = MockedGoodServer()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -23,10 +23,8 @@ class EndpointTests: XCTestCase {
     }
 
     func testUrlCreationForMinimumEndpoint() throws {
-        let goodServer = MockedGoodServer()
         let minimumEndpoint = MockedGoodEndpoint(method: .get,
                                                  path: path,
-                                                 queryItems: nil,
                                                  headers: nil,
                                                  encodingMethod: .httpBodyJSON(parameters: [:]))
         let urlForMinimumEndpoint = minimumEndpoint.url(relatedTo: goodServer)

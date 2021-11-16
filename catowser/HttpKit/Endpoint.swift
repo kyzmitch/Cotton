@@ -14,7 +14,6 @@ extension HttpKit {
     public struct Endpoint<T: ResponseType, Server: ServerDescription> {
         public let method: HTTPMethod
         public let path: String
-        public let queryItems: [URLQueryItem]?
         public let headers: [HttpHeader]?
         
         /// This is needed to associate type of response with endpoint
@@ -26,12 +25,10 @@ extension HttpKit {
         
         public init(method: HTTPMethod,
                     path: String,
-                    queryItems: [URLQueryItem]?,
                     headers: [HttpHeader]?,
                     encodingMethod: ParametersEncodingDestination) {
             self.method = method
             self.path = path
-            self.queryItems = queryItems
             self.headers = headers
             self.encodingMethod = encodingMethod
         }
@@ -45,7 +42,9 @@ extension HttpKit {
             components.scheme = server.scheme.rawValue
             components.host = server.hostString
             components.path = "/\(path)"
-            components.queryItems = queryItems
+            if case let .queryString(queryItems) = encodingMethod {
+                components.queryItems = queryItems
+            }
             
             let resultURL = components.url
             return resultURL
@@ -53,9 +52,11 @@ extension HttpKit {
     }
     
     public enum ParametersEncodingDestination {
-        case queryString
+        /// Stores URL query items to include them in URL
+        case queryString(queryItems: [URLQueryItem])
+        /// Http body Dictionary to generate JSON
         case httpBodyJSON(parameters: [String: Any])
-        /// Data enoded from `Encodable`
+        /// Http body data enoded from `Encodable`
         case httpBody(encodedData: Data)
     }
     
