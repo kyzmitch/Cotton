@@ -19,15 +19,7 @@ extension HttpKit.Client {
         guard let url = endpoint.url(relatedTo: self.server) else {
             throw HttpKit.HttpError.failedConstructUrl
         }
-        var httpRequest = URLRequest(url: url,
-                                     cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-                                     timeoutInterval: self.httpTimeout)
-        httpRequest.httpMethod = endpoint.method.rawValue
-        httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
-        if let token = accessToken {
-            let auth: HttpKit.HttpHeader = .authorization(token: token)
-            httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
-        }
+        var httpRequest = endpoint.request(url, httpTimeout: httpTimeout, accessToken: accessToken)
         
         do {
             try httpRequest.addParameters(from: endpoint)

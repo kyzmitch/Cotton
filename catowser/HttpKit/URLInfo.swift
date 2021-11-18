@@ -89,6 +89,4 @@ extension HttpKit {
     }
 }
 
-extension HttpKit.URLIpInfo: Equatable {
-    
-}
+extension HttpKit.URLIpInfo: Equatable {}

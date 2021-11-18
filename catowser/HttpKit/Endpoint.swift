@@ -49,6 +49,20 @@ extension HttpKit {
             let resultURL = components.url
             return resultURL
         }
+        
+        /// Constructs `URLRequest`
+        public func request(_ url: URL, httpTimeout: TimeInterval, accessToken: String?) -> URLRequest {
+            var request = URLRequest(url: url,
+                                     cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+                                     timeoutInterval: httpTimeout)
+            request.httpMethod = method.rawValue
+            request.allHTTPHeaderFields = headers?.dictionary
+            if let token = accessToken {
+                let auth: HttpHeader = .authorization(token: token)
+                request.setValue(auth.value, forHTTPHeaderField: auth.key)
+            }
+            return request
+        }
     }
     
     public enum ParametersEncodingDestination {

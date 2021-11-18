@@ -34,4 +34,20 @@ class EndpointTests: XCTestCase {
             XCTAssertEqual(url1.absoluteString, expectedString, "Not expected url was generated")
         }
     }
+    
+    func testEndpointHeaders() throws {
+        let header: HttpKit.HttpHeader = .accept(.html)
+        let headers = [header]
+        let endpointWithHeaders = MockedGoodEndpoint(method: .get,
+                                                     path: path,
+                                                     headers: headers,
+                                                     encodingMethod: .httpBodyJSON(parameters: [:]))
+        
+        let url = endpointWithHeaders.url(relatedTo: goodServer)
+        XCTAssertNotNil(url, "url method should return some url")
+        if let url1 = url {
+            let urlRequest = endpointWithHeaders.request(url1, httpTimeout: 60, accessToken: nil)
+            XCTAssertEqual(headers.dictionary, urlRequest.allHTTPHeaderFields, "Wrong set of headers in URLRequest")
+        }
+    }
 }
