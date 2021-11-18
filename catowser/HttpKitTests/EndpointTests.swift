@@ -22,7 +22,7 @@ class EndpointTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testUrlCreationForMinimumEndpoint() throws {
+    func testUrlCreationForEndpointWithoutPayload() throws {
         let minimumEndpoint = MockedGoodEndpoint(method: .get,
                                                  path: path,
                                                  headers: nil,
@@ -48,6 +48,24 @@ class EndpointTests: XCTestCase {
         if let url1 = url {
             let urlRequest = endpointWithHeaders.request(url1, httpTimeout: 60, accessToken: nil)
             XCTAssertEqual(headers.dictionary, urlRequest.allHTTPHeaderFields, "Wrong set of headers in URLRequest")
+        }
+    }
+    
+    func testUrlCreationEndpointWithQueryString() throws {
+        let queryItemName = "client"
+        let queryItemValue = "firefox"
+        let queryItem = URLQueryItem(name: queryItemName, value: queryItemValue)
+        let minimumEndpoint = MockedGoodEndpoint(method: .get,
+                                                 path: path,
+                                                 headers: nil,
+                                                 encodingMethod: .queryString(queryItems: [queryItem]))
+        let urlForMinimumEndpoint = minimumEndpoint.url(relatedTo: goodServer)
+        XCTAssertNotNil(urlForMinimumEndpoint, "url method should return some url")
+        if let url1 = urlForMinimumEndpoint {
+            let expectedString = """
+\(goodServer.scheme)://\(goodServer.hostString)/\(minimumEndpoint.path)?\(queryItemName)=\(queryItemValue)
+"""
+            XCTAssertEqual(url1.absoluteString, expectedString, "Not expected url was generated")
         }
     }
 }
