@@ -51,7 +51,7 @@ extension HttpKit {
         }
         
         /// Constructs `URLRequest`
-        public func request(_ url: URL, httpTimeout: TimeInterval, accessToken: String?) -> URLRequest {
+        public func request(_ url: URL, httpTimeout: TimeInterval, accessToken: String? = nil) -> URLRequest {
             var request = URLRequest(url: url,
                                      cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
                                      timeoutInterval: httpTimeout)
