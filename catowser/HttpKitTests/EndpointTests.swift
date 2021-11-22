@@ -63,9 +63,34 @@ class EndpointTests: XCTestCase {
         XCTAssertNotNil(urlForMinimumEndpoint, "url method should return some url")
         if let url1 = urlForMinimumEndpoint {
             let expectedString = """
-\(goodServer.scheme)://\(goodServer.hostString)/\(minimumEndpoint.path)?\(queryItemName)=\(queryItemValue)
+\(goodServer.scheme)://\(goodServer.hostString)/\
+\(minimumEndpoint.path)?\(queryItemName)=\(queryItemValue)
 """
             XCTAssertEqual(url1.absoluteString, expectedString, "Not expected url was generated")
         }
+    }
+    
+    func testEndpointRequestAddParametersUsingJsonBody() throws {
+        let key = "userId"
+        let value = 1000
+        let parameters: Parameters = [key: value]
+        let endpoint = MockedGoodEndpoint(method: .get,
+                                          path: path,
+                                          headers: nil,
+                                          encodingMethod: .httpBodyJSON(parameters: parameters))
+        let possibleURL = endpoint.url(relatedTo: goodServer)
+        XCTAssertNotNil(possibleURL, "url method should return some url")
+        guard let url = possibleURL else {
+            return
+        }
+        let interval: TimeInterval = 60
+        var request = endpoint.request(url, httpTimeout: interval, accessToken: nil)
+        try request.addParameters(from: endpoint)
+        let goodSerializedData = try JSONSerialization.data(withJSONObject: parameters, options: [])
+        XCTAssertEqual(request.httpBody, goodSerializedData, "addParameters method serialized parameters with an error")
+        
+        let anotherParameters: Parameters = ["wrongKey": 22]
+        let anotherData = try JSONSerialization.data(withJSONObject: anotherParameters, options: [])
+        XCTAssertNotEqual(request.httpBody, anotherData, "addParameters method serialized parameters with an error")
     }
 }
