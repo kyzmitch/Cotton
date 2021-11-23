@@ -36,6 +36,7 @@ class EndpointTests: XCTestCase {
     }
     
     func testEndpointHeaders() throws {
+        // just using some random header
         let header: HttpKit.HttpHeader = .accept(.html)
         let headers = [header]
         let endpointWithHeaders = MockedGoodEndpoint(method: .get,
@@ -43,11 +44,16 @@ class EndpointTests: XCTestCase {
                                                      headers: headers,
                                                      encodingMethod: .httpBodyJSON(parameters: [:]))
         
-        let url = endpointWithHeaders.url(relatedTo: goodServer)
-        XCTAssertNotNil(url, "url method should return some url")
-        if let url1 = url {
-            let urlRequest = endpointWithHeaders.request(url1, httpTimeout: 60, accessToken: nil)
-            XCTAssertEqual(headers.dictionary, urlRequest.allHTTPHeaderFields, "Wrong set of headers in URLRequest")
+        let possibleUrl = endpointWithHeaders.url(relatedTo: goodServer)
+        XCTAssertNotNil(possibleUrl, "url method should return some url")
+        if let url = possibleUrl {
+            let urlRequest = try endpointWithHeaders.request(url, httpTimeout: 60, accessToken: nil)
+            // Not entirely sure if we get same order every time
+            var expectingHeaders = headers
+            let additonalHeader: HttpKit.HttpHeader = .contentType(.json)
+            expectingHeaders.append(additonalHeader)
+            let errMsg = "Wrong set of headers in URLRequest"
+            XCTAssertEqual(expectingHeaders.dictionary, urlRequest.allHTTPHeaderFields, errMsg)
         }
     }
     
@@ -84,8 +90,7 @@ class EndpointTests: XCTestCase {
             return
         }
         let interval: TimeInterval = 60
-        var request = endpoint.request(url, httpTimeout: interval, accessToken: nil)
-        try request.addParameters(from: endpoint)
+        let request = try endpoint.request(url, httpTimeout: interval, accessToken: nil)
         let goodSerializedData = try JSONSerialization.data(withJSONObject: parameters, options: [])
         XCTAssertEqual(request.httpBody, goodSerializedData, "addParameters method serialized parameters with an error")
         

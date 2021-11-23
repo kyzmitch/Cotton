@@ -88,15 +88,14 @@ extension HttpKit {
                     return
                 }
                 
-                var httpRequest = endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
-                
+                let httpRequest: URLRequest
                 do {
-                    try httpRequest.addParameters(from: endpoint)
+                    httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
                 } catch let error as HttpError {
                     observer.send(error: error)
                     return
                 } catch {
-                    observer.send(error: .httpFailure(error: error, request: httpRequest))
+                    observer.send(error: .httpFailure(error: error))
                     return
                 }
                 
@@ -114,7 +113,7 @@ extension HttpKit {
                             observer.send(value: value)
                             observer.sendCompleted()
                         case .failure(let error):
-                            observer.send(error: .httpFailure(error: error, request: httpRequest))
+                            observer.send(error: .httpFailure(error: error))
                         }
                     })
                 
@@ -151,15 +150,14 @@ extension HttpKit {
                     return
                 }
                 
-                var httpRequest = endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
-                
+                let httpRequest: URLRequest
                 do {
-                    try httpRequest.addParameters(from: endpoint)
+                    httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
                 } catch let error as HttpError {
                     observer.send(error: error)
                     return
                 } catch {
-                    observer.send(error: .httpFailure(error: error, request: httpRequest))
+                    observer.send(error: .httpFailure(error: error))
                     return
                 }
                 
@@ -169,7 +167,7 @@ extension HttpKit {
                     .validate(statusCode: codes)
                     .response { (defaultResponse) in
                         if let error = defaultResponse.error {
-                            let localError = HttpError.httpFailure(error: error, request: httpRequest)
+                            let localError = HttpError.httpFailure(error: error)
                             observer.send(error: localError)
                         } else {
                             let value: Void = ()
@@ -183,26 +181,6 @@ extension HttpKit {
                 })
             }
             return producer
-        }
-    }
-}
-
-extension URLRequest {
-    mutating func addParameters<T: Decodable, S: ServerDescription>(from endpoint: HttpKit.Endpoint<T, S>)  throws {
-        switch endpoint.encodingMethod {
-        case .httpBodyJSON(parameters: let parameters):
-            do {
-                self = try JSONEncoding.default.encode(self, with: parameters)
-            } catch {
-                throw HttpKit.HttpError.failedEncodeJSONRequestParameters(error)
-            }
-        case .httpBody(encodedData: let encodedData):
-            let contentHeader: HttpKit.HttpHeader = .contentType(.json)
-            setValue(contentHeader.value, forHTTPHeaderField: contentHeader.key)
-            httpBody = encodedData
-        case .queryString:
-            let contentHeader: HttpKit.HttpHeader = .contentType(.url)
-            setValue(contentHeader.value, forHTTPHeaderField: contentHeader.key)
         }
     }
 }

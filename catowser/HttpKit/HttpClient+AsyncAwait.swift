@@ -19,14 +19,14 @@ extension HttpKit.Client {
         guard let url = endpoint.url(relatedTo: self.server) else {
             throw HttpKit.HttpError.failedConstructUrl
         }
-        var httpRequest = endpoint.request(url, httpTimeout: httpTimeout, accessToken: accessToken)
         
+        let httpRequest: URLRequest
         do {
-            try httpRequest.addParameters(from: endpoint)
+            httpRequest = try endpoint.request(url, httpTimeout: httpTimeout, accessToken: accessToken)
         } catch let error as HttpKit.HttpError {
             throw error
         } catch {
-            throw HttpKit.HttpError.httpFailure(error: error, request: httpRequest)
+            throw HttpKit.HttpError.httpFailure(error: error)
         }
         
         let codes = T.successCodes

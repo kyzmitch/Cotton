@@ -51,7 +51,7 @@ extension HttpKit {
         }
         
         /// Constructs `URLRequest`
-        public func request(_ url: URL, httpTimeout: TimeInterval, accessToken: String? = nil) -> URLRequest {
+        public func request(_ url: URL, httpTimeout: TimeInterval, accessToken: String? = nil) throws -> URLRequest {
             var request = URLRequest(url: url,
                                      cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
                                      timeoutInterval: httpTimeout)
@@ -60,6 +60,17 @@ extension HttpKit {
             if let token = accessToken {
                 let auth: HttpHeader = .authorization(token: token)
                 request.setValue(auth.value, forHTTPHeaderField: auth.key)
+            }
+            switch encodingMethod {
+            case .httpBodyJSON(parameters: let parameters):
+                request = try JSONEncoding.default.encode(request, with: parameters)
+            case .httpBody(encodedData: let encodedData):
+                let contentHeader: HttpKit.HttpHeader = .contentType(.json)
+                request.setValue(contentHeader.value, forHTTPHeaderField: contentHeader.key)
+                request.httpBody = encodedData
+            case .queryString:
+                let contentHeader: HttpKit.HttpHeader = .contentType(.url)
+                request.setValue(contentHeader.value, forHTTPHeaderField: contentHeader.key)
             }
             return request
         }
