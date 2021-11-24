@@ -36,9 +36,8 @@ extension HttpKit.Endpoint {
          */
         return HttpKit.GDNSjsonEndpoint(method: .get,
                                         path: "resolve",
-                                        queryItems: params.urlQueryItems,
                                         headers: nil,
-                                        encodingMethod: .queryString)
+                                        encodingMethod: .queryString(queryItems: params.urlQueryItems))
     }
     
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> HttpKit.GDNSjsonEndpoint {

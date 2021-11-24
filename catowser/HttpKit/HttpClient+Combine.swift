@@ -26,23 +26,15 @@ extension HttpKit.Client {
                     promise(.failure(.failedConstructUrl))
                     return
                 }
-                var httpRequest = URLRequest(url: url,
-                                             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-                                             timeoutInterval: self.httpTimeout)
-                httpRequest.httpMethod = endpoint.method.rawValue
-                httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
-                if let token = accessToken {
-                    let auth: HttpKit.HttpHeader = .authorization(token: token)
-                    httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
-                }
                 
+                let httpRequest: URLRequest
                 do {
-                    try httpRequest.addParameters(from: endpoint)
+                    httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
                 } catch let error as HttpKit.HttpError {
                     promise(.failure(error))
                     return
                 } catch {
-                    promise(.failure(.httpFailure(error: error, request: httpRequest)))
+                    promise(.failure(.httpFailure(error: error)))
                     return
                 }
                 
@@ -58,7 +50,7 @@ extension HttpKit.Client {
                         case .success(let value):
                             promise(.success(value))
                         case .failure(let error):
-                            promise(.failure(.httpFailure(error: error, request: httpRequest)))
+                            promise(.failure(.httpFailure(error: error)))
                         }
                     })
                 
