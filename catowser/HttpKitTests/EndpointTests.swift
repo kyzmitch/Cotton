@@ -54,6 +54,13 @@ class EndpointTests: XCTestCase {
             expectingHeaders.append(additonalHeader)
             let errMsg = "Wrong set of headers in URLRequest"
             XCTAssertEqual(expectingHeaders.dictionary, urlRequest.allHTTPHeaderFields, errMsg)
+            
+            let authToken = "secret$auth^token"
+            let authorizedRequest = try endpointWithHeaders.request(url, httpTimeout: 60, accessToken: authToken)
+            let authHeader: HttpKit.HttpHeader = .authorization(token: authToken)
+            expectingHeaders.append(authHeader)
+            let errMsgAuth = "Without auth header"
+            XCTAssertEqual(expectingHeaders.dictionary, authorizedRequest.allHTTPHeaderFields, errMsgAuth)
         }
     }
     
