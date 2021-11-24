@@ -39,9 +39,8 @@ extension HttpKit.Endpoint {
         
         return GSearchEndpoint(method: .get,
                                        path: "complete/search",
-                                       queryItems: items,
                                        headers: headers,
-                                       encodingMethod: .queryString)
+                                       encodingMethod: .queryString(queryItems: items))
     }
 }
 

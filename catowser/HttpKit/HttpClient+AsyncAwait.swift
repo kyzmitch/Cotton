@@ -9,13 +9,6 @@
 #if swift(>=5.5)
 
 import Foundation
-#if canImport(_Concurrency)
-// this won't be needed after Swift 5.5 will be released
-import _Concurrency
-#endif
-
-// Swift Concurrency requires a deployment target of macOS 12, iOS 15, tvOS 15, and watchOS 8 or newer. (70738378)
-// source: https://developer.apple.com/documentation/xcode-release-notes/xcode-13-beta-release-notes
 
 extension HttpKit.Client {
     @available(swift 5.5)
@@ -26,25 +19,18 @@ extension HttpKit.Client {
         guard let url = endpoint.url(relatedTo: self.server) else {
             throw HttpKit.HttpError.failedConstructUrl
         }
-        var httpRequest = URLRequest(url: url,
-                                     cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-                                     timeoutInterval: self.httpTimeout)
-        httpRequest.httpMethod = endpoint.method.rawValue
-        httpRequest.allHTTPHeaderFields = endpoint.headers?.dictionary
-        if let token = accessToken {
-            let auth: HttpKit.HttpHeader = .authorization(token: token)
-            httpRequest.setValue(auth.value, forHTTPHeaderField: auth.key)
-        }
         
+        let httpRequest: URLRequest
         do {
-            try httpRequest.addParameters(from: endpoint)
+            httpRequest = try endpoint.request(url, httpTimeout: httpTimeout, accessToken: accessToken)
         } catch let error as HttpKit.HttpError {
             throw error
         } catch {
-            throw HttpKit.HttpError.httpFailure(error: error, request: httpRequest)
+            throw HttpKit.HttpError.httpFailure(error: error)
         }
         
         let codes = T.successCodes
+        // https://developer.apple.com/documentation/foundation/urlsession/3767352-data
         let (data, response) = try await urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
         guard let urlResponse = response as? HTTPURLResponse else {
             throw HttpKit.HttpError.notHttpUrlResponse

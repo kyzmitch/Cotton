@@ -9,7 +9,7 @@
 import Foundation
 
 public struct DomainName {
-    let string: String
+    public let string: String
     
     /// https://developers.google.com/speed/public-dns/docs/doh/json
     // swiftlint:disable:next cyclomatic_complexity

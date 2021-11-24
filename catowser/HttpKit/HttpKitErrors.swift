@@ -16,14 +16,13 @@ extension HttpKit {
         case swiftVersionIsTooLowForAsyncAwait
         case failedConstructUrl
         
-        case httpFailure(error: Error, request: URLRequest?)
+        case httpFailure(error: Error)
         case jsonSerialization(error: Error)
         case jsonDecoding(error: Error)
         /// can add String assiciated value for missed params
         case missingRequestParameters(String)
         case noAuthenticationToken
         case failedConstructRequestParameters
-        case failedEncodeJSONRequestParameters(Error)
         case failedEncodeEncodable
         case noInternetConnectionWithHost
         case noHttpResponse
@@ -39,7 +38,7 @@ extension HttpKit {
         
         public var localizedDescription: String {
             switch self {
-            case .httpFailure(error: let error, request: _):
+            case .httpFailure(error: let error):
                 return "http failure: \(error.localizedDescription)"
             case .jsonSerialization(error: let error):
                 return "json serialization: \(error.localizedDescription)"
