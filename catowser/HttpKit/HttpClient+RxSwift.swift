@@ -11,9 +11,9 @@ import Alamofire
 import ReactiveSwift
 
 extension HttpKit.Client {
-    private func makeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                              withAccessToken accessToken: String?,
-                                              responseType: T.Type) -> SignalProducer<T, HttpKit.HttpError> {
+    private func rxMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                withAccessToken accessToken: String?,
+                                                responseType: T.Type) -> SignalProducer<T, HttpKit.HttpError> {
         let producer: SignalProducer<T, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
@@ -61,21 +61,21 @@ extension HttpKit.Client {
         return producer
     }
     
-    public func makePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                   responseType: T.Type) -> SignalProducer<T, HttpKit.HttpError> {
-        let producer = makeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
+    public func rxMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                     responseType: T.Type) -> SignalProducer<T, HttpKit.HttpError> {
+        let producer = rxMakeRequest(for: endpoint, withAccessToken: nil, responseType: responseType)
         return producer
     }
     
-    public func makeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                       withAccessToken accessToken: String,
-                                                       responseType: T.Type) -> SignalProducer<T, HttpKit.HttpError> {
-        let producer = makeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
+    public func rxMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                         withAccessToken accessToken: String,
+                                                         responseType: T.Type) -> SignalProducer<T, HttpKit.HttpError> {
+        let producer = rxMakeRequest(for: endpoint, withAccessToken: accessToken, responseType: responseType)
         return producer
     }
     
-    func makeVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
-                         withAccessToken accessToken: String?) -> SignalProducer<Void, HttpKit.HttpError> {
+    func rxMakeVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
+                           withAccessToken accessToken: String?) -> SignalProducer<Void, HttpKit.HttpError> {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)

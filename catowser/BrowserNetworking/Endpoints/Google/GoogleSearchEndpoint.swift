@@ -75,7 +75,7 @@ extension HttpKit.Client where Server == GoogleServer {
             return GSearchProducer.init(error: .failedConstructRequestParameters)
         }
         
-        let producer = self.makePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        let producer = self.rxMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
         return producer
     }
     
