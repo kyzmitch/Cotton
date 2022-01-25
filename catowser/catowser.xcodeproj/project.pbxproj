@@ -254,6 +254,8 @@
 		8AB022EF26258B110053AFF0 /* CoreBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB022EE26258B110053AFF0 /* CoreBrowserTests.swift */; };
 		8AB022F126258B110053AFF0 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8AB0D40B2754AEB500493EC3 /* HttpClient+RxSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */; };
+		8AB0D40F2754FC9B00493EC3 /* HttpClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */; };
+		8AB0D4112755075700493EC3 /* AlamofireExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */; };
 		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
@@ -695,6 +697,8 @@
 		8AB022EE26258B110053AFF0 /* CoreBrowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBrowserTests.swift; sourceTree = "<group>"; };
 		8AB022F026258B110053AFF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+RxSwift.swift"; sourceTree = "<group>"; };
+		8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClientTests.swift; sourceTree = "<group>"; };
+		8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireExtensions.swift; sourceTree = "<group>"; };
 		8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsDBClient.swift; sourceTree = "<group>"; };
 		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -1274,6 +1278,7 @@
 		8A62AEE22351E684001A9C83 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */,
 				8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */,
 				8A68E40D245966190070F338 /* CombineExtensions.swift */,
 			);
@@ -1304,6 +1309,7 @@
 				8A7EF3D3273924EF0071BB89 /* HostTests.swift */,
 				8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */,
 				8AD8E1652739B74000628DB4 /* EndpointMocks.swift */,
+				8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */,
 			);
 			path = HttpKitTests;
 			sourceTree = "<group>";
@@ -2564,6 +2570,7 @@
 			files = (
 				8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */,
 				8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */,
+				8AB0D40F2754FC9B00493EC3 /* HttpClientTests.swift in Sources */,
 				8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2696,6 +2703,7 @@
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
 				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
+				8AB0D4112755075700493EC3 /* AlamofireExtensions.swift in Sources */,
 				8A74188C245086330019695E /* Downloadable.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 				8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */,

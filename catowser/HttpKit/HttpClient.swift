@@ -17,6 +17,21 @@ fileprivate extension String {
     static let threadName = "Client"
 }
 
+/// Interface for some HTTP networking library (e.g. Alamofire) to hide it and
+/// not use it directly and be able to mock it for unit testing
+protocol HTTPNetworkingBackend: AnyObject {
+    associatedtype TYPE: ResponseType
+    func performRequest(_ request: URLRequest,
+                        sucessCodes: [Int])
+    var completionHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) { get }
+}
+
+protocol HTTPNetworkingBackendVoid: AnyObject {
+    func performVoidRequest(_ request: URLRequest,
+                            sucessCodes: [Int])
+    var completionHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
+}
+
 extension HttpKit {
     public class Client<Server: ServerDescription> {
         let server: Server
@@ -174,6 +189,60 @@ extension HttpKit {
                     }
                     completionHandler(result)
             }
+        }
+        
+        // MARK: - Clear functions without dependencies
+        
+        /// T: ResponseType
+        private func makeCleanRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                   withAccessToken accessToken: String?,
+                                                                   networkingBackend: B) where B.TYPE == T {
+            guard let url = endpoint.url(relatedTo: self.server) else {
+                let result: Result<T, HttpKit.HttpError> = .failure(.failedConstructUrl)
+                networkingBackend.completionHandler(result)
+                return
+            }
+            let httpRequest: URLRequest
+            do {
+                httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+            } catch let error as HttpKit.HttpError {
+                let result: Result<T, HttpKit.HttpError> = .failure(error)
+                networkingBackend.completionHandler(result)
+                return
+            } catch {
+                let result: Result<T, HttpKit.HttpError> = .failure(.httpFailure(error: error))
+                networkingBackend.completionHandler(result)
+                return
+            }
+            
+            let codes = T.successCodes
+            networkingBackend.performRequest(httpRequest, sucessCodes: codes)
+        }
+        
+        func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                  withAccessToken accessToken: String?,
+                                  networkingBackend: HTTPNetworkingBackendVoid) {
+            guard let url = endpoint.url(relatedTo: self.server) else {
+                let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
+                networkingBackend.completionHandler(result)
+                return
+            }
+            
+            let httpRequest: URLRequest
+            do {
+                httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+            } catch let error as HttpKit.HttpError {
+                let result: Result<Void, HttpKit.HttpError> = .failure(error)
+                networkingBackend.completionHandler(result)
+                return
+            } catch {
+                let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
+                networkingBackend.completionHandler(result)
+                return
+            }
+            
+            let codes = HttpKit.VoidResponse.successCodes
+            networkingBackend.performVoidRequest(httpRequest, sucessCodes: codes)
         }
     }
 }
