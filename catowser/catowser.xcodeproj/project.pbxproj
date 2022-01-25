@@ -247,6 +247,8 @@
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
+		8AA4FFF327A006CE003C3BBA /* HttpClient+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */; };
+		8AA4FFF527A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF427A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift */; };
 		8AA60B2225A33568002EF8AF /* TabCacheErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
@@ -690,6 +692,8 @@
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
+		8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Alamofire.swift"; sourceTree = "<group>"; };
+		8AA4FFF427A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPNetworkingBackendMocks.swift; sourceTree = "<group>"; };
 		8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCacheErrors.swift; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -1310,6 +1314,7 @@
 				8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */,
 				8AD8E1652739B74000628DB4 /* EndpointMocks.swift */,
 				8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */,
+				8AA4FFF427A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift */,
 			);
 			path = HttpKitTests;
 			sourceTree = "<group>";
@@ -1470,6 +1475,7 @@
 				8AE6D1762350FF65006316AD /* Endpoint.swift */,
 				8A62AED82351CD2D001A9C83 /* ServerDescription.swift */,
 				8A82CDEF2351095700607162 /* HttpClient.swift */,
+				8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */,
 				8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */,
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
@@ -2571,6 +2577,7 @@
 				8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */,
 				8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */,
 				8AB0D40F2754FC9B00493EC3 /* HttpClientTests.swift in Sources */,
+				8AA4FFF527A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift in Sources */,
 				8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2707,6 +2714,7 @@
 				8A74188C245086330019695E /* Downloadable.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 				8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */,
+				8AA4FFF327A006CE003C3BBA /* HttpClient+Alamofire.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

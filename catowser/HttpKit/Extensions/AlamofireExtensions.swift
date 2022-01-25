@@ -8,7 +8,7 @@
 
 import Alamofire
 
-class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
+final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
     typealias TYPE = RType
     
     let completionHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void)
@@ -37,7 +37,7 @@ class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
     }
 }
 
-class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
+final class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
     
     let completionHandler: ((Result<Void, HttpKit.HttpError>) -> Void)
     
