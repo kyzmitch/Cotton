@@ -20,10 +20,13 @@ class HttpClientTests: XCTestCase {
     func testUnauthorizedRequest() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
         let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse> = .init { result in
-            // XCTAssertNotNil(result.error)
-            // XCTAssertEqual(result.error, HttpKit.HttpError.failedConstructUrl, "Not expected error")
+            XCTAssertNotNil(result.error)
+            XCTAssertEqual(result.error, HttpKit.HttpError.failedConstructUrl, "Not expected error")
             expectationUrlFail.fulfill()
         }
-        goodHttpClient.makeCleanRequest(for: goodEndpointMock, withAccessToken: nil, networkingBackend: badNetBackendMock)
+        goodHttpClient.makeCleanRequest(for: goodEndpointMock,
+                                           withAccessToken: nil,
+                                           networkingBackend: badNetBackendMock)
+        wait(for: [expectationUrlFail], timeout: 3.0)
     }
 }
