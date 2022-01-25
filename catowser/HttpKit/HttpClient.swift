@@ -32,6 +32,9 @@ protocol HTTPNetworkingBackendVoid: AnyObject {
     var completionHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
 }
 
+public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
+public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
+
 extension HttpKit {
     public class Client<Server: ServerDescription> {
         let server: Server
@@ -93,9 +96,9 @@ extension HttpKit {
         private func makeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                   withAccessToken accessToken: String?,
                                                   responseType: T.Type,
-                                                  completionHandler: @escaping (Result<T, HttpKit.HttpError>) -> Void) {
+                                                  completionHandler: @escaping TypedResponseClosure<T>) {
             guard let url = endpoint.url(relatedTo: self.server) else {
-                let result: Result<T, HttpKit.HttpError> = .failure(.failedConstructUrl)
+                let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 completionHandler(result)
                 return
             }
@@ -104,11 +107,11 @@ extension HttpKit {
             do {
                 httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
-                let result: Result<T, HttpKit.HttpError> = .failure(error)
+                let result: HttpTypedResult<T> = .failure(error)
                 completionHandler(result)
                 return
             } catch {
-                let result: Result<T, HttpKit.HttpError> = .failure(.httpFailure(error: error))
+                let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
                 completionHandler(result)
                 return
             }
@@ -122,7 +125,7 @@ extension HttpKit {
                                    queue: .main,
                                    decoder: JSONDecoder(),
                                    completionHandler: { (response) in
-                    let result: Result<T, HttpKit.HttpError>
+                    let result: HttpTypedResult<T>
                     switch response.result {
                     case .success(let value):
                         result = .success(value)
@@ -145,7 +148,7 @@ extension HttpKit {
         public func makeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                            withAccessToken accessToken: String,
                                                            responseType: T.Type,
-                                                           completionHandler: @escaping (Result<T, HttpKit.HttpError>) -> Void) {
+                                                           completionHandler: @escaping TypedResponseClosure<T>) {
             makeRequest(for: endpoint,
                            withAccessToken: accessToken,
                            responseType: responseType,
@@ -198,7 +201,7 @@ extension HttpKit {
                                                                    withAccessToken accessToken: String?,
                                                                    networkingBackend: B) where B.TYPE == T {
             guard let url = endpoint.url(relatedTo: self.server) else {
-                let result: Result<T, HttpKit.HttpError> = .failure(.failedConstructUrl)
+                let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 networkingBackend.completionHandler(result)
                 return
             }
@@ -206,11 +209,11 @@ extension HttpKit {
             do {
                 httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
-                let result: Result<T, HttpKit.HttpError> = .failure(error)
+                let result: HttpTypedResult<T> = .failure(error)
                 networkingBackend.completionHandler(result)
                 return
             } catch {
-                let result: Result<T, HttpKit.HttpError> = .failure(.httpFailure(error: error))
+                let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
                 networkingBackend.completionHandler(result)
                 return
             }
