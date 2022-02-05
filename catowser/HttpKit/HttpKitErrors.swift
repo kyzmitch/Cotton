@@ -69,15 +69,30 @@ extension HttpKit {
                 (.emptyQueryParam, .emptyQueryParam),
                 (.spacesInQueryParam, .spacesInQueryParam):
                 return true
-            case (let .httpFailure(_), let .httpFailure(_)):
-                // return lErr == rErr
-                return true
-            case (let .jsonSerialization(_), let .jsonSerialization(_)):
-                // return lErr == rErr
-                return true
-            case (let .jsonDecoding(_), let .jsonDecoding(_)):
-                // return lErr == rErr
-                return true
+            case (let .httpFailure(lhs), let .httpFailure(rhs)):
+                guard type(of: lhs) == type(of: rhs) else { return false }
+                if lhs is NSError && rhs is NSError {
+                    let error1 = lhs as NSError
+                    let error2 = rhs as NSError
+                    return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
+                }
+                return false
+            case (let .jsonSerialization(lhs), let .jsonSerialization(rhs)):
+                guard type(of: lhs) == type(of: rhs) else { return false }
+                if lhs is NSError && rhs is NSError {
+                    let error1 = lhs as NSError
+                    let error2 = rhs as NSError
+                    return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
+                }
+                return false
+            case (let .jsonDecoding(lhs), let .jsonDecoding(rhs)):
+                guard type(of: lhs) == type(of: rhs) else { return false }
+                if lhs is NSError && rhs is NSError {
+                    let error1 = lhs as NSError
+                    let error2 = rhs as NSError
+                    return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
+                }
+                return false
             case (let .missingRequestParameters(lStr), let .missingRequestParameters(rStr)):
                 return lStr == rStr
             default:
