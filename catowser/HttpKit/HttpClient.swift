@@ -17,6 +17,24 @@ fileprivate extension String {
     static let threadName = "Client"
 }
 
+/// Interface for some HTTP networking library (e.g. Alamofire) to hide it and
+/// not use it directly and be able to mock it for unit testing
+protocol HTTPNetworkingBackend: AnyObject {
+    associatedtype TYPE: ResponseType
+    func performRequest(_ request: URLRequest,
+                        sucessCodes: [Int])
+    var completionHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) { get }
+}
+
+protocol HTTPNetworkingBackendVoid: AnyObject {
+    func performVoidRequest(_ request: URLRequest,
+                            sucessCodes: [Int])
+    var completionHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
+}
+
+public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
+public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
+
 extension HttpKit {
     public class Client<Server: ServerDescription> {
         let server: Server
@@ -34,6 +52,8 @@ extension HttpKit {
         
         let httpTimeout: TimeInterval
         
+        let jsonEncoder: JSONRequestEncodable
+        
         public typealias HostNetState = NetworkReachabilityManager.NetworkReachabilityStatus
         
         public let connectionStateStream: MutableProperty<HostNetState>
@@ -45,9 +65,10 @@ extension HttpKit {
             self.connectionStateStream.value = status
         }
         
-        public init(server: Server, httpTimeout: TimeInterval = 60) {
+        public init(server: Server, jsonEncoder: JSONRequestEncodable, httpTimeout: TimeInterval = 60) {
             self.server = server
             self.httpTimeout = httpTimeout
+            self.jsonEncoder = jsonEncoder
             let sessionConfiguration = URLSessionConfiguration.default
             urlSessionHandler = .init()
             let operationQueue: OperationQueue = .init()
@@ -75,105 +96,64 @@ extension HttpKit {
             }
         }
         
-        private func makeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                  withAccessToken accessToken: String?,
-                                                  responseType: T.Type,
-                                                  completionHandler: @escaping (Result<T, HttpKit.HttpError>) -> Void) {
+        // MARK: - Clear functions without dependencies
+        
+        /// T: ResponseType
+        func makeCleanRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                           withAccessToken accessToken: String?,
+                                                           networkingBackend: B) where B.TYPE == T {
             guard let url = endpoint.url(relatedTo: self.server) else {
-                let result: Result<T, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                completionHandler(result)
+                let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
+                networkingBackend.completionHandler(result)
                 return
             }
-            
             let httpRequest: URLRequest
             do {
-                httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+                httpRequest = try endpoint.request(url,
+                                                   httpTimeout: self.httpTimeout,
+                                                   jsonEncoder: jsonEncoder,
+                                                   accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
-                let result: Result<T, HttpKit.HttpError> = .failure(error)
-                completionHandler(result)
+                let result: HttpTypedResult<T> = .failure(error)
+                networkingBackend.completionHandler(result)
                 return
             } catch {
-                let result: Result<T, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                completionHandler(result)
+                let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
+                networkingBackend.completionHandler(result)
                 return
             }
             
             let codes = T.successCodes
-            
-            let dataRequest: DataRequest = AF.request(httpRequest)
-            dataRequest
-                .validate(statusCode: codes)
-                .responseDecodable(of: responseType,
-                                   queue: .main,
-                                   decoder: JSONDecoder(),
-                                   completionHandler: { (response) in
-                    let result: Result<T, HttpKit.HttpError>
-                    switch response.result {
-                    case .success(let value):
-                        result = .success(value)
-                    case .failure(let error):
-                        result = .failure(.httpFailure(error: error))
-                    }
-                    completionHandler(result)
-                })
+            networkingBackend.performRequest(httpRequest, sucessCodes: codes)
         }
         
-        public func makePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                       responseType: T.Type,
-                                                       completionHandler: @escaping (Result<T, HttpKit.HttpError>) -> Void) {
-            makeRequest(for: endpoint,
-                           withAccessToken: nil,
-                           responseType: responseType,
-                           completionHandler: completionHandler)
-        }
-        
-        public func makeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                           withAccessToken accessToken: String,
-                                                           responseType: T.Type,
-                                                           completionHandler: @escaping (Result<T, HttpKit.HttpError>) -> Void) {
-            makeRequest(for: endpoint,
-                           withAccessToken: accessToken,
-                           responseType: responseType,
-                           completionHandler: completionHandler)
-        }
-        
-        func makeVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
-                             withAccessToken accessToken: String?,
-                             completionHandler: @escaping (Result<Void, HttpKit.HttpError>) -> Void) {
+        func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                  withAccessToken accessToken: String?,
+                                  networkingBackend: HTTPNetworkingBackendVoid) {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                completionHandler(result)
+                networkingBackend.completionHandler(result)
                 return
             }
             
             let httpRequest: URLRequest
             do {
-                httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+                httpRequest = try endpoint.request(url,
+                                                   httpTimeout: self.httpTimeout,
+                                                   jsonEncoder: jsonEncoder,
+                                                   accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
-                completionHandler(result)
+                networkingBackend.completionHandler(result)
                 return
             } catch {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                completionHandler(result)
+                networkingBackend.completionHandler(result)
                 return
             }
             
             let codes = HttpKit.VoidResponse.successCodes
-            let dataRequest: DataRequest = AF.request(httpRequest)
-            dataRequest
-                .validate(statusCode: codes)
-                .response { (defaultResponse) in
-                    let result: Result<Void, HttpKit.HttpError>
-                    if let error = defaultResponse.error {
-                        let localError = HttpKit.HttpError.httpFailure(error: error)
-                        result = .failure(localError)
-                    } else {
-                        let value: Void = ()
-                        result = .success(value)
-                    }
-                    completionHandler(result)
-            }
+            networkingBackend.performVoidRequest(httpRequest, sucessCodes: codes)
         }
     }
 }

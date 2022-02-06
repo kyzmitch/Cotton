@@ -26,4 +26,23 @@ struct MockedGoodServer: ServerDescription {
     init() {}
 }
 
+struct MockedBadNoHostServer: ServerDescription {
+    var hostString: String {
+        return ""
+    }
+    
+    let domain: String = ""
+    
+    let prefix = ""
+    
+    init() {}
+}
+
 typealias MockedGoodEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedGoodServer>
+typealias MockedBadNoHostEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedBadNoHostServer>
+
+struct MockedGoodJSONEncoding: JSONRequestEncodable {
+    func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String : Any]?) throws -> URLRequest {
+        return try urlRequest.convertToURLRequest()
+    }
+}

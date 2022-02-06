@@ -29,7 +29,10 @@ extension HttpKit.Client {
                 
                 let httpRequest: URLRequest
                 do {
-                    httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+                    httpRequest = try endpoint.request(url,
+                                                       httpTimeout: self.httpTimeout,
+                                                       jsonEncoder: self.jsonEncoder,
+                                                       accessToken: accessToken)
                 } catch let error as HttpKit.HttpError {
                     promise(.failure(error))
                     return
