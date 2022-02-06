@@ -9,6 +9,7 @@
 import Foundation
 import HttpKit
 import BrowserNetworking
+import Alamofire
 
 final class HttpEnvironment {
     static let shared: HttpEnvironment = .init()
@@ -18,9 +19,9 @@ final class HttpEnvironment {
     
     private init() {
         let googleDNSserver = GoogleDnsServer()
-        dnsClient = .init(server: googleDNSserver, httpTimeout: 2)
+        dnsClient = .init(server: googleDNSserver, jsonEncoder: JSONEncoding.default, httpTimeout: 2)
         let googleServer = GoogleServer()
-        googleClient = .init(server: googleServer, httpTimeout: 10)
+        googleClient = .init(server: googleServer, jsonEncoder: JSONEncoding.default, httpTimeout: 10)
     }
 }
 
