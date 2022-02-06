@@ -19,8 +19,9 @@ final class MockedTypedNetworkingBackendWithFail<RType: ResponseType>: HTTPNetwo
     }
     
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-            let result: Result<TYPE, HttpKit.HttpError> = .failure(.failedConstructUrl)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
+            let result: Result<TYPE, HttpKit.HttpError> = .failure(.httpFailure(error: nsError))
             self?.completionHandler(result)
         }
     }

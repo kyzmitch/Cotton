@@ -11,22 +11,42 @@ import XCTest
 
 class HttpClientTests: XCTestCase {
     let goodServerMock: MockedGoodServer = .init()
+    let badNoHostServerMock: MockedBadNoHostServer = .init()
     let goodEndpointMock: MockedGoodEndpoint = .init(method: .get,
                                                      path: "players",
                                                      headers: nil,
                                                      encodingMethod: .queryString(queryItems: []))
+    let badPathEndpointMock: MockedBadNoHostEndpoint = .init(method: .get,
+                                                             path: "/players",
+                                                             headers: nil,
+                                                             encodingMethod: .queryString(queryItems: []))
     lazy var goodHttpClient: HttpKit.Client<MockedGoodServer> = .init(server: goodServerMock)
+    lazy var badNoHostHttpClient: HttpKit.Client<MockedBadNoHostServer> = .init(server: badNoHostServerMock)
 
     func testUnauthorizedRequest() throws {
+        let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
+        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse> = .init { result in
+            XCTAssertNotNil(result.error)
+            let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
+            XCTAssertEqual(result.error, HttpKit.HttpError.httpFailure(error: nsError), "Not expected error")
+            expectationUrlFail.fulfill()
+        }
+        goodHttpClient.makeCleanRequest(for: goodEndpointMock,
+                                           withAccessToken: nil,
+                                           networkingBackend: badNetBackendMock)
+        wait(for: [expectationUrlFail], timeout: 1.0)
+    }
+    
+    func testUrlConstruction() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
         let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse> = .init { result in
             XCTAssertNotNil(result.error)
             XCTAssertEqual(result.error, HttpKit.HttpError.failedConstructUrl, "Not expected error")
             expectationUrlFail.fulfill()
         }
-        goodHttpClient.makeCleanRequest(for: goodEndpointMock,
-                                           withAccessToken: nil,
-                                           networkingBackend: badNetBackendMock)
-        wait(for: [expectationUrlFail], timeout: 3.0)
+        badNoHostHttpClient.makeCleanRequest(for: badPathEndpointMock,
+                                                withAccessToken: nil,
+                                                networkingBackend: badNetBackendMock)
+        wait(for: [expectationUrlFail], timeout: 0.5)
     }
 }

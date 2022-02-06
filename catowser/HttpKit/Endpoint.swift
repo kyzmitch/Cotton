@@ -39,8 +39,8 @@ extension HttpKit {
         ///     - server: server should be used from HttpClient inside its makeRequest functions.
         public func url(relatedTo server: Server) -> URL? {
             var components = URLComponents()
-            components.scheme = server.scheme.rawValue
-            components.host = server.hostString
+            components.scheme = server.scheme.rawValue.isEmpty ? nil : server.scheme.rawValue
+            components.host = server.hostString.isEmpty ? nil : server.hostString
             components.path = "/\(path)"
             if case let .queryString(queryItems) = encodingMethod {
                 components.queryItems = queryItems

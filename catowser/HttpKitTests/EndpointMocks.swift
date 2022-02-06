@@ -26,4 +26,17 @@ struct MockedGoodServer: ServerDescription {
     init() {}
 }
 
+struct MockedBadNoHostServer: ServerDescription {
+    var hostString: String {
+        return ""
+    }
+    
+    let domain: String = ""
+    
+    let prefix = ""
+    
+    init() {}
+}
+
 typealias MockedGoodEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedGoodServer>
+typealias MockedBadNoHostEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedBadNoHostServer>
