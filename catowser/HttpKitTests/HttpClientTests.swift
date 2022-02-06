@@ -20,8 +20,11 @@ class HttpClientTests: XCTestCase {
                                                              path: "/players",
                                                              headers: nil,
                                                              encodingMethod: .queryString(queryItems: []))
-    lazy var goodHttpClient: HttpKit.Client<MockedGoodServer> = .init(server: goodServerMock)
-    lazy var badNoHostHttpClient: HttpKit.Client<MockedBadNoHostServer> = .init(server: badNoHostServerMock)
+    let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
+    lazy var goodHttpClient: HttpKit.Client<MockedGoodServer> = .init(server: goodServerMock,
+                                                                      jsonEncoder: goodJsonEncodingMock)
+    lazy var badNoHostHttpClient: HttpKit.Client<MockedBadNoHostServer> = .init(server: badNoHostServerMock,
+                                                                                jsonEncoder: goodJsonEncodingMock)
 
     func testUnauthorizedRequest() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")

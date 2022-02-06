@@ -40,3 +40,9 @@ struct MockedBadNoHostServer: ServerDescription {
 
 typealias MockedGoodEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedGoodServer>
 typealias MockedBadNoHostEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedBadNoHostServer>
+
+struct MockedGoodJSONEncoding: JSONRequestEncodable {
+    func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String : Any]?) throws -> URLRequest {
+        return try urlRequest.convertToURLRequest()
+    }
+}

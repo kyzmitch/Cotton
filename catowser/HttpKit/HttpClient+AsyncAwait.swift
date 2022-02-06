@@ -22,7 +22,10 @@ extension HttpKit.Client {
         
         let httpRequest: URLRequest
         do {
-            httpRequest = try endpoint.request(url, httpTimeout: httpTimeout, jsonEncoder: jsonEncoder, accessToken: accessToken)
+            httpRequest = try endpoint.request(url,
+                                               httpTimeout: httpTimeout,
+                                               jsonEncoder: jsonEncoder,
+                                               accessToken: accessToken)
         } catch let error as HttpKit.HttpError {
             throw error
         } catch {

@@ -13,6 +13,8 @@ import Alamofire
 class EndpointTests: XCTestCase {
     let path = "players"
     let goodServer = MockedGoodServer()
+    // TODO: use mocked encoder, because real encoder from Alamofire is used now
+    let goodJsonEncoding: JSONRequestEncodable = JSONEncoding.default
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -47,7 +49,10 @@ class EndpointTests: XCTestCase {
         let possibleUrl = endpointWithHeaders.url(relatedTo: goodServer)
         XCTAssertNotNil(possibleUrl, "url method should return some url")
         if let url = possibleUrl {
-            let urlRequest = try endpointWithHeaders.request(url, httpTimeout: 60, accessToken: nil)
+            let urlRequest = try endpointWithHeaders.request(url,
+                                                             httpTimeout: 60,
+                                                             jsonEncoder: goodJsonEncoding,
+                                                             accessToken: nil)
             // Not entirely sure if we get same order every time
             var expectingHeaders = headers
             let additonalHeader: HttpKit.HttpHeader = .contentType(.json)
@@ -56,7 +61,10 @@ class EndpointTests: XCTestCase {
             XCTAssertEqual(expectingHeaders.dictionary, urlRequest.allHTTPHeaderFields, errMsg)
             
             let authToken = "secret$auth^token"
-            let authorizedRequest = try endpointWithHeaders.request(url, httpTimeout: 60, accessToken: authToken)
+            let authorizedRequest = try endpointWithHeaders.request(url,
+                                                                    httpTimeout: 60,
+                                                                    jsonEncoder: goodJsonEncoding,
+                                                                    accessToken: authToken)
             let authHeader: HttpKit.HttpHeader = .authorization(token: authToken)
             expectingHeaders.append(authHeader)
             let errMsgAuth = "Without auth header"
@@ -97,7 +105,10 @@ class EndpointTests: XCTestCase {
             return
         }
         let interval: TimeInterval = 60
-        let request = try endpoint.request(url, httpTimeout: interval, accessToken: nil)
+        let request = try endpoint.request(url,
+                                           httpTimeout: interval,
+                                           jsonEncoder: goodJsonEncoding,
+                                           accessToken: nil)
         let goodSerializedData = try JSONSerialization.data(withJSONObject: parameters, options: [])
         XCTAssertEqual(request.httpBody, goodSerializedData, "addParameters method serialized parameters with an error")
         
