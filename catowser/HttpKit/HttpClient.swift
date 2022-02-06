@@ -52,6 +52,8 @@ extension HttpKit {
         
         let httpTimeout: TimeInterval
         
+        let jsonEncoder: JSONRequestEncodable
+        
         public typealias HostNetState = NetworkReachabilityManager.NetworkReachabilityStatus
         
         public let connectionStateStream: MutableProperty<HostNetState>
@@ -63,9 +65,10 @@ extension HttpKit {
             self.connectionStateStream.value = status
         }
         
-        public init(server: Server, httpTimeout: TimeInterval = 60) {
+        public init(server: Server, jsonEncoder: JSONRequestEncodable, httpTimeout: TimeInterval = 60) {
             self.server = server
             self.httpTimeout = httpTimeout
+            self.jsonEncoder = jsonEncoder
             let sessionConfiguration = URLSessionConfiguration.default
             urlSessionHandler = .init()
             let operationQueue: OperationQueue = .init()
@@ -106,7 +109,10 @@ extension HttpKit {
             }
             let httpRequest: URLRequest
             do {
-                httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+                httpRequest = try endpoint.request(url,
+                                                   httpTimeout: self.httpTimeout,
+                                                   jsonEncoder: jsonEncoder,
+                                                   accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: HttpTypedResult<T> = .failure(error)
                 networkingBackend.completionHandler(result)
@@ -132,7 +138,10 @@ extension HttpKit {
             
             let httpRequest: URLRequest
             do {
-                httpRequest = try endpoint.request(url, httpTimeout: self.httpTimeout, accessToken: accessToken)
+                httpRequest = try endpoint.request(url,
+                                                   httpTimeout: self.httpTimeout,
+                                                   jsonEncoder: jsonEncoder,
+                                                   accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
                 networkingBackend.completionHandler(result)

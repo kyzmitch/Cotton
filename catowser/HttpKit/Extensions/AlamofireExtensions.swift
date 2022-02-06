@@ -62,3 +62,17 @@ final class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
         }
     }
 }
+
+/// Wrapper around Alamofire method
+extension URLRequest: URLRequestCreatable {
+    public func convertToURLRequest() throws -> URLRequest {
+        return try asURLRequest()
+    }
+}
+
+/// Wrapper around Alamofire method
+extension JSONEncoding: JSONRequestEncodable {
+    public func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String : Any]?) throws -> URLRequest {
+        return try encode(urlRequest.convertToURLRequest(), with: parameters)
+    }
+}

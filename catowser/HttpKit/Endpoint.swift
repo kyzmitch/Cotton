@@ -10,6 +10,17 @@ import Foundation
 // Alamofire only needed for `HTTPMethod` type
 import Alamofire
 
+
+public protocol URLRequestCreatable {
+    func convertToURLRequest() throws -> URLRequest
+}
+
+/// Interface for some JSON encoder (e.g. Alamofire implementation) to hide it and
+/// not use it directly and be able to mock it for unit testing
+public protocol JSONRequestEncodable {
+    func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest
+}
+
 extension HttpKit {
     public struct Endpoint<T: ResponseType, Server: ServerDescription> {
         public let method: HTTPMethod
@@ -51,7 +62,10 @@ extension HttpKit {
         }
         
         /// Constructs `URLRequest`
-        public func request(_ url: URL, httpTimeout: TimeInterval, accessToken: String? = nil) throws -> URLRequest {
+        public func request(_ url: URL,
+                            httpTimeout: TimeInterval,
+                            jsonEncoder: JSONRequestEncodable,
+                            accessToken: String? = nil) throws -> URLRequest {
             var request = URLRequest(url: url,
                                      cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
                                      timeoutInterval: httpTimeout)
@@ -63,7 +77,7 @@ extension HttpKit {
             }
             switch encodingMethod {
             case .httpBodyJSON(parameters: let parameters):
-                request = try JSONEncoding.default.encode(request, with: parameters)
+                request = try jsonEncoder.encodeRequest(request, with: parameters)
             case .httpBody(encodedData: let encodedData):
                 let contentHeader: HttpKit.HttpHeader = .contentType(.json)
                 request.setValue(contentHeader.value, forHTTPHeaderField: contentHeader.key)
