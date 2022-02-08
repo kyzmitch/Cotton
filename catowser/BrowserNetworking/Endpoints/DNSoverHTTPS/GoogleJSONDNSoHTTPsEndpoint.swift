@@ -154,7 +154,8 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return HttpKit.GDNSjsonProducer(error: HttpKit.HttpError.failedConstructRequestParameters)
         }
         
-        let producer = self.rxMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        let backend: AFNetworkingBackend = .init(.waitsForRxObserver)
+        let producer = self.rxMakePublicRequest(for: endpoint, networkingBackend: backend)
         return producer
     }
     

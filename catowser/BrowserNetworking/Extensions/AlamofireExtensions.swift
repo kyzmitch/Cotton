@@ -6,15 +6,25 @@
 //  Copyright © 2021 andreiermoshin. All rights reserved.
 //
 
+import HttpKit
 import Alamofire
 
 final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
+    let wrapperHandler: ((Result<RType, HttpKit.HttpError>) -> Void)
+    
+    var handlerType: ResponseHandlingApi<RType>
+    
     typealias TYPE = RType
     
-    let completionHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void)
+    init(_ handler: @escaping (Result<RType, HttpKit.HttpError>) -> Void) {
+        self.handlerType = ResponseHandlingApi<RType>.closure(handler)
+        wrapperHandler = handlerType.wrapperHandler
+        // TODO: reuse init below
+    }
     
-    init(_ handler: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void) {
-        completionHandler = handler
+    init(_ handlerType: ResponseHandlingApi<RType>) {
+        self.handlerType = handlerType
+        wrapperHandler = handlerType.wrapperHandler
     }
     
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
@@ -32,17 +42,30 @@ final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
                 case .failure(let error):
                     result = .failure(.httpFailure(error: error))
                 }
-                self?.completionHandler(result)
+                self?.wrapperHandler(result)
             })
+        if case let .rxObserver(_, lifetime) = handlerType {
+            lifetime.observeEnded({
+                dataRequest.cancel()
+            })
+        }
+    }
+    
+    func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
+        if case .waitsForRxObserver = handlerType {
+            handlerType = .rxObserver(observer, lifetime)
+        }
     }
 }
 
 final class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
+    let wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void)
     
-    let completionHandler: ((Result<Void, HttpKit.HttpError>) -> Void)
+    var handlerType: ResponseVoidHandlingApi
     
-    init(_ handler: @escaping (Result<Void, HttpKit.HttpError>) -> Void) {
-        completionHandler = handler
+    init(_ handlerType: ResponseVoidHandlingApi) {
+        self.handlerType = handlerType
+        wrapperHandler = handlerType.wrapperHandler
     }
     
     func performVoidRequest(_ request: URLRequest, sucessCodes: [Int]) {
@@ -58,7 +81,18 @@ final class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
                     let value: Void = ()
                     result = .success(value)
                 }
-                self?.completionHandler(result)
+                self?.wrapperHandler(result)
+        }
+        if case let .rxObserver(_, lifetime) = handlerType {
+            lifetime.observeEnded({
+                dataRequest.cancel()
+            })
+        }
+    }
+    
+    func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
+        if case .waitsForRxObserver = handlerType {
+            handlerType = .rxObserver(observer, lifetime)
         }
     }
 }

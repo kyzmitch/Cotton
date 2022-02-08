@@ -75,7 +75,8 @@ extension HttpKit.Client where Server == GoogleServer {
             return GSearchProducer.init(error: .failedConstructRequestParameters)
         }
         
-        let producer = self.rxMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        let backend: AFNetworkingBackend = .init(.waitsForRxObserver)
+        let producer = self.rxMakePublicRequest(for: endpoint, networkingBackend: backend)
         return producer
     }
     

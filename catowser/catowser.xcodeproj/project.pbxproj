@@ -95,6 +95,8 @@
 		8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
+		8A1A1CE727B1966E0052A2A3 /* AlamofireExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */; };
+		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C1A2484E6450098F2F1 /* TabDefaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentView.swift */; };
@@ -146,7 +148,6 @@
 		8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E40D245966190070F338 /* CombineExtensions.swift */; };
 		8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		8A74188C245086330019695E /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A74188B245086330019695E /* Downloadable.swift */; };
 		8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
 		8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
 		8A745C0C248027C600A379AD /* TabsCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA621FF17C90071BECF /* TabsCache.swift */; };
@@ -243,11 +244,9 @@
 		8A964E3B24867A9400A0AABE /* SiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A964E3924867A9400A0AABE /* SiteSettings.swift */; };
 		8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
 		8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
-		8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
-		8AA4FFF327A006CE003C3BBA /* HttpClient+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */; };
 		8AA4FFF527A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF427A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift */; };
 		8AA60B2225A33568002EF8AF /* TabCacheErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
@@ -255,9 +254,7 @@
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
 		8AB022EF26258B110053AFF0 /* CoreBrowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB022EE26258B110053AFF0 /* CoreBrowserTests.swift */; };
 		8AB022F126258B110053AFF0 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
-		8AB0D40B2754AEB500493EC3 /* HttpClient+RxSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */; };
 		8AB0D40F2754FC9B00493EC3 /* HttpClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */; };
-		8AB0D4112755075700493EC3 /* AlamofireExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */; };
 		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
@@ -267,6 +264,11 @@
 		8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD72522623200E304E2 /* TabsResource.swift */; };
 		8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD72522623200E304E2 /* TabsResource.swift */; };
 		8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */; };
+		8ABDB0B127B24E3900D6EDE7 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A74188B245086330019695E /* Downloadable.swift */; };
+		8ABDB0B427B24FB300D6EDE7 /* HttpClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */; };
+		8ABDB0B527B24FB600D6EDE7 /* HttpClient+RxSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */; };
+		8ABDB0B627B269D500D6EDE7 /* HttpClient+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */; };
+		8ABDB0B827B26A5C00D6EDE7 /* JSONEncodableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABDB0B727B26A5C00D6EDE7 /* JSONEncodableMocks.swift */; };
 		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -275,7 +277,6 @@
 		8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
-		8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0A2447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
@@ -708,6 +709,7 @@
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		8ABA3CD72522623200E304E2 /* TabsResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsResource.swift; sourceTree = "<group>"; };
 		8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+AsyncAwait.swift"; sourceTree = "<group>"; };
+		8ABDB0B727B26A5C00D6EDE7 /* JSONEncodableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncodableMocks.swift; sourceTree = "<group>"; };
 		8AC4366A24798BC8008DD663 /* SPMCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMCommon.swift; sourceTree = "<group>"; };
 		8AC4367424798BDB008DD663 /* SPMCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC4367624798BDB008DD663 /* SPMCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMCommon.h; sourceTree = "<group>"; };
@@ -1239,14 +1241,26 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		8A1A1CE627B1963F0052A2A3 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		8A277138268E452000D8878C /* BrowserNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				8A978D4723F348CB007ECB0C /* AuthChallenge */,
+				8A1A1CE627B1963F0052A2A3 /* Extensions */,
 				8AE6D1752350FF52006316AD /* Endpoints */,
 				8A62AEDA2351CDDB001A9C83 /* Servers */,
 				8A7DCCCE236432AA006AAEE2 /* Models */,
 				8A8035FB24449C72000E035F /* SearchEngines */,
 				8AE46352244E07D600C8E063 /* OpenSearch */,
+				8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */,
+				8A74188B245086330019695E /* Downloadable.swift */,
 				8A277139268E452000D8878C /* BrowserNetworking.h */,
 				8A27713A268E452000D8878C /* Info.plist */,
 			);
@@ -1282,7 +1296,6 @@
 		8A62AEE22351E684001A9C83 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				8AB0D4102755075700493EC3 /* AlamofireExtensions.swift */,
 				8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */,
 				8A68E40D245966190070F338 /* CombineExtensions.swift */,
 			);
@@ -1313,6 +1326,7 @@
 				8A7EF3D3273924EF0071BB89 /* HostTests.swift */,
 				8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */,
 				8AD8E1652739B74000628DB4 /* EndpointMocks.swift */,
+				8ABDB0B727B26A5C00D6EDE7 /* JSONEncodableMocks.swift */,
 				8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */,
 				8AA4FFF427A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift */,
 			);
@@ -1362,7 +1376,8 @@
 			children = (
 				8A978D4823F34909007ECB0C /* AuthChallenge.swift */,
 			);
-			path = AuthChallenge;
+			name = AuthChallenge;
+			path = ../HttpKit/AuthChallenge;
 			sourceTree = "<group>";
 		};
 		8AA68A9D245BE45E00263E22 /* Environment */ = {
@@ -1464,18 +1479,15 @@
 		8AE6D16A2350FF35006316AD /* HttpKit */ = {
 			isa = PBXGroup;
 			children = (
-				8A978D4723F348CB007ECB0C /* AuthChallenge */,
 				8A62AEE22351E684001A9C83 /* Extensions */,
 				8AE6D16B2350FF35006316AD /* HttpKit.h */,
 				8AE6D16C2350FF35006316AD /* Info.plist */,
 				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
 				8A8678AD2430F7D400450666 /* Host.swift */,
 				8A510F642424AE000070503C /* URLInfo.swift */,
-				8A74188B245086330019695E /* Downloadable.swift */,
 				8AE6D1762350FF65006316AD /* Endpoint.swift */,
 				8A62AED82351CD2D001A9C83 /* ServerDescription.swift */,
 				8A82CDEF2351095700607162 /* HttpClient.swift */,
-				8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */,
 				8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */,
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
@@ -2562,11 +2574,15 @@
 				8A27722E268E4AD400D8878C /* SearchEngine+OpenSearchParser.swift in Sources */,
 				8A2771FB268E4AC900D8878C /* SearchEngine.swift in Sources */,
 				8A2771A3268E4AA800D8878C /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift in Sources */,
+				8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */,
+				8ABDB0B127B24E3900D6EDE7 /* Downloadable.swift in Sources */,
 				8A27720C268E4ACC00D8878C /* GoogleSearchEngine.swift in Sources */,
 				8A2771BD268E4AAF00D8878C /* GoogleSearchEndpoint+AsyncAwait.swift in Sources */,
 				8A2771F2268E4AC600D8878C /* DnsRR.swift in Sources */,
 				8A27721D268E4ACF00D8878C /* OpenSearchParser.swift in Sources */,
 				8A2771D7268E4AB700D8878C /* GoogleDnsServer.swift in Sources */,
+				8A1A1CE727B1966E0052A2A3 /* AlamofireExtensions.swift in Sources */,
+				8ABDB0B627B269D500D6EDE7 /* HttpClient+Alamofire.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2575,6 +2591,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */,
+				8ABDB0B827B26A5C00D6EDE7 /* JSONEncodableMocks.swift in Sources */,
 				8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */,
 				8AB0D40F2754FC9B00493EC3 /* HttpClientTests.swift in Sources */,
 				8AA4FFF527A013DC003C3BBA /* HTTPNetworkingBackendMocks.swift in Sources */,
@@ -2697,24 +2714,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
-				8AC45ECD2458327D007E47EE /* HttpClient+Combine.swift in Sources */,
-				8AB0D40B2754AEB500493EC3 /* HttpClient+RxSwift.swift in Sources */,
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
 				8A7EF3DB27392BE00071BB89 /* DomainName.swift in Sources */,
+				8ABDB0B527B24FB600D6EDE7 /* HttpClient+RxSwift.swift in Sources */,
 				8A62AEDE2351CF76001A9C83 /* HttpKitHeaders.swift in Sources */,
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
 				8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */,
 				8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */,
+				8ABDB0B427B24FB300D6EDE7 /* HttpClient+Combine.swift in Sources */,
 				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
 				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
-				8AB0D4112755075700493EC3 /* AlamofireExtensions.swift in Sources */,
-				8A74188C245086330019695E /* Downloadable.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
-				8A978D4923F34909007ECB0C /* AuthChallenge.swift in Sources */,
-				8AA4FFF327A006CE003C3BBA /* HttpClient+Alamofire.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3134,7 +3147,7 @@
 				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3163,7 +3176,7 @@
 				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3193,7 +3206,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = BrowserNetworking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3227,7 +3240,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = BrowserNetworking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3311,7 +3324,7 @@
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = "Info-dnsext.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3336,7 +3349,7 @@
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = "Info-dnsext.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3358,7 +3371,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = DNSProxy/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3383,7 +3396,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = DNSProxy/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3460,7 +3473,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SPMCommon/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3495,7 +3508,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SPMCommon/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3577,7 +3590,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = HttpKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3613,7 +3626,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = HttpKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3646,7 +3659,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CssParser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3683,7 +3696,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CssParser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

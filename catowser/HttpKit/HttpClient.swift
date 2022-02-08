@@ -9,6 +9,9 @@
 import Foundation
 import Alamofire
 import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 
 /// Main namespace for Kit
 public enum HttpKit {}
@@ -17,19 +20,98 @@ fileprivate extension String {
     static let threadName = "Client"
 }
 
-/// Interface for some HTTP networking library (e.g. Alamofire) to hide it and
-/// not use it directly and be able to mock it for unit testing
-protocol HTTPNetworkingBackend: AnyObject {
-    associatedtype TYPE: ResponseType
-    func performRequest(_ request: URLRequest,
-                        sucessCodes: [Int])
-    var completionHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) { get }
+/// Combine Future type is only available from ios 13 https://stackoverflow.com/a/68754297
+/// Can't mark specific enum case to be available for certain OS version
+/// Deployment target was set to 13.0 from 12.1 from now
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+public enum ResponseHandlingApi<TYPE: ResponseType> {
+    case closure((Result<TYPE, HttpKit.HttpError>) -> Void)
+    case rxObserver(Signal<TYPE, HttpKit.HttpError>.Observer, Lifetime)
+    case waitsForRxObserver
+    case combine(Future<TYPE, HttpKit.HttpError>.Promise)
+    case asyncAwaitConcurrency
+    
+    public var wrapperHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) {
+        let closure = { (result: Result<TYPE, HttpKit.HttpError>) in
+            switch self {
+            case .closure(let originalClosure):
+                originalClosure(result)
+            case .rxObserver(let observer, _):
+                switch result {
+                case .success(let value):
+                    observer.send(value: value)
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            case .waitsForRxObserver:
+                break
+            case .combine(let promise):
+                promise(result)
+            case .asyncAwaitConcurrency:
+                break
+            }
+        }
+        return closure
+    }
 }
 
-protocol HTTPNetworkingBackendVoid: AnyObject {
+@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+public enum ResponseVoidHandlingApi {
+    case closure((Result<Void, HttpKit.HttpError>) -> Void)
+    case rxObserver(Signal<Void, HttpKit.HttpError>.Observer, Lifetime)
+    case waitsForRxObserver
+    case combine(Future<Void, HttpKit.HttpError>.Promise)
+    case asyncAwaitConcurrency
+    
+    public var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void) {
+        let closure = { (result: Result<Void, HttpKit.HttpError>) in
+            switch self {
+            case .closure(let originalClosure):
+                originalClosure(result)
+            case .rxObserver(let observer, _):
+                switch result {
+                case .success():
+                    let value: Void = ()
+                    observer.send(value: value)
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            case .waitsForRxObserver:
+                break
+            case .combine(let promise):
+                promise(result)
+            case .asyncAwaitConcurrency:
+                break
+            }
+        }
+        return closure
+    }
+}
+
+/// Interface for some HTTP networking library (e.g. Alamofire) to hide it and
+/// not use it directly and be able to mock it for unit testing
+public protocol HTTPNetworkingBackend: AnyObject {
+    associatedtype TYPE: ResponseType
+    init(_ handlerType: ResponseHandlingApi<TYPE>)
+    
+    func performRequest(_ request: URLRequest,
+                        sucessCodes: [Int])
+    /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
+    var wrapperHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) { get }
+    /// Should refer to simple closure api
+    var handlerType: ResponseHandlingApi<TYPE> { get }
+    
+    /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
+}
+
+public protocol HTTPNetworkingBackendVoid: AnyObject {
+    init(_ handlerType: ResponseVoidHandlingApi)
     func performVoidRequest(_ request: URLRequest,
                             sucessCodes: [Int])
-    var completionHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
+    var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
+    var handlerType: ResponseVoidHandlingApi { get }
+    
+    /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
 }
 
 public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
@@ -104,7 +186,7 @@ extension HttpKit {
                                                            networkingBackend: B) where B.TYPE == T {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
-                networkingBackend.completionHandler(result)
+                networkingBackend.wrapperHandler(result)
                 return
             }
             let httpRequest: URLRequest
@@ -115,11 +197,11 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: HttpTypedResult<T> = .failure(error)
-                networkingBackend.completionHandler(result)
+                networkingBackend.wrapperHandler(result)
                 return
             } catch {
                 let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
-                networkingBackend.completionHandler(result)
+                networkingBackend.wrapperHandler(result)
                 return
             }
             
@@ -132,7 +214,7 @@ extension HttpKit {
                                   networkingBackend: HTTPNetworkingBackendVoid) {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                networkingBackend.completionHandler(result)
+                networkingBackend.wrapperHandler(result)
                 return
             }
             
@@ -144,11 +226,11 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
-                networkingBackend.completionHandler(result)
+                networkingBackend.wrapperHandler(result)
                 return
             } catch {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                networkingBackend.completionHandler(result)
+                networkingBackend.wrapperHandler(result)
                 return
             }
             

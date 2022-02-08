@@ -8,21 +8,35 @@
 
 import Foundation
 @testable import HttpKit
+import ReactiveSwift
 
 final class MockedTypedNetworkingBackendWithFail<RType: ResponseType>: HTTPNetworkingBackend {
     typealias TYPE = RType
     
-    let completionHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void)
+    let wrapperHandler: ((Result<RType, HttpKit.HttpError>) -> Void)
     
-    init(_ handler: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void) {
-        completionHandler = handler
+    let handlerType: ResponseHandlingApi<RType>
+    
+    init(_ handler: @escaping (Result<RType, HttpKit.HttpError>) -> Void) {
+        self.handlerType = ResponseHandlingApi<RType>.closure(handler)
+        wrapperHandler = handlerType.wrapperHandler
+        // TODO: reuse init below
+    }
+    
+    init(_ handlerType: ResponseHandlingApi<RType>) {
+        self.handlerType = handlerType
+        wrapperHandler = handlerType.wrapperHandler
     }
     
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
             let result: Result<TYPE, HttpKit.HttpError> = .failure(.httpFailure(error: nsError))
-            self?.completionHandler(result)
+            self?.wrapperHandler(result)
         }
+    }
+    
+    func transferToRxState(_ observer: Signal<RType, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
+        
     }
 }

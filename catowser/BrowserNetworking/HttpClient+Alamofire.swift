@@ -6,7 +6,8 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import HttpKit
+import ReactiveSwift
 
 extension HttpKit.Client {
     public func makePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
@@ -22,5 +23,18 @@ extension HttpKit.Client {
                                                        completionHandler: @escaping TypedResponseClosure<T>) {
         let backend: AFNetworkingBackend = .init(completionHandler)
         makeCleanRequest(for: endpoint, withAccessToken: accessToken, networkingBackend: backend)
+    }
+    
+    public func rxMakePublicRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                 networkingBackend: B) -> SignalProducer<T, HttpKit.HttpError> where B.TYPE == T {
+        let producer = rxMakeRequest(for: endpoint, withAccessToken: nil, networkingBackend: networkingBackend)
+        return producer
+    }
+    
+    public func rxMakeAuthorizedRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                     withAccessToken accessToken: String,
+                                                                     networkingBackend: B) -> SignalProducer<T, HttpKit.HttpError> where B.TYPE == T {
+        let producer = rxMakeRequest(for: endpoint, withAccessToken: accessToken, networkingBackend: networkingBackend)
+        return producer
     }
 }

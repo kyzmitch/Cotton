@@ -8,6 +8,7 @@
 
 import Foundation
 import Security
+import HttpKit
 import Alamofire
 
 /**

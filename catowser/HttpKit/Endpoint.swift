@@ -7,12 +7,20 @@
 //
 
 import Foundation
-// Alamofire only needed for `HTTPMethod` type
-import Alamofire
 
+public enum HTTPMethod: String {
+    case get
+    case post
+}
 
 public protocol URLRequestCreatable {
     func convertToURLRequest() throws -> URLRequest
+}
+
+extension URLRequest: URLRequestCreatable {
+    public func convertToURLRequest() throws -> URLRequest {
+        return self
+    }
 }
 
 /// Interface for some JSON encoder (e.g. Alamofire implementation) to hide it and
