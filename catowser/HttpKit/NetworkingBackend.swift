@@ -22,29 +22,6 @@ public enum ResponseHandlingApi<TYPE: ResponseType> {
     case combine(Future<TYPE, HttpKit.HttpError>.Promise)
     case waitsForCombinePromise
     case asyncAwaitConcurrency
-    
-    public var wrapperHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) {
-        let closure = { (result: Result<TYPE, HttpKit.HttpError>) in
-            switch self {
-            case .closure(let originalClosure):
-                originalClosure(result)
-            case .rxObserver(let observer, _):
-                switch result {
-                case .success(let value):
-                    observer.send(value: value)
-                case .failure(let error):
-                    observer.send(error: error)
-                }
-            case .waitsForRxObserver, .waitsForCombinePromise:
-                break
-            case .combine(let promise):
-                promise(result)
-            case .asyncAwaitConcurrency:
-                break
-            }
-        }
-        return closure
-    }
 }
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -94,7 +71,7 @@ public protocol HTTPNetworkingBackend: AnyObject {
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
     /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
-    var wrapperHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) { get }
+    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
     var handlerType: ResponseHandlingApi<TYPE> { get }
     

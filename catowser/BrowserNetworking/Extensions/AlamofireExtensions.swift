@@ -14,21 +14,43 @@ import Combine
 #endif
 
 final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
-    let wrapperHandler: ((Result<RType, HttpKit.HttpError>) -> Void)
-    
     var handlerType: ResponseHandlingApi<RType>
     
     typealias TYPE = RType
     
     init(_ handler: @escaping (Result<RType, HttpKit.HttpError>) -> Void) {
         self.handlerType = ResponseHandlingApi<RType>.closure(handler)
-        wrapperHandler = handlerType.wrapperHandler
         // TODO: reuse init below
     }
     
     init(_ handlerType: ResponseHandlingApi<RType>) {
         self.handlerType = handlerType
-        wrapperHandler = handlerType.wrapperHandler
+    }
+    
+    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void {
+        let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
+            guard let self = self else {
+                return
+            }
+            switch self.handlerType {
+            case .closure(let originalClosure):
+                originalClosure(result)
+            case .rxObserver(let observer, _):
+                switch result {
+                case .success(let value):
+                    observer.send(value: value)
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            case .waitsForRxObserver, .waitsForCombinePromise:
+                break
+            case .combine(let promise):
+                promise(result)
+            case .asyncAwaitConcurrency:
+                break
+            }
+        }
+        return closure
     }
     
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
@@ -46,7 +68,11 @@ final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
                 case .failure(let error):
                     result = .failure(.httpFailure(error: error))
                 }
-                self?.wrapperHandler(result)
+                guard let self = self else {
+                    print("Networking backend was deallocated")
+                    return
+                }
+                self.wrapperHandler()(result)
             })
         if case let .rxObserver(_, lifetime) = handlerType {
             lifetime.observeEnded({
@@ -71,7 +97,7 @@ final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
 }
 
 final class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
-    let wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void)
+    var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void)
     
     var handlerType: ResponseVoidHandlingApi
     

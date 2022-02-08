@@ -92,7 +92,7 @@ extension HttpKit {
                                                                   networkingBackend: B) where B.TYPE == T {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
-                networkingBackend.wrapperHandler(result)
+                networkingBackend.wrapperHandler()(result)
                 return
             }
             let httpRequest: URLRequest
@@ -103,11 +103,11 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: HttpTypedResult<T> = .failure(error)
-                networkingBackend.wrapperHandler(result)
+                networkingBackend.wrapperHandler()(result)
                 return
             } catch {
                 let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
-                networkingBackend.wrapperHandler(result)
+                networkingBackend.wrapperHandler()(result)
                 return
             }
             
