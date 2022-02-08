@@ -15,7 +15,7 @@ extension HttpKit {
         case accept(ContentType)
         case authorization(token: String)
         
-        var key: String {
+        public var key: String {
             switch self {
             case .contentType:
                 return "Content-Type"
@@ -28,7 +28,7 @@ extension HttpKit {
             }
         }
         
-        var value: String {
+        public var value: String {
             switch self {
             case .contentType(let type):
                 return type.rawValue

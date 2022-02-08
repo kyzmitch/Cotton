@@ -9,7 +9,7 @@
 import Foundation
 import ReactiveSwift
 // needed for `Downloadable`
-import HttpKit
+import BrowserNetworking
 
 protocol FileDownloadDelegate: AnyObject {
     func didPressOpenFile(withLocal url: URL)
@@ -52,7 +52,7 @@ final class FileDownloadViewModel {
         resourceSizeOutput = .init(0)
         labelText = name
         
-        HttpKit.fetchRemoteResourceInfo(url: batch.url)
+        BrowserNetworking.fetchRemoteResourceInfo(url: batch.url)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 guard let self = self else {
@@ -71,7 +71,7 @@ final class FileDownloadViewModel {
     func download() {
         downloadOutput.value = .started
         
-        HttpKit.download(file: batch)
+        BrowserNetworking.download(file: batch)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
                 guard let self = self else {

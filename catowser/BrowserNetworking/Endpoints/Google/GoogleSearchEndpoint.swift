@@ -75,7 +75,7 @@ extension HttpKit.Client where Server == GoogleServer {
             return GSearchProducer.init(error: .failedConstructRequestParameters)
         }
         
-        let backend: AFNetworkingBackend = .init(.waitsForRxObserver)
+        let backend: AFNetworkingBackend<GoogleSearchSuggestionsResponse> = .init(.waitsForRxObserver)
         let producer = self.rxMakePublicRequest(for: endpoint, networkingBackend: backend)
         return producer
     }
@@ -91,7 +91,8 @@ extension HttpKit.Client where Server == GoogleServer {
             return CGSearchPublisher(Future.failure(.failedConstructRequestParameters))
         }
         
-        let future = self.cMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        let backend: AFNetworkingBackend<GoogleSearchSuggestionsResponse> = .init(.waitsForCombinePromise)
+        let future = self.cMakePublicRequest(for: endpoint, networkingBackend: backend)
         return future.eraseToAnyPublisher()
     }
 }

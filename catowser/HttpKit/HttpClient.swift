@@ -29,6 +29,7 @@ public enum ResponseHandlingApi<TYPE: ResponseType> {
     case rxObserver(Signal<TYPE, HttpKit.HttpError>.Observer, Lifetime)
     case waitsForRxObserver
     case combine(Future<TYPE, HttpKit.HttpError>.Promise)
+    case waitsForCombinePromise
     case asyncAwaitConcurrency
     
     public var wrapperHandler: ((Result<TYPE, HttpKit.HttpError>) -> Void) {
@@ -43,7 +44,7 @@ public enum ResponseHandlingApi<TYPE: ResponseType> {
                 case .failure(let error):
                     observer.send(error: error)
                 }
-            case .waitsForRxObserver:
+            case .waitsForRxObserver, .waitsForCombinePromise:
                 break
             case .combine(let promise):
                 promise(result)
@@ -61,6 +62,7 @@ public enum ResponseVoidHandlingApi {
     case rxObserver(Signal<Void, HttpKit.HttpError>.Observer, Lifetime)
     case waitsForRxObserver
     case combine(Future<Void, HttpKit.HttpError>.Promise)
+    case waitsForCombinePromise
     case asyncAwaitConcurrency
     
     public var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void) {
@@ -76,7 +78,7 @@ public enum ResponseVoidHandlingApi {
                 case .failure(let error):
                     observer.send(error: error)
                 }
-            case .waitsForRxObserver:
+            case .waitsForRxObserver, .waitsForCombinePromise:
                 break
             case .combine(let promise):
                 promise(result)
@@ -102,6 +104,7 @@ public protocol HTTPNetworkingBackend: AnyObject {
     var handlerType: ResponseHandlingApi<TYPE> { get }
     
     /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise)
 }
 
 public protocol HTTPNetworkingBackendVoid: AnyObject {
@@ -112,6 +115,7 @@ public protocol HTTPNetworkingBackendVoid: AnyObject {
     var handlerType: ResponseVoidHandlingApi { get }
     
     /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise)
 }
 
 public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
@@ -181,9 +185,9 @@ extension HttpKit {
         // MARK: - Clear functions without dependencies
         
         /// T: ResponseType
-        func makeCleanRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                           withAccessToken accessToken: String?,
-                                                           networkingBackend: B) where B.TYPE == T {
+        public func makeCleanRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                  withAccessToken accessToken: String?,
+                                                                  networkingBackend: B) where B.TYPE == T {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 networkingBackend.wrapperHandler(result)
@@ -209,9 +213,9 @@ extension HttpKit {
             networkingBackend.performRequest(httpRequest, sucessCodes: codes)
         }
         
-        func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                  withAccessToken accessToken: String?,
-                                  networkingBackend: HTTPNetworkingBackendVoid) {
+        public func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                         withAccessToken accessToken: String?,
+                                         networkingBackend: HTTPNetworkingBackendVoid) {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
                 networkingBackend.wrapperHandler(result)

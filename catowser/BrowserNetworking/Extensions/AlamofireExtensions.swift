@@ -8,6 +8,10 @@
 
 import HttpKit
 import Alamofire
+import ReactiveSwift
+#if canImport(Combine)
+import Combine
+#endif
 
 final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
     let wrapperHandler: ((Result<RType, HttpKit.HttpError>) -> Void)
@@ -48,12 +52,20 @@ final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
             lifetime.observeEnded({
                 dataRequest.cancel()
             })
+        } else if case let .combine(_) = handlerType {
+            // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
     
     func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
         if case .waitsForRxObserver = handlerType {
             handlerType = .rxObserver(observer, lifetime)
+        }
+    }
+    
+    func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise) {
+        if case .waitsForCombinePromise = handlerType {
+            handlerType = .combine(promise)
         }
     }
 }
@@ -87,12 +99,20 @@ final class AFNetworkingVoidBackend: HTTPNetworkingBackendVoid {
             lifetime.observeEnded({
                 dataRequest.cancel()
             })
+        } else if case let .combine(_) = handlerType {
+            // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
     
     func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
         if case .waitsForRxObserver = handlerType {
             handlerType = .rxObserver(observer, lifetime)
+        }
+    }
+    
+    func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise) {
+        if case .waitsForCombinePromise = handlerType {
+            handlerType = .combine(promise)
         }
     }
 }

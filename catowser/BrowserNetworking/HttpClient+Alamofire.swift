@@ -37,4 +37,23 @@ extension HttpKit.Client {
         let producer = rxMakeRequest(for: endpoint, withAccessToken: accessToken, networkingBackend: networkingBackend)
         return producer
     }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public func cMakePublicRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                networkingBackend: B) -> ResponseFuture<T> where B.TYPE == T {
+        let future = cMakeRequest(for: endpoint,
+                                     withAccessToken: nil,
+                                     networkingBackend: networkingBackend)
+        return future
+    }
+    
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public func cMakeAuthorizedRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                    withAccessToken accessToken: String,
+                                                                    networkingBackend: B) -> ResponseFuture<T> where B.TYPE == T {
+        let future = cMakeRequest(for: endpoint,
+                                     withAccessToken: accessToken,
+                                     networkingBackend: networkingBackend)
+        return future
+    }
 }
