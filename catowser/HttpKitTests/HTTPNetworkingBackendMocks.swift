@@ -9,6 +9,7 @@
 import Foundation
 @testable import HttpKit
 import ReactiveSwift
+import Combine
 
 final class MockedTypedNetworkingBackendWithFail<RType: ResponseType>: HTTPNetworkingBackend {
     typealias TYPE = RType
@@ -37,6 +38,10 @@ final class MockedTypedNetworkingBackendWithFail<RType: ResponseType>: HTTPNetwo
     }
     
     func transferToRxState(_ observer: Signal<RType, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
+        
+    }
+    
+    func transferToCombineState(_ promise: @escaping Future<RType, HttpKit.HttpError>.Promise) {
         
     }
 }

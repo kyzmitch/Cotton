@@ -269,6 +269,7 @@
 		8ABDB0B527B24FB600D6EDE7 /* HttpClient+RxSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */; };
 		8ABDB0B627B269D500D6EDE7 /* HttpClient+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */; };
 		8ABDB0B827B26A5C00D6EDE7 /* JSONEncodableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABDB0B727B26A5C00D6EDE7 /* JSONEncodableMocks.swift */; };
+		8ABDB0BA27B2B6F200D6EDE7 /* NetworkingBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABDB0B927B2B6F200D6EDE7 /* NetworkingBackend.swift */; };
 		8AC4367824798BDB008DD663 /* SPMCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AC4367624798BDB008DD663 /* SPMCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -710,6 +711,7 @@
 		8ABA3CD72522623200E304E2 /* TabsResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsResource.swift; sourceTree = "<group>"; };
 		8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8ABDB0B727B26A5C00D6EDE7 /* JSONEncodableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncodableMocks.swift; sourceTree = "<group>"; };
+		8ABDB0B927B2B6F200D6EDE7 /* NetworkingBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingBackend.swift; sourceTree = "<group>"; };
 		8AC4366A24798BC8008DD663 /* SPMCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMCommon.swift; sourceTree = "<group>"; };
 		8AC4367424798BDB008DD663 /* SPMCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC4367624798BDB008DD663 /* SPMCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPMCommon.h; sourceTree = "<group>"; };
@@ -1487,6 +1489,7 @@
 				8A510F642424AE000070503C /* URLInfo.swift */,
 				8AE6D1762350FF65006316AD /* Endpoint.swift */,
 				8A62AED82351CD2D001A9C83 /* ServerDescription.swift */,
+				8ABDB0B927B2B6F200D6EDE7 /* NetworkingBackend.swift */,
 				8A82CDEF2351095700607162 /* HttpClient.swift */,
 				8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */,
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
@@ -2715,6 +2718,7 @@
 			files = (
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
+				8ABDB0BA27B2B6F200D6EDE7 /* NetworkingBackend.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
 				8A7EF3DB27392BE00071BB89 /* DomainName.swift in Sources */,
 				8ABDB0B527B24FB600D6EDE7 /* HttpClient+RxSwift.swift in Sources */,
