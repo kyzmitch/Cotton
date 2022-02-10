@@ -11,7 +11,7 @@ import Foundation
 import ReactiveSwift
 import Combine
 
-final class MockedTypedNetworkingBackendWithFail<RType: ResponseType, SType: ServerDescription>: HTTPNetworkingBackend {
+final class MockedTypedNetworkingBackendWithFail<RType: ResponseType, SType: ServerDescription>: HTTPAdapter {
     typealias TYPE = RType
     typealias SRV = SType
     

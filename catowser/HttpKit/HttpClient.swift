@@ -87,9 +87,9 @@ extension HttpKit {
         // MARK: - Clear functions without dependencies
         
         /// T: ResponseType
-        public func makeCleanRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                                  withAccessToken accessToken: String?,
-                                                                  networkingBackend: B) where B.TYPE == T, B.SRV == Server {
+        public func makeCleanRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                        withAccessToken accessToken: String?,
+                                                        networkingBackend: B) where B.TYPE == T, B.SRV == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 networkingBackend.wrapperHandler()(result)
