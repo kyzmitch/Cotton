@@ -260,6 +260,8 @@
 		8AB4A1B127B55268008030FB /* ResponseHandlingApiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B027B55268008030FB /* ResponseHandlingApiType.swift */; };
 		8AB4A1B327B55484008030FB /* AlamofireHTTPVoidAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B227B55484008030FB /* AlamofireHTTPVoidAdaptee.swift */; };
 		8AB4A1B527B55684008030FB /* HTTPVoidAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B427B55684008030FB /* HTTPVoidAdapter.swift */; };
+		8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B627B56CC3008030FB /* ResponseVoidHandlingApiType.swift */; };
+		8AB4A1B927B583AB008030FB /* ClosureVoidWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */; };
 		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
@@ -715,6 +717,8 @@
 		8AB4A1B027B55268008030FB /* ResponseHandlingApiType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandlingApiType.swift; sourceTree = "<group>"; };
 		8AB4A1B227B55484008030FB /* AlamofireHTTPVoidAdaptee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireHTTPVoidAdaptee.swift; sourceTree = "<group>"; };
 		8AB4A1B427B55684008030FB /* HTTPVoidAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPVoidAdapter.swift; sourceTree = "<group>"; };
+		8AB4A1B627B56CC3008030FB /* ResponseVoidHandlingApiType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseVoidHandlingApiType.swift; sourceTree = "<group>"; };
+		8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureVoidWrappers.swift; sourceTree = "<group>"; };
 		8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsDBClient.swift; sourceTree = "<group>"; };
 		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -1501,7 +1505,9 @@
 				8AE6D1762350FF65006316AD /* Endpoint.swift */,
 				8A62AED82351CD2D001A9C83 /* ServerDescription.swift */,
 				8AB4A1AE27B5522B008030FB /* ClosureWrappers.swift */,
+				8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */,
 				8AB4A1B027B55268008030FB /* ResponseHandlingApiType.swift */,
+				8AB4A1B627B56CC3008030FB /* ResponseVoidHandlingApiType.swift */,
 				8ABDB0B927B2B6F200D6EDE7 /* HTTPAdapter.swift */,
 				8AB4A1B427B55684008030FB /* HTTPVoidAdapter.swift */,
 				8A82CDEF2351095700607162 /* HttpClient.swift */,
@@ -2747,9 +2753,11 @@
 				8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */,
 				8ABDB0B427B24FB300D6EDE7 /* HttpClient+Combine.swift in Sources */,
 				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
+				8AB4A1B927B583AB008030FB /* ClosureVoidWrappers.swift in Sources */,
 				8AB4A1B527B55684008030FB /* HTTPVoidAdapter.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,
 				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
+				8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 			);

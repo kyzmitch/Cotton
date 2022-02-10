@@ -13,12 +13,21 @@ import Combine
 
 
 public protocol HTTPVoidAdapter: AnyObject {
-    init(_ handlerType: ResponseVoidHandlingApi)
+    associatedtype SRV: ServerDescription
+    
+    var handlerType: HttpKit.ResponseVoidHandlingApi<SRV> { get }
+    
+    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<SRV>)
     func performVoidRequest(_ request: URLRequest,
                             sucessCodes: [Int])
-    var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
-    var handlerType: ResponseVoidHandlingApi { get }
     
-    /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
-    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise)
+    /// This is not defined in ResponseHandlingApi because it is a value type and this function should capture self
+    /// So, better to store it here in reference type
+    func wrapperHandler() -> (Result<Void, HttpKit.HttpError>) -> Void
+    
+    /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
+                                          _ lifetime: Lifetime,
+                                          _ endpoint: HttpKit.VoidEndpoint<SRV>)
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
+                                               _ endpoint: HttpKit.VoidEndpoint<SRV>)
 }

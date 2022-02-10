@@ -115,14 +115,15 @@ extension HttpKit {
         /// Http body data enoded from `Encodable`
         case httpBody(encodedData: Data)
         
-        public static func == (lhs: HttpKit.ParametersEncodingDestination, rhs: HttpKit.ParametersEncodingDestination) -> Bool {
+        public static func == (lhs: HttpKit.ParametersEncodingDestination,
+                               rhs: HttpKit.ParametersEncodingDestination) -> Bool {
             switch (lhs, rhs) {
-            case (.queryString(queryItems:let lItems), queryString(queryItems:let rItems)):
+            case (.queryString(queryItems: let lItems), queryString(queryItems: let rItems)):
                 return lItems == rItems
-            case (.httpBodyJSON(parameters:let lItems), httpBodyJSON(parameters:let rItems)):
+            case (.httpBodyJSON(parameters: let lItems), httpBodyJSON(parameters: let rItems)):
                 // Not full comparison because values of type `Any` don't confirm to Equatable
                 return lItems.keys == rItems.keys
-            case (.httpBody(encodedData:let lData), httpBody(encodedData:let rData)):
+            case (.httpBody(encodedData: let lData), httpBody(encodedData: let rData)):
                 return lData == rData
             default:
                 return false
@@ -130,6 +131,10 @@ extension HttpKit {
         }
     }
     
+    /// Non-nominal types cannot be extended.
+    /// Void is an empty tuple, and because tuples are non-nominal types,
+    /// you can’t add methods or properties or conformance to protocols.
+    /// https://nshipster.com/void/
     public struct VoidResponse: ResponseType {
         public static var successCodes: [Int] {
             return [200, 201]

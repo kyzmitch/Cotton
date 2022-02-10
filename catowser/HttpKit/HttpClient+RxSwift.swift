@@ -31,16 +31,16 @@ extension HttpKit.Client {
         })
     }
     
-    public func rxMakeVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                  withAccessToken accessToken: String?,
-                                  transportAdapter: HTTPVoidAdapter) -> SignalProducer<Void, HttpKit.HttpError> {
+    public func rxMakeVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                      withAccessToken accessToken: String?,
+                                                      transportAdapter: B) -> SignalProducer<Void, HttpKit.HttpError> where B.SRV == Server {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
             }
             
-            transportAdapter.transferToRxState(observer, lifetime)
+            transportAdapter.transferToRxState(observer, lifetime, endpoint)
             self.makeCleanVoidRequest(for: endpoint, withAccessToken: accessToken, transportAdapter: transportAdapter)
         }
         return producer

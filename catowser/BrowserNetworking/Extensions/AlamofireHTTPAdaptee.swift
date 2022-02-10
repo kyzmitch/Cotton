@@ -24,7 +24,7 @@ final class AlamofireHTTPAdaptee<RType: ResponseType, SType: ServerDescription>:
     }
     
     func wrapperHandler() -> (Result<RType, HttpKit.HttpError>) -> Void {
-        let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
+        let closure = { [weak self] (result: Result<RType, HttpKit.HttpError>) in
             guard let self = self else {
                 return
             }

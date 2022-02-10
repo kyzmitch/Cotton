@@ -82,37 +82,3 @@ extension HttpKit {
         }
     }
 }
-
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public enum ResponseVoidHandlingApi {
-    case closure((Result<Void, HttpKit.HttpError>) -> Void)
-    case rxObserver(Signal<Void, HttpKit.HttpError>.Observer, Lifetime)
-    case waitsForRxObserver
-    case combine(Future<Void, HttpKit.HttpError>.Promise)
-    case waitsForCombinePromise
-    case asyncAwaitConcurrency
-    
-    public var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void) {
-        let closure = { (result: Result<Void, HttpKit.HttpError>) in
-            switch self {
-            case .closure(let originalClosure):
-                originalClosure(result)
-            case .rxObserver(let observer, _):
-                switch result {
-                case .success():
-                    let value: Void = ()
-                    observer.send(value: value)
-                case .failure(let error):
-                    observer.send(error: error)
-                }
-            case .waitsForRxObserver, .waitsForCombinePromise:
-                break
-            case .combine(let promise):
-                promise(result)
-            case .asyncAwaitConcurrency:
-                break
-            }
-        }
-        return closure
-    }
-}

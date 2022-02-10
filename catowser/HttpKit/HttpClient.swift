@@ -116,12 +116,12 @@ extension HttpKit {
             transportAdapter.performRequest(httpRequest, sucessCodes: codes)
         }
         
-        public func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                         withAccessToken accessToken: String?,
-                                         transportAdapter: HTTPVoidAdapter) {
+        public func makeCleanVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                             withAccessToken accessToken: String?,
+                                                             transportAdapter: B) where B.SRV == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                transportAdapter.wrapperHandler(result)
+                transportAdapter.wrapperHandler()(result)
                 return
             }
             
@@ -133,15 +133,16 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
-                transportAdapter.wrapperHandler(result)
+                transportAdapter.wrapperHandler()(result)
                 return
             } catch {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                transportAdapter.wrapperHandler(result)
+                transportAdapter.wrapperHandler()(result)
                 return
             }
             
             let codes = HttpKit.VoidResponse.successCodes
+            // backendHandlersPool.append(transportAdapter)
             transportAdapter.performVoidRequest(httpRequest, sucessCodes: codes)
         }
     }
