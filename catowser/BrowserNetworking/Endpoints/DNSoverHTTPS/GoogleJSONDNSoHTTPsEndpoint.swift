@@ -155,7 +155,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
         }
         
         let backend: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForRxObserver)
-        let producer = self.rxMakePublicRequest(for: endpoint, networkingBackend: backend)
+        let producer = self.rxMakePublicRequest(for: endpoint, transportAdapter: backend)
         return producer
     }
     
@@ -187,7 +187,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
         }
         
         let backend: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForCombinePromise)
-        let future = self.cMakePublicRequest(for: endpoint, networkingBackend: backend)
+        let future = self.cMakePublicRequest(for: endpoint, transportAdapter: backend)
         return future.eraseToAnyPublisher()
     }
     

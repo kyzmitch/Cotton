@@ -77,7 +77,7 @@ extension HttpKit.Client where Server == GoogleServer {
         }
         
         let backend: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForRxObserver)
-        let producer = self.rxMakePublicRequest(for: endpoint, networkingBackend: backend)
+        let producer = self.rxMakePublicRequest(for: endpoint, transportAdapter: backend)
         return producer
     }
     
@@ -93,7 +93,7 @@ extension HttpKit.Client where Server == GoogleServer {
         }
         
         let backend: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForCombinePromise)
-        let future = self.cMakePublicRequest(for: endpoint, networkingBackend: backend)
+        let future = self.cMakePublicRequest(for: endpoint, transportAdapter: backend)
         return future.eraseToAnyPublisher()
     }
 }

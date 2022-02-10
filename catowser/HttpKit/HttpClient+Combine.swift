@@ -18,7 +18,7 @@ extension HttpKit.Client {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                 withAccessToken accessToken: String?,
-                                                networkingBackend: B) -> ResponseFuture<T> where B.TYPE == T, B.SRV == Server {
+                                                transportAdapter: B) -> ResponseFuture<T> where B.TYPE == T, B.SRV == Server {
         return Combine.Deferred {
             let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
                 guard let self = self else {
@@ -26,13 +26,13 @@ extension HttpKit.Client {
                     return
                 }
                 
-                networkingBackend.transferToCombineState(promise, endpoint)
-                // backendHandlersPool.insert(networkingBackend)
-                self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, networkingBackend: networkingBackend)
+                transportAdapter.transferToCombineState(promise, endpoint)
+                // backendHandlersPool.insert(transportAdapter)
+                self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transportAdapter: transportAdapter)
             }
             return subject
         }.handleEvents { [weak self] completion in
-            // self?.backendHandlersPool.remove(networkingBackend)
+            // self?.backendHandlersPool.remove(transportAdapter)
         }
     }
 }

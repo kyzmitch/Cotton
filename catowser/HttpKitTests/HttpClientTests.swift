@@ -37,7 +37,7 @@ class HttpClientTests: XCTestCase {
         let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse, MockedGoodServer> = .init(.closure(closureWrapper))
         goodHttpClient.makeCleanRequest(for: goodEndpointMock,
                                            withAccessToken: nil,
-                                           networkingBackend: badNetBackendMock)
+                                           transportAdapter: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 1.0)
     }
     
@@ -51,7 +51,7 @@ class HttpClientTests: XCTestCase {
         let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init(.closure(closureWrapper))
         badNoHostHttpClient.makeCleanRequest(for: badPathEndpointMock,
                                                 withAccessToken: nil,
-                                                networkingBackend: badNetBackendMock)
+                                                transportAdapter: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 0.5)
     }
 }

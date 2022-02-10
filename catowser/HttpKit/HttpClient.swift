@@ -89,10 +89,10 @@ extension HttpKit {
         /// T: ResponseType
         public func makeCleanRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                         withAccessToken accessToken: String?,
-                                                        networkingBackend: B) where B.TYPE == T, B.SRV == Server {
+                                                        transportAdapter: B) where B.TYPE == T, B.SRV == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
-                networkingBackend.wrapperHandler()(result)
+                transportAdapter.wrapperHandler()(result)
                 return
             }
             let httpRequest: URLRequest
@@ -103,25 +103,25 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: HttpTypedResult<T> = .failure(error)
-                networkingBackend.wrapperHandler()(result)
+                transportAdapter.wrapperHandler()(result)
                 return
             } catch {
                 let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
-                networkingBackend.wrapperHandler()(result)
+                transportAdapter.wrapperHandler()(result)
                 return
             }
             
             let codes = T.successCodes
-            // backendHandlersPool.append(networkingBackend)
-            networkingBackend.performRequest(httpRequest, sucessCodes: codes)
+            // backendHandlersPool.append(transportAdapter)
+            transportAdapter.performRequest(httpRequest, sucessCodes: codes)
         }
         
         public func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
                                          withAccessToken accessToken: String?,
-                                         networkingBackend: HTTPNetworkingBackendVoid) {
+                                         transportAdapter: HTTPNetworkingBackendVoid) {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                networkingBackend.wrapperHandler(result)
+                transportAdapter.wrapperHandler(result)
                 return
             }
             
@@ -133,16 +133,16 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
-                networkingBackend.wrapperHandler(result)
+                transportAdapter.wrapperHandler(result)
                 return
             } catch {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                networkingBackend.wrapperHandler(result)
+                transportAdapter.wrapperHandler(result)
                 return
             }
             
             let codes = HttpKit.VoidResponse.successCodes
-            networkingBackend.performVoidRequest(httpRequest, sucessCodes: codes)
+            transportAdapter.performVoidRequest(httpRequest, sucessCodes: codes)
         }
     }
 }
