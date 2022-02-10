@@ -9,7 +9,7 @@
 import Foundation
 
 extension HttpKit {
-    public enum HttpHeader: Equatable {
+    public enum HttpHeader: Equatable, Hashable {
         case contentType(ContentType)
         case contentLength(Int)
         case accept(ContentType)
@@ -55,6 +55,11 @@ extension HttpKit {
             default:
                 return false
             }
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(key)
+            hasher.combine(value)
         }
     }
     

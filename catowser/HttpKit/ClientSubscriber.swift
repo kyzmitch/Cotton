@@ -23,7 +23,7 @@ extension HttpKit {
         
         public init() {}
         
-        public func add(_ handler: ResponseHandlingApi<T, S>) {
+        public func insert(_ handler: ResponseHandlingApi<T, S>) {
             handlers.insert(handler)
         }
         

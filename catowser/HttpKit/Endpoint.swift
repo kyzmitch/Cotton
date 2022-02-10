@@ -30,7 +30,7 @@ public protocol JSONRequestEncodable {
 }
 
 extension HttpKit {
-    public struct Endpoint<T: ResponseType, Server: ServerDescription>: Equatable {
+    public struct Endpoint<T: ResponseType, Server: ServerDescription>: Equatable, Hashable {
         public let method: HTTPMethod
         public let path: String
         public let headers: [HttpHeader]?
@@ -59,6 +59,13 @@ extension HttpKit {
             lhs.responseType == rhs.responseType &&
             lhs.serverType == rhs.serverType &&
             lhs.encodingMethod == rhs.encodingMethod
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(method)
+            hasher.combine(path)
+            hasher.combine(headers)
+            hasher.combine(encodingMethod)
         }
         
         /// Constructs a URL based on endpoint info and host name from provided server.
@@ -107,7 +114,7 @@ extension HttpKit {
         }
     }
     
-    public enum ParametersEncodingDestination: Equatable {
+    public enum ParametersEncodingDestination: Equatable, Hashable {
         /// Stores URL query items to include them in URL
         case queryString(queryItems: [URLQueryItem])
         /// Http body Dictionary to generate JSON
@@ -127,6 +134,17 @@ extension HttpKit {
                 return lData == rData
             default:
                 return false
+            }
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            switch self {
+            case .queryString(queryItems: let items):
+                hasher.combine(items)
+            case .httpBodyJSON(parameters: let items):
+                hasher.combine(items.description)
+            case .httpBody(encodedData: let data):
+                hasher.combine(data)
             }
         }
     }

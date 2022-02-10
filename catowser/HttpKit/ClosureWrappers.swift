@@ -28,7 +28,9 @@ extension HttpKit {
         public func hash(into hasher: inout Hasher) {
             let typeString = String(describing: responseType)
             hasher.combine(typeString)
+            hasher.combine("closure")
             hasher.combine(responseType.successCodes)
+            hasher.combine(endpoint)
         }
         
         public static func == (lhs: ClosureWrapper<TYPE, S>, rhs: ClosureWrapper<TYPE, S>) -> Bool {
@@ -57,7 +59,9 @@ extension HttpKit {
         public func hash(into hasher: inout Hasher) {
             let typeString = String(describing: responseType)
             hasher.combine(typeString)
+            hasher.combine("rx.observer")
             hasher.combine(responseType.successCodes)
+            hasher.combine(endpoint)
         }
         
         public static func == (lhs: RxObserverWrapper<R, S>, rhs: RxObserverWrapper<R, S>) -> Bool {
@@ -83,7 +87,9 @@ extension HttpKit {
         public func hash(into hasher: inout Hasher) {
             let typeString = String(describing: responseType)
             hasher.combine(typeString)
+            hasher.combine("combine.promise")
             hasher.combine(responseType.successCodes)
+            hasher.combine(endpoint)
         }
         
         public static func == (lhs: CombinePromiseWrapper<R, S>, rhs: CombinePromiseWrapper<R, S>) -> Bool {

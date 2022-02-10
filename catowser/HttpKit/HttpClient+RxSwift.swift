@@ -22,14 +22,14 @@ extension HttpKit.Client {
             }
             
             adapter.transferToRxState(observer, lifetime, endpoint)
-            // backendHandlersPool.insert(transportAdapter)
+            subscriber.insert(adapter.handlerType)
             self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transportAdapter: adapter)
         }
         
-        return producer.on(failed: { error in
-            
-        }, completed: { [weak self] in
-            // self?.backendHandlersPool.remove(transportAdapter)
+        return producer.on(failed: { [weak subscriber] _ in
+            subscriber?.remove(adapter.handlerType)
+        }, completed: { [weak subscriber] in
+            subscriber?.remove(adapter.handlerType)
         })
     }
     

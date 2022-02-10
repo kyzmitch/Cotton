@@ -24,8 +24,8 @@ extension HttpKit {
         }
         
         public func hash(into hasher: inout Hasher) {
-            // TODO: improve hash value
-            hasher.combine(VoidResponse.successCodes)
+            hasher.combine("closure")
+            hasher.combine(endpoint)
         }
         
         public static func == (lhs: ClosureVoidWrapper<S>, rhs: ClosureVoidWrapper<S>) -> Bool {
@@ -50,7 +50,8 @@ extension HttpKit {
         }
         
         public func hash(into hasher: inout Hasher) {
-            hasher.combine(VoidResponse.successCodes)
+            hasher.combine("rx.observer")
+            hasher.combine(endpoint)
         }
         
         public static func == (lhs: RxObserverVoidWrapper<S>, rhs: RxObserverVoidWrapper<S>) -> Bool {
@@ -72,7 +73,8 @@ extension HttpKit {
         }
         
         public func hash(into hasher: inout Hasher) {
-            hasher.combine(VoidResponse.successCodes)
+            hasher.combine("combine.promise")
+            hasher.combine(endpoint)
         }
         
         public static func == (lhs: CombinePromiseVoidWrapper<S>, rhs: CombinePromiseVoidWrapper<S>) -> Bool {
