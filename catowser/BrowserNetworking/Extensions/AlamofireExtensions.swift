@@ -13,39 +13,35 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
-    var handlerType: ResponseHandlingApi<RType>
-    
+final class AFNetworkingBackend<RType: ResponseType, SType: ServerDescription>: HTTPNetworkingBackend {
     typealias TYPE = RType
+    typealias SRV = SType
     
-    init(_ handler: @escaping (Result<RType, HttpKit.HttpError>) -> Void) {
-        self.handlerType = ResponseHandlingApi<RType>.closure(handler)
-        // TODO: reuse init below
-    }
+    var handlerType: HttpKit.ResponseHandlingApi<RType, SType>
     
-    init(_ handlerType: ResponseHandlingApi<RType>) {
+    init(_ handlerType: HttpKit.ResponseHandlingApi<RType, SType>) {
         self.handlerType = handlerType
     }
     
-    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void {
+    func wrapperHandler() -> (Result<RType, HttpKit.HttpError>) -> Void {
         let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
             guard let self = self else {
                 return
             }
             switch self.handlerType {
             case .closure(let originalClosure):
-                originalClosure(result)
-            case .rxObserver(let observer, _):
+                originalClosure.closure(result)
+            case .rxObserver(let observerWrapper):
                 switch result {
                 case .success(let value):
-                    observer.send(value: value)
+                    observerWrapper.observer.send(value: value)
                 case .failure(let error):
-                    observer.send(error: error)
+                    observerWrapper.observer.send(error: error)
                 }
             case .waitsForRxObserver, .waitsForCombinePromise:
                 break
-            case .combine(let promise):
-                promise(result)
+            case .combine(let promiseWrapper):
+                promiseWrapper.promise(result)
             case .asyncAwaitConcurrency:
                 break
             }
@@ -74,8 +70,8 @@ final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
                 }
                 self.wrapperHandler()(result)
             })
-        if case let .rxObserver(_, lifetime) = handlerType {
-            lifetime.observeEnded({
+        if case let .rxObserver(observerWrapper) = handlerType {
+            observerWrapper.lifetime.observeEnded({
                 dataRequest.cancel()
             })
         } else if case let .combine(_) = handlerType {
@@ -83,15 +79,20 @@ final class AFNetworkingBackend<RType: ResponseType>: HTTPNetworkingBackend {
         }
     }
     
-    func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
+    func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
+                           _ lifetime: Lifetime,
+                           _ endpoint: HttpKit.Endpoint<RType, SType>) {
         if case .waitsForRxObserver = handlerType {
-            handlerType = .rxObserver(observer, lifetime)
+            let observerWrapper: HttpKit.RxObserverWrapper<RType, SType> = .init(observer, lifetime, endpoint)
+            handlerType = .rxObserver(observerWrapper)
         }
     }
     
-    func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise) {
+    func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
+                                _ endpoint: HttpKit.Endpoint<RType, SType>) {
         if case .waitsForCombinePromise = handlerType {
-            handlerType = .combine(promise)
+            let promiseWrapper: HttpKit.CombinePromiseWrapper<RType, SType> = .init(promise, endpoint)
+            handlerType = .combine(promiseWrapper)
         }
     }
 }

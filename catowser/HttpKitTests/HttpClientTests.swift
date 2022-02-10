@@ -28,12 +28,13 @@ class HttpClientTests: XCTestCase {
 
     func testUnauthorizedRequest() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
-        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse> = .init { result in
+        let closureWrapper: HttpKit.ClosureWrapper<MockedGoodEndpointResponse, MockedGoodServer> = .init({ result in
             XCTAssertNotNil(result.error)
             let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
             XCTAssertEqual(result.error, HttpKit.HttpError.httpFailure(error: nsError), "Not expected error")
             expectationUrlFail.fulfill()
-        }
+        }, goodEndpointMock)
+        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse, MockedGoodServer> = .init(.closure(closureWrapper))
         goodHttpClient.makeCleanRequest(for: goodEndpointMock,
                                            withAccessToken: nil,
                                            networkingBackend: badNetBackendMock)
@@ -42,11 +43,12 @@ class HttpClientTests: XCTestCase {
     
     func testUrlConstruction() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
-        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse> = .init { result in
+        let closureWrapper: HttpKit.ClosureWrapper<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init({ result in
             XCTAssertNotNil(result.error)
             XCTAssertEqual(result.error, HttpKit.HttpError.failedConstructUrl, "Not expected error")
             expectationUrlFail.fulfill()
-        }
+        }, badPathEndpointMock)
+        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init(.closure(closureWrapper))
         badNoHostHttpClient.makeCleanRequest(for: badPathEndpointMock,
                                                 withAccessToken: nil,
                                                 networkingBackend: badNetBackendMock)

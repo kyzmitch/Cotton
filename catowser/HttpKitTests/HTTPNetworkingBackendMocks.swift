@@ -11,16 +11,13 @@ import Foundation
 import ReactiveSwift
 import Combine
 
-final class MockedTypedNetworkingBackendWithFail<RType: ResponseType>: HTTPNetworkingBackend {
+final class MockedTypedNetworkingBackendWithFail<RType: ResponseType, SType: ServerDescription>: HTTPNetworkingBackend {
     typealias TYPE = RType
+    typealias SRV = SType
     
-    let handlerType: ResponseHandlingApi<RType>
+    let handlerType: HttpKit.ResponseHandlingApi<RType, SType>
     
-    init(_ handler: @escaping (Result<RType, HttpKit.HttpError>) -> Void) {
-        self.handlerType = ResponseHandlingApi<RType>.closure(handler)
-    }
-    
-    init(_ handlerType: ResponseHandlingApi<RType>) {
+    init(_ handlerType: HttpKit.ResponseHandlingApi<RType, SType>) {
         self.handlerType = handlerType
     }
     
@@ -38,11 +35,14 @@ final class MockedTypedNetworkingBackendWithFail<RType: ResponseType>: HTTPNetwo
         return closure
     }
     
-    func transferToRxState(_ observer: Signal<RType, HttpKit.HttpError>.Observer, _ lifetime: Lifetime) {
+    func transferToRxState(_ observer: Signal<RType, HttpKit.HttpError>.Observer,
+                           _ lifetime: Lifetime,
+                           _ endpoint: HttpKit.Endpoint<RType, SType>) {
         
     }
     
-    func transferToCombineState(_ promise: @escaping Future<RType, HttpKit.HttpError>.Promise) {
+    func transferToCombineState(_ promise: @escaping Future<RType, HttpKit.HttpError>.Promise,
+                                _ endpoint: HttpKit.Endpoint<RType, SType>) {
         
     }
 }

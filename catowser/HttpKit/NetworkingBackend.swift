@@ -11,82 +11,155 @@ import ReactiveSwift
 import Combine
 #endif
 
-public class ClosureWrapper<TYPE: ResponseType>: Hashable {
-    public let closure: (Result<TYPE, HttpKit.HttpError>) -> Void
-    let responseType: TYPE.Type
-    
-    init(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void) {
-        self.closure = closure
-        responseType = TYPE.self
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        let typeString = String(describing: responseType)
-        hasher.combine(typeString)
-        hasher.combine(responseType.successCodes)
-    }
-    
-    public static func == (lhs: ClosureWrapper<TYPE>, rhs: ClosureWrapper<TYPE>) -> Bool {
-        return lhs.responseType == rhs.responseType
+extension HttpKit {
+    public class ClosureWrapper<TYPE: ResponseType, S: ServerDescription>: Hashable {
+        public let closure: (Result<TYPE, HttpKit.HttpError>) -> Void
+        /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
+        let endpoint: Endpoint<TYPE, S>
+        let responseType: TYPE.Type
+        
+        public init(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void,
+                    _ endpoint: Endpoint<TYPE, S>) {
+            self.closure = closure
+            self.endpoint = endpoint
+            responseType = TYPE.self
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            let typeString = String(describing: responseType)
+            hasher.combine(typeString)
+            hasher.combine(responseType.successCodes)
+        }
+        
+        public static func == (lhs: ClosureWrapper<TYPE, S>, rhs: ClosureWrapper<TYPE, S>) -> Bool {
+            return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
+        }
     }
 }
 
-/// Combine Future type is only available from ios 13 https://stackoverflow.com/a/68754297
-/// Can't mark specific enum case to be available for certain OS version
-/// Deployment target was set to 13.0 from 12.1 from now
-@available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public enum ResponseHandlingApi<TYPE: ResponseType>: Hashable {
-    case closure((Result<TYPE, HttpKit.HttpError>) -> Void)
-    case rxObserver(Signal<TYPE, HttpKit.HttpError>.Observer, Lifetime)
-    case waitsForRxObserver
-    case combine(Future<TYPE, HttpKit.HttpError>.Promise)
-    case waitsForCombinePromise
-    case asyncAwaitConcurrency
-    
-    public func hash(into hasher: inout Hasher) {
-        let caseNumber: Int
-        switch self {
-        case .closure(let originalClosure):
-            caseNumber = 0
-        case .rxObserver(let observer, let lifetime):
-            caseNumber = 1
-        case .waitsForRxObserver:
-            caseNumber = 2
-        case .waitsForCombinePromise:
-            caseNumber = 3
-        case .combine(let promise):
-            caseNumber = 4
-        case .asyncAwaitConcurrency:
-            caseNumber = 5
+extension HttpKit {
+    public class RxObserverWrapper<R: ResponseType, S: ServerDescription>: Hashable {
+        public let observer: Signal<R, HttpKit.HttpError>.Observer
+        public let lifetime: Lifetime
+        /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
+        let endpoint: Endpoint<R, S>
+        let responseType: R.Type
+        
+        public init(_ observer: Signal<R, HttpKit.HttpError>.Observer,
+                    _ lifetime: Lifetime,
+                    _ endpoint: Endpoint<R, S>) {
+            self.observer = observer
+            self.lifetime = lifetime
+            self.endpoint = endpoint
+            responseType = R.self
         }
-        hasher.combine(caseNumber)
+        
+        public func hash(into hasher: inout Hasher) {
+            let typeString = String(describing: responseType)
+            hasher.combine(typeString)
+            hasher.combine(responseType.successCodes)
+        }
+        
+        public static func == (lhs: RxObserverWrapper<R, S>, rhs: RxObserverWrapper<R, S>) -> Bool {
+            return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
+        }
     }
-    
-    public static func == (lhs: ResponseHandlingApi<TYPE>, rhs: ResponseHandlingApi<TYPE>) -> Bool {
-        /**
-         Can't compare closures/functions and it is intended.
-         
-         https://stackoverflow.com/a/25694072
-         equality of this sort would be extremely surprising in some generics contexts,
-         where you can get reabstraction thunks that adjust the actual signature of a function to the one the function type expects.
-         */
-        switch (lhs, rhs) {
-        case (.closure(_), .closure(_)):
-            // TODO: not sure actually, need to check more
-            return true
-        case (.rxObserver(_, _), rxObserver(_, _)):
-            return true
-        case (.waitsForRxObserver, .waitsForRxObserver):
-            return true
-        case (.combine(_), .combine(_)):
-            // TODO: not sure actually, need to check more
-            return true
-        case (.waitsForCombinePromise, .waitsForCombinePromise):
-            return true
-        case (.asyncAwaitConcurrency, .asyncAwaitConcurrency):
-            return true
-        default:
-            return false
+}
+
+extension HttpKit {
+    public class CombinePromiseWrapper<R: ResponseType, S: ServerDescription>: Hashable {
+        public let promise: Future<R, HttpKit.HttpError>.Promise
+        /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
+        let endpoint: Endpoint<R, S>
+        let responseType: R.Type
+        
+        public init(_ promise: @escaping Future<R, HttpKit.HttpError>.Promise,
+                    _ endpoint: Endpoint<R, S>) {
+            self.promise = promise
+            self.endpoint = endpoint
+            responseType = R.self
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            let typeString = String(describing: responseType)
+            hasher.combine(typeString)
+            hasher.combine(responseType.successCodes)
+        }
+        
+        public static func == (lhs: CombinePromiseWrapper<R, S>, rhs: CombinePromiseWrapper<R, S>) -> Bool {
+            return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
+        }
+    }
+}
+
+extension HttpKit {
+    /// Combine Future type is only available from ios 13 https://stackoverflow.com/a/68754297
+    /// Can't mark specific enum case to be available for certain OS version
+    /// Deployment target was set to 13.0 from 12.1 from now
+    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    public enum ResponseHandlingApi<TYPE: ResponseType, S: ServerDescription>: Hashable {
+        case closure(ClosureWrapper<TYPE, S>)
+        case rxObserver(RxObserverWrapper<TYPE, S>)
+        case waitsForRxObserver
+        case combine(CombinePromiseWrapper<TYPE, S>)
+        case waitsForCombinePromise
+        case asyncAwaitConcurrency
+        
+        // MARK: - convenience methods
+        
+        public static func closure(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void,
+                                   _ endpoint: Endpoint<TYPE, S>) -> ResponseHandlingApi<TYPE, S> {
+            let closureWrapper: ClosureWrapper<TYPE, S> = .init(closure, endpoint)
+            return ResponseHandlingApi<TYPE, S>.closure(closureWrapper)
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            let caseNumber: Int
+            switch self {
+            case .closure(let closureWrapper):
+                caseNumber = 0
+                hasher.combine(closureWrapper)
+            case .rxObserver(let observerWrapper):
+                caseNumber = 1
+                hasher.combine(observerWrapper)
+            case .waitsForRxObserver:
+                caseNumber = 2
+            case .waitsForCombinePromise:
+                caseNumber = 3
+            case .combine(let promiseWrapper):
+                caseNumber = 4
+                hasher.combine(promiseWrapper)
+            case .asyncAwaitConcurrency:
+                caseNumber = 5
+            }
+            hasher.combine(caseNumber)
+        }
+        
+        public static func == (lhs: ResponseHandlingApi<TYPE, S>, rhs: ResponseHandlingApi<TYPE, S>) -> Bool {
+            /**
+             Can't compare closures/functions and it is intended.
+             
+             https://stackoverflow.com/a/25694072
+             equality of this sort would be extremely surprising in some generics contexts,
+             where you can get reabstraction thunks that adjust the actual signature
+             of a function to the one the function type expects.
+             */
+            switch (lhs, rhs) {
+            case (.closure(let lClosure), .closure(let rClosure)):
+                return lClosure == rClosure
+            case (.rxObserver(let lObserver), .rxObserver(let rObserver)):
+                return lObserver == rObserver
+            case (.waitsForRxObserver, .waitsForRxObserver):
+                return true
+            case (.combine(let lPromise), .combine(let rPromise)):
+                return lPromise == rPromise
+            case (.waitsForCombinePromise, .waitsForCombinePromise):
+                return true
+            case (.asyncAwaitConcurrency, .asyncAwaitConcurrency):
+                return true
+            default:
+                return false
+            }
         }
     }
 }
@@ -133,17 +206,21 @@ public enum ResponseVoidHandlingApi {
 /// and should be avoid copying closures, original closure should be used
 public protocol HTTPNetworkingBackend: AnyObject {
     associatedtype TYPE: ResponseType
-    init(_ handlerType: ResponseHandlingApi<TYPE>)
+    associatedtype SRV: ServerDescription
+    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV>)
     
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
     /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
     func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
-    var handlerType: ResponseHandlingApi<TYPE> { get }
+    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV> { get }
     
-    /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
-    /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise)
+    /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
+                                          _ lifetime: Lifetime,
+                                          _ endpoint: HttpKit.Endpoint<TYPE, SRV>)
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
+                                               _ endpoint: HttpKit.Endpoint<TYPE, SRV>)
 }
 
 public protocol HTTPNetworkingBackendVoid: AnyObject {

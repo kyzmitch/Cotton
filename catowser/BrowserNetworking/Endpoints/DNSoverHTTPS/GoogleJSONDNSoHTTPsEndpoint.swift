@@ -154,7 +154,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return HttpKit.GDNSjsonProducer(error: HttpKit.HttpError.failedConstructRequestParameters)
         }
         
-        let backend: AFNetworkingBackend<GoogleDNSOverJSONResponse> = .init(.waitsForRxObserver)
+        let backend: AFNetworkingBackend<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForRxObserver)
         let producer = self.rxMakePublicRequest(for: endpoint, networkingBackend: backend)
         return producer
     }
@@ -186,7 +186,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return HttpKit.GDNSjsonPublisher(Future.failure(HttpKit.HttpError.failedConstructRequestParameters))
         }
         
-        let backend: AFNetworkingBackend<GoogleDNSOverJSONResponse> = .init(.waitsForCombinePromise)
+        let backend: AFNetworkingBackend<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForCombinePromise)
         let future = self.cMakePublicRequest(for: endpoint, networkingBackend: backend)
         return future.eraseToAnyPublisher()
     }

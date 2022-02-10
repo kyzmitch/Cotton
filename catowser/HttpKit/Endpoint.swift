@@ -30,7 +30,7 @@ public protocol JSONRequestEncodable {
 }
 
 extension HttpKit {
-    public struct Endpoint<T: ResponseType, Server: ServerDescription> {
+    public struct Endpoint<T: ResponseType, Server: ServerDescription>: Equatable {
         public let method: HTTPMethod
         public let path: String
         public let headers: [HttpHeader]?
@@ -50,6 +50,15 @@ extension HttpKit {
             self.path = path
             self.headers = headers
             self.encodingMethod = encodingMethod
+        }
+        
+        public static func == (lhs: HttpKit.Endpoint<T, Server>, rhs: HttpKit.Endpoint<T, Server>) -> Bool {
+            return lhs.method == rhs.method &&
+            lhs.path == rhs.path &&
+            lhs.headers == rhs.headers &&
+            lhs.responseType == rhs.responseType &&
+            lhs.serverType == rhs.serverType &&
+            lhs.encodingMethod == rhs.encodingMethod
         }
         
         /// Constructs a URL based on endpoint info and host name from provided server.
@@ -98,13 +107,27 @@ extension HttpKit {
         }
     }
     
-    public enum ParametersEncodingDestination {
+    public enum ParametersEncodingDestination: Equatable {
         /// Stores URL query items to include them in URL
         case queryString(queryItems: [URLQueryItem])
         /// Http body Dictionary to generate JSON
         case httpBodyJSON(parameters: [String: Any])
         /// Http body data enoded from `Encodable`
         case httpBody(encodedData: Data)
+        
+        public static func == (lhs: HttpKit.ParametersEncodingDestination, rhs: HttpKit.ParametersEncodingDestination) -> Bool {
+            switch (lhs, rhs) {
+            case (.queryString(queryItems:let lItems), queryString(queryItems:let rItems)):
+                return lItems == rItems
+            case (.httpBodyJSON(parameters:let lItems), httpBodyJSON(parameters:let rItems)):
+                // Not full comparison because values of type `Any` don't confirm to Equatable
+                return lItems.keys == rItems.keys
+            case (.httpBody(encodedData:let lData), httpBody(encodedData:let rData)):
+                return lData == rData
+            default:
+                return false
+            }
+        }
     }
     
     public struct VoidResponse: ResponseType {
