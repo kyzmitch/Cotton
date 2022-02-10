@@ -13,7 +13,7 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPVoidAdaptee: HTTPNetworkingBackendVoid {
+final class AlamofireHTTPVoidAdaptee: HTTPVoidAdapter {
     var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void)
     
     var handlerType: ResponseVoidHandlingApi

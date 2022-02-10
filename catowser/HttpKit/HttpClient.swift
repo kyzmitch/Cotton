@@ -118,7 +118,7 @@ extension HttpKit {
         
         public func makeCleanVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
                                          withAccessToken accessToken: String?,
-                                         transportAdapter: HTTPNetworkingBackendVoid) {
+                                         transportAdapter: HTTPVoidAdapter) {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
                 transportAdapter.wrapperHandler(result)

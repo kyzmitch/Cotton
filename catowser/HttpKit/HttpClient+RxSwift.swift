@@ -33,7 +33,7 @@ extension HttpKit.Client {
     
     public func rxMakeVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,
                                   withAccessToken accessToken: String?,
-                                  transportAdapter: HTTPNetworkingBackendVoid) -> SignalProducer<Void, HttpKit.HttpError> {
+                                  transportAdapter: HTTPVoidAdapter) -> SignalProducer<Void, HttpKit.HttpError> {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)

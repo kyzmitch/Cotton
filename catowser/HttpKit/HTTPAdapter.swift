@@ -37,14 +37,3 @@ public protocol HTTPAdapter: AnyObject {
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
                                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>)
 }
-
-public protocol HTTPNetworkingBackendVoid: AnyObject {
-    init(_ handlerType: ResponseVoidHandlingApi)
-    func performVoidRequest(_ request: URLRequest,
-                            sucessCodes: [Int])
-    var wrapperHandler: ((Result<Void, HttpKit.HttpError>) -> Void) { get }
-    var handlerType: ResponseVoidHandlingApi { get }
-    
-    /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer, _ lifetime: Lifetime)
-    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise)
-}
