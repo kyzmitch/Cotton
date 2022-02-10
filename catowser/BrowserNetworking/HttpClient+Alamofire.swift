@@ -9,6 +9,9 @@
 import HttpKit
 import ReactiveSwift
 
+public typealias Subscriber<R: ResponseType, S: ServerDescription> = HttpKit.ClientSubscriber<R, S>
+public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
+
 extension HttpKit.Client {
     public func makePublicRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                      transportAdapter: B) where B.TYPE == T, B.SRV == Server {
@@ -22,15 +25,25 @@ extension HttpKit.Client {
     }
     
     public func rxMakePublicRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                       transportAdapter: B) -> SignalProducer<T, HttpKit.HttpError> where B.TYPE == T, B.SRV == Server {
-        let producer = rxMakeRequest(for: endpoint, withAccessToken: nil, transportAdapter: transportAdapter)
+                                                       transport adapter: B,
+                                                       _ subscriber: Subscriber<T, Server>) -> RxProducer<T>
+                                                       where B.TYPE == T, B.SRV == Server {
+        let producer = rxMakeRequest(for: endpoint,
+                                        withAccessToken: nil,
+                                        transport: adapter,
+                                        subscriber)
         return producer
     }
     
     public func rxMakeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                            withAccessToken accessToken: String,
-                                                           transportAdapter: B) -> SignalProducer<T, HttpKit.HttpError> where B.TYPE == T, B.SRV == Server {
-        let producer = rxMakeRequest(for: endpoint, withAccessToken: accessToken, transportAdapter: transportAdapter)
+                                                           transport adapter: B,
+                                                           _ subscriber: Subscriber<T, Server>) -> RxProducer<T>
+                                                           where B.TYPE == T, B.SRV == Server {
+        let producer = rxMakeRequest(for: endpoint,
+                                        withAccessToken: accessToken,
+                                        transport: adapter,
+                                        subscriber)
         return producer
     }
     

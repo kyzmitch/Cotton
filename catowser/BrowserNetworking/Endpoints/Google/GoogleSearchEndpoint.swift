@@ -76,8 +76,8 @@ extension HttpKit.Client where Server == GoogleServer {
             return GSearchProducer.init(error: .failedConstructRequestParameters)
         }
         
-        let backend: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForRxObserver)
-        let producer = self.rxMakePublicRequest(for: endpoint, transportAdapter: backend)
+        let adapter: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForRxObserver)
+        let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return producer
     }
     
@@ -92,8 +92,8 @@ extension HttpKit.Client where Server == GoogleServer {
             return CGSearchPublisher(Future.failure(.failedConstructRequestParameters))
         }
         
-        let backend: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForCombinePromise)
-        let future = self.cMakePublicRequest(for: endpoint, transportAdapter: backend)
+        let adapter: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForCombinePromise)
+        let future = self.cMakePublicRequest(for: endpoint, transportAdapter: adapter)
         return future.eraseToAnyPublisher()
     }
 }
