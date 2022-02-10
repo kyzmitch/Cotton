@@ -20,10 +20,15 @@ extension HttpKit.Client {
             }
             
             networkingBackend.transferToRxState(observer, lifetime)
+            backendHandlersPool.insert(networkingBackend)
             self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, networkingBackend: networkingBackend)
         }
         
-        return producer
+        return producer.on(failed: { error in
+            
+        }, completed: { [weak self] in
+            self?.backendHandlersPool.remove(networkingBackend)
+        })
     }
     
     public func rxMakeVoidRequest(for endpoint: HttpKit.VoidEndpoint<Server>,

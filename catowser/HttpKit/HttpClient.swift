@@ -27,6 +27,9 @@ extension HttpKit {
     public class Client<Server: ServerDescription> {
         let server: Server
         
+        /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
+        var backendHandlersPool: Set<AnyObject /* HTTPNetworkingBackend */> = []
+        
         private let connectivityManager: NetworkReachabilityManager?
         
         let sessionTaskHandler: HttpClientSessionTaskDelegate?
@@ -112,6 +115,7 @@ extension HttpKit {
             }
             
             let codes = T.successCodes
+            backendHandlersPool.append(networkingBackend)
             networkingBackend.performRequest(httpRequest, sucessCodes: codes)
         }
         

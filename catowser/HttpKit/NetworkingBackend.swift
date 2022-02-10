@@ -11,17 +11,84 @@ import ReactiveSwift
 import Combine
 #endif
 
+public class ClosureWrapper<TYPE: ResponseType>: Hashable {
+    public let closure: (Result<TYPE, HttpKit.HttpError>) -> Void
+    let responseType: TYPE.Type
+    
+    init(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void) {
+        self.closure = closure
+        responseType = TYPE.self
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        let typeString = String(describing: responseType)
+        hasher.combine(typeString)
+        hasher.combine(responseType.successCodes)
+    }
+    
+    public static func == (lhs: ClosureWrapper<TYPE>, rhs: ClosureWrapper<TYPE>) -> Bool {
+        return lhs.responseType == rhs.responseType
+    }
+}
+
 /// Combine Future type is only available from ios 13 https://stackoverflow.com/a/68754297
 /// Can't mark specific enum case to be available for certain OS version
 /// Deployment target was set to 13.0 from 12.1 from now
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public enum ResponseHandlingApi<TYPE: ResponseType> {
+public enum ResponseHandlingApi<TYPE: ResponseType>: Hashable {
     case closure((Result<TYPE, HttpKit.HttpError>) -> Void)
     case rxObserver(Signal<TYPE, HttpKit.HttpError>.Observer, Lifetime)
     case waitsForRxObserver
     case combine(Future<TYPE, HttpKit.HttpError>.Promise)
     case waitsForCombinePromise
     case asyncAwaitConcurrency
+    
+    public func hash(into hasher: inout Hasher) {
+        let caseNumber: Int
+        switch self {
+        case .closure(let originalClosure):
+            caseNumber = 0
+        case .rxObserver(let observer, let lifetime):
+            caseNumber = 1
+        case .waitsForRxObserver:
+            caseNumber = 2
+        case .waitsForCombinePromise:
+            caseNumber = 3
+        case .combine(let promise):
+            caseNumber = 4
+        case .asyncAwaitConcurrency:
+            caseNumber = 5
+        }
+        hasher.combine(caseNumber)
+    }
+    
+    public static func == (lhs: ResponseHandlingApi<TYPE>, rhs: ResponseHandlingApi<TYPE>) -> Bool {
+        /**
+         Can't compare closures/functions and it is intended.
+         
+         https://stackoverflow.com/a/25694072
+         equality of this sort would be extremely surprising in some generics contexts,
+         where you can get reabstraction thunks that adjust the actual signature of a function to the one the function type expects.
+         */
+        switch (lhs, rhs) {
+        case (.closure(_), .closure(_)):
+            // TODO: not sure actually, need to check more
+            return true
+        case (.rxObserver(_, _), rxObserver(_, _)):
+            return true
+        case (.waitsForRxObserver, .waitsForRxObserver):
+            return true
+        case (.combine(_), .combine(_)):
+            // TODO: not sure actually, need to check more
+            return true
+        case (.waitsForCombinePromise, .waitsForCombinePromise):
+            return true
+        case (.asyncAwaitConcurrency, .asyncAwaitConcurrency):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)

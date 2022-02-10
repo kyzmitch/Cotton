@@ -13,7 +13,7 @@ import Combine
 
 extension HttpKit.Client {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public typealias ResponseFuture<T> = Deferred<Future<T, HttpKit.HttpError>>
+    public typealias ResponseFuture<T> = Publishers.HandleEvents<Deferred<Future<T, HttpKit.HttpError>>>
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cMakeRequest<T, B: HTTPNetworkingBackend>(for endpoint: HttpKit.Endpoint<T, Server>,
@@ -27,9 +27,12 @@ extension HttpKit.Client {
                 }
                 
                 networkingBackend.transferToCombineState(promise)
+                backendHandlersPool.insert(networkingBackend)
                 self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, networkingBackend: networkingBackend)
             }
             return subject
+        }.handleEvents { [weak self] completion in
+            self?.backendHandlersPool.remove(networkingBackend)
         }
     }
 }
