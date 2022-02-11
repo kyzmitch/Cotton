@@ -1257,20 +1257,20 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		8A1A1CE627B1963F0052A2A3 /* Extensions */ = {
+		8A1A1CE627B1963F0052A2A3 /* TransportAdapters */ = {
 			isa = PBXGroup;
 			children = (
 				8AB0D4102755075700493EC3 /* AlamofireHTTPAdaptee.swift */,
 				8AB4A1B227B55484008030FB /* AlamofireHTTPVoidAdaptee.swift */,
 			);
-			path = Extensions;
+			path = TransportAdapters;
 			sourceTree = "<group>";
 		};
 		8A277138268E452000D8878C /* BrowserNetworking */ = {
 			isa = PBXGroup;
 			children = (
 				8A978D4723F348CB007ECB0C /* AuthChallenge */,
-				8A1A1CE627B1963F0052A2A3 /* Extensions */,
+				8A1A1CE627B1963F0052A2A3 /* TransportAdapters */,
 				8AE6D1752350FF52006316AD /* Endpoints */,
 				8A62AEDA2351CDDB001A9C83 /* Servers */,
 				8A7DCCCE236432AA006AAEE2 /* Models */,

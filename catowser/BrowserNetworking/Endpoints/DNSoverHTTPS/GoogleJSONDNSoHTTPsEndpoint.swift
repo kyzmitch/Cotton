@@ -1,6 +1,6 @@
 //
 //  GoogleJSONDNSoHTTPsEndpoint.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 10/26/19.
 //  Copyright © 2019 andreiermoshin. All rights reserved.

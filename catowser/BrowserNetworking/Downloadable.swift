@@ -1,6 +1,6 @@
 //
 //  Downloadable.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/22/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.

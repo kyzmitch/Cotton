@@ -1,6 +1,6 @@
 //
 //  GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Ermoshin Andrey on 20.06.2021.
 //  Copyright © 2021 andreiermoshin. All rights reserved.

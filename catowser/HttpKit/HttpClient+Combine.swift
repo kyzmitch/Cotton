@@ -33,19 +33,11 @@ extension HttpKit.Client {
                 self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
             }
             return subject
-        }.handleEvents(receiveSubscription: { _ in
-            
-        }, receiveOutput: { _ in
-            
-        }, receiveCompletion: { [weak subscriber, weak adapter] _ in
+        }.handleEvents(receiveCompletion: { [weak subscriber, weak adapter] _ in
             guard let adapter = adapter else {
                 return
             }
             subscriber?.remove(adapter.handlerType)
-        }, receiveCancel: { 
-            
-        }, receiveRequest: { _ in
-            
         })
     }
 }
