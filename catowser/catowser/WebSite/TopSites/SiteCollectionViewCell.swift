@@ -11,6 +11,7 @@ import CoreBrowser
 #if canImport(Combine)
 import Combine
 #endif
+import BrowserNetworking
 
 final class SiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var faviconImageView: UIImageView!
@@ -18,6 +19,9 @@ final class SiteCollectionViewCell: UICollectionViewCell {
     
     @available(iOS 13.0, *)
     lazy var imageURLRequestCancellable: AnyCancellable? = nil
+    
+    ///
+    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
 
     override func awakeFromNib() {
         super.awakeFromNib()

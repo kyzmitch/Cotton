@@ -23,12 +23,15 @@ extension HttpKit.Client {
             
             adapter.transferToRxState(observer, lifetime, endpoint)
             subscriber.insert(adapter.handlerType)
-            self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transportAdapter: adapter)
+            self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
         }
         
         return producer.on(failed: { [weak subscriber] _ in
             subscriber?.remove(adapter.handlerType)
-        }, completed: { [weak subscriber] in
+        }, completed: { [weak subscriber, weak adapter] in
+            guard let adapter = adapter else {
+                return
+            }
             subscriber?.remove(adapter.handlerType)
         })
     }

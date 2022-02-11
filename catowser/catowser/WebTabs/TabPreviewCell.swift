@@ -12,6 +12,7 @@ import CoreBrowser
 #if canImport(Combine)
 import Combine
 #endif
+import BrowserNetworking
 
 fileprivate extension CGFloat {
     static let cornerRadius = CGFloat(6.0)
@@ -65,6 +66,9 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     
     @available(iOS 13.0, *)
     private lazy var imageURLRequestCancellable: AnyCancellable? = nil
+    
+    ///
+    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
 
     private let backgroundHolder: UIView = {
         let view = UIView()
@@ -198,7 +202,8 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         
         if #available(iOS 13.0, *) {
             imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, dnsClientSubscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {

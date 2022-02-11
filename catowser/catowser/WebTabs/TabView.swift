@@ -13,6 +13,7 @@ import CoreBrowser
 #if canImport(Combine)
 import Combine
 #endif
+import BrowserNetworking
 
 protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView)
@@ -42,6 +43,9 @@ final class TabView: UIView {
     }
     
     weak var delegate: TabDelegate?
+    
+    ///
+    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
@@ -215,7 +219,8 @@ private extension TabView {
         
         if #available(iOS 13.0, *) {
             imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, dnsClientSubscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {

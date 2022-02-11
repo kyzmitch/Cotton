@@ -175,7 +175,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func cGetIPaddress(ofDomain domainName: String) -> GDNSjsonPublisher {
+    func cGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientSubscriber) -> GDNSjsonPublisher {
         let endpoint: GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
@@ -185,18 +185,18 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return GDNSjsonPublisher(Future.failure(HttpKit.HttpError.failedConstructRequestParameters))
         }
         
-        let backend: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForCombinePromise)
-        let future = self.cMakePublicRequest(for: endpoint, transportAdapter: backend)
+        let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForCombinePromise)
+        let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return future.eraseToAnyPublisher()
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func resolvedDomainName(in url: URL) -> AnyPublisher<URL, HttpKit.DnsError> {
+    public func resolvedDomainName(in url: URL, _ subscriber: GDNSJsonClientSubscriber) -> AnyPublisher<URL, HttpKit.DnsError> {
         return url.cHttpHost
         .mapError { _ -> HttpKit.HttpError in
             return .failedConstructRequestParameters
         }
-        .flatMap { self.cGetIPaddress(ofDomain: $0) }
+        .flatMap { self.cGetIPaddress(ofDomain: $0, subscriber) }
         .map { $0.ipAddress}
         .mapError { (kitErr) -> HttpKit.DnsError in
             return .httpError(kitErr)

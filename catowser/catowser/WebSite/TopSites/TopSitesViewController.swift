@@ -101,7 +101,8 @@ extension SiteCollectionViewCell {
 
         if #available(iOS 13.0, *) {
             imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, dnsClientSubscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {

@@ -18,7 +18,9 @@ extension HttpKit.Client {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                 withAccessToken accessToken: String?,
-                                                transportAdapter: B) -> ResponseFuture<T> where B.TYPE == T, B.SRV == Server {
+                                                transport adapter: B,
+                                                _ subscriber: HttpKit.ClientSubscriber<T, Server>) -> ResponseFuture<T>
+                                                where B.TYPE == T, B.SRV == Server {
         return Combine.Deferred {
             let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
                 guard let self = self else {
@@ -26,13 +28,24 @@ extension HttpKit.Client {
                     return
                 }
                 
-                transportAdapter.transferToCombineState(promise, endpoint)
-                // backendHandlersPool.insert(transportAdapter)
-                self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transportAdapter: transportAdapter)
+                adapter.transferToCombineState(promise, endpoint)
+                subscriber.insert(adapter.handlerType)
+                self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
             }
             return subject
-        }.handleEvents { [weak self] completion in
-            // self?.backendHandlersPool.remove(transportAdapter)
-        }
+        }.handleEvents(receiveSubscription: { _ in
+            
+        }, receiveOutput: { _ in
+            
+        }, receiveCompletion: { [weak subscriber, weak adapter] _ in
+            guard let adapter = adapter else {
+                return
+            }
+            subscriber?.remove(adapter.handlerType)
+        }, receiveCancel: { 
+            
+        }, receiveRequest: { _ in
+            
+        })
     }
 }

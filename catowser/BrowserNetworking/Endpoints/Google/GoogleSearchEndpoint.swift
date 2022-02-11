@@ -93,7 +93,7 @@ extension HttpKit.Client where Server == GoogleServer {
         }
         
         let adapter: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForCombinePromise)
-        let future = self.cMakePublicRequest(for: endpoint, transportAdapter: adapter)
+        let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return future.eraseToAnyPublisher()
     }
 }

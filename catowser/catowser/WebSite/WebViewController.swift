@@ -273,7 +273,7 @@ final class WebViewController: BaseViewController {
     @available(iOS 13.0, *)
     private func cResolveDomainName(url: URL) {
         dnsRequestCancellable?.cancel()
-        dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
+        dnsRequestCancellable = dnsClient.resolvedDomainName(in: url, dnsClientSubscriber)
         .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
