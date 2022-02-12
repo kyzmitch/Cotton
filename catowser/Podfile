@@ -60,11 +60,7 @@ target 'CoreBrowserTests' do
   pod 'SwiftLint', '~> 0.33.0'
 end
 
-target 'HttpKit' do
-  use_frameworks!
-
-  pod 'SwiftLint', '~> 0.33.0'
-end
+# No even SwiftLint for 'HttpKit' target to be able to convert it to Kotlin
 
 target 'ReactiveHttpKit' do
   use_frameworks!

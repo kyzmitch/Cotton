@@ -42,10 +42,10 @@ extension HttpKit {
         public typealias S = SS
         public typealias RO = RX
         
-        public var observer: RO {
+        public var observer: RX {
             // TODO: it should be recognized by compiler, don't need to force cast
             // swiftlint:disable:next force_cast
-            return rxObserver as! RO
+            return rxObserver as! RX
         }
         
         public var lifetime: RxAnyLifetime {
