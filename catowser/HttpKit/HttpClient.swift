@@ -75,12 +75,12 @@ extension HttpKit {
             }
         }
         
-        // MARK: - Clear functions without dependencies
+        // MARK: - Clear RX capable functions without dependencies
         
-        /// T: ResponseType
-        public func makeCleanRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                        withAccessToken accessToken: String?,
-                                                        transport adapter: B) where B.TYPE == T, B.SRV == Server {
+        public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                       withAccessToken accessToken: String?,
+                                                       transport adapter: B) where B.TYPE == T, B.SRV == Server {
+            
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 adapter.wrapperHandler()(result)
@@ -106,9 +106,9 @@ extension HttpKit {
             adapter.performRequest(httpRequest, sucessCodes: codes)
         }
         
-        public func makeCleanVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                                             withAccessToken accessToken: String?,
-                                                             transportAdapter: B) where B.SRV == Server {
+        public func makeRxVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                          withAccessToken accessToken: String?,
+                                                          transportAdapter: B) where B.SRV == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
                 transportAdapter.wrapperHandler()(result)
@@ -134,6 +134,36 @@ extension HttpKit {
             let codes = HttpKit.VoidResponse.successCodes
             // backendHandlersPool.append(transportAdapter)
             transportAdapter.performVoidRequest(httpRequest, sucessCodes: codes)
+        }
+        
+        // MARK: - Clear functions without dependencies
+        
+        public func makeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                   withAccessToken accessToken: String?,
+                                                   transport adapter: B) where B.TYPE == T, B.SRV == Server {
+            guard let url = endpoint.url(relatedTo: self.server) else {
+                let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
+                adapter.wrapperHandler()(result)
+                return
+            }
+            let httpRequest: URLRequest
+            do {
+                httpRequest = try endpoint.request(url,
+                                                   httpTimeout: self.httpTimeout,
+                                                   jsonEncoder: jsonEncoder,
+                                                   accessToken: accessToken)
+            } catch let error as HttpKit.HttpError {
+                let result: HttpTypedResult<T> = .failure(error)
+                adapter.wrapperHandler()(result)
+                return
+            } catch {
+                let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
+                adapter.wrapperHandler()(result)
+                return
+            }
+            
+            let codes = T.successCodes
+            adapter.performRequest(httpRequest, sucessCodes: codes)
         }
     }
 }

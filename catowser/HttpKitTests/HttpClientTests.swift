@@ -41,9 +41,9 @@ class HttpClientTests: XCTestCase {
             expectationUrlFail.fulfill()
         }, goodEndpointMock)
         let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse, MockedGoodServer> = .init(.closure(closureWrapper))
-        goodHttpClient.makeCleanRequest(for: goodEndpointMock,
-                                           withAccessToken: nil,
-                                           transport: badNetBackendMock)
+        goodHttpClient.makeRxRequest(for: goodEndpointMock,
+                                        withAccessToken: nil,
+                                        transport: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 1.0)
     }
     
@@ -55,9 +55,9 @@ class HttpClientTests: XCTestCase {
             expectationUrlFail.fulfill()
         }, badPathEndpointMock)
         let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init(.closure(closureWrapper))
-        badNoHostHttpClient.makeCleanRequest(for: badPathEndpointMock,
-                                                withAccessToken: nil,
-                                                transport: badNetBackendMock)
+        badNoHostHttpClient.makeRxRequest(for: badPathEndpointMock,
+                                             withAccessToken: nil,
+                                             transport: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 0.5)
     }
 }

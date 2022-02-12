@@ -110,7 +110,7 @@ final class SearchSuggestionsViewController: UITableViewController {
             })
             .flatMap({ [weak self] (text) -> CGSearchPublisher in
                 guard let self = self else {
-                    typealias SuggestionsResult = Result<GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+                    typealias SuggestionsResult = Result<GSearchSuggestionsResponse, HttpKit.HttpError>
                     let errorResult: SuggestionsResult = .failure(.zombieSelf)
                     return errorResult.publisher.eraseToAnyPublisher()
                 }

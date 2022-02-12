@@ -13,12 +13,13 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter {
-    typealias SRV = SType
+final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter where RX.S == S {
+    typealias SRV = S
+    typealias RXI = RX
 
-    var handlerType: HttpKit.ResponseVoidHandlingApi<SRV>
+    var handlerType: HttpKit.ResponseVoidHandlingApi<SRV, RXI>
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<SRV>) {
+    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<SRV, RXI>) {
         self.handlerType = handlerType
     }
     
@@ -34,9 +35,9 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
                 switch result {
                 case .success:
                     let value: Void = ()
-                    observerWrapper.observer.send(value: value)
+                    observerWrapper.observer.newSend(value: value)
                 case .failure(let error):
-                    observerWrapper.observer.send(error: error)
+                    observerWrapper.observer.newSend(error: error)
                 }
             case .waitsForRxObserver, .waitsForCombinePromise:
                 break
@@ -65,7 +66,7 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
                 self?.wrapperHandler()(result)
         }
         if case let .rxObserver(observerWrapper) = handlerType {
-            observerWrapper.lifetime.observeEnded({
+            observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
             })
         } else if case let .combine(_) = handlerType {
@@ -76,7 +77,7 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
     func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
                                 _ endpoint: HttpKit.VoidEndpoint<SRV>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<SType> = .init(promise, endpoint)
+            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<SRV> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

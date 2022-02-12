@@ -9,8 +9,8 @@
 /// These types are needed for Combine interfaces of HttpKit.Client we don't have to pass actual ReactiveSwift types
 /// to be able to use Combine interfaces
 extension HttpKit {
-    struct DummyRxObserver: RxAnyObserver {
-        typealias R = VoidResponse
+    public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
+        public typealias R = RR
         
         public func newSend(value: R) {}
         public func newSend(error: HttpKit.HttpError) {}
@@ -20,27 +20,30 @@ extension HttpKit {
         func newObserveEnded(_ action: @escaping () -> Void) {}
     }
     
-    class DummyRxType<SS: ServerDescription,
-                       RX: RxAnyObserver>: RxInterface where RX.R == VoidResponse {
-        typealias RO = DummyRxObserver
-        typealias S = SS
+    public class DummyRxType<R,
+                      SS: ServerDescription,
+                      RX: RxAnyObserver>: RxInterface where RX.R == R {
+        public typealias RO = DummyRxObserver
+        public typealias S = SS
         
-        var observer: HttpKit.DummyRxObserver {
-            return .init()
+        public var observer: RX {
+            // TODO: think about why it ask for conversion
+            // swiftlint:disable:next force_cast
+            return DummyRxObserver<R>() as! RX
         }
         
-        var lifetime: RxAnyLifetime {
+        public var lifetime: RxAnyLifetime {
             return DummyRxLifetime()
         }
         
-        var endpoint: HttpKit.Endpoint<HttpKit.VoidResponse, S> {
+        public var endpoint: HttpKit.Endpoint<R, S> {
             return .init(method: .get, path: "", headers: nil, encodingMethod: .httpBodyJSON(parameters: [:]))
         }
         
-        static func == (lhs: HttpKit.DummyRxType<SS, RX>, rhs: HttpKit.DummyRxType<SS, RX>) -> Bool {
+        public static func == (lhs: HttpKit.DummyRxType<R, SS, RX>, rhs: HttpKit.DummyRxType<R, SS, RX>) -> Bool {
             return false
         }
         
-        func hash(into hasher: inout Hasher) {}
+        public func hash(into hasher: inout Hasher) {}
     }
 }

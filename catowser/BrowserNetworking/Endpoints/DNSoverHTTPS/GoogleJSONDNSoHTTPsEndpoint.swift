@@ -7,6 +7,7 @@
 //
 
 import HttpKit
+import ReactiveHttpKit
 // only for `IPv4Address` type, but it's not possible to store mask in it
 // maybe better remove this dependency
 // import Network
@@ -20,7 +21,13 @@ import Combine
 public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
 
 typealias GDNSjsonEndpoint = HttpKit.Endpoint<GoogleDNSOverJSONResponse, GoogleDnsServer>
-public typealias GDNSJsonClientSubscriber = HttpKit.ClientSubscriber<GoogleDNSOverJSONResponse, GoogleDnsServer>
+public typealias GDNSjsonRxSignal = Signal<GoogleDNSOverJSONResponse, HttpKit.HttpError>.Observer
+public typealias GDNSjsonRxInterface = HttpKit.RxObserverWrapper<GoogleDNSOverJSONResponse,
+                                                                 GoogleDnsServer,
+                                                                 GDNSjsonRxSignal>
+public typealias GDNSJsonClientSubscriber = RxSubscriber<GoogleDNSOverJSONResponse,
+                                                         GoogleDnsServer,
+                                                         GDNSjsonRxInterface>
 public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, HttpKit.HttpError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpKit.HttpError>
@@ -153,7 +160,9 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return GDNSjsonProducer(error: HttpKit.HttpError.failedConstructRequestParameters)
         }
         
-        let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForRxObserver)
+        let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse,
+                                            GoogleDnsServer,
+                                            GDNSjsonRxInterface> = .init(.waitsForRxObserver)
         let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return producer
     }
@@ -185,7 +194,9 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return GDNSjsonPublisher(Future.failure(HttpKit.HttpError.failedConstructRequestParameters))
         }
         
-        let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse, GoogleDnsServer> = .init(.waitsForCombinePromise)
+        let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse,
+                                            GoogleDnsServer,
+                                            GDNSjsonRxInterface> = .init(.waitsForCombinePromise)
         let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return future.eraseToAnyPublisher()
     }

@@ -1,5 +1,5 @@
 //
-//  HTTPAdapter.swift
+//  HTTPRxAdapter.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 2/8/22.
@@ -18,7 +18,7 @@ import Combine
 /// and should be avoid copying closures, original closure should be used
 ///
 /// This is an adapter pattern for the high level HTTP requests transport
-public protocol HTTPAdapter: AnyObject {
+public protocol HTTPRxAdapter: AnyObject {
     associatedtype TYPE
     associatedtype SRV
     associatedtype RXI: RxInterface where RXI.RO.R == TYPE, RXI.S == SRV
@@ -32,6 +32,25 @@ public protocol HTTPAdapter: AnyObject {
     func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
     var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI> { get set }
+    
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
+                                               _ endpoint: HttpKit.Endpoint<TYPE, SRV>)
+}
+
+public protocol HTTPAdapter: AnyObject {
+    associatedtype TYPE: ResponseType
+    associatedtype SRV: ServerDescription
+    
+    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, HttpKit.RxFreeInterface<TYPE, SRV>>)
+    
+    func performRequest(_ request: URLRequest,
+                        sucessCodes: [Int])
+    /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
+    /// This is not defined in ResponseHandlingApi because it is a value type and this function should capture self
+    /// So, better to store it here in reference type
+    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void
+    /// Should refer to simple closure api
+    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, HttpKit.RxFreeInterface<TYPE, SRV>> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
                                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>)

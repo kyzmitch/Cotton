@@ -1,5 +1,5 @@
 //
-//  HTTPAdapter+Rx.swift
+//  HTTPRxAdapter+Rx.swift
 //  ReactiveHttpKit
 //
 //  Created by Andrei Ermoshin on 2/12/22.
@@ -9,7 +9,7 @@
 import HttpKit
 import ReactiveSwift
 
-extension HTTPAdapter {
+extension HTTPRxAdapter {
     /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
                                           _ lifetime: Lifetime,
                                           _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {

@@ -14,7 +14,7 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPAdapter where RX.RO.R == R, RX.S == S {
+final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.RO.R == R, RX.S == S {
     typealias TYPE = R
     typealias SRV = S
     typealias RXI = RX
