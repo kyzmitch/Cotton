@@ -11,13 +11,14 @@ import Foundation
 import ReactiveSwift
 import Combine
 
-final class MockedHTTPAdapteeWithFail<RType: ResponseType, SType: ServerDescription>: HTTPAdapter {
-    typealias TYPE = RType
-    typealias SRV = SType
+final class MockedHTTPAdapteeWithFail<R: ResponseType, S: ServerDescription, RX: RxInterface>: HTTPAdapter where RX.RO.R == R, RX.S == S {
+    typealias TYPE = R
+    typealias SRV = S
+    typealias RXI = RX
     
-    let handlerType: HttpKit.ResponseHandlingApi<RType, SType>
+    let handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<RType, SType>) {
+    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>) {
         self.handlerType = handlerType
     }
     
@@ -29,20 +30,20 @@ final class MockedHTTPAdapteeWithFail<RType: ResponseType, SType: ServerDescript
         }
     }
     
-    func wrapperHandler() -> (Result<RType, HttpKit.HttpError>) -> Void {
+    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void {
         let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
         }
         return closure
     }
     
-    func transferToRxState(_ observer: Signal<RType, HttpKit.HttpError>.Observer,
+    func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
                            _ lifetime: Lifetime,
-                           _ endpoint: HttpKit.Endpoint<RType, SType>) {
+                           _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
         
     }
     
-    func transferToCombineState(_ promise: @escaping Future<RType, HttpKit.HttpError>.Promise,
-                                _ endpoint: HttpKit.Endpoint<RType, SType>) {
+    func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
+                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
         
     }
 }

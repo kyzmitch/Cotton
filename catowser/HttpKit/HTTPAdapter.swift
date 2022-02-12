@@ -21,7 +21,8 @@ import Combine
 public protocol HTTPAdapter: AnyObject {
     associatedtype TYPE: ResponseType
     associatedtype SRV: ServerDescription
-    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV>)
+    associatedtype RXI: RxInterface
+    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>)
     
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
@@ -30,7 +31,7 @@ public protocol HTTPAdapter: AnyObject {
     /// So, better to store it here in reference type
     func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
-    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV> { get set }
+    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
                                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>)

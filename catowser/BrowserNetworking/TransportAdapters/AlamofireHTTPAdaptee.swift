@@ -14,18 +14,19 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPAdaptee<RType: ResponseType, SType: ServerDescription>: HTTPAdapter {
-    typealias TYPE = RType
-    typealias SRV = SType
+final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPAdapter where RX.RO.R == R, RX.S == S {
+    typealias TYPE = R
+    typealias SRV = S
+    typealias RXI = RX
     
-    var handlerType: HttpKit.ResponseHandlingApi<RType, SType>
+    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<RType, SType>) {
+    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>) {
         self.handlerType = handlerType
     }
     
-    func wrapperHandler() -> (Result<RType, HttpKit.HttpError>) -> Void {
-        let closure = { [weak self] (result: Result<RType, HttpKit.HttpError>) in
+    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void {
+        let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
             guard let self = self else {
                 return
             }
@@ -81,9 +82,9 @@ final class AlamofireHTTPAdaptee<RType: ResponseType, SType: ServerDescription>:
     }
     
     func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
-                                _ endpoint: HttpKit.Endpoint<RType, SType>) {
+                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseWrapper<RType, SType> = .init(promise, endpoint)
+            let promiseWrapper: HttpKit.CombinePromiseWrapper<TYPE, SRV> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

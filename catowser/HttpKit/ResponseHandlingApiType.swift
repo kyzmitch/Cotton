@@ -25,6 +25,7 @@ public protocol RxAnyLifetime {}
 /// It should be implemented by RxObserverWrapper which is in different Framework
 public protocol RxInterface: Hashable, Equatable {
     associatedtype RO: RxAnyObserver
+    associatedtype S: ServerDescription
     
     public var observer: RO { get }
     public var lifetime: RxAnyLifetime { get }
@@ -35,20 +36,20 @@ extension HttpKit {
     /// Can't mark specific enum case to be available for certain OS version
     /// Deployment target was set to 13.0 from 12.1 from now
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public enum ResponseHandlingApi<TYPE: ResponseType, S: ServerDescription>: Hashable {
-        case closure(ClosureWrapper<TYPE, S>)
-        case rxObserver(RxInterface<TYPE, S>)
+    public enum ResponseHandlingApi<R: ResponseType, S: ServerDescription, RX: RxInterface>: Hashable where RX.RO.R == R, RX.S == S {
+        case closure(ClosureWrapper<R, S>)
+        case rxObserver(RX)
         case waitsForRxObserver
-        case combine(CombinePromiseWrapper<TYPE, S>)
+        case combine(CombinePromiseWrapper<R, S>)
         case waitsForCombinePromise
         case asyncAwaitConcurrency
         
         // MARK: - convenience methods
         
-        public static func closure(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void,
-                                   _ endpoint: Endpoint<TYPE, S>) -> ResponseHandlingApi<TYPE, S> {
-            let closureWrapper: ClosureWrapper<TYPE, S> = .init(closure, endpoint)
-            return ResponseHandlingApi<TYPE, S>.closure(closureWrapper)
+        public static func closure(_ closure: @escaping (Result<R, HttpKit.HttpError>) -> Void,
+                                   _ endpoint: Endpoint<R, S>) -> ResponseHandlingApi<R, S, RX> {
+            let closureWrapper: ClosureWrapper<R, S> = .init(closure, endpoint)
+            return ResponseHandlingApi<R, S, RX>.closure(closureWrapper)
         }
         
         public func hash(into hasher: inout Hasher) {
@@ -73,7 +74,7 @@ extension HttpKit {
             hasher.combine(caseNumber)
         }
         
-        public static func == (lhs: ResponseHandlingApi<TYPE, S>, rhs: ResponseHandlingApi<TYPE, S>) -> Bool {
+        public static func == (lhs: ResponseHandlingApi<R, S, RX>, rhs: ResponseHandlingApi<R, S, RX>) -> Bool {
             /**
              Can't compare closures/functions and it is intended.
              

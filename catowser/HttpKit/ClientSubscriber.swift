@@ -17,17 +17,17 @@ extension HttpKit {
     /// It lead to the issue that clsoures or Rx observers should be stored somewhere outside async HttpClient methods
     /// Because they can't be deallocated during async requests
     /// It must be a reference type because we will pass it to Http.Client methods
-    public class ClientSubscriber<T: ResponseType, S: ServerDescription> {
+    public class ClientSubscriber<T: ResponseType, S: ServerDescription, R: RxInterface> where R.RO.R == T, R.S == S {
         /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
-        var handlers = Set<ResponseHandlingApi<T, S>>()
+        var handlers = Set<ResponseHandlingApi<T, S, R>>()
         
         public init() {}
         
-        public func insert(_ handler: ResponseHandlingApi<T, S>) {
+        public func insert(_ handler: ResponseHandlingApi<T, S, R>) {
             handlers.insert(handler)
         }
         
-        public func remove(_ handler: ResponseHandlingApi<T, S>) {
+        public func remove(_ handler: ResponseHandlingApi<T, S, R>) {
             handlers.remove(handler)
         }
     }
