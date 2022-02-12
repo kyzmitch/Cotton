@@ -47,6 +47,8 @@ final class WebViewController: BaseViewController {
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
     /// Not private to allow access from extension
     let dnsClient: GoogleDnsClient
+    ///
+    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
     /// Was DoH used to load URL in WebView
     private(set) var dohUsed: Bool
     /// State of web view
@@ -271,7 +273,7 @@ final class WebViewController: BaseViewController {
     @available(iOS 13.0, *)
     private func cResolveDomainName(url: URL) {
         dnsRequestCancellable?.cancel()
-        dnsRequestCancellable = dnsClient.resolvedDomainName(in: url)
+        dnsRequestCancellable = dnsClient.resolvedDomainName(in: url, dnsClientSubscriber)
         .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
@@ -293,7 +295,7 @@ final class WebViewController: BaseViewController {
     
     private func rxResolveDomainName(url: URL) {
         dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url)
+        dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url, dnsClientSubscriber)
             .start(on: UIScheduler())
             .startWithResult({ [weak self] (result) in
                 guard let self = self else {

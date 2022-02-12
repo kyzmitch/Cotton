@@ -13,8 +13,8 @@ import Alamofire
 class EndpointTests: XCTestCase {
     let path = "players"
     let goodServer = MockedGoodServer()
-    // TODO: use mocked encoder, because real encoder from Alamofire is used now
-    let goodJsonEncoding: JSONRequestEncodable = JSONEncoding.default
+    // TODO: use more accurate mock to fix unit tests which used Alamofire before that successfully
+    let goodJsonEncoding: JSONRequestEncodable = MockedGoodJSONEncoding()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

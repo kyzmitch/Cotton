@@ -7,78 +7,37 @@
 //
 
 import Foundation
-import Alamofire
 #if canImport(Combine)
 import Combine
 #endif
 
 extension HttpKit.Client {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public typealias ResponseFuture<T> = Deferred<Future<T, HttpKit.HttpError>>
+    public typealias ResponseFuture<T> = Publishers.HandleEvents<Deferred<Future<T, HttpKit.HttpError>>>
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    private func cMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                               withAccessToken accessToken: String?,
-                                               responseType: T.Type) -> ResponseFuture<T> {
+    public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                withAccessToken accessToken: String?,
+                                                transport adapter: B,
+                                                _ subscriber: HttpKit.ClientSubscriber<T, Server>) -> ResponseFuture<T>
+                                                where B.TYPE == T, B.SRV == Server {
         return Combine.Deferred {
-            let subject: Future<T, HttpKit.HttpError> = .init { (promise) in
-                guard let url = endpoint.url(relatedTo: self.server) else {
-                    promise(.failure(.failedConstructUrl))
+            let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
+                guard let self = self else {
+                    promise(.failure(.zombieSelf))
                     return
                 }
                 
-                let httpRequest: URLRequest
-                do {
-                    httpRequest = try endpoint.request(url,
-                                                       httpTimeout: self.httpTimeout,
-                                                       jsonEncoder: self.jsonEncoder,
-                                                       accessToken: accessToken)
-                } catch let error as HttpKit.HttpError {
-                    promise(.failure(error))
-                    return
-                } catch {
-                    promise(.failure(.httpFailure(error: error)))
-                    return
-                }
-                
-                let codes = T.successCodes
-                
-                let _: DataRequest = AF.request(httpRequest)
-                    .validate(statusCode: codes)
-                    .responseDecodable(of: responseType,
-                                       queue: .main,
-                                       decoder: JSONDecoder(),
-                                       completionHandler: { (response) in
-                        switch response.result {
-                        case .success(let value):
-                            promise(.success(value))
-                        case .failure(let error):
-                            promise(.failure(.httpFailure(error: error)))
-                        }
-                    })
-                
-                // https://github.com/kyzmitch/Cotton/issues/14
+                adapter.transferToCombineState(promise, endpoint)
+                subscriber.insert(adapter.handlerType)
+                self.makeCleanRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
             }
             return subject
-        }
-    }
-    
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func cMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                    responseType: T.Type) -> ResponseFuture<T> {
-        let future = cMakeRequest(for: endpoint,
-                                  withAccessToken: nil,
-                                  responseType: responseType)
-        return future
-    }
-    
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func cMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                        withAccessToken accessToken: String,
-                                                        responseType: T.Type) -> ResponseFuture<T> {
-        let future = cMakeRequest(for: endpoint,
-                                  withAccessToken: accessToken,
-                                  responseType: responseType)
-        return future
+        }.handleEvents(receiveCompletion: { [weak subscriber, weak adapter] _ in
+            guard let adapter = adapter else {
+                return
+            }
+            subscriber?.remove(adapter.handlerType)
+        })
     }
 }

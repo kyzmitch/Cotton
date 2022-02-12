@@ -1,6 +1,6 @@
 //
 //  OpenSearchParser.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/20/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
