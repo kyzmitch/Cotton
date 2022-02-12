@@ -1854,7 +1854,6 @@
 				8A7EF3CD273924EF0071BB89 /* Sources */,
 				8A7EF3CE273924EF0071BB89 /* Frameworks */,
 				8A7EF3CF273924EF0071BB89 /* Resources */,
-				40800E2C25AC7DD5E28A697E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2108,8 +2107,8 @@
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
 			packageReferences = (
-				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
+				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -2268,24 +2267,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		40800E2C25AC7DD5E28A697E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4EFB9C87A566D4BFCB0AB7B2 /* [CP] Check Pods Manifest.lock */ = {
@@ -4168,7 +4149,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -4176,7 +4157,7 @@
 				minimumVersion = 5.2.0;
 			};
 		};
-		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
 			requirement = {
@@ -4189,12 +4170,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		8AC4368024798BE2008DD663 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
 			productName = Alamofire;
 		};
 		8AC4368224798BE7008DD663 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */;
 			productName = AlamofireImage;
 		};
 /* End XCSwiftPackageProductDependency section */

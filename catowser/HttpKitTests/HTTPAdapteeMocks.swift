@@ -8,15 +8,14 @@
 
 import Foundation
 @testable import HttpKit
-import ReactiveSwift
 import Combine
 
-final class MockedHTTPAdapteeWithFail<R: ResponseType, S: ServerDescription, RX: RxInterface>: HTTPRxAdapter where RX.RO.R == R, RX.S == S {
+final class MockedHTTPAdapteeWithFail<R, S, RX: RxInterface>: HTTPRxAdapter where RX.RO.R == R, RX.S == S {
     typealias TYPE = R
     typealias SRV = S
     typealias RXI = RX
     
-    let handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>
+    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>
     
     init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>) {
         self.handlerType = handlerType
@@ -34,12 +33,6 @@ final class MockedHTTPAdapteeWithFail<R: ResponseType, S: ServerDescription, RX:
         let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
         }
         return closure
-    }
-    
-    func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
-                           _ lifetime: Lifetime,
-                           _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
-        
     }
     
     func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
