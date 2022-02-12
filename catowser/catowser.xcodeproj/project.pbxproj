@@ -294,6 +294,8 @@
 		8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
+		8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */; };
+		8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0A2447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
@@ -780,6 +782,8 @@
 		8AC4367724798BDB008DD663 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AC45ECA24582453007E47EE /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Combine.framework; sourceTree = DEVELOPER_DIR; };
 		8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Combine.swift"; sourceTree = "<group>"; };
+		8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Rx.swift"; sourceTree = "<group>"; };
+		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
@@ -1487,6 +1491,7 @@
 				8AB0D40A2754AEB500493EC3 /* HttpClient+RxSwift.swift */,
 				8AB70EA327B7B214003FB59B /* RxObserverWrapper.swift */,
 				8AB70EA527B7B518003FB59B /* HTTPAdapter+Rx.swift */,
+				8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */,
 			);
 			path = ReactiveHttpKit;
 			sourceTree = "<group>";
@@ -1589,6 +1594,7 @@
 				8A328F3427B690980021F6B0 /* NetworkReachabilityAdapter.swift */,
 				8A82CDEF2351095700607162 /* HttpClient.swift */,
 				8AB4A1AB27B53043008030FB /* ClientSubscriber.swift */,
+				8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */,
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
 				8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */,
@@ -2923,6 +2929,7 @@
 				8AB70EA227B7AF58003FB59B /* HttpClient+RxSwift.swift in Sources */,
 				8AB70EA627B7B518003FB59B /* HTTPAdapter+Rx.swift in Sources */,
 				8AB70EA427B7B214003FB59B /* RxObserverWrapper.swift in Sources */,
+				8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2959,6 +2966,7 @@
 				8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */,
 				8ABDB0B427B24FB300D6EDE7 /* HttpClient+Combine.swift in Sources */,
 				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
+				8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */,
 				8AB4A1B927B583AB008030FB /* ClosureVoidWrappers.swift in Sources */,
 				8AB4A1B527B55684008030FB /* HTTPVoidAdapter.swift in Sources */,
 				8A62AED92351CD2D001A9C83 /* ServerDescription.swift in Sources */,

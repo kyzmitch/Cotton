@@ -12,8 +12,8 @@ import Combine
 
 public protocol RxAnyObserver {
     associatedtype R: ResponseType
-    public func newSend(value: R)
-    public func newSend(error: HttpKit.HttpError)
+    func newSend(value: R)
+    func newSend(error: HttpKit.HttpError)
 }
 
 /// Can't add similar Lifetime method because it returns a Disposable which is not a type but protocol already
@@ -21,17 +21,19 @@ public protocol RxAnyObserver {
 /// can't extend swift protocol Disposable with our RxAnyDisposable
 /// As a workaround this method doesn't return Disposable
 public protocol RxAnyLifetime {
-    public func newObserveEnded(_ action: @escaping () -> Void)
+    func newObserveEnded(_ action: @escaping () -> Void)
 }
 
 /// This protocol is needed to not use ReactiveSwift dependency directly
 /// It should be implemented by RxObserverWrapper which is in different Framework
-public protocol RxInterface: Hashable, Equatable {
+public protocol RxInterface: Hashable, AnyObject {
     associatedtype RO: RxAnyObserver
     associatedtype S: ServerDescription
     
-    public var observer: RO { get }
-    public var lifetime: RxAnyLifetime { get }
+    var observer: RO { get }
+    var lifetime: RxAnyLifetime { get }
+    /// Not needed actually, but maybe we have to use S type somewhere
+    var endpoint: HttpKit.Endpoint<RO.R, S> { get }
 }
 
 extension HttpKit {
@@ -39,7 +41,7 @@ extension HttpKit {
     /// Can't mark specific enum case to be available for certain OS version
     /// Deployment target was set to 13.0 from 12.1 from now
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public enum ResponseHandlingApi<R: ResponseType, S: ServerDescription, RX: RxInterface>: Hashable where RX.RO.R == R, RX.S == S {
+    public enum ResponseHandlingApi<R, S, RX: RxInterface>: Hashable where RX.RO.R == R, RX.S == S {
         case closure(ClosureWrapper<R, S>)
         case rxObserver(RX)
         case waitsForRxObserver

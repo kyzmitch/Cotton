@@ -6,15 +6,15 @@
 //  Copyright © 2021 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import HttpKit
 import ReactiveSwift
 
 extension HttpKit.Client {
-    public func rxMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                 withAccessToken accessToken: String?,
-                                                 transport adapter: B,
-                                                 _ subscriber: HttpKit.ClientSubscriber<T, Server>) -> SignalProducer<T, HttpKit.HttpError>
-                                                 where B.TYPE == T, B.SRV == Server {
+    public func rxMakeRequest<T, B: HTTPAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                     withAccessToken accessToken: String?,
+                                                     transport adapter: B,
+                                                     _ subscriber: HttpKit.ClientSubscriber<T, Server, RX>) -> SignalProducer<T, HttpKit.HttpError>
+                                                     where B.TYPE == T, B.SRV == Server, B.RXI == RX {
         let producer: SignalProducer<T, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)

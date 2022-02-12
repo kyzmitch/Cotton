@@ -20,6 +20,15 @@ extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == Htt
     }
 }
 
+extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpKit.HttpError {
+    public func newSend(value: Value) {
+        send(value: value)
+    }
+    public func newSend(error: HttpKit.HttpError) {
+        send(error: error)
+    }
+}
+
 extension Lifetime: RxAnyLifetime {
     public func newObserveEnded(_ action: @escaping () -> Void) {
         observeEnded(action)
@@ -35,6 +44,7 @@ extension HttpKit {
         
         public var observer: RO {
             // TODO: it should be recognized by compiler, don't need to force cast
+            // swiftlint:disable:next force_cast
             return rxObserver as! RO
         }
         
@@ -45,7 +55,7 @@ extension HttpKit {
         let rxObserver: Signal<RR, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint<RR, S>
+        public let endpoint: Endpoint<RR, S>
         let responseType: RR.Type
         
         public init(_ observer: Signal<RR, HttpKit.HttpError>.Observer,
@@ -72,17 +82,27 @@ extension HttpKit {
 }
 
 extension HttpKit {
-    public class RxObserverVoidWrapper<S: ServerDescription>: Hashable {
-        public let observer: Signal<Void, HttpKit.HttpError>.Observer
-        public let lifetime: Lifetime
+    public class RxObserverVoidWrapper<SS: ServerDescription>: RxVoidInterface {
+        public typealias S = SS
+        
+        public var observer: RxAnyVoidObserver {
+            return rxObserver
+        }
+        
+        public var lifetime: RxAnyLifetime {
+            return rxLifetime
+        }
+        
+        let rxObserver: Signal<Void, HttpKit.HttpError>.Observer
+        let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: VoidEndpoint<S>
+        public let endpoint: VoidEndpoint<S>
         
         public init(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
                     _ endpoint: VoidEndpoint<S>) {
-            self.observer = observer
-            self.lifetime = lifetime
+            self.rxObserver = observer
+            self.rxLifetime = lifetime
             self.endpoint = endpoint
         }
         

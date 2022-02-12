@@ -19,9 +19,9 @@ import Combine
 ///
 /// This is an adapter pattern for the high level HTTP requests transport
 public protocol HTTPAdapter: AnyObject {
-    associatedtype TYPE: ResponseType
-    associatedtype SRV: ServerDescription
-    associatedtype RXI: RxInterface
+    associatedtype TYPE
+    associatedtype SRV
+    associatedtype RXI: RxInterface where RXI.RO.R == TYPE, RXI.S == SRV
     init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>)
     
     func performRequest(_ request: URLRequest,

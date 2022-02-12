@@ -12,15 +12,15 @@ import Combine
 #endif
 
 extension HttpKit.Client {
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public typealias ResponseFuture<T> = Publishers.HandleEvents<Deferred<Future<T, HttpKit.HttpError>>>
     
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                withAccessToken accessToken: String?,
-                                                transport adapter: B,
-                                                _ subscriber: HttpKit.ClientSubscriber<T, Server>) -> ResponseFuture<T>
-                                                where B.TYPE == T, B.SRV == Server {
+    /// RX type is not needed for this Combine based interface, but it is required by `ClientSubscriber` type
+    /// So, probably will create some dummy type for this
+    public func cMakeRequest<T, B: HTTPAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                    withAccessToken accessToken: String?,
+                                                    transport adapter: B,
+                                                    _ subscriber: HttpKit.ClientSubscriber<T, Server, RX>) -> ResponseFuture<T>
+                                                    where B.TYPE == T, B.SRV == Server, B.RXI == RX {
         return Combine.Deferred {
             let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
                 guard let self = self else {

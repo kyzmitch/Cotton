@@ -14,9 +14,10 @@ extension HTTPAdapter {
                                           _ lifetime: Lifetime,
                                           _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
         if case .waitsForRxObserver = handlerType {
-            typealias SignalObserverType = Signal<TYPE, HttpKit.HttpError>.Observer
-            let observerWrapper: HttpKit.RxObserverWrapper<TYPE, SRV, SignalObserverType> = .init(observer, lifetime, endpoint)
-            handlerType = .rxObserver(observerWrapper)
+            let observerWrapper: HttpKit.RxObserverWrapper<TYPE, SRV, RXI.RO> = .init(observer, lifetime, endpoint)
+            // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
+            // swiftlint:disable:next force_cast
+            handlerType = .rxObserver(observerWrapper as! Self.RXI)
         }
     }
 }
@@ -27,7 +28,9 @@ extension HTTPVoidAdapter {
                                           _ endpoint: HttpKit.VoidEndpoint<SRV>) {
         if case .waitsForRxObserver = handlerType {
             let observerWrapper: HttpKit.RxObserverVoidWrapper<SRV> = .init(observer, lifetime, endpoint)
-            handlerType = .rxObserver(observerWrapper)
+            // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
+            // swiftlint:disable:next force_cast
+            handlerType = .rxObserver(observerWrapper as! Self.RXI)
         }
     }
 }
