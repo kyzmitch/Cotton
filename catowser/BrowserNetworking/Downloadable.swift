@@ -1,6 +1,6 @@
 //
 //  Downloadable.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/22/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
@@ -12,6 +12,7 @@ import ReactiveSwift
 #if canImport(CryptoKit)
 import CryptoKit
 #endif
+import HttpKit
 
 /// Represents a remote file which can be downloaded and stored locally
 public protocol Downloadable {
@@ -69,7 +70,7 @@ extension Downloadable {
         let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         assert(urls.count != 0, "Failed to find documents directory")
         guard let documentsURL = urls.first else {
-            throw HttpKit.DownloadError.noDocumentsDirectory
+            throw BrowserNetworking.DownloadError.noDocumentsDirectory
         }
         return documentsURL.destination(using: fileName)
     }
@@ -87,14 +88,17 @@ fileprivate extension URL {
     }
 }
 
-extension HttpKit {
+/// Probably temporarily namespace (types defined in it are used to belong to HttpKit namespace)
+public enum BrowserNetworking {}
+
+extension BrowserNetworking {
     public enum ProgressResponse<T> {
         case progress(Progress)
         case complete(T)
     }
 }
 
-extension HttpKit {
+extension BrowserNetworking {
     public enum DownloadError: LocalizedError {
         case zombyInstance
         case noDocumentsDirectory
@@ -123,7 +127,7 @@ extension HttpKit {
     }
 }
 
-extension HttpKit {
+extension BrowserNetworking {
     fileprivate var appGroupIdentifier: String {
         "group.com.ae.cotton-browser"
     }
@@ -203,7 +207,7 @@ extension HttpKit {
                     observer.send(error: .noHttpHeadersInResponse)
                     return
                 }
-                let key = HttpHeader.contentLength(0).key
+                let key = HttpKit.HttpHeader.contentLength(0).key
                 guard let contentLengthValue = headers.value(for: key) else {
                     observer.send(error: .noContentLengthHeader)
                     return

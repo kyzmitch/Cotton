@@ -9,13 +9,13 @@
 import Foundation
 
 extension HttpKit {
-    public enum HttpHeader {
+    public enum HttpHeader: Equatable, Hashable {
         case contentType(ContentType)
         case contentLength(Int)
         case accept(ContentType)
         case authorization(token: String)
         
-        var key: String {
+        public var key: String {
             switch self {
             case .contentType:
                 return "Content-Type"
@@ -28,7 +28,7 @@ extension HttpKit {
             }
         }
         
-        var value: String {
+        public var value: String {
             switch self {
             case .contentType(let type):
                 return type.rawValue
@@ -40,6 +40,26 @@ extension HttpKit {
                 // setup different ways for authorization, not only Bearer
                 return "Bearer \(token)"
             }
+        }
+        
+        public static func == (lhs: HttpKit.HttpHeader, rhs: HttpKit.HttpHeader) -> Bool {
+            switch (lhs, rhs) {
+            case (.contentType(let lType), contentType(let rType)):
+                return lType == rType
+            case (.contentLength(let lLength), contentLength(let rLength)):
+                return lLength == rLength
+            case (.accept(let lType), accept(let rType)):
+                return lType == rType
+            case (.authorization(token: let lToken), .authorization(token: let rToken)):
+                return lToken == rToken
+            default:
+                return false
+            }
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(key)
+            hasher.combine(value)
         }
     }
     

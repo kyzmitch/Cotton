@@ -1,6 +1,6 @@
 //
 //  AuthChallenge.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 2/11/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
@@ -8,6 +8,7 @@
 
 import Foundation
 import Security
+import HttpKit
 import Alamofire
 
 /**

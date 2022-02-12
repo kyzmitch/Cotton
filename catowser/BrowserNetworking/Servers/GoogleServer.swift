@@ -1,6 +1,6 @@
 //
 //  GoogleServer.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 10/12/19.
 //  Copyright © 2019 andreiermoshin. All rights reserved.
