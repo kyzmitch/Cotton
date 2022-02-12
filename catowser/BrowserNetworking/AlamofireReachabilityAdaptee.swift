@@ -22,7 +22,6 @@ public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkRe
             assertionFailure("No connectivity manager for: \(server.hostString)")
             return nil
         }
-        return nil
     }
     
     public func startListening(onQueue queue: DispatchQueue, onUpdatePerforming listener: @escaping Listener) -> Bool {
