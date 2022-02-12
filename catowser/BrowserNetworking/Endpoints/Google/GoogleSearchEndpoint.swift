@@ -12,7 +12,7 @@ import ReactiveSwift
 import Combine
 #endif
 
-public typealias GoogleSuggestionsClient = HttpKit.Client<GoogleServer>
+public typealias GoogleSuggestionsClient = HttpKit.Client<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
 typealias GSearchEndpoint = HttpKit.Endpoint<GoogleSearchSuggestionsResponse, GoogleServer>
 public typealias GSearchClientSubscriber = HttpKit.ClientSubscriber<GoogleSearchSuggestionsResponse, GoogleServer>
 public typealias GSearchProducer = SignalProducer<GoogleSearchSuggestionsResponse, HttpKit.HttpError>

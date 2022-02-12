@@ -17,7 +17,7 @@ import Combine
 
 /// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
 
-public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer>
+public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
 
 typealias GDNSjsonEndpoint = HttpKit.Endpoint<GoogleDNSOverJSONResponse, GoogleDnsServer>
 public typealias GDNSJsonClientSubscriber = HttpKit.ClientSubscriber<GoogleDNSOverJSONResponse, GoogleDnsServer>

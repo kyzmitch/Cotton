@@ -1,5 +1,5 @@
 //
-//  HTTPNetworkingBackendMocks.swift
+//  HTTPAdapteeMocks.swift
 //  HttpKitTests
 //
 //  Created by Andrei Ermoshin on 1/25/22.
@@ -11,7 +11,7 @@ import Foundation
 import ReactiveSwift
 import Combine
 
-final class MockedTypedNetworkingBackendWithFail<RType: ResponseType, SType: ServerDescription>: HTTPAdapter {
+final class MockedHTTPAdapteeWithFail<RType: ResponseType, SType: ServerDescription>: HTTPAdapter {
     typealias TYPE = RType
     typealias SRV = SType
     

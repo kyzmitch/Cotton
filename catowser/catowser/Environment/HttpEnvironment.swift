@@ -16,12 +16,24 @@ final class HttpEnvironment {
     
     let dnsClient: GoogleDnsClient
     let googleClient: GoogleSuggestionsClient
+    let dnsAlReachability: AlamofireReachabilityAdaptee<GoogleDnsServer>
+    let googleAlReachability: AlamofireReachabilityAdaptee<GoogleServer>
     
     private init() {
         let googleDNSserver = GoogleDnsServer()
-        dnsClient = .init(server: googleDNSserver, jsonEncoder: JSONEncoding.default, httpTimeout: 2)
+        // swiftlint:disable:next force_unwrapping
+        dnsAlReachability = .init(server: googleDNSserver)!
+        dnsClient = .init(server: googleDNSserver,
+                          jsonEncoder: JSONEncoding.default,
+                          reachability: dnsAlReachability,
+                          httpTimeout: 2)
         let googleServer = GoogleServer()
-        googleClient = .init(server: googleServer, jsonEncoder: JSONEncoding.default, httpTimeout: 10)
+        // swiftlint:disable:next force_unwrapping
+        googleAlReachability = .init(server: googleServer)!
+        googleClient = .init(server: googleServer,
+                             jsonEncoder: JSONEncoding.default,
+                             reachability: googleAlReachability,
+                             httpTimeout: 10)
     }
 }
 

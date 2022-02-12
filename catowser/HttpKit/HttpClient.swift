@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Alamofire
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
@@ -24,10 +23,10 @@ public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
 extension HttpKit {
-    public class Client<Server: ServerDescription> {
+    public class Client<Server, R: NetworkReachabilityAdapter> where R.S == Server {
         let server: Server
         
-        private let connectivityManager: NetworkReachabilityManager?
+        private let connectivityManager: R?
         
         let sessionTaskHandler: HttpClientSessionTaskDelegate?
         
@@ -42,18 +41,19 @@ extension HttpKit {
         
         let jsonEncoder: JSONRequestEncodable
         
-        public typealias HostNetState = NetworkReachabilityManager.NetworkReachabilityStatus
+        public let connectionStateStream: MutableProperty<NetworkReachabilityStatus>
         
-        public let connectionStateStream: MutableProperty<HostNetState>
-        
-        private lazy var hostListener: Alamofire.NetworkReachabilityManager.Listener = { [weak self] status in
+        private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
             guard let self = self else {
                 return
             }
             self.connectionStateStream.value = status
         }
         
-        public init(server: Server, jsonEncoder: JSONRequestEncodable, httpTimeout: TimeInterval = 60) {
+        public init(server: Server,
+                    jsonEncoder: JSONRequestEncodable,
+                    reachability: R,
+                    httpTimeout: TimeInterval = 60) {
             self.server = server
             self.httpTimeout = httpTimeout
             self.jsonEncoder = jsonEncoder
@@ -66,19 +66,12 @@ extension HttpKit {
                                     delegateQueue: operationQueue)
             sessionTaskHandler = .init()
             
-            if let manager = NetworkReachabilityManager(host: server.hostString) {
-                connectivityManager = manager
-            } else if let manager = NetworkReachabilityManager() {
-                connectivityManager = manager
-            } else {
-                connectivityManager = nil
-                assertionFailure("No connectivity manager for: \(server.hostString)")
-            }
+            connectivityManager = reachability
             connectionStateStream = .init(.unknown)
             guard let cManager = connectivityManager else {
                 return
             }
-            guard cManager.startListening(onUpdatePerforming: hostListener) else {
+            guard cManager.startListening(onQueue: .main, onUpdatePerforming: hostListener) else {
                 print("Connectivity listening failed to start")
                 return
             }

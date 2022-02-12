@@ -21,10 +21,16 @@ class HttpClientTests: XCTestCase {
                                                              headers: nil,
                                                              encodingMethod: .queryString(queryItems: []))
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
-    lazy var goodHttpClient: HttpKit.Client<MockedGoodServer> = .init(server: goodServerMock,
-                                                                      jsonEncoder: goodJsonEncodingMock)
-    lazy var badNoHostHttpClient: HttpKit.Client<MockedBadNoHostServer> = .init(server: badNoHostServerMock,
-                                                                                jsonEncoder: goodJsonEncodingMock)
+    // swiftlint:disable:next force_unwrapping
+    lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
+    lazy var goodHttpClient: HttpKit.Client<MockedGoodServer, MockedReachabilityAdaptee> = .init(server: goodServerMock,
+                                                                                                 jsonEncoder: goodJsonEncodingMock,
+                                                                                                 reachability: goodReachabilityMock)
+    // swiftlint:disable:next force_unwrapping
+    lazy var  badReachabilityMock: MockedReachabilityAdaptee = .init(server: badNoHostServerMock)!
+    lazy var badNoHostHttpClient: HttpKit.Client<MockedBadNoHostServer, MockedReachabilityAdaptee> = .init(server: badNoHostServerMock,
+                                                                                                           jsonEncoder: goodJsonEncodingMock,
+                                                                                                           reachability: badReachabilityMock)
 
     func testUnauthorizedRequest() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
@@ -34,10 +40,10 @@ class HttpClientTests: XCTestCase {
             XCTAssertEqual(result.error, HttpKit.HttpError.httpFailure(error: nsError), "Not expected error")
             expectationUrlFail.fulfill()
         }, goodEndpointMock)
-        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse, MockedGoodServer> = .init(.closure(closureWrapper))
+        let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse, MockedGoodServer> = .init(.closure(closureWrapper))
         goodHttpClient.makeCleanRequest(for: goodEndpointMock,
                                            withAccessToken: nil,
-                                           transportAdapter: badNetBackendMock)
+                                           transport: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 1.0)
     }
     
@@ -48,10 +54,10 @@ class HttpClientTests: XCTestCase {
             XCTAssertEqual(result.error, HttpKit.HttpError.failedConstructUrl, "Not expected error")
             expectationUrlFail.fulfill()
         }, badPathEndpointMock)
-        let badNetBackendMock: MockedTypedNetworkingBackendWithFail<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init(.closure(closureWrapper))
+        let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init(.closure(closureWrapper))
         badNoHostHttpClient.makeCleanRequest(for: badPathEndpointMock,
                                                 withAccessToken: nil,
-                                                transportAdapter: badNetBackendMock)
+                                                transport: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 0.5)
     }
 }
