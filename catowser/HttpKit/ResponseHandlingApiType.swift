@@ -6,10 +6,29 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+
+public protocol RxAnyObserver {
+    associatedtype R: ResponseType
+    public func newSend(value: R)
+    public func newSend(error: HttpKit.HttpError)
+}
+
+/// Can't add similar Lifetime method because it returns a Disposable which is not a type but protocol already
+/// So, can't extend swift protocol like RxAnyDisposable, in other words
+/// can't extend swift protocol Disposable with our RxAnyDisposable
+public protocol RxAnyLifetime {}
+
+/// This protocol is needed to not use ReactiveSwift dependency directly
+/// It should be implemented by RxObserverWrapper which is in different Framework
+public protocol RxInterface: Hashable, Equatable {
+    associatedtype RO: RxAnyObserver
+    
+    public var observer: RO { get }
+    public var lifetime: RxAnyLifetime { get }
+}
 
 extension HttpKit {
     /// Combine Future type is only available from ios 13 https://stackoverflow.com/a/68754297
@@ -18,7 +37,7 @@ extension HttpKit {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public enum ResponseHandlingApi<TYPE: ResponseType, S: ServerDescription>: Hashable {
         case closure(ClosureWrapper<TYPE, S>)
-        case rxObserver(RxObserverWrapper<TYPE, S>)
+        case rxObserver(RxInterface<TYPE, S>)
         case waitsForRxObserver
         case combine(CombinePromiseWrapper<TYPE, S>)
         case waitsForCombinePromise

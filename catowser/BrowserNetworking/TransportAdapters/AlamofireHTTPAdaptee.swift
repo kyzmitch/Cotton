@@ -7,6 +7,7 @@
 //
 
 import HttpKit
+import ReactiveHttpKit
 import Alamofire
 import ReactiveSwift
 #if canImport(Combine)
@@ -34,9 +35,9 @@ final class AlamofireHTTPAdaptee<RType: ResponseType, SType: ServerDescription>:
             case .rxObserver(let observerWrapper):
                 switch result {
                 case .success(let value):
-                    observerWrapper.observer.send(value: value)
+                    observerWrapper.observer.newSend(value: value)
                 case .failure(let error):
-                    observerWrapper.observer.send(error: error)
+                    observerWrapper.observer.newSend(error: error)
                 }
             case .waitsForRxObserver, .waitsForCombinePromise:
                 break
@@ -76,15 +77,6 @@ final class AlamofireHTTPAdaptee<RType: ResponseType, SType: ServerDescription>:
             })
         } else if case let .combine(_) = handlerType {
             // https://github.com/kyzmitch/Cotton/issues/14
-        }
-    }
-    
-    func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
-                           _ lifetime: Lifetime,
-                           _ endpoint: HttpKit.Endpoint<RType, SType>) {
-        if case .waitsForRxObserver = handlerType {
-            let observerWrapper: HttpKit.RxObserverWrapper<RType, SType> = .init(observer, lifetime, endpoint)
-            handlerType = .rxObserver(observerWrapper)
         }
     }
     

@@ -6,7 +6,6 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
@@ -31,11 +30,8 @@ public protocol HTTPAdapter: AnyObject {
     /// So, better to store it here in reference type
     func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
-    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV> { get }
+    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV> { get set }
     
-    /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
-                                          _ lifetime: Lifetime,
-                                          _ endpoint: HttpKit.Endpoint<TYPE, SRV>)
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
                                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>)
 }

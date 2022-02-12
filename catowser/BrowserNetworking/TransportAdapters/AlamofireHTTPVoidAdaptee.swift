@@ -73,15 +73,6 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
         }
     }
     
-    func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
-                           _ lifetime: Lifetime,
-                           _ endpoint: HttpKit.VoidEndpoint<SRV>) {
-        if case .waitsForRxObserver = handlerType {
-            let observerWrapper: HttpKit.RxObserverVoidWrapper<SType> = .init(observer, lifetime, endpoint)
-            handlerType = .rxObserver(observerWrapper)
-        }
-    }
-    
     func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
                                 _ endpoint: HttpKit.VoidEndpoint<SRV>) {
         if case .waitsForCombinePromise = handlerType {

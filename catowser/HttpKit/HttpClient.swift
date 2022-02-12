@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
@@ -41,13 +40,13 @@ extension HttpKit {
         
         let jsonEncoder: JSONRequestEncodable
         
-        public let connectionStateStream: MutableProperty<NetworkReachabilityStatus>
-        
         private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
             guard let self = self else {
                 return
             }
-            self.connectionStateStream.value = status
+            // TODO: need to be implemented without RX
+            // public let connectionStateStream: MutableProperty<NetworkReachabilityStatus>
+            // self.connectionStateStream.value = status
         }
         
         public init(server: Server,
@@ -67,7 +66,6 @@ extension HttpKit {
             sessionTaskHandler = .init()
             
             connectivityManager = reachability
-            connectionStateStream = .init(.unknown)
             guard let cManager = connectivityManager else {
                 return
             }
