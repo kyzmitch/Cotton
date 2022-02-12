@@ -73,7 +73,7 @@ final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPAdapter where RX.RO
                 self.wrapperHandler()(result)
             })
         if case let .rxObserver(observerWrapper) = handlerType {
-            observerWrapper.lifetime.observeEnded({
+            observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
             })
         } else if case let .combine(_) = handlerType {

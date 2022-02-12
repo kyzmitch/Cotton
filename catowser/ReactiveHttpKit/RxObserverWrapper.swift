@@ -20,17 +20,22 @@ extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == Htt
     }
 }
 
-extension Lifetime: RxAnyLifetime {}
+extension Lifetime: RxAnyLifetime {
+    public func newObserveEnded(_ action: @escaping () -> Void) {
+        observeEnded(action)
+    }
+}
 
 extension HttpKit {
     public class RxObserverWrapper<RR,
                                    SS: ServerDescription,
                                    RX: RxAnyObserver>: RxInterface where RX.R == RR {
+        public typealias S = SS
         public typealias RO = RX
         
         public var observer: RO {
             // TODO: it should be recognized by compiler, don't need to force cast
-            return rxObserver as! RX
+            return rxObserver as! RO
         }
         
         public var lifetime: RxAnyLifetime {
@@ -40,12 +45,12 @@ extension HttpKit {
         let rxObserver: Signal<RR, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint<RR, SS>
+        let endpoint: Endpoint<RR, S>
         let responseType: RR.Type
         
         public init(_ observer: Signal<RR, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
-                    _ endpoint: Endpoint<RR, SS>) {
+                    _ endpoint: Endpoint<RR, S>) {
             self.rxObserver = observer
             self.rxLifetime = lifetime
             self.endpoint = endpoint
@@ -60,7 +65,7 @@ extension HttpKit {
             hasher.combine(endpoint)
         }
         
-        public static func == (lhs: RxObserverWrapper<RR, SS, RX>, rhs: RxObserverWrapper<RR, SS, RX>) -> Bool {
+        public static func == (lhs: RxObserverWrapper<RR, S, RO>, rhs: RxObserverWrapper<RR, S, RO>) -> Bool {
             return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
         }
     }

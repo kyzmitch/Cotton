@@ -19,7 +19,10 @@ public protocol RxAnyObserver {
 /// Can't add similar Lifetime method because it returns a Disposable which is not a type but protocol already
 /// So, can't extend swift protocol like RxAnyDisposable, in other words
 /// can't extend swift protocol Disposable with our RxAnyDisposable
-public protocol RxAnyLifetime {}
+/// As a workaround this method doesn't return Disposable
+public protocol RxAnyLifetime {
+    public func newObserveEnded(_ action: @escaping () -> Void)
+}
 
 /// This protocol is needed to not use ReactiveSwift dependency directly
 /// It should be implemented by RxObserverWrapper which is in different Framework
