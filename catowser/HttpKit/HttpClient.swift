@@ -79,7 +79,7 @@ extension HttpKit {
         
         public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                        withAccessToken accessToken: String?,
-                                                       transport adapter: B) where B.TYPE == T, B.SRV == Server {
+                                                       transport adapter: B) where B.Response == T, B.Server == Server {
             
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
@@ -108,7 +108,7 @@ extension HttpKit {
         
         public func makeRxVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
                                                           withAccessToken accessToken: String?,
-                                                          transportAdapter: B) where B.SRV == Server {
+                                                          transportAdapter: B) where B.Server == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
                 transportAdapter.wrapperHandler()(result)
@@ -140,7 +140,7 @@ extension HttpKit {
         
         public func makeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                    withAccessToken accessToken: String?,
-                                                   transport adapter: B) where B.TYPE == T, B.SRV == Server {
+                                                   transport adapter: B) where B.Response == T, B.Server == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 adapter.wrapperHandler()(result)

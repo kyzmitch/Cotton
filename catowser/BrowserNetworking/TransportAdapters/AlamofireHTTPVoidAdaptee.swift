@@ -14,12 +14,12 @@ import Combine
 #endif
 
 final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter where RX.S == S {
-    typealias SRV = S
-    typealias RXI = RX
+    typealias Server = S
+    typealias ObserverWrapper = RX
 
-    var handlerType: HttpKit.ResponseVoidHandlingApi<SRV, RXI>
+    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<SRV, RXI>) {
+    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
     
@@ -75,9 +75,9 @@ final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter wh
     }
     
     func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                                _ endpoint: HttpKit.VoidEndpoint<SRV>) {
+                                _ endpoint: HttpKit.VoidEndpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<SRV> = .init(promise, endpoint)
+            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

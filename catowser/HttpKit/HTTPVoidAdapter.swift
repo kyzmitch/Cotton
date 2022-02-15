@@ -11,12 +11,12 @@ import Combine
 #endif
 
 public protocol HTTPVoidAdapter: AnyObject {
-    associatedtype SRV
-    associatedtype RXI: RxVoidInterface where RXI.S == SRV
+    associatedtype Server
+    associatedtype ObserverWrapper: RxVoidInterface where ObserverWrapper.S == Server
     
-    var handlerType: HttpKit.ResponseVoidHandlingApi<SRV, RXI> { get set }
+    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper> { get set }
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<SRV, RXI>)
+    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>)
     func performVoidRequest(_ request: URLRequest,
                             sucessCodes: [Int])
     
@@ -25,5 +25,5 @@ public protocol HTTPVoidAdapter: AnyObject {
     func wrapperHandler() -> (Result<Void, HttpKit.HttpError>) -> Void
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                                               _ endpoint: HttpKit.VoidEndpoint<SRV>)
+                                               _ endpoint: HttpKit.VoidEndpoint<Server>)
 }

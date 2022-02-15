@@ -13,20 +13,20 @@ public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpErr
 
 extension HttpKit.Client {
     public func makePublicRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                     transportAdapter: B) where B.TYPE == T, B.SRV == Server {
+                                                     transportAdapter: B) where B.Response == T, B.Server == Server {
         makeRxRequest(for: endpoint, withAccessToken: nil, transport: transportAdapter)
     }
     
     public func makeAuthorizedRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                          withAccessToken accessToken: String,
-                                                         transportAdapter: B) where B.TYPE == T, B.SRV == Server {
+                                                         transportAdapter: B) where B.Response == T, B.Server == Server {
         makeRxRequest(for: endpoint, withAccessToken: accessToken, transport: transportAdapter)
     }
     
     public func rxMakePublicRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                              transport adapter: B,
                                                              _ subscriber: RxSubscriber<T, Server, RX>) -> RxProducer<T>
-                                                             where B.TYPE == T, B.SRV == Server, B.RXI == RX {
+                                                             where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer = rxMakeRequest(for: endpoint,
                                         withAccessToken: nil,
                                         transport: adapter,
@@ -38,7 +38,7 @@ extension HttpKit.Client {
                                                                  withAccessToken accessToken: String,
                                                                  transport adapter: B,
                                                                  _ subscriber: RxSubscriber<T, Server, RX>) -> RxProducer<T>
-                                                                 where B.TYPE == T, B.SRV == Server, B.RXI == RX {
+                                                                 where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer = rxMakeRequest(for: endpoint,
                                         withAccessToken: accessToken,
                                         transport: adapter,
@@ -49,7 +49,7 @@ extension HttpKit.Client {
     public func cMakePublicRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                        transport adapter: B,
                                                        _ subscriber: RxSubscriber<T, Server, RX>) -> ResponseFuture<T>
-    where B.TYPE == T, B.SRV == Server, B.RXI == RX {
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         // TODO: Use HTTPAdapter to remove RX dependency for Combine interfaces
         let future = cMakeRequest(for: endpoint,
                                      withAccessToken: nil,
@@ -62,7 +62,7 @@ extension HttpKit.Client {
                                                            withAccessToken accessToken: String,
                                                            transport adapter: B,
                                                            _ subscriber: RxSubscriber<T, Server, RX>) -> ResponseFuture<T>
-    where B.TYPE == T, B.SRV == Server, B.RXI == RX {
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         // TODO: Use HTTPAdapter to remove RX dependency for Combine interfaces
         let future = cMakeRequest(for: endpoint,
                                      withAccessToken: accessToken,

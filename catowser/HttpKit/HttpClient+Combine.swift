@@ -18,7 +18,7 @@ extension HttpKit.Client {
                                                 withAccessToken accessToken: String?,
                                                 transport adapter: B,
                                                 _ subscriber: RxSubscriber<T, Server, RX>) -> ResponseFuture<T>
-    where B.TYPE == T, B.SRV == Server, B.RXI == RX {
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         return Combine.Deferred {
             let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
                 guard let self = self else {

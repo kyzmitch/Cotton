@@ -15,18 +15,18 @@ import Combine
 #endif
 
 final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.Observer.Response == R, RX.Server == S {
-    typealias TYPE = R
-    typealias SRV = S
-    typealias RXI = RX
+    typealias Response = R
+    typealias Server = S
+    typealias ObserverWrapper = RX
     
-    var handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>
+    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>) {
+    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
     
-    func wrapperHandler() -> (Result<TYPE, HttpKit.HttpError>) -> Void {
-        let closure = { [weak self] (result: Result<TYPE, HttpKit.HttpError>) in
+    func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void {
+        let closure = { [weak self] (result: Result<Response, HttpKit.HttpError>) in
             guard let self = self else {
                 return
             }
@@ -55,11 +55,11 @@ final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.
         let dataRequest: DataRequest = AF.request(request)
         dataRequest
             .validate(statusCode: sucessCodes)
-            .responseDecodable(of: TYPE.self,
+            .responseDecodable(of: Response.self,
                                queue: .main,
                                decoder: JSONDecoder(),
                                completionHandler: { [weak self] (response) in
-                let result: Result<TYPE, HttpKit.HttpError>
+                let result: Result<Response, HttpKit.HttpError>
                 switch response.result {
                 case .success(let value):
                     result = .success(value)
@@ -81,10 +81,10 @@ final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.
         }
     }
     
-    func transferToCombineState(_ promise: @escaping Future<TYPE, HttpKit.HttpError>.Promise,
-                                _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
+    func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+                                _ endpoint: HttpKit.Endpoint<Response, Server>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseWrapper<TYPE, SRV> = .init(promise, endpoint)
+            let promiseWrapper: HttpKit.CombinePromiseWrapper<Response, Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

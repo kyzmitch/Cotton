@@ -10,14 +10,14 @@ import HttpKit
 import ReactiveSwift
 
 extension HTTPRxAdapter {
-    /* mutating */ func transferToRxState(_ observer: Signal<TYPE, HttpKit.HttpError>.Observer,
+    /* mutating */ func transferToRxState(_ observer: Signal<Response, HttpKit.HttpError>.Observer,
                                           _ lifetime: Lifetime,
-                                          _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
+                                          _ endpoint: HttpKit.Endpoint<Response, Server>) {
         if case .waitsForRxObserver = handlerType {
-            let observerWrapper: HttpKit.RxObserverWrapper<TYPE, SRV, RXI.Observer> = .init(observer, lifetime, endpoint)
+            let observerWrapper: HttpKit.RxObserverWrapper<Response, Server, ObserverWrapper.Observer> = .init(observer, lifetime, endpoint)
             // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
             // swiftlint:disable:next force_cast
-            handlerType = .rxObserver(observerWrapper as! Self.RXI)
+            handlerType = .rxObserver(observerWrapper as! Self.ObserverWrapper)
         }
     }
 }
@@ -25,12 +25,12 @@ extension HTTPRxAdapter {
 extension HTTPVoidAdapter {
     /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
                                           _ lifetime: Lifetime,
-                                          _ endpoint: HttpKit.VoidEndpoint<SRV>) {
+                                          _ endpoint: HttpKit.VoidEndpoint<Server>) {
         if case .waitsForRxObserver = handlerType {
-            let observerWrapper: HttpKit.RxObserverVoidWrapper<SRV> = .init(observer, lifetime, endpoint)
+            let observerWrapper: HttpKit.RxObserverVoidWrapper<Server> = .init(observer, lifetime, endpoint)
             // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
             // swiftlint:disable:next force_cast
-            handlerType = .rxObserver(observerWrapper as! Self.RXI)
+            handlerType = .rxObserver(observerWrapper as! Self.ObserverWrapper)
         }
     }
 }

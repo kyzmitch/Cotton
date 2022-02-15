@@ -14,7 +14,7 @@ extension HttpKit.Client {
                                                        withAccessToken accessToken: String?,
                                                        transport adapter: B,
                                                        _ subscriber: RxSubscriber<T, Server, RX>) -> SignalProducer<T, HttpKit.HttpError>
-                                                     where B.TYPE == T, B.SRV == Server, B.RXI == RX {
+                                                     where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer: SignalProducer<T, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
@@ -39,7 +39,7 @@ extension HttpKit.Client {
     public func rxMakeVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
                                                       withAccessToken accessToken: String?,
                                                       transport adapter: B) -> SignalProducer<Void, HttpKit.HttpError>
-                                                      where B.SRV == Server {
+                                                      where B.Server == Server {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
