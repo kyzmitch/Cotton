@@ -22,7 +22,7 @@ public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
 extension HttpKit {
-    public class Client<Server, R: NetworkReachabilityAdapter> where R.S == Server {
+    public class Client<Server, R: NetworkReachabilityAdapter> where R.Server == Server {
         let server: Server
         
         private let connectivityManager: R?
@@ -44,9 +44,7 @@ extension HttpKit {
             guard let self = self else {
                 return
             }
-            // TODO: need to be implemented without RX
-            // public let connectionStateStream: MutableProperty<NetworkReachabilityStatus>
-            // self.connectionStateStream.value = status
+            // TODO: need some interface for reachability but without RX (MutableProperty)
         }
         
         public init(server: Server,
@@ -108,10 +106,10 @@ extension HttpKit {
         
         public func makeRxVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
                                                           withAccessToken accessToken: String?,
-                                                          transportAdapter: B) where B.Server == Server {
+                                                          transport adapter: B) where B.Server == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                transportAdapter.wrapperHandler()(result)
+                adapter.wrapperHandler()(result)
                 return
             }
             
@@ -123,17 +121,16 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
-                transportAdapter.wrapperHandler()(result)
+                adapter.wrapperHandler()(result)
                 return
             } catch {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                transportAdapter.wrapperHandler()(result)
+                adapter.wrapperHandler()(result)
                 return
             }
             
             let codes = HttpKit.VoidResponse.successCodes
-            // backendHandlersPool.append(transportAdapter)
-            transportAdapter.performVoidRequest(httpRequest, sucessCodes: codes)
+            adapter.performVoidRequest(httpRequest, sucessCodes: codes)
         }
         
         // MARK: - Clear functions without dependencies

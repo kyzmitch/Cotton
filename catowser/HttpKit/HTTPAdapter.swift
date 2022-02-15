@@ -51,7 +51,9 @@ public protocol HTTPAdapter: AnyObject {
     /// So, better to store it here in reference type
     func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
-    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, HttpKit.RxFreeInterface<Response, Server>> { get set }
+    var handlerType: HttpKit.ResponseHandlingApi<Response,
+                                                    Server,
+                                                    HttpKit.RxFreeInterface<Response, Server>> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
                                                _ endpoint: HttpKit.Endpoint<Response, Server>)

@@ -28,9 +28,9 @@ extension HttpKit {
 }
 
 public protocol NetworkReachabilityAdapter: AnyObject {
-    associatedtype S: ServerDescription
+    associatedtype Server: ServerDescription
     typealias Listener = (HttpKit.NetworkReachabilityStatus) -> Void
-    init?(server: S)
+    init?(server: Server)
     @discardableResult
     func startListening(onQueue queue: DispatchQueue,
                         onUpdatePerforming listener: @escaping Listener) -> Bool
