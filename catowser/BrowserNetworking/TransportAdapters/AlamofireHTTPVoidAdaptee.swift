@@ -13,7 +13,7 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter where RX.S == S {
+final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter where RX.Server == S {
     typealias Server = S
     typealias ObserverWrapper = RX
 

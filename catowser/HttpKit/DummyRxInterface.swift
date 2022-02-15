@@ -10,9 +10,9 @@
 /// to be able to use Combine interfaces
 extension HttpKit {
     public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
-        public typealias R = RR
+        public typealias Response = RR
         
-        public func newSend(value: R) {}
+        public func newSend(value: Response) {}
         public func newSend(error: HttpKit.HttpError) {}
     }
     
@@ -21,10 +21,10 @@ extension HttpKit {
     }
     
     public class DummyRxType<R,
-                      SS: ServerDescription,
-                      RX: RxAnyObserver>: RxInterface where RX.Response == R {
+                             SS: ServerDescription,
+                             RX: RxAnyObserver>: RxInterface where RX.Response == R {
         public typealias Observer = RX
-        public typealias S = SS
+        public typealias Server = SS
         
         public var observer: RX {
             // TODO: think about why it ask for conversion
@@ -36,7 +36,7 @@ extension HttpKit {
             return DummyRxLifetime()
         }
         
-        public var endpoint: HttpKit.Endpoint<R, S> {
+        public var endpoint: HttpKit.Endpoint<R, Server> {
             return .init(method: .get, path: "", headers: nil, encodingMethod: .httpBodyJSON(parameters: [:]))
         }
         

@@ -41,20 +41,25 @@ extension HttpKit {
     /// Can't mark specific enum case to be available for certain OS version
     /// Deployment target was set to 13.0 from 12.1 from now
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public enum ResponseHandlingApi<R, S, RX: RxInterface>: Hashable where RX.Observer.Response == R, RX.Server == S {
-        case closure(ClosureWrapper<R, S>)
-        case rxObserver(RX)
+    public enum ResponseHandlingApi<Response,
+                                    Server,
+                                    Observer: RxInterface>: Hashable where Observer.Observer.Response == Response,
+                                                                           Observer.Server == Server {
+        case closure(ClosureWrapper<Response, Server>)
+        case rxObserver(Observer)
         case waitsForRxObserver
-        case combine(CombinePromiseWrapper<R, S>)
+        case combine(CombinePromiseWrapper<Response, Server>)
         case waitsForCombinePromise
         case asyncAwaitConcurrency
         
+        public typealias ResponseType<R, S, O> = ResponseHandlingApi<Response, Server, Observer>
+        
         // MARK: - convenience methods
         
-        public static func closure(_ closure: @escaping (Result<R, HttpKit.HttpError>) -> Void,
-                                   _ endpoint: Endpoint<R, S>) -> ResponseHandlingApi<R, S, RX> {
-            let closureWrapper: ClosureWrapper<R, S> = .init(closure, endpoint)
-            return ResponseHandlingApi<R, S, RX>.closure(closureWrapper)
+        public static func closure(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
+                                   _ endpoint: Endpoint<Response, Server>) -> ResponseType<Response, Server, Observer> {
+            let closureWrapper: ClosureWrapper<Response, Server> = .init(closure, endpoint)
+            return ResponseHandlingApi<Response, Server, Observer>.closure(closureWrapper)
         }
         
         public func hash(into hasher: inout Hasher) {
@@ -79,7 +84,8 @@ extension HttpKit {
             hasher.combine(caseNumber)
         }
         
-        public static func == (lhs: ResponseHandlingApi<R, S, RX>, rhs: ResponseHandlingApi<R, S, RX>) -> Bool {
+        public static func == (lhs: ResponseHandlingApi<Response, Server, Observer>,
+                               rhs: ResponseHandlingApi<Response, Server, Observer>) -> Bool {
             /**
              Can't compare closures/functions and it is intended.
              

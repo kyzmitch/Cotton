@@ -21,7 +21,8 @@ import Combine
 public protocol HTTPRxAdapter: AnyObject {
     associatedtype Response
     associatedtype Server
-    associatedtype ObserverWrapper: RxInterface where ObserverWrapper.Observer.Response == Response, ObserverWrapper.Server == Server
+    associatedtype ObserverWrapper: RxInterface where ObserverWrapper.Observer.Response == Response,
+                                                        ObserverWrapper.Server == Server
     init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>)
     
     func performRequest(_ request: URLRequest,

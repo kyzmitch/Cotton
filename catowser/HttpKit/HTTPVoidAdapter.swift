@@ -12,11 +12,11 @@ import Combine
 
 public protocol HTTPVoidAdapter: AnyObject {
     associatedtype Server
-    associatedtype ObserverWrapper: RxVoidInterface where ObserverWrapper.S == Server
+    associatedtype Observer: RxVoidInterface where Observer.Server == Server
     
-    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper> { get set }
+    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, Observer> { get set }
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>)
+    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, Observer>)
     func performVoidRequest(_ request: URLRequest,
                             sucessCodes: [Int])
     

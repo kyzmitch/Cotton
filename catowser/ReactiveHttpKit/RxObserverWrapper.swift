@@ -10,9 +10,9 @@ import HttpKit
 import ReactiveSwift
 
 extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpKit.HttpError {
-    public typealias R = Value
+    public typealias Response = Value
     
-    public func newSend(value: Value) {
+    public func newSend(value: Response) {
         send(value: value)
     }
     public func newSend(error: HttpKit.HttpError) {
@@ -39,7 +39,7 @@ extension HttpKit {
     public class RxObserverWrapper<RR,
                                    SS: ServerDescription,
                                    RX: RxAnyObserver>: RxInterface where RX.Response == RR {
-        public typealias S = SS
+        public typealias Server = SS
         public typealias Observer = RX
         
         public var observer: RX {
@@ -55,12 +55,12 @@ extension HttpKit {
         let rxObserver: Signal<RR, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        public let endpoint: Endpoint<RR, S>
+        public let endpoint: Endpoint<RR, Server>
         let responseType: RR.Type
         
         public init(_ observer: Signal<RR, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
-                    _ endpoint: Endpoint<RR, S>) {
+                    _ endpoint: Endpoint<RR, Server>) {
             self.rxObserver = observer
             self.rxLifetime = lifetime
             self.endpoint = endpoint
@@ -75,7 +75,8 @@ extension HttpKit {
             hasher.combine(endpoint)
         }
         
-        public static func == (lhs: RxObserverWrapper<RR, S, Observer>, rhs: RxObserverWrapper<RR, S, Observer>) -> Bool {
+        public static func == (lhs: RxObserverWrapper<RR, Server, Observer>,
+                               rhs: RxObserverWrapper<RR, Server, Observer>) -> Bool {
             return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
         }
     }

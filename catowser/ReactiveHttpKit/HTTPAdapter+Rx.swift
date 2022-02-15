@@ -30,7 +30,7 @@ extension HTTPVoidAdapter {
             let observerWrapper: HttpKit.RxObserverVoidWrapper<Server> = .init(observer, lifetime, endpoint)
             // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
             // swiftlint:disable:next force_cast
-            handlerType = .rxObserver(observerWrapper as! Self.ObserverWrapper)
+            handlerType = .rxObserver(observerWrapper as! Self.Observer)
         }
     }
 }
