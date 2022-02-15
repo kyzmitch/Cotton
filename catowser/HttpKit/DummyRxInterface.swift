@@ -23,7 +23,7 @@ extension HttpKit {
     public class DummyRxType<R,
                       SS: ServerDescription,
                       RX: RxAnyObserver>: RxInterface where RX.Response == R {
-        public typealias RO = RX
+        public typealias Observer = RX
         public typealias S = SS
         
         public var observer: RX {

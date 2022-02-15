@@ -14,7 +14,7 @@ extension HTTPRxAdapter {
                                           _ lifetime: Lifetime,
                                           _ endpoint: HttpKit.Endpoint<TYPE, SRV>) {
         if case .waitsForRxObserver = handlerType {
-            let observerWrapper: HttpKit.RxObserverWrapper<TYPE, SRV, RXI.RO> = .init(observer, lifetime, endpoint)
+            let observerWrapper: HttpKit.RxObserverWrapper<TYPE, SRV, RXI.Observer> = .init(observer, lifetime, endpoint)
             // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
             // swiftlint:disable:next force_cast
             handlerType = .rxObserver(observerWrapper as! Self.RXI)

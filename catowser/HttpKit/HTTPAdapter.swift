@@ -21,7 +21,7 @@ import Combine
 public protocol HTTPRxAdapter: AnyObject {
     associatedtype TYPE
     associatedtype SRV
-    associatedtype RXI: RxInterface where RXI.RO.Response == TYPE, RXI.S == SRV
+    associatedtype RXI: RxInterface where RXI.Observer.Response == TYPE, RXI.Server == SRV
     init(_ handlerType: HttpKit.ResponseHandlingApi<TYPE, SRV, RXI>)
     
     func performRequest(_ request: URLRequest,

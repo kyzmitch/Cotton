@@ -10,7 +10,7 @@ import Foundation
 @testable import HttpKit
 import Combine
 
-final class MockedHTTPAdapteeWithFail<R, S, RX: RxInterface>: HTTPRxAdapter where RX.RO.R == R, RX.S == S {
+final class MockedHTTPAdapteeWithFail<R, S, RX: RxInterface>: HTTPRxAdapter where RX.Observer.R == R, RX.S == S {
     typealias TYPE = R
     typealias SRV = S
     typealias RXI = RX

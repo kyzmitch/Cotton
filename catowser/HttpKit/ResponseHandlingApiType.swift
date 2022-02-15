@@ -27,13 +27,13 @@ public protocol RxAnyLifetime {
 /// This protocol is needed to not use ReactiveSwift dependency directly
 /// It should be implemented by RxObserverWrapper which is in different Framework
 public protocol RxInterface: Hashable, AnyObject {
-    associatedtype RO: RxAnyObserver
-    associatedtype S: ServerDescription
+    associatedtype Observer: RxAnyObserver
+    associatedtype Server: ServerDescription
     
-    var observer: RO { get }
+    var observer: Observer { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
-    var endpoint: HttpKit.Endpoint<RO.Response, S> { get }
+    var endpoint: HttpKit.Endpoint<Observer.Response, Server> { get }
 }
 
 extension HttpKit {
@@ -41,7 +41,7 @@ extension HttpKit {
     /// Can't mark specific enum case to be available for certain OS version
     /// Deployment target was set to 13.0 from 12.1 from now
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public enum ResponseHandlingApi<R, S, RX: RxInterface>: Hashable where RX.RO.Response == R, RX.S == S {
+    public enum ResponseHandlingApi<R, S, RX: RxInterface>: Hashable where RX.Observer.Response == R, RX.Server == S {
         case closure(ClosureWrapper<R, S>)
         case rxObserver(RX)
         case waitsForRxObserver

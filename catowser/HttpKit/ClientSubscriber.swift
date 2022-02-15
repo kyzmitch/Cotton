@@ -10,7 +10,7 @@ import Foundation
 
 /// Should be used for async interfaces which use RX library
 public typealias RxSubscriber<R, S, RX: RxInterface> = HttpKit.ClientRxSubscriber<R, S, RX>
-    where RX.S == S, RX.RO.Response == R
+    where RX.Server == S, RX.Observer.Response == R
 /// Can be used for async interfaces which do not need RX stuff, like Combine or simple Closures
 public typealias Subscriber<R: ResponseType, S: ServerDescription> = HttpKit.ClientSubscriber<R, S>
 
@@ -24,7 +24,7 @@ extension HttpKit {
     /// It lead to the issue that clsoures or Rx observers should be stored somewhere outside async HttpClient methods
     /// Because they can't be deallocated during async requests
     /// It must be a reference type because we will pass it to Http.Client methods
-    public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.RO.Response == R, RX.S == S {
+    public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.Observer.Response == R, RX.Server == S {
         /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
         var handlers = Set<ResponseHandlingApi<R, S, RX>>()
         

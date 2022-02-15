@@ -40,7 +40,7 @@ extension HttpKit {
                                    SS: ServerDescription,
                                    RX: RxAnyObserver>: RxInterface where RX.Response == RR {
         public typealias S = SS
-        public typealias RO = RX
+        public typealias Observer = RX
         
         public var observer: RX {
             // TODO: it should be recognized by compiler, don't need to force cast
@@ -75,7 +75,7 @@ extension HttpKit {
             hasher.combine(endpoint)
         }
         
-        public static func == (lhs: RxObserverWrapper<RR, S, RO>, rhs: RxObserverWrapper<RR, S, RO>) -> Bool {
+        public static func == (lhs: RxObserverWrapper<RR, S, Observer>, rhs: RxObserverWrapper<RR, S, Observer>) -> Bool {
             return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
         }
     }
