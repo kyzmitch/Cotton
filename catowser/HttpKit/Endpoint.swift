@@ -8,9 +8,11 @@
 
 import Foundation
 
-public enum HTTPMethod: String {
-    case get
-    case post
+extension HttpKit {
+    public enum HTTPMethod: String {
+        case get
+        case post
+    }
 }
 
 public protocol URLRequestCreatable {
@@ -30,13 +32,13 @@ public protocol JSONRequestEncodable {
 }
 
 extension HttpKit {
-    public struct Endpoint<T: ResponseType, Server: ServerDescription>: Equatable, Hashable {
+    public struct Endpoint<Response: ResponseType, Server: ServerDescription>: Equatable, Hashable {
         public let method: HTTPMethod
         public let path: String
         public let headers: [HttpHeader]?
         
         /// This is needed to associate type of response with endpoint
-        public let responseType: T.Type = T.self
+        public let responseType: Response.Type = Response.self
         /// To link endpoint to specific server, since it doesn't make sense to use endpoint
         /// for different host or something
         public let serverType: Server.Type = Server.self
@@ -52,7 +54,9 @@ extension HttpKit {
             self.encodingMethod = encodingMethod
         }
         
-        public static func == (lhs: HttpKit.Endpoint<T, Server>, rhs: HttpKit.Endpoint<T, Server>) -> Bool {
+        public typealias HttpEndpoint<R, S> = HttpKit.Endpoint<Response, Server>
+        
+        public static func == (lhs: HttpEndpoint<Response, Server>, rhs: HttpEndpoint<Response, Server>) -> Bool {
             return lhs.method == rhs.method &&
             lhs.path == rhs.path &&
             lhs.headers == rhs.headers &&
