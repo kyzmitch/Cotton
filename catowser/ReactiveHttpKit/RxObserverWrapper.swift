@@ -38,7 +38,7 @@ extension Lifetime: RxAnyLifetime {
 extension HttpKit {
     public class RxObserverWrapper<RR,
                                    SS: ServerDescription,
-                                   RX: RxAnyObserver>: RxInterface where RX.R == RR {
+                                   RX: RxAnyObserver>: RxInterface where RX.Response == RR {
         public typealias S = SS
         public typealias RO = RX
         

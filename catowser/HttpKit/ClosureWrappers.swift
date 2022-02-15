@@ -11,17 +11,17 @@ import Combine
 #endif
 
 extension HttpKit {
-    public class ClosureWrapper<TYPE: ResponseType, S: ServerDescription>: Hashable {
-        public let closure: (Result<TYPE, HttpKit.HttpError>) -> Void
+    public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
+        public let closure: (Result<Response, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint<TYPE, S>
-        let responseType: TYPE.Type
+        let endpoint: Endpoint<Response, Server>
+        let responseType: Response.Type
         
-        public init(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void,
-                    _ endpoint: Endpoint<TYPE, S>) {
+        public init(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
+                    _ endpoint: Endpoint<Response, Server>) {
             self.closure = closure
             self.endpoint = endpoint
-            responseType = TYPE.self
+            responseType = Response.self
         }
         
         public func hash(into hasher: inout Hasher) {
@@ -32,24 +32,24 @@ extension HttpKit {
             hasher.combine(endpoint)
         }
         
-        public static func == (lhs: ClosureWrapper<TYPE, S>, rhs: ClosureWrapper<TYPE, S>) -> Bool {
+        public static func == (lhs: ClosureWrapper<Response, Server>, rhs: ClosureWrapper<Response, Server>) -> Bool {
             return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
         }
     }
 }
 
 extension HttpKit {
-    public class CombinePromiseWrapper<R: ResponseType, S: ServerDescription>: Hashable {
-        public let promise: Future<R, HttpKit.HttpError>.Promise
+    public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
+        public let promise: Future<Response, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint<R, S>
-        let responseType: R.Type
+        let endpoint: Endpoint<Response, Server>
+        let responseType: Response.Type
         
-        public init(_ promise: @escaping Future<R, HttpKit.HttpError>.Promise,
-                    _ endpoint: Endpoint<R, S>) {
+        public init(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+                    _ endpoint: Endpoint<Response, Server>) {
             self.promise = promise
             self.endpoint = endpoint
-            responseType = R.self
+            responseType = Response.self
         }
         
         public func hash(into hasher: inout Hasher) {
@@ -60,7 +60,8 @@ extension HttpKit {
             hasher.combine(endpoint)
         }
         
-        public static func == (lhs: CombinePromiseWrapper<R, S>, rhs: CombinePromiseWrapper<R, S>) -> Bool {
+        public static func == (lhs: CombinePromiseWrapper<Response, Server>,
+                               rhs: CombinePromiseWrapper<Response, Server>) -> Bool {
             return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
         }
     }

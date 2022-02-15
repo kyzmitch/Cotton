@@ -15,7 +15,7 @@ public struct GDNSRequestParams {
 
      The only required parameter. RFC 4343 backslash escapes are accepted.
      */
-    let name: DomainName
+    let name: HttpKit.DomainName
     /**
      string, default: 1
      */
@@ -75,7 +75,7 @@ public struct GDNSRequestParams {
      */
     let randomPadding: String
     
-    public init?(domainName: DomainName) {
+    public init?(domainName: HttpKit.DomainName) {
         name = domainName
         guard let rrType = DnsRR() else {
             return nil

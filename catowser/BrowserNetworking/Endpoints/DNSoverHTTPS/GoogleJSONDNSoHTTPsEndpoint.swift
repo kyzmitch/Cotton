@@ -8,9 +8,6 @@
 
 import HttpKit
 import ReactiveHttpKit
-// only for `IPv4Address` type, but it's not possible to store mask in it
-// maybe better remove this dependency
-// import Network
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
@@ -47,7 +44,7 @@ extension HttpKit.Endpoint {
     }
     
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> GDNSjsonEndpoint {
-        let domainObject = try DomainName(domainName)
+        let domainObject = try HttpKit.DomainName(domainName)
         guard let params = GDNSRequestParams(domainName: domainObject) else {
             throw HttpKit.HttpError.missingRequestParameters("google dns params")
         }
