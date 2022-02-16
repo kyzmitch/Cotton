@@ -24,6 +24,7 @@ struct SiteMenuView: View {
 private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
     @State private var isShowingAddTabSetting = false
+    @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
     
     var body: some View {
@@ -57,6 +58,18 @@ private struct _SiteMenuView: View {
                         Text(verbatim: model.currentTabDefaultContent)
                     }
                 }
+#if DEBUG
+                Section(header: Text(verbatim: .devSectionTtl)) {
+                    NavigationLink(destination: AppAsyncApiTypeView(model: .init { (selected) in
+                        FeatureManager.setFeature(.appDefaultAsyncApi, value: selected.rawValue)
+                        self.isShowingAppAsyncApiSetting = false
+                    }), isActive: $isShowingAppAsyncApiSetting) {
+                        Text(verbatim: .appAsyncApiTypeTxt)
+                        Spacer()
+                        Text(verbatim: model.selectedAsyncApiStringValue)
+                    }
+                }
+#endif
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
             .navigationBarItems(trailing: Button<Text>(String.dismissBtn, action: model.dismissAction))
@@ -66,6 +79,7 @@ private struct _SiteMenuView: View {
 
 private extension String {
     static let globalSectionTtl = NSLocalizedString("ttl_global_menu", comment: "")
+    static let devSectionTtl = NSLocalizedString("ttl_developer_menu", comment: "")
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
     static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled_for_tab", comment: "")
@@ -73,6 +87,8 @@ private extension String {
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
     static let tabContentTxt = NSLocalizedString("ttl_tab_default_content", comment: "")
+    
+    static let appAsyncApiTypeTxt = NSLocalizedString("ttl_app_async_method", comment: "")
 }
 
 #if DEBUG
