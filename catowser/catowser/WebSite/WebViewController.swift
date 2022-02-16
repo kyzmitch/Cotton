@@ -257,7 +257,7 @@ final class WebViewController: BaseViewController {
             return
         }
         
-        switch FeatureManager.appDefaultAsyncApiTypeValue() {
+        switch FeatureManager.appAsyncApiTypeValue() {
         case .reactive:
             rxResolveDomainName(url: url)
         case .combine:

@@ -83,7 +83,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     func prepareSearch(for searchText: String) {
         suggestions.removeAll()
         knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
-        switch FeatureManager.appDefaultAsyncApiTypeValue() {
+        switch FeatureManager.appAsyncApiTypeValue() {
         case .reactive:
             rxPrepareSearch(for: searchText)
         case .combine:
