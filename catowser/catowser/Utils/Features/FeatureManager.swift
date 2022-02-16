@@ -88,4 +88,14 @@ extension FeatureManager {
         }
         return TabContentDefaultState(rawValue: source.currentValue(of: feature)) ?? defaultValue
     }
+    
+    static func appDefaultAsyncApiTypeValue() -> AsyncApiType {
+        let feature: ApplicationFeature = .appDefaultAsyncApi
+        // swiftlint:disable:next force_unwrapping
+        let defaultValue = AsyncApiType(rawValue: feature.defaultValue)!
+        guard let source = source(for: feature) else {
+            return defaultValue
+        }
+        return AsyncApiType(rawValue: source.currentValue(of: feature)) ?? defaultValue
+    }
 }

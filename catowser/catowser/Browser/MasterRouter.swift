@@ -322,6 +322,8 @@ fileprivate extension MasterRouter {
             }
             presenter.viewController.present(menuHostVC, animated: true)
         } else {
+            // This is not full menu, it only configures DoH
+            // (JavaScript, Tab behaviour, etc.) is not implemented for iOS < 13.0
             let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
             let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
             let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
