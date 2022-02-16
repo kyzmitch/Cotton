@@ -83,16 +83,23 @@ final class SearchSuggestionsViewController: UITableViewController {
     func prepareSearch(for searchText: String) {
         suggestions.removeAll()
         knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
-        if #available(iOS 15.0, *) {
-#if swift(>=5.5)
-            async { await aaPrepareSearch(for: searchText) }
-#else
-            assertionFailure("Swift version isn't 5.5")
-#endif
-        } else if #available(iOS 13.0, *) {
-            combinePrepareSearch(for: searchText)
-        } else {
+        switch FeatureManager.appDefaultAsyncApiTypeValue() {
+        case .reactive:
             rxPrepareSearch(for: searchText)
+        case .combine:
+            if #available(iOS 13.0, *) {
+                combinePrepareSearch(for: searchText)
+            } else {
+                assertionFailure("Attempt to use Combine API when iOS < 13.x")
+            }
+        case .asyncAwait:
+            if #available(iOS 15.0, *) {
+    #if swift(>=5.5)
+                async { await aaPrepareSearch(for: searchText) }
+    #else
+                assertionFailure("Swift version isn't 5.5")
+    #endif
+            }
         }
     }
     
