@@ -71,6 +71,10 @@
 		71A09C5188CE02B919C6F31B /* Pods_CoreBrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385A71DDFA4C7EA5C03A0E5D /* Pods_CoreBrowserTests.framework */; };
 		721DF7B158CBE52302D9227B /* Pods_JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0877BB4339CB2073429F95AD /* Pods_JSPlugins.framework */; };
 		7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7509BF9122AF832200F4D701 /* Site+Extension.swift */; };
+		755E107127BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */; };
+		755E107227BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */; };
+		755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */; };
+		755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -646,6 +650,8 @@
 		60D52D5422673C6300CB56F0 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		7155735F0D18D8B646D8B384 /* Pods-HttpKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7509BF9122AF832200F4D701 /* Site+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Site+Extension.swift"; sourceTree = "<group>"; };
+		755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeView.swift; sourceTree = "<group>"; };
+		755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeModel.swift; sourceTree = "<group>"; };
 		767DCB6FAC0282E44CD4A2D7 /* Pods-HttpKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		81B2D2928390EC8BF7C0C9A8 /* Pods-BrowserNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserNetworking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserNetworking/Pods-BrowserNetworking.debug.xcconfig"; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
@@ -1546,6 +1552,8 @@
 				8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */,
 				8A1C1C192484E6450098F2F1 /* TabDefaultContentView.swift */,
 				8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */,
+				755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */,
+				755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -2666,11 +2674,13 @@
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
+				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				60C2C90522801F3400F5D869 /* SiteCollectionViewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
 				8A1C1C23248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift in Sources */,
+				755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A1C1C202485103E0098F2F1 /* MasterInterfaces.swift in Sources */,
 				8A90B16C248246D6000618F5 /* TabAddPositionsView.swift in Sources */,
 				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
@@ -2784,11 +2794,13 @@
 				8A8035B224442F0F000E035F /* AppDelegate.swift in Sources */,
 				8A8035B324442F0F000E035F /* WebViewsReuseManager.swift in Sources */,
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
+				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */,
 				8A8035B524442F0F000E035F /* SmartphoneSearchBarViewController.swift in Sources */,
 				8A8035B624442F0F000E035F /* TabPreviewCell.swift in Sources */,
 				8A8035B724442F0F000E035F /* SiteCollectionViewCell.swift in Sources */,
 				8A8035B824442F0F000E035F /* ThemeProvider.swift in Sources */,
 				8A1C1C24248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift in Sources */,
+				755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A1C1C212485103E0098F2F1 /* MasterInterfaces.swift in Sources */,
 				8A90B16D248246D6000618F5 /* TabAddPositionsView.swift in Sources */,
 				8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */,
