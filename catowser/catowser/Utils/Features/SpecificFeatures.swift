@@ -42,7 +42,6 @@ enum SelectedAppAsyncApi: BasicFeature {
     static let source: FeatureSource.Type = LocalFeatureSource.self
     
     static let defaultNotRawValue: AsyncApiType = {
-#if DEBUG
         if #available(iOS 15.0, *) {
 #if swift(>=5.5)
             return .asyncAwait
@@ -54,7 +53,6 @@ enum SelectedAppAsyncApi: BasicFeature {
         } else {
             return .reactive
         }
-#endif
     }()
 }
 
