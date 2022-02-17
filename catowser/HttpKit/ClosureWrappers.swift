@@ -12,7 +12,8 @@ import Combine
 
 extension HttpKit {
     public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
-        public let closure: (Result<Response, HttpKit.HttpError>) -> Void
+        /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
+        public var closure: (Result<Response, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
         let endpoint: Endpoint<Response, Server>
         let responseType: Response.Type
@@ -30,6 +31,10 @@ extension HttpKit {
             hasher.combine("closure")
             hasher.combine(responseType.successCodes)
             hasher.combine(endpoint)
+            withUnsafePointer(to: &closure) {
+                let strAddrs = "\($0)"
+                hasher.combine(strAddrs)
+            }
         }
         
         public static func == (lhs: ClosureWrapper<Response, Server>, rhs: ClosureWrapper<Response, Server>) -> Bool {
@@ -40,7 +45,8 @@ extension HttpKit {
 
 extension HttpKit {
     public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
-        public let promise: Future<Response, HttpKit.HttpError>.Promise
+        /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
+        public var promise: Future<Response, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
         let endpoint: Endpoint<Response, Server>
         let responseType: Response.Type
@@ -58,6 +64,10 @@ extension HttpKit {
             hasher.combine("combine.promise")
             hasher.combine(responseType.successCodes)
             hasher.combine(endpoint)
+            withUnsafePointer(to: &promise) {
+                let strAddrs = "\($0)"
+                hasher.combine(strAddrs)
+            }
         }
         
         public static func == (lhs: CombinePromiseWrapper<Response, Server>,

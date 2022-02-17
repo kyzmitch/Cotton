@@ -12,7 +12,7 @@ import Combine
 
 extension HttpKit {
     public class ClosureVoidWrapper<Server: ServerDescription>: Hashable {
-        public let closure: (Result<Void, HttpKit.HttpError>) -> Void
+        public var closure: (Result<Void, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
         let endpoint: VoidEndpoint<Server>
         
@@ -25,6 +25,10 @@ extension HttpKit {
         public func hash(into hasher: inout Hasher) {
             hasher.combine("closure")
             hasher.combine(endpoint)
+            withUnsafePointer(to: &closure) {
+                let strAddrs = "\($0)"
+                hasher.combine(strAddrs)
+            }
         }
         
         public static func == (lhs: ClosureVoidWrapper<Server>, rhs: ClosureVoidWrapper<Server>) -> Bool {
@@ -35,7 +39,7 @@ extension HttpKit {
 
 extension HttpKit {
     public class CombinePromiseVoidWrapper<Server: ServerDescription>: Hashable {
-        public let promise: Future<Void, HttpKit.HttpError>.Promise
+        public var promise: Future<Void, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
         let endpoint: VoidEndpoint<Server>
         
@@ -48,6 +52,10 @@ extension HttpKit {
         public func hash(into hasher: inout Hasher) {
             hasher.combine("combine.promise")
             hasher.combine(endpoint)
+            withUnsafePointer(to: &promise) {
+                let strAddrs = "\($0)"
+                hasher.combine(strAddrs)
+            }
         }
         
         public static func == (lhs: CombinePromiseVoidWrapper<Server>,

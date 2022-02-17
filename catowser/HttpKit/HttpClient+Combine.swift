@@ -15,9 +15,9 @@ extension HttpKit.Client {
     public typealias ResponseFuture<T> = Publishers.HandleEvents<Deferred<Future<T, HttpKit.HttpError>>>
     
     public func cMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                withAccessToken accessToken: String?,
-                                                transport adapter: B,
-                                                _ subscriber: RxSubscriber<T, Server, RX>) -> ResponseFuture<T>
+                                                      withAccessToken accessToken: String?,
+                                                      transport adapter: B,
+                                                      _ subscriber: RxSubscriber<T, Server, RX>) -> ResponseFuture<T>
     where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         return Combine.Deferred {
             let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
@@ -28,6 +28,7 @@ extension HttpKit.Client {
                 
                 adapter.transferToCombineState(promise, endpoint)
                 subscriber.insert(adapter.handlerType)
+                // TODO: use makeRequest instead
                 self.makeRxRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
             }
             return subject
