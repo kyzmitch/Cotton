@@ -37,6 +37,7 @@ final class AlamofireHTTPAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.
                 switch result {
                 case .success(let value):
                     observerWrapper.observer.newSend(value: value)
+                    observerWrapper.observer.newComplete()
                 case .failure(let error):
                     observerWrapper.observer.newSend(error: error)
                 }

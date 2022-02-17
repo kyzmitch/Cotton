@@ -14,6 +14,7 @@ public protocol RxAnyObserver {
     associatedtype Response: ResponseType
     func newSend(value: Response)
     func newSend(error: HttpKit.HttpError)
+    func newComplete()
 }
 
 /// Can't add similar Lifetime method because it returns a Disposable which is not a type but protocol already

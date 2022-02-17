@@ -14,6 +14,7 @@ extension HttpKit {
         
         public func newSend(value: Response) {}
         public func newSend(error: HttpKit.HttpError) {}
+        public func newComplete() {}
     }
     
     struct DummyRxLifetime: RxAnyLifetime {

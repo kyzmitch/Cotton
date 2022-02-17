@@ -18,6 +18,10 @@ extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == Htt
     public func newSend(error: HttpKit.HttpError) {
         send(error: error)
     }
+    
+    public func newComplete() {
+        sendCompleted()
+    }
 }
 
 extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpKit.HttpError {
@@ -26,6 +30,10 @@ extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpK
     }
     public func newSend(error: HttpKit.HttpError) {
         send(error: error)
+    }
+    
+    public func newComplete() {
+        sendCompleted()
     }
 }
 

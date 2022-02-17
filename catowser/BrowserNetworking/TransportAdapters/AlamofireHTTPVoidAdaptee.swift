@@ -36,6 +36,7 @@ final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter wh
                 case .success:
                     let value: Void = ()
                     observerWrapper.observer.newSend(value: value)
+                    observerWrapper.observer.newComplete()
                 case .failure(let error):
                     observerWrapper.observer.newSend(error: error)
                 }

@@ -13,6 +13,7 @@ import Combine
 public protocol RxAnyVoidObserver {
     func newSend(value: Void)
     func newSend(error: HttpKit.HttpError)
+    func newComplete()
 }
 
 public protocol RxVoidInterface: Hashable {
