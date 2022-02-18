@@ -42,7 +42,9 @@ public protocol HTTPAdapter: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, HttpKit.RxFreeInterface<Response, Server>>)
+    typealias RxFreeDummy<R: ResponseType, S: ServerDescription> = HttpKit.RxFreeInterface<R, S>
+    
+    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>)
     
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
@@ -52,8 +54,8 @@ public protocol HTTPAdapter: AnyObject {
     func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void
     /// Should refer to simple closure api
     var handlerType: HttpKit.ResponseHandlingApi<Response,
-                                                    Server,
-                                                    HttpKit.RxFreeInterface<Response, Server>> { get set }
+                                                Server,
+                                                RxFreeDummy<Response, Server>> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
                                                _ endpoint: HttpKit.Endpoint<Response, Server>)

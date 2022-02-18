@@ -19,9 +19,6 @@ final class SiteCollectionViewCell: UICollectionViewCell {
     
     @available(iOS 13.0, *)
     lazy var imageURLRequestCancellable: AnyCancellable? = nil
-    
-    ///
-    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -19,6 +19,12 @@ final class HttpEnvironment {
     let dnsAlReachability: AlamofireReachabilityAdaptee<GoogleDnsServer>
     let googleAlReachability: AlamofireReachabilityAdaptee<GoogleServer>
     
+    let googleClientRxSubscriber: GSearchClientRxSubscriber = .init()
+    let googleClientSubscriber: GSearchClientSubscriber = .init()
+    
+    let dnsClientRxSubscriber: GDNSJsonClientRxSubscriber = .init()
+    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
+    
     private init() {
         let googleDNSserver = GoogleDnsServer()
         // swiftlint:disable:next force_unwrapping

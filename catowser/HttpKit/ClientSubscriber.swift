@@ -8,15 +8,15 @@
 
 import Foundation
 
-/// Should be used for async interfaces which use RX library
-public typealias RxSubscriber<R, S, RX: RxInterface> = HttpKit.ClientRxSubscriber<R, S, RX>
-    where RX.Server == S, RX.Observer.Response == R
-public typealias RxVoidSubscriber<S, RX: RxVoidInterface> = HttpKit.ClientRxVoidSubscriber<S, RX>
-    where RX.Server == S
-/// Can be used for async interfaces which do not need RX stuff, like Combine or simple Closures
-public typealias Subscriber<R: ResponseType, S: ServerDescription> = HttpKit.ClientSubscriber<R, S>
-
 extension HttpKit {
+    /// Should be used for async interfaces which use RX library
+    public typealias RxSubscriber<R, S, RX: RxInterface> = ClientRxSubscriber<R, S, RX>
+        where RX.Server == S, RX.Observer.Response == R
+    public typealias RxVoidSubscriber<S, RX: RxVoidInterface> = ClientRxVoidSubscriber<S, RX>
+        where RX.Server == S
+    /// Can be used for async interfaces which do not need RX stuff, like Combine or simple Closures
+    public typealias Subscriber<R: ResponseType, S: ServerDescription> = ClientSubscriber<R, S>
+    
     /// I already don't like this idea and this class, it will be for every endpoint
     /// This is only because I want to support generics for endpoints
     /// The main issue which needs to be solved by this class is to not add ResponseType
@@ -59,8 +59,6 @@ extension HttpKit {
 
 extension HttpKit {
     public typealias RxFreeInterface<R: ResponseType, S: ServerDescription> = DummyRxType<R, S, DummyRxObserver<R>>
-    public class ClientSubscriber<R: ResponseType,
-                                  S: ServerDescription>: ClientRxSubscriber<R, S, RxFreeInterface<R, S>> {
-        
-    }
+    public typealias ClientSubscriber<R: ResponseType,
+                                      S: ServerDescription> = ClientRxSubscriber<R, S, RxFreeInterface<R, S>>
 }
