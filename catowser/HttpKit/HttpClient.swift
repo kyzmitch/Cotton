@@ -104,9 +104,9 @@ extension HttpKit {
             adapter.performRequest(httpRequest, sucessCodes: codes)
         }
         
-        public func makeRxVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                                          withAccessToken accessToken: String?,
-                                                          transport adapter: B) where B.Server == Server {
+        public func makeRxVoidRequest<B: HTTPRxVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                            withAccessToken accessToken: String?,
+                                                            transport adapter: B) where B.Server == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
                 adapter.wrapperHandler()(result)
