@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
@@ -34,10 +33,8 @@ extension HttpKit {
     }
 }
 
-public typealias HostProducer = SignalProducer<String, HttpKit.DnsError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 typealias HostPublisher = Result<String, HttpKit.DnsError>.Publisher
-public typealias ResolvedURLProducer = SignalProducer<URL, HttpKit.DnsError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias ResolvedURLPublisher = Result<URL, HttpKit.DnsError>.Publisher
 
@@ -57,19 +54,6 @@ extension URL {
         }
         
         return host
-    }
-    
-    /// Not required to be public
-    public var rxHttpHost: HostProducer {
-        guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
-            return .init(error: .notHttpScheme)
-        }
-        
-        guard let host = host else {
-            return .init(error: .noHost)
-        }
-        
-        return .init(value: host)
     }
     
     /// Not required to be public
@@ -96,17 +80,6 @@ extension URL {
             throw HttpKit.DnsError.failToGetUrlFromComponents
         }
         return clearURL
-    }
-    
-    public func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
-        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
-            return .init(error: .urlComponentsFail)
-        }
-        components.host = ipAddress
-        guard let clearURL = components.url else {
-            return .init(error: .urlHostReplaceFail)
-        }
-        return .init(value: clearURL)
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)

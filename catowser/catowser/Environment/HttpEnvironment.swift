@@ -9,7 +9,7 @@
 import Foundation
 import HttpKit
 import BrowserNetworking
-import Alamofire
+import Alamofire // only needed for `JSONEncoding`
 
 final class HttpEnvironment {
     static let shared: HttpEnvironment = .init()

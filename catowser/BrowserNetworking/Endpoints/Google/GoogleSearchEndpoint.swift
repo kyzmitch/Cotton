@@ -7,17 +7,24 @@
 //
 
 import HttpKit
+import ReactiveHttpKit
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
 
 public typealias GoogleSuggestionsClient = HttpKit.Client<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
-typealias GSearchEndpoint = HttpKit.Endpoint<GoogleSearchSuggestionsResponse, GoogleServer>
-public typealias GSearchClientSubscriber = HttpKit.ClientSubscriber<GoogleSearchSuggestionsResponse, GoogleServer>
-public typealias GSearchProducer = SignalProducer<GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+typealias GSearchEndpoint = HttpKit.Endpoint<GSearchSuggestionsResponse, GoogleServer>
+public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpKit.HttpError>.Observer
+public typealias GSearchRxInterface = HttpKit.RxObserverWrapper<GSearchSuggestionsResponse,
+                                                                    GoogleServer,
+                                                                    GSearchRxSignal>
+public typealias GSearchClientSubscriber = RxSubscriber<GSearchSuggestionsResponse,
+                                                        GoogleServer,
+                                                        GSearchRxInterface>
+public typealias GSearchProducer = SignalProducer<GSearchSuggestionsResponse, HttpKit.HttpError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public typealias CGSearchPublisher = AnyPublisher<GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+public typealias CGSearchPublisher = AnyPublisher<GSearchSuggestionsResponse, HttpKit.HttpError>
 
 extension HttpKit.Endpoint {
     static func googleSearchSuggestions(query: String) throws -> GSearchEndpoint {
@@ -45,7 +52,7 @@ extension HttpKit.Endpoint {
     }
 }
 
-public struct GoogleSearchSuggestionsResponse: ResponseType {
+public struct GSearchSuggestionsResponse: ResponseType {
     public static var successCodes: [Int] {
         return [200]
     }
@@ -76,7 +83,9 @@ extension HttpKit.Client where Server == GoogleServer {
             return GSearchProducer.init(error: .failedConstructRequestParameters)
         }
         
-        let adapter: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForRxObserver)
+        let adapter: AlamofireHTTPAdaptee<GSearchSuggestionsResponse,
+                                            GoogleServer,
+                                            GSearchRxInterface> = .init(.waitsForRxObserver)
         let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return producer
     }
@@ -92,7 +101,9 @@ extension HttpKit.Client where Server == GoogleServer {
             return CGSearchPublisher(Future.failure(.failedConstructRequestParameters))
         }
         
-        let adapter: AlamofireHTTPAdaptee<GoogleSearchSuggestionsResponse, GoogleServer> = .init(.waitsForCombinePromise)
+        let adapter: AlamofireHTTPAdaptee<GSearchSuggestionsResponse,
+                                            GoogleServer,
+                                            GSearchRxInterface> = .init(.waitsForCombinePromise)
         let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber)
         return future.eraseToAnyPublisher()
     }

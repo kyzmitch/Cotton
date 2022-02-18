@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
@@ -23,7 +22,7 @@ public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
 extension HttpKit {
-    public class Client<Server, R: NetworkReachabilityAdapter> where R.S == Server {
+    public class Client<Server, R: NetworkReachabilityAdapter> where R.Server == Server {
         let server: Server
         
         private let connectivityManager: R?
@@ -41,13 +40,11 @@ extension HttpKit {
         
         let jsonEncoder: JSONRequestEncodable
         
-        public let connectionStateStream: MutableProperty<NetworkReachabilityStatus>
-        
         private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
             guard let self = self else {
                 return
             }
-            self.connectionStateStream.value = status
+            // TODO: need some interface for reachability but without RX (MutableProperty)
         }
         
         public init(server: Server,
@@ -67,7 +64,6 @@ extension HttpKit {
             sessionTaskHandler = .init()
             
             connectivityManager = reachability
-            connectionStateStream = .init(.unknown)
             guard let cManager = connectivityManager else {
                 return
             }
@@ -77,12 +73,12 @@ extension HttpKit {
             }
         }
         
-        // MARK: - Clear functions without dependencies
+        // MARK: - Clear RX capable functions without dependencies
         
-        /// T: ResponseType
-        public func makeCleanRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                        withAccessToken accessToken: String?,
-                                                        transport adapter: B) where B.TYPE == T, B.SRV == Server {
+        public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                       withAccessToken accessToken: String?,
+                                                       transport adapter: B) where B.Response == T, B.Server == Server {
+            
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
                 adapter.wrapperHandler()(result)
@@ -108,12 +104,12 @@ extension HttpKit {
             adapter.performRequest(httpRequest, sucessCodes: codes)
         }
         
-        public func makeCleanVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                                             withAccessToken accessToken: String?,
-                                                             transportAdapter: B) where B.SRV == Server {
+        public func makeRxVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                          withAccessToken accessToken: String?,
+                                                          transport adapter: B) where B.Server == Server {
             guard let url = endpoint.url(relatedTo: self.server) else {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.failedConstructUrl)
-                transportAdapter.wrapperHandler()(result)
+                adapter.wrapperHandler()(result)
                 return
             }
             
@@ -125,17 +121,46 @@ extension HttpKit {
                                                    accessToken: accessToken)
             } catch let error as HttpKit.HttpError {
                 let result: Result<Void, HttpKit.HttpError> = .failure(error)
-                transportAdapter.wrapperHandler()(result)
+                adapter.wrapperHandler()(result)
                 return
             } catch {
                 let result: Result<Void, HttpKit.HttpError> = .failure(.httpFailure(error: error))
-                transportAdapter.wrapperHandler()(result)
+                adapter.wrapperHandler()(result)
                 return
             }
             
             let codes = HttpKit.VoidResponse.successCodes
-            // backendHandlersPool.append(transportAdapter)
-            transportAdapter.performVoidRequest(httpRequest, sucessCodes: codes)
+            adapter.performVoidRequest(httpRequest, sucessCodes: codes)
+        }
+        
+        // MARK: - Clear functions without dependencies
+        
+        public func makeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                   withAccessToken accessToken: String?,
+                                                   transport adapter: B) where B.Response == T, B.Server == Server {
+            guard let url = endpoint.url(relatedTo: self.server) else {
+                let result: HttpTypedResult<T> = .failure(.failedConstructUrl)
+                adapter.wrapperHandler()(result)
+                return
+            }
+            let httpRequest: URLRequest
+            do {
+                httpRequest = try endpoint.request(url,
+                                                   httpTimeout: self.httpTimeout,
+                                                   jsonEncoder: jsonEncoder,
+                                                   accessToken: accessToken)
+            } catch let error as HttpKit.HttpError {
+                let result: HttpTypedResult<T> = .failure(error)
+                adapter.wrapperHandler()(result)
+                return
+            } catch {
+                let result: HttpTypedResult<T> = .failure(.httpFailure(error: error))
+                adapter.wrapperHandler()(result)
+                return
+            }
+            
+            let codes = T.successCodes
+            adapter.performRequest(httpRequest, sucessCodes: codes)
         }
     }
 }

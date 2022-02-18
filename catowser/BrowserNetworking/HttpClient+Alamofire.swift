@@ -9,25 +9,29 @@
 import HttpKit
 import ReactiveSwift
 
-public typealias Subscriber<R: ResponseType, S: ServerDescription> = HttpKit.ClientSubscriber<R, S>
+/// This typealias could be an issue, because the same defined in ReactiveSwift HttpClient+RxSwift.swift
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
+/// Shorter name
+public typealias RxSub<R, S, O: RxInterface> = RxSubscriber<R, S, O> where O.Observer.Response == R, O.Server == S
 
 extension HttpKit.Client {
-    public func makePublicRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                     transportAdapter: B) where B.TYPE == T, B.SRV == Server {
-        makeCleanRequest(for: endpoint, withAccessToken: nil, transport: transportAdapter)
+    public func makePublicRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                       transport adapter: B)
+    where B.Response == T, B.Server == Server {
+        makeRxRequest(for: endpoint, withAccessToken: nil, transport: adapter)
     }
     
-    public func makeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                         withAccessToken accessToken: String,
-                                                         transportAdapter: B) where B.TYPE == T, B.SRV == Server {
-        makeCleanRequest(for: endpoint, withAccessToken: accessToken, transport: transportAdapter)
+    public func makeAuthorizedRequest<T, B: HTTPRxAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                           withAccessToken accessToken: String,
+                                                           transport adapter: B)
+    where B.Response == T, B.Server == Server {
+        makeRxRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
     }
     
-    public func rxMakePublicRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                       transport adapter: B,
-                                                       _ subscriber: Subscriber<T, Server>) -> RxProducer<T>
-                                                       where B.TYPE == T, B.SRV == Server {
+    public func rxMakePublicRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                             transport adapter: B,
+                                                             _ subscriber: RxSubscriber<T, Server, RX>) -> RxProducer<T>
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer = rxMakeRequest(for: endpoint,
                                         withAccessToken: nil,
                                         transport: adapter,
@@ -35,11 +39,11 @@ extension HttpKit.Client {
         return producer
     }
     
-    public func rxMakeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                           withAccessToken accessToken: String,
-                                                           transport adapter: B,
-                                                           _ subscriber: Subscriber<T, Server>) -> RxProducer<T>
-                                                           where B.TYPE == T, B.SRV == Server {
+    public func rxMakeAuthorizedRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                 withAccessToken accessToken: String,
+                                                                 transport adapter: B,
+                                                                 _ subscriber: RxSub<T, Server, RX>) -> RxProducer<T>
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer = rxMakeRequest(for: endpoint,
                                         withAccessToken: accessToken,
                                         transport: adapter,
@@ -47,11 +51,11 @@ extension HttpKit.Client {
         return producer
     }
     
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func cMakePublicRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                      transport adapter: B,
-                                                      _ subscriber: Subscriber<T, Server>) -> ResponseFuture<T>
-                                                      where B.TYPE == T, B.SRV == Server {
+    public func cMakePublicRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                            transport adapter: B,
+                                                            _ subscriber: RxSub<T, Server, RX>) -> ResponseFuture<T>
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
+        // TODO: Use HTTPAdapter to remove RX dependency for Combine interfaces
         let future = cMakeRequest(for: endpoint,
                                      withAccessToken: nil,
                                      transport: adapter,
@@ -59,12 +63,12 @@ extension HttpKit.Client {
         return future
     }
     
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public func cMakeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                          withAccessToken accessToken: String,
-                                                          transport adapter: B,
-                                                          _ subscriber: Subscriber<T, Server>) -> ResponseFuture<T>
-                                                          where B.TYPE == T, B.SRV == Server {
+    public func cMakeAuthorizedRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                                withAccessToken accessToken: String,
+                                                                transport adapter: B,
+                                                                _ subscriber: RxSub<T, Server, RX>) -> ResponseFuture<T>
+    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
+        // TODO: Use HTTPAdapter to remove RX dependency for Combine interfaces
         let future = cMakeRequest(for: endpoint,
                                      withAccessToken: accessToken,
                                      transport: adapter,
