@@ -40,10 +40,10 @@ extension HttpKit.Client {
         })
     }
     
-    public func rxMakeVoidRequest<B: HTTPVoidAdapter, RX>(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                                          withAccessToken accessToken: String?,
-                                                          transport adapter: B,
-                                                          subscriber: RxVoidSubscriber<Server, RX>) -> RxVoidProducer
+    public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                            withAccessToken accessToken: String?,
+                                                            transport adapter: B,
+                                                            subscriber: RxVoidSubscriber<Server, RX>) -> RxVoidProducer
     where B.Server == Server, B.Observer == RX {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {

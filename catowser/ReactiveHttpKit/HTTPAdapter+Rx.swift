@@ -22,7 +22,7 @@ extension HTTPRxAdapter {
     }
 }
 
-extension HTTPVoidAdapter {
+extension HTTPRxVoidAdapter {
     /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
                                           _ lifetime: Lifetime,
                                           _ endpoint: HttpKit.VoidEndpoint<Server>) {
