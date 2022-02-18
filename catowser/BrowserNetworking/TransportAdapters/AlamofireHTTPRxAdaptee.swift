@@ -1,9 +1,9 @@
 //
-//  AlamofireHTTPAdaptee.swift
+//  AlamofireHTTPRxAdaptee.swift
 //  BrowserNetworking
 //
-//  Created by Andrey Ermoshin on 18.02.2022.
-//  Copyright © 2022 andreiermoshin. All rights reserved.
+//  Created by Andrei Ermoshin on 11/29/21.
+//  Copyright © 2021 andreiermoshin. All rights reserved.
 //
 
 import HttpKit
@@ -14,13 +14,14 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAdapter {
+final class AlamofireHTTPRxAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.Observer.Response == R, RX.Server == S {
     typealias Response = R
     typealias Server = S
+    typealias ObserverWrapper = RX
     
-    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>
+    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>) {
+    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
     
@@ -32,9 +33,15 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
             switch self.handlerType {
             case .closure(let originalClosure):
                 originalClosure.closure(result)
-            case .rxObserver, .waitsForRxObserver:
-                assertionFailure("Calling RX interface in RX free wrapper")
-            case .waitsForCombinePromise:
+            case .rxObserver(let observerWrapper):
+                switch result {
+                case .success(let value):
+                    observerWrapper.observer.newSend(value: value)
+                    observerWrapper.observer.newComplete()
+                case .failure(let error):
+                    observerWrapper.observer.newSend(error: error)
+                }
+            case .waitsForRxObserver, .waitsForCombinePromise:
                 break
             case .combine(let promiseWrapper):
                 promiseWrapper.promise(result)
@@ -66,7 +73,11 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
                 }
                 self.wrapperHandler()(result)
             })
-        if case let .combine(_) = handlerType {
+        if case let .rxObserver(observerWrapper) = handlerType {
+            observerWrapper.lifetime.newObserveEnded({
+                dataRequest.cancel()
+            })
+        } else if case let .combine(_) = handlerType {
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
@@ -77,5 +88,19 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
             let promiseWrapper: HttpKit.CombinePromiseWrapper<Response, Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
+    }
+}
+
+/// Wrapper around Alamofire method
+extension URLRequest: URLRequestCreatable {
+    public func convertToURLRequest() throws -> URLRequest {
+        return try asURLRequest()
+    }
+}
+
+/// Wrapper around Alamofire method
+extension JSONEncoding: JSONRequestEncodable {
+    public func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest {
+        return try encode(urlRequest.convertToURLRequest(), with: parameters)
     }
 }

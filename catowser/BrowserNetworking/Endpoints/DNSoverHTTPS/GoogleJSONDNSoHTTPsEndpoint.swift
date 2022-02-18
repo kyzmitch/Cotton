@@ -22,9 +22,11 @@ public typealias GDNSjsonRxSignal = Signal<GoogleDNSOverJSONResponse, HttpKit.Ht
 public typealias GDNSjsonRxInterface = HttpKit.RxObserverWrapper<GoogleDNSOverJSONResponse,
                                                                  GoogleDnsServer,
                                                                  GDNSjsonRxSignal>
-public typealias GDNSJsonClientSubscriber = RxSubscriber<GoogleDNSOverJSONResponse,
-                                                         GoogleDnsServer,
-                                                         GDNSjsonRxInterface>
+public typealias GDNSJsonClientRxSubscriber = HttpKit.RxSubscriber<GoogleDNSOverJSONResponse,
+                                                                   GoogleDnsServer,
+                                                                   GDNSjsonRxInterface>
+public typealias GDNSJsonClientSubscriber = HttpKit.Subscriber<GoogleDNSOverJSONResponse,
+                                                               GoogleDnsServer>
 public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, HttpKit.HttpError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpKit.HttpError>
@@ -147,7 +149,7 @@ extension DnsRR {
 }
 
 extension HttpKit.Client where Server == GoogleDnsServer {
-    func rxGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientSubscriber) -> GDNSjsonProducer {
+    func rxGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientRxSubscriber) -> GDNSjsonProducer {
         let endpoint: GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
@@ -157,14 +159,14 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             return GDNSjsonProducer(error: HttpKit.HttpError.failedConstructRequestParameters)
         }
         
-        let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse,
+        let adapter: AlamofireHTTPRxAdaptee<GoogleDNSOverJSONResponse,
                                             GoogleDnsServer,
                                             GDNSjsonRxInterface> = .init(.waitsForRxObserver)
-        let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber)
+        let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber: subscriber)
         return producer
     }
     
-    public func rxResolvedDomainName(in url: URL, _ subscriber: GDNSJsonClientSubscriber) -> ResolvedURLProducer {
+    public func rxResolvedDomainName(in url: URL, _ subscriber: GDNSJsonClientRxSubscriber) -> ResolvedURLProducer {
         return url.rxHttpHost
             .flatMapError({ _ -> SignalProducer<String, HttpKit.HttpError> in
                 return .init(error: .failedConstructRequestParameters)
@@ -192,9 +194,8 @@ extension HttpKit.Client where Server == GoogleDnsServer {
         }
         
         let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse,
-                                            GoogleDnsServer,
-                                            GDNSjsonRxInterface> = .init(.waitsForCombinePromise)
-        let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber)
+                                          GoogleDnsServer> = .init(.waitsForCombinePromise)
+        let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber: subscriber)
         return future.eraseToAnyPublisher()
     }
     

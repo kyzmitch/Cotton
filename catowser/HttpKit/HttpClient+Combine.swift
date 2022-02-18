@@ -14,11 +14,11 @@ import Combine
 extension HttpKit.Client {
     public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpKit.HttpError>>>
     
-    public func cMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
-                                                      withAccessToken accessToken: String?,
-                                                      transport adapter: B,
-                                                      _ subscriber: RxSubscriber<T, Server, RX>) -> ResponseFuture<T>
-    where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
+    public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
+                                                withAccessToken accessToken: String?,
+                                                transport adapter: B,
+                                                subscriber: HttpKit.Subscriber<T, Server>) -> ResponseFuture<T>
+    where B.Response == T, B.Server == Server {
         // Can't use Future without Deferred because
         // a Future will begin executing immediately when you create it.
         return Combine.Deferred {
@@ -30,8 +30,7 @@ extension HttpKit.Client {
                 
                 adapter.transferToCombineState(promise, endpoint)
                 subscriber.insert(adapter.handlerType)
-                // TODO: use makeRequest instead
-                self.makeRxRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
+                self.makeRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
             }
             return subject.handleEvents(receiveCompletion: { [weak subscriber] _ in
                 // Must capture `adapter` by strong reference comparing to

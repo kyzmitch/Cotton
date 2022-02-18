@@ -17,7 +17,7 @@ extension HttpKit.Client {
     public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                        withAccessToken accessToken: String?,
                                                        transport adapter: B,
-                                                       _ subscriber: RxSubscriber<T, Server, RX>) -> RxProducer<T>
+                                                       subscriber: HttpKit.RxSubscriber<T, Server, RX>) -> RxProducer<T>
     where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer: SignalProducer<T, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
@@ -43,7 +43,7 @@ extension HttpKit.Client {
     public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: HttpKit.VoidEndpoint<Server>,
                                                             withAccessToken accessToken: String?,
                                                             transport adapter: B,
-                                                            subscriber: RxVoidSubscriber<Server, RX>) -> RxVoidProducer
+                                                            subscriber: HttpKit.RxVoidSubscriber<Server, RX>) -> RxVoidProducer
     where B.Server == Server, B.Observer == RX {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {

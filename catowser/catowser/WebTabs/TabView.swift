@@ -44,9 +44,6 @@ final class TabView: UIView {
     
     weak var delegate: TabDelegate?
     
-    ///
-    let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
-    
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
         centerBackground.translatesAutoresizingMaskIntoConstraints = false
@@ -218,9 +215,11 @@ private extension TabView {
         favicon.image = nil
         
         if #available(iOS 13.0, *) {
+            let subscriber = HttpEnvironment.shared.dnsClientSubscriber
+
             imageURLRequestCancellable?.cancel()
             let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, dnsClientSubscriber)
+            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {
