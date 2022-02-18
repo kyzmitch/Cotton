@@ -81,16 +81,23 @@ final class SearchSuggestionsViewController: UITableViewController {
     func prepareSearch(for searchText: String) {
         suggestions.removeAll()
         knownDomains = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: searchText)
-        if #available(iOS 15.0, *) {
-#if swift(>=5.5)
-            async { await aaPrepareSearch(for: searchText) }
-#else
-            assertionFailure("Swift version isn't 5.5")
-#endif
-        } else if #available(iOS 13.0, *) {
-            combinePrepareSearch(for: searchText)
-        } else {
+        switch FeatureManager.appAsyncApiTypeValue() {
+        case .reactive:
             rxPrepareSearch(for: searchText)
+        case .combine:
+            if #available(iOS 13.0, *) {
+                combinePrepareSearch(for: searchText)
+            } else {
+                assertionFailure("Attempt to use Combine API when iOS < 13.x")
+            }
+        case .asyncAwait:
+            if #available(iOS 15.0, *) {
+    #if swift(>=5.5)
+                async { await aaPrepareSearch(for: searchText) }
+    #else
+                assertionFailure("Swift version isn't 5.5")
+    #endif
+            }
         }
     }
     
@@ -108,11 +115,12 @@ final class SearchSuggestionsViewController: UITableViewController {
             })
             .flatMap({ [weak self] (text) -> CGSearchPublisher in
                 guard let self = self else {
-                    typealias SuggestionsResult = Result<GoogleSearchSuggestionsResponse, HttpKit.HttpError>
+                    typealias SuggestionsResult = Result<GSearchSuggestionsResponse, HttpKit.HttpError>
                     let errorResult: SuggestionsResult = .failure(.zombieSelf)
                     return errorResult.publisher.eraseToAnyPublisher()
                 }
-                return self.googleClient.cGoogleSearchSuggestions(for: text)
+                let subscriber = HttpEnvironment.shared.googleClientSubscriber
+                return self.googleClient.cGoogleSearchSuggestions(for: text, subscriber)
             })
             .receive(on: DispatchQueue.main)
             .map { $0.textResults }
@@ -132,7 +140,8 @@ final class SearchSuggestionsViewController: UITableViewController {
                 guard let self = self else {
                     return .init(error: .zombieSelf)
                 }
-                return self.googleClient.googleSearchSuggestions(for: text)
+                let subscriber = HttpEnvironment.shared.googleClientRxSubscriber
+                return self.googleClient.googleSearchSuggestions(for: text, subscriber)
             })
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in

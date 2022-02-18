@@ -9,7 +9,7 @@
 import UIKit
 import CoreBrowser
 // needed for `Downloadable`
-import HttpKit
+import BrowserNetworking
 import JSPlugins
 
 protocol FilesGreedPresenter: AnyObject {

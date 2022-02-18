@@ -11,6 +11,7 @@ import CoreBrowser
 #if canImport(Combine)
 import Combine
 #endif
+import BrowserNetworking
 
 final class SiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var faviconImageView: UIImageView!

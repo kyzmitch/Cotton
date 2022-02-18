@@ -22,6 +22,38 @@ extension ApplicationFeature {
     static var tabDefaultContent: ApplicationFeature<TabDefaultContent> {
         return ApplicationFeature<TabDefaultContent>()
     }
+    static var appDefaultAsyncApi: ApplicationFeature<SelectedAppAsyncApi> {
+        return ApplicationFeature<SelectedAppAsyncApi>()
+    }
+}
+
+/// More simple analog for HttpKit.ResponseHandlingApi
+enum AsyncApiType: Int, CaseIterable {
+    case reactive
+    case combine
+    case asyncAwait
+}
+
+/// Async Api type
+enum SelectedAppAsyncApi: BasicFeature {
+    typealias Value = AsyncApiType.RawValue
+    static let key = "ios.browser.async_api"
+    static let defaultValue: AsyncApiType.RawValue = defaultNotRawValue.rawValue
+    static let source: FeatureSource.Type = LocalFeatureSource.self
+    
+    static let defaultNotRawValue: AsyncApiType = {
+        if #available(iOS 15.0, *) {
+#if swift(>=5.5)
+            return .asyncAwait
+#else
+            return .combine
+#endif
+        } else if #available(iOS 13.0, *) {
+            return .combine
+        } else {
+            return .reactive
+        }
+    }()
 }
 
 /// DNS over HTTPS

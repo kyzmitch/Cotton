@@ -47,7 +47,6 @@ target 'HttpKitTests' do
 # Probably it is not right way of fixing
 # unit tests only should require main framework 
 # as a dependency which is JSPlugins.framework
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.33.0'
 end
 
@@ -61,7 +60,9 @@ target 'CoreBrowserTests' do
   pod 'SwiftLint', '~> 0.33.0'
 end
 
-target 'HttpKit' do
+# No even SwiftLint for 'HttpKit' target to be able to convert it to Kotlin
+
+target 'ReactiveHttpKit' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'

@@ -1,6 +1,6 @@
 //
 //  SearchEngine+OpenSearchParser.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/14/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 import SWXMLHash
-import Alamofire // for HTTPMethod type
+import HttpKit
 
 /**
  https://developer.mozilla.org/en-US/docs/Web/OpenSearch
@@ -22,6 +22,7 @@ extension OpenSearch {
         case noTemplateParameter
         case templateIsNotURL
         case notValidURL
+        case notImplementedHttpMethod
         case htmlTemplateUrlNotFound
     }
 }
@@ -39,9 +40,12 @@ extension SearchEngine {
         self.shortName = shortName
         self.imageData = imageData
         
-        let httpMethod: HTTPMethod
+        let httpMethod: HttpKit.HTTPMethod
         if let httpMethodString = element.attribute(by: "method")?.text {
-            httpMethod = HTTPMethod(rawValue: httpMethodString)
+            guard let enumValue = HttpKit.HTTPMethod(rawValue: httpMethodString) else {
+                throw OpenSearch.Error.notImplementedHttpMethod
+            }
+            httpMethod = enumValue
         } else {
             httpMethod = .get
         }

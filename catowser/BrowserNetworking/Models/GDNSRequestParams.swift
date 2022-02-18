@@ -1,6 +1,6 @@
 //
 //  GDNSRequestParams.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/29/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
@@ -15,7 +15,7 @@ public struct GDNSRequestParams {
 
      The only required parameter. RFC 4343 backslash escapes are accepted.
      */
-    let name: DomainName
+    let name: HttpKit.DomainName
     /**
      string, default: 1
      */
@@ -75,7 +75,7 @@ public struct GDNSRequestParams {
      */
     let randomPadding: String
     
-    public init?(domainName: DomainName) {
+    public init?(domainName: HttpKit.DomainName) {
         name = domainName
         guard let rrType = DnsRR() else {
             return nil

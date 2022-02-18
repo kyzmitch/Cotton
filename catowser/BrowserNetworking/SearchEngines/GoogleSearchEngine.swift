@@ -1,6 +1,6 @@
 //
 //  GoogleSearchEngine.swift
-//  HttpKit
+//  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/13/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.

@@ -26,7 +26,7 @@ extension Site {
     
     /// Attempts resolve domain name from site url before using it in favicon URL.
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func fetchFaviconURL(_ resolve: Bool) -> AnyPublisher<URL, Error> {
+    func fetchFaviconURL(_ resolve: Bool, _ subscriber: GDNSJsonClientSubscriber) -> AnyPublisher<URL, Error> {
         typealias URLResult = Result<URL, Error>
         
         struct InvalidUrlError: Error {}
@@ -41,7 +41,7 @@ extension Site {
         guard let faviconDomainURL = URL(faviconHost: urlInfo.host) else {
             return URLResult.Publisher(.failure(InvalidUrlError())).eraseToAnyPublisher()
         }
-        return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL)
+        return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL, subscriber)
             .mapError { (dnsError) -> Error in
                 return dnsError
             }.eraseToAnyPublisher()

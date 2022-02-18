@@ -13,6 +13,7 @@ import CoreBrowser
 #if canImport(Combine)
 import Combine
 #endif
+import BrowserNetworking
 
 protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView)
@@ -214,8 +215,11 @@ private extension TabView {
         favicon.image = nil
         
         if #available(iOS 13.0, *) {
+            let subscriber = HttpEnvironment.shared.dnsClientSubscriber
+
             imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
                     switch completion {

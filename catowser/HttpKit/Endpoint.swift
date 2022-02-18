@@ -7,12 +7,22 @@
 //
 
 import Foundation
-// Alamofire only needed for `HTTPMethod` type
-import Alamofire
 
+extension HttpKit {
+    public enum HTTPMethod: String {
+        case get
+        case post
+    }
+}
 
 public protocol URLRequestCreatable {
     func convertToURLRequest() throws -> URLRequest
+}
+
+extension URLRequest: URLRequestCreatable {
+    public func convertToURLRequest() throws -> URLRequest {
+        return self
+    }
 }
 
 /// Interface for some JSON encoder (e.g. Alamofire implementation) to hide it and
@@ -22,13 +32,13 @@ public protocol JSONRequestEncodable {
 }
 
 extension HttpKit {
-    public struct Endpoint<T: ResponseType, Server: ServerDescription> {
+    public struct Endpoint<Response: ResponseType, Server: ServerDescription>: Equatable, Hashable {
         public let method: HTTPMethod
         public let path: String
         public let headers: [HttpHeader]?
         
         /// This is needed to associate type of response with endpoint
-        public let responseType: T.Type = T.self
+        public let responseType: Response.Type = Response.self
         /// To link endpoint to specific server, since it doesn't make sense to use endpoint
         /// for different host or something
         public let serverType: Server.Type = Server.self
@@ -42,6 +52,24 @@ extension HttpKit {
             self.path = path
             self.headers = headers
             self.encodingMethod = encodingMethod
+        }
+        
+        public typealias HttpEndpoint<R, S> = HttpKit.Endpoint<Response, Server>
+        
+        public static func == (lhs: HttpEndpoint<Response, Server>, rhs: HttpEndpoint<Response, Server>) -> Bool {
+            return lhs.method == rhs.method &&
+            lhs.path == rhs.path &&
+            lhs.headers == rhs.headers &&
+            lhs.responseType == rhs.responseType &&
+            lhs.serverType == rhs.serverType &&
+            lhs.encodingMethod == rhs.encodingMethod
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(method)
+            hasher.combine(path)
+            hasher.combine(headers)
+            hasher.combine(encodingMethod)
         }
         
         /// Constructs a URL based on endpoint info and host name from provided server.
@@ -90,15 +118,45 @@ extension HttpKit {
         }
     }
     
-    public enum ParametersEncodingDestination {
+    public enum ParametersEncodingDestination: Equatable, Hashable {
         /// Stores URL query items to include them in URL
         case queryString(queryItems: [URLQueryItem])
         /// Http body Dictionary to generate JSON
         case httpBodyJSON(parameters: [String: Any])
         /// Http body data enoded from `Encodable`
         case httpBody(encodedData: Data)
+        
+        public static func == (lhs: HttpKit.ParametersEncodingDestination,
+                               rhs: HttpKit.ParametersEncodingDestination) -> Bool {
+            switch (lhs, rhs) {
+            case (.queryString(queryItems: let lItems), queryString(queryItems: let rItems)):
+                return lItems == rItems
+            case (.httpBodyJSON(parameters: let lItems), httpBodyJSON(parameters: let rItems)):
+                // Not full comparison because values of type `Any` don't confirm to Equatable
+                return lItems.keys == rItems.keys
+            case (.httpBody(encodedData: let lData), httpBody(encodedData: let rData)):
+                return lData == rData
+            default:
+                return false
+            }
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            switch self {
+            case .queryString(queryItems: let items):
+                hasher.combine(items)
+            case .httpBodyJSON(parameters: let items):
+                hasher.combine(items.description)
+            case .httpBody(encodedData: let data):
+                hasher.combine(data)
+            }
+        }
     }
     
+    /// Non-nominal types cannot be extended.
+    /// Void is an empty tuple, and because tuples are non-nominal types,
+    /// you can’t add methods or properties or conformance to protocols.
+    /// https://nshipster.com/void/
     public struct VoidResponse: ResponseType {
         public static var successCodes: [Int] {
             return [200, 201]
