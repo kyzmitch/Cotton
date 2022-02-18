@@ -11,6 +11,7 @@ import ReactiveSwift
 
 /// This typealias could be an issue, because the same defined in BrowserNetworking HttpClient+Alamofire.swift
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
+public typealias RxVoidProducer = SignalProducer<Void, HttpKit.HttpError>
 
 extension HttpKit.Client {
     public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
@@ -39,10 +40,11 @@ extension HttpKit.Client {
         })
     }
     
-    public func rxMakeVoidRequest<B: HTTPVoidAdapter>(for endpoint: HttpKit.VoidEndpoint<Server>,
-                                                      withAccessToken accessToken: String?,
-                                                      transport adapter: B) -> SignalProducer<Void, HttpKit.HttpError>
-                                                      where B.Server == Server {
+    public func rxMakeVoidRequest<B: HTTPVoidAdapter, RX>(for endpoint: HttpKit.VoidEndpoint<Server>,
+                                                          withAccessToken accessToken: String?,
+                                                          transport adapter: B,
+                                                          subscriber: RxVoidSubscriber<Server, RX>) -> RxVoidProducer
+    where B.Server == Server, B.Observer == RX {
         let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
@@ -50,8 +52,16 @@ extension HttpKit.Client {
             }
             
             adapter.transferToRxState(observer, lifetime, endpoint)
+            subscriber.insert(adapter.handlerType)
             self.makeRxVoidRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
         }
-        return producer
+        return producer.on(failed: { [weak subscriber] _ in
+            subscriber?.remove(adapter.handlerType)
+        }, completed: { [weak subscriber, weak adapter] in
+            guard let adapter = adapter else {
+                return
+            }
+            subscriber?.remove(adapter.handlerType)
+        })
     }
 }
