@@ -29,7 +29,7 @@ final class SiteMenuModel: ObservableObject {
     @Published var isJavaScriptEnabled: Bool
     @Published var tabAddPosition = FeatureManager.tabAddPositionValue()
     @Published var tabDefaultContent = FeatureManager.tabDefaultContentValue()
-    @Published var asyncApiType: AsyncApiType = FeatureManager.appDefaultAsyncApiTypeValue()
+    @Published var asyncApiType: AsyncApiType = FeatureManager.appAsyncApiTypeValue()
     
     private var dohChangesCancellable: AnyCancellable?
     private var jsEnabledOptionCancellable: AnyCancellable?
@@ -56,7 +56,7 @@ final class SiteMenuModel: ObservableObject {
     }
     
     var selectedAsyncApiStringValue: String {
-        return FeatureManager.appDefaultAsyncApiTypeValue().description
+        return FeatureManager.appAsyncApiTypeValue().description
     }
     
     let viewTitle: String = .menuTtl

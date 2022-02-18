@@ -18,7 +18,7 @@ struct AppAsyncApiTypeModel {
     
     let onPop: AsyncApiSelectionPopClosure
     
-    let selected: AsyncApiType = FeatureManager.appDefaultAsyncApiTypeValue()
+    let selected: AsyncApiType = FeatureManager.appAsyncApiTypeValue()
 }
 
 extension AsyncApiType: CustomStringConvertible {

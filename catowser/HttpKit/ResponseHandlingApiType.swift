@@ -6,30 +6,61 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+
+public protocol RxAnyObserver {
+    associatedtype Response: ResponseType
+    func newSend(value: Response)
+    func newSend(error: HttpKit.HttpError)
+    func newComplete()
+}
+
+/// Can't add similar Lifetime method because it returns a Disposable which is not a type but protocol already
+/// So, can't extend swift protocol like RxAnyDisposable, in other words
+/// can't extend swift protocol Disposable with our RxAnyDisposable
+/// As a workaround this method doesn't return Disposable
+public protocol RxAnyLifetime {
+    func newObserveEnded(_ action: @escaping () -> Void)
+}
+
+/// This protocol is needed to not use ReactiveSwift dependency directly
+/// It should be implemented by RxObserverWrapper which is in different Framework
+public protocol RxInterface: Hashable, AnyObject {
+    associatedtype Observer: RxAnyObserver
+    associatedtype Server: ServerDescription
+    
+    var observer: Observer { get }
+    var lifetime: RxAnyLifetime { get }
+    /// Not needed actually, but maybe we have to use S type somewhere
+    var endpoint: HttpKit.Endpoint<Observer.Response, Server> { get }
+}
 
 extension HttpKit {
     /// Combine Future type is only available from ios 13 https://stackoverflow.com/a/68754297
     /// Can't mark specific enum case to be available for certain OS version
     /// Deployment target was set to 13.0 from 12.1 from now
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public enum ResponseHandlingApi<TYPE: ResponseType, S: ServerDescription>: Hashable {
-        case closure(ClosureWrapper<TYPE, S>)
-        case rxObserver(RxObserverWrapper<TYPE, S>)
+    public enum ResponseHandlingApi<Response,
+                                    Server,
+                                    Observer: RxInterface>: Hashable where Observer.Observer.Response == Response,
+                                                                           Observer.Server == Server {
+        case closure(ClosureWrapper<Response, Server>)
+        case rxObserver(Observer)
         case waitsForRxObserver
-        case combine(CombinePromiseWrapper<TYPE, S>)
+        case combine(CombinePromiseWrapper<Response, Server>)
         case waitsForCombinePromise
         case asyncAwaitConcurrency
         
+        public typealias ResponseType<R, S, O> = ResponseHandlingApi<Response, Server, Observer>
+        
         // MARK: - convenience methods
         
-        public static func closure(_ closure: @escaping (Result<TYPE, HttpKit.HttpError>) -> Void,
-                                   _ endpoint: Endpoint<TYPE, S>) -> ResponseHandlingApi<TYPE, S> {
-            let closureWrapper: ClosureWrapper<TYPE, S> = .init(closure, endpoint)
-            return ResponseHandlingApi<TYPE, S>.closure(closureWrapper)
+        public static func closure(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
+                                   _ endpoint: Endpoint<Response, Server>) -> ResponseType<Response, Server, Observer> {
+            let closureWrapper: ClosureWrapper<Response, Server> = .init(closure, endpoint)
+            return ResponseHandlingApi<Response, Server, Observer>.closure(closureWrapper)
         }
         
         public func hash(into hasher: inout Hasher) {
@@ -54,7 +85,8 @@ extension HttpKit {
             hasher.combine(caseNumber)
         }
         
-        public static func == (lhs: ResponseHandlingApi<TYPE, S>, rhs: ResponseHandlingApi<TYPE, S>) -> Bool {
+        public static func == (lhs: ResponseHandlingApi<Response, Server, Observer>,
+                               rhs: ResponseHandlingApi<Response, Server, Observer>) -> Bool {
             /**
              Can't compare closures/functions and it is intended.
              

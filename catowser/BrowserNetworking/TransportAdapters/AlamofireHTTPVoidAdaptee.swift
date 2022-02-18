@@ -13,12 +13,13 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter {
-    typealias SRV = SType
+final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPVoidAdapter where RX.Server == S {
+    typealias Server = S
+    typealias ObserverWrapper = RX
 
-    var handlerType: HttpKit.ResponseVoidHandlingApi<SRV>
+    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<SRV>) {
+    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
     
@@ -34,9 +35,10 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
                 switch result {
                 case .success:
                     let value: Void = ()
-                    observerWrapper.observer.send(value: value)
+                    observerWrapper.observer.newSend(value: value)
+                    observerWrapper.observer.newComplete()
                 case .failure(let error):
-                    observerWrapper.observer.send(error: error)
+                    observerWrapper.observer.newSend(error: error)
                 }
             case .waitsForRxObserver, .waitsForCombinePromise:
                 break
@@ -65,7 +67,7 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
                 self?.wrapperHandler()(result)
         }
         if case let .rxObserver(observerWrapper) = handlerType {
-            observerWrapper.lifetime.observeEnded({
+            observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
             })
         } else if case let .combine(_) = handlerType {
@@ -73,19 +75,10 @@ final class AlamofireHTTPVoidAdaptee<SType: ServerDescription>: HTTPVoidAdapter 
         }
     }
     
-    func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
-                           _ lifetime: Lifetime,
-                           _ endpoint: HttpKit.VoidEndpoint<SRV>) {
-        if case .waitsForRxObserver = handlerType {
-            let observerWrapper: HttpKit.RxObserverVoidWrapper<SType> = .init(observer, lifetime, endpoint)
-            handlerType = .rxObserver(observerWrapper)
-        }
-    }
-    
     func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                                _ endpoint: HttpKit.VoidEndpoint<SRV>) {
+                                _ endpoint: HttpKit.VoidEndpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<SType> = .init(promise, endpoint)
+            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

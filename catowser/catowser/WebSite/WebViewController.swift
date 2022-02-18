@@ -257,16 +257,23 @@ final class WebViewController: BaseViewController {
             return
         }
         
-        if #available(iOS 15.0, *) {
-#if swift(>=5.5)
-            async { await aaResolveDomainName(url: url)}
-#else
-            assertionFailure("Swift version isn't 5.5")
-#endif
-        } else if #available(iOS 13.0, *) {
-            cResolveDomainName(url: url)
-        } else {
+        switch FeatureManager.appAsyncApiTypeValue() {
+        case .reactive:
             rxResolveDomainName(url: url)
+        case .combine:
+            if #available(iOS 13.0, *) {
+                cResolveDomainName(url: url)
+            } else {
+                assertionFailure("Attempt to use Combine API when iOS < 13.x")
+            }
+        case .asyncAwait:
+            if #available(iOS 15.0, *) {
+    #if swift(>=5.5)
+                async { await aaResolveDomainName(url: url)}
+    #else
+                assertionFailure("Swift version isn't 5.5")
+    #endif
+            }
         }
     }
     
