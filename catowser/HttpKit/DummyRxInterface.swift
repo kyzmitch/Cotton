@@ -42,9 +42,12 @@ extension HttpKit {
         }
         
         public static func == (lhs: HttpKit.DummyRxType<R, SS, RX>, rhs: HttpKit.DummyRxType<R, SS, RX>) -> Bool {
-            return false
+            return lhs.endpoint == rhs.endpoint
         }
         
-        public func hash(into hasher: inout Hasher) {}
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine("DummyRxType")
+            hasher.combine(endpoint)
+        }
     }
 }
