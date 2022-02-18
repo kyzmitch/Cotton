@@ -48,6 +48,8 @@ final class WebViewController: BaseViewController {
     /// Not private to allow access from extension
     let dnsClient: GoogleDnsClient
     ///
+    let dnsClientRxSubscriber: GDNSJsonClientRxSubscriber = .init()
+    ///
     let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
     /// Was DoH used to load URL in WebView
     private(set) var dohUsed: Bool
@@ -302,7 +304,7 @@ final class WebViewController: BaseViewController {
     
     private func rxResolveDomainName(url: URL) {
         dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url, dnsClientSubscriber)
+        dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url, dnsClientRxSubscriber)
             .start(on: UIScheduler())
             .startWithResult({ [weak self] (result) in
                 guard let self = self else {

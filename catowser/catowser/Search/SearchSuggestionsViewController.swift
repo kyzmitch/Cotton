@@ -54,6 +54,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     /// Not private to allow access from extension
     let googleClient: GoogleSuggestionsClient
     /// 
+    let googleClientRxSubscriber: GSearchClientRxSubscriber = .init()
+    ///
     let googleClientSubscriber: GSearchClientSubscriber = .init()
     
     private let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
@@ -141,7 +143,7 @@ final class SearchSuggestionsViewController: UITableViewController {
                 guard let self = self else {
                     return .init(error: .zombieSelf)
                 }
-                return self.googleClient.googleSearchSuggestions(for: text, self.googleClientSubscriber)
+                return self.googleClient.googleSearchSuggestions(for: text, self.googleClientRxSubscriber)
             })
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in

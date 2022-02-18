@@ -1,5 +1,5 @@
 //
-//  AlamofireHTTPVoidAdaptee.swift
+//  AlamofireHTTPRxVoidAdaptee.swift
 //  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 2/10/22.
@@ -13,7 +13,7 @@ import ReactiveSwift
 import Combine
 #endif
 
-final class AlamofireHTTPVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapter where RX.Server == S {
+final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapter where RX.Server == S {
     typealias Server = S
     typealias ObserverWrapper = RX
 
