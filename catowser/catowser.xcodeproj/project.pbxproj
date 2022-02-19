@@ -80,6 +80,10 @@
 		755E107C27C1241000D90AD0 /* DuckDuckGoServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107B27C1241000D90AD0 /* DuckDuckGoServer.swift */; };
 		755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */; };
 		755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */; };
+		755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108127C169AC00D90AD0 /* BaseListModel.swift */; };
+		755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108127C169AC00D90AD0 /* BaseListModel.swift */; };
+		755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */; };
+		755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -661,6 +665,8 @@
 		755E107927C0FBC600D90AD0 /* DuckDuckGoAutoCompleteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckDuckGoAutoCompleteEndpoint.swift; sourceTree = "<group>"; };
 		755E107B27C1241000D90AD0 /* DuckDuckGoServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckDuckGoServer.swift; sourceTree = "<group>"; };
 		755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchSettingsModel.swift; sourceTree = "<group>"; };
+		755E108127C169AC00D90AD0 /* BaseListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListModel.swift; sourceTree = "<group>"; };
+		755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListModelImpl.swift; sourceTree = "<group>"; };
 		767DCB6FAC0282E44CD4A2D7 /* Pods-HttpKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		81B2D2928390EC8BF7C0C9A8 /* Pods-BrowserNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserNetworking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserNetworking/Pods-BrowserNetworking.debug.xcconfig"; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
@@ -1574,6 +1580,8 @@
 				755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */,
 				755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */,
 				755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */,
+				755E108127C169AC00D90AD0 /* BaseListModel.swift */,
+				755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */,
 			);
 			path = Menu;
 			sourceTree = "<group>";
@@ -2695,6 +2703,7 @@
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
+				755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
@@ -2740,6 +2749,7 @@
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
+				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				60A82C532254E1F7008210D9 /* MasterRouter.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
@@ -2819,6 +2829,7 @@
 				8A8035B224442F0F000E035F /* AppDelegate.swift in Sources */,
 				8A8035B324442F0F000E035F /* WebViewsReuseManager.swift in Sources */,
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
+				755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */,
 				8A8035B524442F0F000E035F /* SmartphoneSearchBarViewController.swift in Sources */,
 				8A8035B624442F0F000E035F /* TabPreviewCell.swift in Sources */,
@@ -2864,6 +2875,7 @@
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
+				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
 				8A8035CA24442F0F000E035F /* MasterRouter.swift in Sources */,
 				8A8035CB24442F0F000E035F /* CounterView.swift in Sources */,

@@ -62,7 +62,7 @@ final class FeatureManager {
             .filterMap { $0 == feature ? feature : nil }
     }
     
-    private static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
+    static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
         return shared.sources.first(where: { type(of: $0) == F.source })
     }
 }
