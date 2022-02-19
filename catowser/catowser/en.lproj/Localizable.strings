@@ -45,6 +45,7 @@
 "ttl_tab_positions" = "How to add new tab";
 "ttl_tab_default_content" = "New tab content";
 "ttl_app_async_method" = "Used Async API method";
+"ttl_web_search_auto_complete_source" = "Web search auto completion settings";
 
 "txt_app_async_api_reactive" = "Reactive";
 "txt_app_async_api_combine" = "Combine";

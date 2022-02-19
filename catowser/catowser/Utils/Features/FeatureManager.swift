@@ -102,4 +102,14 @@ extension FeatureManager {
         return defaultValue
 #endif
     }
+    
+    static func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
+        let feature: ApplicationFeature = .webAutoCompletionSource
+        // swiftlint:disable:next force_unwrapping
+        let defaultValue = WebAutoCompletionSource(rawValue: feature.defaultValue)!
+        guard let source = source(for: feature) else {
+            return defaultValue
+        }
+        return WebAutoCompletionSource(rawValue: source.currentValue(of: feature)) ?? defaultValue
+    }
 }

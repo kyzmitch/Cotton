@@ -86,9 +86,12 @@ private extension String {
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
-    static let tabContentTxt = NSLocalizedString("ttl_tab_default_content", comment: "")
-    
-    static let appAsyncApiTypeTxt = NSLocalizedString("ttl_app_async_method", comment: "")
+    static let tabContentTxt = NSLocalizedString("ttl_tab_default_content",
+                                                 comment: "")
+    static let appAsyncApiTypeTxt = NSLocalizedString("ttl_app_async_method",
+                                                      comment: "")
+    static let webSearchSettingsTxt = NSLocalizedString("ttl_web_search_auto_complete_source",
+                                                        comment: "")
 }
 
 #if DEBUG

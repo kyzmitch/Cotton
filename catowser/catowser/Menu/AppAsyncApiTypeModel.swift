@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreBrowser
 
 typealias AsyncApiSelectionPopClosure = (AsyncApiType) -> Void
 

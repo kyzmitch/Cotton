@@ -59,6 +59,10 @@ final class SiteMenuModel: ObservableObject {
         return FeatureManager.appAsyncApiTypeValue().description
     }
     
+    var selectedWebAutoCompleteStringValue: String {
+        return FeatureManager.webSearchAutoCompleteValue().description
+    }
+    
     let viewTitle: String = .menuTtl
     
     init(menuStyle: MenuModelStyle,

@@ -45,6 +45,7 @@
 "ttl_tab_positions" = "Как добавлять вкладку";
 "ttl_tab_default_content" = "Контент для новых вкладок";
 "ttl_app_async_method" = "Async API метод";
+"ttl_web_search_auto_complete_source" = "Настройки вэб поиска";
 
 "txt_app_async_api_reactive" = "Reactive";
 "txt_app_async_api_combine" = "Combine";
