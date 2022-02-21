@@ -18,4 +18,10 @@ struct BaseListModelImpl<SourceType: CaseIterable>: BaseListModel {
     let onPop: PopClosure
     
     let selected: EnumDataSourceType
+    
+    init(_ selectedValue: EnumDataSourceType, _ title: String, _ completion: @escaping PopClosure) {
+        selected = selectedValue
+        viewTitle = title
+        onPop = completion
+    }
 }
