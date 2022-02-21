@@ -9,16 +9,14 @@
 import Foundation
 import CoreBrowser
 
-typealias TabAddPopClosure = (AddedTabPosition) -> Void
+typealias TabAddPositionsModel = BaseListModelImpl<AddedTabPosition>
 
-struct TabAddPositionsModel {
-    let dataSource = AddedTabPosition.allCases
-    
-    let viewTitle = NSLocalizedString("ttl_tab_positions", comment: "")
-    
-    let onPop: TabAddPopClosure
-    
-    let selected: AddedTabPosition = FeatureManager.tabAddPositionValue()
+extension BaseListModelImpl where EnumDataSourceType == AddedTabPosition {
+    init(_ completion: @escaping PopClosure) {
+        self.init(FeatureManager.tabAddPositionValue(),
+                  NSLocalizedString("ttl_tab_positions", comment: ""),
+                  completion)
+    }
 }
 
 /// Declare string representation for CoreBrowser enum

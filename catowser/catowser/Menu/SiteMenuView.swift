@@ -26,6 +26,7 @@ private struct _SiteMenuView: View {
     @State private var isShowingAddTabSetting = false
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
+    @State private var isShowingWebAutoCompleteSetting = false
     
     var body: some View {
         NavigationView {
@@ -41,7 +42,7 @@ private struct _SiteMenuView: View {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
                     }
-                    NavigationLink(destination: TabAddPositionsView(model: .init { (selected) in
+                    NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabAddPosition, value: selected.rawValue)
                         self.isShowingAddTabSetting = false
                     }), isActive: $isShowingAddTabSetting) {
@@ -49,7 +50,7 @@ private struct _SiteMenuView: View {
                         Spacer()
                         Text(verbatim: model.currentTabAddValue)
                     }
-                    NavigationLink(destination: TabDefaultContentView(model: .init { (selected) in
+                    NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabDefaultContent, value: selected.rawValue)
                         self.isShowingDefaultTabContentSetting = false
                     }), isActive: $isShowingDefaultTabContentSetting) {
@@ -58,9 +59,19 @@ private struct _SiteMenuView: View {
                         Text(verbatim: model.currentTabDefaultContent)
                     }
                 }
+                Section(header: Text(verbatim: .searchSectionTtl)) {
+                    NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(model: .init { (selected) in
+                        FeatureManager.setFeature(.webAutoCompletionSource, value: selected.rawValue)
+                        self.isShowingWebAutoCompleteSetting = false
+                    }), isActive: $isShowingWebAutoCompleteSetting) {
+                        Text(verbatim: .webAutoCompleteSourceTxt)
+                        Spacer()
+                        Text(verbatim: model.selectedWebAutoCompleteStringValue)
+                    }
+                }
 #if DEBUG
                 Section(header: Text(verbatim: .devSectionTtl)) {
-                    NavigationLink(destination: AppAsyncApiTypeView(model: .init { (selected) in
+                    NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultAsyncApi, value: selected.rawValue)
                         self.isShowingAppAsyncApiSetting = false
                     }), isActive: $isShowingAppAsyncApiSetting) {
@@ -79,6 +90,7 @@ private struct _SiteMenuView: View {
 
 private extension String {
     static let globalSectionTtl = NSLocalizedString("ttl_global_menu", comment: "")
+    static let searchSectionTtl = NSLocalizedString("ttl_search_menu", comment: "")
     static let devSectionTtl = NSLocalizedString("ttl_developer_menu", comment: "")
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
@@ -86,9 +98,12 @@ private extension String {
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
-    static let tabContentTxt = NSLocalizedString("ttl_tab_default_content", comment: "")
-    
-    static let appAsyncApiTypeTxt = NSLocalizedString("ttl_app_async_method", comment: "")
+    static let tabContentTxt = NSLocalizedString("ttl_tab_default_content",
+                                                 comment: "")
+    static let appAsyncApiTypeTxt = NSLocalizedString("ttl_app_async_method",
+                                                      comment: "")
+    static let webAutoCompleteSourceTxt = NSLocalizedString("ttl_web_search_auto_complete_source",
+                                                        comment: "")
 }
 
 #if DEBUG

@@ -72,6 +72,11 @@ public struct GSearchSuggestionsResponse: ResponseType {
         queryText = try container.decode(String.self)
         textResults = try container.decode([String].self)
     }
+    
+    public init(_ text: String, _ results: [String]) {
+        queryText = text
+        textResults = results
+    }
 }
 
 extension HttpKit.Client where Server == GoogleServer {
