@@ -25,6 +25,23 @@ extension ApplicationFeature {
     static var appDefaultAsyncApi: ApplicationFeature<SelectedAppAsyncApi> {
         return ApplicationFeature<SelectedAppAsyncApi>()
     }
+    static var webAutoCompletionSource: ApplicationFeature<SelectedWebAutoCompletionSource> {
+        return ApplicationFeature<SelectedWebAutoCompletionSource>()
+    }
+}
+
+/// Web search completion source
+enum WebAutoCompletionSource: Int, CaseIterable {
+    case google
+    case duckduckgo
+}
+
+enum SelectedWebAutoCompletionSource: BasicFeature {
+    typealias Value = WebAutoCompletionSource.RawValue
+    static var key: String = "ios.browser.autocompletion.source"
+    static var defaultValue: WebAutoCompletionSource.RawValue = defaultNotRawValue.rawValue
+    static let defaultNotRawValue: WebAutoCompletionSource = .duckduckgo
+    static var source: FeatureSource.Type = LocalFeatureSource.self
 }
 
 /// More simple analog for HttpKit.ResponseHandlingApi

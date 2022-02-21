@@ -62,7 +62,7 @@ final class FeatureManager {
             .filterMap { $0 == feature ? feature : nil }
     }
     
-    private static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
+    static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
         return shared.sources.first(where: { type(of: $0) == F.source })
     }
 }
@@ -101,5 +101,15 @@ extension FeatureManager {
 #else
         return defaultValue
 #endif
+    }
+    
+    static func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
+        let feature: ApplicationFeature = .webAutoCompletionSource
+        // swiftlint:disable:next force_unwrapping
+        let defaultValue = WebAutoCompletionSource(rawValue: feature.defaultValue)!
+        guard let source = source(for: feature) else {
+            return defaultValue
+        }
+        return WebAutoCompletionSource(rawValue: source.currentValue(of: feature)) ?? defaultValue
     }
 }
