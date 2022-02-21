@@ -36,8 +36,9 @@ enum WebAutoCompletionSource: Int, CaseIterable {
     case duckduckgo
 }
 
-enum SelectedWebAutoCompletionSource: BasicFeature {
+enum SelectedWebAutoCompletionSource: EnumFeature {
     typealias Value = WebAutoCompletionSource.RawValue
+    typealias NonRawValue = WebAutoCompletionSource
     static var key: String = "ios.browser.autocompletion.source"
     static var defaultValue: WebAutoCompletionSource.RawValue = defaultNotRawValue.rawValue
     static let defaultNotRawValue: WebAutoCompletionSource = .duckduckgo
@@ -52,8 +53,9 @@ enum AsyncApiType: Int, CaseIterable {
 }
 
 /// Async Api type
-enum SelectedAppAsyncApi: BasicFeature {
+enum SelectedAppAsyncApi: EnumFeature {
     typealias Value = AsyncApiType.RawValue
+    typealias NonRawValue = AsyncApiType
     static let key = "ios.browser.async_api"
     static let defaultValue: AsyncApiType.RawValue = defaultNotRawValue.rawValue
     static let source: FeatureSource.Type = LocalFeatureSource.self
@@ -90,16 +92,20 @@ enum JavaScriptEnabled: BasicFeature {
 }
 
 /// Tab add strategy on UI
-enum TabAddPosition: BasicFeature {
+enum TabAddPosition: EnumFeature {
     typealias Value = AddedTabPosition.RawValue
+    typealias NonRawValue = AddedTabPosition
     static let key = "ios.tab.add_position"
-    static let defaultValue: AddedTabPosition.RawValue = AddedTabPosition.listEnd.rawValue
+    static let defaultValue: AddedTabPosition.RawValue = defaultNotRawValue.rawValue
+    static var defaultNotRawValue: AddedTabPosition = .listEnd
     static let source: FeatureSource.Type = LocalFeatureSource.self
 }
 
-enum TabDefaultContent: BasicFeature {
+enum TabDefaultContent: EnumFeature {
     typealias Value = TabContentDefaultState.RawValue
+    typealias NonRawValue = TabContentDefaultState
     static let key = "ios.tab.default_content"
-    static let defaultValue: TabContentDefaultState.RawValue = TabContentDefaultState.topSites.rawValue
+    static let defaultValue: TabContentDefaultState.RawValue = defaultNotRawValue.rawValue
+    static var defaultNotRawValue: TabContentDefaultState = .topSites
     static let source: FeatureSource.Type = LocalFeatureSource.self
 }
