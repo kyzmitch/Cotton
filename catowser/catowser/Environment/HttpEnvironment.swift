@@ -28,6 +28,7 @@ final class HttpEnvironment {
     
     let dnsClientRxSubscriber: GDNSJsonClientRxSubscriber = .init()
     let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
+    let duckduckgoClientRxSubscriber: DDGoSuggestionsClientRxSubscriber = .init()
     
     private init() {
         let googleDNSserver = GoogleDnsServer()

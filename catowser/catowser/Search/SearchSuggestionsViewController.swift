@@ -152,7 +152,14 @@ final class SearchSuggestionsViewController: UITableViewController {
                     return .init(error: .zombieSelf)
                 }
                 let subscriber = HttpEnvironment.shared.googleClientRxSubscriber
-                return self.googleClient.googleSearchSuggestions(for: text, subscriber)
+                let ddgoSubscriber = HttpEnvironment.shared.duckduckgoClientRxSubscriber
+                switch FeatureManager.webSearchAutoCompleteValue() {
+                case .google:
+                    return self.googleClient.googleSearchSuggestions(for: text, subscriber)
+                case .duckduckgo:
+                    return self.ddGoClient.duckDuckGoSuggestions(for: text, subscriber: ddgoSubscriber)
+                        .map { $0.googleResponse }
+                }
             })
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
