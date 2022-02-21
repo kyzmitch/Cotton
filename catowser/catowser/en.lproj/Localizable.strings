@@ -34,6 +34,7 @@
 
 "ttl_site_menu" = "%@ tab settings";
 "ttl_global_menu" = "Global settings";
+"ttl_search_menu" = "Search";
 "ttl_developer_menu" = "Developer settings";
 "txt_doh_menu_item" = "DNS over HTTPs";
 "txt_javascript_enabled_for_tab" = "JavaScript in tab";
@@ -45,7 +46,7 @@
 "ttl_tab_positions" = "How to add new tab";
 "ttl_tab_default_content" = "New tab content";
 "ttl_app_async_method" = "Used Async API method";
-"ttl_web_search_auto_complete_source" = "Web search auto completion settings";
+"ttl_web_search_auto_complete_source" = "Web search auto completion source";
 
 "txt_app_async_api_reactive" = "Reactive";
 "txt_app_async_api_combine" = "Combine";

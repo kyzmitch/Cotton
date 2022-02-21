@@ -17,9 +17,11 @@ struct BaseListModelImpl<SourceType: CaseIterable>: BaseListModel {
     
     let onPop: PopClosure
     
+    /// Need to improve/re-desing Feature system to initialize it here based on a generic type instead of init usage
     let selected: EnumDataSourceType
     
     init(_ selectedValue: EnumDataSourceType, _ title: String, _ completion: @escaping PopClosure) {
+        // TODO: re-design Feature system to initialize it using generic type and without passing the argument
         selected = selectedValue
         viewTitle = title
         onPop = completion

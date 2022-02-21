@@ -10,8 +10,6 @@
 import SwiftUI
 #endif
 
-// TODO: create base view with Generic type to represent the model type for (AppAsyncApiTypeView, TabDefaultContentView, TabAddPositionsView)
-
 @available(iOS 13.0, *)
 struct AppAsyncApiTypeView: View {
     let model: AppAsyncApiTypeModel

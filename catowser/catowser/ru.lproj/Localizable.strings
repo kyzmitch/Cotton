@@ -34,6 +34,7 @@
 
 "ttl_site_menu" = "%@ настройки вкладки";
 "ttl_global_menu" = "Общие настройки";
+"ttl_search_menu" = "Поиск";
 "ttl_developer_menu" = "Настройки разработчика";
 "txt_doh_menu_item" = "DNS по HTTPs";
 "txt_javascript_enabled_for_tab" = "JavaScript на вкладке";
@@ -45,7 +46,7 @@
 "ttl_tab_positions" = "Как добавлять вкладку";
 "ttl_tab_default_content" = "Контент для новых вкладок";
 "ttl_app_async_method" = "Async API метод";
-"ttl_web_search_auto_complete_source" = "Настройки вэб поиска";
+"ttl_web_search_auto_complete_source" = "Поставщик авто дополения вэб поиска";
 
 "txt_app_async_api_reactive" = "Reactive";
 "txt_app_async_api_combine" = "Combine";
