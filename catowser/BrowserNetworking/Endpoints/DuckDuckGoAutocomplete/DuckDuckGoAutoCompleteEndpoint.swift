@@ -10,6 +10,7 @@ import HttpKit
 import Combine
 import ReactiveSwift
 
+public typealias DDGoSuggestionsClient = HttpKit.Client<DuckDuckGoServer, AlamofireReachabilityAdaptee<DuckDuckGoServer>>
 typealias DDGoSuggestionsEndpoint = HttpKit.Endpoint<DDGoSuggestionsResponse, DuckDuckGoServer>
 
 extension HttpKit.Endpoint {

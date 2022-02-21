@@ -16,11 +16,15 @@ final class HttpEnvironment {
     
     let dnsClient: GoogleDnsClient
     let googleClient: GoogleSuggestionsClient
+    let duckduckgoClient: DDGoSuggestionsClient
+    
     let dnsAlReachability: AlamofireReachabilityAdaptee<GoogleDnsServer>
     let googleAlReachability: AlamofireReachabilityAdaptee<GoogleServer>
+    let ddGoAlReachability: AlamofireReachabilityAdaptee<DuckDuckGoServer>
     
     let googleClientRxSubscriber: GSearchClientRxSubscriber = .init()
     let googleClientSubscriber: GSearchClientSubscriber = .init()
+    let duckduckgoClientSubscriber: DDGoSuggestionsClientSubscriber = .init()
     
     let dnsClientRxSubscriber: GDNSJsonClientRxSubscriber = .init()
     let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
@@ -40,6 +44,14 @@ final class HttpEnvironment {
                              jsonEncoder: JSONEncoding.default,
                              reachability: googleAlReachability,
                              httpTimeout: 10)
+        
+        let duckduckgoServer = DuckDuckGoServer()
+        // swiftlint:disable:next force_unwrapping
+        ddGoAlReachability = .init(server: duckduckgoServer)!
+        duckduckgoClient = .init(server: duckduckgoServer,
+                                 jsonEncoder: JSONEncoding.default,
+                                 reachability: ddGoAlReachability,
+                                 httpTimeout: 10)
     }
 }
 
@@ -52,5 +64,11 @@ extension HttpKit.Client where Server == GoogleDnsServer {
 extension HttpKit.Client where Server == GoogleServer {
     static var shared: GoogleSuggestionsClient {
         return HttpEnvironment.shared.googleClient
+    }
+}
+
+extension HttpKit.Client where Server == DuckDuckGoServer {
+    static var shared: DDGoSuggestionsClient {
+        return HttpEnvironment.shared.duckduckgoClient
     }
 }
