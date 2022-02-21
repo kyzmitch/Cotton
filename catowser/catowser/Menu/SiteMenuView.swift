@@ -42,7 +42,7 @@ private struct _SiteMenuView: View {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
                     }
-                    NavigationLink(destination: TabAddPositionsView(model: .init { (selected) in
+                    NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabAddPosition, value: selected.rawValue)
                         self.isShowingAddTabSetting = false
                     }), isActive: $isShowingAddTabSetting) {
@@ -50,7 +50,7 @@ private struct _SiteMenuView: View {
                         Spacer()
                         Text(verbatim: model.currentTabAddValue)
                     }
-                    NavigationLink(destination: TabDefaultContentView(model: .init { (selected) in
+                    NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabDefaultContent, value: selected.rawValue)
                         self.isShowingDefaultTabContentSetting = false
                     }), isActive: $isShowingDefaultTabContentSetting) {
@@ -71,7 +71,7 @@ private struct _SiteMenuView: View {
                 }
 #if DEBUG
                 Section(header: Text(verbatim: .devSectionTtl)) {
-                    NavigationLink(destination: AppAsyncApiTypeView(model: .init { (selected) in
+                    NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultAsyncApi, value: selected.rawValue)
                         self.isShowingAppAsyncApiSetting = false
                     }), isActive: $isShowingAppAsyncApiSetting) {

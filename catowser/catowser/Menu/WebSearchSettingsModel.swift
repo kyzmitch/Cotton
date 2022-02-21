@@ -13,7 +13,7 @@ typealias WebSearchSettingsModel = BaseListModelImpl<WebAutoCompletionSource>
 extension BaseListModelImpl where EnumDataSourceType == WebAutoCompletionSource {
     init(_ completion: @escaping PopClosure) {
         self.init(FeatureManager.webSearchAutoCompleteValue(),
-                  NSLocalizedString("ttl_web_search_auto_complete_source", comment: ""),
+                  NSLocalizedString("ttl_search_menu", comment: ""),
                   completion)
     }
 }
@@ -25,7 +25,7 @@ extension WebAutoCompletionSource: CustomStringConvertible {
         // Not need to localize the names
         switch self {
         case .duckduckgo:
-            key = "DuckDuckGo"
+            key = "Duck Duck Go"
         case .google:
             key = "Google"
         }

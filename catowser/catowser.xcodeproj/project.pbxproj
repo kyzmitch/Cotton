@@ -71,8 +71,8 @@
 		71A09C5188CE02B919C6F31B /* Pods_CoreBrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 385A71DDFA4C7EA5C03A0E5D /* Pods_CoreBrowserTests.framework */; };
 		721DF7B158CBE52302D9227B /* Pods_JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0877BB4339CB2073429F95AD /* Pods_JSPlugins.framework */; };
 		7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7509BF9122AF832200F4D701 /* Site+Extension.swift */; };
-		755E107127BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */; };
-		755E107227BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */; };
+		755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */; };
+		755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */; };
 		755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */; };
 		755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */; };
 		755E107727BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107627BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift */; };
@@ -111,8 +111,8 @@
 		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
-		8A1C1C1A2484E6450098F2F1 /* TabDefaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentView.swift */; };
-		8A1C1C1B2484E6450098F2F1 /* TabDefaultContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentView.swift */; };
+		8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */; };
+		8A1C1C1B2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */; };
 		8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */; };
 		8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */; };
 		8A1C1C202485103E0098F2F1 /* MasterInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C1F2485103E0098F2F1 /* MasterInterfaces.swift */; };
@@ -244,8 +244,8 @@
 		8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90636824332376009D786E /* URL+CoreExtensions.swift */; };
 		8A90636A243323C0009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
 		8A90636B24332452009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
-		8A90B16C248246D6000618F5 /* TabAddPositionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */; };
-		8A90B16D248246D6000618F5 /* TabAddPositionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */; };
+		8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
+		8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
 		8A91A0E82678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */; };
 		8A91A0E92678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */; };
 		8A91A0EB2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */; };
@@ -661,7 +661,7 @@
 		60D52D5422673C6300CB56F0 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		7155735F0D18D8B646D8B384 /* Pods-HttpKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7509BF9122AF832200F4D701 /* Site+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Site+Extension.swift"; sourceTree = "<group>"; };
-		755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeView.swift; sourceTree = "<group>"; };
+		755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeViewPreview.swift; sourceTree = "<group>"; };
 		755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeModel.swift; sourceTree = "<group>"; };
 		755E107627BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireHTTPAdaptee.swift; sourceTree = "<group>"; };
 		755E107927C0FBC600D90AD0 /* DuckDuckGoAutoCompleteEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckDuckGoAutoCompleteEndpoint.swift; sourceTree = "<group>"; };
@@ -696,7 +696,7 @@
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
 		8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentModel.swift; sourceTree = "<group>"; };
-		8A1C1C192484E6450098F2F1 /* TabDefaultContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentView.swift; sourceTree = "<group>"; };
+		8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentViewPreview.swift; sourceTree = "<group>"; };
 		8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SiteNavigationDelegate.swift"; sourceTree = "<group>"; };
 		8A1C1C1F2485103E0098F2F1 /* MasterInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterInterfaces.swift; sourceTree = "<group>"; };
 		8A1C1C22248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+TagsRouterInterface.swift"; sourceTree = "<group>"; };
@@ -754,7 +754,7 @@
 		8A90636824332376009D786E /* URL+CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+CoreExtensions.swift"; sourceTree = "<group>"; };
 		8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
-		8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsView.swift; sourceTree = "<group>"; };
+		8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsViewPreview.swift; sourceTree = "<group>"; };
 		8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchSuggestionsViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
@@ -1524,6 +1524,16 @@
 			path = ReactiveHttpKit;
 			sourceTree = "<group>";
 		};
+		8AB8018C27C3EDFF002D6628 /* Previews */ = {
+			isa = PBXGroup;
+			children = (
+				8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */,
+				8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */,
+				755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */,
+			);
+			path = Previews;
+			sourceTree = "<group>";
+		};
 		8AC4366924798BC8008DD663 /* SPMCommon */ = {
 			isa = PBXGroup;
 			children = (
@@ -1574,13 +1584,11 @@
 		8AE3113A247C66AC00FF28B1 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				8AB8018C27C3EDFF002D6628 /* Previews */,
 				8AE3113B247C66DF00FF28B1 /* SiteMenuView.swift */,
 				8A553519247D740900E3B330 /* SiteMenuModel.swift */,
-				8A90B16B248246D6000618F5 /* TabAddPositionsView.swift */,
 				8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */,
-				8A1C1C192484E6450098F2F1 /* TabDefaultContentView.swift */,
 				8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */,
-				755E107027BC3DC500D90AD0 /* AppAsyncApiTypeView.swift */,
 				755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */,
 				755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */,
 				755E108127C169AC00D90AD0 /* BaseListModel.swift */,
@@ -2708,7 +2716,7 @@
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
 				755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
-				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */,
+				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				60C2C90522801F3400F5D869 /* SiteCollectionViewCell.swift in Sources */,
@@ -2716,7 +2724,7 @@
 				8A1C1C23248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift in Sources */,
 				755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A1C1C202485103E0098F2F1 /* MasterInterfaces.swift in Sources */,
-				8A90B16C248246D6000618F5 /* TabAddPositionsView.swift in Sources */,
+				8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
 				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
 				8ADAF548240123F600A0D233 /* FeatureManager.swift in Sources */,
 				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
@@ -2724,7 +2732,7 @@
 				8A1C1C262485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
 				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
-				8A1C1C1A2484E6450098F2F1 /* TabDefaultContentView.swift in Sources */,
+				8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
 				8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
 				8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */,
 				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
@@ -2835,7 +2843,7 @@
 				8A8035B324442F0F000E035F /* WebViewsReuseManager.swift in Sources */,
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
 				755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
-				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeView.swift in Sources */,
+				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
 				8A8035B524442F0F000E035F /* SmartphoneSearchBarViewController.swift in Sources */,
 				8A8035B624442F0F000E035F /* TabPreviewCell.swift in Sources */,
 				8A8035B724442F0F000E035F /* SiteCollectionViewCell.swift in Sources */,
@@ -2843,7 +2851,7 @@
 				8A1C1C24248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift in Sources */,
 				755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A1C1C212485103E0098F2F1 /* MasterInterfaces.swift in Sources */,
-				8A90B16D248246D6000618F5 /* TabAddPositionsView.swift in Sources */,
+				8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
 				8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */,
 				8A8035BA24442F0F000E035F /* FeatureManager.swift in Sources */,
 				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
@@ -2851,7 +2859,7 @@
 				8A1C1C272485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
 				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,
-				8A1C1C1B2484E6450098F2F1 /* TabDefaultContentView.swift in Sources */,
+				8A1C1C1B2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
 				8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
 				8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */,
 				8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */,
