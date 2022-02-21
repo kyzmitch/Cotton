@@ -8,16 +8,14 @@
 
 import Foundation
 
-typealias WebSearchAutoCompletionSelectPopClosure = (WebAutoCompletionSource) -> Void
+typealias WebSearchSettingsModel = BaseListModelImpl<WebAutoCompletionSource>
 
-struct WebSearchSettingsModel {
-    let dataSource = WebAutoCompletionSource.allCases
-    
-    let viewTitle = NSLocalizedString("ttl_web_search_auto_complete_source", comment: "")
-    
-    let onPop: WebSearchAutoCompletionSelectPopClosure
-    
-    let selected = FeatureManager.webSearchAutoCompleteValue()
+extension BaseListModelImpl where EnumDataSourceType == WebAutoCompletionSource {
+    init(_ completion: @escaping PopClosure) {
+        self.init(FeatureManager.webSearchAutoCompleteValue(),
+                  NSLocalizedString("ttl_web_search_auto_complete_source", comment: ""),
+                  completion)
+    }
 }
 
 extension WebAutoCompletionSource: CustomStringConvertible {
