@@ -17,5 +17,5 @@ struct BaseListModelImpl<SourceType: CaseIterable>: BaseListModel {
     
     let onPop: PopClosure
     
-    let selected: EnumDataSourceType = FeatureManager.source(for: ApplicationFeature<>)
+    let selected: EnumDataSourceType
 }

@@ -31,21 +31,6 @@ protocol ObservableFeatureSource {
 protocol BasicFeature: Feature where Value: RawFeatureValue {
 }
 
-protocol EnumFeature: BasicFeature {
-    associatedtype NonRawValue: CaseIterable
-    
-    static var defaultNotRawValue: NonRawValue { get }
-}
-
-struct GenericEnumFeature<EnumType: CaseIterable & RawRepresentable>: EnumFeature {
-    typealias Value = EnumType.RawValue
-    typealias NonRawValue = EnumType
-    static var key: String = "ios.browser.autocompletion.source"
-    static var defaultValue: WebAutoCompletionSource.RawValue = defaultNotRawValue.rawValue
-    static let defaultNotRawValue: WebAutoCompletionSource = .duckduckgo
-    static var source: FeatureSource.Type = LocalFeatureSource.self
-}
-
 protocol Feature {
     associatedtype Value
 
