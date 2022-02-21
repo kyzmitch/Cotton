@@ -8,16 +8,12 @@
 
 import Foundation
 
-typealias AsyncApiSelectionPopClosure = (AsyncApiType) -> Void
+typealias AppAsyncApiTypeModel = BaseListModelImpl<AsyncApiType>
 
-struct AppAsyncApiTypeModel {
-    let dataSource = AsyncApiType.allCases
-    
-    let viewTitle = NSLocalizedString("ttl_app_async_method", comment: "")
-    
-    let onPop: AsyncApiSelectionPopClosure
-    
-    let selected: AsyncApiType = FeatureManager.appAsyncApiTypeValue()
+extension BaseListModelImpl where EnumDataSourceType == AsyncApiType {
+    init(_ completion: @escaping PopClosure) {
+        self.init(FeatureManager.appAsyncApiTypeValue(), NSLocalizedString("ttl_app_async_method", comment: ""), completion)
+    }
 }
 
 extension AsyncApiType: CustomStringConvertible {
