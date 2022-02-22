@@ -30,17 +30,30 @@ extension ApplicationFeature {
     }
 }
 
+extension ApplicationEnumFeature {
+    static var webAutoCompletionSource: ApplicationEnumFeature<SelectedWebAutoCompletionSource> {
+        return ApplicationEnumFeature<SelectedWebAutoCompletionSource>()
+    }
+}
+
 /// Web search completion source
 enum WebAutoCompletionSource: Int, CaseIterable {
     case google
     case duckduckgo
 }
 
-enum SelectedWebAutoCompletionSource: BasicFeature {
+enum GenericEnumFeature<E: CaseIterable & RawRepresentable>: EnumFeature where E.RawValue == Int {
+    typealias EnumValue = E
+    typealias Value = E.RawValue
+    
+}
+
+enum SelectedWebAutoCompletionSource: EnumFeature {
+    typealias EnumValue = WebAutoCompletionSource
     typealias Value = WebAutoCompletionSource.RawValue
     static var key: String = "ios.browser.autocompletion.source"
-    static var defaultValue: WebAutoCompletionSource.RawValue = defaultNotRawValue.rawValue
-    static let defaultNotRawValue: WebAutoCompletionSource = .duckduckgo
+    static var defaultEnumValue: EnumValue = .duckduckgo
+    static let defaultValue: Value = defaultEnumValue.rawValue
     static var source: FeatureSource.Type = LocalFeatureSource.self
 }
 

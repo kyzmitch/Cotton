@@ -65,9 +65,14 @@ final class FeatureManager {
     static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
         return shared.sources.first(where: { type(of: $0) == F.source })
     }
+    
+    static func source<F>(for enumFeature: ApplicationEnumFeature<F>) -> FeatureSource? {
+        return shared.sources.first(where: { type(of: $0) == F.source })
+    }
 }
 
 // MARK: - special methods specific to features
+
 extension FeatureManager {
     static func tabAddPositionValue() -> AddedTabPosition {
         let feature: ApplicationFeature = .tabAddPosition
@@ -111,5 +116,13 @@ extension FeatureManager {
             return defaultValue
         }
         return WebAutoCompletionSource(rawValue: source.currentValue(of: feature)) ?? defaultValue
+    }
+}
+
+// MARK: - Generic Enum features
+
+extension FeatureManager {
+    static func enumValue<F: CaseIterable>() -> F {
+        
     }
 }

@@ -14,7 +14,6 @@ import Combine
 
 // FeatureSource that uses UserDefaults
 final class LocalFeatureSource: FeatureSource {
-    
     /// Used to publish Feature changes
     private let (featureChangeSignal, featureObserver) = Signal<AnyFeature, Never>.pipe()
     

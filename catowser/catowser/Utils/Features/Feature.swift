@@ -10,6 +10,7 @@ import Foundation
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
+import Accessibility
 #endif
 
 protocol FeatureSource {
@@ -29,6 +30,16 @@ protocol ObservableFeatureSource {
  */
 
 protocol BasicFeature: Feature where Value: RawFeatureValue {
+}
+
+/// Should be used for generic enum types, so, no static properties are allowed
+/// Can't be a subset of a `BasicFeature` or `Feature` which have static properties
+protocol EnumFeature {
+    associatedtype EnumValue: CaseIterable
+    associatedtype RawValue: RawRepresentable
+    
+    var defaultEnumValue: EnumValue { get }
+    var defaultRawValue: RawValue { get }
 }
 
 protocol Feature {
@@ -67,6 +78,16 @@ extension BasicFeature {
 struct ApplicationFeature<F: Feature> {
     var defaultValue: F.Value {
         return F.defaultValue
+    }
+}
+
+struct ApplicationEnumFeature<F: EnumFeature> {
+    var defaultValue: F.Value {
+        return F.defaultValue
+    }
+    
+    var defaultEnumValue: F.EnumValue {
+        return F.defaultEnumValue
     }
 }
 
