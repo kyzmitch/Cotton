@@ -110,6 +110,8 @@
 		755E10B227CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */; };
 		755E10B427CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */; };
 		755E10B527CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */; };
+		755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
+		755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -281,8 +283,8 @@
 		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A964E3A24867A9400A0AABE /* SiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A964E3924867A9400A0AABE /* SiteSettings.swift */; };
 		8A964E3B24867A9400A0AABE /* SiteSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A964E3924867A9400A0AABE /* SiteSettings.swift */; };
-		8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
-		8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */; };
+		8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificBasicFeatures.swift */; };
+		8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96BEC82481237B00E81C38 /* SpecificBasicFeatures.swift */; };
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
@@ -708,6 +710,7 @@
 		755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumFeatureSource.swift; sourceTree = "<group>"; };
 		755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+BasicValues.swift"; sourceTree = "<group>"; };
 		755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+EnumValues.swift"; sourceTree = "<group>"; };
+		755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificApplicationEnumFeatures.swift; sourceTree = "<group>"; };
 		767DCB6FAC0282E44CD4A2D7 /* Pods-HttpKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		81B2D2928390EC8BF7C0C9A8 /* Pods-BrowserNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserNetworking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserNetworking/Pods-BrowserNetworking.debug.xcconfig"; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
@@ -800,7 +803,7 @@
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
 		8A964E3924867A9400A0AABE /* SiteSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSettings.swift; sourceTree = "<group>"; };
-		8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificFeatures.swift; sourceTree = "<group>"; };
+		8A96BEC82481237B00E81C38 /* SpecificBasicFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificBasicFeatures.swift; sourceTree = "<group>"; };
 		8A978D4823F34909007ECB0C /* AuthChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChallenge.swift; sourceTree = "<group>"; };
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
@@ -1639,7 +1642,8 @@
 				8ADAF547240123F600A0D233 /* FeatureManager.swift */,
 				755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */,
 				755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */,
-				8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */,
+				8A96BEC82481237B00E81C38 /* SpecificBasicFeatures.swift */,
+				755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */,
 				8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */,
 				755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */,
 				755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */,
@@ -2789,6 +2793,7 @@
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
 				755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
+				755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				60C2C90522801F3400F5D869 /* SiteCollectionViewCell.swift in Sources */,
@@ -2837,7 +2842,7 @@
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
-				8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */,
+				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				755E10A027CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E109727CA385D00D90AD0 /* EnumFeature.swift in Sources */,
@@ -2929,6 +2934,7 @@
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
 				755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
+				755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */,
 				8A8035B524442F0F000E035F /* SmartphoneSearchBarViewController.swift in Sources */,
 				8A8035B624442F0F000E035F /* TabPreviewCell.swift in Sources */,
 				8A8035B724442F0F000E035F /* SiteCollectionViewCell.swift in Sources */,
@@ -2977,7 +2983,7 @@
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
-				8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */,
+				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				755E10A127CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E109827CA385D00D90AD0 /* EnumFeature.swift in Sources */,

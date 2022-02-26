@@ -16,16 +16,16 @@ extension String {
     static let browserAsyncApiKey = "ios.browser.async_api"
 }
 
-typealias SelectedWebAutoCompletionSource = GenericEnumFeature<WebAutoCompletionSource>
-typealias TabAddPosition = GenericEnumFeature<AddedTabPosition>
-typealias TabDefaultContent = GenericEnumFeature<TabContentDefaultState>
-typealias SelectedAppAsyncApi = GenericEnumFeature<AsyncApiType>
+typealias WebAutoCompletionFeature = GenericEnumFeature<WebAutoCompletionSource>
+typealias TabAddPositionFeature = GenericEnumFeature<AddedTabPosition>
+typealias TabContentFeature = GenericEnumFeature<TabContentDefaultState>
+typealias AppAsyncApiFeature = GenericEnumFeature<AsyncApiType>
 
 enum EnumFeaturesHolder {
-    static let selectedWebAutoCompletionSource = SelectedWebAutoCompletionSource(.autoCompletionKey)
-    static let tabAddPosition = TabAddPosition(.tabAddPositionKey)
-    static let tabDefaultContent = TabDefaultContent(.tabDefaultContentKey)
-    static let selectedAppAsyncApi = SelectedAppAsyncApi(.browserAsyncApiKey)
+    static let webAutoCompletionSource = WebAutoCompletionFeature(.autoCompletionKey)
+    static let tabAddPosition = TabAddPositionFeature(.tabAddPositionKey)
+    static let tabDefaultContent = TabContentFeature(.tabDefaultContentKey)
+    static let selectedAppAsyncApi = AppAsyncApiFeature(.browserAsyncApiKey)
 }
 
 extension GenericEnumFeature where E == AsyncApiType {

@@ -12,7 +12,9 @@ protocol EnumDefaultValueSupportable where Self: CaseIterable {
     var defaultValue: Self { get }
 }
 
-struct GenericEnumFeature<E: CaseIterable & RawRepresentable & EnumDefaultValueSupportable>: EnumFeature where E.RawValue == Int {
+struct GenericEnumFeature<E: CaseIterable &
+                             RawRepresentable &
+                             EnumDefaultValueSupportable>: EnumFeature where E.RawValue == Int {
     typealias RawValue = E.RawValue
     typealias EnumValue = E
     
