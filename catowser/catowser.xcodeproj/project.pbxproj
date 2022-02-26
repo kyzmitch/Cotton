@@ -84,6 +84,22 @@
 		755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108127C169AC00D90AD0 /* BaseListModel.swift */; };
 		755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */; };
 		755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */; };
+		755E108B27CA377B00D90AD0 /* RawFeatureValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108A27CA377B00D90AD0 /* RawFeatureValue.swift */; };
+		755E108C27CA377B00D90AD0 /* RawFeatureValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108A27CA377B00D90AD0 /* RawFeatureValue.swift */; };
+		755E108E27CA379B00D90AD0 /* BasicFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108D27CA379B00D90AD0 /* BasicFeature.swift */; };
+		755E108F27CA379B00D90AD0 /* BasicFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108D27CA379B00D90AD0 /* BasicFeature.swift */; };
+		755E109127CA37F900D90AD0 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109027CA37F900D90AD0 /* AnyFeature.swift */; };
+		755E109227CA37F900D90AD0 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109027CA37F900D90AD0 /* AnyFeature.swift */; };
+		755E109427CA383800D90AD0 /* FeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109327CA383800D90AD0 /* FeatureSource.swift */; };
+		755E109527CA383800D90AD0 /* FeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109327CA383800D90AD0 /* FeatureSource.swift */; };
+		755E109727CA385D00D90AD0 /* EnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109627CA385D00D90AD0 /* EnumFeature.swift */; };
+		755E109827CA385D00D90AD0 /* EnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109627CA385D00D90AD0 /* EnumFeature.swift */; };
+		755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109C27CA3A3100D90AD0 /* SettingsEnumTypes.swift */; };
+		755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109C27CA3A3100D90AD0 /* SettingsEnumTypes.swift */; };
+		755E10A027CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */; };
+		755E10A127CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */; };
+		755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
+		755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -669,6 +685,14 @@
 		755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchSettingsModel.swift; sourceTree = "<group>"; };
 		755E108127C169AC00D90AD0 /* BaseListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListModel.swift; sourceTree = "<group>"; };
 		755E108427C16AB100D90AD0 /* BaseListModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListModelImpl.swift; sourceTree = "<group>"; };
+		755E108A27CA377B00D90AD0 /* RawFeatureValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawFeatureValue.swift; sourceTree = "<group>"; };
+		755E108D27CA379B00D90AD0 /* BasicFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicFeature.swift; sourceTree = "<group>"; };
+		755E109027CA37F900D90AD0 /* AnyFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFeature.swift; sourceTree = "<group>"; };
+		755E109327CA383800D90AD0 /* FeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureSource.swift; sourceTree = "<group>"; };
+		755E109627CA385D00D90AD0 /* EnumFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumFeature.swift; sourceTree = "<group>"; };
+		755E109C27CA3A3100D90AD0 /* SettingsEnumTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEnumTypes.swift; sourceTree = "<group>"; };
+		755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericEnumFeature.swift; sourceTree = "<group>"; };
+		755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificEnumFeatures.swift; sourceTree = "<group>"; };
 		767DCB6FAC0282E44CD4A2D7 /* Pods-HttpKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		81B2D2928390EC8BF7C0C9A8 /* Pods-BrowserNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserNetworking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserNetworking/Pods-BrowserNetworking.debug.xcconfig"; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
@@ -1169,6 +1193,28 @@
 			path = DuckDuckGoAutocomplete;
 			sourceTree = "<group>";
 		};
+		755E10A227CA3C6500D90AD0 /* BaseModels */ = {
+			isa = PBXGroup;
+			children = (
+				755E109C27CA3A3100D90AD0 /* SettingsEnumTypes.swift */,
+				8ADAF549240124D800A0D233 /* Feature.swift */,
+				755E109027CA37F900D90AD0 /* AnyFeature.swift */,
+				755E108D27CA379B00D90AD0 /* BasicFeature.swift */,
+				755E109627CA385D00D90AD0 /* EnumFeature.swift */,
+				755E108A27CA377B00D90AD0 /* RawFeatureValue.swift */,
+				755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */,
+			);
+			path = BaseModels;
+			sourceTree = "<group>";
+		};
+		755E10A327CA3FB600D90AD0 /* SpecificModels */ = {
+			isa = PBXGroup;
+			children = (
+				755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */,
+			);
+			path = SpecificModels;
+			sourceTree = "<group>";
+		};
 		841022B72247816D0021516F /* Downloads */ = {
 			isa = PBXGroup;
 			children = (
@@ -1565,6 +1611,7 @@
 				8ADAF546240123EA00A0D233 /* Features */,
 				8ADAF54D240126F700A0D233 /* LocalSettings.swift */,
 				8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */,
+				60724ED92204332B0071BECF /* DefaultTabProvider.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1572,11 +1619,12 @@
 		8ADAF546240123EA00A0D233 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				755E10A327CA3FB600D90AD0 /* SpecificModels */,
+				755E10A227CA3C6500D90AD0 /* BaseModels */,
 				8ADAF547240123F600A0D233 /* FeatureManager.swift */,
-				8ADAF549240124D800A0D233 /* Feature.swift */,
 				8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */,
 				8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */,
-				60724ED92204332B0071BECF /* DefaultTabProvider.swift */,
+				755E109327CA383800D90AD0 /* FeatureSource.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2752,6 +2800,9 @@
 				60380EF722A15504007F06FB /* PluginsBuilder.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
+				755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
+				755E108B27CA377B00D90AD0 /* RawFeatureValue.swift in Sources */,
+				755E108E27CA379B00D90AD0 /* BasicFeature.swift in Sources */,
 				8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
 				8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
@@ -2760,12 +2811,17 @@
 				8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
+				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificFeatures.swift in Sources */,
+				755E10A027CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
+				755E109727CA385D00D90AD0 /* EnumFeature.swift in Sources */,
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
+				755E109427CA383800D90AD0 /* FeatureSource.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				60A82C532254E1F7008210D9 /* MasterRouter.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
+				755E109127CA37F900D90AD0 /* AnyFeature.swift in Sources */,
 				8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
@@ -2879,6 +2935,9 @@
 				8A8035C324442F0F000E035F /* PluginsBuilder.swift in Sources */,
 				8A8035C424442F0F000E035F /* SearchSuggestionsViewController.swift in Sources */,
 				8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */,
+				755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
+				755E108C27CA377B00D90AD0 /* RawFeatureValue.swift in Sources */,
+				755E108F27CA379B00D90AD0 /* BasicFeature.swift in Sources */,
 				8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
 				8A8035C624442F0F000E035F /* WebViewController+SystemExtensions.swift in Sources */,
 				8A8035C724442F0F000E035F /* UIConstants.swift in Sources */,
@@ -2887,12 +2946,17 @@
 				8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
+				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificFeatures.swift in Sources */,
+				755E10A127CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
+				755E109827CA385D00D90AD0 /* EnumFeature.swift in Sources */,
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
+				755E109527CA383800D90AD0 /* FeatureSource.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
 				8A8035CA24442F0F000E035F /* MasterRouter.swift in Sources */,
 				8A8035CB24442F0F000E035F /* CounterView.swift in Sources */,
+				755E109227CA37F900D90AD0 /* AnyFeature.swift in Sources */,
 				8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,
