@@ -16,14 +16,14 @@ protocol EnumFeature {
     
     var defaultEnumValue: EnumValue { get }
     var defaultRawValue: RawValue { get }
-    var source: FeatureSource.Type { get }
+    var source: EnumFeatureSource.Type { get }
     var key: String { get }
     var name: String { get }
     var description: String { get }
 }
 
 extension EnumFeature {
-    var source: FeatureSource.Type {
+    var source: EnumFeatureSource.Type {
         return LocalFeatureSource.self
     }
     var name: String {

@@ -23,6 +23,16 @@ struct AnyFeature: Equatable {
         self.featureType = F.self
     }
     
+    init<E: EnumFeature>(_ feature: E) {
+        key = feature.key
+        featureType = E.self
+    }
+    
+    init<E>(_ enumFeature: ApplicationEnumFeature<E>) {
+        key = enumFeature.feature.key
+        featureType = type(of: enumFeature.feature)
+    }
+    
     static func == (lhs: AnyFeature, rhs: AnyFeature) -> Bool {
         return lhs.featureType == rhs.featureType
     }
@@ -32,6 +42,14 @@ struct AnyFeature: Equatable {
     }
 
     static func == <F>(lhs: ApplicationFeature<F>, rhs: AnyFeature) -> Bool {
+        return AnyFeature(lhs) == rhs
+    }
+    
+    static func == <E>(lhs: AnyFeature, rhs: ApplicationEnumFeature<E>) -> Bool {
+        return lhs == AnyFeature(rhs)
+    }
+    
+    static func == <E>(lhs: ApplicationEnumFeature<E>, rhs: AnyFeature) -> Bool {
         return AnyFeature(lhs) == rhs
     }
 }

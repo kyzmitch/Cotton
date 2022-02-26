@@ -100,6 +100,16 @@
 		755E10A127CA3A4C00D90AD0 /* GenericEnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */; };
 		755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
 		755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
+		755E10A827CA772200D90AD0 /* FeatureManager+BasicFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */; };
+		755E10A927CA772200D90AD0 /* FeatureManager+BasicFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */; };
+		755E10AB27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */; };
+		755E10AC27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */; };
+		755E10AE27CA783B00D90AD0 /* EnumFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */; };
+		755E10AF27CA783B00D90AD0 /* EnumFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */; };
+		755E10B127CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */; };
+		755E10B227CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */; };
+		755E10B427CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */; };
+		755E10B527CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
 		841022BD224785340021516F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
@@ -693,6 +703,11 @@
 		755E109C27CA3A3100D90AD0 /* SettingsEnumTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEnumTypes.swift; sourceTree = "<group>"; };
 		755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericEnumFeature.swift; sourceTree = "<group>"; };
 		755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificEnumFeatures.swift; sourceTree = "<group>"; };
+		755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeatureManager+BasicFeatures.swift"; sourceTree = "<group>"; };
+		755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeatureManager+EnumFeatures.swift"; sourceTree = "<group>"; };
+		755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumFeatureSource.swift; sourceTree = "<group>"; };
+		755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+BasicValues.swift"; sourceTree = "<group>"; };
+		755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+EnumValues.swift"; sourceTree = "<group>"; };
 		767DCB6FAC0282E44CD4A2D7 /* Pods-HttpKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HttpKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-HttpKitTests/Pods-HttpKitTests.release.xcconfig"; sourceTree = "<group>"; };
 		81B2D2928390EC8BF7C0C9A8 /* Pods-BrowserNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrowserNetworking.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrowserNetworking/Pods-BrowserNetworking.debug.xcconfig"; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
@@ -1622,9 +1637,14 @@
 				755E10A327CA3FB600D90AD0 /* SpecificModels */,
 				755E10A227CA3C6500D90AD0 /* BaseModels */,
 				8ADAF547240123F600A0D233 /* FeatureManager.swift */,
+				755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */,
+				755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */,
 				8A96BEC82481237B00E81C38 /* SpecificFeatures.swift */,
 				8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */,
+				755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */,
+				755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */,
 				755E109327CA383800D90AD0 /* FeatureSource.swift */,
+				755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2746,6 +2766,9 @@
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
 				8A510F632424ADC30070503C /* SiteNavigationProtocols.swift in Sources */,
 				8ADAF54C2401258000A0D233 /* LocalFeatureSource.swift in Sources */,
+				755E10B127CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift in Sources */,
+				755E10A827CA772200D90AD0 /* FeatureManager+BasicFeatures.swift in Sources */,
+				755E10AE27CA783B00D90AD0 /* EnumFeatureSource.swift in Sources */,
 				8A964E3A24867A9400A0AABE /* SiteSettings.swift in Sources */,
 				8ADAF54E240126F700A0D233 /* LocalSettings.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
@@ -2755,6 +2778,7 @@
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				60724EE72209C8730071BECF /* TabsPreviewsRouter.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
+				755E10AB27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift in Sources */,
 				841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */,
 				60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */,
 				607D02AA21FEEC51009FCD0B /* ToolbarRouter.swift in Sources */,
@@ -2799,6 +2823,7 @@
 				8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */,
 				60380EF722A15504007F06FB /* PluginsBuilder.swift in Sources */,
 				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
+				755E10B427CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift in Sources */,
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
 				755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
 				755E108B27CA377B00D90AD0 /* RawFeatureValue.swift in Sources */,
@@ -2881,6 +2906,9 @@
 				8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */,
 				8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */,
 				8A8035A424442F0F000E035F /* LocalFeatureSource.swift in Sources */,
+				755E10B227CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift in Sources */,
+				755E10A927CA772200D90AD0 /* FeatureManager+BasicFeatures.swift in Sources */,
+				755E10AF27CA783B00D90AD0 /* EnumFeatureSource.swift in Sources */,
 				8A964E3B24867A9400A0AABE /* SiteSettings.swift in Sources */,
 				8A8035A524442F0F000E035F /* LocalSettings.swift in Sources */,
 				8A8035A724442F0F000E035F /* LightTheme.swift in Sources */,
@@ -2890,6 +2918,7 @@
 				8A8035AB24442F0F000E035F /* TabsViewController.swift in Sources */,
 				8A8035AC24442F0F000E035F /* TabsPreviewsRouter.swift in Sources */,
 				8A8035AD24442F0F000E035F /* TabView.swift in Sources */,
+				755E10AC27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift in Sources */,
 				8A8035AE24442F0F000E035F /* UIViewController+MainBundle.swift in Sources */,
 				8A8035AF24442F0F000E035F /* TopSitesViewController.swift in Sources */,
 				8A8035B024442F0F000E035F /* ToolbarRouter.swift in Sources */,
@@ -2934,6 +2963,7 @@
 				8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */,
 				8A8035C324442F0F000E035F /* PluginsBuilder.swift in Sources */,
 				8A8035C424442F0F000E035F /* SearchSuggestionsViewController.swift in Sources */,
+				755E10B527CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift in Sources */,
 				8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */,
 				755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
 				755E108C27CA377B00D90AD0 /* RawFeatureValue.swift in Sources */,
