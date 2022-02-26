@@ -43,7 +43,7 @@ private struct _SiteMenuView: View {
                         Text(verbatim: .dohMenuTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
-                        FeatureManager.setFeature(.tabAddPosition, value: selected.rawValue)
+                        FeatureManager.setFeature(.tabAddPosition, value: selected)
                         self.isShowingAddTabSetting = false
                     }), isActive: $isShowingAddTabSetting) {
                         Text(verbatim: .tabAddTxt)
@@ -51,7 +51,7 @@ private struct _SiteMenuView: View {
                         Text(verbatim: model.currentTabAddValue)
                     }
                     NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
-                        FeatureManager.setFeature(.tabDefaultContent, value: selected.rawValue)
+                        FeatureManager.setFeature(.tabDefaultContent, value: selected)
                         self.isShowingDefaultTabContentSetting = false
                     }), isActive: $isShowingDefaultTabContentSetting) {
                         Text(verbatim: .tabContentTxt)
@@ -61,7 +61,7 @@ private struct _SiteMenuView: View {
                 }
                 Section(header: Text(verbatim: .searchSectionTtl)) {
                     NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(model: .init { (selected) in
-                        FeatureManager.setFeature(.webAutoCompletionSource, value: selected.rawValue)
+                        FeatureManager.setFeature(.webAutoCompletionSource, value: selected)
                         self.isShowingWebAutoCompleteSetting = false
                     }), isActive: $isShowingWebAutoCompleteSetting) {
                         Text(verbatim: .webAutoCompleteSourceTxt)
@@ -72,7 +72,7 @@ private struct _SiteMenuView: View {
 #if DEBUG
                 Section(header: Text(verbatim: .devSectionTtl)) {
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
-                        FeatureManager.setFeature(.appDefaultAsyncApi, value: selected.rawValue)
+                        FeatureManager.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
                     }), isActive: $isShowingAppAsyncApiSetting) {
                         Text(verbatim: .appAsyncApiTypeTxt)
