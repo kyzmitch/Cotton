@@ -10,8 +10,8 @@ import SwiftUI
 
 typealias SwiftUIValueRequirements = Hashable & Identifiable & CustomStringConvertible
 
-struct BaseMenuView<SourceType: CaseIterable & SwiftUIValueRequirements>: View
-where SourceType.AllCases: RandomAccessCollection {
+struct BaseMenuView<SourceType: FullEnumTypeConstraints & SwiftUIValueRequirements>: View
+where SourceType.RawValue == Int, SourceType.AllCases: RandomAccessCollection {
     
     let model: BaseListModelImpl<SourceType>
     
