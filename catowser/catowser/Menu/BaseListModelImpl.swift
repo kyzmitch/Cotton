@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct BaseListModelImpl<SourceType: CaseIterable>: BaseListModel {
+struct BaseListModelImpl<SourceType: FullEnumTypeConstraints>: BaseListModel where SourceType.RawValue == Int {
     typealias EnumDataSourceType = SourceType
     
     let dataSource: EnumDataSourceType.AllCases = EnumDataSourceType.allCases
@@ -20,9 +20,12 @@ struct BaseListModelImpl<SourceType: CaseIterable>: BaseListModel {
     /// Need to improve/re-desing Feature system to initialize it here based on a generic type instead of init usage
     let selected: EnumDataSourceType
     
-    init(_ selectedValue: EnumDataSourceType, _ title: String, _ completion: @escaping PopClosure) {
-        // TODO: re-design Feature system to initialize it using generic type and without passing the argument
-        selected = selectedValue
+    init( _ title: String, _ completion: @escaping PopClosure) {
+        // Using random/first enum value just because it seems
+        // it is not possible to pass just a type name
+        // swiftlint:disable:next force_unwrapping
+        let enumCase = EnumDataSourceType.allCases.first!
+        selected = FeatureManager.enumValue(enumCase) ?? enumCase.defaultValue
         viewTitle = title
         onPop = completion
     }

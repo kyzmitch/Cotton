@@ -1,0 +1,24 @@
+//
+//  SpecificApplicationEnumFeatures.swift
+//  catowser
+//
+//  Created by Andrey Ermoshin on 26.02.2022.
+//  Copyright © 2022 andreiermoshin. All rights reserved.
+//
+
+import Foundation
+
+extension ApplicationEnumFeature {
+    static var tabAddPosition: ApplicationEnumFeature<TabAddPositionFeature> {
+        return ApplicationEnumFeature<TabAddPositionFeature>(feature: EnumFeaturesHolder.tabAddPosition)
+    }
+    static var tabDefaultContent: ApplicationEnumFeature<TabContentFeature> {
+        return ApplicationEnumFeature<TabContentFeature>(feature: EnumFeaturesHolder.tabDefaultContent)
+    }
+    static var appDefaultAsyncApi: ApplicationEnumFeature<AppAsyncApiFeature> {
+        return ApplicationEnumFeature<AppAsyncApiFeature>(feature: EnumFeaturesHolder.selectedAppAsyncApi)
+    }
+    static var webAutoCompletionSource: ApplicationEnumFeature<WebAutoCompletionFeature> {
+        return ApplicationEnumFeature<WebAutoCompletionFeature>(feature: EnumFeaturesHolder.webAutoCompletionSource)
+    }
+}

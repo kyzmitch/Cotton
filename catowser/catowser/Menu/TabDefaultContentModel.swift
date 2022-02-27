@@ -12,8 +12,7 @@ typealias TabDefaultContentModel = BaseListModelImpl<TabContentDefaultState>
 
 extension BaseListModelImpl where EnumDataSourceType == TabContentDefaultState {
     init(_ completion: @escaping PopClosure) {
-        self.init(FeatureManager.tabDefaultContentValue(),
-                  NSLocalizedString("ttl_tab_default_content", comment: ""),
+        self.init(NSLocalizedString("ttl_tab_default_content", comment: ""),
                   completion)
     }
 }
