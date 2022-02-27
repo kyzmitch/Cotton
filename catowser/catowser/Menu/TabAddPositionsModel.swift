@@ -13,8 +13,7 @@ typealias TabAddPositionsModel = BaseListModelImpl<AddedTabPosition>
 
 extension BaseListModelImpl where EnumDataSourceType == AddedTabPosition {
     init(_ completion: @escaping PopClosure) {
-        self.init(FeatureManager.tabAddPositionValue(),
-                  NSLocalizedString("ttl_tab_positions", comment: ""),
+        self.init(NSLocalizedString("ttl_tab_positions", comment: ""),
                   completion)
     }
 }

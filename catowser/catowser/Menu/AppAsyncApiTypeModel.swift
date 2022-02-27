@@ -12,8 +12,7 @@ typealias AppAsyncApiTypeModel = BaseListModelImpl<AsyncApiType>
 
 extension BaseListModelImpl where EnumDataSourceType == AsyncApiType {
     init(_ completion: @escaping PopClosure) {
-        self.init(FeatureManager.appAsyncApiTypeValue(),
-                  NSLocalizedString("ttl_app_async_method", comment: ""),
+        self.init(NSLocalizedString("ttl_app_async_method", comment: ""),
                   completion)
     }
 }
