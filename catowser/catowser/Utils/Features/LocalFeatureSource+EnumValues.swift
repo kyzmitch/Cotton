@@ -23,6 +23,12 @@ extension LocalFeatureSource: EnumFeatureSource {
             return
         }
         LocalSettings.setGlobalIntSetting(for: feature.feature.key.prefixed(), value: intValue)
+        
+        let value = AnyFeature(feature)
+        if #available(iOS 13.0, *) {
+            self.featureSubject.send(value)
+        }
+        self.featureObserver.send(value: value)
     }
 }
 
