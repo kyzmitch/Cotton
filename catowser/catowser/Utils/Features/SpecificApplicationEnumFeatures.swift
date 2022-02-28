@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import FeaturesFlagsKit
 
 extension ApplicationEnumFeature {
     static var tabAddPosition: ApplicationEnumFeature<TabAddPositionFeature> {

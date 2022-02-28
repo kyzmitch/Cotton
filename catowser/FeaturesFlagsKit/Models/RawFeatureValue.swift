@@ -9,7 +9,7 @@
 import Foundation
 
 // Raw types of features we support.
-protocol RawFeatureValue {}
+public protocol RawFeatureValue {}
 extension Bool: RawFeatureValue {}
 extension Int: RawFeatureValue {}
 extension String: RawFeatureValue {}

@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreBrowser
+import FeaturesFlagsKit
 
 /// Web search completion source
 enum WebAutoCompletionSource: Int, CaseIterable {
@@ -16,7 +17,7 @@ enum WebAutoCompletionSource: Int, CaseIterable {
 }
 
 extension WebAutoCompletionSource: EnumDefaultValueSupportable {
-    var defaultValue: WebAutoCompletionSource {
+    public var defaultValue: WebAutoCompletionSource {
         return .duckduckgo
     }
 }
@@ -29,7 +30,7 @@ enum AsyncApiType: Int, CaseIterable {
 }
 
 extension AsyncApiType: EnumDefaultValueSupportable {
-    var defaultValue: AsyncApiType {
+    public var defaultValue: AsyncApiType {
         return .combine
     }
 }
@@ -37,13 +38,13 @@ extension AsyncApiType: EnumDefaultValueSupportable {
 // MARK: - types from CoreBrowser
 
 extension AddedTabPosition: EnumDefaultValueSupportable {
-    var defaultValue: AddedTabPosition {
+    public var defaultValue: AddedTabPosition {
         return .listEnd
     }
 }
 
 extension TabContentDefaultState: EnumDefaultValueSupportable {
-    var defaultValue: TabContentDefaultState {
+    public var defaultValue: TabContentDefaultState {
         return .favorites
     }
 }

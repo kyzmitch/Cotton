@@ -6,8 +6,8 @@
 //  Copyright © 2020 andreiermoshin. All rights reserved.
 //
 
-import Foundation
 import CoreBrowser
+import FeaturesFlagsKit
 
 extension ApplicationFeature {
     static var dnsOverHTTPSAvailable: ApplicationFeature<DoHAvailable> {

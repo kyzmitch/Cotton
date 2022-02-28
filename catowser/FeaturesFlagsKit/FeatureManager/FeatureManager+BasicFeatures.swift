@@ -14,7 +14,7 @@ import ReactiveSwift
 // MARK: - basic features
 
 extension FeatureManager {
-    static func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) {
+    public static func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) {
         guard let source = source(for: feature) else {
             return
         }
@@ -22,10 +22,10 @@ extension FeatureManager {
     }
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    typealias AppFeaturePublisher<F: Feature> = AnyPublisher<ApplicationFeature<F>, Never>
+    public typealias AppFeaturePublisher<F: Feature> = AnyPublisher<ApplicationFeature<F>, Never>
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    static func featureChangesPublisher<F>(for feature: ApplicationFeature<F>) -> AppFeaturePublisher<F> {
+    public static func featureChangesPublisher<F>(for feature: ApplicationFeature<F>) -> AppFeaturePublisher<F> {
         guard let source = source(for: feature) as? ObservableFeatureSource else {
             let empty = Empty<ApplicationFeature<F>, Never>(completeImmediately: false)
             return empty.eraseToAnyPublisher()
@@ -35,7 +35,7 @@ extension FeatureManager {
             .eraseToAnyPublisher()
     }
     
-    static func rxFeatureChanges<F>(for feature: ApplicationFeature<F>) -> Signal<ApplicationFeature<F>, Never> {
+    public static func rxFeatureChanges<F>(for feature: ApplicationFeature<F>) -> Signal<ApplicationFeature<F>, Never> {
         guard let source = source(for: feature) as? ObservableFeatureSource else {
             return .empty
         }
@@ -43,7 +43,7 @@ extension FeatureManager {
             .filterMap { $0 == feature ? feature : nil }
     }
     
-    static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
+    public static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
         return shared.sources.first(where: { type(of: $0) == F.source })
     }
 }

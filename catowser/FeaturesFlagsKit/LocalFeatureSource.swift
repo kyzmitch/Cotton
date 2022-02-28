@@ -13,7 +13,7 @@ import Combine
 #endif
 
 // FeatureSource that uses UserDefaults
-final class LocalFeatureSource {
+public final class LocalFeatureSource {
     /// Used to publish Feature changes
     let (featureChangeSignal, featureObserver) = Signal<AnyFeature, Never>.pipe()
     
