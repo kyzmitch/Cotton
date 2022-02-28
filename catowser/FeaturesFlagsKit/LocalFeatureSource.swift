@@ -1,6 +1,6 @@
 //
 //  LocalFeatureSource.swift
-//  catowser
+//  FeaturesFlagsKit
 //
 //  Created by Andrei Ermoshin on 2/22/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
@@ -13,7 +13,7 @@ import Combine
 #endif
 
 // FeatureSource that uses UserDefaults
-final class LocalFeatureSource {
+public final class LocalFeatureSource {
     /// Used to publish Feature changes
     let (featureChangeSignal, featureObserver) = Signal<AnyFeature, Never>.pipe()
     

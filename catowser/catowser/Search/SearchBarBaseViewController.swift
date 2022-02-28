@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 /// The sate of search bar
 enum SearchBarState {

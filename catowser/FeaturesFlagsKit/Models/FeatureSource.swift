@@ -1,6 +1,6 @@
 //
 //  FeatureSource.swift
-//  catowser
+//  FeaturesFlagsKit
 //
 //  Created by Andrey Ermoshin on 26.02.2022.
 //  Copyright © 2022 andreiermoshin. All rights reserved.
@@ -11,7 +11,7 @@ import ReactiveSwift
 import Combine
 #endif
 
-protocol FeatureSource {
+public protocol FeatureSource {
     func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value
     func setValue<F: BasicFeature>(of feature: ApplicationFeature<F>, value: F.Value?)
 }

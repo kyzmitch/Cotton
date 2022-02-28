@@ -11,6 +11,7 @@ import Combine
 #endif
 import HttpKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 enum MenuModelStyle {
     case siteMenu(host: HttpKit.Host, siteSettings: Site.Settings)

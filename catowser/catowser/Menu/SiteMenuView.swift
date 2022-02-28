@@ -11,6 +11,7 @@ import SwiftUI
 #endif
 import HttpKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 @available(iOS 13.0, *)
 struct SiteMenuView: View {

@@ -1,6 +1,6 @@
 //
 //  LocalFeatureSource+BasicValues.swift
-//  catowser
+//  FeaturesFlagsKit
 //
 //  Created by Andrey Ermoshin on 26.02.2022.
 //  Copyright © 2022 andreiermoshin. All rights reserved.
@@ -9,7 +9,7 @@
 import Foundation
 
 extension LocalFeatureSource: FeatureSource {
-    func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value {
+    public func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value {
         switch F.defaultValue {
         case is String:
             guard let result = LocalSettings.getGlobalStringSetting(for: F.key.prefixed()) else {
@@ -33,7 +33,7 @@ extension LocalFeatureSource: FeatureSource {
         }
     }
     
-    func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F: BasicFeature {
+    public func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F: BasicFeature {
         switch F.defaultValue {
         case is Bool:
             // swiftlint:disable:next force_cast
