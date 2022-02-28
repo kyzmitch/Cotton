@@ -1,6 +1,6 @@
 //
 //  Feature.swift
-//  catowser
+//  FeaturesFlagsKit
 //
 //  Created by Andrei Ermoshin on 2/22/20.
 //  Copyright © 2020 andreiermoshin. All rights reserved.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Feature {
+public protocol Feature {
     associatedtype Value
 
     static var source: FeatureSource.Type { get }
@@ -19,17 +19,19 @@ protocol Feature {
 }
 
 extension Feature {
-    static var name: String {
+    public static var name: String {
         return key
     }
-    static var description: String {
+    public static var description: String {
         return "\(name) feature"
     }
 }
 
 /// For `syntatic sugar`
-struct ApplicationFeature<F: Feature> {
-    var defaultValue: F.Value {
+public struct ApplicationFeature<F: Feature> {
+    public var defaultValue: F.Value {
         return F.defaultValue
     }
+    
+    public init() {}
 }

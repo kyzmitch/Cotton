@@ -11,6 +11,7 @@ import CoreBrowser
 import JSPlugins
 import HttpKit
 import BrowserNetworking
+import FeaturesFlagsKit
 #if canImport(SwiftUI)
 import SwiftUI
 #endif

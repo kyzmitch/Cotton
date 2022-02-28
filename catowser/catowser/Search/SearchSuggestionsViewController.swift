@@ -12,6 +12,7 @@ import HttpKit
 // needed for `GoogleSuggestionsClient`
 import BrowserNetworking
 import CoreBrowser
+import FeaturesFlagsKit
 import ReactiveSwift
 #if canImport(Combine)
 import Combine

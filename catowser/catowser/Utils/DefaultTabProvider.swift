@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 final class DefaultTabProvider {
     static let shared = DefaultTabProvider()

@@ -1,31 +1,18 @@
 //
-//  FeatureManager+EnumFeatures.swift
+//  FeatureManager+SpecificEnums.swift
 //  catowser
 //
-//  Created by Andrey Ermoshin on 26.02.2022.
+//  Created by Andrei Ermoshin on 2/28/22.
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
 import CoreBrowser
-
-extension FeatureManager {
-    static func setFeature<F: EnumFeature>(_ feature: ApplicationEnumFeature<F>, value: F.EnumValue?)
-    where F.EnumValue.RawValue == Int {
-        guard let source = source(for: feature) else {
-            return
-        }
-        source.setEnumValue(of: feature, value: value)
-    }
-    
-    static func source<F: EnumFeature>(for enumFeature: ApplicationEnumFeature<F>) -> EnumFeatureSource? {
-        return shared.enumSources.first(where: { type(of: $0) == enumFeature.feature.source})
-    }
-}
+import FeaturesFlagsKit
 
 // MARK: - generic GETTER method
 
 extension FeatureManager {
-    static func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F? where F.RawValue == Int {
+    public static func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F? where F.RawValue == Int {
         let keyStr: String
         switch enumCase.defaultValue {
         case is WebAutoCompletionSource:

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
 import AlamofireImage
 
 protocol TopSitesInterface {
