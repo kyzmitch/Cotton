@@ -1,6 +1,6 @@
 //
 //  FeatureManager+BasicFeatures.swift
-//  catowser
+//  FeaturesFlagsKit
 //
 //  Created by Andrey Ermoshin on 26.02.2022.
 //  Copyright © 2022 andreiermoshin. All rights reserved.
