@@ -20,4 +20,14 @@ extension FeatureManager {
     public static func source<F: EnumFeature>(for enumFeature: ApplicationEnumFeature<F>) -> EnumFeatureSource? {
         return shared.enumSources.first(where: { type(of: $0) == enumFeature.feature.source})
     }
+    
+    public static func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F, _ key: String) -> F?
+    where F.RawValue == Int {
+        let enumFeature = GenericEnumFeature<F>(key)
+        let feature: ApplicationEnumFeature = .init(feature: enumFeature)
+        guard let source = source(for: feature) else {
+            return feature.defaultEnumValue
+        }
+        return source.currentEnumValue(of: feature)
+    }
 }

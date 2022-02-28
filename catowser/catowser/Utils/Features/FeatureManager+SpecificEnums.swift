@@ -12,7 +12,8 @@ import FeaturesFlagsKit
 // MARK: - generic GETTER method
 
 extension FeatureManager {
-    public static func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F? where F.RawValue == Int {
+    static func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F?
+    where F.RawValue == Int {
         let keyStr: String
         switch enumCase.defaultValue {
         case is WebAutoCompletionSource:
@@ -27,12 +28,7 @@ extension FeatureManager {
             assertionFailure("Attempt to search for not supported enum feature type")
             return nil
         }
-        let enumFeature = GenericEnumFeature<F>(keyStr)
-        let feature: ApplicationEnumFeature = .init(feature: enumFeature)
-        guard let source = source(for: feature) else {
-            return feature.defaultEnumValue
-        }
-        return source.currentEnumValue(of: feature)
+        return enumValue(enumCase, keyStr)
     }
 }
 
