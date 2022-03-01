@@ -76,6 +76,12 @@ target 'BrowserNetworking' do
   pod 'SWXMLHash', '~> 5.0.0'
 end
 
+target 'FeaturesFlagsKit' do
+  use_frameworks!
+
+  pod 'ReactiveSwift', '~> 6.0.0'
+end
+
 deployment_target = '12.0'
 
 post_install do |installer|

@@ -11,6 +11,7 @@ import Combine
 #endif
 import HttpKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 enum MenuModelStyle {
     case siteMenu(host: HttpKit.Host, siteSettings: Site.Settings)
@@ -57,6 +58,10 @@ final class SiteMenuModel: ObservableObject {
     
     var selectedAsyncApiStringValue: String {
         return FeatureManager.appAsyncApiTypeValue().description
+    }
+    
+    var selectedWebAutoCompleteStringValue: String {
+        return FeatureManager.webSearchAutoCompleteValue().description
     }
     
     let viewTitle: String = .menuTtl

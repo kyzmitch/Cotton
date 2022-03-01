@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import CoreBrowser
+import FeaturesFlagsKit
 import JSPlugins
 import HttpKit
 

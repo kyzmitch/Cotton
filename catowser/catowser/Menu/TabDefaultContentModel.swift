@@ -8,16 +8,13 @@
 
 import CoreBrowser
 
-typealias TabDefaultContentPopClosure = (TabContentDefaultState) -> Void
+typealias TabDefaultContentModel = BaseListModelImpl<TabContentDefaultState>
 
-struct TabDefaultContentModel {
-    let dataSource = TabContentDefaultState.allCases
-    
-    let viewTitle = NSLocalizedString("ttl_tab_default_content", comment: "")
-    
-    let onPop: TabDefaultContentPopClosure
-    
-    let selected: TabContentDefaultState = FeatureManager.tabDefaultContentValue()
+extension BaseListModelImpl where EnumDataSourceType == TabContentDefaultState {
+    init(_ completion: @escaping PopClosure) {
+        self.init(NSLocalizedString("ttl_tab_default_content", comment: ""),
+                  completion)
+    }
 }
 
 extension TabContentDefaultState: Identifiable {

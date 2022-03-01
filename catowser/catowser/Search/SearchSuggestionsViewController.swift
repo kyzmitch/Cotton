@@ -12,6 +12,7 @@ import HttpKit
 // needed for `GoogleSuggestionsClient`
 import BrowserNetworking
 import CoreBrowser
+import FeaturesFlagsKit
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
@@ -53,6 +54,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     /// Not private to allow access from extension
     let googleClient: GoogleSuggestionsClient
+    ///
+    let ddGoClient: DDGoSuggestionsClient
     
     private let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
     
@@ -69,8 +72,9 @@ final class SearchSuggestionsViewController: UITableViewController {
     lazy var searchSuggestionTaskHandler: Task.Handle<[String], Error>? = nil
 #endif
     
-    init(_ suggestionsHttpClient: GoogleSuggestionsClient) {
+    init(_ suggestionsHttpClient: GoogleSuggestionsClient, _ duckduckgoClient: DDGoSuggestionsClient) {
         googleClient = suggestionsHttpClient
+        ddGoClient = duckduckgoClient
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -120,7 +124,15 @@ final class SearchSuggestionsViewController: UITableViewController {
                     return errorResult.publisher.eraseToAnyPublisher()
                 }
                 let subscriber = HttpEnvironment.shared.googleClientSubscriber
-                return self.googleClient.cGoogleSearchSuggestions(for: text, subscriber)
+                let ddgoSubscriber = HttpEnvironment.shared.duckduckgoClientSubscriber
+                switch FeatureManager.webSearchAutoCompleteValue() {
+                case .google:
+                    return self.googleClient.cGoogleSearchSuggestions(for: text, subscriber)
+                case .duckduckgo:
+                    return self.ddGoClient.cDuckDuckgoSuggestions(for: text, subscriber: ddgoSubscriber)
+                        .map { $0.googleResponse }
+                        .eraseToAnyPublisher()
+                }
             })
             .receive(on: DispatchQueue.main)
             .map { $0.textResults }
@@ -141,7 +153,14 @@ final class SearchSuggestionsViewController: UITableViewController {
                     return .init(error: .zombieSelf)
                 }
                 let subscriber = HttpEnvironment.shared.googleClientRxSubscriber
-                return self.googleClient.googleSearchSuggestions(for: text, subscriber)
+                let ddgoSubscriber = HttpEnvironment.shared.duckduckgoClientRxSubscriber
+                switch FeatureManager.webSearchAutoCompleteValue() {
+                case .google:
+                    return self.googleClient.googleSearchSuggestions(for: text, subscriber)
+                case .duckduckgo:
+                    return self.ddGoClient.duckDuckGoSuggestions(for: text, subscriber: ddgoSubscriber)
+                        .map { $0.googleResponse }
+                }
             })
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
@@ -244,5 +263,11 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
             return
         }
         delegate?.didSelect(content)
+    }
+}
+
+extension DDGoSuggestionsResponse {
+    var googleResponse: GSearchSuggestionsResponse {
+        .init(queryText, textResults)
     }
 }

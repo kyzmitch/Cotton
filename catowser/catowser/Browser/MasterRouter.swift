@@ -11,6 +11,7 @@ import CoreBrowser
 import JSPlugins
 import HttpKit
 import BrowserNetworking
+import FeaturesFlagsKit
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
@@ -24,7 +25,7 @@ protocol MediaLinksPresenter: AnyObject {
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
     lazy var searchSuggestionsController: SearchSuggestionsViewController = {
-        let vc = SearchSuggestionsViewController(GoogleSuggestionsClient.shared)
+        let vc = SearchSuggestionsViewController(GoogleSuggestionsClient.shared, DDGoSuggestionsClient.shared)
         return vc
     }()
 

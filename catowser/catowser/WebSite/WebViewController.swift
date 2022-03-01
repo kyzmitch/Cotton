@@ -14,6 +14,7 @@ import JSPlugins
 import HttpKit
 // needed for `GoogleDnsClient`
 import BrowserNetworking
+import FeaturesFlagsKit
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
