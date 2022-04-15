@@ -1,6 +1,8 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 
+// https://kotlinlang.org/docs/multiplatform-discover-project.html#multiplatform-plugin
+
 plugins {
     kotlin("multiplatform") version "1.6.10"
 }
@@ -24,4 +26,9 @@ kotlin {
             xcf.add(this)
         }
     }
+}
+
+tasks.wrapper {
+    gradleVersion = "6.7.1"
+    distributionType = Wrapper.DistributionType.ALL
 }

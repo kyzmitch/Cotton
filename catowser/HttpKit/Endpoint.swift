@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-// gryphon output: ../CoreHttpKit/src/nativeMain/kotlin/Endpoint.kt
+// gryphon output: ../CoreHttpKit/src/nativeMain/kotlin/HttpEndpoint.kt
 // gryphon insert: package org.cottonweb.CoreHttpKit
 
 import Foundation
