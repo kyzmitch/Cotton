@@ -6,8 +6,14 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
+// gryphon output: ../CoreHttpKit/src/nativeMain/kotlin/HttpKitHeaders.kt
+// gryphon insert: package org.cottonweb.CoreHttpKit
+
 import Foundation
 
+/// TODO: think about namespace, probably we need to remove it to be able to convert this to Kotlin
+
+// gryphon ignore
 extension HttpKit {
     public enum HttpHeader: Equatable, Hashable {
         case contentType(ContentType)

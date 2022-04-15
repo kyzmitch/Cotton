@@ -6,6 +6,31 @@
 	objectVersion = 52;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		7E8949E866832B2BB787758D /* Gryphon */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 96240751EF5B429984D7B470 /* Build configuration list for PBXAggregateTarget "Gryphon" */;
+			buildPhases = (
+				1DA01B7AC6F845477A357754 /* Call Gryphon */,
+			);
+			dependencies = (
+			);
+			name = Gryphon;
+			productName = Gryphon;
+		};
+		AD03AC9B2C076D3F0BF786B8 /* Kotlin */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 8AA3492A95229070B071CE12 /* Build configuration list for PBXAggregateTarget "Kotlin" */;
+			buildPhases = (
+				CF99377919CA527833D24EA4 /* Compile Kotlin */,
+			);
+			dependencies = (
+			);
+			name = Kotlin;
+			productName = Kotlin;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		21C191D4EBF58D361A99B203 /* Pods_Cotton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ACCF22F0D34D2B91B8B34A3 /* Pods_Cotton.framework */; };
 		2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */; };
@@ -342,6 +367,8 @@
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
 		8AD18E0C2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
 		8AD18E102447580A00224702 /* ResourceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD18E0F2447580A00224702 /* ResourceReader.swift */; };
+		8AD51E912809CA1E00C5D3DC /* GryphonSwiftLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */; };
+		8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */; };
@@ -882,6 +909,8 @@
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
+		8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GryphonSwiftLibrary.swift; sourceTree = SOURCE_ROOT; };
+		8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitNamespace.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
 		8AD8E1652739B74000628DB4 /* EndpointMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointMocks.swift; sourceTree = "<group>"; };
@@ -1349,6 +1378,7 @@
 			children = (
 				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
 				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
+				8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */,
 				8435A4991EED5E700020102F /* catowser */,
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,
 				8ABF503F27CC1A64007C6427 /* FeaturesFlagsKit */,
@@ -1770,6 +1800,7 @@
 				8A62AEE22351E684001A9C83 /* Extensions */,
 				8AE6D16B2350FF35006316AD /* HttpKit.h */,
 				8AE6D16C2350FF35006316AD /* Info.plist */,
+				8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */,
 				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
 				8A8678AD2430F7D400450666 /* Host.swift */,
 				8A510F642424AE000070503C /* URLInfo.swift */,
@@ -2349,6 +2380,8 @@
 				8AB022EB26258B110053AFF0 /* CoreBrowserTests */,
 				8A7EF3D0273924EF0071BB89 /* HttpKitTests */,
 				8ABF503D27CC1A64007C6427 /* FeaturesFlagsKit */,
+				7E8949E866832B2BB787758D /* Gryphon */,
+				AD03AC9B2C076D3F0BF786B8 /* Kotlin */,
 			);
 		};
 /* End PBXProject section */
@@ -2476,6 +2509,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1DA01B7AC6F845477A357754 /* Call Gryphon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Call Gryphon";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "gryphon \"${PROJECT_NAME}.xcodeproj\" \"${SRCROOT}/gryphonInputFiles.xcfilelist\" --verbose --continue-on-error --UseModernBuildSystem=YES --target=\"HttpKit\"\n";
+		};
 		4EFB9C87A566D4BFCB0AB7B2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2735,6 +2786,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF99377919CA527833D24EA4 /* Compile Kotlin */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Compile Kotlin";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash .gryphon/scripts/compileKotlin.sh\n";
 			showEnvVarsInLog = 0;
 		};
 		D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */ = {
@@ -3184,6 +3254,7 @@
 			files = (
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
+				8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */,
 				8ABDB0BA27B2B6F200D6EDE7 /* HTTPAdapter.swift in Sources */,
 				8AB4A1AF27B5522B008030FB /* ClosureWrappers.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
@@ -3203,6 +3274,7 @@
 				8A328F3527B690980021F6B0 /* NetworkReachabilityAdapter.swift in Sources */,
 				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
 				8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */,
+				8AD51E912809CA1E00C5D3DC /* GryphonSwiftLibrary.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 			);
@@ -3375,6 +3447,37 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		129F8F11F5089CE8BE27E5C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				PRODUCT_NAME = Gryphon;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Release;
+		};
+		1649E904EBE6AFF1E5E8CDCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				PRODUCT_NAME = Gryphon;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Debug;
+		};
+		2228BF7670151F3E0673D50E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CONFIG_FILES = "";
+				PRODUCT_NAME = Kotlin;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Release;
+		};
 		608DA753223A3BD5009F75BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D784585EBE40B8C157609F97 /* Pods-JSPlugins.debug.xcconfig */;
@@ -3511,6 +3614,17 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		73C85E76840E86ED34A01147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CONFIG_FILES = "";
+				PRODUCT_NAME = Kotlin;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Debug;
 		};
 		8435A4A71EED5E700020102F /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4427,6 +4541,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		8AA3492A95229070B071CE12 /* Build configuration list for PBXAggregateTarget "Kotlin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2228BF7670151F3E0673D50E /* Release */,
+				73C85E76840E86ED34A01147 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8AB022F626258B110053AFF0 /* Build configuration list for PBXNativeTarget "CoreBrowserTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4486,6 +4609,15 @@
 			buildConfigurations = (
 				8AF4337E248EBB2A0047452B /* Debug */,
 				8AF4337F248EBB2A0047452B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96240751EF5B429984D7B470 /* Build configuration list for PBXAggregateTarget "Gryphon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				129F8F11F5089CE8BE27E5C7 /* Release */,
+				1649E904EBE6AFF1E5E8CDCD /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

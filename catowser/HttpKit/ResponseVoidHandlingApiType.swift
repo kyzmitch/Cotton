@@ -10,12 +10,14 @@
 import Combine
 #endif
 
+// gryphon ignore
 public protocol RxAnyVoidObserver {
     func newSend(value: Void)
     func newSend(error: HttpKit.HttpError)
     func newComplete()
 }
 
+// gryphon ignore
 public protocol RxVoidInterface: Hashable {
     associatedtype Server: ServerDescription
     
@@ -27,6 +29,7 @@ public protocol RxVoidInterface: Hashable {
 
 extension HttpKit {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    // gryphon ignore
     public enum ResponseVoidHandlingApi<Server, Observer: RxVoidInterface>: Hashable where Observer.Server == Server {
         case closure(ClosureVoidWrapper<Server>)
         case rxObserver(Observer)

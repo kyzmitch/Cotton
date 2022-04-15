@@ -9,6 +9,7 @@
 import Foundation
 
 extension HttpKit {
+    // gryphon ignore
     public enum NetworkReachabilityStatus {
         /// It is unknown whether the network is reachable.
         case unknown
@@ -27,6 +28,7 @@ extension HttpKit {
     }
 }
 
+// gryphon ignore
 public protocol NetworkReachabilityAdapter: AnyObject {
     associatedtype Server: ServerDescription
     typealias Listener = (HttpKit.NetworkReachabilityStatus) -> Void

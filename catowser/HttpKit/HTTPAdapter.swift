@@ -18,6 +18,7 @@ import Combine
 /// and should be avoid copying closures, original closure should be used
 ///
 /// This is an adapter pattern for the high level HTTP requests transport
+// gryphon ignore
 public protocol HTTPRxAdapter: AnyObject {
     associatedtype Response
     associatedtype Server
@@ -38,6 +39,7 @@ public protocol HTTPRxAdapter: AnyObject {
                                                _ endpoint: HttpKit.Endpoint<Response, Server>)
 }
 
+// gryphon ignore
 public protocol HTTPAdapter: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription

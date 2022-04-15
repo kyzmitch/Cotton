@@ -9,6 +9,7 @@
 import Foundation
 
 extension HttpKit {
+    // gryphon ignore
     public enum HttpError: LocalizedError, Equatable {
         /* Comon errors related to http client */
         

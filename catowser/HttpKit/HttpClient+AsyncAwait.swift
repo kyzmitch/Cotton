@@ -13,6 +13,7 @@ import Foundation
 extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    // gryphon ignore
     private func aaMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                 withAccessToken accessToken: String?,
                                                 responseType: T.Type) async throws -> T {
@@ -48,6 +49,7 @@ extension HttpKit.Client {
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    // gryphon ignore
     public func aaMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                      responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,
@@ -58,6 +60,7 @@ extension HttpKit.Client {
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    // gryphon ignore
     func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                   withAccessToken accessToken: String,
                                                   responseType: T.Type) async throws -> T {

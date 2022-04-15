@@ -9,6 +9,7 @@
 import Foundation
 
 extension HttpKit {
+    // gryphon ignore
     public struct DomainName {
         public let string: String
         
@@ -70,6 +71,7 @@ extension HttpKit {
 }
 
 extension HttpKit {
+    // gryphon ignore
     public enum DomainNameError: Error {
         case wrongLength(Int)
         case wrongLabels
