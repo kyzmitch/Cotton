@@ -1,12 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 
-// https://kotlinlang.org/docs/multiplatform-discover-project.html#multiplatform-plugin
-
-plugins {
-    kotlin("multiplatform") version "1.6.10"
-}
-
 group = "org.cottonweb"
 version = "0.1-SNAPSHOT"
 
@@ -14,11 +8,26 @@ repositories {
     mavenCentral()
 }
 
+// https://kotlinlang.org/docs/multiplatform-discover-project.html#multiplatform-plugin
+// https://github.com/ge-org/multiplatform-swiftpackage
+
+plugins {
+    kotlin("multiplatform") version "1.6.10"
+    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
+}
+
+multiplatformSwiftPackage {
+    swiftToolsVersion("5.3")
+    targetPlatforms {
+        iOS { v("13") }
+    }
+}
+
 // https://kotlinlang.org/docs/mpp-build-native-binaries.html#build-xcframeworks
 
 kotlin {
-    val xcf = XCFramework()
     val frameworkName = "CoreHttpKit"
+    val xcf = XCFramework(frameworkName)
     ios {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)

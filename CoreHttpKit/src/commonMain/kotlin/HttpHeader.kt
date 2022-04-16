@@ -21,9 +21,3 @@ public sealed class HTTPHeader {
     class Accept(val type: ContentType) : HTTPHeader()
     class Authorization(val token: String) : HTTPHeader()
 }
-
-public class Endpoint(method: HTTPMethod, path: String, headers: Set<HTTPHeader>?) {
-    val method: HTTPMethod = method
-    val path: String = path
-    val headers: Set<HTTPHeader>? = headers
-}
