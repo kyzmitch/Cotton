@@ -1,7 +1,13 @@
 package org.cottonweb.CoreHttpKit
-import io.ktor.http.*
+import io.ktor.http.Parameters
+import io.ktor.http.ParametersBuilder
+import io.ktor.http.URLBuilder
+import io.ktor.http.URLProtocol
+import io.ktor.http.Url
 
-/// Would be good if this interface is based on some Decodable interface
+/**
+ * Would be good if this interface is based on some Decodable interface
+ * */
 interface ResponseType {
     val successCodes: IntArray
         get() = intArrayOf(200, 201)
@@ -15,30 +21,34 @@ interface ResponseType {
  * @property path slash divided string, e.g. `complete/search`
  * @constructor Creates the description for the Http request.
  */
-data class Endpoint<out R: ResponseType, in S: Server>(val method: HTTPMethod,
-                                                       val path: String,
-                                                       val headers: Set<HTTPHeader>?,
-                                                       val encodingMethod: ParametersEncodingDestination) {
+data class Endpoint<out R : ResponseType, in S : Server>(
+    val method: HTTPMethod,
+    val path: String,
+    val headers: Set<HTTPHeader>?,
+    val encodingMethod: ParametersEncodingDestination
+) {
     fun urlRelatedTo(server: S): Url {
         val scheme = server.scheme
         val urlProtocol = URLProtocol(scheme.stringValue, scheme.port)
         val pathSegments = path.split('/')
         val parameters = urlParameters()
         // https://github.com/ktorio/ktor/blob/main/ktor-http/common/src/io/ktor/http/URLBuilder.kt
-        val builder = URLBuilder(urlProtocol,
+        val builder = URLBuilder(
+            urlProtocol,
             server.hostString,
             scheme.port,
             null,
             null,
             pathSegments,
-            parameters)
+            parameters
+        )
         return builder.build()
     }
 
     private fun urlParameters(): Parameters {
-        when(encodingMethod) {
-            is ParametersEncodingDestination.QueryString -> return buildParameters(encodingMethod.items)
-            else -> return Parameters.Empty
+        return when (encodingMethod) {
+            is ParametersEncodingDestination.QueryString -> buildParameters(encodingMethod.items)
+            else -> Parameters.Empty
         }
     }
 

@@ -1,5 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 group = "org.cottonweb"
 version = "0.1-SNAPSHOT"
@@ -14,6 +14,8 @@ repositories {
 plugins {
     kotlin("multiplatform") version "1.6.10"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
+    id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
 }
 
 // https://kotlinlang.org/docs/multiplatform-add-dependencies.html#library-shared-for-all-source-sets
