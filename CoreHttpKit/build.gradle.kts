@@ -52,3 +52,7 @@ tasks.wrapper {
     gradleVersion = "6.7.1"
     distributionType = Wrapper.DistributionType.ALL
 }
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    additionalEditorconfigFile.set(file(".editorconfig"))
+}

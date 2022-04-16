@@ -1,9 +1,14 @@
 package org.cottonweb.CoreHttpKit
+import io.ktor.client.plugins.timeout
+import io.ktor.client.request.headers
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.HttpRequestData
+import io.ktor.client.request.url
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
+import io.ktor.http.Url
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
-import io.ktor.http.Url
 
 /**
  * Would be good if this interface is based on some Decodable interface
@@ -22,7 +27,7 @@ interface ResponseType {
  * @constructor Creates the description for the Http request.
  */
 data class Endpoint<out R : ResponseType, in S : Server>(
-    val method: HTTPMethod,
+    val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,
     val encodingMethod: ParametersEncodingDestination
@@ -42,6 +47,28 @@ data class Endpoint<out R : ResponseType, in S : Server>(
             pathSegments,
             parameters
         )
+        return builder.build()
+    }
+
+    fun request(url: Url, requestTimeout: Long, accessToken: String?): HttpRequestData /*HttpRequest*/ {
+        var builder = HttpRequestBuilder()
+        builder.method = httpMethod.ktorValue
+        builder.timeout {
+            this.requestTimeoutMillis = requestTimeout
+        }
+        builder.url(url)
+        headers?.let {
+            builder.headers {
+                it.forEach { this.append(it.key, it.value) }
+            }
+        }
+        accessToken?.let {
+            val authHeader = HTTPHeader.Authorization(it)
+            builder.headers {
+                this.append(authHeader.key, authHeader.value)
+            }
+        }
+
         return builder.build()
     }
 
