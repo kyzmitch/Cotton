@@ -7,14 +7,23 @@ interface ResponseType {
         get() = intArrayOf(200, 201)
 }
 
+// https://kotlinlang.org/docs/kotlin-doc.html#block-tags
+
+/**
+ * The endpoint data type.
+ *
+ * @property path slash divided string, e.g. `complete/search`
+ * @constructor Creates the description for the Http request.
+ */
 data class Endpoint<out R: ResponseType, in S: Server>(val method: HTTPMethod,
-                                                        val path: String,
-                                                        val headers: Set<HTTPHeader>?) {
+                                                       val path: String,
+                                                       val headers: Set<HTTPHeader>?,
+                                                       val encodingMethod: ParametersEncodingDestination) {
     fun urlRelatedTo(server: S): Url {
         val scheme = server.scheme
         val urlProtocol = URLProtocol(scheme.stringValue, scheme.port)
-        val pathSegments: List<String> = mutableListOf("")
-        val parameters: Parameters = Parameters.Empty
+        val pathSegments = path.split('/')
+        val parameters = urlParameters()
         // https://github.com/ktorio/ktor/blob/main/ktor-http/common/src/io/ktor/http/URLBuilder.kt
         val builder = URLBuilder(urlProtocol,
             server.hostString,
@@ -24,5 +33,19 @@ data class Endpoint<out R: ResponseType, in S: Server>(val method: HTTPMethod,
             pathSegments,
             parameters)
         return builder.build()
+    }
+
+    private fun urlParameters(): Parameters {
+        when(encodingMethod) {
+            is ParametersEncodingDestination.QueryString -> return buildParameters(encodingMethod.items)
+            else -> return Parameters.Empty
+        }
+    }
+
+    private fun buildParameters(items: Array<URLQueryItem>): Parameters {
+        if (items.isEmpty()) return Parameters.Empty
+        val parametersBuilder = ParametersBuilder(items.size)
+        items.forEach { parametersBuilder.append(it.name, it.value) }
+        return parametersBuilder.build()
     }
 }
