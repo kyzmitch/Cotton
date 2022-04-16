@@ -16,6 +16,15 @@ plugins {
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
+// https://kotlinlang.org/docs/multiplatform-add-dependencies.html#library-shared-for-all-source-sets
+// next section could be moved to the kotlin section
+
+val ktor_version: String by project
+dependencies {
+    commonMainImplementation("io.ktor:ktor-client-core:$ktor_version")
+    commonMainImplementation("io.ktor:ktor-client-cio:$ktor_version")
+}
+
 multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {

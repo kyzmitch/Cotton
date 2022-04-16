@@ -1,11 +1,11 @@
 package org.cottonweb.CoreHttpKit
 
-public enum class HttpScheme(val stringValue: String) {
-    https("https"),
-    http("http")
+enum class HttpScheme(val stringValue: String, val port: Int) {
+    https("https", 80),
+    http("http", 443)
 }
 
-public interface Server {
+interface Server {
     val hostString: String
     val domain: String
     val scheme: HttpScheme
