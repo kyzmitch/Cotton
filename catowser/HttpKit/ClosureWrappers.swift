@@ -11,6 +11,7 @@ import Combine
 #endif
 
 extension HttpKit {
+    // gryphon ignore
     public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
         /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
         public var closure: (Result<Response, HttpKit.HttpError>) -> Void
@@ -44,6 +45,7 @@ extension HttpKit {
 }
 
 extension HttpKit {
+    // gryphon ignore
     public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
         /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
         public var promise: Future<Response, HttpKit.HttpError>.Promise

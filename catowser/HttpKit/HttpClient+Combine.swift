@@ -14,6 +14,7 @@ import Combine
 extension HttpKit.Client {
     public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpKit.HttpError>>>
     
+    // gryphon ignore
     public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: HttpKit.Endpoint<T, Server>,
                                                 withAccessToken accessToken: String?,
                                                 transport adapter: B,

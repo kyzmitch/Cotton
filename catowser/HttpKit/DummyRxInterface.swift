@@ -9,6 +9,7 @@
 /// These types are needed for Combine interfaces of HttpKit.Client we don't have to pass actual ReactiveSwift types
 /// to be able to use Combine interfaces
 extension HttpKit {
+    // gryphon ignore
     public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
         public typealias Response = RR
         
@@ -17,10 +18,12 @@ extension HttpKit {
         public func newComplete() {}
     }
     
+    // gryphon ignore
     struct DummyRxLifetime: RxAnyLifetime {
         func newObserveEnded(_ action: @escaping () -> Void) {}
     }
     
+    // gryphon ignore
     public class DummyRxType<R,
                              SS: ServerDescription,
                              RX: RxAnyObserver>: RxInterface where RX.Response == R {

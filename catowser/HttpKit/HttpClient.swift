@@ -11,9 +11,6 @@ import Foundation
 import Combine
 #endif
 
-/// Main namespace for Kit
-public enum HttpKit {}
-
 fileprivate extension String {
     static let threadName = "Client"
 }
@@ -22,6 +19,7 @@ public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
 extension HttpKit {
+    // gryphon ignore
     public class Client<Server, R: NetworkReachabilityAdapter> where R.Server == Server {
         let server: Server
         
