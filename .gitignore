@@ -70,4 +70,4 @@ CoreHttpKit/.gradle
 !gradle-wrapper.jar
 catowser/.gryphon
 local.properties
-CoreHttpKit/swiftpackage
+CoreHttpKit/CoreHttpKit

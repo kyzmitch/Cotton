@@ -33,6 +33,7 @@ val frameworkName = "CoreHttpKit"
 
 multiplatformSwiftPackage {
     packageName(frameworkName)
+    outputDirectory(File(projectDir, "$frameworkName"))
     swiftToolsVersion("5.3")
     targetPlatforms {
         iOS { v("13") }
