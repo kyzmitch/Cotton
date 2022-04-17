@@ -2,6 +2,7 @@ package org.cottonweb.CoreHttpKit
 
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.HttpRequestData
+import io.ktor.http.content.ByteArrayContent
 import kotlin.collections.HashSet
 
 data class HTTPRequestInfo(
@@ -21,7 +22,9 @@ data class HTTPRequestInfo(
                 if (it.value.isEmpty()) null
                 HTTPHeader.createFromRaw(it.key, it.value[0])
             }
-            return HTTPRequestInfo(data.url.toString(), method, HashSet(headers), timeout)
+
+            val possibleHttpBody = data.body as? ByteArrayContent
+            return HTTPRequestInfo(data.url.toString(), method, HashSet(headers), timeout, possibleHttpBody?.bytes())
         }
     }
 }
