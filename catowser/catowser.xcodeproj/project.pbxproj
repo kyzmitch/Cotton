@@ -140,6 +140,8 @@
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
 		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
+		8A1C1BD7280B1DD2009B9363 /* CoreHttpKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A1C1BD6280B1DD2009B9363 /* CoreHttpKit */; };
+		8A1C1BD9280B1E2D009B9363 /* HttpClient+Kotlin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */; };
 		8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */; };
@@ -793,6 +795,8 @@
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
+		8A1C1BD5280B1D9E009B9363 /* swiftpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swiftpackage; path = ../CoreHttpKit/swiftpackage; sourceTree = "<group>"; };
+		8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Kotlin.swift"; sourceTree = "<group>"; };
 		8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentModel.swift; sourceTree = "<group>"; };
 		8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentViewPreview.swift; sourceTree = "<group>"; };
 		8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SiteNavigationDelegate.swift"; sourceTree = "<group>"; };
@@ -1102,6 +1106,7 @@
 			files = (
 				8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */,
 				8A4D0D8224A279A9009B28A3 /* CryptoKit.framework in Frameworks */,
+				8A1C1BD7280B1DD2009B9363 /* CoreHttpKit in Frameworks */,
 				8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */,
 				8A90636B24332452009D786E /* Network.framework in Frameworks */,
 			);
@@ -1376,6 +1381,7 @@
 		8435A48E1EED5E700020102F = {
 			isa = PBXGroup;
 			children = (
+				8A1C1BD4280B1D9E009B9363 /* Packages */,
 				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
 				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
 				8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */,
@@ -1497,6 +1503,14 @@
 				755E107627BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift */,
 			);
 			path = TransportAdapters;
+			sourceTree = "<group>";
+		};
+		8A1C1BD4280B1D9E009B9363 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				8A1C1BD5280B1D9E009B9363 /* swiftpackage */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		8A277138268E452000D8878C /* BrowserNetworking */ = {
@@ -1819,6 +1833,7 @@
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
 				8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */,
+				8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */,
 				8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */,
 				8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */,
 				8AF4922A235248CE00183579 /* HttpKitErrors.swift */,
@@ -2256,6 +2271,9 @@
 			dependencies = (
 			);
 			name = HttpKit;
+			packageProductDependencies = (
+				8A1C1BD6280B1DD2009B9363 /* CoreHttpKit */,
+			);
 			productName = HttpKit;
 			productReference = 8AE6D1692350FF35006316AD /* HttpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -3255,6 +3273,7 @@
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
 				8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */,
+				8A1C1BD9280B1E2D009B9363 /* HttpClient+Kotlin.swift in Sources */,
 				8ABDB0BA27B2B6F200D6EDE7 /* HTTPAdapter.swift in Sources */,
 				8AB4A1AF27B5522B008030FB /* ClosureWrappers.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
@@ -4644,6 +4663,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8A1C1BD6280B1DD2009B9363 /* CoreHttpKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreHttpKit;
+		};
 		8AC4368024798BE2008DD663 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;

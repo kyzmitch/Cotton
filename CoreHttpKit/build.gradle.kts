@@ -12,22 +12,27 @@ repositories {
 // https://github.com/ge-org/multiplatform-swiftpackage
 
 plugins {
-    kotlin("multiplatform") version "1.6.10"
+    kotlin("multiplatform") version "1.6.20"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
 }
 
+// https://kotlinlang.org/docs/multiplatform-mobile-ios-dependencies.html#workaround-to-enable-ide-support-for-the-shared-ios-source-set
+
 // https://kotlinlang.org/docs/multiplatform-add-dependencies.html#library-shared-for-all-source-sets
 // next section could be moved to the kotlin section
 
-val ktor_version: String by project
+val ktorVersion: String by project
 dependencies {
-    commonMainImplementation("io.ktor:ktor-client-core:$ktor_version")
-    commonMainImplementation("io.ktor:ktor-client-cio:$ktor_version")
+    commonMainImplementation("io.ktor:ktor-client-core:$ktorVersion")
+    commonMainImplementation("io.ktor:ktor-client-cio:$ktorVersion")
 }
 
+val frameworkName = "CoreHttpKit"
+
 multiplatformSwiftPackage {
+    packageName(frameworkName)
     swiftToolsVersion("5.3")
     targetPlatforms {
         iOS { v("13") }
@@ -37,7 +42,6 @@ multiplatformSwiftPackage {
 // https://kotlinlang.org/docs/mpp-build-native-binaries.html#build-xcframeworks
 
 kotlin {
-    val frameworkName = "CoreHttpKit"
     val xcf = XCFramework(frameworkName)
     ios {
         binaries.framework {

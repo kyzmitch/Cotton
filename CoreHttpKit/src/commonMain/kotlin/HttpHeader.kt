@@ -5,6 +5,16 @@ enum class HTTPMethod(val stringValue: String) {
     GET("GET"),
     POST("POST");
 
+    companion object {
+        internal fun createFrom(ktorValue: HttpMethod): HTTPMethod {
+            return when (ktorValue) {
+                HttpMethod.Get -> GET
+                HttpMethod.Post -> POST
+                else -> GET
+            }
+        }
+    }
+
     val ktorValue: HttpMethod
         get() {
             return when (this) {
@@ -22,7 +32,19 @@ enum class ContentTypeValue(val stringValue: String) {
      * */
     JsonSuggestions("application/x-suggestions+json"),
     Url("application/x-www-form-urlencoded"),
-    Html("text/html")
+    Html("text/html");
+
+    companion object {
+        internal fun createFrom(rawValue: String): ContentTypeValue? {
+            return when (rawValue) {
+                "application/json" -> Json
+                "application/x-suggestions+json" -> JsonSuggestions
+                "application/x-www-form-urlencoded" -> Url
+                "text/html" -> Html
+                else -> null
+            }
+        }
+    }
 }
 
 // / https://medium.com/@arturogdg/creating-enums-with-associated-data-in-kotlin-d9e2cdcf4a99
@@ -31,6 +53,18 @@ sealed class HTTPHeader {
     class ContentLength(val length: Int) : HTTPHeader()
     class Accept(val type: ContentTypeValue) : HTTPHeader()
     class Authorization(val token: String) : HTTPHeader()
+
+    companion object {
+        internal fun createFromRaw(name: String, value: String): HTTPHeader? {
+            return when (name) {
+                "Content-Type" -> ContentTypeValue.createFrom(value)?.let { ContentType(it) }
+                "Content-Length" -> value.toIntOrNull()?.let { ContentLength(it) }
+                "Accept" -> ContentTypeValue.createFrom(value)?.let { Accept(it) }
+                "Authorization" -> Authorization(value)
+                else -> null
+            }
+        }
+    }
 
     val key: String
         get() {
