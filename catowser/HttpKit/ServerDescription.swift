@@ -6,6 +6,9 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
+// gryphon output: ../CoreHttpKit/src/nativeMain/kotlin/ServerDescription.kt
+// gryphon insert: package org.cottonweb.CoreHttpKit
+
 import Foundation
 
 public protocol ServerDescription {

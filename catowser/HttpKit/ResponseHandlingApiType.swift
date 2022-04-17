@@ -10,6 +10,7 @@
 import Combine
 #endif
 
+// gryphon ignore
 public protocol RxAnyObserver {
     associatedtype Response: ResponseType
     func newSend(value: Response)
@@ -21,12 +22,14 @@ public protocol RxAnyObserver {
 /// So, can't extend swift protocol like RxAnyDisposable, in other words
 /// can't extend swift protocol Disposable with our RxAnyDisposable
 /// As a workaround this method doesn't return Disposable
+// gryphon ignore
 public protocol RxAnyLifetime {
     func newObserveEnded(_ action: @escaping () -> Void)
 }
 
 /// This protocol is needed to not use ReactiveSwift dependency directly
 /// It should be implemented by RxObserverWrapper which is in different Framework
+// gryphon ignore
 public protocol RxInterface: Hashable, AnyObject {
     associatedtype Observer: RxAnyObserver
     associatedtype Server: ServerDescription
@@ -42,6 +45,7 @@ extension HttpKit {
     /// Can't mark specific enum case to be available for certain OS version
     /// Deployment target was set to 13.0 from 12.1 from now
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    // gryphon ignore
     public enum ResponseHandlingApi<Response,
                                     Server,
                                     Observer: RxInterface>: Hashable where Observer.Observer.Response == Response,

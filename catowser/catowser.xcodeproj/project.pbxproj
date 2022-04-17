@@ -6,6 +6,31 @@
 	objectVersion = 52;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		7E8949E866832B2BB787758D /* Gryphon */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 96240751EF5B429984D7B470 /* Build configuration list for PBXAggregateTarget "Gryphon" */;
+			buildPhases = (
+				1DA01B7AC6F845477A357754 /* Call Gryphon */,
+			);
+			dependencies = (
+			);
+			name = Gryphon;
+			productName = Gryphon;
+		};
+		AD03AC9B2C076D3F0BF786B8 /* Kotlin */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 8AA3492A95229070B071CE12 /* Build configuration list for PBXAggregateTarget "Kotlin" */;
+			buildPhases = (
+				CF99377919CA527833D24EA4 /* Compile Kotlin */,
+			);
+			dependencies = (
+			);
+			name = Kotlin;
+			productName = Kotlin;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		21C191D4EBF58D361A99B203 /* Pods_Cotton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ACCF22F0D34D2B91B8B34A3 /* Pods_Cotton.framework */; };
 		2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */; };
@@ -115,6 +140,8 @@
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
 		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
+		8A1C1BD7280B1DD2009B9363 /* CoreHttpKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A1C1BD6280B1DD2009B9363 /* CoreHttpKit */; };
+		8A1C1BD9280B1E2D009B9363 /* HttpClient+Kotlin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */; };
 		8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */; };
@@ -342,6 +369,8 @@
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
 		8AD18E0C2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
 		8AD18E102447580A00224702 /* ResourceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD18E0F2447580A00224702 /* ResourceReader.swift */; };
+		8AD51E912809CA1E00C5D3DC /* GryphonSwiftLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */; };
+		8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */; };
@@ -642,7 +671,6 @@
 /* Begin PBXFileReference section */
 		0877BB4339CB2073429F95AD /* Pods_JSPlugins.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JSPlugins.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1734249475EC8FA1087C42A0 /* Pods-CoreBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBrowser/Pods-CoreBrowser.debug.xcconfig"; sourceTree = "<group>"; };
-		1D115CE5A5AB43ADAB7F31A0 /* Pods-catowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.debug.xcconfig"; sourceTree = "<group>"; };
 		25A1D5F1221A945E907F61C1 /* Pods-CoreBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBrowser/Pods-CoreBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		3190E6E57F2EB42F18AD7F49 /* Pods-JSPlugins.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JSPlugins.release.xcconfig"; path = "Pods/Target Support Files/Pods-JSPlugins/Pods-JSPlugins.release.xcconfig"; sourceTree = "<group>"; };
 		36A988DA2E6EA4154987BBC2 /* Pods-JSPluginsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JSPluginsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -767,6 +795,8 @@
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
+		8A1C1BD5280B1D9E009B9363 /* swiftpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = swiftpackage; path = ../CoreHttpKit/swiftpackage; sourceTree = "<group>"; };
+		8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Kotlin.swift"; sourceTree = "<group>"; };
 		8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentModel.swift; sourceTree = "<group>"; };
 		8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentViewPreview.swift; sourceTree = "<group>"; };
 		8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SiteNavigationDelegate.swift"; sourceTree = "<group>"; };
@@ -883,6 +913,8 @@
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
+		8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GryphonSwiftLibrary.swift; sourceTree = SOURCE_ROOT; };
+		8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitNamespace.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
 		8AD8E1652739B74000628DB4 /* EndpointMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointMocks.swift; sourceTree = "<group>"; };
@@ -912,7 +944,6 @@
 		8F8CC527299E6F8BE69F06A8 /* Pods_CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EF5304FC018F5159A692445 /* Pods-Cotton.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cotton.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Cotton/Pods-Cotton.debug.xcconfig"; sourceTree = "<group>"; };
 		AB6A7FD8FA75CEE4AA43C57A /* Pods-Cotton.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cotton.release.xcconfig"; path = "Pods/Target Support Files/Pods-Cotton/Pods-Cotton.release.xcconfig"; sourceTree = "<group>"; };
-		AE523E5A762180ED2678B7F8 /* Pods-catowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-catowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-catowser/Pods-catowser.release.xcconfig"; sourceTree = "<group>"; };
 		B58017F9FD1003C0729B3A8C /* Pods-JSPluginsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JSPluginsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BA646235AD000C99C273128B /* Pods-CoreBrowserTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreBrowserTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoreBrowserTests/Pods-CoreBrowserTests.release.xcconfig"; sourceTree = "<group>"; };
 		C22599621F7BEF6D000E4C3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -1075,6 +1106,7 @@
 			files = (
 				8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */,
 				8A4D0D8224A279A9009B28A3 /* CryptoKit.framework in Frameworks */,
+				8A1C1BD7280B1DD2009B9363 /* CoreHttpKit in Frameworks */,
 				8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */,
 				8A90636B24332452009D786E /* Network.framework in Frameworks */,
 			);
@@ -1349,8 +1381,10 @@
 		8435A48E1EED5E700020102F = {
 			isa = PBXGroup;
 			children = (
+				8A1C1BD4280B1D9E009B9363 /* Packages */,
 				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
 				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
+				8AD51E8F2809BCE200C5D3DC /* GryphonSwiftLibrary.swift */,
 				8435A4991EED5E700020102F /* catowser */,
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,
 				8ABF503F27CC1A64007C6427 /* FeaturesFlagsKit */,
@@ -1469,6 +1503,14 @@
 				755E107627BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift */,
 			);
 			path = TransportAdapters;
+			sourceTree = "<group>";
+		};
+		8A1C1BD4280B1D9E009B9363 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				8A1C1BD5280B1D9E009B9363 /* swiftpackage */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		8A277138268E452000D8878C /* BrowserNetworking */ = {
@@ -1772,6 +1814,7 @@
 				8A62AEE22351E684001A9C83 /* Extensions */,
 				8AE6D16B2350FF35006316AD /* HttpKit.h */,
 				8AE6D16C2350FF35006316AD /* Info.plist */,
+				8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */,
 				8A7DCCCF236432B5006AAEE2 /* DomainName.swift */,
 				8A8678AD2430F7D400450666 /* Host.swift */,
 				8A510F642424AE000070503C /* URLInfo.swift */,
@@ -1790,6 +1833,7 @@
 				8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* HttpClient+AsyncAwait.swift */,
 				8A41A18026738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift */,
+				8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */,
 				8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */,
 				8A62AEDD2351CF76001A9C83 /* HttpKitHeaders.swift */,
 				8AF4922A235248CE00183579 /* HttpKitErrors.swift */,
@@ -1862,8 +1906,6 @@
 				25A1D5F1221A945E907F61C1 /* Pods-CoreBrowser.release.xcconfig */,
 				D784585EBE40B8C157609F97 /* Pods-JSPlugins.debug.xcconfig */,
 				3190E6E57F2EB42F18AD7F49 /* Pods-JSPlugins.release.xcconfig */,
-				1D115CE5A5AB43ADAB7F31A0 /* Pods-catowser.debug.xcconfig */,
-				AE523E5A762180ED2678B7F8 /* Pods-catowser.release.xcconfig */,
 				9EF5304FC018F5159A692445 /* Pods-Cotton.debug.xcconfig */,
 				AB6A7FD8FA75CEE4AA43C57A /* Pods-Cotton.release.xcconfig */,
 				B58017F9FD1003C0729B3A8C /* Pods-JSPluginsTests.debug.xcconfig */,
@@ -2229,6 +2271,9 @@
 			dependencies = (
 			);
 			name = HttpKit;
+			packageProductDependencies = (
+				8A1C1BD6280B1DD2009B9363 /* CoreHttpKit */,
+			);
 			productName = HttpKit;
 			productReference = 8AE6D1692350FF35006316AD /* HttpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2353,6 +2398,8 @@
 				8AB022EB26258B110053AFF0 /* CoreBrowserTests */,
 				8A7EF3D0273924EF0071BB89 /* HttpKitTests */,
 				8ABF503D27CC1A64007C6427 /* FeaturesFlagsKit */,
+				7E8949E866832B2BB787758D /* Gryphon */,
+				AD03AC9B2C076D3F0BF786B8 /* Kotlin */,
 			);
 		};
 /* End PBXProject section */
@@ -2480,6 +2527,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1DA01B7AC6F845477A357754 /* Call Gryphon */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Call Gryphon";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "gryphon \"${PROJECT_NAME}.xcodeproj\" \"${SRCROOT}/gryphonInputFiles.xcfilelist\" --verbose --continue-on-error --UseModernBuildSystem=YES --target=\"HttpKit\"\n";
+		};
 		4EFB9C87A566D4BFCB0AB7B2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2739,6 +2804,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF99377919CA527833D24EA4 /* Compile Kotlin */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Compile Kotlin";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash .gryphon/scripts/compileKotlin.sh\n";
 			showEnvVarsInLog = 0;
 		};
 		D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */ = {
@@ -3188,6 +3272,8 @@
 			files = (
 				8AF4922B235248CE00183579 /* HttpKitErrors.swift in Sources */,
 				8ABABEF1267233D3000AA9CB /* HttpClient+AsyncAwait.swift in Sources */,
+				8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */,
+				8A1C1BD9280B1E2D009B9363 /* HttpClient+Kotlin.swift in Sources */,
 				8ABDB0BA27B2B6F200D6EDE7 /* HTTPAdapter.swift in Sources */,
 				8AB4A1AF27B5522B008030FB /* ClosureWrappers.swift in Sources */,
 				8A82CDF02351095700607162 /* HttpClient.swift in Sources */,
@@ -3207,6 +3293,7 @@
 				8A328F3527B690980021F6B0 /* NetworkReachabilityAdapter.swift in Sources */,
 				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
 				8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */,
+				8AD51E912809CA1E00C5D3DC /* GryphonSwiftLibrary.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
 				8AE6D1772350FF65006316AD /* Endpoint.swift in Sources */,
 			);
@@ -3379,6 +3466,37 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		129F8F11F5089CE8BE27E5C7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				PRODUCT_NAME = Gryphon;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Release;
+		};
+		1649E904EBE6AFF1E5E8CDCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				PRODUCT_NAME = Gryphon;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Debug;
+		};
+		2228BF7670151F3E0673D50E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CONFIG_FILES = "";
+				PRODUCT_NAME = Kotlin;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Release;
+		};
 		608DA753223A3BD5009F75BD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D784585EBE40B8C157609F97 /* Pods-JSPlugins.debug.xcconfig */;
@@ -3515,6 +3633,17 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		73C85E76840E86ED34A01147 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CONFIG_FILES = "";
+				PRODUCT_NAME = Kotlin;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = FALSE;
+			};
+			name = Debug;
 		};
 		8435A4A71EED5E700020102F /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4431,6 +4560,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		8AA3492A95229070B071CE12 /* Build configuration list for PBXAggregateTarget "Kotlin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2228BF7670151F3E0673D50E /* Release */,
+				73C85E76840E86ED34A01147 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		8AB022F626258B110053AFF0 /* Build configuration list for PBXNativeTarget "CoreBrowserTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4494,6 +4632,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		96240751EF5B429984D7B470 /* Build configuration list for PBXAggregateTarget "Gryphon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				129F8F11F5089CE8BE27E5C7 /* Release */,
+				1649E904EBE6AFF1E5E8CDCD /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -4516,6 +4663,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8A1C1BD6280B1DD2009B9363 /* CoreHttpKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreHttpKit;
+		};
 		8AC4368024798BE2008DD663 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;

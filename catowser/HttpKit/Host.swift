@@ -11,6 +11,7 @@ import Foundation
 extension HttpKit {
     /// URL Host type instead of system String.
     ///  https://tools.ietf.org/html/rfc1738#section-3.1
+    // gryphon ignore
     public struct Host: RawRepresentable, Equatable {
         static let domainAccessibleOnlyHosts: Set<String> = {
            let hosts = ["instagram.com",

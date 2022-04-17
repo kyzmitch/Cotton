@@ -9,6 +9,7 @@
 import Foundation
 
 extension HttpKit {
+    // gryphon ignore
     public struct URLIpInfo {
         /// URL which always contains normal domain/host
         var internalUrl: URL

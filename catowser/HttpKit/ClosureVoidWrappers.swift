@@ -11,6 +11,7 @@ import Combine
 #endif
 
 extension HttpKit {
+    // gryphon ignore
     public class ClosureVoidWrapper<Server: ServerDescription>: Hashable {
         public var closure: (Result<Void, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
@@ -38,6 +39,7 @@ extension HttpKit {
 }
 
 extension HttpKit {
+    // gryphon ignore
     public class CombinePromiseVoidWrapper<Server: ServerDescription>: Hashable {
         public var promise: Future<Void, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure

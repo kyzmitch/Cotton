@@ -10,6 +10,7 @@
 import Combine
 #endif
 
+// gryphon ignore
 public protocol HTTPRxVoidAdapter: AnyObject {
     associatedtype Server
     associatedtype Observer: RxVoidInterface where Observer.Server == Server

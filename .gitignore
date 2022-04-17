@@ -65,3 +65,9 @@ fastlane/screenshots
 fastlane/test_output
 catowser/Pods
 node_modules
+CoreHttpKit/.gradle
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+catowser/.gryphon
+local.properties
+CoreHttpKit/swiftpackage

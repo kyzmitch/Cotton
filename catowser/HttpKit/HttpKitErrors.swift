@@ -9,6 +9,7 @@
 import Foundation
 
 extension HttpKit {
+    // gryphon ignore
     public enum HttpError: LocalizedError, Equatable {
         /* Comon errors related to http client */
         
@@ -17,6 +18,7 @@ extension HttpKit {
         case failedConstructUrl
         case noAuthenticationToken
         case failedConstructRequestParameters
+        case failedKotlinRequestConstruct
         case failedEncodeEncodable
         case noInternetConnectionWithHost
         case noHttpResponse
@@ -60,6 +62,7 @@ extension HttpKit {
                 (.failedConstructUrl, .failedConstructUrl),
                 (.noAuthenticationToken, .noAuthenticationToken),
                 (.failedConstructRequestParameters, .failedConstructRequestParameters),
+                (.failedKotlinRequestConstruct, .failedKotlinRequestConstruct),
                 (.failedEncodeEncodable, .failedEncodeEncodable),
                 (.noInternetConnectionWithHost, .noInternetConnectionWithHost),
                 (.noHttpResponse, .noHttpResponse),
