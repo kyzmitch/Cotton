@@ -2,12 +2,17 @@ package org.cottonweb.CoreHttpKit
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.headers
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.Url
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
+import io.ktor.http.ContentType
+import io.ktor.http.content.ByteArrayContent
+import io.ktor.utils.io.charsets.Charsets
+import io.ktor.utils.io.core.toByteArray
 
 /**
  * Would be good if this interface is based on some Decodable interface
@@ -76,10 +81,25 @@ data class Endpoint<out R : ResponseType, in S : Server>(
             append(contentTypeHeader.key, contentTypeHeader.value)
         }
 
-        // TODO: set httpBody if it is present, based on encodingMethod
+        updateWithBody(builder)
 
         val ktorData = builder.build()
         return HTTPRequestInfo.createFromKtorType(ktorData)
+    }
+
+    private fun updateWithBody(builder: HttpRequestBuilder) {
+        val readyBodyData = when (encodingMethod) {
+            is ParametersEncodingDestination.HttpBody -> encodingMethod.encodedData
+            is ParametersEncodingDestination.HttpBodyJSON -> encodingMethod.keyToValue.encode()
+            else -> null
+        }
+
+        if (readyBodyData == null) {
+            return
+        }
+
+        val content = ByteArrayContent(readyBodyData, ContentType.Application.Json, null)
+        builder.setBody(content)
     }
 
     private fun urlParameters(): Parameters {
@@ -95,4 +115,13 @@ data class Endpoint<out R : ResponseType, in S : Server>(
         items.forEach { parametersBuilder.append(it.name, it.value) }
         return parametersBuilder.build()
     }
+}
+
+// extensions
+
+fun Map<String, Any>.encode(): ByteArray {
+    // https://github.com/Kotlin/kotlinx.serialization/issues/746
+    val jsonObject = toJsonObject()
+    val string = jsonObject.toString()
+    return string.toByteArray(Charsets.UTF_8)
 }

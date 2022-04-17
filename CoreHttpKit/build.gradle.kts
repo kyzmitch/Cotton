@@ -13,6 +13,7 @@ repositories {
 
 plugins {
     kotlin("multiplatform") version "1.6.20"
+    kotlin("plugin.serialization") version "1.6.20"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
@@ -23,10 +24,14 @@ plugins {
 // https://kotlinlang.org/docs/multiplatform-add-dependencies.html#library-shared-for-all-source-sets
 // next section could be moved to the kotlin section
 
+// https://github.com/Kotlin/kotlinx.serialization#setup
+
 val ktorVersion: String by project
 dependencies {
     commonMainImplementation("io.ktor:ktor-client-core:$ktorVersion")
     commonMainImplementation("io.ktor:ktor-client-cio:$ktorVersion")
+    commonMainImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 }
 
 val frameworkName = "CoreHttpKit"
