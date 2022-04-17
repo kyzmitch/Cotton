@@ -12,7 +12,7 @@ import CoreHttpKit
 /// to be able to use Combine interfaces
 extension HttpKit {
     // gryphon ignore
-    public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
+    public struct DummyRxObserver<RR: DecodableResponse>: RxAnyObserver {
         public typealias Response = RR
         
         public func newSend(value: Response) {}

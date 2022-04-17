@@ -13,7 +13,7 @@ import CoreHttpKit
 
 // gryphon ignore
 public protocol RxAnyObserver {
-    associatedtype Response: ResponseType
+    associatedtype Response: DecodableResponse
     func newSend(value: Response)
     func newSend(error: HttpKit.HttpError)
     func newComplete()
@@ -58,6 +58,7 @@ extension HttpKit {
         case waitsForCombinePromise
         case asyncAwaitConcurrency
         
+        /// TODO: probably need to rename this type alias
         public typealias ResponseType<R, S, O> = ResponseHandlingApi<Response, Server, Observer>
         
         // MARK: - convenience methods

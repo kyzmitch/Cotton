@@ -304,6 +304,8 @@
 		8AB4A1B927B583AB008030FB /* ClosureVoidWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */; };
 		8AB5B3C4280C8B3D001F8644 /* RequestInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C3280C8B3D001F8644 /* RequestInterfaces.swift */; };
 		8AB5B3C6280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C5280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift */; };
+		8AB5B3C8280C9D97001F8644 /* CoreHttpKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8AB5B3C7280C9D97001F8644 /* CoreHttpKit */; };
+		8AB5B3CA280C9D9C001F8644 /* CoreHttpKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8AB5B3C9280C9D9C001F8644 /* CoreHttpKit */; };
 		8AB70E8B27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB70E8A27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift */; };
 		8AB70E9427B7AE7A003FB59B /* ReactiveHttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AB70E9327B7AE7A003FB59B /* ReactiveHttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
@@ -1011,6 +1013,7 @@
 			files = (
 				8AB70E9D27B7AF2C003FB59B /* ReactiveHttpKit.framework in Frameworks */,
 				9E32AED5CC3F3BEF60EA5A51 /* Pods_BrowserNetworking.framework in Frameworks */,
+				8AB5B3CA280C9D9C001F8644 /* CoreHttpKit in Frameworks */,
 				8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */,
 				8A7ECCBE26AF2BF2000C902F /* SPMCommon.framework in Frameworks */,
 			);
@@ -1064,6 +1067,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */,
+				8AB5B3C8280C9D97001F8644 /* CoreHttpKit in Frameworks */,
 				F7BE4DBB5923E22193C67E9C /* Pods_ReactiveHttpKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2088,6 +2092,9 @@
 				8AB70EA027B7AF2C003FB59B /* PBXTargetDependency */,
 			);
 			name = BrowserNetworking;
+			packageProductDependencies = (
+				8AB5B3C9280C9D9C001F8644 /* CoreHttpKit */,
+			);
 			productName = BrowserNetworking;
 			productReference = 8A277137268E452000D8878C /* BrowserNetworking.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2192,6 +2199,9 @@
 				8AB70E9B27B7AEA7003FB59B /* PBXTargetDependency */,
 			);
 			name = ReactiveHttpKit;
+			packageProductDependencies = (
+				8AB5B3C7280C9D97001F8644 /* CoreHttpKit */,
+			);
 			productName = ReactiveHttpKit;
 			productReference = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -4664,6 +4674,14 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		75DAB6DB280C450E005F67FE /* CoreHttpKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreHttpKit;
+		};
+		8AB5B3C7280C9D97001F8644 /* CoreHttpKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreHttpKit;
+		};
+		8AB5B3C9280C9D9C001F8644 /* CoreHttpKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreHttpKit;
 		};

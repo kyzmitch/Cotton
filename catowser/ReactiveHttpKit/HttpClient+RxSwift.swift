@@ -8,13 +8,14 @@
 
 import HttpKit
 import ReactiveSwift
+import CoreHttpKit
 
 /// This typealias could be an issue, because the same defined in BrowserNetworking HttpClient+Alamofire.swift
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
 public typealias RxVoidProducer = SignalProducer<Void, HttpKit.HttpError>
 
 extension HttpKit.Client {
-    public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: HttpKit.Endpoint<T, Server>,
+    public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint<Server>,
                                                        withAccessToken accessToken: String?,
                                                        transport adapter: B,
                                                        subscriber: HttpKit.RxSubscriber<T, Server, RX>) -> RxProducer<T>
@@ -40,7 +41,7 @@ extension HttpKit.Client {
         })
     }
     
-    public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: HttpKit.VoidEndpoint<Server>,
+    public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: Endpoint<Server>,
                                                             withAccessToken accessToken: String?,
                                                             transport adapter: B,
                                                             subscriber: HttpKit.RxVoidSubscriber<Server, RX>) -> RxVoidProducer

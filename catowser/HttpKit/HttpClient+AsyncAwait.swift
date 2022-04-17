@@ -11,13 +11,15 @@
 import Foundation
 import CoreHttpKit
 
+public typealias DecodableResponse = ResponseType & Decodable
+
 extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    private func aaMakeRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
-                                                withAccessToken accessToken: String?,
-                                                responseType: T.Type) async throws -> T {
+    private func aaMakeRequest<T: DecodableResponse>(for endpoint: Endpoint<Server>,
+                                                     withAccessToken accessToken: String?,
+                                                     responseType: T.Type) async throws -> T {
         let requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
@@ -42,23 +44,23 @@ extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    public func aaMakePublicRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
-                                                     responseType: T.Type) async throws -> T {
+    public func aaMakePublicRequest<T: DecodableResponse>(for endpoint: Endpoint<Server>,
+                                                          responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,
-                                               withAccessToken: nil,
-                                               responseType: responseType)
+                                            withAccessToken: nil,
+                                            responseType: responseType)
         return value
     }
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
-                                                  withAccessToken accessToken: String,
-                                                  responseType: T.Type) async throws -> T {
+    func aaMakeAuthorizedRequest<T: DecodableResponse>(for endpoint: Endpoint<Server>,
+                                                       withAccessToken accessToken: String,
+                                                       responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,
-                                               withAccessToken: accessToken,
-                                               responseType: responseType)
+                                            withAccessToken: accessToken,
+                                            responseType: responseType)
         return value
     }
 }

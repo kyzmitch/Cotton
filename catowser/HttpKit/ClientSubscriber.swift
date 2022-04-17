@@ -16,7 +16,7 @@ extension HttpKit {
     public typealias RxVoidSubscriber<S, RX: RxVoidInterface> = ClientRxVoidSubscriber<S, RX>
         where RX.Server == S
     /// Can be used for async interfaces which do not need RX stuff, like Combine or simple Closures
-    public typealias Subscriber<R: ResponseType, S: ServerDescription> = ClientSubscriber<R, S>
+    public typealias Subscriber<R: DecodableResponse, S: ServerDescription> = ClientSubscriber<R, S>
     
     /// I already don't like this idea and this class, it will be for every endpoint
     /// This is only because I want to support generics for endpoints
@@ -62,8 +62,8 @@ extension HttpKit {
 
 extension HttpKit {
     // gryphon ignore
-    public typealias RxFreeInterface<R: ResponseType, S: ServerDescription> = DummyRxType<R, S, DummyRxObserver<R>>
+    public typealias RxFreeInterface<R: DecodableResponse, S: ServerDescription> = DummyRxType<R, S, DummyRxObserver<R>>
     // gryphon ignore
-    public typealias ClientSubscriber<R: ResponseType,
+    public typealias ClientSubscriber<R: DecodableResponse,
                                       S: ServerDescription> = ClientRxSubscriber<R, S, RxFreeInterface<R, S>>
 }

@@ -13,7 +13,7 @@ import CoreHttpKit
 
 extension HttpKit {
     // gryphon ignore
-    public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
+    public class ClosureWrapper<Response: DecodableResponse, Server: ServerDescription>: Hashable {
         /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
         public var closure: (Result<Response, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
@@ -47,7 +47,7 @@ extension HttpKit {
 
 extension HttpKit {
     // gryphon ignore
-    public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
+    public class CombinePromiseWrapper<Response: DecodableResponse, Server: ServerDescription>: Hashable {
         /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
         public var promise: Future<Response, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
