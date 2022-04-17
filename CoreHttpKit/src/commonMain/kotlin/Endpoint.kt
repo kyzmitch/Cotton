@@ -29,10 +29,16 @@ interface ResponseType {
  * It connects to the specific server (host name) and
  * has a specific expected response type.
  *
+ * We're not passing the Response type for now
+ * because it is better for the Void response case
+ * and currently we actually don't do network requests
+ * in Kotlin, so, we don't need to decode the http responses
+ * and no need to check the http response codes.
+ *
  * @property path slash divided string, e.g. `complete/search`
  * @constructor Creates the description for the Http request.
  */
-data class Endpoint<out R : ResponseType, in S : Server>(
+data class Endpoint</* out R : ResponseType, */ in S : ServerDescription>(
     val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,
@@ -109,7 +115,7 @@ data class Endpoint<out R : ResponseType, in S : Server>(
         }
     }
 
-    private fun buildParameters(items: Array<URLQueryItem>): Parameters {
+    private fun buildParameters(items: Array<URLQueryPair>): Parameters {
         if (items.isEmpty()) return Parameters.Empty
         val parametersBuilder = ParametersBuilder(items.size)
         items.forEach { parametersBuilder.append(it.name, it.value) }
@@ -119,7 +125,7 @@ data class Endpoint<out R : ResponseType, in S : Server>(
 
 // extensions
 
-fun Map<String, Any>.encode(): ByteArray {
+internal fun Map<String, Any>.encode(): ByteArray {
     // https://github.com/Kotlin/kotlinx.serialization/issues/746
     val jsonObject = toJsonObject()
     val string = jsonObject.toString()

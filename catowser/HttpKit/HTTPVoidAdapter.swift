@@ -9,6 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 // gryphon ignore
 public protocol HTTPRxVoidAdapter: AnyObject {
@@ -26,5 +27,5 @@ public protocol HTTPRxVoidAdapter: AnyObject {
     func wrapperHandler() -> (Result<Void, HttpKit.HttpError>) -> Void
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                                               _ endpoint: HttpKit.VoidEndpoint<Server>)
+                                               _ endpoint: Endpoint<Server>)
 }

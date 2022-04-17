@@ -9,28 +9,20 @@
 #if swift(>=5.5)
 
 import Foundation
+import CoreHttpKit
 
 extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    private func aaMakeRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+    private func aaMakeRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
                                                 withAccessToken accessToken: String?,
                                                 responseType: T.Type) async throws -> T {
-        guard let url = endpoint.url(relatedTo: self.server) else {
-            throw HttpKit.HttpError.failedConstructUrl
-        }
-        
-        let httpRequest: URLRequest
-        do {
-            httpRequest = try endpoint.request(url,
-                                               httpTimeout: httpTimeout,
-                                               jsonEncoder: jsonEncoder,
-                                               accessToken: accessToken)
-        } catch let error as HttpKit.HttpError {
-            throw error
-        } catch {
-            throw HttpKit.HttpError.httpFailure(error: error)
+        let requestInfo = endpoint.request(server: server,
+                                           requestTimeout: Int64(httpTimeout),
+                                           accessToken: accessToken)
+        guard let httpRequest = requestInfo.urlRequest else {
+            throw HttpKit.HttpError.failedKotlinRequestConstruct
         }
         
         let codes = T.successCodes
@@ -50,7 +42,7 @@ extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    public func aaMakePublicRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+    public func aaMakePublicRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
                                                      responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,
                                                withAccessToken: nil,
@@ -61,7 +53,7 @@ extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: HttpKit.Endpoint<T, Server>,
+    func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
                                                   withAccessToken accessToken: String,
                                                   responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,

@@ -5,7 +5,7 @@ enum class HttpScheme(val stringValue: String, val port: Int) {
     http("http", 443)
 }
 
-interface Server {
+interface ServerDescription {
     val hostString: String
     val domain: String
     val scheme: HttpScheme

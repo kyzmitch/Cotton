@@ -15,7 +15,7 @@ enum class HTTPMethod(val stringValue: String) {
         }
     }
 
-    val ktorValue: HttpMethod
+    internal val ktorValue: HttpMethod
         get() {
             return when (this) {
                 GET -> HttpMethod.Get

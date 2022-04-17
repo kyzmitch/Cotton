@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreHttpKit
 
 extension HttpKit {
     /// Should be used for async interfaces which use RX library
