@@ -16,10 +16,10 @@ extension HttpKit {
     public class ClosureVoidWrapper<Server: ServerDescription>: Hashable {
         public var closure: (Result<Void, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint
+        let endpoint: Endpoint<Server>
         
         public init(_ closure: @escaping (Result<Void, HttpKit.HttpError>) -> Void,
-                    _ endpoint: Endpoint) {
+                    _ endpoint: Endpoint<Server>) {
             self.closure = closure
             self.endpoint = endpoint
         }
@@ -44,10 +44,10 @@ extension HttpKit {
     public class CombinePromiseVoidWrapper<Server: ServerDescription>: Hashable {
         public var promise: Future<Void, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint
+        let endpoint: Endpoint<Server>
         
         public init(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                    _ endpoint: Endpoint) {
+                    _ endpoint: Endpoint<Server>) {
             self.promise = promise
             self.endpoint = endpoint
         }

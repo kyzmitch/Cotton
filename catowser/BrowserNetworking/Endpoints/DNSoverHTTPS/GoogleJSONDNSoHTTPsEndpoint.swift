@@ -18,6 +18,7 @@ import CoreHttpKit
 
 public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
 
+typealias GDNSjsonEndpoint = Endpoint<GoogleDnsServer>
 public typealias GDNSjsonRxSignal = Signal<GoogleDNSOverJSONResponse, HttpKit.HttpError>.Observer
 public typealias GDNSjsonRxInterface = HttpKit.RxObserverWrapper<GoogleDNSOverJSONResponse,
                                                                  GoogleDnsServer,
@@ -31,22 +32,22 @@ public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, Ht
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpKit.HttpError>
 
-extension Endpoint {
+extension Endpoint where S == GoogleDnsServer {
      
-    static func googleDnsOverHTTPSJson(_ params: GDNSRequestParams) throws -> Endpoint {
+    static func googleDnsOverHTTPSJson(_ params: GDNSRequestParams) throws -> GDNSjsonEndpoint {
         /**
          To minimize this risk, send only the HTTP headers required for DoH:
          Host, Content-Type (for POST), and if necessary, Accept.
          User-Agent should be included in any development or testing versions.
          */
-        let instance = Endpoint(httpMethod: .get,
-                                path: "resolve",
-                                headers: nil,
-                                encodingMethod: .QueryString(items: params.urlQueryItems.kotlinArray))
+        let instance = GDNSjsonEndpoint(httpMethod: .get,
+                                        path: "resolve",
+                                        headers: nil,
+                                        encodingMethod: .QueryString(items: params.urlQueryItems.kotlinArray))
         return Freezer.shared.frozenEndpoint(endpoint: instance)
     }
     
-    static func googleDnsOverHTTPSJson(_ domainName: String) throws -> Endpoint {
+    static func googleDnsOverHTTPSJson(_ domainName: String) throws -> GDNSjsonEndpoint {
         let domainObject = try HttpKit.DomainName(domainName)
         guard let params = GDNSRequestParams(domainName: domainObject) else {
             throw HttpKit.HttpError.missingRequestParameters("google dns params")
@@ -151,7 +152,7 @@ extension DnsRR {
 
 extension HttpKit.Client where Server == GoogleDnsServer {
     func rxGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientRxSubscriber) -> GDNSjsonProducer {
-        let endpoint: Endpoint
+        let endpoint: GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
         } catch let error as HttpKit.HttpError {
@@ -185,7 +186,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     func cGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientSubscriber) -> GDNSjsonPublisher {
-        let endpoint: Endpoint
+        let endpoint: GDNSjsonEndpoint
         do {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
         } catch let error as HttpKit.HttpError {

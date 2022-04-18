@@ -77,7 +77,7 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
     }
     
     func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                                _ endpoint: Endpoint) {
+                                _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
             let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)

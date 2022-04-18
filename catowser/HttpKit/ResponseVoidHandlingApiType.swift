@@ -25,7 +25,7 @@ public protocol RxVoidInterface: Hashable {
     var observer: RxAnyVoidObserver { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
-    var endpoint: Endpoint { get }
+    var endpoint: Endpoint<Server> { get }
 }
 
 extension HttpKit {

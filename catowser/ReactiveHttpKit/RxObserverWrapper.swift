@@ -64,12 +64,12 @@ extension HttpKit {
         let rxObserver: Signal<RR, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        public let endpoint: Endpoint
+        public let endpoint: Endpoint<Server>
         let responseType: RR.Type
         
         public init(_ observer: Signal<RR, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
-                    _ endpoint: Endpoint) {
+                    _ endpoint: Endpoint<Server>) {
             self.rxObserver = observer
             self.rxLifetime = lifetime
             self.endpoint = endpoint
@@ -93,7 +93,7 @@ extension HttpKit {
 
 extension HttpKit {
     public class RxObserverVoidWrapper<SS: ServerDescription>: RxVoidInterface {
-        public typealias Server = SS
+        public typealias S = SS
         
         public var observer: RxAnyVoidObserver {
             return rxObserver
@@ -106,11 +106,11 @@ extension HttpKit {
         let rxObserver: Signal<Void, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        public let endpoint: Endpoint
+        public let endpoint: Endpoint<S>
         
         public init(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
-                    _ endpoint: Endpoint) {
+                    _ endpoint: Endpoint<S>) {
             self.rxObserver = observer
             self.rxLifetime = lifetime
             self.endpoint = endpoint
@@ -121,7 +121,7 @@ extension HttpKit {
             hasher.combine(endpoint)
         }
         
-        public static func == (lhs: RxObserverVoidWrapper<Server>, rhs: RxObserverVoidWrapper<Server>) -> Bool {
+        public static func == (lhs: RxObserverVoidWrapper<S>, rhs: RxObserverVoidWrapper<S>) -> Bool {
             return lhs.endpoint == rhs.endpoint
         }
     }

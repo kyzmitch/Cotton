@@ -9,7 +9,7 @@
 import CoreHttpKit
 
 extension HttpKit.Client {
-    public func makeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint,
+    public func makeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                 withAccessToken accessToken: String?,
                                                 transport adapter: B) where B.Response == T, B.Server == Server {
         let requestInfo = endpoint.request(server: server,
@@ -26,7 +26,7 @@ extension HttpKit.Client {
     
     // MARK: - Clear RX capable functions without dependencies
     
-    public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: Endpoint,
+    public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: Endpoint<Server>,
                                                    withAccessToken accessToken: String?,
                                                    transport adapter: B) where B.Response == T, B.Server == Server {
         let requestInfo = endpoint.request(server: server,
@@ -42,7 +42,7 @@ extension HttpKit.Client {
         adapter.performRequest(httpRequest, sucessCodes: codes)
     }
     
-    public func makeRxVoidRequest<B: HTTPRxVoidAdapter>(for endpoint: Endpoint,
+    public func makeRxVoidRequest<B: HTTPRxVoidAdapter>(for endpoint: Endpoint<Server>,
                                                         withAccessToken accessToken: String?,
                                                         transport adapter: B) where B.Server == Server {
         let requestInfo = endpoint.request(server: server,
