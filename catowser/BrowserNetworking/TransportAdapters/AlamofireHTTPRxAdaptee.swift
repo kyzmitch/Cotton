@@ -84,7 +84,7 @@ final class AlamofireHTTPRxAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where R
     }
     
     func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
-                                _ endpoint: Endpoint<Server>) {
+                                _ endpoint: Endpoint) {
         if case .waitsForCombinePromise = handlerType {
             let promiseWrapper: HttpKit.CombinePromiseWrapper<Response, Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)

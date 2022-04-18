@@ -39,7 +39,7 @@ interface DecodableResponse {
  * @property path slash divided string, e.g. `complete/search`
  * @constructor Creates the description for the Http request.
  */
-data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
+data class Endpoint(
     val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,
@@ -56,17 +56,16 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
          *
          * https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/
          * */
-        fun <SS> frozen(
+        fun frozen(
             httpMethod: HTTPMethod,
             path: String,
             headers: Set<HTTPHeader>?,
-            encodingMethod: ParametersEncodingDestination): Endpoint<SS>
-        where SS: ServerDescription {
-            return Endpoint<SS>(httpMethod, path, headers, encodingMethod).freeze()
+            encodingMethod: ParametersEncodingDestination): Endpoint{
+            return Endpoint(httpMethod, path, headers, encodingMethod).freeze()
         }
     }
 
-    internal fun urlRelatedTo(server: S): Url {
+    internal fun <S: ServerDescription> urlRelatedTo(server: S): Url {
         val scheme = server.scheme
         val urlProtocol = URLProtocol(scheme.stringValue, scheme.port)
         val pathSegments = path.split('/')
@@ -84,7 +83,7 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
         return builder.build()
     }
 
-    fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
+    fun <S: ServerDescription> request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
         var builder = HttpRequestBuilder()
         builder.method = httpMethod.ktorValue
         builder.timeout {

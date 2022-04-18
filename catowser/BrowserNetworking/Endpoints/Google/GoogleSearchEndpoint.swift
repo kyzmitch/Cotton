@@ -15,7 +15,6 @@ import Combine
 #endif
 
 public typealias GoogleSuggestionsClient = HttpKit.Client<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
-typealias GSearchEndpoint = Endpoint<GoogleServer>
 public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpKit.HttpError>.Observer
 public typealias GSearchRxInterface = HttpKit.RxObserverWrapper<GSearchSuggestionsResponse,
                                                                     GoogleServer,
@@ -29,8 +28,8 @@ public typealias GSearchProducer = SignalProducer<GSearchSuggestionsResponse, Ht
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias CGSearchPublisher = AnyPublisher<GSearchSuggestionsResponse, HttpKit.HttpError>
 
-extension Endpoint where S == GoogleServer {
-    static func googleSearchSuggestions(query: String) throws -> GSearchEndpoint {
+extension Endpoint {
+    static func googleSearchSuggestions(query: String) throws -> Endpoint {
         guard !query.isEmpty else {
             throw HttpKit.HttpError.emptyQueryParam
         }
@@ -47,10 +46,10 @@ extension Endpoint where S == GoogleServer {
         // Actually it's possible to get correct response even without any headers
         let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        let instance = GSearchEndpoint(httpMethod: .get,
-                                       path: "complete/search",
-                                       headers: Set(headers),
-                                       encodingMethod: .QueryString(items: items.kotlinArray))
+        let instance = Endpoint(httpMethod: .get,
+                                path: "complete/search",
+                                headers: Set(headers),
+                                encodingMethod: .QueryString(items: items.kotlinArray))
         return Freezer.shared.frozenEndpoint(endpoint: instance)
     }
 }
@@ -82,7 +81,7 @@ public final class GSearchSuggestionsResponse: ResponseType {
 
 extension HttpKit.Client where Server == GoogleServer {
     public func googleSearchSuggestions(for text: String, _ subscriber: GSearchClientRxSubscriber) -> GSearchProducer {
-        let endpoint: GSearchEndpoint
+        let endpoint: Endpoint
         do {
             endpoint = try .googleSearchSuggestions(query: text)
         } catch let error as HttpKit.HttpError {
@@ -100,7 +99,7 @@ extension HttpKit.Client where Server == GoogleServer {
     
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cGoogleSearchSuggestions(for text: String, _ subscriber: GSearchClientSubscriber) -> CGSearchPublisher {
-        let endpoint: GSearchEndpoint
+        let endpoint: Endpoint
         do {
             endpoint = try .googleSearchSuggestions(query: text)
         } catch let error as HttpKit.HttpError {

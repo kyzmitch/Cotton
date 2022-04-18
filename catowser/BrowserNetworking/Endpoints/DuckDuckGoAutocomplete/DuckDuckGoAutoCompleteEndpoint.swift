@@ -13,10 +13,9 @@ import CoreHttpKit
 
 public typealias DDGoSuggestionsClient = HttpKit.Client<DuckDuckGoServer,
                                                         AlamofireReachabilityAdaptee<DuckDuckGoServer>>
-typealias DDGoSuggestionsEndpoint = Endpoint<DuckDuckGoServer>
 
-extension Endpoint where S == DuckDuckGoServer {
-    static func duckduckgoSuggestions(query: String) throws -> DDGoSuggestionsEndpoint {
+extension Endpoint {
+    static func duckduckgoSuggestions(query: String) throws -> Endpoint {
         guard !query.isEmpty else {
             throw HttpKit.HttpError.emptyQueryParam
         }
@@ -32,10 +31,10 @@ extension Endpoint where S == DuckDuckGoServer {
         ]
         let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        let instance = DDGoSuggestionsEndpoint(httpMethod: .get,
-                                       path: "ac",
-                                       headers: Set(headers),
-                                       encodingMethod: .QueryString(items: items.kotlinArray))
+        let instance = Endpoint(httpMethod: .get,
+                                path: "ac",
+                                headers: Set(headers),
+                                encodingMethod: .QueryString(items: items.kotlinArray))
 
         return Freezer.shared.frozenEndpoint(endpoint: instance)
     }
@@ -71,7 +70,7 @@ public typealias DDGoSuggestionsPublisher = AnyPublisher<DDGoSuggestionsResponse
 extension HttpKit.Client where Server == DuckDuckGoServer {
     public func duckDuckGoSuggestions(for text: String,
                                       subscriber: DDGoSuggestionsClientRxSubscriber) -> DDGoSuggestionsProducer {
-        let endpoint: DDGoSuggestionsEndpoint
+        let endpoint: Endpoint
         do {
             endpoint = try .duckduckgoSuggestions(query: text)
         } catch let error as HttpKit.HttpError {
@@ -89,7 +88,7 @@ extension HttpKit.Client where Server == DuckDuckGoServer {
     
     public func cDuckDuckgoSuggestions(for text: String,
                                        subscriber: DDGoSuggestionsClientSubscriber) -> DDGoSuggestionsPublisher {
-        let endpoint: DDGoSuggestionsEndpoint
+        let endpoint: Endpoint
         do {
             endpoint = try .duckduckgoSuggestions(query: text)
         } catch let error as HttpKit.HttpError {

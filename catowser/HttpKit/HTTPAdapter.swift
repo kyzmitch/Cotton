@@ -37,7 +37,7 @@ public protocol HTTPRxAdapter: AnyObject {
     var handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
-                                               _ endpoint: Endpoint<Server>)
+                                               _ endpoint: Endpoint)
 }
 
 // gryphon ignore
@@ -61,5 +61,5 @@ public protocol HTTPAdapter: AnyObject {
                                                 RxFreeDummy<Response, Server>> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
-                                               _ endpoint: Endpoint<Server>)
+                                               _ endpoint: Endpoint)
 }

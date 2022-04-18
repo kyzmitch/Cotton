@@ -15,7 +15,7 @@ extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    private func aaMakeRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
+    private func aaMakeRequest<T: ResponseType>(for endpoint: Endpoint,
                                                 withAccessToken accessToken: String?,
                                                 responseType: T.Type) async throws -> T {
         let requestInfo = endpoint.request(server: server,
@@ -42,7 +42,7 @@ extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    public func aaMakePublicRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
+    public func aaMakePublicRequest<T: ResponseType>(for endpoint: Endpoint,
                                                      responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,
                                             withAccessToken: nil,
@@ -53,7 +53,7 @@ extension HttpKit.Client {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     // gryphon ignore
-    func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
+    func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint,
                                                   withAccessToken accessToken: String,
                                                   responseType: T.Type) async throws -> T {
         let value = try await aaMakeRequest(for: endpoint,

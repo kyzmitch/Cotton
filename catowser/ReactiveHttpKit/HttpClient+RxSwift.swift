@@ -15,7 +15,7 @@ public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpErr
 public typealias RxVoidProducer = SignalProducer<Void, HttpKit.HttpError>
 
 extension HttpKit.Client {
-    public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint<Server>,
+    public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint,
                                                        withAccessToken accessToken: String?,
                                                        transport adapter: B,
                                                        subscriber: HttpKit.RxSubscriber<T, Server, RX>) -> RxProducer<T>
@@ -41,7 +41,7 @@ extension HttpKit.Client {
         })
     }
     
-    public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: Endpoint<Server>,
+    public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: Endpoint,
                                                             withAccessToken accessToken: String?,
                                                             transport adapter: B,
                                                             subscriber: HttpKit.RxVoidSubscriber<Server, RX>) -> RxVoidProducer

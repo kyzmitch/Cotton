@@ -38,7 +38,7 @@ public protocol RxInterface: Hashable, AnyObject {
     var observer: Observer { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
-    var endpoint: Endpoint<Server> { get }
+    var endpoint: Endpoint { get }
 }
 
 extension HttpKit {
@@ -63,7 +63,7 @@ extension HttpKit {
         // MARK: - convenience methods
         
         public static func closure(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
-                                   _ endpoint: Endpoint<Server>) -> ResponseApi<Response, Server, Observer> {
+                                   _ endpoint: Endpoint) -> ResponseApi<Response, Server, Observer> {
             let closureWrapper: ClosureWrapper<Response, Server> = .init(closure, endpoint)
             return ResponseHandlingApi<Response, Server, Observer>.closure(closureWrapper)
         }

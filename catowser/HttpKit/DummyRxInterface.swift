@@ -42,7 +42,7 @@ extension HttpKit {
             return DummyRxLifetime()
         }
         
-        public var endpoint: Endpoint<Server> {
+        public var endpoint: Endpoint {
             let encodingMethod: ParametersEncodingDestination.QueryString = .init(items: .empty)
             return Endpoint(httpMethod: .get, path: "", headers: nil, encodingMethod: encodingMethod)
         }
