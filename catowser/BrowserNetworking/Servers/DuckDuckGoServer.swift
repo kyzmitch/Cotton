@@ -9,11 +9,13 @@
 import CoreHttpKit
 
 public class DuckDuckGoServer: ServerDescription {
-    public let scheme: HttpScheme = .https
-    
-    public var hostString: String {
+    public override var hostString: String {
         return domain
     }
     
-    public let domain: String = "ac.duckduckgo.com"
+    public override var domain: String {
+        return "ac.duckduckgo.com"
+    }
+    
+    public override init() {}
 }

@@ -9,11 +9,10 @@
 import CoreHttpKit
 
 public class GoogleDnsServer: ServerDescription {
-    public let scheme: HttpScheme = .https
-    
-    public var hostString: String {
+    public override var domain: String {
+        return "dns.google"
+    }
+    public override var hostString: String {
         return domain
     }
-    
-    public let domain: String = "dns.google"
 }

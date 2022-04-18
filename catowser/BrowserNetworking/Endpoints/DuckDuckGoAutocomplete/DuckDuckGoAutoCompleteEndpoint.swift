@@ -32,10 +32,12 @@ extension Endpoint where S == DuckDuckGoServer {
         ]
         let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        return DDGoSuggestionsEndpoint(httpMethod: .get,
+        let instance = DDGoSuggestionsEndpoint(httpMethod: .get,
                                        path: "ac",
                                        headers: Set(headers),
                                        encodingMethod: .QueryString(items: items.kotlinArray))
+
+        return Freezer.shared.frozenEndpoint(endpoint: instance)
     }
 }
 

@@ -9,13 +9,15 @@
 import CoreHttpKit
 
 public class GoogleServer: ServerDescription {
-    public let scheme: HttpScheme = .https
-    
-    public var hostString: String {
+    public override var hostString: String {
         return "\(prefix).\(domain)"
     }
     
-    public let domain: String = "google.com"
+    public override var domain: String {
+        return "google.com"
+    }
     
     private let prefix = "www"
+    
+    public override init() {}
 }

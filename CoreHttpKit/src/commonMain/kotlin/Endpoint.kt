@@ -13,6 +13,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
+import kotlin.native.concurrent.freeze
 
 /**
  * Would be good if this interface is based on some Decodable interface
@@ -44,6 +45,27 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     val headers: Set<HTTPHeader>?,
     val encodingMethod: ParametersEncodingDestination
 ) {
+    companion object {
+        /**
+         * Safe init for the immutable Endpoint type to be able to use it
+         * on different threads.
+         *
+         * This method doesn't work on platform level (Swift)
+         * for some reason it returns the instance with ServerDescription type
+         * instead of the actual generic type which were used.
+         *
+         * https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/
+         * */
+        fun <SS> frozen(
+            httpMethod: HTTPMethod,
+            path: String,
+            headers: Set<HTTPHeader>?,
+            encodingMethod: ParametersEncodingDestination): Endpoint<SS>
+        where SS: ServerDescription {
+            return Endpoint<SS>(httpMethod, path, headers, encodingMethod).freeze()
+        }
+    }
+
     internal fun urlRelatedTo(server: S): Url {
         val scheme = server.scheme
         val urlProtocol = URLProtocol(scheme.stringValue, scheme.port)
