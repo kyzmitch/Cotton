@@ -40,11 +40,12 @@ extension Endpoint where S == GoogleDnsServer {
          Host, Content-Type (for POST), and if necessary, Accept.
          User-Agent should be included in any development or testing versions.
          */
-        let instance = GDNSjsonEndpoint(httpMethod: .get,
-                                        path: "resolve",
-                                        headers: nil,
-                                        encodingMethod: .QueryString(items: params.urlQueryItems.kotlinArray))
-        return Freezer.shared.frozenEndpoint(endpoint: instance)
+        let frozenEndpoint = GDNSjsonEndpoint(
+            httpMethod: .get,
+            path: "resolve",
+            headers: nil,
+            encodingMethod: .QueryString(items: params.urlQueryItems.kotlinArray))
+        return frozenEndpoint
     }
     
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> GDNSjsonEndpoint {

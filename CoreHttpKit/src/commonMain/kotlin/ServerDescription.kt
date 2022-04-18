@@ -1,8 +1,8 @@
 package org.cottonweb.CoreHttpKit
 
 enum class HttpScheme(val stringValue: String, val port: Int) {
-    https("https", 80),
-    http("http", 443)
+    https("https", 443),
+    http("http", 80)
 }
 
 // https://blog.kotlin-academy.com/abstract-class-vs-interface-in-kotlin-5ab8697c3a14

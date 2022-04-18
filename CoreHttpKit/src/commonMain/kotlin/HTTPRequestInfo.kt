@@ -4,6 +4,7 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.HttpRequestData
 import io.ktor.http.content.ByteArrayContent
 import kotlin.collections.HashSet
+import kotlin.native.concurrent.freeze
 
 data class HTTPRequestInfo(
     val rawURL: String,
@@ -12,6 +13,9 @@ data class HTTPRequestInfo(
     val requestTimeout: Long,
     val httpBody: ByteArray? = null
 ) {
+    init {
+        freeze()
+    }
     companion object {
         internal fun createFromKtorType(data: HttpRequestData): HTTPRequestInfo {
             val method: HTTPMethod = HTTPMethod.createFrom(data.method)

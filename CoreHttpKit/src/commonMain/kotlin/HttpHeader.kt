@@ -1,5 +1,6 @@
 package org.cottonweb.CoreHttpKit
 import io.ktor.http.HttpMethod
+import kotlin.native.concurrent.freeze
 
 enum class HTTPMethod(val stringValue: String) {
     GET("GET"),
@@ -56,11 +57,33 @@ enum class ContentTypeValue(val stringValue: String) {
 }
 
 // / https://medium.com/@arturogdg/creating-enums-with-associated-data-in-kotlin-d9e2cdcf4a99
+
+// this looks similar to enum type which is frozen by default
+// but it is not, so, we must modify it to make it safe
+// for use outside of Kotlin
+// This type is public and used to instantiate an Endpoint type
+
 sealed class HTTPHeader {
-    class ContentType(val type: ContentTypeValue) : HTTPHeader()
-    class ContentLength(val length: Int) : HTTPHeader()
-    class Accept(val type: ContentTypeValue) : HTTPHeader()
-    class Authorization(val token: String) : HTTPHeader()
+    class ContentType(val type: ContentTypeValue) : HTTPHeader() {
+        init {
+            freeze()
+        }
+    }
+    class ContentLength(val length: Int) : HTTPHeader() {
+        init {
+            freeze()
+        }
+    }
+    class Accept(val type: ContentTypeValue) : HTTPHeader() {
+        init {
+            freeze()
+        }
+    }
+    class Authorization(val token: String) : HTTPHeader() {
+        init {
+            freeze()
+        }
+    }
 
     companion object {
         internal fun createFromRaw(name: String, value: String): HTTPHeader? {

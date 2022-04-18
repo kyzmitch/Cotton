@@ -10,8 +10,8 @@ import CoreHttpKit
 
 extension HttpKit.Client {
     public func makeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
-                                                withAccessToken accessToken: String?,
-                                                transport adapter: B) where B.Response == T, B.Server == Server {
+                                               withAccessToken accessToken: String?,
+                                               transport adapter: B) where B.Response == T, B.Server == Server {
         let requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)

@@ -47,11 +47,12 @@ extension Endpoint where S == GoogleServer {
         // Actually it's possible to get correct response even without any headers
         let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        let instance = GSearchEndpoint(httpMethod: .get,
-                                       path: "complete/search",
-                                       headers: Set(headers),
-                                       encodingMethod: .QueryString(items: items.kotlinArray))
-        return Freezer.shared.frozenEndpoint(endpoint: instance)
+        let frozenEndpoint = GSearchEndpoint(
+            httpMethod: .get,
+            path: "complete/search",
+            headers: Set(headers),
+            encodingMethod: .QueryString(items: items.kotlinArray))
+        return frozenEndpoint
     }
 }
 

@@ -45,25 +45,10 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     val headers: Set<HTTPHeader>?,
     val encodingMethod: ParametersEncodingDestination
 ) {
-    companion object {
-        /**
-         * Safe init for the immutable Endpoint type to be able to use it
-         * on different threads.
-         *
-         * This method doesn't work on platform level (Swift)
-         * for some reason it returns the instance with ServerDescription type
-         * instead of the actual generic type which were used.
-         *
-         * https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/
-         * */
-        fun <SS> frozen(
-            httpMethod: HTTPMethod,
-            path: String,
-            headers: Set<HTTPHeader>?,
-            encodingMethod: ParametersEncodingDestination): Endpoint<SS>
-        where SS: ServerDescription {
-            return Endpoint<SS>(httpMethod, path, headers, encodingMethod).freeze()
-        }
+    init {
+        // https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/
+        // No need a static/companion fabric method for creation and calling next method
+        freeze()
     }
 
     internal fun urlRelatedTo(server: S): Url {
@@ -85,12 +70,18 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     }
 
     fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
+        // probably it is too late to froze it
+        // because it was created lets say on a main thread in Swift
+        // and we're using it on background thread already
+        val frozenServer = server.freeze()
         var builder = HttpRequestBuilder()
         builder.method = httpMethod.ktorValue
+
         builder.timeout {
             this.requestTimeoutMillis = requestTimeout
         }
-        val url = urlRelatedTo(server)
+        // Had to freeze the input parameter, because it comes from random thread
+        val url = urlRelatedTo(frozenServer)
         builder.url(url)
         headers?.let {
             builder.headers {

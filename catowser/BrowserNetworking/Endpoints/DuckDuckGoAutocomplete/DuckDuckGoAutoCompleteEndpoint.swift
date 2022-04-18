@@ -32,12 +32,18 @@ extension Endpoint where S == DuckDuckGoServer {
         ]
         let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        let instance = DDGoSuggestionsEndpoint(httpMethod: .get,
-                                       path: "ac",
-                                       headers: Set(headers),
-                                       encodingMethod: .QueryString(items: items.kotlinArray))
-
-        return Freezer.shared.frozenEndpoint(endpoint: instance)
+        /**
+         https://youtrack.jetbrains.com/issue/KT-44108
+         
+         .freeze() doesn't affect Swift or Objective-C objects, they are just opaque for freezing,
+         and anything these objects refer doesn't get frozen as well.
+         */
+        let frozenEndpoint = DDGoSuggestionsEndpoint(
+            httpMethod: .get,
+            path: "ac",
+            headers: Set(headers),
+            encodingMethod: .QueryString(items: items.kotlinArray))
+        return frozenEndpoint
     }
 }
 
