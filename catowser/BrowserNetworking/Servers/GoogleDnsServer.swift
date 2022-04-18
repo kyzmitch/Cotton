@@ -6,14 +6,14 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
-public struct GoogleDnsServer: ServerDescription {
+public class GoogleDnsServer: ServerDescription {
+    public let scheme: HttpScheme = .https
+    
     public var hostString: String {
         return domain
     }
     
     public let domain: String = "dns.google"
-    
-    public init() {}
 }

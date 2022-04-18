@@ -6,14 +6,14 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
-public struct DuckDuckGoServer: ServerDescription {
+public class DuckDuckGoServer: ServerDescription {
+    public let scheme: HttpScheme = .https
+    
     public var hostString: String {
         return domain
     }
     
     public let domain: String = "ac.duckduckgo.com"
-    
-    public init() {}
 }

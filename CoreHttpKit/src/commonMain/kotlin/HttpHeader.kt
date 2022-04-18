@@ -13,6 +13,14 @@ enum class HTTPMethod(val stringValue: String) {
                 else -> GET
             }
         }
+
+        fun createFrom(rawString: String): HTTPMethod? {
+            return when (rawString) {
+                "GET" -> HTTPMethod.GET
+                "POST" -> HTTPMethod.POST
+                else -> null
+            }
+        }
     }
 
     internal val ktorValue: HttpMethod
@@ -35,7 +43,7 @@ enum class ContentTypeValue(val stringValue: String) {
     Html("text/html");
 
     companion object {
-        internal fun createFrom(rawValue: String): ContentTypeValue? {
+        fun createFrom(rawValue: String): ContentTypeValue? {
             return when (rawValue) {
                 "application/json" -> Json
                 "application/x-suggestions+json" -> JsonSuggestions

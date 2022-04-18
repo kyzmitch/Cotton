@@ -10,7 +10,7 @@ import HttpKit
 import ReactiveSwift
 import CoreHttpKit
 
-extension Signal.Observer: RxAnyObserver where Value: DecodableResponse, Error == HttpKit.HttpError {
+extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpKit.HttpError {
     public typealias Response = Value
     
     public func newSend(value: Response) {

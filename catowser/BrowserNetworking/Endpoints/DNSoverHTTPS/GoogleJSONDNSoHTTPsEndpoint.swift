@@ -12,12 +12,13 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 /// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
 
 public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
 
-typealias GDNSjsonEndpoint = HttpKit.Endpoint<GoogleDNSOverJSONResponse, GoogleDnsServer>
+typealias GDNSjsonEndpoint = Endpoint<GoogleDnsServer>
 public typealias GDNSjsonRxSignal = Signal<GoogleDNSOverJSONResponse, HttpKit.HttpError>.Observer
 public typealias GDNSjsonRxInterface = HttpKit.RxObserverWrapper<GoogleDNSOverJSONResponse,
                                                                  GoogleDnsServer,
@@ -31,18 +32,18 @@ public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, Ht
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpKit.HttpError>
 
-extension HttpKit.Endpoint {
-    
+extension Endpoint where S == GoogleDnsServer {
+     
     static func googleDnsOverHTTPSJson(_ params: GDNSRequestParams) throws -> GDNSjsonEndpoint {
         /**
          To minimize this risk, send only the HTTP headers required for DoH:
          Host, Content-Type (for POST), and if necessary, Accept.
          User-Agent should be included in any development or testing versions.
          */
-        return GDNSjsonEndpoint(method: .get,
+        return GDNSjsonEndpoint(httpMethod: .get,
                                 path: "resolve",
                                 headers: nil,
-                                encodingMethod: .queryString(queryItems: params.urlQueryItems))
+                                encodingMethod: .QueryString(items: params.urlQueryItems.kotlinArray))
     }
     
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> GDNSjsonEndpoint {
@@ -63,7 +64,7 @@ public struct GoogleDNSOverJSONResponse: ResponseType {
      depending on the query endpoint, Accept header and GET parameters.
      */
     public static var successCodes: [Int] {
-        return [200]
+        [200]
     }
     
     fileprivate let answer: [Answer]

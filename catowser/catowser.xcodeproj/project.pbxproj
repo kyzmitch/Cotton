@@ -387,6 +387,8 @@
 		8AE63B57248EC38300D6D2E4 /* CSSBackgroundImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE63B56248EC38300D6D2E4 /* CSSBackgroundImageTests.swift */; };
 		8AE63B59248EC38300D6D2E4 /* JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; };
 		8AE6D16D2350FF35006316AD /* HttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE6D16B2350FF35006316AD /* HttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D044280D388800FADE3A /* ResponseType.swift */; };
+		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
 		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */; };
 		8AF43379248EBB2A0047452B /* CssParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF43377248EBB2A0047452B /* CssParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -930,6 +932,8 @@
 		8AE6D1692350FF35006316AD /* HttpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HttpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE6D16B2350FF35006316AD /* HttpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpKit.h; sourceTree = "<group>"; };
 		8AE6D16C2350FF35006316AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
+		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
 		8AF4336B248E129F0047452B /* HTMLContentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentMessage.swift; sourceTree = "<group>"; };
 		8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSBackgroundImage.swift; sourceTree = "<group>"; };
 		8AF43375248EBB2A0047452B /* CssParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CssParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1515,6 +1519,7 @@
 		8A277138268E452000D8878C /* BrowserNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				8AE8D046280D3CA900FADE3A /* Extensions */,
 				8A978D4723F348CB007ECB0C /* AuthChallenge */,
 				8A1A1CE627B1963F0052A2A3 /* TransportAdapters */,
 				8AE6D1752350FF52006316AD /* Endpoints */,
@@ -1843,6 +1848,7 @@
 				8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */,
 				8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */,
 				8AF4922A235248CE00183579 /* HttpKitErrors.swift */,
+				8AE8D044280D388800FADE3A /* ResponseType.swift */,
 			);
 			path = HttpKit;
 			sourceTree = "<group>";
@@ -1855,6 +1861,14 @@
 				8A62AEDF2351D1B8001A9C83 /* Google */,
 			);
 			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		8AE8D046280D3CA900FADE3A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		8AF4336D248EA3A10047452B /* CSSModels */ = {
@@ -3109,6 +3123,7 @@
 				8A2771BD268E4AAF00D8878C /* GoogleSearchEndpoint+AsyncAwait.swift in Sources */,
 				8A2771F2268E4AC600D8878C /* DnsRR.swift in Sources */,
 				8A27721D268E4ACF00D8878C /* OpenSearchParser.swift in Sources */,
+				8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */,
 				8A2771D7268E4AB700D8878C /* GoogleDnsServer.swift in Sources */,
 				8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */,
 				8ABDB0B627B269D500D6EDE7 /* HttpClient+Alamofire.swift in Sources */,
@@ -3306,6 +3321,7 @@
 				8A41A18126738949005DAC7D /* HttpClient+URLSessionTaskDelegate.swift in Sources */,
 				8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */,
 				8A8678AE2430F7D400450666 /* Host.swift in Sources */,
+				8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

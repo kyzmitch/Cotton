@@ -48,9 +48,3 @@ extension KotlinArray where T == URLQueryPair {
         }
     }
 }
-
-extension ResponseType {
-    public static var successCodes: [Int] {
-        return [200, 201]
-    }
-}

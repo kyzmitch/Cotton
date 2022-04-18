@@ -17,7 +17,7 @@ import io.ktor.utils.io.core.toByteArray
 /**
  * Would be good if this interface is based on some Decodable interface
  * */
-interface ResponseType {
+interface DecodableResponse {
     val successCodes: IntArray
         get() = intArrayOf(200, 201)
 }
@@ -38,7 +38,7 @@ interface ResponseType {
  * @property path slash divided string, e.g. `complete/search`
  * @constructor Creates the description for the Http request.
  */
-data class Endpoint</* out R : ResponseType, */ in S : ServerDescription>(
+data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,

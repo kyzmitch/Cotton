@@ -9,11 +9,13 @@
 import HttpKit
 import Combine
 import ReactiveSwift
+import CoreHttpKit
 
-public typealias DDGoSuggestionsClient = HttpKit.Client<DuckDuckGoServer, AlamofireReachabilityAdaptee<DuckDuckGoServer>>
-typealias DDGoSuggestionsEndpoint = HttpKit.Endpoint<DDGoSuggestionsResponse, DuckDuckGoServer>
+public typealias DDGoSuggestionsClient = HttpKit.Client<DuckDuckGoServer,
+                                                        AlamofireReachabilityAdaptee<DuckDuckGoServer>>
+typealias DDGoSuggestionsEndpoint = Endpoint<DuckDuckGoServer>
 
-extension HttpKit.Endpoint {
+extension Endpoint where S == DuckDuckGoServer {
     static func duckduckgoSuggestions(query: String) throws -> DDGoSuggestionsEndpoint {
         guard !query.isEmpty else {
             throw HttpKit.HttpError.emptyQueryParam
@@ -28,19 +30,18 @@ extension HttpKit.Endpoint {
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "type", value: "list")
         ]
-        let headers: [HttpKit.HttpHeader] = [.contentType(.jsonSuggestions),
-                                             .accept(.jsonSuggestions)]
+        let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        return DDGoSuggestionsEndpoint(method: .get,
+        return DDGoSuggestionsEndpoint(httpMethod: .get,
                                        path: "ac",
-                                       headers: headers,
-                                       encodingMethod: .queryString(queryItems: items))
+                                       headers: Set(headers),
+                                       encodingMethod: .QueryString(items: items.kotlinArray))
     }
 }
 
 public struct DDGoSuggestionsResponse: ResponseType {
     public static var successCodes: [Int] {
-        return [200]
+        [200]
     }
     
     public let queryText: String

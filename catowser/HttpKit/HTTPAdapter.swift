@@ -42,10 +42,10 @@ public protocol HTTPRxAdapter: AnyObject {
 
 // gryphon ignore
 public protocol HTTPAdapter: AnyObject {
-    associatedtype Response: DecodableResponse
+    associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     
-    typealias RxFreeDummy<R: DecodableResponse, S: ServerDescription> = HttpKit.RxFreeInterface<R, S>
+    typealias RxFreeDummy<R: ResponseType, S: ServerDescription> = HttpKit.RxFreeInterface<R, S>
     
     init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>)
     

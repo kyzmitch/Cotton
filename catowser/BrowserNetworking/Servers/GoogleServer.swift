@@ -6,9 +6,11 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
-public struct GoogleServer: ServerDescription {
+public class GoogleServer: ServerDescription {
+    public let scheme: HttpScheme = .https
+    
     public var hostString: String {
         return "\(prefix).\(domain)"
     }
@@ -16,6 +18,4 @@ public struct GoogleServer: ServerDescription {
     public let domain: String = "google.com"
     
     private let prefix = "www"
-    
-    public init() {}
 }

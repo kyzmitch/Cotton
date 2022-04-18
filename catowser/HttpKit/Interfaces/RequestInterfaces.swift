@@ -29,7 +29,7 @@ public protocol JSONRequestEncodable {
 /// Void is an empty tuple, and because tuples are non-nominal types,
 /// you can’t add methods or properties or conformance to protocols.
 /// https://nshipster.com/void/
-public struct VoidResponse /* : ResponseType */ {
+public struct VoidResponse: ResponseType {
     public static var successCodes: [Int] {
         return [200, 201]
     }
