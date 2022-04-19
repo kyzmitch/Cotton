@@ -1,5 +1,7 @@
 package org.cottonweb.CoreHttpKit
 
+import kotlin.native.concurrent.freeze
+
 enum class HttpScheme(val stringValue: String, val port: Int) {
     https("https", 443),
     http("http", 80)
@@ -12,4 +14,7 @@ enum class HttpScheme(val stringValue: String, val port: Int) {
     abstract val domain: String
     val scheme: HttpScheme
         get() = HttpScheme.https
+    init {
+        freeze()
+    }
 }

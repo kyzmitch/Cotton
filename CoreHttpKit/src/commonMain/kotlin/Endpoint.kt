@@ -70,18 +70,26 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     }
 
     fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
-        // probably it is too late to froze it
-        // because it was created lets say on a main thread in Swift
-        // and we're using it on background thread already
-        val frozenServer = server.freeze()
         var builder = HttpRequestBuilder()
         builder.method = httpMethod.ktorValue
 
+        /**
+         * Starting from this line we have IncorrectDereferenceException
+         * Trying to access top level value not marked as @ThreadLocal
+         * and it is unknown why it happens, because only Endpoint was frozen
+         * and the builder instance is not connected to the Endpoint
+         * it is not a mutable property or property at all
+         *
+         * Also, there is no way to tell that the kotlin function
+         * is a const immutable function.
+         * */
         builder.timeout {
             this.requestTimeoutMillis = requestTimeout
         }
-        // Had to freeze the input parameter, because it comes from random thread
-        val url = urlRelatedTo(frozenServer)
+        // Had to freeze the input parameter, because it comes from a random thread
+        // but the server is created outside the Kotlin and we make it frozen
+        // using ServerDescription base abstract class
+        val url = urlRelatedTo(server)
         builder.url(url)
         headers?.let {
             builder.headers {
