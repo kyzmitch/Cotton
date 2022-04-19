@@ -12,10 +12,20 @@ extension HttpKit.Client {
     public func makeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                withAccessToken accessToken: String?,
                                                transport adapter: B) where B.Response == T, B.Server == Server {
-        let requestInfo = endpoint.request(server: server,
+        var requestInfo: HTTPRequestInfo?
+        DispatchQueue.main.sync {
+            /**
+             Kotlin implementation uses Ktor types (3rd party library)
+             which works only on a main thread
+             which is insanely ridiculous
+             because they mentioned that it is working for multiplatform code
+             https://ktor.io/docs/getting-started-ktor-client-multiplatform-mobile.html#build-script
+             */
+            requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
-        guard let httpRequest = requestInfo.urlRequest else {
+        }
+        guard let httpRequest = requestInfo?.urlRequest else {
             let result: HttpTypedResult<T> = .failure(.failedKotlinRequestConstruct)
             adapter.wrapperHandler()(result)
             return
@@ -29,10 +39,13 @@ extension HttpKit.Client {
     public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: Endpoint<Server>,
                                                    withAccessToken accessToken: String?,
                                                    transport adapter: B) where B.Response == T, B.Server == Server {
-        let requestInfo = endpoint.request(server: server,
+        var requestInfo: HTTPRequestInfo?
+        DispatchQueue.main.sync {
+            requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
-        guard let httpRequest = requestInfo.urlRequest else {
+        }
+        guard let httpRequest = requestInfo?.urlRequest else {
             let result: HttpTypedResult<T> = .failure(.failedKotlinRequestConstruct)
             adapter.wrapperHandler()(result)
             return
@@ -45,10 +58,13 @@ extension HttpKit.Client {
     public func makeRxVoidRequest<B: HTTPRxVoidAdapter>(for endpoint: Endpoint<Server>,
                                                         withAccessToken accessToken: String?,
                                                         transport adapter: B) where B.Server == Server {
-        let requestInfo = endpoint.request(server: server,
+        var requestInfo: HTTPRequestInfo?
+        DispatchQueue.main.sync {
+            requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
-        guard let httpRequest = requestInfo.urlRequest else {
+        }
+        guard let httpRequest = requestInfo?.urlRequest else {
             let result: Result<Void, HttpKit.HttpError> = .failure(.failedKotlinRequestConstruct)
             adapter.wrapperHandler()(result)
             return

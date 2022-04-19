@@ -74,21 +74,11 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
         builder.method = httpMethod.ktorValue
 
         /**
-         * Starting from this line we have IncorrectDereferenceException
-         * Trying to access top level value not marked as @ThreadLocal
-         * and it is unknown why it happens, because only Endpoint was frozen
-         * and the builder instance is not connected to the Endpoint
-         * it is not a mutable property or property at all
-         *
-         * Also, there is no way to tell that the kotlin function
-         * is a const immutable function.
+         * Ktor types can work only on main thread???
          * */
         builder.timeout {
             this.requestTimeoutMillis = requestTimeout
         }
-        // Had to freeze the input parameter, because it comes from a random thread
-        // but the server is created outside the Kotlin and we make it frozen
-        // using ServerDescription base abstract class
         val url = urlRelatedTo(server)
         builder.url(url)
         headers?.let {
