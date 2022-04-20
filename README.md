@@ -16,8 +16,10 @@ Building the code
 -----------------
 1. cd catowser/
 2. pod install
-3. Open `catowser.xcworkspace`
-4. Build `catowser` scheme
+3. open Kotlin CoreHttpKit folder using `InteliJ IDEA`
+4. run `CoreHttpKit [createSwiftPackage]` Gradle configuration
+5. Open `catowser.xcworkspace`
+6. Build `Cotton` or `Cotton dev` build target
 
 ## Screenshots
 
