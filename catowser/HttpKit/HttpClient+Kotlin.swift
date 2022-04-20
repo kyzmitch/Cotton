@@ -14,13 +14,6 @@ extension HttpKit.Client {
                                                transport adapter: B) where B.Response == T, B.Server == Server {
         var requestInfo: HTTPRequestInfo?
         DispatchQueue.main.sync {
-            /**
-             Kotlin implementation uses Ktor types (3rd party library)
-             which works only on a main thread
-             which is insanely ridiculous
-             because they mentioned that it is working for multiplatform code
-             https://ktor.io/docs/getting-started-ktor-client-multiplatform-mobile.html#build-script
-             */
             requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)

@@ -2,6 +2,9 @@ package org.cottonweb.CoreHttpKit
 import io.ktor.http.HttpMethod
 import kotlin.native.concurrent.freeze
 
+/**
+ * Basic HTTP method
+ * */
 enum class HTTPMethod(val stringValue: String) {
     GET("GET"),
     POST("POST");

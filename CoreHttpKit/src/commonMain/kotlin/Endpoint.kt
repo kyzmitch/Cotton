@@ -16,7 +16,13 @@ import io.ktor.utils.io.core.toByteArray
 import kotlin.native.concurrent.freeze
 
 /**
+ * Response type which should be associated with specific Endpoint
+ * and Server to accomplish some type safety and to not
+ * have wrong decoding for HTTP response
+ *
  * Would be good if this interface is based on some Decodable interface
+ *
+ * @property successCodes HTTP codes which could be used to determine the result of request
  * */
 interface DecodableResponse {
     val successCodes: IntArray
@@ -35,8 +41,10 @@ interface DecodableResponse {
  * and currently we actually don't do network requests
  * in Kotlin, so, we don't need to decode the http responses
  * and no need to check the http response codes.
- *
+ * @property httpMethod usual HTTP methods like Get, Post, etc.
  * @property path slash divided string, e.g. `complete/search`
+ * @property headers optional set of HTTP headers
+ * @property encodingMethod The HTTP body encoding method like Query , Json, etc.
  * @constructor Creates the description for the Http request.
  */
 data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
@@ -70,12 +78,14 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     }
 
     fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
-        var builder = HttpRequestBuilder()
+        val builder = HttpRequestBuilder()
         builder.method = httpMethod.ktorValue
 
         /**
-         * Ktor types can work only on main thread???
+         * Ktor types can work only on main thread
+         * https://medium.com/@kpgalligan/ktor-and-kotlin-native-fb5c06cb920a
          * */
+
         builder.timeout {
             this.requestTimeoutMillis = requestTimeout
         }

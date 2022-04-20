@@ -6,6 +6,11 @@ import io.ktor.http.content.ByteArrayContent
 import kotlin.collections.HashSet
 import kotlin.native.concurrent.freeze
 
+/**
+ * A public HTTP request type used as a replacement
+ * for some 3rd party library type to not expose it
+ * on platform level and keep the type simple
+ * */
 data class HTTPRequestInfo(
     val rawURL: String,
     val method: HTTPMethod,
