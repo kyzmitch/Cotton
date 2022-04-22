@@ -7,6 +7,7 @@
 //
 
 import HttpKit
+import CoreHttpKit
 import ReactiveHttpKit
 import ReactiveSwift
 #if canImport(Combine)
@@ -14,7 +15,7 @@ import Combine
 #endif
 
 public typealias GoogleSuggestionsClient = HttpKit.Client<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
-typealias GSearchEndpoint = HttpKit.Endpoint<GSearchSuggestionsResponse, GoogleServer>
+typealias GSearchEndpoint = Endpoint<GoogleServer>
 public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpKit.HttpError>.Observer
 public typealias GSearchRxInterface = HttpKit.RxObserverWrapper<GSearchSuggestionsResponse,
                                                                     GoogleServer,
@@ -28,7 +29,7 @@ public typealias GSearchProducer = SignalProducer<GSearchSuggestionsResponse, Ht
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias CGSearchPublisher = AnyPublisher<GSearchSuggestionsResponse, HttpKit.HttpError>
 
-extension HttpKit.Endpoint {
+extension Endpoint where S == GoogleServer {
     static func googleSearchSuggestions(query: String) throws -> GSearchEndpoint {
         guard !query.isEmpty else {
             throw HttpKit.HttpError.emptyQueryParam
@@ -44,19 +45,20 @@ extension HttpKit.Endpoint {
             URLQueryItem(name: "client", value: "firefox")
         ]
         // Actually it's possible to get correct response even without any headers
-        let headers: [HttpKit.HttpHeader] = [.contentType(.jsonSuggestions),
-                                             .accept(.jsonSuggestions)]
+        let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
-        return GSearchEndpoint(method: .get,
-                                       path: "complete/search",
-                                       headers: headers,
-                                       encodingMethod: .queryString(queryItems: items))
+        let frozenEndpoint = GSearchEndpoint(
+            httpMethod: .get,
+            path: "complete/search",
+            headers: Set(headers),
+            encodingMethod: .QueryString(items: items.kotlinArray))
+        return frozenEndpoint
     }
 }
 
-public struct GSearchSuggestionsResponse: ResponseType {
-    public static var successCodes: [Int] {
-        return [200]
+public final class GSearchSuggestionsResponse: ResponseType {
+    static public var successCodes: [Int] {
+        [200]
     }
     
     /*

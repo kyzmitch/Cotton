@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import CoreHttpKit
 
 extension HttpKit {
     // gryphon ignore

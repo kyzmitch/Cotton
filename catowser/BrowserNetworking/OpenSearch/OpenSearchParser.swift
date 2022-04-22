@@ -6,7 +6,7 @@
 //  Copyright © 2020 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 import SWXMLHash
 
 extension OpenSearch {
@@ -45,7 +45,8 @@ extension OpenSearch {
                 guard let typeString = urlElement.attribute(by: "type")?.text else {
                     continue
                 }
-                guard let contentType = HttpKit.ContentType(rawValue: typeString) else {
+                let possibleContentType: CoreHttpKit.ContentTypeValue? = .companion.createFrom(rawValue: typeString)
+                guard let contentType = possibleContentType else {
                     continue
                 }
                 switch contentType {
@@ -54,13 +55,13 @@ extension OpenSearch {
                                                  indexer: urlXml,
                                                  shortName: shortName,
                                                  imageData: imageResult)
-                case .jsonSuggestions:
+                case .jsonsuggestions:
                     jsonSearchEngine = try .init(xml: urlElement,
                                                  indexer: urlXml,
                                                  shortName: shortName,
                                                  imageData: imageResult)
                 default:
-                    print("Unhandled url type for OpenSearch format: \(contentType.rawValue)")
+                    print("Unhandled url type for OpenSearch format: \(contentType.stringValue)")
                 }
             }
             

@@ -6,6 +6,8 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
+import CoreHttpKit
+
 /// These types are needed for Combine interfaces of HttpKit.Client we don't have to pass actual ReactiveSwift types
 /// to be able to use Combine interfaces
 extension HttpKit {
@@ -40,8 +42,9 @@ extension HttpKit {
             return DummyRxLifetime()
         }
         
-        public var endpoint: HttpKit.Endpoint<R, Server> {
-            return .init(method: .get, path: "", headers: nil, encodingMethod: .httpBodyJSON(parameters: [:]))
+        public var endpoint: Endpoint<Server> {
+            let encodingMethod: ParametersEncodingDestination.QueryString = .init(items: .empty)
+            return Endpoint(httpMethod: .get, path: "", headers: nil, encodingMethod: encodingMethod)
         }
         
         public static func == (lhs: HttpKit.DummyRxType<R, SS, RX>, rhs: HttpKit.DummyRxType<R, SS, RX>) -> Bool {

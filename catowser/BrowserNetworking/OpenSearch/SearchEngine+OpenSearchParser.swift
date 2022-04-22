@@ -8,7 +8,7 @@
 
 import Foundation
 import SWXMLHash
-import HttpKit
+import CoreHttpKit
 
 /**
  https://developer.mozilla.org/en-US/docs/Web/OpenSearch
@@ -40,9 +40,9 @@ extension SearchEngine {
         self.shortName = shortName
         self.imageData = imageData
         
-        let httpMethod: HttpKit.HTTPMethod
-        if let httpMethodString = element.attribute(by: "method")?.text {
-            guard let enumValue = HttpKit.HTTPMethod(rawValue: httpMethodString) else {
+        let httpMethod: HTTPMethod
+        if let methodString = element.attribute(by: "method")?.text {
+            guard let enumValue = HTTPMethod.companion.createFrom(rawString: methodString) else {
                 throw OpenSearch.Error.notImplementedHttpMethod
             }
             httpMethod = enumValue

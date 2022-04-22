@@ -8,6 +8,7 @@
 
 import HttpKit
 import ReactiveSwift
+import CoreHttpKit
 
 extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpKit.HttpError {
     public typealias Response = Value
@@ -63,12 +64,12 @@ extension HttpKit {
         let rxObserver: Signal<RR, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        public let endpoint: Endpoint<RR, Server>
+        public let endpoint: Endpoint<Server>
         let responseType: RR.Type
         
         public init(_ observer: Signal<RR, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
-                    _ endpoint: Endpoint<RR, Server>) {
+                    _ endpoint: Endpoint<Server>) {
             self.rxObserver = observer
             self.rxLifetime = lifetime
             self.endpoint = endpoint
@@ -105,11 +106,11 @@ extension HttpKit {
         let rxObserver: Signal<Void, HttpKit.HttpError>.Observer
         let rxLifetime: Lifetime
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        public let endpoint: VoidEndpoint<S>
+        public let endpoint: Endpoint<S>
         
         public init(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
                     _ lifetime: Lifetime,
-                    _ endpoint: VoidEndpoint<S>) {
+                    _ endpoint: Endpoint<S>) {
             self.rxObserver = observer
             self.rxLifetime = lifetime
             self.endpoint = endpoint

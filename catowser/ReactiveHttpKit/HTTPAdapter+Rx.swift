@@ -8,11 +8,12 @@
 
 import HttpKit
 import ReactiveSwift
+import CoreHttpKit
 
 extension HTTPRxAdapter {
     /* mutating */ func transferToRxState(_ observer: Signal<Response, HttpKit.HttpError>.Observer,
                                           _ lifetime: Lifetime,
-                                          _ endpoint: HttpKit.Endpoint<Response, Server>) {
+                                          _ endpoint: Endpoint<Server>) {
         if case .waitsForRxObserver = handlerType {
             let observerWrapper: HttpKit.RxObserverWrapper<Response, Server, ObserverWrapper.Observer> = .init(observer, lifetime, endpoint)
             // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue
@@ -25,7 +26,7 @@ extension HTTPRxAdapter {
 extension HTTPRxVoidAdapter {
     /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
                                           _ lifetime: Lifetime,
-                                          _ endpoint: HttpKit.VoidEndpoint<Server>) {
+                                          _ endpoint: Endpoint<Server>) {
         if case .waitsForRxObserver = handlerType {
             let observerWrapper: HttpKit.RxObserverVoidWrapper<Server> = .init(observer, lifetime, endpoint)
             // TODO: Don't think that this conversion is needed, but lets do it to fix compiler issue

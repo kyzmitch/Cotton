@@ -15,7 +15,7 @@ extension HttpKit.Client where Server == GoogleDnsServer {
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func aaGetIPaddress(ofDomain domainName: String) async throws -> GoogleDNSOverJSONResponse {
         let endpoint: GDNSjsonEndpoint = try .googleDnsOverHTTPSJson(domainName)
-        let value = try await self.aaMakePublicRequest(for: endpoint, responseType: endpoint.responseType)
+        let value = try await self.aaMakePublicRequest(for: endpoint, responseType: GoogleDNSOverJSONResponse.self)
         return value
     }
 
