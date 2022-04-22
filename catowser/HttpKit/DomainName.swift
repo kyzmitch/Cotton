@@ -39,6 +39,7 @@ extension HttpKit {
             // All labels (parts of the name betweendots) must be 1 to 63 bytes long.
             let parts = name.split(separator: ".")
             for part in parts {
+                // TODO: cover with unit tests and fix this, this won't work if part contains nonASCII characters
                 guard let partData = part.data(using: .ascii) else {
                     continue
                 }
@@ -74,8 +75,6 @@ extension HttpKit {
     // gryphon ignore
     public enum DomainNameError: Error {
         case wrongLength(Int)
-        case wrongLabels
-        case invalidName
         case emptyString
         case dotAtBeginning
         case doubleDots

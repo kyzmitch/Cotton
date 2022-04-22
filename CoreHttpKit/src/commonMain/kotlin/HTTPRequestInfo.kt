@@ -28,8 +28,9 @@ data class HTTPRequestInfo(
             // no need to use a return statements inside the map lambda!
             // kotlin thinks that it is a return from the function
             val headers: List<HTTPHeader> = data.headers.entries().mapNotNull {
-                if (it.value.isEmpty()) null
-                HTTPHeader.createFromRaw(it.key, it.value[0])
+                it.takeIf { it.value.isNotEmpty() }?.let {
+                    HTTPHeader.createFromRaw(it.key, it.value[0])
+                }
             }
 
             val possibleHttpBody = data.body as? ByteArrayContent
