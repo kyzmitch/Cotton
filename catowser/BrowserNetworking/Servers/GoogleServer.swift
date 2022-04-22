@@ -6,16 +6,18 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
-public struct GoogleServer: ServerDescription {
-    public var hostString: String {
+public class GoogleServer: ServerDescription {
+    public override var hostString: String {
         return "\(prefix).\(domain)"
     }
     
-    public let domain: String = "google.com"
+    public override var domain: String {
+        return "google.com"
+    }
     
     private let prefix = "www"
     
-    public init() {}
+    public override init() {}
 }

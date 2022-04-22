@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import HttpKit
+import CoreHttpKit
 
 /// The model for OpenSearch format URL
 public struct SearchEngine {
@@ -20,14 +20,14 @@ public struct SearchEngine {
     /// Data or URL for site image/icon
     let imageData: OpenSearch.ImageParseResult
     /// So far not used parameter,  but it is present in OpenSearch format
-    let httpMethod: HttpKit.HTTPMethod
+    let httpMethod: HTTPMethod
     
     init(shortName: String,
          domainName: String,
          path: String,
          queryItems: [URLQueryItem],
          imageData: OpenSearch.ImageParseResult = .none,
-         httpMethod: HttpKit.HTTPMethod = .get) {
+         httpMethod: HTTPMethod = .get) {
         self.shortName = shortName
         
         var components = URLComponents()

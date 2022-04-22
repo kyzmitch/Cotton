@@ -12,6 +12,7 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapter where RX.Server == S {
     typealias Server = S
@@ -76,7 +77,7 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
     }
     
     func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
-                                _ endpoint: HttpKit.VoidEndpoint<Server>) {
+                                _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
             let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)

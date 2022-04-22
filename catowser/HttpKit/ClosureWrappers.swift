@@ -9,6 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 extension HttpKit {
     // gryphon ignore
@@ -16,11 +17,11 @@ extension HttpKit {
         /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
         public var closure: (Result<Response, HttpKit.HttpError>) -> Void
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint<Response, Server>
+        let endpoint: Endpoint<Server>
         let responseType: Response.Type
         
         public init(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
-                    _ endpoint: Endpoint<Response, Server>) {
+                    _ endpoint: Endpoint<Server>) {
             self.closure = closure
             self.endpoint = endpoint
             responseType = Response.self
@@ -50,11 +51,11 @@ extension HttpKit {
         /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
         public var promise: Future<Response, HttpKit.HttpError>.Promise
         /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
-        let endpoint: Endpoint<Response, Server>
+        let endpoint: Endpoint<Server>
         let responseType: Response.Type
         
         public init(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
-                    _ endpoint: Endpoint<Response, Server>) {
+                    _ endpoint: Endpoint<Server>) {
             self.promise = promise
             self.endpoint = endpoint
             responseType = Response.self

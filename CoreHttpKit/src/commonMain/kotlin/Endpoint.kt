@@ -13,11 +13,18 @@ import io.ktor.http.ContentType
 import io.ktor.http.content.ByteArrayContent
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
+import kotlin.native.concurrent.freeze
 
 /**
+ * Response type which should be associated with specific Endpoint
+ * and Server to accomplish some type safety and to not
+ * have wrong decoding for HTTP response
+ *
  * Would be good if this interface is based on some Decodable interface
+ *
+ * @property successCodes HTTP codes which could be used to determine the result of request
  * */
-interface ResponseType {
+interface DecodableResponse {
     val successCodes: IntArray
         get() = intArrayOf(200, 201)
 }
@@ -29,15 +36,29 @@ interface ResponseType {
  * It connects to the specific server (host name) and
  * has a specific expected response type.
  *
+ * We're not passing the Response type for now
+ * because it is better for the Void response case
+ * and currently we actually don't do network requests
+ * in Kotlin, so, we don't need to decode the http responses
+ * and no need to check the http response codes.
+ * @property httpMethod usual HTTP methods like Get, Post, etc.
  * @property path slash divided string, e.g. `complete/search`
+ * @property headers optional set of HTTP headers
+ * @property encodingMethod The HTTP body encoding method like Query , Json, etc.
  * @constructor Creates the description for the Http request.
  */
-data class Endpoint<out R : ResponseType, in S : Server>(
+data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,
     val encodingMethod: ParametersEncodingDestination
 ) {
+    init {
+        // https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/
+        // No need a static/companion fabric method for creation and calling next method
+        freeze()
+    }
+
     internal fun urlRelatedTo(server: S): Url {
         val scheme = server.scheme
         val urlProtocol = URLProtocol(scheme.stringValue, scheme.port)
@@ -57,8 +78,14 @@ data class Endpoint<out R : ResponseType, in S : Server>(
     }
 
     fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
-        var builder = HttpRequestBuilder()
+        val builder = HttpRequestBuilder()
         builder.method = httpMethod.ktorValue
+
+        /**
+         * Ktor types can work only on main thread
+         * https://medium.com/@kpgalligan/ktor-and-kotlin-native-fb5c06cb920a
+         * */
+
         builder.timeout {
             this.requestTimeoutMillis = requestTimeout
         }
@@ -109,7 +136,7 @@ data class Endpoint<out R : ResponseType, in S : Server>(
         }
     }
 
-    private fun buildParameters(items: Array<URLQueryItem>): Parameters {
+    private fun buildParameters(items: Array<URLQueryPair>): Parameters {
         if (items.isEmpty()) return Parameters.Empty
         val parametersBuilder = ParametersBuilder(items.size)
         items.forEach { parametersBuilder.append(it.name, it.value) }
@@ -119,7 +146,7 @@ data class Endpoint<out R : ResponseType, in S : Server>(
 
 // extensions
 
-fun Map<String, Any>.encode(): ByteArray {
+internal fun Map<String, Any>.encode(): ByteArray {
     // https://github.com/Kotlin/kotlinx.serialization/issues/746
     val jsonObject = toJsonObject()
     val string = jsonObject.toString()

@@ -9,6 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 // gryphon ignore
 public protocol RxAnyVoidObserver {
@@ -24,7 +25,7 @@ public protocol RxVoidInterface: Hashable {
     var observer: RxAnyVoidObserver { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
-    var endpoint: HttpKit.VoidEndpoint<Server> { get }
+    var endpoint: Endpoint<Server> { get }
 }
 
 extension HttpKit {

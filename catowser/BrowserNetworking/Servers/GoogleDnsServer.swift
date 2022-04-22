@@ -6,14 +6,13 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
-public struct GoogleDnsServer: ServerDescription {
-    public var hostString: String {
+public class GoogleDnsServer: ServerDescription {
+    public override var domain: String {
+        return "dns.google"
+    }
+    public override var hostString: String {
         return domain
     }
-    
-    public let domain: String = "dns.google"
-    
-    public init() {}
 }

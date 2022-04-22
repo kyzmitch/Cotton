@@ -6,14 +6,16 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
-public struct DuckDuckGoServer: ServerDescription {
-    public var hostString: String {
+public class DuckDuckGoServer: ServerDescription {
+    public override var hostString: String {
         return domain
     }
     
-    public let domain: String = "ac.duckduckgo.com"
+    public override var domain: String {
+        return "ac.duckduckgo.com"
+    }
     
-    public init() {}
+    public override init() {}
 }

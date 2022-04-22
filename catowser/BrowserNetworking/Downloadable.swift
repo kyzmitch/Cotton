@@ -12,7 +12,7 @@ import ReactiveSwift
 #if canImport(CryptoKit)
 import CryptoKit
 #endif
-import HttpKit
+import CoreHttpKit
 
 /// Represents a remote file which can be downloaded and stored locally
 public protocol Downloadable {
@@ -207,7 +207,7 @@ extension BrowserNetworking {
                     observer.send(error: .noHttpHeadersInResponse)
                     return
                 }
-                let key = HttpKit.HttpHeader.contentLength(0).key
+                let key = CoreHttpKit.HTTPHeader.ContentLength(length: 0).key
                 guard let contentLengthValue = headers.value(for: key) else {
                     observer.send(error: .noContentLengthHeader)
                     return

@@ -9,6 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 /// Interface for some HTTP networking library (e.g. Alamofire or URLSession) to hide it and
 /// not use it directly and be able to mock it for unit testing.
@@ -36,7 +37,7 @@ public protocol HTTPRxAdapter: AnyObject {
     var handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
-                                               _ endpoint: HttpKit.Endpoint<Response, Server>)
+                                               _ endpoint: Endpoint<Server>)
 }
 
 // gryphon ignore
@@ -60,5 +61,5 @@ public protocol HTTPAdapter: AnyObject {
                                                 RxFreeDummy<Response, Server>> { get set }
     
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
-                                               _ endpoint: HttpKit.Endpoint<Response, Server>)
+                                               _ endpoint: Endpoint<Server>)
 }

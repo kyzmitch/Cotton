@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <Group
+      location = "group:Kotlin Debug"
+      name = "KotlinDebug">
+      <Group
+         location = "container:"
+         name = "CoreHttpKit">
+         <FileRef
+            location = "group:../CoreHttpKit/src/commonMain">
+         </FileRef>
+      </Group>
+   </Group>
    <FileRef
       location = "group:catowser.xcodeproj">
    </FileRef>

@@ -1,13 +1,27 @@
 package org.cottonweb.CoreHttpKit
 
+import kotlin.native.concurrent.freeze
+
 enum class HttpScheme(val stringValue: String, val port: Int) {
-    https("https", 80),
-    http("http", 443)
+    https("https", 443),
+    http("http", 80)
 }
 
-interface Server {
-    val hostString: String
-    val domain: String
+// https://blog.kotlin-academy.com/abstract-class-vs-interface-in-kotlin-5ab8697c3a14
+
+/**
+ * A server description base interface
+ *
+ * @property hostString A raw string (could contain dots and domains)
+ * @property domain The minimum part of the host
+ * @property scheme Server protocol type (could be HTTPS, HTTP, etc.)
+ * */
+/* interface */ abstract class ServerDescription {
+    abstract val hostString: String
+    abstract val domain: String
     val scheme: HttpScheme
         get() = HttpScheme.https
+    init {
+        freeze()
+    }
 }

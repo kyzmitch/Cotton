@@ -9,6 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 // gryphon ignore
 public protocol RxAnyObserver {
@@ -37,7 +38,7 @@ public protocol RxInterface: Hashable, AnyObject {
     var observer: Observer { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
-    var endpoint: HttpKit.Endpoint<Observer.Response, Server> { get }
+    var endpoint: Endpoint<Server> { get }
 }
 
 extension HttpKit {
@@ -57,12 +58,12 @@ extension HttpKit {
         case waitsForCombinePromise
         case asyncAwaitConcurrency
         
-        public typealias ResponseType<R, S, O> = ResponseHandlingApi<Response, Server, Observer>
+        public typealias ResponseApi<R, S, O> = ResponseHandlingApi<Response, Server, Observer>
         
         // MARK: - convenience methods
         
         public static func closure(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
-                                   _ endpoint: Endpoint<Response, Server>) -> ResponseType<Response, Server, Observer> {
+                                   _ endpoint: Endpoint<Server>) -> ResponseApi<Response, Server, Observer> {
             let closureWrapper: ClosureWrapper<Response, Server> = .init(closure, endpoint)
             return ResponseHandlingApi<Response, Server, Observer>.closure(closureWrapper)
         }
