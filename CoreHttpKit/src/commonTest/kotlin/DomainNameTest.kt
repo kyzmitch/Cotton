@@ -1,7 +1,10 @@
 import org.cottonweb.CoreHttpKit.DomainName
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+
+fun Char.repeat(count: Int): String = this.toString().repeat(count)
 
 class DomainNameTests {
     val egyptian: String = "\u0644\u064A\u0647\u0645\u0627\u0628\u062A\u0643\u0644\u0645\u0648\u0634\u0639\u0631\u0628\u064A\u061F"
@@ -13,7 +16,7 @@ class DomainNameTests {
     val example = "example.com"
 
     @Test
-    fun testAsciiConstructor() {
+    fun testUnicodeToPunycode() {
         val egyptianDomainName = DomainName(egyptian)
         assertEquals(egyptianCode, egyptianDomainName.rawString)
         val hebrewDomainName = DomainName(hebrew)
@@ -22,5 +25,31 @@ class DomainNameTests {
         assertEquals(russianCode, russianDomainName.rawString)
         val domainName1 = DomainName(example)
         assertEquals(example, domainName1.rawString)
+    }
+
+    @Test
+    fun testWrongInputs() {
+        // https://www.baeldung.com/kotlin/assertfailswith#using-kotlins-assertfailswith-method
+        assertFailsWith<DomainName.Error.EmptyString>(
+            message = "Domain name can't be constructed from the empty string",
+            block = { DomainName("") }
+        )
+
+        assertFailsWith(
+            exceptionClass = DomainName.Error.DotAtBeginning::class,
+            block = { DomainName(".example.com") }
+        )
+
+        assertFailsWith(
+            exceptionClass = DomainName.Error.DoubleDots::class,
+            block = { DomainName("example..com") }
+        )
+
+        val tooLongLength = 254
+        var tooLongInputForDomainName = 'a'.repeat(tooLongLength)
+        val exception = assertFailsWith<DomainName.Error.WrongLength>(
+            block = { DomainName(tooLongInputForDomainName) }
+        )
+        assertEquals(tooLongLength, exception.inputLength)
     }
 }
