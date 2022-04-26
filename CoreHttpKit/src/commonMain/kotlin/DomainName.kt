@@ -34,7 +34,8 @@ final class DomainName(private val input: String) {
         val parts = input.split('.')
         // https://tools.ietf.org/html/rfc5849#section-3.6
         // Non-ASCII characters should be punycoded (xn--qxam, not ελ).
-        val punycodedParts = parts.mapNotNull { Punycode.encode(it) }
+        // Not using punycoding for the basic ASCII strings
+        val punycodedParts = parts.mapNotNull { if (it.isAscii) it else Punycode.encode(it) }
         if (punycodedParts.size != parts.size) {
             throw Error.PunycodingFailed()
         }

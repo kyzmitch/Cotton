@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "org.cottonweb"
 version = "0.1-SNAPSHOT"
@@ -32,6 +33,11 @@ dependencies {
     commonMainImplementation("io.ktor:ktor-client-cio:$ktorVersion")
     commonMainImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    // https://kotlinlang.org/docs/gradle.html#set-dependencies-on-test-libraries
+    // JUNIT is only for java code used in kotlin or something like that
+    commonTestImplementation(kotlin("test"))
+    commonTestImplementation(kotlin("test-common"))
+    commonTestImplementation(kotlin("test-annotations-common"))
 }
 
 val frameworkName = "CoreHttpKit"
@@ -61,6 +67,11 @@ kotlin {
 tasks.wrapper {
     gradleVersion = "6.7.1"
     distributionType = Wrapper.DistributionType.ALL
+}
+
+// config JVM target to 1.8 for kotlin compilation tasks
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
