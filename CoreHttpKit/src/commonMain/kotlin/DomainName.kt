@@ -57,7 +57,7 @@ final class DomainName(private val input: String) {
     }
 
     sealed class Error : Throwable() {
-        class WrongLength(val length: Int) : Error()
+        class WrongLength(val inputLength: Int) : Error()
         class EmptyString : Error()
         class DotAtBeginning : Error()
         class DoubleDots : Error()
