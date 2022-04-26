@@ -62,6 +62,9 @@ internal class Punycode {
         /**
          * Encodes string to punycode (RFC 3492)
          *
+         * There is an issue if you want to encode a basic ASCII string
+         * this algo adds a trailing dash, so that, don't use it for ASCII values.
+         *
          * @param input raw string
          * @return punycode encoded string
          * */
