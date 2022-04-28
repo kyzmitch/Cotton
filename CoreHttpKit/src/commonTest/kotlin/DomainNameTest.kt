@@ -2,7 +2,6 @@ import org.cottonweb.CoreHttpKit.DomainName
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
 
 fun Char.repeat(count: Int): String = this.toString().repeat(count)
 

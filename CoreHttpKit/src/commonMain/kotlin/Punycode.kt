@@ -68,7 +68,7 @@ internal class Punycode {
          * @param input raw string
          * @return punycode encoded string
          * */
-        fun encode(input: String): String? {
+        internal fun encode(input: String): String? {
             var n: Int = initialN
             var delta: Int = 0
             var bias: Int = initialBias
