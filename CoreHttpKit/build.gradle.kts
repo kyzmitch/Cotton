@@ -33,6 +33,14 @@ dependencies {
     commonMainImplementation("io.ktor:ktor-client-cio:$ktorVersion")
     commonMainImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    /**
+     * A dependency on a standard library (stdlib) in each source set is added automatically.
+     * The version of the standard library is the same as the version of the kotlin-multiplatform plugin.
+     *
+     * https://kotlinlang.org/docs/multiplatform-add-dependencies.html#standard-library
+     * */
+    commonMainImplementation(kotlin("stdlib"))
+    commonMainImplementation(kotlin("stdlib-common"))
     // https://kotlinlang.org/docs/gradle.html#set-dependencies-on-test-libraries
     // JUNIT is only for java code used in kotlin or something like that
     commonTestImplementation(kotlin("test"))
