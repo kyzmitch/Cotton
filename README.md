@@ -1,4 +1,4 @@
-# Cotton - browser for iOS
+# Cotton - web browser for iOS
 
 Features
 -----------------
@@ -20,6 +20,10 @@ Building the code
 4. run `CoreHttpKit [createSwiftPackage]` Gradle configuration
 5. Open `catowser.xcworkspace`
 6. Build `Cotton` or `Cotton dev` build target
+
+Design documents
+-----------------
+https://github.com/kyzmitch/CatowserEvolution
 
 ## Screenshots
 
