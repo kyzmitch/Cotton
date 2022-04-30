@@ -10,17 +10,33 @@ internal const val upBound: Char = '\uD880'
 internal const val lowerBound: Char = '\uE000'
 internal const val secondUpBound: Char = '\uFFFF' // should be 0x1FFFFF
 
-val Char.isAscii: Boolean
+internal val Char.isAscii: Boolean
     get() {
         return "$this".matches(asciiRegex)
     }
 
-val Char.isValid: Boolean
+internal val Char.isValid: Boolean
     get() {
         return this < upBound || (this >= lowerBound && this <= secondUpBound)
     }
 
-val String.isAscii: Boolean
+internal val String.isAscii: Boolean
     get() {
         return matches(asciiRegex)
+    }
+
+val String.withoutLeadingTrailingSpaces: String
+    get() {
+        if (isEmpty()) {
+            return this
+        }
+        var front = 0
+        while (get(front) == ' ') {
+            front++
+        }
+        var end = length - 1
+        while (get(end) == ' ') {
+            end--
+        }
+        return subSequence(front, end + 1).toString()
     }

@@ -72,15 +72,15 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
         freeze()
     }
 
-    sealed class Error : Throwable() {
-        class WrongLength(val inputLength: Int) : Error()
-        class EmptyString : Error()
-        class DotAtBeginning : Error()
-        class DoubleDots : Error()
-        class WrongPartSize(val length: Int) : Error()
-        class PunycodingFailed : Error()
-        class NoDomainLabelParts : Error()
-        class EmptyLastLabel : Error()
-        class RightmostDomainLabelStartsWithDigit : Error()
+    sealed class Error(message: String) : Throwable(message) {
+        class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength)
+        class EmptyString : Error("empty string")
+        class DotAtBeginning : Error("dot at beginning")
+        class DoubleDots : Error("double dots")
+        class WrongPartSize(val length: Int) : Error("wrong label size: " + length)
+        class PunycodingFailed : Error("punycode fail")
+        class NoDomainLabelParts : Error("no domain label parts")
+        class EmptyLastLabel : Error("last label is empty")
+        class RightmostDomainLabelStartsWithDigit : Error("trailing domain label starts with digit")
     }
 }
