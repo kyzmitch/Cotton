@@ -13,6 +13,7 @@ class DomainNameTests {
     val russian: String = "\u043F\u043E\u0447\u0435\u043C\u0443\u0436\u0435\u043E\u043D\u0438\u043D\u0435\u0433\u043E\u0432\u043E\u0440\u044F\u0442\u043F\u043E\u0440\u0443\u0441\u0441\u043A\u0438"
     val russianCode: String = "b1abfaaepdrnnbgefbadotcwatmq2g4l"
     val example = "example.com"
+    val wrongIPv4Addres1 = "1.2.3"
 
     @Test
     fun testUnicodeToPunycode() {
@@ -50,5 +51,10 @@ class DomainNameTests {
             block = { DomainName(tooLongInputForDomainName) }
         )
         assertEquals(tooLongLength, exception.inputLength)
+
+        assertFailsWith(
+            exceptionClass = DomainName.Error.RightmostDomainLabelStartsWithDigit::class,
+            block = { DomainName(wrongIPv4Addres1) }
+        )
     }
 }
