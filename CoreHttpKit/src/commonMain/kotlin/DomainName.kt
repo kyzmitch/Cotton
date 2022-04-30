@@ -72,6 +72,37 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
         freeze()
     }
 
+    val onlySecondLevelDomain: String
+        get() {
+            val parts = punycodedValue.split('.')
+            if (parts.size < 2) {
+                return punycodedValue
+            }
+            /**
+             * a top level domain (TLD) – also called a domain name extension – is
+             * the letter combination that concludes a web address
+             * Of all TLDs, the most famous is .com.
+             */
+            val tld = parts.last()
+            // second level domain
+            val sld = parts.get(parts.size - 2)
+            return sld + "." + tld
+        }
+
+    /**
+     * Custom name to fix e.g. google.com when certificate from google only has www.google.com DNS name in it
+     * Not sure why and how auth challenge was made before that
+     * */
+    val wwwName: String
+        get() = "www." + onlySecondLevelDomain
+
+    val wildcardName: String
+        get() = "*." + onlySecondLevelDomain
+
+    fun isSimilar(name: String): Boolean {
+        return name.contains(punycodedValue) || punycodedValue.contains(name) || name == punycodedValue
+    }
+
     sealed class Error(message: String) : Throwable(message) {
         class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength)
         class EmptyString : Error("empty string")

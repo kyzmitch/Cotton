@@ -1,5 +1,7 @@
 package org.cottonweb.CoreHttpKit
 
+import kotlin.native.concurrent.freeze
+
 /**
  * Represents the URL host. Could be an ip v4 address or a domain name.
  *
@@ -9,7 +11,10 @@ package org.cottonweb.CoreHttpKit
  * @property rawString a verified raw string representing the host value.
  * @property content a type of the host (ip address or a domain name).
  * */
-final class Host @Throws(Host.Error::class) constructor (private val input: String) {
+final class Host @Throws(Host.Error::class) constructor (
+    private val input: String,
+    private var domainName: DomainName? = null
+) {
     private val validatedInputValue: String
     private val hostType: Content
 
@@ -26,6 +31,18 @@ final class Host @Throws(Host.Error::class) constructor (private val input: Stri
          * https://stackoverflow.com/a/37355379
          * */
         internal val ipV4Regex: Regex = Regex("^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)(\\.(?!\$)|\$)){4}\$")
+
+        /**
+         * Some known domain names which are hard to load using ip address
+         * without using VPN profile for DoH or when there is no access to URLRequest on iOS.
+         * Other domain names usually can be loaded using our DoH implementation.
+         * */
+        internal val domainAccessibleOnlyHosts: Set<String> = setOf(
+            "instagram.com",
+            "www.instagram.com",
+            "youtube.com",
+            "m.youtube.com"
+        )
     }
 
     init {
@@ -42,11 +59,53 @@ final class Host @Throws(Host.Error::class) constructor (private val input: Stri
         if (isIPv4address) {
             hostType = Content.IPv4
         } else {
-            try { DomainName(input) } catch (e: DomainName.Error) { throw Error.NotValidHostInput(e, input) }
+            try { domainName = DomainName(input) } catch (e: DomainName.Error) { throw Error.NotValidHostInput(e, input) }
             hostType = Content.DomainName
         }
 
         validatedInputValue = rawInputWithoutSpaces
+        freeze()
+    }
+
+    /**
+     * URLs with some hosts can't be loaded by ip address,
+     * so that, DNS over HTTPS won't work for them using iOS WKWebView
+     * since there is no way to change how URLRequest is doing DNS requests and replace them.
+     */
+    val isDoHSupported: Boolean
+        get() {
+            if (content == Content.IPv4) {
+                return true
+            }
+            return !domainAccessibleOnlyHosts.contains(validatedInputValue)
+        }
+
+    val onlySecondLevelDomain: String?
+        get() {
+            if (content == Host.Content.IPv4) {
+                return null
+            }
+            return domainName?.onlySecondLevelDomain
+        }
+
+    val wwwName: String?
+        get() {
+            if (content == Host.Content.IPv4) {
+                return null
+            }
+            return domainName?.wwwName
+        }
+
+    val wildcardName: String?
+        get() {
+            if (content == Host.Content.IPv4) {
+                return null
+            }
+            return domainName?.wildcardName
+        }
+
+    fun isSimilar(name: String): Boolean {
+        return domainName?.isSimilar(name) ?: false
     }
 
     /**
@@ -64,7 +123,7 @@ final class Host @Throws(Host.Error::class) constructor (private val input: Stri
         IPv4
     }
 
-    sealed class Error(message: String): Throwable(message) {
+    sealed class Error(message: String) : Throwable(message) {
         class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message)
     }
 }
