@@ -29,10 +29,12 @@ final class Host @Throws(Host.Error::class) constructor (private val input: Stri
     }
 
     init {
-        val inputWithoutDots = input.replace(".", "")
+        val rawInputWithoutSpaces = input.withoutLeadingTrailingSpaces
+        val inputWithoutDots = rawInputWithoutSpaces.replace(".", "")
         val isIPv4address: Boolean
         if (inputWithoutDots.all { it.isDigit() }) {
-            isIPv4address = input.matches(ipV4Regex)
+            // remove the leading & trailing spaces
+            isIPv4address = rawInputWithoutSpaces.matches(ipV4Regex)
         } else {
             isIPv4address = false
         }
@@ -40,11 +42,11 @@ final class Host @Throws(Host.Error::class) constructor (private val input: Stri
         if (isIPv4address) {
             hostType = Content.IPv4
         } else {
-            try { DomainName(input) } catch (e: DomainName.Error) { throw Error.NotValidHostInput(e) }
+            try { DomainName(input) } catch (e: DomainName.Error) { throw Error.NotValidHostInput(e, input) }
             hostType = Content.DomainName
         }
 
-        validatedInputValue = input
+        validatedInputValue = rawInputWithoutSpaces
     }
 
     /**
@@ -62,7 +64,7 @@ final class Host @Throws(Host.Error::class) constructor (private val input: Stri
         IPv4
     }
 
-    sealed class Error : Throwable() {
-        class NotValidHostInput(val err: DomainName.Error) : Host.Error()
+    sealed class Error(message: String): Throwable(message) {
+        class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message)
     }
 }
