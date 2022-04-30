@@ -12,11 +12,14 @@ import kotlin.native.concurrent.freeze
  * @property content a type of the host (ip address or a domain name).
  * */
 final class Host @Throws(Host.Error::class) constructor (
-    private val input: String,
-    private var domainName: DomainName? = null
+    private val input: String
 ) {
     private val validatedInputValue: String
     private val hostType: Content
+    private var domainName: DomainName? = null
+
+    internal val getDomainName: DomainName?
+    get() = domainName
 
     val rawString: String
         get() = validatedInputValue
