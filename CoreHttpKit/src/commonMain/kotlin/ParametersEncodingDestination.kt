@@ -21,21 +21,12 @@ data class URLQueryPair(val name: String, val value: String) {
  * of the actual Http request.
  * */
 sealed class ParametersEncodingDestination {
-    class QueryString(val items: Array<URLQueryPair>) : ParametersEncodingDestination() {
-        init {
-            freeze()
-        }
+    init {
+        freeze()
     }
-    class HttpBodyJSON(val keyToValue: Map<String, Any>) : ParametersEncodingDestination() {
-        init {
-            freeze()
-        }
-    }
-    class HttpBody(val encodedData: ByteArray) : ParametersEncodingDestination() {
-        init {
-            freeze()
-        }
-    }
+    class QueryString(val items: Array<URLQueryPair>) : ParametersEncodingDestination()
+    class HttpBodyJSON(val keyToValue: Map<String, Any>) : ParametersEncodingDestination()
+    class HttpBody(val encodedData: ByteArray) : ParametersEncodingDestination()
 
     internal val contentTypeHttpHeader: HTTPHeader
         get() {

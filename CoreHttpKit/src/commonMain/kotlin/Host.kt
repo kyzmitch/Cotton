@@ -127,6 +127,9 @@ final class Host @Throws(Host.Error::class) constructor (
     }
 
     sealed class Error(message: String) : Throwable(message) {
+        init {
+            freeze()
+        }
         class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message)
     }
 }

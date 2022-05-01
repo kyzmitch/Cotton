@@ -104,6 +104,9 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
     }
 
     sealed class Error(message: String) : Throwable(message) {
+        init {
+            freeze()
+        }
         class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength)
         class EmptyString : Error("empty string")
         class DotAtBeginning : Error("dot at beginning")
