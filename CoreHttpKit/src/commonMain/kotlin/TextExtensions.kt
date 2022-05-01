@@ -5,9 +5,13 @@ package org.cottonweb.CoreHttpKit
  *
  * https://stackoverflow.com/a/3585284
  * */
+@SharedImmutable
 internal val asciiRegex = Regex("\\A\\p{ASCII}*\\z")
+@SharedImmutable
 internal const val upBound: Char = '\uD880'
+@SharedImmutable
 internal const val lowerBound: Char = '\uE000'
+@SharedImmutable
 internal const val secondUpBound: Char = '\uFFFF' // should be 0x1FFFFF
 
 internal val Char.isAscii: Boolean

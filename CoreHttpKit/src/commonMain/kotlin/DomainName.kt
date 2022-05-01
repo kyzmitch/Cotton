@@ -51,7 +51,14 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
         // https://tools.ietf.org/html/rfc5849#section-3.6
         // Non-ASCII characters should be punycoded (xn--qxam, not ελ).
         // Not using punycoding for the basic ASCII strings
-        val punycodedParts = parts.mapNotNull { if (it.isAscii) it else Punycode.encode(it) }
+        val punycodedParts: List<String>
+        try {
+            // punycode function doesn't throw, but wrapping it just in case
+            punycodedParts = parts.mapNotNull { if (it.isAscii) it else Punycode.encode(it) }
+        } catch (e: Throwable) {
+            throw Error.PunycodeFail()
+        }
+
         if (punycodedParts.size != parts.size) {
             throw Error.PunycodingFailed()
         }
@@ -116,5 +123,6 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
         class NoDomainLabelParts : Error("no domain label parts")
         class EmptyLastLabel : Error("last label is empty")
         class RightmostDomainLabelStartsWithDigit : Error("trailing domain label starts with digit")
+        class PunycodeFail : Error("punycode util fail")
     }
 }

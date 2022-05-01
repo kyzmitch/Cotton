@@ -11,9 +11,6 @@ import kotlin.text.StringBuilder
  * */
 
 internal class Punycode {
-    private constructor() {
-    }
-
     companion object {
         private val base: Int = 36
         private val tMin: Int = 1
