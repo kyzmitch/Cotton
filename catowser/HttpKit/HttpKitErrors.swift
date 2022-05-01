@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreHttpKit
 
 extension HttpKit {
     // gryphon ignore
@@ -18,6 +19,7 @@ extension HttpKit {
         case failedConstructUrl
         case noAuthenticationToken
         case failedConstructRequestParameters
+        case invalidDomainName(error: DomainName.Error)
         case failedKotlinRequestConstruct
         case failedEncodeEncodable
         case noInternetConnectionWithHost
@@ -50,6 +52,8 @@ extension HttpKit {
                 return "missing parameters: \(message)"
             case .notGoodStatusCode(let statusCode):
                 return "not valid http response status code: \(statusCode)"
+            case .invalidDomainName(error: let error):
+                return "invalid domain name: \(error.message ?? "no message")"
             default:
                 return "\(self)"
             }
@@ -98,6 +102,8 @@ extension HttpKit {
                 return false
             case (let .missingRequestParameters(lStr), let .missingRequestParameters(rStr)):
                 return lStr == rStr
+            case (let .invalidDomainName(error: lhs), let .invalidDomainName(error: rhs)):
+                return lhs == rhs
             default:
                 return false
             }

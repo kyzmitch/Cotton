@@ -9,7 +9,7 @@
 import UIKit
 import CoreBrowser
 import JSPlugins
-import HttpKit
+import CoreHttpKit
 import BrowserNetworking
 import FeaturesFlagsKit
 #if canImport(SwiftUI)
@@ -278,7 +278,7 @@ extension MasterRouter: SiteLifetimeInterface {
     
     func openTabMenu(from sourceView: UIView,
                      and sourceRect: CGRect,
-                     for host: HttpKit.Host,
+                     for host: Host,
                      siteSettings: Site.Settings) {
         let style: MenuModelStyle = .siteMenu(host: host, siteSettings: siteSettings)
         showTabMenuIfNeeded(from: sourceView,

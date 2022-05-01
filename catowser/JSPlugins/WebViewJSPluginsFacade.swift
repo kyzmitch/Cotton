@@ -8,7 +8,7 @@
 
 import Foundation
 import WebKit
-import HttpKit
+import CoreHttpKit
 #if canImport(Combine)
 import Combine
 #endif
@@ -58,10 +58,10 @@ public final class WebViewJSPluginsFacade {
         }
     }
 
-    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: HttpKit.Host) {
+    public func enablePlugins(for webView: JavaScriptEvaluateble, with host: Host) {
         plugins
             .filter { !$0.hostKeyword.isEmpty || $0.messageHandlerName == .basePluginHName}
-            .compactMap { $0.scriptString(host.rawValue.contains($0.hostKeyword))}
+            .compactMap { $0.scriptString(host.rawString.contains($0.hostKeyword))}
             .forEach { webView.evaluate(jsScript: $0)}
     }
 }
