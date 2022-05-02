@@ -1,5 +1,6 @@
 package org.cottonweb.CoreHttpKit
 
+import io.ktor.http.encodeURLParameter
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlin.native.concurrent.freeze
@@ -57,8 +58,10 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
                 // paramString = queryParam.name + "&"
                 continue
             } else {
-                paramString = queryParam.name + "=" + queryParam.value + "&"
+                // need to percent encode name & value
+                paramString = queryParam.name.encodeURLParameter() + "=" + queryParam.value.encodeURLParameter() + "&"
             }
+            // Ktor has `Byte.percentEncode` which is used inside
             queryString += paramString
         }
         return queryString.dropLast(1) // remove last '&'
