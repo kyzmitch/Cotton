@@ -51,7 +51,14 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
         // https://tools.ietf.org/html/rfc5849#section-3.6
         // Non-ASCII characters should be punycoded (xn--qxam, not ελ).
         // Not using punycoding for the basic ASCII strings
-        val punycodedParts = parts.mapNotNull { if (it.isAscii) it else Punycode.encode(it) }
+        val punycodedParts: List<String>
+        try {
+            // punycode function doesn't throw, but wrapping it just in case
+            punycodedParts = parts.mapNotNull { if (it.isAscii) it else Punycode.encode(it) }
+        } catch (e: Throwable) {
+            throw Error.PunycodeFail()
+        }
+
         if (punycodedParts.size != parts.size) {
             throw Error.PunycodingFailed()
         }
@@ -104,14 +111,55 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
     }
 
     sealed class Error(message: String) : Throwable(message) {
-        class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength)
-        class EmptyString : Error("empty string")
-        class DotAtBeginning : Error("dot at beginning")
-        class DoubleDots : Error("double dots")
-        class WrongPartSize(val length: Int) : Error("wrong label size: " + length)
-        class PunycodingFailed : Error("punycode fail")
-        class NoDomainLabelParts : Error("no domain label parts")
-        class EmptyLastLabel : Error("last label is empty")
-        class RightmostDomainLabelStartsWithDigit : Error("trailing domain label starts with digit")
+        class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength) {
+            init {
+                freeze()
+            }
+        }
+        class EmptyString : Error("empty string") {
+            init {
+                freeze()
+            }
+        }
+        class DotAtBeginning : Error("dot at beginning") {
+            init {
+                freeze()
+            }
+        }
+        class DoubleDots : Error("double dots") {
+            init {
+                freeze()
+            }
+        }
+        class WrongPartSize(val length: Int) : Error("wrong label size: " + length) {
+            init {
+                freeze()
+            }
+        }
+        class PunycodingFailed : Error("punycode fail") {
+            init {
+                freeze()
+            }
+        }
+        class NoDomainLabelParts : Error("no domain label parts") {
+            init {
+                freeze()
+            }
+        }
+        class EmptyLastLabel : Error("last label is empty") {
+            init {
+                freeze()
+            }
+        }
+        class RightmostDomainLabelStartsWithDigit : Error("trailing domain label starts with digit") {
+            init {
+                freeze()
+            }
+        }
+        class PunycodeFail : Error("punycode util fail") {
+            init {
+                freeze()
+            }
+        }
     }
 }

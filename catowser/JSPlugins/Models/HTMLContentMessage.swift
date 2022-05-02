@@ -7,17 +7,17 @@
 //
 
 import Foundation
-import HttpKit
+import CoreHttpKit
 import SwiftSoup
 
 struct HTMLContentMessage: Decodable {
-    let hostname: HttpKit.Host
+    let hostname: Host
     let html: Document
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let hostnameString = try container.decode(String.self, forKey: .hostname)
-        guard let kitHost = HttpKit.Host(rawValue: hostnameString) else {
+        guard let kitHost = try? Host(input: hostnameString) else {
             throw CottonError.parseHost
         }
         hostname = kitHost
@@ -26,7 +26,7 @@ struct HTMLContentMessage: Decodable {
     }
     
     var mainPosterURL: URL? {
-        if hostname.isSimilar(with: "youtube.com") {
+        if hostname.isSimilar(name: "youtube.com") {
             let divs: Elements
             do {
                 divs = try html.select("div[class*=ytp-cued-thumbnail-overlay-image]")

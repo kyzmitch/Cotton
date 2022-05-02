@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import HttpKit
+import CoreHttpKit
 
 extension Site {
     public struct Settings: Equatable {
@@ -28,7 +29,7 @@ extension Site {
 public struct Site {
     /// Initial url
     public let urlInfo: HttpKit.URLIpInfo
-    public var host: HttpKit.Host {
+    public var host: Host {
         return urlInfo.host
     }
     /// Used by top sites by loading high quality image from Assets
@@ -45,7 +46,7 @@ public struct Site {
         } else if let userSpecific = userSpecifiedTitle {
             return userSpecific
         } else {
-            return host.rawValue
+            return host.rawString
         }
     }
 

@@ -9,6 +9,7 @@
 import Foundation
 import Network
 import HttpKit
+import CoreHttpKit
 
 public extension URL {
     var isAppleMapsURL: Bool {
@@ -55,8 +56,8 @@ public extension URL {
         return hasIPv4Host || hasIPv6Host
     }
     
-    init?(faviconHost: HttpKit.Host) {
-        let format = "https://\(faviconHost.rawValue)/favicon.ico"
+    init?(faviconHost: Host) {
+        let format = "https://\(faviconHost.rawString)/favicon.ico"
         self.init(string: format)
     }
     

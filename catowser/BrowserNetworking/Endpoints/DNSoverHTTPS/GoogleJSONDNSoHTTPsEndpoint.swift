@@ -7,12 +7,12 @@
 //
 
 import HttpKit
+import CoreHttpKit
 import ReactiveHttpKit
 import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
-import CoreHttpKit
 
 /// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
 
@@ -49,7 +49,7 @@ extension Endpoint where S == GoogleDnsServer {
     }
     
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> GDNSjsonEndpoint {
-        let domainObject = try HttpKit.DomainName(domainName)
+        let domainObject = try DomainName(input: domainName)
         guard let params = GDNSRequestParams(domainName: domainObject) else {
             throw HttpKit.HttpError.missingRequestParameters("google dns params")
         }
@@ -158,6 +158,8 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
         } catch let error as HttpKit.HttpError {
             return GDNSjsonProducer(error: error)
+        } catch let coreError as DomainName.Error {
+            return GDNSjsonProducer(error: HttpKit.HttpError.invalidDomainName(error: coreError))
         } catch {
             return GDNSjsonProducer(error: HttpKit.HttpError.failedConstructRequestParameters)
         }
@@ -192,6 +194,9 @@ extension HttpKit.Client where Server == GoogleDnsServer {
             endpoint = try .googleDnsOverHTTPSJson(domainName)
         } catch let error as HttpKit.HttpError {
             return GDNSjsonPublisher(Future.failure(error))
+        } catch let coreError as DomainName.Error {
+            let adaptedError: HttpKit.HttpError = .invalidDomainName(error: coreError)
+            return GDNSjsonPublisher(Future.failure(adaptedError))
         } catch {
             return GDNSjsonPublisher(Future.failure(HttpKit.HttpError.failedConstructRequestParameters))
         }

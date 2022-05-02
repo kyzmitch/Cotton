@@ -17,6 +17,9 @@ enum class HttpScheme(val stringValue: String, val port: Int) {
  * @property scheme Server protocol type (could be HTTPS, HTTP, etc.)
  * */
 /* interface */ abstract class ServerDescription {
+    /**
+     * TODO: use Host type instead of a raw string
+     * */
     abstract val hostString: String
     abstract val domain: String
     val scheme: HttpScheme

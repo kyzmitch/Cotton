@@ -9,7 +9,7 @@
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
-import HttpKit
+import CoreHttpKit
 import CoreBrowser
 import FeaturesFlagsKit
 
@@ -112,11 +112,12 @@ private extension String {
 @available(iOS 13.0, *)
 struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {
-        // swiftlint:disable force_unwrapping
-        let host = HttpKit.Host(rawValue: "example.com")!
+        let host = try? Host(input: "example.com")
         let settings = Site.Settings(popupsBlock: true,
                                      javaScriptEnabled: true)
-        let model = SiteMenuModel(menuStyle: .siteMenu(host: host, siteSettings: settings),
+        // swiftlint:disable force_unwrapping
+        let style: MenuModelStyle = .siteMenu(host: host!, siteSettings: settings)
+        let model = SiteMenuModel(menuStyle: style,
                                   siteDelegate: nil) {
             print("Dismiss triggered")
         }

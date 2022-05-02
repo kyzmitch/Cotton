@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import HttpKit
+import CoreHttpKit
 
 public struct GDNSRequestParams {
     /**
@@ -15,7 +15,7 @@ public struct GDNSRequestParams {
 
      The only required parameter. RFC 4343 backslash escapes are accepted.
      */
-    let name: HttpKit.DomainName
+    let name: DomainName
     /**
      string, default: 1
      */
@@ -75,7 +75,7 @@ public struct GDNSRequestParams {
      */
     let randomPadding: String
     
-    public init?(domainName: HttpKit.DomainName) {
+    public init?(domainName: DomainName) {
         name = domainName
         guard let rrType = DnsRR() else {
             return nil
@@ -91,7 +91,7 @@ public struct GDNSRequestParams {
     var urlQueryItems: [URLQueryItem] {
         
         let items: [URLQueryItem] = [
-            URLQueryItem(name: "name", value: name.string),
+            URLQueryItem(name: "name", value: name.rawString),
             URLQueryItem(name: "type", value: type.rawValue),
             URLQueryItem(name: "cd", value: "\(cd)"),
             URLQueryItem(name: "ct", value: ct),

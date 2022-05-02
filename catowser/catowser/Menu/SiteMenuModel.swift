@@ -9,12 +9,12 @@
 #if canImport(Combine)
 import Combine
 #endif
-import HttpKit
+import CoreHttpKit
 import CoreBrowser
 import FeaturesFlagsKit
 
 enum MenuModelStyle {
-    case siteMenu(host: HttpKit.Host, siteSettings: Site.Settings)
+    case siteMenu(host: Host, siteSettings: Site.Settings)
     case onlyGlobalMenu
 }
 
@@ -37,7 +37,7 @@ final class SiteMenuModel: ObservableObject {
     
     let dismissAction: DismissClosure
     
-    let host: HttpKit.Host?
+    let host: Host?
     
     let siteSettings: Site.Settings?
     
@@ -45,7 +45,7 @@ final class SiteMenuModel: ObservableObject {
     
     var siteSectionTitle: String {
         // site section is only available for site menu
-        return .localizedStringWithFormat(.siteSectionTtl, host?.rawValue ?? "")
+        return .localizedStringWithFormat(.siteSectionTtl, host?.rawString ?? "")
     }
     
     var currentTabAddValue: String {

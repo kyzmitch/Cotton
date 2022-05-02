@@ -39,12 +39,12 @@ final class WebViewAuthChallengeHandler {
         }
         if let currentIPAddress = urlInfo.ipAddress, currentIPAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
-                              urlInfo.host.rawValue,
+                              urlInfo.host.rawString,
                               presentationController,
                               completionHandler,
                               completion)
         } else {
-            guard urlInfo.host.isSimilar(with: challenge.protectionSpace.host) else {
+            guard urlInfo.host.isSimilar(name: challenge.protectionSpace.host) else {
                 // Here web site is trying to complete navigation
                 // requests for supplementary hosts like analytics.
                 // Obviously they're using own certificates to validate SSL

@@ -8,8 +8,7 @@
 
 import Foundation
 import UIKit
-// needed for `Host`
-import HttpKit
+import CoreHttpKit
 import CoreBrowser
 
 // base protocol already based on `class`
@@ -41,7 +40,7 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     func updateTabPreview(_ screenshot: UIImage)
     func openTabMenu(from sourceView: UIView,
                      and sourceRect: CGRect,
-                     for host: HttpKit.Host,
+                     for host: Host,
                      siteSettings: Site.Settings)
 }
 

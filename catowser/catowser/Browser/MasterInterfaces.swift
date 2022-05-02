@@ -8,7 +8,7 @@
 
 import UIKit
 import JSPlugins
-import HttpKit
+import CoreHttpKit
 import CoreBrowser
 
 protocol MasterDelegate: AnyObject {
@@ -32,6 +32,6 @@ protocol SiteLifetimeInterface {
     
     func openTabMenu(from sourceView: UIView,
                      and sourceRect: CGRect,
-                     for host: HttpKit.Host,
+                     for host: Host,
                      siteSettings: Site.Settings)
 }
