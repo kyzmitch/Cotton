@@ -10,7 +10,7 @@ class EndpointTests {
     val googleDnsQueryParams: ArrayList<URLQueryPair>
         get() {
             val params = arrayListOf<URLQueryPair>(
-                URLQueryPair("name", googleDNSserver.domain),
+                URLQueryPair("name", "apple.com"),
                 URLQueryPair("type", "1"),
                 URLQueryPair("cd", "false"),
                 URLQueryPair("ct", ""),
@@ -32,9 +32,10 @@ class EndpointTests {
             return endpoint
         }
 
+    val expectedGoogleDnsUrlStr = "https://dns.google:443/resolve?name=apple.com&type=1&cd=false&do=false&edns_client_subnet=0.0.0.0/0"
+
     @Test
     fun testURL() {
-        val expectedGoogleDnsUrlStr = "https://dns.google:443/resolve"
         val dnsAccessToken1 = "xzr-564"
         val dnsRequest = googleDNSendpoint.request(googleDNSserver, 60, dnsAccessToken1)
         assertEquals(expectedGoogleDnsUrlStr, dnsRequest.rawURL)

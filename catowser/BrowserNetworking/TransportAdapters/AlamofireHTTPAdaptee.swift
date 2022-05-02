@@ -59,6 +59,7 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
                 case .success(let value):
                     result = .success(value)
                 case .failure(let error):
+                    print("Http request failed: \(error.localizedDescription)")
                     result = .failure(.httpFailure(error: error))
                 }
                 guard let self = self else {

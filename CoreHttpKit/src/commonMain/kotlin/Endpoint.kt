@@ -49,10 +49,19 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     }
 
     private fun buildParameters(items: Array<URLQueryPair>): String? {
-        if (items.isEmpty()) return null
-        var queryString: String = ""
-        items.forEach { queryString += "&" + it.name + "=" + it.value }
-        return queryString
+        if (items.isEmpty()) { return null }
+        var queryString: String = "?"
+        for (queryParam in items) {
+            val paramString: String
+            if (queryParam.value.isBlank()) {
+                // paramString = queryParam.name + "&"
+                continue
+            } else {
+                paramString = queryParam.name + "=" + queryParam.value + "&"
+            }
+            queryString += paramString
+        }
+        return queryString.dropLast(1) // remove last '&'
     }
 
     private fun createQueryString(): String? {
@@ -70,16 +79,17 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
         }
     }
 
-    internal fun createRawURL(server: S): String {
+    private fun createRawURL(server: S): String {
         val scheme = server.scheme
         val rawURL: String = scheme.stringValue + "://" + server.hostString + ":" + scheme.port + "/" + path
         val queryUrlPart = createQueryString()
         if (queryUrlPart != null) {
             val builder = StringBuilder(rawURL)
-            builder.append('/')
             builder.append(queryUrlPart)
+            return builder.toString()
+        } else {
+            return rawURL
         }
-        return rawURL
     }
 
     private fun createHeaders(accessToken: String?): Set<HTTPHeader> {
