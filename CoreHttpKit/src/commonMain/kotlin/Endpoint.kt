@@ -1,16 +1,5 @@
 package org.cottonweb.CoreHttpKit
-import io.ktor.client.plugins.timeout
-import io.ktor.client.request.headers
-import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.setBody
-import io.ktor.client.request.url
-import io.ktor.http.Parameters
-import io.ktor.http.ParametersBuilder
-import io.ktor.http.Url
-import io.ktor.http.URLBuilder
-import io.ktor.http.URLProtocol
-import io.ktor.http.ContentType
-import io.ktor.http.content.ByteArrayContent
+
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlin.native.concurrent.freeze
@@ -59,88 +48,58 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
         freeze()
     }
 
-    internal fun urlRelatedTo(server: S): Url {
-        val scheme = server.scheme
-        val urlProtocol = URLProtocol(scheme.stringValue, scheme.port)
-        val pathSegments = path.split('/')
-        val parameters = urlParameters()
-        // https://github.com/ktorio/ktor/blob/main/ktor-http/common/src/io/ktor/http/URLBuilder.kt
-        val builder = URLBuilder(
-            urlProtocol,
-            server.hostString,
-            scheme.port,
-            null,
-            null,
-            pathSegments,
-            parameters
-        )
-        return builder.build()
+    private fun buildParameters(items: Array<URLQueryPair>): String? {
+        if (items.isEmpty()) return null
+        var queryString: String = ""
+        items.forEach { queryString += "&" + it.name + "=" + it.value }
+        return queryString
     }
 
-    fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
-        val builder = HttpRequestBuilder()
-        builder.method = httpMethod.ktorValue
-
-        /**
-         * Ktor types can work only on main thread
-         * https://medium.com/@kpgalligan/ktor-and-kotlin-native-fb5c06cb920a
-         * */
-
-        builder.timeout {
-            this.requestTimeoutMillis = requestTimeout
+    private fun createQueryString(): String? {
+        return when (encodingMethod) {
+            is ParametersEncodingDestination.QueryString -> buildParameters(encodingMethod.items)
+            else -> null
         }
-        val url = urlRelatedTo(server)
-        builder.url(url)
-        headers?.let {
-            builder.headers {
-                it.forEach { this.append(it.key, it.value) }
-            }
-        }
-        accessToken?.let {
-            val authHeader = HTTPHeader.Authorization(it)
-            builder.headers {
-                this.append(authHeader.key, authHeader.value)
-            }
-        }
-
-        val contentTypeHeader = encodingMethod.contentTypeHttpHeader
-        builder.headers {
-            append(contentTypeHeader.key, contentTypeHeader.value)
-        }
-
-        updateWithBody(builder)
-
-        val ktorData = builder.build()
-        return HTTPRequestInfo.createFromKtorType(ktorData)
     }
 
-    private fun updateWithBody(builder: HttpRequestBuilder) {
-        val readyBodyData = when (encodingMethod) {
+    private fun createHttpBodyData(): ByteArray? {
+        return when (encodingMethod) {
             is ParametersEncodingDestination.HttpBody -> encodingMethod.encodedData
             is ParametersEncodingDestination.HttpBodyJSON -> encodingMethod.keyToValue.encode()
             else -> null
         }
-
-        if (readyBodyData == null) {
-            return
-        }
-
-        val content = ByteArrayContent(readyBodyData, ContentType.Application.Json, null)
-        builder.setBody(content)
     }
 
-    private fun urlParameters(): Parameters {
-        return when (encodingMethod) {
-            is ParametersEncodingDestination.QueryString -> buildParameters(encodingMethod.items)
-            else -> Parameters.Empty
+    internal fun createRawURL(server: S): String {
+        val scheme = server.scheme
+        val rawURL: String = scheme.stringValue + "://" + server.hostString + ":" + scheme.port + "/" + path
+        val queryUrlPart = createQueryString()
+        if (queryUrlPart != null) {
+            val builder = StringBuilder(rawURL)
+            builder.append('/')
+            builder.append(queryUrlPart)
         }
+        return rawURL
     }
 
-    private fun buildParameters(items: Array<URLQueryPair>): Parameters {
-        if (items.isEmpty()) return Parameters.Empty
-        val parametersBuilder = ParametersBuilder(items.size)
-        items.forEach { parametersBuilder.append(it.name, it.value) }
-        return parametersBuilder.build()
+    private fun createHeaders(accessToken: String?): Set<HTTPHeader> {
+        var latestHeaders: MutableSet<HTTPHeader> = headers?.toMutableSet() ?: emptySet<HTTPHeader>().toMutableSet()
+        accessToken?.let {
+            val authHeader = HTTPHeader.Authorization(it)
+            latestHeaders.add(authHeader)
+        }
+        val contentTypeHeader = encodingMethod.contentTypeHttpHeader
+        latestHeaders.add(contentTypeHeader)
+        return latestHeaders
+    }
+
+    fun request(server: S, requestTimeout: Long, accessToken: String?): HTTPRequestInfo {
+        // need to create a raw URL and httpBody only
+        val urlString: String = createRawURL(server)
+        val httpBodyData: ByteArray? = createHttpBodyData()
+        val updatedHeaders: Set<HTTPHeader> = createHeaders(accessToken)
+
+        return HTTPRequestInfo(urlString, httpMethod, updatedHeaders, requestTimeout, httpBodyData)
     }
 }
 
