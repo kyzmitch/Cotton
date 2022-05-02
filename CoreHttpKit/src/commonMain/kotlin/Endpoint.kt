@@ -1,8 +1,6 @@
 package org.cottonweb.CoreHttpKit
 
-import io.ktor.http.encodeURLParameter
-import io.ktor.utils.io.charsets.Charsets
-import io.ktor.utils.io.core.toByteArray
+import kotlin.text.encodeToByteArray
 import kotlin.native.concurrent.freeze
 
 /**
@@ -59,7 +57,7 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
                 continue
             } else {
                 // need to percent encode name & value
-                paramString = queryParam.name.encodeURLParameter() + "=" + queryParam.value.encodeURLParameter() + "&"
+                paramString = queryParam.name.percentEncoded() + "=" + queryParam.value.percentEncoded() + "&"
             }
             // Ktor has `Byte.percentEncode` which is used inside
             queryString += paramString
@@ -122,5 +120,5 @@ internal fun Map<String, Any>.encode(): ByteArray {
     // https://github.com/Kotlin/kotlinx.serialization/issues/746
     val jsonObject = toJsonObject()
     val string = jsonObject.toString()
-    return string.toByteArray(Charsets.UTF_8)
+    return string.encodeToByteArray()
 }

@@ -48,6 +48,9 @@ final class WebViewLoadingErrorHandler {
             return
         case ("WebKitErrorDomain", WKError.webContentProcessTerminated.rawValue /* 102 */):
             print("WebContent process has crashed. Trying to reload to restart it.")
+            /**
+             TODO: for DoH case this should be improved, because currently it creates an infinit loop of reloading
+             */
             webView.reload()
             return
         case (NSOSStatusErrorDomain, Int(errSSLProtocol)): /* -9800 */
@@ -76,6 +79,8 @@ final class WebViewLoadingErrorHandler {
             msg += "\n\n\(url)"
         }
 
-        AlertPresenter.present(on: presentationController, message: msg)
+        /**
+         TODO: Temporarily not showing the alert views, because there is a case when they could be showed infinitly on DoH case
+         */
     }
 }
