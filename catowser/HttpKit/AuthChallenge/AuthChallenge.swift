@@ -8,7 +8,7 @@
 
 import Foundation
 import Security
-import HttpKit
+import CoreHttpKit
 import Alamofire
 
 /**
@@ -44,13 +44,13 @@ extension DefaultTrustEvaluator {
     /// `host` is used only for error messages since it is ip address and should be used for evaluation
     // swiftlint:disable:next cyclomatic_complexity
     public func evaluateWithRecovery(_ trust: SecTrust, forHost host: String) throws {
-        guard let kitHost = HttpKit.Host(rawValue: host) else {
+        guard let kitHost = try? Host(input: host) else {
             try evaluate(trust, forHost: host)
             return
         }
         
         do {
-            try evaluate(trust, forHost: kitHost.rawValue)
+            try evaluate(trust, forHost: kitHost.rawString)
         } catch AFError.serverTrustEvaluationFailed(let reason) {
             var optionalOutput: AFError.ServerTrustFailureReason.Output?
             switch reason {
@@ -76,7 +76,7 @@ extension DefaultTrustEvaluator {
                     throw AFError.serverTrustEvaluationFailed(reason: reason)
                 }
                 // evaulate one more time
-                try evaluate(trust, forHost: kitHost.rawValue)
+                try evaluate(trust, forHost: kitHost.rawString)
             default:
                 throw AFError.serverTrustEvaluationFailed(reason: reason)
             }

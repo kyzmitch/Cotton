@@ -9,7 +9,7 @@
 import Foundation
 import WebKit
 import CoreBrowser
-import HttpKit
+import CoreHttpKit
 
 private extension WebViewController {
     func handleNativeAppSchemeRedirect(_ url: URL,
@@ -196,5 +196,12 @@ extension WKNavigationType: CustomDebugStringConvertible {
         @unknown default:
             return "default \(rawValue)"
         }
+    }
+}
+
+private extension Host {
+    func isSimilar(with url: URL) -> Bool {
+        guard let rawHostString = url.host else { return false }
+        return isSimilar(name: rawHostString)
     }
 }

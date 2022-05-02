@@ -26,12 +26,7 @@ plugins {
 // next section could be moved to the kotlin section
 
 // https://github.com/Kotlin/kotlinx.serialization#setup
-
-val ktorVersion: String by project
 dependencies {
-    commonMainImplementation("io.ktor:ktor-client-core:$ktorVersion")
-    commonMainImplementation("io.ktor:ktor-client-cio:$ktorVersion")
-    commonMainImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     commonMainImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     /**
      * A dependency on a standard library (stdlib) in each source set is added automatically.
@@ -49,7 +44,6 @@ dependencies {
 }
 
 val frameworkName = "CoreHttpKit"
-
 multiplatformSwiftPackage {
     packageName(frameworkName)
     outputDirectory(File(projectDir, "$frameworkName"))

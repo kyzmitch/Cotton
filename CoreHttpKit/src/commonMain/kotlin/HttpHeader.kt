@@ -1,5 +1,5 @@
 package org.cottonweb.CoreHttpKit
-import io.ktor.http.HttpMethod
+
 import kotlin.native.concurrent.freeze
 
 /**
@@ -10,14 +10,6 @@ enum class HTTPMethod(val stringValue: String) {
     POST("POST");
 
     companion object {
-        internal fun createFrom(ktorValue: HttpMethod): HTTPMethod {
-            return when (ktorValue) {
-                HttpMethod.Get -> GET
-                HttpMethod.Post -> POST
-                else -> GET
-            }
-        }
-
         fun createFrom(rawString: String): HTTPMethod? {
             return when (rawString) {
                 "GET" -> HTTPMethod.GET
@@ -26,14 +18,6 @@ enum class HTTPMethod(val stringValue: String) {
             }
         }
     }
-
-    internal val ktorValue: HttpMethod
-        get() {
-            return when (this) {
-                GET -> HttpMethod.Get
-                POST -> HttpMethod.Post
-            }
-        }
 }
 
 enum class ContentTypeValue(val stringValue: String) {

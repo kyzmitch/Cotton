@@ -209,7 +209,7 @@ final class WebViewController: BaseViewController {
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name
         pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
-        InMemoryDomainSearchProvider.shared.remember(domainName: urlInfo.host)
+        InMemoryDomainSearchProvider.shared.remember(host: urlInfo.host)
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))

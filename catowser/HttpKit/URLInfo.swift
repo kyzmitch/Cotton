@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreHttpKit
 
 extension HttpKit {
     // gryphon ignore
@@ -15,7 +16,7 @@ extension HttpKit {
         var internalUrl: URL
         /// IP address for a host after using DNS request
         public var ipAddress: String?
-        public let host: HttpKit.Host
+        public let host: Host
         
         public init?(_ url: URL) {
             guard let host = url.kitHost else {
@@ -26,7 +27,7 @@ extension HttpKit {
             ipAddress = nil
         }
         
-        public init(_ url: URL, _ host: HttpKit.Host) {
+        public init(_ url: URL, _ host: Host) {
             self.host = host
             internalUrl = url
             ipAddress = nil
@@ -63,7 +64,7 @@ extension HttpKit {
             // need to update URL without changing host from domain name to ip address
             let newComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
             guard var components = newComponents else { return }
-            components.host = host.rawValue
+            components.host = host.rawString
             guard let updatedURL = components.url else { return }
             internalUrl = updatedURL
         }
@@ -72,7 +73,7 @@ extension HttpKit {
             guard !url.hasIPHost else {
                 return
             }
-            guard host.rawValue == url.host else {
+            guard host.rawString == url.host else {
                 return
             }
             internalUrl = url
@@ -83,7 +84,7 @@ extension HttpKit {
             if url.hasIPHost {
                 isSameHost = ipAddress == url.host
             } else {
-                isSameHost = host.rawValue == url.host
+                isSameHost = host.rawString == url.host
             }
             return isSameHost
         }

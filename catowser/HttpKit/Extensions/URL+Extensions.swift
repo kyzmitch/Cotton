@@ -11,6 +11,7 @@ import Foundation
 import Combine
 #endif
 import Network
+import CoreHttpKit
 
 extension HttpKit {
     public enum DnsError: LocalizedError {
@@ -39,13 +40,12 @@ typealias HostPublisher = Result<String, HttpKit.DnsError>.Publisher
 public typealias ResolvedURLPublisher = Result<URL, HttpKit.DnsError>.Publisher
 
 extension URL {
-    public var kitHost: HttpKit.Host? {
+    public var kitHost: Host? {
         guard let hostString = host else {
             return nil
         }
         
-        let value = HttpKit.Host(rawValue: hostString)
-        return value
+        return try? Host(input: hostString)
     }
     
     public var httpHost: String? {

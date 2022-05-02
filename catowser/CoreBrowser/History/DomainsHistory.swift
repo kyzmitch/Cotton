@@ -6,10 +6,10 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CoreHttpKit
 
 /// Interface for domain checks
 public protocol DomainsHistory {
-    func remember(domainName: HttpKit.Host)
+    func remember(host: Host)
     func domainNames(whereURLContains filter: String) -> [String]
 }

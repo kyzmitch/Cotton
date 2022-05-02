@@ -19,7 +19,7 @@ final class Host @Throws(Host.Error::class) constructor (
     private var domainName: DomainName? = null
 
     internal val getDomainName: DomainName?
-    get() = domainName
+        get() = domainName
 
     val rawString: String
         get() = validatedInputValue
@@ -127,6 +127,10 @@ final class Host @Throws(Host.Error::class) constructor (
     }
 
     sealed class Error(message: String) : Throwable(message) {
-        class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message)
+        class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message) {
+            init {
+                freeze()
+            }
+        }
     }
 }
