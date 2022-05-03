@@ -27,12 +27,6 @@ extension HttpKit {
             ipAddress = nil
         }
         
-        public init(_ url: URL, _ host: Host) {
-            self.host = host
-            internalUrl = url
-            ipAddress = nil
-        }
-        
         /// Automatically provides URL with ip address instead of host when it is available
         public var url: URL {
             guard let ip = ipAddress else {

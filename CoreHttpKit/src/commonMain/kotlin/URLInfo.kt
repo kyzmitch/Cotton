@@ -1,0 +1,55 @@
+package org.cottonweb.CoreHttpKit
+
+import kotlin.native.concurrent.freeze
+
+/**
+ * URL type with ip address info.
+ * The ip address info usually filled in after DNS over HTTPS request.
+ * This allow to have HTTP request for URL without domain name information,
+ * to not disclose the visited web sites for privacy.
+ *
+ * NOTE: still, older TLS protocol versions show the domain name info.
+ *
+ * @property scheme A URL prefix describing the protocol name
+ * @property remainingURLpart The string contatining the path of URL and query parameters
+ * @property domainName A name of the server
+ * */
+class URLInfo constructor(private val scheme: HttpScheme,
+                          private val remainingURLpart: String,
+                          private val domainName: DomainName,
+                          private var ipAddress: String? = null
+) {
+
+    /**
+     * Returns the URL string with domain name even if there is an ip address.
+     * */
+    val url: String
+
+    init {
+        url = scheme.stringValue + "://" + domainName.rawString + ":" + scheme.port + "/" + remainingURLpart
+        freeze()
+    }
+    /**
+     * The IP address of the domain name from the initial URL is usually unknown at the start.
+     * So that, with this property setter we're allowing to set it later.
+     * And it will be used next time the user of this type decides to
+     * get a URL string, and next time it will contain the ip address instead of a domain name.
+     * */
+    fun withIPAddress(ipAddress: String): URLInfo {
+        // Initially I wanted to have a property which mutates the instance
+        // but it won't work when we use freeze function
+        // So that, to keep immutability - this create a copy with a new field
+        return URLInfo(scheme, remainingURLpart, domainName, ipAddress)
+    }
+
+    /**
+     * When ip address is present, this property could return the same initial URL, but
+     * instead of a domain name it will give the ip address.
+     * */
+    fun urlWithIPaddress(): String? {
+        if (ipAddress == null) {
+            return null
+        }
+        return scheme.stringValue + "://" + ipAddress + ":" + scheme.port + "/" + remainingURLpart
+    }
+}
