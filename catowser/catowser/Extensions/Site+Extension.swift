@@ -21,7 +21,7 @@ extension Site {
         if FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) {
             return URL(faviconIPInfo: urlInfo)
         } else {
-            return URL(faviconHost: urlInfo.host)
+            return URL(faviconHost: urlInfo.host())
         }
     }
     
@@ -33,13 +33,13 @@ extension Site {
         struct InvalidUrlError: Error {}
         
         guard resolve else {
-            let domainURL = URL(faviconHost: urlInfo.host)
+            let domainURL = URL(faviconHost: urlInfo.host())
             // swiftlint:disable:next force_unwrapping
             let result: URLResult = domainURL != nil ? .success(domainURL!) : .failure(InvalidUrlError())
             return URLResult.Publisher(result).eraseToAnyPublisher()
         }
         
-        guard let faviconDomainURL = URL(faviconHost: urlInfo.host) else {
+        guard let faviconDomainURL = URL(faviconHost: urlInfo.host()) else {
             return URLResult.Publisher(.failure(InvalidUrlError())).eraseToAnyPublisher()
         }
         return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL, subscriber)

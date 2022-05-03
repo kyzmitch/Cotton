@@ -16,7 +16,7 @@ import kotlin.native.concurrent.freeze
  * */
 class URLInfo constructor(private val scheme: HttpScheme,
                           private val remainingURLpart: String,
-                          private val domainName: DomainName,
+                          val domainName: DomainName,
                           private var ipAddress: String? = null
 ) {
 
@@ -24,6 +24,9 @@ class URLInfo constructor(private val scheme: HttpScheme,
      * Returns the URL string with domain name even if there is an ip address.
      * */
     val url: String
+
+    val ipAddressString: String?
+        get() = ipAddress
 
     init {
         url = scheme.stringValue + "://" + domainName.rawString + ":" + scheme.port + "/" + remainingURLpart
@@ -45,11 +48,17 @@ class URLInfo constructor(private val scheme: HttpScheme,
     /**
      * When ip address is present, this property could return the same initial URL, but
      * instead of a domain name it will give the ip address.
+     *
+     * Returning the original URL when ip address is not present.
      * */
-    fun urlWithIPaddress(): String? {
+    fun urlWithIPaddress(): String {
         if (ipAddress == null) {
-            return null
+            return url
         }
         return scheme.stringValue + "://" + ipAddress + ":" + scheme.port + "/" + remainingURLpart
+    }
+
+    fun host(): Host {
+        return Host(domainName)
     }
 }

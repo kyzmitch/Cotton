@@ -10,8 +10,8 @@ import UIKit
 import WebKit
 import CoreBrowser
 import JSPlugins
-// needed for `URLIpInfo`
-import HttpKit
+// needed for `URLInfo`
+import CoreHttpKit
 // needed for `GoogleDnsClient`
 import BrowserNetworking
 import FeaturesFlagsKit
@@ -24,7 +24,7 @@ extension WKWebView: JavaScriptEvaluateble {}
 
 final class WebViewController: BaseViewController {
     /// URL with info about ip address
-    var urlInfo: HttpKit.URLIpInfo
+    var urlInfo: URLInfo
     /// Configuration should be transferred from `Site`
     private var configuration: WKWebViewConfiguration
     ///
@@ -93,7 +93,7 @@ final class WebViewController: BaseViewController {
         setupScripts(canLoadPlugins: canLoadPlugins)
         reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-        internalLoad(url: urlInfo.url, enableDoH: dohUsed)
+        internalLoad(url: urlInfo.platformURL, enableDoH: dohUsed)
     }
 
     /**
@@ -148,7 +148,7 @@ final class WebViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        load(url: urlInfo.url, canLoadPlugins: siteSettings.canLoadPlugins)
+        load(url: urlInfo.platformURL, canLoadPlugins: siteSettings.canLoadPlugins)
         // try create web view only after creating
         view.addSubview(webView)
         isWebViewLoaded = true
@@ -188,28 +188,35 @@ final class WebViewController: BaseViewController {
     }
     
     func handleLinkLoading(_ newURL: URL, _ webView: WKWebView) {
+        // TODO: improve this handling and mutations
         if newURL.hasIPHost {
-            urlInfo.updateURLForSameIP(url: newURL)
+            urlInfo = urlInfo.withDifferentPathForSameIp(url: newURL)
         } else if urlInfo.sameHost(with: newURL) {
-            urlInfo.updateURLForSameHost(url: newURL)
-        } else if let newURLinfo = HttpKit.URLIpInfo(newURL) {
+            urlInfo = urlInfo.withDifferentPathForSameHost(url: newURL)
+        } else if let hostString = newURL.host,
+                  let domain = try? DomainName(input: hostString) {
             // if user moves from one host (search engine)
             // to different (specific website)
             // need to update host completely
-            urlInfo = newURLinfo
+            urlInfo = URLInfo(scheme: .https,
+                              remainingURLpart: newURL.path,
+                              domainName: domain,
+                              ipAddress: nil)
         } else {
             assertionFailure("Impossible case with new URL: \(newURL)")
         }
         
-        guard let site = Site(url: urlInfo.domainURL, settings: siteSettings) else {
+        // TODO: `Site` type should have a `URLInfo` init
+        guard let site = Site(url: urlInfo.platformURL, settings: siteSettings) else {
             assertionFailure("Failed create site from URL")
             return
         }
         
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name
-        pluginsFacade?.enablePlugins(for: webView, with: urlInfo.host)
-        InMemoryDomainSearchProvider.shared.remember(host: urlInfo.host)
+        let host = urlInfo.host()
+        pluginsFacade?.enablePlugins(for: webView, with: host)
+        InMemoryDomainSearchProvider.shared.remember(host: host)
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
@@ -291,11 +298,11 @@ final class WebViewController: BaseViewController {
                     break
                 }
             }, receiveValue: { (finalURL) in
-                guard finalURL.hasIPHost else {
+                guard finalURL.hasIPHost, let ipAddress = finalURL.host else {
                     print("Alert - host wasn't replaced on IP address after operation")
                     return
                 }
-                self.urlInfo.ipAddress = finalURL.host
+                self.urlInfo = self.urlInfo.withIPAddress(ipAddress: ipAddress)
                 let request = URLRequest(url: finalURL)
                 self.webView.load(request)
             })
@@ -315,11 +322,11 @@ final class WebViewController: BaseViewController {
                     return
                 }
                 
-                guard finalURL.hasIPHost else {
+                guard finalURL.hasIPHost, let ipAddress = finalURL.host else {
                     print("Alert - host wasn't replaced on IP address after operation")
                     return
                 }
-                self.urlInfo.ipAddress = finalURL.host
+                self.urlInfo = self.urlInfo.withIPAddress(ipAddress: ipAddress)
                 let request = URLRequest(url: finalURL)
                 self.webView.load(request)
             })
@@ -429,11 +436,11 @@ private extension WebViewController {
             dohUsed = needToUseDoH
             // maybe need to trigger UI webview reload state
             externalNavigationDelegate?.didStartProvisionalNavigation()
-            if needToUseDoH && urlInfo.ipAddress != nil {
-                let request = URLRequest(url: urlInfo.url)
+            if needToUseDoH && urlInfo.ipAddressString != nil {
+                let request = URLRequest(url: urlInfo.platformURL)
                 webView.load(request)
             } else {
-                internalLoad(url: urlInfo.domainURL, enableDoH: needToUseDoH)
+                internalLoad(url: urlInfo.platformURL, enableDoH: needToUseDoH)
             }
         }
     }
@@ -457,5 +464,4 @@ private extension WebViewController {
         }
         
     }
-    // swiftlint:disable:next file_length
 }

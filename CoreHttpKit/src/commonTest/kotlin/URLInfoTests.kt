@@ -17,6 +17,8 @@ class URLInfoTests {
         assertEquals(googleDNStr, googleDN.rawString)
         val googleDsnIpInfo = URLInfo(httpsScheme, urlLastPartGoogleDns, googleDN)
         assertEquals(initialGoogleDnsUrlStr, googleDsnIpInfo.url)
+        // should return the original URL if ip address is null
+        assertEquals(initialGoogleDnsUrlStr, googleDsnIpInfo.urlWithIPaddress())
         val googleDNip = "127.0.0.1"
         val updatedGoogleDsnIpInfo = googleDsnIpInfo.withIPAddress(googleDNip)
         assertEquals(withIpAddressGoogleDnsUrlStr, updatedGoogleDsnIpInfo.urlWithIPaddress())

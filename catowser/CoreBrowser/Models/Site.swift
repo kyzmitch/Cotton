@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import HttpKit
 import CoreHttpKit
 
 extension Site {
@@ -28,9 +27,9 @@ extension Site {
 
 public struct Site {
     /// Initial url
-    public let urlInfo: HttpKit.URLIpInfo
+    public let urlInfo: URLInfo
     public var host: Host {
-        return urlInfo.host
+        return urlInfo.host()
     }
     /// Used by top sites by loading high quality image from Assets
     public var highQualityFaviconImage: UIImage?
@@ -53,7 +52,7 @@ public struct Site {
     public let userSpecifiedTitle: String?
 
     public var searchBarContent: String {
-        return searchSuggestion ?? urlInfo.domainURL.absoluteString
+        return searchSuggestion ?? urlInfo.url
     }
 
     public let settings: Settings
@@ -61,10 +60,15 @@ public struct Site {
     public init?(url: URL,
                  searchSuggestion: String? = nil,
                  settings: Settings) {
-        guard let urlInfo = HttpKit.URLIpInfo(url) else {
+        guard let hostString = url.host,
+                let domain = try? DomainName(input: hostString) else {
             return nil
         }
-        self.urlInfo = urlInfo
+        // TODO: parse url.scheme to the enum type from Kotlin
+        urlInfo = URLInfo(scheme: HttpScheme.https,
+                          remainingURLpart: url.path,
+                          domainName: domain,
+                          ipAddress: nil)
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
@@ -78,10 +82,14 @@ public struct Site {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
-        guard let urlInfo = HttpKit.URLIpInfo(decodedUrl) else {
+        guard let domainString = decodedUrl.host,
+                let domainName = try? DomainName(input: domainString) else {
             return nil
         }
-        self.urlInfo = urlInfo
+        self.urlInfo = URLInfo(scheme: .https,
+                               remainingURLpart: decodedUrl.path,
+                               domainName: domainName,
+                               ipAddress: nil)
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
