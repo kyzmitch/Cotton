@@ -15,12 +15,12 @@ public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkRe
     public typealias S = S
     
     public init?(server: S) {
-        if let manager = NetworkReachabilityManager(host: server.hostString) {
+        if let manager = NetworkReachabilityManager(host: server.host.rawString) {
             connectivityManager = manager
         } else if let manager = NetworkReachabilityManager() {
             connectivityManager = manager
         } else {
-            assertionFailure("No connectivity manager for: \(server.hostString)")
+            assertionFailure("No connectivity manager for: \(server.host.rawString)")
             return nil
         }
     }

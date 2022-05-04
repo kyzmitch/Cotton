@@ -16,22 +16,11 @@ struct MockedGoodEndpointResponse: ResponseType {
 }
 
 class MockedGoodServer: ServerDescription {
-    override var hostString: String { "\(prefix).\(domain)" }
-    
-    override var domain: String { "example.com" }
-    
-    private let prefix = "www"
-    
-    override init() {}
-}
-
-class MockedBadNoHostServer: ServerDescription {
-    override var hostString: String { "" }
-    
-    override var domain: String { "" }
-    
-    override init() {}
+    convenience init() {
+        // swiftlint:disable:next force_try
+        let host = try! Host(input: "www.example.com")
+        self.init(host: host, scheme: .https)
+    }
 }
 
 typealias MockedGoodEndpoint = Endpoint<MockedGoodServer>
-typealias MockedBadNoHostEndpoint = Endpoint<MockedBadNoHostServer>
