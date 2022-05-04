@@ -7,6 +7,7 @@
 //
 
 import HttpKit
+import CoreHttpKit
 
 struct MockedGoodEndpointResponse: ResponseType {
     static var successCodes: [Int] {
@@ -14,29 +15,23 @@ struct MockedGoodEndpointResponse: ResponseType {
     }
 }
 
-struct MockedGoodServer: ServerDescription {
-    var hostString: String {
-        return "\(prefix).\(domain)"
-    }
+class MockedGoodServer: ServerDescription {
+    override var hostString: String { "\(prefix).\(domain)" }
     
-    let domain: String = "example.com"
+    override var domain: String { "example.com" }
     
-    let prefix = "www"
+    private let prefix = "www"
     
-    init() {}
+    override init() {}
 }
 
-struct MockedBadNoHostServer: ServerDescription {
-    var hostString: String {
-        return ""
-    }
+class MockedBadNoHostServer: ServerDescription {
+    override var hostString: String { "" }
     
-    let domain: String = ""
+    override var domain: String { "" }
     
-    let prefix = ""
-    
-    init() {}
+    override init() {}
 }
 
-typealias MockedGoodEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedGoodServer>
-typealias MockedBadNoHostEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedBadNoHostServer>
+typealias MockedGoodEndpoint = Endpoint<MockedGoodServer>
+typealias MockedBadNoHostEndpoint = Endpoint<MockedBadNoHostServer>

@@ -13,14 +13,14 @@ import Foundation
 class HttpClientTests: XCTestCase {
     let goodServerMock: MockedGoodServer = .init()
     let badNoHostServerMock: MockedBadNoHostServer = .init()
-    let goodEndpointMock: MockedGoodEndpoint = .init(method: .get,
+    let goodEndpointMock: MockedGoodEndpoint = .init(httpMethod: .get,
                                                      path: "players",
                                                      headers: nil,
-                                                     encodingMethod: .queryString(queryItems: []))
-    let badPathEndpointMock: MockedBadNoHostEndpoint = .init(method: .get,
+                                                     encodingMethod: .QueryString(items: .empty))
+    let badPathEndpointMock: MockedBadNoHostEndpoint = .init(httpMethod: .get,
                                                              path: "/players",
                                                              headers: nil,
-                                                             encodingMethod: .queryString(queryItems: []))
+                                                             encodingMethod: .QueryString(items: .empty))
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
     // swiftlint:disable:next force_unwrapping
     lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
@@ -46,9 +46,9 @@ class HttpClientTests: XCTestCase {
             }
         }, goodEndpointMock)
         let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse,
-                                                            MockedGoodServer,
-                                                            HttpKit.RxFreeInterface<MockedGoodEndpointResponse,
-                                                                                        MockedGoodServer>> = .init(.closure(closureWrapper))
+                                                         MockedGoodServer,
+                                                         HttpKit.RxFreeInterface<MockedGoodEndpointResponse,
+                                                                                 MockedGoodServer>> = .init(.closure(closureWrapper))
         goodHttpClient.makeRxRequest(for: goodEndpointMock,
                                         withAccessToken: nil,
                                         transport: badNetBackendMock)
@@ -60,16 +60,16 @@ class HttpClientTests: XCTestCase {
         let closureWrapper: HttpKit.ClosureWrapper<MockedGoodEndpointResponse, MockedBadNoHostServer> = .init({ result in
             switch result {
             case .failure(let error):
-                XCTAssertEqual(error, HttpKit.HttpError.failedConstructUrl, "Not expected error")
+                XCTAssertEqual(error, HttpKit.HttpError.failedKotlinRequestConstruct, "Not expected error")
                 expectationUrlFail.fulfill()
             case .success:
                 XCTFail("Expected to see an error")
             }
         }, badPathEndpointMock)
         let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse,
-                                                            MockedBadNoHostServer,
-                                                            HttpKit.RxFreeInterface<MockedGoodEndpointResponse,
-                                                                                        MockedBadNoHostServer>> = .init(.closure(closureWrapper))
+                                                         MockedBadNoHostServer,
+                                                         HttpKit.RxFreeInterface<MockedGoodEndpointResponse,
+                                                                                 MockedBadNoHostServer>> = .init(.closure(closureWrapper))
         badNoHostHttpClient.makeRxRequest(for: badPathEndpointMock,
                                              withAccessToken: nil,
                                              transport: badNetBackendMock)

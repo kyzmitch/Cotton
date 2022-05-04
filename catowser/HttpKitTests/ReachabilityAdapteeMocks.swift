@@ -7,6 +7,7 @@
 //
 
 import HttpKit
+import CoreHttpKit
 
 final class MockedReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {
     public typealias S = S
