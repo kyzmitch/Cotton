@@ -9,15 +9,9 @@
 import CoreHttpKit
 
 public class GoogleServer: ServerDescription {
-    public override var hostString: String {
-        return "\(prefix).\(domain)"
+    public convenience init() {
+        // swiftlint:disable:next force_try
+        let host = try! Host(input: "www.google.com")
+        self.init(host: host, scheme: .https)
     }
-    
-    public override var domain: String {
-        return "google.com"
-    }
-    
-    private let prefix = "www"
-    
-    public override init() {}
 }

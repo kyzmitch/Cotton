@@ -22,18 +22,10 @@ enum class HttpScheme(val stringValue: String, val port: Int) {
 /**
  * A server description base interface
  *
- * @property hostString A raw string (could contain dots and domains)
- * @property domain The minimum part of the host
+ * @property host A host name (usually domain name and not an ip address)
  * @property scheme Server protocol type (could be HTTPS, HTTP, etc.)
  * */
-/* interface */ abstract class ServerDescription {
-    /**
-     * TODO: use Host type instead of a raw string
-     * */
-    abstract val hostString: String
-    abstract val domain: String
-    val scheme: HttpScheme
-        get() = HttpScheme.https
+open class ServerDescription(val host: Host, val scheme: HttpScheme = HttpScheme.https) {
     init {
         freeze()
     }

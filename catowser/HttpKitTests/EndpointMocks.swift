@@ -7,6 +7,7 @@
 //
 
 import HttpKit
+import CoreHttpKit
 
 struct MockedGoodEndpointResponse: ResponseType {
     static var successCodes: [Int] {
@@ -14,29 +15,12 @@ struct MockedGoodEndpointResponse: ResponseType {
     }
 }
 
-struct MockedGoodServer: ServerDescription {
-    var hostString: String {
-        return "\(prefix).\(domain)"
+class MockedGoodServer: ServerDescription {
+    convenience init() {
+        // swiftlint:disable:next force_try
+        let host = try! Host(input: "www.example.com")
+        self.init(host: host, scheme: .https)
     }
-    
-    let domain: String = "example.com"
-    
-    let prefix = "www"
-    
-    init() {}
 }
 
-struct MockedBadNoHostServer: ServerDescription {
-    var hostString: String {
-        return ""
-    }
-    
-    let domain: String = ""
-    
-    let prefix = ""
-    
-    init() {}
-}
-
-typealias MockedGoodEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedGoodServer>
-typealias MockedBadNoHostEndpoint = HttpKit.Endpoint<MockedGoodEndpointResponse, MockedBadNoHostServer>
+typealias MockedGoodEndpoint = Endpoint<MockedGoodServer>

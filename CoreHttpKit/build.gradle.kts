@@ -43,6 +43,14 @@ dependencies {
     commonTestImplementation(kotlin("test-annotations-common"))
 }
 
+/**
+ * was forced to up the macOS version to 11, because original
+ * `10.15` - format with a dot is not supported and
+ * produces the wrong Package.swift
+ *
+ * And it didn't help, https://github.com/ge-org/multiplatform-swiftpackage/issues/33
+ * */
+
 val frameworkName = "CoreHttpKit"
 multiplatformSwiftPackage {
     packageName(frameworkName)
@@ -50,6 +58,7 @@ multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
         iOS { v("13") }
+        macOS { v("11") }
     }
 }
 
@@ -58,6 +67,14 @@ multiplatformSwiftPackage {
 kotlin {
     val xcf = XCFramework(frameworkName)
     ios {
+        binaries.framework {
+            embedBitcode(BitcodeEmbeddingMode.BITCODE)
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
+    // For unit tests in Xcode on Mac Catalyst
+    macosX64 {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
