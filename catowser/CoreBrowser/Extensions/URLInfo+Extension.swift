@@ -8,7 +8,7 @@
 
 import CoreHttpKit
 
-extension URLInfo {
+public extension URLInfo {
     func withDifferentPathForSameIp(url: URL) -> URLInfo {
         /// Call this function only after checking that `url.host` is IP address.
         guard url.hasIPHost else {
@@ -42,7 +42,6 @@ extension URLInfo {
                        ipAddress: ipAddressString)
     }
 
-    
     var platformURL: URL {
         guard let platformURL = URL(string: url) else {
             // This shouldn't fail
@@ -62,5 +61,14 @@ extension URLInfo {
         }
         return isSameHost
     }
-
+    
+    convenience init?(_ url: URL) {
+        guard let hostString = url.host,
+              let schemeString = url.scheme,
+              let domain = try? DomainName(input: hostString) else {
+            return nil
+        }
+        let scheme: HttpScheme = .companion.create(rawString: schemeString) ?? HttpScheme.https
+        self.init(scheme: scheme, remainingURLpart: url.path, domainName: domain, ipAddress: nil)
+    }
 }

@@ -4,7 +4,17 @@ import kotlin.native.concurrent.freeze
 
 enum class HttpScheme(val stringValue: String, val port: Int) {
     https("https", 443),
-    http("http", 80)
+    http("http", 80);
+
+    companion object {
+        fun create(rawString: String): HttpScheme? {
+            return when (rawString) {
+                "https" -> https
+                "http" -> http
+                else -> null
+            }
+        }
+    }
 }
 
 // https://blog.kotlin-academy.com/abstract-class-vs-interface-in-kotlin-5ab8697c3a14

@@ -60,15 +60,10 @@ public struct Site {
     public init?(url: URL,
                  searchSuggestion: String? = nil,
                  settings: Settings) {
-        guard let hostString = url.host,
-                let domain = try? DomainName(input: hostString) else {
+        guard let createdURLinfo = URLInfo(url) else {
             return nil
         }
-        // TODO: parse url.scheme to the enum type from Kotlin
-        urlInfo = URLInfo(scheme: HttpScheme.https,
-                          remainingURLpart: url.path,
-                          domainName: domain,
-                          ipAddress: nil)
+        urlInfo = createdURLinfo
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil

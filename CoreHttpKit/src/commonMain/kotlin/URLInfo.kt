@@ -13,6 +13,7 @@ import kotlin.native.concurrent.freeze
  * @property scheme A URL prefix describing the protocol name
  * @property remainingURLpart The string contatining the path of URL and query parameters
  * @property domainName A name of the server
+ * @property ipAddress A replacement for the domain name.
  * */
 class URLInfo constructor(private val scheme: HttpScheme,
                           private val remainingURLpart: String,
