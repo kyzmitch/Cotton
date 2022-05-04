@@ -188,29 +188,11 @@ final class WebViewController: BaseViewController {
     }
     
     func handleLinkLoading(_ newURL: URL, _ webView: WKWebView) {
-        // TODO: improve this handling and mutations
-        if newURL.hasIPHost {
-            urlInfo = urlInfo.withDifferentPathForSameIp(url: newURL)
-        } else if urlInfo.sameHost(with: newURL) {
-            urlInfo = urlInfo.withDifferentPathForSameHost(url: newURL)
-        } else if let hostString = newURL.host,
-                  let domain = try? DomainName(input: hostString) {
-            // if user moves from one host (search engine)
-            // to different (specific website)
-            // need to update host completely
-            urlInfo = URLInfo(scheme: .https,
-                              remainingURLpart: newURL.path,
-                              domainName: domain,
-                              ipAddress: nil)
-        } else {
-            assertionFailure("Impossible case with new URL: \(newURL)")
-        }
-        
-        // TODO: `Site` type should have a `URLInfo` init
-        guard let site = Site(url: urlInfo.platformURL, settings: siteSettings) else {
-            assertionFailure("Failed create site from URL")
+        guard let createdURLinfo = urlInfo.withSimilar(newURL) else {
             return
         }
+        urlInfo = createdURLinfo
+        let site = Site(urlInfo, siteSettings)
         
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name

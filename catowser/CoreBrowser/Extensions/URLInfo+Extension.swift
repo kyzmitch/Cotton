@@ -9,7 +9,7 @@
 import CoreHttpKit
 
 public extension URLInfo {
-    func withDifferentPathForSameIp(url: URL) -> URLInfo {
+    private func withDifferentPathForSameIp(url: URL) -> URLInfo {
         /// Call this function only after checking that `url.host` is IP address.
         guard url.hasIPHost else {
             return self
@@ -29,7 +29,7 @@ public extension URLInfo {
                        ipAddress: ipAddressString)
     }
     
-    func withDifferentPathForSameHost(url: URL) -> URLInfo {
+    private func withDifferentPathForSameHost(url: URL) -> URLInfo {
         guard !url.hasIPHost else {
             return self
         }
@@ -70,5 +70,21 @@ public extension URLInfo {
         }
         let scheme: HttpScheme = .companion.create(rawString: schemeString) ?? HttpScheme.https
         self.init(scheme: scheme, remainingURLpart: url.path, domainName: domain, ipAddress: nil)
+    }
+    
+    func withSimilar(_ newURL: URL) -> URLInfo? {
+        if newURL.hasIPHost {
+            return withDifferentPathForSameIp(url: newURL)
+        } else if sameHost(with: newURL) {
+            return withDifferentPathForSameHost(url: newURL)
+        } else if let createdURLinfo = URLInfo(newURL) {
+            // if user moves from one host (search engine)
+            // to different (specific website)
+            // need to update host completely
+            return createdURLinfo
+        } else {
+            assertionFailure("Impossible case with new URL: \(newURL)")
+            return nil
+        }
     }
 }

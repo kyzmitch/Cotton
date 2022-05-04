@@ -77,18 +77,22 @@ public struct Site {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
-        guard let domainString = decodedUrl.host,
-                let domainName = try? DomainName(input: domainString) else {
+        guard let createdURLinfo = URLInfo(decodedUrl) else {
             return nil
         }
-        self.urlInfo = URLInfo(scheme: .https,
-                               remainingURLpart: decodedUrl.path,
-                               domainName: domainName,
-                               ipAddress: nil)
+        urlInfo = createdURLinfo
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
         self.settings = settings
+    }
+    
+    public init(_ urlInfo: URLInfo,_ settings: Settings) {
+        self.urlInfo = urlInfo
+        self.settings = settings
+        self.searchSuggestion = nil
+        userSpecifiedTitle = nil
+        highQualityFaviconImage = nil
     }
 }
 
