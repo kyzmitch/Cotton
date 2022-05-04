@@ -8,7 +8,6 @@
 
 import Foundation
 import Network
-import HttpKit
 import CoreHttpKit
 
 public extension URL {
@@ -61,8 +60,8 @@ public extension URL {
         self.init(string: format)
     }
     
-    init?(faviconIPInfo: HttpKit.URLIpInfo) {
-        guard let ipAddress = faviconIPInfo.ipAddress else {
+    init?(faviconIPInfo: URLInfo) {
+        guard let ipAddress = faviconIPInfo.ipAddressString else {
             return nil
         }
         let format = "https://\(ipAddress)/favicon.ico"

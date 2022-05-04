@@ -42,7 +42,7 @@ extension WebViewController: SiteNavigationDelegate {
     func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
         externalNavigationDelegate?.openTabMenu(from: sourceView,
                                                 and: sourceRect,
-                                                for: urlInfo.host,
+                                                for: urlInfo.host(),
                                                 siteSettings: siteSettings)
     }
     
@@ -56,6 +56,6 @@ extension WebViewController: SiteNavigationDelegate {
         recreateWebView(forceRecreate: true)
         setupScripts(canLoadPlugins: siteSettings.canLoadPlugins)
         reattachWebViewObservers()
-        internalLoad(url: urlInfo.url, enableDoH: dohUsed)
+        internalLoad(url: urlInfo.platformURL, enableDoH: dohUsed)
     }
 }

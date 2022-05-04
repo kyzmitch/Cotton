@@ -18,6 +18,17 @@ final class Host @Throws(Host.Error::class) constructor (
     private val hostType: Content
     private var domainName: DomainName? = null
 
+    /**
+     * Creates a Host instance based on Domain Name.
+     *
+     * It would be better thing to make this constructor main,
+     * but at the same time it must not fail with any exception
+     * because the input parameter is a valid DomainName
+     *
+     * @param domain A valid domain name
+     * */
+    constructor(domain: DomainName): this(domain.rawString) {}
+
     internal val getDomainName: DomainName?
         get() = domainName
 

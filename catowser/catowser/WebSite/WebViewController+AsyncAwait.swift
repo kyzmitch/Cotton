@@ -9,14 +9,17 @@
 #if swift(>=5.5)
 
 import Foundation
-import HttpKit
+import CoreHttpKit
 
 extension WebViewController {
     @available(swift 5.5)
     @MainActor
     @available(iOS 15.0, *)
     private func updateWebView(url: URL) async {
-        urlInfo.ipAddress = url.host
+        if url.hasIPHost, let ipAddress = url.host {
+            urlInfo = urlInfo.withIPAddress(ipAddress: ipAddress)
+        }
+        
         webView.load(URLRequest(url: url))
     }
     

@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import HttpKit
 import CoreHttpKit
 
 extension Site {
@@ -28,9 +27,9 @@ extension Site {
 
 public struct Site {
     /// Initial url
-    public let urlInfo: HttpKit.URLIpInfo
+    public let urlInfo: URLInfo
     public var host: Host {
-        return urlInfo.host
+        return urlInfo.host()
     }
     /// Used by top sites by loading high quality image from Assets
     public var highQualityFaviconImage: UIImage?
@@ -53,7 +52,7 @@ public struct Site {
     public let userSpecifiedTitle: String?
 
     public var searchBarContent: String {
-        return searchSuggestion ?? urlInfo.domainURL.absoluteString
+        return searchSuggestion ?? urlInfo.url
     }
 
     public let settings: Settings
@@ -61,10 +60,10 @@ public struct Site {
     public init?(url: URL,
                  searchSuggestion: String? = nil,
                  settings: Settings) {
-        guard let urlInfo = HttpKit.URLIpInfo(url) else {
+        guard let createdURLinfo = URLInfo(url) else {
             return nil
         }
-        self.urlInfo = urlInfo
+        urlInfo = createdURLinfo
         self.searchSuggestion = searchSuggestion
         userSpecifiedTitle = nil
         highQualityFaviconImage = nil
@@ -78,14 +77,22 @@ public struct Site {
         guard let decodedUrl = URL(string: urlString) else {
             return nil
         }
-        guard let urlInfo = HttpKit.URLIpInfo(decodedUrl) else {
+        guard let createdURLinfo = URLInfo(decodedUrl) else {
             return nil
         }
-        self.urlInfo = urlInfo
+        urlInfo = createdURLinfo
         searchSuggestion = nil
         userSpecifiedTitle = customTitle
         highQualityFaviconImage = image
         self.settings = settings
+    }
+    
+    public init(_ urlInfo: URLInfo,_ settings: Settings) {
+        self.urlInfo = urlInfo
+        self.settings = settings
+        self.searchSuggestion = nil
+        userSpecifiedTitle = nil
+        highQualityFaviconImage = nil
     }
 }
 

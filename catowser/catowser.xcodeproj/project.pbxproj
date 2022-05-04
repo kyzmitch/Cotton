@@ -263,7 +263,6 @@
 		8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8035E924442F45000E035F /* NetworkExtension.framework */; };
 		8A8035F224446234000E035F /* AppProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8035F124446234000E035F /* AppProxyProvider.swift */; };
 		8A8035F724446234000E035F /* DNSProxy.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8A8035EF24446234000E035F /* DNSProxy.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F642424AE000070503C /* URLInfo.swift */; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
 		8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */; };
 		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
@@ -287,6 +286,7 @@
 		8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A978D4A23F34942007ECB0C /* Security.framework */; };
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
+		8A9863692822441300F679D7 /* URLInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A986366282171F000F679D7 /* URLInfo+Extension.swift */; };
 		8AA4FFF527A013DC003C3BBA /* HTTPAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */; };
 		8AA60B2225A33568002EF8AF /* TabCacheErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
@@ -812,7 +812,6 @@
 		8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDnsServer.swift; sourceTree = "<group>"; };
 		8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CryptoKit.framework; sourceTree = DEVELOPER_DIR; };
 		8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNavigationProtocols.swift; sourceTree = "<group>"; };
-		8A510F642424AE000070503C /* URLInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLInfo.swift; sourceTree = "<group>"; };
 		8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SystemExtensions.swift"; sourceTree = "<group>"; };
 		8A553519247D740900E3B330 /* SiteMenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuModel.swift; sourceTree = "<group>"; };
 		8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
@@ -858,6 +857,7 @@
 		8A978D4823F34909007ECB0C /* AuthChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthChallenge.swift; sourceTree = "<group>"; };
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		8A986366282171F000F679D7 /* URLInfo+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLInfo+Extension.swift"; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Alamofire.swift"; sourceTree = "<group>"; };
 		8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAdapteeMocks.swift; sourceTree = "<group>"; };
@@ -1822,7 +1822,6 @@
 				8AE6D16B2350FF35006316AD /* HttpKit.h */,
 				8AE6D16C2350FF35006316AD /* Info.plist */,
 				8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */,
-				8A510F642424AE000070503C /* URLInfo.swift */,
 				8AB4A1AE27B5522B008030FB /* ClosureWrappers.swift */,
 				8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */,
 				8AB4A1B027B55268008030FB /* ResponseHandlingApiType.swift */,
@@ -1886,6 +1885,7 @@
 		C70724C8201E603E0021CF5D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8A986366282171F000F679D7 /* URLInfo+Extension.swift */,
 				C705C0ED204340BD0018067F /* UIColour+CatowserExtensions.swift */,
 				605C550621F8AA5900B3DC73 /* ReusableItem.swift */,
 				604A500821F9CFE400EF07F9 /* Collection.swift */,
@@ -2992,6 +2992,7 @@
 				60D52CEE22572F2300CB56F0 /* CollectionViewInterface.swift in Sources */,
 				6094E732221FE2EF004269A2 /* Collection.swift in Sources */,
 				6094E730221FE2E5004269A2 /* UIColour+CatowserExtensions.swift in Sources */,
+				8A9863692822441300F679D7 /* URLInfo+Extension.swift in Sources */,
 				60C2C8F12270886A00F5D869 /* ReloadWithCompletion.swift in Sources */,
 				6094E735221FE2FE004269A2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8A745C0F2480287700A379AD /* TabsStoragable.swift in Sources */,
@@ -3308,7 +3309,6 @@
 				8AB4A1B127B55268008030FB /* ResponseHandlingApiType.swift in Sources */,
 				8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */,
 				8AB5B3C4280C8B3D001F8644 /* RequestInterfaces.swift in Sources */,
-				8A80D0D42451B1E40025528D /* URLInfo.swift in Sources */,
 				8ABDB0B427B24FB300D6EDE7 /* HttpClient+Combine.swift in Sources */,
 				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
 				8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */,
