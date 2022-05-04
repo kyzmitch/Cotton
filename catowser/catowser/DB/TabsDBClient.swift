@@ -281,7 +281,7 @@ fileprivate extension CDSite {
         self.init(context: context)
         searchSuggestion = site.searchSuggestion
         userSpecifiedTitle = site.userSpecifiedTitle
-        siteUrl = site.urlInfo.domainURL
+        siteUrl = site.urlInfo.platformURL
         settings = CDSiteSettings(context: context, siteSettings: site.settings)
     }
 }

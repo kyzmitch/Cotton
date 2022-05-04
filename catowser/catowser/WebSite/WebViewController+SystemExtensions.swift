@@ -18,7 +18,7 @@ private extension WebViewController {
         guard isSameHost else {
             return false
         }
-        guard let checker = try? DomainNativeAppChecker(host: urlInfo.host) else {
+        guard let checker = try? DomainNativeAppChecker(host: urlInfo.host()) else {
             return false
         }
         externalNavigationDelegate?.didOpenSiteWith(appName: checker.correspondingDomain)
@@ -87,7 +87,7 @@ extension WebViewController: WKNavigationDelegate {
         switch url.scheme {
         case "http", "https":
             if dohUsed &&
-                urlInfo.host.isSimilar(with: url) &&
+                urlInfo.host().isSimilar(with: url) &&
                 !url.hasIPHost {
                 /**
                  To avoid errors, when DoH is enabled, many sites

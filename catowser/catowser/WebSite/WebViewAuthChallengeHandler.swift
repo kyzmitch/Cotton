@@ -7,18 +7,18 @@
 //
 
 import WebKit
-import HttpKit
+import CoreHttpKit
 import Alamofire
 
 final class WebViewAuthChallengeHandler {
     typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     
-    let urlInfo: HttpKit.URLIpInfo
+    let urlInfo: URLInfo
     let challenge: URLAuthenticationChallenge
     let completionHandler: AuthHandler
     let webView: WKWebView
     
-    init(_ urlInfo: HttpKit.URLIpInfo,
+    init(_ urlInfo: URLInfo,
          _ webView: WKWebView,
          _ challenge: URLAuthenticationChallenge,
          _ completionHandler: @escaping AuthHandler) {
@@ -37,14 +37,14 @@ final class WebViewAuthChallengeHandler {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        if let currentIPAddress = urlInfo.ipAddress, currentIPAddress == challenge.protectionSpace.host {
+        if let currentIPAddress = urlInfo.ipAddressString, currentIPAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
-                              urlInfo.host.rawString,
+                              urlInfo.domainName.rawString,
                               presentationController,
                               completionHandler,
                               completion)
         } else {
-            guard urlInfo.host.isSimilar(name: challenge.protectionSpace.host) else {
+            guard urlInfo.host().isSimilar(name: challenge.protectionSpace.host) else {
                 // Here web site is trying to complete navigation
                 // requests for supplementary hosts like analytics.
                 // Obviously they're using own certificates to validate SSL
