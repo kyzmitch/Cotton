@@ -9,13 +9,9 @@
 import CoreHttpKit
 
 public class DuckDuckGoServer: ServerDescription {
-    public override var hostString: String {
-        return domain
+    public convenience init() {
+        // swiftlint:disable:next force_try
+        let host = try! Host(input: "ac.duckduckgo.com")
+        self.init(host: host, scheme: .https)
     }
-    
-    public override var domain: String {
-        return "ac.duckduckgo.com"
-    }
-    
-    public override init() {}
 }

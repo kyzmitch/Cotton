@@ -1,22 +1,8 @@
+import org.cottonweb.CoreHttpKit.Host
 import org.cottonweb.CoreHttpKit.ServerDescription
 
-class MockGoogleDnsServer : ServerDescription() {
-    override val hostString: String
-        get() = domain
-    override val domain: String
-        get() = "dns.google"
-}
+class MockGoogleDnsServer : ServerDescription(Host("dns.google")) {}
 
-class MockGoogleSearchServer : ServerDescription() {
-    override val hostString: String
-        get() = "www" + "." + domain
-    override val domain: String
-        get() = "google.com"
-}
+class MockGoogleSearchServer : ServerDescription(Host("www.google.com")) {}
 
-class MockDuckDuckGoServer : ServerDescription() {
-    override val hostString: String
-        get() = domain
-    override val domain: String
-        get() = "ac.duckduckgo.com"
-}
+class MockDuckDuckGoServer : ServerDescription(Host("ac.duckduckgo.com")) {}

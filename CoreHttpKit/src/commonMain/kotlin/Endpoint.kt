@@ -82,7 +82,7 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
 
     private fun createRawURL(server: S): String {
         val scheme = server.scheme
-        val rawURL: String = scheme.stringValue + "://" + server.hostString + ":" + scheme.port + "/" + path
+        val rawURL: String = scheme.stringValue + "://" + server.host.rawString + ":" + scheme.port + "/" + path
         val queryUrlPart = createQueryString()
         if (queryUrlPart != null) {
             val builder = StringBuilder(rawURL)

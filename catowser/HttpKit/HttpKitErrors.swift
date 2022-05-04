@@ -16,7 +16,6 @@ extension HttpKit {
         
         case zombieSelf
         case swiftVersionIsTooLowForAsyncAwait
-        case failedConstructUrl
         case noAuthenticationToken
         case failedConstructRequestParameters
         case invalidDomainName(error: DomainName.Error)
@@ -63,7 +62,6 @@ extension HttpKit {
             switch (lhs, rhs) {
             case (.zombieSelf, .zombieSelf),
                 (.swiftVersionIsTooLowForAsyncAwait, .swiftVersionIsTooLowForAsyncAwait),
-                (.failedConstructUrl, .failedConstructUrl),
                 (.noAuthenticationToken, .noAuthenticationToken),
                 (.failedConstructRequestParameters, .failedConstructRequestParameters),
                 (.failedKotlinRequestConstruct, .failedKotlinRequestConstruct),

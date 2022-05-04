@@ -208,7 +208,6 @@
 		8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A7ECCBE26AF2BF2000C902F /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8A7ECCC626AF2C0D000C902F /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
-		8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7EF3D3273924EF0071BB89 /* HostTests.swift */; };
 		8A7EF3D5273924EF0071BB89 /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
@@ -287,6 +286,8 @@
 		8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */; };
 		8A9863692822441300F679D7 /* URLInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A986366282171F000F679D7 /* URLInfo+Extension.swift */; };
+		8A98636B2822612500F679D7 /* EndpointMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A98636A2822612500F679D7 /* EndpointMocks.swift */; };
+		8A98636F282261E200F679D7 /* CoreHttpKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8A98636E282261E200F679D7 /* CoreHttpKit */; };
 		8AA4FFF527A013DC003C3BBA /* HTTPAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */; };
 		8AA60B2225A33568002EF8AF /* TabCacheErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
@@ -374,9 +375,6 @@
 		8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
-		8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */; };
-		8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8E1652739B74000628DB4 /* EndpointMocks.swift */; };
-		8AD8E1692739BA7500628DB4 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8ADEC2D924642AA200FD389B /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE31135247C664600FF28B1 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8AE31137247C665300FF28B1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE31135247C664600FF28B1 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -830,7 +828,6 @@
 		8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		8A7DCCCC23643032006AAEE2 /* GoogleJSONDNSoHTTPsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleJSONDNSoHTTPsEndpoint.swift; sourceTree = "<group>"; };
 		8A7EF3D1273924EF0071BB89 /* HttpKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HttpKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A7EF3D3273924EF0071BB89 /* HostTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostTests.swift; sourceTree = "<group>"; };
 		8A8035E624442F0F000E035F /* Cotton dnsext.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cotton dnsext.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8035E724442F0F000E035F /* Info-dnsext.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-dnsext.plist"; path = "/Users/aermoshin/prj/catowser/catowser/Info-dnsext.plist"; sourceTree = "<absolute>"; };
 		8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "catowser dnsextDebug.entitlements"; sourceTree = "<group>"; };
@@ -858,6 +855,7 @@
 		8A978D4A23F34942007ECB0C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		8A986366282171F000F679D7 /* URLInfo+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLInfo+Extension.swift"; sourceTree = "<group>"; };
+		8A98636A2822612500F679D7 /* EndpointMocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointMocks.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Alamofire.swift"; sourceTree = "<group>"; };
 		8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAdapteeMocks.swift; sourceTree = "<group>"; };
@@ -908,8 +906,6 @@
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
 		8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitNamespace.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
-		8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
-		8AD8E1652739B74000628DB4 /* EndpointMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointMocks.swift; sourceTree = "<group>"; };
 		8ADAF547240123F600A0D233 /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
 		8ADAF549240124D800A0D233 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureSource.swift; sourceTree = "<group>"; };
@@ -1020,8 +1016,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AD8E1692739BA7500628DB4 /* SPMCommon.framework in Frameworks */,
 				8A7EF3D5273924EF0071BB89 /* HttpKit.framework in Frameworks */,
+				8A98636F282261E200F679D7 /* CoreHttpKit in Frameworks */,
 				BD0665A164911A03D3509789 /* Pods_HttpKitTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1587,9 +1583,7 @@
 		8A7EF3D2273924EF0071BB89 /* HttpKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				8A7EF3D3273924EF0071BB89 /* HostTests.swift */,
-				8AD8E1632739B6CD00628DB4 /* EndpointTests.swift */,
-				8AD8E1652739B74000628DB4 /* EndpointMocks.swift */,
+				8A98636A2822612500F679D7 /* EndpointMocks.swift */,
 				8ABDB0B727B26A5C00D6EDE7 /* JSONEncodableMocks.swift */,
 				8AB0D40E2754FC9B00493EC3 /* HttpClientTests.swift */,
 				8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */,
@@ -2127,6 +2121,9 @@
 				8A7EF3D7273924EF0071BB89 /* PBXTargetDependency */,
 			);
 			name = HttpKitTests;
+			packageProductDependencies = (
+				8A98636E282261E200F679D7 /* CoreHttpKit */,
+			);
 			productName = HttpKitTests;
 			productReference = 8A7EF3D1273924EF0071BB89 /* HttpKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -3134,12 +3131,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8AD8E1662739B74000628DB4 /* EndpointMocks.swift in Sources */,
+				8A98636B2822612500F679D7 /* EndpointMocks.swift in Sources */,
 				8ABDB0B827B26A5C00D6EDE7 /* JSONEncodableMocks.swift in Sources */,
-				8AD8E1642739B6CD00628DB4 /* EndpointTests.swift in Sources */,
 				8AB0D40F2754FC9B00493EC3 /* HttpClientTests.swift in Sources */,
 				8AA4FFF527A013DC003C3BBA /* HTTPAdapteeMocks.swift in Sources */,
-				8A7EF3D4273924EF0071BB89 /* HostTests.swift in Sources */,
 				8AB70E8B27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3533,6 +3528,7 @@
 				INFOPLIST_FILE = JSPlugins/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3569,6 +3565,7 @@
 				INFOPLIST_FILE = JSPlugins/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3602,6 +3599,7 @@
 				INFOPLIST_FILE = CoreBrowser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3636,6 +3634,7 @@
 				INFOPLIST_FILE = CoreBrowser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3855,6 +3854,7 @@
 				INFOPLIST_FILE = BrowserNetworking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -3889,6 +3889,7 @@
 				INFOPLIST_FILE = BrowserNetworking/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4122,6 +4123,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 andreiermoshin. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4157,6 +4159,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 andreiermoshin. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4193,6 +4196,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 andreiermoshin. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4230,6 +4234,7 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 andreiermoshin. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4264,6 +4269,7 @@
 				INFOPLIST_FILE = SPMCommon/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4299,6 +4305,7 @@
 				INFOPLIST_FILE = SPMCommon/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4380,6 +4387,7 @@
 				INFOPLIST_FILE = HttpKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4390,6 +4398,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4415,6 +4424,7 @@
 				INFOPLIST_FILE = HttpKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4424,6 +4434,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4448,6 +4459,7 @@
 				INFOPLIST_FILE = CssParser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4485,6 +4497,7 @@
 				INFOPLIST_FILE = CssParser/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4694,6 +4707,10 @@
 			productName = CoreHttpKit;
 		};
 		8A7A27EF281E47EC006C4C3D /* CoreHttpKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreHttpKit;
+		};
+		8A98636E282261E200F679D7 /* CoreHttpKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CoreHttpKit;
 		};
