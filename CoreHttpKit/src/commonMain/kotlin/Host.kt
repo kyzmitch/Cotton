@@ -27,7 +27,7 @@ final class Host @Throws(Host.Error::class) constructor (
      *
      * @param domain A valid domain name
      * */
-    constructor(domain: DomainName): this(domain.rawString) {}
+    constructor(domain: DomainName) : this(domain.rawString) {}
 
     internal val getDomainName: DomainName?
         get() = domainName

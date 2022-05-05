@@ -15,10 +15,11 @@ import kotlin.native.concurrent.freeze
  * @property domainName A name of the server
  * @property ipAddress A replacement for the domain name.
  * */
-class URLInfo constructor(private val scheme: HttpScheme,
-                          private val remainingURLpart: String,
-                          val domainName: DomainName,
-                          private var ipAddress: String? = null
+class URLInfo constructor(
+    private val scheme: HttpScheme,
+    private val remainingURLpart: String,
+    val domainName: DomainName,
+    private var ipAddress: String? = null
 ) {
 
     /**
