@@ -58,7 +58,6 @@ multiplatformSwiftPackage {
     swiftToolsVersion("5.3")
     targetPlatforms {
         iOS { v("13") }
-        macOS { v("11") }
     }
 }
 
@@ -67,14 +66,6 @@ multiplatformSwiftPackage {
 kotlin {
     val xcf = XCFramework(frameworkName)
     ios {
-        binaries.framework {
-            embedBitcode(BitcodeEmbeddingMode.BITCODE)
-            baseName = frameworkName
-            xcf.add(this)
-        }
-    }
-    // For unit tests in Xcode on Mac Catalyst
-    macosX64 {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
