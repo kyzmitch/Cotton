@@ -113,8 +113,10 @@ private extension String {
 struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {
         let host = try? Host(input: "example.com")
-        let settings = Site.Settings(popupsBlock: true,
-                                     javaScriptEnabled: true)
+        let settings = Site.Settings(isPrivate: false,
+                                     blockPopups: true,
+                                     isJSEnabled: true,
+                                     canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
         let style: MenuModelStyle = .siteMenu(host: host!, siteSettings: settings)
         let model = SiteMenuModel(menuStyle: style,

@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import CoreHttpKit
 
 // MARK: - Allow users of this delegate to control webview navigation
 
@@ -47,11 +48,10 @@ extension WebViewController: SiteNavigationDelegate {
     }
     
     func reloadWithNewSettings(jsEnabled: Bool) {
-        guard jsEnabled != siteSettings.isJsEnabled else {
+        guard jsEnabled != siteSettings.isJSEnabled else {
             return
         }
-        var mutableSettings = siteSettings
-        mutableSettings.isJsEnabled = jsEnabled
+        let mutableSettings = siteSettings.withChanged(javaScriptEnabled: jsEnabled)
         siteSettings = mutableSettings
         recreateWebView(forceRecreate: true)
         setupScripts(canLoadPlugins: siteSettings.canLoadPlugins)

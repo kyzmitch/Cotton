@@ -217,7 +217,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
                 })
         } else {
             let source: ImageSource
-            switch (site.faviconURL, site.highQualityFaviconImage) {
+            switch (site.faviconURL, site.favicon()) {
             case (let url?, nil):
                 source = .url(url)
             case (nil, let image?):

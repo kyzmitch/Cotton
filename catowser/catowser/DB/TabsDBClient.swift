@@ -8,6 +8,7 @@
 
 import CoreData
 import CoreBrowser
+import CoreHttpKit
 
 enum TabsCoreDataError: Swift.Error {
     case noAppSettingsRecordWasFound
@@ -217,25 +218,31 @@ final class TabsDBClient {
 }
 
 fileprivate extension Site.Settings {
-    init(cdSettings: CDSiteSettings) {
-        self.init(popupsBlock: cdSettings.blockPopups,
-                  javaScriptEnabled: cdSettings.canLoadPlugins,
-                  privateTab: cdSettings.isPrivate)
-        self.isJsEnabled = cdSettings.isJsEnabled
+    convenience init(cdSettings: CDSiteSettings) {
+        self.init(isPrivate: cdSettings.isPrivate,
+                  blockPopups: cdSettings.blockPopups,
+                  isJSEnabled: cdSettings.canLoadPlugins,
+                  canLoadPlugins: cdSettings.canLoadPlugins)
     }
 }
 
 fileprivate extension Site {
-    init?(cdSite: CDSite) {
+    convenience init?(cdSite: CDSite) {
         guard let url = cdSite.siteUrl else {
             return nil
         }
         guard let cdSettings = cdSite.settings else {
             return nil
         }
+        guard let urlInfo = URLInfo(url) else {
+            return nil
+        }
         let settings = Site.Settings(cdSettings: cdSettings)
-        self.init(url: url, searchSuggestion: cdSite.searchSuggestion, settings: settings)
-        highQualityFaviconImage = nil
+        self.init(urlInfo: urlInfo,
+                  settings: settings,
+                  faviconData: nil,
+                  searchSuggestion: cdSite.searchSuggestion,
+                  userSpecifiedTitle: nil)
     }
 }
 
@@ -291,7 +298,7 @@ fileprivate extension CDSiteSettings {
         self.init(context: context)
         blockPopups = siteSettings.blockPopups
         canLoadPlugins = siteSettings.canLoadPlugins
-        isJsEnabled = siteSettings.isJsEnabled
+        isJsEnabled = siteSettings.isJSEnabled
         isPrivate = siteSettings.isPrivate
     }
 }

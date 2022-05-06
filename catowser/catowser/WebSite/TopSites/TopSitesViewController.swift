@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 import AlamofireImage
+import CoreHttpKit
 
 protocol TopSitesInterface {
     func reload(with sites: [Site])
@@ -94,7 +95,7 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
 extension SiteCollectionViewCell {
     func reloadSiteCell(with site: Site) {
         titleLabel.text = site.title
-        if let hqImage = site.highQualityFaviconImage {
+        if let hqImage = site.favicon() {
             faviconImageView.image = hqImage
             return
         }
@@ -119,7 +120,7 @@ extension SiteCollectionViewCell {
                 })
         } else {
             let source: ImageSource
-            switch (site.faviconURL, site.highQualityFaviconImage) {
+            switch (site.faviconURL, site.favicon()) {
             case (let url?, nil):
                 source = .url(url)
             case (nil, let image?):
