@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveSwift
+import CoreHttpKit
 
 public extension Tab {
     enum ContentType {

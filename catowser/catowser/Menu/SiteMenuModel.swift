@@ -73,7 +73,7 @@ final class SiteMenuModel: ObservableObject {
         case .siteMenu(host: let host, siteSettings: let settings):
             self.host = host
             self.siteSettings = settings
-            isJavaScriptEnabled = settings.isJsEnabled
+            isJavaScriptEnabled = settings.isJSEnabled
         case .onlyGlobalMenu:
             host = nil
             siteSettings = nil

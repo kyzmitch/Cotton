@@ -7,13 +7,13 @@
 //
 
 import WebKit
-import CoreBrowser
+import CoreHttpKit
 
 extension Site.Settings {
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
     var webViewConfig: WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
-        configuration.preferences.javaScriptEnabled = isJsEnabled
+        configuration.preferences.javaScriptEnabled = isJSEnabled
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
         // We do this to go against the configuration of the <meta name="viewport">

@@ -10,9 +10,7 @@ import UIKit
 import WebKit
 import CoreBrowser
 import JSPlugins
-// needed for `URLInfo`
 import CoreHttpKit
-// needed for `GoogleDnsClient`
 import BrowserNetworking
 import FeaturesFlagsKit
 import ReactiveSwift
@@ -192,7 +190,11 @@ final class WebViewController: BaseViewController {
             return
         }
         urlInfo = createdURLinfo
-        let site = Site(urlInfo, siteSettings)
+        let site = Site(urlInfo: urlInfo,
+                        settings: siteSettings,
+                        faviconData: nil,
+                        searchSuggestion: nil,
+                        userSpecifiedTitle: nil)
         
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name

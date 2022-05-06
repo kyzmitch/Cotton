@@ -12,6 +12,7 @@ import FeaturesFlagsKit
 import Combine
 #endif
 import BrowserNetworking
+import CoreHttpKit
 
 /// Client side extension for `CoreBrowser` `Site` type to be able to detect DoH usage
 /// and hide real domain name for favicon http requests.
@@ -46,5 +47,44 @@ extension Site {
             .mapError { (dnsError) -> Error in
                 return dnsError
             }.eraseToAnyPublisher()
+    }
+    
+    static func create(urlString: String,
+                       customTitle: String? = nil,
+                       image: UIImage? = nil,
+                       settings: Settings) -> Site? {
+        guard let decodedUrl = URL(string: urlString) else {
+            return nil
+        }
+        guard let urlInfo = URLInfo(decodedUrl) else {
+            return nil
+        }
+        
+        let site = Site(urlInfo: urlInfo,
+                        settings: settings,
+                        faviconData: nil,
+                        searchSuggestion: nil,
+                        userSpecifiedTitle: customTitle)
+        
+        if let image = image {
+            return site.withFavicon(image: image)
+        } else {
+            return site
+        }
+    }
+
+    static func create(url: URL,
+                       searchSuggestion: String?,
+                       settings: Settings) -> Site? {
+        guard let urlInfo = URLInfo(url) else {
+            return nil
+        }
+        
+        let site = Site(urlInfo: urlInfo,
+                        settings: settings,
+                        faviconData: nil,
+                        searchSuggestion: searchSuggestion,
+                        userSpecifiedTitle: nil)
+        return site
     }
 }

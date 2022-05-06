@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import JSPlugins
 import BrowserNetworking
+import CoreHttpKit
 
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreGraphics
 import CoreBrowser
+import CoreHttpKit
 import FeaturesFlagsKit
 #if canImport(Combine)
 import Combine
@@ -209,7 +210,7 @@ private extension TabView {
             favicon.image = nil
             return
         }
-        if let hqImage = site.highQualityFaviconImage {
+        if let hqImage = site.favicon() {
             favicon.image = hqImage
             return
         }
@@ -234,7 +235,7 @@ private extension TabView {
                 })
         } else {
             let source: ImageSource
-            switch (site.faviconURL, site.highQualityFaviconImage) {
+            switch (site.faviconURL, site.favicon()) {
             case (let url?, nil):
                 source = .url(url)
             case (nil, let image?):
