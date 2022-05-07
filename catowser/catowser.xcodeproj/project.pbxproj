@@ -190,9 +190,7 @@
 		8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
 		8A5F72042826C1A7008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
 		8A5F72072826C410008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F72082826C410008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8A5F720A2826C432008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F720B2826C432008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8A5F720D2826DD16008E5638 /* ReactiveHttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; };
 		8A5F72102826DD59008E5638 /* ReactiveHttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; };
 		8A5F72112826DD59008E5638 /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -601,28 +599,6 @@
 			files = (
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8A5F72092826C410008E5638 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				8A5F72082826C410008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8A5F720C2826C432008E5638 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				8A5F720B2826C432008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A8035DD24442F0F000E035F /* Embed Frameworks */ = {
@@ -2199,7 +2175,6 @@
 				8AB70E8E27B7AE7A003FB59B /* Frameworks */,
 				8AB70E8F27B7AE7A003FB59B /* Resources */,
 				8AB70EA727B7D629003FB59B /* ShellScript */,
-				8A5F72092826C410008E5638 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2283,7 +2258,6 @@
 				8AE6D1652350FF35006316AD /* Sources */,
 				8AE6D1662350FF35006316AD /* Frameworks */,
 				8AE6D1672350FF35006316AD /* Resources */,
-				8A5F720C2826C432008E5638 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3790,7 +3764,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = "Cotton Dev";
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -3819,7 +3793,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = Cotton;
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
