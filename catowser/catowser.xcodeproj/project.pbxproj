@@ -184,6 +184,15 @@
 		8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A553519247D740900E3B330 /* SiteMenuModel.swift */; };
 		8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */; };
 		8A566F80245D7D7B00E71221 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */; };
+		8A5F71F62826C148008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A5F71F72826C148008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A5F72042826C1A7008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A5F72072826C410008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A5F72082826C410008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8A5F720A2826C432008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A5F720B2826C432008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8A5FD6A426AF31FE0019384A /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A5FD6A526AF31FE0019384A /* HttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A5FD6A926AF34570019384A /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5FD6A826AF34570019384A /* AppErrors.swift */; };
@@ -365,15 +374,6 @@
 		8AD51E932809CD5F00C5D3DC /* HttpKitNamespace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
-		8ADAF9C22826637F0073A189 /* KNCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 8ADAF9C12826637F0073A189 /* KNCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8ADAF9C52826637F0073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
-		8ADAF9C62826637F0073A189 /* KNCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8ADAF9CC282663A70073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
-		8ADAF9D1282663B40073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
-		8ADAF9D4282663C60073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
-		8ADAF9D9282663CD0073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
-		8ADAF9DE282663D50073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
-		8ADAF9E3282663DD0073A189 /* KNCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */; };
 		8ADEC2D924642AA200FD389B /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE31135247C664600FF28B1 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8AE31137247C665300FF28B1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE31135247C664600FF28B1 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -555,55 +555,6 @@
 			remoteGlobalIDString = 8AC4367324798BDB008DD663;
 			remoteInfo = SPMCommon;
 		};
-		8ADAF9C32826637F0073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
-		8ADAF9CE282663A70073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
-		8ADAF9D2282663B40073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
-		8ADAF9D6282663C60073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
-		8ADAF9DB282663CD0073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
-		8ADAF9E0282663D50073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
-		8ADAF9E5282663DD0073A189 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8ADAF9BE2826637E0073A189;
-			remoteInfo = KNCommon;
-		};
 		8AE63B5A248EC38300D6D2E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -627,11 +578,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8ADAF9C62826637F0073A189 /* KNCommon.framework in Embed Frameworks */,
 				8AC4367C24798BDB008DD663 /* SPMCommon.framework in Embed Frameworks */,
 				608DA752223A3BD5009F75BD /* JSPlugins.framework in Embed Frameworks */,
 				6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */,
 				8ABF504527CC1A64007C6427 /* FeaturesFlagsKit.framework in Embed Frameworks */,
+				8A5F71F72826C148008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */,
 				8A27713F268E452000D8878C /* BrowserNetworking.framework in Embed Frameworks */,
 				8AF4337D248EBB2A0047452B /* CssParser.framework in Embed Frameworks */,
 				8A5FD6A526AF31FE0019384A /* HttpKit.framework in Embed Frameworks */,
@@ -647,6 +598,28 @@
 			files = (
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A5F72092826C410008E5638 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8A5F72082826C410008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8A5F720C2826C432008E5638 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8A5F720B2826C432008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8A8035DD24442F0F000E035F /* Embed Frameworks */ = {
@@ -828,6 +801,7 @@
 		8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SystemExtensions.swift"; sourceTree = "<group>"; };
 		8A553519247D740900E3B330 /* SiteMenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuModel.swift; sourceTree = "<group>"; };
 		8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoreHttpKit.xcframework; path = ../CoreHttpKit/build/XCFrameworks/release/CoreHttpKit.xcframework; sourceTree = "<group>"; };
 		8A5FD6A826AF34570019384A /* AppErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
@@ -925,7 +899,6 @@
 		8ADAF549240124D800A0D233 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureSource.swift; sourceTree = "<group>"; };
 		8ADAF54D240126F700A0D233 /* LocalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSettings.swift; sourceTree = "<group>"; };
-		8ADAF9BF2826637E0073A189 /* KNCommon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KNCommon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ADAF9C12826637F0073A189 /* KNCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KNCommon.h; sourceTree = "<group>"; };
 		8AE31135247C664600FF28B1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		8AE3113B247C66DF00FF28B1 /* SiteMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuView.swift; sourceTree = "<group>"; };
@@ -976,10 +949,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8ADAF9D4282663C60073A189 /* KNCommon.framework in Frameworks */,
 				C7519628228DEC190071CE0C /* SwiftSoup.framework in Frameworks */,
 				721DF7B158CBE52302D9227B /* Pods_JSPlugins.framework in Frameworks */,
 				8ADEC2D924642AA200FD389B /* Combine.framework in Frameworks */,
+				8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -989,8 +962,8 @@
 			files = (
 				607CC66722A5505F0037E5EC /* UIKit.framework in Frameworks */,
 				60C2C92122819AE200F5D869 /* CoreImage.framework in Frameworks */,
+				8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				6094E73F221FE65F004269A2 /* ReactiveSwift.framework in Frameworks */,
-				8ADAF9CC282663A70073A189 /* KNCommon.framework in Frameworks */,
 				2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */,
 				8A90636A243323C0009D786E /* Network.framework in Frameworks */,
 				8A7ECCC626AF2C0D000C902F /* HttpKit.framework in Frameworks */,
@@ -1003,6 +976,7 @@
 			files = (
 				608DA751223A3BD5009F75BD /* JSPlugins.framework in Frameworks */,
 				8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */,
+				8A5F71F62826C148008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8ABF504427CC1A64007C6427 /* FeaturesFlagsKit.framework in Frameworks */,
 				8A27715A268E467500D8878C /* BrowserNetworking.framework in Frameworks */,
 				8AF4337C248EBB2A0047452B /* CssParser.framework in Frameworks */,
@@ -1010,8 +984,6 @@
 				8A5FD6A426AF31FE0019384A /* HttpKit.framework in Frameworks */,
 				8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */,
 				8AC4367B24798BDB008DD663 /* SPMCommon.framework in Frameworks */,
-				8ADAF9C52826637F0073A189 /* KNCommon.framework in Frameworks */,
-				8ADAF9D1282663B40073A189 /* KNCommon.framework in Frameworks */,
 				8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */,
 				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
 				21C191D4EBF58D361A99B203 /* Pods_Cotton.framework in Frameworks */,
@@ -1022,9 +994,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8ADAF9E3282663DD0073A189 /* KNCommon.framework in Frameworks */,
 				8AB70E9D27B7AF2C003FB59B /* ReactiveHttpKit.framework in Frameworks */,
 				9E32AED5CC3F3BEF60EA5A51 /* Pods_BrowserNetworking.framework in Frameworks */,
+				8A5F72042826C1A7008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */,
 				8A7ECCBE26AF2BF2000C902F /* SPMCommon.framework in Frameworks */,
 			);
@@ -1078,8 +1050,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */,
-				8ADAF9DE282663D50073A189 /* KNCommon.framework in Frameworks */,
 				F7BE4DBB5923E22193C67E9C /* Pods_ReactiveHttpKit.framework in Frameworks */,
+				8A5F72072826C410008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1102,13 +1074,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8ADAF9BC2826637E0073A189 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8AE63B51248EC38300D6D2E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1122,9 +1087,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8ADAF9D9282663CD0073A189 /* KNCommon.framework in Frameworks */,
 				8A978D4B23F34942007ECB0C /* Security.framework in Frameworks */,
 				8A4D0D8224A279A9009B28A3 /* CryptoKit.framework in Frameworks */,
+				8A5F720A2826C432008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */,
 				8A90636B24332452009D786E /* Network.framework in Frameworks */,
 			);
@@ -1143,6 +1108,7 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */,
 				8ABF505A27CC1B49007C6427 /* Combine.framework */,
 				8A328F3627B6914F0021F6B0 /* SystemConfiguration.framework */,
 				8ABA3CD12522602900E304E2 /* CoreData.framework */,
@@ -1439,7 +1405,6 @@
 				8A7EF3D1273924EF0071BB89 /* HttpKitTests.xctest */,
 				8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */,
 				8ABF503E27CC1A64007C6427 /* FeaturesFlagsKit.framework */,
-				8ADAF9BF2826637E0073A189 /* KNCommon.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2014,14 +1979,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8ADAF9BA2826637E0073A189 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8ADAF9C22826637F0073A189 /* KNCommon.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8AE6D1642350FF35006316AD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2055,7 +2012,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8ADAF9D7282663C60073A189 /* PBXTargetDependency */,
 			);
 			name = JSPlugins;
 			packageProductDependencies = (
@@ -2079,7 +2035,6 @@
 			);
 			dependencies = (
 				8A80D0D82451B2120025528D /* PBXTargetDependency */,
-				8ADAF9CF282663A70073A189 /* PBXTargetDependency */,
 			);
 			name = CoreBrowser;
 			packageProductDependencies = (
@@ -2112,8 +2067,6 @@
 				8A27715C268E467500D8878C /* PBXTargetDependency */,
 				8A5FD6A726AF31FE0019384A /* PBXTargetDependency */,
 				8ABF504327CC1A64007C6427 /* PBXTargetDependency */,
-				8ADAF9C42826637F0073A189 /* PBXTargetDependency */,
-				8ADAF9D3282663B40073A189 /* PBXTargetDependency */,
 			);
 			name = Cotton;
 			packageProductDependencies = (
@@ -2139,7 +2092,6 @@
 				8A277158268E466100D8878C /* PBXTargetDependency */,
 				8A27724C268E4DC500D8878C /* PBXTargetDependency */,
 				8AB70EA027B7AF2C003FB59B /* PBXTargetDependency */,
-				8ADAF9E6282663DD0073A189 /* PBXTargetDependency */,
 			);
 			name = BrowserNetworking;
 			packageProductDependencies = (
@@ -2243,12 +2195,12 @@
 				8AB70E8E27B7AE7A003FB59B /* Frameworks */,
 				8AB70E8F27B7AE7A003FB59B /* Resources */,
 				8AB70EA727B7D629003FB59B /* ShellScript */,
+				8A5F72092826C410008E5638 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				8AB70E9B27B7AEA7003FB59B /* PBXTargetDependency */,
-				8ADAF9E1282663D50073A189 /* PBXTargetDependency */,
 			);
 			name = ReactiveHttpKit;
 			packageProductDependencies = (
@@ -2299,27 +2251,6 @@
 			productReference = 8AC4367424798BDB008DD663 /* SPMCommon.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8ADAF9BE2826637E0073A189 /* KNCommon */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8ADAF9C72826637F0073A189 /* Build configuration list for PBXNativeTarget "KNCommon" */;
-			buildPhases = (
-				8ADAF9BA2826637E0073A189 /* Headers */,
-				8ADAF9BB2826637E0073A189 /* Sources */,
-				8ADAF9BC2826637E0073A189 /* Frameworks */,
-				8ADAF9BD2826637E0073A189 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8ADAF9E9282665750073A189 /* PBXTargetDependency */,
-			);
-			name = KNCommon;
-			packageProductDependencies = (
-			);
-			productName = KNCommon;
-			productReference = 8ADAF9BF2826637E0073A189 /* KNCommon.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 		8AE63B53248EC38300D6D2E4 /* JSPluginsTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AE63B5E248EC38300D6D2E4 /* Build configuration list for PBXNativeTarget "JSPluginsTests" */;
@@ -2348,11 +2279,11 @@
 				8AE6D1652350FF35006316AD /* Sources */,
 				8AE6D1662350FF35006316AD /* Frameworks */,
 				8AE6D1672350FF35006316AD /* Resources */,
+				8A5F720C2826C432008E5638 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				8ADAF9DC282663CD0073A189 /* PBXTargetDependency */,
 			);
 			name = HttpKit;
 			packageProductDependencies = (
@@ -2435,9 +2366,6 @@
 					8AC4367324798BDB008DD663 = {
 						CreatedOnToolsVersion = 11.5;
 					};
-					8ADAF9BE2826637E0073A189 = {
-						CreatedOnToolsVersion = 13.2.1;
-					};
 					8AE63B53248EC38300D6D2E4 = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -2479,7 +2407,6 @@
 				8A277136268E452000D8878C /* BrowserNetworking */,
 				8A8035EE24446234000E035F /* DNSProxy */,
 				8AC4367324798BDB008DD663 /* SPMCommon */,
-				8ADAF9BE2826637E0073A189 /* KNCommon */,
 				8AF43374248EBB2A0047452B /* CssParser */,
 				8AE63B53248EC38300D6D2E4 /* JSPluginsTests */,
 				8AB022EB26258B110053AFF0 /* CoreBrowserTests */,
@@ -2584,13 +2511,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8AC4367224798BDB008DD663 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8ADAF9BD2826637E0073A189 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3351,13 +3271,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8ADAF9BB2826637E0073A189 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8AE63B50248EC38300D6D2E4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3514,45 +3427,6 @@
 			target = 8AC4367324798BDB008DD663 /* SPMCommon */;
 			targetProxy = 8AC4368B24798C09008DD663 /* PBXContainerItemProxy */;
 		};
-		8ADAF9C42826637F0073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9C32826637F0073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9CF282663A70073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9CE282663A70073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9D3282663B40073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9D2282663B40073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9D7282663C60073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9D6282663C60073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9DC282663CD0073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9DB282663CD0073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9E1282663D50073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9E0282663D50073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9E6282663DD0073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8ADAF9BE2826637E0073A189 /* KNCommon */;
-			targetProxy = 8ADAF9E5282663DD0073A189 /* PBXContainerItemProxy */;
-		};
-		8ADAF9E9282665750073A189 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 8ADAF9E8282665750073A189 /* CoreHttpKit */;
-		};
 		8AE63B5B248EC38300D6D2E4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 608DA749223A3BD4009F75BD /* JSPlugins */;
@@ -3656,6 +3530,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.JSPlugins;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3692,6 +3567,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.JSPlugins;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3727,6 +3603,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3761,6 +3638,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -3982,6 +3860,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.BrowserNetworking.debug;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4016,6 +3895,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.BrowserNetworking;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4252,6 +4132,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.ReactiveHttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4287,6 +4168,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.ReactiveHttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4325,6 +4207,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.FeaturesFlagsKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4362,6 +4245,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.FeaturesFlagsKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4399,6 +4283,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4434,79 +4319,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		8ADAF9C82826637F0073A189 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = ERT5B59458;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 andreiermoshin. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.KNCommon;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		8ADAF9C92826637F0073A189 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = ERT5B59458;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 andreiermoshin. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.KNCommon;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4662,6 +4475,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4699,6 +4513,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4826,15 +4641,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8ADAF9C72826637F0073A189 /* Build configuration list for PBXNativeTarget "KNCommon" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8ADAF9C82826637F0073A189 /* Debug */,
-				8ADAF9C92826637F0073A189 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		8AE63B5E248EC38300D6D2E4 /* Build configuration list for PBXNativeTarget "JSPluginsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4906,10 +4712,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
-		};
-		8ADAF9E8282665750073A189 /* CoreHttpKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CoreHttpKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 
