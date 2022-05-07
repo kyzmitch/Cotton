@@ -33,10 +33,21 @@ class URLInfo constructor(
 
     private val completePath: String
         get() {
+            val result: String
             if (query != null) {
-                return path + "?" + query
+                result = path + "?" + query
             } else {
-                return path
+                result = path
+            }
+
+            /**
+             * the Path part of the iOS URL contains the `/` prefix right away
+             * so that, we have to remove it or not use the slash later.
+             * */
+            if (!result.isEmpty() && result.first() == '/') {
+                return result.drop(1)
+            } else {
+                return result
             }
         }
 
