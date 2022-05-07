@@ -24,7 +24,8 @@ public extension URLInfo {
         guard let updatedURL = components.url else { return self }
         
         return URLInfo(scheme: .https,
-                       remainingURLpart: updatedURL.path,
+                       path: updatedURL.path,
+                       query: updatedURL.query,
                        domainName: domainName,
                        ipAddress: ipAddressString)
     }
@@ -37,7 +38,8 @@ public extension URLInfo {
             return self
         }
         return URLInfo(scheme: .https,
-                       remainingURLpart: url.path,
+                       path: url.path,
+                       query: url.query,
                        domainName: domainName,
                        ipAddress: ipAddressString)
     }
@@ -69,7 +71,7 @@ public extension URLInfo {
             return nil
         }
         let scheme: HttpScheme = .companion.create(rawString: schemeString) ?? HttpScheme.https
-        self.init(scheme: scheme, remainingURLpart: url.path, domainName: domain, ipAddress: nil)
+        self.init(scheme: scheme, path: url.path, query: url.query, domainName: domain, ipAddress: nil)
     }
     
     func withSimilar(_ newURL: URL) -> URLInfo? {

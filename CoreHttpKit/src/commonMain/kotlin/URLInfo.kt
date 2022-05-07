@@ -11,13 +11,14 @@ import kotlin.native.concurrent.freeze
  * NOTE: still, older TLS protocol versions show the domain name info.
  *
  * @property scheme A URL prefix describing the protocol name
- * @property remainingURLpart The string contatining the path of URL and query parameters
+ * @property path The string contatining the path of URL and query parameters
  * @property domainName A name of the server
  * @property ipAddress A replacement for the domain name.
  * */
 class URLInfo constructor(
     private val scheme: HttpScheme,
-    private val remainingURLpart: String,
+    private val path: String,
+    private val query: String? = null,
     val domainName: DomainName,
     private var ipAddress: String? = null
 ) {
@@ -30,8 +31,17 @@ class URLInfo constructor(
     val ipAddressString: String?
         get() = ipAddress
 
+    private val completePath: String
+        get() {
+            if (query != null) {
+                return path + "?" + query
+            } else {
+                return path
+            }
+        }
+
     init {
-        url = scheme.stringValue + "://" + domainName.rawString + ":" + scheme.port + "/" + remainingURLpart
+        url = scheme.stringValue + "://" + domainName.rawString + ":" + scheme.port + "/" + completePath
         freeze()
     }
     /**
@@ -44,7 +54,7 @@ class URLInfo constructor(
         // Initially I wanted to have a property which mutates the instance
         // but it won't work when we use freeze function
         // So that, to keep immutability - this create a copy with a new field
-        return URLInfo(scheme, remainingURLpart, domainName, ipAddress)
+        return URLInfo(scheme, path, query, domainName, ipAddress)
     }
 
     /**
@@ -57,7 +67,7 @@ class URLInfo constructor(
         if (ipAddress == null) {
             return url
         }
-        return scheme.stringValue + "://" + ipAddress + ":" + scheme.port + "/" + remainingURLpart
+        return scheme.stringValue + "://" + ipAddress + ":" + scheme.port + "/" + completePath
     }
 
     fun host(): Host {
