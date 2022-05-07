@@ -27,10 +27,7 @@ https://github.com/kyzmitch/CatowserEvolution
 
 ## Screenshots
 
-[//]: # (CSS is filtered by Github, so style="border:5px solid black ; width:300px;" is not working for img tags)
-
-<img src="screenshots/iphone_screenshot.png" width="400"/> | <img src="screenshots/ipad_screenshot.png" width="400" border="5" /> | <img src="screenshots/ipad_landskape_screenshot.png" width="400"/>
---- | --- | ---
-
-
-
+![ipad_landskape_screenshot](https://user-images.githubusercontent.com/622715/167244528-4cf58696-f191-4f96-b59f-e4956fcc429c.png)
+![ipad_screenshot](https://user-images.githubusercontent.com/622715/167244530-7dd2931a-abbc-4804-a52d-e7d516e3ae5d.png)
+![iphone_screenshot](https://user-images.githubusercontent.com/622715/167244532-f120c4f8-1570-4bc5-9caa-9fa0f0a6f47f.png)
+![iphone_tabs_screenshot](https://user-images.githubusercontent.com/622715/167244534-ac07749d-788a-4e91-88dc-5a28f5439eb0.png)
