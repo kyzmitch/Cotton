@@ -3908,7 +3908,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = "Cotton Dev";
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -3937,7 +3937,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = Cotton;
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
