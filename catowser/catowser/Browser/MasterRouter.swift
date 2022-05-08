@@ -83,8 +83,8 @@ final class MasterRouter: NSObject {
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
-    private let searchSuggestClient: SearchEngine = {
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: .duckduckgo, on: .main)
+    private var searchSuggestClient: SearchEngine {
+        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
         guard let xmlData = optionalXmlData else {
             return .googleSearchEngine()
         }
@@ -98,7 +98,7 @@ final class MasterRouter: NSObject {
         }
         
         return osDescription.html
-    }()
+    }
 
     typealias LinksRouterPresenter = AnyViewController & MasterDelegate
 
@@ -397,5 +397,16 @@ extension MasterRouter: DonwloadPanelDelegate {
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect) {
         guard let source = tagsSiteDataSource else { return }
         presentVideoViews(using: source, from: sourceView, and: sourceRect)
+    }
+}
+
+extension FeatureManager {
+    static func searchPluginName() -> KnownSearchPluginName {
+        switch webSearchAutoCompleteValue() {
+        case .google:
+            return .google
+        case .duckduckgo:
+            return .duckduckgo
+        }
     }
 }
