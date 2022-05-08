@@ -89,7 +89,7 @@ private extension WebViewAuthChallengeHandler {
             completionHandler(.useCredential, credential)
         } catch {
             let msg = "Server trust validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
-            AlertPresenter.present(on: presentationController, message: msg)
+            print("Error: \(msg)")
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
             completion()
