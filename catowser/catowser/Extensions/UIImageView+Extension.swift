@@ -39,6 +39,12 @@ extension UIImageView {
         //  As an alternative, it's possible to reimplement image downloading based on Alamofire
         // but it requires too much work.
         //  Firefox for iOS doesn't load favicons for URLs with invalid certificates.
+        guard !url.hasIPHost else {
+            // we even won't try to load the image because with current impl
+            // it will fail 100%
+            backgroundColor = .black
+            return
+        }
         
         // swiftlint:disable:next line_length
         af.setImage(withURL: url, placeholderImage: cachedImage, progressQueue: .global(qos: .userInteractive), imageTransition: .noTransition, runImageTransitionIfCached: false) { [weak self] (dataResponse) in
