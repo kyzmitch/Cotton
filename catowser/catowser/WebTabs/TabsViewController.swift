@@ -63,7 +63,9 @@ final class TabsViewController: BaseViewController {
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.addSubview(tabsStackView)
         view.addSubview(addTabButton)
+#if DEBUG
         view.addSubview(showTabPreviewsButton)
+#endif
     }
     
     override func viewDidLoad() {
@@ -84,11 +86,15 @@ final class TabsViewController: BaseViewController {
         addTabButton.leadingAnchor.constraint(equalTo: stackViewScrollableContainer.trailingAnchor).isActive = true
         addTabButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         
+#if DEBUG
         showTabPreviewsButton.leadingAnchor.constraint(equalTo: addTabButton.trailingAnchor).isActive = true
         showTabPreviewsButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         showTabPreviewsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         showTabPreviewsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         showTabPreviewsButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
+#else
+        addTabButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+#endif
         
         TabsListManager.shared.attach(self)
     }
@@ -136,7 +142,9 @@ private extension TabsViewController {
             self.view.layoutIfNeeded()
         }
         let count = tabsStackView.arrangedSubviews.count
+#if DEBUG
         showTabPreviewsButton.setTitle("\(count)", for: .normal)
+#endif
     }
 
     func makeTabFullyVisibleIfNeeded(_ tabView: TabView) {
@@ -225,7 +233,9 @@ extension TabsViewController: TabsObserver {
     }
     
     func update(with tabsCount: Int) {
+        #if DEBUG
         showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
+        #endif
     }
 
     func initializeObserver(with tabs: [Tab]) {
