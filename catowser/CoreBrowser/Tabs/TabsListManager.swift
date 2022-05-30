@@ -24,7 +24,7 @@ public final class TabsListManager {
     private let selectedTabId: MutableProperty<UUID>
 
     private let storage: TabsStoragable
-    private let positioning: TabsPositioning
+    private let positioning: TabsStates
     private var observers: [TabsObserver] = [TabsObserver]()
     private let queue: DispatchQueue
     private lazy var scheduler: QueueScheduler = {
@@ -39,7 +39,7 @@ public final class TabsListManager {
     private var tabSelectDisposable: Disposable?
     private var tabContentUpdateDisposable: Disposable?
 
-    public init(storage: TabsStoragable, positioning: TabsPositioning) {
+    public init(storage: TabsStoragable, positioning: TabsStates) {
         selectionStrategy = NearbySelectionStrategy()
 
         tabs = MutableProperty<[Tab]>([])

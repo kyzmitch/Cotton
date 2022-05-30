@@ -56,7 +56,7 @@ final class DefaultTabProvider {
     }
 }
 
-extension DefaultTabProvider: TabsPositioning {
+extension DefaultTabProvider: TabsStates {
     var addPosition: AddedTabPosition {
         return FeatureManager.tabAddPositionValue()
     }
