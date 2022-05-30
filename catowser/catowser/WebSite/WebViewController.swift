@@ -32,7 +32,7 @@ final class WebViewController: BaseViewController {
         }
     }
     /// JavaScript Plugins holder
-    private(set) var pluginsFacade: WebViewJSPluginsFacade?
+    private(set) var pluginsState: JSPluginsState?
     /// Own navigation delegate
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     private var webViewObserversAdded = false
@@ -108,7 +108,7 @@ final class WebViewController: BaseViewController {
         siteSettings = site.settings
         configuration = siteSettings.webViewConfig
         if siteSettings.canLoadPlugins {
-            pluginsFacade = WebViewJSPluginsFacade(plugins)
+            pluginsState = JSPluginsState(plugins)
         }
         dnsClient = dnsHttpClient
         dohUsed = false
@@ -199,7 +199,7 @@ final class WebViewController: BaseViewController {
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name
         let host = urlInfo.host()
-        pluginsFacade?.enablePlugins(for: webView, with: host)
+        pluginsState?.enablePlugins(for: webView, with: host)
         InMemoryDomainSearchProvider.shared.remember(host: host)
         
         do {
@@ -342,7 +342,7 @@ private extension WebViewController {
         configuration.userContentController.removeAllUserScripts()
         // inject only for specific sites, to fix case
         // when instagram related plugin is injected to webview with google site
-        pluginsFacade?.visit(configuration.userContentController)
+        pluginsState?.visit(configuration.userContentController)
     }
     
     func addWebViewProgressObserver() {
