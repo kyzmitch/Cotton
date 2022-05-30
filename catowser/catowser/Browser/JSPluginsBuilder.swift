@@ -10,12 +10,12 @@ import Foundation
 import JSPlugins
 
 final class JSPluginsBuilder {
-    fileprivate let _plugins: [CottonJSPlugin]
+    fileprivate let _plugins: [JavaScriptPlugin]
 
     init?(baseDelegate: BasePluginContentDelegate,
           instagramDelegate: InstagramContentDelegate) {
 
-        var array = [CottonJSPlugin]()
+        var array = [JavaScriptPlugin]()
         guard let basePlugin = BasePlugin(delegate: .base(baseDelegate)) else {
             return nil
         }
@@ -29,7 +29,7 @@ final class JSPluginsBuilder {
 }
 
 extension JSPluginsBuilder: PluginsBuilder {
-    var plugins: [CottonJSPlugin] {
+    var plugins: [JavaScriptPlugin] {
         return _plugins
     }
 }

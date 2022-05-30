@@ -9,41 +9,6 @@
 import Foundation
 import WebKit
 
-public protocol InstagramContentDelegate: AnyObject {
-    func didReceiveVideoNodes(_ nodes: [InstagramVideoNode])
-}
-
-public struct InstagramContentPlugin: CottonJSPlugin {
-    public let handler: WKScriptMessageHandler
-
-    public let jsFileName: String = "ig"
-
-    public let messageHandlerName: String = "igHandler"
-
-    public let hostKeyword: String = "instagram"
-
-    public func scriptString(_ enable: Bool) -> String? {
-        return "__cotton__.ig.setEnabled(\(enable ? "true" : "false"));"
-    }
-
-    public let isMainFrameOnly: Bool = true
-
-    public init?(delegate: PluginHandlerDelegateType) {
-        guard case let .instagram(actualDelegate) = delegate else {
-            assertionFailure("failed to create object")
-            return nil
-        }
-        handler = InstagramHandler(actualDelegate)
-    }
-
-    public init?(anyProtocol: Any) {
-        guard let igDelegate = anyProtocol as? InstagramContentDelegate else {
-            return nil
-        }
-        handler = InstagramHandler(igDelegate)
-    }
-}
-
 final class InstagramHandler: NSObject {
     private weak var delegate: InstagramContentDelegate?
     init(_ delegate: InstagramContentDelegate) {

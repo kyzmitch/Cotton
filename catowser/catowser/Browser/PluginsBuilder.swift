@@ -10,5 +10,5 @@ import Foundation
 import JSPlugins
 
 protocol PluginsBuilder {
-    var plugins: [CottonJSPlugin] { get }
+    var plugins: [JavaScriptPlugin] { get }
 }
