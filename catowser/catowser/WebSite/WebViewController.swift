@@ -98,7 +98,7 @@ final class WebViewController: BaseViewController {
      Constructs web view controller for specific site with set of plugins and navigation handler
      */
     init(_ site: Site,
-         plugins: [CottonJSPlugin],
+         plugins: [JavaScriptPlugin],
          externalNavigationDelegate: SiteExternalNavigationDelegate,
          dnsHttpClient: GoogleDnsClient) {
         self.externalNavigationDelegate = externalNavigationDelegate

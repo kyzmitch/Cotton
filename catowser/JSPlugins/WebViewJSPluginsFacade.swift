@@ -23,9 +23,9 @@ public protocol JavaScriptEvaluateble: AnyObject {
 }
 
 public final class WebViewJSPluginsFacade {
-    private let plugins: [CottonJSPlugin]
+    private let plugins: [JavaScriptPlugin]
 
-    public init?(_ plugins: [CottonJSPlugin]) {
+    public init?(_ plugins: [JavaScriptPlugin]) {
         guard plugins.count != 0 else {
             assertionFailure("Can't initialize object with empty plugins list")
             return nil
