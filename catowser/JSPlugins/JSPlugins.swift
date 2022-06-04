@@ -26,9 +26,7 @@ public final class JSPlugins {
 
     public func accept(visitor: WKUserContentController, context: Host) {
         do {
-            try plugins
-                .filter { visitor.canVisit($0, context, true) }
-                .forEach { try visitor.visit($0) }
+            try plugins.forEach { try $0.accept(visitor, context, true) }
         } catch {
             print("\(#function) failed to load plugin: \(error.localizedDescription)")
         }
@@ -37,7 +35,6 @@ public final class JSPlugins {
     public func enable(on webView: JavaScriptEvaluateble, enable: Bool) {
         plugins
             .compactMap { $0.hostKeyword == nil ? nil : $0 }
-            // swiftlint:disable:next force_unwrapping
             .compactMap { $0.scriptString(enable) }
             .forEach { webView.evaluate(jsScript: $0)}
     }

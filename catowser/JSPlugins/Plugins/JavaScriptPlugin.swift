@@ -8,6 +8,7 @@
 
 import Foundation
 import WebKit
+import CoreHttpKit
 
 // Need to use struct or class instead of enum, because it breaks Solid Open/Closed principle
 // And it is not convinient to make association with delegate protocol for plugin handler
@@ -38,4 +39,22 @@ public protocol JavaScriptPlugin {
     func scriptString(_ enable: Bool) -> String?
     init?(delegate: PluginHandlerDelegateType)
     init?(anyProtocol: Any)
+    
+    /**
+     Handles the visitor depending on context.
+     
+     - Parameters:
+        - host represents the hostname from web view (can be used to determine if specific plugin is applicable or not)
+        - needsInject shows if this specific plugin needs to be injected or can be skipped.
+     */
+    func accept(_ visitor: JavaScriptPluginVisitor, _ host: Host, _ needsInject: Bool) throws
+}
+
+extension JavaScriptPlugin {
+    public func accept(_ visitor: JavaScriptPluginVisitor, _ host: Host, _ needsInject: Bool) throws {
+        guard visitor.canVisit(self, host, needsInject) else {
+            return
+        }
+        try visitor.visit(self)
+    }
 }
