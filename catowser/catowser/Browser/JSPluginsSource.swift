@@ -1,5 +1,5 @@
 //
-//  PluginsBuilder.swift
+//  JSPluginsSource.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 31/05/2019.
@@ -9,6 +9,6 @@
 import Foundation
 import JSPlugins
 
-protocol PluginsBuilder {
+protocol JSPluginsSource: AnyObject {
     var plugins: [JavaScriptPlugin] { get }
 }

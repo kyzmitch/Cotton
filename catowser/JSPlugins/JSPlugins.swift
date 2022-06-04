@@ -24,18 +24,20 @@ public final class JSPlugins {
         self.plugins = plugins
     }
 
-    public func accept(visitor: WKUserContentController, context: Host) {
+    public func inject(to visitor: WKUserContentController, context: Host, _ needsInject: Bool) {
+        guard needsInject else {
+            visitor.removeAllUserScripts()
+            return
+        }
+        visitor.removeAllUserScripts() // reset old state
         do {
-            try plugins.forEach { try $0.accept(visitor, context, true) }
+            try plugins.forEach { try $0.accept(visitor, context, needsInject) }
         } catch {
             print("\(#function) failed to load plugin: \(error.localizedDescription)")
         }
     }
 
     public func enable(on webView: JavaScriptEvaluateble, enable: Bool) {
-        plugins
-            .compactMap { $0.hostKeyword == nil ? nil : $0 }
-            .compactMap { $0.scriptString(enable) }
-            .forEach { webView.evaluate(jsScript: $0)}
+        plugins.compactMap { $0.scriptString(enable) }.forEach { webView.evaluate(jsScript: $0)}
     }
 }

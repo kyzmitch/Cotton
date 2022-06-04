@@ -76,7 +76,7 @@ final class WebViewController: BaseViewController {
     private var finalURLFetchDisposable: Disposable?
 
     func load(url: URL, canLoadPlugins: Bool) {
-        setupScripts(canLoadPlugins: canLoadPlugins)
+        setupScripts(canLoadPlugins)
         reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: url, enableDoH: dohUsed)
@@ -88,7 +88,7 @@ final class WebViewController: BaseViewController {
         configuration = site.settings.webViewConfig
         
         recreateWebView()
-        setupScripts(canLoadPlugins: canLoadPlugins)
+        setupScripts(canLoadPlugins)
         reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: urlInfo.platformURL, enableDoH: dohUsed)
@@ -107,9 +107,7 @@ final class WebViewController: BaseViewController {
         urlInfo = site.urlInfo
         siteSettings = site.settings
         configuration = siteSettings.webViewConfig
-        if siteSettings.canLoadPlugins {
-            jsPlugins = JSPlugins(plugins)
-        }
+        jsPlugins = JSPlugins(plugins)
         dnsClient = dnsHttpClient
         dohUsed = false
         super.init(nibName: nil, bundle: nil)
@@ -315,12 +313,8 @@ final class WebViewController: BaseViewController {
             })
     }
     
-    func setupScripts(canLoadPlugins: Bool) {
-        if canLoadPlugins {
-            injectPlugins()
-        } else {
-            configuration.userContentController.removeAllUserScripts()
-        }
+    func setupScripts(_ canLoadPlugins: Bool) {
+        jsPlugins?.inject(to: configuration.userContentController, context: urlInfo.host(), canLoadPlugins)
     }
 }
 
@@ -335,11 +329,6 @@ private extension WebViewController {
         webView.allowsBackForwardNavigationGestures = true
         
         return webView
-    }
-    
-    func injectPlugins() {
-        configuration.userContentController.removeAllUserScripts()
-        jsPlugins?.accept(visitor: configuration.userContentController, context: urlInfo.host())
     }
     
     func addWebViewProgressObserver() {

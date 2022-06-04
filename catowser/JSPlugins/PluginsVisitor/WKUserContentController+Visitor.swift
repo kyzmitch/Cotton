@@ -11,12 +11,12 @@ import CoreHttpKit
 
 /// A Concrete Visitor which is in this case only one possible type from iOS SDK WebKit
 extension WKUserContentController: JavaScriptPluginVisitor {
-    public func canVisit(_ plugin: JavaScriptPlugin, _ host: Host, _ enabled: Bool) -> Bool {
-        guard enabled else {
+    public func canVisit(_ plugin: JavaScriptPlugin, _ host: Host, _ needsInject: Bool) -> Bool {
+        guard needsInject else {
             return false
         }
         guard let pluginHostName = plugin.hostKeyword else {
-            return true // should a base plugin which doesn't need to be enabled (ON by default)
+            return true // should be a base plugin which doesn't need to be enabled (ON by default)
         }
         guard host.isSimilar(name: pluginHostName) else {
             return false
