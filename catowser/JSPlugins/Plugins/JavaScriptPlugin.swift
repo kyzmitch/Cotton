@@ -18,12 +18,23 @@ public enum PluginHandlerDelegateType {
     case instagram(InstagramContentDelegate)
 }
 
+/**
+ Describes the JavaScript plugin model.
+ An Element from visitor design pattern.
+ */
 public protocol JavaScriptPlugin {
     var jsFileName: String { get }
     var messageHandlerName: String { get }
     var isMainFrameOnly: Bool { get }
     var handler: WKScriptMessageHandler { get }
-    var hostKeyword: String { get }
+    var hostKeyword: String? { get }
+    /**
+     Constructs a JavaScript string with specific variable
+     for controlling specific plugin in web view
+     
+     - Parameters:
+        - enable determines if specific plugin should be turned on/off
+     */
     func scriptString(_ enable: Bool) -> String?
     init?(delegate: PluginHandlerDelegateType)
     init?(anyProtocol: Any)

@@ -54,7 +54,7 @@
 		608DA751223A3BD5009F75BD /* JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; };
 		608DA752223A3BD5009F75BD /* JSPlugins.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608DA759223FBB3E009F75BD /* JSPluginFactory.swift */; };
-		608DA760223FD826009F75BD /* JSPluginsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608DA75F223FD826009F75BD /* JSPluginsState.swift */; };
+		608DA760223FD826009F75BD /* JSPlugins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608DA75F223FD826009F75BD /* JSPlugins.swift */; };
 		6094E720221FD2B9004269A2 /* CoreBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6094E71E221FD2B9004269A2 /* CoreBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6094E723221FD2B9004269A2 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -154,6 +154,8 @@
 		8A1C1C272485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C252485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift */; };
 		8A1C1C292485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */; };
 		8A1C1C2A2485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */; };
+		8A258330284B45D30047077A /* JavaScriptPluginVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A25832F284B45D30047077A /* JavaScriptPluginVisitor.swift */; };
+		8A258340284B4F090047077A /* WKUserContentController+Visitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A25833F284B4F090047077A /* WKUserContentController+Visitor.swift */; };
 		8A27713B268E452000D8878C /* BrowserNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A277139268E452000D8878C /* BrowserNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A27713F268E452000D8878C /* BrowserNetworking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A27715A268E467500D8878C /* BrowserNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; };
@@ -679,7 +681,7 @@
 		608DA74C223A3BD5009F75BD /* JSPlugins.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSPlugins.h; sourceTree = "<group>"; };
 		608DA74D223A3BD5009F75BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		608DA759223FBB3E009F75BD /* JSPluginFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginFactory.swift; sourceTree = "<group>"; };
-		608DA75F223FD826009F75BD /* JSPluginsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsState.swift; sourceTree = "<group>"; };
+		608DA75F223FD826009F75BD /* JSPlugins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPlugins.swift; sourceTree = "<group>"; };
 		6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		6094E71C221FD2B9004269A2 /* CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E71E221FD2B9004269A2 /* CoreBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreBrowser.h; sourceTree = "<group>"; };
@@ -774,6 +776,8 @@
 		8A1C1C22248510880098F2F1 /* MasterRouter+TagsRouterInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+TagsRouterInterface.swift"; sourceTree = "<group>"; };
 		8A1C1C252485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+UISearchBarDelegate.swift"; sourceTree = "<group>"; };
 		8A1C1C282485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterRouter+LinkTagsDelegate.swift"; sourceTree = "<group>"; };
+		8A25832F284B45D30047077A /* JavaScriptPluginVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JavaScriptPluginVisitor.swift; sourceTree = "<group>"; };
+		8A25833F284B4F090047077A /* WKUserContentController+Visitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKUserContentController+Visitor.swift"; sourceTree = "<group>"; };
 		8A277137268E452000D8878C /* BrowserNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BrowserNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A277139268E452000D8878C /* BrowserNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BrowserNetworking.h; sourceTree = "<group>"; };
 		8A27713A268E452000D8878C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1196,6 +1200,7 @@
 		608DA74B223A3BD5009F75BD /* JSPlugins */ = {
 			isa = PBXGroup;
 			children = (
+				8A25832E284B45BB0047077A /* PluginsVisitor */,
 				8A9980672845460800E18762 /* Plugins */,
 				8A0E0EA9224A94BE00D86CD7 /* Models */,
 				8A012FA52240110000041487 /* Handlers */,
@@ -1204,7 +1209,7 @@
 				8A998070284548C200E18762 /* JSPluginsError.swift */,
 				8A99806E2845484100E18762 /* JavaScriptEvaluateble.swift */,
 				608DA759223FBB3E009F75BD /* JSPluginFactory.swift */,
-				608DA75F223FD826009F75BD /* JSPluginsState.swift */,
+				608DA75F223FD826009F75BD /* JSPlugins.swift */,
 				608DA74C223A3BD5009F75BD /* JSPlugins.h */,
 				608DA74D223A3BD5009F75BD /* Info.plist */,
 			);
@@ -1502,6 +1507,15 @@
 				75DAB6DA280C44F0005F67FE /* CoreHttpKit */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		8A25832E284B45BB0047077A /* PluginsVisitor */ = {
+			isa = PBXGroup;
+			children = (
+				8A25832F284B45D30047077A /* JavaScriptPluginVisitor.swift */,
+				8A25833F284B4F090047077A /* WKUserContentController+Visitor.swift */,
+			);
+			path = PluginsVisitor;
 			sourceTree = "<group>";
 		};
 		8A277138268E452000D8878C /* BrowserNetworking */ = {
@@ -2974,6 +2988,7 @@
 			files = (
 				8A998071284548C200E18762 /* JSPluginsError.swift in Sources */,
 				8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */,
+				8A258330284B45D30047077A /* JavaScriptPluginVisitor.swift in Sources */,
 				8A99806F2845484100E18762 /* JavaScriptEvaluateble.swift in Sources */,
 				841022D0227D89D80021516F /* HTMLVideoTagsContainer.swift in Sources */,
 				60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */,
@@ -2983,9 +2998,10 @@
 				8A9980692845464000E18762 /* JavaScriptPlugin.swift in Sources */,
 				C7796FF3228E70590071E69C /* HTMLVideoTag.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
-				608DA760223FD826009F75BD /* JSPluginsState.swift in Sources */,
+				608DA760223FD826009F75BD /* JSPlugins.swift in Sources */,
 				8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */,
 				60C2C8F722772FEF00F5D869 /* VideoFileNameble.swift in Sources */,
+				8A258340284B4F090047077A /* WKUserContentController+Visitor.swift in Sources */,
 				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
 				8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */,
 				8A99806B284546BA00E18762 /* InstagramContentPlugin.swift in Sources */,
