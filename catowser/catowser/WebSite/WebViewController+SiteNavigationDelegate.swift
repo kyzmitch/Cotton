@@ -54,7 +54,7 @@ extension WebViewController: SiteNavigationDelegate {
         let mutableSettings = siteSettings.withChanged(javaScriptEnabled: jsEnabled)
         siteSettings = mutableSettings
         recreateWebView(forceRecreate: true)
-        setupScripts(canLoadPlugins: siteSettings.canLoadPlugins)
+        setupScripts(siteSettings.canLoadPlugins)
         reattachWebViewObservers()
         internalLoad(url: urlInfo.platformURL, enableDoH: dohUsed)
     }

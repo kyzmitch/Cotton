@@ -34,9 +34,8 @@ if (typeof window.__cotton__ !== 'undefined') {
                             writable: false,
                             value: function() {
                                 let currentHost = window.location.hostname;
-                                let on4Tube = currentHost.includes("4tube.com");
                                 let onIg = currentHost.includes("instagram.com");
-                                if (on4Tube || onIg) {
+                                if (onIg) {
                                     return false;
                                 } else {
                                     return true;

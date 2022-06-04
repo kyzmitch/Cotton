@@ -9,6 +9,9 @@
 import Foundation
 import JSPlugins
 
+/**
+ Creates the plugins by connecting them with observers (delegates).
+ */
 final class JSPluginsBuilder {
     fileprivate let _plugins: [JavaScriptPlugin]
 
@@ -28,7 +31,7 @@ final class JSPluginsBuilder {
     }
 }
 
-extension JSPluginsBuilder: PluginsBuilder {
+extension JSPluginsBuilder: JSPluginsSource {
     var plugins: [JavaScriptPlugin] {
         return _plugins
     }

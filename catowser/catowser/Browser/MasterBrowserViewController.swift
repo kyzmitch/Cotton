@@ -96,7 +96,7 @@ final class MasterBrowserViewController: BaseViewController {
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
 
-    private var jsPluginsBuilder: PluginsBuilder?
+    private var jsPluginsBuilder: JSPluginsSource?
 
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
