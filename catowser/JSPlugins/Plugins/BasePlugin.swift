@@ -19,9 +19,10 @@ public struct BasePlugin: JavaScriptPlugin {
     public let messageHandlerName: String = .basePluginHName
 
     /// Should be present on any web site no matter which host is it
-    public let hostKeyword: String = ""
+    public let hostKeyword: String? = nil
 
     public func scriptString(_ enable: Bool) -> String? {
+        // always should work, no need to enable it
         return nil
     }
 

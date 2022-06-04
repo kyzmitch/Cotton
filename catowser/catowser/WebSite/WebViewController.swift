@@ -32,7 +32,7 @@ final class WebViewController: BaseViewController {
         }
     }
     /// JavaScript Plugins holder
-    private(set) var pluginsState: JSPluginsState?
+    private(set) var jsPlugins: JSPlugins?
     /// Own navigation delegate
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     private var webViewObserversAdded = false
@@ -76,7 +76,7 @@ final class WebViewController: BaseViewController {
     private var finalURLFetchDisposable: Disposable?
 
     func load(url: URL, canLoadPlugins: Bool) {
-        setupScripts(canLoadPlugins: canLoadPlugins)
+        setupScripts(canLoadPlugins)
         reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: url, enableDoH: dohUsed)
@@ -88,7 +88,7 @@ final class WebViewController: BaseViewController {
         configuration = site.settings.webViewConfig
         
         recreateWebView()
-        setupScripts(canLoadPlugins: canLoadPlugins)
+        setupScripts(canLoadPlugins)
         reattachWebViewObservers()
         dohUsed = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         internalLoad(url: urlInfo.platformURL, enableDoH: dohUsed)
@@ -107,9 +107,7 @@ final class WebViewController: BaseViewController {
         urlInfo = site.urlInfo
         siteSettings = site.settings
         configuration = siteSettings.webViewConfig
-        if siteSettings.canLoadPlugins {
-            pluginsState = JSPluginsState(plugins)
-        }
+        jsPlugins = JSPlugins(plugins)
         dnsClient = dnsHttpClient
         dohUsed = false
         super.init(nibName: nil, bundle: nil)
@@ -198,9 +196,8 @@ final class WebViewController: BaseViewController {
         
         // you must inject re-enable plugins even if web view loaded page from same Host
         // and even if ip address is used instead of domain name
-        let host = urlInfo.host()
-        pluginsState?.enablePlugins(for: webView, with: host)
-        InMemoryDomainSearchProvider.shared.remember(host: host)
+        jsPlugins?.enable(on: webView, enable: true)
+        InMemoryDomainSearchProvider.shared.remember(host: urlInfo.host())
         
         do {
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
@@ -316,12 +313,8 @@ final class WebViewController: BaseViewController {
             })
     }
     
-    func setupScripts(canLoadPlugins: Bool) {
-        if canLoadPlugins {
-            injectPlugins()
-        } else {
-            configuration.userContentController.removeAllUserScripts()
-        }
+    func setupScripts(_ canLoadPlugins: Bool) {
+        jsPlugins?.inject(to: configuration.userContentController, context: urlInfo.host(), canLoadPlugins)
     }
 }
 
@@ -336,13 +329,6 @@ private extension WebViewController {
         webView.allowsBackForwardNavigationGestures = true
         
         return webView
-    }
-    
-    func injectPlugins() {
-        configuration.userContentController.removeAllUserScripts()
-        // inject only for specific sites, to fix case
-        // when instagram related plugin is injected to webview with google site
-        pluginsState?.visit(configuration.userContentController)
     }
     
     func addWebViewProgressObserver() {

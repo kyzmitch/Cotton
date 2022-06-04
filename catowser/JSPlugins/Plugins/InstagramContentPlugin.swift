@@ -20,7 +20,7 @@ public struct InstagramContentPlugin: JavaScriptPlugin {
 
     public let messageHandlerName: String = "igHandler"
 
-    public let hostKeyword: String = "instagram"
+    public let hostKeyword: String? = "instagram"
 
     public func scriptString(_ enable: Bool) -> String? {
         return "__cotton__.ig.setEnabled(\(enable ? "true" : "false"));"
