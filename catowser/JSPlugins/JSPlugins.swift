@@ -11,7 +11,8 @@ import WebKit
 import CoreHttpKit
 
 /**
- An Object Structure (Program) from visitor desgin pattern. Could be a Composite
+ An Object Structure (Program) from visitor design pattern.
+ It allows to iterate over every plugin and apply it to the WebKit content controller.
  */
 public final class JSPlugins {
     private let plugins: [JavaScriptPlugin]
