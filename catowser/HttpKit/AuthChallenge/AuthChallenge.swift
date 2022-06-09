@@ -70,7 +70,15 @@ extension DefaultTrustEvaluator {
             
             switch output.result {
             case .recoverableTrustFailure:
-                let exceptions: CFData = SecTrustCopyExceptions(trust)
+                let exceptions: CFData
+                // Use if #available(iOS 16.0, *)
+                // when `SecTrustCopyExceptions` will be marked with new iOS version
+                // because the return type was changed to nullable/optional
+                guard let cookie = SecTrustCopyExceptions(trust) else {
+                    struct OpaqueCookieNil: Error {}
+                    throw OpaqueCookieNil()
+                }
+                exceptions = cookie
                 SecTrustSetExceptions(trust, exceptions)
                 guard SecTrustSetExceptions(trust, exceptions) else {
                     throw AFError.serverTrustEvaluationFailed(reason: reason)

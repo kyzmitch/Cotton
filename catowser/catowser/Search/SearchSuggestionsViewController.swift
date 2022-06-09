@@ -67,8 +67,6 @@ final class SearchSuggestionsViewController: UITableViewController {
     
 #if swift(>=5.5)
     /// Not private to make it available for extension with async await
-    // @available(swift 5.5)
-    @available(iOS 15.0, *)
     lazy var searchSuggestionTaskHandler: Task.Handle<[String], Error>? = nil
 #endif
     
