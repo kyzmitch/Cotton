@@ -57,12 +57,14 @@ final class SearchSuggestionsViewController: UITableViewController {
     ///
     let ddGoClient: DDGoSuggestionsClient
     
+    /// TODO: Moved to `WebSearchAutocomplete` and can be removed later
     private let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
     
+    /// TODO: Moved to `WebSearchAutocomplete` and can be removed later
     private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated,
                                                        name: waitingQueueName,
                                                        targeting: waitingQueue)
-    
+    /// TODO: Moved to `WebSearchAutocomplete` and can be removed later
     private lazy var waitingQueue = DispatchQueue(label: waitingQueueName)
     
 #if swift(>=5.5)
