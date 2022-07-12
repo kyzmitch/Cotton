@@ -15,10 +15,58 @@ typealias QuerySuggestions = [String]
 
 /// View state, without error, because we want to show at least known domains even if there was a network failure
 /// Need to return to `waitingForQuery` state after view changes the text
-enum SearchSuggestionsViewState {
+enum SearchSuggestionsViewState: Equatable {
     case waitingForQuery
     case knownDomainsLoaded(KnownDomains)
     case everythingLoaded(KnownDomains, QuerySuggestions)
+    
+    func rowsCount(_ section: Int) -> Int {
+        switch self {
+        case .waitingForQuery:
+            return 0
+        case .knownDomainsLoaded(let knownDomains):
+            return knownDomains.count
+        case .everythingLoaded(let knownDomains, let querySuggestions):
+            if section == 0 {
+                return knownDomains.count
+            } else if section == 1 {
+                return querySuggestions.count
+            } else {
+                // impossible case
+                assertionFailure("Not expected section number for suggestions state")
+                return 0
+            }
+        }
+    }
+    
+    var sectionsNumber: Int {
+        switch self {
+        case .waitingForQuery:
+            return 0
+        case .knownDomainsLoaded:
+            return 1
+        case .everythingLoaded:
+            return 2
+        }
+    }
+    
+    func value(from indexPath: IndexPath) -> String? {
+        switch self {
+        case .knownDomainsLoaded(let knownDomains):
+            return knownDomains[indexPath.row]
+        case .everythingLoaded(let knownDomains, let querySuggestions):
+            if indexPath.section == 0 {
+                return knownDomains[indexPath.row]
+            } else if indexPath.section == 1 {
+                return querySuggestions[indexPath.row]
+            } else {
+                assertionFailure("Not expected section number for suggestions state")
+                return nil
+            }
+        default:
+            return nil
+        }
+    }
 }
 
 protocol SearchSuggestionsViewModel: AnyObject {

@@ -297,8 +297,6 @@
 		8A90636B24332452009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
 		8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
-		8A91A0E82678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */; };
-		8A91A0E92678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */; };
 		8A91A0EB2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */; };
 		8A91A0EC2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
@@ -855,7 +853,6 @@
 		8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsViewPreview.swift; sourceTree = "<group>"; };
-		8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchSuggestionsViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
@@ -1358,7 +1355,6 @@
 				841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */,
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
 				C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */,
-				8A91A0E72678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -3165,7 +3161,6 @@
 				8A91A0EB2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */,
 				8A745C0D248027C600A379AD /* TabsCache.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
-				8A91A0E82678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */,
 				8A5FD6A926AF34570019384A /* AppErrors.swift in Sources */,
 				8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */,
@@ -3301,7 +3296,6 @@
 				8A91A0EC2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */,
 				8A745C0C248027C600A379AD /* TabsCache.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
-				8A91A0E92678DAC600872362 /* SearchSuggestionsViewController+AsyncAwait.swift in Sources */,
 				8A5FD6AA26AF34570019384A /* AppErrors.swift in Sources */,
 				8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */,

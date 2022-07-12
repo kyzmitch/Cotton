@@ -24,10 +24,12 @@ protocol MediaLinksPresenter: AnyObject {
 /// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
-    lazy var searchSuggestionsController: SearchSuggestionsViewController = {
-        let vc = SearchSuggestionsViewController(GoogleSuggestionsClient.shared, DDGoSuggestionsClient.shared)
-        return vc
-    }()
+    var searchSuggestionsController: SearchSuggestionsViewController {
+        // It seems it should be computed property
+        // to allow app. to use different view model
+        // based on current feature flag's value
+        return SearchSuggestionsViewController()
+    }
 
     /// The link tags controller to display segments with link types amount
     lazy var linkTagsController: AnyViewController & LinkTagsPresenter = {
