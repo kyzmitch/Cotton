@@ -84,6 +84,11 @@ final class SearchSuggestionsViewController: UITableViewController {
         
         disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
         cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+        
+        // Also would be good to obverve for changes in settings
+        // to notify user to close and open this search table
+        // to re-create view model with recently selected auto complete source.
+        // Need to update FeatureManager enum features
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -28,9 +28,9 @@ enum SearchSuggestionsViewState: Equatable {
             return knownDomains.count
         case .everythingLoaded(let knownDomains, let querySuggestions):
             if section == 0 {
-                return knownDomains.count
-            } else if section == 1 {
                 return querySuggestions.count
+            } else if section == 1 {
+                return knownDomains.count
             } else {
                 // impossible case
                 assertionFailure("Not expected section number for suggestions state")
@@ -56,9 +56,9 @@ enum SearchSuggestionsViewState: Equatable {
             return knownDomains[indexPath.row]
         case .everythingLoaded(let knownDomains, let querySuggestions):
             if indexPath.section == 0 {
-                return knownDomains[indexPath.row]
-            } else if indexPath.section == 1 {
                 return querySuggestions[indexPath.row]
+            } else if indexPath.section == 1 {
+                return knownDomains[indexPath.row]
             } else {
                 assertionFailure("Not expected section number for suggestions state")
                 return nil
