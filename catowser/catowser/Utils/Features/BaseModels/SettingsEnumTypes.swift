@@ -18,6 +18,7 @@ enum WebAutoCompletionSource: Int, CaseIterable {
 
 extension WebAutoCompletionSource: EnumDefaultValueSupportable {
     public var defaultValue: WebAutoCompletionSource {
+        // Google doesn't work for now due to API response changes or something else
         return .duckduckgo
     }
 }

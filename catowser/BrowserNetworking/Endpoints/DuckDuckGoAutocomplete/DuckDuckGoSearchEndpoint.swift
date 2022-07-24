@@ -1,5 +1,5 @@
 //
-//  DuckDuckGoAutoCompleteEndpoint.swift
+//  DuckDuckGoSearchEndpoint.swift
 //  BrowserNetworking
 //
 //  Created by Andrey Ermoshin on 19.02.2022.

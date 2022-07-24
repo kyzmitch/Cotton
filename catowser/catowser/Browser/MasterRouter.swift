@@ -24,10 +24,14 @@ protocol MediaLinksPresenter: AnyObject {
 /// NSObject subclass to support system delegate protocol.
 final class MasterRouter: NSObject {
     /// The table to display search suggestions list
-    lazy var searchSuggestionsController: SearchSuggestionsViewController = {
-        let vc = SearchSuggestionsViewController(GoogleSuggestionsClient.shared, DDGoSuggestionsClient.shared)
-        return vc
-    }()
+    func createSuggestionsController() -> SearchSuggestionsViewController {
+        // It seems it should be computed property
+        // to allow app. to use different view model
+        // based on current feature flag's value
+        return SearchSuggestionsViewController()
+    }
+    
+    var searchSuggestionsVC: SearchSuggestionsViewController?
 
     /// The link tags controller to display segments with link types amount
     lazy var linkTagsController: AnyViewController & LinkTagsPresenter = {
@@ -172,6 +176,8 @@ final class MasterRouter: NSObject {
             print("Attempted to hide suggestions when they are not showed")
             return
         }
+        
+        guard let searchSuggestionsController = searchSuggestionsVC else { return }
 
         searchSuggestionsController.willMove(toParent: nil)
         searchSuggestionsController.removeFromParent()
@@ -185,6 +191,9 @@ final class MasterRouter: NSObject {
         guard !isSuggestionsShowed else {
             return
         }
+        
+        searchSuggestionsVC = createSuggestionsController()
+        guard let searchSuggestionsController = searchSuggestionsVC else { return }
 
         presenter.viewController.add(asChildViewController: searchSuggestionsController, to: presenter.view)
         isSuggestionsShowed = true
@@ -214,7 +223,7 @@ final class MasterRouter: NSObject {
     }
     
     func startSearch(_ searchText: String) {
-        searchSuggestionsController.prepareSearch(for: searchText)
+        searchSuggestionsVC?.prepareSearch(for: searchText)
     }
     
     /// Shows files greed view, designed only for Phone layout
