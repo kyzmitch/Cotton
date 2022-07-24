@@ -48,4 +48,11 @@ final class DDGoAutocompleteStrategy: SearchAutocompleteStrategy {
             .map { SearchSuggestionsResponse($0) }
             .eraseToAnyPublisher()
     }
+    
+    @available(swift 5.5)
+    @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    func suggestionsTask(for text: String) async throws -> SearchSuggestionsResponse {
+        let response = try await context.client.aaDuckDuckGoSuggestions(for: text)
+        return SearchSuggestionsResponse(response)
+    }
 }

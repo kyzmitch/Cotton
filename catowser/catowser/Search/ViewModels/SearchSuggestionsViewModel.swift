@@ -75,4 +75,8 @@ protocol SearchSuggestionsViewModel: AnyObject {
     
     var rxState: MutableProperty<SearchSuggestionsViewState> { get }
     var combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> { get }
+    // https://github.com/kyzmitch/Cotton/issues/41
+    // Can't declare it @Published to not depend on SwiftUI
+    // and also it is not possible to use property wrappers in protocols
+    var aaState: SearchSuggestionsViewState { get }
 }

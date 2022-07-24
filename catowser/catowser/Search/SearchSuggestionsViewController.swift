@@ -7,20 +7,9 @@
 //
 
 import UIKit
-// needed only for `HttpError`
-import HttpKit
-// needed for `GoogleSuggestionsClient`
-import BrowserNetworking
-import CoreBrowser
 import FeaturesFlagsKit
 import ReactiveSwift
-#if canImport(Combine)
 import Combine
-#endif
-#if canImport(_Concurrency)
-// this won't be needed after Swift 5.5 will be released
-import _Concurrency
-#endif
 
 fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
@@ -51,6 +40,12 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     private var cancellable: AnyCancellable?
     
+#if swift(>=5.5)
+     /// Not private to make it available for extension with async await
+     @available(swift 5.5)
+     lazy var taskHandler: Task<[String], Error>? = nil
+ #endif
+    
     weak var delegate: SearchSuggestionsListDelegate?
 
     init() {
@@ -61,6 +56,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     deinit {
         cancellable?.cancel()
         disposable?.dispose()
+        taskHandler?.cancel()
     }
     
     required init?(coder: NSCoder) {
@@ -81,9 +77,13 @@ final class SearchSuggestionsViewController: UITableViewController {
         
         disposable?.dispose()
         cancellable?.cancel()
+        taskHandler?.cancel()
         
         disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
         cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+        // https://github.com/kyzmitch/Cotton/issues/41
+        // Bind to Concurrency API state interface `viewModel.aaState`
+        // Use `taskHandler` to save binding
         
         // Also would be good to obverve for changes in settings
         // to notify user to close and open this search table
@@ -99,6 +99,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     }
 
     func prepareSearch(for searchText: String) {
+        taskHandler?.cancel()
         viewModel.fetchSuggestions(searchText)
     }
     
