@@ -7,20 +7,9 @@
 //
 
 import UIKit
-// needed only for `HttpError`
-import HttpKit
-// needed for `GoogleSuggestionsClient`
-import BrowserNetworking
-import CoreBrowser
 import FeaturesFlagsKit
 import ReactiveSwift
-#if canImport(Combine)
 import Combine
-#endif
-#if canImport(_Concurrency)
-// this won't be needed after Swift 5.5 will be released
-import _Concurrency
-#endif
 
 fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
@@ -51,6 +40,9 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     private var cancellable: AnyCancellable?
     
+    /// Combine cancellable for Concurrency Published property
+    private var taskHandler: AnyCancellable?
+    
     weak var delegate: SearchSuggestionsListDelegate?
 
     init() {
@@ -61,6 +53,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     deinit {
         cancellable?.cancel()
         disposable?.dispose()
+        taskHandler?.cancel()
     }
     
     required init?(coder: NSCoder) {
@@ -79,11 +72,17 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        disposable?.dispose()
-        cancellable?.cancel()
-        
-        disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
-        cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+        switch FeatureManager.appAsyncApiTypeValue() {
+        case .reactive:
+            disposable?.dispose()
+            disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
+        case .combine:
+            cancellable?.cancel()
+            cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+        case .asyncAwait:
+            taskHandler?.cancel()
+            taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
+        }
         
         // Also would be good to obverve for changes in settings
         // to notify user to close and open this search table
@@ -96,6 +95,7 @@ final class SearchSuggestionsViewController: UITableViewController {
         
         disposable?.dispose()
         cancellable?.cancel()
+        taskHandler?.cancel()
     }
 
     func prepareSearch(for searchText: String) {

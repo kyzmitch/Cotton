@@ -27,7 +27,7 @@ extension WebViewController {
     @available(iOS 15.0, *)
     func aaResolveDomainName(url: URL) async {
         dnsRequestTaskHandler?.cancel()
-        let taskHandler = detach(priority: .userInitiated) { [weak self] () -> URL in
+        let taskHandler = Task.detached(priority: .userInitiated) { [weak self] () -> URL in
             guard let self = self else {
                 throw AppError.zombieSelf
             }
@@ -36,7 +36,7 @@ extension WebViewController {
         }
         dnsRequestTaskHandler = taskHandler
         do {
-            let finalURL = try await taskHandler.get()
+            let finalURL = try await taskHandler.value
             guard finalURL.hasIPHost else {
                 print("Alert - host wasn't replaced on IP address after operation")
                 return

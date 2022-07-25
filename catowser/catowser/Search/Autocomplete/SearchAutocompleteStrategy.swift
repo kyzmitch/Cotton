@@ -17,4 +17,7 @@ protocol SearchAutocompleteStrategy: AnyObject {
     init(_ context: Context)
     func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpKit.HttpError>
     func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpKit.HttpError>
+    @available(swift 5.5)
+    @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
+    func suggestionsTask(for text: String) async throws -> SearchSuggestionsResponse
 }

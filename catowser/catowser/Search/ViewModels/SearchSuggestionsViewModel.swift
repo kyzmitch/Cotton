@@ -75,4 +75,7 @@ protocol SearchSuggestionsViewModel: AnyObject {
     
     var rxState: MutableProperty<SearchSuggestionsViewState> { get }
     var combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> { get }
+    /// wrapped value for Published
+    var state: SearchSuggestionsViewState { get }
+    var statePublisher: Published<SearchSuggestionsViewState>.Publisher { get }
 }
