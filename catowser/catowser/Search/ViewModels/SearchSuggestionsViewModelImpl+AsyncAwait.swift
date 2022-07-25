@@ -34,7 +34,7 @@
      @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
      @MainActor
      private func updateState(_ suggestions: [String], _ domainNames: [String]) async {
-         aaState = .everythingLoaded(domainNames, suggestions)
+         state = .everythingLoaded(domainNames, suggestions)
      }
  }
 

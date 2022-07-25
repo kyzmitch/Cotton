@@ -19,16 +19,15 @@ final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutoc
     
     let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> = .init(.waitingForQuery)
     
-    // https://github.com/kyzmitch/Cotton/issues/41
-    // Next usage of @Publisher from SwiftUI should be removed and replaced
-    // with some other @State property wrapper
-    // or it could be better to just return Combine Publisher
-    // right away because anyway ViewModel swift protocol won't
-    // allow to use property wrapper
+    /// Using `Published` property wrapper from not related SwiftUI for now
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    var aaState: SearchSuggestionsViewState = .waitingForQuery
+    @Published var state: SearchSuggestionsViewState = .waitingForQuery
+    
+    /// This is a replacement for `Task.Handler`, property wrapper can't be defined in protocol
+    var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
     
     private var searchSuggestionsDisposable: Disposable?
+    
     @available(iOS 13.0, *)
     private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
     
@@ -38,18 +37,13 @@ final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutoc
     lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
 #endif
     
-    var state: SearchSuggestionsViewState = .waitingForQuery
-    
     init(_ strategy: Strategy) {
         autocomplete = .init(strategy)
     }
     
     deinit {
-        if #available(iOS 13.0, *) {
-            searchSuggestionsCancellable?.cancel()
-        } else {
-            searchSuggestionsDisposable?.dispose()
-        }
+        searchSuggestionsCancellable?.cancel()
+        searchSuggestionsDisposable?.dispose()
         searchSuggestionsTaskHandler?.cancel()
     }
 }
@@ -87,7 +81,8 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
         case .asyncAwait:
             if #available(iOS 15.0, *) {
 #if swift(>=5.5)
-                aaState = .knownDomainsLoaded(domainNames)
+                state = .knownDomainsLoaded(domainNames)
+                searchSuggestionsTaskHandler?.cancel()
                 Task {
                     await aaFetchSuggestions(query, domainNames)
                 }
