@@ -21,7 +21,7 @@ typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpKit.HttpErr
 
 /// Web search suggestions (search autocomplete) facade
 final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteStrategy {
-    private let strategy: Strategy
+    let strategy: Strategy
     
     private lazy var waitingQueue = DispatchQueue(label: .waitingQueueName)
     private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated,

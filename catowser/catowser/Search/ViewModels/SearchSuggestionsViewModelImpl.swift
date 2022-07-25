@@ -13,28 +13,38 @@ import FeaturesFlagsKit
 import CoreBrowser
 
 final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutocompleteStrategy {
-    private let autocomplete: WebSearchAutocomplete<Strategy>
+    let autocomplete: WebSearchAutocomplete<Strategy>
     
     let rxState: MutableProperty<SearchSuggestionsViewState> = .init(.waitingForQuery)
     
     let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> = .init(.waitingForQuery)
     
+    /// Using `Published` property wrapper from not related SwiftUI for now
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    @Published var state: SearchSuggestionsViewState = .waitingForQuery
+    
+    /// This is a replacement for `Task.Handler`, property wrapper can't be defined in protocol
+    var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
+    
     private var searchSuggestionsDisposable: Disposable?
+    
     @available(iOS 13.0, *)
     private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
     
-    var state: SearchSuggestionsViewState = .waitingForQuery
+#if swift(>=5.5)
+    @available(swift 5.5)
+    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
+    lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
+#endif
     
     init(_ strategy: Strategy) {
         autocomplete = .init(strategy)
     }
     
     deinit {
-        if #available(iOS 13.0, *) {
-            searchSuggestionsCancellable?.cancel()
-        } else {
-            searchSuggestionsDisposable?.dispose()
-        }
+        searchSuggestionsCancellable?.cancel()
+        searchSuggestionsDisposable?.dispose()
+        searchSuggestionsTaskHandler?.cancel()
     }
 }
 
@@ -69,7 +79,19 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
                     self?.combineState.value = .everythingLoaded(domainNames, suggestions)
                 })
         case .asyncAwait:
-            break
+            if #available(iOS 15.0, *) {
+#if swift(>=5.5)
+                state = .knownDomainsLoaded(domainNames)
+                searchSuggestionsTaskHandler?.cancel()
+                Task {
+                    await aaFetchSuggestions(query, domainNames)
+                }
+#else
+                assertionFailure("Swift version isn't 5.5")
+#endif
+            } else {
+                assertionFailure("iOS version is not >= 15.x")
+            }
         }
     }
 }
