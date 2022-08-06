@@ -26,7 +26,7 @@ enum WebViewAction {
     case fetchDoHStatus
     case checkDNResolvingSupport(Bool)
     case resolveDomainName(_ useDoH: Bool)
-    case hideDomainName(IPAddress?)
+    case createRequestAnyway(URL)
     case loadWebView(URLRequest)
     case finishLoading
 }
@@ -51,6 +51,7 @@ extension WebViewState: Actionable {
     typealias Action = WebViewAction
     typealias State = Self
     
+    // swiftlint:disable:next cyclomatic_complexity
     func transition(on action: Action) throws -> State {
         switch (self, action) {
         case (.waitingForURL, .loadUrl(let url)):
@@ -79,12 +80,8 @@ extension WebViewState: Actionable {
             } else {
                 return .creatingRequest(urlData.platformURL)
             }
-        case (.resolvingDN(let urlData), .hideDomainName(let value)):
-            if let ipAddress = value, let newUrlData = urlData.updateWith(ip: ipAddress) {
-                return .creatingRequest(newUrlData.platformURL)
-            } else {
-                return .creatingRequest(urlData.platformURL)
-            }
+        case (.resolvingDN, .createRequestAnyway(let url)):
+            return .creatingRequest(url)
         case (.creatingRequest, .loadWebView(let request)):
             return .updatingWebView(request)
         case (.updatingWebView, .finishLoading):

@@ -13,6 +13,8 @@ import CoreBrowser
 import JSPlugins
 import BrowserNetworking
 import FeaturesFlagsKit
+import ReactiveSwift
+import Combine
 
 final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
     let dnsResolver: DNSResolver<Strategy>
@@ -34,6 +36,13 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     /// JavaScript Plugins holder
     private(set) var jsPlugins: JSPlugins?
     
+    private var dnsRequestSubsrciption: Disposable?
+    private lazy var dnsRequestCancellable: AnyCancellable? = nil
+#if swift(>=5.5)
+    @available(iOS 15.0, *)
+    lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
+#endif
+    
     /**
      Constructs web view model
      */
@@ -42,6 +51,11 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         self.settings = settings
         configuration = settings.webViewConfig
         self.context = context
+    }
+    
+    deinit {
+        dnsRequestSubsrciption?.dispose()
+        dnsRequestCancellable?.cancel()
     }
     
     func load(url: URL) {
@@ -90,8 +104,6 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
             case .updatingWebView:
                 // Notify View layer - load content
                 break
-            default:
-                break
             }
         } catch {
             print("Wrong state: \(error.localizedDescription)")
@@ -99,12 +111,88 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     }
     
     private func resolveDomainName(_ urlData: URLData) {
-        
-        
-        /**
-         let ipAddress: IPAddress? = nil
-         state = try state.transition(on: .hideDomainName(ipAddress))
-         break
-         */
+        let apiType = FeatureManager.appAsyncApiTypeValue()
+        switch apiType {
+        case .reactive:
+            dnsRequestSubsrciption?.dispose()
+            dnsRequestSubsrciption = dnsResolver.rxResolveDomainName(urlData.platformURL)
+                .startWithResult({ [weak self] result in
+                    guard let self = self else {
+                        return
+                    }
+                    switch result {
+                    case .success(let finalURL):
+                        let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL))
+                        guard let nextState = possibleState else {
+                            assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
+                            return
+                        }
+                        self.state = nextState
+                    case .failure(let dnsErr):
+                        print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                    }
+                })
+        case .combine:
+            dnsRequestCancellable?.cancel()
+            dnsRequestCancellable = dnsResolver.cResolveDomainName(urlData.platformURL)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .failure(let dnsErr):
+                        print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                    default:
+                        break
+                    }
+                }, receiveValue: { [weak self] (finalURL) in
+                    guard let self = self else {
+                        return
+                    }
+                    let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL))
+                    guard let nextState = possibleState else {
+                        assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
+                        return
+                    }
+                    self.state = nextState
+                })
+        case .asyncAwait:
+            if #available(iOS 15.0, *) {
+#if swift(>=5.5)
+                dnsRequestTaskHandler?.cancel()
+                Task {
+                    await aaResolveDomainName(urlData.platformURL)
+                }
+#else
+                assertionFailure("Swift version isn't 5.5")
+#endif
+            } else {
+                assertionFailure("iOS version is not >= 15.x")
+            }
+        }
+    }
+    
+    @available(iOS 15.0, *)
+    func aaResolveDomainName(_ originalURL: URL) async {
+        let taskHandler = Task.detached(priority: .userInitiated) { [weak self] () -> URL in
+            guard let self = self else {
+                throw AppError.zombieSelf
+            }
+            return try await self.dnsResolver.aaResolveDomainName(originalURL)
+        }
+        dnsRequestTaskHandler = taskHandler
+        do {
+            await updateState(try await taskHandler.value)
+        } catch {
+            print("Fail to resolve domain name: \(error.localizedDescription)")
+            await updateState(originalURL)
+        }
+    }
+    
+    @MainActor
+    private func updateState(_ finalURL: URL) async {
+        let possibleState = try? state.transition(on: .createRequestAnyway(finalURL))
+        guard let nextState = possibleState else {
+            assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
+            return
+        }
+        state = nextState
     }
 }
