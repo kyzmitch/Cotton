@@ -10,6 +10,8 @@ import Foundation
 import CoreHttpKit
 import JSPlugins
 import FeaturesFlagsKit
+import ReactiveSwift
+import Combine
 
 protocol Actionable {
     associatedtype Action
@@ -92,7 +94,18 @@ extension WebViewState: Actionable {
     }
 }
 
+enum WebPageLoadingState {
+    case idle
+    case load(URLRequest)
+}
+
 protocol WebViewModel: AnyObject {
     func load(url: URL)
     func load(site: Site)
+    
+    var rxWebPageState: MutableProperty<WebPageLoadingState> { get }
+    var combineWebPageState: CurrentValueSubject<WebPageLoadingState, Never> { get }
+    /// wrapped value for Published
+    var webPageState: WebPageLoadingState { get }
+    var webPageStatePublisher: Published<WebPageLoadingState>.Publisher { get }
 }
