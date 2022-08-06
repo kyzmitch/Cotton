@@ -41,8 +41,8 @@ final class WebViewController: BaseViewController {
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     @available(iOS 13.0, *)
     private lazy var dnsFeatureChangeCancellable: AnyCancellable? = nil
-    private var dnsRequestSubsciption: Disposable?
-    private var dnsFeatureChangeSubsciption: Disposable?
+    private var dnsRequestSubsrciption: Disposable?
+    private var dnsFeatureChangeSubscription: Disposable?
     /// Http client to send DNS requests to unveal ip addresses of hosts to not show them, common for all web views
     /// Not private to allow access from extension
     let dnsClient: GoogleDnsClient
@@ -66,9 +66,8 @@ final class WebViewController: BaseViewController {
     private var canGoForwardObservation: NSKeyValueObservation?
     
 #if swift(>=5.5)
-    // @available(swift 5.5)
     @available(iOS 15.0, *)
-    lazy var dnsRequestTaskHandler: Task.Handle<URL, Error>? = nil
+    lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
 #endif
 
     @available(iOS 13.0, *)
@@ -98,12 +97,18 @@ final class WebViewController: BaseViewController {
      Constructs web view controller for specific site with set of plugins and navigation handler
      */
     init(_ site: Site,
-         plugins: [JavaScriptPlugin],
-         externalNavigationDelegate: SiteExternalNavigationDelegate,
-         dnsHttpClient: GoogleDnsClient) {
+         _ plugins: [JavaScriptPlugin],
+         _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+         _ dnsHttpClient: GoogleDnsClient) {
         self.externalNavigationDelegate = externalNavigationDelegate
         // Don't use `Site` model because  it contains some
         // properties which are not needed for web view
+        
+        /**
+         this `site` can be removed from constructor, because `site` actually used in load func above
+         Only settings from Site type are needed for constructor actually.
+         URLInfo is needed only in `load` function actually could be stored in view state.
+         */
         urlInfo = site.urlInfo
         siteSettings = site.settings
         configuration = siteSettings.webViewConfig
@@ -128,9 +133,9 @@ final class WebViewController: BaseViewController {
             finalURLFetchCancellable?.cancel()
             dnsFeatureChangeCancellable?.cancel()
         } else {
-            dnsRequestSubsciption?.dispose()
+            dnsRequestSubsrciption?.dispose()
             finalURLFetchDisposable?.dispose()
-            dnsFeatureChangeSubsciption?.dispose()
+            dnsFeatureChangeSubscription?.dispose()
         }
         loadingProgressObservation?.invalidate()
         canGoForwardObservation?.invalidate()
@@ -293,8 +298,8 @@ final class WebViewController: BaseViewController {
     
     private func rxResolveDomainName(url: URL) {
         let subscriber = HttpEnvironment.shared.dnsClientRxSubscriber
-        dnsRequestSubsciption?.dispose()
-        dnsRequestSubsciption = dnsClient.rxResolvedDomainName(in: url, subscriber)
+        dnsRequestSubsrciption?.dispose()
+        dnsRequestSubsrciption = dnsClient.rxResolvedDomainName(in: url, subscriber)
             .start(on: UIScheduler())
             .startWithResult({ [weak self] (result) in
                 guard let self = self else {
@@ -316,6 +321,7 @@ final class WebViewController: BaseViewController {
     }
     
     func setupScripts(_ canLoadPlugins: Bool) {
+        // guard urlInfo.host().isIpAddress
         jsPlugins?.inject(to: configuration.userContentController, context: urlInfo.host(), canLoadPlugins)
     }
 }
@@ -427,7 +433,7 @@ private extension WebViewController {
                     self?.handleDoHFeatureChange(needToUseDoH)
             }
         } else {
-            dnsFeatureChangeSubsciption = FeatureManager.rxFeatureChanges(for: .dnsOverHTTPSAvailable)
+            dnsFeatureChangeSubscription = FeatureManager.rxFeatureChanges(for: .dnsOverHTTPSAvailable)
                 .observe(on: UIScheduler())
                 .observeValues { [weak self] (feature) in
                     let needToUseDoH = FeatureManager.boolValue(of: feature)

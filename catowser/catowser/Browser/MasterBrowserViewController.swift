@@ -378,17 +378,10 @@ extension MasterBrowserViewController: TabRendererInterface {
     }
     
     private func openSiteTabContent(with site: Site) {
-        guard let pluginsBuilder = jsPluginsBuilder else {
-            assertionFailure("Failed show site - no plugins")
-            open(tabContent: .blank)
-            return
-        }
         // need to display progress view before load start
         linksRouter.showProgress(true)
-        let viewController = try? WebViewsReuseManager.shared.controllerFor(site,
-                                                                            pluginsBuilder: pluginsBuilder,
-                                                                            delegate: self)
-        guard let webViewController = viewController else {
+        let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsBuilder, self)
+        guard let webViewController = vc else {
             assertionFailure("Failed create new web view for tab")
             open(tabContent: .blank)
             return

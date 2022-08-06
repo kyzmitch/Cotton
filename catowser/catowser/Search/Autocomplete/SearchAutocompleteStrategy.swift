@@ -12,7 +12,7 @@ import ReactiveSwift
 import Combine
 
 protocol SearchAutocompleteStrategy: AnyObject {
-    associatedtype Context: SearchAutocompleteContext
+    associatedtype Context: RestClientContext
     
     init(_ context: Context)
     func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpKit.HttpError>
