@@ -83,11 +83,27 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
+    func didFinishLoading() {
+        do {
+            state = try state.transition(on: .finishLoading)
+        } catch {
+            print("Wrong state on loading finish: " + error.localizedDescription)
+        }
+    }
+    
+    // swiftlint:disable:next cyclomatic_complexity
     private func onStateChange(_ nextState: WebViewState) throws {
         switch nextState {
         case .waitingForURL:
-            // Notify view layer - clear view
-            break
+            let apiType = FeatureManager.appAsyncApiTypeValue()
+            switch apiType {
+            case .reactive:
+                rxWebPageState.value = .idle
+            case .combine:
+                combineWebPageState.value = .idle
+            case .asyncAwait:
+                webPageState = .idle
+            }
         case .pendingPlugins:
             let plugins: [JavaScriptPlugin]? = settings.canLoadPlugins ? context.pluginsBuilder?.plugins : nil
             state = try state.transition(on: .injectPlugins(plugins))

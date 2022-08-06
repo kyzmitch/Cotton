@@ -102,6 +102,7 @@ enum WebPageLoadingState {
 protocol WebViewModel: AnyObject {
     func load(url: URL)
     func load(site: Site)
+    func didFinishLoading()
     
     var rxWebPageState: MutableProperty<WebPageLoadingState> { get }
     var combineWebPageState: CurrentValueSubject<WebPageLoadingState, Never> { get }
