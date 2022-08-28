@@ -87,4 +87,13 @@ extension Site {
                         userSpecifiedTitle: nil)
         return site
     }
+    
+    func withUpdated(_ newSettings: Site.Settings) -> Site {
+        // Can't figure out how to pass favicon data again
+        return Site(urlInfo: urlInfo,
+                    settings: newSettings,
+                    faviconData: nil,
+                    searchSuggestion: searchSuggestion,
+                    userSpecifiedTitle: userSpecifiedTitle)
+    }
 }

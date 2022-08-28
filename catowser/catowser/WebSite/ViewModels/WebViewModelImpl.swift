@@ -40,19 +40,8 @@ import Combine
  - pending navigation request is related to initial host or similar host used by user (search bar url)
  */
 
-private extension String {
-    static let tel = "tel"
-    static let facetime = "facetime"
-    static let facetimeAudio = "facetime-audio"
-    static let mailto = "mailto"
-    static let http = "http"
-    static let https = "https"
-    static let about = "about"
-}
-
-// swiftlint:disable:next type_body_length
 final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
-    
+    /// Domain name resolver with specific strategy
     let dnsResolver: DNSResolver<Strategy>
     
     /// view model state
@@ -66,7 +55,9 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
+    /// reactive state property
     var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.idle)
+    /// combine state property
     var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.idle)
     /// wrapped value for Published
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -93,12 +84,19 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     
     var urlInfo: URLInfo? { state.urlInfo }
     
+    var nativeAppDomainNameString: String? {
+        guard let host = host, let checker = try? DomainNativeAppChecker(host: host) else {
+            return nil
+        }
+        return checker.correspondingDomain
+    }
+    
     /**
      Constructs web view model
      */
-    init(_ strategy: Strategy, _ settings: Site.Settings, _ context: WebViewContext) {
+    init(_ strategy: Strategy, _ site: Site, _ context: WebViewContext) {
         dnsResolver = .init(strategy)
-        state = .waitingForURL(settings)
+        state = .initialized(site)
         self.context = context
     }
     
@@ -119,19 +117,19 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
+    func load() {
+        do {
+            state = try state.transition(on: .load)
+        } catch {
+            print("Wrong state on load action: " + error.localizedDescription)
+        }
+    }
+    
     func load(url: URL) {
         do {
             state = try state.transition(on: .loadUrl(url))
         } catch {
             print("Wrong state on url load action: " + error.localizedDescription)
-        }
-    }
-    
-    func load(site: Site) {
-        do {
-            state = try state.transition(on: .loadSite(site))
-        } catch {
-            print("Wrong state on site load action: " + error.localizedDescription)
         }
     }
     
@@ -146,13 +144,6 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
         // swiftlint:disable:next force_unwrapping
         return WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!
-    }
-    
-    var nativeAppDomainNameString: String? {
-        guard let host = host, let checker = try? DomainNativeAppChecker(host: host) else {
-            return nil
-        }
-        return checker.correspondingDomain
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
@@ -271,10 +262,13 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     func enableJSPlugins(_ subject: JavaScriptEvaluateble, _ enable: Bool) {
         context.jsPlugins?.enable(on: subject, enable: enable)
     }
+}
 
-    private func onStateChange(_ nextState: WebViewModelState) throws {
+private extension WebViewModelImpl {
+    // swiftlint:disable:next cyclomatic_complexity
+    func onStateChange(_ nextState: WebViewModelState) throws {
         switch nextState {
-        case .waitingForURL:
+        case .initialized:
             updateLoadingState(.idle)
         case .pendingPlugins:
             let plugins: JSPlugins? = settings.canLoadPlugins ? context.pluginsBuilder?.jsPlugins : nil
@@ -304,7 +298,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    private func resolveDomainName(_ urlData: URLData) {
+    func resolveDomainName(_ urlData: URLData) {
         let apiType = FeatureManager.appAsyncApiTypeValue()
         switch apiType {
         case .reactive:
@@ -364,7 +358,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     }
     
     @available(iOS 15.0, *)
-    private func aaResolveDomainName(_ originalURL: URL) async {
+    func aaResolveDomainName(_ originalURL: URL) async {
         let taskHandler = Task.detached(priority: .userInitiated) { [weak self] () -> URL in
             guard let self = self else {
                 throw AppError.zombieSelf
@@ -381,7 +375,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     }
     
     @MainActor
-    private func updateState(_ finalURL: URL) async {
+    func updateState(_ finalURL: URL) async {
         let possibleState = try? state.transition(on: .createRequestAnyway(finalURL))
         guard let nextState = possibleState else {
             assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
@@ -389,4 +383,14 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
         state = nextState
     }
+}
+
+private extension String {
+    static let tel = "tel"
+    static let facetime = "facetime"
+    static let facetimeAudio = "facetime-audio"
+    static let mailto = "mailto"
+    static let http = "http"
+    static let https = "https"
+    static let about = "about"
 }

@@ -34,12 +34,12 @@ final class ViewModelFactory {
         }
     }
     
-    func webViewModel(_ settings: Site.Settings, _ context: WebViewContext) -> WebViewModel {
+    func webViewModel(_ site: Site, _ context: WebViewContext) -> WebViewModel {
         let stratContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
                                        HttpEnvironment.shared.dnsClientRxSubscriber,
                                        HttpEnvironment.shared.dnsClientSubscriber)
         
         let strategy = GoogleDNSStrategy(stratContext)
-        return WebViewModelImpl(strategy, settings, context)
+        return WebViewModelImpl(strategy, site, context)
     }
 }

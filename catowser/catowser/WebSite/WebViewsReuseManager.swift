@@ -12,8 +12,6 @@ import JSPlugins
 import BrowserNetworking
 import CoreHttpKit
 
-typealias VMName = WebViewModelImpl<GoogleDNSStrategy>
-
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
     static let shared = WebViewsReuseManager()
@@ -24,7 +22,7 @@ final class WebViewsReuseManager {
     private let viewsLimit: Int
     /// Needed to store index of last returned view
     private var lastSelectedIndex: Int?
-    
+    /// Tells to actually use reuse manager for limiting the number of views
     private let useLimitedCache = false
 
     private init(_ viewsLimit: Int = 10) {
@@ -67,7 +65,7 @@ final class WebViewsReuseManager {
         let count = views.count
         if count >= 0 && count < viewsLimit {
             let context: WebViewContext = .init(pluginsBuilder)
-            let vm = ViewModelFactory.shared.webViewModel(site.settings, context)
+            let vm = ViewModelFactory.shared.webViewModel(site, context)
             let vc: WebViewController = .init(vm, delegate)
             views.append(vc)
             lastSelectedIndex = count
@@ -99,7 +97,6 @@ final class WebViewsReuseManager {
             struct OutOfBoundsIndex: Error {}
             throw OutOfBoundsIndex()
         }
-        // TODO: somehow need to not call load methods from here
         return vc
     }
     

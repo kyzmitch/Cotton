@@ -11,7 +11,7 @@ import CoreHttpKit
 import JSPlugins
 
 enum WebViewModelState {
-    case waitingForURL(Site.Settings)
+    case initialized(Site)
     case pendingPlugins(URLData, Site.Settings)
     case injectingPlugins(JSPlugins, URLData, Site.Settings)
     case pendingDoHStatus(URLData, Site.Settings)
@@ -57,8 +57,8 @@ enum WebViewModelState {
     
     var url: URL? {
         switch self {
-        case .waitingForURL:
-            return nil
+        case .initialized(let site):
+            return site.urlInfo.platformURL
         case .pendingPlugins(let uRLData, _):
             return uRLData.platformURL
         case .injectingPlugins(_, let uRLData, _):
@@ -80,8 +80,8 @@ enum WebViewModelState {
     
     var settings: Site.Settings {
         switch self {
-        case .waitingForURL(let settings):
-            return settings
+        case .initialized(let site):
+            return site.settings
         case .pendingPlugins(_, let settings):
             return settings
         case .injectingPlugins(_, _, let settings):
@@ -103,8 +103,8 @@ enum WebViewModelState {
     
     func withUpdatedSettings(_ newSettings: Site.Settings) -> WebViewModelState {
         switch self {
-        case .waitingForURL:
-            return .waitingForURL(newSettings)
+        case .initialized(let site):
+            return .initialized(site.withUpdated(newSettings))
         case .pendingPlugins(let uRLData, _):
             return .pendingPlugins(uRLData, newSettings)
         case .injectingPlugins(let array, let uRLData, _):
@@ -126,8 +126,8 @@ enum WebViewModelState {
     
     func sameHost(with url: URL) -> Bool {
         switch self {
-        case .waitingForURL:
-            return false // can't tell
+        case .initialized(let site):
+            return site.host.isSimilar(with: url)
         case .pendingPlugins(let uRLData, _):
             return uRLData.sameHost(with: url)
         case .injectingPlugins(_, let uRLData, _):
@@ -149,8 +149,8 @@ enum WebViewModelState {
     
     var urlData: URLData? {
         switch self {
-        case .waitingForURL:
-            return nil
+        case .initialized(let site):
+            return .info(site.urlInfo)
         case .pendingPlugins(let uRLData, _):
             return uRLData
         case .injectingPlugins(_, let uRLData, _):

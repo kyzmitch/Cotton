@@ -25,15 +25,15 @@ enum WebPageLoadingAction {
 protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
+    func load()
     func load(url: URL)
-    func load(site: Site)
     func finishLoading()
     func enableJSPlugins(_ subject: JavaScriptEvaluateble, _ enable: Bool)
     
     // MARK: - Not main methods which could be refactored
     
-    func setJavaScript(enabled: Bool)
     var nativeAppDomainNameString: String? { get }
+    func setJavaScript(enabled: Bool)
     func decidePolicyFor(_ navigationAction: WKNavigationAction,
                          _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     func finishNavigation(_ newURL: URL)

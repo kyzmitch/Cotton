@@ -17,14 +17,10 @@ extension WebViewModelState: Actionable {
     // swiftlint:disable:next cyclomatic_complexity
     func transition(on action: Action) throws -> State {
         switch (self, action) {
-        case (.waitingForURL(let settings), .loadUrl(let url)):
-            return .pendingPlugins(.url(url), settings)
-        case (.waitingForURL(let settings), .loadSite(let site)):
-            return .pendingPlugins(.info(site.urlInfo), settings)
+        case (.initialized(let site), .load):
+            return .pendingPlugins(.url(site.urlInfo.platformURL), site.settings)
         case (.viewing(_, let settings), .loadUrl(let url)):
             return .pendingPlugins(.url(url), settings)
-        case (.viewing(_, let settings), .loadSite(let site)):
-            return .pendingPlugins(.info(site.urlInfo), settings)
         case (.pendingPlugins(let urlData, let settings), .injectPlugins(let plugins)):
             if let plugins = plugins {
                 return .injectingPlugins(plugins, urlData, settings)
@@ -53,9 +49,7 @@ extension WebViewModelState: Actionable {
             return .updatingWebView(request, settings)
         case (.updatingWebView(let request, let settings), .finishLoading):
             return .viewing(request, settings) // to still be able to read URL after loading
-        case (.viewing(let request, _), .changeJavaScript(let enable)):
-            throw Error.notImplemented
-        case (.waitingForURL(_), .changeJavaScript(let enable)):
+        case (.viewing, .changeJavaScript):
             throw Error.notImplemented
         default:
             throw Error.unexpectedStateForAction

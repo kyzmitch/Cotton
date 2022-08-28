@@ -29,7 +29,7 @@ final class WebViewController: BaseViewController,
     
     /// Own navigation delegate
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
-    
+    /// State of observers
     private var webViewObserversAdded = false
     /// State of web view
     private var isWebViewLoaded: Bool = false
@@ -43,7 +43,9 @@ final class WebViewController: BaseViewController,
     private var canGoForwardObservation: NSKeyValueObservation?
     private var loadingProgressObservation: NSKeyValueObservation?
     
+    /// reactive disposanble needed to be able to cancel producer
     private var disposable: Disposable?
+    /// needed to be able to cancel publisher
     private var cancellable: AnyCancellable?
     /// Combine cancellable for Concurrency Published property
     private var taskHandler: AnyCancellable?
@@ -73,15 +75,6 @@ final class WebViewController: BaseViewController,
         unsubscribe()
     }
     
-    private func unsubscribe() {
-        disposable?.dispose()
-        cancellable?.cancel()
-        taskHandler?.cancel()
-        loadingProgressObservation?.invalidate()
-        canGoForwardObservation?.invalidate()
-        canGoBackObservation?.invalidate()
-    }
-    
     override func loadView() {
         view = UIView(frame: .zero)
     }
@@ -102,31 +95,12 @@ final class WebViewController: BaseViewController,
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if isFirstAppearance {
-            isFirstAppearance = false
-        } else {
-            // so, reuse of web view controller isn't ready
-            // but probably not needed
-            assertionFailure("Resubscribtion for web view isn't implemented yet")
-        }
-        
-        switch FeatureManager.appAsyncApiTypeValue() {
-        case .reactive:
-            disposable?.dispose()
-            disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
-        case .combine:
-            cancellable?.cancel()
-            cancellable = viewModel.combineWebPageState.sink(receiveValue: onStateChange)
-        case .asyncAwait:
-            taskHandler?.cancel()
-            taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
-        }
+        subscribe()
+        viewModel.load()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         unsubscribe()
     }
     
@@ -139,36 +113,6 @@ final class WebViewController: BaseViewController,
         }
     }
     
-    func recreateWebView(forceRecreate: Bool = false) {
-        if !forceRecreate {
-            guard !isWebViewLoaded else {
-                return
-            }
-        }
-        
-        loadingProgressObservation?.invalidate()
-        webViewObserversAdded = false
-        
-        webView.removeFromSuperview()
-        webView = createWebView(with: viewModel.configuration)
-        view.addSubview(webView)
-        
-        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-    }
-    
-    func reattachWebViewObservers() {
-        guard !webViewObserversAdded else {
-            return
-        }
-        webViewObserversAdded = true
-        addWebViewProgressObserver()
-        addWebViewCanGoBackObserver()
-        addWebViewCanGoForwardObserver()
-    }
-    
     private func onStateChange(_ state: WebPageLoadingAction) {
         switch state {
         case .idle:
@@ -176,8 +120,7 @@ final class WebViewController: BaseViewController,
         case .load(let uRLRequest):
             webView.load(uRLRequest)
         case .recreateView:
-            // TODO: handle as before
-            break
+            recreateWebView(forceRecreate: true)
         case .reattachViewObservers:
             reattachWebViewObservers()
         }
@@ -271,6 +214,37 @@ final class WebViewController: BaseViewController,
 // MARK: - private functions
 
 private extension WebViewController {
+    func unsubscribe() {
+        disposable?.dispose()
+        cancellable?.cancel()
+        taskHandler?.cancel()
+        loadingProgressObservation?.invalidate()
+        canGoForwardObservation?.invalidate()
+        canGoBackObservation?.invalidate()
+    }
+    
+    func subscribe() {
+        if isFirstAppearance {
+            isFirstAppearance = false
+        } else {
+            // so, reuse of web view controller isn't ready
+            // but probably not needed
+            assertionFailure("Resubscribtion for web view isn't implemented yet")
+        }
+        
+        switch FeatureManager.appAsyncApiTypeValue() {
+        case .reactive:
+            disposable?.dispose()
+            disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
+        case .combine:
+            cancellable?.cancel()
+            cancellable = viewModel.combineWebPageState.sink(receiveValue: onStateChange)
+        case .asyncAwait:
+            taskHandler?.cancel()
+            taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        }
+    }
+    
     func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -282,8 +256,8 @@ private extension WebViewController {
     }
     
     func addWebViewProgressObserver() {
-        // swiftlint:disable:next line_length
-        // https://github.com/ole/whats-new-in-swift-4/blob/master/Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
+        // https://github.com/ole/whats-new-in-swift-4/blob/master/
+        // Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
         
         loadingProgressObservation?.invalidate()
         loadingProgressObservation = webView.observe(\.estimatedProgress,
@@ -311,6 +285,36 @@ private extension WebViewController {
             self.externalNavigationDelegate?.didUpdateForwardNavigation(to: value)
         }
     }
+    
+    func reattachWebViewObservers() {
+        guard !webViewObserversAdded else {
+            return
+        }
+        webViewObserversAdded = true
+        addWebViewProgressObserver()
+        addWebViewCanGoBackObserver()
+        addWebViewCanGoForwardObserver()
+    }
+    
+    func recreateWebView(forceRecreate: Bool = false) {
+        if !forceRecreate {
+            guard !isWebViewLoaded else {
+                return
+            }
+        }
+        
+        loadingProgressObservation?.invalidate()
+        webViewObserversAdded = false
+        
+        webView.removeFromSuperview()
+        webView = createWebView(with: viewModel.configuration)
+        view.addSubview(webView)
+        
+        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
 }
 
 extension WKNavigationType: CustomDebugStringConvertible {
@@ -331,12 +335,5 @@ extension WKNavigationType: CustomDebugStringConvertible {
         @unknown default:
             return "default \(rawValue)"
         }
-    }
-}
-
-private extension Host {
-    func isSimilar(with url: URL) -> Bool {
-        guard let rawHostString = url.host else { return false }
-        return isSimilar(name: rawHostString)
     }
 }
