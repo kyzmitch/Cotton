@@ -1,5 +1,5 @@
 //
-//  JSPlugins.swift
+//  JSPluginsProgram.swift
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 18/03/2019.
@@ -13,18 +13,20 @@ import CoreHttpKit
 /**
  An Object Structure (Program) from visitor desgin pattern. Could be a Composite
  */
-public final class JSPlugins {
+public final class JSPluginsProgram {
     private let plugins: [JavaScriptPlugin]
 
-    public init?(_ plugins: [JavaScriptPlugin]) {
-        guard plugins.count != 0 else {
-            assertionFailure("Can't initialize object with empty plugins list")
-            return nil
+    public init(_ plugins: [JavaScriptPlugin]) {
+        if plugins.count == 0 {
+            print("Plugins program was initialized with 0 JS plugins")
         }
         self.plugins = plugins
     }
 
     public func inject(to visitor: WKUserContentController, context: Host, _ needsInject: Bool) {
+        guard !plugins.isEmpty else {
+            return
+        }
         guard needsInject else {
             visitor.removeAllUserScripts()
             return
@@ -38,6 +40,9 @@ public final class JSPlugins {
     }
 
     public func enable(on webView: JavaScriptEvaluateble, enable: Bool) {
+        guard !plugins.isEmpty else {
+            return
+        }
         plugins.compactMap { $0.scriptString(enable) }.forEach { webView.evaluate(jsScript: $0)}
     }
 }

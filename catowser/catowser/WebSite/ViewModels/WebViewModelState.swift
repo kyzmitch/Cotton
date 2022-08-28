@@ -13,7 +13,7 @@ import JSPlugins
 enum WebViewModelState {
     case initialized(Site)
     case pendingPlugins(URLData, Site.Settings)
-    case injectingPlugins(JSPlugins, URLData, Site.Settings)
+    case injectingPlugins(JSPluginsProgram, URLData, Site.Settings)
     case pendingDoHStatus(URLData, Site.Settings)
     case checkingDNResolveSupport(URLData, Site.Settings)
     case resolvingDN(URLData, Site.Settings)

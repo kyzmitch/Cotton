@@ -10,6 +10,5 @@ import Foundation
 import JSPlugins
 
 protocol JSPluginsSource: AnyObject {
-    var plugins: [JavaScriptPlugin] { get }
-    var jsPlugins: JSPlugins? { get }
+    var pluginsProgram: JSPluginsProgram { get }
 }

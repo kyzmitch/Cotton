@@ -9,15 +9,12 @@
 import Foundation
 import JSPlugins
 
+/// web view context should carry some data or dependencies which can't be stored as a state and always are present
 final class WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
-    let pluginsBuilder: JSPluginsSource?
+    let pluginsProgram: JSPluginsProgram
     
-    init(_ plugins: JSPluginsSource?) {
-        pluginsBuilder = plugins
-    }
-    
-    var jsPlugins: JSPlugins? {
-        pluginsBuilder?.jsPlugins
+    init(_ pluginsSource: JSPluginsSource) {
+        pluginsProgram = pluginsSource.pluginsProgram
     }
 }

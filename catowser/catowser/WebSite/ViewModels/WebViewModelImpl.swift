@@ -138,7 +138,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
                         searchSuggestion: nil,
                         userSpecifiedTitle: nil)
         InMemoryDomainSearchProvider.shared.remember(host: info.host())
-        context.jsPlugins?.enable(on: subject, enable: enable)
+        context.pluginsProgram.enable(on: subject, enable: enable)
         
         do {
             state = try state.transition(on: .finishLoading)
@@ -236,10 +236,10 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
         state = state.withUpdatedSettings(jsSettings)
         updateLoadingState(.recreateView(true))
-        if let stateHost = state.host {
-            context.jsPlugins?.inject(to: configuration.userContentController,
-                                      context: stateHost,
-                                      settings.canLoadPlugins)
+        if let stateHost = state.host, state.settings.canLoadPlugins {
+            context.pluginsProgram.inject(to: configuration.userContentController,
+                                          context: stateHost,
+                                          settings.canLoadPlugins)
         }
         updateLoadingState(.reattachViewObservers)
         do {
@@ -251,14 +251,13 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
 }
 
 private extension WebViewModelImpl {
-    // swiftlint:disable:next cyclomatic_complexity
     func onStateChange(_ nextState: WebViewModelState) throws {
         switch nextState {
         case .initialized:
             updateLoadingState(.idle)
         case .pendingPlugins:
-            let plugins: JSPlugins? = settings.canLoadPlugins ? context.pluginsBuilder?.jsPlugins : nil
-            state = try state.transition(on: .injectPlugins(plugins))
+            let pluginsProgram: JSPluginsProgram? = settings.canLoadPlugins ? context.pluginsProgram : nil
+            state = try state.transition(on: .injectPlugins(pluginsProgram))
         case .injectingPlugins(let plugins, let urlData, _):
             guard let host = urlData.host else {
                 return

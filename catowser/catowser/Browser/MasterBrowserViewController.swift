@@ -95,7 +95,7 @@ final class MasterBrowserViewController: BaseViewController {
     private var disposables = [Disposable?]()
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
-
+    /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: JSPluginsSource?
 
     /// Not initialized, will be initialized after `TabsListManager`
@@ -224,7 +224,7 @@ final class MasterBrowserViewController: BaseViewController {
     
     private func setupObservers() {
         jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self)
-
+        
         let disposeB = NotificationCenter.default.reactive
             .notifications(forName: UIResponder.keyboardWillHideNotification)
             .observe(on: UIScheduler())
@@ -378,9 +378,13 @@ extension MasterBrowserViewController: TabRendererInterface {
     }
     
     private func openSiteTabContent(with site: Site) {
+        guard let jsPluginsSource = jsPluginsBuilder else {
+            assertionFailure("Plugins source is expected to be initialized even if it is empty")
+            return
+        }
         // need to display progress view before load start
         linksRouter.showProgress(true)
-        let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsBuilder, self)
+        let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsSource, self)
         guard let webViewController = vc else {
             assertionFailure("Failed create new web view for tab")
             open(tabContent: .blank)

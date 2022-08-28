@@ -21,9 +21,9 @@ extension WebViewModelState: Actionable {
             return .pendingPlugins(.url(site.urlInfo.platformURL), site.settings)
         case (.viewing(_, let settings), .loadNextLink(let url)):
             return .pendingPlugins(.url(url), settings)
-        case (.pendingPlugins(let urlData, let settings), .injectPlugins(let plugins)):
-            if let plugins = plugins {
-                return .injectingPlugins(plugins, urlData, settings)
+        case (.pendingPlugins(let urlData, let settings), .injectPlugins(let pluginsProgram)):
+            if let pluginsProgram = pluginsProgram {
+                return .injectingPlugins(pluginsProgram, urlData, settings)
             } else {
                 return .pendingDoHStatus(urlData, settings)
             }

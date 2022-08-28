@@ -45,11 +45,11 @@ final class WebViewsReuseManager {
     /// Returns already created view with updated site or creates new one.
     ///
     /// - Parameter site: The site object with all info for WebView.
-    /// - Parameter pluginsBuilder: Builder for plugins.
+    /// - Parameter pluginsBuilder: Source for plugins.
     /// - Parameter delegate: navigation delegate.
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor(_ site: Site,
-                       _ pluginsBuilder: JSPluginsSource?,
+                       _ pluginsBuilder: JSPluginsSource,
                        _ delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
