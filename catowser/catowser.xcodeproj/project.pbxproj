@@ -206,7 +206,6 @@
 		8A437DA9247ED376001C1E8B /* TrimmedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA8247ED376001C1E8B /* TrimmedString.swift */; };
 		8A4D0D8224A279A9009B28A3 /* CryptoKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */; };
 		8A510F632424ADC30070503C /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
-		8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */; };
 		8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A553519247D740900E3B330 /* SiteMenuModel.swift */; };
 		8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A553519247D740900E3B330 /* SiteMenuModel.swift */; };
 		8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */; };
@@ -278,7 +277,6 @@
 		8A8035C324442F0F000E035F /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
 		8A8035C424442F0F000E035F /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
 		8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */; };
-		8A8035C624442F0F000E035F /* WebViewController+SystemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */; };
 		8A8035C724442F0F000E035F /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
@@ -309,8 +307,6 @@
 		8A90636B24332452009D786E /* Network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A46AB9A237721FD00DC03E6 /* Network.framework */; };
 		8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
-		8A91A0EB2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */; };
-		8A91A0EC2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
@@ -435,6 +431,12 @@
 		8AE6D16D2350FF35006316AD /* HttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE6D16B2350FF35006316AD /* HttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D044280D388800FADE3A /* ResponseType.swift */; };
 		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
+		8AF0B95828B9FA2C001D202C /* WebViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */; };
+		8AF0B95928B9FA2C001D202C /* WebViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */; };
+		8AF0B95B28B9FA8A001D202C /* WebViewModelState+Actionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */; };
+		8AF0B95C28B9FA8A001D202C /* WebViewModelState+Actionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */; };
+		8AF0B95E28B9FAC8001D202C /* WebViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */; };
+		8AF0B95F28B9FAC8001D202C /* WebViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */; };
 		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */; };
 		8AF43379248EBB2A0047452B /* CssParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF43377248EBB2A0047452B /* CssParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -841,7 +843,6 @@
 		8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDnsServer.swift; sourceTree = "<group>"; };
 		8A4D0D8124A279A9009B28A3 /* CryptoKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CryptoKit.framework; sourceTree = DEVELOPER_DIR; };
 		8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNavigationProtocols.swift; sourceTree = "<group>"; };
-		8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SystemExtensions.swift"; sourceTree = "<group>"; };
 		8A553519247D740900E3B330 /* SiteMenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuModel.swift; sourceTree = "<group>"; };
 		8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		8A5755A928638748004D6F1E /* SearchSuggestionsViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewModelImpl.swift; sourceTree = "<group>"; };
@@ -879,7 +880,6 @@
 		8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsViewPreview.swift; sourceTree = "<group>"; };
-		8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
@@ -970,6 +970,9 @@
 		8AE6D16C2350FF35006316AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
 		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
+		8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelState.swift; sourceTree = "<group>"; };
+		8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewModelState+Actionable.swift"; sourceTree = "<group>"; };
+		8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAction.swift; sourceTree = "<group>"; };
 		8AF4336B248E129F0047452B /* HTMLContentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentMessage.swift; sourceTree = "<group>"; };
 		8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSBackgroundImage.swift; sourceTree = "<group>"; };
 		8AF43375248EBB2A0047452B /* CssParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CssParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1410,9 +1413,7 @@
 				8A3FED7A288FC8AE004997E4 /* ViewModels */,
 				60C2C90122801C7600F5D869 /* TopSites */,
 				C22599621F7BEF6D000E4C3A /* WebViewController.swift */,
-				8A510F662424F1550070503C /* WebViewController+SystemExtensions.swift */,
 				8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */,
-				8A91A0EA2678DBE900872362 /* WebViewController+AsyncAwait.swift */,
 				8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */,
 				841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */,
 				60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */,
@@ -1645,6 +1646,9 @@
 			isa = PBXGroup;
 			children = (
 				8AC19CBC289E2A290021D8ED /* URLData.swift */,
+				8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */,
+				8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */,
+				8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */,
 				8A3FED7B288FC8CA004997E4 /* WebViewModel.swift */,
 				8A3FED7E288FD1A6004997E4 /* WebViewModelImpl.swift */,
 				8AC5873B289C3DA00038A7B5 /* WebViewContext.swift */,
@@ -3212,6 +3216,7 @@
 				8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
 				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
 				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
+				8AF0B95E28B9FAC8001D202C /* WebViewAction.swift in Sources */,
 				8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				8A5755AA28638748004D6F1E /* SearchSuggestionsViewModelImpl.swift in Sources */,
 				8A1C1C262485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
@@ -3228,7 +3233,6 @@
 				8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */,
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
 				841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */,
-				8A91A0EB2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */,
 				8A745C0D248027C600A379AD /* TabsCache.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				8A5FD6A926AF34570019384A /* AppErrors.swift in Sources */,
@@ -3240,7 +3244,6 @@
 				8A23987C286223A7005DA801 /* WebSearchAutocomplete.swift in Sources */,
 				755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
 				8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
-				8A510F672424F1550070503C /* WebViewController+SystemExtensions.swift in Sources */,
 				8A16102928947C2F00D45228 /* DNSResolver.swift in Sources */,
 				8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */,
 				8A745C112480295B00A379AD /* TabsEnvironment.swift in Sources */,
@@ -3264,11 +3267,13 @@
 				8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				8A23988528622456005DA801 /* DDGoAutocompleteStrategy.swift in Sources */,
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
+				8AF0B95B28B9FA8A001D202C /* WebViewModelState+Actionable.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
 				8A1C1C292485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */,
 				8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */,
 				8A16102F28947D2100D45228 /* DNSResolvingStrategy.swift in Sources */,
 				8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
+				8AF0B95828B9FA2C001D202C /* WebViewModelState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3357,6 +3362,7 @@
 				8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
 				8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */,
 				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
+				8AF0B95F28B9FAC8001D202C /* WebViewAction.swift in Sources */,
 				8AB8018B27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				8A5755AB28638748004D6F1E /* SearchSuggestionsViewModelImpl.swift in Sources */,
 				8A1C1C272485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
@@ -3373,7 +3379,6 @@
 				8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */,
 				8A8035C024442F0F000E035F /* Theme.swift in Sources */,
 				8A8035C124442F0F000E035F /* LinkTagsViewController.swift in Sources */,
-				8A91A0EC2678DBE900872362 /* WebViewController+AsyncAwait.swift in Sources */,
 				8A745C0C248027C600A379AD /* TabsCache.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
 				8A5FD6AA26AF34570019384A /* AppErrors.swift in Sources */,
@@ -3385,7 +3390,6 @@
 				8A23987D286223A7005DA801 /* WebSearchAutocomplete.swift in Sources */,
 				755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
 				8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
-				8A8035C624442F0F000E035F /* WebViewController+SystemExtensions.swift in Sources */,
 				8A16102A28947C2F00D45228 /* DNSResolver.swift in Sources */,
 				8A8035C724442F0F000E035F /* UIConstants.swift in Sources */,
 				8A745C122480295B00A379AD /* TabsEnvironment.swift in Sources */,
@@ -3409,11 +3413,13 @@
 				8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				8A23988628622456005DA801 /* DDGoAutocompleteStrategy.swift in Sources */,
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
+				8AF0B95C28B9FA8A001D202C /* WebViewModelState+Actionable.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,
 				8A1C1C2A2485121C0098F2F1 /* MasterRouter+LinkTagsDelegate.swift in Sources */,
 				8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */,
 				8A16103028947D2100D45228 /* DNSResolvingStrategy.swift in Sources */,
 				8A566F80245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
+				8AF0B95928B9FA2C001D202C /* WebViewModelState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

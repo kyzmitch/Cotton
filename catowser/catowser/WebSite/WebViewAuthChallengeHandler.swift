@@ -28,7 +28,7 @@ final class WebViewAuthChallengeHandler {
         self.completionHandler = completionHandler
     }
     
-    func solve(_ presentationController: UIViewController, completion: @escaping () -> Void) {
+    func solve(completion: @escaping () -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
             completionHandler(.performDefaultHandling, nil)
             return
@@ -40,7 +40,6 @@ final class WebViewAuthChallengeHandler {
         if let currentIPAddress = urlInfo.ipAddressString, currentIPAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
                               urlInfo.domainName.rawString,
-                              presentationController,
                               completionHandler,
                               completion)
         } else {
@@ -61,7 +60,6 @@ final class WebViewAuthChallengeHandler {
 private extension WebViewAuthChallengeHandler {
     func handleServerTrust(_ serverTrust: SecTrust,
                            _ host: String,
-                           _ presentationController: UIViewController,
                            _ completionHandler: @escaping AuthHandler,
                            _ completion: @escaping () -> Void) {
         

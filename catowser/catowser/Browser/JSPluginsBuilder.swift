@@ -35,4 +35,8 @@ extension JSPluginsBuilder: JSPluginsSource {
     var plugins: [JavaScriptPlugin] {
         return _plugins
     }
+    
+    var jsPlugins: JSPlugins? {
+        JSPlugins(_plugins)
+    }
 }

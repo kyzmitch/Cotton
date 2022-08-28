@@ -90,7 +90,7 @@ final class MasterBrowserViewController: BaseViewController {
     var mKeyboardHeight: CGFloat?
 
     /// The current holder for WebView (controller) if browser has at least one
-    private weak var currentWebViewController: WebViewController?
+    private weak var currentWebViewController: AnyViewController?
 
     private var disposables = [Disposable?]()
 
@@ -356,7 +356,7 @@ extension MasterBrowserViewController: TabRendererInterface {
                     // a lot of tabs are opened.
                     // It is because it's very tricky to save navigation history
                     // for reused web view and for some other reasons.
-                    currentWebViewVC.removeFromChild()
+                    currentWebViewVC.viewController.removeFromChild()
                 }
             case .topSites:
                 topSitesController.viewController.removeFromChild()

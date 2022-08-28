@@ -49,4 +49,13 @@ enum URLData {
             return uRLInfo.platformURL.hasIPHost
         }
     }
+    
+    func sameHost(with url: URL) -> Bool {
+        switch self {
+        case .url(let uRL):
+            return uRL.host == url.host
+        case .info(let uRLInfo):
+            return uRLInfo.sameHost(with: url)
+        }
+    }
 }

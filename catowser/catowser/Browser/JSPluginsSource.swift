@@ -11,4 +11,5 @@ import JSPlugins
 
 protocol JSPluginsSource: AnyObject {
     var plugins: [JavaScriptPlugin] { get }
+    var jsPlugins: JSPlugins? { get }
 }

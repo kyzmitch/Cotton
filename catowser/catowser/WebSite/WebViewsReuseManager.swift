@@ -12,12 +12,14 @@ import JSPlugins
 import BrowserNetworking
 import CoreHttpKit
 
+typealias VMName = WebViewModelImpl<GoogleDNSStrategy>
+
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
     static let shared = WebViewsReuseManager()
     /// Web view controllers array, array is used to have ordering and current index
     /// But NSMapTable could be better by using Sites as keys for web views.
-    private var views: [WebViewController]
+    private var views: [WebViewController] = [WebViewController]()
     /// How many views to store
     private let viewsLimit: Int
     /// Needed to store index of last returned view
@@ -27,7 +29,7 @@ final class WebViewsReuseManager {
 
     private init(_ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
-        views = [WebViewController]()
+        
         if viewsLimit >= 1 {
             self.viewsLimit = viewsLimit
         } else {
@@ -36,11 +38,8 @@ final class WebViewsReuseManager {
     }
     
     private func searchWebViewIndex(for site: Site) -> Int? {
-        for (i, vc) in views.enumerated() {
-            let currentUrl = vc.urlInfo.url
-            if currentUrl == site.urlInfo.url {
-                return i
-            }
+        for (i, vc) in views.enumerated() where vc.viewModel.currentURL?.absoluteString == site.urlInfo.url {
+            return i
         }
         return nil
     }
@@ -67,8 +66,9 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let jsPlugins: [JavaScriptPlugin] = pluginsBuilder?.plugins ?? []
-            let vc: WebViewController = .init(site, jsPlugins, delegate, GoogleDnsClient.shared)
+            let context: WebViewContext = .init(pluginsBuilder)
+            let vm = ViewModelFactory.shared.webViewModel(site.settings, context)
+            let vc: WebViewController = .init(vm, delegate)
             views.append(vc)
             lastSelectedIndex = count
             return vc
@@ -99,7 +99,7 @@ final class WebViewsReuseManager {
             struct OutOfBoundsIndex: Error {}
             throw OutOfBoundsIndex()
         }
-        vc.load(site: site, canLoadPlugins: site.settings.canLoadPlugins)
+        // TODO: somehow need to not call load methods from here
         return vc
     }
     

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import JSPlugins
 
 final class WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
@@ -14,5 +15,9 @@ final class WebViewContext {
     
     init(_ plugins: JSPluginsSource?) {
         pluginsBuilder = plugins
+    }
+    
+    var jsPlugins: JSPlugins? {
+        pluginsBuilder?.jsPlugins
     }
 }
