@@ -17,9 +17,9 @@ extension WebViewModelState: Actionable {
     // swiftlint:disable:next cyclomatic_complexity
     func transition(on action: Action) throws -> State {
         switch (self, action) {
-        case (.initialized(let site), .load):
+        case (.initialized(let site), .loadSite):
             return .pendingPlugins(.url(site.urlInfo.platformURL), site.settings)
-        case (.viewing(_, let settings), .loadUrl(let url)):
+        case (.viewing(_, let settings), .loadNextLink(let url)):
             return .pendingPlugins(.url(url), settings)
         case (.pendingPlugins(let urlData, let settings), .injectPlugins(let plugins)):
             if let plugins = plugins {

@@ -119,17 +119,9 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     
     func load() {
         do {
-            state = try state.transition(on: .load)
+            state = try state.transition(on: .loadSite)
         } catch {
             print("Wrong state on load action: " + error.localizedDescription)
-        }
-    }
-    
-    func load(url: URL) {
-        do {
-            state = try state.transition(on: .loadUrl(url))
-        } catch {
-            print("Wrong state on url load action: " + error.localizedDescription)
         }
     }
     
@@ -196,7 +188,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
             if stateHost.isSimilar(name: nextHost) && !url.hasIPHost {
                 decisionHandler(.cancel)
                 do {
-                    state = try state.transition(on: .loadUrl(url))
+                    state = try state.transition(on: .loadNextLink(url))
                 } catch {
                     print("Fail to load next URL due to error: \(error.localizedDescription)")
                 }

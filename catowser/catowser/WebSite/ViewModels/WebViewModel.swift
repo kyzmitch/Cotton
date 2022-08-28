@@ -26,7 +26,6 @@ protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
     func load()
-    func load(url: URL)
     func finishLoading()
     func enableJSPlugins(_ subject: JavaScriptEvaluateble, _ enable: Bool)
     

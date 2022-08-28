@@ -19,8 +19,8 @@ protocol Actionable {
 typealias IPAddress = String
 
 enum WebViewAction {
-    case load
-    case loadUrl(_ url: URL)
+    case loadSite
+    case loadNextLink(_ url: URL)
     case injectPlugins(JSPlugins?)
     case fetchDoHStatus
     case checkDNResolvingSupport(Bool)
