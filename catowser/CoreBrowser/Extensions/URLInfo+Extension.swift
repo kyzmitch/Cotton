@@ -45,7 +45,7 @@ public extension URLInfo {
     }
 
     var platformURL: URL {
-        guard let platformURL = URL(string: url) else {
+        guard let platformURL = URL(string: urlWithoutPort) else {
             // This shouldn't fail
             assertionFailure("Failed to convert kotlin URL to platform type")
             // swiftlint:disable:next force_unwrapping

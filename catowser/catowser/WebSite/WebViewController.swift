@@ -181,9 +181,8 @@ final class WebViewController: BaseViewController,
          you must inject/re-enable plugins even if web view loaded page from same Host
          and even if ip address is used instead of domain name
          */
-        // TODO: figure out if it should be enabled or not
-        viewModel.enableJSPlugins(webView, true)
-        viewModel.finishNavigation(newURL)
+        let jsEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        viewModel.finishLoading(newURL, webView, jsEnabled)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

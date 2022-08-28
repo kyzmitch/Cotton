@@ -26,8 +26,7 @@ protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
     func load()
-    func finishLoading()
-    func enableJSPlugins(_ subject: JavaScriptEvaluateble, _ enable: Bool)
+    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble, _ enable: Bool)
     
     // MARK: - Not main methods which could be refactored
     
@@ -35,7 +34,6 @@ protocol WebViewModel: AnyObject {
     func setJavaScript(enabled: Bool)
     func decidePolicyFor(_ navigationAction: WKNavigationAction,
                          _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
-    func finishNavigation(_ newURL: URL)
     
     // MARK: - public properties
     

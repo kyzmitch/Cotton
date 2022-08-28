@@ -125,6 +125,29 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
+    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble, _ enable: Bool) {
+        guard let info = state.urlInfo else {
+            return
+        }
+        guard let updatedInfo = info.withSimilar(newURL) else {
+            return
+        }
+        let site = Site(urlInfo: updatedInfo,
+                        settings: state.settings,
+                        faviconData: nil,
+                        searchSuggestion: nil,
+                        userSpecifiedTitle: nil)
+        InMemoryDomainSearchProvider.shared.remember(host: info.host())
+        context.jsPlugins?.enable(on: subject, enable: enable)
+        
+        do {
+            state = try state.transition(on: .finishLoading)
+            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        } catch {
+            print("\(#function) - failed to replace current tab: " + error.localizedDescription)
+        }
+    }
+    
     func isNativeAppSchemeRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
         let isSameHost = state.sameHost(with: url)
         guard isSameHost && nativeAppDomainNameString != nil else {
@@ -181,6 +204,10 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         
         switch scheme {
         case .http, .https:
+            guard state.url != url else {
+                decisionHandler(.allow)
+                return
+            }
             guard  let stateHost = state.host, let nextHost = url.host else {
                 decisionHandler(.allow)
                 return
@@ -202,27 +229,6 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func finishNavigation(_ newURL: URL) {
-        guard let info = state.urlInfo else {
-            return
-        }
-        guard let updatedInfo = info.withSimilar(newURL) else {
-            return
-        }
-        let site = Site(urlInfo: updatedInfo,
-                        settings: state.settings,
-                        faviconData: nil,
-                        searchSuggestion: nil,
-                        userSpecifiedTitle: nil)
-        InMemoryDomainSearchProvider.shared.remember(host: info.host())
-        
-        do {
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
-        } catch {
-            print("\(#function) - failed to replace current tab")
-        }
-    }
-    
     func setJavaScript(enabled: Bool) {
         guard enabled != settings.isJSEnabled else {
             return
@@ -241,18 +247,6 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         } catch {
             print("Wrong state on JS change action: " + error.localizedDescription)
         }
-    }
-    
-    func finishLoading() {
-        do {
-            state = try state.transition(on: .finishLoading)
-        } catch {
-            print("Wrong state on loading finish: " + error.localizedDescription)
-        }
-    }
-    
-    func enableJSPlugins(_ subject: JavaScriptEvaluateble, _ enable: Bool) {
-        context.jsPlugins?.enable(on: subject, enable: enable)
     }
 }
 
