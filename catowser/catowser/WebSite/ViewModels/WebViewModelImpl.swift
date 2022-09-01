@@ -76,7 +76,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     @available(iOS 15.0, *)
     lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
     
-    var host: Host? { state.host }
+    var host: Host { state.host }
     
     var currentURL: URL? { state.url }
     
@@ -85,7 +85,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     var urlInfo: URLInfo? { state.urlInfo }
     
     var nativeAppDomainNameString: String? {
-        guard let host = host, let checker = try? DomainNativeAppChecker(host: host) else {
+        guard let checker = try? DomainNativeAppChecker(host: host) else {
             return nil
         }
         return checker.correspondingDomain
@@ -208,11 +208,11 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
                 decisionHandler(.allow)
                 return
             }
-            guard  let stateHost = state.host, let nextHost = url.host else {
+            guard let nextHost = url.host else {
                 decisionHandler(.allow)
                 return
             }
-            if stateHost.isSimilar(name: nextHost) && !url.hasIPHost {
+            if state.host.isSimilar(name: nextHost) && !url.hasIPHost {
                 decisionHandler(.cancel)
                 do {
                     state = try state.transition(on: .loadNextLink(url))
@@ -236,9 +236,9 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
         state = state.withUpdatedSettings(jsSettings)
         updateLoadingState(.recreateView(true))
-        if let stateHost = state.host, state.settings.canLoadPlugins {
+        if state.settings.canLoadPlugins {
             context.pluginsProgram.inject(to: configuration.userContentController,
-                                          context: stateHost,
+                                          context: state.host,
                                           settings.canLoadPlugins)
         }
         updateLoadingState(.reattachViewObservers)
@@ -258,18 +258,18 @@ private extension WebViewModelImpl {
         case .pendingPlugins:
             let pluginsProgram: JSPluginsProgram? = settings.canLoadPlugins ? context.pluginsProgram : nil
             state = try state.transition(on: .injectPlugins(pluginsProgram))
-        case .injectingPlugins(let plugins, let urlData, _):
-            guard let host = urlData.host else {
-                return
-            }
-            plugins.inject(to: configuration.userContentController, context: host, true)
+        case .injectingPlugins(let pluginsProgram, let urlData, _):
+            pluginsProgram.inject(to: configuration.userContentController, context: urlData.host, true)
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
             let enabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
             state = try state.transition(on: .resolveDomainName(enabled))
         case .checkingDNResolveSupport(let urlData, _):
-            let needResolveHost = urlData.host?.isDoHSupported ?? false
-            state = try state.transition(on: .checkDNResolvingSupport(needResolveHost && !urlData.hasIPHost))
+            let dohWillWork = urlData.host.isDoHSupported
+            // somehow url from site already or from next page request
+            // contained ip address
+            let domainNameAlreadyResolved = urlData.hasIPHost
+            state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
         case .creatingRequest(let url, _):
@@ -284,6 +284,18 @@ private extension WebViewModelImpl {
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     func resolveDomainName(_ urlData: URLData) {
+        // Double checking even if it was checked before
+        // to not perform unnecessary network requests
+        guard !urlData.hasIPHost else {
+            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.urlWithResolvedDomainName))
+            guard let nextState = possibleState else {
+                assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
+                return
+            }
+            state = nextState
+            return
+        }
+        
         let apiType = FeatureManager.appAsyncApiTypeValue()
         switch apiType {
         case .reactive:

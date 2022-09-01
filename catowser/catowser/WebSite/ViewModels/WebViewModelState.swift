@@ -26,8 +26,10 @@ enum WebViewModelState {
         case notImplemented
     }
     
-    var host: Host? {
+    var host: Host {
         switch self {
+        case .initialized(let site):
+            return site.host
         case .pendingPlugins(let uRLData, _):
             return uRLData.host
         case .injectingPlugins(_, let uRLData, _):
@@ -39,23 +41,22 @@ enum WebViewModelState {
         case .resolvingDN(let uRLData, _):
             return uRLData.host
         case .creatingRequest(let uRL, _):
-            guard let hostString = uRL.host else {
-                return nil
-            }
-            return try? Host(input: hostString)
+            // swiftlint:disable:next force_unwrapping
+            return uRL.kitHost!
         case .updatingWebView(let uRLRequest, _):
-            guard let hostString = uRLRequest.url?.host else {
-                return nil
-            }
-            return try? Host(input: hostString)
-        case .viewing(let request, _):
-            return request.url?.kitHost
-        default:
-            return nil
+            // swiftlint:disable:next force_unwrapping
+            let url = uRLRequest.url!
+            // swiftlint:disable:next force_unwrapping
+            return url.kitHost!
+        case .viewing(let uRLRequest, _):
+            // swiftlint:disable:next force_unwrapping
+            let url = uRLRequest.url!
+            // swiftlint:disable:next force_unwrapping
+            return url.kitHost!
         }
     }
     
-    var url: URL? {
+    var url: URL {
         switch self {
         case .initialized(let site):
             return site.urlInfo.platformURL
@@ -72,9 +73,11 @@ enum WebViewModelState {
         case .creatingRequest(let uRL, _):
             return uRL
         case .updatingWebView(let uRLRequest, _):
-            return uRLRequest.url
+            // swiftlint:disable:next force_unwrapping
+            return uRLRequest.url!
         case .viewing(let request, _):
-            return request.url
+            // swiftlint:disable:next force_unwrapping
+            return request.url!
         }
     }
     
@@ -147,7 +150,7 @@ enum WebViewModelState {
         }
     }
     
-    var urlData: URLData? {
+    var urlData: URLData {
         switch self {
         case .initialized(let site):
             return .info(site.urlInfo)
@@ -162,37 +165,24 @@ enum WebViewModelState {
         case .resolvingDN(let uRLData, _):
             return uRLData
         case .creatingRequest(let uRL, _):
-            guard let value = URLInfo(uRL) else {
-                return nil
-            }
-            return .info(value)
+            return .url(uRL)
         case .updatingWebView(let uRLRequest, _):
-            guard let uRL = uRLRequest.url else {
-                return nil
-            }
-            guard let value = URLInfo(uRL) else {
-                return nil
-            }
-            return .info(value)
+            // swiftlint:disable:next force_unwrapping
+            let uRL = uRLRequest.url!
+            return .url(uRL)
         case .viewing(let uRLRequest, _):
-            guard let uRL = uRLRequest.url else {
-                return nil
-            }
-            guard let value = URLInfo(uRL) else {
-                return nil
-            }
-            return .info(value)
+            // swiftlint:disable:next force_unwrapping
+            let uRL = uRLRequest.url!
+            return .url(uRL)
         }
     }
     
     var urlInfo: URLInfo? {
-        guard let value = urlData else {
-            return nil
-        }
-        if case .info(let internalValue) = value {
-            return internalValue
-        } else {
-            return nil
+        switch urlData {
+        case .url(let uRL):
+            return URLInfo(uRL)
+        case .info(let uRLInfo):
+            return uRLInfo
         }
     }
 }

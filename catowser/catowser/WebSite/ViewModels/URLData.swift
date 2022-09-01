@@ -22,6 +22,8 @@ enum URLData {
         }
     }
     
+    /// Returns url with a domain name in host property of URL.
+    /// Platform URL is always present.
     var platformURL: URL {
         switch self {
         case .url(let uRL):
@@ -31,10 +33,21 @@ enum URLData {
         }
     }
     
-    var host: Host? {
+    /// Could return URL with an ip address instead of a domain name
+    var urlWithResolvedDomainName: URL {
         switch self {
         case .url(let uRL):
-            return uRL.kitHost
+            return uRL
+        case .info(let uRLInfo):
+            return uRLInfo.urlWithIPaddress()
+        }
+    }
+    
+    var host: Host {
+        switch self {
+        case .url(let uRL):
+            // swiftlint:disable:next force_unwrapping
+            return uRL.kitHost!
         case .info(let uRLInfo):
             return uRLInfo.host()
         }
@@ -45,8 +58,7 @@ enum URLData {
         case .url(let uRL):
             return uRL.hasIPHost
         case .info(let uRLInfo):
-            // TODO: double check that platform URL is needed value here
-            return uRLInfo.platformURL.hasIPHost
+            return uRLInfo.ipAddressString != nil
         }
     }
     

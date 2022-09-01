@@ -38,7 +38,7 @@ protocol WebViewModel: AnyObject {
     // MARK: - public properties
     
     var configuration: WKWebViewConfiguration { get }
-    var host: Host? { get }
+    var host: Host { get }
     var currentURL: URL? { get }
     var settings: Site.Settings { get }
     var urlInfo: URLInfo? { get }

@@ -18,7 +18,7 @@ extension WebViewModelState: Actionable {
     func transition(on action: Action) throws -> State {
         switch (self, action) {
         case (.initialized(let site), .loadSite):
-            return .pendingPlugins(.url(site.urlInfo.platformURL), site.settings)
+            return .pendingPlugins(.info(site.urlInfo), site.settings)
         case (.viewing(_, let settings), .loadNextLink(let url)):
             return .pendingPlugins(.url(url), settings)
         case (.pendingPlugins(let urlData, let settings), .injectPlugins(let pluginsProgram)):
@@ -41,10 +41,10 @@ extension WebViewModelState: Actionable {
             if resolveNeeded {
                 return .resolvingDN(urlData, settings)
             } else {
-                return .creatingRequest(urlData.platformURL, settings)
+                return .creatingRequest(urlData.urlWithResolvedDomainName, settings)
             }
-        case (.resolvingDN(_, let settings), .createRequestAnyway(let url)):
-            return .creatingRequest(url, settings)
+        case (.resolvingDN(_, let settings), .createRequestAnyway(let urlWithPossiblyResolvedDomainName)):
+            return .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
         case (.creatingRequest(_, let settings), .loadWebView(let request)):
             return .updatingWebView(request, settings)
         case (.updatingWebView(let request, let settings), .finishLoading):
