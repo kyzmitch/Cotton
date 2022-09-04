@@ -125,24 +125,14 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble, _ enable: Bool) {
-        guard let info = state.urlInfo else {
-            return
-        }
-        guard let updatedInfo = info.withSimilar(newURL) else {
-            return
-        }
-        let site = Site(urlInfo: updatedInfo,
-                        settings: state.settings,
-                        faviconData: nil,
-                        searchSuggestion: nil,
-                        userSpecifiedTitle: nil)
-        InMemoryDomainSearchProvider.shared.remember(host: info.host())
-        context.pluginsProgram.enable(on: subject, enable: enable)
-        
+    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
+        /**
+         you must inject/re-enable plugins even if web view loaded page from same Host
+         and even if ip address is used instead of domain name
+         */
+        let jsEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
         do {
-            state = try state.transition(on: .finishLoading)
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+            state = try state.transition(on: .finishLoading(newURL, subject, jsEnabled))
         } catch {
             print("\(#function) - failed to replace current tab: " + error.localizedDescription)
         }
@@ -229,21 +219,9 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func setJavaScript(enabled: Bool) {
-        guard enabled != settings.isJSEnabled else {
-            return
-        }
-        let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
-        state = state.withUpdatedSettings(jsSettings)
-        updateLoadingState(.recreateView(true))
-        if state.settings.canLoadPlugins {
-            context.pluginsProgram.inject(to: configuration.userContentController,
-                                          context: state.host,
-                                          settings.canLoadPlugins)
-        }
-        updateLoadingState(.reattachViewObservers)
+    func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) {
         do {
-            state = try state.transition(on: .changeJavaScript(enabled))
+            state = try state.transition(on: .changeJavaScript(subject, enabled))
         } catch {
             print("Wrong state on JS change action: " + error.localizedDescription)
         }
@@ -277,8 +255,24 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .loadWebView(request))
         case .updatingWebView(let request, _):
             updateLoadingState(.load(request))
+        case .finishingLoading(let request, let settings, let newURL, let subject, let enable):
+            // swiftlint:disable:next force_unwrapping
+            let url = request.url!
+            // swiftlint:disable:next force_unwrapping
+            let info = URLInfo(url)!
+            // swiftlint:disable:next force_unwrapping
+            let updatedInfo = info.withSimilar(newURL)!
+            let site = Site.create(urlInfo: updatedInfo, settings: settings)
+            InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
+            context.pluginsProgram.enable(on: subject, enable: enable)
+            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
         case .viewing:
             break
+        case .updatingJS(let request, let settings, let subject):
+            context.pluginsProgram.enable(on: subject, enable: settings.isJSEnabled)
+            updateLoadingState(.recreateView(true))
+            updateLoadingState(.reattachViewObservers)
+            updateLoadingState(.load(request))
         }
     }
     

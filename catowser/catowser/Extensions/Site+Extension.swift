@@ -96,4 +96,13 @@ extension Site {
                     searchSuggestion: searchSuggestion,
                     userSpecifiedTitle: userSpecifiedTitle)
     }
+    
+    static func create(urlInfo: URLInfo, settings: Settings) -> Site {
+        let site = Site(urlInfo: urlInfo,
+                        settings: settings,
+                        faviconData: nil,
+                        searchSuggestion: nil,
+                        userSpecifiedTitle: nil)
+        return site
+    }
 }

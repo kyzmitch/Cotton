@@ -27,9 +27,10 @@ enum WebViewAction {
     case resolveDomainName(_ useDoH: Bool)
     case createRequestAnyway(URL)
     case loadWebView(URLRequest)
-    case finishLoading
+    case finishLoading(URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
+    case startView
     
     // middle actions
     
-    case changeJavaScript(Bool)
+    case changeJavaScript(JavaScriptEvaluateble, Bool)
 }

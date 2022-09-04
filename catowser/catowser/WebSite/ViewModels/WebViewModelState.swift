@@ -19,7 +19,10 @@ enum WebViewModelState {
     case resolvingDN(URLData, Site.Settings)
     case creatingRequest(URL, Site.Settings)
     case updatingWebView(URLRequest, Site.Settings)
+    case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
     case viewing(URLRequest, Site.Settings)
+    
+    case updatingJS(URLRequest, Site.Settings, JavaScriptEvaluateble)
     
     enum Error: LocalizedError {
         case unexpectedStateForAction
@@ -48,7 +51,15 @@ enum WebViewModelState {
             let url = uRLRequest.url!
             // swiftlint:disable:next force_unwrapping
             return url.kitHost!
+        case .finishingLoading(let request, _, _, _, _):
+            // swiftlint:disable:next force_unwrapping
+            return request.url!.kitHost!
         case .viewing(let uRLRequest, _):
+            // swiftlint:disable:next force_unwrapping
+            let url = uRLRequest.url!
+            // swiftlint:disable:next force_unwrapping
+            return url.kitHost!
+        case .updatingJS(let uRLRequest, _, _):
             // swiftlint:disable:next force_unwrapping
             let url = uRLRequest.url!
             // swiftlint:disable:next force_unwrapping
@@ -75,7 +86,13 @@ enum WebViewModelState {
         case .updatingWebView(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             return uRLRequest.url!
+        case .finishingLoading(let request, _, _, _, _):
+            // swiftlint:disable:next force_unwrapping
+            return request.url!
         case .viewing(let request, _):
+            // swiftlint:disable:next force_unwrapping
+            return request.url!
+        case .updatingJS(let request, _, _):
             // swiftlint:disable:next force_unwrapping
             return request.url!
         }
@@ -99,31 +116,12 @@ enum WebViewModelState {
             return settings
         case .updatingWebView(_, let settings):
             return settings
+        case .finishingLoading(_, let settings, _, _, _):
+            return settings
         case .viewing(_, let settings):
             return settings
-        }
-    }
-    
-    func withUpdatedSettings(_ newSettings: Site.Settings) -> WebViewModelState {
-        switch self {
-        case .initialized(let site):
-            return .initialized(site.withUpdated(newSettings))
-        case .pendingPlugins(let uRLData, _):
-            return .pendingPlugins(uRLData, newSettings)
-        case .injectingPlugins(let array, let uRLData, _):
-            return .injectingPlugins(array, uRLData, newSettings)
-        case .pendingDoHStatus(let uRLData, _):
-            return .pendingDoHStatus(uRLData, newSettings)
-        case .checkingDNResolveSupport(let uRLData, _):
-            return .checkingDNResolveSupport(uRLData, newSettings)
-        case .resolvingDN(let uRLData, _):
-            return .resolvingDN(uRLData, newSettings)
-        case .creatingRequest(let uRL, _):
-            return .creatingRequest(uRL, newSettings)
-        case .updatingWebView(let uRLRequest, _):
-            return .updatingWebView(uRLRequest, newSettings)
-        case .viewing(let request, _):
-            return .viewing(request, newSettings)
+        case .updatingJS(_, let settings, _):
+            return settings
         }
     }
     
@@ -145,7 +143,11 @@ enum WebViewModelState {
             return uRL.host == url.host
         case .updatingWebView(let uRLRequest, _):
             return uRLRequest.url?.host == url.host
+        case .finishingLoading(let request, _, _, _, _):
+            return request.url?.host == url.host
         case .viewing(let request, _):
+            return request.url?.host == url.host
+        case .updatingJS(let request, _, _):
             return request.url?.host == url.host
         }
     }
@@ -170,7 +172,15 @@ enum WebViewModelState {
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
             return .url(uRL)
+        case .finishingLoading(let uRLRequest, _, _, _, _):
+            // swiftlint:disable:next force_unwrapping
+            let uRL = uRLRequest.url!
+            return .url(uRL)
         case .viewing(let uRLRequest, _):
+            // swiftlint:disable:next force_unwrapping
+            let uRL = uRLRequest.url!
+            return .url(uRL)
+        case .updatingJS(let uRLRequest, _, _):
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
             return .url(uRL)

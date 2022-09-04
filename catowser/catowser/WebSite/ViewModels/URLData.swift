@@ -39,7 +39,8 @@ enum URLData {
         case .url(let uRL):
             return uRL
         case .info(let uRLInfo):
-            return uRLInfo.urlWithIPaddress()
+            // swiftlint:disable:next force_unwrapping
+            return URL(string: uRLInfo.urlWithIPaddress())!
         }
     }
     

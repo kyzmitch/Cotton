@@ -177,12 +177,8 @@ final class WebViewController: BaseViewController,
             print("web view without url")
             return
         }
-        /**
-         you must inject/re-enable plugins even if web view loaded page from same Host
-         and even if ip address is used instead of domain name
-         */
-        let jsEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        viewModel.finishLoading(newURL, webView, jsEnabled)
+        
+        viewModel.finishLoading(newURL, webView)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

@@ -48,6 +48,6 @@ extension WebViewController: SiteNavigationDelegate {
     }
     
     func reloadWithNewSettings(jsEnabled: Bool) {
-        viewModel.setJavaScript(enabled: jsEnabled)
+        viewModel.setJavaScript(webView, jsEnabled)
     }
 }

@@ -47,10 +47,16 @@ extension WebViewModelState: Actionable {
             return .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
         case (.creatingRequest(_, let settings), .loadWebView(let request)):
             return .updatingWebView(request, settings)
-        case (.updatingWebView(let request, let settings), .finishLoading):
-            return .viewing(request, settings) // to still be able to read URL after loading
-        case (.viewing, .changeJavaScript):
-            throw Error.notImplemented
+        case (.updatingWebView(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
+            return .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
+        case (.finishingLoading(let request, let settings, _, _, _), .startView):
+            return .viewing(request, settings)
+        case (.viewing(let request, let settings), .changeJavaScript(let subject, let enabled)):
+            guard settings.isJSEnabled != enabled else {
+                return self
+            }
+            let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
+            return .updatingJS(request, jsSettings, subject)
         default:
             throw Error.unexpectedStateForAction
         }

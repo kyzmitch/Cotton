@@ -26,12 +26,12 @@ protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
     func load()
-    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble, _ enable: Bool)
+    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble)
     
     // MARK: - Not main methods which could be refactored
     
     var nativeAppDomainNameString: String? { get }
-    func setJavaScript(enabled: Bool)
+    func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool)
     func decidePolicyFor(_ navigationAction: WKNavigationAction,
                          _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     
