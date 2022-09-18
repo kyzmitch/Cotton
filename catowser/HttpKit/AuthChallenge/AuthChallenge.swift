@@ -70,9 +70,12 @@ extension DefaultTrustEvaluator {
             
             switch output.result {
             case .recoverableTrustFailure:
-                let exceptions: CFData = SecTrustCopyExceptions(trust)
-                SecTrustSetExceptions(trust, exceptions)
-                guard SecTrustSetExceptions(trust, exceptions) else {
+                guard let cookie = SecTrustCopyExceptions(trust) else {
+                    struct OpaqueCookieNil: Error {}
+                    throw OpaqueCookieNil()
+                }
+                SecTrustSetExceptions(trust, cookie)
+                guard SecTrustSetExceptions(trust, cookie) else {
                     throw AFError.serverTrustEvaluationFailed(reason: reason)
                 }
                 // evaulate one more time

@@ -73,7 +73,6 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     
     private var dnsRequestSubsrciption: Disposable?
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
-    @available(iOS 15.0, *)
     lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
     
     var host: Host { state.host }
