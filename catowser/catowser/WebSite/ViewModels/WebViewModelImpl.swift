@@ -266,6 +266,7 @@ private extension WebViewModelImpl {
             InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
             context.pluginsProgram.enable(on: subject, enable: enable)
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+            state = try state.transition(on: .startView)
         case .viewing:
             break
         case .updatingJS(let request, let settings, let subject):
