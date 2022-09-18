@@ -66,8 +66,6 @@ final class WebViewController: BaseViewController {
     private var canGoForwardObservation: NSKeyValueObservation?
     
 #if swift(>=5.5)
-    // @available(swift 5.5)
-    @available(iOS 15.0, *)
     lazy var dnsRequestTaskHandler: Task.Handle<URL, Error>? = nil
 #endif
 
