@@ -254,7 +254,9 @@ final class WebViewController: BaseViewController {
         case .asyncAwait:
             if #available(iOS 15.0, *) {
     #if swift(>=5.5)
-                async { await aaResolveDomainName(url: url)}
+                Task {
+                    await aaResolveDomainName(url: url)
+                }
     #else
                 assertionFailure("Swift version isn't 5.5")
     #endif

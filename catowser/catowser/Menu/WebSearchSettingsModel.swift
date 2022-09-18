@@ -21,7 +21,7 @@ extension WebAutoCompletionSource: CustomStringConvertible {
     public var description: String {
         let key: String
         
-        // Not need to localize the names
+        // No need to localize the names
         switch self {
         case .duckduckgo:
             key = "Duck Duck Go"
