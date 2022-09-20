@@ -125,6 +125,7 @@ enum WebViewModelState {
         }
     }
     
+    // swiftlint:disable:next cyclomatic_complexity
     func sameHost(with url: URL) -> Bool {
         switch self {
         case .initialized(let site):

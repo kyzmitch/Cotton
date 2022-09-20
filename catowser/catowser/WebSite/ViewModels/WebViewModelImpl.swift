@@ -228,6 +228,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
 }
 
 private extension WebViewModelImpl {
+    // swiftlint:disable:next cyclomatic_complexity
     func onStateChange(_ nextState: WebViewModelState) throws {
         switch nextState {
         case .initialized:

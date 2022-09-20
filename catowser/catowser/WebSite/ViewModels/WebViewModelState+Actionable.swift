@@ -57,6 +57,8 @@ extension WebViewModelState: Actionable {
             }
             let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
             return .updatingJS(request, jsSettings, subject)
+        case (.updatingJS(let request, let settings, _), .finishLoading):
+            return .viewing(request, settings)
         default:
             throw Error.unexpectedStateForAction
         }
