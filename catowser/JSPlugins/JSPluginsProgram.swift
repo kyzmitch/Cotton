@@ -23,17 +23,17 @@ public final class JSPluginsProgram {
         self.plugins = plugins
     }
 
-    public func inject(to visitor: WKUserContentController, context: Host, _ needsInject: Bool) {
+    public func inject(to visitor: WKUserContentController, context: Host, canInject: Bool) {
         guard !plugins.isEmpty else {
             return
         }
-        guard needsInject else {
+        guard canInject else {
             visitor.removeAllUserScripts()
             return
         }
         visitor.removeAllUserScripts() // reset old state
         do {
-            try plugins.forEach { try $0.accept(visitor, context, needsInject) }
+            try plugins.forEach { try $0.accept(visitor, context, canInject) }
         } catch {
             print("\(#function) failed to load plugin: \(error.localizedDescription)")
         }

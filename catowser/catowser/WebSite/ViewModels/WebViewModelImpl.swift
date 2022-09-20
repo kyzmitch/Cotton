@@ -204,7 +204,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
 }
 
 private extension WebViewModelImpl {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func onStateChange(_ nextState: WebViewModelState) throws {
         switch nextState {
         case .initialized:
@@ -212,8 +212,11 @@ private extension WebViewModelImpl {
         case .pendingPlugins:
             let pluginsProgram: JSPluginsProgram? = settings.canLoadPlugins ? context.pluginsProgram : nil
             state = try state.transition(on: .injectPlugins(pluginsProgram))
-        case .injectingPlugins(let pluginsProgram, let urlData, _):
-            pluginsProgram.inject(to: configuration.userContentController, context: urlData.host, true)
+        case .injectingPlugins(let pluginsProgram, let urlData, let settings):
+            let canInject = settings.canLoadPlugins
+            pluginsProgram.inject(to: configuration.userContentController,
+                                  context: urlData.host,
+                                  canInject: canInject)
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
             let enabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)

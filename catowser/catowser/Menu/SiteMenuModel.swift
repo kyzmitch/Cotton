@@ -14,7 +14,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 
 enum MenuModelStyle {
-    case siteMenu(host: Host, siteSettings: Site.Settings)
+    case siteMenu(Host, Site.Settings)
     case onlyGlobalMenu
 }
 
@@ -70,7 +70,7 @@ final class SiteMenuModel: ObservableObject {
          siteDelegate: SiteSettingsInterface?,
          dismiss: @escaping DismissClosure) {
         switch menuStyle {
-        case .siteMenu(host: let host, siteSettings: let settings):
+        case .siteMenu(let host, let settings):
             self.host = host
             self.siteSettings = settings
             isJavaScriptEnabled = settings.isJSEnabled

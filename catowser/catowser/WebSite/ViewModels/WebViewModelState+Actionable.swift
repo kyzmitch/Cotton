@@ -14,7 +14,7 @@ extension WebViewModelState: Actionable {
     typealias Action = WebViewAction
     typealias State = Self
     
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func transition(on action: Action) throws -> State {
         switch (self, action) {
         case (.initialized(let site), .loadSite):

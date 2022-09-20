@@ -38,6 +38,7 @@ private struct _SiteMenuView: View {
                             Text(verbatim: .jsMenuTitle)
                         }
                     }
+                    // TODO: add setting to control JS plugins adding
                 }
                 Section(header: Text(verbatim: .globalSectionTtl)) {
                     Toggle(isOn: $model.isDohEnabled) {
@@ -118,7 +119,7 @@ struct SiteMenuView_Previews: PreviewProvider {
                                      isJSEnabled: true,
                                      canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
-        let style: MenuModelStyle = .siteMenu(host: host!, siteSettings: settings)
+        let style: MenuModelStyle = .siteMenu(host!, settings)
         let model = SiteMenuModel(menuStyle: style,
                                   siteDelegate: nil) {
             print("Dismiss triggered")
