@@ -243,13 +243,17 @@ private extension WebViewModelImpl {
             let updatedInfo = info.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
-            context.pluginsProgram.enable(on: subject, enable: enable)
+            context.pluginsProgram.enable(on: subject, context: info.host(), enable: enable)
             try TabsListManager.shared.replaceSelected(tabContent: .site(site))
             state = try state.transition(on: .startView)
         case .viewing:
             break
         case .updatingJS(let request, let settings, let subject):
-            context.pluginsProgram.enable(on: subject, enable: settings.isJSEnabled)
+            // swiftlint:disable:next force_unwrapping
+            let url = request.url!
+            // swiftlint:disable:next force_unwrapping
+            let host = url.kitHost!
+            context.pluginsProgram.enable(on: subject, context: host, enable: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             updateLoadingState(.load(request))

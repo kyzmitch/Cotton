@@ -39,10 +39,21 @@ public final class JSPluginsProgram {
         }
     }
 
-    public func enable(on webView: JavaScriptEvaluateble, enable: Bool) {
+    public func enable(on webView: JavaScriptEvaluateble, context: Host, enable: Bool) {
         guard !plugins.isEmpty else {
             return
         }
-        plugins.compactMap { $0.scriptString(enable) }.forEach { webView.evaluate(jsScript: $0)}
+        plugins
+            .filter { plugin in
+                guard let pluginHostName = plugin.hostKeyword else {
+                    return true
+                }
+                guard context.isSimilar(name: pluginHostName) else {
+                    return false
+                }
+                return true
+            }
+            .compactMap { $0.scriptString(enable) }
+            .forEach { webView.evaluate(jsScript: $0)}
     }
 }
