@@ -141,11 +141,11 @@ final class WebViewController: BaseViewController,
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let correspondingDomain = viewModel.nativeAppDomainNameString {
-            externalNavigationDelegate?.didOpenSiteWith(appName: correspondingDomain)
+        if let domain = viewModel.nativeAppDomainNameString {
+            externalNavigationDelegate?.didOpenSiteWith(appName: domain)
             // no need to interrupt
         }
-        viewModel.decidePolicyFor(navigationAction, decisionHandler)
+        viewModel.decidePolicy(navigationAction, decisionHandler)
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {

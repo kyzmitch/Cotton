@@ -17,7 +17,7 @@ import ReactiveSwift
 import Combine
 
 /**
- See `decidePolicyFor` method below
+ See `decidePolicy` method below
  
  To avoid errors, when DoH is enabled, many sites
  uses additional requests but with different hosts
@@ -62,6 +62,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     /// wrapped value for Published
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     @Published var webPageState: WebPageLoadingAction = .idle
+    /// Combine publisher of public view state (next action)
     var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { $webPageState }
     
     /// Configuration should be transferred from `Site`
@@ -104,18 +105,6 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         dnsRequestCancellable?.cancel()
     }
     
-    private func updateLoadingState(_ state: WebPageLoadingAction) {
-        let apiType = FeatureManager.appAsyncApiTypeValue()
-        switch apiType {
-        case .reactive:
-            rxWebPageState.value = state
-        case .combine:
-            combineWebPageState.value = state
-        case .asyncAwait:
-            webPageState = state
-        }
-    }
-    
     func load() {
         do {
             state = try state.transition(on: .loadSite)
@@ -137,22 +126,9 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func isNativeAppSchemeRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
-        let isSameHost = state.sameHost(with: url)
-        guard isSameHost && nativeAppDomainNameString != nil else {
-            return nil
-        }
-        let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
-        guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
-            return nil
-        }
-        // swiftlint:disable:next force_unwrapping
-        return WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!
-    }
-    
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func decidePolicyFor(_ navigationAction: WKNavigationAction,
-                         _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func decidePolicy(_ navigationAction: WKNavigationAction,
+                      _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
             return
@@ -374,6 +350,31 @@ private extension WebViewModelImpl {
             return
         }
         state = nextState
+    }
+    
+    func isNativeAppSchemeRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
+        let isSameHost = state.sameHost(with: url)
+        guard isSameHost && nativeAppDomainNameString != nil else {
+            return nil
+        }
+        let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2
+        guard WKNavigationActionPolicy(rawValue: ignoreAppRawValue) != nil else {
+            return nil
+        }
+        // swiftlint:disable:next force_unwrapping
+        return WKNavigationActionPolicy(rawValue: ignoreAppRawValue)!
+    }
+    
+    func updateLoadingState(_ state: WebPageLoadingAction) {
+        let apiType = FeatureManager.appAsyncApiTypeValue()
+        switch apiType {
+        case .reactive:
+            rxWebPageState.value = state
+        case .combine:
+            combineWebPageState.value = state
+        case .asyncAwait:
+            webPageState = state
+        }
     }
 }
 

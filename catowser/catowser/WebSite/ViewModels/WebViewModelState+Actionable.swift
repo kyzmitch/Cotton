@@ -47,6 +47,7 @@ extension WebViewModelState: Actionable {
             return .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
         case (.creatingRequest(_, let settings), .loadWebView(let request)):
             return .updatingWebView(request, settings)
+        // swiftlint:disable:next line_length
         case (.updatingWebView(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             return .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         case (.finishingLoading(let request, let settings, _, _, _), .startView):

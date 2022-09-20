@@ -27,16 +27,13 @@ protocol WebViewModel: AnyObject {
     
     func load()
     func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble)
-    
-    // MARK: - Not main methods which could be refactored
-    
-    var nativeAppDomainNameString: String? { get }
+    func decidePolicy(_ navigationAction: WKNavigationAction,
+                      _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool)
-    func decidePolicyFor(_ navigationAction: WKNavigationAction,
-                         _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     
     // MARK: - public properties
     
+    var nativeAppDomainNameString: String? { get }
     var configuration: WKWebViewConfiguration { get }
     var host: Host { get }
     var currentURL: URL? { get }
