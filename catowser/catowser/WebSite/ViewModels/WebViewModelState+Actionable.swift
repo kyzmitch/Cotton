@@ -21,6 +21,8 @@ extension WebViewModelState: Actionable {
             return .pendingPlugins(.info(site.urlInfo), site.settings)
         case (.viewing(_, let settings), .loadNextLink(let url)):
             return .pendingPlugins(.url(url), settings)
+        case (.viewing(let request, let settings), .reload):
+            return .waitingForReload(request, settings)
         case (.pendingPlugins(let urlData, let settings), .injectPlugins(let pluginsProgram)):
             if let pluginsProgram = pluginsProgram {
                 return .injectingPlugins(pluginsProgram, urlData, settings)
@@ -49,6 +51,9 @@ extension WebViewModelState: Actionable {
             return .updatingWebView(request, settings)
         // swiftlint:disable:next line_length
         case (.updatingWebView(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
+            return .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
+        // swiftlint:disable:next line_length
+        case (.waitingForReload(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             return .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         case (.finishingLoading(let request, let settings, _, _, _), .startView):
             return .viewing(request, settings)

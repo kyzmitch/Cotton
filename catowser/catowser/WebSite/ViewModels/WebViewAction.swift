@@ -21,6 +21,7 @@ typealias IPAddress = String
 enum WebViewAction {
     case loadSite
     case loadNextLink(_ url: URL)
+    case reload
     case injectPlugins(JSPluginsProgram?)
     case fetchDoHStatus
     case checkDNResolvingSupport(Bool)

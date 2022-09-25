@@ -172,7 +172,7 @@ final class WebViewController: BaseViewController,
                 }
             }
         }
-        
+
         guard let newURL = webView.url else {
             print("web view without url")
             return

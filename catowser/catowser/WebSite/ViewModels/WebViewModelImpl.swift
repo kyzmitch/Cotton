@@ -113,6 +113,14 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
+    func reload() {
+        do {
+            state = try state.transition(on: .reload)
+        } catch {
+            print("Wrong state on re-load action: " + error.localizedDescription)
+        }
+    }
+    
     func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
         /**
          you must inject/re-enable plugins even if web view loaded page from same Host
@@ -171,12 +179,17 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         case .http, .https:
             guard state.url != url else {
                 decisionHandler(.allow)
+                // No need to change vm state
+                // because it is the same URL which was provided
+                // in `.load` or `.loadNextLink`
                 return
             }
             guard !url.hasIPHost else {
                 decisionHandler(.allow)
                 return
             }
+            // Cancelling navigation because it is a different URL
+            // and need to update vm state URL at least  
             decisionHandler(.cancel)
             do {
                 state = try state.transition(on: .loadNextLink(url))
@@ -230,6 +243,8 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .loadWebView(request))
         case .updatingWebView(let request, _):
             updateLoadingState(.load(request))
+        case .waitingForReload:
+            break
         case .finishingLoading(let request, let settings, let newURL, let subject, let enable):
             // swiftlint:disable:next force_unwrapping
             let url = request.url!

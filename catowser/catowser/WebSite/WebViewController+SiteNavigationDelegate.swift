@@ -35,6 +35,7 @@ extension WebViewController: SiteNavigationDelegate {
     func reload() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.didStartProvisionalNavigation()
+        viewModel.reload()
         _ = webView.reload()
     }
     
