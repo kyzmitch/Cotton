@@ -173,19 +173,15 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
                 decisionHandler(.allow)
                 return
             }
-            guard let nextHost = url.host else {
+            guard !url.hasIPHost else {
                 decisionHandler(.allow)
                 return
             }
-            if state.host.isSimilar(name: nextHost) && !url.hasIPHost {
-                decisionHandler(.cancel)
-                do {
-                    state = try state.transition(on: .loadNextLink(url))
-                } catch {
-                    print("Fail to load next URL due to error: \(error.localizedDescription)")
-                }
-            } else {
-                decisionHandler(.allow)
+            decisionHandler(.cancel)
+            do {
+                state = try state.transition(on: .loadNextLink(url))
+            } catch {
+                print("Fail to load next URL due to error: \(error.localizedDescription)")
             }
         case .about:
             decisionHandler(.allow)
