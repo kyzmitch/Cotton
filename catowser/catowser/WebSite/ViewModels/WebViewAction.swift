@@ -35,3 +35,34 @@ enum WebViewAction {
     
     case changeJavaScript(JavaScriptEvaluateble, Bool)
 }
+
+extension WebViewAction: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .loadSite:
+            return "loadSite"
+        case .loadNextLink(_):
+            return "loadNextLink"
+        case .reload:
+            return "reload"
+        case .injectPlugins(_):
+            return "injectPlugins"
+        case .fetchDoHStatus:
+            return "fetchDoHStatus"
+        case .checkDNResolvingSupport(_):
+            return "checkDNResolvingSupport"
+        case .resolveDomainName(_):
+            return "resolveDomainName"
+        case .createRequestAnyway(_):
+            return "createRequestAnyway"
+        case .loadWebView(_):
+            return "loadWebView"
+        case .finishLoading(_, _, _):
+            return "finishLoading"
+        case .startView:
+            return "startView"
+        case .changeJavaScript(_, _):
+            return "changeJavaScript"
+        }
+    }
+}

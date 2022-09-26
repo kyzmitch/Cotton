@@ -26,8 +26,17 @@ enum WebViewModelState {
     case updatingJS(URLRequest, Site.Settings, JavaScriptEvaluateble)
     
     enum Error: LocalizedError {
-        case unexpectedStateForAction
+        case unexpectedStateForAction(WebViewModelState, WebViewAction)
         case notImplemented
+        
+        public var localizedDescription: String {
+            switch self {
+            case .unexpectedStateForAction(let state, let action):
+                return "Unexpected state \(state.description) for action \(action.description)"
+            case .notImplemented:
+                return "Not implemented"
+            }
+        }
     }
     
     var host: Host {
@@ -211,6 +220,37 @@ enum WebViewModelState {
             return URLInfo(uRL)
         case .info(let uRLInfo):
             return uRLInfo
+        }
+    }
+}
+
+extension WebViewModelState: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .initialized(_):
+            return "initialized"
+        case .pendingPlugins(_, _):
+            return "pendingPlugins"
+        case .injectingPlugins(_, _, _):
+            return "injectingPlugins"
+        case .pendingDoHStatus(_, _):
+            return "pendingDoHStatus"
+        case .checkingDNResolveSupport(_, _):
+            return "checkingDNResolveSupport"
+        case .resolvingDN(_, _):
+            return "resolvingDN"
+        case .creatingRequest(_, _):
+            return "creatingRequest"
+        case .updatingWebView(_, _):
+            return "updatingWebView"
+        case .waitingForReload(_, _):
+            return "waitingForReload"
+        case .finishingLoading(_, _, _, _, _):
+            return "finishingLoading"
+        case .viewing(_, _):
+            return "viewing"
+        case .updatingJS(_, _, _):
+            return "updatingJS"
         }
     }
 }

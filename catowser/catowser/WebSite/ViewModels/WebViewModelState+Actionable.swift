@@ -66,7 +66,7 @@ extension WebViewModelState: Actionable {
         case (.updatingJS(let request, let settings, _), .finishLoading):
             return .viewing(request, settings)
         default:
-            throw Error.unexpectedStateForAction
+            throw Error.unexpectedStateForAction(self, action)
         }
     }
 }
