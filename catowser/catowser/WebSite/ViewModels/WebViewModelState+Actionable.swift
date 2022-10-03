@@ -16,57 +16,63 @@ extension WebViewModelState: Actionable {
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     func transition(on action: Action) throws -> State {
+        let nextState: State
         switch (self, action) {
         case (.initialized(let site), .loadSite):
-            return .pendingPlugins(.info(site.urlInfo), site.settings)
+            nextState = .pendingPlugins(.info(site.urlInfo), site.settings)
         case (.viewing(_, let settings), .loadNextLink(let url)):
-            return .pendingPlugins(.url(url), settings)
+            nextState = .pendingPlugins(.url(url), settings)
         case (.viewing(let request, let settings), .reload):
-            return .waitingForReload(request, settings)
+            nextState = .waitingForReload(request, settings)
         case (.pendingPlugins(let urlData, let settings), .injectPlugins(let pluginsProgram)):
             if let pluginsProgram = pluginsProgram {
-                return .injectingPlugins(pluginsProgram, urlData, settings)
+                nextState = .injectingPlugins(pluginsProgram, urlData, settings)
             } else {
-                return .pendingDoHStatus(urlData, settings)
+                nextState = .pendingDoHStatus(urlData, settings)
             }
         case (.injectingPlugins(_, let urlData, let settings), .fetchDoHStatus):
-            return .pendingDoHStatus(urlData, settings)
+            nextState = .pendingDoHStatus(urlData, settings)
         case (.pendingPlugins(let urlData, let settings), .fetchDoHStatus):
-            return .pendingDoHStatus(urlData, settings)
+            nextState = .pendingDoHStatus(urlData, settings)
         case (.pendingDoHStatus(let urlData, let settings), .resolveDomainName(let useDoH)):
             if useDoH {
-                return .checkingDNResolveSupport(urlData, settings)
+                nextState = .checkingDNResolveSupport(urlData, settings)
             } else {
-                return .creatingRequest(urlData.platformURL, settings)
+                nextState = .creatingRequest(urlData.platformURL, settings)
             }
         case (.checkingDNResolveSupport(let urlData, let settings), .checkDNResolvingSupport(let resolveNeeded)):
             if resolveNeeded {
-                return .resolvingDN(urlData, settings)
+                nextState = .resolvingDN(urlData, settings)
             } else {
-                return .creatingRequest(urlData.urlWithResolvedDomainName, settings)
+                nextState = .creatingRequest(urlData.urlWithResolvedDomainName, settings)
             }
         case (.resolvingDN(_, let settings), .createRequestAnyway(let urlWithPossiblyResolvedDomainName)):
-            return .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
+            nextState = .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
         case (.creatingRequest(_, let settings), .loadWebView(let request)):
-            return .updatingWebView(request, settings)
+            nextState = .updatingWebView(request, settings)
         // swiftlint:disable:next line_length
         case (.updatingWebView(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            return .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
+            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         // swiftlint:disable:next line_length
         case (.waitingForReload(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            return .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
+            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         case (.finishingLoading(let request, let settings, _, _, _), .startView):
-            return .viewing(request, settings)
+            nextState = .viewing(request, settings)
         case (.viewing(let request, let settings), .changeJavaScript(let subject, let enabled)):
-            guard settings.isJSEnabled != enabled else {
-                return self
+            if settings.isJSEnabled == enabled {
+                nextState = self
+            } else {
+                let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
+                nextState = .updatingJS(request, jsSettings, subject)
             }
-            let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
-            return .updatingJS(request, jsSettings, subject)
         case (.updatingJS(let request, let settings, _), .finishLoading):
-            return .viewing(request, settings)
+            nextState = .viewing(request, settings)
         default:
+            print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
             throw Error.unexpectedStateForAction(self, action)
         }
+        
+        print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
+        return nextState
     }
 }
