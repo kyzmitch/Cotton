@@ -289,7 +289,7 @@ extension MasterRouter: SiteLifetimeInterface {
                      and sourceRect: CGRect,
                      for host: Host,
                      siteSettings: Site.Settings) {
-        let style: MenuModelStyle = .siteMenu(host: host, siteSettings: siteSettings)
+        let style: MenuModelStyle = .siteMenu(host, siteSettings)
         showTabMenuIfNeeded(from: sourceView,
                             and: sourceRect,
                             menuStyle: style)

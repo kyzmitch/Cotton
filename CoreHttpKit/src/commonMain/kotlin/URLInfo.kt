@@ -27,6 +27,13 @@ class URLInfo constructor(
      * Returns the URL string with domain name even if there is an ip address.
      * */
     val url: String
+        get() = scheme.stringValue + "://" + domainName.rawString + ":" + scheme.port + "/" + completePath
+
+    /**
+     * Returns the URL string with domain name and without port number
+     */
+    val urlWithoutPort: String
+        get() = scheme.stringValue + "://" + domainName.rawString + "/" + completePath
 
     val ipAddressString: String?
         get() = ipAddress
@@ -52,7 +59,6 @@ class URLInfo constructor(
         }
 
     init {
-        url = scheme.stringValue + "://" + domainName.rawString + ":" + scheme.port + "/" + completePath
         freeze()
     }
     /**

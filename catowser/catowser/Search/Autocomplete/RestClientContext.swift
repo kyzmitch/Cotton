@@ -1,5 +1,5 @@
 //
-//  SearchAutocompleteContext.swift
+//  RestClientContext.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/21/22.
@@ -14,7 +14,7 @@ import CoreHttpKit
 import ReactiveHttpKit
 import BrowserNetworking
 
-protocol SearchAutocompleteContext: AnyObject {
+protocol RestClientContext: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     

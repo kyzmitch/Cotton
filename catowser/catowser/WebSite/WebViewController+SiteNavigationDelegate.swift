@@ -23,18 +23,21 @@ extension WebViewController: SiteNavigationDelegate {
     func goForward() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.didStartProvisionalNavigation()
+        viewModel.goForward()
         _ = webView.goForward()
     }
 
     func goBack() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.didStartProvisionalNavigation()
+        viewModel.goBack()
         _ = webView.goBack()
     }
 
     func reload() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.didStartProvisionalNavigation()
+        viewModel.reload()
         _ = webView.reload()
     }
     
@@ -43,19 +46,11 @@ extension WebViewController: SiteNavigationDelegate {
     func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
         externalNavigationDelegate?.openTabMenu(from: sourceView,
                                                 and: sourceRect,
-                                                for: urlInfo.host(),
-                                                siteSettings: siteSettings)
+                                                for: viewModel.host,
+                                                siteSettings: viewModel.settings)
     }
     
     func reloadWithNewSettings(jsEnabled: Bool) {
-        guard jsEnabled != siteSettings.isJSEnabled else {
-            return
-        }
-        let mutableSettings = siteSettings.withChanged(javaScriptEnabled: jsEnabled)
-        siteSettings = mutableSettings
-        recreateWebView(forceRecreate: true)
-        setupScripts(siteSettings.canLoadPlugins)
-        reattachWebViewObservers()
-        internalLoad(url: urlInfo.platformURL, enableDoH: dohUsed)
+        viewModel.setJavaScript(webView, jsEnabled)
     }
 }

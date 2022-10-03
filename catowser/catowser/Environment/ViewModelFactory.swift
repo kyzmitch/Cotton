@@ -8,6 +8,7 @@
 
 import Foundation
 import FeaturesFlagsKit
+import CoreHttpKit
 
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
@@ -31,5 +32,14 @@ final class ViewModelFactory {
             let strategy = DDGoAutocompleteStrategy(context)
             return SearchSuggestionsViewModelImpl(strategy)
         }
+    }
+    
+    func webViewModel(_ site: Site, _ context: WebViewContext) -> WebViewModel {
+        let stratContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
+                                       HttpEnvironment.shared.dnsClientRxSubscriber,
+                                       HttpEnvironment.shared.dnsClientSubscriber)
+        
+        let strategy = GoogleDNSStrategy(stratContext)
+        return WebViewModelImpl(strategy, site, context)
     }
 }

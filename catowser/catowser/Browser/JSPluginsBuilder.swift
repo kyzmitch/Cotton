@@ -13,26 +13,24 @@ import JSPlugins
  Creates the plugins by connecting them with observers (delegates).
  */
 final class JSPluginsBuilder {
-    fileprivate let _plugins: [JavaScriptPlugin]
+    private let _plugins: [JavaScriptPlugin]
 
-    init?(baseDelegate: BasePluginContentDelegate,
-          instagramDelegate: InstagramContentDelegate) {
+    init(baseDelegate: BasePluginContentDelegate, instagramDelegate: InstagramContentDelegate) {
 
         var array = [JavaScriptPlugin]()
-        guard let basePlugin = BasePlugin(delegate: .base(baseDelegate)) else {
-            return nil
+        if let basePlugin = BasePlugin(delegate: .base(baseDelegate)) {
+            array.append(basePlugin)
         }
-        array.append(basePlugin)
-        guard let igPlugin = InstagramContentPlugin(delegate: .instagram(instagramDelegate)) else {
-            return nil
+        if let igPlugin = InstagramContentPlugin(delegate: .instagram(instagramDelegate)) {
+            array.append(igPlugin)
         }
-        array.append(igPlugin)
+        
         _plugins = array
     }
 }
 
 extension JSPluginsBuilder: JSPluginsSource {
-    var plugins: [JavaScriptPlugin] {
-        return _plugins
+    var pluginsProgram: JSPluginsProgram {
+        JSPluginsProgram(_plugins)
     }
 }

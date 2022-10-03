@@ -12,7 +12,7 @@ import ReactiveSwift
 import Combine
 import HttpKit
 
-final class GoogleContext: SearchAutocompleteContext {
+final class GoogleContext: RestClientContext {
     typealias Response = GSearchSuggestionsResponse
     typealias Server = GoogleServer
     
