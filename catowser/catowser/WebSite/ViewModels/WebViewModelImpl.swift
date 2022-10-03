@@ -201,9 +201,18 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
                 return
             }
             guard !url.hasIPHost else {
+                // Always allow navigation for ip addresses
+                // to not save them in vm state
                 decisionHandler(.allow)
                 return
             }
+            guard case .viewing = state else {
+                // Always allow navigation for internal iframes
+                // when main url is already handled
+                decisionHandler(.allow)
+                return
+            }
+            
             // Cancelling navigation because it is a different URL
             // and need to update vm state URL at least  
             decisionHandler(.cancel)
