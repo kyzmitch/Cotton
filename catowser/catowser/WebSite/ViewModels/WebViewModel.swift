@@ -27,6 +27,8 @@ protocol WebViewModel: AnyObject {
     
     func load()
     func reload()
+    func goBack()
+    func goForward()
     func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble)
     func decidePolicy(_ navigationAction: WKNavigationAction,
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)

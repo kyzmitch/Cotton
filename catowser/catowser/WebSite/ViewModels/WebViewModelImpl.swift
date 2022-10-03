@@ -121,6 +121,22 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
+    func goBack() {
+        do {
+            state = try state.transition(on: .goBack)
+        } catch {
+            print("Wrong state on go Back action: " + error.localizedDescription)
+        }
+    }
+    
+    func goForward() {
+        do {
+            state = try state.transition(on: .goForward)
+        } catch {
+            print("Wrong state on go Forward action: " + error.localizedDescription)
+        }
+    }
+    
     func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
         /**
          you must inject/re-enable plugins even if web view loaded page from same Host

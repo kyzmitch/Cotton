@@ -21,7 +21,6 @@ typealias IPAddress = String
 enum WebViewAction {
     case loadSite
     case loadNextLink(_ url: URL)
-    case reload
     case injectPlugins(JSPluginsProgram?)
     case fetchDoHStatus
     case checkDNResolvingSupport(Bool)
@@ -34,6 +33,9 @@ enum WebViewAction {
     // middle actions
     
     case changeJavaScript(JavaScriptEvaluateble, Bool)
+    case reload
+    case goBack
+    case goForward
 }
 
 extension WebViewAction: CustomStringConvertible {
@@ -63,6 +65,10 @@ extension WebViewAction: CustomStringConvertible {
             return "startView"
         case .changeJavaScript(_, _):
             return "changeJavaScript"
+        case .goBack:
+            return "goBack"
+        case .goForward:
+            return "goForward"
         }
     }
 }
