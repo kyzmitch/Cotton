@@ -45,14 +45,14 @@ public protocol JavaScriptPlugin {
      
      - Parameters:
         - host represents the hostname from web view (can be used to determine if specific plugin is applicable or not)
-        - needsInject shows if this specific plugin needs to be injected or can be skipped.
+        - canInject shows if this specific plugin needs to be injected or can be skipped.
      */
-    func accept(_ visitor: JavaScriptPluginVisitor, _ host: Host, _ needsInject: Bool) throws
+    func accept(_ visitor: JavaScriptPluginVisitor, _ host: Host, _ canInject: Bool) throws
 }
 
 extension JavaScriptPlugin {
-    public func accept(_ visitor: JavaScriptPluginVisitor, _ host: Host, _ needsInject: Bool) throws {
-        guard visitor.canVisit(self, host, needsInject) else {
+    public func accept(_ visitor: JavaScriptPluginVisitor, _ host: Host, _ canInject: Bool) throws {
+        guard visitor.canVisit(self, host, canInject) else {
             return
         }
         try visitor.visit(self)

@@ -90,12 +90,12 @@ final class MasterBrowserViewController: BaseViewController {
     var mKeyboardHeight: CGFloat?
 
     /// The current holder for WebView (controller) if browser has at least one
-    private weak var currentWebViewController: WebViewController?
+    private weak var currentWebViewController: AnyViewController?
 
     private var disposables = [Disposable?]()
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
-
+    /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: JSPluginsSource?
 
     /// Not initialized, will be initialized after `TabsListManager`
@@ -224,7 +224,7 @@ final class MasterBrowserViewController: BaseViewController {
     
     private func setupObservers() {
         jsPluginsBuilder = JSPluginsBuilder(baseDelegate: self, instagramDelegate: self)
-
+        
         let disposeB = NotificationCenter.default.reactive
             .notifications(forName: UIResponder.keyboardWillHideNotification)
             .observe(on: UIScheduler())
@@ -356,7 +356,7 @@ extension MasterBrowserViewController: TabRendererInterface {
                     // a lot of tabs are opened.
                     // It is because it's very tricky to save navigation history
                     // for reused web view and for some other reasons.
-                    currentWebViewVC.removeFromChild()
+                    currentWebViewVC.viewController.removeFromChild()
                 }
             case .topSites:
                 topSitesController.viewController.removeFromChild()
@@ -378,17 +378,14 @@ extension MasterBrowserViewController: TabRendererInterface {
     }
     
     private func openSiteTabContent(with site: Site) {
-        guard let pluginsBuilder = jsPluginsBuilder else {
-            assertionFailure("Failed show site - no plugins")
-            open(tabContent: .blank)
+        guard let jsPluginsSource = jsPluginsBuilder else {
+            assertionFailure("Plugins source is expected to be initialized even if it is empty")
             return
         }
         // need to display progress view before load start
         linksRouter.showProgress(true)
-        let viewController = try? WebViewsReuseManager.shared.controllerFor(site,
-                                                                            pluginsBuilder: pluginsBuilder,
-                                                                            delegate: self)
-        guard let webViewController = viewController else {
+        let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsSource, self)
+        guard let webViewController = vc else {
             assertionFailure("Failed create new web view for tab")
             open(tabContent: .blank)
             return

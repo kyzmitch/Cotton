@@ -11,8 +11,8 @@ import CoreHttpKit
 
 /// A Concrete Visitor which is in this case only one possible type from iOS SDK WebKit
 extension WKUserContentController: JavaScriptPluginVisitor {
-    public func canVisit(_ plugin: JavaScriptPlugin, _ host: Host, _ needsInject: Bool) -> Bool {
-        guard needsInject else {
+    public func canVisit(_ plugin: JavaScriptPlugin, _ host: Host, _ canInject: Bool) -> Bool {
+        guard canInject else {
             return false
         }
         guard let pluginHostName = plugin.hostKeyword else {
@@ -36,18 +36,19 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         let wkScript = try JSPluginFactory.shared.script(for: basePlugin,
                                                         with: .atDocumentEnd,
                                                         isMainFrameOnly: true)
-        addUserScript(wkScript)
-        
-        removeScriptMessageHandler(forName: basePlugin.messageHandlerName)
-        add(basePlugin.handler, name: basePlugin.messageHandlerName)
+        addHandler(wkScript, basePlugin.messageHandlerName, basePlugin.handler)
     }
     
     private func visit(instagramPlugin: InstagramContentPlugin) throws {
         let wkScript = try JSPluginFactory.shared.script(for: instagramPlugin,
                                                          with: .atDocumentStart,
                                                          isMainFrameOnly: instagramPlugin.isMainFrameOnly)
-        addUserScript(wkScript)
-        removeScriptMessageHandler(forName: instagramPlugin.messageHandlerName)
-        add(instagramPlugin.handler, name: instagramPlugin.messageHandlerName)
+        addHandler(wkScript, instagramPlugin.messageHandlerName, instagramPlugin.handler)
+    }
+    
+    private func addHandler(_ script: WKUserScript, _ handlerName: String, _ handler: WKScriptMessageHandler) {
+        addUserScript(script)
+        removeScriptMessageHandler(forName: handlerName)
+        add(handler, name: handlerName)
     }
 }

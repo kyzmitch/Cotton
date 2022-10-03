@@ -44,8 +44,9 @@ public extension URLInfo {
                        ipAddress: ipAddressString)
     }
 
+    /// Returns an URL with host property set to domain name even if ip address is available
     var platformURL: URL {
-        guard let platformURL = URL(string: url) else {
+        guard let platformURL = URL(string: urlWithoutPort) else {
             // This shouldn't fail
             assertionFailure("Failed to convert kotlin URL to platform type")
             // swiftlint:disable:next force_unwrapping

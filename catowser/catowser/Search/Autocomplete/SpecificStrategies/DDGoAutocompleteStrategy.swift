@@ -12,7 +12,7 @@ import ReactiveSwift
 import Combine
 import HttpKit
 
-final class DDGoContext: SearchAutocompleteContext {
+final class DDGoContext: RestClientContext {
     typealias Response = DDGoSuggestionsResponse
     typealias Server = DuckDuckGoServer
     

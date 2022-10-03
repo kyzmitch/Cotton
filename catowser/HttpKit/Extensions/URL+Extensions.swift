@@ -22,6 +22,7 @@ extension HttpKit {
         case urlComponentsFail
         case failToGetUrlFromComponents
         case urlHostReplaceFail
+        case hostIsNotIpAddress
         
         public var localizedDescription: String {
             switch self {
