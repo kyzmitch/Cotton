@@ -11,7 +11,7 @@ import HttpKit
 import ReactiveSwift
 import Combine
 
-protocol DNSResolvingStrategy: AnyObject {
+public protocol DNSResolvingStrategy: AnyObject {
     associatedtype Context: RestClientContext
     
     init(_ context: Context)

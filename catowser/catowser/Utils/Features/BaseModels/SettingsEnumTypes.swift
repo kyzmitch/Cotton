@@ -23,13 +23,6 @@ extension WebAutoCompletionSource: EnumDefaultValueSupportable {
     }
 }
 
-/// More simple analog for HttpKit.ResponseHandlingApi
-enum AsyncApiType: Int, CaseIterable {
-    case reactive
-    case combine
-    case asyncAwait
-}
-
 extension AsyncApiType: EnumDefaultValueSupportable {
     public var defaultValue: AsyncApiType {
         return .combine

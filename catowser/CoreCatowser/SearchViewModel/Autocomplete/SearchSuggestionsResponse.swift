@@ -10,7 +10,7 @@ import Foundation
 import BrowserNetworking
 
 /// Need to have one common response type, because there are more than one provider (Google, DDGo, etc.)
-struct SearchSuggestionsResponse {
+public struct SearchSuggestionsResponse {
     let queryText: String
     let textResults: [String]
     

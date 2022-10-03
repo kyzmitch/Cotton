@@ -12,19 +12,24 @@ import Combine
 import FeaturesFlagsKit
 import CoreBrowser
 
-final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutocompleteStrategy {
+/// This is only needed now to not have a direct dependency on FutureManager
+public protocol SearchViewContext: AnyObject {
+    func appAsyncApiTypeValue() -> AsyncApiType
+}
+
+public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutocompleteStrategy {
     let autocomplete: WebSearchAutocomplete<Strategy>
     
-    let rxState: MutableProperty<SearchSuggestionsViewState> = .init(.waitingForQuery)
+    public let rxState: MutableProperty<SearchSuggestionsViewState> = .init(.waitingForQuery)
     
-    let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> = .init(.waitingForQuery)
+    public let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> = .init(.waitingForQuery)
     
     /// Using `Published` property wrapper from not related SwiftUI for now
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    @Published var state: SearchSuggestionsViewState = .waitingForQuery
+    @Published public var state: SearchSuggestionsViewState = .waitingForQuery
     
     /// This is a replacement for `Task.Handler`, property wrapper can't be defined in protocol
-    var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
+    public var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
     
     private var searchSuggestionsDisposable: Disposable?
     
@@ -37,8 +42,11 @@ final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutoc
     lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
 #endif
     
-    init(_ strategy: Strategy) {
+    let searchContext: SearchViewContext
+    
+    public init(_ strategy: Strategy, _ context: SearchViewContext) {
         autocomplete = .init(strategy)
+        searchContext = context
     }
     
     deinit {
@@ -49,10 +57,10 @@ final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutoc
 }
 
 extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
-    func fetchSuggestions(_ query: String) {
+    public func fetchSuggestions(_ query: String) {
         let domainNames = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: query)
         
-        let apiType = FeatureManager.appAsyncApiTypeValue()
+        let apiType = searchContext.appAsyncApiTypeValue()
         switch apiType {
         case .reactive:
             rxState.value = .knownDomainsLoaded(domainNames)

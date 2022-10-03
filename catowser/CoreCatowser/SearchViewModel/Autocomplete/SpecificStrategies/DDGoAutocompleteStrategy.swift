@@ -12,38 +12,38 @@ import ReactiveSwift
 import Combine
 import HttpKit
 
-final class DDGoContext: RestClientContext {
-    typealias Response = DDGoSuggestionsResponse
-    typealias Server = DuckDuckGoServer
+public final class DDGoContext: RestClientContext {
+    public typealias Response = DDGoSuggestionsResponse
+    public typealias Server = DuckDuckGoServer
     
-    let client: Client
-    let rxSubscriber: HttpKitRxSubscriber
-    let subscriber: HttpKitSubscriber
+    public let client: Client
+    public let rxSubscriber: HttpKitRxSubscriber
+    public let subscriber: HttpKitSubscriber
     
-    init(_ client: Client,
-         _ rxSubscriber: HttpKitRxSubscriber,
-         _ subscriber: HttpKitSubscriber) {
+    public init(_ client: Client,
+                _ rxSubscriber: HttpKitRxSubscriber,
+                _ subscriber: HttpKitSubscriber) {
         self.client = client
         self.rxSubscriber = rxSubscriber
         self.subscriber = subscriber
     }
 }
 
-final class DDGoAutocompleteStrategy: SearchAutocompleteStrategy {
-    typealias Context = DDGoContext
+public final class DDGoAutocompleteStrategy: SearchAutocompleteStrategy {
+    public typealias Context = DDGoContext
     
     private let context: Context
     
-    init(_ context: Context) {
+    public init(_ context: Context) {
         self.context = context
     }
     
-    func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpKit.HttpError> {
+    public func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpKit.HttpError> {
         context.client.duckDuckGoSuggestions(for: text, subscriber: context.rxSubscriber)
             .map { SearchSuggestionsResponse($0) }
     }
     
-    func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpKit.HttpError> {
+    public func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpKit.HttpError> {
         context.client.cDuckDuckgoSuggestions(for: text, subscriber: context.subscriber)
             .map { SearchSuggestionsResponse($0) }
             .eraseToAnyPublisher()
@@ -51,7 +51,7 @@ final class DDGoAutocompleteStrategy: SearchAutocompleteStrategy {
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    func suggestionsTask(for text: String) async throws -> SearchSuggestionsResponse {
+    public func suggestionsTask(for text: String) async throws -> SearchSuggestionsResponse {
         let response = try await context.client.aaDuckDuckGoSuggestions(for: text)
         return SearchSuggestionsResponse(response)
     }

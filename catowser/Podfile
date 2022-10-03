@@ -74,12 +74,21 @@ target 'BrowserNetworking' do
 
   pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SWXMLHash', '~> 5.0.0'
+  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'FeaturesFlagsKit' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
+  pod 'SwiftLint', '~> 0.33.0'
+end
+
+target 'CoreCatowser' do
+  use_frameworks!
+
+  pod 'ReactiveSwift', '~> 6.0.0'
+  pod 'SwiftLint', '~> 0.33.0'
 end
 
 deployment_target = '12.0'

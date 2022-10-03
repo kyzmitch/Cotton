@@ -11,6 +11,7 @@ import CoreBrowser
 import JSPlugins
 import BrowserNetworking
 import CoreHttpKit
+import CoreCatowser
 
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
@@ -64,7 +65,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let context: WebViewContext = .init(pluginsBuilder)
+            let context: WebViewContextImpl = .init(pluginsBuilder)
             let vm = ViewModelFactory.shared.webViewModel(site, context)
             let vc: WebViewController = .init(vm, delegate)
             views.append(vc)
