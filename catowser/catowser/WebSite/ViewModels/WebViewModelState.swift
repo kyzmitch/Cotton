@@ -19,7 +19,7 @@ enum WebViewModelState {
     case resolvingDN(URLData, Site.Settings)
     case creatingRequest(URL, Site.Settings)
     case updatingWebView(URLRequest, Site.Settings)
-    case waitingForReload(URLRequest, Site.Settings)
+    case waitingForNavigation(URLRequest, Site.Settings)
     case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
     case viewing(URLRequest, Site.Settings)
     
@@ -61,7 +61,7 @@ enum WebViewModelState {
             let url = uRLRequest.url!
             // swiftlint:disable:next force_unwrapping
             return url.kitHost!
-        case .waitingForReload(let uRLRequest, _):
+        case .waitingForNavigation(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             let url = uRLRequest.url!
             // swiftlint:disable:next force_unwrapping
@@ -101,7 +101,7 @@ enum WebViewModelState {
         case .updatingWebView(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             return uRLRequest.url!
-        case .waitingForReload(let uRLRequest, _):
+        case .waitingForNavigation(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             return uRLRequest.url!
         case .finishingLoading(let request, _, _, _, _):
@@ -134,7 +134,7 @@ enum WebViewModelState {
             return settings
         case .updatingWebView(_, let settings):
             return settings
-        case .waitingForReload(_, let settings):
+        case .waitingForNavigation(_, let settings):
             return settings
         case .finishingLoading(_, let settings, _, _, _):
             return settings
@@ -164,7 +164,7 @@ enum WebViewModelState {
             return uRL.host == url.host
         case .updatingWebView(let uRLRequest, _):
             return uRLRequest.url?.host == url.host
-        case .waitingForReload(let uRLRequest, _):
+        case .waitingForNavigation(let uRLRequest, _):
             return uRLRequest.url?.host == url.host
         case .finishingLoading(let request, _, _, _, _):
             return request.url?.host == url.host
@@ -195,7 +195,7 @@ enum WebViewModelState {
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
             return .url(uRL)
-        case .waitingForReload(let uRLRequest, _):
+        case .waitingForNavigation(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
             return .url(uRL)
@@ -243,8 +243,8 @@ extension WebViewModelState: CustomStringConvertible {
             return "creatingRequest"
         case .updatingWebView(_, _):
             return "updatingWebView"
-        case .waitingForReload(_, _):
-            return "waitingForReload"
+        case .waitingForNavigation(_, _):
+            return "waitingForNavigation"
         case .finishingLoading(_, _, _, _, _):
             return "finishingLoading"
         case .viewing(_, _):

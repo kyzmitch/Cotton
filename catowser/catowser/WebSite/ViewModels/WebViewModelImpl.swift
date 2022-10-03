@@ -213,8 +213,8 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
                 return
             }
             
-            // Cancelling navigation because it is a different URL
-            // and need to update vm state URL at least  
+            // Cancelling navigation because it is a different URL.
+            // Need to handle DoH, plugins and vm state
             decisionHandler(.cancel)
             do {
                 state = try state.transition(on: .loadNextLink(url))
@@ -268,7 +268,7 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .loadWebView(request))
         case .updatingWebView(let request, _):
             updateLoadingState(.load(request))
-        case .waitingForReload:
+        case .waitingForNavigation:
             break
         case .finishingLoading(let request, let settings, let newURL, let subject, let enable):
             // swiftlint:disable:next force_unwrapping

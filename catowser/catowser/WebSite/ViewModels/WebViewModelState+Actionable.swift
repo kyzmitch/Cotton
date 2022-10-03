@@ -23,7 +23,11 @@ extension WebViewModelState: Actionable {
         case (.viewing(_, let settings), .loadNextLink(let url)):
             nextState = .pendingPlugins(.url(url), settings)
         case (.viewing(let request, let settings), .reload):
-            nextState = .waitingForReload(request, settings)
+            nextState = .waitingForNavigation(request, settings)
+        case (.viewing(let request, let settings), .goBack):
+            nextState = .waitingForNavigation(request, settings)
+        case (.viewing(let request, let settings), .goForward):
+            nextState = .waitingForNavigation(request, settings)
         case (.pendingPlugins(let urlData, let settings), .injectPlugins(let pluginsProgram)):
             if let pluginsProgram = pluginsProgram {
                 nextState = .injectingPlugins(pluginsProgram, urlData, settings)
@@ -54,7 +58,7 @@ extension WebViewModelState: Actionable {
         case (.updatingWebView(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         // swiftlint:disable:next line_length
-        case (.waitingForReload(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
+        case (.waitingForNavigation(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         case (.finishingLoading(let request, let settings, _, _, _), .startView):
             nextState = .viewing(request, settings)
