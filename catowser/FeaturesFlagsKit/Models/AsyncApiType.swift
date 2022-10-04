@@ -1,0 +1,16 @@
+//
+//  AsyncApiType.swift
+//  FeaturesFlagsKit
+//
+//  Created by Andrei Ermoshin on 10/3/22.
+//  Copyright © 2022 andreiermoshin. All rights reserved.
+//
+
+import Foundation
+
+/// More simple analog for HttpKit.ResponseHandlingApi
+public enum AsyncApiType: Int, CaseIterable {
+    case reactive
+    case combine
+    case asyncAwait
+}

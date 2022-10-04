@@ -6,6 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
+import FeaturesFlagsKit
 #if canImport(SwiftUI)
 import SwiftUI
 #endif

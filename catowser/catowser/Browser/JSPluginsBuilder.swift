@@ -8,6 +8,7 @@
 
 import Foundation
 import JSPlugins
+import CoreCatowser
 
 /**
  Creates the plugins by connecting them with observers (delegates).

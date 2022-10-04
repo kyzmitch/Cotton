@@ -9,6 +9,7 @@
 import Foundation
 import CoreHttpKit
 import JSPlugins
+import CoreBrowser
 
 enum WebViewModelState {
     case initialized(Site)

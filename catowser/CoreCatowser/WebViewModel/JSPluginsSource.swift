@@ -9,6 +9,6 @@
 import Foundation
 import JSPlugins
 
-protocol JSPluginsSource: AnyObject {
+public protocol JSPluginsSource: AnyObject {
     var pluginsProgram: JSPluginsProgram { get }
 }

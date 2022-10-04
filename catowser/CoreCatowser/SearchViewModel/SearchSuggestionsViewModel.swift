@@ -10,17 +10,17 @@ import Foundation
 import ReactiveSwift
 import Combine
 
-typealias KnownDomains = [String]
-typealias QuerySuggestions = [String]
+public typealias KnownDomains = [String]
+public typealias QuerySuggestions = [String]
 
 /// View state, without error, because we want to show at least known domains even if there was a network failure
 /// Need to return to `waitingForQuery` state after view changes the text
-enum SearchSuggestionsViewState: Equatable {
+public enum SearchSuggestionsViewState: Equatable {
     case waitingForQuery
     case knownDomainsLoaded(KnownDomains)
     case everythingLoaded(KnownDomains, QuerySuggestions)
     
-    func rowsCount(_ section: Int) -> Int {
+    public func rowsCount(_ section: Int) -> Int {
         switch self {
         case .waitingForQuery:
             return 0
@@ -39,7 +39,7 @@ enum SearchSuggestionsViewState: Equatable {
         }
     }
     
-    var sectionsNumber: Int {
+    public var sectionsNumber: Int {
         switch self {
         case .waitingForQuery:
             return 0
@@ -50,7 +50,7 @@ enum SearchSuggestionsViewState: Equatable {
         }
     }
     
-    func value(from indexPath: IndexPath) -> String? {
+    public func value(from indexPath: IndexPath) -> String? {
         switch self {
         case .knownDomainsLoaded(let knownDomains):
             return knownDomains[indexPath.row]
@@ -69,7 +69,7 @@ enum SearchSuggestionsViewState: Equatable {
     }
 }
 
-protocol SearchSuggestionsViewModel: AnyObject {
+public protocol SearchSuggestionsViewModel: AnyObject {
     /// Initiate fetching only after subscribing to the async interfaces below
     func fetchSuggestions(_ query: String)
     

@@ -11,7 +11,7 @@ import HttpKit
 import ReactiveSwift
 import Combine
 
-protocol SearchAutocompleteStrategy: AnyObject {
+public protocol SearchAutocompleteStrategy: AnyObject {
     associatedtype Context: RestClientContext
     
     init(_ context: Context)

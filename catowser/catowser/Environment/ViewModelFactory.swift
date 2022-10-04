@@ -9,6 +9,7 @@
 import Foundation
 import FeaturesFlagsKit
 import CoreHttpKit
+import CoreCatowser
 
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
@@ -24,13 +25,13 @@ final class ViewModelFactory {
                                         HttpEnvironment.shared.googleClientRxSubscriber,
                                         HttpEnvironment.shared.googleClientSubscriber)
             let strategy = GoogleAutocompleteStrategy(context)
-            return SearchSuggestionsViewModelImpl(strategy)
+            return SearchSuggestionsViewModelImpl(strategy, FeatureManager.shared)
         case .duckduckgo:
             let context = DDGoContext(HttpEnvironment.shared.duckduckgoClient,
                                       HttpEnvironment.shared.duckduckgoClientRxSubscriber,
                                       HttpEnvironment.shared.duckduckgoClientSubscriber)
             let strategy = DDGoAutocompleteStrategy(context)
-            return SearchSuggestionsViewModelImpl(strategy)
+            return SearchSuggestionsViewModelImpl(strategy, FeatureManager.shared)
         }
     }
     
@@ -41,5 +42,12 @@ final class ViewModelFactory {
         
         let strategy = GoogleDNSStrategy(stratContext)
         return WebViewModelImpl(strategy, site, context)
+    }
+}
+
+extension FeatureManager: SearchViewContext {
+    public func appAsyncApiTypeValue() -> AsyncApiType {
+        // Temporarily use static method in non static
+        FeatureManager.appAsyncApiTypeValue()
     }
 }
