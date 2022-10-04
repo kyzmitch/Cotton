@@ -15,14 +15,14 @@ import Combine
 import WebKit
 
 /// Simplified view actions for view use
-enum WebPageLoadingAction {
+public enum WebPageLoadingAction {
     case idle
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
 }
 
-protocol WebViewModel: AnyObject {
+public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
     func load()

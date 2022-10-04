@@ -12,6 +12,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 import JSPlugins
 import CoreHttpKit
+import CoreCatowser
 
 /// An interface for component which suppose to render tabs
 ///

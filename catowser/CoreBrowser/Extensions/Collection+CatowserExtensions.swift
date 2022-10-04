@@ -1,5 +1,5 @@
 //
-//  Collection.swift
+//  Collection+CatowserExtensions.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 24/01/2019.

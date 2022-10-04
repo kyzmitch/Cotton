@@ -10,6 +10,7 @@ import UIKit
 import FeaturesFlagsKit
 import ReactiveSwift
 import Combine
+import CoreCatowser
 
 fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"

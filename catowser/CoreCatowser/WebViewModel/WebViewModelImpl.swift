@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import WebKit
 import CoreHttpKit
 import CoreBrowser
 import JSPlugins
 import BrowserNetworking
-import FeaturesFlagsKit
 import ReactiveSwift
 import Combine
+import WebKit
 
 /**
  See `decidePolicy` method below
@@ -40,7 +39,7 @@ import Combine
  - pending navigation request is related to initial host or similar host used by user (search bar url)
  */
 
-final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
+public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
     /// Domain name resolver with specific strategy
     let dnsResolver: DNSResolver<Strategy>
     
@@ -56,17 +55,17 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     }
     
     /// reactive state property
-    var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.idle)
+    public var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.idle)
     /// combine state property
-    var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.idle)
+    public var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.idle)
     /// wrapped value for Published
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    @Published var webPageState: WebPageLoadingAction = .idle
+    @Published public var webPageState: WebPageLoadingAction = .idle
     /// Combine publisher of public view state (next action)
-    var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { $webPageState }
+    public var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { $webPageState }
     
     /// Configuration should be transferred from `Site`
-    var configuration: WKWebViewConfiguration {
+    public var configuration: WKWebViewConfiguration {
         settings.webViewConfig
     }
     /// web view model context to access plugins and other dependencies
@@ -76,25 +75,22 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
     
-    var host: Host { state.host }
+    public var host: Host { state.host }
     
-    var currentURL: URL? { state.url }
+    public var currentURL: URL? { state.url }
     
-    var settings: Site.Settings { state.settings }
+    public var settings: Site.Settings { state.settings }
     
-    var urlInfo: URLInfo? { state.urlInfo }
+    public var urlInfo: URLInfo? { state.urlInfo }
     
-    var nativeAppDomainNameString: String? {
-        guard let checker = try? DomainNativeAppChecker(host: host) else {
-            return nil
-        }
-        return checker.correspondingDomain
+    public var nativeAppDomainNameString: String? {
+        context.nativeApp(for: host)
     }
     
     /**
      Constructs web view model
      */
-    init(_ strategy: Strategy, _ site: Site, _ context: WebViewContext) {
+    public init(_ strategy: Strategy, _ site: Site, _ context: WebViewContext) {
         dnsResolver = .init(strategy)
         state = .initialized(site)
         self.context = context
@@ -105,7 +101,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         dnsRequestCancellable?.cancel()
     }
     
-    func load() {
+    public func load() {
         do {
             state = try state.transition(on: .loadSite)
         } catch {
@@ -113,7 +109,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func reload() {
+    public func reload() {
         do {
             state = try state.transition(on: .reload)
         } catch {
@@ -121,7 +117,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func goBack() {
+    public func goBack() {
         do {
             state = try state.transition(on: .goBack)
         } catch {
@@ -129,7 +125,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func goForward() {
+    public func goForward() {
         do {
             state = try state.transition(on: .goForward)
         } catch {
@@ -137,12 +133,12 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
+    public func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
         /**
          you must inject/re-enable plugins even if web view loaded page from same Host
          and even if ip address is used instead of domain name
          */
-        let jsEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        let jsEnabled = context.isJavaScriptEnabled()
         do {
             state = try state.transition(on: .finishLoading(newURL, subject, jsEnabled))
         } catch {
@@ -151,7 +147,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func decidePolicy(_ navigationAction: WKNavigationAction,
+    public func decidePolicy(_ navigationAction: WKNavigationAction,
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
@@ -228,7 +224,7 @@ final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvin
         }
     }
     
-    func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) {
+    public func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) {
         do {
             state = try state.transition(on: .changeJavaScript(subject, enabled))
         } catch {
@@ -253,7 +249,7 @@ private extension WebViewModelImpl {
                                   canInject: canInject)
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
-            let enabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            let enabled = context.isDohEnabled()
             state = try state.transition(on: .resolveDomainName(enabled))
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host.isDoHSupported
@@ -280,7 +276,7 @@ private extension WebViewModelImpl {
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
             context.pluginsProgram.enable(on: subject, context: info.host(), enable: enable)
-            try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+            try context.updateTabContent(site)
             state = try state.transition(on: .startView)
         case .viewing:
             break
@@ -310,7 +306,7 @@ private extension WebViewModelImpl {
             return
         }
         
-        let apiType = FeatureManager.appAsyncApiTypeValue()
+        let apiType = context.appAsyncApiTypeValue()
         switch apiType {
         case .reactive:
             dnsRequestSubsrciption?.dispose()
@@ -409,7 +405,7 @@ private extension WebViewModelImpl {
     }
     
     func updateLoadingState(_ state: WebPageLoadingAction) {
-        let apiType = FeatureManager.appAsyncApiTypeValue()
+        let apiType = context.appAsyncApiTypeValue()
         switch apiType {
         case .reactive:
             rxWebPageState.value = state

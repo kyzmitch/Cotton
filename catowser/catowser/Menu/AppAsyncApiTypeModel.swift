@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FeaturesFlagsKit
 
 typealias AppAsyncApiTypeModel = BaseListModelImpl<AsyncApiType>
 

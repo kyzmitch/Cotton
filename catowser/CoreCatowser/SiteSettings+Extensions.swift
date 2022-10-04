@@ -1,5 +1,5 @@
 //
-//  SiteSettings.swift
+//  SiteSettings+Extensions.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/2/20.

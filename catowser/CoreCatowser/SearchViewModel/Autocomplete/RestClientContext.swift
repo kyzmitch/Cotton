@@ -14,7 +14,7 @@ import CoreHttpKit
 import ReactiveHttpKit
 import BrowserNetworking
 
-protocol RestClientContext: AnyObject {
+public protocol RestClientContext: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     

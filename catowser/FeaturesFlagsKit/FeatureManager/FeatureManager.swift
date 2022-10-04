@@ -11,7 +11,7 @@ import CoreBrowser
 
 public final class FeatureManager {
     /// Shared instance has to be internal, to be able to divide code on extensions in separate files
-    static let shared: FeatureManager = .init()
+    public static let shared: FeatureManager = .init()
     /// fields have to be internal, to be able to move code to extensions in separate files
     let sources: [FeatureSource] = [LocalFeatureSource() /*, RemoteFeatureSource()*/]
     /// temporarily create a separate array of sources for enum features
