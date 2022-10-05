@@ -57,3 +57,30 @@ public final class JSPluginsProgram {
             .forEach { webView.evaluate(jsScript: $0)}
     }
 }
+
+extension JSPluginsProgram: Equatable {
+    public static func == (lhs: JSPluginsProgram, rhs: JSPluginsProgram) -> Bool {
+        guard lhs.plugins.count == rhs.plugins.count else {
+            return false
+        }
+        
+        var index = 0
+        while index < lhs.plugins.count {
+            let lv = lhs.plugins[index]
+            let rv = rhs.plugins[index]
+            if let baseLhs = lv as? BasePlugin, let baseRhs = rv as? BasePlugin {
+                if baseLhs != baseRhs {
+                    return false
+                }
+            } else if let instLhs = lv as? InstagramContentPlugin, let instRhs = rv as? InstagramContentPlugin {
+                if instLhs != instRhs {
+                    return false
+                }
+            } else {
+                return false
+            }
+            index += 1
+        }
+        return true
+    }
+}

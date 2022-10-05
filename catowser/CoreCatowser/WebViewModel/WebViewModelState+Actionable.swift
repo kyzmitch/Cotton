@@ -18,58 +18,73 @@ extension WebViewModelState: Actionable {
     func transition(on action: Action) throws -> State {
         let nextState: State
         switch (self, action) {
-        case (.initialized(let site), .loadSite):
+        case (.initialized(let site),
+              .loadSite):
             nextState = .pendingPlugins(.info(site.urlInfo), site.settings)
-        case (.viewing(_, let settings), .loadNextLink(let url)):
+        case (.viewing(_, let settings),
+              .loadNextLink(let url)):
             nextState = .pendingPlugins(.url(url), settings)
-        case (.viewing(let request, let settings), .reload):
+        case (.viewing(let request, let settings),
+              .reload):
             nextState = .waitingForNavigation(request, settings)
-        case (.viewing(let request, let settings), .goBack):
+        case (.viewing(let request, let settings),
+              .goBack):
             nextState = .waitingForNavigation(request, settings)
-        case (.viewing(let request, let settings), .goForward):
+        case (.viewing(let request, let settings),
+              .goForward):
             nextState = .waitingForNavigation(request, settings)
-        case (.pendingPlugins(let urlData, let settings), .injectPlugins(let pluginsProgram)):
+        case (.pendingPlugins(let urlData, let settings),
+              .injectPlugins(let pluginsProgram)):
             if let pluginsProgram = pluginsProgram {
                 nextState = .injectingPlugins(pluginsProgram, urlData, settings)
             } else {
                 nextState = .pendingDoHStatus(urlData, settings)
             }
-        case (.injectingPlugins(_, let urlData, let settings), .fetchDoHStatus):
+        case (.injectingPlugins(_, let urlData, let settings),
+              .fetchDoHStatus):
             nextState = .pendingDoHStatus(urlData, settings)
-        case (.pendingPlugins(let urlData, let settings), .fetchDoHStatus):
+        case (.pendingPlugins(let urlData, let settings),
+              .fetchDoHStatus):
             nextState = .pendingDoHStatus(urlData, settings)
-        case (.pendingDoHStatus(let urlData, let settings), .resolveDomainName(let useDoH)):
+        case (.pendingDoHStatus(let urlData, let settings),
+              .resolveDomainName(let useDoH)):
             if useDoH {
                 nextState = .checkingDNResolveSupport(urlData, settings)
             } else {
                 nextState = .creatingRequest(urlData.platformURL, settings)
             }
-        case (.checkingDNResolveSupport(let urlData, let settings), .checkDNResolvingSupport(let resolveNeeded)):
+        case (.checkingDNResolveSupport(let urlData, let settings),
+              .checkDNResolvingSupport(let resolveNeeded)):
             if resolveNeeded {
                 nextState = .resolvingDN(urlData, settings)
             } else {
                 nextState = .creatingRequest(urlData.urlWithResolvedDomainName, settings)
             }
-        case (.resolvingDN(_, let settings), .createRequestAnyway(let urlWithPossiblyResolvedDomainName)):
+        case (.resolvingDN(_, let settings),
+              .createRequestAnyway(let urlWithPossiblyResolvedDomainName)):
             nextState = .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
-        case (.creatingRequest(_, let settings), .loadWebView(let request)):
+        case (.creatingRequest(_, let settings),
+              .loadWebView(let request)):
             nextState = .updatingWebView(request, settings)
-        // swiftlint:disable:next line_length
-        case (.updatingWebView(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
+        case (.updatingWebView(let request, let settings),
+              .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
-        // swiftlint:disable:next line_length
-        case (.waitingForNavigation(let request, let settings), .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
+        case (.waitingForNavigation(let request, let settings),
+              .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
-        case (.finishingLoading(let request, let settings, _, _, _), .startView):
+        case (.finishingLoading(let request, let settings, _, _, _),
+              .startView):
             nextState = .viewing(request, settings)
-        case (.viewing(let request, let settings), .changeJavaScript(let subject, let enabled)):
+        case (.viewing(let request, let settings),
+              .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {
                 nextState = self
             } else {
                 let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
                 nextState = .updatingJS(request, jsSettings, subject)
             }
-        case (.updatingJS(let request, let settings, _), .finishLoading):
+        case (.updatingJS(let request, let settings, _),
+              .finishLoading):
             nextState = .viewing(request, settings)
         default:
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")

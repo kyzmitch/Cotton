@@ -43,8 +43,8 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /// Domain name resolver with specific strategy
     let dnsResolver: DNSResolver<Strategy>
     
-    /// view model state
-    private var state: WebViewModelState {
+    /// view model state (not private for unit tests only)
+    var state: WebViewModelState {
         didSet {
             do {
                 try onStateChange(state)
@@ -138,7 +138,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
          you must inject/re-enable plugins even if web view loaded page from same Host
          and even if ip address is used instead of domain name
          */
-        let jsEnabled = context.isJavaScriptEnabled()
+        let jsEnabled = context.isJavaScriptEnabled() || settings.isJSEnabled
         do {
             state = try state.transition(on: .finishLoading(newURL, subject, jsEnabled))
         } catch {

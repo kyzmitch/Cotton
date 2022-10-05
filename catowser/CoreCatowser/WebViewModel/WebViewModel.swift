@@ -15,7 +15,7 @@ import Combine
 import WebKit
 
 /// Simplified view actions for view use
-public enum WebPageLoadingAction {
+public enum WebPageLoadingAction: Equatable {
     case idle
     case recreateView(Bool)
     case load(URLRequest)

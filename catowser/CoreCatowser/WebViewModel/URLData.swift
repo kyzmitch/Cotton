@@ -72,3 +72,5 @@ enum URLData {
         }
     }
 }
+
+extension URLData: Equatable {}

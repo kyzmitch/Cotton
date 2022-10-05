@@ -255,3 +255,23 @@ extension WebViewModelState: CustomStringConvertible {
         }
     }
 }
+
+extension WebViewModelState: Equatable {
+    static func == (lhs: WebViewModelState, rhs: WebViewModelState) -> Bool {
+        switch (lhs, rhs) {
+        case (.initialized(let lSite), .initialized(let rSite)):
+            return lSite == rSite
+        case (.pendingPlugins(let lData, let lSettings), .pendingPlugins(let rData, let rSettings)):
+            return lData == rData && lSettings == rSettings
+        case (.injectingPlugins(let lProgram, let lData, let lSettings),
+              .injectingPlugins(let rProgram, let rData, let rSettings)):
+            return lProgram == rProgram && lData == rData && lSettings == rSettings
+        case (.updatingWebView(let lRequest, let lSettings), .updatingWebView(let rRequest, let rSettings)):
+            return lRequest == rRequest && lSettings == rSettings
+        case (.viewing(let lRequest, let lSettings), .viewing(let rRequest, let rSettings)):
+            return lRequest == rRequest && lSettings == rSettings
+        default:
+            return false
+        }
+    }
+}

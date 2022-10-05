@@ -11,7 +11,7 @@ import JSPlugins
 import CoreHttpKit
 import FeaturesFlagsKit
 
-final class MockedMinimumWebViewContext: WebViewContext {
+final class MockedMinimumCombineWebViewContext: WebViewContext {
     let pluginsProgram: JSPluginsProgram = .init([])
     
     init() {}
@@ -21,7 +21,7 @@ final class MockedMinimumWebViewContext: WebViewContext {
     }
     
     public func isJavaScriptEnabled() -> Bool {
-        return false
+        return true
     }
     
     public func isDohEnabled() -> Bool {
