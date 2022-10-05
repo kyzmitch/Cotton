@@ -15,6 +15,7 @@ import HttpKit
 public final class DDGoContext: RestClientContext {
     public typealias Response = DDGoSuggestionsResponse
     public typealias Server = DuckDuckGoServer
+    public typealias ReachabilityAdapter = AlamofireReachabilityAdaptee<Server>
     
     public let client: Client
     public let rxSubscriber: HttpKitRxSubscriber

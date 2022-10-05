@@ -15,6 +15,7 @@ import HttpKit
 public final class GoogleDNSContext: RestClientContext {
     public typealias Response = GoogleDNSOverJSONResponse
     public typealias Server = GoogleDnsServer
+    public typealias ReachabilityAdapter = AlamofireReachabilityAdaptee<Server>
     
     public let client: Client
     public let rxSubscriber: HttpKitRxSubscriber

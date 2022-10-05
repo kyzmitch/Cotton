@@ -17,12 +17,13 @@ import BrowserNetworking
 public protocol RestClientContext: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
+    associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
     
     typealias Observer = Signal<Response, HttpKit.HttpError>.Observer
     typealias ObserverWrapper = HttpKit.RxObserverWrapper<Response, Server, Observer>
     typealias HttpKitRxSubscriber = HttpKit.RxSubscriber<Response, Server, ObserverWrapper>
     typealias HttpKitSubscriber = HttpKit.Subscriber<Response, Server>
-    typealias Client = HttpKit.Client<Server, AlamofireReachabilityAdaptee<Server>>
+    typealias Client = HttpKit.Client<Server, ReachabilityAdapter>
     
     var client: Client { get }
     var rxSubscriber: HttpKitRxSubscriber { get }

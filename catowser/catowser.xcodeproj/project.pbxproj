@@ -133,6 +133,11 @@
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
 		8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A012FA322400F1200041487 /* InstagramHandler.swift */; };
 		8A06D6F128EC27EB001CB63D /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
+		8A06D6F328EC2BE6001CB63D /* RestClientContextMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */; };
+		8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */; };
+		8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */; };
+		8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F928EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift */; };
+		8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */; };
 		8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */; };
 		8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */; };
 		8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */; };
@@ -214,7 +219,7 @@
 		8A745C1424802E4F00A379AD /* TabsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C1324802E4F00A379AD /* TabsObserver.swift */; };
 		8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */; };
 		8A7B1BA028EB131F004FC135 /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
-		8A7B1BA728EB131F004FC135 /* CoreCatowserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BA628EB131F004FC135 /* CoreCatowserTests.swift */; };
+		8A7B1BA728EB131F004FC135 /* WebViewVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BA628EB131F004FC135 /* WebViewVMTests.swift */; };
 		8A7B1BA828EB131F004FC135 /* CoreCatowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7B1B9A28EB131F004FC135 /* CoreCatowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A7B1BAB28EB131F004FC135 /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
 		8A7B1BAC28EB131F004FC135 /* CoreCatowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -416,6 +421,8 @@
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
 		8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */; };
 		8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */; };
+		8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */; };
+		8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0A2447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
@@ -878,6 +885,11 @@
 		84704FC11EEE769800F89F6B /* TabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
 		847D7C881EF6C30F00291B87 /* TabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		8A012FA322400F1200041487 /* InstagramHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramHandler.swift; sourceTree = "<group>"; };
+		8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClientContextMocks.swift; sourceTree = "<group>"; };
+		8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseTypeMocks.swift; sourceTree = "<group>"; };
+		8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDescriptionMocks.swift; sourceTree = "<group>"; };
+		8A06D6F928EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityAdapteeMocks.swift; sourceTree = "<group>"; };
+		8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncodableMocks.swift; sourceTree = "<group>"; };
 		8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDecodable.swift; sourceTree = "<group>"; };
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
@@ -940,7 +952,7 @@
 		8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreCatowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7B1B9A28EB131F004FC135 /* CoreCatowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreCatowser.h; sourceTree = "<group>"; };
 		8A7B1B9F28EB131F004FC135 /* CoreCatowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreCatowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A7B1BA628EB131F004FC135 /* CoreCatowserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreCatowserTests.swift; sourceTree = "<group>"; };
+		8A7B1BA628EB131F004FC135 /* WebViewVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMTests.swift; sourceTree = "<group>"; };
 		8A7B1BF328EB2A4D004FC135 /* AsyncApiType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncApiType.swift; sourceTree = "<group>"; };
 		8A7B1BF628EB2C7F004FC135 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8A7B1BFB28EB2E59004FC135 /* WebViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContextImpl.swift; sourceTree = "<group>"; };
@@ -1034,6 +1046,8 @@
 		8AC6972628BB35DE00981BBF /* Host+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Host+Extension.swift"; sourceTree = "<group>"; };
 		8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Rx.swift"; sourceTree = "<group>"; };
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
+		8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategyMocks.swift; sourceTree = "<group>"; };
+		8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContextMocks.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
 		8AD51E922809CD5F00C5D3DC /* HttpKitNamespace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpKitNamespace.swift; sourceTree = "<group>"; };
@@ -1655,6 +1669,20 @@
 			path = Handlers;
 			sourceTree = "<group>";
 		};
+		8A06D6F828EC2FB6001CB63D /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				8A06D6F928EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift */,
+				8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */,
+				8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */,
+				8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */,
+				8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */,
+				8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */,
+				8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		8A0E0EA9224A94BE00D86CD7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1803,7 +1831,8 @@
 		8A7B1BA528EB131F004FC135 /* CoreCatowserTests */ = {
 			isa = PBXGroup;
 			children = (
-				8A7B1BA628EB131F004FC135 /* CoreCatowserTests.swift */,
+				8A7B1BA628EB131F004FC135 /* WebViewVMTests.swift */,
+				8A06D6F828EC2FB6001CB63D /* Mocks */,
 			);
 			path = CoreCatowserTests;
 			sourceTree = "<group>";
@@ -2742,8 +2771,8 @@
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
 			packageReferences = (
-				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
-				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */,
+				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -3597,7 +3626,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A7B1BA728EB131F004FC135 /* CoreCatowserTests.swift in Sources */,
+				8A06D6F328EC2BE6001CB63D /* RestClientContextMocks.swift in Sources */,
+				8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */,
+				8A7B1BA728EB131F004FC135 /* WebViewVMTests.swift in Sources */,
+				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
+				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
+				8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */,
+				8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */,
+				8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5374,7 +5410,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -5382,7 +5418,7 @@
 				minimumVersion = 5.2.0;
 			};
 		};
-		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */ = {
+		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
 			requirement = {
@@ -5395,12 +5431,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		8AC4368024798BE2008DD663 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		8AC4368224798BE7008DD663 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */;
+			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
 		};
 /* End XCSwiftPackageProductDependency section */
