@@ -333,3 +333,5 @@ extension WKNavigationType: CustomDebugStringConvertible {
         }
     }
 }
+
+extension WKNavigationAction: NavigationActionable {}

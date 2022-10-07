@@ -21,7 +21,7 @@ final class MockedMinimumCombineWebViewContext: WebViewContext {
     }
     
     public func isJavaScriptEnabled() -> Bool {
-        return true
+        return false
     }
     
     public func isDohEnabled() -> Bool {

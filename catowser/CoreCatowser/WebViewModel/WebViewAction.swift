@@ -43,8 +43,12 @@ extension WebViewAction: CustomStringConvertible {
         switch self {
         case .loadSite:
             return "loadSite"
-        case .loadNextLink(_):
+        case .loadNextLink(let nextURL):
+#if DEBUG
+            return "loadNextLink (\(nextURL.absoluteString))"
+#else
             return "loadNextLink"
+#endif
         case .reload:
             return "reload"
         case .injectPlugins(_):

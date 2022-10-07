@@ -22,6 +22,12 @@ public enum WebPageLoadingAction: Equatable {
     case reattachViewObservers
 }
 
+/// Interface for system's type `WKNavigationAction` from WebKit framework to be able to mock it
+public protocol NavigationActionable: AnyObject {
+    var navigationType: WKNavigationType { get }
+    var request: URLRequest { get }
+}
+
 public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
@@ -30,7 +36,7 @@ public protocol WebViewModel: AnyObject {
     func goBack()
     func goForward()
     func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble)
-    func decidePolicy(_ navigationAction: WKNavigationAction,
+    func decidePolicy(_ navigationAction: NavigationActionable,
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool)
     

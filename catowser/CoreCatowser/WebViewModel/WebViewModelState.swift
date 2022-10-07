@@ -228,8 +228,12 @@ enum WebViewModelState {
 extension WebViewModelState: CustomStringConvertible {
     var description: String {
         switch self {
-        case .initialized(_):
+        case .initialized(let site):
+#if DEBUG
+            return "initialized (\(site.urlInfo.url))"
+#else
             return "initialized"
+#endif
         case .pendingPlugins(_, _):
             return "pendingPlugins"
         case .injectingPlugins(_, _, _):
@@ -246,8 +250,13 @@ extension WebViewModelState: CustomStringConvertible {
             return "updatingWebView"
         case .waitingForNavigation(_, _):
             return "waitingForNavigation"
-        case .finishingLoading(_, _, _, _, _):
+        case .finishingLoading(let request, _, let finalURL, _, _):
+#if DEBUG
+            // swiftlint:disable:next force_unwrapping
+            return "finishingLoading (\(request.url!.absoluteString) -->> \(finalURL.absoluteString))"
+#else
             return "finishingLoading"
+#endif
         case .viewing(_, _):
             return "viewing"
         case .updatingJS(_, _, _):

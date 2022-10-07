@@ -419,6 +419,7 @@
 		8AC4368924798C09008DD663 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
 		8AC4368A24798C09008DD663 /* SPMCommon.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AC45ECB24582453007E47EE /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC45ECA24582453007E47EE /* Combine.framework */; };
+		8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */; };
 		8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */; };
 		8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */; };
 		8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */; };
@@ -1045,6 +1046,7 @@
 		8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Combine.swift"; sourceTree = "<group>"; };
 		8AC5873B289C3DA00038A7B5 /* WebViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContext.swift; sourceTree = "<group>"; };
 		8AC6972628BB35DE00981BBF /* Host+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Host+Extension.swift"; sourceTree = "<group>"; };
+		8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationActionableMocks.swift; sourceTree = "<group>"; };
 		8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Rx.swift"; sourceTree = "<group>"; };
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
 		8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategyMocks.swift; sourceTree = "<group>"; };
@@ -1682,6 +1684,7 @@
 				8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */,
 				8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */,
 				8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */,
+				8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -3634,6 +3637,7 @@
 				8A7B1BA728EB131F004FC135 /* WebViewVMCombineTests.swift in Sources */,
 				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
 				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
+				8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */,
 				8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */,
 				8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */,
 				8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */,
