@@ -34,7 +34,7 @@ final class WebViewVMCombineTests: XCTestCase {
     let settings: Site.Settings = .init(isPrivate: false,
                                         blockPopups: true,
                                         isJSEnabled: false,
-                                        canLoadPlugins: true)
+                                        canLoadPlugins: false)
     
     // swiftlint:disable:next force_try
     let exampleDomainName: DomainName = try! .init(input: "www.example.com")

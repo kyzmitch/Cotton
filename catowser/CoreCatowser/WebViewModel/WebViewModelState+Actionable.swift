@@ -51,20 +51,28 @@ extension WebViewModelState: Actionable {
             if useDoH {
                 nextState = .checkingDNResolveSupport(urlData, settings)
             } else {
-                nextState = .creatingRequest(urlData.platformURL, settings)
+                nextState = .creatingRequest(urlData, settings)
             }
         case (.checkingDNResolveSupport(let urlData, let settings),
               .checkDNResolvingSupport(let resolveNeeded)):
             if resolveNeeded {
                 nextState = .resolvingDN(urlData, settings)
             } else {
-                nextState = .creatingRequest(urlData.urlWithResolvedDomainName, settings)
+                nextState = .creatingRequest(urlData, settings)
             }
-        case (.resolvingDN(_, let settings),
-              .createRequestAnyway(let urlWithPossiblyResolvedDomainName)):
-            nextState = .creatingRequest(urlWithPossiblyResolvedDomainName, settings)
+        case (.resolvingDN(let urlData, let settings),
+              .createRequestAnyway(let ipAddress)):
+            let updatedUrlData: URLInfo
+            if let address = ipAddress {
+                updatedUrlData = urlData.updateWith(ip: address)
+            } else {
+                updatedUrlData = urlData.info
+            }
+            nextState = .creatingRequest(.info(updatedUrlData), settings)
         case (.creatingRequest(_, let settings),
               .loadWebView(let request)):
+            // TODO: need to save URLData in `updatingWebView`, can be taken from `creatingRequest`
+            // it is necessary to be able to save original domain name if DoH is enabled and URLRequest contains ip address host
             nextState = .updatingWebView(request, settings)
         case (.updatingWebView(let request, let settings),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):

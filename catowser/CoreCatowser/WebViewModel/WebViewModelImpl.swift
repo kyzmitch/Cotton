@@ -242,8 +242,9 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
-        case .creatingRequest(let url, _):
-            let request = URLRequest(url: url)
+        case .creatingRequest(let urlData, _):
+            let requestedURL: URL = urlData.hasIPHost ? urlData.urlWithResolvedDomainName : urlData.platformURL
+            let request = URLRequest(url: requestedURL)
             state = try state.transition(on: .loadWebView(request))
         case .updatingWebView(let request, _):
             updateLoadingState(.load(request))
@@ -280,7 +281,7 @@ private extension WebViewModelImpl {
         // Double checking even if it was checked before
         // to not perform unnecessary network requests
         guard !urlData.hasIPHost else {
-            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.urlWithResolvedDomainName))
+            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.info.ipAddressString))
             guard let nextState = possibleState else {
                 assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                 return
@@ -300,7 +301,7 @@ private extension WebViewModelImpl {
                     }
                     switch result {
                     case .success(let finalURL):
-                        let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL))
+                        let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
                         guard let nextState = possibleState else {
                             assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                             return
@@ -324,7 +325,7 @@ private extension WebViewModelImpl {
                     guard let self = self else {
                         return
                     }
-                    let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL))
+                    let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
                     guard let nextState = possibleState else {
                         assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                         return
@@ -366,7 +367,7 @@ private extension WebViewModelImpl {
     
     @MainActor
     func updateState(_ finalURL: URL) async {
-        let possibleState = try? state.transition(on: .createRequestAnyway(finalURL))
+        let possibleState = try? state.transition(on: .createRequestAnyway(finalURL.host))
         guard let nextState = possibleState else {
             assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
             return

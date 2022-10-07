@@ -18,7 +18,8 @@ enum WebViewModelState {
     case pendingDoHStatus(URLData, Site.Settings)
     case checkingDNResolveSupport(URLData, Site.Settings)
     case resolvingDN(URLData, Site.Settings)
-    case creatingRequest(URL, Site.Settings)
+    case creatingRequest(URLData, Site.Settings)
+    // TODO: add `URLData` to `updatingWebView` to save domain name when DoH is enabled, and to all states which go next
     case updatingWebView(URLRequest, Site.Settings)
     case waitingForNavigation(URLRequest, Site.Settings)
     case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
@@ -54,9 +55,8 @@ enum WebViewModelState {
             return uRLData.host
         case .resolvingDN(let uRLData, _):
             return uRLData.host
-        case .creatingRequest(let uRL, _):
-            // swiftlint:disable:next force_unwrapping
-            return uRL.kitHost!
+        case .creatingRequest(let uRLData, _):
+            return uRLData.host
         case .updatingWebView(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             let url = uRLRequest.url!
@@ -97,8 +97,8 @@ enum WebViewModelState {
             return uRLData.platformURL
         case .resolvingDN(let uRLData, _):
             return uRLData.platformURL
-        case .creatingRequest(let uRL, _):
-            return uRL
+        case .creatingRequest(let uRLData, _):
+            return uRLData.platformURL
         case .updatingWebView(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             return uRLRequest.url!
@@ -161,8 +161,8 @@ enum WebViewModelState {
             return uRLData.sameHost(with: url)
         case .resolvingDN(let uRLData, _):
             return uRLData.sameHost(with: url)
-        case .creatingRequest(let uRL, _):
-            return uRL.host == url.host
+        case .creatingRequest(let uRLData, _):
+            return uRLData.sameHost(with: url)
         case .updatingWebView(let uRLRequest, _):
             return uRLRequest.url?.host == url.host
         case .waitingForNavigation(let uRLRequest, _):
@@ -190,8 +190,8 @@ enum WebViewModelState {
             return uRLData
         case .resolvingDN(let uRLData, _):
             return uRLData
-        case .creatingRequest(let uRL, _):
-            return .url(uRL)
+        case .creatingRequest(let uRLData, _):
+            return uRLData
         case .updatingWebView(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
@@ -242,8 +242,12 @@ extension WebViewModelState: CustomStringConvertible {
             return "pendingDoHStatus"
         case .checkingDNResolveSupport(_, _):
             return "checkingDNResolveSupport"
-        case .resolvingDN(_, _):
+        case .resolvingDN(let urlData, let settings):
+#if DEBUG
+            return "resolvingDN (\(urlData.description), \(settings.description))"
+#else
             return "resolvingDN"
+#endif
         case .creatingRequest(_, _):
             return "creatingRequest"
         case .updatingWebView(_, _):
@@ -281,6 +285,8 @@ extension WebViewModelState: Equatable {
             return lRequest == rRequest && lSettings == rSettings
         case (.waitingForNavigation(let lRequest, let lSettings), .waitingForNavigation(let rRequest, let rSettings)):
             return lRequest == rRequest && lSettings == rSettings
+        case (.resolvingDN(let lData, let lSettings), .resolvingDN(let rData, let rSettings)):
+            return lData == rData
         default:
             return false
         }

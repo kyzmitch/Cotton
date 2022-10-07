@@ -36,3 +36,29 @@ final class MockedMinimumCombineWebViewContext: WebViewContext {
         // Do nothing
     }
 }
+
+final class MockedDOHcombineWebViewContext: WebViewContext {
+    let pluginsProgram: JSPluginsProgram = .init([])
+    
+    init() {}
+    
+    public func nativeApp(for host: Host) -> String? {
+        return nil
+    }
+    
+    public func isJavaScriptEnabled() -> Bool {
+        return false
+    }
+    
+    public func isDohEnabled() -> Bool {
+        return true
+    }
+    
+    public func appAsyncApiTypeValue() -> AsyncApiType {
+        return .combine
+    }
+    
+    public func updateTabContent(_ site: Site) throws {
+        // Do nothing
+    }
+}

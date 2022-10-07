@@ -25,7 +25,7 @@ enum WebViewAction {
     case fetchDoHStatus
     case checkDNResolvingSupport(Bool)
     case resolveDomainName(_ useDoH: Bool)
-    case createRequestAnyway(URL)
+    case createRequestAnyway(IPAddress?)
     case loadWebView(URLRequest)
     case finishLoading(URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
     case startView
@@ -59,7 +59,7 @@ extension WebViewAction: CustomStringConvertible {
             return "checkDNResolvingSupport"
         case .resolveDomainName(_):
             return "resolveDomainName"
-        case .createRequestAnyway(_):
+        case .createRequestAnyway:
             return "createRequestAnyway"
         case .loadWebView(_):
             return "loadWebView"
