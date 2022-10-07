@@ -279,6 +279,8 @@ extension WebViewModelState: Equatable {
             return lRequest == rRequest && lSettings == rSettings
         case (.viewing(let lRequest, let lSettings), .viewing(let rRequest, let rSettings)):
             return lRequest == rRequest && lSettings == rSettings
+        case (.waitingForNavigation(let lRequest, let lSettings), .waitingForNavigation(let rRequest, let rSettings)):
+            return lRequest == rRequest && lSettings == rSettings
         default:
             return false
         }

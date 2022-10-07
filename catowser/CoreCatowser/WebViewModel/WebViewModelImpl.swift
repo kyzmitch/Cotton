@@ -247,8 +247,8 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .loadWebView(request))
         case .updatingWebView(let request, _):
             updateLoadingState(.load(request))
-        case .waitingForNavigation:
-            break
+        case .waitingForNavigation(let request, _):
+            updateLoadingState(.ghostedLoad(request))
         case .finishingLoading(let request, let settings, let newURL, let subject, let enable):
             // swiftlint:disable:next force_unwrapping
             let url = request.url!

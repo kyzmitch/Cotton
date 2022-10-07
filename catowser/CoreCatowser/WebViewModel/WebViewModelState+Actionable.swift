@@ -72,9 +72,10 @@ extension WebViewModelState: Actionable {
         case (.waitingForNavigation(let request, let settings),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
-        case (.finishingLoading(let request, let settings, _, _, _),
+        case (.finishingLoading(_, let settings, let finalURL, _, _),
               .startView):
-            nextState = .viewing(request, settings)
+            let finalRequest = URLRequest(url: finalURL)
+            nextState = .viewing(finalRequest, settings)
         case (.viewing(let request, let settings),
               .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {

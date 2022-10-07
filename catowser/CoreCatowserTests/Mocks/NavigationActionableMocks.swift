@@ -9,20 +9,12 @@
 import CoreCatowser
 import WebKit
 
-class MockedOtherNavAction: NavigationActionable {
-    let navigationType: WKNavigationType = .other
+class MockedNavAction: NavigationActionable {
+    let navigationType: WKNavigationType
     let request: URLRequest
     
-    init(_ url: URL) {
+    init(_ url: URL, _ type: WKNavigationType) {
         request = URLRequest(url: url)
-    }
-}
-
-class MockedLinkActivationNavAction: NavigationActionable {
-    let navigationType: WKNavigationType = .linkActivated
-    let request: URLRequest
-    
-    init(_ url: URL) {
-        request = URLRequest(url: url)
+        navigationType = type
     }
 }

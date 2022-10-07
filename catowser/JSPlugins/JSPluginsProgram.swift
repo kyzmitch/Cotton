@@ -64,6 +64,8 @@ extension JSPluginsProgram: Equatable {
             return false
         }
         
+        // TODO: implement Equatable on protocol side, with generic approach if possible
+        
         var index = 0
         while index < lhs.plugins.count {
             let lv = lhs.plugins[index]
