@@ -84,6 +84,15 @@ enum URLData {
             return uRLInfo.sameHost(with: url)
         }
     }
+    
+    var ipAddress: String? {
+        switch self {
+        case .url(let uRL):
+            return uRL.hasIPHost ? uRL.host : nil
+        case .info(let uRLInfo):
+            return uRLInfo.ipAddressString
+        }
+    }
 }
 
 extension URLData: Equatable {

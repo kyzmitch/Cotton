@@ -69,12 +69,10 @@ extension WebViewModelState: Actionable {
                 updatedUrlData = urlData.info
             }
             nextState = .creatingRequest(.info(updatedUrlData), settings)
-        case (.creatingRequest(_, let settings),
+        case (.creatingRequest(let urlData, let settings),
               .loadWebView(let request)):
-            // TODO: need to save URLData in `updatingWebView`, can be taken from `creatingRequest`
-            // it is necessary to be able to save original domain name if DoH is enabled and URLRequest contains ip address host
-            nextState = .updatingWebView(request, settings)
-        case (.updatingWebView(let request, let settings),
+            nextState = .updatingWebView(request, settings, urlData)
+        case (.updatingWebView(let request, let settings, let urlData),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
         case (.waitingForNavigation(let request, let settings),

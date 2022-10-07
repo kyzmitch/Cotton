@@ -90,6 +90,17 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress)
         let urlRequestV1 = URLRequest(url: resolvedUrlV1)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings))
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV11: URLInfo = urlInfoV1!.withIPAddress(ipAddress: exampleIpAddress)
+        let urlDataV11: URLData = .info(urlInfoV11)
+        let expectedStateV11: WebViewModelState = .updatingWebView(urlRequestV1, settings, urlDataV11)
+        print("actual state: \(vm.state.description)")
+        print("expected sta: \(expectedStateV11.description)")
+        XCTAssertEqual(vm.state, expectedStateV11)
+        
+        let navActionV1 = MockedNavAction(resolvedUrlV1, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
     }
 }

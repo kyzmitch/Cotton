@@ -246,7 +246,7 @@ private extension WebViewModelImpl {
             let requestedURL: URL = urlData.hasIPHost ? urlData.urlWithResolvedDomainName : urlData.platformURL
             let request = URLRequest(url: requestedURL)
             state = try state.transition(on: .loadWebView(request))
-        case .updatingWebView(let request, _):
+        case .updatingWebView(let request, _, _):
             updateLoadingState(.load(request))
         case .waitingForNavigation(let request, _):
             updateLoadingState(.ghostedLoad(request))
