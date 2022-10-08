@@ -129,8 +129,7 @@ final class WebViewVMCombineTests: XCTestCase {
         // swiftlint:disable:next force_unwrapping
         let urlRequestV3 = URLRequest(url: urlV3!)
         // swiftlint:disable:next force_unwrapping
-        let urlInfoV3: URLInfo = .init(urlV3!)!
-        let urlDataV3: URLData = .info(urlInfoV3)
+        let urlDataV3: URLData = .url(urlV3!)
         XCTAssertEqual(vm.state, .updatingWebView(urlRequestV3, settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
@@ -203,8 +202,7 @@ final class WebViewVMCombineTests: XCTestCase {
         // swiftlint:disable:next force_unwrapping
         let urlRequestV3 = URLRequest(url: urlV3!)
         // swiftlint:disable:next force_unwrapping
-        let urlInfoV3: URLInfo = .init(urlV3!)!
-        let urlDataV3: URLData = .info(urlInfoV3)
+        let urlDataV3: URLData = .url(urlV3!)
         XCTAssertEqual(vm.state, .updatingWebView(urlRequestV3, settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
@@ -261,8 +259,7 @@ final class WebViewVMCombineTests: XCTestCase {
         // swiftlint:disable:next force_unwrapping
         let urlRequestV3 = URLRequest(url: urlV3!)
         // swiftlint:disable:next force_unwrapping
-        let urlInfoV3: URLInfo = .init(urlV3!)!
-        let urlDataV3: URLData = .info(urlInfoV3)
+        let urlDataV3: URLData = .url(urlV3!)
         XCTAssertEqual(vm.state, .updatingWebView(urlRequestV3, settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)

@@ -110,7 +110,7 @@ class URLInfo constructor(
         if (domainName != other.domainName) return false
         if (ipAddress != other.ipAddress) return false
         if (scheme != other.scheme) return false
-        if (path != other.path) return false
+        if (completePath != other.completePath) return false
         if (query != other.query) return false
         return true
     }

@@ -84,7 +84,7 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         let expectedStateV1: WebViewModelState = .resolvingDN(urlDataV1, settings)
         print("actual state: \(vm.state.description)")
         print("expected sta: \(expectedStateV1.description)")
-        // TODO: This state test for some very strange reason is not right `XCTAssertEqual(vm.state, expectedStateV1)`
+        XCTAssertEqual(vm.state, expectedStateV1)
         _ = XCTWaiter.wait(for: [expectation(description: "Wait for async domain name resolving")], timeout: 1.0)
         // swiftlint:disable:next force_unwrapping force_try
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress)

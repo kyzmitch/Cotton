@@ -101,7 +101,7 @@ extension URLData: Equatable {
         case (.url(let lUrl), .url(let rUrl)):
             return lUrl == rUrl
         case (.info(let lInfo), .info(let rInfo)):
-            return lInfo == rInfo
+            return lInfo.isEqual(rInfo)
         default:
             return false
         }
