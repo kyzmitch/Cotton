@@ -250,16 +250,12 @@ private extension WebViewModelImpl {
             updateLoadingState(.load(request))
         case .waitingForNavigation(let request, _):
             updateLoadingState(.ghostedLoad(request))
-        case .finishingLoading(let request, let settings, let newURL, let subject, let enable):
+        case .finishingLoading(let request, let settings, let newURL, let subject, let enable, let urlData):
             // swiftlint:disable:next force_unwrapping
-            let url = request.url!
-            // swiftlint:disable:next force_unwrapping
-            let info = URLInfo(url)!
-            // swiftlint:disable:next force_unwrapping
-            let updatedInfo = info.withSimilar(newURL)!
+            let updatedInfo = urlData.info.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
-            context.pluginsProgram.enable(on: subject, context: info.host(), enable: enable)
+            context.pluginsProgram.enable(on: subject, context: urlData.info.host(), enable: enable)
             try context.updateTabContent(site)
             state = try state.transition(on: .startView)
         case .viewing:

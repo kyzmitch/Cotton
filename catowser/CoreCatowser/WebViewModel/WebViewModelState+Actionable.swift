@@ -74,11 +74,11 @@ extension WebViewModelState: Actionable {
             nextState = .updatingWebView(request, settings, urlData)
         case (.updatingWebView(let request, let settings, let urlData),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
+            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled, urlData)
         case (.waitingForNavigation(let request, let settings),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled)
-        case (.finishingLoading(_, let settings, let finalURL, _, _),
+            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled, urlData)
+        case (.finishingLoading(_, let settings, let finalURL, _, _, _),
               .startView):
             let finalRequest = URLRequest(url: finalURL)
             nextState = .viewing(finalRequest, settings)

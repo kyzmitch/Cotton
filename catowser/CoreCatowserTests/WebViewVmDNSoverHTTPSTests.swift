@@ -102,5 +102,8 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         vm.decidePolicy(navActionV1) { policy in
             XCTAssertEqual(policy, .allow)
         }
+        vm.finishLoading(resolvedUrlV1, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings))
     }
 }

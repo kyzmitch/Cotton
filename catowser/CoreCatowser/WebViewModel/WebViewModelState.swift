@@ -22,7 +22,7 @@ enum WebViewModelState {
     /// `URLRequest` could have ip address in URL host, so, keeping URLData as well, to not forget original host
     case updatingWebView(URLRequest, Site.Settings, URLData)
     case waitingForNavigation(URLRequest, Site.Settings)
-    case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
+    case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLData)
     case viewing(URLRequest, Site.Settings)
     
     case updatingJS(URLRequest, Site.Settings, JavaScriptEvaluateble)
@@ -66,9 +66,8 @@ enum WebViewModelState {
             let url = uRLRequest.url!
             // swiftlint:disable:next force_unwrapping
             return url.kitHost!
-        case .finishingLoading(let request, _, _, _, _):
-            // swiftlint:disable:next force_unwrapping
-            return request.url!.kitHost!
+        case .finishingLoading(let request, _, _, _, _, let urlData):
+            return urlData.host
         case .viewing(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             let url = uRLRequest.url!
@@ -99,14 +98,13 @@ enum WebViewModelState {
             return uRLData.platformURL
         case .creatingRequest(let uRLData, _):
             return uRLData.platformURL
-        case .updatingWebView(_, _, let urlData):
-            return urlData.platformURL
+        case .updatingWebView(_, _, let uRLData):
+            return uRLData.platformURL
         case .waitingForNavigation(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             return uRLRequest.url!
-        case .finishingLoading(let request, _, _, _, _):
-            // swiftlint:disable:next force_unwrapping
-            return request.url!
+        case .finishingLoading(_, _, _, _, _, let uRLData):
+            return uRLData.platformURL
         case .viewing(let request, _):
             // swiftlint:disable:next force_unwrapping
             return request.url!
@@ -136,7 +134,7 @@ enum WebViewModelState {
             return settings
         case .waitingForNavigation(_, let settings):
             return settings
-        case .finishingLoading(_, let settings, _, _, _):
+        case .finishingLoading(_, let settings, _, _, _, _):
             return settings
         case .viewing(_, let settings):
             return settings
@@ -166,8 +164,8 @@ enum WebViewModelState {
             return urlData.host.rawString == url.host || urlData.ipAddress == url.host
         case .waitingForNavigation(let uRLRequest, _):
             return uRLRequest.url?.host == url.host
-        case .finishingLoading(let request, _, _, _, _):
-            return request.url?.host == url.host
+        case .finishingLoading(_, _, _, _, _, let urlData):
+            return urlData.host.rawString == url.host || urlData.ipAddress == url.host
         case .viewing(let request, _):
             return request.url?.host == url.host
         case .updatingJS(let request, _, _):
@@ -197,10 +195,8 @@ enum WebViewModelState {
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
             return .url(uRL)
-        case .finishingLoading(let uRLRequest, _, _, _, _):
-            // swiftlint:disable:next force_unwrapping
-            let uRL = uRLRequest.url!
-            return .url(uRL)
+        case .finishingLoading(let uRLRequest, _, _, _, _, let urlData):
+            return urlData
         case .viewing(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
@@ -256,10 +252,10 @@ extension WebViewModelState: CustomStringConvertible {
 #endif
         case .waitingForNavigation(_, _):
             return "waitingForNavigation"
-        case .finishingLoading(let request, _, let finalURL, _, _):
+        case .finishingLoading(let request, _, _, _, _, let urlData):
 #if DEBUG
             // swiftlint:disable:next force_unwrapping
-            return "finishingLoading (\(request.url!.absoluteString) -->> \(finalURL.absoluteString))"
+            return "finishingLoading (\(request.url!.absoluteString) -->> ip address \(urlData.ipAddress ?? "none"))"
 #else
             return "finishingLoading"
 #endif
