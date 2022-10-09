@@ -14,7 +14,7 @@ import CoreBrowser
 enum WebViewModelState {
     case initialized(Site)
     case pendingPlugins(URLData, Site.Settings)
-    case injectingPlugins(JSPluginsProgram, URLData, Site.Settings)
+    case injectingPlugins(any JSPluginsProgram, URLData, Site.Settings)
     case pendingDoHStatus(URLData, Site.Settings)
     case checkingDNResolveSupport(URLData, Site.Settings)
     case resolvingDN(URLData, Site.Settings)
@@ -276,7 +276,10 @@ extension WebViewModelState: Equatable {
             return lData == rData && lSettings == rSettings
         case (.injectingPlugins(let lProgram, let lData, let lSettings),
               .injectingPlugins(let rProgram, let rData, let rSettings)):
-            return lProgram == rProgram && lData == rData && lSettings == rSettings
+            if let lp = lProgram as? JSPluginsProgramImpl, let rp = rProgram as? JSPluginsProgramImpl, lp != rp {
+                return false
+            }
+            return lData == rData && lSettings == rSettings
         case (.updatingWebView(let lRequest, let lSettings, let lData),
               .updatingWebView(let rRequest, let rSettings, let rData)):
             return lRequest == rRequest && lSettings == rSettings && lData == rData

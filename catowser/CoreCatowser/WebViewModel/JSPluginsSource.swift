@@ -10,5 +10,6 @@ import Foundation
 import JSPlugins
 
 public protocol JSPluginsSource: AnyObject {
-    var pluginsProgram: JSPluginsProgram { get }
+    associatedtype Program: JSPluginsProgram
+    var pluginsProgram: Program { get }
 }

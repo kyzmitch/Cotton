@@ -12,9 +12,11 @@ import CoreHttpKit
 import FeaturesFlagsKit
 
 final class MockedMinimumCombineWebViewContext: WebViewContext {
-    let pluginsProgram: JSPluginsProgram = .init([])
+    let pluginsProgram: any JSPluginsProgram
     
-    init() {}
+    init() {
+        pluginsProgram = MockedJSPluginsProgram()
+    }
     
     public func nativeApp(for host: Host) -> String? {
         return nil
@@ -38,9 +40,11 @@ final class MockedMinimumCombineWebViewContext: WebViewContext {
 }
 
 final class MockedDOHcombineWebViewContext: WebViewContext {
-    let pluginsProgram: JSPluginsProgram = .init([])
+    let pluginsProgram: any JSPluginsProgram
     
-    init() {}
+    init() {
+        pluginsProgram = MockedJSPluginsProgram()
+    }
     
     public func nativeApp(for host: Host) -> String? {
         return nil
@@ -52,6 +56,34 @@ final class MockedDOHcombineWebViewContext: WebViewContext {
     
     public func isDohEnabled() -> Bool {
         return true
+    }
+    
+    public func appAsyncApiTypeValue() -> AsyncApiType {
+        return .combine
+    }
+    
+    public func updateTabContent(_ site: Site) throws {
+        // Do nothing
+    }
+}
+
+final class MockedJScombineWebViewContext: WebViewContext {
+    let pluginsProgram: any JSPluginsProgram
+    
+    init() {
+        pluginsProgram = MockedJSPluginsProgram()
+    }
+    
+    public func nativeApp(for host: Host) -> String? {
+        return nil
+    }
+    
+    public func isJavaScriptEnabled() -> Bool {
+        return true
+    }
+    
+    public func isDohEnabled() -> Bool {
+        return false
     }
     
     public func appAsyncApiTypeValue() -> AsyncApiType {

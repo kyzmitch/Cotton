@@ -69,7 +69,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         settings.webViewConfig
     }
     /// web view model context to access plugins and other dependencies
-    let context: WebViewContext
+    let context: any WebViewContext
     
     private var dnsRequestSubsrciption: Disposable?
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
@@ -90,7 +90,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /**
      Constructs web view model
      */
-    public init(_ strategy: Strategy, _ site: Site, _ context: WebViewContext) {
+    public init(_ strategy: Strategy, _ site: Site, _ context: any WebViewContext) {
         dnsResolver = .init(strategy)
         state = .initialized(site)
         self.context = context
@@ -223,7 +223,7 @@ private extension WebViewModelImpl {
         case .initialized:
             updateLoadingState(.idle)
         case .pendingPlugins:
-            let pluginsProgram: JSPluginsProgram? = settings.canLoadPlugins ? context.pluginsProgram : nil
+            let pluginsProgram: (any JSPluginsProgram)? = settings.canLoadPlugins ? context.pluginsProgram : nil
             state = try state.transition(on: .injectPlugins(pluginsProgram))
         case .injectingPlugins(let pluginsProgram, let urlData, let settings):
             let canInject = settings.canLoadPlugins
@@ -250,12 +250,12 @@ private extension WebViewModelImpl {
             updateLoadingState(.load(request))
         case .waitingForNavigation(let request, _):
             updateLoadingState(.ghostedLoad(request))
-        case .finishingLoading(let request, let settings, let newURL, let subject, let enable, let urlData):
+        case .finishingLoading(_, let settings, let newURL, let subject, let enable, let urlData):
             // swiftlint:disable:next force_unwrapping
             let updatedInfo = urlData.info.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
-            context.pluginsProgram.enable(on: subject, context: urlData.info.host(), enable: enable)
+            context.pluginsProgram.enable(on: subject, context: urlData.info.host(), jsEnabled: enable)
             try context.updateTabContent(site)
             state = try state.transition(on: .startView)
         case .viewing:
@@ -265,7 +265,7 @@ private extension WebViewModelImpl {
             let url = request.url!
             // swiftlint:disable:next force_unwrapping
             let host = url.kitHost!
-            context.pluginsProgram.enable(on: subject, context: host, enable: settings.isJSEnabled)
+            context.pluginsProgram.enable(on: subject, context: host, jsEnabled: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             updateLoadingState(.load(request))

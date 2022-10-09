@@ -2,87 +2,17 @@
 //  JSPluginsProgram.swift
 //  JSPlugins
 //
-//  Created by Andrei Ermoshin on 18/03/2019.
-//  Copyright © 2019 andreiermoshin. All rights reserved.
+//  Created by Andrei Ermoshin on 08/10/2022.
+//  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
 import Foundation
 import WebKit
 import CoreHttpKit
 
-/**
- An Object Structure (Program) from visitor desgin pattern. Could be a Composite
- */
-public final class JSPluginsProgram {
-    private let plugins: [JavaScriptPlugin]
-
-    public init(_ plugins: [JavaScriptPlugin]) {
-        if plugins.count == 0 {
-            print("Plugins program was initialized with 0 JS plugins")
-        }
-        self.plugins = plugins
-    }
-
-    public func inject(to visitor: WKUserContentController, context: Host, canInject: Bool) {
-        guard !plugins.isEmpty else {
-            return
-        }
-        guard canInject else {
-            visitor.removeAllUserScripts()
-            return
-        }
-        visitor.removeAllUserScripts() // reset old state
-        do {
-            try plugins.forEach { try $0.accept(visitor, context, canInject) }
-        } catch {
-            print("\(#function) failed to load plugin: \(error.localizedDescription)")
-        }
-    }
-
-    public func enable(on webView: JavaScriptEvaluateble, context: Host, enable: Bool) {
-        guard !plugins.isEmpty else {
-            return
-        }
-        plugins
-            .filter { plugin in
-                guard let pluginHostName = plugin.hostKeyword else {
-                    return true
-                }
-                guard context.isSimilar(name: pluginHostName) else {
-                    return false
-                }
-                return true
-            }
-            .compactMap { $0.scriptString(enable) }
-            .forEach { webView.evaluate(jsScript: $0)}
-    }
-}
-
-extension JSPluginsProgram: Equatable {
-    public static func == (lhs: JSPluginsProgram, rhs: JSPluginsProgram) -> Bool {
-        guard lhs.plugins.count == rhs.plugins.count else {
-            return false
-        }
-        
-        // TODO: implement Equatable on protocol side, with generic approach if possible
-        
-        var index = 0
-        while index < lhs.plugins.count {
-            let lv = lhs.plugins[index]
-            let rv = rhs.plugins[index]
-            if let baseLhs = lv as? BasePlugin, let baseRhs = rv as? BasePlugin {
-                if baseLhs != baseRhs {
-                    return false
-                }
-            } else if let instLhs = lv as? InstagramContentPlugin, let instRhs = rv as? InstagramContentPlugin {
-                if instLhs != instRhs {
-                    return false
-                }
-            } else {
-                return false
-            }
-            index += 1
-        }
-        return true
-    }
+public protocol JSPluginsProgram: AnyObject, Equatable {
+    var plugins: [any JavaScriptPlugin] { get }
+    
+    func inject(to visitor: WKUserContentController, context: Host, canInject: Bool)
+    func enable(on webView: JavaScriptEvaluateble, context: Host, jsEnabled: Bool)
 }

@@ -11,7 +11,7 @@ import CoreHttpKit
 
 /// A Concrete Visitor which is in this case only one possible type from iOS SDK WebKit
 extension WKUserContentController: JavaScriptPluginVisitor {
-    public func canVisit(_ plugin: JavaScriptPlugin, _ host: Host, _ canInject: Bool) -> Bool {
+    public func canVisit(_ plugin: any JavaScriptPlugin, _ host: Host, _ canInject: Bool) -> Bool {
         guard canInject else {
             return false
         }
@@ -24,7 +24,7 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         return true
     }
     
-    public func visit(_ plugin: JavaScriptPlugin) throws {
+    public func visit(_ plugin: any JavaScriptPlugin) throws {
         if let base = plugin as? BasePlugin {
             try visit(basePlugin: base)
         } else if let instagram = plugin as? InstagramContentPlugin {
