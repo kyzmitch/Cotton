@@ -21,11 +21,11 @@ typealias IPAddress = String
 enum WebViewAction {
     case loadSite
     case loadNextLink(_ url: URL)
-    case injectPlugins(JSPluginsProgram?)
+    case injectPlugins((any JSPluginsProgram)?)
     case fetchDoHStatus
     case checkDNResolvingSupport(Bool)
     case resolveDomainName(_ useDoH: Bool)
-    case createRequestAnyway(URL)
+    case createRequestAnyway(IPAddress?)
     case loadWebView(URLRequest)
     case finishLoading(URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
     case startView
@@ -43,8 +43,12 @@ extension WebViewAction: CustomStringConvertible {
         switch self {
         case .loadSite:
             return "loadSite"
-        case .loadNextLink(_):
+        case .loadNextLink(let nextURL):
+#if DEBUG
+            return "loadNextLink (\(nextURL.absoluteString))"
+#else
             return "loadNextLink"
+#endif
         case .reload:
             return "reload"
         case .injectPlugins(_):
@@ -55,7 +59,7 @@ extension WebViewAction: CustomStringConvertible {
             return "checkDNResolvingSupport"
         case .resolveDomainName(_):
             return "resolveDomainName"
-        case .createRequestAnyway(_):
+        case .createRequestAnyway:
             return "createRequestAnyway"
         case .loadWebView(_):
             return "loadWebView"

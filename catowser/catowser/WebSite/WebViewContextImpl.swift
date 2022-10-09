@@ -14,11 +14,10 @@ import JSPlugins
 import FeaturesFlagsKit
 
 public final class WebViewContextImpl: WebViewContext {
-    /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
-    public let pluginsProgram: JSPluginsProgram
+    public let pluginsProgram: any JSPluginsProgram
     
-    init(_ pluginsSource: JSPluginsSource) {
-        pluginsProgram = pluginsSource.pluginsProgram
+    init(_ program: any JSPluginsProgram) {
+        pluginsProgram = program
     }
     
     public func nativeApp(for host: Host) -> String? {

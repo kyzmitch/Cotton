@@ -19,12 +19,12 @@ public protocol JavaScriptPluginVisitor: AnyObject {
         - host hostname from the URL, can be used to determine if plugin is specific to web site
         - canInject A boolean value which should be used as a top level check. Describes feature availability.
      */
-    func canVisit(_ plugin: JavaScriptPlugin, _ host: Host, _ canInject: Bool) -> Bool
+    func canVisit(_ plugin: any JavaScriptPlugin, _ host: Host, _ canInject: Bool) -> Bool
     /**
      Uses specific plugin in a visitor.
      
      - Parameters:
         - plugin JavaScript plugin
      */
-    func visit(_ plugin: JavaScriptPlugin) throws
+    func visit(_ plugin: any JavaScriptPlugin) throws
 }

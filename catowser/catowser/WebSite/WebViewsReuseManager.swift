@@ -50,7 +50,7 @@ final class WebViewsReuseManager {
     /// - Parameter delegate: navigation delegate.
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor(_ site: Site,
-                       _ pluginsBuilder: JSPluginsSource,
+                       _ pluginsBuilder: any JSPluginsSource,
                        _ delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
@@ -65,7 +65,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let context: WebViewContextImpl = .init(pluginsBuilder)
+            let context: WebViewContextImpl = .init(pluginsBuilder.pluginsProgram)
             let vm = ViewModelFactory.shared.webViewModel(site, context)
             let vc: WebViewController = .init(vm, delegate)
             views.append(vc)

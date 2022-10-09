@@ -16,7 +16,7 @@ final class JSPluginFactory {
 
     private init() {}
 
-    func script(for plugin: JavaScriptPlugin,
+    func script(for plugin: any JavaScriptPlugin,
                 with injectionTime: WKUserScriptInjectionTime,
                 isMainFrameOnly: Bool) throws -> WKUserScript {
         let typeName = plugin.jsFileName

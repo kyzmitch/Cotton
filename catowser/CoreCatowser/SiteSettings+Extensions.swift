@@ -26,3 +26,9 @@ extension Site.Settings {
         return configuration
     }
 }
+
+extension Site.Settings: CustomStringConvertible {
+    public override var description: String {
+        return "private: \(isPrivate) popupsBlock: \(blockPopups) js: \(isJSEnabled) plugins: \(canLoadPlugins)"
+    }
+}

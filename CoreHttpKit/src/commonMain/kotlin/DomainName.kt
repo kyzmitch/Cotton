@@ -110,6 +110,13 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
         return name.contains(punycodedValue) || punycodedValue.contains(name) || name == punycodedValue
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        other as DomainName
+        if (punycodedValue != other.punycodedValue) return false
+        return true
+    }
+
     sealed class Error(message: String) : Throwable(message) {
         class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength) {
             init {

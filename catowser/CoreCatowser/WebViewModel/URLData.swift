@@ -13,12 +13,24 @@ enum URLData {
     case url(URL)
     case info(URLInfo)
     
-    func updateWith(ip: String) -> URLInfo? {
+    func updateWith(ip: String) -> URLInfo {
         switch self {
         case .url(let uRL):
-            return URLInfo(uRL)?.withIPAddress(ipAddress: ip)
+            // swiftlint:disable:next force_unwrapping
+            return URLInfo(uRL)!.withIPAddress(ipAddress: ip)
         case .info(let uRLInfo):
             return uRLInfo.withIPAddress(ipAddress: ip)
+        }
+    }
+    
+    /// Returns an URL info even if internally we have URL
+    var info: URLInfo {
+        switch self {
+        case .url(let uRL):
+            // swiftlint:disable:next force_unwrapping
+            return URLInfo(uRL)!
+        case .info(let uRLInfo):
+            return uRLInfo
         }
     }
     
@@ -34,13 +46,14 @@ enum URLData {
     }
     
     /// Could return URL with an ip address instead of a domain name
+    /// Probably not needed property.
     var urlWithResolvedDomainName: URL {
         switch self {
         case .url(let uRL):
             return uRL
         case .info(let uRLInfo):
             // swiftlint:disable:next force_unwrapping
-            return URL(string: uRLInfo.urlWithIPaddress())!
+            return URL(string: uRLInfo.urlWithIPaddressWithoutPort())!
         }
     }
     
@@ -69,6 +82,43 @@ enum URLData {
             return uRL.host == url.host
         case .info(let uRLInfo):
             return uRLInfo.sameHost(with: url)
+        }
+    }
+    
+    var ipAddress: String? {
+        switch self {
+        case .url(let uRL):
+            return uRL.hasIPHost ? uRL.host : nil
+        case .info(let uRLInfo):
+            return uRLInfo.ipAddressString
+        }
+    }
+}
+
+extension URLData: Equatable {
+    public static func == (lhs: URLData, rhs: URLData) -> Bool {
+        switch (lhs, rhs) {
+        case (.url(let lUrl), .url(let rUrl)):
+            return lUrl == rUrl
+        case (.info(let lInfo), .info(let rInfo)):
+            return lInfo.isEqual(rInfo)
+        default:
+            return false
+        }
+    }
+}
+
+extension URLData: CustomStringConvertible {
+    var description: String {
+        switch self {
+        case .url(let url):
+            return "url (\(url.absoluteString)"
+        case .info(let urlInfo):
+            return """
+info:\
+ -url: \(urlInfo.platformURL.absoluteString)\
+ -ip: \(urlInfo.ipAddressString ?? "none")
+"""
         }
     }
 }

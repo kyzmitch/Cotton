@@ -23,7 +23,7 @@ public enum PluginHandlerDelegateType {
  Describes the JavaScript plugin model.
  An Element from visitor design pattern.
  */
-public protocol JavaScriptPlugin {
+public protocol JavaScriptPlugin: Equatable {
     var jsFileName: String { get }
     var messageHandlerName: String { get }
     var isMainFrameOnly: Bool { get }
@@ -56,5 +56,15 @@ extension JavaScriptPlugin {
             return
         }
         try visitor.visit(self)
+    }
+}
+
+public extension JavaScriptPlugin {
+    static func == (lhs: any JavaScriptPlugin, rhs: any JavaScriptPlugin) -> Bool {
+        return lhs.jsFileName == rhs.jsFileName
+                && lhs.messageHandlerName == rhs.messageHandlerName
+                && lhs.isMainFrameOnly == rhs.isMainFrameOnly
+                && lhs.hostKeyword == rhs.hostKeyword
+                && lhs.scriptString(true) == rhs.scriptString(true)
     }
 }
