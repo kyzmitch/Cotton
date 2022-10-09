@@ -19,7 +19,7 @@ public protocol RestClientContext: AnyObject {
     associatedtype Server: ServerDescription
     associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
     
-    typealias Observer = Signal<Response, HttpKit.HttpError>.Observer
+    typealias Observer = Signal<Response, HttpError>.Observer
     typealias ObserverWrapper = RxObserverWrapper<Response, Server, Observer>
     typealias HttpKitRxSubscriber = RxSubscriber<Response, Server, ObserverWrapper>
     typealias HttpKitSubscriber = Sub<Response, Server>

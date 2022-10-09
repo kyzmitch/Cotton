@@ -11,16 +11,16 @@ import ReactiveSwift
 import CoreHttpKit
 
 /// This typealias could be an issue, because the same defined in BrowserNetworking HttpClient+Alamofire.swift
-public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
-public typealias RxVoidProducer = SignalProducer<Void, HttpKit.HttpError>
+public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpError>
+public typealias RxVoidProducer = SignalProducer<Void, HttpError>
 
 extension RestClient {
     public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint<Server>,
                                                        withAccessToken accessToken: String?,
                                                        transport adapter: B,
-                                                       subscriber: HttpKit.RxSubscriber<T, Server, RX>) -> RxProducer<T>
+                                                       subscriber: RxSubscriber<T, Server, RX>) -> RxProducer<T>
     where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
-        let producer: SignalProducer<T, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<T, HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return
@@ -44,9 +44,9 @@ extension RestClient {
     public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: Endpoint<Server>,
                                                             withAccessToken accessToken: String?,
                                                             transport adapter: B,
-                                                            subscriber: HttpKit.RxVoidSubscriber<Server, RX>) -> RxVoidProducer
+                                                            subscriber: RxVoidSubscriber<Server, RX>) -> RxVoidProducer
     where B.Server == Server, B.Observer == RX {
-        let producer: SignalProducer<Void, HttpKit.HttpError> = .init { [weak self] (observer, lifetime) in
+        let producer: SignalProducer<Void, HttpError> = .init { [weak self] (observer, lifetime) in
             guard let self = self else {
                 observer.send(error: .zombieSelf)
                 return

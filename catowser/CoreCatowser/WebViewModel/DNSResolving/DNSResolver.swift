@@ -15,8 +15,8 @@ private extension String {
     static let waitingQueueName: String = .queueNameWith(suffix: "dnsResolvingThrottle")
 }
 
-typealias DNSResolvingProducer = SignalProducer<URL, HttpKit.DnsError>
-typealias DNSResolvingPublisher = AnyPublisher<URL, HttpKit.DnsError>
+typealias DNSResolvingProducer = SignalProducer<URL, DnsError>
+typealias DNSResolvingPublisher = AnyPublisher<URL, DnsError>
 
 final class DNSResolver<Strategy> where Strategy: DNSResolvingStrategy {
     let strategy: Strategy

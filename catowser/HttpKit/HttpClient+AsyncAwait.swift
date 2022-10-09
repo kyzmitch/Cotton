@@ -22,17 +22,17 @@ extension RestClient {
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
         guard let httpRequest = requestInfo.urlRequest else {
-            throw HttpKit.HttpError.failedKotlinRequestConstruct
+            throw HttpError.failedKotlinRequestConstruct
         }
         
         let codes = T.successCodes
         // https://developer.apple.com/documentation/foundation/urlsession/3767352-data
         let (data, response) = try await urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
         guard let urlResponse = response as? HTTPURLResponse else {
-            throw HttpKit.HttpError.notHttpUrlResponse
+            throw HttpError.notHttpUrlResponse
         }
         guard codes.contains(urlResponse.statusCode) else {
-            throw HttpKit.HttpError.notGoodStatusCode(urlResponse.statusCode)
+            throw HttpError.notGoodStatusCode(urlResponse.statusCode)
         }
         
         let decodedValue = try JSONDecoder().decode(T.self, from: data)

@@ -16,7 +16,7 @@ import Combine
 
 public typealias GoogleSuggestionsClient = RestClient<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
 typealias GSearchEndpoint = Endpoint<GoogleServer>
-public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpKit.HttpError>.Observer
+public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpError>.Observer
 public typealias GSearchRxInterface = RxObserverWrapper<GSearchSuggestionsResponse,
                                                         GoogleServer,
                                                         GSearchRxSignal>
@@ -25,19 +25,19 @@ public typealias GSearchClientRxSubscriber = RxSubscriber<GSearchSuggestionsResp
                                                           GSearchRxInterface>
 public typealias GSearchClientSubscriber = Sub<GSearchSuggestionsResponse,
                                                       GoogleServer>
-public typealias GSearchProducer = SignalProducer<GSearchSuggestionsResponse, HttpKit.HttpError>
+public typealias GSearchProducer = SignalProducer<GSearchSuggestionsResponse, HttpError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public typealias CGSearchPublisher = AnyPublisher<GSearchSuggestionsResponse, HttpKit.HttpError>
+public typealias CGSearchPublisher = AnyPublisher<GSearchSuggestionsResponse, HttpError>
 
 extension Endpoint where S == GoogleServer {
     static func googleSearchSuggestions(query: String) throws -> GSearchEndpoint {
         guard !query.isEmpty else {
-            throw HttpKit.HttpError.emptyQueryParam
+            throw HttpError.emptyQueryParam
         }
         
         let withoutSpaces = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !withoutSpaces.isEmpty else {
-            throw HttpKit.HttpError.spacesInQueryParam
+            throw HttpError.spacesInQueryParam
         }
         
         let items: [URLQueryItem] = [
@@ -86,7 +86,7 @@ extension RestClient where Server == GoogleServer {
         let endpoint: GSearchEndpoint
         do {
             endpoint = try .googleSearchSuggestions(query: text)
-        } catch let error as HttpKit.HttpError {
+        } catch let error as HttpError {
             return GSearchProducer.init(error: error)
         } catch {
             return GSearchProducer.init(error: .failedConstructRequestParameters)
@@ -104,7 +104,7 @@ extension RestClient where Server == GoogleServer {
         let endpoint: GSearchEndpoint
         do {
             endpoint = try .googleSearchSuggestions(query: text)
-        } catch let error as HttpKit.HttpError {
+        } catch let error as HttpError {
             return CGSearchPublisher(Future.failure(error))
         } catch {
             return CGSearchPublisher(Future.failure(.failedConstructRequestParameters))

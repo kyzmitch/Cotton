@@ -18,14 +18,14 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
     typealias Server = S
     typealias ObserverWrapper = RX
 
-    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>
+    var handlerType: ResponseVoidHandlingApi<Server, ObserverWrapper>
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, ObserverWrapper>) {
+    init(_ handlerType: ResponseVoidHandlingApi<Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
     
-    func wrapperHandler() -> (Result<Void, HttpKit.HttpError>) -> Void {
-        let closure = { [weak self] (result: Result<Void, HttpKit.HttpError>) in
+    func wrapperHandler() -> (Result<Void, HttpError>) -> Void {
+        let closure = { [weak self] (result: Result<Void, HttpError>) in
             guard let self = self else {
                 return
             }
@@ -57,9 +57,9 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
         dataRequest
             .validate(statusCode: sucessCodes)
             .response { [weak self] (defaultResponse) in
-                let result: Result<Void, HttpKit.HttpError>
+                let result: Result<Void, HttpError>
                 if let error = defaultResponse.error {
-                    let localError = HttpKit.HttpError.httpFailure(error: error)
+                    let localError = HttpError.httpFailure(error: error)
                     result = .failure(localError)
                 } else {
                     let value: Void = ()
@@ -76,10 +76,10 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
         }
     }
     
-    func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
+    func transferToCombineState(_ promise: @escaping Future<Void, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseVoidWrapper<Server> = .init(promise, endpoint)
+            let promiseWrapper: CombinePromiseVoidWrapper<Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

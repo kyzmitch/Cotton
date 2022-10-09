@@ -16,16 +16,16 @@ public protocol HTTPRxVoidAdapter: AnyObject {
     associatedtype Server
     associatedtype Observer: RxVoidInterface where Observer.Server == Server
     
-    var handlerType: HttpKit.ResponseVoidHandlingApi<Server, Observer> { get set }
+    var handlerType: ResponseVoidHandlingApi<Server, Observer> { get set }
     
-    init(_ handlerType: HttpKit.ResponseVoidHandlingApi<Server, Observer>)
+    init(_ handlerType: ResponseVoidHandlingApi<Server, Observer>)
     func performVoidRequest(_ request: URLRequest,
                             sucessCodes: [Int])
     
     /// This is not defined in ResponseHandlingApi because it is a value type and this function should capture self
     /// So, better to store it here in reference type
-    func wrapperHandler() -> (Result<Void, HttpKit.HttpError>) -> Void
+    func wrapperHandler() -> (Result<Void, HttpError>) -> Void
     
-    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Void, HttpError>.Promise,
                                                _ endpoint: Endpoint<Server>)
 }

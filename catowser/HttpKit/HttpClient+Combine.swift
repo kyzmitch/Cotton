@@ -13,7 +13,7 @@ import Combine
 import CoreHttpKit
 
 extension RestClient {
-    public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpKit.HttpError>>>
+    public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpError>>>
     
     // gryphon ignore
     public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
@@ -24,7 +24,7 @@ extension RestClient {
         // Can't use Future without Deferred because
         // a Future will begin executing immediately when you create it.
         return Combine.Deferred {
-            let subject: Future<T, HttpKit.HttpError> = .init { [weak self] (promise) in
+            let subject: Future<T, HttpError> = .init { [weak self] (promise) in
                 guard let self = self else {
                     promise(.failure(.zombieSelf))
                     return

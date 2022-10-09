@@ -14,12 +14,12 @@ import CoreHttpKit
 // gryphon ignore
 public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
     /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
-    public var closure: (Result<Response, HttpKit.HttpError>) -> Void
+    public var closure: (Result<Response, HttpError>) -> Void
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     let endpoint: Endpoint<Server>
     let responseType: Response.Type
     
-    public init(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
+    public init(_ closure: @escaping (Result<Response, HttpError>) -> Void,
                 _ endpoint: Endpoint<Server>) {
         self.closure = closure
         self.endpoint = endpoint
@@ -46,12 +46,12 @@ public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: 
 // gryphon ignore
 public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
     /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
-    public var promise: Future<Response, HttpKit.HttpError>.Promise
+    public var promise: Future<Response, HttpError>.Promise
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     let endpoint: Endpoint<Server>
     let responseType: Response.Type
     
-    public init(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+    public init(_ promise: @escaping Future<Response, HttpError>.Promise,
                 _ endpoint: Endpoint<Server>) {
         self.promise = promise
         self.endpoint = endpoint

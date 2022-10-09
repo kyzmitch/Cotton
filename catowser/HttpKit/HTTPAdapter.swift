@@ -25,18 +25,18 @@ public protocol HTTPRxAdapter: AnyObject {
     associatedtype Server
     associatedtype ObserverWrapper: RxInterface where ObserverWrapper.Observer.Response == Response,
                                                         ObserverWrapper.Server == Server
-    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>)
+    init(_ handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>)
     
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
     /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
     /// This is not defined in ResponseHandlingApi because it is a value type and this function should capture self
     /// So, better to store it here in reference type
-    func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void
+    func wrapperHandler() -> (Result<Response, HttpError>) -> Void
     /// Should refer to simple closure api
-    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper> { get set }
+    var handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper> { get set }
     
-    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                                _ endpoint: Endpoint<Server>)
 }
 
@@ -45,21 +45,21 @@ public protocol HTTPAdapter: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     
-    typealias RxFreeDummy<R: ResponseType, S: ServerDescription> = HttpKit.RxFreeInterface<R, S>
+    typealias RxFreeDummy<R: ResponseType, S: ServerDescription> = RxFreeInterface<R, S>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>)
+    init(_ handlerType: ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>)
     
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
     /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
     /// This is not defined in ResponseHandlingApi because it is a value type and this function should capture self
     /// So, better to store it here in reference type
-    func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void
+    func wrapperHandler() -> (Result<Response, HttpError>) -> Void
     /// Should refer to simple closure api
-    var handlerType: HttpKit.ResponseHandlingApi<Response,
-                                                Server,
-                                                RxFreeDummy<Response, Server>> { get set }
+    var handlerType: ResponseHandlingApi<Response,
+                                         Server,
+                                         RxFreeDummy<Response, Server>> { get set }
     
-    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+    /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                                _ endpoint: Endpoint<Server>)
 }

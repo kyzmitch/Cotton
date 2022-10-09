@@ -29,7 +29,7 @@ class HttpClientTests: XCTestCase {
             switch result {
             case .failure(let error):
                 let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
-                XCTAssertEqual(error, HttpKit.HttpError.httpFailure(error: nsError), "Not expected error")
+                XCTAssertEqual(error, HttpError.httpFailure(error: nsError), "Not expected error")
                 expectationUrlFail.fulfill()
             case .success:
                 XCTFail("Expected to see an error")

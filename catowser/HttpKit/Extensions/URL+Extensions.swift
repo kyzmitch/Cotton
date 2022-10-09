@@ -15,7 +15,7 @@ import CoreHttpKit
 
 public enum DnsError: LocalizedError {
     case zombieSelf
-    case httpError(HttpKit.HttpError)
+    case httpError(HttpError)
     case notHttpScheme
     case noHost
     case urlComponentsFail
@@ -34,9 +34,9 @@ public enum DnsError: LocalizedError {
 }
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-typealias HostPublisher = Result<String, HttpKit.DnsError>.Publisher
+typealias HostPublisher = Result<String, DnsError>.Publisher
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public typealias ResolvedURLPublisher = Result<URL, HttpKit.DnsError>.Publisher
+public typealias ResolvedURLPublisher = Result<URL, DnsError>.Publisher
 
 extension URL {
     public var kitHost: Host? {
@@ -57,7 +57,7 @@ extension URL {
     
     /// Not required to be public
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public var cHttpHost: AnyPublisher<String, HttpKit.DnsError> {
+    public var cHttpHost: AnyPublisher<String, DnsError> {
         guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
             return HostPublisher(.failure(.notHttpScheme)).eraseToAnyPublisher()
         }
@@ -72,11 +72,11 @@ extension URL {
     
     public func updatedHost(with ipAddress: String) throws -> URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
-            throw HttpKit.DnsError.urlComponentsFail
+            throw DnsError.urlComponentsFail
         }
         components.host = ipAddress
         guard let clearURL = components.url else {
-            throw HttpKit.DnsError.failToGetUrlFromComponents
+            throw DnsError.failToGetUrlFromComponents
         }
         return clearURL
     }

@@ -23,7 +23,7 @@ extension RestClient where Server == GoogleDnsServer {
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func aaResolvedDomainName(in url: URL) async throws -> URL {
         guard let hostString = url.httpHost else {
-            throw HttpKit.HttpError.noHostInUrl
+            throw HttpError.noHostInUrl
         }
             
         let ipAddressResponse = try await self.aaGetIPaddress(ofDomain: hostString)

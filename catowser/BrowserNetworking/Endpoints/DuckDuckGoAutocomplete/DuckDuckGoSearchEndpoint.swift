@@ -19,12 +19,12 @@ typealias DDGoSuggestionsEndpoint = Endpoint<DuckDuckGoServer>
 extension Endpoint where S == DuckDuckGoServer {
     static func duckduckgoSuggestions(query: String) throws -> DDGoSuggestionsEndpoint {
         guard !query.isEmpty else {
-            throw HttpKit.HttpError.emptyQueryParam
+            throw HttpError.emptyQueryParam
         }
         
         let withoutSpaces = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !withoutSpaces.isEmpty else {
-            throw HttpKit.HttpError.spacesInQueryParam
+            throw HttpError.spacesInQueryParam
         }
         
         let items: [URLQueryItem] = [
@@ -63,17 +63,17 @@ public struct DDGoSuggestionsResponse: ResponseType {
     }
 }
 
-public typealias DDGoRxSignal = Signal<DDGoSuggestionsResponse, HttpKit.HttpError>.Observer
+public typealias DDGoRxSignal = Signal<DDGoSuggestionsResponse, HttpError>.Observer
 public typealias DDGoRxInterface = RxObserverWrapper<DDGoSuggestionsResponse,
                                                      DuckDuckGoServer,
                                                      DDGoRxSignal>
 public typealias DDGoSuggestionsClientRxSubscriber = RxSubscriber<DDGoSuggestionsResponse,
                                                                   DuckDuckGoServer,
                                                                   DDGoRxInterface>
-public typealias DDGoSuggestionsProducer = SignalProducer<DDGoSuggestionsResponse, HttpKit.HttpError>
+public typealias DDGoSuggestionsProducer = SignalProducer<DDGoSuggestionsResponse, HttpError>
 public typealias DDGoSuggestionsClientSubscriber = Sub<DDGoSuggestionsResponse,
                                                        DuckDuckGoServer>
-public typealias DDGoSuggestionsPublisher = AnyPublisher<DDGoSuggestionsResponse, HttpKit.HttpError>
+public typealias DDGoSuggestionsPublisher = AnyPublisher<DDGoSuggestionsResponse, HttpError>
 
 extension RestClient where Server == DuckDuckGoServer {
     public func duckDuckGoSuggestions(for text: String,
@@ -81,7 +81,7 @@ extension RestClient where Server == DuckDuckGoServer {
         let endpoint: DDGoSuggestionsEndpoint
         do {
             endpoint = try .duckduckgoSuggestions(query: text)
-        } catch let error as HttpKit.HttpError {
+        } catch let error as HttpError {
             return DDGoSuggestionsProducer.init(error: error)
         } catch {
             return DDGoSuggestionsProducer.init(error: .failedConstructRequestParameters)
@@ -99,7 +99,7 @@ extension RestClient where Server == DuckDuckGoServer {
         let endpoint: DDGoSuggestionsEndpoint
         do {
             endpoint = try .duckduckgoSuggestions(query: text)
-        } catch let error as HttpKit.HttpError {
+        } catch let error as HttpError {
             return DDGoSuggestionsPublisher(Future.failure(error))
         } catch {
             return DDGoSuggestionsPublisher(Future.failure(.failedConstructRequestParameters))

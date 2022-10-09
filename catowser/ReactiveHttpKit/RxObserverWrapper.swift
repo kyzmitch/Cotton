@@ -10,13 +10,13 @@ import HttpKit
 import ReactiveSwift
 import CoreHttpKit
 
-extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpKit.HttpError {
+extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpError {
     public typealias Response = Value
     
     public func newSend(value: Response) {
         send(value: value)
     }
-    public func newSend(error: HttpKit.HttpError) {
+    public func newSend(error: HttpError) {
         send(error: error)
     }
     
@@ -25,11 +25,11 @@ extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == Htt
     }
 }
 
-extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpKit.HttpError {
+extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpError {
     public func newSend(value: Value) {
         send(value: value)
     }
-    public func newSend(error: HttpKit.HttpError) {
+    public func newSend(error: HttpError) {
         send(error: error)
     }
     
@@ -60,13 +60,13 @@ public class RxObserverWrapper<RR,
         return rxLifetime
     }
     
-    let rxObserver: Signal<RR, HttpKit.HttpError>.Observer
+    let rxObserver: Signal<RR, HttpError>.Observer
     let rxLifetime: Lifetime
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     public let endpoint: Endpoint<Server>
     let responseType: RR.Type
     
-    public init(_ observer: Signal<RR, HttpKit.HttpError>.Observer,
+    public init(_ observer: Signal<RR, HttpError>.Observer,
                 _ lifetime: Lifetime,
                 _ endpoint: Endpoint<Server>) {
         self.rxObserver = observer
@@ -100,12 +100,12 @@ public class RxObserverVoidWrapper<SS: ServerDescription>: RxVoidInterface {
         return rxLifetime
     }
     
-    let rxObserver: Signal<Void, HttpKit.HttpError>.Observer
+    let rxObserver: Signal<Void, HttpError>.Observer
     let rxLifetime: Lifetime
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     public let endpoint: Endpoint<S>
     
-    public init(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
+    public init(_ observer: Signal<Void, HttpError>.Observer,
                 _ lifetime: Lifetime,
                 _ endpoint: Endpoint<S>) {
         self.rxObserver = observer
