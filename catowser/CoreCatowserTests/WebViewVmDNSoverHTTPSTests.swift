@@ -29,7 +29,7 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
     lazy var goodDnsStrategy: MockedDNSStrategy = {
         .init(goodDnsContext, exampleIpAddress)
     }()
-    let dohWebViewContext: MockedDOHcombineWebViewContext = .init()
+    let dohWebViewContext: MockedCombineWebViewContext = .init(doh: true, js: false)
     
     let settings: Site.Settings = .init(isPrivate: false,
                                         blockPopups: true,

@@ -29,7 +29,7 @@ final class WebViewVMCombineTests: XCTestCase {
     lazy var goodDnsStrategy: MockedDNSStrategy = {
         .init(goodDnsContext)
     }()
-    let minimumWebViewContext: MockedMinimumCombineWebViewContext = .init()
+    let minimumWebViewContext: MockedCombineWebViewContext = .init(doh: false, js: false)
     
     let settings: Site.Settings = .init(isPrivate: false,
                                         blockPopups: true,
