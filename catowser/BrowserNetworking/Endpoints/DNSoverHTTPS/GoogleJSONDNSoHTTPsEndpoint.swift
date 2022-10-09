@@ -16,18 +16,18 @@ import Combine
 
 /// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
 
-public typealias GoogleDnsClient = HttpKit.Client<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
+public typealias GoogleDnsClient = RestClient<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
 
 typealias GDNSjsonEndpoint = Endpoint<GoogleDnsServer>
 public typealias GDNSjsonRxSignal = Signal<GoogleDNSOverJSONResponse, HttpKit.HttpError>.Observer
-public typealias GDNSjsonRxInterface = HttpKit.RxObserverWrapper<GoogleDNSOverJSONResponse,
-                                                                 GoogleDnsServer,
-                                                                 GDNSjsonRxSignal>
-public typealias GDNSJsonClientRxSubscriber = HttpKit.RxSubscriber<GoogleDNSOverJSONResponse,
-                                                                   GoogleDnsServer,
-                                                                   GDNSjsonRxInterface>
-public typealias GDNSJsonClientSubscriber = HttpKit.Subscriber<GoogleDNSOverJSONResponse,
-                                                               GoogleDnsServer>
+public typealias GDNSjsonRxInterface = RxObserverWrapper<GoogleDNSOverJSONResponse,
+                                                         GoogleDnsServer,
+                                                         GDNSjsonRxSignal>
+public typealias GDNSJsonClientRxSubscriber = RxSubscriber<GoogleDNSOverJSONResponse,
+                                                           GoogleDnsServer,
+                                                           GDNSjsonRxInterface>
+public typealias GDNSJsonClientSubscriber = Sub<GoogleDNSOverJSONResponse,
+                                                GoogleDnsServer>
 public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, HttpKit.HttpError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpKit.HttpError>
@@ -151,7 +151,7 @@ extension DnsRR {
     }
 }
 
-extension HttpKit.Client where Server == GoogleDnsServer {
+extension RestClient where Server == GoogleDnsServer {
     func rxGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientRxSubscriber) -> GDNSjsonProducer {
         let endpoint: GDNSjsonEndpoint
         do {

@@ -8,52 +8,52 @@
 
 import CoreHttpKit
 
-/// These types are needed for Combine interfaces of HttpKit.Client we don't have to pass actual ReactiveSwift types
+/// These types are needed for Combine interfaces of RestClient we don't have to pass actual ReactiveSwift types
 /// to be able to use Combine interfaces
-extension HttpKit {
-    // gryphon ignore
-    public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
-        public typealias Response = RR
-        
-        public func newSend(value: Response) {}
-        public func newSend(error: HttpKit.HttpError) {}
-        public func newComplete() {}
+
+
+// gryphon ignore
+public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
+    public typealias Response = RR
+    
+    public func newSend(value: Response) {}
+    public func newSend(error: HttpKit.HttpError) {}
+    public func newComplete() {}
+}
+
+// gryphon ignore
+struct DummyRxLifetime: RxAnyLifetime {
+    func newObserveEnded(_ action: @escaping () -> Void) {}
+}
+
+// gryphon ignore
+public class DummyRxType<R,
+                         SS: ServerDescription,
+                         RX: RxAnyObserver>: RxInterface where RX.Response == R {
+    public typealias Observer = RX
+    public typealias Server = SS
+    
+    public var observer: RX {
+        // TODO: think about why it ask for conversion
+        // swiftlint:disable:next force_cast
+        return DummyRxObserver<R>() as! RX
     }
     
-    // gryphon ignore
-    struct DummyRxLifetime: RxAnyLifetime {
-        func newObserveEnded(_ action: @escaping () -> Void) {}
+    public var lifetime: RxAnyLifetime {
+        return DummyRxLifetime()
     }
     
-    // gryphon ignore
-    public class DummyRxType<R,
-                             SS: ServerDescription,
-                             RX: RxAnyObserver>: RxInterface where RX.Response == R {
-        public typealias Observer = RX
-        public typealias Server = SS
-        
-        public var observer: RX {
-            // TODO: think about why it ask for conversion
-            // swiftlint:disable:next force_cast
-            return DummyRxObserver<R>() as! RX
-        }
-        
-        public var lifetime: RxAnyLifetime {
-            return DummyRxLifetime()
-        }
-        
-        public var endpoint: Endpoint<Server> {
-            let encodingMethod: ParametersEncodingDestination.QueryString = .init(items: .empty)
-            return Endpoint(httpMethod: .get, path: "", headers: nil, encodingMethod: encodingMethod)
-        }
-        
-        public static func == (lhs: HttpKit.DummyRxType<R, SS, RX>, rhs: HttpKit.DummyRxType<R, SS, RX>) -> Bool {
-            return lhs.endpoint == rhs.endpoint
-        }
-        
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine("DummyRxType")
-            hasher.combine(endpoint)
-        }
+    public var endpoint: Endpoint<Server> {
+        let encodingMethod: ParametersEncodingDestination.QueryString = .init(items: .empty)
+        return Endpoint(httpMethod: .get, path: "", headers: nil, encodingMethod: encodingMethod)
+    }
+    
+    public static func == (lhs: HttpKit.DummyRxType<R, SS, RX>, rhs: HttpKit.DummyRxType<R, SS, RX>) -> Bool {
+        return lhs.endpoint == rhs.endpoint
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine("DummyRxType")
+        hasher.combine(endpoint)
     }
 }

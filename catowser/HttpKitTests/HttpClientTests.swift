@@ -19,13 +19,13 @@ class HttpClientTests: XCTestCase {
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
     // swiftlint:disable:next force_unwrapping
     lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodHttpClient: HttpKit.Client<MockedGoodServer, MockedReachabilityAdaptee> = .init(server: goodServerMock,
-                                                                                                 jsonEncoder: goodJsonEncodingMock,
-                                                                                                 reachability: goodReachabilityMock)
+    lazy var goodHttpClient: RestClient<MockedGoodServer, MockedReachabilityAdaptee> = .init(server: goodServerMock,
+                                                                                             jsonEncoder: goodJsonEncodingMock,
+                                                                                             reachability: goodReachabilityMock)
 
     func testUnauthorizedRequest() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")
-        let closureWrapper: HttpKit.ClosureWrapper<MockedGoodEndpointResponse, MockedGoodServer> = .init({ result in
+        let closureWrapper: ClosureWrapper<MockedGoodEndpointResponse, MockedGoodServer> = .init({ result in
             switch result {
             case .failure(let error):
                 let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
@@ -37,8 +37,8 @@ class HttpClientTests: XCTestCase {
         }, goodEndpointMock)
         let badNetBackendMock: MockedHTTPAdapteeWithFail<MockedGoodEndpointResponse,
                                                          MockedGoodServer,
-                                                         HttpKit.RxFreeInterface<MockedGoodEndpointResponse,
-                                                                                 MockedGoodServer>> = .init(.closure(closureWrapper))
+                                                         RxFreeInterface<MockedGoodEndpointResponse,
+                                                                         MockedGoodServer>> = .init(.closure(closureWrapper))
         goodHttpClient.makeRxRequest(for: goodEndpointMock,
                                         withAccessToken: nil,
                                         transport: badNetBackendMock)

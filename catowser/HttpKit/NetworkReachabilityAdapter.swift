@@ -8,23 +8,21 @@
 
 import CoreHttpKit
 
-extension HttpKit {
-    // gryphon ignore
-    public enum NetworkReachabilityStatus {
-        /// It is unknown whether the network is reachable.
-        case unknown
-        /// The network is not reachable.
-        case notReachable
-        /// The network is reachable on the associated `ConnectionType`.
-        case reachable(ConnectionType)
+// gryphon ignore
+public enum NetworkReachabilityStatus {
+    /// It is unknown whether the network is reachable.
+    case unknown
+    /// The network is not reachable.
+    case notReachable
+    /// The network is reachable on the associated `ConnectionType`.
+    case reachable(ConnectionType)
 
-        /// Defines the various connection types detected by reachability flags.
-        public enum ConnectionType {
-            /// The connection type is either over Ethernet or WiFi.
-            case ethernetOrWiFi
-            /// The connection type is a cellular connection.
-            case cellular
-        }
+    /// Defines the various connection types detected by reachability flags.
+    public enum ConnectionType {
+        /// The connection type is either over Ethernet or WiFi.
+        case ethernetOrWiFi
+        /// The connection type is a cellular connection.
+        case cellular
     }
 }
 

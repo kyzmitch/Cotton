@@ -20,10 +20,10 @@ public protocol RestClientContext: AnyObject {
     associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
     
     typealias Observer = Signal<Response, HttpKit.HttpError>.Observer
-    typealias ObserverWrapper = HttpKit.RxObserverWrapper<Response, Server, Observer>
-    typealias HttpKitRxSubscriber = HttpKit.RxSubscriber<Response, Server, ObserverWrapper>
-    typealias HttpKitSubscriber = HttpKit.Subscriber<Response, Server>
-    typealias Client = HttpKit.Client<Server, ReachabilityAdapter>
+    typealias ObserverWrapper = RxObserverWrapper<Response, Server, Observer>
+    typealias HttpKitRxSubscriber = RxSubscriber<Response, Server, ObserverWrapper>
+    typealias HttpKitSubscriber = Sub<Response, Server>
+    typealias Client = RestClient<Server, ReachabilityAdapter>
     
     var client: Client { get }
     var rxSubscriber: HttpKitRxSubscriber { get }

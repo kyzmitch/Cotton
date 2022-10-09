@@ -10,9 +10,10 @@ import HttpKit
 import Combine
 import ReactiveSwift
 import CoreHttpKit
+import ReactiveHttpKit
 
-public typealias DDGoSuggestionsClient = HttpKit.Client<DuckDuckGoServer,
-                                                        AlamofireReachabilityAdaptee<DuckDuckGoServer>>
+public typealias DDGoSuggestionsClient = RestClient<DuckDuckGoServer,
+                                                    AlamofireReachabilityAdaptee<DuckDuckGoServer>>
 typealias DDGoSuggestionsEndpoint = Endpoint<DuckDuckGoServer>
 
 extension Endpoint where S == DuckDuckGoServer {
@@ -63,18 +64,18 @@ public struct DDGoSuggestionsResponse: ResponseType {
 }
 
 public typealias DDGoRxSignal = Signal<DDGoSuggestionsResponse, HttpKit.HttpError>.Observer
-public typealias DDGoRxInterface = HttpKit.RxObserverWrapper<DDGoSuggestionsResponse,
-                                                             DuckDuckGoServer,
-                                                             DDGoRxSignal>
-public typealias DDGoSuggestionsClientRxSubscriber = HttpKit.RxSubscriber<DDGoSuggestionsResponse,
-                                                                          DuckDuckGoServer,
-                                                                          DDGoRxInterface>
+public typealias DDGoRxInterface = RxObserverWrapper<DDGoSuggestionsResponse,
+                                                     DuckDuckGoServer,
+                                                     DDGoRxSignal>
+public typealias DDGoSuggestionsClientRxSubscriber = RxSubscriber<DDGoSuggestionsResponse,
+                                                                  DuckDuckGoServer,
+                                                                  DDGoRxInterface>
 public typealias DDGoSuggestionsProducer = SignalProducer<DDGoSuggestionsResponse, HttpKit.HttpError>
-public typealias DDGoSuggestionsClientSubscriber = HttpKit.Subscriber<DDGoSuggestionsResponse,
-                                                                      DuckDuckGoServer>
+public typealias DDGoSuggestionsClientSubscriber = Sub<DDGoSuggestionsResponse,
+                                                       DuckDuckGoServer>
 public typealias DDGoSuggestionsPublisher = AnyPublisher<DDGoSuggestionsResponse, HttpKit.HttpError>
 
-extension HttpKit.Client where Server == DuckDuckGoServer {
+extension RestClient where Server == DuckDuckGoServer {
     public func duckDuckGoSuggestions(for text: String,
                                       subscriber: DDGoSuggestionsClientRxSubscriber) -> DDGoSuggestionsProducer {
         let endpoint: DDGoSuggestionsEndpoint

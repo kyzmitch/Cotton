@@ -10,7 +10,7 @@
 
 import HttpKit
 
-extension HttpKit.Client where Server == GoogleDnsServer {
+extension RestClient where Server == GoogleDnsServer {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func aaGetIPaddress(ofDomain domainName: String) async throws -> GoogleDNSOverJSONResponse {
