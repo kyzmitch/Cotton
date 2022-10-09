@@ -66,7 +66,7 @@ enum WebViewModelState {
             let url = uRLRequest.url!
             // swiftlint:disable:next force_unwrapping
             return url.kitHost!
-        case .finishingLoading(let request, _, _, _, _, let urlData):
+        case .finishingLoading(_, _, _, _, _, let urlData):
             return urlData.host
         case .viewing(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
@@ -195,7 +195,7 @@ enum WebViewModelState {
             // swiftlint:disable:next force_unwrapping
             let uRL = uRLRequest.url!
             return .url(uRL)
-        case .finishingLoading(let uRLRequest, _, _, _, _, let urlData):
+        case .finishingLoading(_, _, _, _, _, let urlData):
             return urlData
         case .viewing(let uRLRequest, _):
             // swiftlint:disable:next force_unwrapping
@@ -261,8 +261,13 @@ extension WebViewModelState: CustomStringConvertible {
 #endif
         case .viewing(_, _):
             return "viewing"
-        case .updatingJS(_, _, _):
+        case .updatingJS(let request, let settings, let jsSubject):
+#if DEBUG
+            // swiftlint:disable:next force_unwrapping
+            return "updatingJS (\(request.url!.absoluteString), \(settings.description))"
+#else
             return "updatingJS"
+#endif
         }
     }
 }
@@ -290,6 +295,9 @@ extension WebViewModelState: Equatable {
         case (.resolvingDN(let lData, let lSettings),
               .resolvingDN(let rData, let rSettings)):
             return lData == rData && lSettings == rSettings
+        case (.updatingJS(let lRequest, let lSettings, let lSubject),
+              .updatingJS(let rRequest, let rSettings, let rSubject)):
+            return lRequest == rRequest && lSettings == rSettings /* && lSubject === rSubject */
         default:
             return false
         }

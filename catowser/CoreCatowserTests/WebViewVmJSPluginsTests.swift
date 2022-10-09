@@ -94,4 +94,55 @@ final class WebViewVmJSPluginsTests: XCTestCase {
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
         XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings))
     }
+    
+    func testChangeJSstate() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, jsWebViewContext)
+        vm.load()
+        // swiftlint:disable:next force_unwrapping
+        let urlRequestV1 = URLRequest(url: urlV1!)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV1: URLInfo = .init(urlV1!)!
+        let urlDataV1: URLData = .info(urlInfoV1)
+        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlDataV1))
+        // swiftlint:disable:next force_unwrapping
+        let navActionV1 = MockedNavAction(urlV1!, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings))
+        
+        // JS was already enabled
+        
+        vm.setJavaScript(jsSubject, true)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings))
+        
+        // User disables JS
+        
+        vm.setJavaScript(jsSubject, false)
+        let expectedSettingsV1: Site.Settings = settings.withChanged(javaScriptEnabled: false)
+        let expectedStateV1: WebViewModelState = .updatingJS(urlRequestV1, expectedSettingsV1, jsSubject)
+        XCTAssertEqual(vm.state, expectedStateV1)
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.state, .viewing(urlRequestV1, expectedSettingsV1))
+        
+        // User enables JS back
+        vm.setJavaScript(jsSubject, true)
+        let expectedSettingsV2: Site.Settings = expectedSettingsV1.withChanged(javaScriptEnabled: true)
+        let expectedStateV2: WebViewModelState = .updatingJS(urlRequestV1, expectedSettingsV2, jsSubject)
+        XCTAssertEqual(vm.state, expectedStateV2)
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.state, .viewing(urlRequestV1, expectedSettingsV2))
+    }
 }
