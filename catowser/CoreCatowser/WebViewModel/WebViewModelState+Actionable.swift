@@ -92,6 +92,10 @@ extension WebViewModelState: Actionable {
             }
         case (.updatingJS(let request, let settings, _),
               .finishLoading):
+            // No need to use middle `finishingLoading` state because
+            // we can be sure that finalURL during JS update web view reload
+            // stays the same, because `.changeJavaScript` action is very similar to `.reload`.
+            // Also, we can ignore `jsEnabled` value from `.finishLoading` action for this case.
             nextState = .viewing(request, settings)
         default:
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")

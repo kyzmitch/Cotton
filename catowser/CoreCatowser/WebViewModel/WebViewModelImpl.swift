@@ -136,9 +136,11 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     public func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
         /**
          you must inject/re-enable plugins even if web view loaded page from same Host
-         and even if ip address is used instead of domain name
+         and even if ip address is used instead of domain name.
+         No need to care about value from `context.isJavaScriptEnabled()`
+         Maybe it is not needed at all.
          */
-        let jsEnabled = context.isJavaScriptEnabled() || settings.isJSEnabled
+        let jsEnabled = settings.isJSEnabled
         do {
             // url can be different from initial at least during navigation back and forward actions
             // so that, it has to be passed to update current url
