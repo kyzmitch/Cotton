@@ -56,19 +56,19 @@ final class HttpEnvironment {
     }
 }
 
-extension HttpKit.Client where Server == GoogleDnsServer {
+extension RestClient where Server == GoogleDnsServer {
     static var shared: GoogleDnsClient {
         return HttpEnvironment.shared.dnsClient
     }
 }
 
-extension HttpKit.Client where Server == GoogleServer {
+extension RestClient where Server == GoogleServer {
     static var shared: GoogleSuggestionsClient {
         return HttpEnvironment.shared.googleClient
     }
 }
 
-extension HttpKit.Client where Server == DuckDuckGoServer {
+extension RestClient where Server == DuckDuckGoServer {
     static var shared: DDGoSuggestionsClient {
         return HttpEnvironment.shared.duckduckgoClient
     }

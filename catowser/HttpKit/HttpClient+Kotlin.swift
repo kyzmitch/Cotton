@@ -8,7 +8,7 @@
 
 import CoreHttpKit
 
-extension HttpKit.Client {
+extension RestClient {
     public func makeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                withAccessToken accessToken: String?,
                                                transport adapter: B) where B.Response == T, B.Server == Server {

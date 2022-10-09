@@ -13,11 +13,11 @@ import CoreHttpKit
 /// This typealias could be an issue, because the same defined in ReactiveSwift HttpClient+RxSwift.swift
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
 /// Shorter name
-public typealias RxSub<R, S, O: RxInterface> = HttpKit.RxSubscriber<R, S, O> where O.Observer.Response == R, O.Server == S
+public typealias RxSub<R, S, O: RxInterface> = RxSubscriber<R, S, O> where O.Observer.Response == R, O.Server == S
 /// Shorter name for the subscriber type without dependencies
-public typealias Sub<R: ResponseType, S: ServerDescription> = HttpKit.Subscriber<R, S>
+public typealias Sub<R: ResponseType, S: ServerDescription> = Subscriber<R, S>
 
-extension HttpKit.Client {
+extension RestClient {
     public func makePublicRequest<T, B: HTTPRxAdapter>(for endpoint: Endpoint<Server>,
                                                        transport adapter: B)
     where B.Response == T, B.Server == Server {

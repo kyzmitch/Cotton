@@ -14,17 +14,17 @@ import ReactiveSwift
 import Combine
 #endif
 
-public typealias GoogleSuggestionsClient = HttpKit.Client<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
+public typealias GoogleSuggestionsClient = RestClient<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
 typealias GSearchEndpoint = Endpoint<GoogleServer>
 public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpKit.HttpError>.Observer
-public typealias GSearchRxInterface = HttpKit.RxObserverWrapper<GSearchSuggestionsResponse,
-                                                                    GoogleServer,
-                                                                    GSearchRxSignal>
-public typealias GSearchClientRxSubscriber = HttpKit.RxSubscriber<GSearchSuggestionsResponse,
-                                                                  GoogleServer,
-                                                                  GSearchRxInterface>
-public typealias GSearchClientSubscriber = HttpKit.Subscriber<GSearchSuggestionsResponse,
-                                                              GoogleServer>
+public typealias GSearchRxInterface = RxObserverWrapper<GSearchSuggestionsResponse,
+                                                        GoogleServer,
+                                                        GSearchRxSignal>
+public typealias GSearchClientRxSubscriber = RxSubscriber<GSearchSuggestionsResponse,
+                                                          GoogleServer,
+                                                          GSearchRxInterface>
+public typealias GSearchClientSubscriber = Sub<GSearchSuggestionsResponse,
+                                                      GoogleServer>
 public typealias GSearchProducer = SignalProducer<GSearchSuggestionsResponse, HttpKit.HttpError>
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias CGSearchPublisher = AnyPublisher<GSearchSuggestionsResponse, HttpKit.HttpError>
@@ -81,7 +81,7 @@ public final class GSearchSuggestionsResponse: ResponseType {
     }
 }
 
-extension HttpKit.Client where Server == GoogleServer {
+extension RestClient where Server == GoogleServer {
     public func googleSearchSuggestions(for text: String, _ subscriber: GSearchClientRxSubscriber) -> GSearchProducer {
         let endpoint: GSearchEndpoint
         do {

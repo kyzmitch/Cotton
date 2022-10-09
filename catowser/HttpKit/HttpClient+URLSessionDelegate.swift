@@ -8,8 +8,6 @@
 
 import Foundation
 
-extension HttpKit {
-    class HttpClientUrlSessionDelegate: NSObject, URLSessionDelegate {
-        // https://github.com/kyzmitch/Cotton/issues/17
-    }
+class HttpClientUrlSessionDelegate: NSObject, URLSessionDelegate {
+    // https://github.com/kyzmitch/Cotton/issues/17
 }

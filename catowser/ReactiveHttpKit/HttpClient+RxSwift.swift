@@ -14,7 +14,7 @@ import CoreHttpKit
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpKit.HttpError>
 public typealias RxVoidProducer = SignalProducer<Void, HttpKit.HttpError>
 
-extension HttpKit.Client {
+extension RestClient {
     public func rxMakeRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint<Server>,
                                                        withAccessToken accessToken: String?,
                                                        transport adapter: B,

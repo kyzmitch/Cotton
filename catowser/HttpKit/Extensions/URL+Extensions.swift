@@ -13,24 +13,22 @@ import Combine
 import Network
 import CoreHttpKit
 
-extension HttpKit {
-    public enum DnsError: LocalizedError {
-        case zombieSelf
-        case httpError(HttpKit.HttpError)
-        case notHttpScheme
-        case noHost
-        case urlComponentsFail
-        case failToGetUrlFromComponents
-        case urlHostReplaceFail
-        case hostIsNotIpAddress
-        
-        public var localizedDescription: String {
-            switch self {
-            case .httpError(let httpErr):
-                return "dns err: \(httpErr.localizedDescription)"
-            default:
-                return "dns err: \(self)"
-            }
+public enum DnsError: LocalizedError {
+    case zombieSelf
+    case httpError(HttpKit.HttpError)
+    case notHttpScheme
+    case noHost
+    case urlComponentsFail
+    case failToGetUrlFromComponents
+    case urlHostReplaceFail
+    case hostIsNotIpAddress
+    
+    public var localizedDescription: String {
+        switch self {
+        case .httpError(let httpErr):
+            return "dns err: \(httpErr.localizedDescription)"
+        default:
+            return "dns err: \(self)"
         }
     }
 }
