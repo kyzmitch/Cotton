@@ -124,6 +124,8 @@ final class WebViewController: BaseViewController,
             recreateWebView(forceRecreate: true)
         case .reattachViewObservers:
             reattachWebViewObservers()
+        case .ghostedLoad:
+            break
         }
     }
     
@@ -333,3 +335,5 @@ extension WKNavigationType: CustomDebugStringConvertible {
         }
     }
 }
+
+extension WKNavigationAction: NavigationActionable {}

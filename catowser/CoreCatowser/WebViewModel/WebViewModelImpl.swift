@@ -43,8 +43,8 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /// Domain name resolver with specific strategy
     let dnsResolver: DNSResolver<Strategy>
     
-    /// view model state
-    private var state: WebViewModelState {
+    /// view model state (not private for unit tests only)
+    var state: WebViewModelState {
         didSet {
             do {
                 try onStateChange(state)
@@ -69,7 +69,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         settings.webViewConfig
     }
     /// web view model context to access plugins and other dependencies
-    let context: WebViewContext
+    let context: any WebViewContext
     
     private var dnsRequestSubsrciption: Disposable?
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
@@ -90,7 +90,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /**
      Constructs web view model
      */
-    public init(_ strategy: Strategy, _ site: Site, _ context: WebViewContext) {
+    public init(_ strategy: Strategy, _ site: Site, _ context: any WebViewContext) {
         dnsResolver = .init(strategy)
         state = .initialized(site)
         self.context = context
@@ -136,51 +136,42 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     public func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
         /**
          you must inject/re-enable plugins even if web view loaded page from same Host
-         and even if ip address is used instead of domain name
+         and even if ip address is used instead of domain name.
+         No need to care about value from `context.isJavaScriptEnabled()`
+         Maybe it is not needed at all.
          */
-        let jsEnabled = context.isJavaScriptEnabled()
+        let jsEnabled = settings.isJSEnabled
         do {
+            // url can be different from initial at least during navigation back and forward actions
+            // so that, it has to be passed to update current url
             state = try state.transition(on: .finishLoading(newURL, subject, jsEnabled))
         } catch {
             print("\(#function) - failed to replace current tab: " + error.localizedDescription)
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
-    public func decidePolicy(_ navigationAction: WKNavigationAction,
-                      _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    // swiftlint:disable:next cyclomatic_complexity
+    public func decidePolicy(_ navigationAction: NavigationActionable,
+                             _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard navigationAction.navigationType.needsHandling else {
+            print("navigationType: ignored '\(navigationAction.navigationType)'")
+            decisionHandler(.allow)
+            return
+        }
+        print("navigationType: need to handle '\(navigationAction.navigationType)'")
         guard let url = navigationAction.request.url else {
-            decisionHandler(.cancel)
+            decisionHandler(.allow)
             return
         }
-        
-        if let scheme = url.scheme {
-            switch scheme {
-            case .tel, .facetime, .facetimeAudio, .mailto:
-                UIApplication.shared.open(url, options: [:])
-                decisionHandler(.cancel)
-                return
-            default:
-                break
-            }
-        }
-
-        guard !url.isAppleMapsURL else {
+        if let policy = isSystemAppRedirectNeeded(url) {
             UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-
-        guard !url.isStoreURL else {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-        
-        if let policy = isNativeAppSchemeRedirectNeeded(url) {
             decisionHandler(policy)
             return
-        } // continue execution if it is not the case
+        }
+        if let policy = isNativeAppRedirectNeeded(url) {
+            decisionHandler(policy)
+            return
+        }
         
         guard let scheme = url.scheme else {
             decisionHandler(.allow)
@@ -202,17 +193,11 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
                 decisionHandler(.allow)
                 return
             }
-            guard case .viewing = state else {
-                // Always allow navigation for internal iframes
-                // when main url is already handled
-                decisionHandler(.allow)
-                return
-            }
-            
-            // Cancelling navigation because it is a different URL.
-            // Need to handle DoH, plugins and vm state
-            decisionHandler(.cancel)
             do {
+                // Cancelling navigation because it is a different URL.
+                // Need to handle DoH, plugins and vm state.
+                // It also applies for go back and forward navigation actions.
+                decisionHandler(.cancel)
                 state = try state.transition(on: .loadNextLink(url))
             } catch {
                 print("Fail to load next URL due to error: \(error.localizedDescription)")
@@ -240,7 +225,7 @@ private extension WebViewModelImpl {
         case .initialized:
             updateLoadingState(.idle)
         case .pendingPlugins:
-            let pluginsProgram: JSPluginsProgram? = settings.canLoadPlugins ? context.pluginsProgram : nil
+            let pluginsProgram: (any JSPluginsProgram)? = settings.canLoadPlugins ? context.pluginsProgram : nil
             state = try state.transition(on: .injectPlugins(pluginsProgram))
         case .injectingPlugins(let pluginsProgram, let urlData, let settings):
             let canInject = settings.canLoadPlugins
@@ -259,23 +244,20 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
-        case .creatingRequest(let url, _):
-            let request = URLRequest(url: url)
+        case .creatingRequest(let urlData, _):
+            let requestedURL: URL = urlData.hasIPHost ? urlData.urlWithResolvedDomainName : urlData.platformURL
+            let request = URLRequest(url: requestedURL)
             state = try state.transition(on: .loadWebView(request))
-        case .updatingWebView(let request, _):
+        case .updatingWebView(let request, _, _):
             updateLoadingState(.load(request))
-        case .waitingForNavigation:
-            break
-        case .finishingLoading(let request, let settings, let newURL, let subject, let enable):
+        case .waitingForNavigation(let request, _):
+            updateLoadingState(.ghostedLoad(request))
+        case .finishingLoading(_, let settings, let newURL, let subject, let enable, let urlData):
             // swiftlint:disable:next force_unwrapping
-            let url = request.url!
-            // swiftlint:disable:next force_unwrapping
-            let info = URLInfo(url)!
-            // swiftlint:disable:next force_unwrapping
-            let updatedInfo = info.withSimilar(newURL)!
+            let updatedInfo = urlData.info.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
-            context.pluginsProgram.enable(on: subject, context: info.host(), enable: enable)
+            context.pluginsProgram.enable(on: subject, context: urlData.info.host(), jsEnabled: enable)
             try context.updateTabContent(site)
             state = try state.transition(on: .startView)
         case .viewing:
@@ -285,7 +267,7 @@ private extension WebViewModelImpl {
             let url = request.url!
             // swiftlint:disable:next force_unwrapping
             let host = url.kitHost!
-            context.pluginsProgram.enable(on: subject, context: host, enable: settings.isJSEnabled)
+            context.pluginsProgram.enable(on: subject, context: host, jsEnabled: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             updateLoadingState(.load(request))
@@ -297,7 +279,7 @@ private extension WebViewModelImpl {
         // Double checking even if it was checked before
         // to not perform unnecessary network requests
         guard !urlData.hasIPHost else {
-            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.urlWithResolvedDomainName))
+            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.info.ipAddressString))
             guard let nextState = possibleState else {
                 assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                 return
@@ -317,7 +299,7 @@ private extension WebViewModelImpl {
                     }
                     switch result {
                     case .success(let finalURL):
-                        let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL))
+                        let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
                         guard let nextState = possibleState else {
                             assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                             return
@@ -341,7 +323,7 @@ private extension WebViewModelImpl {
                     guard let self = self else {
                         return
                     }
-                    let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL))
+                    let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
                     guard let nextState = possibleState else {
                         assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                         return
@@ -383,7 +365,7 @@ private extension WebViewModelImpl {
     
     @MainActor
     func updateState(_ finalURL: URL) async {
-        let possibleState = try? state.transition(on: .createRequestAnyway(finalURL))
+        let possibleState = try? state.transition(on: .createRequestAnyway(finalURL.host))
         guard let nextState = possibleState else {
             assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
             return
@@ -391,7 +373,7 @@ private extension WebViewModelImpl {
         state = nextState
     }
     
-    func isNativeAppSchemeRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
+    func isNativeAppRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
         let isSameHost = state.sameHost(with: url)
         guard isSameHost && nativeAppDomainNameString != nil else {
             return nil
@@ -415,6 +397,22 @@ private extension WebViewModelImpl {
             webPageState = state
         }
     }
+    
+    func isSystemAppRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
+        if let scheme = url.scheme {
+            switch scheme {
+            case .tel, .facetime, .facetimeAudio, .mailto:
+                return WKNavigationActionPolicy.cancel
+            default:
+                break
+            }
+        }
+
+        if url.isAppleMapsURL || url.isStoreURL {
+            return WKNavigationActionPolicy.cancel
+        }
+        return nil
+    }
 }
 
 private extension String {
@@ -425,4 +423,32 @@ private extension String {
     static let http = "http"
     static let https = "https"
     static let about = "about"
+}
+
+extension WKNavigationType {
+    /// Tells if specific navigation need to be handled specifically
+    /// E.g. back and forward navigations should be bypassed
+    /// because anyway they're handled by finishLoading.
+    /// Link activation navigations need to be handled to remeber new URL.
+    /// Initial navigation during init has `other` type, it can be ignored as well.
+    var needsHandling: Bool {
+        switch self {
+        case .linkActivated:
+            return true
+        case .formSubmitted:
+            return false
+        case .backForward:
+            return false
+        case .reload:
+            return false
+        case .formResubmitted:
+            return false
+        case .other:
+            return false
+        @unknown default:
+            return false
+        }
+    }
+    
+    // swiftlint:disable:next file_length
 }

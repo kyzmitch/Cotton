@@ -76,7 +76,7 @@ class URLInfo constructor(
 
     /**
      * When ip address is present, this property could return the same initial URL, but
-     * instead of a domain name it will give the ip address.
+     * instead of a domain name it will give the ip address. Also contains a port number.
      *
      * Returning the original URL when ip address is not present.
      * */
@@ -87,7 +87,31 @@ class URLInfo constructor(
         return scheme.stringValue + "://" + ipAddress + ":" + scheme.port + "/" + completePath
     }
 
+    /**
+     * When ip address is present, this property could return the same initial URL, but
+     * instead of a domain name it will give the ip address.
+     *
+     * Returning the original URL when ip address is not present.
+     * */
+    fun urlWithIPaddressWithoutPort(): String {
+        if (ipAddress == null) {
+            return url
+        }
+        return scheme.stringValue + "://" + ipAddress + "/" + completePath
+    }
+
     fun host(): Host {
         return Host(domainName)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        other as URLInfo
+        if (domainName != other.domainName) return false
+        if (ipAddress != other.ipAddress) return false
+        if (scheme != other.scheme) return false
+        if (completePath != other.completePath) return false
+        if (query != other.query) return false
+        return true
     }
 }

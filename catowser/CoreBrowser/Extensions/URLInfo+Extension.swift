@@ -66,6 +66,10 @@ public extension URLInfo {
     }
     
     convenience init?(_ url: URL) {
+        guard !url.hasIPHost else {
+            // Need to have domain name to create url info
+            return nil
+        }
         guard let hostString = url.host,
               let schemeString = url.scheme,
               let domain = try? DomainName(input: hostString) else {

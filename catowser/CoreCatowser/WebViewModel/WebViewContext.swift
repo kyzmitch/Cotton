@@ -12,10 +12,15 @@ import CoreHttpKit
 import FeaturesFlagsKit
 import CoreBrowser
 
+/**
+ For more info about usage any keyword see:
+ https://swiftrocks.com/whats-any-understanding-type-erasure-in-swift
+ */
+
 /// web view context should carry some data or dependencies which can't be stored as a state and always are present
 public protocol WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
-    var pluginsProgram: JSPluginsProgram { get }
+    var pluginsProgram: any JSPluginsProgram { get }
     /// Hides app specific implementation for host check
     func nativeApp(for host: Host) -> String?
     /// Hides app specific feature for JS value

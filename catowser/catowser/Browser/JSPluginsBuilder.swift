@@ -13,12 +13,13 @@ import CoreCatowser
 /**
  Creates the plugins by connecting them with observers (delegates).
  */
-final class JSPluginsBuilder {
-    private let _plugins: [JavaScriptPlugin]
+final class JSPluginsBuilder: JSPluginsSource {
+    typealias Program = JSPluginsProgramImpl
+    private let _plugins: [any JavaScriptPlugin]
 
     init(baseDelegate: BasePluginContentDelegate, instagramDelegate: InstagramContentDelegate) {
 
-        var array = [JavaScriptPlugin]()
+        var array = [any JavaScriptPlugin]()
         if let basePlugin = BasePlugin(delegate: .base(baseDelegate)) {
             array.append(basePlugin)
         }
@@ -28,10 +29,8 @@ final class JSPluginsBuilder {
         
         _plugins = array
     }
-}
-
-extension JSPluginsBuilder: JSPluginsSource {
-    var pluginsProgram: JSPluginsProgram {
-        JSPluginsProgram(_plugins)
+    
+    var pluginsProgram: Program {
+        JSPluginsProgramImpl(_plugins)
     }
 }

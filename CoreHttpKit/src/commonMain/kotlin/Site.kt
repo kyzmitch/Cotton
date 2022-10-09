@@ -56,6 +56,15 @@ class Site(
         fun withChanged(javaScriptEnabled: Boolean): Settings {
             return Settings(isPrivate, blockPopups, javaScriptEnabled, canLoadPlugins)
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            other as Settings
+            return isPrivate == other.isPrivate
+                    && blockPopups == other.blockPopups
+                    && isJSEnabled == other.isJSEnabled
+                    && canLoadPlugins == other.canLoadPlugins
+        }
     }
 }
 
