@@ -28,14 +28,14 @@ final class MockedDNSStrategy: DNSResolvingStrategy {
         ipAddress = "192.168.0.1"
     }
     
-    public func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, HttpKit.DnsError> {
+    public func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, DnsError> {
         // swiftlint:disable:next force_try
         let resolvedURL = try! originalURL.updatedHost(with: ipAddress)
         return SignalProducer(value: resolvedURL)
     }
     
-    public func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, HttpKit.DnsError> {
-        let future: Future<URL, HttpKit.DnsError> = .init { [weak self] (promise) in
+    public func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, DnsError> {
+        let future: Future<URL, DnsError> = .init { [weak self] (promise) in
             guard let self = self else {
                 promise(.failure(.zombieSelf))
                 return

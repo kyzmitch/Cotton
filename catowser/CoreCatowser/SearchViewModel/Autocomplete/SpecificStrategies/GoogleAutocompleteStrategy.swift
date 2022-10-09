@@ -39,12 +39,12 @@ public final class GoogleAutocompleteStrategy: SearchAutocompleteStrategy {
         self.context = context
     }
     
-    public func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpKit.HttpError> {
+    public func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpError> {
         context.client.googleSearchSuggestions(for: text, context.rxSubscriber)
             .map { SearchSuggestionsResponse($0) }
     }
     
-    public func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpKit.HttpError> {
+    public func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpError> {
         context.client.cGoogleSearchSuggestions(for: text, context.subscriber)
             .map { SearchSuggestionsResponse($0) }
             .eraseToAnyPublisher()

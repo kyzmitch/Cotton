@@ -39,11 +39,11 @@ public final class GoogleDNSStrategy: DNSResolvingStrategy {
         self.context = context
     }
     
-    public func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, HttpKit.DnsError> {
+    public func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, DnsError> {
         context.client.rxResolvedDomainName(in: originalURL, context.rxSubscriber)
     }
     
-    public func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, HttpKit.DnsError> {
+    public func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, DnsError> {
         context.client.resolvedDomainName(in: originalURL, context.subscriber)
             .eraseToAnyPublisher()
     }

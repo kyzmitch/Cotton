@@ -49,7 +49,7 @@ extension RestClient {
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
         guard let httpRequest = requestInfo.urlRequest else {
-            let result: Result<Void, HttpKit.HttpError> = .failure(.failedKotlinRequestConstruct)
+            let result: Result<Void, HttpError> = .failure(.failedKotlinRequestConstruct)
             adapter.wrapperHandler()(result)
             return
         }

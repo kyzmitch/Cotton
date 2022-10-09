@@ -9,8 +9,8 @@
 import ReactiveSwift
 import HttpKit
 
-public typealias HostProducer = SignalProducer<String, HttpKit.DnsError>
-public typealias ResolvedURLProducer = SignalProducer<URL, HttpKit.DnsError>
+public typealias HostProducer = SignalProducer<String, DnsError>
+public typealias ResolvedURLProducer = SignalProducer<URL, DnsError>
 
 extension URL {
     /// Not required to be public

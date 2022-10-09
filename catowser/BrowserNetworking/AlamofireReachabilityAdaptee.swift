@@ -34,7 +34,7 @@ public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkRe
 }
 
 extension Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus.ConnectionType {
-    var httpKitValue: HttpKit.NetworkReachabilityStatus.ConnectionType {
+    var httpKitValue: NetworkReachabilityStatus.ConnectionType {
         switch self {
         case .ethernetOrWiFi:
             return .ethernetOrWiFi
@@ -45,7 +45,7 @@ extension Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus.Connect
 }
 
 extension Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus {
-    var httpKitValue: HttpKit.NetworkReachabilityStatus {
+    var httpKitValue: NetworkReachabilityStatus {
         switch self {
         case .unknown:
             return .unknown

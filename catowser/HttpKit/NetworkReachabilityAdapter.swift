@@ -29,7 +29,7 @@ public enum NetworkReachabilityStatus {
 // gryphon ignore
 public protocol NetworkReachabilityAdapter: AnyObject {
     associatedtype Server: ServerDescription
-    typealias Listener = (HttpKit.NetworkReachabilityStatus) -> Void
+    typealias Listener = (NetworkReachabilityStatus) -> Void
     init?(server: Server)
     @discardableResult
     func startListening(onQueue queue: DispatchQueue,

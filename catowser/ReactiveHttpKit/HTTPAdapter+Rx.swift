@@ -11,7 +11,7 @@ import ReactiveSwift
 import CoreHttpKit
 
 extension HTTPRxAdapter {
-    /* mutating */ func transferToRxState(_ observer: Signal<Response, HttpKit.HttpError>.Observer,
+    /* mutating */ func transferToRxState(_ observer: Signal<Response, HttpError>.Observer,
                                           _ lifetime: Lifetime,
                                           _ endpoint: Endpoint<Server>) {
         if case .waitsForRxObserver = handlerType {
@@ -24,7 +24,7 @@ extension HTTPRxAdapter {
 }
 
 extension HTTPRxVoidAdapter {
-    /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpKit.HttpError>.Observer,
+    /* mutating */ func transferToRxState(_ observer: Signal<Void, HttpError>.Observer,
                                           _ lifetime: Lifetime,
                                           _ endpoint: Endpoint<Server>) {
         if case .waitsForRxObserver = handlerType {

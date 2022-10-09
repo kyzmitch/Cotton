@@ -14,7 +14,7 @@ import CoreHttpKit
 // gryphon ignore
 public protocol RxAnyVoidObserver {
     func newSend(value: Void)
-    func newSend(error: HttpKit.HttpError)
+    func newSend(error: HttpError)
     func newComplete()
 }
 

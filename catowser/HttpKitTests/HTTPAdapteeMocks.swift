@@ -16,22 +16,22 @@ final class MockedHTTPAdapteeWithFail<R, S, RX: RxInterface>: HTTPRxAdapter wher
     typealias Server = S
     typealias ObserverWrapper = RX
     
-    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>
+    var handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, ObserverWrapper>) {
+    init(_ handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
     
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
-            let result: Result<Response, HttpKit.HttpError> = .failure(.httpFailure(error: nsError))
+            let result: Result<Response, HttpError> = .failure(.httpFailure(error: nsError))
             self?.wrapperHandler()(result)
         }
     }
     
-    func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void {
-        let closure = { [weak self] (result: Result<Response, HttpKit.HttpError>) in
+    func wrapperHandler() -> (Result<Response, HttpError>) -> Void {
+        let closure = { [weak self] (result: Result<Response, HttpError>) in
             guard let self = self else {
                 return
             }
@@ -57,7 +57,7 @@ final class MockedHTTPAdapteeWithFail<R, S, RX: RxInterface>: HTTPRxAdapter wher
         return closure
     }
     
-    func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+    func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
         
     }

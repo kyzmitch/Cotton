@@ -15,8 +15,8 @@ private extension String {
     static let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
 }
 
-typealias WebSearchSuggestionsProducer = SignalProducer<[String], HttpKit.HttpError>
-typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpKit.HttpError>
+typealias WebSearchSuggestionsProducer = SignalProducer<[String], HttpError>
+typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpError>
 
 /// Web search suggestions (search autocomplete) facade
 final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteStrategy {
@@ -49,7 +49,7 @@ final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteSt
         let source = Just<String>(query)
         return source
             .delay(for: 0.5, scheduler: waitingQueue)
-            .mapError({ (_) -> HttpKit.HttpError in
+            .mapError({ (_) -> HttpError in
                 // workaround to be able to compile case when `Just` has no error type for Failure
                 // but it is required to be able to use `flatMap` in next call
                 // another option is to use custom publisher which supports non Never Failure type
@@ -57,7 +57,7 @@ final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteSt
             })
             .flatMap({ [weak self] _ -> WebSearchSuggestionsPublisher in
                 guard let self = self else {
-                    typealias SuggestionsResult = Result<[String], HttpKit.HttpError>
+                    typealias SuggestionsResult = Result<[String], HttpError>
                     let errorResult: SuggestionsResult = .failure(.zombieSelf)
                     return errorResult.publisher.eraseToAnyPublisher()
                 }

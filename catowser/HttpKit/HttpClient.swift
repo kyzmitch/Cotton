@@ -15,7 +15,7 @@ fileprivate extension String {
     static let threadName = "Client"
 }
 
-public typealias HttpTypedResult<T> = Result<T, HttpKit.HttpError>
+public typealias HttpTypedResult<T> = Result<T, HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
 public class RestClient<Server, R: NetworkReachabilityAdapter> where R.Server == Server {

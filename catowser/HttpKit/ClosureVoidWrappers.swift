@@ -13,11 +13,11 @@ import CoreHttpKit
 
 // gryphon ignore
 public class ClosureVoidWrapper<Server: ServerDescription>: Hashable {
-    public var closure: (Result<Void, HttpKit.HttpError>) -> Void
+    public var closure: (Result<Void, HttpError>) -> Void
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     let endpoint: Endpoint<Server>
     
-    public init(_ closure: @escaping (Result<Void, HttpKit.HttpError>) -> Void,
+    public init(_ closure: @escaping (Result<Void, HttpError>) -> Void,
                 _ endpoint: Endpoint<Server>) {
         self.closure = closure
         self.endpoint = endpoint
@@ -39,11 +39,11 @@ public class ClosureVoidWrapper<Server: ServerDescription>: Hashable {
 
 // gryphon ignore
 public class CombinePromiseVoidWrapper<Server: ServerDescription>: Hashable {
-    public var promise: Future<Void, HttpKit.HttpError>.Promise
+    public var promise: Future<Void, HttpError>.Promise
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     let endpoint: Endpoint<Server>
     
-    public init(_ promise: @escaping Future<Void, HttpKit.HttpError>.Promise,
+    public init(_ promise: @escaping Future<Void, HttpError>.Promise,
                 _ endpoint: Endpoint<Server>) {
         self.promise = promise
         self.endpoint = endpoint

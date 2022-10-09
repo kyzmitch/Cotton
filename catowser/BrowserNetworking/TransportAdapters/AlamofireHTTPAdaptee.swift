@@ -19,14 +19,14 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
     typealias Response = R
     typealias Server = S
     
-    var handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>
+    var handlerType: ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>
     
-    init(_ handlerType: HttpKit.ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>) {
+    init(_ handlerType: ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>) {
         self.handlerType = handlerType
     }
     
-    func wrapperHandler() -> (Result<Response, HttpKit.HttpError>) -> Void {
-        let closure = { [weak self] (result: Result<Response, HttpKit.HttpError>) in
+    func wrapperHandler() -> (Result<Response, HttpError>) -> Void {
+        let closure = { [weak self] (result: Result<Response, HttpError>) in
             guard let self = self else {
                 return
             }
@@ -54,7 +54,7 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
                                queue: .main,
                                decoder: JSONDecoder(),
                                completionHandler: { [weak self] (response) in
-                let result: Result<Response, HttpKit.HttpError>
+                let result: Result<Response, HttpError>
                 switch response.result {
                 case .success(let value):
                     result = .success(value)
@@ -73,10 +73,10 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
         }
     }
     
-    func transferToCombineState(_ promise: @escaping Future<Response, HttpKit.HttpError>.Promise,
+    func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
-            let promiseWrapper: HttpKit.CombinePromiseWrapper<Response, Server> = .init(promise, endpoint)
+            let promiseWrapper: CombinePromiseWrapper<Response, Server> = .init(promise, endpoint)
             handlerType = .combine(promiseWrapper)
         }
     }

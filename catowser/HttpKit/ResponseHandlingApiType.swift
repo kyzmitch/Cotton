@@ -15,7 +15,7 @@ import CoreHttpKit
 public protocol RxAnyObserver {
     associatedtype Response: ResponseType
     func newSend(value: Response)
-    func newSend(error: HttpKit.HttpError)
+    func newSend(error: HttpError)
     func newComplete()
 }
 
@@ -61,7 +61,7 @@ public enum ResponseHandlingApi<Response,
     
     // MARK: - convenience methods
     
-    public static func closure(_ closure: @escaping (Result<Response, HttpKit.HttpError>) -> Void,
+    public static func closure(_ closure: @escaping (Result<Response, HttpError>) -> Void,
                                _ endpoint: Endpoint<Server>) -> ResponseApi<Response, Server, Observer> {
         let closureWrapper: ClosureWrapper<Response, Server> = .init(closure, endpoint)
         return ResponseHandlingApi<Response, Server, Observer>.closure(closureWrapper)
