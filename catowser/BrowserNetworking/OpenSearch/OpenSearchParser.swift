@@ -20,7 +20,7 @@ extension OpenSearch {
         }
         
         public init(data: Data) throws {
-            let xml = SWXMLHash.config { (options) in
+            let xml = XMLHash.config { (options) in
                     options.detectParsingErrors = true
             }.parse(data)
             

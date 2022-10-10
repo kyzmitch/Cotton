@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/drmohundro/SWXMLHash",
       "state" : {
-        "revision" : "3d020aed48da8012cc9fc2f8cff14881a0ab193f",
-        "version" : "5.0.0"
+        "revision" : "4d0f62f561458cbe1f732171e625f03195151b60",
+        "version" : "7.0.1"
       }
     }
   ],
