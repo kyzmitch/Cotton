@@ -67,7 +67,6 @@
 		6094E734221FE2F9004269A2 /* AnyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE82209C9A20071BECF /* AnyViewController.swift */; };
 		6094E735221FE2FE004269A2 /* UIImage+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */; };
 		6094E736221FE302004269A2 /* UIViewController+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */; };
-		6094E73F221FE65F004269A2 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E73E221FE65F004269A2 /* ReactiveSwift.framework */; };
 		6094E740221FE6CB004269A2 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D7B0221F17010032C156 /* Box.swift */; };
 		6094E741221FE706004269A2 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
 		6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsListManager.swift */; };
@@ -133,6 +132,14 @@
 		84704FC21EEE769800F89F6B /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84704FC11EEE769800F89F6B /* TabView.swift */; };
 		847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7C881EF6C30F00291B87 /* TabsViewController.swift */; };
 		8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A012FA322400F1200041487 /* InstagramHandler.swift */; };
+		8A03F44328F476BF00E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F44828F476D600E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F44D28F476EC00E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F44E28F4770300E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F44F28F4771300E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F45028F4771F00E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F45128F4774900E4A296 /* SPMCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AC4367424798BDB008DD663 /* SPMCommon.framework */; };
+		8A03F45A28F47ACB00E4A296 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 8A03F45928F47ACB00E4A296 /* SwiftSoup */; };
 		8A06D6F128EC27EB001CB63D /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
 		8A06D6F328EC2BE6001CB63D /* RestClientContextMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */; };
 		8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */; };
@@ -437,6 +444,13 @@
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
 		8AD18E0C2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
 		8AD18E102447580A00224702 /* ResourceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD18E0F2447580A00224702 /* ResourceReader.swift */; };
+		8AD4F51028F491A7009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F50F28F491A7009C4BDC /* ReactiveSwift */; };
+		8AD4F51228F491C8009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F51128F491C8009C4BDC /* ReactiveSwift */; };
+		8AD4F51428F491D9009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F51328F491D9009C4BDC /* ReactiveSwift */; };
+		8AD4F51628F491EA009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F51528F491EA009C4BDC /* ReactiveSwift */; };
+		8AD4F51828F491F8009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F51728F491F8009C4BDC /* ReactiveSwift */; };
+		8AD4F51A28F49208009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F51928F49208009C4BDC /* ReactiveSwift */; };
+		8AD4F51C28F49219009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F51B28F49219009C4BDC /* ReactiveSwift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
@@ -469,7 +483,6 @@
 		C22599671F7BF301000E4C3A /* MasterBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MasterBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
-		C7519628228DEC190071CE0C /* SwiftSoup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7519627228DEC190071CE0C /* SwiftSoup.framework */; };
 		C7796FF3228E70590071E69C /* HTMLVideoTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7796FF2228E70590071E69C /* HTMLVideoTag.swift */; };
 		CCAAC24DC051842407FD1C01 /* Pods_FeaturesFlagsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F6278C9C6B8C8E1B49F277 /* Pods_FeaturesFlagsKit.framework */; };
 		F7BE4DBB5923E22193C67E9C /* Pods_ReactiveHttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA29C8BAB2CF5996EB140813 /* Pods_ReactiveHttpKit.framework */; };
@@ -489,6 +502,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6094E71B221FD2B9004269A2;
 			remoteInfo = CoreBrowser;
+		};
+		8A03F44528F476BF00E4A296 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC4367324798BDB008DD663;
+			remoteInfo = SPMCommon;
+		};
+		8A03F44A28F476D600E4A296 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC4367324798BDB008DD663;
+			remoteInfo = SPMCommon;
 		};
 		8A277157268E466100D8878C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1134,10 +1161,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7519628228DEC190071CE0C /* SwiftSoup.framework in Frameworks */,
 				721DF7B158CBE52302D9227B /* Pods_JSPlugins.framework in Frameworks */,
+				8AD4F51228F491C8009C4BDC /* ReactiveSwift in Frameworks */,
 				8ADEC2D924642AA200FD389B /* Combine.framework in Frameworks */,
 				8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */,
+				8A03F44828F476D600E4A296 /* SPMCommon.framework in Frameworks */,
+				8A03F45A28F47ACB00E4A296 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1145,11 +1174,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A03F44328F476BF00E4A296 /* SPMCommon.framework in Frameworks */,
 				607CC66722A5505F0037E5EC /* UIKit.framework in Frameworks */,
 				60C2C92122819AE200F5D869 /* CoreImage.framework in Frameworks */,
 				8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */,
-				6094E73F221FE65F004269A2 /* ReactiveSwift.framework in Frameworks */,
 				2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */,
+				8AD4F51028F491A7009C4BDC /* ReactiveSwift in Frameworks */,
 				8A90636A243323C0009D786E /* Network.framework in Frameworks */,
 				8A7ECCC626AF2C0D000C902F /* HttpKit.framework in Frameworks */,
 			);
@@ -1164,6 +1194,7 @@
 				8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */,
 				8A7B1BE828EB18A5004FC135 /* CoreCatowser.framework in Frameworks */,
 				8A5F71F62826C148008E5638 /* CoreHttpKit.xcframework in Frameworks */,
+				8AD4F51C28F49219009C4BDC /* ReactiveSwift in Frameworks */,
 				8ABF504427CC1A64007C6427 /* FeaturesFlagsKit.framework in Frameworks */,
 				8A27715A268E467500D8878C /* BrowserNetworking.framework in Frameworks */,
 				8AF4337C248EBB2A0047452B /* CssParser.framework in Frameworks */,
@@ -1183,6 +1214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AA6608A28F43F790058490F /* SWXMLHash in Frameworks */,
+				8AD4F51828F491F8009C4BDC /* ReactiveSwift in Frameworks */,
 				9E32AED5CC3F3BEF60EA5A51 /* Pods_BrowserNetworking.framework in Frameworks */,
 				8A5F72042826C1A7008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8A5F720D2826DD16008E5638 /* ReactiveHttpKit.framework in Frameworks */,
@@ -1198,6 +1230,7 @@
 				8A7B1BF728EB2C80004FC135 /* WebKit.framework in Frameworks */,
 				8A7B1BDC28EB1736004FC135 /* JSPlugins.framework in Frameworks */,
 				8A7B1BD128EB16F9004FC135 /* ReactiveHttpKit.framework in Frameworks */,
+				8AD4F51A28F49208009C4BDC /* ReactiveSwift in Frameworks */,
 				8A7B1BE028EB1752004FC135 /* FeaturesFlagsKit.framework in Frameworks */,
 				8A7B1BD528EB170E004FC135 /* Combine.framework in Frameworks */,
 				8A7B1BCC28EB16F4004FC135 /* HttpKit.framework in Frameworks */,
@@ -1212,6 +1245,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A03F44F28F4771300E4A296 /* SPMCommon.framework in Frameworks */,
 				8A7B1BA028EB131F004FC135 /* CoreCatowser.framework in Frameworks */,
 				8FDC45A5803399BCCC71C699 /* Pods_CoreCatowserTests.framework in Frameworks */,
 			);
@@ -1256,6 +1290,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A03F44E28F4770300E4A296 /* SPMCommon.framework in Frameworks */,
 				8AB022F126258B110053AFF0 /* CoreBrowser.framework in Frameworks */,
 				71A09C5188CE02B919C6F31B /* Pods_CoreBrowserTests.framework in Frameworks */,
 			);
@@ -1265,6 +1300,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A03F45028F4771F00E4A296 /* SPMCommon.framework in Frameworks */,
+				8AD4F51428F491D9009C4BDC /* ReactiveSwift in Frameworks */,
 				8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */,
 				F7BE4DBB5923E22193C67E9C /* Pods_ReactiveHttpKit.framework in Frameworks */,
 				8A5F72072826C410008E5638 /* CoreHttpKit.xcframework in Frameworks */,
@@ -1275,6 +1312,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A03F45128F4774900E4A296 /* SPMCommon.framework in Frameworks */,
+				8AD4F51628F491EA009C4BDC /* ReactiveSwift in Frameworks */,
 				8ABF505B27CC1B49007C6427 /* Combine.framework in Frameworks */,
 				8ABF505527CC1B40007C6427 /* CoreBrowser.framework in Frameworks */,
 				CCAAC24DC051842407FD1C01 /* Pods_FeaturesFlagsKit.framework in Frameworks */,
@@ -1294,6 +1333,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A03F44D28F476EC00E4A296 /* SPMCommon.framework in Frameworks */,
 				8AE63B59248EC38300D6D2E4 /* JSPlugins.framework in Frameworks */,
 				53617CB64FB908040B48E941 /* Pods_JSPluginsTests.framework in Frameworks */,
 			);
@@ -2392,8 +2432,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				8A03F44B28F476D600E4A296 /* PBXTargetDependency */,
 			);
 			name = JSPlugins;
+			packageProductDependencies = (
+				8A03F45928F47ACB00E4A296 /* SwiftSoup */,
+				8AD4F51128F491C8009C4BDC /* ReactiveSwift */,
+			);
 			productName = JSPlugins;
 			productReference = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2413,8 +2458,12 @@
 			);
 			dependencies = (
 				8A80D0D82451B2120025528D /* PBXTargetDependency */,
+				8A03F44628F476BF00E4A296 /* PBXTargetDependency */,
 			);
 			name = CoreBrowser;
+			packageProductDependencies = (
+				8AD4F50F28F491A7009C4BDC /* ReactiveSwift */,
+			);
 			productName = CoreBrowser;
 			productReference = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2427,7 +2476,6 @@
 				8435A4931EED5E700020102F /* Sources */,
 				8435A4941EED5E700020102F /* Frameworks */,
 				8435A4951EED5E700020102F /* Resources */,
-				D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */,
 				6094E728221FD2B9004269A2 /* Embed Frameworks */,
 				60D52D03225B2A3400CB56F0 /* Embed App Extensions */,
 				8A875AC523782028004FA50F /* ShellScript */,
@@ -2447,6 +2495,9 @@
 				8A7B1BEA28EB18A5004FC135 /* PBXTargetDependency */,
 			);
 			name = Cotton;
+			packageProductDependencies = (
+				8AD4F51B28F49219009C4BDC /* ReactiveSwift */,
+			);
 			productName = catowser;
 			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
 			productType = "com.apple.product-type.application";
@@ -2472,6 +2523,7 @@
 			name = BrowserNetworking;
 			packageProductDependencies = (
 				8AA6608928F43F790058490F /* SWXMLHash */,
+				8AD4F51728F491F8009C4BDC /* ReactiveSwift */,
 			);
 			productName = BrowserNetworking;
 			productReference = 8A277137268E452000D8878C /* BrowserNetworking.framework */;
@@ -2499,6 +2551,9 @@
 				8A7B1BE728EB1771004FC135 /* PBXTargetDependency */,
 			);
 			name = CoreCatowser;
+			packageProductDependencies = (
+				8AD4F51928F49208009C4BDC /* ReactiveSwift */,
+			);
 			productName = CoreCatowser;
 			productReference = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2511,7 +2566,6 @@
 				8A7B1B9B28EB131F004FC135 /* Sources */,
 				8A7B1B9C28EB131F004FC135 /* Frameworks */,
 				8A7B1B9D28EB131F004FC135 /* Resources */,
-				689B22D47563B04559F4A3B1 /* [CP] Embed Pods Frameworks */,
 				8A03F43F28F4747900E4A296 /* ShellScript */,
 			);
 			buildRules = (
@@ -2596,7 +2650,6 @@
 				8AB022E826258B110053AFF0 /* Sources */,
 				8AB022E926258B110053AFF0 /* Frameworks */,
 				8AB022EA26258B110053AFF0 /* Resources */,
-				60ABF54CAD084C1C5940A4B2 /* [CP] Embed Pods Frameworks */,
 				8A03F43B28F4745200E4A296 /* ShellScript */,
 			);
 			buildRules = (
@@ -2626,6 +2679,9 @@
 				8AB70E9B27B7AEA7003FB59B /* PBXTargetDependency */,
 			);
 			name = ReactiveHttpKit;
+			packageProductDependencies = (
+				8AD4F51328F491D9009C4BDC /* ReactiveSwift */,
+			);
 			productName = ReactiveHttpKit;
 			productReference = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2647,6 +2703,9 @@
 				8ABF505827CC1B40007C6427 /* PBXTargetDependency */,
 			);
 			name = FeaturesFlagsKit;
+			packageProductDependencies = (
+				8AD4F51528F491EA009C4BDC /* ReactiveSwift */,
+			);
 			productName = FeaturesFlagsKit;
 			productReference = 8ABF503E27CC1A64007C6427 /* FeaturesFlagsKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2681,7 +2740,6 @@
 				8AE63B50248EC38300D6D2E4 /* Sources */,
 				8AE63B51248EC38300D6D2E4 /* Frameworks */,
 				8AE63B52248EC38300D6D2E4 /* Resources */,
-				AEF1F2A3F177E810DF99DC04 /* [CP] Embed Pods Frameworks */,
 				8A03F43A28F4744B00E4A296 /* ShellScript */,
 			);
 			buildRules = (
@@ -2820,9 +2878,11 @@
 			);
 			mainGroup = 8435A48E1EED5E700020102F;
 			packageReferences = (
-				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
-				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */,
+				8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				8AA6608828F43F790058490F /* XCRemoteSwiftPackageReference "SWXMLHash" */,
+				8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
+				8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -3023,24 +3083,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		60ABF54CAD084C1C5940A4B2 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoreBrowserTests/Pods-CoreBrowserTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoreBrowserTests/Pods-CoreBrowserTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6826CB5E5705F07C41FA79CB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3061,26 +3103,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		689B22D47563B04559F4A3B1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-CoreCatowserTests/Pods-CoreCatowserTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CoreCatowserTests/Pods-CoreCatowserTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		73CC3A96A7006C50C08CF793 /* [CP] Check Pods Manifest.lock */ = {
@@ -3449,26 +3471,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEF1F2A3F177E810DF99DC04 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JSPluginsTests/Pods-JSPluginsTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CF99377919CA527833D24EA4 /* Compile Kotlin */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3486,26 +3488,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "bash .gryphon/scripts/compileKotlin.sh\n";
-			showEnvVarsInLog = 0;
-		};
-		D801B8366CD82AB0D8FBBEF1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Cotton/Pods-Cotton-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ReactiveSwift/ReactiveSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Cotton/Pods-Cotton-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DB736D4DD3219E9A545AC643 /* [CP] Check Pods Manifest.lock */ = {
@@ -4061,6 +4043,16 @@
 			isa = PBXTargetDependency;
 			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
 			targetProxy = 6094E721221FD2B9004269A2 /* PBXContainerItemProxy */;
+		};
+		8A03F44628F476BF00E4A296 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC4367324798BDB008DD663 /* SPMCommon */;
+			targetProxy = 8A03F44528F476BF00E4A296 /* PBXContainerItemProxy */;
+		};
+		8A03F44B28F476D600E4A296 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC4367324798BDB008DD663 /* SPMCommon */;
+			targetProxy = 8A03F44A28F476D600E4A296 /* PBXContainerItemProxy */;
 		};
 		8A277158268E466100D8878C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5610,6 +5602,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveCocoa/ReactiveSwift";
+			requirement = {
+				kind = exactVersion;
+				version = 7.0.0;
+			};
+		};
+		8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = exactVersion;
+				version = 2.4.3;
+			};
+		};
 		8AA6608828F43F790058490F /* XCRemoteSwiftPackageReference "SWXMLHash" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/drmohundro/SWXMLHash";
@@ -5618,7 +5626,7 @@
 				version = 7.0.1;
 			};
 		};
-		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+		8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -5626,7 +5634,7 @@
 				version = 5.2.0;
 			};
 		};
-		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */ = {
+		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
 			requirement = {
@@ -5637,6 +5645,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8A03F45928F47ACB00E4A296 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
 		8AA6608928F43F790058490F /* SWXMLHash */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8AA6608828F43F790058490F /* XCRemoteSwiftPackageReference "SWXMLHash" */;
@@ -5644,13 +5657,48 @@
 		};
 		8AC4368024798BE2008DD663 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		8AC4368224798BE7008DD663 /* AlamofireImage */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage.git" */;
+			package = 8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
 			productName = AlamofireImage;
+		};
+		8AD4F50F28F491A7009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		8AD4F51128F491C8009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		8AD4F51328F491D9009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		8AD4F51528F491EA009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		8AD4F51728F491F8009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		8AD4F51928F49208009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
+		};
+		8AD4F51B28F49219009C4BDC /* ReactiveSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
+			productName = ReactiveSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 

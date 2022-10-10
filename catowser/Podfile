@@ -7,7 +7,6 @@ target 'Cotton' do
   use_frameworks!
 
 # pod 'SwiftCssParser' instead of own CssParser
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
@@ -16,15 +15,12 @@ target 'CoreBrowser' do
   use_frameworks!
 
   # Pods for CoreBrowser
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
 target 'JSPlugins' do
   use_frameworks!
 
-  pod 'SwiftSoup', '~> 2.3.2'
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
@@ -46,8 +42,6 @@ target 'JSPluginsTests' do
 # Probably it is not right way of fixing
 # unit tests only should require main framework 
 # as a dependency which is JSPlugins.framework
-  pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftSoup', '~> 2.3.2'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
@@ -59,42 +53,35 @@ end
 target 'CoreBrowserTests' do
   use_frameworks!
 
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
 target 'CoreCatowserTests' do
   use_frameworks!
-  pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftSoup', '~> 2.3.2'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
 target 'ReactiveHttpKit' do
   use_frameworks!
 
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
 target 'BrowserNetworking' do
   use_frameworks!
 
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
 target 'FeaturesFlagsKit' do
   use_frameworks!
 
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
 target 'CoreCatowser' do
   use_frameworks!
 
-  pod 'ReactiveSwift', '~> 6.0.0'
   pod 'SwiftLint', '~> 0.49.1'
 end
 
