@@ -1,0 +1,16 @@
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+  - Tests/Generated
+  - Tests/Expected
+sources:
+  - <sources path>
+  - <sources path>
+templates:
+  - <templates path>
+  - <templates path>
+forceParse:
+  - <string value>
+  - <string value>
+output:
+  <output path>
+args:
+  <name>: <value>

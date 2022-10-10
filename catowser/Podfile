@@ -8,7 +8,6 @@ target 'Cotton' do
 
   # Pods for Cotton
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'CoreBrowser' do
@@ -17,7 +16,6 @@ target 'CoreBrowser' do
 
   # Pods for CoreBrowser
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'JSPlugins' do
@@ -25,7 +23,6 @@ target 'JSPlugins' do
 
   pod 'SwiftSoup', '~> 2.3.2'
   # pod 'SwiftCssParser'
-  pod 'SwiftLint', '~> 0.33.0'
   pod 'ReactiveSwift', '~> 6.0.0'
 end
 
@@ -36,29 +33,23 @@ target 'JSPluginsTests' do
 # unit tests only should require main framework 
 # as a dependency which is JSPlugins.framework
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SWXMLHash', '~> 5.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
   pod 'SwiftSoup', '~> 2.3.2'
 end
 
 target 'HttpKitTests' do
   use_frameworks!
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'CoreBrowserTests' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'CoreCatowserTests' do
   use_frameworks!
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
   pod 'SwiftSoup', '~> 2.3.2'
-  pod 'SWXMLHash', '~> 5.0.0'
 end
 
 # No even SwiftLint for 'HttpKit' target to be able to convert it to Kotlin
@@ -67,29 +58,24 @@ target 'ReactiveHttpKit' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'BrowserNetworking' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SWXMLHash', '~> 5.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'FeaturesFlagsKit' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 target 'CoreCatowser' do
   use_frameworks!
 
   pod 'ReactiveSwift', '~> 6.0.0'
-  pod 'SwiftLint', '~> 0.33.0'
 end
 
 deployment_target = '12.0'
