@@ -1,28 +1,20 @@
 PODS:
   - ReactiveSwift (6.0.0)
-  - SwiftLint (0.33.1)
   - SwiftSoup (2.3.8)
-  - SWXMLHash (5.0.1)
 
 DEPENDENCIES:
   - ReactiveSwift (~> 6.0.0)
-  - SwiftLint (~> 0.33.0)
   - SwiftSoup (~> 2.3.2)
-  - SWXMLHash (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
     - ReactiveSwift
-    - SwiftLint
     - SwiftSoup
-    - SWXMLHash
 
 SPEC CHECKSUMS:
   ReactiveSwift: 24b7ed245617bbfd30ee0c87779b6c64ac1b4518
-  SwiftLint: 9fc1143bbacec37f94994a7d0d2a85b2154b6294
   SwiftSoup: ba8ea2c91151881a298cba4b0628ef31e835a77f
-  SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
 
-PODFILE CHECKSUM: c505cee1aea9b0b017b9a0f3b068c873a0970478
+PODFILE CHECKSUM: 8b6091d49fb283a05fff2a1fd0fa97bebd9daa59
 
 COCOAPODS: 1.11.2
