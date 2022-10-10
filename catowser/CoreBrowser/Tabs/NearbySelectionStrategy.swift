@@ -13,7 +13,10 @@ import Foundation
  when the next closest tab needs to be selected.
  */
 public struct NearbySelectionStrategy {
-    public let makeTabActiveAfterAdding = true
+    public let makeTabActiveAfterAdding: Bool
+    public init() {
+        makeTabActiveAfterAdding = true
+    }
 }
 
 extension NearbySelectionStrategy: TabSelectionStrategy {

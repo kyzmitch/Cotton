@@ -13,7 +13,8 @@ public enum TabSubjectError: Error {
 }
 
 public protocol TabsSubject {
-    init(storage: TabsStoragable, positioning: TabsStates)
+    /// Tabs subject initialiser for Observer pattern
+    init(storage: TabsStoragable, positioning: TabsStates, selectionStrategy: TabSelectionStrategy)
     /// Add tabs observer.
     func attach(_ observer: TabsObserver)
     /// Removes tabs observer.
@@ -33,4 +34,8 @@ public protocol TabsSubject {
     func replaceSelected(tabContent: Tab.ContentType) throws
     /// Fetches latest tabs.
     func fetch() -> [Tab]
+    /// Returns tabs count
+    var tabsCount: Int { get }
+    /// Returns selected UUID, could be invalid one which is defined (to handle always not empty condition)
+    var selectedId: UUID { get }
 }

@@ -35,7 +35,8 @@ final class TabsEnvironment {
         let tabsCacheProvider: TabsCacheProvider = .init(temporaryContext: cottonDb.viewContext,
                                                          privateContextCreator: contextClosure)
         cachedTabsManager = .init(storage: tabsCacheProvider,
-                                  positioning: DefaultTabProvider.shared)
+                                  positioning: DefaultTabProvider.shared,
+                                  selectionStrategy: NearbySelectionStrategy())
     }
 }
 

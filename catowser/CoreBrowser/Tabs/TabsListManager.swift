@@ -9,16 +9,19 @@
 import Foundation
 import ReactiveSwift
 
+/**
+ Tabs list manager.
+ 
+ Can't really implement this in Singletone pattern due to
+ asynс initialization for several parameters during init.
+ http://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
+ But if we choose some default state for this object we can make async init.
+ One empty tab (`.blank` or even tab with favorite sites) will be good default
+ state for time before some cached tabs will be fetched from storage.
+ */
 public final class TabsListManager {
-    // Can't really implement this in Singletone pattern due to
-    // asynс initialization for several parameters during init.
-    // http://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
-    // But if we choose some default state for this object we can make async init.
-    // One empty tab (`.blank` or even tab with favorite sites) will be good default
-    // state for time before some cached tabs will be fetched from storage.
-
     /// Current tab selection strategy
-    public var selectionStrategy: TabSelectionStrategy
+    var selectionStrategy: TabSelectionStrategy
 
     private let tabs: MutableProperty<[Tab]>
     private let selectedTabId: MutableProperty<UUID>
@@ -39,8 +42,8 @@ public final class TabsListManager {
     private var tabSelectDisposable: Disposable?
     private var tabContentUpdateDisposable: Disposable?
 
-    public init(storage: TabsStoragable, positioning: TabsStates) {
-        selectionStrategy = NearbySelectionStrategy()
+    public init(storage: TabsStoragable, positioning: TabsStates, selectionStrategy: TabSelectionStrategy) {
+        self.selectionStrategy = selectionStrategy
 
         tabs = MutableProperty<[Tab]>([])
         selectedTabId = MutableProperty<UUID>(positioning.defaultSelectedTabId)
@@ -144,10 +147,6 @@ public final class TabsListManager {
         disposables.append(disposable)
     }
 
-    public var tabsCount: Int {
-        return self.tabs.value.count
-    }
-
     /// Returns currently selected tab.
     public func selectedTab() throws -> Tab {
         guard selectedId != self.positioning.defaultSelectedTabId else {
@@ -158,10 +157,6 @@ public final class TabsListManager {
             throw TabsListError.selectedNotFound
         }
         return tabTuple.tab
-    }
-    
-    public var selectedId: UUID {
-        return selectedTabId.value
     }
 
     fileprivate enum TabsListError: LocalizedError {
@@ -175,11 +170,15 @@ extension TabsListManager: IndexSelectionContext {
     public var collectionLastIndex: Int {
         // -1 index is not possible because always should be at least 1 tab
         let amount = tabs.value.count
+        // Leaving assert even with unit tests
+        // https://stackoverflow.com/a/410198
         assert(amount != 0, "Tabs amount shouldn't be 0")
         return amount - 1
     }
 
     public var currentlySelectedIndex: Int {
+        // Leaving assert even with unit tests
+        // https://stackoverflow.com/a/410198
         assert(!tabs.value.isEmpty, "Tabs amount shouldn't be 0")
         if let tabTuple = tabs.value.element(by: selectedId) {
             return tabTuple.index
@@ -333,6 +332,14 @@ extension TabsListManager: TabsSubject {
                 return currentObserver.name == observer.name
             }
         }
+    }
+    
+    public var tabsCount: Int {
+        return self.tabs.value.count
+    }
+    
+    public var selectedId: UUID {
+        return selectedTabId.value
     }
 }
 
