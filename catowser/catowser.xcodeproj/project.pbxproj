@@ -265,7 +265,6 @@
 		8A7B1BFD28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BFB28EB2E59004FC135 /* WebViewContextImpl.swift */; };
 		8A7B1BFF28EB3269004FC135 /* Site+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BFE28EB3269004FC135 /* Site+Extensions.swift */; };
 		8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
-		8A7ECCC626AF2C0D000C902F /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A7EF3D5273924EF0071BB89 /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435A49C1EED5E700020102F /* BaseViewController.swift */; };
 		8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
@@ -404,7 +403,6 @@
 		8ABF505227CC1B07007C6427 /* RawFeatureValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108A27CA377B00D90AD0 /* RawFeatureValue.swift */; };
 		8ABF505327CC1B1A007C6427 /* GenericEnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */; };
 		8ABF505427CC1B32007C6427 /* FeatureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF547240123F600A0D233 /* FeatureManager.swift */; };
-		8ABF505527CC1B40007C6427 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8ABF505C27CC1B5A007C6427 /* FeatureManager+BasicFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */; };
 		8ABF505D27CC1B5D007C6427 /* FeatureManager+EnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */; };
 		8ABF505F27CC1B84007C6427 /* EnumFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */; };
@@ -634,13 +632,6 @@
 			remoteGlobalIDString = 8A8035EE24446234000E035F;
 			remoteInfo = DNSProxy;
 		};
-		8A80D0D72451B2120025528D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8AE6D1682350FF35006316AD;
-			remoteInfo = HttpKit;
-		};
 		8AB022F226258B110053AFF0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -675,13 +666,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8ABF503D27CC1A64007C6427;
 			remoteInfo = FeaturesFlagsKit;
-		};
-		8ABF505727CC1B40007C6427 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6094E71B221FD2B9004269A2;
-			remoteInfo = CoreBrowser;
 		};
 		8AD4F52A28F49341009C4BDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1183,7 +1167,6 @@
 				8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				2276FC93121AA81A24CB1372 /* Pods_CoreBrowser.framework in Frameworks */,
 				8AD4F51028F491A7009C4BDC /* ReactiveSwift in Frameworks */,
-				8A7ECCC626AF2C0D000C902F /* HttpKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1325,7 +1308,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AD4F51628F491EA009C4BDC /* ReactiveSwift in Frameworks */,
-				8ABF505527CC1B40007C6427 /* CoreBrowser.framework in Frameworks */,
 				CCAAC24DC051842407FD1C01 /* Pods_FeaturesFlagsKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2413,7 +2395,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8A80D0D82451B2120025528D /* PBXTargetDependency */,
 			);
 			name = CoreBrowser;
 			packageProductDependencies = (
@@ -2671,7 +2652,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8ABF505827CC1B40007C6427 /* PBXTargetDependency */,
 			);
 			name = FeaturesFlagsKit;
 			packageProductDependencies = (
@@ -4070,11 +4050,6 @@
 			target = 8A8035EE24446234000E035F /* DNSProxy */;
 			targetProxy = 8A8035F524446234000E035F /* PBXContainerItemProxy */;
 		};
-		8A80D0D82451B2120025528D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8AE6D1682350FF35006316AD /* HttpKit */;
-			targetProxy = 8A80D0D72451B2120025528D /* PBXContainerItemProxy */;
-		};
 		8AB022F326258B110053AFF0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
@@ -4099,11 +4074,6 @@
 			isa = PBXTargetDependency;
 			target = 8ABF503D27CC1A64007C6427 /* FeaturesFlagsKit */;
 			targetProxy = 8ABF504227CC1A64007C6427 /* PBXContainerItemProxy */;
-		};
-		8ABF505827CC1B40007C6427 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
-			targetProxy = 8ABF505727CC1B40007C6427 /* PBXContainerItemProxy */;
 		};
 		8AD4F52B28F49341009C4BDC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
