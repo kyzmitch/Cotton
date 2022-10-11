@@ -446,6 +446,7 @@
 		8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54428F493B8009C4BDC /* Alamofire */; };
 		8AD4F54728F4941A009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54628F4941A009C4BDC /* ReactiveSwift */; };
 		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
+		8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
@@ -720,6 +721,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8AB70E9027B7AE7A003FB59B;
 			remoteInfo = ReactiveHttpKit;
+		};
+		8AD62B7C28F564B8003F3940 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6094E71B221FD2B9004269A2;
+			remoteInfo = CoreBrowser;
 		};
 		8AE63B5A248EC38300D6D2E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1304,6 +1312,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */,
 				8AD4F51628F491EA009C4BDC /* ReactiveSwift in Frameworks */,
 				CCAAC24DC051842407FD1C01 /* Pods_FeaturesFlagsKit.framework in Frameworks */,
 			);
@@ -2649,6 +2658,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8AD62B7D28F564B8003F3940 /* PBXTargetDependency */,
 			);
 			name = FeaturesFlagsKit;
 			packageProductDependencies = (
@@ -4127,6 +4137,11 @@
 			target = 8AB70E9027B7AE7A003FB59B /* ReactiveHttpKit */;
 			targetProxy = 8AD4F54228F4936B009C4BDC /* PBXContainerItemProxy */;
 		};
+		8AD62B7D28F564B8003F3940 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
+			targetProxy = 8AD62B7C28F564B8003F3940 /* PBXContainerItemProxy */;
+		};
 		8AE63B5B248EC38300D6D2E4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 608DA749223A3BD4009F75BD /* JSPlugins */;
@@ -4480,7 +4495,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = "Cotton Dev";
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser.debug";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -4509,7 +4524,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COTTON_APP_NAME = Cotton;
 				COTTON_BUNDLE_IDENTIFIER = "com.ae.cotton-browser";
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = ERT5B59458;
 				INFOPLIST_FILE = catowser/Base.lproj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
