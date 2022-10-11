@@ -408,7 +408,6 @@
 		8ABF505F27CC1B84007C6427 /* EnumFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */; };
 		8ABF506027CC1B93007C6427 /* FeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109327CA383800D90AD0 /* FeatureSource.swift */; };
 		8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */; };
-		8AC6DE1528F3391F00584CD7 /* TabsStoragableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6DE1428F3391F00584CD7 /* TabsStoragableMocks.swift */; };
 		8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */; };
 		8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */; };
 		8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */; };
@@ -1077,7 +1076,6 @@
 		8AC5873B289C3DA00038A7B5 /* WebViewContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContext.swift; sourceTree = "<group>"; };
 		8AC6972628BB35DE00981BBF /* Host+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Host+Extension.swift"; sourceTree = "<group>"; };
 		8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationActionableMocks.swift; sourceTree = "<group>"; };
-		8AC6DE1428F3391F00584CD7 /* TabsStoragableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStoragableMocks.swift; sourceTree = "<group>"; };
 		8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Rx.swift"; sourceTree = "<group>"; };
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
 		8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategyMocks.swift; sourceTree = "<group>"; };
@@ -2001,7 +1999,6 @@
 				8AB022EE26258B110053AFF0 /* TabsListManagerTests.swift */,
 				8AD62B6F28F547E6003F3940 /* Sourcery */,
 				8AD62B6928F545E5003F3940 /* GeneratedMocks */,
-				8AC6DE1328F3390E00584CD7 /* Mocks */,
 				8AB022F026258B110053AFF0 /* Info.plist */,
 			);
 			path = CoreBrowserTests;
@@ -2083,14 +2080,6 @@
 				8AC19CC0289E2F7E0021D8ED /* GoogleDNSStrategy.swift */,
 			);
 			path = SpecificStrategies;
-			sourceTree = "<group>";
-		};
-		8AC6DE1328F3390E00584CD7 /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				8AC6DE1428F3391F00584CD7 /* TabsStoragableMocks.swift */,
-			);
-			path = Mocks;
 			sourceTree = "<group>";
 		};
 		8AD18E0E244757EC00224702 /* Filesystem */ = {
@@ -3881,7 +3870,6 @@
 			files = (
 				8AB022EF26258B110053AFF0 /* TabsListManagerTests.swift in Sources */,
 				8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */,
-				8AC6DE1528F3391F00584CD7 /* TabsStoragableMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

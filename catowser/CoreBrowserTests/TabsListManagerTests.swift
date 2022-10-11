@@ -18,11 +18,11 @@ extension UUID {
 
 class TabsListManagerTests: XCTestCase {
     
-    let tabsStorageWithErrorsClient: MockedWithErrorTabsStorage = .init()
+    let tabsStorageMock: TabsStoragableMock = .init()
     
     let tabsStates: TabsStatesMock = .init()
     
-    let selectionStrategy: TabSelectionStrategyMock = .init()
+    let selectionStrategyMock: TabSelectionStrategyMock = .init()
     
     let exampleTabId: UUID = .testId1
     let knownTabId: UUID = .testId2
@@ -61,9 +61,11 @@ class TabsListManagerTests: XCTestCase {
 
     func testFailedInit() throws {
         tabsStates.defaultSelectedTabId = .notPossibleId
-        let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageWithErrorsClient,
+        tabsStorageMock.fetchAllTabsReturnValue = .init(error: .notImplemented)
+
+        let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageMock,
                                                        positioning: tabsStates,
-                                                       selectionStrategy: selectionStrategy)
+                                                       selectionStrategy: selectionStrategyMock)
         XCTAssertEqual(tabsMgr.tabsCount, 0)
         XCTAssertEqual(tabsMgr.selectedId, .notPossibleId)
         _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 1.1)
@@ -78,11 +80,12 @@ class TabsListManagerTests: XCTestCase {
         let tab2: Tab = .init(contentType: .site(knownSite), idenifier: knownTabId)
         let tabsV1: [Tab] = [tab1, tab2]
         
-        let tabsStorageGoodClient: MockedGoodErrorTabsStorage = .init(selected: knownTabId, tabs: tabsV1)
         tabsStates.defaultSelectedTabId = .notPossibleId
-        let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageGoodClient,
+        tabsStorageMock.fetchAllTabsReturnValue = .init(value: tabsV1)
+        tabsStorageMock.fetchSelectedTabIdReturnValue = .init(value: knownTabId)
+        let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageMock,
                                                        positioning: tabsStates,
-                                                       selectionStrategy: selectionStrategy)
+                                                       selectionStrategy: selectionStrategyMock)
         XCTAssertEqual(tabsMgr.tabsCount, 0)
         XCTAssertEqual(tabsMgr.selectedId, .notPossibleId)
         _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 1.1)
@@ -92,10 +95,12 @@ class TabsListManagerTests: XCTestCase {
         
         // User selects already selected
         
+        tabsStorageMock.selectTabReturnValue = .init(value: tab2.id)
         tabsMgr.select(tab: tab2)
         _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 0.1)
         XCTAssertEqual(tabsMgr.selectedId, knownTabId)
         
+        tabsStorageMock.selectTabReturnValue = .init(value: tab1.id)
         tabsMgr.select(tab: tab1)
         _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 0.1)
         XCTAssertEqual(tabsMgr.selectedId, exampleTabId)

@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 
+// sourcery: AutoMockable
 public protocol TabsStoragable {
     /// Defines human redable name for Int if it is describes index.
     /// e.g. implementation could use Index type instead.
