@@ -8,6 +8,7 @@
 
 import Foundation
 
+// sourcery: AutoMockable
 public protocol TabsStates {
     var addPosition: AddedTabPosition { get }
     var contentState: Tab.ContentType { get }

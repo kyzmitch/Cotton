@@ -1,16 +1,11 @@
-excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - Tests/Generated
-  - Tests/Expected
 sources:
-  - <sources path>
-  - <sources path>
+  - ../CoreBrowser/Tabs
 templates:
-  - <templates path>
-  - <templates path>
-forceParse:
-  - <string value>
-  - <string value>
+  - ./Sourcery/Templates/AutoMockable.stencil
 output:
-  <output path>
+    ./GeneratedMocks
 args:
-  <name>: <value>
+# Imports do not work for some reason
+    # import: "ReactiveSwift"
+    # import: "CoreHttpKit"
+    # import: "CoreBrowser"

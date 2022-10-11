@@ -409,8 +409,6 @@
 		8ABF506027CC1B93007C6427 /* FeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109327CA383800D90AD0 /* FeatureSource.swift */; };
 		8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */; };
 		8AC6DE1528F3391F00584CD7 /* TabsStoragableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6DE1428F3391F00584CD7 /* TabsStoragableMocks.swift */; };
-		8AC6DE1728F33BF000584CD7 /* TabsStatesMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6DE1628F33BF000584CD7 /* TabsStatesMocks.swift */; };
-		8AC6DE1928F33EBA00584CD7 /* TabSelectionStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6DE1828F33EBA00584CD7 /* TabSelectionStrategyMocks.swift */; };
 		8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */; };
 		8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */; };
 		8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */; };
@@ -448,6 +446,7 @@
 		8AD4F54128F4936B009C4BDC /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54428F493B8009C4BDC /* Alamofire */; };
 		8AD4F54728F4941A009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54628F4941A009C4BDC /* ReactiveSwift */; };
+		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
@@ -1079,8 +1078,6 @@
 		8AC6972628BB35DE00981BBF /* Host+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Host+Extension.swift"; sourceTree = "<group>"; };
 		8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationActionableMocks.swift; sourceTree = "<group>"; };
 		8AC6DE1428F3391F00584CD7 /* TabsStoragableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStoragableMocks.swift; sourceTree = "<group>"; };
-		8AC6DE1628F33BF000584CD7 /* TabsStatesMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsStatesMocks.swift; sourceTree = "<group>"; };
-		8AC6DE1828F33EBA00584CD7 /* TabSelectionStrategyMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSelectionStrategyMocks.swift; sourceTree = "<group>"; };
 		8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Rx.swift"; sourceTree = "<group>"; };
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
 		8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategyMocks.swift; sourceTree = "<group>"; };
@@ -1088,6 +1085,8 @@
 		8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewMocks.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
+		8AD62B6F28F547E6003F3940 /* Sourcery */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sourcery; sourceTree = "<group>"; };
+		8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramMocks.swift; sourceTree = "<group>"; };
 		8ADAF547240123F600A0D233 /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
@@ -1606,17 +1605,17 @@
 				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
 				8435A4991EED5E700020102F /* catowser */,
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,
+				8A7B1B9928EB131F004FC135 /* CoreCatowser */,
 				8ABF503F27CC1A64007C6427 /* FeaturesFlagsKit */,
 				608DA74B223A3BD5009F75BD /* JSPlugins */,
-				8AE63B55248EC38300D6D2E4 /* JSPluginsTests */,
 				8AE6D16A2350FF35006316AD /* HttpKit */,
 				8AB70E9227B7AE7A003FB59B /* ReactiveHttpKit */,
-				8A7EF3D2273924EF0071BB89 /* HttpKitTests */,
 				8A277138268E452000D8878C /* BrowserNetworking */,
 				8A8035F024446234000E035F /* DNSProxy */,
 				8AF43376248EBB2A0047452B /* CssParser */,
+				8A7EF3D2273924EF0071BB89 /* HttpKitTests */,
+				8AE63B55248EC38300D6D2E4 /* JSPluginsTests */,
 				8AB022ED26258B110053AFF0 /* CoreBrowserTests */,
-				8A7B1B9928EB131F004FC135 /* CoreCatowser */,
 				8A7B1BA528EB131F004FC135 /* CoreCatowserTests */,
 				8435A4981EED5E700020102F /* Products */,
 				E35CED317EE4DF68ED3EDD9C /* Pods */,
@@ -2000,6 +1999,8 @@
 			isa = PBXGroup;
 			children = (
 				8AB022EE26258B110053AFF0 /* TabsListManagerTests.swift */,
+				8AD62B6F28F547E6003F3940 /* Sourcery */,
+				8AD62B6928F545E5003F3940 /* GeneratedMocks */,
 				8AC6DE1328F3390E00584CD7 /* Mocks */,
 				8AB022F026258B110053AFF0 /* Info.plist */,
 			);
@@ -2088,8 +2089,6 @@
 			isa = PBXGroup;
 			children = (
 				8AC6DE1428F3391F00584CD7 /* TabsStoragableMocks.swift */,
-				8AC6DE1628F33BF000584CD7 /* TabsStatesMocks.swift */,
-				8AC6DE1828F33EBA00584CD7 /* TabSelectionStrategyMocks.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -2100,6 +2099,14 @@
 				8AD18E0F2447580A00224702 /* ResourceReader.swift */,
 			);
 			path = Filesystem;
+			sourceTree = "<group>";
+		};
+		8AD62B6928F545E5003F3940 /* GeneratedMocks */ = {
+			isa = PBXGroup;
+			children = (
+				8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */,
+			);
+			path = GeneratedMocks;
 			sourceTree = "<group>";
 		};
 		8ADAF545240123E000A0D233 /* Utils */ = {
@@ -2603,6 +2610,7 @@
 				8AB022E926258B110053AFF0 /* Frameworks */,
 				8AB022EA26258B110053AFF0 /* Resources */,
 				8A03F43B28F4745200E4A296 /* ShellScript */,
+				8AD62B6628F53B9C003F3940 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3283,6 +3291,23 @@
 			shellPath = /bin/sh;
 			shellScript = "if which \"${PODS_ROOT}/SwiftLint/swiftlint\" >/dev/null; then\n  \"${PODS_ROOT}/SwiftLint/swiftlint\"\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		8AD62B6628F53B9C003F3940 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which sourcery >/dev/null; then\n  sourcery --config \"${PROJECT_DIR}/CoreBrowserTests/.sourcery.yml\"\nelse\n  echo \"warning: Sourcery not installed, run make from root directory\"\nfi\n";
+		};
 		8C3DAF44843C19B58E5F0872 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3855,9 +3880,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AB022EF26258B110053AFF0 /* TabsListManagerTests.swift in Sources */,
-				8AC6DE1728F33BF000584CD7 /* TabsStatesMocks.swift in Sources */,
+				8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */,
 				8AC6DE1528F3391F00584CD7 /* TabsStoragableMocks.swift in Sources */,
-				8AC6DE1928F33EBA00584CD7 /* TabSelectionStrategyMocks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

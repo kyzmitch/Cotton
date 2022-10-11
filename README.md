@@ -16,12 +16,13 @@ Features
 
 Building the code
 -----------------
-1. cd catowser/
-2. pod install
-3. open Kotlin CoreHttpKit folder using `InteliJ IDEA`
-4. run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
-5. Open `catowser.xcworkspace`
-6. Build `Cotton` or `Cotton dev` build target
+1. `make`
+2. open Kotlin CoreHttpKit folder using `InteliJ IDEA`
+3. run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
+4. `cd catowser/`
+5. `pod install`
+6. Open `catowser.xcworkspace`
+7. Build `Cotton` or `Cotton dev` build target
 
 Design documents
 -----------------

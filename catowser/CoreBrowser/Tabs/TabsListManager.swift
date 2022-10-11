@@ -404,3 +404,26 @@ extension Array where Element == Tab {
         return nil
     }
 }
+
+extension AddedTabPosition {
+    func addTab(_ tab: Tab,
+                to tabs: MutableProperty<[Tab]>,
+                currentlySelectedId: UUID) -> Int {
+        let newIndex: Int
+        switch self {
+        case .listEnd:
+            tabs.value.append(tab)
+            newIndex = tabs.value.count - 1
+        case .afterSelected:
+            guard let tabTuple = tabs.value.element(by: currentlySelectedId) else {
+                // no previously selected tab, probably when reset to one tab happend
+                tabs.value.append(tab)
+                return tabs.value.count - 1
+            }
+            newIndex = tabTuple.index + 1
+            tabs.value.insert(tab, at: newIndex)
+        }
+        
+        return newIndex
+    }
+}

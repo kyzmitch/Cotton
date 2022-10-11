@@ -1,0 +1,37 @@
+{
+  "entries": {
+    "brew": {
+      "./brew_configs/sourcery.rb": {
+        "version": "1.9.0",
+        "bottle": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "arm64_monterey": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/sourcery/blobs/sha256:0f8ad70cf4d9dba61f8621513dc8db1c25bcee74c0a2da3a1013763e37add80c",
+              "sha256": "0f8ad70cf4d9dba61f8621513dc8db1c25bcee74c0a2da3a1013763e37add80c"
+            },
+            "monterey": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/sourcery/blobs/sha256:9cc7c91be67833c608e94ec72d57531a86953318e97ec751bcaf86daf798c263",
+              "sha256": "9cc7c91be67833c608e94ec72d57531a86953318e97ec751bcaf86daf798c263"
+            }
+          }
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "monterey": {
+        "HOMEBREW_VERSION": "3.6.5",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "a9fd8f9d7381be4c930a2f2c331ae924f3a1cbf2",
+        "CLT": "",
+        "Xcode": "14.0.1",
+        "macOS": "12.6"
+      }
+    }
+  }
+}

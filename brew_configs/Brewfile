@@ -1,0 +1,2 @@
+# configs for Swift
+brew './brew_configs/sourcery.rb'
