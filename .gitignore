@@ -71,3 +71,4 @@ CoreHttpKit/.gradle
 catowser/.gryphon
 local.properties
 CoreHttpKit/CoreHttpKit
+catowser/CoreBrowserTests/GeneratedMocks

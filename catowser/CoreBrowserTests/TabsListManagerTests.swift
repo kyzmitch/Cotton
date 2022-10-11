@@ -13,15 +13,16 @@ import CoreHttpKit
 extension UUID {
     static let testId1: UUID = .init(uuid: (1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))
     static let testId2: UUID = .init(uuid: (0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))
+    static let notPossibleId: UUID = .init(uuid: (0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))
 }
 
 class TabsListManagerTests: XCTestCase {
     
     let tabsStorageWithErrorsClient: MockedWithErrorTabsStorage = .init()
     
-    let tabsStates: MockedTabsStates = .init()
+    let tabsStates: TabsStatesMock = .init()
     
-    let selectionStrategy: MockedTabSelectionStrategy = .init()
+    let selectionStrategy: TabSelectionStrategyMock = .init()
     
     let exampleTabId: UUID = .testId1
     let knownTabId: UUID = .testId2
@@ -59,6 +60,7 @@ class TabsListManagerTests: XCTestCase {
                                      userSpecifiedTitle: nil)
 
     func testFailedInit() throws {
+        tabsStates.defaultSelectedTabId = .notPossibleId
         let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageWithErrorsClient,
                                                        positioning: tabsStates,
                                                        selectionStrategy: selectionStrategy)
@@ -77,6 +79,7 @@ class TabsListManagerTests: XCTestCase {
         let tabsV1: [Tab] = [tab1, tab2]
         
         let tabsStorageGoodClient: MockedGoodErrorTabsStorage = .init(selected: knownTabId, tabs: tabsV1)
+        tabsStates.defaultSelectedTabId = .notPossibleId
         let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageGoodClient,
                                                        positioning: tabsStates,
                                                        selectionStrategy: selectionStrategy)
