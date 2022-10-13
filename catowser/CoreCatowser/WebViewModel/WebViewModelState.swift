@@ -219,27 +219,29 @@ extension WebViewModelState: CustomStringConvertible {
 #endif
         case .creatingRequest:
             return "creatingRequest"
-        case .updatingWebView(_, _, let urlData):
+        case .updatingWebView(let request, _, let urlData):
 #if DEBUG
-            return "updatingWebView (\(urlData.debugDescription))"
+            return "updatingWebView (request[\(request.url?.absoluteString ?? "none")], [\(urlData.debugDescription)])"
 #else
             return "updatingWebView"
 #endif
-        case .waitingForNavigation:
-            return "waitingForNavigation"
-        case .finishingLoading(_, _, _, _, _, let urlData):
+        case .waitingForNavigation(let request, _, let urlInfo):
 #if DEBUG
-            // swiftlint:disable:next force_unwrapping
-            return "finishingLoading (\(urlData.debugDescription)"
+            return "waitingForNavigation (request[\(request.url?.absoluteString ?? "none")], [\(urlInfo.debugDescription)])"
+#else
+            return "waitingForNavigation"
+#endif
+        case .finishingLoading(let request, _, _, _, _, let urlInfo):
+#if DEBUG
+            return "finishingLoading (request[\(request.url?.absoluteString ?? "none")], [\(urlInfo.debugDescription)])"
 #else
             return "finishingLoading"
 #endif
         case .viewing:
             return "viewing"
-        case .updatingJS(_, let settings, _, let urlData):
+        case .updatingJS(let request, let settings, _, let urlData):
 #if DEBUG
-            // swiftlint:disable:next force_unwrapping
-            return "updatingJS (\(settings.description), \(urlData.debugDescription)"
+            return "updatingJS (request[\(request.url?.absoluteString ?? "none")], settings[\(settings.description)], [\(urlData.debugDescription)]"
 #else
             return "updatingJS"
 #endif
