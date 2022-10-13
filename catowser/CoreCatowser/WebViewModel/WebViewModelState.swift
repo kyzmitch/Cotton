@@ -199,7 +199,7 @@ extension WebViewModelState: CustomStringConvertible {
         switch self {
         case .initialized(let site):
 #if DEBUG
-            return "initialized (\(site.urlInfo.url))"
+            return "initialized (\(site.urlInfo.debugDescription))"
 #else
             return "initialized"
 #endif
@@ -213,34 +213,33 @@ extension WebViewModelState: CustomStringConvertible {
             return "checkingDNResolveSupport"
         case .resolvingDN(let urlData, let settings):
 #if DEBUG
-            return "resolvingDN (\(urlData.description), \(settings.description))"
+            return "resolvingDN (\(urlData.debugDescription), \(settings.description))"
 #else
             return "resolvingDN"
 #endif
         case .creatingRequest:
             return "creatingRequest"
-        case .updatingWebView(let request, _, let urlData):
+        case .updatingWebView(_, _, let urlData):
 #if DEBUG
-            // swiftlint:disable:next force_unwrapping
-            return "updatingWebView (\(request.url!.absoluteString) --> \(urlData.description))"
+            return "updatingWebView (\(urlData.debugDescription))"
 #else
             return "updatingWebView"
 #endif
         case .waitingForNavigation:
             return "waitingForNavigation"
-        case .finishingLoading(let request, _, _, _, _, let urlData):
+        case .finishingLoading(_, _, _, _, _, let urlData):
 #if DEBUG
             // swiftlint:disable:next force_unwrapping
-            return "finishingLoading (\(request.url!.absoluteString) -->> ip address \(urlData.ipAddressString ?? "none"))"
+            return "finishingLoading (\(urlData.debugDescription)"
 #else
             return "finishingLoading"
 #endif
         case .viewing:
             return "viewing"
-        case .updatingJS(let request, let settings, _, let urlData):
+        case .updatingJS(_, let settings, _, let urlData):
 #if DEBUG
             // swiftlint:disable:next force_unwrapping
-            return "updatingJS (\(request.url!.absoluteString), \(settings.description))"
+            return "updatingJS (\(settings.description), \(urlData.debugDescription)"
 #else
             return "updatingJS"
 #endif

@@ -101,3 +101,9 @@ public extension URLInfo {
         }
     }
 }
+
+extension URLInfo: CustomDebugStringConvertible {
+    public override var debugDescription: String {
+        return "url[\(platformURL.absoluteString)],ip[\(ipAddressString ?? "none")]"
+    }
+}
