@@ -236,8 +236,12 @@ extension WebViewModelState: CustomStringConvertible {
 #else
             return "finishingLoading"
 #endif
-        case .viewing:
+        case .viewing(_, let urlInfo):
+#if DEBUG
+            return "viewing ([\(urlInfo.debugDescription)])"
+#else
             return "viewing"
+#endif
         case .updatingJS(let settings, _, let urlData):
 #if DEBUG
             return "updatingJS (settings[\(settings.description)], [\(urlData.debugDescription)]"

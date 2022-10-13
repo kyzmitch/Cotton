@@ -244,7 +244,7 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
-        case .creatingRequest(_, _):
+        case .creatingRequest:
             state = try state.transition(on: .loadWebView)
         case .updatingWebView(_, let urlInfo):
             updateLoadingState(.load(urlInfo.urlRequest))
@@ -258,7 +258,7 @@ private extension WebViewModelImpl {
             InMemoryDomainSearchProvider.shared.remember(host: host)
             context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
             try context.updateTabContent(site)
-            state = try state.transition(on: .startView)
+            state = try state.transition(on: .startView(updatedInfo))
         case .viewing:
             break
         case .updatingJS(let settings, let subject, let urlInfo):

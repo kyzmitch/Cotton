@@ -78,12 +78,12 @@ extension WebViewModelState: Actionable {
         case (.updatingWebView(let settings, let urlData),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, urlData)
-        case (.waitingForNavigation(let settings, let uRLData),
+        case (.waitingForNavigation(let settings, let urlInfo),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, uRLData)
-        case (.finishingLoading(let settings, _, _, _, let urlData),
-              .startView):
-            nextState = .viewing(settings, urlData)
+            nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, urlInfo)
+        case (.finishingLoading(let settings, _, _, _, _),
+              .startView(let updatedURLInfo)):
+            nextState = .viewing(settings, updatedURLInfo)
         case (.viewing(let settings, let urlInfo),
               .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {
