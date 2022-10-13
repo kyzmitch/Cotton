@@ -244,20 +244,13 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
-        case .creatingRequest(let urlData, _):
-            let requestedURL: URL
-            if urlData.ipAddressString != nil {
-                requestedURL = urlData.urlWithResolvedDomainName
-            } else {
-                requestedURL = urlData.platformURL
-            }
-            let request = URLRequest(url: requestedURL)
-            state = try state.transition(on: .loadWebView(request))
-        case .updatingWebView(let request, _, _):
-            updateLoadingState(.load(request))
-        case .waitingForNavigation(let request, _, _):
-            updateLoadingState(.ghostedLoad(request))
-        case .finishingLoading(_, let settings, let newURL, let subject, let enable, let urlData):
+        case .creatingRequest(_, _):
+            state = try state.transition(on: .loadWebView)
+        case .updatingWebView(_, let urlInfo):
+            updateLoadingState(.load(urlInfo.urlRequest))
+        case .waitingForNavigation:
+            break
+        case .finishingLoading(let settings, let newURL, let subject, let enable, let urlData):
             // swiftlint:disable:next force_unwrapping
             let updatedInfo = urlData.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
@@ -268,11 +261,11 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .startView)
         case .viewing:
             break
-        case .updatingJS(let request, let settings, let subject, let urlInfo):
+        case .updatingJS(let settings, let subject, let urlInfo):
             context.pluginsProgram.enable(on: subject, context: urlInfo.host(), jsEnabled: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
-            updateLoadingState(.load(request))
+            updateLoadingState(.load(urlInfo.urlRequest))
         }
     }
     

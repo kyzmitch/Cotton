@@ -20,8 +20,6 @@ public enum WebPageLoadingAction: Equatable {
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
-    /// load request which needs to be ignored, needed only to tell that navigation has happened
-    case ghostedLoad(URLRequest)
 }
 
 /// Interface for system's type `WKNavigationAction` from WebKit framework to be able to mock it
