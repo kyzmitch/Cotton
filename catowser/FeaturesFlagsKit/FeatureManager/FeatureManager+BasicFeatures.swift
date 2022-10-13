@@ -40,7 +40,7 @@ extension FeatureManager {
             return .empty
         }
         return source.rxFutureFeatureChanges
-            .filterMap { $0 == feature ? feature : nil }
+            .compactMap { $0 == feature ? feature : nil }
     }
     
     public static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {

@@ -36,6 +36,8 @@ enum WebViewAction {
     case reload
     case goBack
     case goForward
+    /// Similar to `resolveDomainName`
+    case changeDoH(Bool)
 }
 
 extension WebViewAction: CustomStringConvertible {
@@ -73,6 +75,8 @@ extension WebViewAction: CustomStringConvertible {
             return "goBack"
         case .goForward:
             return "goForward"
+        case .changeDoH:
+            return "changeDoH"
         }
     }
 }

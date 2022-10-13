@@ -50,6 +50,10 @@ final class WebViewController: BaseViewController,
     private var cancellable: AnyCancellable?
     /// Combine cancellable for Concurrency Published property
     private var taskHandler: AnyCancellable?
+    /// DoH changes cancellable for combine
+    private var dohCancellable: AnyCancellable?
+    /// DoH changes disposable for rx
+    private var dohDisposable: Disposable?
     
     /// lazy loaded web view to use correct config
     lazy var webView: WKWebView = {
@@ -210,6 +214,8 @@ final class WebViewController: BaseViewController,
 
 private extension WebViewController {
     func unsubscribe() {
+        dohCancellable?.cancel()
+        dohDisposable?.dispose()
         disposable?.dispose()
         cancellable?.cancel()
         taskHandler?.cancel()
@@ -231,9 +237,17 @@ private extension WebViewController {
         case .reactive:
             disposable?.dispose()
             disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
+            dohDisposable?.dispose()
+            dohDisposable = FeatureManager.rxFeatureChanges(for: .dnsOverHTTPSAvailable).producer.startWithValues { [weak self] _ in
+                self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            }
         case .combine:
             cancellable?.cancel()
             cancellable = viewModel.combineWebPageState.sink(receiveValue: onStateChange)
+            dohCancellable?.cancel()
+            dohCancellable = FeatureManager.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { [weak self] _ in
+                self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            }
         case .asyncAwait:
             taskHandler?.cancel()
             taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
