@@ -212,7 +212,7 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
     }
     
     // swiftlint:disable:next function_body_length
@@ -265,14 +265,14 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
         
         // User decides to go forward
         
         vm.goForward()
         let msg2 = "Have to finish loading after forward navigation"
         XCTAssertNotEqual(vm.state, .viewing(settings, urlDataV3), msg2)
-        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlDataV3))
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
         
         // swiftlint:disable:next force_unwrapping
         let navActionV31 = MockedNavAction(urlV3!, .backForward)
