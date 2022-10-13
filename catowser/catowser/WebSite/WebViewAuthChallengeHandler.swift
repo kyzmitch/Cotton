@@ -37,20 +37,24 @@ final class WebViewAuthChallengeHandler {
             completionHandler(.performDefaultHandling, nil)
             return
         }
-        if let currentIPAddress = urlInfo.ipAddressString, currentIPAddress == challenge.protectionSpace.host {
+        let possibleIPAddress = urlInfo.ipAddressString
+        let rawDomainName = urlInfo.domainName.rawString
+        let challengeHost = challenge.protectionSpace.host
+#if DEBUG
+        print("handleServerTrust: domainName[\(rawDomainName)], challengeHost[\(challengeHost)], ip[\(possibleIPAddress ?? "none")]")
+#endif
+        if let ipAddress = possibleIPAddress, ipAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
-                              urlInfo.domainName.rawString,
+                              rawDomainName,
                               completionHandler,
                               completion)
+        } else if !urlInfo.host().isSimilar(name: challenge.protectionSpace.host) {
+            // Here web site is trying to complete navigation
+            // requests for supplementary hosts like analytics.
+            // Obviously they're using own certificates to validate SSL
+            completionHandler(.performDefaultHandling, nil)
+            return
         } else {
-            guard urlInfo.host().isSimilar(name: challenge.protectionSpace.host) else {
-                // Here web site is trying to complete navigation
-                // requests for supplementary hosts like analytics.
-                // Obviously they're using own certificates to validate SSL
-                completionHandler(.performDefaultHandling, nil)
-                return
-            }
-
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         }
@@ -75,18 +79,20 @@ private extension WebViewAuthChallengeHandler {
              */
             
             var certificates = serverTrust.af.certificates
-            print("\(host) has \(certificates.count) certificates")
+#if DEBUG
+            print("handleServerTrust: domain name - \(host) has \(certificates.count) certificates")
             for cert in certificates {
                 let string: String? = SecCertificateCopySubjectSummary(cert) as String?
-                print("certificate info: \(string ?? "no info")")
+                print("handleServerTrust: certificate[\(string ?? "none")]")
             }
+#endif
             _ = certificates.removeFirst()
             try serverTrust.af.setAnchorCertificates(certificates)
             try evaluator.evaluateWithRecovery(serverTrust, forHost: host)
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
         } catch {
-            let msg = "Server trust validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
+            let msg = "handleServerTrust: validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
             print("Error: \(msg)")
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
