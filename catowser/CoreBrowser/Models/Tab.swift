@@ -95,7 +95,7 @@ extension Tab.ContentType: CustomDebugStringConvertible {
         case .blank:
             return ".blank"
         case .site(let site):
-            return ".site(\(site.host.rawString))"
+            return ".site(url[\(site.urlInfo.platformURL.absoluteString)],ip[\(site.urlInfo.ipAddressString ?? "none")])"
         case .homepage:
             return ".homepage"
         case .favorites:
