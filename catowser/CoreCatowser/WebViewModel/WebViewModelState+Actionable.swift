@@ -99,6 +99,18 @@ extension WebViewModelState: Actionable {
             // stays the same, because `.changeJavaScript` action is very similar to `.reload`.
             // Also, we can ignore `jsEnabled` value from `.finishLoading` action for this case.
             nextState = .viewing(settings, urlInfo)
+        case (.viewing(let settings, let urlData),
+              .changeDoH(let enable)):
+            // Handling is similar to when state is `pendingDoHStatus`
+            // and action is `resolveDomainName`, because first need to
+            // make sure that domain name supports DNS over HTTPs
+            if enable {
+                nextState = .checkingDNResolveSupport(urlData, settings)
+            } else {
+                // Need to reload web view anyway, because we don't know previus state of DoH
+                // If ip address was used for URL, this reload would replace it with domain name as needed
+                nextState = .creatingRequest(urlData, settings)
+            }
         default:
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
             throw Error.unexpectedStateForAction(self, action)

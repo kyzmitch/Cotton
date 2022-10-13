@@ -216,6 +216,14 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             print("Wrong state on JS change action: " + error.localizedDescription)
         }
     }
+    
+    public func setDoH(_ enabled: Bool) {
+        do {
+            state = try state.transition(on: .changeDoH(enabled))
+        } catch {
+            print("Wrong state on DoH change action: " + error.localizedDescription)
+        }
+    }
 }
 
 private extension WebViewModelImpl {
@@ -247,7 +255,9 @@ private extension WebViewModelImpl {
         case .creatingRequest:
             state = try state.transition(on: .loadWebView)
         case .updatingWebView(_, let urlInfo):
-            updateLoadingState(.load(urlInfo.urlRequest))
+            // Not storing DoH state in vm state, can fetch it from context
+            let useIPaddress = context.isDohEnabled()
+            updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
         case .waitingForNavigation:
             break
         case .finishingLoading(let settings, let newURL, let subject, let enable, let urlData):
@@ -265,7 +275,9 @@ private extension WebViewModelImpl {
             context.pluginsProgram.enable(on: subject, context: urlInfo.host(), jsEnabled: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
-            updateLoadingState(.load(urlInfo.urlRequest))
+            // Not storing DoH state in vm state, can fetch it from context
+            let useIPaddress = context.isDohEnabled()
+            updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
         }
     }
     

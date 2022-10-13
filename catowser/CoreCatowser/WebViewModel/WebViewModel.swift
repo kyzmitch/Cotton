@@ -39,6 +39,7 @@ public protocol WebViewModel: AnyObject {
     func decidePolicy(_ navigationAction: NavigationActionable,
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool)
+    func setDoH(_ enabled: Bool)
     
     // MARK: - public properties
     
