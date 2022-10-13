@@ -28,7 +28,7 @@ enum WebViewAction {
     case createRequestAnyway(IPAddress?)
     case loadWebView
     case finishLoading(URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
-    case startView
+    case startView(URLInfo)
     
     // middle actions
     
