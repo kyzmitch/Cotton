@@ -51,23 +51,23 @@ extension WebViewAction: CustomStringConvertible {
 #endif
         case .reload:
             return "reload"
-        case .injectPlugins(_):
+        case .injectPlugins:
             return "injectPlugins"
         case .fetchDoHStatus:
             return "fetchDoHStatus"
-        case .checkDNResolvingSupport(_):
+        case .checkDNResolvingSupport:
             return "checkDNResolvingSupport"
-        case .resolveDomainName(_):
+        case .resolveDomainName:
             return "resolveDomainName"
         case .createRequestAnyway:
             return "createRequestAnyway"
-        case .loadWebView(_):
+        case .loadWebView:
             return "loadWebView"
-        case .finishLoading(_, _, _):
+        case .finishLoading:
             return "finishLoading"
         case .startView:
             return "startView"
-        case .changeJavaScript(_, _):
+        case .changeJavaScript:
             return "changeJavaScript"
         case .goBack:
             return "goBack"
