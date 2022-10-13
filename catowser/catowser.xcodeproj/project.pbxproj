@@ -224,7 +224,6 @@
 		8A7B1BAB28EB131F004FC135 /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
 		8A7B1BAC28EB131F004FC135 /* CoreCatowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A7B1BB428EB15CB004FC135 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3FED7B288FC8CA004997E4 /* WebViewModel.swift */; };
-		8A7B1BB528EB15D0004FC135 /* URLData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC19CBC289E2A290021D8ED /* URLData.swift */; };
 		8A7B1BB628EB15D4004FC135 /* WebViewAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */; };
 		8A7B1BB728EB15D8004FC135 /* WebViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */; };
 		8A7B1BB928EB15DD004FC135 /* WebViewModelState+Actionable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */; };
@@ -1077,7 +1076,6 @@
 		8ABDD90727CCF4360028B9DE /* FeatureManager+SpecificEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeatureManager+SpecificEnums.swift"; sourceTree = "<group>"; };
 		8ABF503E27CC1A64007C6427 /* FeaturesFlagsKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeaturesFlagsKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8ABF504027CC1A64007C6427 /* FeaturesFlagsKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeaturesFlagsKit.h; sourceTree = "<group>"; };
-		8AC19CBC289E2A290021D8ED /* URLData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLData.swift; sourceTree = "<group>"; };
 		8AC19CC0289E2F7E0021D8ED /* GoogleDNSStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDNSStrategy.swift; sourceTree = "<group>"; };
 		8AC19CC3289E68F90021D8ED /* DNSResolver+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DNSResolver+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8AC45ECC2458327D007E47EE /* HttpClient+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Combine.swift"; sourceTree = "<group>"; };
@@ -1883,7 +1881,6 @@
 			children = (
 				8A16102728947C0900D45228 /* DNSResolving */,
 				8A3FED7B288FC8CA004997E4 /* WebViewModel.swift */,
-				8AC19CBC289E2A290021D8ED /* URLData.swift */,
 				8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */,
 				8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */,
 				8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */,
@@ -3748,7 +3745,6 @@
 				8A7B1BC428EB16C4004FC135 /* WebSearchAutocomplete.swift in Sources */,
 				8A7B1BC928EB16DA004FC135 /* DDGoAutocompleteStrategy.swift in Sources */,
 				8A7B1BBD28EB1619004FC135 /* DNSResolver+AsyncAwait.swift in Sources */,
-				8A7B1BB528EB15D0004FC135 /* URLData.swift in Sources */,
 				8A7B1BBA28EB15E2004FC135 /* WebViewModelImpl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -55,6 +55,12 @@ public extension URLInfo {
         return platformURL
     }
     
+    /// Returns an URL with ip address in place of host
+    var urlWithResolvedDomainName: URL {
+        // swiftlint:disable:next force_unwrapping
+        return URL(string: urlWithIPaddressWithoutPort())!
+    }
+    
     func sameHost(with url: URL) -> Bool {
         let isSameHost: Bool
         if url.hasIPHost {

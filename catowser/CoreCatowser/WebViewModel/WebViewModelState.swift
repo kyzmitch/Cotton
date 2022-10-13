@@ -13,19 +13,19 @@ import CoreBrowser
 
 enum WebViewModelState {
     case initialized(Site)
-    case pendingPlugins(URLData, Site.Settings)
-    case injectingPlugins(any JSPluginsProgram, URLData, Site.Settings)
-    case pendingDoHStatus(URLData, Site.Settings)
-    case checkingDNResolveSupport(URLData, Site.Settings)
-    case resolvingDN(URLData, Site.Settings)
-    case creatingRequest(URLData, Site.Settings)
-    /// `URLRequest` could have ip address in URL host, so, keeping URLData as well, to not forget original host
-    case updatingWebView(URLRequest, Site.Settings, URLData)
-    case waitingForNavigation(URLRequest, Site.Settings)
-    case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLData)
-    case viewing(URLRequest, Site.Settings)
+    case pendingPlugins(URLInfo, Site.Settings)
+    case injectingPlugins(any JSPluginsProgram, URLInfo, Site.Settings)
+    case pendingDoHStatus(URLInfo, Site.Settings)
+    case checkingDNResolveSupport(URLInfo, Site.Settings)
+    case resolvingDN(URLInfo, Site.Settings)
+    case creatingRequest(URLInfo, Site.Settings)
+    /// `URLRequest` could have ip address in URL host, so, keeping URLInfo as well, to not forget original host
+    case updatingWebView(URLRequest, Site.Settings, URLInfo)
+    case waitingForNavigation(URLRequest, Site.Settings, URLInfo)
+    case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
+    case viewing(URLRequest, Site.Settings, URLInfo)
     
-    case updatingJS(URLRequest, Site.Settings, JavaScriptEvaluateble)
+    case updatingJS(URLRequest, Site.Settings, JavaScriptEvaluateble, URLInfo)
     
     enum Error: LocalizedError {
         case unexpectedStateForAction(WebViewModelState, WebViewAction)
@@ -47,41 +47,33 @@ enum WebViewModelState {
         case .initialized(let site):
             return site.host
         case .pendingPlugins(let uRLData, _):
-            return uRLData.host
+            return uRLData.host()
         case .injectingPlugins(_, let uRLData, _):
-            return uRLData.host
+            return uRLData.host()
         case .pendingDoHStatus(let uRLData, _):
-            return uRLData.host
+            return uRLData.host()
         case .checkingDNResolveSupport(let uRLData, _):
-            return uRLData.host
+            return uRLData.host()
         case .resolvingDN(let uRLData, _):
-            return uRLData.host
+            return uRLData.host()
         case .creatingRequest(let uRLData, _):
-            return uRLData.host
+            return uRLData.host()
         case .updatingWebView(_, _, let urlData):
             // Returns host with domain name, but it is possible to return host with ip address as well
-            return urlData.host
-        case .waitingForNavigation(let uRLRequest, _):
-            // swiftlint:disable:next force_unwrapping
-            let url = uRLRequest.url!
-            // swiftlint:disable:next force_unwrapping
-            return url.kitHost!
+            // host from request argument can't be used, because it could contain an ip address
+            return urlData.host()
+        case .waitingForNavigation(_, _, let urlInfo):
+            return urlInfo.host()
         case .finishingLoading(_, _, _, _, _, let urlData):
-            return urlData.host
-        case .viewing(let uRLRequest, _):
-            // swiftlint:disable:next force_unwrapping
-            let url = uRLRequest.url!
-            // swiftlint:disable:next force_unwrapping
-            return url.kitHost!
-        case .updatingJS(let uRLRequest, _, _):
-            // swiftlint:disable:next force_unwrapping
-            let url = uRLRequest.url!
-            // swiftlint:disable:next force_unwrapping
-            return url.kitHost!
+            return urlData.host()
+        case .viewing(_, _, let uRLInfo):
+            return uRLInfo.host()
+        case .updatingJS(_, _, _, let uRLInfo):
+            return uRLInfo.host()
         }
     }
     
-    /// Return URL with domain name, not with ip address as a host
+    /// Returns URL with domain name, not with ip address as a host
     var url: URL {
         switch self {
         case .initialized(let site):
@@ -100,20 +92,18 @@ enum WebViewModelState {
             return uRLData.platformURL
         case .updatingWebView(_, _, let uRLData):
             return uRLData.platformURL
-        case .waitingForNavigation(let uRLRequest, _):
-            // swiftlint:disable:next force_unwrapping
-            return uRLRequest.url!
+        case .waitingForNavigation(_, _, let uRLData):
+            return uRLData.platformURL
         case .finishingLoading(_, _, _, _, _, let uRLData):
             return uRLData.platformURL
-        case .viewing(let request, _):
-            // swiftlint:disable:next force_unwrapping
-            return request.url!
-        case .updatingJS(let request, _, _):
-            // swiftlint:disable:next force_unwrapping
-            return request.url!
+        case .viewing(_, _, let uRLInfo):
+            return uRLInfo.platformURL
+        case .updatingJS(_, _, _, let uRLData):
+            return uRLData.platformURL
         }
     }
     
+    /// Returns settings which are always present in any VM state
     var settings: Site.Settings {
         switch self {
         case .initialized(let site):
@@ -132,13 +122,13 @@ enum WebViewModelState {
             return settings
         case .updatingWebView(_, let settings, _):
             return settings
-        case .waitingForNavigation(_, let settings):
+        case .waitingForNavigation(_, let settings, _):
             return settings
         case .finishingLoading(_, let settings, _, _, _, _):
             return settings
-        case .viewing(_, let settings):
+        case .viewing(_, let settings, _):
             return settings
-        case .updatingJS(_, let settings, _):
+        case .updatingJS(_, let settings, _, _):
             return settings
         }
     }
@@ -161,22 +151,22 @@ enum WebViewModelState {
         case .creatingRequest(let uRLData, _):
             return uRLData.sameHost(with: url)
         case .updatingWebView(_, _, let urlData):
-            return urlData.host.rawString == url.host || urlData.ipAddress == url.host
-        case .waitingForNavigation(let uRLRequest, _):
-            return uRLRequest.url?.host == url.host
+            return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
+        case .waitingForNavigation(_, _, let urlData):
+            return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
         case .finishingLoading(_, _, _, _, _, let urlData):
-            return urlData.host.rawString == url.host || urlData.ipAddress == url.host
-        case .viewing(let request, _):
-            return request.url?.host == url.host
-        case .updatingJS(let request, _, _):
-            return request.url?.host == url.host
+            return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
+        case .viewing(_, _, let uRLInfo):
+            return uRLInfo.host().rawString == url.host || uRLInfo.ipAddressString == url.host
+        case .updatingJS(_, _, _, let uRLInfo):
+            return uRLInfo.host().rawString == url.host || uRLInfo.ipAddressString == url.host
         }
     }
     
-    var urlData: URLData {
+    var urlInfo: URLInfo {
         switch self {
         case .initialized(let site):
-            return .info(site.urlInfo)
+            return site.urlInfo
         case .pendingPlugins(let uRLData, _):
             return uRLData
         case .injectingPlugins(_, let uRLData, _):
@@ -189,33 +179,19 @@ enum WebViewModelState {
             return uRLData
         case .creatingRequest(let uRLData, _):
             return uRLData
-        case .updatingWebView(_, _, let urlData):
-            return urlData
-        case .waitingForNavigation(let uRLRequest, _):
-            // swiftlint:disable:next force_unwrapping
-            let uRL = uRLRequest.url!
-            return .url(uRL)
+        case .updatingWebView(_, _, let uRLData):
+            return uRLData
+        case .waitingForNavigation(_, _, let urlInfo):
+            return urlInfo
         case .finishingLoading(_, _, _, _, _, let urlData):
             return urlData
-        case .viewing(let uRLRequest, _):
-            // swiftlint:disable:next force_unwrapping
-            let uRL = uRLRequest.url!
-            return .url(uRL)
-        case .updatingJS(let uRLRequest, _, _):
-            // swiftlint:disable:next force_unwrapping
-            let uRL = uRLRequest.url!
-            return .url(uRL)
-        }
-    }
-    
-    var urlInfo: URLInfo? {
-        switch urlData {
-        case .url(let uRL):
-            return URLInfo(uRL)
-        case .info(let uRLInfo):
+        case .viewing(_, _, let uRLInfo):
+            return uRLInfo
+        case .updatingJS(_, _, _, let uRLInfo):
             return uRLInfo
         }
     }
+
 }
 
 extension WebViewModelState: CustomStringConvertible {
@@ -227,13 +203,13 @@ extension WebViewModelState: CustomStringConvertible {
 #else
             return "initialized"
 #endif
-        case .pendingPlugins(_, _):
+        case .pendingPlugins:
             return "pendingPlugins"
-        case .injectingPlugins(_, _, _):
+        case .injectingPlugins:
             return "injectingPlugins"
-        case .pendingDoHStatus(_, _):
+        case .pendingDoHStatus:
             return "pendingDoHStatus"
-        case .checkingDNResolveSupport(_, _):
+        case .checkingDNResolveSupport:
             return "checkingDNResolveSupport"
         case .resolvingDN(let urlData, let settings):
 #if DEBUG
@@ -241,7 +217,7 @@ extension WebViewModelState: CustomStringConvertible {
 #else
             return "resolvingDN"
 #endif
-        case .creatingRequest(_, _):
+        case .creatingRequest:
             return "creatingRequest"
         case .updatingWebView(let request, _, let urlData):
 #if DEBUG
@@ -250,18 +226,18 @@ extension WebViewModelState: CustomStringConvertible {
 #else
             return "updatingWebView"
 #endif
-        case .waitingForNavigation(_, _):
+        case .waitingForNavigation:
             return "waitingForNavigation"
         case .finishingLoading(let request, _, _, _, _, let urlData):
 #if DEBUG
             // swiftlint:disable:next force_unwrapping
-            return "finishingLoading (\(request.url!.absoluteString) -->> ip address \(urlData.ipAddress ?? "none"))"
+            return "finishingLoading (\(request.url!.absoluteString) -->> ip address \(urlData.ipAddressString ?? "none"))"
 #else
             return "finishingLoading"
 #endif
-        case .viewing(_, _):
+        case .viewing:
             return "viewing"
-        case .updatingJS(let request, let settings, let jsSubject):
+        case .updatingJS(let request, let settings, _, let urlData):
 #if DEBUG
             // swiftlint:disable:next force_unwrapping
             return "updatingJS (\(request.url!.absoluteString), \(settings.description))"
@@ -288,16 +264,18 @@ extension WebViewModelState: Equatable {
         case (.updatingWebView(let lRequest, let lSettings, let lData),
               .updatingWebView(let rRequest, let rSettings, let rData)):
             return lRequest == rRequest && lSettings == rSettings && lData == rData
-        case (.viewing(let lRequest, let lSettings), .viewing(let rRequest, let rSettings)):
-            return lRequest == rRequest && lSettings == rSettings
-        case (.waitingForNavigation(let lRequest, let lSettings), .waitingForNavigation(let rRequest, let rSettings)):
-            return lRequest == rRequest && lSettings == rSettings
+        case (.viewing(let lRequest, let lSettings, let lInfo),
+              .viewing(let rRequest, let rSettings, let rInfo)):
+            return lRequest == rRequest && lSettings == rSettings && lInfo == rInfo
+        case (.waitingForNavigation(let lRequest, let lSettings, let lInfo),
+              .waitingForNavigation(let rRequest, let rSettings, let rInfo)):
+            return lRequest == rRequest && lSettings == rSettings && lInfo == rInfo
         case (.resolvingDN(let lData, let lSettings),
               .resolvingDN(let rData, let rSettings)):
             return lData == rData && lSettings == rSettings
-        case (.updatingJS(let lRequest, let lSettings, let lSubject),
-              .updatingJS(let rRequest, let rSettings, let rSubject)):
-            return lRequest == rRequest && lSettings == rSettings /* && lSubject === rSubject */
+        case (.updatingJS(let lRequest, let lSettings, let lSubject, let lInfo),
+              .updatingJS(let rRequest, let rSettings, let rSubject, let rInfo)):
+            return lRequest == rRequest && lSettings == rSettings && lInfo == rInfo && lSubject === rSubject
         default:
             return false
         }

@@ -81,7 +81,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public var settings: Site.Settings { state.settings }
     
-    public var urlInfo: URLInfo? { state.urlInfo }
+    public var urlInfo: URLInfo { state.urlInfo }
     
     public var nativeAppDomainNameString: String? {
         context.nativeApp(for: host)
@@ -230,44 +230,46 @@ private extension WebViewModelImpl {
         case .injectingPlugins(let pluginsProgram, let urlData, let settings):
             let canInject = settings.canLoadPlugins
             pluginsProgram.inject(to: configuration.userContentController,
-                                  context: urlData.host,
+                                  context: urlData.host(),
                                   canInject: canInject)
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
             let enabled = context.isDohEnabled()
             state = try state.transition(on: .resolveDomainName(enabled))
         case .checkingDNResolveSupport(let urlData, _):
-            let dohWillWork = urlData.host.isDoHSupported
+            let dohWillWork = urlData.host().isDoHSupported
             // somehow url from site already or from next page request
             // contained ip address
-            let domainNameAlreadyResolved = urlData.hasIPHost
+            let domainNameAlreadyResolved = urlData.ipAddressString != nil
             state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
         case .creatingRequest(let urlData, _):
-            let requestedURL: URL = urlData.hasIPHost ? urlData.urlWithResolvedDomainName : urlData.platformURL
+            let requestedURL: URL
+            if urlData.ipAddressString != nil {
+                requestedURL = urlData.urlWithResolvedDomainName
+            } else {
+                requestedURL = urlData.platformURL
+            }
             let request = URLRequest(url: requestedURL)
             state = try state.transition(on: .loadWebView(request))
         case .updatingWebView(let request, _, _):
             updateLoadingState(.load(request))
-        case .waitingForNavigation(let request, _):
+        case .waitingForNavigation(let request, _, _):
             updateLoadingState(.ghostedLoad(request))
         case .finishingLoading(_, let settings, let newURL, let subject, let enable, let urlData):
             // swiftlint:disable:next force_unwrapping
-            let updatedInfo = urlData.info.withSimilar(newURL)!
+            let updatedInfo = urlData.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
-            InMemoryDomainSearchProvider.shared.remember(host: updatedInfo.host())
-            context.pluginsProgram.enable(on: subject, context: urlData.info.host(), jsEnabled: enable)
+            let host = updatedInfo.host()
+            InMemoryDomainSearchProvider.shared.remember(host: host)
+            context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
             try context.updateTabContent(site)
             state = try state.transition(on: .startView)
         case .viewing:
             break
-        case .updatingJS(let request, let settings, let subject):
-            // swiftlint:disable:next force_unwrapping
-            let url = request.url!
-            // swiftlint:disable:next force_unwrapping
-            let host = url.kitHost!
-            context.pluginsProgram.enable(on: subject, context: host, jsEnabled: settings.isJSEnabled)
+        case .updatingJS(let request, let settings, let subject, let urlInfo):
+            context.pluginsProgram.enable(on: subject, context: urlInfo.host(), jsEnabled: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             updateLoadingState(.load(request))
@@ -275,11 +277,11 @@ private extension WebViewModelImpl {
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func resolveDomainName(_ urlData: URLData) {
+    func resolveDomainName(_ urlData: URLInfo) {
         // Double checking even if it was checked before
         // to not perform unnecessary network requests
-        guard !urlData.hasIPHost else {
-            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.info.ipAddressString))
+        guard urlData.ipAddressString == nil else {
+            let possibleState = try? state.transition(on: .createRequestAnyway(urlData.ipAddressString))
             guard let nextState = possibleState else {
                 assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                 return

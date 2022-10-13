@@ -49,7 +49,7 @@ public protocol WebViewModel: AnyObject {
     var host: Host { get }
     var currentURL: URL? { get }
     var settings: Site.Settings { get }
-    var urlInfo: URLInfo? { get }
+    var urlInfo: URLInfo { get }
     
     // MARK: - main state observers
     

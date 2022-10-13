@@ -78,10 +78,8 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         vm.load()
         XCTAssertEqual(vm.combineWebPageState.value, .idle)
         // swiftlint:disable:next force_unwrapping
-        let urlInfoV1 = URLInfo(urlV1!)
-        // swiftlint:disable:next force_unwrapping
-        let urlDataV1: URLData = .info(urlInfoV1!)
-        let expectedStateV1: WebViewModelState = .resolvingDN(urlDataV1, settings)
+        let urlInfoV1 = URLInfo(urlV1!)!
+        let expectedStateV1: WebViewModelState = .resolvingDN(urlInfoV1, settings)
         print("actual state: \(vm.state.description)")
         print("expected sta: \(expectedStateV1.description)")
         XCTAssertEqual(vm.state, expectedStateV1)
@@ -90,10 +88,8 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress)
         let urlRequestV1 = URLRequest(url: resolvedUrlV1)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        // swiftlint:disable:next force_unwrapping
-        let urlInfoV11: URLInfo = urlInfoV1!.withIPAddress(ipAddress: exampleIpAddress)
-        let urlDataV11: URLData = .info(urlInfoV11)
-        let expectedStateV11: WebViewModelState = .updatingWebView(urlRequestV1, settings, urlDataV11)
+        let urlInfoV11: URLInfo = urlInfoV1.withIPAddress(ipAddress: exampleIpAddress)
+        let expectedStateV11: WebViewModelState = .updatingWebView(urlRequestV1, settings, urlInfoV11)
         XCTAssertEqual(vm.state, expectedStateV11)
         
         let navActionV1 = MockedNavAction(resolvedUrlV1, .other)
@@ -102,6 +98,6 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         }
         vm.finishLoading(resolvedUrlV1, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings))
+        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV11))
     }
 }
