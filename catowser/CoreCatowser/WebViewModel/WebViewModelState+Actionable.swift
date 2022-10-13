@@ -21,21 +21,21 @@ extension WebViewModelState: Actionable {
         case (.initialized(let site),
               .loadSite):
             nextState = .pendingPlugins(site.urlInfo, site.settings)
-        case (.viewing(_, let settings, _),
+        case (.viewing(let settings, _),
               .loadNextLink(let url)):
             // DoH can be optimized here, if previous URLInfo had same host and resolved ip address
             // swiftlint:disable:next force_unwrapping
             let urlInfo: URLInfo = .init(url)!
             nextState = .pendingPlugins(urlInfo, settings)
-        case (.viewing(let request, let settings, let uRLInfo),
+        case (.viewing(let settings, let uRLInfo),
               .reload):
-            nextState = .waitingForNavigation(request, settings, uRLInfo)
-        case (.viewing(let request, let settings, let uRLInfo),
+            nextState = .waitingForNavigation(settings, uRLInfo)
+        case (.viewing(let settings, let uRLInfo),
               .goBack):
-            nextState = .waitingForNavigation(request, settings, uRLInfo)
-        case (.viewing(let request, let settings, let uRLInfo),
+            nextState = .waitingForNavigation(settings, uRLInfo)
+        case (.viewing(let settings, let uRLInfo),
               .goForward):
-            nextState = .waitingForNavigation(request, settings, uRLInfo)
+            nextState = .waitingForNavigation(settings, uRLInfo)
         case (.pendingPlugins(let urlInfo, let settings),
               .injectPlugins(let pluginsProgram)):
             if let pluginsProgram = pluginsProgram {
@@ -73,34 +73,32 @@ extension WebViewModelState: Actionable {
             }
             nextState = .creatingRequest(updatedUrlData, settings)
         case (.creatingRequest(let urlData, let settings),
-              .loadWebView(let request)):
-            nextState = .updatingWebView(request, settings, urlData)
-        case (.updatingWebView(let request, let settings, let urlData),
+              .loadWebView):
+            nextState = .updatingWebView(settings, urlData)
+        case (.updatingWebView(let settings, let urlData),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled, urlData)
-        case (.waitingForNavigation(let request, let settings, let uRLData),
+            nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, urlData)
+        case (.waitingForNavigation(let settings, let uRLData),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
-            nextState = .finishingLoading(request, settings, finalURL, pluginsSubject, jsEnabled, uRLData)
-        case (.finishingLoading(_, let settings, let finalURL, _, _, let urlData),
+            nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, uRLData)
+        case (.finishingLoading(let settings, _, _, _, let urlData),
               .startView):
-            // Final URL could be with an ip address in place of a host
-            let finalRequest = URLRequest(url: finalURL)
-            nextState = .viewing(finalRequest, settings, urlData)
-        case (.viewing(let request, let settings, let urlInfo),
+            nextState = .viewing(settings, urlData)
+        case (.viewing(let settings, let urlInfo),
               .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {
                 nextState = self
             } else {
                 let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
-                nextState = .updatingJS(request, jsSettings, subject, urlInfo)
+                nextState = .updatingJS(jsSettings, subject, urlInfo)
             }
-        case (.updatingJS(let request, let settings, _, let urlInfo),
+        case (.updatingJS(let settings, _, let urlInfo),
               .finishLoading):
             // No need to use middle `finishingLoading` state because
             // we can be sure that finalURL during JS update web view reload
             // stays the same, because `.changeJavaScript` action is very similar to `.reload`.
             // Also, we can ignore `jsEnabled` value from `.finishLoading` action for this case.
-            nextState = .viewing(request, settings, urlInfo)
+            nextState = .viewing(settings, urlInfo)
         default:
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
             throw Error.unexpectedStateForAction(self, action)

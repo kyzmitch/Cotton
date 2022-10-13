@@ -89,7 +89,7 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         let urlRequestV1 = URLRequest(url: resolvedUrlV1)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
         let urlInfoV11: URLInfo = urlInfoV1.withIPAddress(ipAddress: exampleIpAddress)
-        let expectedStateV11: WebViewModelState = .updatingWebView(urlRequestV1, settings, urlInfoV11)
+        let expectedStateV11: WebViewModelState = .updatingWebView(settings, urlInfoV11)
         XCTAssertEqual(vm.state, expectedStateV11)
         
         let navActionV1 = MockedNavAction(resolvedUrlV1, .other)
@@ -98,6 +98,6 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         }
         vm.finishLoading(resolvedUrlV1, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV11))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV11))
     }
 }

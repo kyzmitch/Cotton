@@ -77,15 +77,13 @@ final class WebViewVMCombineTests: XCTestCase {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
-        let urlRequestV1 = URLRequest(url: urlV1!)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         vm.load()
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
         let errMsg1 = "State should stay the same when wrong action is getting called"
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1), errMsg1)
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1), errMsg1)
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         vm.decidePolicy(navActionV1) { policy in
@@ -94,19 +92,17 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
     
     func testLinkActivation() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
-        let urlRequestV1 = URLRequest(url: urlV1!)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         vm.decidePolicy(navActionV1) { policy in
@@ -114,8 +110,8 @@ final class WebViewVMCombineTests: XCTestCase {
         }
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
         
         // User taps on a link in web view which already displays some web site
         
@@ -125,29 +121,25 @@ final class WebViewVMCombineTests: XCTestCase {
             XCTAssertEqual(policy, .cancel)
         }
         // swiftlint:disable:next force_unwrapping
-        let urlRequestV3 = URLRequest(url: urlV3!)
-        // swiftlint:disable:next force_unwrapping
         let urlDataV3: URLInfo = URLInfo(urlV3!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV3, settings, urlDataV3))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV3))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV3, settings, urlDataV3))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlDataV3.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3))
     }
     
     func testReload() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
-        let urlRequestV1 = URLRequest(url: urlV1!)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         vm.load()
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
         let errMsg1 = "State should stay the same when wrong action is getting called"
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1), errMsg1)
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1), errMsg1)
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         vm.decidePolicy(navActionV1) { policy in
@@ -159,14 +151,13 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
         
         vm.reload()
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.combineWebPageState.value, .ghostedLoad(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
     
     func testGoBack() throws {
@@ -177,7 +168,7 @@ final class WebViewVMCombineTests: XCTestCase {
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         vm.decidePolicy(navActionV1) { policy in
@@ -186,7 +177,7 @@ final class WebViewVMCombineTests: XCTestCase {
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
         
         // User taps on a link in web view which already displays some web site
         
@@ -199,19 +190,19 @@ final class WebViewVMCombineTests: XCTestCase {
         let urlRequestV3 = URLRequest(url: urlV3!)
         // swiftlint:disable:next force_unwrapping
         let urlDataV3: URLInfo = .init(urlV3!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV3, settings, urlDataV3))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV3))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV3, settings, urlDataV3))
+        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3))
         
         // User decided to go back
         
         vm.goBack()
         let msg1 = "Have to finish loading after back navigation"
-        XCTAssertNotEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1), msg1)
-        XCTAssertNotEqual(vm.state, .waitingForNavigation(urlRequestV1, settings, urlInfoV1))
-        XCTAssertEqual(vm.state, .waitingForNavigation(urlRequestV3, settings, urlDataV3))
+        XCTAssertNotEqual(vm.state, .viewing(settings, urlInfoV1), msg1)
+        XCTAssertNotEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlDataV3))
         
         // swiftlint:disable:next force_unwrapping
         let navActionV11 = MockedNavAction(urlV1!, .backForward)
@@ -221,9 +212,7 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        let errMsg1 = "New url is unknown for now on VM level"
-        XCTAssertEqual(vm.combineWebPageState.value, .ghostedLoad(urlRequestV3), errMsg1)
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlDataV3), "New url is expected")
+        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
     }
     
     // swiftlint:disable:next function_body_length
@@ -235,7 +224,7 @@ final class WebViewVMCombineTests: XCTestCase {
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         vm.decidePolicy(navActionV1) { policy in
@@ -244,7 +233,7 @@ final class WebViewVMCombineTests: XCTestCase {
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
         
         // User taps on a link in web view which already displays some web site
         
@@ -257,16 +246,16 @@ final class WebViewVMCombineTests: XCTestCase {
         let urlRequestV3 = URLRequest(url: urlV3!)
         // swiftlint:disable:next force_unwrapping
         let urlDataV3: URLInfo = .init(urlV3!)!
-        XCTAssertEqual(vm.state, .updatingWebView(urlRequestV3, settings, urlDataV3))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV3))
-        XCTAssertEqual(vm.state, .viewing(urlRequestV3, settings, urlDataV3))
+        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3))
         
         vm.goBack()
         let msg1 = "Have to finish loading after back navigation"
-        XCTAssertNotEqual(vm.state, .viewing(urlRequestV1, settings, urlInfoV1), msg1)
-        XCTAssertEqual(vm.state, .waitingForNavigation(urlRequestV3, settings, urlDataV3))
+        XCTAssertNotEqual(vm.state, .viewing(settings, urlInfoV1), msg1)
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlDataV3))
         
         // swiftlint:disable:next force_unwrapping
         let navActionV11 = MockedNavAction(urlV1!, .backForward)
@@ -276,16 +265,14 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        let errMsg1 = "New url is unknown for now on VM level"
-        XCTAssertEqual(vm.combineWebPageState.value, .ghostedLoad(urlRequestV3), errMsg1)
-        XCTAssertEqual(vm.state, .viewing(urlRequestV1, settings, urlDataV3), "New url is expected")
+        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
         
         // User decides to go forward
         
         vm.goForward()
         let msg2 = "Have to finish loading after forward navigation"
-        XCTAssertNotEqual(vm.state, .viewing(urlRequestV1, settings, urlDataV3), msg2)
-        XCTAssertEqual(vm.state, .waitingForNavigation(urlRequestV1, settings, urlDataV3))
+        XCTAssertNotEqual(vm.state, .viewing(settings, urlDataV3), msg2)
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlDataV3))
         
         // swiftlint:disable:next force_unwrapping
         let navActionV31 = MockedNavAction(urlV3!, .backForward)
@@ -295,8 +282,6 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
-        let errMsg2 = "New url is unknown for now on VM level"
-        XCTAssertEqual(vm.combineWebPageState.value, .ghostedLoad(urlRequestV1), errMsg2)
-        XCTAssertEqual(vm.state, .viewing(urlRequestV3, settings, urlDataV3), "New url is expected")
+        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
     }
 }

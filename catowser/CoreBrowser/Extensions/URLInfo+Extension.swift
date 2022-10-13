@@ -61,6 +61,18 @@ public extension URLInfo {
         return URL(string: urlWithIPaddressWithoutPort())!
     }
     
+    /// Constructs a URLRequest depending on current host
+    var urlRequest: URLRequest {
+        let requestedURL: URL
+        if ipAddressString != nil {
+            requestedURL = urlWithResolvedDomainName
+        } else {
+            requestedURL = platformURL
+        }
+        let request = URLRequest(url: requestedURL)
+        return request
+    }
+    
     func sameHost(with url: URL) -> Bool {
         let isSameHost: Bool
         if url.hasIPHost {

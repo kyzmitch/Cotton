@@ -19,13 +19,12 @@ enum WebViewModelState {
     case checkingDNResolveSupport(URLInfo, Site.Settings)
     case resolvingDN(URLInfo, Site.Settings)
     case creatingRequest(URLInfo, Site.Settings)
-    /// `URLRequest` could have ip address in URL host, so, keeping URLInfo as well, to not forget original host
-    case updatingWebView(URLRequest, Site.Settings, URLInfo)
-    case waitingForNavigation(URLRequest, Site.Settings, URLInfo)
-    case finishingLoading(URLRequest, Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
-    case viewing(URLRequest, Site.Settings, URLInfo)
+    case updatingWebView(Site.Settings, URLInfo)
+    case waitingForNavigation(Site.Settings, URLInfo)
+    case finishingLoading(Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
+    case viewing(Site.Settings, URLInfo)
     
-    case updatingJS(URLRequest, Site.Settings, JavaScriptEvaluateble, URLInfo)
+    case updatingJS(Site.Settings, JavaScriptEvaluateble, URLInfo)
     
     enum Error: LocalizedError {
         case unexpectedStateForAction(WebViewModelState, WebViewAction)
@@ -58,17 +57,17 @@ enum WebViewModelState {
             return uRLData.host()
         case .creatingRequest(let uRLData, _):
             return uRLData.host()
-        case .updatingWebView(_, _, let urlData):
+        case .updatingWebView(_, let urlData):
             // Returns host with domain name, but it is possible to return host with ip address as well
             // host from request argument can't be used, because it could contain an ip address
             return urlData.host()
-        case .waitingForNavigation(_, _, let urlInfo):
+        case .waitingForNavigation(_, let urlInfo):
             return urlInfo.host()
-        case .finishingLoading(_, _, _, _, _, let urlData):
+        case .finishingLoading(_, _, _, _, let urlData):
             return urlData.host()
-        case .viewing(_, _, let uRLInfo):
+        case .viewing(_, let uRLInfo):
             return uRLInfo.host()
-        case .updatingJS(_, _, _, let uRLInfo):
+        case .updatingJS(_, _, let uRLInfo):
             return uRLInfo.host()
         }
     }
@@ -90,15 +89,15 @@ enum WebViewModelState {
             return uRLData.platformURL
         case .creatingRequest(let uRLData, _):
             return uRLData.platformURL
-        case .updatingWebView(_, _, let uRLData):
+        case .updatingWebView(_, let uRLData):
             return uRLData.platformURL
-        case .waitingForNavigation(_, _, let uRLData):
+        case .waitingForNavigation(_, let uRLData):
             return uRLData.platformURL
-        case .finishingLoading(_, _, _, _, _, let uRLData):
+        case .finishingLoading(_, _, _, _, let uRLData):
             return uRLData.platformURL
-        case .viewing(_, _, let uRLInfo):
+        case .viewing(_, let uRLInfo):
             return uRLInfo.platformURL
-        case .updatingJS(_, _, _, let uRLData):
+        case .updatingJS(_, _, let uRLData):
             return uRLData.platformURL
         }
     }
@@ -120,15 +119,15 @@ enum WebViewModelState {
             return settings
         case .creatingRequest(_, let settings):
             return settings
-        case .updatingWebView(_, let settings, _):
+        case .updatingWebView(let settings, _):
             return settings
-        case .waitingForNavigation(_, let settings, _):
+        case .waitingForNavigation(let settings, _):
             return settings
-        case .finishingLoading(_, let settings, _, _, _, _):
+        case .finishingLoading(let settings, _, _, _, _):
             return settings
-        case .viewing(_, let settings, _):
+        case .viewing(let settings, _):
             return settings
-        case .updatingJS(_, let settings, _, _):
+        case .updatingJS(let settings, _, _):
             return settings
         }
     }
@@ -150,15 +149,15 @@ enum WebViewModelState {
             return uRLData.sameHost(with: url)
         case .creatingRequest(let uRLData, _):
             return uRLData.sameHost(with: url)
-        case .updatingWebView(_, _, let urlData):
+        case .updatingWebView(_, let urlData):
             return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
-        case .waitingForNavigation(_, _, let urlData):
+        case .waitingForNavigation(_, let urlData):
             return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
-        case .finishingLoading(_, _, _, _, _, let urlData):
+        case .finishingLoading(_, _, _, _, let urlData):
             return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
-        case .viewing(_, _, let uRLInfo):
+        case .viewing(_, let uRLInfo):
             return uRLInfo.host().rawString == url.host || uRLInfo.ipAddressString == url.host
-        case .updatingJS(_, _, _, let uRLInfo):
+        case .updatingJS(_, _, let uRLInfo):
             return uRLInfo.host().rawString == url.host || uRLInfo.ipAddressString == url.host
         }
     }
@@ -179,15 +178,15 @@ enum WebViewModelState {
             return uRLData
         case .creatingRequest(let uRLData, _):
             return uRLData
-        case .updatingWebView(_, _, let uRLData):
+        case .updatingWebView(_, let uRLData):
             return uRLData
-        case .waitingForNavigation(_, _, let urlInfo):
+        case .waitingForNavigation(_, let urlInfo):
             return urlInfo
-        case .finishingLoading(_, _, _, _, _, let urlData):
+        case .finishingLoading(_, _, _, _, let urlData):
             return urlData
-        case .viewing(_, _, let uRLInfo):
+        case .viewing(_, let uRLInfo):
             return uRLInfo
-        case .updatingJS(_, _, _, let uRLInfo):
+        case .updatingJS(_, _, let uRLInfo):
             return uRLInfo
         }
     }
@@ -219,29 +218,29 @@ extension WebViewModelState: CustomStringConvertible {
 #endif
         case .creatingRequest:
             return "creatingRequest"
-        case .updatingWebView(let request, _, let urlData):
+        case .updatingWebView(_, let urlData):
 #if DEBUG
-            return "updatingWebView (request[\(request.url?.absoluteString ?? "none")], [\(urlData.debugDescription)])"
+            return "updatingWebView ([\(urlData.debugDescription)])"
 #else
             return "updatingWebView"
 #endif
-        case .waitingForNavigation(let request, _, let urlInfo):
+        case .waitingForNavigation(_, let urlInfo):
 #if DEBUG
-            return "waitingForNavigation (request[\(request.url?.absoluteString ?? "none")], [\(urlInfo.debugDescription)])"
+            return "waitingForNavigation ([\(urlInfo.debugDescription)])"
 #else
             return "waitingForNavigation"
 #endif
-        case .finishingLoading(let request, _, _, _, _, let urlInfo):
+        case .finishingLoading(_, _, _, _, let urlInfo):
 #if DEBUG
-            return "finishingLoading (request[\(request.url?.absoluteString ?? "none")], [\(urlInfo.debugDescription)])"
+            return "finishingLoading ([\(urlInfo.debugDescription)])"
 #else
             return "finishingLoading"
 #endif
         case .viewing:
             return "viewing"
-        case .updatingJS(let request, let settings, _, let urlData):
+        case .updatingJS(let settings, _, let urlData):
 #if DEBUG
-            return "updatingJS (request[\(request.url?.absoluteString ?? "none")], settings[\(settings.description)], [\(urlData.debugDescription)]"
+            return "updatingJS (settings[\(settings.description)], [\(urlData.debugDescription)]"
 #else
             return "updatingJS"
 #endif
@@ -262,21 +261,21 @@ extension WebViewModelState: Equatable {
                 return false
             }
             return lData == rData && lSettings == rSettings
-        case (.updatingWebView(let lRequest, let lSettings, let lData),
-              .updatingWebView(let rRequest, let rSettings, let rData)):
-            return lRequest == rRequest && lSettings == rSettings && lData == rData
-        case (.viewing(let lRequest, let lSettings, let lInfo),
-              .viewing(let rRequest, let rSettings, let rInfo)):
-            return lRequest == rRequest && lSettings == rSettings && lInfo == rInfo
-        case (.waitingForNavigation(let lRequest, let lSettings, let lInfo),
-              .waitingForNavigation(let rRequest, let rSettings, let rInfo)):
-            return lRequest == rRequest && lSettings == rSettings && lInfo == rInfo
+        case (.updatingWebView(let lSettings, let lData),
+              .updatingWebView(let rSettings, let rData)):
+            return lSettings == rSettings && lData == rData
+        case (.viewing(let lSettings, let lInfo),
+              .viewing(let rSettings, let rInfo)):
+            return lSettings == rSettings && lInfo == rInfo
+        case (.waitingForNavigation(let lSettings, let lInfo),
+              .waitingForNavigation(let rSettings, let rInfo)):
+            return lSettings == rSettings && lInfo == rInfo
         case (.resolvingDN(let lData, let lSettings),
               .resolvingDN(let rData, let rSettings)):
             return lData == rData && lSettings == rSettings
-        case (.updatingJS(let lRequest, let lSettings, let lSubject, let lInfo),
-              .updatingJS(let rRequest, let rSettings, let rSubject, let rInfo)):
-            return lRequest == rRequest && lSettings == rSettings && lInfo == rInfo && lSubject === rSubject
+        case (.updatingJS(let lSettings, let lSubject, let lInfo),
+              .updatingJS(let rSettings, let rSubject, let rInfo)):
+            return lSettings == rSettings && lInfo == rInfo && lSubject === rSubject
         default:
             return false
         }

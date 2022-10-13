@@ -26,7 +26,7 @@ enum WebViewAction {
     case checkDNResolvingSupport(Bool)
     case resolveDomainName(_ useDoH: Bool)
     case createRequestAnyway(IPAddress?)
-    case loadWebView(URLRequest)
+    case loadWebView
     case finishLoading(URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
     case startView
     
