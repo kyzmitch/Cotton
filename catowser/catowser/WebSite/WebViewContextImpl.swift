@@ -40,6 +40,10 @@ public final class WebViewContextImpl: WebViewContext {
     }
     
     public func updateTabContent(_ site: Site) throws {
-        try TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        let content: Tab.ContentType = .site(site)
+#if DEBUG
+        print("Web VM tab update: \(content.debugDescription)")
+#endif
+        try TabsListManager.shared.replaceSelected(tabContent: content)
     }
 }

@@ -288,7 +288,7 @@ extension TabsListManager: TabsSubject {
         
         tabContentUpdateDisposable?.dispose()
         tabContentUpdateDisposable = storage
-            .update(tab: tabTuple.tab)
+            .update(tab: newTab)
             .observe(on: scheduler)
             .startWithResult({ [weak self] (result) in
                 switch result {
