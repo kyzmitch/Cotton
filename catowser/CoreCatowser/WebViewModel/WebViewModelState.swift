@@ -21,6 +21,7 @@ enum WebViewModelState {
     case creatingRequest(URLInfo, Site.Settings)
     case updatingWebView(Site.Settings, URLInfo)
     case waitingForNavigation(Site.Settings, URLInfo)
+    case solvingAuthChallenge(Site.Settings, URLInfo, URLAuthenticationChallenge, AuthHandler)
     case finishingLoading(Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
     case viewing(Site.Settings, URLInfo)
     
@@ -61,6 +62,8 @@ enum WebViewModelState {
             // Returns host with domain name, but it is possible to return host with ip address as well
             // host from request argument can't be used, because it could contain an ip address
             return urlData.host()
+        case .solvingAuthChallenge(_, let urlData, _, _):
+            return urlData.host()
         case .waitingForNavigation(_, let urlInfo):
             return urlInfo.host()
         case .finishingLoading(_, _, _, _, let urlData):
@@ -91,6 +94,8 @@ enum WebViewModelState {
             return uRLData.platformURL
         case .updatingWebView(_, let uRLData):
             return uRLData.platformURL
+        case .solvingAuthChallenge(_, let urlData, _, _):
+            return urlData.platformURL
         case .waitingForNavigation(_, let uRLData):
             return uRLData.platformURL
         case .finishingLoading(_, _, _, _, let uRLData):
@@ -120,6 +125,8 @@ enum WebViewModelState {
         case .creatingRequest(_, let settings):
             return settings
         case .updatingWebView(let settings, _):
+            return settings
+        case .solvingAuthChallenge(let settings, _, _, _):
             return settings
         case .waitingForNavigation(let settings, _):
             return settings
@@ -151,6 +158,8 @@ enum WebViewModelState {
             return uRLData.sameHost(with: url)
         case .updatingWebView(_, let urlData):
             return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
+        case .solvingAuthChallenge(_, let urlData, _, _):
+            return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
         case .waitingForNavigation(_, let urlData):
             return urlData.host().rawString == url.host || urlData.ipAddressString == url.host
         case .finishingLoading(_, _, _, _, let urlData):
@@ -180,6 +189,8 @@ enum WebViewModelState {
             return uRLData
         case .updatingWebView(_, let uRLData):
             return uRLData
+        case .solvingAuthChallenge(_, let urlData, _, _):
+            return urlData
         case .waitingForNavigation(_, let urlInfo):
             return urlInfo
         case .finishingLoading(_, _, _, _, let urlData):
@@ -224,6 +235,8 @@ extension WebViewModelState: CustomStringConvertible {
 #else
             return "updatingWebView"
 #endif
+        case .solvingAuthChallenge(_, _, _, _):
+            return "solvingAuthChallenge"
         case .waitingForNavigation(_, let urlInfo):
 #if DEBUG
             return "waitingForNavigation ([\(urlInfo.debugDescription)])"
@@ -268,6 +281,9 @@ extension WebViewModelState: Equatable {
         case (.updatingWebView(let lSettings, let lData),
               .updatingWebView(let rSettings, let rData)):
             return lSettings == rSettings && lData == rData
+        case (.solvingAuthChallenge(let lSettings, let lData, let lChallenge, _),
+              .solvingAuthChallenge(let rSettings, let rData, let rChallenge, _)):
+            return lSettings == rSettings && lData == rData && lChallenge == rChallenge
         case (.viewing(let lSettings, let lInfo),
               .viewing(let rSettings, let rInfo)):
             return lSettings == rSettings && lInfo == rInfo

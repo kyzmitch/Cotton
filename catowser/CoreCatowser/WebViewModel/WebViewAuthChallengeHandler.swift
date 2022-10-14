@@ -11,24 +11,19 @@ import CoreHttpKit
 import Alamofire
 
 final class WebViewAuthChallengeHandler {
-    typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
-    
     let urlInfo: URLInfo
     let challenge: URLAuthenticationChallenge
     let completionHandler: AuthHandler
-    let webView: WKWebView
     
     init(_ urlInfo: URLInfo,
-         _ webView: WKWebView,
          _ challenge: URLAuthenticationChallenge,
          _ completionHandler: @escaping AuthHandler) {
         self.urlInfo = urlInfo
-        self.webView = webView
         self.challenge = challenge
         self.completionHandler = completionHandler
     }
     
-    func solve(completion: @escaping () -> Void) {
+    func solve(errorHandler: @escaping () -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
             completionHandler(.performDefaultHandling, nil)
             return
@@ -41,13 +36,19 @@ final class WebViewAuthChallengeHandler {
         let rawDomainName = urlInfo.domainName.rawString
         let challengeHost = challenge.protectionSpace.host
 #if DEBUG
-        print("handleServerTrust: domainName[\(rawDomainName)], challengeHost[\(challengeHost)], ip[\(possibleIPAddress ?? "none")]")
+        print("""
+handleServerTrust:
+domainName[\(rawDomainName)],
+challengeHost[\(challengeHost)],
+ip[\(possibleIPAddress ?? "none")]
+"""
+        )
 #endif
         if let ipAddress = possibleIPAddress, ipAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
                               rawDomainName,
                               completionHandler,
-                              completion)
+                              errorHandler)
         } else if !urlInfo.host().isSimilar(name: challenge.protectionSpace.host) {
             // Here web site is trying to complete navigation
             // requests for supplementary hosts like analytics.
@@ -65,7 +66,7 @@ private extension WebViewAuthChallengeHandler {
     func handleServerTrust(_ serverTrust: SecTrust,
                            _ host: String,
                            _ completionHandler: @escaping AuthHandler,
-                           _ completion: @escaping () -> Void) {
+                           _ errorHandler: @escaping () -> Void) {
         
         do {
             let evaluator: DefaultTrustEvaluator = .ipHostEvaluator()
@@ -96,7 +97,7 @@ private extension WebViewAuthChallengeHandler {
             print("Error: \(msg)")
             let credential = URLCredential(trust: serverTrust)
             completionHandler(.useCredential, credential)
-            completion()
+            errorHandler()
         }
     }
 }

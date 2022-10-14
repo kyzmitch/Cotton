@@ -194,10 +194,7 @@ final class WebViewController: BaseViewController,
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
-        handler.solve { [weak self] in
-            self?.externalNavigationDelegate?.showProgress(false)
-        }
+        viewModel.solveAuthChallenge(challenge, authHandler: completionHandler)
     }
     
     func webView(_ webView: WKWebView,

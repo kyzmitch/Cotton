@@ -145,7 +145,6 @@
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
-		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A1C1BD9280B1E2D009B9363 /* HttpClient+Kotlin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1BD8280B1E2D009B9363 /* HttpClient+Kotlin.swift */; };
 		8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
 		8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
@@ -319,8 +318,6 @@
 		8A815D3D28F16367007A6926 /* JSPluginsProgramImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */; };
 		8A82CDF02351095700607162 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* HttpClient.swift */; };
 		8A84DC562677867E000C69DB /* HttpClient+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84DC552677867E000C69DB /* HttpClient+URLSessionDelegate.swift */; };
-		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
-		8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90636824332376009D786E /* URL+CoreExtensions.swift */; };
 		8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
@@ -411,6 +408,7 @@
 		8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */; };
 		8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */; };
 		8ACE7BEE28ED6E0F001CBAED /* WebViewMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */; };
+		8AD1601528F8655500273893 /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0A2447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
 		8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */ = {isa = PBXBuildFile; fileRef = 8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */; };
@@ -443,6 +441,8 @@
 		8AD4F54128F4936B009C4BDC /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54428F493B8009C4BDC /* Alamofire */; };
 		8AD4F54728F4941A009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54628F4941A009C4BDC /* ReactiveSwift */; };
+		8AD51F1E28F91C0300B1AE1F /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
+		8AD51F2028F91C3200B1AE1F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD51F1F28F91C3200B1AE1F /* Alamofire */; };
 		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
 		8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
@@ -1213,6 +1213,7 @@
 				8A7B1BD128EB16F9004FC135 /* ReactiveHttpKit.framework in Frameworks */,
 				8AD4F51A28F49208009C4BDC /* ReactiveSwift in Frameworks */,
 				8A7B1BD528EB170E004FC135 /* Combine.framework in Frameworks */,
+				8AD51F2028F91C3200B1AE1F /* Alamofire in Frameworks */,
 				8A7B1BCC28EB16F4004FC135 /* HttpKit.framework in Frameworks */,
 				8A7B1BEF28EB18DB004FC135 /* CoreHttpKit.xcframework in Frameworks */,
 				8A7B1BE428EB1771004FC135 /* CoreBrowser.framework in Frameworks */,
@@ -1576,7 +1577,6 @@
 				841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */,
 				60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */,
 				607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */,
-				8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */,
 				8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */,
 				8A7B1BFB28EB2E59004FC135 /* WebViewContextImpl.swift */,
 			);
@@ -1790,7 +1790,6 @@
 			isa = PBXGroup;
 			children = (
 				8AE8D046280D3CA900FADE3A /* Extensions */,
-				8A978D4723F348CB007ECB0C /* AuthChallenge */,
 				8A1A1CE627B1963F0052A2A3 /* TransportAdapters */,
 				8AE6D1752350FF52006316AD /* Endpoints */,
 				8A62AEDA2351CDDB001A9C83 /* Servers */,
@@ -1850,6 +1849,7 @@
 				8A5FD6A826AF34570019384A /* AppErrors.swift */,
 				8A964E3924867A9400A0AABE /* SiteSettings+Extensions.swift */,
 				8A7B1BFE28EB3269004FC135 /* Site+Extensions.swift */,
+				8A978D4823F34909007ECB0C /* AuthChallenge.swift */,
 				8A7B1BC028EB1679004FC135 /* SearchViewModel */,
 				8A7B1BB328EB1512004FC135 /* WebViewModel */,
 			);
@@ -1878,6 +1878,7 @@
 				8A3FED7E288FD1A6004997E4 /* WebViewModelImpl.swift */,
 				8AC5873B289C3DA00038A7B5 /* WebViewContext.swift */,
 				60380EF622A15504007F06FB /* JSPluginsSource.swift */,
+				8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */,
 			);
 			path = WebViewModel;
 			sourceTree = "<group>";
@@ -1959,15 +1960,6 @@
 				8ABA3CD72522623200E304E2 /* TabsResource.swift */,
 			);
 			path = DB;
-			sourceTree = "<group>";
-		};
-		8A978D4723F348CB007ECB0C /* AuthChallenge */ = {
-			isa = PBXGroup;
-			children = (
-				8A978D4823F34909007ECB0C /* AuthChallenge.swift */,
-			);
-			name = AuthChallenge;
-			path = ../HttpKit/AuthChallenge;
 			sourceTree = "<group>";
 		};
 		8A9980672845460800E18762 /* Plugins */ = {
@@ -2482,6 +2474,7 @@
 			name = CoreCatowser;
 			packageProductDependencies = (
 				8AD4F51928F49208009C4BDC /* ReactiveSwift */,
+				8AD51F1F28F91C3200B1AE1F /* Alamofire */,
 			);
 			productName = CoreCatowser;
 			productReference = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */;
@@ -3633,7 +3626,6 @@
 				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
 				8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				8A1C1C262485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
-				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
 				8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
 				8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
@@ -3692,7 +3684,6 @@
 				8A2771FB268E4AC900D8878C /* SearchEngine.swift in Sources */,
 				8AB4A1B327B55484008030FB /* AlamofireHTTPRxVoidAdaptee.swift in Sources */,
 				8A2771A3268E4AA800D8878C /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift in Sources */,
-				8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */,
 				755E107A27C0FBC600D90AD0 /* DuckDuckGoSearchEndpoint.swift in Sources */,
 				8ABDB0B127B24E3900D6EDE7 /* Downloadable.swift in Sources */,
 				755E107727BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift in Sources */,
@@ -3715,6 +3706,7 @@
 				8A7B1BC128EB169A004FC135 /* SearchSuggestionsViewModel.swift in Sources */,
 				8A7B1BB428EB15CB004FC135 /* WebViewModel.swift in Sources */,
 				8A7B1BC628EB16CC004FC135 /* RestClientContext.swift in Sources */,
+				8AD51F1E28F91C0300B1AE1F /* AuthChallenge.swift in Sources */,
 				8A7B1BF828EB2D7D004FC135 /* SiteSettings+Extensions.swift in Sources */,
 				8A7B1BB728EB15D8004FC135 /* WebViewModelState.swift in Sources */,
 				8A7B1BC228EB16A0004FC135 /* SearchSuggestionsViewModelImpl.swift in Sources */,
@@ -3722,6 +3714,7 @@
 				8A7B1BBC28EB1614004FC135 /* DNSResolver.swift in Sources */,
 				8A7B1BF228EB28D3004FC135 /* AppErrors.swift in Sources */,
 				8A7B1BC528EB16C8004FC135 /* WebSearchAutocomplete+AsyncAwait.swift in Sources */,
+				8AD1601528F8655500273893 /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A7B1BC328EB16A4004FC135 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift in Sources */,
 				8A7B1BCB28EB16DF004FC135 /* GoogleAutocompleteStrategy.swift in Sources */,
 				8A7B1BBB28EB15E6004FC135 /* WebViewContext.swift in Sources */,
@@ -3807,7 +3800,6 @@
 				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
 				8AB8018B27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				8A1C1C272485115C0098F2F1 /* MasterRouter+UISearchBarDelegate.swift in Sources */,
-				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,
 				8A1C1C1B2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
 				8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
@@ -5570,6 +5562,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */;
 			productName = ReactiveSwift;
+		};
+		8AD51F1F28F91C3200B1AE1F /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 

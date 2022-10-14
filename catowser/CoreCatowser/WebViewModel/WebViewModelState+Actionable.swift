@@ -81,7 +81,7 @@ extension WebViewModelState: Actionable {
         case (.creatingRequest(let urlData, let settings),
               .loadWebView):
             nextState = .updatingWebView(settings, urlData)
-        case (.updatingWebView(let settings, let urlData),
+        case (.solvingAuthChallenge(let settings, let urlData, _, _),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, urlData)
         case (.waitingForNavigation(let settings, let urlInfo),
@@ -117,6 +117,9 @@ extension WebViewModelState: Actionable {
                 // If ip address was used for URL, this reload would replace it with domain name as needed
                 nextState = .creatingRequest(urlData, settings)
             }
+        case (.updatingWebView(let settings, let urlInfo),
+              .solveAuth(let challenge, let authHandler)):
+            nextState = .solvingAuthChallenge(settings, urlInfo, challenge, authHandler)
         default:
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
             throw Error.unexpectedStateForAction(self, action)

@@ -28,6 +28,17 @@ public protocol NavigationActionable: AnyObject {
     var request: URLRequest { get }
 }
 
+public typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+
+/**
+ Web View view model interface
+ 
+ URL loading sequence:
+ 1. solveAuthChallenge
+ 2. decidePolicy
+ 2.1 loadNextLink (optional internal action)
+ 3. finishLoading
+ */
 public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
@@ -40,6 +51,8 @@ public protocol WebViewModel: AnyObject {
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
     func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool)
     func setDoH(_ enabled: Bool)
+    func solveAuthChallenge(_ challenge: URLAuthenticationChallenge,
+                            authHandler: @escaping AuthHandler)
     
     // MARK: - public properties
     

@@ -38,6 +38,7 @@ enum WebViewAction {
     case goForward
     /// Similar to `resolveDomainName`
     case changeDoH(Bool)
+    case solveAuth(URLAuthenticationChallenge, AuthHandler)
 }
 
 extension WebViewAction: CustomStringConvertible {
@@ -77,6 +78,8 @@ extension WebViewAction: CustomStringConvertible {
             return "goForward"
         case .changeDoH:
             return "changeDoH"
+        case .solveAuth:
+            return "solveAuth"
         }
     }
 }

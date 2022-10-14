@@ -150,7 +150,6 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     public func decidePolicy(_ navigationAction: NavigationActionable,
                              _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.navigationType.needsHandling else {
@@ -220,6 +219,15 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             print("Wrong state on DoH change action: " + error.localizedDescription)
         }
     }
+    
+    public func solveAuthChallenge(_ challenge: URLAuthenticationChallenge,
+                                   authHandler: @escaping AuthHandler) {
+        do {
+            state = try state.transition(on: .solveAuth(challenge, authHandler))
+        } catch {
+            print("Wrong state on Auth challenge solve action: " + error.localizedDescription)
+        }
+    }
 }
 
 private extension WebViewModelImpl {
@@ -254,6 +262,11 @@ private extension WebViewModelImpl {
             // Not storing DoH state in vm state, can fetch it from context
             let useIPaddress = context.isDohEnabled()
             updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
+        case .solvingAuthChallenge(_, let urlInfo, let challenge, let authHandler):
+            let handler = WebViewAuthChallengeHandler(urlInfo, challenge, authHandler)
+            handler.solve {
+                
+            }
         case .waitingForNavigation:
             break
         case .finishingLoading(let settings, let newURL, let subject, let enable, let urlData):
