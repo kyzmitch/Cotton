@@ -126,6 +126,9 @@ extension WebViewModelState: Actionable {
         case (.solvingAuthChallenge(let settings, let urlInfo, _, _),
               .solveAuth(let challenge, let authHandler)):
             nextState = .solvingAuthChallenge(settings, urlInfo, challenge, authHandler)
+        case (.viewing(let settings, let urlInfo),
+              .solveAuth(let challenge, let authHandler)):
+            nextState = .solvingAuthChallenge(settings, urlInfo, challenge, authHandler)
         default:
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
             throw Error.unexpectedStateForAction(self, action)
