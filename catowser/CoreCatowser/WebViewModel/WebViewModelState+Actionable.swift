@@ -21,12 +21,18 @@ extension WebViewModelState: Actionable {
         case (.initialized(let site),
               .loadSite):
             nextState = .pendingPlugins(site.urlInfo, site.settings)
-        case (.viewing(let settings, _),
+        case (.viewing(let settings, let urlInfo),
               .loadNextLink(let url)):
             // DoH can be optimized here, if previous URLInfo had same host and resolved ip address
-            // swiftlint:disable:next force_unwrapping
-            let urlInfo: URLInfo = .init(url)!
-            nextState = .pendingPlugins(urlInfo, settings)
+            let updatedURLInfo: URLInfo
+            if url.hasIPHost {
+                // swiftlint:disable:next force_unwrapping
+                updatedURLInfo = urlInfo.withSimilar(url)!
+            } else {
+                // swiftlint:disable:next force_unwrapping
+                updatedURLInfo = .init(url)!
+            }
+            nextState = .pendingPlugins(updatedURLInfo, settings)
         case (.viewing(let settings, let uRLInfo),
               .reload):
             nextState = .waitingForNavigation(settings, uRLInfo)

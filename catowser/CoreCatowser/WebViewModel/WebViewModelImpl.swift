@@ -77,7 +77,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public var host: Host { state.host }
     
-    public var currentURL: URL? { state.url }
+    public var currentURL: URL? { state.platformURL }
     
     public var settings: Site.Settings { state.settings }
     
@@ -180,17 +180,13 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         
         switch scheme {
         case .http, .https:
-            guard state.url != url else {
+            let currentURLinfo = state.urlInfo
+            if currentURLinfo.platformURL == url ||
+              (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
                 decisionHandler(.allow)
                 // No need to change vm state
                 // because it is the same URL which was provided
                 // in `.load` or `.loadNextLink`
-                return
-            }
-            guard !url.hasIPHost else {
-                // Always allow navigation for ip addresses
-                // to not save them in vm state
-                decisionHandler(.allow)
                 return
             }
             do {
