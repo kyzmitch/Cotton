@@ -1,5 +1,5 @@
 //
-//  MasterRouter+TagsRouterInterface.swift
+//  MainRouter+TagsRouterInterface.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -8,7 +8,7 @@
 
 import JSPlugins
 
-extension MasterRouter: TagsRouterInterface {
+extension MainRouter: TagsRouterInterface {
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
         tagsSiteDataSource = .instagram(nodes)
         linkTagsController.setLinks(nodes.count, for: .video)

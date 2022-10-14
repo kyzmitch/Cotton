@@ -1,5 +1,5 @@
 //
-//  MasterRouter.swift
+//  MainRouter.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 03/04/2019.
@@ -22,7 +22,7 @@ protocol MediaLinksPresenter: AnyObject {
 
 /// Should contain copies for references to all needed constraints and view controllers.
 /// NSObject subclass to support system delegate protocol.
-final class MasterRouter: NSObject {
+final class MainRouter: NSObject {
     /// The table to display search suggestions list
     func createSuggestionsController() -> SearchSuggestionsViewController {
         // It seems it should be computed property
@@ -104,7 +104,7 @@ final class MasterRouter: NSObject {
         return osDescription.html
     }
 
-    typealias LinksRouterPresenter = AnyViewController & MasterDelegate
+    typealias LinksRouterPresenter = AnyViewController & MainDelegate
 
     private(set) weak var presenter: LinksRouterPresenter!
     /// Need to update this navigation delegate each time it changes in router holder
@@ -274,7 +274,7 @@ final class MasterRouter: NSObject {
     }
 }
 
-extension MasterRouter: SiteLifetimeInterface {
+extension MainRouter: SiteLifetimeInterface {
     func showProgress(_ show: Bool) {
         if show {
             hiddenWebLoadConstraint?.isActive = false
@@ -296,7 +296,7 @@ extension MasterRouter: SiteLifetimeInterface {
     }
 }
 
-extension MasterRouter: GlobalMenuDelegate {
+extension MainRouter: GlobalMenuDelegate {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
         showTabMenuIfNeeded(from: sourceView,
                             and: sourceRect,
@@ -304,7 +304,7 @@ extension MasterRouter: GlobalMenuDelegate {
     }
 }
 
-fileprivate extension MasterRouter {
+fileprivate extension MainRouter {
     func showTabMenuIfNeeded(from sourceView: UIView,
                              and sourceRect: CGRect,
                              menuStyle: MenuModelStyle) {
@@ -364,7 +364,7 @@ fileprivate extension MasterRouter {
     }
 }
 
-extension MasterRouter: SearchSuggestionsListDelegate {
+extension MainRouter: SearchSuggestionsListDelegate {
     func didSelect(_ content: SuggestionType) {
         hideSearchController()
 
@@ -391,7 +391,7 @@ extension MasterRouter: SearchSuggestionsListDelegate {
     }
 }
 
-extension MasterRouter: DonwloadPanelDelegate {
+extension MainRouter: DonwloadPanelDelegate {
     func didPressDownloads(to hide: Bool) {
         if hide {
             hideFilesGreedIfNeeded()

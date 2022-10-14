@@ -1,5 +1,5 @@
 //
-//  MasterBrowserViewController.swift
+//  MainBrowserViewController.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 27/09/2017.
@@ -24,14 +24,14 @@ protocol TabRendererInterface: AnyViewController {
     func open(tabContent: Tab.ContentType)
 }
 
-final class MasterBrowserViewController: BaseViewController {
+final class MainBrowserViewController: BaseViewController {
 
     init() {
         super.init(nibName: nil, bundle: nil)
     }
 
     /// Router and layout handler for supplementary views.
-    private var linksRouter: MasterRouter!
+    private var linksRouter: MainRouter!
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -114,7 +114,7 @@ final class MasterBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to: view)
         }
 
-        linksRouter = MasterRouter(viewController: self)
+        linksRouter = MainRouter(viewController: self)
 
         add(asChildViewController: linksRouter.searchBarController.viewController, to: view)
         view.addSubview(webLoadProgressView)
@@ -335,7 +335,7 @@ final class MasterBrowserViewController: BaseViewController {
     }
 }
 
-extension MasterBrowserViewController: TabRendererInterface {
+extension MainBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
         linksRouter.closeTags()
 
@@ -432,7 +432,7 @@ extension MasterBrowserViewController: TabRendererInterface {
     }
 }
 
-private extension MasterBrowserViewController {
+private extension MainBrowserViewController {
     func navigationComponent() -> FullSiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return toolbarViewController
@@ -483,9 +483,9 @@ private extension MasterBrowserViewController {
     }
 }
 
-extension MasterBrowserViewController: AnyViewController {}
+extension MainBrowserViewController: AnyViewController {}
 
-extension MasterBrowserViewController: MasterDelegate {
+extension MainBrowserViewController: MainDelegate {
     var popoverSourceView: UIView {
         return containerView
     }
@@ -517,7 +517,7 @@ extension MasterBrowserViewController: MasterDelegate {
     }
 }
 
-extension MasterBrowserViewController: TabsObserver {
+extension MainBrowserViewController: TabsObserver {
     func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         open(tabContent: content)
     }
@@ -545,7 +545,7 @@ extension MasterBrowserViewController: TabsObserver {
     }
 }
 
-extension MasterBrowserViewController: SiteNavigationComponent {
+extension MainBrowserViewController: SiteNavigationComponent {
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         navigationComponent()?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
     }
@@ -562,21 +562,21 @@ extension MasterBrowserViewController: SiteNavigationComponent {
     }
 }
 
-extension MasterBrowserViewController: InstagramContentDelegate {
+extension MainBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linksRouter.openTagsFor(instagram: nodes)
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
-extension MasterBrowserViewController: BasePluginContentDelegate {
+extension MainBrowserViewController: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
         linksRouter.openTagsFor(html: tags)
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
-extension MasterBrowserViewController: SiteExternalNavigationDelegate {
+extension MainBrowserViewController: SiteExternalNavigationDelegate {
     func didUpdateBackNavigation(to canGoBack: Bool) {
         navigationComponent()?.changeBackButton(to: canGoBack)
     }

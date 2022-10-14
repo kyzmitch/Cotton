@@ -1,5 +1,5 @@
 //
-//  MasterRouter+UISearchBarDelegate.swift
+//  MainRouter+UISearchBarDelegate.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MasterRouter: UISearchBarDelegate {
+extension MainRouter: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty || searchText.looksLikeAURL() {
             hideSearchController()
