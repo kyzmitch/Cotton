@@ -59,6 +59,7 @@ extension FeatureManager {
         }
         return source.currentEnumValue(of: feature)
 #else
+        // We don't need to change this in Release builds
         return feature.defaultEnumValue
 #endif
     }

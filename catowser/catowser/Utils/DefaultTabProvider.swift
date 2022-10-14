@@ -25,29 +25,16 @@ final class DefaultTabProvider {
                                             blockPopups: blockPopups,
                                             isJSEnabled: isJsEnabled,
                                             canLoadPlugins: true)
-        let instagramImage = UIImage(named: "instagram")
-        let ig = Site.create(urlString: "https://www.instagram.com",
-                      customTitle: "Instagram",
-                      image: instagramImage,
-                      settings: settings)
-        let youtubeImage = UIImage(named: "youtube")
-        let tube = Site.create(urlString: "https://youtube.com",
-                        customTitle: "Youtube",
-                        image: youtubeImage,
-                        settings: settings)
         let opennet = Site.create(urlString: "https://opennet.ru",
                            customTitle: "OpenNet",
                            settings: settings)
-        let meduza = Site.create(urlString: "https://meduza.io",
-                          customTitle: "Meduza",
-                          settings: settings)
         let yahooFinance = Site.create(urlString: "https://finance.yahoo.com",
                                 customTitle: "Yahoo Finance",
                                 settings: settings)
         let github = Site.create(urlString: "https://github.com",
                           customTitle: "GitHub",
                           settings: settings)
-        array = [ig, tube, opennet, meduza, yahooFinance, github]
+        array = [opennet, yahooFinance, github]
         return array.compactMap {$0}
     }()
     
@@ -58,10 +45,12 @@ final class DefaultTabProvider {
 
 extension DefaultTabProvider: TabsStates {
     var addPosition: AddedTabPosition {
-        return FeatureManager.tabAddPositionValue()
+        FeatureManager.tabAddPositionValue()
     }
     
-    var contentState: Tab.ContentType { .topSites }
+    var contentState: Tab.ContentType {
+        FeatureManager.tabDefaultContentValue().contentType
+    }
     
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }
     

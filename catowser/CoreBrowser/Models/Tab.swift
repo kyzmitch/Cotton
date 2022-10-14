@@ -89,6 +89,12 @@ public extension Tab {
     }
 }
 
+extension Tab.ContentType: CaseIterable {
+    public static var allCases: [Tab.ContentType] {
+        [.blank, .homepage, .topSites, .favorites]
+    }
+}
+
 extension Tab.ContentType: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
