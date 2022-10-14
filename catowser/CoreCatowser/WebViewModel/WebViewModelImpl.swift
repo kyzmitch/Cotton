@@ -222,6 +222,11 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func solveAuthChallenge(_ challenge: URLAuthenticationChallenge,
                                    authHandler: @escaping AuthHandler) {
+#if DEBUG
+        let incomingHost = challenge.protectionSpace.host
+        let currentDomainName = state.urlInfo.domainName.rawString
+        print("web view auth challenge incoming[\(incomingHost)], current[\(currentDomainName)]")
+#endif
         do {
             state = try state.transition(on: .solveAuth(challenge, authHandler))
         } catch {
@@ -264,8 +269,11 @@ private extension WebViewModelImpl {
             updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
         case .solvingAuthChallenge(_, let urlInfo, let challenge, let authHandler):
             let handler = WebViewAuthChallengeHandler(urlInfo, challenge, authHandler)
-            handler.solve {
-                
+            do {
+                try handler.solve()
+            } catch {
+                print("Fail to solve auth challenge: \(error.localizedDescription)")
+                updateLoadingState(.stopLoadingProgress)
             }
         case .waitingForNavigation:
             break

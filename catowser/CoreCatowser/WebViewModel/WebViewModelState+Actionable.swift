@@ -81,6 +81,9 @@ extension WebViewModelState: Actionable {
         case (.creatingRequest(let urlData, let settings),
               .loadWebView):
             nextState = .updatingWebView(settings, urlData)
+        case (.updatingWebView(let settings, let urlData),
+              .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
+            nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, urlData)
         case (.solvingAuthChallenge(let settings, let urlData, _, _),
               .finishLoading(let finalURL, let pluginsSubject, let jsEnabled)):
             nextState = .finishingLoading(settings, finalURL, pluginsSubject, jsEnabled, urlData)
@@ -118,6 +121,9 @@ extension WebViewModelState: Actionable {
                 nextState = .creatingRequest(urlData, settings)
             }
         case (.updatingWebView(let settings, let urlInfo),
+              .solveAuth(let challenge, let authHandler)):
+            nextState = .solvingAuthChallenge(settings, urlInfo, challenge, authHandler)
+        case (.solvingAuthChallenge(let settings, let urlInfo, _, _),
               .solveAuth(let challenge, let authHandler)):
             nextState = .solvingAuthChallenge(settings, urlInfo, challenge, authHandler)
         default:

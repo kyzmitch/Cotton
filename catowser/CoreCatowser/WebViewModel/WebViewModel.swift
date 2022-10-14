@@ -20,6 +20,7 @@ public enum WebPageLoadingAction: Equatable {
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
+    case stopLoadingProgress
 }
 
 /// Interface for system's type `WKNavigationAction` from WebKit framework to be able to mock it

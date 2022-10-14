@@ -128,6 +128,8 @@ final class WebViewController: BaseViewController,
             recreateWebView(forceRecreate: true)
         case .reattachViewObservers:
             reattachWebViewObservers()
+        case .stopLoadingProgress:
+            externalNavigationDelegate?.showProgress(false)
         }
     }
     
