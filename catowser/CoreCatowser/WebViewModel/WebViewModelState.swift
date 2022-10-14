@@ -73,7 +73,7 @@ enum WebViewModelState {
     }
     
     /// Returns URL with domain name, not with ip address as a host
-    var url: URL {
+    var platformURL: URL {
         switch self {
         case .initialized(let site):
             return site.urlInfo.platformURL
