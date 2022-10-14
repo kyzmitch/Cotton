@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           width: UIScreen.main.bounds.width,
                           height: UIScreen.main.bounds.height)
         window = UIWindow(frame: rect)
-        let rootViewController = MasterBrowserViewController()
+        let rootViewController = MainBrowserViewController()
         window?.rootViewController = rootViewController
         window?.makeKeyAndVisible()
         

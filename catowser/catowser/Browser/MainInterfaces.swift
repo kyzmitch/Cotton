@@ -1,5 +1,5 @@
 //
-//  MasterInterfaces.swift
+//  MainInterfaces.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -11,7 +11,7 @@ import JSPlugins
 import CoreHttpKit
 import CoreBrowser
 
-protocol MasterDelegate: AnyObject {
+protocol MainDelegate: AnyObject {
     var keyboardHeight: CGFloat? { get set }
     var toolbarHeight: CGFloat { get }
     var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
