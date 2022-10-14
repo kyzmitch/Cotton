@@ -39,6 +39,11 @@ extension AddedTabPosition: EnumDefaultValueSupportable {
 
 extension TabContentDefaultState: EnumDefaultValueSupportable {
     public var defaultValue: TabContentDefaultState {
-        return .favorites
+#if DEBUG
+        return TabContentDefaultState.topSites
+#else
+        // In Release builds only User can decide which web sites to show by default
+        return TabContentDefaultState.favorites
+#endif
     }
 }
