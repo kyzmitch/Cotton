@@ -101,7 +101,7 @@ final class MainBrowserViewController: BaseViewController {
 
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
-    private var previousTabContent: Tab.ContentType?
+    private lazy var previousTabContent: Tab.ContentType = FeatureManager.tabDefaultContentValue().contentType
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
@@ -339,31 +339,29 @@ extension MainBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
         linksRouter.closeTags()
 
-        if let currentTabContentType = previousTabContent {
-            switch currentTabContentType {
-            case .site:
-                // need to stop any video/audio on corresponding web view
-                // before removing it from parent view controller.
-                // on iphones the video is always played in full-screen (probably need to invent workaround)
-                // https://webkit.org/blog/6784/new-video-policies-for-ios/
-                // "and, on iPhone, the <video> will enter fullscreen when starting playback."
-                // on ipads it is played in normal mode, so, this is why need to stop/pause it
-                if let currentWebViewVC = currentWebViewController {
-                    // also need to invalidate and cancel all observations
-                    // in viewDidDisappear, and not in dealloc,
-                    // because currently web view controller reference
-                    // stored in reuse manager which probably
-                    // not needed anymore even with unsolved memory issue when it's
-                    // a lot of tabs are opened.
-                    // It is because it's very tricky to save navigation history
-                    // for reused web view and for some other reasons.
-                    currentWebViewVC.viewController.removeFromChild()
-                }
-            case .topSites:
-                topSitesController.viewController.removeFromChild()
-            default:
-                blankWebPageController.removeFromChild()
+        switch previousTabContent {
+        case .site:
+            // need to stop any video/audio on corresponding web view
+            // before removing it from parent view controller.
+            // on iphones the video is always played in full-screen (probably need to invent workaround)
+            // https://webkit.org/blog/6784/new-video-policies-for-ios/
+            // "and, on iPhone, the <video> will enter fullscreen when starting playback."
+            // on ipads it is played in normal mode, so, this is why need to stop/pause it
+            if let currentWebViewVC = currentWebViewController {
+                // also need to invalidate and cancel all observations
+                // in viewDidDisappear, and not in dealloc,
+                // because currently web view controller reference
+                // stored in reuse manager which probably
+                // not needed anymore even with unsolved memory issue when it's
+                // a lot of tabs are opened.
+                // It is because it's very tricky to save navigation history
+                // for reused web view and for some other reasons.
+                currentWebViewVC.viewController.removeFromChild()
             }
+        case .topSites:
+            topSitesController.viewController.removeFromChild()
+        default:
+            blankWebPageController.removeFromChild()
         }
 
         switch tabContent {
@@ -425,6 +423,7 @@ extension MainBrowserViewController: TabRendererInterface {
 
         add(asChildViewController: blankWebPageController, to: containerView)
         let blankView: UIView = blankWebPageController.view
+        blankView.translatesAutoresizingMaskIntoConstraints = false
         blankView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
         blankView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
         blankView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
@@ -523,13 +522,11 @@ extension MainBrowserViewController: TabsObserver {
     }
 
     func tabDidReplace(_ tab: Tab, at index: Int) {
-        if let currentContentType = previousTabContent {
-            switch currentContentType {
-            case .site:
-                break
-            default:
-                open(tabContent: tab.contentType)
-            }
+        switch previousTabContent {
+        case .site:
+            break
+        default:
+            open(tabContent: tab.contentType)
         }
 
         // need update navigation if the same tab was updated
