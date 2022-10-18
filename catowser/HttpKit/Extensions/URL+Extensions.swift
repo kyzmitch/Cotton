@@ -39,7 +39,8 @@ typealias HostPublisher = Result<String, DnsError>.Publisher
 public typealias ResolvedURLPublisher = Result<URL, DnsError>.Publisher
 
 extension URL {
-    public var kitHost: Host? {
+    /// Have to use module name for Host type, becuase for macOS variant there is `Foundation.Host`
+    public var kitHost: CoreHttpKit.Host? {
         guard let hostString = host else {
             return nil
         }

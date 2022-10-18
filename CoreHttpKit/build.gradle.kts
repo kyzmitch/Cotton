@@ -58,6 +58,7 @@ multiplatformSwiftPackage {
     swiftToolsVersion("5.7")
     targetPlatforms {
         iOS { v("13") }
+        macOS { v("12.3") }
     }
 }
 
@@ -68,6 +69,12 @@ kotlin {
     ios {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
+    macosX64 {
+        binaries.framework {
             baseName = frameworkName
             xcf.add(this)
         }

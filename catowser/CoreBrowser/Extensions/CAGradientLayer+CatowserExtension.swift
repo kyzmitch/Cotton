@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension CAGradientLayer {
     public static func lightBackgroundGradientLayer(bounds: CGRect, lightTop: Bool = true) -> CAGradientLayer {

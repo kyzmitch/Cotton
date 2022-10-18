@@ -11,7 +11,7 @@ import HttpKit
 import ReactiveSwift
 import Combine
 
-public protocol SearchAutocompleteStrategy: AnyObject {
+public protocol SearchAutocompleteStrategy: AnyObject, AutoMockable {
     associatedtype Context: RestClientContext
     
     init(_ context: Context)

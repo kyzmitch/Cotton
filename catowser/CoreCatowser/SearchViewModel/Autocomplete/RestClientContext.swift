@@ -14,7 +14,7 @@ import CoreHttpKit
 import ReactiveHttpKit
 import BrowserNetworking
 
-public protocol RestClientContext: AnyObject {
+public protocol RestClientContext: AnyObject, AutoMockable {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
