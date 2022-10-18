@@ -301,7 +301,7 @@ extension TabsListManager: TabsSubject {
         var newTab = tabTuple.tab
         let tabIndex = tabTuple.index
         newTab.contentType = tabContent
-        newTab._preview = nil
+        newTab.previewData = nil
         
         tabContentUpdateDisposable?.dispose()
         tabContentUpdateDisposable = storage
