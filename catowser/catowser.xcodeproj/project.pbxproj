@@ -369,6 +369,8 @@
 		8AB70EA627B7B518003FB59B /* HTTPAdapter+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB70EA527B7B518003FB59B /* HTTPAdapter+Rx.swift */; };
 		8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB8018927C3E597002D6628 /* BaseMenuView.swift */; };
 		8AB8018B27C3E597002D6628 /* BaseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB8018927C3E597002D6628 /* BaseMenuView.swift */; };
+		8AB9BE0E28FEBA34002063C2 /* AutoMockable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9BE0D28FEBA34002063C2 /* AutoMockable.swift */; };
+		8AB9BE0F28FEFD84002063C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607CC66622A5505F0037E5EC /* UIKit.framework */; platformFilter = ios; };
 		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
@@ -1058,6 +1060,8 @@
 		8AB70EA327B7B214003FB59B /* RxObserverWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxObserverWrapper.swift; sourceTree = "<group>"; };
 		8AB70EA527B7B518003FB59B /* HTTPAdapter+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPAdapter+Rx.swift"; sourceTree = "<group>"; };
 		8AB8018927C3E597002D6628 /* BaseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMenuView.swift; sourceTree = "<group>"; };
+		8AB9BE0928FEB17E002063C2 /* SearchSuggestionsVMCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMCombineTests.swift; sourceTree = "<group>"; };
+		8AB9BE0D28FEBA34002063C2 /* AutoMockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.swift; sourceTree = "<group>"; };
 		8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsDBClient.swift; sourceTree = "<group>"; };
 		8ABA3CD12522602900E304E2 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		8ABA3CD42522608000E304E2 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
@@ -1146,6 +1150,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AB9BE0F28FEFD84002063C2 /* UIKit.framework in Frameworks */,
 				721DF7B158CBE52302D9227B /* Pods_JSPlugins.framework in Frameworks */,
 				8AD4F51228F491C8009C4BDC /* ReactiveSwift in Frameworks */,
 				8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */,
@@ -1850,6 +1855,7 @@
 				8A5FD6A826AF34570019384A /* AppErrors.swift */,
 				8A964E3924867A9400A0AABE /* SiteSettings+Extensions.swift */,
 				8A7B1BFE28EB3269004FC135 /* Site+Extensions.swift */,
+				8AB9BE0D28FEBA34002063C2 /* AutoMockable.swift */,
 				8A7B1BC028EB1679004FC135 /* SearchViewModel */,
 				8A7B1BB328EB1512004FC135 /* WebViewModel */,
 			);
@@ -1862,6 +1868,7 @@
 				8A7B1BA628EB131F004FC135 /* WebViewVMCombineTests.swift */,
 				8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */,
 				8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift */,
+				8AB9BE0928FEB17E002063C2 /* SearchSuggestionsVMCombineTests.swift */,
 				8A06D6F828EC2FB6001CB63D /* Mocks */,
 			);
 			path = CoreCatowserTests;
@@ -3735,6 +3742,7 @@
 				8A7B1BC428EB16C4004FC135 /* WebSearchAutocomplete.swift in Sources */,
 				8A7B1BC928EB16DA004FC135 /* DDGoAutocompleteStrategy.swift in Sources */,
 				8A7B1BBD28EB1619004FC135 /* DNSResolver+AsyncAwait.swift in Sources */,
+				8AB9BE0E28FEBA34002063C2 /* AutoMockable.swift in Sources */,
 				8A7B1BBA28EB15E2004FC135 /* WebViewModelImpl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4225,7 +4233,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.JSPlugins;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4261,7 +4271,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.JSPlugins;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4295,7 +4307,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4328,7 +4342,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4549,7 +4565,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.BrowserNetworking.debug;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4583,7 +4601,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.BrowserNetworking;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -4619,9 +4639,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreCatowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4657,9 +4677,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreCatowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4685,12 +4705,11 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreCatowserTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -4709,12 +4728,11 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreCatowserTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -4961,7 +4979,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.ReactiveHttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4998,7 +5018,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.ReactiveHttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5036,7 +5058,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.FeaturesFlagsKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5073,7 +5097,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.FeaturesFlagsKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5162,7 +5188,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5198,7 +5226,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -5235,7 +5265,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5272,7 +5304,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

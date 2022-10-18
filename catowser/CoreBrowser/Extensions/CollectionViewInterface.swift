@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 private struct CollectionViewSizes {
     static let compactNumberOfColumnsThin = 2

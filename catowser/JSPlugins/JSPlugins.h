@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for JSPlugins.
 FOUNDATION_EXPORT double JSPluginsVersionNumber;

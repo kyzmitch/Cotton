@@ -16,17 +16,41 @@ Features
 
 Building the code
 -----------------
-1. `make`
+1.`make`
 2. open Kotlin CoreHttpKit folder using `InteliJ IDEA`
 3. run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
-4. `cd catowser/`
-5. `pod install`
+4.`cd catowser/`
+5.`pod install`
 6. Open `catowser.xcworkspace`
 7. Build `Cotton` or `Cotton dev` build target
 
 Design documents
 -----------------
-https://github.com/kyzmitch/CatowserEvolution
+Private repo https://github.com/kyzmitch/CatowserEvolution
+
+## Dependencies
+_____________________
+### SwiftSoup
+Used to parse HTML content of the loaded web pages to extract video tags and other info. 
+https://github.com/scinfu/SwiftSoup
+### Alamofire
+Used as current transport for the REST calls. Can be replaced easily with something else. 
+https://github.com/Alamofire/Alamofire 
+### ReactiveSwift
+Used to be main API for async source code. Some places are already migrated to Combine or Concurrency, but not all. It is possible to change currently used Async API. 
+https://github.com/ReactiveCocoa/ReactiveSwift
+### SWXMLHash
+Used to parse OpenSearch XML files which described search plugins. To be able to extend currently used search providers by including new XML files.
+https://github.com/drmohundro/SWXMLHash
+### AlamofireImage
+Used to download favicons for the web sites.
+https://github.com/Alamofire/AlamofireImage
+### SwiftLint
+Compile/Run time checks for Swift source code. 
+https://github.com/realm/SwiftLint
+### Sourcery
+Used to generate simple mocks for the unit tests. Can't be used for the Swift protocols with associated types.
+https://github.com/krzysztofzablocki/Sourcery
 
 ## Screenshots
 

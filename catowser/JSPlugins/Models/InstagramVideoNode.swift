@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Describes INSTAGRAM video post json object
 public struct InstagramVideoNode: Decodable, VideoFileNameble {
