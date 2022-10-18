@@ -14,7 +14,7 @@ private struct CollectionViewSizes {
     static let numberOfColumnsWide = 3
 }
 
-public protocol CollectionViewInterface: AnyObject {
+protocol CollectionViewInterface: AnyObject {
     var traitCollection: UITraitCollection { get }
 }
 

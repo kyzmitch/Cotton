@@ -8,7 +8,7 @@
 
 import UIKit
 
-public extension UIViewController {
+extension UIViewController {
     func removeFromChild() {
         willMove(toParent: nil)
         removeFromParent()

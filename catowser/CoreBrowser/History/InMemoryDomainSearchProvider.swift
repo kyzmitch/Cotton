@@ -39,7 +39,7 @@ extension InMemoryDomainSearchProvider: DomainsHistory {
         return words
     }
 
-    public func remember(host: Host) {
+    public func remember(host: CoreHttpKit.Host) {
         storage.insert(word: host.rawString)
         if let withoutWww = host.rawString.withoutPrefix("www.") {
             storage.insert(word: withoutWww)
