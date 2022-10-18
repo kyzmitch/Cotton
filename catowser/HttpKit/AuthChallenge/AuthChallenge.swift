@@ -70,10 +70,14 @@ extension DefaultTrustEvaluator {
             
             switch output.result {
             case .recoverableTrustFailure:
+#if os(iOS)
                 guard let cookie = SecTrustCopyExceptions(trust) else {
                     struct OpaqueCookieNil: Error {}
                     throw OpaqueCookieNil()
                 }
+#elseif os(macOS)
+                let cookie = SecTrustCopyExceptions(trust)
+#endif
                 SecTrustSetExceptions(trust, cookie)
                 guard SecTrustSetExceptions(trust, cookie) else {
                     throw AFError.serverTrustEvaluationFailed(reason: reason)

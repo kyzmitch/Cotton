@@ -128,6 +128,8 @@ final class WebViewController: BaseViewController,
             recreateWebView(forceRecreate: true)
         case .reattachViewObservers:
             reattachWebViewObservers()
+        case .openApp(let url):
+            UIApplication.shared.open(url, options: [:])
         }
     }
     

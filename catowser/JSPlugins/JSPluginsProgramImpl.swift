@@ -23,7 +23,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
         self.plugins = plugins
     }
 
-    public func inject(to visitor: WKUserContentController, context: Host, canInject: Bool) {
+    public func inject(to visitor: WKUserContentController, context: CoreHttpKit.Host, canInject: Bool) {
         guard !plugins.isEmpty else {
             return
         }
@@ -39,7 +39,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
         }
     }
 
-    public func enable(on webView: JavaScriptEvaluateble, context: Host, jsEnabled: Bool) {
+    public func enable(on webView: JavaScriptEvaluateble, context: CoreHttpKit.Host, jsEnabled: Bool) {
         guard !plugins.isEmpty else {
             return
         }

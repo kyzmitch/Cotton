@@ -18,11 +18,11 @@ final class MockedJSPluginsProgram: JSPluginsProgram {
         return lhs.plugins.count == rhs.plugins.count
     }
     
-    func inject(to visitor: WKUserContentController, context: Host, canInject: Bool) {
+    func inject(to visitor: WKUserContentController, context: CoreHttpKit.Host, canInject: Bool) {
         
     }
     
-    func enable(on webView: JSPlugins.JavaScriptEvaluateble, context: Host, jsEnabled: Bool) {
+    func enable(on webView: JSPlugins.JavaScriptEvaluateble, context: CoreHttpKit.Host, jsEnabled: Bool) {
         
     }
 }

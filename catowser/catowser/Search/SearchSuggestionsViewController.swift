@@ -133,7 +133,7 @@ extension SearchSuggestionsViewController /* UITableViewDataSource */ {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: .searchSuggestionCellId, for: indexPath)
-        cell.textLabel?.text = state.value(from: indexPath)
+        cell.textLabel?.text = state.value(from: indexPath.row, section: indexPath.section)
         return cell
     }
 }
@@ -142,7 +142,7 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let text = state.value(from: indexPath) else {
+        guard let text = state.value(from: indexPath.row, section: indexPath.section) else {
             return
         }
 
