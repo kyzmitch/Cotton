@@ -6,7 +6,6 @@
 //  Copyright © 2017 andreiermoshin. All rights reserved.
 //
 
-import UIKit
 import ReactiveSwift
 import CoreHttpKit
 
@@ -157,25 +156,9 @@ public struct Tab {
         return contentType.title
     }
     
-    /// Since this is a reference type, we should make it private and use custom getter/setter to make a copy
-    /// To keep this Tab type as a value type
-    private var _preview: UIImage?
-    
-    /// Preview image of the site if content is .site
-    public var preview: UIImage? {
-        mutating get {
-            // https://www.hackingwithswift.com/example-code/language/
-            // how-to-safely-use-reference-types-inside-value-types-with-isknownuniquelyreferenced
-            if !isKnownUniquelyReferenced(&_preview) {
-                _preview = _preview?.copy() as? UIImage
-            }
-            return _preview
-        }
-        
-        set {
-            _preview = newValue
-        }
-    }
+    /// Not using `UIImage` to not depend on UIKit
+    public var _preview: Data?
+
 
     public var searchBarContent: String {
         return contentType.searchBarContent
@@ -183,30 +166,6 @@ public struct Tab {
     
     public var site: Site? {
         return contentType.site
-    }
-
-    public func titleColor(_ selectedId: UUID) -> UIColor {
-        if selectedId == id {
-            return .lightGrayText
-        } else {
-            return .darkGrayText
-        }
-    }
-
-    public func backgroundColor(_ selectedId: UUID) -> UIColor {
-        if selectedId == id {
-            return .superLightGray
-        } else {
-            return .normallyLightGray
-        }
-    }
-
-    func tabCurvesColour(_ selectedId: UUID) -> UIColor {
-        if selectedId == id {
-            return .superLightGray
-        } else {
-            return .normallyLightGray
-        }
     }
     
     public func isSelected(_ selectedId: UUID) -> Bool {
@@ -216,8 +175,6 @@ public struct Tab {
     public func getVisualState(_ selectedId: UUID) -> VisualState {
         return isSelected(selectedId) ? .selected : .deselected
     }
-    
-    public let realBackgroundColour = UIColor.clear
 
     /**
      Initializes an instance of `Tab` type.
@@ -239,13 +196,6 @@ extension Tab: Equatable {
     public static func == (lhs: Tab, rhs: Tab) -> Bool {
         return lhs.id == rhs.id
     }
-}
-
-fileprivate extension UIColor {
-    static let superLightGray = UIColor(displayP3Red: 0.96, green: 0.96, blue: 0.96, alpha: 1.0)
-    static let normallyLightGray = UIColor(displayP3Red: 0.71, green: 0.71, blue: 0.71, alpha: 1.0)
-    static let darkGrayText = UIColor(displayP3Red: 0.32, green: 0.32, blue: 0.32, alpha: 1.0)
-    static let lightGrayText = UIColor(displayP3Red: 0.14, green: 0.14, blue: 0.14, alpha: 1.0)
 }
 
 fileprivate extension String {

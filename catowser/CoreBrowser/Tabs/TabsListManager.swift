@@ -8,7 +8,13 @@
 
 import Foundation
 import ReactiveSwift
-import UIKit
+
+public enum TabsListError: LocalizedError {
+    case notInitializedYet
+    case selectedNotFound
+    case wrongTabContent
+    case wrongTabIndexToReplace
+}
 
 /**
  Tabs list manager.
@@ -159,11 +165,21 @@ public final class TabsListManager {
         }
         return tabTuple.tab
     }
-
-    fileprivate enum TabsListError: LocalizedError {
-        case notInitializedYet
-        case selectedNotFound
-        case wrongTabContent
+    
+    /// Returns index of selected tab
+    public func selectedIndex() throws -> Int {
+        guard let tabTuple = tabs.value.element(by: selectedId) else {
+            throw TabsListError.notInitializedYet
+        }
+        return tabTuple.index
+    }
+    
+    /// Replaces tab at specific index
+    public func replaceInMemory(_ tab: Tab, _ index: Int) throws {
+        guard index >= 0 && index < tabs.value.count else {
+            throw TabsListError.wrongTabIndexToReplace
+        }
+        tabs.value[index] = tab
     }
 }
 
@@ -285,7 +301,7 @@ extension TabsListManager: TabsSubject {
         var newTab = tabTuple.tab
         let tabIndex = tabTuple.index
         newTab.contentType = tabContent
-        newTab.preview = nil
+        newTab._preview = nil
         
         tabContentUpdateDisposable?.dispose()
         tabContentUpdateDisposable = storage
@@ -304,21 +320,6 @@ extension TabsListManager: TabsSubject {
                     print("Failed to update tab content to storage \(storageError)")
                 }
             })
-    }
-    
-    /// Updates preview image for selected tab if it has site content.
-    ///
-    /// - Parameter image: `UIImage` usually a screenshot of WKWebView.
-    public func setSelectedPreview(_ image: UIImage?) throws {
-        guard let tabTuple = tabs.value.element(by: selectedId) else {
-            throw TabsListError.notInitializedYet
-        }
-        if case .site = tabTuple.tab.contentType, image == nil {
-            throw TabsListError.wrongTabContent
-        }
-        var tabCopy = tabTuple.tab
-        tabCopy.preview = image
-        tabs.value[tabTuple.index] = tabCopy
     }
 
     public func attach(_ observer: TabsObserver) {

@@ -10,6 +10,6 @@ import CoreHttpKit
 
 /// Interface for domain checks
 public protocol DomainsHistory {
-    func remember(host: Host)
+    func remember(host: CoreHttpKit.Host)
     func domainNames(whereURLContains filter: String) -> [String]
 }

@@ -55,7 +55,7 @@ public extension URL {
         return hasIPv4Host || hasIPv6Host
     }
     
-    init?(faviconHost: Host) {
+    init?(faviconHost: CoreHttpKit.Host) {
         let format = "https://\(faviconHost.rawString)/favicon.ico"
         self.init(string: format)
     }

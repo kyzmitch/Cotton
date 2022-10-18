@@ -8,7 +8,7 @@
 
 import CoreHttpKit
 
-public extension Host {
+public extension CoreHttpKit.Host {
     func isSimilar(with url: URL) -> Bool {
         guard let rawHostString = url.host else { return false }
         return isSimilar(name: rawHostString)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol ReloadableCollection {
+protocol ReloadableCollection {
     func reloadData()
     func reloadData(_ closure: @escaping (() -> Void))
 }
@@ -17,7 +17,7 @@ extension UICollectionView: ReloadableCollection {}
 
 extension UITableView: ReloadableCollection {}
 
-public extension ReloadableCollection {
+extension ReloadableCollection {
     /// https://stackoverflow.com/a/43162226/483101
     /// Calls reloadsData() on self, and ensures that the given closure is
     /// called after reloadData() has been completed.
@@ -29,7 +29,7 @@ public extension ReloadableCollection {
     ///
     /// This method uses CATransaction to schedule the closure.
 
-    func reloadData(_ closure: @escaping (() -> Void)) {
+    public func reloadData(_ closure: @escaping (() -> Void)) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(closure)
         self.reloadData()
