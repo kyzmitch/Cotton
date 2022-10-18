@@ -157,8 +157,7 @@ public struct Tab {
     }
     
     /// Not using `UIImage` to not depend on UIKit
-    public var _preview: Data?
-
+    public var previewData: Data?
 
     public var searchBarContent: String {
         return contentType.searchBarContent

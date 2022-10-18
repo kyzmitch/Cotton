@@ -1,2 +1,3 @@
 # configs for Swift
 brew './brew_configs/sourcery.rb'
+brew './brew_configs/swiftlint.rb'

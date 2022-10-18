@@ -13,7 +13,7 @@ extension Tab {
     /// Preview image of the site if content is .site
     var preview: UIImage? {
         mutating get {
-            if let data = _preview {
+            if let data = previewData {
                 return UIImage(data: data)
             } else {
                 return nil
@@ -21,7 +21,7 @@ extension Tab {
         }
         
         set {
-            _preview = newValue?.pngData()
+            previewData = newValue?.pngData()
         }
     }
     
