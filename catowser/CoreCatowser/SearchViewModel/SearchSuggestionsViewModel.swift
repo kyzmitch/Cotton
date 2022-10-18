@@ -50,15 +50,15 @@ public enum SearchSuggestionsViewState: Equatable {
         }
     }
     
-    public func value(from indexPath: IndexPath) -> String? {
+    public func value(from row: Int, section: Int) -> String? {
         switch self {
         case .knownDomainsLoaded(let knownDomains):
-            return knownDomains[indexPath.row]
+            return knownDomains[row]
         case .everythingLoaded(let knownDomains, let querySuggestions):
-            if indexPath.section == 0 {
-                return knownDomains[indexPath.row]
-            } else if indexPath.section == 1 {
-                return querySuggestions[indexPath.row]
+            if section == 0 {
+                return knownDomains[row]
+            } else if section == 1 {
+                return querySuggestions[row]
             } else {
                 assertionFailure("Not expected section number for suggestions state")
                 return nil

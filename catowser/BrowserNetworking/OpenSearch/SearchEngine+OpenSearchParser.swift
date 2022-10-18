@@ -32,7 +32,7 @@ extension String {
 }
 
 extension SearchEngine {
-    init(xml element: XMLElement,
+    init(xml element: SWXMLHash.XMLElement,
          indexer: XMLIndexer,
          shortName: String,
          imageData: OpenSearch.ImageParseResult) throws {

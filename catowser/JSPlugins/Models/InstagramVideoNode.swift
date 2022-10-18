@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 /// Describes INSTAGRAM video post json object
 public struct InstagramVideoNode: Decodable, VideoFileNameble {
@@ -17,7 +16,7 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
     public let thumbnailUrl: URL
 
     /// The image created from Base64 data
-    public let mediaPreview: UIImage?
+    public let mediaPreview: Data?
     /// The resolution of the video clip
     public let dimensions: CGSize?
     /// The name of video
@@ -48,8 +47,7 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
 
         if  let base64String = try? container.decodeIfPresent(String.self, forKey: .mediaPreview),
             let mediaPreviewData = Data(base64Encoded: base64String) {
-            // UIImage can't be created with base64 value for some reason
-            mediaPreview = UIImage(data: mediaPreviewData)
+            mediaPreview = mediaPreviewData
         } else {
             mediaPreview = nil
         }

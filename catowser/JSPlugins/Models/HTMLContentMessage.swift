@@ -11,13 +11,13 @@ import CoreHttpKit
 import SwiftSoup
 
 struct HTMLContentMessage: Decodable {
-    let hostname: Host
+    let hostname: CoreHttpKit.Host
     let html: Document
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let hostnameString = try container.decode(String.self, forKey: .hostname)
-        guard let kitHost = try? Host(input: hostnameString) else {
+        guard let kitHost = try? CoreHttpKit.Host(input: hostnameString) else {
             throw CottonError.parseHost
         }
         hostname = kitHost

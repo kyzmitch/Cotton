@@ -13,6 +13,6 @@ import CoreHttpKit
 public protocol JSPluginsProgram: AnyObject, Equatable {
     var plugins: [any JavaScriptPlugin] { get }
     
-    func inject(to visitor: WKUserContentController, context: Host, canInject: Bool)
-    func enable(on webView: JavaScriptEvaluateble, context: Host, jsEnabled: Bool)
+    func inject(to visitor: WKUserContentController, context: CoreHttpKit.Host, canInject: Bool)
+    func enable(on webView: JavaScriptEvaluateble, context: CoreHttpKit.Host, jsEnabled: Bool)
 }

@@ -22,7 +22,7 @@ final class MockedCombineWebViewContext: WebViewContext {
         enableJS = js
     }
     
-    public func nativeApp(for host: Host) -> String? {
+    public func nativeApp(for host: CoreHttpKit.Host) -> String? {
         return nil
     }
     

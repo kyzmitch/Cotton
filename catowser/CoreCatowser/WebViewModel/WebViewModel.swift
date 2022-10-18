@@ -20,6 +20,7 @@ public enum WebPageLoadingAction: Equatable {
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
+    case openApp(URL)
 }
 
 /// Interface for system's type `WKNavigationAction` from WebKit framework to be able to mock it
@@ -45,7 +46,7 @@ public protocol WebViewModel: AnyObject {
     
     var nativeAppDomainNameString: String? { get }
     var configuration: WKWebViewConfiguration { get }
-    var host: Host { get }
+    var host: CoreHttpKit.Host { get }
     var currentURL: URL? { get }
     var settings: Site.Settings { get }
     var urlInfo: URLInfo { get }
