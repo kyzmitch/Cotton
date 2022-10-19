@@ -118,11 +118,15 @@ extension WebViewModelState: Actionable {
                 nextState = .creatingRequest(urlData, settings)
             }
         default:
+#if TESTING
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
+#endif
             throw Error.unexpectedStateForAction(self, action)
         }
         
+#if TESTING
         print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
+#endif
         return nextState
     }
 }
