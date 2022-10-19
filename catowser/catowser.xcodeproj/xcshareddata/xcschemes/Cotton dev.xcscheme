@@ -52,6 +52,11 @@
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
+            key = "TESTING"
+            value = "NO"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "CG_CONTEXT_SHOW_BACKTRACE"
             value = "YES"
             isEnabled = "NO">
