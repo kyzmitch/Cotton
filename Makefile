@@ -13,4 +13,4 @@ prepare:
 	brew update
 	$(DISPLAY_SEPARATOR)
 	brew bundle install --file=./brew_configs/Brewfile
-
+	mint install MakeAWishFoundation/SwiftyMocky

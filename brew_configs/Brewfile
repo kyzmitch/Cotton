@@ -1,3 +1,5 @@
 # configs for Swift
 brew './brew_configs/sourcery.rb'
 brew './brew_configs/swiftlint.rb'
+# mint needed to install SwiftyMocky
+Brew './brew_configs/mint.rb'
