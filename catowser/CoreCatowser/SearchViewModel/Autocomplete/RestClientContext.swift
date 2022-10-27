@@ -13,6 +13,7 @@ import Combine
 import CoreHttpKit
 import ReactiveHttpKit
 import BrowserNetworking
+import AutoMockable
 
 public protocol RestClientContext: AnyObject, AutoMockable {
     associatedtype Response: ResponseType

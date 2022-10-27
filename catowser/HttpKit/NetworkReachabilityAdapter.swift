@@ -7,8 +7,8 @@
 //
 
 import CoreHttpKit
+import AutoMockable
 
-// gryphon ignore
 public enum NetworkReachabilityStatus {
     /// It is unknown whether the network is reachable.
     case unknown
@@ -26,8 +26,7 @@ public enum NetworkReachabilityStatus {
     }
 }
 
-// gryphon ignore
-public protocol NetworkReachabilityAdapter: AnyObject {
+public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable {
     associatedtype Server: ServerDescription
     typealias Listener = (NetworkReachabilityStatus) -> Void
     init?(server: Server)

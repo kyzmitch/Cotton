@@ -1,8 +1,8 @@
 //
 //  AutoMockable.swift
-//  CoreCatowser
+//  CoreBrowser
 //
-//  Created by Andrei Ermoshin on 10/18/22.
+//  Created by Andrei Ermoshin on 10/27/22.
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 

@@ -10,6 +10,7 @@ import Foundation
 import HttpKit
 import ReactiveSwift
 import Combine
+import AutoMockable
 
 public protocol SearchAutocompleteStrategy: AnyObject, AutoMockable {
     associatedtype Context: RestClientContext

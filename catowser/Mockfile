@@ -1,0 +1,13 @@
+# Mockfile is a SwiftyMocky YAML configuration file
+sourceryCommand: null
+CoreCatowserTarget: # Distinctive name of your mock configuration target
+  sources:
+    include:        # All swift files here would be scanned for AutoMockable types
+        - ./CoreCatowser/SearchViewModel/Autocomplete
+    exclude: []     # You can exclude files as well
+  output:           # Generated mock file location and name
+    ./CoreCatowserTests/GeneratedMocks/Mock.generated.swift
+  targets:          # Specify XCodeproj targets for your mock. Used for linting
+    - CoreCatowserTests
+  testable: [CoreCatowser] 
+  import: [HttpKit, ReactiveSwift, Combine, CoreHttpKit, ReactiveHttpKit, BrowserNetworking]

@@ -10,6 +10,7 @@
 import Combine
 #endif
 import CoreHttpKit
+import AutoMockable
 
 // gryphon ignore
 public protocol RxAnyObserver {
@@ -31,7 +32,7 @@ public protocol RxAnyLifetime {
 /// This protocol is needed to not use ReactiveSwift dependency directly
 /// It should be implemented by RxObserverWrapper which is in different Framework
 // gryphon ignore
-public protocol RxInterface: Hashable, AnyObject {
+public protocol RxInterface: Hashable, AnyObject, AutoMockable {
     associatedtype Observer: RxAnyObserver
     associatedtype Server: ServerDescription
     
