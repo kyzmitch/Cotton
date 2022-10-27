@@ -12,7 +12,11 @@ import ReactiveSwift
 import Combine
 import AutoMockable
 
+// swiftlint:disable comment_spacing
+//sourcery: associatedtype = "Context: RestClientContext"
 public protocol SearchAutocompleteStrategy: AnyObject, AutoMockable {
+    // swiftlint:enable comment_spacing
+    
     associatedtype Context: RestClientContext
     
     init(_ context: Context)

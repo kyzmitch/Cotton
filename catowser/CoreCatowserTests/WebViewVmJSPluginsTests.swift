@@ -18,7 +18,7 @@ final class WebViewVmJSPluginsTests: XCTestCase {
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
     // swiftlint:disable:next force_unwrapping
     lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodDnsClient: RestClient<MockedGoodDnsServer, MockedReachabilityAdaptee> = {
+    lazy var goodDnsClient: RestClient<MockedGoodDnsServer, MockedReachabilityAdaptee, MockedGoodJSONEncoding> = {
         .init(server: goodServerMock, jsonEncoder: goodJsonEncodingMock, reachability: goodReachabilityMock)
     }()
     let rxSubscriber: MockedDNSContext.HttpKitRxSubscriber = .init()

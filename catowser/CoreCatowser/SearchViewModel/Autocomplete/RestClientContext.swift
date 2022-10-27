@@ -15,16 +15,23 @@ import ReactiveHttpKit
 import BrowserNetworking
 import AutoMockable
 
+// swiftlint:disable comment_spacing
+//sourcery: associatedtype = "Response: ResponseType"
+//sourcery: associatedtype = "Server: ServerDescription"
+//sourcery: associatedtype = "ReachabilityAdapter: NetworkReachabilityAdapter"
+//sourcery: associatedtype = "Encoder: JSONRequestEncodable"
 public protocol RestClientContext: AnyObject, AutoMockable {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
     associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
+    associatedtype Encoder: JSONRequestEncodable
     
     typealias Observer = Signal<Response, HttpError>.Observer
     typealias ObserverWrapper = RxObserverWrapper<Response, Server, Observer>
     typealias HttpKitRxSubscriber = RxSubscriber<Response, Server, ObserverWrapper>
     typealias HttpKitSubscriber = Sub<Response, Server>
-    typealias Client = RestClient<Server, ReachabilityAdapter>
+    typealias Client = RestClient<Server, ReachabilityAdapter, Encoder>
+    // swiftlint:enable comment_spacing
     
     var client: Client { get }
     var rxSubscriber: HttpKitRxSubscriber { get }

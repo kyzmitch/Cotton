@@ -11,13 +11,9 @@ import XCTest
 
 final class SearchSuggestionsVMCombineTests: XCTestCase {
 
-    override func setUpWithError() throws {
-    }
-
-    override func tearDownWithError() throws {
-    }
-
     func testExample() throws {
+        // let contextMock: RestClientContextMock = .init(<#T##Client#>, <#T##HttpKitRxSubscriber#>, <#T##HttpKitSubscriber#>)
+        // let stratMock: SearchAutocompleteStrategyMock = .init(<#T##Context#>)
     }
 
 }

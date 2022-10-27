@@ -12,6 +12,7 @@ final class MockedDNSContext: RestClientContext {
     public typealias Response = MockedDNSResponse
     public typealias Server = MockedGoodDnsServer
     public typealias ReachabilityAdapter = MockedReachabilityAdaptee<Server>
+    public typealias Encoder = MockedGoodJSONEncoding
     
     public let client: Client
     public let rxSubscriber: HttpKitRxSubscriber

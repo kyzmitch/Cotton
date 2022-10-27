@@ -13,8 +13,11 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+import Alamofire
 
-public typealias GoogleSuggestionsClient = RestClient<GoogleServer, AlamofireReachabilityAdaptee<GoogleServer>>
+public typealias GoogleSuggestionsClient = RestClient<GoogleServer,
+                                                      AlamofireReachabilityAdaptee<GoogleServer>,
+                                                      JSONEncoding>
 typealias GSearchEndpoint = Endpoint<GoogleServer>
 public typealias GSearchRxSignal = Signal<GSearchSuggestionsResponse, HttpError>.Observer
 public typealias GSearchRxInterface = RxObserverWrapper<GSearchSuggestionsResponse,
@@ -45,7 +48,7 @@ extension Endpoint where S == GoogleServer {
             URLQueryItem(name: "client", value: "firefox")
         ]
         // Actually it's possible to get correct response even without any headers
-        let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
+        let headers: [CoreHttpKit.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
         let frozenEndpoint = GSearchEndpoint(
             httpMethod: .get,
