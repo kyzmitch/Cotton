@@ -26,7 +26,9 @@ public class RestClient<S: ServerDescription,
     public typealias Reachability = R
     public typealias Encoder = E
     
-    let server: Server
+    public let server: Server
+    
+    public let jsonEncoder: Encoder
     
     private let connectivityManager: R?
     
@@ -40,8 +42,6 @@ public class RestClient<S: ServerDescription,
     let urlSession: URLSession
     
     let httpTimeout: TimeInterval
-    
-    let jsonEncoder: JSONRequestEncodable
     
     private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
         guard let self = self else {

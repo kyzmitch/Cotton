@@ -26,4 +26,7 @@ public protocol RestInterface: AnyObject, AutoMockable {
     associatedtype Encoder: JSONRequestEncodable
     
     init(server: Server, jsonEncoder: Encoder, reachability: Reachability, httpTimeout: TimeInterval)
+    
+    var server: Server { get }
+    var jsonEncoder: Encoder { get }
 }
