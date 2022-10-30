@@ -22,19 +22,19 @@ import AutoMockable
 //sourcery: associatedtype = "E: JSONRequestEncodable"
 //sourcery: typealias = "Response = R"
 //sourcery: typealias = "Server = S"
-//sourcery: typealias = "ReachabilityAdapter = RAdapter where ReachabilityAdapter.Server == Server"
+//sourcery: typealias = "ReachabilityAdapter = RAdapter where RAdapter.Server == Server"
 //sourcery: typealias = "Encoder = E"
-public protocol RestClientContext: AnyObject, AutoMockable where ReachabilityAdapter.Server == Server {
+public protocol RestClientContext: AnyObject, AutoMockable {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
-    associatedtype ReachabilityAdapter: NetworkReachabilityAdapter
+    associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
     associatedtype Encoder: JSONRequestEncodable
+    associatedtype Client: RestInterface where Client.Reachability == ReachabilityAdapter, Client.Encoder == Encoder
     
     typealias Observer = Signal<Response, HttpError>.Observer
     typealias ObserverWrapper = RxObserverWrapper<Response, Server, Observer>
     typealias HttpKitRxSubscriber = RxSubscriber<Response, Server, ObserverWrapper>
     typealias HttpKitSubscriber = Sub<Response, Server>
-    typealias Client = RestClient<Server, ReachabilityAdapter, Encoder>
     // swiftlint:enable comment_spacing
     
     var client: Client { get }
