@@ -1,5 +1,5 @@
 //
-//  HttpClient+Kotlin.swift
+//  RestClient+Kotlin.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 4/16/22.

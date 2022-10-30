@@ -1,5 +1,5 @@
 //
-//  HttpClientImpl.swift
+//  RestClient.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 10/11/19.
@@ -11,7 +11,6 @@ import Foundation
 import Combine
 #endif
 import CoreHttpKit
-import AutoMockable
 
 fileprivate extension String {
     static let threadName = "Client"
@@ -20,14 +19,9 @@ fileprivate extension String {
 public typealias HttpTypedResult<T> = Result<T, HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
-// swiftlint:disable comment_spacing
-//sourcery: typealias = "Server: ServerDescription"
-//sourcery: typealias = "Reachability: NetworkReachabilityAdapter"
-//sourcery: typealias = "Encoder: JSONRequestEncodable"
 public class RestClient<S: ServerDescription,
                         R: NetworkReachabilityAdapter,
-                        E: JSONRequestEncodable>: RestInterface, AutoMockable where R.Server == S {
-    // swiftlint:enable comment_spacing
+                        E: JSONRequestEncodable>: RestInterface where R.Server == S {
     public typealias Server = S
     public typealias Reachability = R
     public typealias Encoder = E
