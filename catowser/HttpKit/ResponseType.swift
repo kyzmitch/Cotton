@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import AutoMockable
 
-public protocol ResponseType: Decodable, AutoMockable {
-     static var successCodes: [Int] { get }
+public protocol ResponseType: Decodable {
+    static var successCodes: [Int] { get }
 }
 
 extension ResponseType {

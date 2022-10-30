@@ -10,10 +10,15 @@ import Foundation
 import CoreHttpKit
 import AutoMockable
 
+extension ServerDescription: AutoMockable {}
+
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "Server: ServerDescription"
 //sourcery: associatedtype = "Reachability: NetworkReachabilityAdapter"
 //sourcery: associatedtype = "Encoder: JSONRequestEncodable"
+//sourcery: typealias = "Server = Server"
+//sourcery: typealias = "Reachability = Reachability"
+//sourcery: typealias = "Encoder = Encoder"
 public protocol RestInterface: AnyObject, AutoMockable {
     // swiftlint:enable comment_spacing
     associatedtype Server: ServerDescription

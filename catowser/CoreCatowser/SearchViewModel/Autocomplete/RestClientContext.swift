@@ -16,14 +16,18 @@ import BrowserNetworking
 import AutoMockable
 
 // swiftlint:disable comment_spacing
-//sourcery: associatedtype = "Response: ResponseType"
-//sourcery: associatedtype = "Server: ServerDescription"
-//sourcery: associatedtype = "ReachabilityAdapter: NetworkReachabilityAdapter"
-//sourcery: associatedtype = "Encoder: JSONRequestEncodable"
-public protocol RestClientContext: AnyObject, AutoMockable {
+//sourcery: associatedtype = "R: ResponseType"
+//sourcery: associatedtype = "S: ServerDescription"
+//sourcery: associatedtype = "RAdapter: NetworkReachabilityAdapter"
+//sourcery: associatedtype = "E: JSONRequestEncodable"
+//sourcery: typealias = "Response = R"
+//sourcery: typealias = "Server = S"
+//sourcery: typealias = "ReachabilityAdapter = RAdapter where ReachabilityAdapter.Server == Server"
+//sourcery: typealias = "Encoder = E"
+public protocol RestClientContext: AnyObject, AutoMockable where ReachabilityAdapter.Server == Server {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
-    associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
+    associatedtype ReachabilityAdapter: NetworkReachabilityAdapter
     associatedtype Encoder: JSONRequestEncodable
     
     typealias Observer = Signal<Response, HttpError>.Observer

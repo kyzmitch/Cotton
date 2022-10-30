@@ -186,7 +186,6 @@
 		8A5E6C93290B107B0034A78B /* AutoMockable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5E6C7D290B0E6C0034A78B /* AutoMockable.framework */; };
 		8A5E6CAF290B1D4F0034A78B /* RestInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5E6CAE290B1D4F0034A78B /* RestInterface.swift */; };
 		8A5E6CB1290B21B50034A78B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8A5E6CB0290B21B50034A78B /* Alamofire */; };
-		8A5E6CB3290B228B0034A78B /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5E6CB2290B228B0034A78B /* Mock.generated.swift */; };
 		8A5F71F62826C148008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
 		8A5F71F72826C148008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
@@ -475,6 +474,7 @@
 		8AE6D16D2350FF35006316AD /* HttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE6D16B2350FF35006316AD /* HttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D044280D388800FADE3A /* ResponseType.swift */; };
 		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
+		8AEA9454290E6DA100CCBB46 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA9453290E6DA000CCBB46 /* Mock.generated.swift */; };
 		8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */; };
 		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */; };
@@ -1005,7 +1005,6 @@
 		8A5E6C7D290B0E6C0034A78B /* AutoMockable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AutoMockable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A5E6C7F290B0E6C0034A78B /* AutoMockable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoMockable.h; sourceTree = "<group>"; };
 		8A5E6CAE290B1D4F0034A78B /* RestInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestInterface.swift; sourceTree = "<group>"; };
-		8A5E6CB2290B228B0034A78B /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoreHttpKit.xcframework; path = ../CoreHttpKit/build/XCFrameworks/release/CoreHttpKit.xcframework; sourceTree = "<group>"; };
 		8A5FD6A826AF34570019384A /* AppErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
 		8A624074288D98DA006DDC66 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchSuggestionsViewModelImpl+AsyncAwait.swift"; sourceTree = "<group>"; };
@@ -1141,6 +1140,7 @@
 		8AE6D16C2350FF35006316AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
 		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
+		8AEA9453290E6DA000CCBB46 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmDNSoverHTTPSTests.swift; sourceTree = "<group>"; };
 		8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelState.swift; sourceTree = "<group>"; };
 		8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewModelState+Actionable.swift"; sourceTree = "<group>"; };
@@ -1839,7 +1839,7 @@
 		8A5E6C75290B0C430034A78B /* GeneratedMocks */ = {
 			isa = PBXGroup;
 			children = (
-				8A5E6CB2290B228B0034A78B /* Mock.generated.swift */,
+				8AEA9453290E6DA000CCBB46 /* Mock.generated.swift */,
 			);
 			path = GeneratedMocks;
 			sourceTree = "<group>";
@@ -3515,7 +3515,7 @@
 				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
 				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
 				8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */,
-				8A5E6CB3290B228B0034A78B /* Mock.generated.swift in Sources */,
+				8AEA9454290E6DA100CCBB46 /* Mock.generated.swift in Sources */,
 				8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */,
 				8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */,
 				8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */,
