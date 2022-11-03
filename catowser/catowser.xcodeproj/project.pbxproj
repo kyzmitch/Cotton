@@ -126,6 +126,8 @@
 		8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */; };
 		8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */; };
 		8A0E4D5729133C02008F7964 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4D5629133C02008F7964 /* Mock.generated.swift */; };
+		8A0E4D5A29133E77008F7964 /* SwiftyMocky in Frameworks */ = {isa = PBXBuildFile; productRef = 8A0E4D5929133E77008F7964 /* SwiftyMocky */; };
+		8A0E4D5B29133F65008F7964 /* SearchSuggestionsVMCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9BE0928FEB17E002063C2 /* SearchSuggestionsVMCombineTests.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
@@ -1259,6 +1261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A7B1BA028EB131F004FC135 /* CoreCatowser.framework in Frameworks */,
+				8A0E4D5A29133E77008F7964 /* SwiftyMocky in Frameworks */,
 				8AD4F54728F4941A009C4BDC /* ReactiveSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2535,6 +2538,7 @@
 			name = CoreCatowserTests;
 			packageProductDependencies = (
 				8AD4F54628F4941A009C4BDC /* ReactiveSwift */,
+				8A0E4D5929133E77008F7964 /* SwiftyMocky */,
 			);
 			productName = CoreCatowserTests;
 			productReference = 8A7B1B9F28EB131F004FC135 /* CoreCatowserTests.xctest */;
@@ -2830,6 +2834,7 @@
 				8AA6608828F43F790058490F /* XCRemoteSwiftPackageReference "SWXMLHash" */,
 				8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
 				8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				8A0E4D5829133E77008F7964 /* XCRemoteSwiftPackageReference "SwiftyMocky" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -3514,6 +3519,7 @@
 				8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift in Sources */,
 				8A815D3B28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift in Sources */,
 				8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */,
+				8A0E4D5B29133F65008F7964 /* SearchSuggestionsVMCombineTests.swift in Sources */,
 				8A7B1BA728EB131F004FC135 /* WebViewVMCombineTests.swift in Sources */,
 				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
 				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
@@ -5367,6 +5373,14 @@
 				version = 2.4.3;
 			};
 		};
+		8A0E4D5829133E77008F7964 /* XCRemoteSwiftPackageReference "SwiftyMocky" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MakeAWishFoundation/SwiftyMocky";
+			requirement = {
+				kind = exactVersion;
+				version = 4.2.0;
+			};
+		};
 		8AA6608828F43F790058490F /* XCRemoteSwiftPackageReference "SWXMLHash" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/drmohundro/SWXMLHash";
@@ -5398,6 +5412,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		8A0E4D5929133E77008F7964 /* SwiftyMocky */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A0E4D5829133E77008F7964 /* XCRemoteSwiftPackageReference "SwiftyMocky" */;
+			productName = SwiftyMocky;
 		};
 		8A5E6CB0290B21B50034A78B /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
