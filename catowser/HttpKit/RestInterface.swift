@@ -10,15 +10,15 @@ import Foundation
 import CoreHttpKit
 import AutoMockable
 
-extension ServerDescription: AutoMockable {}
+// Can't mock `ServerDescription` because need to call base init somehow
 
 // swiftlint:disable comment_spacing
-//sourcery: associatedtype = "Server: ServerDescription"
-//sourcery: associatedtype = "Reachability: NetworkReachabilityAdapter"
-//sourcery: associatedtype = "Encoder: JSONRequestEncodable"
-//sourcery: typealias = "Server = Server"
-//sourcery: typealias = "Reachability = Reachability"
-//sourcery: typealias = "Encoder = Encoder"
+//sourcery: associatedtype = "S: ServerDescription"
+//sourcery: associatedtype = "RA: NetworkReachabilityAdapter where RA.Server == S"
+//sourcery: associatedtype = "E: JSONRequestEncodable"
+//sourcery: typealias = "Server = S"
+//sourcery: typealias = "Reachability = RA"
+//sourcery: typealias = "Encoder = E"
 public protocol RestInterface: AnyObject, AutoMockable {
     // swiftlint:enable comment_spacing
     associatedtype Server: ServerDescription

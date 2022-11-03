@@ -125,6 +125,7 @@
 		8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */; };
 		8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */; };
 		8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */; };
+		8A0E4D5729133C02008F7964 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E4D5629133C02008F7964 /* Mock.generated.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
@@ -964,6 +965,7 @@
 		8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDecodable.swift; sourceTree = "<group>"; };
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
+		8A0E4D5629133C02008F7964 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		8A16102E28947D2100D45228 /* DNSResolvingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategy.swift; sourceTree = "<group>"; };
@@ -1840,6 +1842,7 @@
 		8A5E6C75290B0C430034A78B /* GeneratedMocks */ = {
 			isa = PBXGroup;
 			children = (
+				8A0E4D5629133C02008F7964 /* Mock.generated.swift */,
 			);
 			path = GeneratedMocks;
 			sourceTree = "<group>";
@@ -3516,6 +3519,7 @@
 				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
 				8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */,
 				8AEA9456290F01E800CCBB46 /* MockedRestInterface.swift in Sources */,
+				8A0E4D5729133C02008F7964 /* Mock.generated.swift in Sources */,
 				8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */,
 				8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */,
 				8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */,

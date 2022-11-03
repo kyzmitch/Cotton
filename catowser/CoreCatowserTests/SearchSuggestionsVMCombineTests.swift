@@ -10,10 +10,13 @@ import XCTest
 @testable import CoreCatowser
 
 final class SearchSuggestionsVMCombineTests: XCTestCase {
-
+    private let rxSubscriber: HttpKitRxSubscriber = .init()
+    private let subscriber: HttpKitSubscriber = .init()
+    
     func testExample() throws {
-        // let contextMock: RestClientContextMock = .init(<#T##Client#>, <#T##HttpKitRxSubscriber#>, <#T##HttpKitSubscriber#>)
-        // let stratMock: SearchAutocompleteStrategyMock = .init(<#T##Context#>)
+        let restClient: RestInterfaceMock = .init()
+        let contextMock: RestClientContextMock = .init(restClient, rxSubscriber, subscriber)
+        let strategyMock: SearchAutocompleteStrategyMock = .init(contextMock)
     }
 
 }
