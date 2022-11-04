@@ -13,6 +13,7 @@ import HttpKit
 import ReactiveHttpKit
 import ReactiveSwift
 import BrowserNetworking
+import SwiftyMocky
 
 struct MockedGoodResponse: ResponseType {
     static var successCodes: [Int] {
@@ -37,16 +38,21 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
                                                   httpTimeout: 10)
         let contextMock = RestClientContextMock(restClient, rxSubscriber, subscriber)
         let strategyMock: SearchAutocompleteStrategyMock = .init(contextMock)
-        
+        let input = "how to use"
+        let results = ["how to use Swift", "how to use Kotlin"]
+        let searchSuggestionsResponse: SearchSuggestionsResponse = .init(input, results)
+        typealias SuggestionProducer = SignalProducer<SearchSuggestionsResponse, HttpError>
+        let responseProducer: SuggestionProducer = .init(value: searchSuggestionsResponse)
+        Given(strategyMock, .suggestionsProducer(for: .value(input), willReturn: responseProducer))
         let autoCompleteFacade: WebSearchAutocomplete = .init(strategyMock)
-        let producer = autoCompleteFacade.rxFetchSuggestions("how to use")
-        let expected = ["how to use Swift", "how to use Kotlin"]
+        let producer = autoCompleteFacade.rxFetchSuggestions(input)
         let expectationRxSuggestionFail = XCTestExpectation(description: "Suggestions were not received")
-        producer.startWithResult { result in
+        let disposable = producer.startWithResult { result in
             expectationRxSuggestionFail.fulfill()
             // swiftlint:disable:next force_try
             let received = try! result.get()
-            XCTAssertEqual(received, expected)
+            XCTAssertEqual(received, results)
         }
+        wait(for: [expectationRxSuggestionFail], timeout: 1)
     }
 }
