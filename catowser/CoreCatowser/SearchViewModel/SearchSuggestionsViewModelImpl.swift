@@ -11,10 +11,12 @@ import ReactiveSwift
 import Combine
 import FeaturesFlagsKit
 import CoreBrowser
+import AutoMockable
 
 /// This is only needed now to not have a direct dependency on FutureManager
-public protocol SearchViewContext: AnyObject {
-    func appAsyncApiTypeValue() -> AsyncApiType
+public protocol SearchViewContext: AutoMockable {
+    var appAsyncApiTypeValue: AsyncApiType { get }
+    var knownDomainsStorage: KnownDomainsSource { get }
 }
 
 public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutocompleteStrategy {
@@ -58,9 +60,9 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
 
 extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     public func fetchSuggestions(_ query: String) {
-        let domainNames = InMemoryDomainSearchProvider.shared.domainNames(whereURLContains: query)
+        let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
         
-        let apiType = searchContext.appAsyncApiTypeValue()
+        let apiType = searchContext.appAsyncApiTypeValue
         switch apiType {
         case .reactive:
             rxState.value = .knownDomainsLoaded(domainNames)

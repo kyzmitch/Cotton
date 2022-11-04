@@ -12,10 +12,17 @@ import Combine
 #endif
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-extension Combine.Future {
-    public static func failure(_ error: Failure) -> Future<Output, Failure> {
+public extension Combine.Future {
+    static func failure(_ error: Failure) -> Future<Output, Failure> {
         let future: Future<Output, Failure> = .init { (promise) in
             promise(.failure(error))
+        }
+        return future
+    }
+    
+    static func success(_ value: Output) -> Future<Output, Failure> {
+        let future: Future<Output, Failure> = .init { (promise) in
+            promise(.success(value))
         }
         return future
     }

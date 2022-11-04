@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol ResponseType: Decodable {
-     static var successCodes: [Int] { get }
+    static var successCodes: [Int] { get }
 }
 
 extension ResponseType {

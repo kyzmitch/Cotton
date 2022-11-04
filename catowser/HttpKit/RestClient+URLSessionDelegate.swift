@@ -1,5 +1,5 @@
 //
-//  HttpClient+URLSessionDelegate.swift
+//  RestClient+URLSessionDelegate.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 6/14/21.

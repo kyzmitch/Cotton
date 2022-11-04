@@ -11,11 +11,14 @@ import BrowserNetworking
 import ReactiveSwift
 import Combine
 import HttpKit
+import Alamofire
 
 public final class GoogleContext: RestClientContext {
     public typealias Response = GSearchSuggestionsResponse
     public typealias Server = GoogleServer
     public typealias ReachabilityAdapter = AlamofireReachabilityAdaptee<Server>
+    public typealias Encoder = JSONEncoding
+    public typealias Client = RestClient<Server, ReachabilityAdapter, Encoder>
     
     public let client: Client
     public let rxSubscriber: HttpKitRxSubscriber

@@ -34,15 +34,17 @@ public final class InMemoryDomainSearchProvider {
 }
 
 extension InMemoryDomainSearchProvider: DomainsHistory {
-    public func domainNames(whereURLContains filter: String) -> [String] {
-        let words: [String] = storage.findWordsWithPrefix(prefix: filter)
-        return words
-    }
-
     public func remember(host: CoreHttpKit.Host) {
         storage.insert(word: host.rawString)
         if let withoutWww = host.rawString.withoutPrefix("www.") {
             storage.insert(word: withoutWww)
         }
+    }
+}
+
+extension InMemoryDomainSearchProvider: KnownDomainsSource {
+    public func domainNames(whereURLContains filter: String) -> [String] {
+        let words: [String] = storage.findWordsWithPrefix(prefix: filter)
+        return words
     }
 }

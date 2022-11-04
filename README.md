@@ -49,8 +49,11 @@ https://github.com/Alamofire/AlamofireImage
 Compile/Run time checks for Swift source code. 
 https://github.com/realm/SwiftLint
 ### Sourcery
-Used to generate simple mocks for the unit tests. Can't be used for the Swift protocols with associated types.
+Used to generate simple mocks. Can't be used for the Swift protocols with associated types.
 https://github.com/krzysztofzablocki/Sourcery
+### SwiftyMocky
+Used to generate complex mocks for the types and Swift protocols with associated types and constraints. 
+https://github.com/MakeAWishFoundation/SwiftyMocky
 
 ## Screenshots
 

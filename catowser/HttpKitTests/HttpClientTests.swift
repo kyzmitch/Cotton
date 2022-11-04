@@ -19,9 +19,9 @@ class HttpClientTests: XCTestCase {
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
     // swiftlint:disable:next force_unwrapping
     lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodHttpClient: RestClient<MockedGoodServer, MockedReachabilityAdaptee> = .init(server: goodServerMock,
-                                                                                             jsonEncoder: goodJsonEncodingMock,
-                                                                                             reachability: goodReachabilityMock)
+    lazy var goodHttpClient = RestClient(server: goodServerMock,
+                                         jsonEncoder: goodJsonEncodingMock,
+                                         reachability: goodReachabilityMock)
 
     func testUnauthorizedRequest() throws {
         let expectationUrlFail = XCTestExpectation(description: "Failed to construct URL")

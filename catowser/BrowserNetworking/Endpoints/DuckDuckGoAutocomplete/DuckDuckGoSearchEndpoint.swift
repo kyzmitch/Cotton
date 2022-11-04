@@ -11,9 +11,11 @@ import Combine
 import ReactiveSwift
 import CoreHttpKit
 import ReactiveHttpKit
+import Alamofire
 
 public typealias DDGoSuggestionsClient = RestClient<DuckDuckGoServer,
-                                                    AlamofireReachabilityAdaptee<DuckDuckGoServer>>
+                                                    AlamofireReachabilityAdaptee<DuckDuckGoServer>,
+                                                    JSONEncoding>
 typealias DDGoSuggestionsEndpoint = Endpoint<DuckDuckGoServer>
 
 extension Endpoint where S == DuckDuckGoServer {
@@ -31,7 +33,7 @@ extension Endpoint where S == DuckDuckGoServer {
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "type", value: "list")
         ]
-        let headers: [HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
+        let headers: [CoreHttpKit.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
         /**
          https://youtrack.jetbrains.com/issue/KT-44108

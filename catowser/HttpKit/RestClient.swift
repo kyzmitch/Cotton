@@ -1,5 +1,5 @@
 //
-//  HttpClient.swift
+//  RestClient.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 10/11/19.
@@ -10,6 +10,7 @@ import Foundation
 #if canImport(Combine)
 import Combine
 #endif
+import CoreHttpKit
 
 fileprivate extension String {
     static let threadName = "Client"
@@ -18,8 +19,16 @@ fileprivate extension String {
 public typealias HttpTypedResult<T> = Result<T, HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
-public class RestClient<Server, R: NetworkReachabilityAdapter> where R.Server == Server {
-    let server: Server
+public class RestClient<S: ServerDescription,
+                        R: NetworkReachabilityAdapter,
+                        E: JSONRequestEncodable>: RestInterface where R.Server == S {
+    public typealias Server = S
+    public typealias Reachability = R
+    public typealias Encoder = E
+    
+    public let server: Server
+    
+    public let jsonEncoder: Encoder
     
     private let connectivityManager: R?
     
@@ -34,8 +43,6 @@ public class RestClient<Server, R: NetworkReachabilityAdapter> where R.Server ==
     
     let httpTimeout: TimeInterval
     
-    let jsonEncoder: JSONRequestEncodable
-    
     private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
         guard let self = self else {
             return
@@ -43,10 +50,10 @@ public class RestClient<Server, R: NetworkReachabilityAdapter> where R.Server ==
         // TODO: need some interface for reachability but without RX (MutableProperty)
     }
     
-    public init(server: Server,
-                jsonEncoder: JSONRequestEncodable,
-                reachability: R,
-                httpTimeout: TimeInterval = 60) {
+    public required init(server: S,
+                         jsonEncoder: E,
+                         reachability: R,
+                         httpTimeout: TimeInterval = 60) {
         self.server = server
         self.httpTimeout = httpTimeout
         self.jsonEncoder = jsonEncoder

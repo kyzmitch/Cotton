@@ -1,5 +1,5 @@
 //
-//  HttpKitErrors.swift
+//  RestClientError.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 10/12/19.

@@ -13,10 +13,13 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
+import Alamofire
 
 /// https://tools.ietf.org/id/draft-ietf-doh-dns-over-https-02.txt
 
-public typealias GoogleDnsClient = RestClient<GoogleDnsServer, AlamofireReachabilityAdaptee<GoogleDnsServer>>
+public typealias GoogleDnsClient = RestClient<GoogleDnsServer,
+                                              AlamofireReachabilityAdaptee<GoogleDnsServer>,
+                                              JSONEncoding>
 
 typealias GDNSjsonEndpoint = Endpoint<GoogleDnsServer>
 public typealias GDNSjsonRxSignal = Signal<GoogleDNSOverJSONResponse, HttpError>.Observer

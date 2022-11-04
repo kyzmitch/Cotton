@@ -7,8 +7,8 @@
 //
 
 import CoreHttpKit
+import AutoMockable
 
-// gryphon ignore
 public enum NetworkReachabilityStatus {
     /// It is unknown whether the network is reachable.
     case unknown
@@ -26,8 +26,10 @@ public enum NetworkReachabilityStatus {
     }
 }
 
-// gryphon ignore
-public protocol NetworkReachabilityAdapter: AnyObject {
+// swiftlint:disable comment_spacing
+//sourcery: associatedtype = "Server: ServerDescription"
+public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable {
+    // swiftlint:enable comment_spacing
     associatedtype Server: ServerDescription
     typealias Listener = (NetworkReachabilityStatus) -> Void
     init?(server: Server)

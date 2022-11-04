@@ -8,8 +8,9 @@
 
 import Foundation
 import CoreHttpKit
+import AutoMockable
 
-public protocol URLRequestCreatable {
+public protocol URLRequestCreatable: AutoMockable {
     func convertToURLRequest() throws -> URLRequest
 }
 
@@ -21,7 +22,7 @@ extension URLRequest: URLRequestCreatable {
 
 /// Interface for some JSON encoder (e.g. Alamofire implementation) to hide it and
 /// not use it directly and be able to mock it for unit testing
-public protocol JSONRequestEncodable {
+public protocol JSONRequestEncodable: AutoMockable {
     func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest
 }
 
