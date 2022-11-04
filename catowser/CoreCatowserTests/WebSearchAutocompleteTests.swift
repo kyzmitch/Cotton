@@ -1,5 +1,5 @@
 //
-//  SearchSuggestionsVMCombineTests.swift
+//  WebSearchAutocomplete.swift
 //  CoreCatowserTests
 //
 //  Created by Andrei Ermoshin on 10/18/22.
@@ -22,7 +22,7 @@ struct MockedGoodResponse: ResponseType {
     }
 }
 
-final class SearchSuggestionsVMCombineTests: XCTestCase {
+final class WebSearchAutocompleteTests: XCTestCase {
     private var goodServerMock: MockedGoodDnsServer!
     private var goodJsonEncodingMock: MockedGoodJSONEncoding!
     private var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
@@ -37,8 +37,11 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
     private lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
     private var cancellables: Set<AnyCancellable>!
     
-    override func setUp() {
-        super.setUp()
+    private let input = "g"
+    private let results = ["google", "gmail"]
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         cancellables = []
         goodServerMock = .init()
         goodJsonEncodingMock = .init()
@@ -55,8 +58,6 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
     }
     
     func testRxWebSearchAutocomplete() throws {
-        let input = "g"
-        let results = ["google", "gmail"]
         let searchSuggestionsResponse: SearchSuggestionsResponse = .init(input, results)
         typealias SuggestionProducer = SignalProducer<SearchSuggestionsResponse, HttpError>
         let responseProducer: SuggestionProducer = .init(value: searchSuggestionsResponse)
@@ -68,14 +69,12 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
             expectationRxSuggestionFail.fulfill()
             // swiftlint:disable:next force_try
             let received = try! result.get()
-            XCTAssertEqual(received, results)
+            XCTAssertEqual(received, self.results)
         }
         wait(for: [expectationRxSuggestionFail], timeout: 1)
     }
     
     func testCombineWebSearchAutocomplete() throws {
-        let input = "g"
-        let results = ["google", "gmail"]
         let promiseValue: SearchSuggestionsResponse = .init(input, results)
         let responsePublisher: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
             .success(promiseValue)
@@ -88,9 +87,17 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
             XCTAssertEqual(completion, .finished)
         } receiveValue: { received in
             expectationRxSuggestionFail.fulfill()
-            XCTAssertEqual(received, results)
+            XCTAssertEqual(received, self.results)
         }
         cancellables.insert(cancellable)
         wait(for: [expectationRxSuggestionFail], timeout: 1)
+    }
+    
+    func testConcurrencyWebSearchAutocomplete() async throws {
+        let value: SearchSuggestionsResponse = .init(input, results)
+        Given(strategyMock, .suggestionsTask(for: .value(input), willReturn: value))
+        let autoCompleteFacade: WebSearchAutocomplete = .init(strategyMock)
+        let received = try await autoCompleteFacade.aaFetchSuggestions(input)
+        XCTAssertEqual(received, results)
     }
 }
