@@ -215,7 +215,6 @@ final class WebViewVMCombineTests: XCTestCase {
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
     }
     
-    // swiftlint:disable:next function_body_length
     func testGoForward() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
         vm.load()

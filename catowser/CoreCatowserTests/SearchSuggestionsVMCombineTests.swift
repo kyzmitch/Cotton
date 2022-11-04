@@ -16,6 +16,8 @@ import Combine
 import BrowserNetworking
 import SwiftyMocky
 
+struct EndpointHttpError: Error {}
+
 final class SearchSuggestionsVMCombineTests: XCTestCase {
     private var goodServerMock: MockedGoodDnsServer!
     private var goodJsonEncodingMock: MockedGoodJSONEncoding!
@@ -55,6 +57,7 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
         combineFetchSuggestionsCounter = 0
     }
 
+    // swiftlint:disable:next function_body_length
     func testVMInitAndSuggestionsFetch() throws {
         let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
@@ -118,4 +121,42 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
         wait(for: [expectation2], timeout: 1)
     }
 
+    func testSuggestionsFetchFailure() throws {
+        let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
+        XCTAssertEqual(vm.state, .waitingForQuery)
+        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .combine))
+        let input1 = "g"
+        let expected1 = ["google", "gmail"]
+        let known1 = ["google.com", "gmail.com"]
+        let responsePublisher1: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
+            .failure(HttpError.httpFailure(error: EndpointHttpError()))
+            .eraseToAnyPublisher()
+        combineFetchSuggestionsCounter = 3
+        let expectation1 = XCTestExpectation(description: "Suggestions were not received v1")
+        let cancellable = vm.combineState.sink { state in
+            if self.combineFetchSuggestionsCounter == 3 {
+                XCTAssertEqual(state, .waitingForQuery)
+                self.combineFetchSuggestionsCounter -= 1
+            } else if self.combineFetchSuggestionsCounter == 2 {
+                XCTAssertEqual(state, .knownDomainsLoaded(known1))
+                self.combineFetchSuggestionsCounter -= 1
+            } else if self.combineFetchSuggestionsCounter == 1 {
+                XCTAssertEqual(state, .everythingLoaded(known1, []), "Error's happened - suggestions are empty")
+                self.combineFetchSuggestionsCounter -= 1
+                expectation1.fulfill()
+            } else {
+                XCTAssert(false, "Not expected state change")
+            }
+        }
+        cancellables.insert(cancellable)
+        
+        Given(strategyMock, .suggestionsPublisher(for: .value(input1), willProduce: { stubber in
+            stubber.return(responsePublisher1)
+        }))
+        Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
+        Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))
+        vm.fetchSuggestions(input1)
+        XCTAssertEqual(vm.state, .waitingForQuery)
+        wait(for: [expectation1], timeout: 1)
+    }
 }
