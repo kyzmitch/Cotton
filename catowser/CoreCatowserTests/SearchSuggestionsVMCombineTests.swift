@@ -12,6 +12,7 @@ import CoreHttpKit
 import HttpKit
 import ReactiveHttpKit
 import ReactiveSwift
+import Combine
 import BrowserNetworking
 import SwiftyMocky
 
@@ -22,24 +23,40 @@ struct MockedGoodResponse: ResponseType {
 }
 
 final class SearchSuggestionsVMCombineTests: XCTestCase {
-    let goodServerMock: MockedGoodDnsServer = .init()
-    let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
-    // swiftlint:disable:next force_unwrapping
-    lazy var reachabilityMock = NetworkReachabilityAdapterMock(server: goodServerMock)!
+    private var goodServerMock: MockedGoodDnsServer!
+    private var goodJsonEncodingMock: MockedGoodJSONEncoding!
+    private var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
     typealias Observer = Signal<MockedGoodResponse, HttpError>.Observer
     typealias ObserverWrapper = RxObserverWrapper<MockedGoodResponse, MockedGoodDnsServer, Observer>
-    private let subscriber: Sub<MockedGoodResponse, MockedGoodDnsServer> = .init()
-    private let rxSubscriber: RxSubscriber<MockedGoodResponse, MockedGoodDnsServer, ObserverWrapper> = .init()
+    private var subscriber: Sub<MockedGoodResponse, MockedGoodDnsServer>!
+    private var rxSubscriber: RxSubscriber<MockedGoodResponse, MockedGoodDnsServer, ObserverWrapper>!
+    private var goodRestClient: RestInterfaceMock<MockedGoodDnsServer,
+                                                  NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
+                                                  MockedGoodJSONEncoding>!
+    private lazy var goodContextMock: RestClientContextMock = .init(goodRestClient, rxSubscriber, subscriber)
+    private lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
+    private var cancellables: Set<AnyCancellable>!
     
-    func testWebSearchAutocomplete() throws {
-        let restClient: RestInterfaceMock = .init(server: goodServerMock,
-                                                  jsonEncoder: goodJsonEncodingMock,
-                                                  reachability: reachabilityMock,
-                                                  httpTimeout: 10)
-        let contextMock = RestClientContextMock(restClient, rxSubscriber, subscriber)
-        let strategyMock: SearchAutocompleteStrategyMock = .init(contextMock)
-        let input = "how to use"
-        let results = ["how to use Swift", "how to use Kotlin"]
+    override func setUp() {
+        super.setUp()
+        cancellables = []
+        goodServerMock = .init()
+        goodJsonEncodingMock = .init()
+        // swiftlint:disable:next force_unwrapping
+        reachabilityMock = NetworkReachabilityAdapterMock(server: goodServerMock)!
+        subscriber = .init()
+        rxSubscriber = .init()
+        goodRestClient = .init(server: goodServerMock,
+                               jsonEncoder: goodJsonEncodingMock,
+                               reachability: reachabilityMock,
+                               httpTimeout: 10)
+        goodContextMock = .init(goodRestClient, rxSubscriber, subscriber)
+        strategyMock = .init(goodContextMock)
+    }
+    
+    func testRxWebSearchAutocomplete() throws {
+        let input = "g"
+        let results = ["google", "gmail"]
         let searchSuggestionsResponse: SearchSuggestionsResponse = .init(input, results)
         typealias SuggestionProducer = SignalProducer<SearchSuggestionsResponse, HttpError>
         let responseProducer: SuggestionProducer = .init(value: searchSuggestionsResponse)
@@ -47,12 +64,33 @@ final class SearchSuggestionsVMCombineTests: XCTestCase {
         let autoCompleteFacade: WebSearchAutocomplete = .init(strategyMock)
         let producer = autoCompleteFacade.rxFetchSuggestions(input)
         let expectationRxSuggestionFail = XCTestExpectation(description: "Suggestions were not received")
-        let disposable = producer.startWithResult { result in
+        producer.startWithResult { result in
             expectationRxSuggestionFail.fulfill()
             // swiftlint:disable:next force_try
             let received = try! result.get()
             XCTAssertEqual(received, results)
         }
+        wait(for: [expectationRxSuggestionFail], timeout: 1)
+    }
+    
+    func testCombineWebSearchAutocomplete() throws {
+        let input = "g"
+        let results = ["google", "gmail"]
+        let promiseValue: SearchSuggestionsResponse = .init(input, results)
+        let responsePublisher: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
+            .success(promiseValue)
+            .eraseToAnyPublisher()
+        Given(strategyMock, .suggestionsPublisher(for: .value(input), willReturn: responsePublisher))
+        let autoCompleteFacade: WebSearchAutocomplete = .init(strategyMock)
+        let publisher = autoCompleteFacade.combineFetchSuggestions(input)
+        let expectationRxSuggestionFail = XCTestExpectation(description: "Suggestions were not received")
+        let cancellable = publisher.sink { completion in
+            XCTAssertEqual(completion, .finished)
+        } receiveValue: { received in
+            expectationRxSuggestionFail.fulfill()
+            XCTAssertEqual(received, results)
+        }
+        cancellables.insert(cancellable)
         wait(for: [expectationRxSuggestionFail], timeout: 1)
     }
 }
