@@ -8,7 +8,7 @@
 
 import CoreHttpKit
 
-class MockedGoodDnsServer: ServerDescription {
+final class MockedGoodDnsServer: ServerDescription {
     convenience init() {
         // swiftlint:disable:next force_try
         let host = try! Host(input: "www.example.com")

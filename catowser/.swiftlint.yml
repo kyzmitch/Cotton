@@ -4,6 +4,7 @@ disabled_rules:
 excluded:
 - Carthage
 - Pods
+- CoreCatowserTests/GeneratedMocks
 
 identifier_name:
     min_length: 1 # warning

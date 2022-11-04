@@ -1,5 +1,5 @@
 //
-//  HttpClient+AsyncAwait.swift
+//  RestClient+AsyncAwait.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 6/10/21.

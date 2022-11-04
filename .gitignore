@@ -72,3 +72,4 @@ catowser/.gryphon
 local.properties
 CoreHttpKit/CoreHttpKit
 catowser/CoreBrowserTests/GeneratedMocks
+catowser/CoreCatowserTests/GeneratedMocks

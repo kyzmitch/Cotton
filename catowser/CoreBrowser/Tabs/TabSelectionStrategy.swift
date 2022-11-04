@@ -7,15 +7,14 @@
 //
 
 import Foundation
+import AutoMockable
 
-// sourcery: AutoMockable
-public protocol IndexSelectionContext {
+public protocol IndexSelectionContext: AutoMockable {
     var collectionLastIndex: Int { get }
     var currentlySelectedIndex: Int { get }
 }
 
-// sourcery: AutoMockable
-public protocol TabSelectionStrategy {
+public protocol TabSelectionStrategy: AutoMockable {
     /**
      A Tab selection strategy (Compositor) defines the algorithms of tab selection in specific cases
      - when tab was removed and need to select another

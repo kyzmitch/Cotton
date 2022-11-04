@@ -18,7 +18,7 @@ final class WebViewVMCombineTests: XCTestCase {
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
     // swiftlint:disable:next force_unwrapping
     lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodDnsClient: RestClient<MockedGoodDnsServer, MockedReachabilityAdaptee> = {
+    lazy var goodDnsClient: MockedRestInterface<MockedGoodDnsServer, MockedReachabilityAdaptee, MockedGoodJSONEncoding> = {
         .init(server: goodServerMock, jsonEncoder: goodJsonEncodingMock, reachability: goodReachabilityMock)
     }()
     let rxSubscriber: MockedDNSContext.HttpKitRxSubscriber = .init()
@@ -215,7 +215,6 @@ final class WebViewVMCombineTests: XCTestCase {
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
     }
     
-    // swiftlint:disable:next function_body_length
     func testGoForward() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
         vm.load()

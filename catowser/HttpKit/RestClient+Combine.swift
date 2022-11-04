@@ -1,5 +1,5 @@
 //
-//  HttpClient+Combine.swift
+//  RestClient+Combine.swift
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 4/28/20.

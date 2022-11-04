@@ -18,20 +18,20 @@ final class ViewModelFactory {
     
     func searchSuggestionsViewModel() -> SearchSuggestionsViewModel {
         let searchProviderType = FeatureManager.webSearchAutoCompleteValue()
-
+        let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:
             let context = GoogleContext(HttpEnvironment.shared.googleClient,
                                         HttpEnvironment.shared.googleClientRxSubscriber,
                                         HttpEnvironment.shared.googleClientSubscriber)
             let strategy = GoogleAutocompleteStrategy(context)
-            return SearchSuggestionsViewModelImpl(strategy, FeatureManager.shared)
+            return SearchSuggestionsViewModelImpl(strategy, vmContext)
         case .duckduckgo:
             let context = DDGoContext(HttpEnvironment.shared.duckduckgoClient,
                                       HttpEnvironment.shared.duckduckgoClientRxSubscriber,
                                       HttpEnvironment.shared.duckduckgoClientSubscriber)
             let strategy = DDGoAutocompleteStrategy(context)
-            return SearchSuggestionsViewModelImpl(strategy, FeatureManager.shared)
+            return SearchSuggestionsViewModelImpl(strategy, vmContext)
         }
     }
     
@@ -42,12 +42,5 @@ final class ViewModelFactory {
         
         let strategy = GoogleDNSStrategy(stratContext)
         return WebViewModelImpl(strategy, site, context)
-    }
-}
-
-extension FeatureManager: SearchViewContext {
-    public func appAsyncApiTypeValue() -> AsyncApiType {
-        // Temporarily use static method in non static
-        FeatureManager.appAsyncApiTypeValue()
     }
 }

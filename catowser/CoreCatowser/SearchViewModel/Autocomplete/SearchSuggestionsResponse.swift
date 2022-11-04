@@ -23,4 +23,9 @@ public struct SearchSuggestionsResponse {
         queryText = ddgoResponse.queryText
         textResults = ddgoResponse.textResults
     }
+    
+    init(_ query: String, _ results: [String]) {
+        queryText = query
+        textResults = results
+    }
 }
