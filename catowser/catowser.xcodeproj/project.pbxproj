@@ -461,7 +461,7 @@
 		8AD4F54128F4936B009C4BDC /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54428F493B8009C4BDC /* Alamofire */; };
 		8AD4F54728F4941A009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54628F4941A009C4BDC /* ReactiveSwift */; };
-		8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */; };
+		8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMTests.swift */; };
 		8AD5E0402915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD5E0412915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
@@ -1129,7 +1129,7 @@
 		8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewMocks.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
-		8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMCombineTests.swift; sourceTree = "<group>"; };
+		8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMTests.swift; sourceTree = "<group>"; };
 		8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewContextImpl.swift; sourceTree = "<group>"; };
 		8AD62B6F28F547E6003F3940 /* Sourcery */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sourcery; sourceTree = "<group>"; };
 		8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
@@ -1916,7 +1916,7 @@
 				8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */,
 				8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift */,
 				8AB9BE0928FEB17E002063C2 /* WebSearchAutocompleteTests.swift */,
-				8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */,
+				8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMTests.swift */,
 				8A5E6C75290B0C430034A78B /* GeneratedMocks */,
 				8A06D6F828EC2FB6001CB63D /* Mocks */,
 			);
@@ -3527,7 +3527,7 @@
 				8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift in Sources */,
 				8A815D3B28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift in Sources */,
 				8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */,
-				8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift in Sources */,
+				8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMTests.swift in Sources */,
 				8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */,
 				8A7B1BA728EB131F004FC135 /* WebViewVMCombineTests.swift in Sources */,
 				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
