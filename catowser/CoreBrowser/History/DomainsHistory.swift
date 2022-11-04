@@ -7,9 +7,13 @@
 //
 
 import CoreHttpKit
+import AutoMockable
+
+public protocol KnownDomainsSource: AutoMockable {
+    func domainNames(whereURLContains filter: String) -> [String]
+}
 
 /// Interface for domain checks
 public protocol DomainsHistory {
     func remember(host: CoreHttpKit.Host)
-    func domainNames(whereURLContains filter: String) -> [String]
 }
