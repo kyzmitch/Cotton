@@ -20,6 +20,11 @@ extension RestClient {
             adapter.wrapperHandler()(result)
             return
         }
+        guard reachabilityStatus.isReachable else {
+            let result: HttpTypedResult<T> = .failure(.noInternetConnectionWithHost)
+            adapter.wrapperHandler()(result)
+            return
+        }
         let codes = T.successCodes
         adapter.performRequest(httpRequest, sucessCodes: codes)
     }
@@ -37,7 +42,11 @@ extension RestClient {
             adapter.wrapperHandler()(result)
             return
         }
-        
+        guard reachabilityStatus.isReachable else {
+            let result: HttpTypedResult<T> = .failure(.noInternetConnectionWithHost)
+            adapter.wrapperHandler()(result)
+            return
+        }
         let codes = T.successCodes
         adapter.performRequest(httpRequest, sucessCodes: codes)
     }
@@ -53,7 +62,11 @@ extension RestClient {
             adapter.wrapperHandler()(result)
             return
         }
-        
+        guard reachabilityStatus.isReachable else {
+            let result: Result<Void, HttpError> = .failure(.noInternetConnectionWithHost)
+            adapter.wrapperHandler()(result)
+            return
+        }
         let codes = VoidResponse.successCodes
         adapter.performVoidRequest(httpRequest, sucessCodes: codes)
     }
