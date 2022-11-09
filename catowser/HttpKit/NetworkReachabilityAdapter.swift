@@ -24,6 +24,17 @@ public enum NetworkReachabilityStatus {
         /// The connection type is a cellular connection.
         case cellular
     }
+    
+    public var isReachable: Bool {
+        switch self {
+        case .unknown:
+            return false
+        case .notReachable:
+            return false
+        case .reachable:
+            return true
+        }
+    }
 }
 
 // swiftlint:disable comment_spacing

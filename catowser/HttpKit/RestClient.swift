@@ -30,12 +30,10 @@ public class RestClient<S: ServerDescription,
     public let jsonEncoder: Encoder
     private let connectivityManager: R
     let httpTimeout: TimeInterval
+    var reachabilityStatus: NetworkReachabilityStatus = .unknown
     
     private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
-        guard let self = self else {
-            return
-        }
-        // TODO: need some interface for reachability but without RX (MutableProperty)
+        self?.reachabilityStatus = status
     }
     
     public required init(server: S,

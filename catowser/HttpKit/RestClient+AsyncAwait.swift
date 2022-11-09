@@ -24,7 +24,9 @@ extension RestClient {
         guard let httpRequest = requestInfo.urlRequest else {
             throw HttpError.failedKotlinRequestConstruct
         }
-        
+        guard reachabilityStatus.isReachable else {
+            throw HttpError.noInternetConnectionWithHost
+        }
         let codes = T.successCodes
         return try await adapter.performAsyncRequest(httpRequest, sucessCodes: codes)
     }
