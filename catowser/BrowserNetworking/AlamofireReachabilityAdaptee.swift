@@ -12,9 +12,9 @@ import CoreHttpKit
 
 public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {
     let connectivityManager: NetworkReachabilityManager
-    public typealias S = S
+    public typealias Server = S
     
-    public init?(server: S) {
+    public init?(server: Server) {
         if let manager = NetworkReachabilityManager(host: server.host.rawString) {
             connectivityManager = manager
         } else if let manager = NetworkReachabilityManager() {
@@ -30,6 +30,10 @@ public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkRe
             listener(status.httpKitValue)
         }
         return connectivityManager.startListening(onQueue: queue, onUpdatePerforming: closure)
+    }
+    
+    public func stopListening() {
+        connectivityManager.stopListening()
     }
 }
 

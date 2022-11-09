@@ -36,4 +36,5 @@ public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable {
     @discardableResult
     func startListening(onQueue queue: DispatchQueue,
                         onUpdatePerforming listener: @escaping Listener) -> Bool
+    func stopListening()
 }

@@ -15,7 +15,6 @@ import CoreHttpKit
 extension RestClient {
     public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpError>>>
     
-    // gryphon ignore
     public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                 withAccessToken accessToken: String?,
                                                 transport adapter: B,

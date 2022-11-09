@@ -80,4 +80,18 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
             handlerType = .combine(promiseWrapper)
         }
     }
+    
+    func performAsyncRequest(_ request: URLRequest,
+                             sucessCodes: [Int]) async throws -> Response {
+        do {
+            let value = try await AF.request(request)
+                .validate(statusCode: sucessCodes)
+                .serializingDecodable(Response.self)
+                .value
+            return value
+        } catch {
+            throw HttpError.httpFailure(error: error)
+        }
+        
+    }
 }

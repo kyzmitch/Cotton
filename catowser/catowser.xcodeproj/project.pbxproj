@@ -171,7 +171,6 @@
 		8A27722E268E4AD400D8878C /* SearchEngine+OpenSearchParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A968C24462E8700E035F8 /* SearchEngine+OpenSearchParser.swift */; };
 		8A328F3527B690980021F6B0 /* NetworkReachabilityAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A328F3427B690980021F6B0 /* NetworkReachabilityAdapter.swift */; };
 		8A328F3927B695490021F6B0 /* AlamofireReachabilityAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A328F3827B695490021F6B0 /* AlamofireReachabilityAdaptee.swift */; };
-		8A41A18126738949005DAC7D /* RestClient+URLSessionTaskDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A41A18026738949005DAC7D /* RestClient+URLSessionTaskDelegate.swift */; };
 		8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */; };
 		8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */; };
 		8A437DA9247ED376001C1E8B /* TrimmedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A437DA8247ED376001C1E8B /* TrimmedString.swift */; };
@@ -313,7 +312,6 @@
 		8A815D3B28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift */; };
 		8A815D3D28F16367007A6926 /* JSPluginsProgramImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */; };
 		8A82CDF02351095700607162 /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* RestClient.swift */; };
-		8A84DC562677867E000C69DB /* RestClient+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A84DC552677867E000C69DB /* RestClient+URLSessionDelegate.swift */; };
 		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90636824332376009D786E /* URL+CoreExtensions.swift */; };
@@ -1001,7 +999,6 @@
 		8A328F3827B695490021F6B0 /* AlamofireReachabilityAdaptee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireReachabilityAdaptee.swift; sourceTree = "<group>"; };
 		8A3FED7B288FC8CA004997E4 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
 		8A3FED7E288FD1A6004997E4 /* WebViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelImpl.swift; sourceTree = "<group>"; };
-		8A41A18026738949005DAC7D /* RestClient+URLSessionTaskDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RestClient+URLSessionTaskDelegate.swift"; sourceTree = "<group>"; };
 		8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIHostingController+Extension.swift"; sourceTree = "<group>"; };
 		8A437DA8247ED376001C1E8B /* TrimmedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrimmedString.swift; sourceTree = "<group>"; };
 		8A46AB9C2377260300DC03E6 /* GoogleDnsServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleDnsServer.swift; sourceTree = "<group>"; };
@@ -1051,7 +1048,6 @@
 		8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmJSPluginsTests.swift; sourceTree = "<group>"; };
 		8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramImpl.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* RestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClient.swift; sourceTree = "<group>"; };
-		8A84DC552677867E000C69DB /* RestClient+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RestClient+URLSessionDelegate.swift"; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
 		8A90636824332376009D786E /* URL+CoreExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+CoreExtensions.swift"; sourceTree = "<group>"; };
 		8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
@@ -2228,9 +2224,7 @@
 				8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */,
 				8AC45ECC2458327D007E47EE /* RestClient+Combine.swift */,
 				8ABABEF0267233D3000AA9CB /* RestClient+AsyncAwait.swift */,
-				8A41A18026738949005DAC7D /* RestClient+URLSessionTaskDelegate.swift */,
 				8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */,
-				8A84DC552677867E000C69DB /* RestClient+URLSessionDelegate.swift */,
 				8AF4922A235248CE00183579 /* RestClientError.swift */,
 				8AE8D044280D388800FADE3A /* ResponseType.swift */,
 			);
@@ -3719,7 +3713,6 @@
 				8AB4A1AD27B5335C008030FB /* ClientSubscriber.swift in Sources */,
 				8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */,
 				8AB4A1B127B55268008030FB /* ResponseHandlingApiType.swift in Sources */,
-				8A84DC562677867E000C69DB /* RestClient+URLSessionDelegate.swift in Sources */,
 				8AB5B3C4280C8B3D001F8644 /* RequestInterfaces.swift in Sources */,
 				8ABDB0B427B24FB300D6EDE7 /* RestClient+Combine.swift in Sources */,
 				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
@@ -3729,7 +3722,6 @@
 				8AB4A1B527B55684008030FB /* HTTPVoidAdapter.swift in Sources */,
 				8AB5B3C6280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift in Sources */,
 				8A328F3527B690980021F6B0 /* NetworkReachabilityAdapter.swift in Sources */,
-				8A41A18126738949005DAC7D /* RestClient+URLSessionTaskDelegate.swift in Sources */,
 				8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */,
 				8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */,
 			);
@@ -5420,7 +5412,7 @@
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
 				kind = exactVersion;
-				version = 5.2.0;
+				version = 5.6.2;
 			};
 		};
 		8AC4365F247911F6008DD663 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {

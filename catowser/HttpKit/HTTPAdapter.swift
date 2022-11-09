@@ -51,6 +51,8 @@ public protocol HTTPAdapter: AnyObject {
     
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
+    func performAsyncRequest(_ request: URLRequest,
+                             sucessCodes: [Int]) async throws -> Response
     /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
     /// This is not defined in ResponseHandlingApi because it is a value type and this function should capture self
     /// So, better to store it here in reference type
