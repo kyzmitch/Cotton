@@ -17,8 +17,8 @@ extension RestClient where Server == DuckDuckGoServer {
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func aaDuckDuckGoSuggestions(for text: String) async throws -> DDGoSuggestionsResponse {
         let endpoint: DDGoSuggestionsEndpoint = try .duckduckgoSuggestions(query: text)
-        let value = try await self.aaMakePublicRequest(for: endpoint, responseType: DDGoSuggestionsResponse.self)
-        return value
+        let adapter: AlamofireHTTPAdaptee<DDGoSuggestionsResponse, DuckDuckGoServer> = .init(.asyncAwaitConcurrency)
+        return try await self.aaMakePublicRequest(for: endpoint, transport: adapter)
     }
 }
 

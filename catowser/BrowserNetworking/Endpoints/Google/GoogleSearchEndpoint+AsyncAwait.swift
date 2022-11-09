@@ -15,8 +15,8 @@ extension RestClient where Server == GoogleServer {
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func aaGoogleSearchSuggestions(for text: String) async throws -> GSearchSuggestionsResponse {
         let endpoint: GSearchEndpoint = try .googleSearchSuggestions(query: text)
-        let value = try await self.aaMakePublicRequest(for: endpoint, responseType: GSearchSuggestionsResponse.self)
-        return value
+        let adapter: AlamofireHTTPAdaptee<GSearchSuggestionsResponse, GoogleServer> = .init(.asyncAwaitConcurrency)
+        return try await self.aaMakePublicRequest(for: endpoint, transport: adapter)
     }
 }
 

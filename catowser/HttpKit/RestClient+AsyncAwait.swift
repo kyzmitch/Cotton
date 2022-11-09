@@ -14,10 +14,10 @@ import CoreHttpKit
 extension RestClient {
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    // gryphon ignore
-    private func aaMakeRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
-                                                withAccessToken accessToken: String?,
-                                                responseType: T.Type) async throws -> T {
+    private func aaMakeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
+                                                  withAccessToken accessToken: String?,
+                                                  transport adapter: B) async throws -> T
+    where B.Response == T, B.Server == Server {
         let requestInfo = endpoint.request(server: server,
                                            requestTimeout: Int64(httpTimeout),
                                            accessToken: accessToken)
@@ -26,40 +26,24 @@ extension RestClient {
         }
         
         let codes = T.successCodes
-        // https://developer.apple.com/documentation/foundation/urlsession/3767352-data
-        let (data, response) = try await urlSession.data(for: httpRequest, delegate: self.sessionTaskHandler)
-        guard let urlResponse = response as? HTTPURLResponse else {
-            throw HttpError.notHttpUrlResponse
-        }
-        guard codes.contains(urlResponse.statusCode) else {
-            throw HttpError.notGoodStatusCode(urlResponse.statusCode)
-        }
-        
-        let decodedValue = try JSONDecoder().decode(T.self, from: data)
-        return decodedValue
+        return try await adapter.performAsyncRequest(httpRequest, sucessCodes: codes)
     }
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    // gryphon ignore
-    public func aaMakePublicRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
-                                                     responseType: T.Type) async throws -> T {
-        let value = try await aaMakeRequest(for: endpoint,
-                                            withAccessToken: nil,
-                                            responseType: responseType)
-        return value
+    public func aaMakePublicRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
+                                                       transport adapter: B) async throws -> T
+    where B.Response == T, B.Server == Server {
+        return try await aaMakeRequest(for: endpoint, withAccessToken: nil, transport: adapter)
     }
     
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
-    // gryphon ignore
-    func aaMakeAuthorizedRequest<T: ResponseType>(for endpoint: Endpoint<Server>,
-                                                  withAccessToken accessToken: String,
-                                                  responseType: T.Type) async throws -> T {
-        let value = try await aaMakeRequest(for: endpoint,
-                                            withAccessToken: accessToken,
-                                            responseType: responseType)
-        return value
+    func aaMakeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
+                                                    withAccessToken accessToken: String,
+                                                    transport adapter: B) async throws -> T
+    where B.Response == T, B.Server == Server {
+        return try await aaMakeRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
     }
 }
 

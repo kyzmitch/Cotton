@@ -27,20 +27,8 @@ public class RestClient<S: ServerDescription,
     public typealias Encoder = E
     
     public let server: Server
-    
     public let jsonEncoder: Encoder
-    
-    private let connectivityManager: R?
-    
-    let sessionTaskHandler: HttpClientSessionTaskDelegate?
-    
-    let urlSessionHandler: HttpClientUrlSessionDelegate?
-    
-    private let urlSessionQueue: DispatchQueue = .init(label: "com.ae.HttpKit." + .threadName)
-    
-    /// Used only for async/await implementation when Alamofire can't be used naturally
-    let urlSession: URLSession
-    
+    private let connectivityManager: R
     let httpTimeout: TimeInterval
     
     private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
@@ -57,22 +45,14 @@ public class RestClient<S: ServerDescription,
         self.server = server
         self.httpTimeout = httpTimeout
         self.jsonEncoder = jsonEncoder
-        let sessionConfiguration = URLSessionConfiguration.default
-        urlSessionHandler = .init()
-        let operationQueue: OperationQueue = .init()
-        operationQueue.underlyingQueue = urlSessionQueue
-        urlSession = URLSession(configuration: sessionConfiguration,
-                                delegate: urlSessionHandler,
-                                delegateQueue: operationQueue)
-        sessionTaskHandler = .init()
-        
         connectivityManager = reachability
-        guard let cManager = connectivityManager else {
-            return
-        }
-        guard cManager.startListening(onQueue: .main, onUpdatePerforming: hostListener) else {
+        guard connectivityManager.startListening(onQueue: .main, onUpdatePerforming: hostListener) else {
             print("Connectivity listening failed to start")
             return
         }
+    }
+    
+    deinit {
+        connectivityManager.stopListening()
     }
 }
