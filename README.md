@@ -16,20 +16,20 @@ Features
 
 Building the code
 -----------------
-1.`make`
-2. open Kotlin CoreHttpKit folder using `InteliJ IDEA`
-3. run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
-4.`cd catowser/`
-5.`pod install`
-6. Open `catowser.xcworkspace`
-7. Build `Cotton` or `Cotton dev` build target
+- `make`
+- open Kotlin CoreHttpKit folder using `InteliJ IDEA`
+- run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
+- `cd catowser/`
+- Open `catowser.xcworkspace`
+- Build `Cotton` or `Cotton dev` build target
 
 Design documents
 -----------------
 Private repo https://github.com/kyzmitch/CatowserEvolution
 
-## Dependencies
-_____________________
+Dependencies
+-----------------
+
 ### SwiftSoup
 Used to parse HTML content of the loaded web pages to extract video tags and other info. 
 https://github.com/scinfu/SwiftSoup
@@ -55,9 +55,3 @@ https://github.com/krzysztofzablocki/Sourcery
 Used to generate complex mocks for the types and Swift protocols with associated types and constraints. 
 https://github.com/MakeAWishFoundation/SwiftyMocky
 
-## Screenshots
-
-![ipad_landskape_screenshot](https://user-images.githubusercontent.com/622715/167244528-4cf58696-f191-4f96-b59f-e4956fcc429c.png)
-![ipad_screenshot](https://user-images.githubusercontent.com/622715/167244530-7dd2931a-abbc-4804-a52d-e7d516e3ae5d.png)
-![iphone_screenshot](https://user-images.githubusercontent.com/622715/167244532-f120c4f8-1570-4bc5-9caa-9fa0f0a6f47f.png)
-![iphone_tabs_screenshot](https://user-images.githubusercontent.com/622715/167244534-ac07749d-788a-4e91-88dc-5a28f5439eb0.png)
