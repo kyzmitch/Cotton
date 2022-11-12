@@ -34,8 +34,8 @@ final class TabletSearchBarViewController: BaseViewController {
     private weak var downloadPanelDelegate: DonwloadPanelDelegate?
     
     init(_ searchBarDelegate: UISearchBarDelegate,
-         settingsDelegate: GlobalMenuDelegate,
-         downloadDelegate: DonwloadPanelDelegate) {
+         _ settingsDelegate: GlobalMenuDelegate,
+         _ downloadDelegate: DonwloadPanelDelegate) {
         searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
         globalSettingsDelegate = settingsDelegate
         downloadPanelDelegate = downloadDelegate

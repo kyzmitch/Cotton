@@ -26,7 +26,7 @@ final class ToolbarRouter {
     }
 
     func showTabs() {
-        let tabsVc = TabsPreviewsViewController(router: tabsPreviewsRouter)
+        let tabsVc = TabsPreviewsViewController(tabsPreviewsRouter)
         vc?.present(tabsVc, animated: animated, completion: nil)
     }
 }

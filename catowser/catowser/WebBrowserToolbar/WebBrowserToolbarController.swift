@@ -25,7 +25,7 @@ protocol GlobalMenuDelegate: AnyObject {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect)
 }
 
-final class WebBrowserToolbarController: UIViewController {
+final class WebBrowserToolbarController: BaseViewController {
 
     /// Site navigation delegate
     private weak var siteNavigationDelegate: SiteNavigationDelegate? {
@@ -140,9 +140,9 @@ final class WebBrowserToolbarController: UIViewController {
 
     private let router: ToolbarRouter
 
-    init(router: ToolbarRouter,
-         downloadDelegate: DonwloadPanelDelegate,
-         globalSettingsDelegate: GlobalMenuDelegate) {
+    init(_ router: ToolbarRouter,
+         _ downloadDelegate: DonwloadPanelDelegate,
+         _ globalSettingsDelegate: GlobalMenuDelegate) {
         self.router = router
         downloadPanelDelegate = downloadDelegate
         self.globalSettingsDelegate = globalSettingsDelegate

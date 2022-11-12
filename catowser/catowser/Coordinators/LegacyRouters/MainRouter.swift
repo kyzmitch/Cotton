@@ -47,9 +47,7 @@ final class MainRouter: NSObject {
 
     lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            let tabletController = TabletSearchBarViewController(self,
-                                                                 settingsDelegate: self,
-                                                                 downloadDelegate: self)
+            let tabletController = TabletSearchBarViewController(self, self, self)
             mediaLinksPresenter = tabletController
             return tabletController
         } else {

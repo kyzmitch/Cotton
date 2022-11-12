@@ -78,6 +78,14 @@
 		60D52D41225F542E00CB56F0 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52D40225F542E00CB56F0 /* Trie.swift */; };
 		60D52D43225F55B400CB56F0 /* topdomains.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60D52D42225F55B400CB56F0 /* topdomains.txt */; };
 		7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7509BF9122AF832200F4D701 /* Site+Extension.swift */; };
+		7533929A291FCEDD00570461 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75339299291FCEDD00570461 /* Coordinator.swift */; };
+		7533929B291FCEDD00570461 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75339299291FCEDD00570461 /* Coordinator.swift */; };
+		753392A1291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */; };
+		753392A2291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */; };
+		753392A4291FD9A500570461 /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A3291FD9A500570461 /* ViewControllerFactory.swift */; };
+		753392A5291FD9A500570461 /* ViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A3291FD9A500570461 /* ViewControllerFactory.swift */; };
+		753392A7291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A6291FEBFD00570461 /* TabletViewControllerFactory.swift */; };
+		753392A8291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A6291FEBFD00570461 /* TabletViewControllerFactory.swift */; };
 		755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */; };
 		755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */; };
 		755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */; };
@@ -917,6 +925,10 @@
 		60D52D42225F55B400CB56F0 /* topdomains.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = topdomains.txt; sourceTree = "<group>"; };
 		60D52D5422673C6300CB56F0 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		7509BF9122AF832200F4D701 /* Site+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Site+Extension.swift"; sourceTree = "<group>"; };
+		75339299291FCEDD00570461 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewControllerFactory.swift; sourceTree = "<group>"; };
+		753392A3291FD9A500570461 /* ViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerFactory.swift; sourceTree = "<group>"; };
+		753392A6291FEBFD00570461 /* TabletViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletViewControllerFactory.swift; sourceTree = "<group>"; };
 		755E107027BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeViewPreview.swift; sourceTree = "<group>"; };
 		755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAsyncApiTypeModel.swift; sourceTree = "<group>"; };
 		755E107627BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireHTTPAdaptee.swift; sourceTree = "<group>"; };
@@ -1531,6 +1543,27 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		75339298291FCEBC00570461 /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				75339299291FCEDD00570461 /* Coordinator.swift */,
+				7533929F291FD30B00570461 /* LegacyRouters */,
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		7533929F291FD30B00570461 /* LegacyRouters */ = {
+			isa = PBXGroup;
+			children = (
+				607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */,
+				60A82C522254E1F7008210D9 /* MainRouter.swift */,
+				8A1C1C22248510880098F2F1 /* MainRouter+TagsRouterInterface.swift */,
+				8A1C1C282485121C0098F2F1 /* MainRouter+LinkTagsDelegate.swift */,
+				8A1C1C252485115C0098F2F1 /* MainRouter+UISearchBarDelegate.swift */,
+			);
+			path = LegacyRouters;
+			sourceTree = "<group>";
+		};
 		755E107827C0FB8200D90AD0 /* DuckDuckGoAutocomplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -1616,7 +1649,6 @@
 			isa = PBXGroup;
 			children = (
 				841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */,
-				607D02A921FEEC51009FCD0B /* ToolbarRouter.swift */,
 				60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */,
 			);
 			path = WebBrowserToolbar;
@@ -1675,6 +1707,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				75339298291FCEBC00570461 /* Coordinators */,
 				8A963C6F25212A63008EAB27 /* DB */,
 				8AA68A9D245BE45E00263E22 /* Environment */,
 				8ADAF545240123E000A0D233 /* Utils */,
@@ -1703,10 +1736,6 @@
 		847D7C871EF6C30F00291B87 /* Browser */ = {
 			isa = PBXGroup;
 			children = (
-				60A82C522254E1F7008210D9 /* MainRouter.swift */,
-				8A1C1C22248510880098F2F1 /* MainRouter+TagsRouterInterface.swift */,
-				8A1C1C282485121C0098F2F1 /* MainRouter+LinkTagsDelegate.swift */,
-				8A1C1C252485115C0098F2F1 /* MainRouter+UISearchBarDelegate.swift */,
 				8A1C1C1F2485103E0098F2F1 /* MainInterfaces.swift */,
 				C22599661F7BF301000E4C3A /* MainBrowserViewController.swift */,
 				841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */,
@@ -2038,6 +2067,9 @@
 				8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */,
 				8A745C102480295B00A379AD /* TabsEnvironment.swift */,
 				8A23989228622FCA005DA801 /* ViewModelFactory.swift */,
+				753392A3291FD9A500570461 /* ViewControllerFactory.swift */,
+				753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */,
+				753392A6291FEBFD00570461 /* TabletViewControllerFactory.swift */,
 			);
 			path = Environment;
 			sourceTree = "<group>";
@@ -3358,6 +3390,7 @@
 			files = (
 				8AE3113C247C66DF00FF28B1 /* SiteMenuView.swift in Sources */,
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
+				7533929A291FCEDD00570461 /* Coordinator.swift in Sources */,
 				8A510F632424ADC30070503C /* SiteNavigationProtocols.swift in Sources */,
 				6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
@@ -3376,6 +3409,7 @@
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
 				755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
+				753392A1291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */,
 				755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
 				8AD5E0402915485200901DA2 /* SearchViewContextImpl.swift in Sources */,
@@ -3407,6 +3441,7 @@
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
 				841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */,
 				8A745C0D248027C600A379AD /* TabsCache.swift in Sources */,
+				753392A7291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8AB9BE1B28FF0CE7002063C2 /* CAGradientLayer+CatowserExtension.swift in Sources */,
@@ -3423,6 +3458,7 @@
 				8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */,
 				8A7B1BFC28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
+				753392A4291FD9A500570461 /* ViewControllerFactory.swift in Sources */,
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989328622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
@@ -3555,6 +3591,7 @@
 			files = (
 				8AE3113D247C66DF00FF28B1 /* SiteMenuView.swift in Sources */,
 				8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */,
+				7533929B291FCEDD00570461 /* Coordinator.swift in Sources */,
 				8A8035A324442F0F000E035F /* SiteNavigationProtocols.swift in Sources */,
 				8A8035A724442F0F000E035F /* LightTheme.swift in Sources */,
 				8A8035A824442F0F000E035F /* WebViewController.swift in Sources */,
@@ -3573,6 +3610,7 @@
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
 				755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
+				753392A2291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */,
 				755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */,
 				8A8035B524442F0F000E035F /* SmartphoneSearchBarViewController.swift in Sources */,
 				8AD5E0412915485200901DA2 /* SearchViewContextImpl.swift in Sources */,
@@ -3604,6 +3642,7 @@
 				8A8035C024442F0F000E035F /* Theme.swift in Sources */,
 				8A8035C124442F0F000E035F /* LinkTagsViewController.swift in Sources */,
 				8A745C0C248027C600A379AD /* TabsCache.swift in Sources */,
+				753392A8291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8AB9BE1C28FF0CE7002063C2 /* CAGradientLayer+CatowserExtension.swift in Sources */,
@@ -3620,6 +3659,7 @@
 				8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */,
 				8A7B1BFD28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
+				753392A5291FD9A500570461 /* ViewControllerFactory.swift in Sources */,
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989428622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,

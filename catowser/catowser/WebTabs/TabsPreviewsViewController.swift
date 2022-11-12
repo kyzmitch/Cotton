@@ -10,7 +10,7 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 
-final class TabsPreviewsViewController: UIViewController, CollectionViewInterface {
+final class TabsPreviewsViewController: BaseViewController, CollectionViewInterface {
 
     private var uxState: MutableProperty<State> = MutableProperty<State>(.loading)
     
@@ -63,7 +63,7 @@ final class TabsPreviewsViewController: UIViewController, CollectionViewInterfac
 
     private let router: TabsPreviewsRouter
 
-    init(router: TabsPreviewsRouter) {
+    init(_ router: TabsPreviewsRouter) {
         self.router = router
         super.init(nibName: nil, bundle: nil)
     }
