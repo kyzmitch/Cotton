@@ -10,15 +10,11 @@ import UIKit
 
 /// Implements the operations to create phone layout product objects.
 final class PhoneViewControllerFactory: ViewControllerFactory {
-    typealias L = PhoneLayout
+    typealias Layout = PhoneLayout
     
     let layoutMode: PhoneLayout
     
     init(_ layoutMode: PhoneLayout) {
         self.layoutMode = layoutMode
-    }
-    
-    var deviceSpecificSearchBarViewController: UIViewController {
-        return SmartphoneSearchBarViewController(layoutMode.searchBarDelegate)
     }
 }

@@ -13,8 +13,15 @@ import Alamofire
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
-    let themeType: ThemeType = .default
+    lazy var appCoordinator: any Coordinator = {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let factory = TabletViewControllerFactory(TabletLayout())
+            return AppCoordinator(factory)
+        } else {
+            let factory = PhoneViewControllerFactory(PhoneLayout())
+            return AppCoordinator(factory)
+        }
+    }()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -32,15 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: UIScreen.main.bounds.width,
-                          height: UIScreen.main.bounds.height)
-        window = UIWindow(frame: rect)
-        let rootViewController = MainBrowserViewController()
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
-        
+        appCoordinator.start()
         return true
     }
 }
