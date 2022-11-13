@@ -10,11 +10,31 @@ import UIKit
 
 /// Implements the operations to create phone layout product objects.
 final class PhoneViewControllerFactory: ViewControllerFactory {
-    typealias Layout = PhoneLayout
+    init() {}
     
-    let layoutMode: PhoneLayout
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController? {
+        return SmartphoneSearchBarViewController(searchBarDelegate)
+    }
     
-    init(_ layoutMode: PhoneLayout) {
-        self.layoutMode = layoutMode
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
+                                               _ downloadDelegate: DonwloadPanelDelegate,
+                                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
+        return nil
+    }
+    
+    func toolbarViewController(_ tabsRenderer: TabRendererInterface,
+                               _ downloadDelegate: DonwloadPanelDelegate,
+                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
+        let router = ToolbarRouter(presenter: tabsRenderer)
+        let toolbar = WebBrowserToolbarController(router,
+                                                  downloadDelegate,
+                                                  settingsDelegate)
+        return toolbar
+    }
+    
+    func tabsPreviewsViewController(_ tabsRenderer: TabRendererInterface) -> UIViewController? {
+        let router = TabsPreviewsRouter(presenter: tabsRenderer)
+        let vc: TabsPreviewsViewController = .init(router)
+        return vc
     }
 }

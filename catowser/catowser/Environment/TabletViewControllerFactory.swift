@@ -10,12 +10,27 @@ import UIKit
 
 /// Implements the operations to create tablet layout product objects.
 final class TabletViewControllerFactory: ViewControllerFactory {
+    init() {}
     
-    typealias Layout = TabletLayout
+    // MARK: - Tablet methods
     
-    let layoutMode: TabletLayout
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
+                                               _ downloadDelegate: DonwloadPanelDelegate,
+                                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
+        return TabletSearchBarViewController(searchBarDelegate,
+                                             settingsDelegate,
+                                             downloadDelegate)
+    }
     
-    init(_ layoutMode: TabletLayout) {
-        self.layoutMode = layoutMode
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController? {
+        return nil
+    }
+    func tabsPreviewsViewController(_ tabsRenderer: TabRendererInterface) -> UIViewController? {
+        return nil
+    }
+    func toolbarViewController(_ tabsRenderer: TabRendererInterface,
+                               _ downloadDelegate: DonwloadPanelDelegate,
+                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
+        return nil
     }
 }

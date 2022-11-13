@@ -9,6 +9,7 @@
 import Foundation
 
 protocol Coordinator: AnyObject {
+    var vcFactory: any ViewControllerFactory { get }
     var childCoordinators: [any Coordinator] { get }
     func start()
     func stop()

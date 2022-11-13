@@ -25,8 +25,10 @@ protocol TabRendererInterface: AnyViewController {
 }
 
 final class MainBrowserViewController: BaseViewController {
-
-    init() {
+    private let coordinator: any Coordinator
+    
+    init(_ coordinator: any Coordinator) {
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 

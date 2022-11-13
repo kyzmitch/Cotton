@@ -15,10 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     lazy var appCoordinator: any Coordinator = {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            let factory = TabletViewControllerFactory(TabletLayout())
+            let factory = TabletViewControllerFactory()
             return AppCoordinator(factory)
         } else {
-            let factory = PhoneViewControllerFactory(PhoneLayout())
+            let factory = PhoneViewControllerFactory()
             return AppCoordinator(factory)
         }
     }()
