@@ -1,5 +1,5 @@
 //
-//  MainRouter.swift
+//  AppLayoutCoordinator.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 03/04/2019.
@@ -22,7 +22,7 @@ protocol MediaLinksPresenter: AnyObject {
 
 /// Should contain copies for references to all needed constraints and view controllers.
 /// NSObject subclass to support system delegate protocol.
-final class MainRouter: NSObject {
+final class AppLayoutCoordinator: NSObject {
     /// The table to display search suggestions list
     func createSuggestionsController() -> SearchSuggestionsViewController {
         // It seems it should be computed property
@@ -47,7 +47,7 @@ final class MainRouter: NSObject {
 
     lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            let tabletController = TabletSearchBarViewController(self, self, self)
+            let tabletController = TabletSearchBarViewController(self, presenter, self)
             mediaLinksPresenter = tabletController
             return tabletController
         } else {
@@ -83,7 +83,7 @@ final class MainRouter: NSObject {
 
     var tagsSiteDataSource: TagsSiteDataSource?
 
-    let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+    let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 
     private var searchSuggestClient: SearchEngine {
         let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
@@ -102,11 +102,9 @@ final class MainRouter: NSObject {
         return osDescription.html
     }
 
-    typealias LinksRouterPresenter = AnyViewController & MainDelegate
+    typealias LinksRouterPresenter = AnyViewController & MainDelegate & GlobalMenuDelegate
 
     private(set) weak var presenter: LinksRouterPresenter!
-    /// Need to update this navigation delegate each time it changes in router holder
-    weak var siteNavigationDelegate: SiteNavigationDelegate?
     
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
@@ -137,7 +135,7 @@ final class MainRouter: NSObject {
         showedTagsConstraint?.isActive = true
 
         UIView.animate(withDuration: 0.33) {
-            self.linkTagsController.view.layoutIfNeeded()
+            self.linkTagsController.controllerView.layoutIfNeeded()
         }
     }
     
@@ -150,7 +148,7 @@ final class MainRouter: NSObject {
             showedFilesGreedConstraint?.isActive = false
             hiddenFilesGreedConstraint?.isActive = true
 
-            filesGreedController.view.layoutIfNeeded()
+            filesGreedController.controllerView.layoutIfNeeded()
         } else {
             filesGreedController.viewController.dismiss(animated: true, completion: nil)
         }
@@ -165,7 +163,7 @@ final class MainRouter: NSObject {
         showedTagsConstraint?.isActive = false
         hiddenTagsConstraint?.isActive = true
 
-        linkTagsController.view.layoutIfNeeded()
+        linkTagsController.controllerView.layoutIfNeeded()
         isLinkTagsShowed = false
     }
     
@@ -193,28 +191,28 @@ final class MainRouter: NSObject {
         searchSuggestionsVC = createSuggestionsController()
         guard let searchSuggestionsController = searchSuggestionsVC else { return }
 
-        presenter.viewController.add(asChildViewController: searchSuggestionsController, to: presenter.view)
+        presenter.viewController.add(asChildViewController: searchSuggestionsController, to: presenter.controllerView)
         isSuggestionsShowed = true
         searchSuggestionsController.delegate = self
 
-        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.view.bottomAnchor,
+        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.controllerView.bottomAnchor,
                                                               constant: 0).isActive = true
-        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.view.leadingAnchor,
+        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.controllerView.leadingAnchor,
                                                                   constant: 0).isActive = true
-        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.view.trailingAnchor,
+        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.controllerView.trailingAnchor,
                                                                    constant: 0).isActive = true
 
         if let bottomShift = presenter.keyboardHeight {
             // fix wrong height of keyboard on Simulator when keyboard partly visible
             let correctedShift = bottomShift < presenter.toolbarHeight ? presenter.toolbarHeight : bottomShift
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
+            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.controllerView.bottomAnchor,
                                                                      constant: -correctedShift).isActive = true
         } else {
             if isPad {
                 searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.toolbarTopAnchor,
                                                                          constant: 0).isActive = true
             } else {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.view.bottomAnchor,
+                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.controllerView.bottomAnchor,
                                                                          constant: 0).isActive = true
             }
         }
@@ -239,7 +237,7 @@ final class MainRouter: NSObject {
         showedFilesGreedConstraint?.isActive = true
 
         UIView.animate(withDuration: 0.6) {
-            self.filesGreedController.view.layoutIfNeeded()
+            self.filesGreedController.controllerView.layoutIfNeeded()
         }
 
         isFilesGreedShowed = true
@@ -270,9 +268,7 @@ final class MainRouter: NSObject {
                                              completion: nil)
         }
     }
-}
-
-extension MainRouter: SiteLifetimeInterface {
+    
     func showProgress(_ show: Bool) {
         if show {
             hiddenWebLoadConstraint?.isActive = false
@@ -282,87 +278,9 @@ extension MainRouter: SiteLifetimeInterface {
             hiddenWebLoadConstraint?.isActive = true
         }
     }
-    
-    func openTabMenu(from sourceView: UIView,
-                     and sourceRect: CGRect,
-                     for host: Host,
-                     siteSettings: Site.Settings) {
-        let style: MenuModelStyle = .siteMenu(host, siteSettings)
-        showTabMenuIfNeeded(from: sourceView,
-                            and: sourceRect,
-                            menuStyle: style)
-    }
 }
 
-extension MainRouter: GlobalMenuDelegate {
-    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
-        showTabMenuIfNeeded(from: sourceView,
-                            and: sourceRect,
-                            menuStyle: .onlyGlobalMenu)
-    }
-}
-
-fileprivate extension MainRouter {
-    func showTabMenuIfNeeded(from sourceView: UIView,
-                             and sourceRect: CGRect,
-                             menuStyle: MenuModelStyle) {
-        if #available(iOS 13.0, *) {
-            let popClosure: DismissClosure = { [weak self] in
-                self?.presenter
-                    .viewController
-                    .presentedViewController?
-                    .dismiss(animated: true)
-            }
-            let menuModel: SiteMenuModel
-            menuModel = SiteMenuModel(menuStyle: menuStyle,
-                                      siteDelegate: siteNavigationDelegate,
-                                      dismiss: popClosure)
-            let menuHostVC = SiteMenuViewController(model: menuModel)
-            
-            if isPad {
-                menuHostVC.modalPresentationStyle = .popover
-                menuHostVC.preferredContentSize = CGSize(width: 400, height: 360)
-                if let popoverPresenter = menuHostVC.popoverPresentationController {
-                    // for iPad
-                    popoverPresenter.sourceView = sourceView
-                    popoverPresenter.sourceRect = sourceRect
-                }
-            }
-            presenter.viewController.present(menuHostVC, animated: true)
-        } else {
-            // This is not full menu, it only configures DoH
-            // (JavaScript, Tab behaviour, etc.) is not implemented for iOS < 13.0
-            let isDoHEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-            let dnsMsg = NSLocalizedString("txt_doh_menu_item", comment: "Title of DoH menu item")
-            let msg = "\(dnsMsg) \(isDoHEnabled ? "enabled" : "disabled")"
-            let alert: UIAlertController = .init(title: nil,
-                                                 message: msg,
-                                                 preferredStyle: .actionSheet)
-            let eAction = UIAlertAction(title: "Enable", style: .default) { (_) in
-                FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: true)
-            }
-            let dAction = UIAlertAction(title: "Disable", style: .default) { (_) in
-                FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: false)
-            }
-            alert.addAction(eAction)
-            alert.addAction(dAction)
-            
-            if isPad {
-                if let popoverPresenter = alert.popoverPresentationController {
-                    // for iPad
-                    popoverPresenter.sourceView = sourceView
-                    popoverPresenter.sourceRect = sourceRect
-                }
-                presenter.viewController.present(alert, animated: true)
-            } else {
-                // https://github.com/kyzmitch/Cotton/issues/13
-                presenter.viewController.present(alert, animated: true)
-            }
-        }
-    }
-}
-
-extension MainRouter: SearchSuggestionsListDelegate {
+extension AppLayoutCoordinator: SearchSuggestionsListDelegate {
     func didSelect(_ content: SuggestionType) {
         hideSearchController()
 
@@ -389,7 +307,7 @@ extension MainRouter: SearchSuggestionsListDelegate {
     }
 }
 
-extension MainRouter: DonwloadPanelDelegate {
+extension AppLayoutCoordinator: DonwloadPanelDelegate {
     func didPressDownloads(to hide: Bool) {
         if hide {
             hideFilesGreedIfNeeded()

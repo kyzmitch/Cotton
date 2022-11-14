@@ -111,8 +111,6 @@ fileprivate extension LinksBadgeView {
     }
 }
 
-extension LinkTagsViewController: AnyViewController {}
-
 extension LinkTagsViewController: LinkTagsPresenter {
     func setLinks(_ count: Int, for type: LinksType) {
         dataSource[type] = count

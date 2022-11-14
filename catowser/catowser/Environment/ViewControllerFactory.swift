@@ -23,7 +23,7 @@ import CoreCatowser
 /// Declares an interface for operations that create abstract product objects.
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: RootScreenCoordinator) -> UIViewController
+    func rootViewController(_ coordinator: AppCoordinator) -> UIViewController
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
     var searchSuggestionsViewController: UIViewController { get }
     
@@ -31,6 +31,7 @@ protocol ViewControllerFactory: AnyObject {
                            _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> UIViewController
     var topSitesViewController: AnyViewController & TopSitesInterface { get }
     var blankWebPageViewController: UIViewController { get }
+    func siteMenuViewController(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) -> UIViewController
     
     // MARK: - layout specific methods with optional results
     
@@ -49,7 +50,7 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: RootScreenCoordinator) -> UIViewController {
+    func rootViewController(_ coordinator: AppCoordinator) -> UIViewController {
         let vc: MainBrowserViewController = .init(coordinator)
         return vc
     }
@@ -79,6 +80,11 @@ extension ViewControllerFactory {
     
     var blankWebPageViewController: UIViewController {
         let vc: BlankWebPageViewController = .init()
+        return vc
+    }
+    
+    func siteMenuViewController(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) -> UIViewController {
+        let vc: SiteMenuViewController = .init(model, coordinator)
         return vc
     }
 }

@@ -12,7 +12,7 @@ import SwiftUI
 
 @available(iOS 13.0, *)
 extension UIHostingController where Content == SiteMenuView {
-    static func create(siteMenu model: SiteMenuModel) -> UIHostingController {
+    static func create(_ model: SiteMenuModel) -> UIHostingController {
         let menuView = SiteMenuView(model: model)
         return UIHostingController(rootView: menuView)
     }
@@ -20,12 +20,21 @@ extension UIHostingController where Content == SiteMenuView {
 
 @available(iOS 13.0.0, *)
 final class SiteMenuViewController: UIHostingController<SiteMenuView> {
-    init(model: SiteMenuModel) {
-        let viewWithModel = SiteMenuView(model: model)
-        super.init(rootView: viewWithModel)
+    private let coordinator: GlobalMenuCoordinator
+    
+    init(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) {
+        self.coordinator = coordinator
+        let view = SiteMenuView(model: model)
+        super.init(rootView: view)
     }
     
     @objc required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        coordinator.stop()
     }
 }

@@ -47,8 +47,6 @@ extension TopSitesViewController: TopSitesInterface {
     }
 }
 
-extension TopSitesViewController: AnyViewController {}
-
 extension TopSitesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return source.count

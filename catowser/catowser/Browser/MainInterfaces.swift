@@ -26,12 +26,3 @@ protocol TagsRouterInterface: AnyObject {
     func openTagsFor(html tags: [HTMLVideoTag])
     func closeTags()
 }
-
-protocol SiteLifetimeInterface {
-    func showProgress(_ show: Bool)
-    
-    func openTabMenu(from sourceView: UIView,
-                     and sourceRect: CGRect,
-                     for host: Host,
-                     siteSettings: Site.Settings)
-}

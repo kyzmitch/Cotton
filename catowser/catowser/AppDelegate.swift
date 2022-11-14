@@ -13,7 +13,8 @@ import Alamofire
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    lazy var appCoordinator: any Coordinator = {
+    /// Should be stored by strong reference, because it is the only owner of App coordinator
+    lazy var appCoordinator: AppCoordinator = {
         if UIDevice.current.userInterfaceIdiom == .pad {
             let factory = TabletViewControllerFactory()
             return AppCoordinator(factory)

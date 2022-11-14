@@ -1,5 +1,5 @@
 //
-//  MainRouter+UISearchBarDelegate.swift
+//  AppLayoutCoordinator+UISearchBarDelegate.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MainRouter: UISearchBarDelegate {
+extension AppLayoutCoordinator: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty || searchText.looksLikeAURL() {
             hideSearchController()

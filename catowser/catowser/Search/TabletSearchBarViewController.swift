@@ -237,8 +237,6 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
     }
 }
 
-extension TabletSearchBarViewController: AnyViewController {}
-
 extension TabletSearchBarViewController: SearchBarControllerInterface {
     func changeState(to state: SearchBarState, animated: Bool) {
         searchBarViewController.changeState(to: state, animated: animated)

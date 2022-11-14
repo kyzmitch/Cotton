@@ -25,15 +25,21 @@ protocol TabRendererInterface: AnyViewController {
 }
 
 final class MainBrowserViewController: BaseViewController {
-    private let coordinator: any Coordinator
+    /// Define a specific type of coordinator, because not any coordinator
+    /// can be used for this specific view controller
+    /// and also the routes are specific to this screen as well.
+    /// Storing it by weak reference, it is stored strongly in the coordinator owner
+    private weak var coordinator: AppCoordinator?
+    /// Need to update this navigation delegate each time it changes in router holder
+    private weak var siteNavigationDelegate: SiteNavigationDelegate?
     
-    init(_ coordinator: any Coordinator) {
+    init(_ coordinator: AppCoordinator) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
     /// Router and layout handler for supplementary views.
-    private var linksRouter: MainRouter!
+    private var linksRouter: AppLayoutCoordinator!
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -69,7 +75,7 @@ final class MainBrowserViewController: BaseViewController {
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
         let router = ToolbarRouter(presenter: self)
-        let toolbar = WebBrowserToolbarController(router, linksRouter, linksRouter)
+        let toolbar = WebBrowserToolbarController(router, linksRouter, self)
         return toolbar
     }()
 
@@ -95,7 +101,7 @@ final class MainBrowserViewController: BaseViewController {
 
     private var disposables = [Disposable?]()
 
-    private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad ? true : false
+    private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
 
@@ -114,7 +120,7 @@ final class MainBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to: view)
         }
 
-        linksRouter = MainRouter(viewController: self)
+        linksRouter = AppLayoutCoordinator(viewController: self)
 
         add(asChildViewController: linksRouter.searchBarController.viewController, to: view)
         view.addSubview(webLoadProgressView)
@@ -250,9 +256,9 @@ final class MainBrowserViewController: BaseViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
-        let tagsView = linksRouter.linkTagsController.view
+        let tagsView = linksRouter.linkTagsController.controllerView
         tagsView.translatesAutoresizingMaskIntoConstraints = false
-        let searchView = linksRouter.searchBarController.view
+        let searchView = linksRouter.searchBarController.controllerView
         searchView.translatesAutoresizingMaskIntoConstraints = false
         
         if isPad {
@@ -273,7 +279,7 @@ final class MainBrowserViewController: BaseViewController {
         tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         if !isPad {
-            let filesView: UIView = linksRouter.filesGreedController.view
+            let filesView: UIView = linksRouter.filesGreedController.controllerView
             filesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             filesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             // temporarily use 0 height because actual height of free space is unknown at the moment
@@ -311,7 +317,7 @@ final class MainBrowserViewController: BaseViewController {
             
             linksRouter.filesGreedHeightConstraint?.constant = freeHeight
             linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
-            let filesView: UIView = linksRouter.filesGreedController.view
+            let filesView: UIView = linksRouter.filesGreedController.controllerView
             filesView.setNeedsLayout()
             filesView.layoutIfNeeded()
         }
@@ -409,7 +415,7 @@ extension MainBrowserViewController: TabRendererInterface {
         topSitesController.reload(with: DefaultTabProvider.shared.topSites)
 
         add(asChildViewController: topSitesController.viewController, to: containerView)
-        let topSitesView: UIView = topSitesController.view
+        let topSitesView: UIView = topSitesController.controllerView
         topSitesView.translatesAutoresizingMaskIntoConstraints = false
         topSitesView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
         topSitesView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
@@ -482,8 +488,6 @@ private extension MainBrowserViewController {
     }
 }
 
-extension MainBrowserViewController: AnyViewController {}
-
 extension MainBrowserViewController: MainDelegate {
     var popoverSourceView: UIView {
         return containerView
@@ -554,7 +558,7 @@ extension MainBrowserViewController: SiteNavigationComponent {
         set(newValue) {
             let holder = navigationComponent()
             holder?.siteNavigator = newValue
-            self.linksRouter.siteNavigationDelegate = newValue
+            siteNavigationDelegate = newValue
         }
     }
 }
@@ -608,10 +612,15 @@ extension MainBrowserViewController: SiteExternalNavigationDelegate {
                      and sourceRect: CGRect,
                      for host: Host,
                      siteSettings: Site.Settings) {
-        linksRouter.openTabMenu(from: sourceView,
-                                and: sourceRect,
-                                for: host,
-                                siteSettings: siteSettings)
+        let style: MenuModelStyle = .siteMenu(host, siteSettings)
+        let menuModel: SiteMenuModel = .init(style, siteNavigationDelegate)
+        coordinator?.showNext(.menu(menuModel, sourceView, sourceRect))
     }
-    // swiftlint:disable:next file_length
+}
+
+extension MainBrowserViewController: GlobalMenuDelegate {
+    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
+        let menuModel: SiteMenuModel = .init(.onlyGlobalMenu, siteNavigationDelegate)
+        coordinator?.showNext(.menu(menuModel, sourceView, sourceRect))
+    }
 }

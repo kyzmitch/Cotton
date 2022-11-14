@@ -91,8 +91,6 @@ extension FilesGreedViewController {
     }
 }
 
-extension FilesGreedViewController: AnyViewController {}
-
 // MARK: Files Greed Presenter
 extension FilesGreedViewController: FilesGreedPresenter {
     func clearFiles() {

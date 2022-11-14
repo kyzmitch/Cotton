@@ -24,6 +24,7 @@ struct SiteMenuView: View {
 @available(iOS 13.0, *)
 private struct _SiteMenuView: View {
     @EnvironmentObject var model: SiteMenuModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var isShowingAddTabSetting = false
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
@@ -85,7 +86,9 @@ private struct _SiteMenuView: View {
 #endif
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
-            .navigationBarItems(trailing: Button<Text>(String.dismissBtn, action: model.dismissAction))
+            .navigationBarItems(trailing: Button<Text>(String.dismissBtn) {
+                presentationMode.wrappedValue.dismiss()
+            })
         }
     }
 }
@@ -120,10 +123,7 @@ struct SiteMenuView_Previews: PreviewProvider {
                                      canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
         let style: MenuModelStyle = .siteMenu(host!, settings)
-        let model = SiteMenuModel(menuStyle: style,
-                                  siteDelegate: nil) {
-            print("Dismiss triggered")
-        }
+        let model = SiteMenuModel(style, nil)
         return _SiteMenuView().environmentObject(model)
     }
 }

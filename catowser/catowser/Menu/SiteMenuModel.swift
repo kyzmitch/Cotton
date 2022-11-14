@@ -22,8 +22,6 @@ protocol SiteSettingsInterface: AnyObject {
     func update(jsEnabled: Bool)
 }
 
-typealias DismissClosure = () -> Void
-
 @available(iOS 13.0, *)
 final class SiteMenuModel: ObservableObject {
     @Published var isDohEnabled: Bool = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
@@ -34,8 +32,6 @@ final class SiteMenuModel: ObservableObject {
     
     private var dohChangesCancellable: AnyCancellable?
     private var jsEnabledOptionCancellable: AnyCancellable?
-    
-    let dismissAction: DismissClosure
     
     let host: Host?
     
@@ -66,9 +62,8 @@ final class SiteMenuModel: ObservableObject {
     
     let viewTitle: String = .menuTtl
     
-    init(menuStyle: MenuModelStyle,
-         siteDelegate: SiteSettingsInterface?,
-         dismiss: @escaping DismissClosure) {
+    init(_ menuStyle: MenuModelStyle,
+         _ siteDelegate: SiteSettingsInterface?) {
         switch menuStyle {
         case .siteMenu(let host, let settings):
             self.host = host
@@ -81,7 +76,6 @@ final class SiteMenuModel: ObservableObject {
             isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
         }
         siteSettingsDelegate = siteDelegate
-        dismissAction = dismiss
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled

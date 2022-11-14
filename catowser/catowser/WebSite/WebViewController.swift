@@ -22,7 +22,6 @@ import CoreCatowser
 extension WKWebView: JavaScriptEvaluateble {}
 
 final class WebViewController: BaseViewController,
-                               AnyViewController,
                                WKUIDelegate,
                                WKNavigationDelegate {
     /// A view model

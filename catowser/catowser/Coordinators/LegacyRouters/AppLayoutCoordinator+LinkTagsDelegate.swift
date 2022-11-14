@@ -1,5 +1,5 @@
 //
-//  MainRouter+LinkTagsDelegate.swift
+//  AppLayoutCoordinator+LinkTagsDelegate.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MainRouter: LinkTagsDelegate {
+extension AppLayoutCoordinator: LinkTagsDelegate {
     func didSelect(type: LinksType, from sourceView: UIView) {
         guard type == .video, let source = tagsSiteDataSource else {
             return
