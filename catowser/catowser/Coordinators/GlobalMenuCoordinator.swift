@@ -15,14 +15,14 @@ enum MenuScreenRoute: Route {
     case asyncApi
 }
 
-final class GlobalMenuCoordinator: Coordinator {
+final class GlobalMenuCoordinator: Coordinator, Navigating {
     typealias R = MenuScreenRoute
     
-    let vcFactory: any ViewControllerFactory
-    var startedCoordinator: (any Coordinator)?
+    let vcFactory: ViewControllerFactory
+    var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     /// View controller which is currently visible
-    private let presenter: any AnyViewController
+    private let presenter: AnyViewController
     /// Data required for start of next navigation
     private let model: SiteMenuModel
     /// View needed when initial screen needs to be shown on Tablet
@@ -30,8 +30,8 @@ final class GlobalMenuCoordinator: Coordinator {
     /// Rectangle needed when initial screen needs to be shown on Tablet
     private let sourceRect: CGRect
     
-    init(_ vcFactory: any ViewControllerFactory,
-         _ presenter: any AnyViewController,
+    init(_ vcFactory: ViewControllerFactory,
+         _ presenter: AnyViewController,
          _ model: SiteMenuModel,
          _ sourceView: UIView,
          _ sourceRect: CGRect) {

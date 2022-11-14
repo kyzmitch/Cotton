@@ -10,6 +10,8 @@ import UIKit
 
 /// Implements the operations to create tablet layout product objects.
 final class TabletViewControllerFactory: ViewControllerFactory {
+    private var searchBarVC: UIViewController?
+    
     init() {}
     
     // MARK: - Tablet methods
@@ -17,9 +19,11 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
                                                _ downloadDelegate: DonwloadPanelDelegate,
                                                _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
-        return TabletSearchBarViewController(searchBarDelegate,
-                                             settingsDelegate,
-                                             downloadDelegate)
+        if let existingVC = searchBarVC {
+            return existingVC
+        }
+        searchBarVC = TabletSearchBarViewController(searchBarDelegate, settingsDelegate, downloadDelegate)
+        return searchBarVC
     }
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController? {

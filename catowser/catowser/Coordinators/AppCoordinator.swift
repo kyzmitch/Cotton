@@ -14,26 +14,32 @@ enum MainScreenRoute: Route {
     case menu(SiteMenuModel, UIView, CGRect)
 }
 
-final class AppCoordinator: Coordinator {
+enum MainScreenSubview: SubviewPart {
+    case toolbar(UIView, TabRendererInterface, DonwloadPanelDelegate, GlobalMenuDelegate)
+}
+
+final class AppCoordinator: Coordinator, Navigating, SubviewNavigation {
     typealias R = MainScreenRoute
-    var startedCoordinator: (any Coordinator)?
+    typealias SP = MainScreenSubview
+    
+    var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
-    let vcFactory: any ViewControllerFactory
+    let vcFactory: ViewControllerFactory
     private let windowRectangle: CGRect = {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }()
     private let window: UIWindow
     /// This will protect from showing next screens when this coordinator is not started
-    private var rootViewController: UIViewController!
+    private var rootViewController: AnyViewController!
     
-    init(_ vcFactory: any ViewControllerFactory) {
+    init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
         window = UIWindow(frame: windowRectangle)
     }
     
     func start() {
         rootViewController = vcFactory.rootViewController(self)
-        window.rootViewController = rootViewController
+        window.rootViewController = rootViewController.viewController
         window.makeKeyAndVisible()
     }
     
@@ -45,6 +51,13 @@ final class AppCoordinator: Coordinator {
             startSearchSuggestions()
         case .tabPreviews:
             startTabPreviews()
+        }
+    }
+    
+    func insertNext(_ subview: SP) {
+        switch subview {
+        case .toolbar(let containerView, let tabRenderer, let downloadDelegate, let settingsDelegate):
+            insertToolbar(containerView, tabRenderer, downloadDelegate, settingsDelegate)
         }
     }
 }
@@ -74,5 +87,20 @@ private extension AppCoordinator {
     
     func startTabPreviews() {
         
+    }
+    
+    func insertToolbar(_ containerView: UIView,
+                       _ tabRenderer: TabRendererInterface,
+                       _ downloadDelegate: DonwloadPanelDelegate,
+                       _ settingsDelegate: GlobalMenuDelegate) {
+        let coordinator: MainToolbarCoordinator = .init(vcFactory,
+                                                        rootViewController,
+                                                        containerView,
+                                                        tabRenderer,
+                                                        downloadDelegate,
+                                                        settingsDelegate)
+        coordinator.parent = self
+        coordinator.start()
+        // TODO: save reference to coordinator which will live forever
     }
 }

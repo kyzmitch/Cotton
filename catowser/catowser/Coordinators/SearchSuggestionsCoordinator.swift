@@ -10,16 +10,16 @@ import UIKit
 
 enum SearchSuggestionsRoute: Route {}
 
-final class SearchSuggestionsCoordinator: Coordinator {
+final class SearchSuggestionsCoordinator: Coordinator, Navigating {
     typealias R = SearchSuggestionsRoute
     
-    let vcFactory: any ViewControllerFactory
-    var startedCoordinator: (any Coordinator)?
+    let vcFactory: ViewControllerFactory
+    var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     
     private let searchBarDelegate: UISearchBarDelegate
     
-    init(_ vcFactory: any ViewControllerFactory,
+    init(_ vcFactory: ViewControllerFactory,
          _ searchBarDelegate: UISearchBarDelegate) {
         self.vcFactory = vcFactory
         self.searchBarDelegate = searchBarDelegate

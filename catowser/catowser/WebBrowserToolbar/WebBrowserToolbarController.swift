@@ -16,6 +16,7 @@
 import UIKit
 import CoreBrowser
 
+// TODO: fix protocol name to Download
 protocol DonwloadPanelDelegate: AnyObject {
     func didPressDownloads(to hide: Bool)
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect)

@@ -9,22 +9,28 @@
 import UIKit
 
 protocol Route {}
+protocol SubviewPart {}
 
 protocol Navigating: AnyObject {
     associatedtype R: Route
     func showNext(_ route: R)
 }
 
+protocol SubviewNavigation: AnyObject {
+    associatedtype SP: SubviewPart
+    func insertNext(_ subview: SP)
+}
+
 protocol CoordinatorOwner: AnyObject {
     func didFinish()
 }
 
-protocol Coordinator: Navigating {
-    var vcFactory: any ViewControllerFactory { get }
+protocol Coordinator: AnyObject {
+    var vcFactory: ViewControllerFactory { get }
     /// For now it seems we could start only one child coordinator, no need to have an array of coordinators
-    var startedCoordinator: (any Coordinator)? { get }
+    var startedCoordinator: Coordinator? { get }
     /// Should be defined as weak reference for stop operation
-    var parent: (any CoordinatorOwner)? { get }
+    var parent: CoordinatorOwner? { get }
     func start()
     func stop()
 }

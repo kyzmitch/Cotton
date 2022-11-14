@@ -10,6 +10,8 @@ import UIKit
 
 /// Implements the operations to create phone layout product objects.
 final class PhoneViewControllerFactory: ViewControllerFactory {
+    private var toolBarVC: UIViewController?
+    
     init() {}
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController? {
@@ -25,11 +27,12 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     func toolbarViewController(_ tabsRenderer: TabRendererInterface,
                                _ downloadDelegate: DonwloadPanelDelegate,
                                _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
+        if let existingVC = toolBarVC {
+            return existingVC
+        }
         let router = ToolbarRouter(presenter: tabsRenderer)
-        let toolbar = WebBrowserToolbarController(router,
-                                                  downloadDelegate,
-                                                  settingsDelegate)
-        return toolbar
+        toolBarVC = WebBrowserToolbarController(router, downloadDelegate, settingsDelegate)
+        return toolBarVC
     }
     
     func tabsPreviewsViewController(_ tabsRenderer: TabRendererInterface) -> UIViewController? {

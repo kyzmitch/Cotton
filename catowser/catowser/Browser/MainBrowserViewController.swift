@@ -72,13 +72,6 @@ final class MainBrowserViewController: BaseViewController {
         return v
     }()
 
-    /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
-    private lazy var toolbarViewController: WebBrowserToolbarController = {
-        let router = ToolbarRouter(presenter: self)
-        let toolbar = WebBrowserToolbarController(router, layoutCoordinator, self)
-        return toolbar
-    }()
-
     /// View to make color under toolbar is the same on iPhone x without home button
     private lazy var underToolbarView: UIView = {
         let v = UIView()
@@ -136,7 +129,7 @@ final class MainBrowserViewController: BaseViewController {
             add(asChildViewController: layoutCoordinator.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
-            add(asChildViewController: toolbarViewController, to: view)
+            coordinator?.insertNext(.toolbar(view, self, layoutCoordinator, self))
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }
