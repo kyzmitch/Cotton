@@ -39,7 +39,7 @@ final class MainBrowserViewController: BaseViewController {
     }
 
     /// Router and layout handler for supplementary views.
-    private var linksRouter: AppLayoutCoordinator!
+    private var layoutCoordinator: AppLayoutCoordinator!
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -75,7 +75,7 @@ final class MainBrowserViewController: BaseViewController {
     /// The controller for toolbar buttons. Used only for compact sizes/smartphones.
     private lazy var toolbarViewController: WebBrowserToolbarController = {
         let router = ToolbarRouter(presenter: self)
-        let toolbar = WebBrowserToolbarController(router, linksRouter, self)
+        let toolbar = WebBrowserToolbarController(router, layoutCoordinator, self)
         return toolbar
     }()
 
@@ -120,9 +120,9 @@ final class MainBrowserViewController: BaseViewController {
             add(asChildViewController: tabsViewController, to: view)
         }
 
-        linksRouter = AppLayoutCoordinator(viewController: self)
+        layoutCoordinator = AppLayoutCoordinator(viewController: self)
 
-        add(asChildViewController: linksRouter.searchBarController.viewController, to: view)
+        add(asChildViewController: layoutCoordinator.searchBarController.viewController, to: view)
         view.addSubview(webLoadProgressView)
         view.addSubview(containerView)
 
@@ -131,11 +131,11 @@ final class MainBrowserViewController: BaseViewController {
             // will try to show as popover
 
             view.addSubview(underLinkTagsView)
-            add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
+            add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
         } else {
-            add(asChildViewController: linksRouter.filesGreedController.viewController, to: view)
+            add(asChildViewController: layoutCoordinator.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
-            add(asChildViewController: linksRouter.linkTagsController.viewController, to: view)
+            add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
             add(asChildViewController: toolbarViewController, to: view)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
@@ -178,13 +178,13 @@ final class MainBrowserViewController: BaseViewController {
         underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         let dummyViewHeight: CGFloat = .safeAreaBottomMargin
         let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
-        linksRouter.underLinksViewHeightConstraint = linksHConstraint
-        linksRouter.underLinksViewHeightConstraint?.isActive = true
+        layoutCoordinator.underLinksViewHeightConstraint = linksHConstraint
+        layoutCoordinator.underLinksViewHeightConstraint?.isActive = true
 
         let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
-        linksRouter.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+        layoutCoordinator.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                                                                      constant: bottomMargin)
-        linksRouter.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        layoutCoordinator.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         let tagsBottom = tagsView.bottomAnchor
         tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
     }
@@ -224,9 +224,9 @@ final class MainBrowserViewController: BaseViewController {
         underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        linksRouter.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor,
+        layoutCoordinator.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor,
                                                                             constant: .linkTagsHeight)
-        linksRouter.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
+        layoutCoordinator.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
     }
     
     private func setupObservers() {
@@ -256,9 +256,9 @@ final class MainBrowserViewController: BaseViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
-        let tagsView = linksRouter.linkTagsController.controllerView
+        let tagsView = layoutCoordinator.linkTagsController.controllerView
         tagsView.translatesAutoresizingMaskIntoConstraints = false
-        let searchView = linksRouter.searchBarController.controllerView
+        let searchView = layoutCoordinator.searchBarController.controllerView
         searchView.translatesAutoresizingMaskIntoConstraints = false
         
         if isPad {
@@ -267,29 +267,29 @@ final class MainBrowserViewController: BaseViewController {
             setupPhoneConstraints(searchView, tagsView)
         }
         
-        linksRouter.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
-        linksRouter.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
-        linksRouter.hiddenWebLoadConstraint?.isActive = true
+        layoutCoordinator.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
+        layoutCoordinator.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
+        layoutCoordinator.hiddenWebLoadConstraint?.isActive = true
         webLoadProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         webLoadProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        linksRouter.hiddenTagsConstraint?.isActive = true
+        layoutCoordinator.hiddenTagsConstraint?.isActive = true
         tagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         if !isPad {
-            let filesView: UIView = linksRouter.filesGreedController.controllerView
+            let filesView: UIView = layoutCoordinator.filesGreedController.controllerView
             filesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             filesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             // temporarily use 0 height because actual height of free space is unknown at the moment
             let greedHeight: CGFloat = 0
-            linksRouter.hiddenFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor,
+            layoutCoordinator.hiddenFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor,
                                                                                        constant: greedHeight)
-            linksRouter.showedFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor)
-            linksRouter.filesGreedHeightConstraint = filesView.heightAnchor.constraint(equalToConstant: greedHeight)
-            linksRouter.hiddenFilesGreedConstraint?.isActive = true
-            linksRouter.filesGreedHeightConstraint?.isActive = true
+            layoutCoordinator.showedFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor)
+            layoutCoordinator.filesGreedHeightConstraint = filesView.heightAnchor.constraint(equalToConstant: greedHeight)
+            layoutCoordinator.hiddenFilesGreedConstraint?.isActive = true
+            layoutCoordinator.filesGreedHeightConstraint?.isActive = true
         }
 
         setupObservers()
@@ -301,7 +301,7 @@ final class MainBrowserViewController: BaseViewController {
         // only here we can get correct value for
         // safe area inset
         if isPad {
-            linksRouter.underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
+            layoutCoordinator.underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
             underLinkTagsView.setNeedsLayout()
             underLinkTagsView.layoutIfNeeded()
         }
@@ -315,9 +315,9 @@ final class MainBrowserViewController: BaseViewController {
             let allHeight = containerView.bounds.height
             freeHeight = allHeight - .linkTagsHeight
             
-            linksRouter.filesGreedHeightConstraint?.constant = freeHeight
-            linksRouter.hiddenFilesGreedConstraint?.constant = freeHeight
-            let filesView: UIView = linksRouter.filesGreedController.controllerView
+            layoutCoordinator.filesGreedHeightConstraint?.constant = freeHeight
+            layoutCoordinator.hiddenFilesGreedConstraint?.constant = freeHeight
+            let filesView: UIView = layoutCoordinator.filesGreedController.controllerView
             filesView.setNeedsLayout()
             filesView.layoutIfNeeded()
         }
@@ -343,7 +343,7 @@ final class MainBrowserViewController: BaseViewController {
 
 extension MainBrowserViewController: TabRendererInterface {
     func open(tabContent: Tab.ContentType) {
-        linksRouter.closeTags()
+        layoutCoordinator.closeTags()
 
         switch previousTabContent {
         case .site:
@@ -388,7 +388,7 @@ extension MainBrowserViewController: TabRendererInterface {
             return
         }
         // need to display progress view before load start
-        linksRouter.showProgress(true)
+        layoutCoordinator.showProgress(true)
         let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsSource, self)
         guard let webViewController = vc else {
             assertionFailure("Failed create new web view for tab")
@@ -411,7 +411,7 @@ extension MainBrowserViewController: TabRendererInterface {
     
     private func openTopSitesTabContent() {
         siteNavigator = nil
-        linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
+        layoutCoordinator.searchBarController.changeState(to: .blankSearch, animated: true)
         topSitesController.reload(with: DefaultTabProvider.shared.topSites)
 
         add(asChildViewController: topSitesController.viewController, to: containerView)
@@ -425,7 +425,7 @@ extension MainBrowserViewController: TabRendererInterface {
     
     private func openBlankTabContent() {
         siteNavigator = nil
-        linksRouter.searchBarController.changeState(to: .blankSearch, animated: true)
+        layoutCoordinator.searchBarController.changeState(to: .blankSearch, animated: true)
 
         add(asChildViewController: blankWebPageController, to: containerView)
         let blankView: UIView = blankWebPageController.view
@@ -441,7 +441,7 @@ private extension MainBrowserViewController {
     func navigationComponent() -> FullSiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return toolbarViewController
-        } else if let tabletVc = linksRouter.searchBarController as? FullSiteNavigationComponent {
+        } else if let tabletVc = layoutCoordinator.searchBarController as? FullSiteNavigationComponent {
             // complex type casting
             return tabletVc
         }
@@ -541,7 +541,7 @@ extension MainBrowserViewController: TabsObserver {
             withSite = false
         }
 
-        linksRouter.closeTags()
+        layoutCoordinator.closeTags()
         reloadNavigationElements(withSite)
     }
 }
@@ -565,14 +565,14 @@ extension MainBrowserViewController: SiteNavigationComponent {
 
 extension MainBrowserViewController: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
-        linksRouter.openTagsFor(instagram: nodes)
+        layoutCoordinator.openTagsFor(instagram: nodes)
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
 extension MainBrowserViewController: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
-        linksRouter.openTagsFor(html: tags)
+        layoutCoordinator.openTagsFor(html: tags)
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
@@ -587,7 +587,7 @@ extension MainBrowserViewController: SiteExternalNavigationDelegate {
     }
     
     func didStartProvisionalNavigation() {
-        linksRouter.closeTags()
+        layoutCoordinator.closeTags()
     }
 
     func didOpenSiteWith(appName: String) {
@@ -600,7 +600,7 @@ extension MainBrowserViewController: SiteExternalNavigationDelegate {
     }
     
     func showProgress(_ show: Bool) {
-        linksRouter.showProgress(show)
+        layoutCoordinator.showProgress(show)
         webLoadProgressView.setProgress(0, animated: false)
     }
     
