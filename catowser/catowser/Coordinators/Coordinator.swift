@@ -28,7 +28,7 @@ protocol CoordinatorOwner: AnyObject {
 protocol Coordinator: AnyObject {
     var vcFactory: ViewControllerFactory { get }
     /// For now it seems we could start only one child coordinator, no need to have an array of coordinators
-    var startedCoordinator: Coordinator? { get }
+    var startedCoordinator: Coordinator? { get set }
     /// Should be defined as weak reference for stop operation
     var parent: CoordinatorOwner? { get }
     /// Started/created view controller during coordinator start. It is optional because `start` is called after `init`
@@ -47,5 +47,12 @@ extension Coordinator {
     
     func stop() {
         parent?.didFinish()
+    }
+}
+
+extension CoordinatorOwner where Self: Coordinator {
+    func didFinish() {
+        // removes previously started coordinator
+        startedCoordinator = nil
     }
 }

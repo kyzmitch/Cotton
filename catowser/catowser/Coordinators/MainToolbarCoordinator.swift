@@ -8,7 +8,12 @@
 
 import UIKit
 
-final class MainToolbarCoordinator: Coordinator {
+enum ToolbarRoute: Route {
+    case tabs
+}
+
+final class MainToolbarCoordinator: Coordinator, Navigating, CoordinatorOwner {
+    typealias R = ToolbarRoute
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     var parent: CoordinatorOwner?
@@ -35,11 +40,29 @@ final class MainToolbarCoordinator: Coordinator {
     }
     
     func start() {
-        guard let vc = vcFactory.toolbarViewController(tabsRenderer, downloadDelegate, settingsDelegate) else {
+        guard let vc = vcFactory.toolbarViewController(downloadDelegate, settingsDelegate, self) else {
             assertionFailure("Toolbar is only available on Phone layout")
             return
         }
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc, to: containerView)
+    }
+    
+    func showNext(_ route: R) {
+        switch route {
+        case .tabs:
+            showTabs()
+        }
+    }
+}
+
+private extension MainToolbarCoordinator {
+    func showTabs() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        startedCoordinator = coordinator
     }
 }

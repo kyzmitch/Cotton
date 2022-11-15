@@ -20,7 +20,7 @@ extension UIHostingController where Content == SiteMenuView {
 
 @available(iOS 13.0.0, *)
 final class SiteMenuViewController: UIHostingController<SiteMenuView> {
-    private let coordinator: GlobalMenuCoordinator
+    private weak var coordinator: GlobalMenuCoordinator?
     
     init(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) {
         self.coordinator = coordinator
@@ -35,6 +35,6 @@ final class SiteMenuViewController: UIHostingController<SiteMenuView> {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        coordinator.stop()
+        coordinator?.stop()
     }
 }

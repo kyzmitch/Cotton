@@ -41,12 +41,12 @@ protocol ViewControllerFactory: AnyObject {
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
                                                _ downloadDelegate: DonwloadPanelDelegate,
                                                _ settingsDelegate: GlobalMenuDelegate) -> UIViewController?
+    /// WIll return nil on Tablet. Should re-create tabs every time to update them
+    func toolbarViewController(_ downloadDelegate: DonwloadPanelDelegate,
+                               _ settingsDelegate: GlobalMenuDelegate,
+                               _ coordinator: MainToolbarCoordinator) -> UIViewController?
     /// WIll return nil on Tablet
-    func toolbarViewController(_ tabsRenderer: TabRendererInterface,
-                               _ downloadDelegate: DonwloadPanelDelegate,
-                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController?
-    /// WIll return nil on Tablet
-    func tabsPreviewsViewController(_ tabsRenderer: TabRendererInterface) -> UIViewController?
+    func tabsPreviewsViewController(_ coordinator: Coordinator) -> UIViewController?
 }
 
 extension ViewControllerFactory {

@@ -47,7 +47,7 @@ final class TabsPreviewsViewController: BaseViewController, CollectionViewInterf
         return toolbar
     }()
 
-    private let addTabButton: UIBarButtonItem = {
+    private lazy var addTabButton: UIBarButtonItem = {
         let img = UIImage(named: "newTabButton-Normal")
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .addTab)
         return btn
@@ -60,11 +60,11 @@ final class TabsPreviewsViewController: BaseViewController, CollectionViewInterf
     }()
 
     private var disposables = [Disposable?]()
+    
+    private weak var coordinator: Coordinator?
 
-    private let router: TabsPreviewsRouter
-
-    init(_ router: TabsPreviewsRouter) {
-        self.router = router
+    init(_ coordinator: Coordinator) {
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -227,7 +227,7 @@ extension TabsPreviewsViewController: UICollectionViewDelegate {
         }
         
         TabsListManager.shared.select(tab: correctTab)
-        router.dismiss()
+        coordinator?.stop()
     }
 }
 
@@ -246,7 +246,7 @@ private extension TabsPreviewsViewController {
         // but user maybe don't want to move that tab right away
         TabsListManager.shared.add(tab: tab)
         if select {
-            router.dismiss()
+            coordinator?.stop()
         }
     }
 }

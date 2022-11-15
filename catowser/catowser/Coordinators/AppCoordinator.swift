@@ -18,7 +18,7 @@ enum MainScreenSubview: SubviewPart {
     case toolbar(UIView, TabRendererInterface, DonwloadPanelDelegate, GlobalMenuDelegate)
 }
 
-final class AppCoordinator: Coordinator, Navigating, SubviewNavigation {
+final class AppCoordinator: Coordinator, Navigating, SubviewNavigation, CoordinatorOwner {
     typealias R = MainScreenRoute
     typealias SP = MainScreenSubview
     
@@ -64,13 +64,6 @@ final class AppCoordinator: Coordinator, Navigating, SubviewNavigation {
         case .toolbar(let containerView, let tabRenderer, let downloadDelegate, let settingsDelegate):
             insertToolbar(containerView, tabRenderer, downloadDelegate, settingsDelegate)
         }
-    }
-}
-
-extension AppCoordinator: CoordinatorOwner {
-    func didFinish() {
-        // removes previously started coordinator
-        startedCoordinator = nil
     }
 }
 

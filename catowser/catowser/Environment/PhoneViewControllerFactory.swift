@@ -24,20 +24,18 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return nil
     }
     
-    func toolbarViewController(_ tabsRenderer: TabRendererInterface,
-                               _ downloadDelegate: DonwloadPanelDelegate,
-                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController? {
+    func toolbarViewController(_ downloadDelegate: DonwloadPanelDelegate,
+                               _ settingsDelegate: GlobalMenuDelegate,
+                               _ coordinator: MainToolbarCoordinator) -> UIViewController? {
         if let existingVC = toolBarVC {
             return existingVC
         }
-        let router = ToolbarRouter(presenter: tabsRenderer)
-        toolBarVC = WebBrowserToolbarController(router, downloadDelegate, settingsDelegate)
+        toolBarVC = WebBrowserToolbarController(coordinator, downloadDelegate, settingsDelegate)
         return toolBarVC
     }
     
-    func tabsPreviewsViewController(_ tabsRenderer: TabRendererInterface) -> UIViewController? {
-        let router = TabsPreviewsRouter(presenter: tabsRenderer)
-        let vc: TabsPreviewsViewController = .init(router)
+    func tabsPreviewsViewController(_ coordinator: Coordinator) -> UIViewController? {
+        let vc: TabsPreviewsViewController = .init(coordinator)
         return vc
     }
 }

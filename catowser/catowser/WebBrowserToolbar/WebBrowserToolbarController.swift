@@ -139,12 +139,12 @@ final class WebBrowserToolbarController: BaseViewController {
         return btn
     }()
 
-    private let router: ToolbarRouter
+    private weak var coordinator: MainToolbarCoordinator?
 
-    init(_ router: ToolbarRouter,
+    init(_ coordinator: MainToolbarCoordinator,
          _ downloadDelegate: DonwloadPanelDelegate,
          _ globalSettingsDelegate: GlobalMenuDelegate) {
-        self.router = router
+        self.coordinator = coordinator
         downloadPanelDelegate = downloadDelegate
         self.globalSettingsDelegate = globalSettingsDelegate
         downloadsViewHidden = true
@@ -255,7 +255,7 @@ private extension WebBrowserToolbarController {
     }
 
     @objc func handleShowOpenedTabsPressed() {
-        router.showTabs()
+        coordinator?.showNext(.tabs)
     }
 
     @objc func handleDownloadsPressed() {
