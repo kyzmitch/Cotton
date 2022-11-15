@@ -182,7 +182,7 @@ final class MainBrowserViewController: BaseViewController {
         tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
     }
     
-    private func setupPhoneConstraints(_ searchView: UIView, _ tagsView: UIView) {
+    private func setupPhoneConstraints(_ searchView: UIView, _ tagsView: UIView, _ toolbarView: UIView) {
         if #available(iOS 11, *) {
             searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         } else {
@@ -194,7 +194,6 @@ final class MainBrowserViewController: BaseViewController {
         
         webLoadProgressView.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
         
-        let toolbarView: UIView = toolbarViewController.view
         toolbarView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
@@ -257,7 +256,11 @@ final class MainBrowserViewController: BaseViewController {
         if isPad {
             setupTabletConstraints(searchView, tagsView)
         } else {
-            setupPhoneConstraints(searchView, tagsView)
+            guard let toolbarView = coordinator?.toolbarView else {
+                assertionFailure("Toolbar coordinator wasn't started")
+                return
+            }
+            setupPhoneConstraints(searchView, tagsView, toolbarView)
         }
         
         layoutCoordinator.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
@@ -433,7 +436,7 @@ extension MainBrowserViewController: TabRendererInterface {
 private extension MainBrowserViewController {
     func navigationComponent() -> FullSiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return toolbarViewController
+            return coordinator?.toolbarViewController as? FullSiteNavigationComponent
         } else if let tabletVc = layoutCoordinator.searchBarController as? FullSiteNavigationComponent {
             // complex type casting
             return tabletVc
@@ -497,11 +500,13 @@ extension MainBrowserViewController: MainDelegate {
 
     /// Dynamicly determined height because it can be different before layout finish it's work
     var toolbarHeight: CGFloat {
-        return toolbarViewController.view.bounds.size.height + underToolbarView.bounds.size.height
+        // swiftlint:disable:next force_unwrapping
+        let toolbarHeight = (coordinator?.toolbarView?.bounds.size.height)!
+        return toolbarHeight + underToolbarView.bounds.size.height
     }
 
     var toolbarTopAnchor: NSLayoutYAxisAnchor {
-        return toolbarViewController.view.topAnchor
+        return (coordinator?.toolbarView?.topAnchor)!
     }
 
     func openSearchSuggestion(url: URL, suggestion: String) {

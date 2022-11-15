@@ -25,12 +25,17 @@ final class AppCoordinator: Coordinator, Navigating, SubviewNavigation {
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     let vcFactory: ViewControllerFactory
+    var startedVC: AnyViewController?
+    var presenterVC: AnyViewController?
+    
+    /// Specific toolbar coordinator which should stay forever
+    private var toolbarCoordinator: Coordinator?
+    /// App window rectangle
     private let windowRectangle: CGRect = {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }()
+    /// main app window
     private let window: UIWindow
-    /// This will protect from showing next screens when this coordinator is not started
-    private var rootViewController: AnyViewController!
     
     init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
@@ -38,8 +43,8 @@ final class AppCoordinator: Coordinator, Navigating, SubviewNavigation {
     }
     
     func start() {
-        rootViewController = vcFactory.rootViewController(self)
-        window.rootViewController = rootViewController.viewController
+        startedVC = vcFactory.rootViewController(self)
+        window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
     }
     
@@ -71,8 +76,10 @@ extension AppCoordinator: CoordinatorOwner {
 
 private extension AppCoordinator {
     func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
         let coordinator: GlobalMenuCoordinator = .init(vcFactory,
-                                                       rootViewController,
+                                                       presenter,
                                                        model,
                                                        sourceView,
                                                        sourceRect)
@@ -93,14 +100,28 @@ private extension AppCoordinator {
                        _ tabRenderer: TabRendererInterface,
                        _ downloadDelegate: DonwloadPanelDelegate,
                        _ settingsDelegate: GlobalMenuDelegate) {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
-                                                        rootViewController,
+                                                        presenter,
                                                         containerView,
                                                         tabRenderer,
                                                         downloadDelegate,
                                                         settingsDelegate)
         coordinator.parent = self
         coordinator.start()
-        // TODO: save reference to coordinator which will live forever
+        toolbarCoordinator = coordinator
+    }
+}
+
+// MARK: - Temporarily methods which MUST be refactored
+
+extension AppCoordinator {
+    var toolbarView: UIView? {
+        toolbarCoordinator?.startedVC?.controllerView
+    }
+    
+    var toolbarViewController: AnyViewController? {
+        toolbarCoordinator?.startedVC
     }
 }

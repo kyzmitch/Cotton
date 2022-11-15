@@ -21,8 +21,9 @@ final class GlobalMenuCoordinator: Coordinator, Navigating {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
-    /// View controller which is currently visible
-    private let presenter: AnyViewController
+    var startedVC: AnyViewController?
+    var presenterVC: AnyViewController?
+    
     /// Data required for start of next navigation
     private let model: SiteMenuModel
     /// View needed when initial screen needs to be shown on Tablet
@@ -36,7 +37,7 @@ final class GlobalMenuCoordinator: Coordinator, Navigating {
          _ sourceView: UIView,
          _ sourceRect: CGRect) {
         self.vcFactory = vcFactory
-        self.presenter = presenter
+        self.presenterVC = presenter
         self.model = model
         self.sourceView = sourceView
         self.sourceRect = sourceRect
@@ -53,7 +54,8 @@ final class GlobalMenuCoordinator: Coordinator, Navigating {
                 popoverPresenter.sourceRect = sourceRect
             }
         }
-        presenter.viewController.present(vc, animated: true)
+        startedVC = vc
+        presenterVC?.viewController.present(vc, animated: true)
     }
     
     func showNext(_ route: R) {

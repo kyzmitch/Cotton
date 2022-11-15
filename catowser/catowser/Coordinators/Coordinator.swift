@@ -31,6 +31,11 @@ protocol Coordinator: AnyObject {
     var startedCoordinator: Coordinator? { get }
     /// Should be defined as weak reference for stop operation
     var parent: CoordinatorOwner? { get }
+    /// Started/created view controller during coordinator start. It is optional because `start` is called after `init`
+    var startedVC: AnyViewController? { get }
+    /// View controller used to present/show this Coordinator's started vc
+    var presenterVC: AnyViewController? { get }
+    
     func start()
     func stop()
 }

@@ -12,8 +12,9 @@ final class MainToolbarCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     var parent: CoordinatorOwner?
-    /// First of all, should be used to get access to child view controllers API
-    private let presenter: AnyViewController
+    var startedVC: AnyViewController?
+    var presenterVC: AnyViewController?
+    
     private let tabsRenderer: TabRendererInterface
     private let downloadDelegate: DonwloadPanelDelegate
     private let settingsDelegate: GlobalMenuDelegate
@@ -26,7 +27,7 @@ final class MainToolbarCoordinator: Coordinator {
          _ downloadDelegate: DonwloadPanelDelegate,
          _ settingsDelegate: GlobalMenuDelegate) {
         self.vcFactory = vcFactory
-        self.presenter = presenter
+        self.presenterVC = presenter
         self.tabsRenderer = tabsRenderer
         self.downloadDelegate = downloadDelegate
         self.settingsDelegate = settingsDelegate
@@ -38,6 +39,7 @@ final class MainToolbarCoordinator: Coordinator {
             assertionFailure("Toolbar is only available on Phone layout")
             return
         }
-        presenter.viewController.add(asChildViewController: vc, to: containerView)
+        startedVC = vc
+        presenterVC?.viewController.add(asChildViewController: vc, to: containerView)
     }
 }

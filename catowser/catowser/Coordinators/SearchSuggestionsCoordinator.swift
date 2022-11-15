@@ -16,6 +16,8 @@ final class SearchSuggestionsCoordinator: Coordinator, Navigating {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
+    var startedVC: AnyViewController?
+    var presenterVC: AnyViewController?
     
     private let searchBarDelegate: UISearchBarDelegate
     
