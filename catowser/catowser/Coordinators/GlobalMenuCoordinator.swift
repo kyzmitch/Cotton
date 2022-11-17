@@ -8,16 +8,7 @@
 
 import UIKit
 
-enum MenuScreenRoute: Route {
-    case initialTabContent
-    case tabAddPolicy
-    case autocompleteProvider
-    case asyncApi
-}
-
-final class GlobalMenuCoordinator: Coordinator, Navigating {
-    typealias R = MenuScreenRoute
-    
+final class GlobalMenuCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
@@ -57,14 +48,25 @@ final class GlobalMenuCoordinator: Coordinator, Navigating {
         startedVC = vc
         presenterVC?.viewController.present(vc, animated: true)
     }
-    
-    func showNext(_ route: R) {
-        
-    }
 }
 
 extension GlobalMenuCoordinator: CoordinatorOwner {
     func didFinish() {
         startedCoordinator = nil
+    }
+}
+
+enum MenuScreenRoute: Route {
+    case initialTabContent
+    case tabAddPolicy
+    case autocompleteProvider
+    case asyncApi
+}
+
+extension GlobalMenuCoordinator: Navigating {
+    typealias R = MenuScreenRoute
+    
+    func showNext(_ route: R) {
+        
     }
 }

@@ -29,12 +29,12 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController? {
         return nil
     }
-    func tabsPreviewsViewController(_ coordinator: Coordinator) -> UIViewController? {
+    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
         return nil
     }
-    func toolbarViewController(_ downloadDelegate: DonwloadPanelDelegate,
-                               _ settingsDelegate: GlobalMenuDelegate,
-                               _ coordinator: MainToolbarCoordinator) -> UIViewController? {
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate,
+                                              _ settingsDelegate: GlobalMenuDelegate,
+                                              _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {
         return nil
     }
 }

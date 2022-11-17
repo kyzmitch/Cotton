@@ -8,11 +8,7 @@
 
 import UIKit
 
-enum SearchSuggestionsRoute: Route {}
-
-final class SearchSuggestionsCoordinator: Coordinator, Navigating {
-    typealias R = SearchSuggestionsRoute
-    
+final class SearchSuggestionsCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
@@ -30,14 +26,20 @@ final class SearchSuggestionsCoordinator: Coordinator, Navigating {
     func start() {
         
     }
-    
-    func showNext(_ route: SearchSuggestionsRoute) {
-        
-    }
 }
 
 extension SearchSuggestionsCoordinator: CoordinatorOwner {
     func didFinish() {
         startedCoordinator = nil
+    }
+}
+
+enum SearchSuggestionsRoute: Route {}
+
+extension SearchSuggestionsCoordinator: Navigating {
+    typealias R = SearchSuggestionsRoute
+    
+    func showNext(_ route: SearchSuggestionsRoute) {
+        
     }
 }

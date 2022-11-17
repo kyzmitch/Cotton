@@ -18,10 +18,7 @@ enum MainScreenSubview: SubviewPart {
     case toolbar(UIView, TabRendererInterface, DonwloadPanelDelegate, GlobalMenuDelegate)
 }
 
-final class AppCoordinator: Coordinator, Navigating, SubviewNavigation, CoordinatorOwner {
-    typealias R = MainScreenRoute
-    typealias SP = MainScreenSubview
-    
+final class AppCoordinator: Coordinator, CoordinatorOwner {
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     let vcFactory: ViewControllerFactory
@@ -47,6 +44,10 @@ final class AppCoordinator: Coordinator, Navigating, SubviewNavigation, Coordina
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
     }
+}
+
+extension AppCoordinator: Navigating {
+    typealias R = MainScreenRoute
     
     func showNext(_ route: R) {
         switch route {
@@ -58,6 +59,10 @@ final class AppCoordinator: Coordinator, Navigating, SubviewNavigation, Coordina
             startTabPreviews()
         }
     }
+}
+
+extension AppCoordinator: SubviewNavigation {
+    typealias SP = MainScreenSubview
     
     func insertNext(_ subview: SP) {
         switch subview {
@@ -106,8 +111,6 @@ private extension AppCoordinator {
         toolbarCoordinator = coordinator
     }
 }
-
-// MARK: - Temporarily methods which MUST be refactored
 
 extension AppCoordinator {
     var toolbarView: UIView? {

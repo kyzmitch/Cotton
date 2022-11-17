@@ -24,16 +24,17 @@ protocol TabRendererInterface: AnyViewController {
     func open(tabContent: Tab.ContentType)
 }
 
-final class MainBrowserViewController: BaseViewController {
+final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseViewController
+    where C.R == MainScreenRoute, C.SP == MainScreenSubview {
     /// Define a specific type of coordinator, because not any coordinator
     /// can be used for this specific view controller
     /// and also the routes are specific to this screen as well.
     /// Storing it by weak reference, it is stored strongly in the coordinator owner
-    private weak var coordinator: AppCoordinator?
+    private weak var coordinator: C?
     /// Need to update this navigation delegate each time it changes in router holder
     private weak var siteNavigationDelegate: SiteNavigationDelegate?
     
-    init(_ coordinator: AppCoordinator) {
+    init(_ coordinator: C) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }

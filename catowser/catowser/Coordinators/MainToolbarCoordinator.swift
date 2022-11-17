@@ -8,12 +8,7 @@
 
 import UIKit
 
-enum ToolbarRoute: Route {
-    case tabs
-}
-
-final class MainToolbarCoordinator: Coordinator, Navigating, CoordinatorOwner {
-    typealias R = ToolbarRoute
+final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     var parent: CoordinatorOwner?
@@ -47,13 +42,6 @@ final class MainToolbarCoordinator: Coordinator, Navigating, CoordinatorOwner {
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc, to: containerView)
     }
-    
-    func showNext(_ route: R) {
-        switch route {
-        case .tabs:
-            showTabs()
-        }
-    }
 }
 
 private extension MainToolbarCoordinator {
@@ -64,5 +52,20 @@ private extension MainToolbarCoordinator {
         coordinator.parent = self
         coordinator.start()
         startedCoordinator = coordinator
+    }
+}
+
+enum ToolbarRoute: Route {
+    case tabs
+}
+
+extension MainToolbarCoordinator: Navigating {
+    typealias R = ToolbarRoute
+    
+    func showNext(_ route: R) {
+        switch route {
+        case .tabs:
+            showTabs()
+        }
     }
 }

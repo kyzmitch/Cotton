@@ -36,3 +36,14 @@ final class PhoneTabsCoordinator: Coordinator {
         startedCoordinator = nil
     }
 }
+
+enum TabsScreenRoute: Route {
+}
+
+extension PhoneTabsCoordinator: Navigating {
+    typealias R = TabsScreenRoute
+    
+    func showNext(_ route: TabsScreenRoute) {
+        
+    }
+}

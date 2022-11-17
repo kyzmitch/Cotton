@@ -13,7 +13,25 @@ protocol SubviewPart {}
 
 protocol Navigating: AnyObject {
     associatedtype R: Route
+    var vcFactory: ViewControllerFactory { get }
     func showNext(_ route: R)
+    func stop()
+    
+    // TODO: remove temporary method
+    var toolbarView: UIView? { get }
+    // TODO: remove temporary method
+    var toolbarViewController: AnyViewController? { get }
+}
+
+// TODO: remove temporary extension
+extension Navigating {
+    var toolbarView: UIView? {
+        return nil
+    }
+    
+    var toolbarViewController: AnyViewController? {
+        return nil
+    }
 }
 
 protocol SubviewNavigation: AnyObject {
@@ -26,7 +44,6 @@ protocol CoordinatorOwner: AnyObject {
 }
 
 protocol Coordinator: AnyObject {
-    var vcFactory: ViewControllerFactory { get }
     /// For now it seems we could start only one child coordinator, no need to have an array of coordinators
     var startedCoordinator: Coordinator? { get set }
     /// Should be defined as weak reference for stop operation
@@ -37,14 +54,15 @@ protocol Coordinator: AnyObject {
     var presenterVC: AnyViewController? { get }
     
     func start()
-    func stop()
 }
 
 extension Coordinator {
     var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
-    
+}
+
+extension Coordinator where Self: Navigating {
     func stop() {
         parent?.didFinish()
     }

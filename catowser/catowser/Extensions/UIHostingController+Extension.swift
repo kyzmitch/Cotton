@@ -19,10 +19,10 @@ extension UIHostingController where Content == SiteMenuView {
 }
 
 @available(iOS 13.0.0, *)
-final class SiteMenuViewController: UIHostingController<SiteMenuView> {
-    private weak var coordinator: GlobalMenuCoordinator?
+final class SiteMenuViewController<C: Navigating>: UIHostingController<SiteMenuView> where C.R == MenuScreenRoute {
+    private weak var coordinator: C?
     
-    init(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) {
+    init(_ model: SiteMenuModel, _ coordinator: C) {
         self.coordinator = coordinator
         let view = SiteMenuView(model: model)
         super.init(rootView: view)

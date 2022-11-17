@@ -31,7 +31,7 @@ protocol ViewControllerFactory: AnyObject {
                            _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> UIViewController
     var topSitesViewController: AnyViewController & TopSitesInterface { get }
     var blankWebPageViewController: UIViewController { get }
-    func siteMenuViewController(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) -> UIViewController
+    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController where C.R == MenuScreenRoute
     
     // MARK: - layout specific methods with optional results
     
@@ -42,11 +42,11 @@ protocol ViewControllerFactory: AnyObject {
                                                _ downloadDelegate: DonwloadPanelDelegate,
                                                _ settingsDelegate: GlobalMenuDelegate) -> UIViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
-    func toolbarViewController(_ downloadDelegate: DonwloadPanelDelegate,
-                               _ settingsDelegate: GlobalMenuDelegate,
-                               _ coordinator: MainToolbarCoordinator) -> UIViewController?
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate,
+                                              _ settingsDelegate: GlobalMenuDelegate,
+                                              _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
-    func tabsPreviewsViewController(_ coordinator: Coordinator) -> UIViewController?
+    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
 }
 
 extension ViewControllerFactory {
@@ -83,7 +83,7 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func siteMenuViewController(_ model: SiteMenuModel, _ coordinator: GlobalMenuCoordinator) -> UIViewController {
+    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
         return vc
     }

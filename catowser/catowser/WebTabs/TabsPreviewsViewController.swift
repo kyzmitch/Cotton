@@ -10,7 +10,23 @@ import UIKit
 import ReactiveSwift
 import CoreBrowser
 
-final class TabsPreviewsViewController: BaseViewController, CollectionViewInterface {
+final class TabsPreviewsViewController<C: Navigating>: BaseViewController,
+                                                        CollectionViewInterface,
+                                                        UICollectionViewDelegateFlowLayout,
+                                                        UICollectionViewDataSource,
+                                                        UICollectionViewDelegate
+where C.R == TabsScreenRoute {
+    
+    private weak var coordinator: C?
+
+    init(_ coordinator: C) {
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     private var uxState: MutableProperty<State> = MutableProperty<State>(.loading)
     
@@ -49,28 +65,18 @@ final class TabsPreviewsViewController: BaseViewController, CollectionViewInterf
 
     private lazy var addTabButton: UIBarButtonItem = {
         let img = UIImage(named: "newTabButton-Normal")
-        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: .addTab)
+        let addTab: Selector = #selector(TabsPreviewsViewController.addTabPressed)
+        let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: addTab)
         return btn
     }()
 
     private let spinnerView: UIActivityIndicatorView = {
-        let v = UIActivityIndicatorView(style: .whiteLarge)
+        let v = UIActivityIndicatorView(style: .large)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
 
     private var disposables = [Disposable?]()
-    
-    private weak var coordinator: Coordinator?
-
-    init(_ coordinator: Coordinator) {
-        self.coordinator = coordinator
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,12 +122,101 @@ final class TabsPreviewsViewController: BaseViewController, CollectionViewInterf
         TabsListManager.shared.detach(self)
         disposables.forEach {$0?.dispose()}
     }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return Sizes.margin
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let viewWidth = collectionView.bounds.width
+        let columnsNumber = CGFloat(numberOfColumns + 1)
+        let width = (viewWidth - Sizes.margin * columnsNumber) / CGFloat(numberOfColumns)
+        let cellWidth = floor(width)
+        let cellHeight = TabPreviewCell.cellHeightForCurrent(traitCollection)
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(equalInset: Sizes.margin)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return Sizes.margin
+    }
+    
+    // MARK: - UICollectionViewDataSource
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return uxState.value.itemsNumber
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        var tab: Tab?
+        switch uxState.value {
+        case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
+            // must use `item` for UICollectionView
+            tab = dataSource.value[safe: indexPath.item]
+        default: break
+        }
+
+        guard let correctTab = tab else {
+            print("\(#function) wrong index")
+            return UICollectionViewCell(frame: .zero)
+        }
+        let cell = collectionView.dequeueCell(at: indexPath, type: TabPreviewCell.self)
+        cell.configure(with: correctTab, at: indexPath.item, delegate: self)
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var tab: Tab?
+        switch uxState.value {
+        case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
+            tab = dataSource.value[safe: indexPath.item]
+        default: break
+        }
+        
+        guard let correctTab = tab else {
+            assertionFailure("\(#function) selected tab wasn't found")
+            return
+        }
+        
+        TabsListManager.shared.select(tab: correctTab)
+        coordinator?.stop()
+    }
+    
+    // MARK: - private functions
+
+    @objc func addTabPressed() {
+        // on previews screen will make new added tab always selected
+        // same behaviour has Safari and Firefox
+        let select = DefaultTabProvider.shared.selected
+        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
+        // newly added tab moves selection to itself
+        // so, it is opened by manager by default
+        // but user maybe don't want to move that tab right away
+        TabsListManager.shared.add(tab: tab)
+        if select {
+            coordinator?.stop()
+        }
+    }
 }
 
-fileprivate extension TabsPreviewsViewController {
-    struct Sizes {
-        static let margin = CGFloat(15)
-    }
+private struct Sizes {
+    static let margin = CGFloat(15)
 }
 
 private extension TabsPreviewsViewController {
@@ -154,106 +249,6 @@ extension TabsPreviewsViewController: TabPreviewCellDelegate {
         }
         TabsListManager.shared.close(tab: tab)
     }
-}
-
-extension TabsPreviewsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return Sizes.margin
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let viewWidth = collectionView.bounds.width
-        let columnsNumber = CGFloat(numberOfColumns + 1)
-        let width = (viewWidth - Sizes.margin * columnsNumber) / CGFloat(numberOfColumns)
-        let cellWidth = floor(width)
-        let cellHeight = TabPreviewCell.cellHeightForCurrent(traitCollection)
-        return CGSize(width: cellWidth, height: cellHeight)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(equalInset: Sizes.margin)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return Sizes.margin
-    }
-}
-
-extension TabsPreviewsViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return uxState.value.itemsNumber
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var tab: Tab?
-        switch uxState.value {
-        case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
-            // must use `item` for UICollectionView
-            tab = dataSource.value[safe: indexPath.item]
-        default: break
-        }
-
-        guard let correctTab = tab else {
-            print("\(#function) wrong index")
-            return UICollectionViewCell(frame: .zero)
-        }
-        let cell = collectionView.dequeueCell(at: indexPath, type: TabPreviewCell.self)
-        cell.configure(with: correctTab, at: indexPath.item, delegate: self)
-        return cell
-    }
-}
-
-extension TabsPreviewsViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var tab: Tab?
-        switch uxState.value {
-        case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
-            tab = dataSource.value[safe: indexPath.item]
-        default: break
-        }
-        
-        guard let correctTab = tab else {
-            assertionFailure("\(#function) selected tab wasn't found")
-            return
-        }
-        
-        TabsListManager.shared.select(tab: correctTab)
-        coordinator?.stop()
-    }
-}
-
-private extension TabsPreviewsViewController {
-    @objc func clearTabsPressed() {
-
-    }
-
-    @objc func addTabPressed() {
-        // on previews screen will make new added tab always selected
-        // same behaviour has Safari and Firefox
-        let select = DefaultTabProvider.shared.selected
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
-        // newly added tab moves selection to itself
-        // so, it is opened by manager by default
-        // but user maybe don't want to move that tab right away
-        TabsListManager.shared.add(tab: tab)
-        if select {
-            coordinator?.stop()
-        }
-    }
-}
-
-fileprivate extension Selector {
-    static let clearTabs = #selector(TabsPreviewsViewController.clearTabsPressed)
-    static let addTab = #selector(TabsPreviewsViewController.addTabPressed)
 }
 
 fileprivate extension TabsPreviewsViewController {

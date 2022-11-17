@@ -24,9 +24,9 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return nil
     }
     
-    func toolbarViewController(_ downloadDelegate: DonwloadPanelDelegate,
-                               _ settingsDelegate: GlobalMenuDelegate,
-                               _ coordinator: MainToolbarCoordinator) -> UIViewController? {
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate,
+                                              _ settingsDelegate: GlobalMenuDelegate,
+                                              _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {
         if let existingVC = toolBarVC {
             return existingVC
         }
@@ -34,7 +34,7 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return toolBarVC
     }
     
-    func tabsPreviewsViewController(_ coordinator: Coordinator) -> UIViewController? {
+    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
         let vc: TabsPreviewsViewController = .init(coordinator)
         return vc
     }
