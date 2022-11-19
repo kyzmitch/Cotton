@@ -28,7 +28,7 @@ public protocol TabsSubject {
     func close(tab: Tab)
     /// Closes all tabs.
     func closeAll()
-    /// Remembers selected tab index. Can fail silently if `tab` will not be found in a list.
+    /// Remembers selected tab index. Can fail silently if `tab` is not found in a list.
     func select(tab: Tab)
     /// Replaces currently active tab by combining two operations
     func replaceSelected(tabContent: Tab.ContentType) throws

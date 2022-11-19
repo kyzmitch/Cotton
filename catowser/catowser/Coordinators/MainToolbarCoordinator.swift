@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     let vcFactory: ViewControllerFactory
@@ -15,7 +16,6 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     var startedVC: AnyViewController?
     var presenterVC: AnyViewController?
     
-    private let tabsRenderer: TabRendererInterface
     private let downloadDelegate: DonwloadPanelDelegate
     private let settingsDelegate: GlobalMenuDelegate
     private let containerView: UIView
@@ -23,12 +23,10 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ containerView: UIView,
-         _ tabsRenderer: TabRendererInterface,
          _ downloadDelegate: DonwloadPanelDelegate,
          _ settingsDelegate: GlobalMenuDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
-        self.tabsRenderer = tabsRenderer
         self.downloadDelegate = downloadDelegate
         self.settingsDelegate = settingsDelegate
         self.containerView = containerView
@@ -48,7 +46,7 @@ private extension MainToolbarCoordinator {
     func showTabs() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter)
+        let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter, self)
         coordinator.parent = self
         coordinator.start()
         startedCoordinator = coordinator
@@ -67,5 +65,19 @@ extension MainToolbarCoordinator: Navigating {
         case .tabs:
             showTabs()
         }
+    }
+}
+
+extension MainToolbarCoordinator: PhoneTabsDelegate {
+    func didTabSelect(_ tab: CoreBrowser.Tab) {
+        TabsListManager.shared.select(tab: tab)
+    }
+    
+    func didTabAdd() {
+        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
+        // newly added tab moves selection to itself
+        // so, it is opened by manager by default
+        // but user maybe don't want to move that tab right away
+        TabsListManager.shared.add(tab: tab)
     }
 }

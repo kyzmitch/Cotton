@@ -186,7 +186,8 @@ where C.R == TabsScreenRoute {
         switch uxState.value {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             tab = dataSource.value[safe: indexPath.item]
-        default: break
+        default:
+            coordinator?.showNext(.error)
         }
         
         guard let correctTab = tab else {
@@ -194,24 +195,13 @@ where C.R == TabsScreenRoute {
             return
         }
         
-        TabsListManager.shared.select(tab: correctTab)
-        coordinator?.stop()
+        coordinator?.showNext(.selectTab(correctTab))
     }
     
     // MARK: - private functions
 
     @objc func addTabPressed() {
-        // on previews screen will make new added tab always selected
-        // same behaviour has Safari and Firefox
-        let select = DefaultTabProvider.shared.selected
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
-        // newly added tab moves selection to itself
-        // so, it is opened by manager by default
-        // but user maybe don't want to move that tab right away
-        TabsListManager.shared.add(tab: tab)
-        if select {
-            coordinator?.stop()
-        }
+        coordinator?.showNext(.addTab)
     }
 }
 

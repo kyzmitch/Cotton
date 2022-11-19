@@ -11,6 +11,8 @@ import UIKit
 /// Implements the operations to create tablet layout product objects.
 final class TabletViewControllerFactory: ViewControllerFactory {
     private var searchBarVC: UIViewController?
+    private var topSitesVC: (AnyViewController & TopSitesInterface)?
+    private var blankVC: UIViewController?
     
     init() {}
     
@@ -36,5 +38,23 @@ final class TabletViewControllerFactory: ViewControllerFactory {
                                               _ settingsDelegate: GlobalMenuDelegate,
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {
         return nil
+    }
+    
+    var topSitesViewController: AnyViewController & TopSitesInterface {
+        if let existingVC = topSitesVC {
+            return existingVC
+        }
+        let createdVC = TopSitesViewController.newFromNib()
+        topSitesVC = createdVC
+        return createdVC
+    }
+    
+    var blankWebPageViewController: UIViewController {
+        if let existingVC = blankVC {
+            return existingVC
+        }
+        let createdVC: BlankWebPageViewController = .init()
+        blankVC = createdVC
+        return createdVC
     }
 }

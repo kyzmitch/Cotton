@@ -7,6 +7,12 @@
 //
 
 import Foundation
+import CoreBrowser
+
+protocol PhoneTabsDelegate: AnyObject {
+    func didTabSelect(_ tab: Tab)
+    func didTabAdd()
+}
 
 final class PhoneTabsCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
@@ -15,9 +21,14 @@ final class PhoneTabsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     var presenterVC: AnyViewController?
     
-    init(_ vcFactory: ViewControllerFactory, _ presenter: AnyViewController) {
+    private weak var delegate: PhoneTabsDelegate?
+    
+    init(_ vcFactory: ViewControllerFactory,
+         _ presenter: AnyViewController,
+         _ delegate: PhoneTabsDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
+        self.delegate = delegate
     }
     
     func start() {
@@ -28,22 +39,52 @@ final class PhoneTabsCoordinator: Coordinator {
         startedVC = vc
         presenterVC?.viewController.present(vc, animated: true, completion: nil)
     }
-    
-    func stop() {
-        // tab select happens somehow before dismissing after selecting the tab
-        // probably it also should be handled by coordinator
-        startedVC?.viewController.dismiss(animated: true)
-        startedCoordinator = nil
-    }
 }
 
 enum TabsScreenRoute: Route {
+    case error
+    case selectTab(Tab)
+    case addTab
 }
 
 extension PhoneTabsCoordinator: Navigating {
     typealias R = TabsScreenRoute
     
     func showNext(_ route: TabsScreenRoute) {
+        switch route {
+        case .selectTab(let contentType):
+            showSelected(contentType)
+        case .addTab:
+            showAdded()
+        case .error:
+            showError()
+        }
+    }
+}
+
+private extension PhoneTabsCoordinator {
+    func showSelected(_ tab: Tab) {
+        startedVC?.viewController.dismiss(animated: true)
+        startedCoordinator = nil
         
+        delegate?.didTabSelect(tab)
+    }
+    
+    func showAdded() {
+        delegate?.didTabAdd()
+        // on previews screen will make new added tab always selected
+        // same behaviour has Safari and Firefox
+        if DefaultTabProvider.shared.selected {
+            startedVC?.viewController.dismiss(animated: true)
+            startedCoordinator = nil
+        }
+    }
+    
+    func showError() {
+        guard let vc = vcFactory.tabsPreviewsViewController(self) else {
+            assertionFailure("Tabs previews screen is only for Phone layout")
+            return
+        }
+        AlertPresenter.present(on: vc)
     }
 }

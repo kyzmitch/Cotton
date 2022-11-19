@@ -74,15 +74,6 @@ extension ViewControllerFactory {
         return vc
     }
     
-    var topSitesViewController: AnyViewController & TopSitesInterface {
-        return TopSitesViewController.newFromNib()
-    }
-    
-    var blankWebPageViewController: UIViewController {
-        let vc: BlankWebPageViewController = .init()
-        return vc
-    }
-    
     func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
         return vc

@@ -34,7 +34,7 @@ public protocol TabsObserver {
     ///     - index: new selected index.
     ///     - content: Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
     ///     - identifier: needed to quickly determine visual state (selected view or not)
-    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID)
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID)
     /// Notifies about tab content type changes or `site` changes
     func tabDidReplace(_ tab: Tab, at index: Int)
 
@@ -49,7 +49,7 @@ public extension TabsObserver {
         return String(describing: self)
     }
 
-    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         // Only landscape/regular tabs list view use that
     }
 

@@ -14,16 +14,6 @@ import JSPlugins
 import CoreHttpKit
 import CoreCatowser
 
-/// An interface for component which suppose to render tabs
-///
-/// Class protocol is used because object gonna be stored by `weak` ref
-/// `AnyObject` is new name for it, but will use old one to find when XCode
-/// will start mark it as deprecated.
-/// https://forums.swift.org/t/class-only-protocols-class-vs-anyobject/11507/4
-protocol TabRendererInterface: AnyViewController {
-    func open(tabContent: Tab.ContentType)
-}
-
 final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseViewController
     where C.R == MainScreenRoute, C.SP == MainScreenSubview {
     /// Define a specific type of coordinator, because not any coordinator
@@ -31,6 +21,8 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     /// and also the routes are specific to this screen as well.
     /// Storing it by weak reference, it is stored strongly in the coordinator owner
     private weak var coordinator: C?
+    /// Layout handler for supplementary views.
+    private lazy var layoutCoordinator: AppLayoutCoordinator = AppLayoutCoordinator(viewController: self)
     /// Need to update this navigation delegate each time it changes in router holder
     private weak var siteNavigationDelegate: SiteNavigationDelegate?
     
@@ -38,9 +30,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
-
-    /// Router and layout handler for supplementary views.
-    private var layoutCoordinator: AppLayoutCoordinator!
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -51,12 +40,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         let viewController = TabsViewController()
         return viewController
     }()
-
-    /// The view controller to manage blank tab, possibly will be enhaced
-    /// to support favorite sites list.
-    private let blankWebPageController = BlankWebPageViewController()
-
-    private let topSitesController: AnyViewController & TopSitesInterface = TopSitesViewController.newFromNib()
 
     /// The view needed to hold tab content like WebView or favorites table view.
     private let containerView: UIView = {
@@ -90,22 +73,17 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 
     var mKeyboardHeight: CGFloat?
 
-    /// The current holder for WebView (controller) if browser has at least one
-    private weak var currentWebViewController: AnyViewController?
-
     private var disposables = [Disposable?]()
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
-
-    /// Not initialized, will be initialized after `TabsListManager`
-    /// during tab opening. Used only during tab opening for optimization
-    private lazy var previousTabContent: Tab.ContentType = FeatureManager.tabDefaultContentValue().contentType
     
     override func loadView() {
         // Your custom implementation of this method should not call super.
         view = UIView()
+        
+        coordinator?.layoutCoordinator = layoutCoordinator
         
         // In that method, create your view hierarchy programmatically and assign
         // the root view of that hierarchy to the view controller’s view property.
@@ -113,8 +91,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         if isPad {
             add(asChildViewController: tabsViewController, to: view)
         }
-
-        layoutCoordinator = AppLayoutCoordinator(viewController: self)
 
         add(asChildViewController: layoutCoordinator.searchBarController.viewController, to: view)
         view.addSubview(webLoadProgressView)
@@ -130,7 +106,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             add(asChildViewController: layoutCoordinator.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
-            coordinator?.insertNext(.toolbar(view, self, layoutCoordinator, self))
+            coordinator?.insertNext(.toolbar(view, layoutCoordinator, self))
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }
@@ -242,7 +218,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         disposables.append(disposeB)
         disposables.append(disposeA)
 
-        TabsListManager.shared.attach(self)
+        // add coordinator as an observer to `TabsSubject` will happen in coordinator
     }
     
     override func viewDidLoad() {
@@ -329,108 +305,11 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     deinit {
         // was in `viewWillDisappear` before
         NotificationCenter.default.removeObserver(self)
-        TabsListManager.shared.detach(self)
         disposables.forEach { $0?.dispose() }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
-    }
-}
-
-extension MainBrowserViewController: TabRendererInterface {
-    func open(tabContent: Tab.ContentType) {
-        layoutCoordinator.closeTags()
-
-        switch previousTabContent {
-        case .site:
-            // need to stop any video/audio on corresponding web view
-            // before removing it from parent view controller.
-            // on iphones the video is always played in full-screen (probably need to invent workaround)
-            // https://webkit.org/blog/6784/new-video-policies-for-ios/
-            // "and, on iPhone, the <video> will enter fullscreen when starting playback."
-            // on ipads it is played in normal mode, so, this is why need to stop/pause it
-            if let currentWebViewVC = currentWebViewController {
-                // also need to invalidate and cancel all observations
-                // in viewDidDisappear, and not in dealloc,
-                // because currently web view controller reference
-                // stored in reuse manager which probably
-                // not needed anymore even with unsolved memory issue when it's
-                // a lot of tabs are opened.
-                // It is because it's very tricky to save navigation history
-                // for reused web view and for some other reasons.
-                currentWebViewVC.viewController.removeFromChild()
-            }
-        case .topSites:
-            topSitesController.viewController.removeFromChild()
-        default:
-            blankWebPageController.removeFromChild()
-        }
-
-        switch tabContent {
-        case .site(let site):
-            openSiteTabContent(with: site)
-        case .topSites:
-            openTopSitesTabContent()
-        default:
-            openBlankTabContent()
-        }
-
-        previousTabContent = tabContent
-    }
-    
-    private func openSiteTabContent(with site: Site) {
-        guard let jsPluginsSource = jsPluginsBuilder else {
-            assertionFailure("Plugins source is expected to be initialized even if it is empty")
-            return
-        }
-        // need to display progress view before load start
-        layoutCoordinator.showProgress(true)
-        let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsSource, self)
-        guard let webViewController = vc else {
-            assertionFailure("Failed create new web view for tab")
-            open(tabContent: .blank)
-            return
-        }
-
-        siteNavigator = webViewController
-        currentWebViewController = webViewController
-
-        add(asChildViewController: webViewController, to: containerView)
-        let webVContainer: UIView = webViewController.view
-        webVContainer.translatesAutoresizingMaskIntoConstraints = false
-        // originally left and right were used instead of leading and trailing
-        webVContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        webVContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        webVContainer.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        webVContainer.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-    }
-    
-    private func openTopSitesTabContent() {
-        siteNavigator = nil
-        layoutCoordinator.searchBarController.changeState(to: .blankSearch, animated: true)
-        topSitesController.reload(with: DefaultTabProvider.shared.topSites)
-
-        add(asChildViewController: topSitesController.viewController, to: containerView)
-        let topSitesView: UIView = topSitesController.controllerView
-        topSitesView.translatesAutoresizingMaskIntoConstraints = false
-        topSitesView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        topSitesView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        topSitesView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        topSitesView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-    }
-    
-    private func openBlankTabContent() {
-        siteNavigator = nil
-        layoutCoordinator.searchBarController.changeState(to: .blankSearch, animated: true)
-
-        add(asChildViewController: blankWebPageController, to: containerView)
-        let blankView: UIView = blankWebPageController.view
-        blankView.translatesAutoresizingMaskIntoConstraints = false
-        blankView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        blankView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        blankView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        blankView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
 }
 
@@ -516,32 +395,6 @@ extension MainBrowserViewController: MainDelegate {
 
     func openDomain(with url: URL) {
         replaceTab(with: url)
-    }
-}
-
-extension MainBrowserViewController: TabsObserver {
-    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        open(tabContent: content)
-    }
-
-    func tabDidReplace(_ tab: Tab, at index: Int) {
-        switch previousTabContent {
-        case .site:
-            break
-        default:
-            open(tabContent: tab.contentType)
-        }
-
-        // need update navigation if the same tab was updated
-        let withSite: Bool
-        if case .site = tab.contentType {
-            withSite = true
-        } else {
-            withSite = false
-        }
-
-        layoutCoordinator.closeTags()
-        reloadNavigationElements(withSite)
     }
 }
 

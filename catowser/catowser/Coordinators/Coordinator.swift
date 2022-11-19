@@ -21,6 +21,8 @@ protocol Navigating: AnyObject {
     var toolbarView: UIView? { get }
     // TODO: remove temporary method
     var toolbarViewController: AnyViewController? { get }
+    // TODO: remove temporary reference property
+    var layoutCoordinator: AppLayoutCoordinator? { get set }
 }
 
 // TODO: remove temporary extension
@@ -30,6 +32,10 @@ extension Navigating {
     }
     
     var toolbarViewController: AnyViewController? {
+        return nil
+    }
+    
+    var layoutCoordinator: AppLayoutCoordinator? {
         return nil
     }
 }

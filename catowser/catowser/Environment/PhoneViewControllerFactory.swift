@@ -11,6 +11,8 @@ import UIKit
 /// Implements the operations to create phone layout product objects.
 final class PhoneViewControllerFactory: ViewControllerFactory {
     private var toolBarVC: UIViewController?
+    private var topSitesVC: (AnyViewController & TopSitesInterface)?
+    private var blankVC: UIViewController?
     
     init() {}
     
@@ -37,5 +39,23 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
         let vc: TabsPreviewsViewController = .init(coordinator)
         return vc
+    }
+    
+    var topSitesViewController: AnyViewController & TopSitesInterface {
+        if let existingVC = topSitesVC {
+            return existingVC
+        }
+        let createdVC = TopSitesViewController.newFromNib()
+        topSitesVC = createdVC
+        return createdVC
+    }
+    
+    var blankWebPageViewController: UIViewController {
+        if let existingVC = blankVC {
+            return existingVC
+        }
+        let createdVC: BlankWebPageViewController = .init()
+        blankVC = createdVC
+        return createdVC
     }
 }
