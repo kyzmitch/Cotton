@@ -9,6 +9,11 @@
 import UIKit
 import CoreCatowser
 
+/// A workaround protocol to get a reference to a view from root view controller
+protocol BrowserContentViewHolder: AnyObject {
+    var containerView: UIView { get }
+}
+
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
  would be layout type (phone or tablet), but it doesn't give the benefits which are needed, like
@@ -23,18 +28,24 @@ import CoreCatowser
 /// Declares an interface for operations that create abstract product objects.
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator) -> UIViewController
+    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController & BrowserContentViewHolder
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
     var searchSuggestionsViewController: UIViewController { get }
     
     func webViewController(_ viewModel: WebViewModel,
-                           _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> UIViewController
+                           _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> WebViewController
     var topSitesViewController: AnyViewController & TopSitesInterface { get }
     var blankWebPageViewController: UIViewController { get }
-    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController where C.R == MenuScreenRoute
+    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel,
+                                               _ coordinator: C) -> UIViewController
+    where C.R == MenuScreenRoute
     
     // MARK: - layout specific methods with optional results
     
+    /// Convinience property to get a reference without input parameters
+    var createdDeviceSpecificSearchBarViewController: UIViewController? { get }
+    /// Convinience property to get a reference without input parameters
+    var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController?
     /// Will return nil on Phone
@@ -50,7 +61,7 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator) -> UIViewController {
+    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController & BrowserContentViewHolder {
         let vc: MainBrowserViewController = .init(coordinator)
         return vc
     }
@@ -69,12 +80,13 @@ extension ViewControllerFactory {
     }
     
     func webViewController(_ viewModel: WebViewModel,
-                           _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> UIViewController {
+                           _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> WebViewController {
         let vc: WebViewController = .init(viewModel, externalNavigationDelegate)
         return vc
     }
     
-    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController where C.R == MenuScreenRoute {
+    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController
+    where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
         return vc
     }

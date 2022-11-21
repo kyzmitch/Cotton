@@ -10,14 +10,30 @@ import UIKit
 
 /// Implements the operations to create phone layout product objects.
 final class PhoneViewControllerFactory: ViewControllerFactory {
+    private var searchBarVC: UIViewController?
     private var toolBarVC: UIViewController?
     private var topSitesVC: (AnyViewController & TopSitesInterface)?
     private var blankVC: UIViewController?
     
     init() {}
     
+    var createdDeviceSpecificSearchBarViewController: UIViewController? {
+        return searchBarVC
+    }
+    
+    var createdToolbaViewController: UIViewController? {
+        return toolBarVC
+    }
+    
+    // MARK: - Phone methods
+    
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController? {
-        return SmartphoneSearchBarViewController(searchBarDelegate)
+        if let existingVC = searchBarVC {
+            return existingVC
+        }
+        let vc = SmartphoneSearchBarViewController(searchBarDelegate)
+        searchBarVC = vc
+        return vc
     }
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,

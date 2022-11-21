@@ -263,7 +263,6 @@
 		8A7B1BEB28EB18AD004FC135 /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
 		8A7B1BEC28EB18AD004FC135 /* CoreCatowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A7B1BEF28EB18DB004FC135 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A7B1BF128EB262D004FC135 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
 		8A7B1BF228EB28D3004FC135 /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5FD6A826AF34570019384A /* AppErrors.swift */; };
 		8A7B1BF428EB2A4D004FC135 /* AsyncApiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BF328EB2A4D004FC135 /* AsyncApiType.swift */; };
 		8A7B1BF528EB2C08004FC135 /* Host+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6972628BB35DE00981BBF /* Host+Extension.swift */; };
@@ -481,6 +480,8 @@
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
+		8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
+		8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
 		8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE31135247C664600FF28B1 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8AE31137247C665300FF28B1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE31135247C664600FF28B1 /* SwiftUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607CC66622A5505F0037E5EC /* UIKit.framework */; };
@@ -493,6 +494,14 @@
 		8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D044280D388800FADE3A /* ResponseType.swift */; };
 		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
 		8AEA9456290F01E800CCBB46 /* MockedRestInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */; };
+		8AED4198292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */; };
+		8AED4199292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */; };
+		8AED419A292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
+		8AED419B292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
+		8AED419D292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */; };
+		8AED419E292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */; };
+		8AED41A0292C004100A00DB2 /* WebViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* WebViewsEnvironment.swift */; };
+		8AED41A1292C004100A00DB2 /* WebViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* WebViewsEnvironment.swift */; };
 		8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */; };
 		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */; };
@@ -1156,6 +1165,7 @@
 		8ADAF549240124D800A0D233 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureSource.swift; sourceTree = "<group>"; };
 		8ADAF54D240126F700A0D233 /* LocalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSettings.swift; sourceTree = "<group>"; };
+		8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesCoordinator.swift; sourceTree = "<group>"; };
 		8AE31135247C664600FF28B1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		8AE3113B247C66DF00FF28B1 /* SiteMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuView.swift; sourceTree = "<group>"; };
 		8AE46353244E07E600C8E063 /* OpenSearchParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSearchParser.swift; sourceTree = "<group>"; };
@@ -1168,6 +1178,9 @@
 		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
 		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
 		8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedRestInterface.swift; sourceTree = "<group>"; };
+		8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankContentCoordinator.swift; sourceTree = "<group>"; };
+		8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentCoordinator.swift; sourceTree = "<group>"; };
+		8AED419F292C004100A00DB2 /* WebViewsEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewsEnvironment.swift; sourceTree = "<group>"; };
 		8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmDNSoverHTTPSTests.swift; sourceTree = "<group>"; };
 		8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelState.swift; sourceTree = "<group>"; };
 		8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewModelState+Actionable.swift"; sourceTree = "<group>"; };
@@ -1561,6 +1574,9 @@
 				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
 				753392B52922C9EB00570461 /* MainToolbarCoordinator.swift */,
 				8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */,
+				8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */,
+				8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */,
+				8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */,
 				7533929F291FD30B00570461 /* LegacyRouters */,
 			);
 			path = Coordinators;
@@ -1648,7 +1664,6 @@
 				8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */,
 				8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */,
 				841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */,
-				60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */,
 				607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */,
 				8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */,
 				8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */,
@@ -1753,6 +1768,7 @@
 				841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */,
 				8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */,
 				60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */,
+				60380EF622A15504007F06FB /* JSPluginsSource.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -1970,7 +1986,6 @@
 				8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */,
 				8A3FED7E288FD1A6004997E4 /* WebViewModelImpl.swift */,
 				8AC5873B289C3DA00038A7B5 /* WebViewContext.swift */,
-				60380EF622A15504007F06FB /* JSPluginsSource.swift */,
 			);
 			path = WebViewModel;
 			sourceTree = "<group>";
@@ -2078,6 +2093,8 @@
 			children = (
 				8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */,
 				8A745C102480295B00A379AD /* TabsEnvironment.swift */,
+				8AED419F292C004100A00DB2 /* WebViewsEnvironment.swift */,
+				60724EED220C4FDC0071BECF /* WebViewsReuseManager.swift */,
 				8A23989228622FCA005DA801 /* ViewModelFactory.swift */,
 				753392A3291FD9A500570461 /* ViewControllerFactory.swift */,
 				753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */,
@@ -3431,6 +3448,7 @@
 				8A1C1C23248510880098F2F1 /* AppLayoutCoordinator+TagsRouterInterface.swift in Sources */,
 				755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A1C1C202485103E0098F2F1 /* MainInterfaces.swift in Sources */,
+				8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8AB9BE1628FF0C75002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
 				753392B62922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
@@ -3448,13 +3466,16 @@
 				8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */,
 				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
 				60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */,
+				8AED4198292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
+				8AED419D292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MainBrowserViewController.swift in Sources */,
 				8A97EF25245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */,
 				6010ECC621F74E2900972E28 /* Theme.swift in Sources */,
 				841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */,
 				8A745C0D248027C600A379AD /* TabsCache.swift in Sources */,
 				753392A7291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
+				8AED419B292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8AB9BE1B28FF0CE7002063C2 /* CAGradientLayer+CatowserExtension.swift in Sources */,
@@ -3486,6 +3507,7 @@
 				60A82C532254E1F7008210D9 /* AppLayoutCoordinator.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
 				8AB9BE1A28FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
+				8AED41A0292C004100A00DB2 /* WebViewsEnvironment.swift in Sources */,
 				8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
@@ -3555,7 +3577,6 @@
 				8A7B1BB928EB15DD004FC135 /* WebViewModelState+Actionable.swift in Sources */,
 				8A7B1BBF28EB1640004FC135 /* GoogleDNSStrategy.swift in Sources */,
 				8A7B1BBE28EB161D004FC135 /* DNSResolvingStrategy.swift in Sources */,
-				8A7B1BF128EB262D004FC135 /* JSPluginsSource.swift in Sources */,
 				8A7B1BFF28EB3269004FC135 /* Site+Extensions.swift in Sources */,
 				8A7B1BC428EB16C4004FC135 /* WebSearchAutocomplete.swift in Sources */,
 				8A7B1BC928EB16DA004FC135 /* DDGoAutocompleteStrategy.swift in Sources */,
@@ -3635,6 +3656,7 @@
 				8A1C1C24248510880098F2F1 /* AppLayoutCoordinator+TagsRouterInterface.swift in Sources */,
 				755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A1C1C212485103E0098F2F1 /* MainInterfaces.swift in Sources */,
+				8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8AB9BE1528FF0C74002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
 				753392B72922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
@@ -3652,13 +3674,16 @@
 				8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */,
 				8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */,
 				8A8035BD24442F0F000E035F /* CottonToolbarView.swift in Sources */,
+				8AED4199292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */,
 				8A8035BE24442F0F000E035F /* WebBrowserToolbarController.swift in Sources */,
+				8AED419E292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */,
 				8A8035BF24442F0F000E035F /* MainBrowserViewController.swift in Sources */,
 				8A97EF26245B44D4003AC9D7 /* UIImageView+Extension.swift in Sources */,
 				8A8035C024442F0F000E035F /* Theme.swift in Sources */,
 				8A8035C124442F0F000E035F /* LinkTagsViewController.swift in Sources */,
 				8A745C0C248027C600A379AD /* TabsCache.swift in Sources */,
 				753392A8291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
+				8AED419A292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8AB9BE1C28FF0CE7002063C2 /* CAGradientLayer+CatowserExtension.swift in Sources */,
@@ -3690,6 +3715,7 @@
 				8A8035CA24442F0F000E035F /* AppLayoutCoordinator.swift in Sources */,
 				8A8035CB24442F0F000E035F /* CounterView.swift in Sources */,
 				8AB9BE1928FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
+				8AED41A1292C004100A00DB2 /* WebViewsEnvironment.swift in Sources */,
 				8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,

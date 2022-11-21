@@ -14,15 +14,7 @@ import Alamofire
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Should be stored by strong reference, because it is the only owner of App coordinator
-    lazy var appCoordinator: AppCoordinator = {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            let factory = TabletViewControllerFactory()
-            return AppCoordinator(factory)
-        } else {
-            let factory = PhoneViewControllerFactory()
-            return AppCoordinator(factory)
-        }
-    }()
+    let appCoordinator: AppCoordinator = .init(WebViewsEnvironment.shared.viewControllerFactory)
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

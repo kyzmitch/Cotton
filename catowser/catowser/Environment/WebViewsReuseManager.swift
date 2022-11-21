@@ -15,20 +15,21 @@ import CoreCatowser
 
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
-    static let shared = WebViewsReuseManager()
     /// Web view controllers array, array is used to have ordering and current index
     /// But NSMapTable could be better by using Sites as keys for web views.
-    private var views: [WebViewController] = [WebViewController]()
+    private var views: [WebViewController] = []
     /// How many views to store
     private let viewsLimit: Int
     /// Needed to store index of last returned view
     private var lastSelectedIndex: Int?
     /// Tells to actually use reuse manager for limiting the number of views
     private let useLimitedCache = false
+    /// view factory
+    private let vcFactory: ViewControllerFactory
 
-    private init(_ viewsLimit: Int = 10) {
+    init(_ viewControllerFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
-        
+        vcFactory = viewControllerFactory
         if viewsLimit >= 1 {
             self.viewsLimit = viewsLimit
         } else {
@@ -51,7 +52,7 @@ final class WebViewsReuseManager {
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor(_ site: Site,
                        _ pluginsBuilder: any JSPluginsSource,
-                       _ delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
+                       _ delegate: SiteExternalNavigationDelegate) throws -> AnyViewController {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
             let index = searchWebViewIndex(for: site),
@@ -67,7 +68,7 @@ final class WebViewsReuseManager {
         if count >= 0 && count < viewsLimit {
             let context: WebViewContextImpl = .init(pluginsBuilder.pluginsProgram)
             let vm = ViewModelFactory.shared.webViewModel(site, context)
-            let vc: WebViewController = .init(vm, delegate)
+            let vc = vcFactory.webViewController(vm, delegate)
             views.append(vc)
             lastSelectedIndex = count
             return vc

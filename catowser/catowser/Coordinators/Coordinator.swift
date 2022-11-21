@@ -19,19 +19,13 @@ protocol Navigating: AnyObject {
     
     // TODO: remove temporary method
     var toolbarView: UIView? { get }
-    // TODO: remove temporary method
-    var toolbarViewController: AnyViewController? { get }
     // TODO: remove temporary reference property
-    var layoutCoordinator: AppLayoutCoordinator? { get set }
+    var layoutCoordinator: AppLayoutCoordinator? { get }
 }
 
 // TODO: remove temporary extension
 extension Navigating {
     var toolbarView: UIView? {
-        return nil
-    }
-    
-    var toolbarViewController: AnyViewController? {
         return nil
     }
     

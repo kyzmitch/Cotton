@@ -16,6 +16,14 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     
     init() {}
     
+    var createdDeviceSpecificSearchBarViewController: UIViewController? {
+        return searchBarVC
+    }
+    
+    var createdToolbaViewController: UIViewController? {
+        return nil
+    }
+    
     // MARK: - Tablet methods
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,

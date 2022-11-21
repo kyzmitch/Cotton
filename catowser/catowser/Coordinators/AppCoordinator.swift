@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import CoreHttpKit
 import FeaturesFlagsKit
+import JSPlugins
 
 final class AppCoordinator: Coordinator, CoordinatorOwner {
     var startedCoordinator: Coordinator?
@@ -20,6 +21,12 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     
     /// Specific toolbar coordinator which should stay forever
     private var toolbarCoordinator: Coordinator?
+    /// Coordinator for inserted child view controller
+    private var topSitesCoordinator: (any Navigating)?
+    /// blank content vc
+    private var blankContentCoordinator: (any Navigating)?
+    /// web view coordinator
+    private var webContentCoordinator: (any Navigating)?
     /// App window rectangle
     private let windowRectangle: CGRect = {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -29,10 +36,24 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private lazy var previousTabContent: Tab.ContentType = FeatureManager.tabDefaultContentValue().contentType
-    /// The WebView (controller) if browser has at least one
-    private weak var currentWebViewController: AnyViewController?
     /// Temporary property, MUST be removed during refactoring
-    weak var layoutCoordinator: AppLayoutCoordinator?
+    var layoutCoordinator: AppLayoutCoordinator?
+    /// Need to update this navigation delegate each time it changes in router holder
+    private weak var siteNavigationDelegate: SiteNavigationDelegate?
+    /// Convinience property to get a content container from root view controller
+    private var contentContainerView: UIView? {
+        (startedVC as? BrowserContentViewHolder)?.containerView
+    }
+    /// Not a constant because can't be initialized in init
+    private var jsPluginsBuilder: (any JSPluginsSource)?
+    /// Web site navigation delegate
+    private var navigationComponent: FullSiteNavigationComponent? {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return vcFactory.createdToolbaViewController as? FullSiteNavigationComponent
+        } else {
+            return vcFactory.createdDeviceSpecificSearchBarViewController as? FullSiteNavigationComponent
+        }
+    }
     
     init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
@@ -40,11 +61,18 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     }
     
     func start() {
-        startedVC = vcFactory.rootViewController(self)
+        let vc = vcFactory.rootViewController(self)
+        startedVC = vc
+        if let layoutPresenter = vc as? LinksRouterPresenter {
+            layoutCoordinator = AppLayoutCoordinator(viewController: layoutPresenter)
+        }
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         
         TabsListManager.shared.attach(self)
+        jsPluginsBuilder = JSPluginsBuilder()
+            .setBase(self)
+            .setInstagram(self)
     }
 }
 
@@ -71,7 +99,8 @@ extension AppCoordinator: Navigating {
 }
 
 enum MainScreenSubview: SubviewPart {
-    case toolbar(UIView, DonwloadPanelDelegate, GlobalMenuDelegate)
+    case toolbar(UIView, DonwloadPanelDelegate)
+    case openTab(Tab.ContentType)
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -79,9 +108,41 @@ extension AppCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .toolbar(let containerView, let downloadDelegate, let settingsDelegate):
-            insertToolbar(containerView, downloadDelegate, settingsDelegate)
+        case .toolbar(let containerView, let downloadDelegate):
+            insertToolbar(containerView, downloadDelegate)
+        case .openTab(let content):
+            open(tabContent: content)
         }
+    }
+}
+
+extension AppCoordinator: SiteNavigationComponent {
+    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
+        navigationComponent?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
+    }
+
+    var siteNavigator: SiteNavigationDelegate? {
+        get {
+            return nil
+        }
+        set(newValue) {
+            navigationComponent?.siteNavigator = newValue
+            siteNavigationDelegate = newValue
+        }
+    }
+}
+
+extension AppCoordinator: InstagramContentDelegate {
+    func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
+        layoutCoordinator?.openTagsFor(instagram: nodes)
+        reloadNavigationElements(true, downloadsAvailable: true)
+    }
+}
+
+extension AppCoordinator: BasePluginContentDelegate {
+    func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
+        layoutCoordinator?.openTagsFor(html: tags)
+        reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
@@ -102,18 +163,61 @@ private extension AppCoordinator {
     }
     
     func insertToolbar(_ containerView: UIView,
-                       _ downloadDelegate: DonwloadPanelDelegate,
-                       _ settingsDelegate: GlobalMenuDelegate) {
+                       _ downloadDelegate: DonwloadPanelDelegate) {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
                                                         containerView,
                                                         downloadDelegate,
-                                                        settingsDelegate)
+                                                        self)
         coordinator.parent = self
         coordinator.start()
         toolbarCoordinator = coordinator
+    }
+    
+    func insertTopSites() {
+        guard let containerView = contentContainerView else {
+            assertionFailure("Root view controller must have content view")
+            return
+        }
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, containerView)
+        coordinator.parent = self
+        coordinator.start()
+        topSitesCoordinator = coordinator
+    }
+    
+    func insertBlankTab() {
+        guard let containerView = contentContainerView else {
+            assertionFailure("Root view controller must have content view")
+            return
+        }
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: BlankContentCoordinator = .init(vcFactory, presenter, containerView)
+        coordinator.parent = self
+        coordinator.start()
+        blankContentCoordinator = coordinator
+    }
+    
+    func insertWebTab(_ site: Site) {
+        guard let containerView = contentContainerView, let plugins = jsPluginsBuilder else {
+            assertionFailure("Root view controller must have content view")
+            return
+        }
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: WebContentCoordinator = .init(vcFactory,
+                                                       presenter,
+                                                       containerView,
+                                                       navigationComponent,
+                                                       site,
+                                                       plugins)
+        coordinator.parent = self
+        coordinator.start()
+        webContentCoordinator = coordinator
     }
     
     // MARK: - Open tab content functions
@@ -123,106 +227,35 @@ private extension AppCoordinator {
 
         switch previousTabContent {
         case .site:
-            // need to stop any video/audio on corresponding web view
-            // before removing it from parent view controller.
-            // on iphones the video is always played in full-screen (probably need to invent workaround)
-            // https://webkit.org/blog/6784/new-video-policies-for-ios/
-            // "and, on iPhone, the <video> will enter fullscreen when starting playback."
-            // on ipads it is played in normal mode, so, this is why need to stop/pause it
-            
-            // also need to invalidate and cancel all observations
-            // in viewDidDisappear, and not in dealloc,
-            // because currently web view controller reference
-            // stored in reuse manager which probably
-            // not needed anymore even with unsolved memory issue when it's
-            // a lot of tabs are opened.
-            // It is because it's very tricky to save navigation history
-            // for reused web view and for some other reasons.
-            currentWebViewController?.viewController.removeFromChild()
+            webContentCoordinator?.stop()
         case .topSites:
-            let topSitesController = vcFactory.topSitesViewController
-            topSitesController.viewController.removeFromChild()
+            topSitesCoordinator?.stop()
         default:
-            let blankWebPageController = vcFactory.blankWebPageViewController
-            blankWebPageController.removeFromChild()
+            blankContentCoordinator?.stop()
         }
 
         switch tabContent {
         case .site(let site):
-            openSiteTabContent(with: site)
+            // need to display progress view before load start
+            layoutCoordinator?.showProgress(true)
+            insertWebTab(site)
         case .topSites:
-            openTopSitesTabContent()
+            siteNavigator = nil
+            layoutCoordinator?.searchBarController.changeState(to: .blankSearch, animated: true)
+            insertTopSites()
         default:
-            openBlankTabContent()
+            siteNavigator = nil
+            layoutCoordinator?.searchBarController.changeState(to: .blankSearch, animated: true)
+            insertBlankTab()
         }
 
         previousTabContent = tabContent
-    }
-    
-    func openTopSitesTabContent() {
-        siteNavigator = nil
-        layoutCoordinator.searchBarController.changeState(to: .blankSearch, animated: true)
-        let topSitesController = vcFactory.topSitesViewController
-        topSitesController.reload(with: DefaultTabProvider.shared.topSites)
-
-        add(asChildViewController: topSitesController.viewController, to: containerView)
-        let topSitesView: UIView = topSitesController.controllerView
-        topSitesView.translatesAutoresizingMaskIntoConstraints = false
-        topSitesView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        topSitesView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        topSitesView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        topSitesView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-    }
-    
-    func openBlankTabContent() {
-        siteNavigator = nil
-        layoutCoordinator.searchBarController.changeState(to: .blankSearch, animated: true)
-
-        let blankWebPageController = vcFactory.blankWebPageViewController
-        add(asChildViewController: blankWebPageController, to: containerView)
-        let blankView: UIView = blankWebPageController.view
-        blankView.translatesAutoresizingMaskIntoConstraints = false
-        blankView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        blankView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        blankView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        blankView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-    }
-    
-    func openSiteTabContent(with site: Site) {
-        guard let jsPluginsSource = jsPluginsBuilder else {
-            assertionFailure("Plugins source is expected to be initialized even if it is empty")
-            return
-        }
-        // need to display progress view before load start
-        layoutCoordinator.showProgress(true)
-        let vc = try? WebViewsReuseManager.shared.controllerFor(site, jsPluginsSource, self)
-        guard let webViewController = vc else {
-            assertionFailure("Failed create new web view for tab")
-            open(tabContent: .blank)
-            return
-        }
-
-        siteNavigator = webViewController
-        currentWebViewController = webViewController
-
-        add(asChildViewController: webViewController, to: containerView)
-        let webVContainer: UIView = webViewController.view
-        webVContainer.translatesAutoresizingMaskIntoConstraints = false
-        // originally left and right were used instead of leading and trailing
-        webVContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        webVContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        webVContainer.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        webVContainer.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
 }
 
 extension AppCoordinator {
     var toolbarView: UIView? {
         toolbarCoordinator?.startedVC?.controllerView
-    }
-    
-    var toolbarViewController: AnyViewController? {
-        toolbarCoordinator?.startedVC
     }
 }
 
@@ -247,7 +280,14 @@ extension AppCoordinator: TabsObserver {
             withSite = false
         }
 
-        layoutCoordinator.closeTags()
+        layoutCoordinator?.closeTags()
         reloadNavigationElements(withSite)
+    }
+}
+
+extension AppCoordinator: GlobalMenuDelegate {
+    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
+        let menuModel: SiteMenuModel = .init(.onlyGlobalMenu, siteNavigationDelegate)
+        showNext(.menu(menuModel, sourceView, sourceRect))
     }
 }
