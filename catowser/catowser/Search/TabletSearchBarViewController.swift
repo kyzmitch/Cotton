@@ -179,7 +179,7 @@ final class TabletSearchBarViewController: BaseViewController {
     @objc fileprivate func actionsPressed() {
         let sourceRect = actionsButton.frame
         if let siteDelegate = siteNavigationDelegate {
-            siteDelegate.openTabMenu(from: view, and: sourceRect)
+            // TODO: open browser settings with Site info
         } else {
             globalSettingsDelegate?.didPressSettings(from: view, and: sourceRect)
         }

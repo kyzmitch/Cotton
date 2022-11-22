@@ -224,7 +224,7 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     
     @objc private func handleActionsPressed() {
         if let siteDelegate = siteNavigationDelegate {
-            siteDelegate.openTabMenu(from: toolbarView, and: .zero)
+            // TODO: handle browser settings with Site info
         } else {
             globalSettingsDelegate?.didPressSettings(from: toolbarView, and: .zero)
         }

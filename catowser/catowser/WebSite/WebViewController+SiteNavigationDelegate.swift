@@ -41,15 +41,6 @@ extension WebViewController: SiteNavigationDelegate {
         _ = webView.reload()
     }
     
-    /// Not only navigation of webview can be controlled, also, it's possible to show site menu,
-    /// but to show it, the user of delegate shold know site info which is stored in webview holder.
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
-        externalNavigationDelegate?.openTabMenu(from: sourceView,
-                                                and: sourceRect,
-                                                for: viewModel.host,
-                                                siteSettings: viewModel.settings)
-    }
-    
     func reloadWithNewSettings(jsEnabled: Bool) {
         viewModel.setJavaScript(webView, jsEnabled)
     }

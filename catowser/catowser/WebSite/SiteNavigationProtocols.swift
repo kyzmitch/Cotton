@@ -20,7 +20,6 @@ protocol SiteNavigationDelegate: SiteSettingsInterface {
     func goForward()
     func goBack()
     func reload()
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect)
     func reloadWithNewSettings(jsEnabled: Bool)
 }
 
@@ -38,10 +37,6 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     func didForwardNavigationUpdate(to canGoForward: Bool)
     func didProgress(show: Bool)
     func didTabPreviewChange(_ screenshot: UIImage)
-    func openTabMenu(from sourceView: UIView,
-                     and sourceRect: CGRect,
-                     for host: Host,
-                     siteSettings: Site.Settings)
 }
 
 protocol SiteNavigationComponent: AnyObject {

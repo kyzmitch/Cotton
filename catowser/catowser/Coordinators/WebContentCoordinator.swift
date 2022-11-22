@@ -125,13 +125,4 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
     func didTabPreviewChange(_ screenshot: UIImage) {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
-    
-    func openTabMenu(from sourceView: UIView,
-                     and sourceRect: CGRect,
-                     for host: Host,
-                     siteSettings: Site.Settings) {
-        let style: MenuModelStyle = .siteMenu(host, siteSettings)
-        let menuModel: SiteMenuModel = .init(style, siteNavigationDelegate)
-        coordinator?.showNext(.menu(menuModel, sourceView, sourceRect))
-    }
 }
