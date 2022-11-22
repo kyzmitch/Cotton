@@ -23,6 +23,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     private var toolbarCoordinator: Coordinator?
     /// Progress view coordinator, TODO: needs to be replaced with base protocol
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
+    /// Search bar coordinator
+    private var searchBarCoordinator: (any Navigating)?
     /// Coordinator for inserted child view controller
     private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
@@ -101,10 +103,11 @@ extension AppCoordinator: Navigating {
 }
 
 enum MainScreenSubview: SubviewPart {
-    case toolbar(UIView, DonwloadPanelDelegate)
+    case toolbar(UIView)
     case openTab(Tab.ContentType)
     case loadingProgress
     case finishLoadingProgress(NSLayoutYAxisAnchor)
+    case searchBar
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -112,14 +115,16 @@ extension AppCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .toolbar(let containerView, let downloadDelegate):
-            insertToolbar(containerView, downloadDelegate)
+        case .toolbar(let containerView):
+            insertToolbar(containerView)
         case .openTab(let content):
             open(tabContent: content)
         case .loadingProgress:
             insertLoadingProgress()
         case .finishLoadingProgress(let anchor):
             loadingProgressCoordinator?.insertNext(.finishLayout(anchor))
+        case .searchBar:
+            insertSearchBar()
         }
     }
 }
@@ -170,10 +175,22 @@ private extension AppCoordinator {
         startedCoordinator = coordinator
     }
     
-    func insertToolbar(_ containerView: UIView,
-                       _ downloadDelegate: DonwloadPanelDelegate) {
+    func insertSearchBar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
+        // swiftlint:disable:next force_unwrapping
+        let downloadDelegate = layoutCoordinator!
+        let coordinator: SearchBarCoordinator = .init(vcFactory, presenter, downloadDelegate, self)
+        coordinator.parent = self
+        coordinator.start()
+        searchBarCoordinator = coordinator
+    }
+    
+    func insertToolbar(_ containerView: UIView) {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        // swiftlint:disable:next force_unwrapping
+        let downloadDelegate = layoutCoordinator!
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
                                                         containerView,

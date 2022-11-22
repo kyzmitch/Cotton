@@ -1,14 +1,64 @@
 //
-//  AppLayoutCoordinator+UISearchBarDelegate.swift
+//  SearchBarCoordinator.swift
 //  catowser
 //
-//  Created by Andrei Ermoshin on 6/1/20.
-//  Copyright © 2020 andreiermoshin. All rights reserved.
+//  Created by Andrey Ermoshin on 22.11.2022.
+//  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
 import UIKit
 
-extension AppLayoutCoordinator: UISearchBarDelegate {
+/// Need to inherit from NSobject to confirm to search bar delegate
+final class SearchBarCoordinator: NSObject, Coordinator {
+    let vcFactory: ViewControllerFactory
+    var startedCoordinator: Coordinator?
+    weak var parent: CoordinatorOwner?
+    var startedVC: AnyViewController?
+    weak var presenterVC: AnyViewController?
+    
+    private weak var downloadPanelDelegate: DonwloadPanelDelegate?
+    private weak var globalMenuDelegate: GlobalMenuDelegate?
+    
+    init(_ vcFactory: ViewControllerFactory,
+         _ presenter: AnyViewController,
+         _ downloadPanelDelegate: DonwloadPanelDelegate,
+         _ globalMenuDelegate: GlobalMenuDelegate) {
+        self.vcFactory = vcFactory
+        self.presenterVC = presenter
+        self.downloadPanelDelegate = downloadPanelDelegate
+        self.globalMenuDelegate = globalMenuDelegate
+    }
+    
+    func start() {
+        let createdVC: (any AnyViewController)?
+        if isPad {
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadPanelDelegate!, globalMenuDelegate!)
+        } else {
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self)
+        }
+        guard let vc = createdVC, let contentContainerView = presenterVC?.controllerView else {
+            return
+        }
+        
+        startedVC = vc
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
+    }
+}
+
+enum SearchBarRoute: Route {}
+
+extension SearchBarCoordinator: Navigating {
+    typealias R = SearchBarRoute
+    
+    func showNext(_ route: R) {}
+    
+    func stop() {
+        startedVC?.viewController.removeFromChild()
+        parent?.didFinish()
+    }
+}
+
+extension SearchBarCoordinator: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty || searchText.looksLikeAURL() {
             hideSearchController()

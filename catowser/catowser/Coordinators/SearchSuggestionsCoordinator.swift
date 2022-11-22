@@ -15,12 +15,8 @@ final class SearchSuggestionsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     var presenterVC: AnyViewController?
     
-    private let searchBarDelegate: UISearchBarDelegate
-    
-    init(_ vcFactory: any ViewControllerFactory,
-         _ searchBarDelegate: UISearchBarDelegate) {
+    init(_ vcFactory: any ViewControllerFactory) {
         self.vcFactory = vcFactory
-        self.searchBarDelegate = searchBarDelegate
     }
     
     func start() {

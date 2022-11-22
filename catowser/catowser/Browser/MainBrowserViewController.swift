@@ -96,7 +96,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             add(asChildViewController: tabsViewController, to: view)
         }
 
-        add(asChildViewController: layoutCoordinator.searchBarController.viewController, to: view)
+        coordinator?.insertNext(.searchBar)
         coordinator?.insertNext(.loadingProgress)
         view.addSubview(containerView)
 
@@ -110,7 +110,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             add(asChildViewController: layoutCoordinator.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
-            coordinator?.insertNext(.toolbar(view, layoutCoordinator))
+            coordinator?.insertNext(.toolbar(view))
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }

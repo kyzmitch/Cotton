@@ -49,11 +49,11 @@ protocol ViewControllerFactory: AnyObject {
     /// Convinience property to get a reference without input parameters
     var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController?
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> AnyViewController?
     /// Will return nil on Phone
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
                                                _ downloadDelegate: DonwloadPanelDelegate,
-                                               _ settingsDelegate: GlobalMenuDelegate) -> UIViewController?
+                                               _ settingsDelegate: GlobalMenuDelegate) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate,
                                               _ settingsDelegate: GlobalMenuDelegate,
