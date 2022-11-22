@@ -9,7 +9,7 @@
 import UIKit
 
 final class SearchSuggestionsCoordinator: Coordinator {
-    let vcFactory: ViewControllerFactory
+    let vcFactory: any ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
@@ -17,7 +17,7 @@ final class SearchSuggestionsCoordinator: Coordinator {
     
     private let searchBarDelegate: UISearchBarDelegate
     
-    init(_ vcFactory: ViewControllerFactory,
+    init(_ vcFactory: any ViewControllerFactory,
          _ searchBarDelegate: UISearchBarDelegate) {
         self.vcFactory = vcFactory
         self.searchBarDelegate = searchBarDelegate

@@ -61,13 +61,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         let viewController = TabsViewController()
         return viewController
     }()
-    
-    /// The view required to demonstrait web content load process.
-    private let webLoadProgressView: UIProgressView = {
-        let v = UIProgressView(progressViewStyle: .default)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
 
     /// View to make color under toolbar is the same on iPhone x without home button
     private lazy var underToolbarView: UIView = {
@@ -104,7 +97,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         }
 
         add(asChildViewController: layoutCoordinator.searchBarController.viewController, to: view)
-        view.addSubview(webLoadProgressView)
+        coordinator?.insertNext(.loadingProgress)
         view.addSubview(containerView)
 
         if isPad {

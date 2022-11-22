@@ -22,21 +22,21 @@ extension WebViewController: SiteNavigationDelegate {
 
     func goForward() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
+        externalNavigationDelegate?.didProvisionalNavigationStart()
         viewModel.goForward()
         _ = webView.goForward()
     }
 
     func goBack() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
+        externalNavigationDelegate?.didProvisionalNavigationStart()
         viewModel.goBack()
         _ = webView.goBack()
     }
 
     func reload() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
+        externalNavigationDelegate?.didProvisionalNavigationStart()
         viewModel.reload()
         _ = webView.reload()
     }

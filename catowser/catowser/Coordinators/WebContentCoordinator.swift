@@ -10,30 +10,44 @@ import UIKit
 import CoreHttpKit
 import CoreBrowser
 
+protocol WebContentDelegate: AnyObject {
+    func didProvisionalNavigationStart()
+    func didLoadingProgressChange(_ progress: Float)
+    func didProgress(show: Bool)
+}
+
 final class WebContentCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
-    
-    private weak var siteNavigationDelegate: SiteNavigationChangable?
+
     private let site: Site
     private let jsPluginsSource: any JSPluginsSource
     private let contentContainerView: UIView
     
+    private var siteNavigationDelegate: SiteNavigationChangable? {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return vcFactory.createdToolbaViewController as? SiteNavigationChangable
+        } else {
+            return vcFactory.createdDeviceSpecificSearchBarVC as? SiteNavigationChangable
+        }
+    }
+    private weak var delegate: WebContentDelegate?
+    
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ contentContainerView: UIView,
-         _ siteNavigationDelegate: SiteNavigationChangable?,
+         _ delegate: WebContentDelegate,
          _ site: Site,
          _ jsPluginsSource: any JSPluginsSource) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
-        self.siteNavigationDelegate = siteNavigationDelegate
         self.contentContainerView = contentContainerView
         self.site = site
         self.jsPluginsSource = jsPluginsSource
+        self.delegate = delegate
     }
     
     func start() {
@@ -83,33 +97,32 @@ extension WebContentCoordinator: Navigating {
 }
 
 extension WebContentCoordinator: SiteExternalNavigationDelegate {
-    func didUpdateBackNavigation(to canGoBack: Bool) {
+    func didBackNavigationUpdate(to canGoBack: Bool) {
         siteNavigationDelegate?.changeBackButton(to: canGoBack)
     }
     
-    func didUpdateForwardNavigation(to canGoForward: Bool) {
+    func didForwardNavigationUpdate(to canGoForward: Bool) {
         siteNavigationDelegate?.changeForwardButton(to: canGoForward)
     }
     
-    func didStartProvisionalNavigation() {
-        layoutCoordinator.closeTags()
+    func didProvisionalNavigationStart() {
+        delegate?.didProvisionalNavigationStart()
     }
 
-    func didOpenSiteWith(appName: String) {
+    func didSiteOpen(appName: String) {
         // notify user to remove speicifc application from iOS
         // to be able to use Cotton browser features
     }
     
-    func displayProgress(_ progress: Double) {
-        webLoadProgressView.setProgress(Float(progress), animated: false)
+    func didLoadingProgressChange(_ progress: Float) {
+        delegate?.didLoadingProgressChange(progress)
     }
     
-    func showProgress(_ show: Bool) {
-        layoutCoordinator.showProgress(show)
-        webLoadProgressView.setProgress(0, animated: false)
+    func didProgress(show: Bool) {
+        delegate?.didProgress(show: show)
     }
     
-    func updateTabPreview(_ screenshot: UIImage) {
+    func didTabPreviewChange(_ screenshot: UIImage) {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
     

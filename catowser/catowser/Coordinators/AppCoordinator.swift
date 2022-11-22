@@ -21,6 +21,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     
     /// Specific toolbar coordinator which should stay forever
     private var toolbarCoordinator: Coordinator?
+    /// Progress view coordinator, TODO: needs to be replaced with base protocol
+    private var loadingProgressCoordinator: LoadingProgressCoordinator?
     /// Coordinator for inserted child view controller
     private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
@@ -51,7 +53,7 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return vcFactory.createdToolbaViewController as? FullSiteNavigationComponent
         } else {
-            return vcFactory.createdDeviceSpecificSearchBarViewController as? FullSiteNavigationComponent
+            return vcFactory.createdDeviceSpecificSearchBarVC as? FullSiteNavigationComponent
         }
     }
     
@@ -101,6 +103,7 @@ extension AppCoordinator: Navigating {
 enum MainScreenSubview: SubviewPart {
     case toolbar(UIView, DonwloadPanelDelegate)
     case openTab(Tab.ContentType)
+    case loadingProgress
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -112,6 +115,8 @@ extension AppCoordinator: SubviewNavigation {
             insertToolbar(containerView, downloadDelegate)
         case .openTab(let content):
             open(tabContent: content)
+        case .loadingProgress:
+            insertLoadingProgress()
         }
     }
 }
@@ -212,7 +217,7 @@ private extension AppCoordinator {
         let coordinator: WebContentCoordinator = .init(vcFactory,
                                                        presenter,
                                                        containerView,
-                                                       navigationComponent,
+                                                       self,
                                                        site,
                                                        plugins)
         coordinator.parent = self
@@ -250,6 +255,15 @@ private extension AppCoordinator {
         }
 
         previousTabContent = tabContent
+    }
+    
+    func insertLoadingProgress() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: LoadingProgressCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        loadingProgressCoordinator = coordinator
     }
 }
 
@@ -289,5 +303,20 @@ extension AppCoordinator: GlobalMenuDelegate {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
         let menuModel: SiteMenuModel = .init(.onlyGlobalMenu, siteNavigationDelegate)
         showNext(.menu(menuModel, sourceView, sourceRect))
+    }
+}
+
+extension AppCoordinator: WebContentDelegate {
+    func didProvisionalNavigationStart() {
+        layoutCoordinator?.closeTags()
+    }
+    
+    func didLoadingProgressChange(_ progress: Float) {
+        loadingProgressCoordinator?.insertNext(.setProgress(progress, false))
+    }
+    
+    func didProgress(show: Bool) {
+        layoutCoordinator?.showProgress(show)
+        loadingProgressCoordinator?.insertNext(.setProgress(0, false))
     }
 }

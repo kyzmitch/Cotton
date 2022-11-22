@@ -20,9 +20,3 @@ protocol MainDelegate: AnyObject {
     func openSearchSuggestion(url: URL, suggestion: String)
     func openDomain(with url: URL)
 }
-
-protocol TagsRouterInterface: AnyObject {
-    func openTagsFor(instagram nodes: [InstagramVideoNode])
-    func openTagsFor(html tags: [HTMLVideoTag])
-    func closeTags()
-}

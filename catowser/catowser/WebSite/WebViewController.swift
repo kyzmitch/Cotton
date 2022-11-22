@@ -148,18 +148,18 @@ final class WebViewController: BaseViewController,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let domain = viewModel.nativeAppDomainNameString {
-            externalNavigationDelegate?.didOpenSiteWith(appName: domain)
+            externalNavigationDelegate?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
         viewModel.decidePolicy(navigationAction, decisionHandler)
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.showProgress(true)
+        externalNavigationDelegate?.didProgress(show: true)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        externalNavigationDelegate?.showProgress(false)
+        externalNavigationDelegate?.didProgress(show: false)
         
         defer {
             let snapshotConfig = WKSnapshotConfiguration()
@@ -172,7 +172,7 @@ final class WebViewController: BaseViewController,
                 case (_, let err?):
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
-                    self?.externalNavigationDelegate?.updateTabPreview(img)
+                    self?.externalNavigationDelegate?.didTabPreviewChange(img)
                 default:
                     print("failed to take a screenshot")
                 }
@@ -189,7 +189,7 @@ final class WebViewController: BaseViewController,
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Error occured during a committed main frame: \(error.localizedDescription)")
-        externalNavigationDelegate?.showProgress(false)
+        externalNavigationDelegate?.didProgress(show: false)
     }
     
     func webView(_ webView: WKWebView,
@@ -197,7 +197,7 @@ final class WebViewController: BaseViewController,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         handler.solve { [weak self] in
-            self?.externalNavigationDelegate?.showProgress(false)
+            self?.externalNavigationDelegate?.didProgress(show: false)
         }
     }
     
@@ -205,7 +205,7 @@ final class WebViewController: BaseViewController,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
         print("Error occured while starting to load data: \(error.localizedDescription)")
-        externalNavigationDelegate?.showProgress(false)
+        externalNavigationDelegate?.didProgress(show: false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
     }
@@ -274,7 +274,7 @@ private extension WebViewController {
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.displayProgress(value)
+            self.externalNavigationDelegate?.didLoadingProgressChange(value)
         }
     }
     
@@ -283,7 +283,7 @@ private extension WebViewController {
         canGoBackObservation = webView.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didUpdateBackNavigation(to: value)
+            self.externalNavigationDelegate?.didBackNavigationUpdate(to: value)
         }
     }
     
@@ -292,7 +292,7 @@ private extension WebViewController {
         canGoForwardObservation = webView.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didUpdateForwardNavigation(to: value)
+            self.externalNavigationDelegate?.didForwardNavigationUpdate(to: value)
         }
     }
     

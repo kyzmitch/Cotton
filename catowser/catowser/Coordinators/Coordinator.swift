@@ -13,7 +13,7 @@ protocol SubviewPart {}
 
 protocol Navigating: AnyObject {
     associatedtype R: Route
-    var vcFactory: ViewControllerFactory { get }
+    var vcFactory: any ViewControllerFactory { get }
     func showNext(_ route: R)
     func stop()
     

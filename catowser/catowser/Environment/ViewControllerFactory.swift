@@ -29,6 +29,7 @@ protocol BrowserContentViewHolder: AnyObject {
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController & BrowserContentViewHolder
+
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
     var searchSuggestionsViewController: UIViewController { get }
     
@@ -36,6 +37,7 @@ protocol ViewControllerFactory: AnyObject {
                            _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> WebViewController
     var topSitesViewController: AnyViewController & TopSitesInterface { get }
     var blankWebPageViewController: UIViewController { get }
+    var loadingProgressViewController: AnyViewController { get }
     func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel,
                                                _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute
@@ -43,7 +45,7 @@ protocol ViewControllerFactory: AnyObject {
     // MARK: - layout specific methods with optional results
     
     /// Convinience property to get a reference without input parameters
-    var createdDeviceSpecificSearchBarViewController: UIViewController? { get }
+    var createdDeviceSpecificSearchBarVC: UIViewController? { get }
     /// Convinience property to get a reference without input parameters
     var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
@@ -88,6 +90,11 @@ extension ViewControllerFactory {
     func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
+        return vc
+    }
+    
+    var loadingProgressViewController: AnyViewController {
+        let vc: LoadingProgressViewController = .init()
         return vc
     }
 }

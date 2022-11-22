@@ -17,7 +17,7 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     
     init() {}
     
-    var createdDeviceSpecificSearchBarViewController: UIViewController? {
+    var createdDeviceSpecificSearchBarVC: UIViewController? {
         return searchBarVC
     }
     

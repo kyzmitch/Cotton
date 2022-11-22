@@ -30,9 +30,8 @@ extension WebViewsReuseManager {
     }
 }
 
-
 extension ViewControllerFactory {
-    static var shared: ViewControllerFactory {
+    static var shared: any ViewControllerFactory {
         return WebViewsEnvironment.shared.viewControllerFactory
     }
 }

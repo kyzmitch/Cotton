@@ -16,7 +16,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     
     init() {}
     
-    var createdDeviceSpecificSearchBarViewController: UIViewController? {
+    var createdDeviceSpecificSearchBarVC: UIViewController? {
         return searchBarVC
     }
     
