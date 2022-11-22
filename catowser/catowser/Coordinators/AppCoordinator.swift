@@ -104,6 +104,7 @@ enum MainScreenSubview: SubviewPart {
     case toolbar(UIView, DonwloadPanelDelegate)
     case openTab(Tab.ContentType)
     case loadingProgress
+    case finishLoadingProgress(NSLayoutYAxisAnchor)
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -117,6 +118,8 @@ extension AppCoordinator: SubviewNavigation {
             open(tabContent: content)
         case .loadingProgress:
             insertLoadingProgress()
+        case .finishLoadingProgress(let anchor):
+            loadingProgressCoordinator?.insertNext(.finishLayout(anchor))
         }
     }
 }
@@ -242,7 +245,7 @@ private extension AppCoordinator {
         switch tabContent {
         case .site(let site):
             // need to display progress view before load start
-            layoutCoordinator?.showProgress(true)
+            loadingProgressCoordinator?.insertNext(.showProgress(true))
             insertWebTab(site)
         case .topSites:
             siteNavigator = nil
@@ -316,7 +319,7 @@ extension AppCoordinator: WebContentDelegate {
     }
     
     func didProgress(show: Bool) {
-        layoutCoordinator?.showProgress(show)
+        loadingProgressCoordinator?.insertNext(.showProgress(show))
         loadingProgressCoordinator?.insertNext(.setProgress(0, false))
     }
 }

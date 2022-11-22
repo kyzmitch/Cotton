@@ -15,6 +15,9 @@ final class LoadingProgressCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     
+    private var hiddenWebLoadConstraint: NSLayoutConstraint?
+    private var showedWebLoadConstraint: NSLayoutConstraint?
+    
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
@@ -28,11 +31,19 @@ final class LoadingProgressCoordinator: Coordinator {
         let vc = vcFactory.loadingProgressViewController
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: containerView)
+        hiddenWebLoadConstraint = vc.controllerView.heightAnchor.constraint(equalToConstant: 0)
+        showedWebLoadConstraint = vc.controllerView.heightAnchor.constraint(equalToConstant: 6)
+        hiddenWebLoadConstraint?.isActive = true
+        
+        vc.controllerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        vc.controllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
     }
 }
 
 enum LoadingProgressPart: SubviewPart {
     case setProgress(Float, _ animated: Bool)
+    case finishLayout(NSLayoutYAxisAnchor)
+    case showProgress(Bool)
 }
 
 extension LoadingProgressCoordinator: SubviewNavigation {
@@ -41,10 +52,25 @@ extension LoadingProgressCoordinator: SubviewNavigation {
     func insertNext(_ subview: SP) {
         switch subview {
         case .setProgress(let progress, let isAnimated):
-            guard let webLoadProgressView = presenterVC?.controllerView as? UIProgressView else {
+            guard let webLoadProgressView = startedVC?.controllerView as? UIProgressView else {
                 return
             }
             webLoadProgressView.setProgress(progress, animated: isAnimated)
+        case .finishLayout(let sbViewBottomAnchor):
+            guard let webLoadProgressView = startedVC?.controllerView,
+                  let containerView = presenterVC?.controllerView else {
+                return
+            }
+            webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
+            containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+        case .showProgress(let show):
+            if show {
+                hiddenWebLoadConstraint?.isActive = false
+                showedWebLoadConstraint?.isActive = true
+            } else {
+                showedWebLoadConstraint?.isActive = false
+                hiddenWebLoadConstraint?.isActive = true
+            }
         }
     }
 }

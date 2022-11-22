@@ -135,12 +135,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             setupPhoneConstraints(searchView, tagsView, toolbarView)
         }
         
-        layoutCoordinator.hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
-        layoutCoordinator.showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
-        layoutCoordinator.hiddenWebLoadConstraint?.isActive = true
-        webLoadProgressView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        webLoadProgressView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
         layoutCoordinator.hiddenTagsConstraint?.isActive = true
         tagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -224,14 +218,12 @@ private extension MainBrowserViewController {
         searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
         
-        let sbViewBottomAnchor = searchView.bottomAnchor
-        webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
+        coordinator?.insertNext(.finishLoadingProgress(searchView.bottomAnchor))
         
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
         // webpage controller with web view if some address entered in search bar
-        containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -260,12 +252,10 @@ private extension MainBrowserViewController {
         searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
-        
-        webLoadProgressView.topAnchor.constraint(equalTo: searchView.bottomAnchor).isActive = true
-        
         toolbarView.translatesAutoresizingMaskIntoConstraints = false
         
-        containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+        coordinator?.insertNext(.finishLoadingProgress(searchView.bottomAnchor))
+        
         containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true

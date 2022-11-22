@@ -274,7 +274,7 @@ private extension WebViewController {
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didLoadingProgressChange(value)
+            self.externalNavigationDelegate?.didLoadingProgressChange(Float(value))
         }
     }
     

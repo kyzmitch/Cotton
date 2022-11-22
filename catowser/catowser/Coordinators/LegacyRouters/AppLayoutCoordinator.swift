@@ -64,10 +64,6 @@ final class AppLayoutCoordinator: NSObject {
     var hiddenTagsConstraint: NSLayoutConstraint?
 
     var showedTagsConstraint: NSLayoutConstraint?
-    
-    var hiddenWebLoadConstraint: NSLayoutConstraint?
-    
-    var showedWebLoadConstraint: NSLayoutConstraint?
 
     var hiddenFilesGreedConstraint: NSLayoutConstraint?
 
@@ -266,16 +262,6 @@ final class AppLayoutCoordinator: NSObject {
             presenter.viewController.present(filesGreedController.viewController,
                                              animated: true,
                                              completion: nil)
-        }
-    }
-    
-    func showProgress(_ show: Bool) {
-        if show {
-            hiddenWebLoadConstraint?.isActive = false
-            showedWebLoadConstraint?.isActive = true
-        } else {
-            showedWebLoadConstraint?.isActive = false
-            hiddenWebLoadConstraint?.isActive = true
         }
     }
     
