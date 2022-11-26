@@ -25,15 +25,6 @@ typealias LinksRouterPresenter = AnyViewController & MainDelegate & GlobalMenuDe
 /// Should contain copies for references to all needed constraints and view controllers.
 /// NSObject subclass to support system delegate protocol.
 final class AppLayoutCoordinator: NSObject {
-    /// The table to display search suggestions list
-    func createSuggestionsController() -> SearchSuggestionsViewController {
-        // It seems it should be computed property
-        // to allow app. to use different view model
-        // based on current feature flag's value
-        return SearchSuggestionsViewController()
-    }
-    
-    var searchSuggestionsVC: SearchSuggestionsViewController?
 
     /// The link tags controller to display segments with link types amount
     lazy var linkTagsController: AnyViewController & LinkTagsPresenter = {
@@ -45,16 +36,6 @@ final class AppLayoutCoordinator: NSObject {
     lazy var filesGreedController: AnyViewController & FilesGreedPresenter = {
         let vc = FilesGreedViewController.newFromStoryboard()
         return vc
-    }()
-
-    lazy var searchBarController: AnyViewController & SearchBarControllerInterface = {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            let tabletController = TabletSearchBarViewController(self, presenter, self)
-            mediaLinksPresenter = tabletController
-            return tabletController
-        } else {
-            return SmartphoneSearchBarViewController(self)
-        }
     }()
     
     private weak var mediaLinksPresenter: MediaLinksPresenter?
@@ -72,8 +53,6 @@ final class AppLayoutCoordinator: NSObject {
     var filesGreedHeightConstraint: NSLayoutConstraint?
 
     var underLinksViewHeightConstraint: NSLayoutConstraint?
-
-    private var isSuggestionsShowed: Bool = false
 
     private var isLinkTagsShowed: Bool = false
 
@@ -101,10 +80,6 @@ final class AppLayoutCoordinator: NSObject {
     }
 
     private(set) weak var presenter: LinksRouterPresenter!
-    
-    /// Temporary property which automatically removes leading spaces.
-    /// Can't declare it private due to compiler error.
-    @LeadingTrimmed var tempSearchText: String = ""
 
     init(viewController: LinksRouterPresenter) {
         presenter = viewController
@@ -161,61 +136,6 @@ final class AppLayoutCoordinator: NSObject {
 
         linkTagsController.controllerView.layoutIfNeeded()
         isLinkTagsShowed = false
-    }
-    
-    func hideSearchController() {
-        guard isSuggestionsShowed else {
-            print("Attempted to hide suggestions when they are not showed")
-            return
-        }
-        
-        guard let searchSuggestionsController = searchSuggestionsVC else { return }
-
-        searchSuggestionsController.willMove(toParent: nil)
-        searchSuggestionsController.removeFromParent()
-        // remove view and constraints
-        searchSuggestionsController.view.removeFromSuperview()
-
-        isSuggestionsShowed = false
-    }
-    
-    func showSearchControllerIfNeeded() {
-        guard !isSuggestionsShowed else {
-            return
-        }
-        
-        searchSuggestionsVC = createSuggestionsController()
-        guard let searchSuggestionsController = searchSuggestionsVC else { return }
-
-        presenter.viewController.add(asChildViewController: searchSuggestionsController, to: presenter.controllerView)
-        isSuggestionsShowed = true
-        searchSuggestionsController.delegate = self
-
-        searchSuggestionsController.view.topAnchor.constraint(equalTo: searchBarController.controllerView.bottomAnchor,
-                                                              constant: 0).isActive = true
-        searchSuggestionsController.view.leadingAnchor.constraint(equalTo: presenter.controllerView.leadingAnchor,
-                                                                  constant: 0).isActive = true
-        searchSuggestionsController.view.trailingAnchor.constraint(equalTo: presenter.controllerView.trailingAnchor,
-                                                                   constant: 0).isActive = true
-
-        if let bottomShift = presenter.keyboardHeight {
-            // fix wrong height of keyboard on Simulator when keyboard partly visible
-            let correctedShift = bottomShift < presenter.toolbarHeight ? presenter.toolbarHeight : bottomShift
-            searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.controllerView.bottomAnchor,
-                                                                     constant: -correctedShift).isActive = true
-        } else {
-            if isPad {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.toolbarTopAnchor,
-                                                                         constant: 0).isActive = true
-            } else {
-                searchSuggestionsController.view.bottomAnchor.constraint(equalTo: presenter.controllerView.bottomAnchor,
-                                                                         constant: 0).isActive = true
-            }
-        }
-    }
-    
-    func startSearch(_ searchText: String) {
-        searchSuggestionsVC?.prepareSearch(for: searchText)
     }
     
     /// Shows files greed view, designed only for Phone layout
@@ -283,33 +203,6 @@ final class AppLayoutCoordinator: NSObject {
         hideLinkTagsController()
         filesGreedController.clearFiles()
         linkTagsController.clearLinks()
-    }
-}
-
-extension AppLayoutCoordinator: SearchSuggestionsListDelegate {
-    func didSelect(_ content: SuggestionType) {
-        hideSearchController()
-
-        switch content {
-        case .looksLikeURL(let likeURL):
-            guard let url = URL(string: likeURL) else {
-                assertionFailure("Failed construct site URL using edited URL")
-                return
-            }
-            presenter.openDomain(with: url)
-        case .knownDomain(let domain):
-            guard let url = URL(string: "https://\(domain)") else {
-                assertionFailure("Failed construct site URL using domain name")
-                return
-            }
-            presenter.openDomain(with: url)
-        case .suggestion(let suggestion):
-            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
-                assertionFailure("Failed construct search engine url from suggestion string")
-                return
-            }
-            presenter.openSearchSuggestion(url: url, suggestion: suggestion)
-        }
     }
 }
 

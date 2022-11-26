@@ -1574,7 +1574,6 @@
 				75339299291FCEDD00570461 /* Coordinator.swift */,
 				753392A92920BB6700570461 /* AppCoordinator.swift */,
 				753392B22921613E00570461 /* GlobalMenuCoordinator.swift */,
-				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
 				753392B52922C9EB00570461 /* MainToolbarCoordinator.swift */,
 				8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */,
 				8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */,
@@ -1582,6 +1581,7 @@
 				8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */,
 				8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */,
 				75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */,
+				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
 				7533929F291FD30B00570461 /* LegacyRouters */,
 			);
 			path = Coordinators;

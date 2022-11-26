@@ -41,7 +41,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     deinit {
         // was in `viewWillDisappear` before
         NotificationCenter.default.removeObserver(self)
-        disposables.forEach { $0?.dispose() }
     }
     
     // MARK: - BrowserContentViewHolder
@@ -76,10 +75,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         ThemeProvider.shared.setupUnderLinkTags(v)
         return v
     }()
-
-    var mKeyboardHeight: CGFloat?
-
-    private var disposables = [Disposable?]()
 
     private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
     
@@ -122,17 +117,15 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         view.backgroundColor = UIColor.white
         let tagsView = layoutCoordinator.linkTagsController.controllerView
         tagsView.translatesAutoresizingMaskIntoConstraints = false
-        let searchView = layoutCoordinator.searchBarController.controllerView
-        searchView.translatesAutoresizingMaskIntoConstraints = false
         
         if isPad {
-            setupTabletConstraints(searchView, tagsView)
+            setupTabletConstraints(tagsView)
         } else {
             guard let toolbarView = coordinator?.toolbarView else {
                 assertionFailure("Toolbar coordinator wasn't started")
                 return
             }
-            setupPhoneConstraints(searchView, tagsView, toolbarView)
+            setupPhoneConstraints(tagsView, toolbarView)
         }
         
         layoutCoordinator.hiddenTagsConstraint?.isActive = true
@@ -154,8 +147,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             layoutCoordinator.hiddenFilesGreedConstraint?.isActive = true
             layoutCoordinator.filesGreedHeightConstraint?.isActive = true
         }
-
-        setupObservers()
     }
 
     override func viewSafeAreaInsetsDidChange() {
@@ -198,7 +189,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 }
 
 private extension MainBrowserViewController {
-    func setupTabletConstraints(_ searchView: UIView, _ tagsView: UIView) {
+    func setupTabletConstraints(_ tagsView: UIView) {
         let tabsView: UIView = tabsViewController.view
         tabsView.translatesAutoresizingMaskIntoConstraints = false
         // https://github.com/SnapKit/SnapKit/issues/448
@@ -213,12 +204,7 @@ private extension MainBrowserViewController {
         tabsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tabsView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
         
-        searchView.topAnchor.constraint(equalTo: tabsView.bottomAnchor).isActive = true
-        searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
-        
-        coordinator?.insertNext(.finishLoadingProgress(searchView.bottomAnchor))
+        coordinator?.insertNext(.layoutSearchBar(tabsView.bottomAnchor))
         
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
@@ -243,18 +229,10 @@ private extension MainBrowserViewController {
         tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
     }
     
-    func setupPhoneConstraints(_ searchView: UIView, _ tagsView: UIView, _ toolbarView: UIView) {
-        if #available(iOS 11, *) {
-            searchView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        } else {
-            searchView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        }
-        searchView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        searchView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
-        toolbarView.translatesAutoresizingMaskIntoConstraints = false
+    func setupPhoneConstraints(_ tagsView: UIView, _ toolbarView: UIView) {
+        coordinator?.insertNext(.layoutSearchBar(nil))
         
-        coordinator?.insertNext(.finishLoadingProgress(searchView.bottomAnchor))
+        toolbarView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -279,48 +257,6 @@ private extension MainBrowserViewController {
                                                                             constant: .linkTagsHeight)
         layoutCoordinator.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
     }
-    
-    func setupObservers() {
-        let disposeB = NotificationCenter.default.reactive
-            .notifications(forName: UIResponder.keyboardWillHideNotification)
-            .observe(on: UIScheduler())
-            .observeValues { [weak self] (notification) in
-                self?.keyboardWillHideClosure()(notification)
-        }
-
-        let disposeA = NotificationCenter.default.reactive
-            .notifications(forName: UIResponder.keyboardDidChangeFrameNotification)
-            .observe(on: UIScheduler())
-            .observeValues { [weak self] notification in
-                self?.keyboardWillChangeFrameClosure()(notification)
-        }
-
-        disposables.append(disposeB)
-        disposables.append(disposeA)
-
-        // add coordinator as an observer to `TabsSubject` will happen in coordinator
-    }
-    
-    func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
-        func handling(_ notification: Notification) {
-            guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
-            guard let value = info as? NSValue else { return }
-            let rect = value.cgRectValue
-
-            // need to reduce search suggestions list height
-            mKeyboardHeight = rect.size.height
-        }
-
-        return handling
-    }
-
-    func keyboardWillHideClosure() -> (Notification) -> Void {
-        func handling(_ notification: Notification) {
-            mKeyboardHeight = nil
-        }
-
-        return handling
-    }
 
     func replaceTab(with url: URL, with suggestion: String? = nil) {
         let blockPopups = DefaultTabProvider.shared.blockPopups
@@ -343,26 +279,6 @@ private extension MainBrowserViewController {
 extension MainBrowserViewController: MainDelegate {
     var popoverSourceView: UIView {
         return containerView
-    }
-
-    var keyboardHeight: CGFloat? {
-        get {
-            return mKeyboardHeight
-        }
-        set (newValue) {
-            mKeyboardHeight = newValue
-        }
-    }
-
-    /// Dynamicly determined height because it can be different before layout finish it's work
-    var toolbarHeight: CGFloat {
-        // swiftlint:disable:next force_unwrapping
-        let toolbarHeight = (coordinator?.toolbarView?.bounds.size.height)!
-        return toolbarHeight + underToolbarView.bounds.size.height
-    }
-
-    var toolbarTopAnchor: NSLayoutYAxisAnchor {
-        return (coordinator?.toolbarView?.topAnchor)!
     }
 
     func openSearchSuggestion(url: URL, suggestion: String) {

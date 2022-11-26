@@ -43,11 +43,12 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     /// Combine cancellable for Concurrency Published property
     private var taskHandler: AnyCancellable?
-    
-    weak var delegate: SearchSuggestionsListDelegate?
+    /// Delegate to handle suggestion selection
+    private weak var delegate: SearchSuggestionsListDelegate?
 
-    init() {
+    init(_ delegate: SearchSuggestionsListDelegate) {
         viewModel = ViewModelFactory.shared.searchSuggestionsViewModel()
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     

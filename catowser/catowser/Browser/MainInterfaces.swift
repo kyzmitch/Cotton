@@ -12,9 +12,6 @@ import CoreHttpKit
 import CoreBrowser
 
 protocol MainDelegate: AnyObject {
-    var keyboardHeight: CGFloat? { get set }
-    var toolbarHeight: CGFloat { get }
-    var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
     var popoverSourceView: UIView { get }
 
     func openSearchSuggestion(url: URL, suggestion: String)

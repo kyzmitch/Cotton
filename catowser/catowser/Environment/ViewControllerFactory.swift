@@ -31,7 +31,7 @@ protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController & BrowserContentViewHolder
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
-    var searchSuggestionsViewController: UIViewController { get }
+    func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate) -> AnyViewController
     
     func webViewController(_ viewModel: WebViewModel,
                            _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> WebViewController
@@ -73,11 +73,11 @@ extension ViewControllerFactory {
         return vc
     }
     
-    var searchSuggestionsViewController: UIViewController {
+    func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate) -> AnyViewController {
         // It seems it should be computed property
         // to allow app. to use different view model
         // based on current feature flag's value
-        let vc: SearchSuggestionsViewController = .init()
+        let vc: SearchSuggestionsViewController = .init(delegate)
         return vc
     }
     

@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import CoreBrowser
+
+protocol SearchBarDelegate: AnyObject {
+    var toolbarHeight: CGFloat { get }
+    var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
+}
 
 /// Need to inherit from NSobject to confirm to search bar delegate
 final class SearchBarCoordinator: NSObject, Coordinator {
@@ -18,21 +24,36 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     
     private weak var downloadPanelDelegate: DonwloadPanelDelegate?
     private weak var globalMenuDelegate: GlobalMenuDelegate?
+    private weak var delegate: SearchBarDelegate?
+    
+    private var searhSuggestionsCoordinator: (any Navigating)?
+    
+    /// Temporary property which automatically removes leading spaces.
+    /// Can't declare it private due to compiler error.
+    @LeadingTrimmed private var tempSearchText: String = ""
+    /// Tells if coordinator was already started
+    private var isSuggestionsShowed: Bool = false
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ downloadPanelDelegate: DonwloadPanelDelegate,
-         _ globalMenuDelegate: GlobalMenuDelegate) {
+         _ globalMenuDelegate: GlobalMenuDelegate,
+         _ delegate: SearchBarDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.downloadPanelDelegate = downloadPanelDelegate
         self.globalMenuDelegate = globalMenuDelegate
+        self.delegate = delegate
     }
     
     func start() {
         let createdVC: (any AnyViewController)?
         if isPad {
-            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadPanelDelegate!, globalMenuDelegate!)
+            // swiftlint:disable:next force_unwrapping
+            let downloadDelegate = downloadPanelDelegate!
+            // swiftlint:disable:next force_unwrapping
+            let menuDelegate = globalMenuDelegate!
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadDelegate, menuDelegate)
         } else {
             createdVC = vcFactory.deviceSpecificSearchBarViewController(self)
         }
@@ -45,16 +66,79 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     }
 }
 
-enum SearchBarRoute: Route {}
+enum SearchBarRoute: Route {
+    case changeState(SearchBarState, Bool)
+}
 
 extension SearchBarCoordinator: Navigating {
     typealias R = SearchBarRoute
     
-    func showNext(_ route: R) {}
+    func showNext(_ route: R) {
+        switch route {
+        case .changeState(let state, let animated):
+            guard let searchInterface = startedVC as? SearchBarControllerInterface else {
+                return
+            }
+            searchInterface.changeState(to: state, animated: animated)
+        }
+    }
     
     func stop() {
         startedVC?.viewController.removeFromChild()
         parent?.didFinish()
+    }
+}
+
+enum SearchBarPart: SubviewPart {
+    case suggestions(String)
+}
+
+extension SearchBarCoordinator: SubviewNavigation {
+    typealias SP = SearchBarPart
+    
+    func insertNext(_ subview: SP) {
+        switch subview {
+        case .suggestions(let query):
+            insertSearchSuggestions(query)
+        }
+    }
+}
+
+extension SearchBarCoordinator: CoordinatorOwner {
+    func didFinish() {
+        startedCoordinator = nil
+    }
+}
+
+private extension SearchBarCoordinator {
+    func insertSearchSuggestions(_ searchText: String) {
+        guard !isSuggestionsShowed,
+        let toolbarHeight = delegate?.toolbarHeight,
+        let toolbarTopAnchor = delegate?.toolbarTopAnchor else {
+            return
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory,
+                                                              presenter,
+                                                              presenter.controllerView.bottomAnchor,
+                                                              toolbarTopAnchor,
+                                                              toolbarHeight)
+        coordinator.parent = self
+        coordinator.start()
+        isSuggestionsShowed = true
+        searhSuggestionsCoordinator = coordinator
+    }
+    
+    func hideSearchController() {
+        guard isSuggestionsShowed else {
+            print("Attempted to hide suggestions when they are not showed")
+            return
+        }
+        
+        searhSuggestionsCoordinator?.stop()
+        isSuggestionsShowed = false
     }
 }
 
@@ -63,8 +147,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
         if searchText.isEmpty || searchText.looksLikeAURL() {
             hideSearchController()
         } else {
-            showSearchControllerIfNeeded()
-            startSearch(searchText)
+            insertNext(.suggestions(searchText))
         }
     }
     
@@ -89,13 +172,13 @@ extension SearchBarCoordinator: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarController.changeState(to: .startSearch, animated: true)
+        showNext(.changeState(.startSearch, true))
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         hideSearchController()
         searchBar.resignFirstResponder()
-        searchBarController.changeState(to: .cancelTapped, animated: true)
+        showNext(.changeState(.cancelTapped, true))
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

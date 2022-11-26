@@ -24,7 +24,7 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     /// Progress view coordinator, TODO: needs to be replaced with base protocol
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
     /// Search bar coordinator
-    private var searchBarCoordinator: (any Navigating)?
+    private var searchBarCoordinator: SearchBarCoordinator?
     /// Coordinator for inserted child view controller
     private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
@@ -106,8 +106,8 @@ enum MainScreenSubview: SubviewPart {
     case toolbar(UIView)
     case openTab(Tab.ContentType)
     case loadingProgress
-    case finishLoadingProgress(NSLayoutYAxisAnchor)
     case searchBar
+    case layoutSearchBar(NSLayoutYAxisAnchor?)
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -121,10 +121,10 @@ extension AppCoordinator: SubviewNavigation {
             open(tabContent: content)
         case .loadingProgress:
             insertLoadingProgress()
-        case .finishLoadingProgress(let anchor):
-            loadingProgressCoordinator?.insertNext(.finishLayout(anchor))
         case .searchBar:
             insertSearchBar()
+        case .layoutSearchBar(let topAnchor):
+            layoutSearchBar(topAnchor)
         }
     }
 }
@@ -180,10 +180,35 @@ private extension AppCoordinator {
         let presenter = startedVC!
         // swiftlint:disable:next force_unwrapping
         let downloadDelegate = layoutCoordinator!
-        let coordinator: SearchBarCoordinator = .init(vcFactory, presenter, downloadDelegate, self)
+        let coordinator: SearchBarCoordinator = .init(vcFactory, presenter, downloadDelegate, self, self)
         coordinator.parent = self
         coordinator.start()
         searchBarCoordinator = coordinator
+    }
+    
+    func layoutSearchBar(_ topAnchor: NSLayoutYAxisAnchor?) {
+        guard let presenterView = presenterVC?.controllerView else {
+            return
+        }
+        guard let searchView = searchBarCoordinator?.startedVC?.controllerView else {
+            return
+        }
+        searchBarCoordinator?.startedVC?.controllerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if isPad, let anchor = topAnchor {
+            searchView.topAnchor.constraint(equalTo: anchor).isActive = true
+        } else {
+            if #available(iOS 11, *) {
+                searchView.topAnchor.constraint(equalTo: presenterView.safeAreaLayoutGuide.topAnchor).isActive = true
+            } else {
+                searchView.topAnchor.constraint(equalTo: presenterView.topAnchor).isActive = true
+            }
+        }
+        searchView.leadingAnchor.constraint(equalTo: presenterView.leadingAnchor).isActive = true
+        searchView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor).isActive = true
+        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
+        
+        loadingProgressCoordinator?.insertNext(.finishLayout(searchView.bottomAnchor))
     }
     
     func insertToolbar(_ containerView: UIView) {
@@ -266,11 +291,11 @@ private extension AppCoordinator {
             insertWebTab(site)
         case .topSites:
             siteNavigator = nil
-            layoutCoordinator?.searchBarController.changeState(to: .blankSearch, animated: true)
+            searchBarCoordinator?.showNext(.changeState(.blankSearch, true))
             insertTopSites()
         default:
             siteNavigator = nil
-            layoutCoordinator?.searchBarController.changeState(to: .blankSearch, animated: true)
+            searchBarCoordinator?.showNext(.changeState(.blankSearch, true))
             insertBlankTab()
         }
 
@@ -338,5 +363,18 @@ extension AppCoordinator: WebContentDelegate {
     func didProgress(show: Bool) {
         loadingProgressCoordinator?.insertNext(.showProgress(show))
         loadingProgressCoordinator?.insertNext(.setProgress(0, false))
+    }
+}
+
+extension AppCoordinator: SearchBarDelegate {
+    var toolbarTopAnchor: NSLayoutYAxisAnchor {
+        return toolbarView!.topAnchor
+    }
+    
+    /// Dynamicly determined height because it can be different before layout finish it's work
+    var toolbarHeight: CGFloat {
+        // swiftlint:disable:next force_unwrapping
+        let toolbarHeight = (toolbarView?.bounds.size.height)!
+        return toolbarHeight + underToolbarView.bounds.size.height
     }
 }
