@@ -8,10 +8,14 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
+import BrowserNetworking
+import CoreHttpKit
 
 protocol SearchBarDelegate: AnyObject {
     var toolbarHeight: CGFloat { get }
     var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
+    func openTab(_ content: Tab.ContentType)
 }
 
 /// Need to inherit from NSobject to confirm to search bar delegate
@@ -26,7 +30,24 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     private weak var globalMenuDelegate: GlobalMenuDelegate?
     private weak var delegate: SearchBarDelegate?
     
-    private var searhSuggestionsCoordinator: (any Navigating)?
+    private var searhSuggestionsCoordinator: SearchSuggestionsCoordinator?
+    
+    private var searchSuggestClient: SearchEngine {
+        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
+        guard let xmlData = optionalXmlData else {
+            return .googleSearchEngine()
+        }
+        
+        let osDescription: OpenSearch.Description
+        do {
+            osDescription = try OpenSearch.Description(data: xmlData)
+        } catch {
+            print("Open search xml parser error: \(error.localizedDescription)")
+            return .googleSearchEngine()
+        }
+        
+        return osDescription.html
+    }
     
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
@@ -90,6 +111,7 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
+    case layoutSuggestions
     case suggestions(String)
 }
 
@@ -98,8 +120,10 @@ extension SearchBarCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
+        case .layoutSuggestions:
+            insertSearchSuggestions()
         case .suggestions(let query):
-            insertSearchSuggestions(query)
+            searhSuggestionsCoordinator?.showNext(.startSearch(query))
         }
     }
 }
@@ -111,10 +135,10 @@ extension SearchBarCoordinator: CoordinatorOwner {
 }
 
 private extension SearchBarCoordinator {
-    func insertSearchSuggestions(_ searchText: String) {
+    func insertSearchSuggestions() {
         guard !isSuggestionsShowed,
-        let toolbarHeight = delegate?.toolbarHeight,
-        let toolbarTopAnchor = delegate?.toolbarTopAnchor else {
+              let toolbarHeight = delegate?.toolbarHeight,
+              let toolbarTopAnchor = delegate?.toolbarTopAnchor else {
             return
         }
         
@@ -122,6 +146,7 @@ private extension SearchBarCoordinator {
         let presenter = startedVC!
         let coordinator: SearchSuggestionsCoordinator = .init(vcFactory,
                                                               presenter,
+                                                              self,
                                                               presenter.controllerView.bottomAnchor,
                                                               toolbarTopAnchor,
                                                               toolbarHeight)
@@ -140,6 +165,23 @@ private extension SearchBarCoordinator {
         searhSuggestionsCoordinator?.stop()
         isSuggestionsShowed = false
     }
+    
+    func replaceTab(with url: URL, with suggestion: String? = nil) {
+        let blockPopups = DefaultTabProvider.shared.blockPopups
+        let isJSEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        let settings = Site.Settings(isPrivate: false,
+                                     blockPopups: blockPopups,
+                                     isJSEnabled: isJSEnabled,
+                                     canLoadPlugins: true)
+        guard let site = Site.create(url: url,
+                                     searchSuggestion: suggestion,
+                                     settings: settings) else {
+            assertionFailure("\(#function) failed to replace current tab - failed create site")
+            return
+        }
+        // tab content replacing will happen in `didCommit`
+        delegate?.openTab(.site(site))
+    }
 }
 
 extension SearchBarCoordinator: UISearchBarDelegate {
@@ -147,6 +189,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
         if searchText.isEmpty || searchText.looksLikeAURL() {
             hideSearchController()
         } else {
+            insertNext(.layoutSuggestions)
             insertNext(.suggestions(searchText))
         }
     }
@@ -198,5 +241,32 @@ extension SearchBarCoordinator: UISearchBarDelegate {
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         // called when `Cancel` pressed or search bar no more a first responder
+    }
+}
+
+extension SearchBarCoordinator: SearchSuggestionsListDelegate {
+    func didSelect(_ content: SuggestionType) {
+        hideSearchController()
+
+        switch content {
+        case .looksLikeURL(let likeURL):
+            guard let url = URL(string: likeURL) else {
+                assertionFailure("Failed construct site URL using edited URL")
+                return
+            }
+            replaceTab(with: url)
+        case .knownDomain(let domain):
+            guard let url = URL(string: "https://\(domain)") else {
+                assertionFailure("Failed construct site URL using domain name")
+                return
+            }
+            replaceTab(with: url)
+        case .suggestion(let suggestion):
+            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
+                assertionFailure("Failed construct search engine url from suggestion string")
+                return
+            }
+            replaceTab(with: url, with: suggestion)
+        }
     }
 }

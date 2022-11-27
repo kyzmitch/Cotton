@@ -13,7 +13,4 @@ import CoreBrowser
 
 protocol MainDelegate: AnyObject {
     var popoverSourceView: UIView { get }
-
-    func openSearchSuggestion(url: URL, suggestion: String)
-    func openDomain(with url: URL)
 }

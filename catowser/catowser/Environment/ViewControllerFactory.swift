@@ -12,6 +12,7 @@ import CoreCatowser
 /// A workaround protocol to get a reference to a view from root view controller
 protocol BrowserContentViewHolder: AnyObject {
     var containerView: UIView { get }
+    var underToolbarViewBounds: CGRect { get }
 }
 
 /**

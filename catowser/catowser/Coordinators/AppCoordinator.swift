@@ -48,6 +48,10 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     private var contentContainerView: UIView? {
         (startedVC as? BrowserContentViewHolder)?.containerView
     }
+    /// Convinience property for specific view bounds
+    private var underToolbarViewBounds: CGRect? {
+        (startedVC as? BrowserContentViewHolder)?.underToolbarViewBounds
+    }
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
     /// Web site navigation delegate
@@ -368,13 +372,17 @@ extension AppCoordinator: WebContentDelegate {
 
 extension AppCoordinator: SearchBarDelegate {
     var toolbarTopAnchor: NSLayoutYAxisAnchor {
+        // swiftlint:disable:next force_unwrapping
         return toolbarView!.topAnchor
     }
     
     /// Dynamicly determined height because it can be different before layout finish it's work
     var toolbarHeight: CGFloat {
-        // swiftlint:disable:next force_unwrapping
-        let toolbarHeight = (toolbarView?.bounds.size.height)!
-        return toolbarHeight + underToolbarView.bounds.size.height
+        let toolbarHeight = toolbarView?.bounds.height ?? 24
+        return toolbarHeight + (underToolbarViewBounds?.height ?? 24)
+    }
+    
+    func openTab(_ content: Tab.ContentType) {
+        insertNext(.openTab(content))
     }
 }

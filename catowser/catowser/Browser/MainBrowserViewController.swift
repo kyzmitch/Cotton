@@ -53,6 +53,10 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         return v
     }()
     
+    var underToolbarViewBounds: CGRect {
+        underToolbarView.bounds
+    }
+    
     // MARK: - Other properties
     
     /// Tabs list without previews. Needed only for tablets or landscape mode.
@@ -257,35 +261,10 @@ private extension MainBrowserViewController {
                                                                             constant: .linkTagsHeight)
         layoutCoordinator.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
     }
-
-    func replaceTab(with url: URL, with suggestion: String? = nil) {
-        let blockPopups = DefaultTabProvider.shared.blockPopups
-        let isJSEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        let settings = Site.Settings(isPrivate: false,
-                                     blockPopups: blockPopups,
-                                     isJSEnabled: isJSEnabled,
-                                     canLoadPlugins: true)
-        guard let site = Site.create(url: url,
-                                     searchSuggestion: suggestion,
-                                     settings: settings) else {
-            assertionFailure("\(#function) failed to replace current tab - failed create site")
-            return
-        }
-        // tab content replacing will happen in `didCommit`
-        coordinator?.insertNext(.openTab(.site(site)))
-    }
 }
 
 extension MainBrowserViewController: MainDelegate {
     var popoverSourceView: UIView {
         return containerView
-    }
-
-    func openSearchSuggestion(url: URL, suggestion: String) {
-        replaceTab(with: url, with: suggestion)
-    }
-
-    func openDomain(with url: URL) {
-        replaceTab(with: url)
     }
 }

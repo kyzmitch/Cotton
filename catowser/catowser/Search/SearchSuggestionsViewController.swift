@@ -99,10 +99,6 @@ final class SearchSuggestionsViewController: UITableViewController {
         cancellable?.cancel()
         taskHandler?.cancel()
     }
-
-    func prepareSearch(for searchText: String) {
-        viewModel.fetchSuggestions(searchText)
-    }
     
     private func onStateChange(_ state: SearchSuggestionsViewState) {
         guard self.state != state else {
@@ -157,5 +153,11 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
             return
         }
         delegate?.didSelect(content)
+    }
+}
+
+extension SearchSuggestionsViewController: SearchSuggestionsControllerInterface {
+    func prepareSearch(for searchText: String) {
+        viewModel.fetchSuggestions(searchText)
     }
 }

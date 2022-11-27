@@ -62,23 +62,6 @@ final class AppLayoutCoordinator: NSObject {
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 
-    private var searchSuggestClient: SearchEngine {
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
-        guard let xmlData = optionalXmlData else {
-            return .googleSearchEngine()
-        }
-        
-        let osDescription: OpenSearch.Description
-        do {
-            osDescription = try OpenSearch.Description(data: xmlData)
-        } catch {
-            print("Open search xml parser error: \(error.localizedDescription)")
-            return .googleSearchEngine()
-        }
-        
-        return osDescription.html
-    }
-
     private(set) weak var presenter: LinksRouterPresenter!
 
     init(viewController: LinksRouterPresenter) {
