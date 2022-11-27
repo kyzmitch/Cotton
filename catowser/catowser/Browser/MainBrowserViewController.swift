@@ -262,9 +262,3 @@ private extension MainBrowserViewController {
         layoutCoordinator.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
     }
 }
-
-extension MainBrowserViewController: MainDelegate {
-    var popoverSourceView: UIView {
-        return containerView
-    }
-}

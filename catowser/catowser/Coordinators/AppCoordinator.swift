@@ -71,7 +71,7 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     func start() {
         let vc = vcFactory.rootViewController(self)
         startedVC = vc
-        if let layoutPresenter = vc as? LinksRouterPresenter {
+        if let layoutPresenter = vc as? (AnyViewController & GlobalMenuDelegate) {
             layoutCoordinator = AppLayoutCoordinator(viewController: layoutPresenter)
         }
         window.rootViewController = startedVC?.viewController

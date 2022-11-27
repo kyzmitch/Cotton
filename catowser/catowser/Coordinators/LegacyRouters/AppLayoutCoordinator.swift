@@ -20,8 +20,6 @@ protocol MediaLinksPresenter: AnyObject {
     func didReceiveMediaLinks()
 }
 
-typealias LinksRouterPresenter = AnyViewController & MainDelegate & GlobalMenuDelegate
-
 /// Should contain copies for references to all needed constraints and view controllers.
 /// NSObject subclass to support system delegate protocol.
 final class AppLayoutCoordinator: NSObject {
@@ -62,9 +60,9 @@ final class AppLayoutCoordinator: NSObject {
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 
-    private(set) weak var presenter: LinksRouterPresenter!
+    private(set) weak var presenter: (AnyViewController & GlobalMenuDelegate)!
 
-    init(viewController: LinksRouterPresenter) {
+    init(viewController: AnyViewController & GlobalMenuDelegate) {
         presenter = viewController
     }
     
