@@ -58,12 +58,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     }
     
     // MARK: - Other properties
-    
-    /// Tabs list without previews. Needed only for tablets or landscape mode.
-    private lazy var tabsViewController: TabsViewController = {
-        let viewController = TabsViewController()
-        return viewController
-    }()
 
     /// View to make color under toolbar is the same on iPhone x without home button
     private lazy var underToolbarView: UIView = {
@@ -91,10 +85,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         // In that method, create your view hierarchy programmatically and assign
         // the root view of that hierarchy to the view controller’s view property.
         
-        if isPad {
-            add(asChildViewController: tabsViewController, to: view)
-        }
-
+        coordinator?.insertNext(.tabs)
         coordinator?.insertNext(.searchBar)
         coordinator?.insertNext(.loadingProgress)
         view.addSubview(containerView)
@@ -102,14 +93,13 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         if isPad {
             // no need to add files greed as a child
             // will try to show as popover
-
             view.addSubview(underLinkTagsView)
             add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
         } else {
             add(asChildViewController: layoutCoordinator.filesGreedController.viewController, to: view)
             // should be added before iPhone toolbar
             add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
-            coordinator?.insertNext(.toolbar(view))
+            coordinator?.insertNext(.toolbar)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
         }
@@ -122,6 +112,8 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         let tagsView = layoutCoordinator.linkTagsController.controllerView
         tagsView.translatesAutoresizingMaskIntoConstraints = false
         
+        coordinator?.insertNext(.layoutTabs)
+        coordinator?.insertNext(.layoutSearchBar)
         if isPad {
             setupTabletConstraints(tagsView)
         } else {
@@ -194,22 +186,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 
 private extension MainBrowserViewController {
     func setupTabletConstraints(_ tagsView: UIView) {
-        let tabsView: UIView = tabsViewController.view
-        tabsView.translatesAutoresizingMaskIntoConstraints = false
-        // https://github.com/SnapKit/SnapKit/issues/448
-        // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
-        // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
-        if #available(iOS 11, *) {
-            tabsView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        } else {
-            tabsView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        }
-        tabsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tabsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tabsView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
-        
-        coordinator?.insertNext(.layoutSearchBar(tabsView.bottomAnchor))
-        
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
@@ -234,8 +210,6 @@ private extension MainBrowserViewController {
     }
     
     func setupPhoneConstraints(_ tagsView: UIView, _ toolbarView: UIView) {
-        coordinator?.insertNext(.layoutSearchBar(nil))
-        
         toolbarView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true

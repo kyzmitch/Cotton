@@ -60,10 +60,13 @@ final class AppLayoutCoordinator: NSObject {
 
     let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
 
-    private(set) weak var presenter: (AnyViewController & GlobalMenuDelegate)!
+    private(set) weak var presenter: AnyViewController!
+    
+    private weak var menuDelegate: GlobalMenuDelegate!
 
-    init(viewController: AnyViewController & GlobalMenuDelegate) {
-        presenter = viewController
+    init(_ presenter: AnyViewController, _ menuDelegate: GlobalMenuDelegate) {
+        self.presenter = presenter
+        self.menuDelegate = menuDelegate
     }
     
     // MARK: - originally private methods

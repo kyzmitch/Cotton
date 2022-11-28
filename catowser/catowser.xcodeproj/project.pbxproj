@@ -491,6 +491,8 @@
 		8AE63B57248EC38300D6D2E4 /* CSSBackgroundImageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE63B56248EC38300D6D2E4 /* CSSBackgroundImageTests.swift */; };
 		8AE63B59248EC38300D6D2E4 /* JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; };
 		8AE6D16D2350FF35006316AD /* HttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AE6D16B2350FF35006316AD /* HttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8AE85DAC293491E10047F14F /* TabletTabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */; };
+		8AE85DAD293491E10047F14F /* TabletTabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */; };
 		8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D044280D388800FADE3A /* ResponseType.swift */; };
 		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
 		8AEA9456290F01E800CCBB46 /* MockedRestInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */; };
@@ -1175,6 +1177,7 @@
 		8AE6D1692350FF35006316AD /* HttpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HttpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE6D16B2350FF35006316AD /* HttpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HttpKit.h; sourceTree = "<group>"; };
 		8AE6D16C2350FF35006316AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletTabsCoordinator.swift; sourceTree = "<group>"; };
 		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
 		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
 		8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedRestInterface.swift; sourceTree = "<group>"; };
@@ -1579,6 +1582,7 @@
 				8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */,
 				75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */,
 				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
+				8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */,
 				7533929F291FD30B00570461 /* LegacyRouters */,
 			);
 			path = Coordinators;
@@ -3453,6 +3457,7 @@
 				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
 				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
 				8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */,
+				8AE85DAC293491E10047F14F /* TabletTabsCoordinator.swift in Sources */,
 				8AB9BE1E28FF0CFF002063C2 /* ReusableItem.swift in Sources */,
 				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
@@ -3661,6 +3666,7 @@
 				8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */,
 				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
 				8AB8018B27C3E597002D6628 /* BaseMenuView.swift in Sources */,
+				8AE85DAD293491E10047F14F /* TabletTabsCoordinator.swift in Sources */,
 				8AB9BE1D28FF0CFF002063C2 /* ReusableItem.swift in Sources */,
 				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,

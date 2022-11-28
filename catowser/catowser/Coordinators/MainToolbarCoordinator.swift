@@ -18,23 +18,23 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     
     private let downloadDelegate: DonwloadPanelDelegate
     private let settingsDelegate: GlobalMenuDelegate
-    private let containerView: UIView
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ containerView: UIView,
          _ downloadDelegate: DonwloadPanelDelegate,
          _ settingsDelegate: GlobalMenuDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.downloadDelegate = downloadDelegate
         self.settingsDelegate = settingsDelegate
-        self.containerView = containerView
     }
     
     func start() {
         guard let vc = vcFactory.toolbarViewController(downloadDelegate, settingsDelegate, self) else {
             assertionFailure("Toolbar is only available on Phone layout")
+            return
+        }
+        guard let containerView = presenterVC?.controllerView else {
             return
         }
         startedVC = vc

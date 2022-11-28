@@ -42,6 +42,10 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
         return nil
     }
+    func tabsViewController() -> AnyViewController? {
+        let vc = TabsViewController()
+        return vc
+    }
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate,
                                               _ settingsDelegate: GlobalMenuDelegate,
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {

@@ -31,6 +31,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     private var blankContentCoordinator: (any Navigating)?
     /// web view coordinator
     private var webContentCoordinator: (any Navigating)?
+    /// This coordinator is optional because it is only needed on Tablet
+    private var tabletTabsCoordinator: TabletTabsCoordinator?
     /// App window rectangle
     private let windowRectangle: CGRect = {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -71,9 +73,7 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     func start() {
         let vc = vcFactory.rootViewController(self)
         startedVC = vc
-        if let layoutPresenter = vc as? (AnyViewController & GlobalMenuDelegate) {
-            layoutCoordinator = AppLayoutCoordinator(viewController: layoutPresenter)
-        }
+        layoutCoordinator = AppLayoutCoordinator(vc, self)
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         
@@ -107,11 +107,13 @@ extension AppCoordinator: Navigating {
 }
 
 enum MainScreenSubview: SubviewPart {
-    case toolbar(UIView)
+    case toolbar
     case openTab(Tab.ContentType)
     case loadingProgress
     case searchBar
-    case layoutSearchBar(NSLayoutYAxisAnchor?)
+    case layoutSearchBar
+    case tabs
+    case layoutTabs
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -119,16 +121,20 @@ extension AppCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .toolbar(let containerView):
-            insertToolbar(containerView)
+        case .tabs:
+            insertTabs()
+        case .layoutTabs:
+            layoutTabs()
+        case .searchBar:
+            insertSearchBar()
+        case .layoutSearchBar:
+            layoutSearchBar()
+        case .toolbar:
+            insertToolbar()
         case .openTab(let content):
             open(tabContent: content)
         case .loadingProgress:
             insertLoadingProgress()
-        case .searchBar:
-            insertSearchBar()
-        case .layoutSearchBar(let topAnchor):
-            layoutSearchBar(topAnchor)
         }
     }
 }
@@ -190,7 +196,26 @@ private extension AppCoordinator {
         searchBarCoordinator = coordinator
     }
     
-    func layoutSearchBar(_ topAnchor: NSLayoutYAxisAnchor?) {
+    func insertTabs() {
+        guard isPad else {
+            return
+        }
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        tabletTabsCoordinator = coordinator
+    }
+    
+    func layoutTabs() {
+        guard isPad else {
+            return
+        }
+        tabletTabsCoordinator?.insertNext(.layout)
+    }
+    
+    func layoutSearchBar() {
         guard let presenterView = presenterVC?.controllerView else {
             return
         }
@@ -199,7 +224,7 @@ private extension AppCoordinator {
         }
         searchBarCoordinator?.startedVC?.controllerView.translatesAutoresizingMaskIntoConstraints = false
         
-        if isPad, let anchor = topAnchor {
+        if isPad, let anchor = tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor {
             searchView.topAnchor.constraint(equalTo: anchor).isActive = true
         } else {
             if #available(iOS 11, *) {
@@ -215,14 +240,13 @@ private extension AppCoordinator {
         loadingProgressCoordinator?.insertNext(.finishLayout(searchView.bottomAnchor))
     }
     
-    func insertToolbar(_ containerView: UIView) {
+    func insertToolbar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
         // swiftlint:disable:next force_unwrapping
         let downloadDelegate = layoutCoordinator!
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
-                                                        containerView,
                                                         downloadDelegate,
                                                         self)
         coordinator.parent = self

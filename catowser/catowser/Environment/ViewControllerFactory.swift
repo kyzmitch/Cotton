@@ -61,6 +61,8 @@ protocol ViewControllerFactory: AnyObject {
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
+    /// Tablet specific tabs
+    func tabsViewController() -> AnyViewController?
 }
 
 extension ViewControllerFactory {

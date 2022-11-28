@@ -57,6 +57,10 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return vc
     }
     
+    func tabsViewController() -> AnyViewController? {
+        return nil
+    }
+    
     var topSitesViewController: AnyViewController & TopSitesInterface {
         if let existingVC = topSitesVC {
             return existingVC
