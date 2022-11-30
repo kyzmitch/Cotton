@@ -53,16 +53,20 @@ protocol ViewControllerFactory: AnyObject {
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> AnyViewController?
     /// Will return nil on Phone
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
-                                               _ downloadDelegate: DonwloadPanelDelegate,
-                                               _ settingsDelegate: GlobalMenuDelegate) -> AnyViewController?
+                                               _ downloadDelegate: DonwloadPanelDelegate?,
+                                               _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
-    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate,
-                                              _ settingsDelegate: GlobalMenuDelegate,
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate?,
+                                              _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
     /// Tablet specific tabs
     func tabsViewController() -> AnyViewController?
+    /// Download link tags
+    func linkTagsViewController(_ delegate: LinkTagsDelegate) -> AnyViewController & LinkTagsPresenter
+    /// The files greed controller to display links for downloads
+    func filesGreedViewController() -> AnyViewController & FilesGreedPresenter
 }
 
 extension ViewControllerFactory {
@@ -98,6 +102,16 @@ extension ViewControllerFactory {
     
     var loadingProgressViewController: AnyViewController {
         let vc: LoadingProgressViewController = .init()
+        return vc
+    }
+    
+    func linkTagsViewController(_ delegate: LinkTagsDelegate) -> AnyViewController & LinkTagsPresenter {
+        let vc = LinkTagsViewController.newFromStoryboard(delegate: delegate)
+        return vc
+    }
+    
+    func filesGreedViewController() -> AnyViewController & FilesGreedPresenter {
+        let vc = FilesGreedViewController.newFromStoryboard()
         return vc
     }
 }

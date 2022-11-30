@@ -16,8 +16,8 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     var startedVC: AnyViewController?
     var presenterVC: AnyViewController?
     
-    private let downloadDelegate: DonwloadPanelDelegate
-    private let settingsDelegate: GlobalMenuDelegate
+    private weak var downloadDelegate: DonwloadPanelDelegate?
+    private weak var settingsDelegate: GlobalMenuDelegate?
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,

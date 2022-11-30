@@ -94,11 +94,11 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             // no need to add files greed as a child
             // will try to show as popover
             view.addSubview(underLinkTagsView)
-            add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
+            coordinator?.insertNext(.linkTags)
         } else {
-            add(asChildViewController: layoutCoordinator.filesGreedController.viewController, to: view)
+            coordinator?.insertNext(.filesGreed)
             // should be added before iPhone toolbar
-            add(asChildViewController: layoutCoordinator.linkTagsController.viewController, to: view)
+            coordinator?.insertNext(.linkTags)
             coordinator?.insertNext(.toolbar)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
@@ -109,25 +109,18 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.white
-        let tagsView = layoutCoordinator.linkTagsController.controllerView
-        tagsView.translatesAutoresizingMaskIntoConstraints = false
         
         coordinator?.insertNext(.layoutTabs)
         coordinator?.insertNext(.layoutSearchBar)
         if isPad {
-            setupTabletConstraints(tagsView)
+            setupTabletConstraints()
         } else {
             guard let toolbarView = coordinator?.toolbarView else {
                 assertionFailure("Toolbar coordinator wasn't started")
                 return
             }
-            setupPhoneConstraints(tagsView, toolbarView)
+            setupPhoneConstraints(toolbarView)
         }
-        
-        layoutCoordinator.hiddenTagsConstraint?.isActive = true
-        tagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
 
         if !isPad {
             let filesView: UIView = layoutCoordinator.filesGreedController.controllerView
@@ -185,7 +178,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 }
 
 private extension MainBrowserViewController {
-    func setupTabletConstraints(_ tagsView: UIView) {
+    func setupTabletConstraints() {
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
@@ -205,11 +198,11 @@ private extension MainBrowserViewController {
         layoutCoordinator.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                                                                      constant: bottomMargin)
         layoutCoordinator.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        let tagsBottom = tagsView.bottomAnchor
-        tagsBottom.constraint(equalTo: underLinkTagsView.topAnchor).isActive = true
+        
+        coordinator?.insertNext(.startLayoutLinkTags(underLinkTagsView.topAnchor))
     }
     
-    func setupPhoneConstraints(_ tagsView: UIView, _ toolbarView: UIView) {
+    func setupPhoneConstraints(_ toolbarView: UIView) {
         toolbarView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
@@ -231,8 +224,6 @@ private extension MainBrowserViewController {
         underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        layoutCoordinator.hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor,
-                                                                            constant: .linkTagsHeight)
-        layoutCoordinator.showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor)
+        coordinator?.insertNext(.startLayoutLinkTags(toolbarView.topAnchor))
     }
 }

@@ -31,8 +31,8 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     private weak var coordinator: C?
 
     init(_ coordinator: C,
-         _ downloadDelegate: DonwloadPanelDelegate,
-         _ globalSettingsDelegate: GlobalMenuDelegate) {
+         _ downloadDelegate: DonwloadPanelDelegate?,
+         _ globalSettingsDelegate: GlobalMenuDelegate?) {
         self.coordinator = coordinator
         downloadPanelDelegate = downloadDelegate
         self.globalSettingsDelegate = globalSettingsDelegate
@@ -60,7 +60,6 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     }
     
     private weak var downloadPanelDelegate: DonwloadPanelDelegate?
-    
     private weak var globalSettingsDelegate: GlobalMenuDelegate?
 
     fileprivate var downloadsViewHidden: Bool = true {

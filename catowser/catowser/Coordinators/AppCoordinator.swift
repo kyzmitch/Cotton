@@ -17,7 +17,7 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     weak var parent: CoordinatorOwner?
     let vcFactory: ViewControllerFactory
     var startedVC: AnyViewController?
-    var presenterVC: AnyViewController?
+    weak var presenterVC: AnyViewController?
     
     /// Specific toolbar coordinator which should stay forever
     private var toolbarCoordinator: Coordinator?
@@ -25,6 +25,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
     /// Search bar coordinator
     private var searchBarCoordinator: SearchBarCoordinator?
+    /// Specific link for tags coordinator
+    private var linkTagsCoordinator: LinkTagsCoordinator?
     /// Coordinator for inserted child view controller
     private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
@@ -114,6 +116,9 @@ enum MainScreenSubview: SubviewPart {
     case layoutSearchBar
     case tabs
     case layoutTabs
+    case linkTags
+    case filesGreed
+    case startLayoutLinkTags(NSLayoutYAxisAnchor)
 }
 
 extension AppCoordinator: SubviewNavigation {
@@ -135,6 +140,12 @@ extension AppCoordinator: SubviewNavigation {
             open(tabContent: content)
         case .loadingProgress:
             insertLoadingProgress()
+        case .linkTags:
+            insertLinkTags()
+        case .filesGreed:
+            insertFilesGreed()
+        case .startLayoutLinkTags(let topAnchor):
+            startLayoutLinkTags(topAnchor)
         }
     }
 }
@@ -157,14 +168,14 @@ extension AppCoordinator: SiteNavigationComponent {
 
 extension AppCoordinator: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
-        layoutCoordinator?.openTagsFor(instagram: nodes)
+        linkTagsCoordinator?.insertNext(.openInstagramTags(nodes))
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
 extension AppCoordinator: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
-        layoutCoordinator?.openTagsFor(html: tags)
+        linkTagsCoordinator?.insertNext(.openHtmlTags(tags))
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
@@ -188,9 +199,11 @@ private extension AppCoordinator {
     func insertSearchBar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        // swiftlint:disable:next force_unwrapping
-        let downloadDelegate = layoutCoordinator!
-        let coordinator: SearchBarCoordinator = .init(vcFactory, presenter, downloadDelegate, self, self)
+        let coordinator: SearchBarCoordinator = .init(vcFactory,
+                                                      presenter,
+                                                      linkTagsCoordinator,
+                                                      self,
+                                                      self)
         coordinator.parent = self
         coordinator.start()
         searchBarCoordinator = coordinator
@@ -243,11 +256,9 @@ private extension AppCoordinator {
     func insertToolbar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        // swiftlint:disable:next force_unwrapping
-        let downloadDelegate = layoutCoordinator!
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
-                                                        downloadDelegate,
+                                                        linkTagsCoordinator,
                                                         self)
         coordinator.parent = self
         coordinator.start()
@@ -301,7 +312,7 @@ private extension AppCoordinator {
     // MARK: - Open tab content functions
     
     func open(tabContent: Tab.ContentType) {
-        layoutCoordinator?.closeTags()
+        linkTagsCoordinator?.insertNext(.closeTags)
 
         switch previousTabContent {
         case .site:
@@ -338,6 +349,23 @@ private extension AppCoordinator {
         coordinator.start()
         loadingProgressCoordinator = coordinator
     }
+    
+    func insertLinkTags() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: LinkTagsCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        linkTagsCoordinator = coordinator
+    }
+    
+    func insertFilesGreed() {
+        linkTagsCoordinator?.insertNext(.insertFilesGreed)
+    }
+    
+    func startLayoutLinkTags(_ topAnchor: NSLayoutYAxisAnchor) {
+        linkTagsCoordinator?.insertNext(.startLayout)
+    }
 }
 
 extension AppCoordinator {
@@ -367,7 +395,7 @@ extension AppCoordinator: TabsObserver {
             withSite = false
         }
 
-        layoutCoordinator?.closeTags()
+        linkTagsCoordinator?.insertNext(.closeTags)
         reloadNavigationElements(withSite)
     }
 }
@@ -381,7 +409,7 @@ extension AppCoordinator: GlobalMenuDelegate {
 
 extension AppCoordinator: WebContentDelegate {
     func didProvisionalNavigationStart() {
-        layoutCoordinator?.closeTags()
+        linkTagsCoordinator?.insertNext(.closeTags)
     }
     
     func didLoadingProgressChange(_ progress: Float) {

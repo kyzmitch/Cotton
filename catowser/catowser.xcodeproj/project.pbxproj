@@ -144,6 +144,8 @@
 		8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9BE0928FEB17E002063C2 /* WebSearchAutocompleteTests.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
+		8A1273DD2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */; };
+		8A1273DE2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
 		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A1C1BD9280B1E2D009B9363 /* RestClient+Kotlin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */; };
@@ -153,8 +155,6 @@
 		8A1C1C1B2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */; };
 		8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */; };
 		8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */; };
-		8A1C1C292485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift */; };
-		8A1C1C2A2485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C282485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift */; };
 		8A22D1B42923FDA1005D1F72 /* PhoneTabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */; };
 		8A22D1B52923FDA1005D1F72 /* PhoneTabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */; };
 		8A239879286222F1005DA801 /* DuckDuckGoSearchEndpoint+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A239878286222F1005DA801 /* DuckDuckGoSearchEndpoint+AsyncAwait.swift */; };
@@ -473,6 +473,8 @@
 		8AD5E0412915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
 		8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
+		8AD8783F29351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */; };
+		8AD8784029351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
@@ -1002,13 +1004,13 @@
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
 		8A0E4D5629133C02008F7964 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
+		8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedCoordinator.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		8A16102E28947D2100D45228 /* DNSResolvingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategy.swift; sourceTree = "<group>"; };
 		8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RestClient+Kotlin.swift"; sourceTree = "<group>"; };
 		8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentModel.swift; sourceTree = "<group>"; };
 		8A1C1C192484E6450098F2F1 /* TabDefaultContentViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDefaultContentViewPreview.swift; sourceTree = "<group>"; };
 		8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+SiteNavigationDelegate.swift"; sourceTree = "<group>"; };
-		8A1C1C282485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppLayoutCoordinator+LinkTagsDelegate.swift"; sourceTree = "<group>"; };
 		8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTabsCoordinator.swift; sourceTree = "<group>"; };
 		8A239878286222F1005DA801 /* DuckDuckGoSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DuckDuckGoSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A23987B286223A7005DA801 /* WebSearchAutocomplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchAutocomplete.swift; sourceTree = "<group>"; };
@@ -1159,6 +1161,7 @@
 		8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewContextImpl.swift; sourceTree = "<group>"; };
 		8AD62B6F28F547E6003F3940 /* Sourcery */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sourcery; sourceTree = "<group>"; };
 		8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
+		8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsCoordinator.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramMocks.swift; sourceTree = "<group>"; };
 		8ADAF547240123F600A0D233 /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
@@ -1583,6 +1586,8 @@
 				75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */,
 				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
 				8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */,
+				8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */,
+				8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */,
 				7533929F291FD30B00570461 /* LegacyRouters */,
 			);
 			path = Coordinators;
@@ -1592,7 +1597,6 @@
 			isa = PBXGroup;
 			children = (
 				60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */,
-				8A1C1C282485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift */,
 			);
 			path = LegacyRouters;
 			sourceTree = "<group>";
@@ -3462,6 +3466,7 @@
 				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
 				8AE0BDDA292D06D200A8BF9E /* LoadingProgressViewController.swift in Sources */,
+				8AD8783F29351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */,
 				75FAAB38292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */,
 				8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
 				753392AA2920BB6700570461 /* AppCoordinator.swift in Sources */,
@@ -3506,6 +3511,7 @@
 				8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE2028FF0D0D002063C2 /* AnyViewController.swift in Sources */,
+				8A1273DD2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
@@ -3516,7 +3522,6 @@
 				8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
-				8A1C1C292485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift in Sources */,
 				8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */,
 				8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
 			);
@@ -3671,6 +3676,7 @@
 				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,
 				8AE0BDDB292D06D200A8BF9E /* LoadingProgressViewController.swift in Sources */,
+				8AD8784029351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */,
 				75FAAB39292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */,
 				8A1C1C1B2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
 				753392AB2920BB6700570461 /* AppCoordinator.swift in Sources */,
@@ -3715,6 +3721,7 @@
 				8AB9BE1228FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE1F28FF0D0D002063C2 /* AnyViewController.swift in Sources */,
+				8A1273DE2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
@@ -3725,7 +3732,6 @@
 				8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,
-				8A1C1C2A2485121C0098F2F1 /* AppLayoutCoordinator+LinkTagsDelegate.swift in Sources */,
 				8ABA3CD02522601800E304E2 /* TabsDBClient.swift in Sources */,
 				8A566F80245D7D7B00E71221 /* AlertPresenter.swift in Sources */,
 			);

@@ -270,3 +270,14 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
         }
     }
 }
+
+private extension FeatureManager {
+    static func searchPluginName() -> KnownSearchPluginName {
+        switch webSearchAutoCompleteValue() {
+        case .google:
+            return .google
+        case .duckduckgo:
+            return .duckduckgo
+        }
+    }
+}
