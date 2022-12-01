@@ -30,11 +30,9 @@ final class AppLayoutCoordinator: NSObject {
 
     
 
-    var hiddenFilesGreedConstraint: NSLayoutConstraint?
+    
 
     var showedFilesGreedConstraint: NSLayoutConstraint?
-
-    var filesGreedHeightConstraint: NSLayoutConstraint?
 
     var underLinksViewHeightConstraint: NSLayoutConstraint?
 

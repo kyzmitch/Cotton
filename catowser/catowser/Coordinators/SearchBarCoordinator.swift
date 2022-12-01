@@ -57,7 +57,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ downloadPanelDelegate: DonwloadPanelDelegate,
+         _ downloadPanelDelegate: DonwloadPanelDelegate?,
          _ globalMenuDelegate: GlobalMenuDelegate,
          _ delegate: SearchBarDelegate) {
         self.vcFactory = vcFactory
@@ -82,6 +82,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
             return
         }
         
+        vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
     }
@@ -111,6 +112,7 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
+    case viewDidLoad(NSLayoutYAxisAnchor?)
     case layoutSuggestions
     case suggestions(String)
 }
@@ -120,6 +122,8 @@ extension SearchBarCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
+        case .viewDidLoad(let bottomAnchor):
+            viewDidLoad(bottomAnchor)
         case .layoutSuggestions:
             insertSearchSuggestions()
         case .suggestions(let query):
@@ -135,6 +139,27 @@ extension SearchBarCoordinator: CoordinatorOwner {
 }
 
 private extension SearchBarCoordinator {
+    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
+        guard let presenterView = presenterVC?.controllerView else {
+            return
+        }
+        guard let searchView = startedVC?.controllerView else {
+            return
+        }
+        if isPad, let anchor = bottomAnchor {
+            searchView.topAnchor.constraint(equalTo: anchor).isActive = true
+        } else {
+            if #available(iOS 11, *) {
+                searchView.topAnchor.constraint(equalTo: presenterView.safeAreaLayoutGuide.topAnchor).isActive = true
+            } else {
+                searchView.topAnchor.constraint(equalTo: presenterView.topAnchor).isActive = true
+            }
+        }
+        searchView.leadingAnchor.constraint(equalTo: presenterView.leadingAnchor).isActive = true
+        searchView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor).isActive = true
+        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
+    }
+    
     func insertSearchSuggestions() {
         guard !isSuggestionsShowed,
               let toolbarHeight = delegate?.toolbarHeight,

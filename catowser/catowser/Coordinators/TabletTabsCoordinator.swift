@@ -33,7 +33,7 @@ final class TabletTabsCoordinator: Coordinator {
 }
 
 enum TabletTabsSubview: SubviewPart {
-    case layout
+    case viewDidLoad
 }
 
 extension TabletTabsCoordinator: SubviewNavigation {
@@ -41,7 +41,7 @@ extension TabletTabsCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .layout:
+        case .viewDidLoad:
             guard let vc = startedVC, let containerView = presenterVC?.controllerView else {
                 return
             }

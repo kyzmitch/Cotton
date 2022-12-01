@@ -65,8 +65,8 @@ protocol ViewControllerFactory: AnyObject {
     func tabsViewController() -> AnyViewController?
     /// Download link tags
     func linkTagsViewController(_ delegate: LinkTagsDelegate) -> AnyViewController & LinkTagsPresenter
-    /// The files greed controller to display links for downloads
-    func filesGreedViewController() -> AnyViewController & FilesGreedPresenter
+    /// The files grid controller to display links for downloads
+    func filesGridViewController() -> AnyViewController & FilesGridPresenter
 }
 
 extension ViewControllerFactory {
@@ -110,8 +110,8 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func filesGreedViewController() -> AnyViewController & FilesGreedPresenter {
-        let vc = FilesGreedViewController.newFromStoryboard()
+    func filesGridViewController() -> AnyViewController & FilesGridPresenter {
+        let vc = FilesGridViewController.newFromStoryboard()
         return vc
     }
 }

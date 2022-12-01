@@ -16,22 +16,6 @@ protocol Navigating: AnyObject {
     var vcFactory: any ViewControllerFactory { get }
     func showNext(_ route: R)
     func stop()
-    
-    // TODO: remove temporary method
-    var toolbarView: UIView? { get }
-    // TODO: remove temporary reference property
-    var layoutCoordinator: AppLayoutCoordinator? { get }
-}
-
-// TODO: remove temporary extension
-extension Navigating {
-    var toolbarView: UIView? {
-        return nil
-    }
-    
-    var layoutCoordinator: AppLayoutCoordinator? {
-        return nil
-    }
 }
 
 protocol SubviewNavigation: AnyObject {

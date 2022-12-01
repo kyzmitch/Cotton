@@ -21,7 +21,7 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ downloadDelegate: DonwloadPanelDelegate,
+         _ downloadDelegate: DonwloadPanelDelegate?,
          _ settingsDelegate: GlobalMenuDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
@@ -37,19 +37,9 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
         guard let containerView = presenterVC?.controllerView else {
             return
         }
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc, to: containerView)
-    }
-}
-
-private extension MainToolbarCoordinator {
-    func showTabs() {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter, self)
-        coordinator.parent = self
-        coordinator.start()
-        startedCoordinator = coordinator
     }
 }
 
@@ -65,6 +55,44 @@ extension MainToolbarCoordinator: Navigating {
         case .tabs:
             showTabs()
         }
+    }
+}
+
+enum ToolbarPart: SubviewPart {
+    case viewDidLoad
+}
+
+extension MainToolbarCoordinator: SubviewNavigation {
+    typealias SP = ToolbarPart
+    
+    func insertNext(_ subview: SP) {
+        switch subview {
+        case .viewDidLoad:
+            viewDidLoad()
+        }
+    }
+}
+
+private extension MainToolbarCoordinator {
+    func viewDidLoad() {
+        toolbarView.topAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true
+        if #available(iOS 11, *) {
+            toolbarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        } else {
+            toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
+    }
+    
+    func showTabs() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter, self)
+        coordinator.parent = self
+        coordinator.start()
+        startedCoordinator = coordinator
     }
 }
 

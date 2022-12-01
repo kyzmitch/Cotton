@@ -21,11 +21,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     /// and also the routes are specific to this screen as well.
     /// Storing it by weak reference, it is stored strongly in the coordinator owner
     private weak var coordinator: C?
-    /// Layout handler for supplementary views.
-    private var layoutCoordinator: AppLayoutCoordinator {
-        // swiftlint:disable:next force_unwrapping
-        return coordinator!.layoutCoordinator!
-    }
     
     // MARK: - initializers
     
@@ -44,14 +39,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     }
     
     // MARK: - BrowserContentViewHolder
-    
-    /// The view needed to hold tab content like WebView or favorites table view.
-    let containerView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .white
-        return v
-    }()
+
     
     var underToolbarViewBounds: CGRect {
         underToolbarView.bounds
@@ -73,8 +61,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         ThemeProvider.shared.setupUnderLinkTags(v)
         return v
     }()
-
-    private let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
     
     // MARK: - Overrided functions from base type
     
@@ -85,20 +71,24 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         // In that method, create your view hierarchy programmatically and assign
         // the root view of that hierarchy to the view controller’s view property.
         
-        coordinator?.insertNext(.tabs)
+        if isPad {
+            coordinator?.insertNext(.tabs)
+        }
         coordinator?.insertNext(.searchBar)
         coordinator?.insertNext(.loadingProgress)
-        view.addSubview(containerView)
+        coordinator?.insertNext(.webContentContainer)
 
         if isPad {
             // no need to add files greed as a child
             // will try to show as popover
-            view.addSubview(underLinkTagsView)
             coordinator?.insertNext(.linkTags)
+            view.addSubview(underLinkTagsView)
         } else {
-            coordinator?.insertNext(.filesGreed)
             // should be added before iPhone toolbar
             coordinator?.insertNext(.linkTags)
+            // files grid MUST be added after link tags
+            // but layout goes before link tags
+            coordinator?.insertNext(.filesGrid)
             coordinator?.insertNext(.toolbar)
             // Need to not add it if it is not iPhone without home button
             view.addSubview(underToolbarView)
@@ -110,31 +100,19 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 
         view.backgroundColor = UIColor.white
         
-        coordinator?.insertNext(.layoutTabs)
-        coordinator?.insertNext(.layoutSearchBar)
+        if isPad {
+            coordinator?.insertNext(.tabsViewDidLoad)
+        }
+        coordinator?.insertNext(.searchBarViewDidLoad)
+        coordinator?.insertNext(.loadingProgressViewDidLoad)
         if isPad {
             setupTabletConstraints()
         } else {
-            guard let toolbarView = coordinator?.toolbarView else {
-                assertionFailure("Toolbar coordinator wasn't started")
-                return
-            }
-            setupPhoneConstraints(toolbarView)
+            setupPhoneConstraints()
         }
 
         if !isPad {
-            let filesView: UIView = layoutCoordinator.filesGreedController.controllerView
-            filesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            filesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            // temporarily use 0 height because actual height of free space is
-            // unknown at the moment
-            let greedHeight: CGFloat = 0
-            layoutCoordinator.hiddenFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor,
-                                                                                       constant: greedHeight)
-            layoutCoordinator.showedFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: tagsView.topAnchor)
-            layoutCoordinator.filesGreedHeightConstraint = filesView.heightAnchor.constraint(equalToConstant: greedHeight)
-            layoutCoordinator.hiddenFilesGreedConstraint?.isActive = true
-            layoutCoordinator.filesGreedHeightConstraint?.isActive = true
+            coordinator?.insertNext(.filesGridViewDidLoad)
         }
     }
 
@@ -154,15 +132,8 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         super.viewDidLayoutSubviews()
 
         if !isPad {
-            let freeHeight: CGFloat
-            let allHeight = containerView.bounds.height
-            freeHeight = allHeight - .linkTagsHeight
-            
-            layoutCoordinator.filesGreedHeightConstraint?.constant = freeHeight
-            layoutCoordinator.hiddenFilesGreedConstraint?.constant = freeHeight
-            let filesView: UIView = layoutCoordinator.filesGreedController.controllerView
-            filesView.setNeedsLayout()
-            filesView.layoutIfNeeded()
+            containerView.bounds.height
+            coordinator?.insertNext(.filesGridViewDidLayoutSubviews)
         }
     }
     
@@ -179,13 +150,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 
 private extension MainBrowserViewController {
     func setupTabletConstraints() {
-        // Need to have not simple view controller view but container view
-        // to have ability to insert to it and show view controller with
-        // bookmarks in case if search bar has no any address entered or
-        // webpage controller with web view if some address entered in search bar
-        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        coordinator?.insertNext(.webContentContainerViewDidLoad)
 
         underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -194,36 +159,18 @@ private extension MainBrowserViewController {
         layoutCoordinator.underLinksViewHeightConstraint = linksHConstraint
         layoutCoordinator.underLinksViewHeightConstraint?.isActive = true
 
-        let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
-        layoutCoordinator.hiddenTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                                                                     constant: bottomMargin)
-        layoutCoordinator.showedTagsConstraint = underLinkTagsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        
-        coordinator?.insertNext(.startLayoutLinkTags(underLinkTagsView.topAnchor))
+        coordinator?.insertNext(.linkTagsViewDidLoad(underLinkTagsView.topAnchor, underLinkTagsView.bottomAnchor))
     }
     
-    func setupPhoneConstraints(_ toolbarView: UIView) {
-        toolbarView.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.bottomAnchor.constraint(equalTo: toolbarView.topAnchor).isActive = true
-        containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
-        toolbarView.topAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true
-        if #available(iOS 11, *) {
-            toolbarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        } else {
-            toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        }
+    func setupPhoneConstraints() {
+        coordinator?.insertNext(.webContentContainerViewDidLoad)
+        coordinator?.insertNext(.toolbarViewDidLoad)
         
         underToolbarView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor).isActive = true
         underToolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
-        coordinator?.insertNext(.startLayoutLinkTags(toolbarView.topAnchor))
+        coordinator?.insertNext(.linkTagsViewDidLoad(toolbarView.topAnchor, nil))
     }
 }

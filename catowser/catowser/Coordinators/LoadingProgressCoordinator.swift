@@ -41,8 +41,8 @@ final class LoadingProgressCoordinator: Coordinator {
 }
 
 enum LoadingProgressPart: SubviewPart {
+    case viewDidLoad(NSLayoutYAxisAnchor)
     case setProgress(Float, _ animated: Bool)
-    case finishLayout(NSLayoutYAxisAnchor)
     case showProgress(Bool)
 }
 
@@ -51,18 +51,18 @@ extension LoadingProgressCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .setProgress(let progress, let isAnimated):
-            guard let webLoadProgressView = startedVC?.controllerView as? UIProgressView else {
-                return
-            }
-            webLoadProgressView.setProgress(progress, animated: isAnimated)
-        case .finishLayout(let sbViewBottomAnchor):
+        case .viewDidLoad(let sbViewBottomAnchor):
             guard let webLoadProgressView = startedVC?.controllerView,
                   let containerView = presenterVC?.controllerView else {
                 return
             }
             webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
             containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+        case .setProgress(let progress, let isAnimated):
+            guard let webLoadProgressView = startedVC?.controllerView as? UIProgressView else {
+                return
+            }
+            webLoadProgressView.setProgress(progress, animated: isAnimated)
         case .showProgress(let show):
             if show {
                 hiddenWebLoadConstraint?.isActive = false

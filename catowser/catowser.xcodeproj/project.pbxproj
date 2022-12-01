@@ -56,8 +56,8 @@
 		6094E740221FE6CB004269A2 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D7B0221F17010032C156 /* Box.swift */; };
 		6094E741221FE706004269A2 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846220AE1EEE9B6C00B84C73 /* Tab.swift */; };
 		6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsListManager.swift */; };
-		60A82C4D22549446008210D9 /* FilesGreedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */; };
-		60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGreedViewController.swift */; };
+		60A82C4D22549446008210D9 /* FilesGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */; };
+		60A82C4F22549453008210D9 /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
 		60A82C532254E1F7008210D9 /* AppLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */; };
 		60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
@@ -144,8 +144,8 @@
 		8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9BE0928FEB17E002063C2 /* WebSearchAutocompleteTests.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
-		8A1273DD2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */; };
-		8A1273DE2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */; };
+		8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
+		8A1273DE2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
 		8A1A1CE827B196B80052A2A3 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A978D4823F34909007ECB0C /* AuthChallenge.swift */; };
 		8A1C1BD9280B1E2D009B9363 /* RestClient+Kotlin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */; };
@@ -286,7 +286,7 @@
 		8A8035B624442F0F000E035F /* TabPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */; };
 		8A8035B724442F0F000E035F /* SiteCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C90422801F3400F5D869 /* SiteCollectionViewCell.swift */; };
 		8A8035B824442F0F000E035F /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCC21F7529400972E28 /* ThemeProvider.swift */; };
-		8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGreedViewController.swift */; };
+		8A8035B924442F0F000E035F /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
 		8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
 		8A8035BD24442F0F000E035F /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
@@ -307,7 +307,7 @@
 		8A8035CF24442F0F000E035F /* JSPlugins.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 608DA74A223A3BD4009F75BD /* JSPlugins.framework */; };
 		8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8A8035D424442F0F000E035F /* LinkTagsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 841022C0224788F80021516F /* LinkTagsViewController.storyboard */; };
-		8A8035D524442F0F000E035F /* FilesGreedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */; };
+		8A8035D524442F0F000E035F /* FilesGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */; };
 		8A8035D624442F0F000E035F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A31EED5E700020102F /* LaunchScreen.storyboard */; };
 		8A8035D724442F0F000E035F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
 		8A8035D924442F0F000E035F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8435A4A11EED5E700020102F /* Assets.xcassets */; };
@@ -473,6 +473,8 @@
 		8AD5E0412915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
 		8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
+		8AD857E02939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */; };
+		8AD857E12939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */; };
 		8AD8783F29351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */; };
 		8AD8784029351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */; };
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
@@ -915,8 +917,8 @@
 		6094E71C221FD2B9004269A2 /* CoreBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6094E71E221FD2B9004269A2 /* CoreBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreBrowser.h; sourceTree = "<group>"; };
 		6094E71F221FD2B9004269A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FilesGreedViewController.storyboard; sourceTree = "<group>"; };
-		60A82C4E22549453008210D9 /* FilesGreedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedViewController.swift; sourceTree = "<group>"; };
+		60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FilesGridViewController.storyboard; sourceTree = "<group>"; };
+		60A82C4E22549453008210D9 /* FilesGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridViewController.swift; sourceTree = "<group>"; };
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLayoutCoordinator.swift; sourceTree = "<group>"; };
 		60C12BE2226746EC004FCB14 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
@@ -1004,7 +1006,7 @@
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
 		8A0E4D5629133C02008F7964 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
-		8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGreedCoordinator.swift; sourceTree = "<group>"; };
+		8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridCoordinator.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		8A16102E28947D2100D45228 /* DNSResolvingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategy.swift; sourceTree = "<group>"; };
 		8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RestClient+Kotlin.swift"; sourceTree = "<group>"; };
@@ -1161,6 +1163,7 @@
 		8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewContextImpl.swift; sourceTree = "<group>"; };
 		8AD62B6F28F547E6003F3940 /* Sourcery */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sourcery; sourceTree = "<group>"; };
 		8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
+		8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentContainerCoordinator.swift; sourceTree = "<group>"; };
 		8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsCoordinator.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramMocks.swift; sourceTree = "<group>"; };
@@ -1576,6 +1579,9 @@
 			children = (
 				75339299291FCEDD00570461 /* Coordinator.swift */,
 				753392A92920BB6700570461 /* AppCoordinator.swift */,
+				8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */,
+				75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */,
+				8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */,
 				753392B22921613E00570461 /* GlobalMenuCoordinator.swift */,
 				753392B52922C9EB00570461 /* MainToolbarCoordinator.swift */,
 				8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */,
@@ -1583,11 +1589,9 @@
 				8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */,
 				8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */,
 				8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */,
-				75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */,
 				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
-				8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */,
 				8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */,
-				8A1273DC2937B7FC0022B934 /* FilesGreedCoordinator.swift */,
+				8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */,
 				7533929F291FD30B00570461 /* LegacyRouters */,
 			);
 			path = Coordinators;
@@ -1632,8 +1636,8 @@
 				60C2C8EF227073B400F5D869 /* Views */,
 				841022B8224781A20021516F /* LinkTagsViewController.swift */,
 				841022C0224788F80021516F /* LinkTagsViewController.storyboard */,
-				60A82C4E22549453008210D9 /* FilesGreedViewController.swift */,
-				60A82C4C22549446008210D9 /* FilesGreedViewController.storyboard */,
+				60A82C4E22549453008210D9 /* FilesGridViewController.swift */,
+				60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */,
 				60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */,
 			);
 			path = Downloads;
@@ -2954,7 +2958,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				841022C1224788F80021516F /* LinkTagsViewController.storyboard in Resources */,
-				60A82C4D22549446008210D9 /* FilesGreedViewController.storyboard in Resources */,
+				60A82C4D22549446008210D9 /* FilesGridViewController.storyboard in Resources */,
 				8AD18E0C2447564B00224702 /* duckduckgo.xml in Resources */,
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
 				C27371171F7A341900900F03 /* Localizable.strings in Resources */,
@@ -3005,7 +3009,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8035D424442F0F000E035F /* LinkTagsViewController.storyboard in Resources */,
-				8A8035D524442F0F000E035F /* FilesGreedViewController.storyboard in Resources */,
+				8A8035D524442F0F000E035F /* FilesGridViewController.storyboard in Resources */,
 				8AD18E0B2447564B00224702 /* duckduckgo.xml in Resources */,
 				8A8035D624442F0F000E035F /* LaunchScreen.storyboard in Resources */,
 				8A8035D724442F0F000E035F /* Localizable.strings in Resources */,
@@ -3436,6 +3440,7 @@
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
+				8AD857E02939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */,
 				753392B32921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */,
 				60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */,
@@ -3458,7 +3463,7 @@
 				8AB9BE1628FF0C75002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
 				753392B62922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
-				60A82C4F22549453008210D9 /* FilesGreedViewController.swift in Sources */,
+				60A82C4F22549453008210D9 /* FilesGridViewController.swift in Sources */,
 				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
 				8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				8AE85DAC293491E10047F14F /* TabletTabsCoordinator.swift in Sources */,
@@ -3511,7 +3516,7 @@
 				8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE2028FF0D0D002063C2 /* AnyViewController.swift in Sources */,
-				8A1273DD2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */,
+				8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */,
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
@@ -3646,6 +3651,7 @@
 				8A8035AA24442F0F000E035F /* SearchBarBaseViewController.swift in Sources */,
 				8A8035AB24442F0F000E035F /* TabsViewController.swift in Sources */,
 				8A8035AD24442F0F000E035F /* TabView.swift in Sources */,
+				8AD857E12939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */,
 				753392B42921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				8A8035AE24442F0F000E035F /* UIViewController+MainBundle.swift in Sources */,
 				8A8035AF24442F0F000E035F /* TopSitesViewController.swift in Sources */,
@@ -3668,7 +3674,7 @@
 				8AB9BE1528FF0C74002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
 				753392B72922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
-				8A8035B924442F0F000E035F /* FilesGreedViewController.swift in Sources */,
+				8A8035B924442F0F000E035F /* FilesGridViewController.swift in Sources */,
 				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
 				8AB8018B27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				8AE85DAD293491E10047F14F /* TabletTabsCoordinator.swift in Sources */,
@@ -3721,7 +3727,7 @@
 				8AB9BE1228FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE1F28FF0D0D002063C2 /* AnyViewController.swift in Sources */,
-				8A1273DE2937B7FC0022B934 /* FilesGreedCoordinator.swift in Sources */,
+				8A1273DE2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */,
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,

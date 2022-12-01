@@ -19,7 +19,7 @@ final class LinkTagsCoordinator: Coordinator {
     // MARK: - state properties
     
     /// Specific coordinator type
-    private var filesGreedCoordinator: FilesGreedCoordinator?
+    private var filesGridCoordinator: FilesGridCoordinator?
     
     private var tagsSiteDataSource: TagsSiteDataSource?
     private(set) var isFilesGreedShowed: Bool = false
@@ -54,13 +54,16 @@ final class LinkTagsCoordinator: Coordinator {
 extension LinkTagsCoordinator: CoordinatorOwner {}
 
 enum LinkTagsPart: SubviewPart {
+    case viewDidLoad(NSLayoutYAxisAnchor, NSLayoutYAxisAnchor?)
+    case insertFilesGrid
+    case filesGridViewDidLoad
+    case filesGridViewDidLayoutSubviews(CGFloat)
+    
     /// Link type and source view
     case showVideos(LinksType, UIView)
     case openInstagramTags([InstagramVideoNode])
     case openHtmlTags([HTMLVideoTag])
     case closeTags
-    case insertFilesGreed
-    case startLayout(NSLayoutYAxisAnchor)
 }
 
 extension LinkTagsCoordinator: SubviewNavigation {
@@ -68,6 +71,14 @@ extension LinkTagsCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
+        case .insertFilesGrid:
+            insertFilesGrid()
+        case .viewDidLoad(let topAnchor, let bottomAnchor):
+            viewDidLoad(topAnchor, bottomAnchor)
+        case .filesGridViewDidLoad:
+            filesGridViewDidLoad()
+        case .filesGridViewDidLayoutSubviews(let containerHeight):
+            filesGridViewDidLayoutSubviews(containerHeight)
         case .showVideos(let type, let sourceView):
             presentVideos(type, sourceView)
         case .openInstagramTags(let tags):
@@ -76,20 +87,36 @@ extension LinkTagsCoordinator: SubviewNavigation {
             openTagsFor(html: tags)
         case .closeTags:
             closeTags()
-        case .insertFilesGreed:
-            startFilesGreed()
-        case .startLayout(let topAnchor):
-            startLayout(topAnchor)
         }
     }
 }
 
 private extension LinkTagsCoordinator {
-    func startLayout(_ topAnchor: NSLayoutYAxisAnchor) {
+    func insertFilesGrid() {
+        // Using root view controller as a presenter
+        // for this specific coordinator, not currently started view controller
+        
+        // swiftlint:disable:next force_unwrapping
+        let presenter = presenterVC!
+        let coordinator: FilesGridCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        filesGridCoordinator = coordinator
+    }
+    
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor, _ bottomAnchor: NSLayoutYAxisAnchor?) {
         guard let tagsView = startedVC?.controllerView, let containerView = presenterVC?.controllerView else {
             return
         }
         if isPad {
+            guard let bottomAnchor = bottomAnchor else {
+                return
+            }
+            let dummyViewHeight: CGFloat = .safeAreaBottomMargin
+            let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
+            hiddenTagsConstraint = bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: bottomMargin)
+            showedTagsConstraint = bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            
             let tagsBottom = tagsView.bottomAnchor
             tagsBottom.constraint(equalTo: topAnchor).isActive = true
         } else {
@@ -103,16 +130,12 @@ private extension LinkTagsCoordinator {
         tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
     }
     
-    func startFilesGreed() {
-        // Using root view controller as a presenter
-        // for this specific coordinator, not currently started view controller
-        
-        // swiftlint:disable:next force_unwrapping
-        let presenter = presenterVC!
-        let coordinator: FilesGreedCoordinator = .init(vcFactory, presenter)
-        coordinator.parent = self
-        coordinator.start()
-        filesGreedCoordinator = coordinator
+    func filesGridViewDidLoad() {
+        filesGridCoordinator?.insertNext(.viewDidLoad)
+    }
+    
+    func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat) {
+        filesGridCoordinator?.insertNext(.viewDidLayoutSubviews(containerHeight))
     }
     
     func presentVideos(_ type: LinksType, _ sourceView: UIView) {

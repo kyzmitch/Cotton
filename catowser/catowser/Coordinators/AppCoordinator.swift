@@ -20,9 +20,11 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     weak var presenterVC: AnyViewController?
     
     /// Specific toolbar coordinator which should stay forever
-    private var toolbarCoordinator: Coordinator?
+    private var toolbarCoordinator: MainToolbarCoordinator?
     /// Progress view coordinator, TODO: needs to be replaced with base protocol
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
+    ///
+    private var webContentContainerCoordinator: WebContentContainerCoordinator?
     /// Search bar coordinator
     private var searchBarCoordinator: SearchBarCoordinator?
     /// Specific link for tags coordinator
@@ -109,43 +111,72 @@ extension AppCoordinator: Navigating {
 }
 
 enum MainScreenSubview: SubviewPart {
-    case toolbar
-    case openTab(Tab.ContentType)
-    case loadingProgress
-    case searchBar
-    case layoutSearchBar
+    // MARK: - views
     case tabs
-    case layoutTabs
+    case searchBar
+    case loadingProgress
+    case webContentContainer
+    case filesGrid
     case linkTags
-    case filesGreed
-    case startLayoutLinkTags(NSLayoutYAxisAnchor)
+    case toolbar
+    // MARK: - layout
+    case tabsViewDidLoad
+    case searchBarViewDidLoad
+    case loadingProgressViewDidLoad
+    case filesGridViewDidLoad
+    case webContentContainerViewDidLoad
+    case toolbarViewDidLoad
+    
+    case linkTagsViewDidLoad(NSLayoutYAxisAnchor, NSLayoutYAxisAnchor?)
+    
+    case filesGridViewDidLayoutSubviews(CGFloat)
+    case openTab(Tab.ContentType)
 }
 
 extension AppCoordinator: SubviewNavigation {
     typealias SP = MainScreenSubview
     
+    // swiftlint:disable:next cyclomatic_complexity
     func insertNext(_ subview: SP) {
         switch subview {
+            // MARK: - views insertion
         case .tabs:
             insertTabs()
-        case .layoutTabs:
-            layoutTabs()
         case .searchBar:
             insertSearchBar()
-        case .layoutSearchBar:
-            layoutSearchBar()
-        case .toolbar:
-            insertToolbar()
-        case .openTab(let content):
-            open(tabContent: content)
         case .loadingProgress:
             insertLoadingProgress()
+        case .webContentContainer:
+            insertWebContentContainer()
+        case .filesGrid:
+            insertFilesGrid()
         case .linkTags:
             insertLinkTags()
-        case .filesGreed:
-            insertFilesGreed()
-        case .startLayoutLinkTags(let topAnchor):
-            startLayoutLinkTags(topAnchor)
+        case .toolbar:
+            insertToolbar()
+            // MARK: - views layout
+        case .tabsViewDidLoad:
+            tabsViewDidLoad()
+        case .searchBarViewDidLoad:
+            searchBarViewDidLoad()
+        case .loadingProgressViewDidLoad:
+            loadingProgressViewDidLoad()
+        case .filesGridViewDidLoad:
+            filesGridViewDidLoad()
+        case .webContentContainerViewDidLoad:
+            webContentContainerViewDidLoad()
+        case .toolbarViewDidLoad:
+            toolbarViewDidLoad()
+            
+            // MARK: - view did layout subviews
+        
+            // MARK: - lifecycle navigation actions
+        case .openTab(let content):
+            open(tabContent: content)
+        case .linkTagsViewDidLoad(let topAnchor, let bottomAnchor):
+            linkTagsViewDidLoad(topAnchor, bottomAnchor)
+        case .filesGridViewDidLayoutSubviews(let containerHeight):
+            filesGridViewDidLayoutSubviews(containerHeight)
         }
     }
 }
@@ -181,19 +212,19 @@ extension AppCoordinator: BasePluginContentDelegate {
 }
 
 private extension AppCoordinator {
-    // MARK: - just private navigation functions
     
-    func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
+    // MARK: - insert methods to start subview coordinators
+    
+    func insertTabs() {
+        guard isPad else {
+            return
+        }
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        let coordinator: GlobalMenuCoordinator = .init(vcFactory,
-                                                       presenter,
-                                                       model,
-                                                       sourceView,
-                                                       sourceRect)
+        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter)
         coordinator.parent = self
         coordinator.start()
-        startedCoordinator = coordinator
+        tabletTabsCoordinator = coordinator
     }
     
     func insertSearchBar() {
@@ -209,48 +240,35 @@ private extension AppCoordinator {
         searchBarCoordinator = coordinator
     }
     
-    func insertTabs() {
-        guard isPad else {
-            return
-        }
+    func insertLoadingProgress() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter)
+        let coordinator: LoadingProgressCoordinator = .init(vcFactory, presenter)
         coordinator.parent = self
         coordinator.start()
-        tabletTabsCoordinator = coordinator
+        loadingProgressCoordinator = coordinator
     }
     
-    func layoutTabs() {
-        guard isPad else {
-            return
-        }
-        tabletTabsCoordinator?.insertNext(.layout)
+    func insertWebContentContainer() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: WebContentContainerCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        webContentContainerCoordinator = coordinator
     }
     
-    func layoutSearchBar() {
-        guard let presenterView = presenterVC?.controllerView else {
-            return
-        }
-        guard let searchView = searchBarCoordinator?.startedVC?.controllerView else {
-            return
-        }
-        searchBarCoordinator?.startedVC?.controllerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        if isPad, let anchor = tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor {
-            searchView.topAnchor.constraint(equalTo: anchor).isActive = true
-        } else {
-            if #available(iOS 11, *) {
-                searchView.topAnchor.constraint(equalTo: presenterView.safeAreaLayoutGuide.topAnchor).isActive = true
-            } else {
-                searchView.topAnchor.constraint(equalTo: presenterView.topAnchor).isActive = true
-            }
-        }
-        searchView.leadingAnchor.constraint(equalTo: presenterView.leadingAnchor).isActive = true
-        searchView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor).isActive = true
-        searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
-        
-        loadingProgressCoordinator?.insertNext(.finishLayout(searchView.bottomAnchor))
+    func insertFilesGrid() {
+        linkTagsCoordinator?.insertNext(.insertFilesGrid)
+    }
+    
+    func insertLinkTags() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: LinkTagsCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        linkTagsCoordinator = coordinator
     }
     
     func insertToolbar() {
@@ -264,6 +282,57 @@ private extension AppCoordinator {
         coordinator.start()
         toolbarCoordinator = coordinator
     }
+    
+    // MARK: - layout methods to layout subviews
+    
+    func tabsViewDidLoad() {
+        guard isPad else {
+            return
+        }
+        tabletTabsCoordinator?.insertNext(.viewDidLoad)
+    }
+    
+    func searchBarViewDidLoad() {
+        // use specific bottom anchor when it is Tablet layout
+        // and the most top view is not a superview but tabs view
+        searchBarCoordinator?.insertNext(.viewDidLoad(tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor))
+    }
+    
+    func loadingProgressViewDidLoad() {
+        guard let bottomAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor else {
+            return
+        }
+        loadingProgressCoordinator?.insertNext(.viewDidLoad(bottomAnchor))
+    }
+    
+    func filesGridViewDidLoad() {
+        linkTagsCoordinator?.insertNext(.filesGridViewDidLoad)
+    }
+    
+    func webContentContainerViewDidLoad() {
+        let anchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
+        webContentContainerCoordinator?.insertNext(.viewDidLoad(anchor))
+    }
+    
+    func toolbarViewDidLoad() {
+        toolbarCoordinator?.insertNext(.viewDidLoad)
+    }
+    
+    // MARK: - lifecycle navigation methods
+    
+    func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: GlobalMenuCoordinator = .init(vcFactory,
+                                                       presenter,
+                                                       model,
+                                                       sourceView,
+                                                       sourceRect)
+        coordinator.parent = self
+        coordinator.start()
+        startedCoordinator = coordinator
+    }
+
     
     func insertTopSites() {
         guard let containerView = contentContainerView else {
@@ -341,36 +410,12 @@ private extension AppCoordinator {
         previousTabContent = tabContent
     }
     
-    func insertLoadingProgress() {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: LoadingProgressCoordinator = .init(vcFactory, presenter)
-        coordinator.parent = self
-        coordinator.start()
-        loadingProgressCoordinator = coordinator
+    func linkTagsViewDidLoad(_ topAnchor: NSLayoutYAxisAnchor, _ bottomAnchor: NSLayoutYAxisAnchor?) {
+        linkTagsCoordinator?.insertNext(.viewDidLoad(topAnchor, bottomAnchor))
     }
     
-    func insertLinkTags() {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: LinkTagsCoordinator = .init(vcFactory, presenter)
-        coordinator.parent = self
-        coordinator.start()
-        linkTagsCoordinator = coordinator
-    }
-    
-    func insertFilesGreed() {
-        linkTagsCoordinator?.insertNext(.insertFilesGreed)
-    }
-    
-    func startLayoutLinkTags(_ topAnchor: NSLayoutYAxisAnchor) {
-        linkTagsCoordinator?.insertNext(.startLayout)
-    }
-}
-
-extension AppCoordinator {
-    var toolbarView: UIView? {
-        toolbarCoordinator?.startedVC?.controllerView
+    func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat) {
+        linkTagsCoordinator?.insertNext(.filesGridViewDidLayoutSubviews(containerHeight))
     }
 }
 
@@ -425,12 +470,12 @@ extension AppCoordinator: WebContentDelegate {
 extension AppCoordinator: SearchBarDelegate {
     var toolbarTopAnchor: NSLayoutYAxisAnchor {
         // swiftlint:disable:next force_unwrapping
-        return toolbarView!.topAnchor
+        return (toolbarCoordinator?.startedVC?.controllerView.topAnchor)!
     }
     
     /// Dynamicly determined height because it can be different before layout finish it's work
     var toolbarHeight: CGFloat {
-        let toolbarHeight = toolbarView?.bounds.height ?? 24
+        let toolbarHeight = toolbarCoordinator?.startedVC?.controllerView.bounds.height ?? 24
         return toolbarHeight + (underToolbarViewBounds?.height ?? 24)
     }
     
