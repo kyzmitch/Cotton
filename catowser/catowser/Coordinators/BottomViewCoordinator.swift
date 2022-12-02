@@ -66,7 +66,7 @@ enum BottomViewPart: SubviewPart {
     case viewSafeAreaInsetsDidChange
 }
 
-extension BottomViewCoordinator: SubviewNavigation {
+extension BottomViewCoordinator: Layouting {
     typealias SP = BottomViewPart
     
     func insertNext(_ subview: SP) {
@@ -76,6 +76,14 @@ extension BottomViewCoordinator: SubviewNavigation {
         case .viewSafeAreaInsetsDidChange:
             viewSafeAreaInsetsDidChange()
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }
 

@@ -59,22 +59,16 @@ extension FilesGridCoordinator: Navigating {
 }
 
 enum FilesGridPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor)
-    case viewDidLayoutSubviews(CGFloat)
     case hide
     case clear
     case showVideos(LinksType, UIView, CGRect, TagsSiteDataSource)
 }
 
-extension FilesGridCoordinator: SubviewNavigation {
+extension FilesGridCoordinator: Layouting {
     typealias SP = FilesGridPart
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .viewDidLoad(let bottomAnchor):
-            viewDidLoad(bottomAnchor)
-        case .viewDidLayoutSubviews(let containerHeight):
-            viewDidLayoutSubviews(containerHeight)
         case .hide:
             hide()
         case .clear:
@@ -82,6 +76,27 @@ extension FilesGridCoordinator: SubviewNavigation {
         case .showVideos(let type, let sourceView, let sourceRect, let tagsDataSource):
             showVideos(type, sourceView, sourceRect, tagsDataSource)
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        switch step {
+        case .viewDidLoad(_, let bottomAnchor):
+            guard let anchor = bottomAnchor else {
+                return
+            }
+            viewDidLoad(anchor)
+        case .viewDidLayoutSubviews(let containerHeight):
+            guard let height = containerHeight else {
+                return
+            }
+            viewDidLayoutSubviews(height)
+        case .viewSafeAreaInsetsDidChange:
+            break
+        }
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }
 

@@ -36,7 +36,7 @@ enum TabletTabsSubview: SubviewPart {
     case viewDidLoad
 }
 
-extension TabletTabsCoordinator: SubviewNavigation {
+extension TabletTabsCoordinator: Layouting {
     typealias SP = TabletTabsSubview
     
     func insertNext(_ subview: SP) {
@@ -58,5 +58,13 @@ extension TabletTabsCoordinator: SubviewNavigation {
             vc.controllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
             vc.controllerView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }

@@ -81,6 +81,7 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
 
 enum MainScreenRoute: Route {
     case menu(SiteMenuModel, UIView, CGRect)
+    case openTab(Tab.ContentType)
 }
 
 extension AppCoordinator: Navigating {
@@ -90,6 +91,8 @@ extension AppCoordinator: Navigating {
         switch route {
         case .menu(let model, let sourceView, let sourceRect):
             startMenu(model, sourceView, sourceRect)
+        case .openTab(let content):
+            open(tabContent: content)
         }
     }
     
@@ -111,27 +114,11 @@ enum MainScreenSubview: SubviewPart {
     case linkTags
     case toolbar
     case dummyView
-    // MARK: - layout
-    case tabsViewDidLoad
-    case searchBarViewDidLoad
-    case loadingProgressViewDidLoad
-    case filesGridViewDidLoad
-    case webContentContainerViewDidLoad
-    case toolbarViewDidLoad
-    case dummyViewDidLoad
-    case linkTagsViewDidLoad
-    // MARK: - safe area
-    case dummyViewSafeAreaInsetsDidChange
-    // MARK: - view Did Layout Subviews
-    case filesGridViewDidLayoutSubviews
-    // MARK: - lifecycle actions
-    case openTab(Tab.ContentType)
 }
 
-extension AppCoordinator: SubviewNavigation {
+extension AppCoordinator: Layouting {
     typealias SP = MainScreenSubview
     
-    // swiftlint:disable:next cyclomatic_complexity
     func insertNext(_ subview: SP) {
         switch subview {
             // MARK: - views insertion
@@ -151,32 +138,51 @@ extension AppCoordinator: SubviewNavigation {
             insertToolbar()
         case .dummyView:
             insertDummyView()
-            // MARK: - views layout
-        case .tabsViewDidLoad:
-            tabsViewDidLoad()
-        case .searchBarViewDidLoad:
-            searchBarViewDidLoad()
-        case .loadingProgressViewDidLoad:
-            loadingProgressViewDidLoad()
-        case .filesGridViewDidLoad:
-            filesGridViewDidLoad()
-        case .webContentContainerViewDidLoad:
-            webContentContainerViewDidLoad()
-        case .toolbarViewDidLoad:
-            toolbarViewDidLoad()
-        case .dummyViewDidLoad:
-            dummyViewDidLoad()
-            // MARK: - view Safe Area Insets Did Change
-        case .dummyViewSafeAreaInsetsDidChange:
-            dummyViewSafeAreaInsetsDidChange()
+        }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
         
-            // MARK: - lifecycle navigation actions
-        case .openTab(let content):
-            open(tabContent: content)
-        case .linkTagsViewDidLoad:
-            linkTagsViewDidLoad()
-        case .filesGridViewDidLayoutSubviews:
-            filesGridViewDidLayoutSubviews()
+    }
+    
+    // swiftlint:disable:next cyclomatic_complexity
+    func layoutNext(_ step: LayoutStep<SP>) {
+        switch step {
+        case .viewDidLoad(let subview):
+            switch subview {
+            case .tabs:
+                tabsViewDidLoad()
+            case .searchBar:
+                searchBarViewDidLoad()
+            case .loadingProgress:
+                loadingProgressViewDidLoad()
+            case .webContentContainer:
+                webContentContainerViewDidLoad()
+            case .filesGrid:
+                filesGridViewDidLoad()
+            case .linkTags:
+                linkTagsViewDidLoad()
+            case .toolbar:
+                toolbarViewDidLoad()
+            case .dummyView:
+                dummyViewDidLoad()
+            default:
+                break
+            }
+        case .viewDidLayoutSubviews(let subview, _):
+            switch subview {
+            case .filesGrid:
+                filesGridViewDidLayoutSubviews()
+            default:
+                break
+            }
+        case .viewSafeAreaInsetsDidChange(let subview):
+            switch subview {
+            case .dummyView:
+                dummyViewSafeAreaInsetsDidChange()
+            default:
+                break
+            }
         }
     }
 }
@@ -259,7 +265,7 @@ private extension AppCoordinator {
     }
     
     func insertFilesGrid() {
-        linkTagsCoordinator?.insertNext(.insertFilesGrid)
+        linkTagsCoordinator?.insertNext(.filesGrid)
     }
     
     func insertLinkTags() {
@@ -315,7 +321,7 @@ private extension AppCoordinator {
     }
     
     func filesGridViewDidLoad() {
-        linkTagsCoordinator?.insertNext(.filesGridViewDidLoad)
+        linkTagsCoordinator?.layoutNext(.viewDidLoad(.filesGrid))
     }
     
     func webContentContainerViewDidLoad() {
@@ -441,14 +447,14 @@ private extension AppCoordinator {
             topAnchor = (toolbarCoordinator?.startedVC?.controllerView.topAnchor)!
             bottomAnchor = nil
         }
-        linkTagsCoordinator?.insertNext(.viewDidLoad(topAnchor, bottomAnchor))
+        linkTagsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor))
     }
     
     func filesGridViewDidLayoutSubviews() {
         guard let containerHeight = webContentContainerCoordinator?.containerView.bounds.height else {
             return
         }
-        linkTagsCoordinator?.insertNext(.filesGridViewDidLayoutSubviews(containerHeight))
+        linkTagsCoordinator?.layoutNext(.viewDidLayoutSubviews(.filesGrid, containerHeight))
     }
 }
 
@@ -513,6 +519,6 @@ extension AppCoordinator: SearchBarDelegate {
     }
     
     func openTab(_ content: Tab.ContentType) {
-        insertNext(.openTab(content))
+        showNext(.openTab(content))
     }
 }

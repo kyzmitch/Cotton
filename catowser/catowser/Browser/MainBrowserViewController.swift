@@ -14,7 +14,7 @@ import JSPlugins
 import CoreHttpKit
 import CoreCatowser
 
-final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseViewController
+final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewController
     where C.R == MainScreenRoute, C.SP == MainScreenSubview {
     /// Define a specific type of coordinator, because not any coordinator
     /// can be used for this specific view controller
@@ -75,23 +75,23 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         view.backgroundColor = UIColor.white
         
         if isPad {
-            coordinator?.insertNext(.tabsViewDidLoad)
+            coordinator?.layoutNext(.viewDidLoad(.tabs))
         }
-        coordinator?.insertNext(.searchBarViewDidLoad)
-        coordinator?.insertNext(.loadingProgressViewDidLoad)
+        coordinator?.layoutNext(.viewDidLoad(.searchBar))
+        coordinator?.layoutNext(.viewDidLoad(.loadingProgress))
         if isPad {
-            coordinator?.insertNext(.webContentContainerViewDidLoad)
-            coordinator?.insertNext(.dummyViewDidLoad)
-            coordinator?.insertNext(.linkTagsViewDidLoad)
+            coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
+            coordinator?.layoutNext(.viewDidLoad(.dummyView))
+            coordinator?.layoutNext(.viewDidLoad(.linkTags))
         } else {
-            coordinator?.insertNext(.webContentContainerViewDidLoad)
-            coordinator?.insertNext(.toolbarViewDidLoad)
-            coordinator?.insertNext(.dummyViewDidLoad)
-            coordinator?.insertNext(.linkTagsViewDidLoad)
+            coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
+            coordinator?.layoutNext(.viewDidLoad(.toolbar))
+            coordinator?.layoutNext(.viewDidLoad(.dummyView))
+            coordinator?.layoutNext(.viewDidLoad(.linkTags))
         }
 
         if !isPad {
-            coordinator?.insertNext(.filesGridViewDidLoad)
+            coordinator?.layoutNext(.viewDidLoad(.filesGrid))
         }
     }
 
@@ -99,7 +99,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         super.viewSafeAreaInsetsDidChange()
 
         if isPad {
-            coordinator?.insertNext(.dummyViewSafeAreaInsetsDidChange)
+            coordinator?.layoutNext(.viewSafeAreaInsetsDidChange(.dummyView))
         }
     }
 
@@ -107,7 +107,7 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         super.viewDidLayoutSubviews()
 
         if !isPad {
-            coordinator?.insertNext(.filesGridViewDidLayoutSubviews)
+            coordinator?.layoutNext(.viewDidLayoutSubviews(.filesGrid))
         }
     }
     

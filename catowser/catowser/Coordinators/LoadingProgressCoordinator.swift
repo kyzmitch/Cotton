@@ -46,7 +46,7 @@ enum LoadingProgressPart: SubviewPart {
     case showProgress(Bool)
 }
 
-extension LoadingProgressCoordinator: SubviewNavigation {
+extension LoadingProgressCoordinator: Layouting {
     typealias SP = LoadingProgressPart
     
     func insertNext(_ subview: SP) {
@@ -72,5 +72,13 @@ extension LoadingProgressCoordinator: SubviewNavigation {
                 hiddenWebLoadConstraint?.isActive = true
             }
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }

@@ -62,7 +62,7 @@ enum ToolbarPart: SubviewPart {
     case viewDidLoad(NSLayoutYAxisAnchor)
 }
 
-extension MainToolbarCoordinator: SubviewNavigation {
+extension MainToolbarCoordinator: Layouting {
     typealias SP = ToolbarPart
     
     func insertNext(_ subview: SP) {
@@ -70,6 +70,14 @@ extension MainToolbarCoordinator: SubviewNavigation {
         case .viewDidLoad(let topAnchor):
             viewDidLoad(topAnchor)
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }
 

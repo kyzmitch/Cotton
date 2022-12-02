@@ -18,9 +18,26 @@ protocol Navigating: AnyObject {
     func stop()
 }
 
-protocol SubviewNavigation: AnyObject {
+enum LayoutStep<SP: SubviewPart> {
+    case viewDidLoad(SP)
+    /// SP - subview type, optional CGFloat to pass container height
+    case viewDidLayoutSubviews(SP, CGFloat? = nil)
+    case viewSafeAreaInsetsDidChange(SP)
+}
+
+enum OwnLayoutStep {
+    /// top and bottom anchors if needed
+    case viewDidLoad(NSLayoutYAxisAnchor?, NSLayoutYAxisAnchor?)
+    /// optional CGFloat to be able to pass container height
+    case viewDidLayoutSubviews(CGFloat? = nil)
+    case viewSafeAreaInsetsDidChange
+}
+
+protocol Layouting: AnyObject {
     associatedtype SP: SubviewPart
     func insertNext(_ subview: SP)
+    func layout(_ step: OwnLayoutStep)
+    func layoutNext(_ step: LayoutStep<SP>)
 }
 
 protocol CoordinatorOwner: AnyObject {

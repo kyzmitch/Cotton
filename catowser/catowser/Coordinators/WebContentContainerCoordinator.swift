@@ -38,7 +38,7 @@ enum ContentContainerPart: SubviewPart {
     case viewDidLoad(NSLayoutYAxisAnchor?)
 }
 
-extension WebContentContainerCoordinator: SubviewNavigation {
+extension WebContentContainerCoordinator: Layouting {
     typealias SP = ContentContainerPart
     
     func insertNext(_ subview: SP) {
@@ -46,6 +46,14 @@ extension WebContentContainerCoordinator: SubviewNavigation {
         case .viewDidLoad(let topAnchor):
             viewDidLoad(topAnchor)
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }
 

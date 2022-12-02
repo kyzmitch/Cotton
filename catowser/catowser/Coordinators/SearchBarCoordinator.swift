@@ -117,7 +117,7 @@ enum SearchBarPart: SubviewPart {
     case suggestions(String)
 }
 
-extension SearchBarCoordinator: SubviewNavigation {
+extension SearchBarCoordinator: Layouting {
     typealias SP = SearchBarPart
     
     func insertNext(_ subview: SP) {
@@ -129,6 +129,14 @@ extension SearchBarCoordinator: SubviewNavigation {
         case .suggestions(let query):
             searhSuggestionsCoordinator?.showNext(.startSearch(query))
         }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
     }
 }
 

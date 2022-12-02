@@ -75,10 +75,7 @@ extension LinkTagsCoordinator: Navigating {
 extension LinkTagsCoordinator: CoordinatorOwner {}
 
 enum LinkTagsPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor, NSLayoutYAxisAnchor?)
-    case insertFilesGrid
-    case filesGridViewDidLoad
-    case filesGridViewDidLayoutSubviews(CGFloat)
+    case filesGrid
     
     /// Link type and source view
     case openInstagramTags([InstagramVideoNode])
@@ -86,25 +83,54 @@ enum LinkTagsPart: SubviewPart {
     case closeTags
 }
 
-extension LinkTagsCoordinator: SubviewNavigation {
+extension LinkTagsCoordinator: Layouting {
     typealias SP = LinkTagsPart
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .insertFilesGrid:
+        case .filesGrid:
             insertFilesGrid()
-        case .viewDidLoad(let topAnchor, let bottomAnchor):
-            viewDidLoad(topAnchor, bottomAnchor)
-        case .filesGridViewDidLoad:
-            filesGridViewDidLoad()
-        case .filesGridViewDidLayoutSubviews(let containerHeight):
-            filesGridViewDidLayoutSubviews(containerHeight)
         case .openInstagramTags(let tags):
             openTagsFor(instagram: tags)
         case .openHtmlTags(let tags):
             openTagsFor(html: tags)
         case .closeTags:
             closeTags()
+        }
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        switch step {
+        case .viewDidLoad(let topAnchor, let bottomAnchor):
+            viewDidLoad(topAnchor, bottomAnchor)
+        case .viewDidLayoutSubviews:
+            break
+        case .viewSafeAreaInsetsDidChange:
+            break
+        }
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        switch step {
+        case .viewDidLoad(let subview):
+            switch subview {
+            case .filesGrid:
+                filesGridViewDidLoad()
+            default:
+                break
+            }
+        case .viewDidLayoutSubviews(let subview, let containerHeight):
+            switch subview {
+            case .filesGrid:
+                guard let height = containerHeight else {
+                    return
+                }
+                filesGridViewDidLayoutSubviews(height)
+            default:
+                break
+            }
+        case .viewSafeAreaInsetsDidChange(let subview):
+            break
         }
     }
 }
@@ -122,12 +148,12 @@ private extension LinkTagsCoordinator {
         filesGridCoordinator = coordinator
     }
     
-    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor, _ bottomAnchor: NSLayoutYAxisAnchor?) {
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?, _ bottomAnchor: NSLayoutYAxisAnchor?) {
         guard let tagsView = startedVC?.controllerView, let containerView = presenterVC?.controllerView else {
             return
         }
         if isPad {
-            guard let bottomAnchor = bottomAnchor else {
+            guard let bottomAnchor = bottomAnchor, let topAnchor = topAnchor else {
                 return
             }
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
@@ -138,6 +164,9 @@ private extension LinkTagsCoordinator {
             let tagsBottom = tagsView.bottomAnchor
             tagsBottom.constraint(equalTo: topAnchor).isActive = true
         } else {
+            guard let topAnchor = topAnchor else {
+                return
+            }
             hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: topAnchor, constant: .linkTagsHeight)
             showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: topAnchor)
         }
@@ -152,11 +181,11 @@ private extension LinkTagsCoordinator {
         guard let anchor = startedVC?.controllerView.topAnchor else {
             return
         }
-        filesGridCoordinator?.insertNext(.viewDidLoad(anchor))
+        filesGridCoordinator?.layout(.viewDidLoad(nil, anchor))
     }
     
     func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat) {
-        filesGridCoordinator?.insertNext(.viewDidLayoutSubviews(containerHeight))
+        filesGridCoordinator?.layout(.viewDidLayoutSubviews(containerHeight))
     }
     
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
