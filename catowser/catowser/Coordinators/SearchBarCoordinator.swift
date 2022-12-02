@@ -78,13 +78,13 @@ final class SearchBarCoordinator: NSObject, Coordinator {
         } else {
             createdVC = vcFactory.deviceSpecificSearchBarViewController(self)
         }
-        guard let vc = createdVC, let contentContainerView = presenterVC?.controllerView else {
+        guard let vc = createdVC, let controllerView = presenterVC?.controllerView else {
             return
         }
         
         vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
         startedVC = vc
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)
     }
 }
 

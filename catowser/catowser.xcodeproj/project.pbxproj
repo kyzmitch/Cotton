@@ -58,7 +58,6 @@
 		6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsListManager.swift */; };
 		60A82C4D22549446008210D9 /* FilesGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */; };
 		60A82C4F22549453008210D9 /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
-		60A82C532254E1F7008210D9 /* AppLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */; };
 		60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
 		60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */; };
@@ -300,7 +299,6 @@
 		8A8035C724442F0F000E035F /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
-		8A8035CA24442F0F000E035F /* AppLayoutCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */; };
 		8A8035CB24442F0F000E035F /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA821FF1BD80071BECF /* CounterView.swift */; };
 		8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7509BF9122AF832200F4D701 /* Site+Extension.swift */; };
 		8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8ED2270739F00F5D869 /* DownloadButtonCellView.swift */; };
@@ -482,6 +480,8 @@
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
 		8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
 		8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
+		8ADC4971293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */; };
+		8ADC4972293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */; };
 		8AE0BDDA292D06D200A8BF9E /* LoadingProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE0BDD9292D06D200A8BF9E /* LoadingProgressViewController.swift */; };
 		8AE0BDDB292D06D200A8BF9E /* LoadingProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE0BDD9292D06D200A8BF9E /* LoadingProgressViewController.swift */; };
 		8AE0BDDD292D079300A8BF9E /* LoadingProgressCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */; };
@@ -920,7 +920,6 @@
 		60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FilesGridViewController.storyboard; sourceTree = "<group>"; };
 		60A82C4E22549453008210D9 /* FilesGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridViewController.swift; sourceTree = "<group>"; };
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
-		60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLayoutCoordinator.swift; sourceTree = "<group>"; };
 		60C12BE2226746EC004FCB14 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE42267480C004FCB14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CottonToolbarView.swift; sourceTree = "<group>"; };
@@ -1172,6 +1171,7 @@
 		8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureSource.swift; sourceTree = "<group>"; };
 		8ADAF54D240126F700A0D233 /* LocalSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSettings.swift; sourceTree = "<group>"; };
 		8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesCoordinator.swift; sourceTree = "<group>"; };
+		8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomViewCoordinator.swift; sourceTree = "<group>"; };
 		8AE0BDD9292D06D200A8BF9E /* LoadingProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgressViewController.swift; sourceTree = "<group>"; };
 		8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgressCoordinator.swift; sourceTree = "<group>"; };
 		8AE31135247C664600FF28B1 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -1592,17 +1592,9 @@
 				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
 				8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */,
 				8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */,
-				7533929F291FD30B00570461 /* LegacyRouters */,
+				8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */,
 			);
 			path = Coordinators;
-			sourceTree = "<group>";
-		};
-		7533929F291FD30B00570461 /* LegacyRouters */ = {
-			isa = PBXGroup;
-			children = (
-				60A82C522254E1F7008210D9 /* AppLayoutCoordinator.swift */,
-			);
-			path = LegacyRouters;
 			sourceTree = "<group>";
 		};
 		755E107827C0FB8200D90AD0 /* DuckDuckGoAutocomplete */ = {
@@ -3448,6 +3440,7 @@
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
+				8ADC4971293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */,
 				755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
 				753392A1291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */,
@@ -3520,7 +3513,6 @@
 				8A55351A247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
-				60A82C532254E1F7008210D9 /* AppLayoutCoordinator.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
 				8AB9BE1A28FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8AED41A0292C004100A00DB2 /* WebViewsEnvironment.swift in Sources */,
@@ -3659,6 +3651,7 @@
 				8A8035B224442F0F000E035F /* AppDelegate.swift in Sources */,
 				8A8035B324442F0F000E035F /* WebViewsReuseManager.swift in Sources */,
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
+				8ADC4972293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */,
 				755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
 				753392A2291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */,
@@ -3731,7 +3724,6 @@
 				8A55351B247D740900E3B330 /* SiteMenuModel.swift in Sources */,
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
-				8A8035CA24442F0F000E035F /* AppLayoutCoordinator.swift in Sources */,
 				8A8035CB24442F0F000E035F /* CounterView.swift in Sources */,
 				8AB9BE1928FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8AED41A1292C004100A00DB2 /* WebViewsEnvironment.swift in Sources */,

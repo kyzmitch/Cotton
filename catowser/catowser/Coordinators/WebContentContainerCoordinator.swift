@@ -16,7 +16,7 @@ final class WebContentContainerCoordinator: Coordinator {
     weak var presenterVC: AnyViewController?
     
     /// The view needed to hold tab content like WebView or favorites table view.
-    private lazy var containerView: UIView = {
+    lazy var containerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .white

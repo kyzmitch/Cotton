@@ -9,12 +9,6 @@
 import UIKit
 import CoreCatowser
 
-/// A workaround protocol to get a reference to a view from root view controller
-protocol BrowserContentViewHolder: AnyObject {
-    var containerView: UIView { get }
-    var underToolbarViewBounds: CGRect { get }
-}
-
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
  would be layout type (phone or tablet), but it doesn't give the benefits which are needed, like
@@ -29,7 +23,7 @@ protocol BrowserContentViewHolder: AnyObject {
 /// Declares an interface for operations that create abstract product objects.
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController & BrowserContentViewHolder
+    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate) -> AnyViewController
@@ -70,7 +64,7 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController & BrowserContentViewHolder {
+    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController {
         let vc: MainBrowserViewController = .init(coordinator)
         return vc
     }

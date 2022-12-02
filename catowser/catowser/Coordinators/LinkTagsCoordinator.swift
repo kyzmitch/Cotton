@@ -9,6 +9,10 @@
 import UIKit
 import JSPlugins
 
+protocol MediaLinksPresenter: AnyObject {
+    func didReceiveMediaLinks()
+}
+
 final class LinkTagsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory
     var startedCoordinator: Coordinator?
@@ -20,10 +24,11 @@ final class LinkTagsCoordinator: Coordinator {
     
     /// Specific coordinator type
     private var filesGridCoordinator: FilesGridCoordinator?
+    private var isLinkTagsShowed: Bool = false
     
     private var tagsSiteDataSource: TagsSiteDataSource?
-    private(set) var isFilesGreedShowed: Bool = false
     private weak var viewInterface: LinkTagsPresenter?
+    private weak var mediaLinksPresenter: MediaLinksPresenter?
     
     // MARK: - All constraints should be stored by strong references because they are removed during deactivation
 
@@ -51,6 +56,22 @@ final class LinkTagsCoordinator: Coordinator {
     }
 }
 
+enum LinkTagsRoute: Route {}
+
+extension LinkTagsCoordinator: Navigating {
+    typealias R = LinkTagsRoute
+    
+    func showNext(_ route: R) {
+        
+    }
+    
+    func stop() {
+        filesGridCoordinator?.stop()
+        filesGridCoordinator = nil
+        // TODO: maybe need to call `parent?.didFinish()`
+    }
+}
+
 extension LinkTagsCoordinator: CoordinatorOwner {}
 
 enum LinkTagsPart: SubviewPart {
@@ -60,7 +81,6 @@ enum LinkTagsPart: SubviewPart {
     case filesGridViewDidLayoutSubviews(CGFloat)
     
     /// Link type and source view
-    case showVideos(LinksType, UIView)
     case openInstagramTags([InstagramVideoNode])
     case openHtmlTags([HTMLVideoTag])
     case closeTags
@@ -79,8 +99,6 @@ extension LinkTagsCoordinator: SubviewNavigation {
             filesGridViewDidLoad()
         case .filesGridViewDidLayoutSubviews(let containerHeight):
             filesGridViewDidLayoutSubviews(containerHeight)
-        case .showVideos(let type, let sourceView):
-            presentVideos(type, sourceView)
         case .openInstagramTags(let tags):
             openTagsFor(instagram: tags)
         case .openHtmlTags(let tags):
@@ -131,35 +149,14 @@ private extension LinkTagsCoordinator {
     }
     
     func filesGridViewDidLoad() {
-        filesGridCoordinator?.insertNext(.viewDidLoad)
+        guard let anchor = startedVC?.controllerView.topAnchor else {
+            return
+        }
+        filesGridCoordinator?.insertNext(.viewDidLoad(anchor))
     }
     
     func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat) {
         filesGridCoordinator?.insertNext(.viewDidLayoutSubviews(containerHeight))
-    }
-    
-    func presentVideos(_ type: LinksType, _ sourceView: UIView) {
-        guard !isFilesGreedShowed else {
-            hideFilesGreedIfNeeded()
-            return
-        }
-        if !isPad {
-            filesGreedController.reloadWith(source: source) { [weak self] in
-                self?.showFilesGreedOnPhoneIfNeeded()
-            }
-        } else {
-            filesGreedController.viewController.modalPresentationStyle = .popover
-            filesGreedController.viewController.preferredContentSize = CGSize(width: 500, height: 600)
-            if let popoverPresenter = filesGreedController.viewController.popoverPresentationController {
-                popoverPresenter.permittedArrowDirections = .any
-                popoverPresenter.sourceRect = sourceRect
-                popoverPresenter.sourceView = sourceView
-            }
-            filesGreedController.reloadWith(source: source, completion: nil)
-            presenter.viewController.present(filesGreedController.viewController,
-                                             animated: true,
-                                             completion: nil)
-        }
     }
     
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
@@ -176,27 +173,10 @@ private extension LinkTagsCoordinator {
 
     func closeTags() {
         tagsSiteDataSource = nil
-        hideFilesGreedIfNeeded()
+        filesGridCoordinator?.insertNext(.hide)
         hideLinkTagsController()
-        filesGreedController.clearFiles()
+        filesGridCoordinator?.insertNext(.clear)
         viewInterface?.clearLinks()
-    }
-    
-    func hideFilesGreedIfNeeded() {
-        guard isFilesGreedShowed else {
-            return
-        }
-
-        if !isPad {
-            showedFilesGreedConstraint?.isActive = false
-            hiddenFilesGreedConstraint?.isActive = true
-
-            filesGreedController.controllerView.layoutIfNeeded()
-        } else {
-            filesGreedController.viewController.dismiss(animated: true, completion: nil)
-        }
-
-        isFilesGreedShowed = false
     }
     
     func hideLinkTagsController() {
@@ -206,7 +186,7 @@ private extension LinkTagsCoordinator {
         showedTagsConstraint?.isActive = false
         hiddenTagsConstraint?.isActive = true
 
-        // linkTagsController.controllerView.layoutIfNeeded()
+        startedVC?.controllerView.layoutIfNeeded()
         isLinkTagsShowed = false
     }
     
@@ -229,42 +209,24 @@ private extension LinkTagsCoordinator {
         showedTagsConstraint?.isActive = true
 
         UIView.animate(withDuration: 0.33) {
-            // self.linkTagsController.controllerView.layoutIfNeeded()
+            self.startedVC?.controllerView.layoutIfNeeded()
         }
-    }
-    
-    /// Shows files greed view, designed only for Phone layout
-    /// for Tablet layout we're using popover.
-    func showFilesGreedOnPhoneIfNeeded() {
-        guard !isPad else {
-            // only for Phone layout
-            return
-        }
-        guard !isFilesGreedShowed else {
-            return
-        }
-
-        hiddenFilesGreedConstraint?.isActive = false
-        showedFilesGreedConstraint?.isActive = true
-
-        UIView.animate(withDuration: 0.6) {
-            self.filesGreedController.controllerView.layoutIfNeeded()
-        }
-
-        isFilesGreedShowed = true
     }
 }
 
 extension LinkTagsCoordinator: LinkTagsDelegate {
     func didSelect(type: LinksType, from sourceView: UIView) {
-        insertNext(.showVideos(type, sourceView))
+        guard let source = tagsSiteDataSource else {
+            return
+        }
+        filesGridCoordinator?.insertNext(.showVideos(type, sourceView, sourceView.frame, source))
     }
 }
 
 extension LinkTagsCoordinator: DonwloadPanelDelegate {
     func didPressDownloads(to hide: Bool) {
         if hide {
-            hideFilesGreedIfNeeded()
+            filesGridCoordinator?.insertNext(.hide)
             hideLinkTagsController()
         } else {
             // only can be used for phone layout
@@ -274,7 +236,9 @@ extension LinkTagsCoordinator: DonwloadPanelDelegate {
     }
     
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect) {
-        guard let source = tagsSiteDataSource else { return }
-        presentVideoViews(using: source, from: sourceView, and: sourceRect)
+        guard let source = tagsSiteDataSource else {
+            return
+        }
+        filesGridCoordinator?.insertNext(.showVideos(.video, sourceView, sourceRect, source))
     }
 }

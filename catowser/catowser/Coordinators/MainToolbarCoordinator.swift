@@ -59,7 +59,7 @@ extension MainToolbarCoordinator: Navigating {
 }
 
 enum ToolbarPart: SubviewPart {
-    case viewDidLoad
+    case viewDidLoad(NSLayoutYAxisAnchor)
 }
 
 extension MainToolbarCoordinator: SubviewNavigation {
@@ -67,22 +67,28 @@ extension MainToolbarCoordinator: SubviewNavigation {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .viewDidLoad:
-            viewDidLoad()
+        case .viewDidLoad(let topAnchor):
+            viewDidLoad(topAnchor)
         }
     }
 }
 
 private extension MainToolbarCoordinator {
-    func viewDidLoad() {
-        toolbarView.topAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor) {
+        guard let toolbarView = startedVC?.controllerView else {
+            return
+        }
+        guard let controllerView = presenterVC?.controllerView else {
+            return
+        }
+        toolbarView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        toolbarView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor).isActive = true
+        toolbarView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor).isActive = true
         toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true
         if #available(iOS 11, *) {
-            toolbarView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            toolbarView.bottomAnchor.constraint(equalTo: controllerView.safeAreaLayoutGuide.bottomAnchor).isActive = true
         } else {
-            toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            toolbarView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor).isActive = true
         }
     }
     

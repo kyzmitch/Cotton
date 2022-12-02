@@ -14,7 +14,7 @@ import JSPlugins
 import CoreHttpKit
 import CoreCatowser
 
-final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseViewController, BrowserContentViewHolder
+final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseViewController
     where C.R == MainScreenRoute, C.SP == MainScreenSubview {
     /// Define a specific type of coordinator, because not any coordinator
     /// can be used for this specific view controller
@@ -38,30 +38,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - BrowserContentViewHolder
-
-    
-    var underToolbarViewBounds: CGRect {
-        underToolbarView.bounds
-    }
-    
-    // MARK: - Other properties
-
-    /// View to make color under toolbar is the same on iPhone x without home button
-    private lazy var underToolbarView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        ThemeProvider.shared.setupUnderToolbar(v)
-        return v
-    }()
-
-    private lazy var underLinkTagsView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        ThemeProvider.shared.setupUnderLinkTags(v)
-        return v
-    }()
-    
     // MARK: - Overrided functions from base type
     
     override func loadView() {
@@ -82,7 +58,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             // no need to add files greed as a child
             // will try to show as popover
             coordinator?.insertNext(.linkTags)
-            view.addSubview(underLinkTagsView)
         } else {
             // should be added before iPhone toolbar
             coordinator?.insertNext(.linkTags)
@@ -90,9 +65,8 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
             // but layout goes before link tags
             coordinator?.insertNext(.filesGrid)
             coordinator?.insertNext(.toolbar)
-            // Need to not add it if it is not iPhone without home button
-            view.addSubview(underToolbarView)
         }
+        coordinator?.insertNext(.dummyView)
     }
     
     override func viewDidLoad() {
@@ -106,9 +80,14 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         coordinator?.insertNext(.searchBarViewDidLoad)
         coordinator?.insertNext(.loadingProgressViewDidLoad)
         if isPad {
-            setupTabletConstraints()
+            coordinator?.insertNext(.webContentContainerViewDidLoad)
+            coordinator?.insertNext(.dummyViewDidLoad)
+            coordinator?.insertNext(.linkTagsViewDidLoad)
         } else {
-            setupPhoneConstraints()
+            coordinator?.insertNext(.webContentContainerViewDidLoad)
+            coordinator?.insertNext(.toolbarViewDidLoad)
+            coordinator?.insertNext(.dummyViewDidLoad)
+            coordinator?.insertNext(.linkTagsViewDidLoad)
         }
 
         if !isPad {
@@ -119,12 +98,8 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
 
-        // only here we can get correct value for
-        // safe area inset
         if isPad {
-            layoutCoordinator.underLinksViewHeightConstraint?.constant = view.safeAreaInsets.bottom
-            underLinkTagsView.setNeedsLayout()
-            underLinkTagsView.layoutIfNeeded()
+            coordinator?.insertNext(.dummyViewSafeAreaInsetsDidChange)
         }
     }
 
@@ -132,7 +107,6 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
         super.viewDidLayoutSubviews()
 
         if !isPad {
-            containerView.bounds.height
             coordinator?.insertNext(.filesGridViewDidLayoutSubviews)
         }
     }
@@ -145,32 +119,5 @@ final class MainBrowserViewController<C: Navigating & SubviewNavigation>: BaseVi
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
-    }
-}
-
-private extension MainBrowserViewController {
-    func setupTabletConstraints() {
-        coordinator?.insertNext(.webContentContainerViewDidLoad)
-
-        underLinkTagsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        underLinkTagsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        let dummyViewHeight: CGFloat = .safeAreaBottomMargin
-        let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
-        layoutCoordinator.underLinksViewHeightConstraint = linksHConstraint
-        layoutCoordinator.underLinksViewHeightConstraint?.isActive = true
-
-        coordinator?.insertNext(.linkTagsViewDidLoad(underLinkTagsView.topAnchor, underLinkTagsView.bottomAnchor))
-    }
-    
-    func setupPhoneConstraints() {
-        coordinator?.insertNext(.webContentContainerViewDidLoad)
-        coordinator?.insertNext(.toolbarViewDidLoad)
-        
-        underToolbarView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor).isActive = true
-        underToolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        underToolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        underToolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        coordinator?.insertNext(.linkTagsViewDidLoad(toolbarView.topAnchor, nil))
     }
 }

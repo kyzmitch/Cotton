@@ -29,6 +29,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     private var searchBarCoordinator: SearchBarCoordinator?
     /// Specific link for tags coordinator
     private var linkTagsCoordinator: LinkTagsCoordinator?
+    /// Dummy view coordinator
+    private var bottomViewCoordinator: BottomViewCoordinator?
     /// Coordinator for inserted child view controller
     private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
@@ -46,18 +48,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private lazy var previousTabContent: Tab.ContentType = FeatureManager.tabDefaultContentValue().contentType
-    /// Temporary property, MUST be removed during refactoring
-    var layoutCoordinator: AppLayoutCoordinator?
     /// Need to update this navigation delegate each time it changes in router holder
     private weak var siteNavigationDelegate: SiteNavigationDelegate?
-    /// Convinience property to get a content container from root view controller
-    private var contentContainerView: UIView? {
-        (startedVC as? BrowserContentViewHolder)?.containerView
-    }
-    /// Convinience property for specific view bounds
-    private var underToolbarViewBounds: CGRect? {
-        (startedVC as? BrowserContentViewHolder)?.underToolbarViewBounds
-    }
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
     /// Web site navigation delegate
@@ -77,7 +69,6 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     func start() {
         let vc = vcFactory.rootViewController(self)
         startedVC = vc
-        layoutCoordinator = AppLayoutCoordinator(vc, self)
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         
@@ -119,6 +110,7 @@ enum MainScreenSubview: SubviewPart {
     case filesGrid
     case linkTags
     case toolbar
+    case dummyView
     // MARK: - layout
     case tabsViewDidLoad
     case searchBarViewDidLoad
@@ -126,10 +118,13 @@ enum MainScreenSubview: SubviewPart {
     case filesGridViewDidLoad
     case webContentContainerViewDidLoad
     case toolbarViewDidLoad
-    
-    case linkTagsViewDidLoad(NSLayoutYAxisAnchor, NSLayoutYAxisAnchor?)
-    
-    case filesGridViewDidLayoutSubviews(CGFloat)
+    case dummyViewDidLoad
+    case linkTagsViewDidLoad
+    // MARK: - safe area
+    case dummyViewSafeAreaInsetsDidChange
+    // MARK: - view Did Layout Subviews
+    case filesGridViewDidLayoutSubviews
+    // MARK: - lifecycle actions
     case openTab(Tab.ContentType)
 }
 
@@ -154,6 +149,8 @@ extension AppCoordinator: SubviewNavigation {
             insertLinkTags()
         case .toolbar:
             insertToolbar()
+        case .dummyView:
+            insertDummyView()
             // MARK: - views layout
         case .tabsViewDidLoad:
             tabsViewDidLoad()
@@ -167,16 +164,19 @@ extension AppCoordinator: SubviewNavigation {
             webContentContainerViewDidLoad()
         case .toolbarViewDidLoad:
             toolbarViewDidLoad()
-            
-            // MARK: - view did layout subviews
+        case .dummyViewDidLoad:
+            dummyViewDidLoad()
+            // MARK: - view Safe Area Insets Did Change
+        case .dummyViewSafeAreaInsetsDidChange:
+            dummyViewSafeAreaInsetsDidChange()
         
             // MARK: - lifecycle navigation actions
         case .openTab(let content):
             open(tabContent: content)
-        case .linkTagsViewDidLoad(let topAnchor, let bottomAnchor):
-            linkTagsViewDidLoad(topAnchor, bottomAnchor)
-        case .filesGridViewDidLayoutSubviews(let containerHeight):
-            filesGridViewDidLayoutSubviews(containerHeight)
+        case .linkTagsViewDidLoad:
+            linkTagsViewDidLoad()
+        case .filesGridViewDidLayoutSubviews:
+            filesGridViewDidLayoutSubviews()
         }
     }
 }
@@ -283,6 +283,15 @@ private extension AppCoordinator {
         toolbarCoordinator = coordinator
     }
     
+    func insertDummyView() {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: BottomViewCoordinator = .init(vcFactory, presenter)
+        coordinator.parent = self
+        coordinator.start()
+        bottomViewCoordinator = coordinator
+    }
+    
     // MARK: - layout methods to layout subviews
     
     func tabsViewDidLoad() {
@@ -315,7 +324,19 @@ private extension AppCoordinator {
     }
     
     func toolbarViewDidLoad() {
-        toolbarCoordinator?.insertNext(.viewDidLoad)
+        guard let topAnchor = webContentContainerCoordinator?.containerView.bottomAnchor else {
+            return
+        }
+        toolbarCoordinator?.insertNext(.viewDidLoad(topAnchor))
+    }
+    
+    func dummyViewDidLoad() {
+        let topAnchor = toolbarCoordinator?.startedVC?.controllerView.bottomAnchor
+        bottomViewCoordinator?.insertNext(.viewDidLoad(topAnchor))
+    }
+    
+    func dummyViewSafeAreaInsetsDidChange() {
+        bottomViewCoordinator?.insertNext(.viewSafeAreaInsetsDidChange)
     }
     
     // MARK: - lifecycle navigation methods
@@ -323,11 +344,7 @@ private extension AppCoordinator {
     func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        let coordinator: GlobalMenuCoordinator = .init(vcFactory,
-                                                       presenter,
-                                                       model,
-                                                       sourceView,
-                                                       sourceRect)
+        let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
         coordinator.parent = self
         coordinator.start()
         startedCoordinator = coordinator
@@ -335,7 +352,7 @@ private extension AppCoordinator {
 
     
     func insertTopSites() {
-        guard let containerView = contentContainerView else {
+        guard let containerView = webContentContainerCoordinator?.containerView else {
             assertionFailure("Root view controller must have content view")
             return
         }
@@ -348,7 +365,7 @@ private extension AppCoordinator {
     }
     
     func insertBlankTab() {
-        guard let containerView = contentContainerView else {
+        guard let containerView = webContentContainerCoordinator?.containerView else {
             assertionFailure("Root view controller must have content view")
             return
         }
@@ -361,7 +378,8 @@ private extension AppCoordinator {
     }
     
     func insertWebTab(_ site: Site) {
-        guard let containerView = contentContainerView, let plugins = jsPluginsBuilder else {
+        guard let containerView = webContentContainerCoordinator?.containerView,
+                let plugins = jsPluginsBuilder else {
             assertionFailure("Root view controller must have content view")
             return
         }
@@ -410,11 +428,26 @@ private extension AppCoordinator {
         previousTabContent = tabContent
     }
     
-    func linkTagsViewDidLoad(_ topAnchor: NSLayoutYAxisAnchor, _ bottomAnchor: NSLayoutYAxisAnchor?) {
+    func linkTagsViewDidLoad() {
+        let topAnchor: NSLayoutYAxisAnchor
+        let bottomAnchor: NSLayoutYAxisAnchor?
+        if isPad {
+            // swiftlint:disable:next force_unwrapping
+            topAnchor = (bottomViewCoordinator?.tabletTopAnchor)!
+            // swiftlint:disable:next force_unwrapping
+            bottomAnchor = (bottomViewCoordinator?.tabletBottomAnchor)!
+        } else {
+            // swiftlint:disable:next force_unwrapping
+            topAnchor = (toolbarCoordinator?.startedVC?.controllerView.topAnchor)!
+            bottomAnchor = nil
+        }
         linkTagsCoordinator?.insertNext(.viewDidLoad(topAnchor, bottomAnchor))
     }
     
-    func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat) {
+    func filesGridViewDidLayoutSubviews() {
+        guard let containerHeight = webContentContainerCoordinator?.containerView.bounds.height else {
+            return
+        }
         linkTagsCoordinator?.insertNext(.filesGridViewDidLayoutSubviews(containerHeight))
     }
 }
@@ -476,7 +509,7 @@ extension AppCoordinator: SearchBarDelegate {
     /// Dynamicly determined height because it can be different before layout finish it's work
     var toolbarHeight: CGFloat {
         let toolbarHeight = toolbarCoordinator?.startedVC?.controllerView.bounds.height ?? 24
-        return toolbarHeight + (underToolbarViewBounds?.height ?? 24)
+        return toolbarHeight + (bottomViewCoordinator?.underToolbarViewBounds?.height ?? 24)
     }
     
     func openTab(_ content: Tab.ContentType) {
