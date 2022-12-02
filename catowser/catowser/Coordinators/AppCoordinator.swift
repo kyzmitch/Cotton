@@ -105,7 +105,6 @@ extension AppCoordinator: Navigating {
 }
 
 enum MainScreenSubview: SubviewPart {
-    // MARK: - views
     case tabs
     case searchBar
     case loadingProgress
@@ -121,7 +120,6 @@ extension AppCoordinator: Layouting {
     
     func insertNext(_ subview: SP) {
         switch subview {
-            // MARK: - views insertion
         case .tabs:
             insertTabs()
         case .searchBar:
@@ -166,8 +164,6 @@ extension AppCoordinator: Layouting {
                 toolbarViewDidLoad()
             case .dummyView:
                 dummyViewDidLoad()
-            default:
-                break
             }
         case .viewDidLayoutSubviews(let subview, _):
             switch subview {
@@ -205,14 +201,14 @@ extension AppCoordinator: SiteNavigationComponent {
 
 extension AppCoordinator: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
-        linkTagsCoordinator?.insertNext(.openInstagramTags(nodes))
+        linkTagsCoordinator?.showNext(.openInstagramTags(nodes))
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
 
 extension AppCoordinator: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
-        linkTagsCoordinator?.insertNext(.openHtmlTags(tags))
+        linkTagsCoordinator?.showNext(.openHtmlTags(tags))
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
@@ -304,20 +300,19 @@ private extension AppCoordinator {
         guard isPad else {
             return
         }
-        tabletTabsCoordinator?.insertNext(.viewDidLoad)
+        tabletTabsCoordinator?.layout(.viewDidLoad())
     }
     
     func searchBarViewDidLoad() {
         // use specific bottom anchor when it is Tablet layout
         // and the most top view is not a superview but tabs view
-        searchBarCoordinator?.insertNext(.viewDidLoad(tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor))
+        let topAnchor = tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor
+        searchBarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
     }
     
     func loadingProgressViewDidLoad() {
-        guard let bottomAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor else {
-            return
-        }
-        loadingProgressCoordinator?.insertNext(.viewDidLoad(bottomAnchor))
+        let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
+        loadingProgressCoordinator?.layout(.viewDidLoad(topAnchor))
     }
     
     func filesGridViewDidLoad() {
@@ -325,24 +320,22 @@ private extension AppCoordinator {
     }
     
     func webContentContainerViewDidLoad() {
-        let anchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
-        webContentContainerCoordinator?.insertNext(.viewDidLoad(anchor))
+        let bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
+        webContentContainerCoordinator?.layout(.viewDidLoad(nil, bottomAnchor))
     }
     
     func toolbarViewDidLoad() {
-        guard let topAnchor = webContentContainerCoordinator?.containerView.bottomAnchor else {
-            return
-        }
-        toolbarCoordinator?.insertNext(.viewDidLoad(topAnchor))
+        let topAnchor = webContentContainerCoordinator?.containerView.bottomAnchor
+        toolbarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
     }
     
     func dummyViewDidLoad() {
         let topAnchor = toolbarCoordinator?.startedVC?.controllerView.bottomAnchor
-        bottomViewCoordinator?.insertNext(.viewDidLoad(topAnchor))
+        bottomViewCoordinator?.layout(.viewDidLoad(topAnchor, nil))
     }
     
     func dummyViewSafeAreaInsetsDidChange() {
-        bottomViewCoordinator?.insertNext(.viewSafeAreaInsetsDidChange)
+        bottomViewCoordinator?.layout(.viewSafeAreaInsetsDidChange)
     }
     
     // MARK: - lifecycle navigation methods
@@ -405,7 +398,7 @@ private extension AppCoordinator {
     // MARK: - Open tab content functions
     
     func open(tabContent: Tab.ContentType) {
-        linkTagsCoordinator?.insertNext(.closeTags)
+        linkTagsCoordinator?.showNext(.closeTags)
 
         switch previousTabContent {
         case .site:
@@ -419,7 +412,7 @@ private extension AppCoordinator {
         switch tabContent {
         case .site(let site):
             // need to display progress view before load start
-            loadingProgressCoordinator?.insertNext(.showProgress(true))
+            loadingProgressCoordinator?.showNext(.showProgress(true))
             insertWebTab(site)
         case .topSites:
             siteNavigator = nil
@@ -479,7 +472,7 @@ extension AppCoordinator: TabsObserver {
             withSite = false
         }
 
-        linkTagsCoordinator?.insertNext(.closeTags)
+        linkTagsCoordinator?.showNext(.closeTags)
         reloadNavigationElements(withSite)
     }
 }
@@ -493,16 +486,16 @@ extension AppCoordinator: GlobalMenuDelegate {
 
 extension AppCoordinator: WebContentDelegate {
     func didProvisionalNavigationStart() {
-        linkTagsCoordinator?.insertNext(.closeTags)
+        linkTagsCoordinator?.showNext(.closeTags)
     }
     
     func didLoadingProgressChange(_ progress: Float) {
-        loadingProgressCoordinator?.insertNext(.setProgress(progress, false))
+        loadingProgressCoordinator?.showNext(.setProgress(progress, false))
     }
     
     func didProgress(show: Bool) {
-        loadingProgressCoordinator?.insertNext(.showProgress(show))
-        loadingProgressCoordinator?.insertNext(.setProgress(0, false))
+        loadingProgressCoordinator?.showNext(.showProgress(show))
+        loadingProgressCoordinator?.showNext(.setProgress(0, false))
     }
 }
 

@@ -32,39 +32,41 @@ final class TabletTabsCoordinator: Coordinator {
     }
 }
 
-enum TabletTabsSubview: SubviewPart {
-    case viewDidLoad
-}
+enum TabletTabsSubview: SubviewPart {}
 
 extension TabletTabsCoordinator: Layouting {
     typealias SP = TabletTabsSubview
     
-    func insertNext(_ subview: SP) {
-        switch subview {
+    func insertNext(_ subview: SP) {}
+    
+    func layout(_ step: OwnLayoutStep) {
+        switch step {
         case .viewDidLoad:
-            guard let vc = startedVC, let containerView = presenterVC?.controllerView else {
-                return
-            }
-            // https://github.com/SnapKit/SnapKit/issues/448
-            // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
-            // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
-            if #available(iOS 11, *) {
-                let topAnchor = containerView.safeAreaLayoutGuide.topAnchor
-                vc.controllerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-            } else {
-                vc.controllerView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-            }
-            vc.controllerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-            vc.controllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-            vc.controllerView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
+            viewDidLoad()
+        default:
+            break
         }
     }
     
-    func layout(_ step: OwnLayoutStep) {
-        
-    }
-    
-    func layoutNext(_ step: LayoutStep<SP>) {
-        
+    func layoutNext(_ step: LayoutStep<SP>) {}
+}
+
+private extension TabletTabsCoordinator {
+    func viewDidLoad() {
+        guard let vc = startedVC, let containerView = presenterVC?.controllerView else {
+            return
+        }
+        // https://github.com/SnapKit/SnapKit/issues/448
+        // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
+        // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
+        if #available(iOS 11, *) {
+            let topAnchor = containerView.safeAreaLayoutGuide.topAnchor
+            vc.controllerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        } else {
+            vc.controllerView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        }
+        vc.controllerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        vc.controllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        vc.controllerView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
     }
 }

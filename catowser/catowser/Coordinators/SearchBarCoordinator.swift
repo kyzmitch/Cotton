@@ -90,6 +90,8 @@ final class SearchBarCoordinator: NSObject, Coordinator {
 
 enum SearchBarRoute: Route {
     case changeState(SearchBarState, Bool)
+    case suggestions(String)
+    case hideSuggestions
 }
 
 extension SearchBarCoordinator: Navigating {
@@ -102,6 +104,10 @@ extension SearchBarCoordinator: Navigating {
                 return
             }
             searchInterface.changeState(to: state, animated: animated)
+        case .suggestions(let query):
+            searhSuggestionsCoordinator?.showNext(.startSearch(query))
+        case .hideSuggestions:
+            hideSearchController()
         }
     }
     
@@ -112,9 +118,7 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor?)
-    case layoutSuggestions
-    case suggestions(String)
+    case suggestions
 }
 
 extension SearchBarCoordinator: Layouting {
@@ -122,17 +126,18 @@ extension SearchBarCoordinator: Layouting {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .viewDidLoad(let bottomAnchor):
-            viewDidLoad(bottomAnchor)
-        case .layoutSuggestions:
+        case .suggestions:
             insertSearchSuggestions()
-        case .suggestions(let query):
-            searhSuggestionsCoordinator?.showNext(.startSearch(query))
         }
     }
     
     func layout(_ step: OwnLayoutStep) {
-        
+        switch step {
+        case .viewDidLoad(let topAnchor, _):
+            viewDidLoad(topAnchor)
+        default:
+            break
+        }
     }
     
     func layoutNext(_ step: LayoutStep<SP>) {
@@ -147,14 +152,14 @@ extension SearchBarCoordinator: CoordinatorOwner {
 }
 
 private extension SearchBarCoordinator {
-    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
         guard let presenterView = presenterVC?.controllerView else {
             return
         }
         guard let searchView = startedVC?.controllerView else {
             return
         }
-        if isPad, let anchor = bottomAnchor {
+        if isPad, let anchor = topAnchor {
             searchView.topAnchor.constraint(equalTo: anchor).isActive = true
         } else {
             if #available(iOS 11, *) {
@@ -194,9 +199,8 @@ private extension SearchBarCoordinator {
             print("Attempted to hide suggestions when they are not showed")
             return
         }
-        
-        searhSuggestionsCoordinator?.stop()
         isSuggestionsShowed = false
+        searhSuggestionsCoordinator?.stop()
     }
     
     func replaceTab(with url: URL, with suggestion: String? = nil) {
@@ -220,10 +224,10 @@ private extension SearchBarCoordinator {
 extension SearchBarCoordinator: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty || searchText.looksLikeAURL() {
-            hideSearchController()
+            showNext(.hideSuggestions)
         } else {
-            insertNext(.layoutSuggestions)
-            insertNext(.suggestions(searchText))
+            insertNext(.suggestions)
+            showNext(.suggestions(searchText))
         }
     }
     
@@ -252,7 +256,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        hideSearchController()
+        showNext(.hideSuggestions)
         searchBar.resignFirstResponder()
         showNext(.changeState(.cancelTapped, true))
     }
@@ -279,7 +283,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
 
 extension SearchBarCoordinator: SearchSuggestionsListDelegate {
     func didSelect(_ content: SuggestionType) {
-        hideSearchController()
+        showNext(.hideSuggestions)
 
         switch content {
         case .looksLikeURL(let likeURL):

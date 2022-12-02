@@ -44,13 +44,24 @@ final class FilesGridCoordinator: Coordinator {
     }
 }
 
-enum FilesGridRoute: Route {}
+enum FilesGridRoute: Route {
+    case hide
+    case clear
+    case videos(LinksType, UIView, CGRect, TagsSiteDataSource)
+}
 
 extension FilesGridCoordinator: Navigating {
     typealias R = FilesGridRoute
     
     func showNext(_ route: R) {
-        
+        switch route {
+        case .hide:
+            hide()
+        case .clear:
+            clear()
+        case .videos(let type, let sourceView, let sourceRect, let tagsDataSource):
+            showVideos(type, sourceView, sourceRect, tagsDataSource)
+        }
     }
     
     func stop() {
@@ -58,25 +69,12 @@ extension FilesGridCoordinator: Navigating {
     }
 }
 
-enum FilesGridPart: SubviewPart {
-    case hide
-    case clear
-    case showVideos(LinksType, UIView, CGRect, TagsSiteDataSource)
-}
+enum FilesGridPart: SubviewPart {}
 
 extension FilesGridCoordinator: Layouting {
     typealias SP = FilesGridPart
     
-    func insertNext(_ subview: SP) {
-        switch subview {
-        case .hide:
-            hide()
-        case .clear:
-            clear()
-        case .showVideos(let type, let sourceView, let sourceRect, let tagsDataSource):
-            showVideos(type, sourceView, sourceRect, tagsDataSource)
-        }
-    }
+    func insertNext(_ subview: SP) {}
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
@@ -161,7 +159,7 @@ private extension FilesGridCoordinator {
                     _ sourceRect: CGRect,
                     _ tagsDataSource: TagsSiteDataSource) {
         guard !isFilesGreedShowed else {
-            insertNext(.hide)
+            showNext(.hide)
             return
         }
         if !isPad {

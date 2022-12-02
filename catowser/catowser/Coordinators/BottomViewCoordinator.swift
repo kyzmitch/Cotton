@@ -61,25 +61,22 @@ final class BottomViewCoordinator: Coordinator {
     }
 }
 
-enum BottomViewPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor?)
-    case viewSafeAreaInsetsDidChange
-}
+enum BottomViewPart: SubviewPart {}
 
 extension BottomViewCoordinator: Layouting {
     typealias SP = BottomViewPart
     
-    func insertNext(_ subview: SP) {
-        switch subview {
-        case .viewDidLoad(let topAnchor):
+    func insertNext(_ subview: SP) {}
+    
+    func layout(_ step: OwnLayoutStep) {
+        switch step {
+        case .viewDidLoad(let topAnchor, _):
             viewDidLoad(topAnchor)
         case .viewSafeAreaInsetsDidChange:
             viewSafeAreaInsetsDidChange()
+        default:
+            break
         }
-    }
-    
-    func layout(_ step: OwnLayoutStep) {
-        
     }
     
     func layoutNext(_ step: LayoutStep<SP>) {

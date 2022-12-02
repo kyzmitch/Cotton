@@ -34,22 +34,20 @@ final class WebContentContainerCoordinator: Coordinator {
     }
 }
 
-enum ContentContainerPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor?)
-}
+enum ContentContainerPart: SubviewPart {}
 
 extension WebContentContainerCoordinator: Layouting {
     typealias SP = ContentContainerPart
     
-    func insertNext(_ subview: SP) {
-        switch subview {
-        case .viewDidLoad(let topAnchor):
-            viewDidLoad(topAnchor)
-        }
-    }
+    func insertNext(_ subview: SP) {}
     
     func layout(_ step: OwnLayoutStep) {
-        
+        switch step {
+        case .viewDidLoad(_, let bottomAnchor):
+            viewDidLoad(bottomAnchor)
+        default:
+            break
+        }
     }
     
     func layoutNext(_ step: LayoutStep<SP>) {
@@ -58,7 +56,7 @@ extension WebContentContainerCoordinator: Layouting {
 }
 
 private extension WebContentContainerCoordinator {
-    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
+    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
@@ -74,7 +72,7 @@ private extension WebContentContainerCoordinator {
         if isPad {
             containerView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor).isActive = true
         } else {
-            guard let anchor = topAnchor else {
+            guard let anchor = bottomAnchor else {
                 return
             }
             containerView.bottomAnchor.constraint(equalTo: anchor).isActive = true

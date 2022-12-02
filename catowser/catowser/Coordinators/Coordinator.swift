@@ -27,7 +27,7 @@ enum LayoutStep<SP: SubviewPart> {
 
 enum OwnLayoutStep {
     /// top and bottom anchors if needed
-    case viewDidLoad(NSLayoutYAxisAnchor?, NSLayoutYAxisAnchor?)
+    case viewDidLoad(NSLayoutYAxisAnchor? = nil, NSLayoutYAxisAnchor? = nil)
     /// optional CGFloat to be able to pass container height
     case viewDidLayoutSubviews(CGFloat? = nil)
     case viewSafeAreaInsetsDidChange

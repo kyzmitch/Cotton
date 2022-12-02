@@ -58,22 +58,20 @@ extension MainToolbarCoordinator: Navigating {
     }
 }
 
-enum ToolbarPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor)
-}
+enum ToolbarPart: SubviewPart {}
 
 extension MainToolbarCoordinator: Layouting {
     typealias SP = ToolbarPart
     
-    func insertNext(_ subview: SP) {
-        switch subview {
-        case .viewDidLoad(let topAnchor):
-            viewDidLoad(topAnchor)
-        }
-    }
+    func insertNext(_ subview: SP) {}
     
     func layout(_ step: OwnLayoutStep) {
-        
+        switch step {
+        case .viewDidLoad(let topAnchor, _):
+            viewDidLoad(topAnchor)
+        default:
+            break
+        }
     }
     
     func layoutNext(_ step: LayoutStep<SP>) {
@@ -82,14 +80,17 @@ extension MainToolbarCoordinator: Layouting {
 }
 
 private extension MainToolbarCoordinator {
-    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor) {
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
         guard let toolbarView = startedVC?.controllerView else {
             return
         }
         guard let controllerView = presenterVC?.controllerView else {
             return
         }
-        toolbarView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        guard let anchor = topAnchor else {
+            return
+        }
+        toolbarView.topAnchor.constraint(equalTo: anchor).isActive = true
         toolbarView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor).isActive = true
         toolbarView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor).isActive = true
         toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true

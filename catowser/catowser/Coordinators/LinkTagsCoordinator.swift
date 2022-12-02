@@ -56,13 +56,24 @@ final class LinkTagsCoordinator: Coordinator {
     }
 }
 
-enum LinkTagsRoute: Route {}
+enum LinkTagsRoute: Route {
+    case openInstagramTags([InstagramVideoNode])
+    case openHtmlTags([HTMLVideoTag])
+    case closeTags
+}
 
 extension LinkTagsCoordinator: Navigating {
     typealias R = LinkTagsRoute
     
     func showNext(_ route: R) {
-        
+        switch route {
+        case .openInstagramTags(let tags):
+            openTagsFor(instagram: tags)
+        case .openHtmlTags(let tags):
+            openTagsFor(html: tags)
+        case .closeTags:
+            closeTags()
+        }
     }
     
     func stop() {
@@ -76,11 +87,6 @@ extension LinkTagsCoordinator: CoordinatorOwner {}
 
 enum LinkTagsPart: SubviewPart {
     case filesGrid
-    
-    /// Link type and source view
-    case openInstagramTags([InstagramVideoNode])
-    case openHtmlTags([HTMLVideoTag])
-    case closeTags
 }
 
 extension LinkTagsCoordinator: Layouting {
@@ -90,12 +96,6 @@ extension LinkTagsCoordinator: Layouting {
         switch subview {
         case .filesGrid:
             insertFilesGrid()
-        case .openInstagramTags(let tags):
-            openTagsFor(instagram: tags)
-        case .openHtmlTags(let tags):
-            openTagsFor(html: tags)
-        case .closeTags:
-            closeTags()
         }
     }
     
@@ -202,9 +202,9 @@ private extension LinkTagsCoordinator {
 
     func closeTags() {
         tagsSiteDataSource = nil
-        filesGridCoordinator?.insertNext(.hide)
+        filesGridCoordinator?.showNext(.hide)
         hideLinkTagsController()
-        filesGridCoordinator?.insertNext(.clear)
+        filesGridCoordinator?.showNext(.clear)
         viewInterface?.clearLinks()
     }
     
@@ -248,14 +248,14 @@ extension LinkTagsCoordinator: LinkTagsDelegate {
         guard let source = tagsSiteDataSource else {
             return
         }
-        filesGridCoordinator?.insertNext(.showVideos(type, sourceView, sourceView.frame, source))
+        filesGridCoordinator?.showNext(.videos(type, sourceView, sourceView.frame, source))
     }
 }
 
 extension LinkTagsCoordinator: DonwloadPanelDelegate {
     func didPressDownloads(to hide: Bool) {
         if hide {
-            filesGridCoordinator?.insertNext(.hide)
+            filesGridCoordinator?.showNext(.hide)
             hideLinkTagsController()
         } else {
             // only can be used for phone layout
@@ -268,6 +268,6 @@ extension LinkTagsCoordinator: DonwloadPanelDelegate {
         guard let source = tagsSiteDataSource else {
             return
         }
-        filesGridCoordinator?.insertNext(.showVideos(.video, sourceView, sourceRect, source))
+        filesGridCoordinator?.showNext(.videos(.video, sourceView, sourceRect, source))
     }
 }

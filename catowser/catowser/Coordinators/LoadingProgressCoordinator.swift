@@ -40,24 +40,16 @@ final class LoadingProgressCoordinator: Coordinator {
     }
 }
 
-enum LoadingProgressPart: SubviewPart {
-    case viewDidLoad(NSLayoutYAxisAnchor)
+enum LoadingProgressRoute: Route {
     case setProgress(Float, _ animated: Bool)
     case showProgress(Bool)
 }
 
-extension LoadingProgressCoordinator: Layouting {
-    typealias SP = LoadingProgressPart
+extension LoadingProgressCoordinator: Navigating {
+    typealias R = LoadingProgressRoute
     
-    func insertNext(_ subview: SP) {
-        switch subview {
-        case .viewDidLoad(let sbViewBottomAnchor):
-            guard let webLoadProgressView = startedVC?.controllerView,
-                  let containerView = presenterVC?.controllerView else {
-                return
-            }
-            webLoadProgressView.topAnchor.constraint(equalTo: sbViewBottomAnchor).isActive = true
-            containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+    func showNext(_ route: R) {
+        switch route {
         case .setProgress(let progress, let isAnimated):
             guard let webLoadProgressView = startedVC?.controllerView as? UIProgressView else {
                 return
@@ -73,12 +65,39 @@ extension LoadingProgressCoordinator: Layouting {
             }
         }
     }
+}
+
+enum LoadingProgressPart: SubviewPart {}
+
+extension LoadingProgressCoordinator: Layouting {
+    typealias SP = LoadingProgressPart
+    
+    func insertNext(_ subview: SP) {}
     
     func layout(_ step: OwnLayoutStep) {
-        
+        switch step {
+        case .viewDidLoad(let topAnchor, _):
+            viewDidLoad(topAnchor)
+        default:
+            break
+        }
     }
     
     func layoutNext(_ step: LayoutStep<SP>) {
         
+    }
+}
+
+private extension LoadingProgressCoordinator {
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
+        guard let webLoadProgressView = startedVC?.controllerView,
+              let containerView = presenterVC?.controllerView else {
+            return
+        }
+        guard let anchor = topAnchor else {
+            return
+        }
+        webLoadProgressView.topAnchor.constraint(equalTo: anchor).isActive = true
+        containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
     }
 }
