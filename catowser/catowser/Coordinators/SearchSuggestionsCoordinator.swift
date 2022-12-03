@@ -146,27 +146,33 @@ private extension SearchSuggestionsCoordinator {
     func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?,
                      _ bottomAnchor: NSLayoutYAxisAnchor?,
                      _ toolbarHeight: CGFloat?) {
-        guard let controllerView = startedVC?.controllerView, let presenterView = presenterVC?.controllerView else {
+        guard let suggestionsView = startedVC?.controllerView,
+              let presenterView = presenterVC?.controllerView else {
             return
         }
         guard let topAnchor = topAnchor,
-                let bottomAnchor = bottomAnchor,
-                let toolbarHeight = toolbarHeight else {
+              let bottomAnchor = bottomAnchor else {
             return
         }
-        controllerView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        controllerView.leadingAnchor.constraint(equalTo: presenterView.leadingAnchor, constant: 0).isActive = true
-        controllerView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor, constant: 0).isActive = true
+        suggestionsView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        suggestionsView.leadingAnchor.constraint(equalTo: presenterView.leadingAnchor, constant: 0).isActive = true
+        suggestionsView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor, constant: 0).isActive = true
 
         if let bottomShift = keyboardHeight {
+            let correctedShift: CGFloat
             // fix wrong height of keyboard on Simulator when keyboard partly visible
-            let correctedShift = bottomShift < toolbarHeight ? toolbarHeight : bottomShift
-            controllerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -correctedShift).isActive = true
+            if let toolbarViewHeight = toolbarHeight {
+                // toolbar height is only on Phone
+                correctedShift = bottomShift < toolbarViewHeight ? toolbarViewHeight : bottomShift
+            } else {
+                correctedShift = bottomShift
+            }
+            suggestionsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -correctedShift).isActive = true
         } else {
             if isPad {
-                controllerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+                suggestionsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
             } else {
-                controllerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+                suggestionsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
             }
         }
     }

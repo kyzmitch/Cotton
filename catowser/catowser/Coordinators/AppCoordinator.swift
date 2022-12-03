@@ -525,7 +525,9 @@ extension AppCoordinator: SearchBarDelegate {
         let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
         let bottomAnchor: NSLayoutYAxisAnchor?
         if isPad {
-            bottomAnchor = bottomViewCoordinator?.startedView?.topAnchor
+            // Probably better to use bottom dummy view anchor
+            // bottomViewCoordinator?.startedView?.topAnchor
+            bottomAnchor = startedVC?.controllerView.bottomAnchor
         } else {
             // Toolbar is only on Phone layout
             bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
