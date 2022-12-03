@@ -81,17 +81,15 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
         }
         coordinator?.layoutNext(.viewDidLoad(.searchBar))
         coordinator?.layoutNext(.viewDidLoad(.loadingProgress))
+        coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
         if isPad {
-            coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
             coordinator?.layoutNext(.viewDidLoad(.dummyView))
             coordinator?.layoutNext(.viewDidLoad(.linkTags))
         } else {
-            coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
             coordinator?.layoutNext(.viewDidLoad(.toolbar))
             coordinator?.layoutNext(.viewDidLoad(.dummyView))
             coordinator?.layoutNext(.viewDidLoad(.linkTags))
         }
-
         if !isPad {
             coordinator?.layoutNext(.viewDidLoad(.filesGrid))
         }

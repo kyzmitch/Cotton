@@ -57,8 +57,8 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ downloadPanelDelegate: DonwloadPanelDelegate?,
-         _ globalMenuDelegate: GlobalMenuDelegate,
-         _ delegate: SearchBarDelegate) {
+         _ globalMenuDelegate: GlobalMenuDelegate?,
+         _ delegate: SearchBarDelegate?) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.downloadPanelDelegate = downloadPanelDelegate
@@ -69,11 +69,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     func start() {
         let createdVC: (any AnyViewController)?
         if isPad {
-            // swiftlint:disable:next force_unwrapping
-            let downloadDelegate = downloadPanelDelegate!
-            // swiftlint:disable:next force_unwrapping
-            let menuDelegate = globalMenuDelegate!
-            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadDelegate, menuDelegate)
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadPanelDelegate, globalMenuDelegate)
         } else {
             createdVC = vcFactory.deviceSpecificSearchBarViewController(self)
         }

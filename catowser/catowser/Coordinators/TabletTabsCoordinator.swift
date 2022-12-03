@@ -22,13 +22,15 @@ final class TabletTabsCoordinator: Coordinator {
     }
     
     func start() {
-        guard let vc = vcFactory.tabsViewController(), let containerView = presenterVC?.controllerView else {
+        guard isPad else {
+            return
+        }
+        guard let vc = vcFactory.tabsViewController(), let superView = presenterVC?.controllerView else {
             return
         }
         startedVC = vc
-        
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: containerView)
         vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
     }
 }
 
@@ -53,20 +55,23 @@ extension TabletTabsCoordinator: Layouting {
 
 private extension TabletTabsCoordinator {
     func viewDidLoad() {
-        guard let vc = startedVC, let containerView = presenterVC?.controllerView else {
+        guard isPad else {
+            return
+        }
+        guard let tabsView = startedVC?.controllerView, let superView = presenterVC?.controllerView else {
             return
         }
         // https://github.com/SnapKit/SnapKit/issues/448
         // https://developer.apple.com/documentation/uikit/uiviewcontroller/1621367-toplayoutguide
         // https://developer.apple.com/documentation/uikit/uiview/2891102-safearealayoutguide
         if #available(iOS 11, *) {
-            let topAnchor = containerView.safeAreaLayoutGuide.topAnchor
-            vc.controllerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            let topAnchor = superView.safeAreaLayoutGuide.topAnchor
+            tabsView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         } else {
-            vc.controllerView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+            tabsView.topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
         }
-        vc.controllerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        vc.controllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        vc.controllerView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
+        tabsView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+        tabsView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
+        tabsView.heightAnchor.constraint(equalToConstant: .tabHeight).isActive = true
     }
 }

@@ -232,6 +232,10 @@ private extension AppCoordinator {
     func insertSearchBar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
+        // Link tags coordinator MUST be initialized before Search bar
+        // to have a reference to a delegate for it
+        linkTagsCoordinator = LinkTagsCoordinator(vcFactory, presenter)
+        linkTagsCoordinator?.parent = self
         let coordinator: SearchBarCoordinator = .init(vcFactory,
                                                       presenter,
                                                       linkTagsCoordinator,
@@ -265,17 +269,14 @@ private extension AppCoordinator {
     }
     
     func insertLinkTags() {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: LinkTagsCoordinator = .init(vcFactory, presenter)
-        coordinator.parent = self
-        coordinator.start()
-        linkTagsCoordinator = coordinator
+        linkTagsCoordinator?.start()
     }
     
     func insertToolbar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
+        // Link tags coordinator MUST be initialized before this toolbar
+        // and it is initialized before Search bar coordinator now
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
                                                         linkTagsCoordinator,
@@ -324,15 +325,14 @@ private extension AppCoordinator {
     func webContentContainerViewDidLoad() {
         let topAnchor = loadingProgressCoordinator?.startedVC?.controllerView.bottomAnchor
         // Web content bottom border depends on device layout
-        // for Phone layout it should be a toolbar
+        // for Phone layout it should be a toolbar,
         // for Tablet layout it should be a bottom dummy view
-        let bottomAnchor: NSLayoutYAxisAnchor?
-        if isPad {
-            bottomAnchor = bottomViewCoordinator?.startedView?.topAnchor
-        } else {
-            bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
-        }
-        webContentContainerCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor))
+
+        // Below used coordinators MUST be started to be able to provide bottom anchors,
+        // but it is not possible at this time, so that,
+        // bottom dummy or toolbar view should use web content container view bottom anchor
+        // MUST be attached later during layout of toolbar or dummy coordinators
+        webContentContainerCoordinator?.layout(.viewDidLoad(topAnchor))
     }
     
     func toolbarViewDidLoad() {
@@ -341,8 +341,15 @@ private extension AppCoordinator {
     }
     
     func dummyViewDidLoad() {
-        // top anchor is only needed on Phone layout and toolbar is only on it as well
-        let topAnchor = toolbarCoordinator?.startedVC?.controllerView.bottomAnchor
+        // top anchor is different on Tablet it is web content container bottom anchor
+        // and on Phone it is toolbar bottom anchor
+        let topAnchor: NSLayoutYAxisAnchor?
+        if isPad {
+            // maybe on Tablet it is better just to use super view bottom anchor
+            topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
+        } else {
+            topAnchor = toolbarCoordinator?.startedVC?.controllerView.bottomAnchor
+        }
         bottomViewCoordinator?.layout(.viewDidLoad(topAnchor))
     }
     
@@ -442,7 +449,8 @@ private extension AppCoordinator {
         let bottomAnchor: NSLayoutYAxisAnchor?
         if isPad {
             // bottom dummy view top or root view bottom
-            bottomAnchor = bottomViewCoordinator?.startedView?.topAnchor
+            // bottomViewCoordinator?.startedView?.topAnchor
+            bottomAnchor = startedView?.bottomAnchor
         } else {
             bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
         }

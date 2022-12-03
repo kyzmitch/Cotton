@@ -48,8 +48,8 @@ extension WebContentContainerCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(let topAnchor, let bottomAnchor, _):
-            viewDidLoad(topAnchor, bottomAnchor)
+        case .viewDidLoad(let topAnchor, _, _):
+            viewDidLoad(topAnchor)
         default:
             break
         }
@@ -61,7 +61,7 @@ extension WebContentContainerCoordinator: Layouting {
 }
 
 private extension WebContentContainerCoordinator {
-    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?, _ bottomAnchor: NSLayoutYAxisAnchor?) {
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
@@ -70,12 +70,13 @@ private extension WebContentContainerCoordinator {
         guard let superView = presenterVC?.controllerView else {
             return
         }
-        guard let topViewAnchor = topAnchor, let bottomViewAnchor = bottomAnchor else {
+        guard let topViewAnchor = topAnchor else {
             return
         }
         containerView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: bottomViewAnchor).isActive = true
+        
+        // Note that bottomAnchor will be set later by bottom dummy or toolbar coordinators
     }
 }

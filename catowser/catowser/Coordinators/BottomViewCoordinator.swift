@@ -91,6 +91,12 @@ private extension BottomViewCoordinator {
             return
         }
         if isPad {
+            // Not using top anchor, because there is a constant height of dummy view
+            // and it can be overlap web content container,
+            // but provided anchor of web content container view MUST be set
+            // so that, setting it here
+            topAnchor?.constraint(equalTo: superView.bottomAnchor).isActive = true
+            
             underLinkTagsView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
             underLinkTagsView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
