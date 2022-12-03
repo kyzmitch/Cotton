@@ -12,33 +12,38 @@ import CoreHttpKit
 import FeaturesFlagsKit
 import JSPlugins
 
-final class AppCoordinator: Coordinator, CoordinatorOwner {
+final class AppCoordinator: Coordinator {
+    /// Currently presented (next) coordinator, to be able to stop it
     var startedCoordinator: Coordinator?
+    /// Root coordinator doesn't have any parent
     weak var parent: CoordinatorOwner?
+    /// Could be accessed using `WebViewsEnvironment.shared.viewControllerFactory` singleton as well
     let vcFactory: ViewControllerFactory
+    /// This specific coordinator starts root view controller
     var startedVC: AnyViewController?
+    /// There is no presenter view controller in App/root coordinator
     weak var presenterVC: AnyViewController?
     
-    /// Specific toolbar coordinator which should stay forever
-    private var toolbarCoordinator: MainToolbarCoordinator?
-    /// Progress view coordinator, TODO: needs to be replaced with base protocol
+    /// Phone toolbar coordinator which should stay forever
+    private var toolbarCoordinator: (any Layouting)?
+    /// Progress view coordinator
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
-    ///
-    private var webContentContainerCoordinator: WebContentContainerCoordinator?
+    /// Web content container coordinator
+    private var webContentContainerCoordinator: (any Layouting)?
     /// Search bar coordinator
     private var searchBarCoordinator: SearchBarCoordinator?
     /// Specific link for tags coordinator
     private var linkTagsCoordinator: LinkTagsCoordinator?
     /// Dummy view coordinator
-    private var bottomViewCoordinator: BottomViewCoordinator?
+    private var bottomViewCoordinator: (any Layouting)?
     /// Coordinator for inserted child view controller
     private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
     /// web view coordinator
     private var webContentCoordinator: (any Navigating)?
-    /// This coordinator is optional because it is only needed on Tablet
-    private var tabletTabsCoordinator: TabletTabsCoordinator?
+    /// Only needed on Tablet
+    private var tabletTabsCoordinator: (any Layouting)?
     /// App window rectangle
     private let windowRectangle: CGRect = {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -48,10 +53,11 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private lazy var previousTabContent: Tab.ContentType = FeatureManager.tabDefaultContentValue().contentType
-    /// Need to update this navigation delegate each time it changes in router holder
-    private weak var siteNavigationDelegate: SiteNavigationDelegate?
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
+    
+    /// Need to update this navigation delegate each time it changes in router holder
+    private weak var siteNavigationDelegate: SiteNavigationDelegate?
     /// Web site navigation delegate
     private var navigationComponent: FullSiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -79,6 +85,8 @@ final class AppCoordinator: Coordinator, CoordinatorOwner {
     }
 }
 
+extension AppCoordinator: CoordinatorOwner {}
+
 enum MainScreenRoute: Route {
     case menu(SiteMenuModel, UIView, CGRect)
     case openTab(Tab.ContentType)
@@ -97,8 +105,8 @@ extension AppCoordinator: Navigating {
     }
     
     func stop() {
-        // Probably it is not necessary because this coordinator
-        // is the root one
+        // Probably it is not necessary because this is root
+        jsPluginsBuilder = nil
         TabsListManager.shared.detach(self)
         parent?.didFinish()
     }
@@ -140,7 +148,7 @@ extension AppCoordinator: Layouting {
     }
     
     func layout(_ step: OwnLayoutStep) {
-        
+        // Could do root layout here instead of view controller
     }
     
     // swiftlint:disable:next cyclomatic_complexity
@@ -295,79 +303,6 @@ private extension AppCoordinator {
         bottomViewCoordinator = coordinator
     }
     
-    // MARK: - layout methods to layout subviews
-    
-    func tabsViewDidLoad() {
-        guard isPad else {
-            return
-        }
-        tabletTabsCoordinator?.layout(.viewDidLoad())
-    }
-    
-    func searchBarViewDidLoad() {
-        // use specific bottom anchor when it is Tablet layout
-        // and the most top view is not a superview but tabs view
-        // if it is a Phone layout then topAnchor can be taken
-        // easily from presenter
-        let topAnchor = tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor
-        searchBarCoordinator?.layout(.viewDidLoad(topAnchor))
-    }
-    
-    func loadingProgressViewDidLoad() {
-        let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
-        loadingProgressCoordinator?.layout(.viewDidLoad(topAnchor))
-    }
-    
-    func filesGridViewDidLoad() {
-        linkTagsCoordinator?.layoutNext(.viewDidLoad(.filesGrid))
-    }
-    
-    func webContentContainerViewDidLoad() {
-        let topAnchor = loadingProgressCoordinator?.startedVC?.controllerView.bottomAnchor
-        // Web content bottom border depends on device layout
-        // for Phone layout it should be a toolbar,
-        // for Tablet layout it should be a bottom dummy view
-
-        // Below used coordinators MUST be started to be able to provide bottom anchors,
-        // but it is not possible at this time, so that,
-        // bottom dummy or toolbar view should use web content container view bottom anchor
-        // MUST be attached later during layout of toolbar or dummy coordinators
-        webContentContainerCoordinator?.layout(.viewDidLoad(topAnchor))
-    }
-    
-    func toolbarViewDidLoad() {
-        let topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
-        toolbarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
-    }
-    
-    func dummyViewDidLoad() {
-        // top anchor is different on Tablet it is web content container bottom anchor
-        // and on Phone it is toolbar bottom anchor
-        let topAnchor: NSLayoutYAxisAnchor?
-        if isPad {
-            // maybe on Tablet it is better just to use super view bottom anchor
-            topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
-        } else {
-            topAnchor = toolbarCoordinator?.startedVC?.controllerView.bottomAnchor
-        }
-        bottomViewCoordinator?.layout(.viewDidLoad(topAnchor))
-    }
-    
-    func dummyViewSafeAreaInsetsDidChange() {
-        bottomViewCoordinator?.layout(.viewSafeAreaInsetsDidChange)
-    }
-    
-    // MARK: - lifecycle navigation methods
-    
-    func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
-        coordinator.parent = self
-        coordinator.start()
-        startedCoordinator = coordinator
-    }
-    
     func insertTopSites() {
         guard let containerView = webContentContainerCoordinator?.startedView else {
             assertionFailure("Root view controller must have content view")
@@ -413,7 +348,86 @@ private extension AppCoordinator {
         webContentCoordinator = coordinator
     }
     
-    // MARK: - Open tab content functions
+    // MARK: - view did load
+    
+    func tabsViewDidLoad() {
+        guard isPad else {
+            return
+        }
+        tabletTabsCoordinator?.layout(.viewDidLoad())
+    }
+    
+    func searchBarViewDidLoad() {
+        // use specific bottom anchor when it is Tablet layout
+        // and the most top view is not a superview but tabs view
+        // if it is a Phone layout then topAnchor can be taken
+        // easily from presenter
+        let topAnchor = tabletTabsCoordinator?.startedView?.bottomAnchor
+        searchBarCoordinator?.layout(.viewDidLoad(topAnchor))
+    }
+    
+    func loadingProgressViewDidLoad() {
+        let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
+        loadingProgressCoordinator?.layout(.viewDidLoad(topAnchor))
+    }
+    
+    func filesGridViewDidLoad() {
+        linkTagsCoordinator?.layoutNext(.viewDidLoad(.filesGrid))
+    }
+    
+    func webContentContainerViewDidLoad() {
+        let topAnchor = loadingProgressCoordinator?.startedVC?.controllerView.bottomAnchor
+        // Web content bottom border depends on device layout
+        // for Phone layout it should be a toolbar,
+        // for Tablet layout it should be a bottom dummy view
+
+        // Below used coordinators MUST be started to be able to provide bottom anchors,
+        // but it is not possible at this time, so that,
+        // bottom dummy or toolbar view should use web content container view bottom anchor
+        // MUST be attached later during layout of toolbar or dummy coordinators
+        webContentContainerCoordinator?.layout(.viewDidLoad(topAnchor))
+    }
+    
+    func toolbarViewDidLoad() {
+        let topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
+        toolbarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
+    }
+    
+    func dummyViewDidLoad() {
+        // top anchor is different on Tablet it is web content container bottom anchor
+        // and on Phone it is toolbar bottom anchor
+        let topAnchor: NSLayoutYAxisAnchor?
+        if isPad {
+            // maybe on Tablet it is better just to use super view bottom anchor
+            topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
+        } else {
+            topAnchor = toolbarCoordinator?.startedView?.bottomAnchor
+        }
+        bottomViewCoordinator?.layout(.viewDidLoad(topAnchor))
+    }
+    
+    func linkTagsViewDidLoad() {
+        let bottomAnchor: NSLayoutYAxisAnchor?
+        if isPad {
+            // bottom dummy view top or root view bottom
+            // bottomViewCoordinator?.startedView?.topAnchor
+            bottomAnchor = startedView?.bottomAnchor
+        } else {
+            bottomAnchor = toolbarCoordinator?.startedView?.topAnchor
+        }
+        linkTagsCoordinator?.layout(.viewDidLoad(nil, bottomAnchor))
+    }
+    
+    // MARK: - lifecycle navigation methods
+    
+    func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
+        coordinator.parent = self
+        coordinator.start()
+        startedCoordinator = coordinator
+    }
     
     func open(tabContent: Tab.ContentType) {
         linkTagsCoordinator?.showNext(.closeTags)
@@ -445,17 +459,13 @@ private extension AppCoordinator {
         previousTabContent = tabContent
     }
     
-    func linkTagsViewDidLoad() {
-        let bottomAnchor: NSLayoutYAxisAnchor?
-        if isPad {
-            // bottom dummy view top or root view bottom
-            // bottomViewCoordinator?.startedView?.topAnchor
-            bottomAnchor = startedView?.bottomAnchor
-        } else {
-            bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
-        }
-        linkTagsCoordinator?.layout(.viewDidLoad(nil, bottomAnchor))
+    // MARK: - safe area insets
+    
+    func dummyViewSafeAreaInsetsDidChange() {
+        bottomViewCoordinator?.layout(.viewSafeAreaInsetsDidChange)
     }
+    
+    // MARK: - did layout subviews
     
     func filesGridViewDidLayoutSubviews() {
         // Files grid view height depends on web content view height,
@@ -530,9 +540,9 @@ extension AppCoordinator: SearchBarDelegate {
             bottomAnchor = startedVC?.controllerView.bottomAnchor
         } else {
             // Toolbar is only on Phone layout
-            bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
+            bottomAnchor = toolbarCoordinator?.startedView?.topAnchor
         }
-        let toolbarHeight = toolbarCoordinator?.startedVC?.controllerView.bounds.height
+        let toolbarHeight = toolbarCoordinator?.startedView?.bounds.height
         searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions, topAnchor, bottomAnchor, toolbarHeight))
     }
 }

@@ -7,12 +7,6 @@
 //
 
 import UIKit
-import ReactiveSwift
-import CoreBrowser
-import FeaturesFlagsKit
-import JSPlugins
-import CoreHttpKit
-import CoreCatowser
 
 final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewController
     where C.R == MainScreenRoute, C.SP == MainScreenSubview {
@@ -75,6 +69,10 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
         view.backgroundColor = UIColor.white
         
         // Layout order matters!
+        
+        // Next sequence of calls could be replaced with just one method:
+        // `coordinator?.layout(.viewDidLoad())`
+        // but then all this logic should be moved to coordinator
         
         if isPad {
             coordinator?.layoutNext(.viewDidLoad(.tabs))

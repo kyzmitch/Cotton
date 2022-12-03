@@ -110,7 +110,7 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
     }
 
     func didSiteOpen(appName: String) {
-        // notify user to remove speicifc application from iOS
+        // notify user to remove specific application from iOS
         // to be able to use Cotton browser features
     }
     

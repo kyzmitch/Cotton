@@ -14,7 +14,7 @@ import Alamofire
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Should be stored by strong reference, because it is the only owner of App coordinator
-    let appCoordinator: AppCoordinator = .init(WebViewsEnvironment.shared.viewControllerFactory)
+    private let appCoordinator: AppCoordinator = .init(WebViewsEnvironment.shared.viewControllerFactory)
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

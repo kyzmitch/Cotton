@@ -35,6 +35,10 @@ enum OwnLayoutStep {
 
 protocol Layouting: AnyObject {
     associatedtype SP: SubviewPart
+    
+    /// Inserted started view, could be redefined when there is no view controller for coordinator
+    var startedView: UIView? { get }
+    
     func insertNext(_ subview: SP)
     func layout(_ step: OwnLayoutStep)
     func layoutNext(_ step: LayoutStep<SP>)
@@ -46,14 +50,14 @@ protocol CoordinatorOwner: AnyObject {
 
 protocol Coordinator: AnyObject {
     /// For now it seems we could start only one child coordinator, no need to have an array of coordinators,
-    /// but it only applies to navigation related routes (presented or pushed to navigation stack) and not to subview layout navigation
+    /// but it only applies to navigation related routes (presented or pushed to navigation stack)
+    /// and not to subview layout navigation.
     var startedCoordinator: Coordinator? { get set }
     /// Should be defined as weak reference for `stop` operation
     var parent: CoordinatorOwner? { get }
-    /// Started/created view controller during coordinator `start`. It is optional because `start` is called after `init`
+    /// Started/created view controller during coordinator `start`.
+    /// It is optional because `start` is called after `init`
     var startedVC: AnyViewController? { get }
-    /// Inserted started view, could be redefined when there is no view controller for coordinator
-    var startedView: UIView? { get }
     /// View controller used to present/show this Coordinator's started vc
     var presenterVC: AnyViewController? { get }
     
@@ -64,15 +68,17 @@ extension Coordinator {
     var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
-    
-    var startedView: UIView? {
-        startedVC?.controllerView
-    }
 }
 
 extension Coordinator where Self: Navigating {
     func stop() {
         parent?.didFinish()
+    }
+}
+
+extension Coordinator where Self: Layouting {
+    var startedView: UIView? {
+        startedVC?.controllerView
     }
 }
 
