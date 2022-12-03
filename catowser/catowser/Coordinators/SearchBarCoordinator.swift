@@ -13,9 +13,8 @@ import BrowserNetworking
 import CoreHttpKit
 
 protocol SearchBarDelegate: AnyObject {
-    var toolbarHeight: CGFloat { get }
-    var toolbarTopAnchor: NSLayoutYAxisAnchor { get }
     func openTab(_ content: Tab.ContentType)
+    func layoutSuggestions()
 }
 
 /// Need to inherit from NSobject to confirm to search bar delegate
@@ -133,7 +132,7 @@ extension SearchBarCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(let topAnchor, _):
+        case .viewDidLoad(let topAnchor, _, _):
             viewDidLoad(topAnchor)
         default:
             break
@@ -141,7 +140,15 @@ extension SearchBarCoordinator: Layouting {
     }
     
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+        switch step {
+        case .viewDidLoad(let subview, let topAnchor, let bottomAnchor, let toolbarHeight):
+            switch subview {
+            case .suggestions:
+                searhSuggestionsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor, toolbarHeight))
+            }
+        default:
+            break
+        }
     }
 }
 
@@ -174,23 +181,17 @@ private extension SearchBarCoordinator {
     }
     
     func insertSearchSuggestions() {
-        guard !isSuggestionsShowed,
-              let toolbarHeight = delegate?.toolbarHeight,
-              let toolbarTopAnchor = delegate?.toolbarTopAnchor else {
+        guard !isSuggestionsShowed else {
             return
         }
+        isSuggestionsShowed = true
+        // Presenter for suggestions is root view controller
         
         // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory,
-                                                              presenter,
-                                                              self,
-                                                              presenter.controllerView.bottomAnchor,
-                                                              toolbarTopAnchor,
-                                                              toolbarHeight)
+        let presenter = presenterVC!
+        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self)
         coordinator.parent = self
         coordinator.start()
-        isSuggestionsShowed = true
         searhSuggestionsCoordinator = coordinator
     }
     
@@ -227,6 +228,10 @@ extension SearchBarCoordinator: UISearchBarDelegate {
             showNext(.hideSuggestions)
         } else {
             insertNext(.suggestions)
+            // Use delegate and not a direct call
+            // because it requires layout info
+            // about neighbour views (anchors and height)
+            delegate?.layoutSuggestions()
             showNext(.suggestions(searchText))
         }
     }

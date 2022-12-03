@@ -46,7 +46,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     /// Delegate to handle suggestion selection
     private weak var delegate: SearchSuggestionsListDelegate?
 
-    init(_ delegate: SearchSuggestionsListDelegate) {
+    init(_ delegate: SearchSuggestionsListDelegate?) {
         viewModel = ViewModelFactory.shared.searchSuggestionsViewModel()
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)

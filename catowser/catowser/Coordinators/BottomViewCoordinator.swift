@@ -15,12 +15,13 @@ final class BottomViewCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     
-    var tabletTopAnchor: NSLayoutYAxisAnchor {
-        underLinkTagsView.topAnchor
-    }
-    
-    var tabletBottomAnchor: NSLayoutYAxisAnchor {
-        underLinkTagsView.bottomAnchor
+    /// Overwritten getter because there is no view controller which holds started view
+    var startedView: UIView? {
+        if isPad {
+            return underLinkTagsView
+        } else {
+            return underToolbarView
+        }
     }
     
     private lazy var underLinkTagsView: UIView = {
@@ -70,7 +71,7 @@ extension BottomViewCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(let topAnchor, _):
+        case .viewDidLoad(let topAnchor, _, _):
             viewDidLoad(topAnchor)
         case .viewSafeAreaInsetsDidChange:
             viewSafeAreaInsetsDidChange()

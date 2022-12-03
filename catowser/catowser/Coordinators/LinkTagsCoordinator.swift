@@ -101,7 +101,7 @@ extension LinkTagsCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(let topAnchor, let bottomAnchor):
+        case .viewDidLoad(let topAnchor, let bottomAnchor, _):
             viewDidLoad(topAnchor, bottomAnchor)
         case .viewDidLayoutSubviews:
             break
@@ -112,7 +112,7 @@ extension LinkTagsCoordinator: Layouting {
     
     func layoutNext(_ step: LayoutStep<SP>) {
         switch step {
-        case .viewDidLoad(let subview):
+        case .viewDidLoad(let subview, _, _, _):
             switch subview {
             case .filesGrid:
                 filesGridViewDidLoad()
@@ -129,7 +129,7 @@ extension LinkTagsCoordinator: Layouting {
             default:
                 break
             }
-        case .viewSafeAreaInsetsDidChange(let subview):
+        case .viewSafeAreaInsetsDidChange:
             break
         }
     }

@@ -30,26 +30,26 @@ final class SearchSuggestionsCoordinator: Coordinator {
             _keyboardHeight = newValue
         }
     }
-    private let toolbarHeight: CGFloat
-    private let topAnchor: NSLayoutYAxisAnchor
-    private let toolbarTopAnchor: NSLayoutYAxisAnchor
     private var disposables = [Disposable?]()
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ delegate: SearchSuggestionsListDelegate,
-         _ topAnchor: NSLayoutYAxisAnchor,
-         _ toolbarTopAnchor: NSLayoutYAxisAnchor,
-         _ toolbarHeight: CGFloat) {
+         _ delegate: SearchSuggestionsListDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
-        self.topAnchor = topAnchor
-        self.toolbarTopAnchor = toolbarTopAnchor
-        self.toolbarHeight = toolbarHeight
     }
     
     func start() {
+        guard let controllerView = presenterVC?.controllerView else {
+            return
+        }
+        
+        let vc = vcFactory.searchSuggestionsViewController(delegate)
+        startedVC = vc
+        // adds suggestions view to root view controller
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)
+        
         disposables.forEach { $0?.dispose() }
         
         let disposeB = NotificationCenter.default.reactive
@@ -68,39 +68,6 @@ final class SearchSuggestionsCoordinator: Coordinator {
 
         disposables.append(disposeB)
         disposables.append(disposeA)
-        
-        guard let controllerView = presenterVC?.controllerView else {
-            return
-        }
-        guard let delegate = delegate else {
-            return
-        }
-        
-        let vc = vcFactory.searchSuggestionsViewController(delegate)
-        startedVC = vc
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)
-
-        vc.controllerView.topAnchor.constraint(equalTo: topAnchor,
-                                               constant: 0).isActive = true
-        vc.controllerView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor,
-                                                   constant: 0).isActive = true
-        vc.controllerView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor,
-                                                    constant: 0).isActive = true
-
-        if let bottomShift = keyboardHeight {
-            // fix wrong height of keyboard on Simulator when keyboard partly visible
-            let correctedShift = bottomShift < toolbarHeight ? toolbarHeight : bottomShift
-            vc.controllerView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor,
-                                                      constant: -correctedShift).isActive = true
-        } else {
-            if isPad {
-                vc.controllerView.bottomAnchor.constraint(equalTo: toolbarTopAnchor,
-                                                          constant: 0).isActive = true
-            } else {
-                vc.controllerView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor,
-                                                          constant: 0).isActive = true
-            }
-        }
     }
 }
 
@@ -131,6 +98,29 @@ extension SearchSuggestionsCoordinator: Navigating {
     }
 }
 
+enum SearchSuggestionsPart: SubviewPart {}
+
+extension SearchSuggestionsCoordinator: Layouting {
+    typealias SP = SearchSuggestionsPart
+    
+    func insertNext(_ subview: SP) {
+        
+    }
+    
+    func layout(_ step: OwnLayoutStep) {
+        switch step {
+        case .viewDidLoad(let topAnchor, let bottomAnchor, let toolbarHeight):
+            viewDidLoad(topAnchor, bottomAnchor, toolbarHeight)
+        default:
+            break
+        }
+    }
+    
+    func layoutNext(_ step: LayoutStep<SP>) {
+        
+    }
+}
+
 private extension SearchSuggestionsCoordinator {
     func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
         func handling(_ notification: Notification) {
@@ -151,6 +141,34 @@ private extension SearchSuggestionsCoordinator {
         }
 
         return handling
+    }
+    
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?,
+                     _ bottomAnchor: NSLayoutYAxisAnchor?,
+                     _ toolbarHeight: CGFloat?) {
+        guard let controllerView = startedVC?.controllerView, let presenterView = presenterVC?.controllerView else {
+            return
+        }
+        guard let topAnchor = topAnchor,
+                let bottomAnchor = bottomAnchor,
+                let toolbarHeight = toolbarHeight else {
+            return
+        }
+        controllerView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        controllerView.leadingAnchor.constraint(equalTo: presenterView.leadingAnchor, constant: 0).isActive = true
+        controllerView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor, constant: 0).isActive = true
+
+        if let bottomShift = keyboardHeight {
+            // fix wrong height of keyboard on Simulator when keyboard partly visible
+            let correctedShift = bottomShift < toolbarHeight ? toolbarHeight : bottomShift
+            controllerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -correctedShift).isActive = true
+        } else {
+            if isPad {
+                controllerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+            } else {
+                controllerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+            }
+        }
     }
 }
 

@@ -146,7 +146,7 @@ extension AppCoordinator: Layouting {
     // swiftlint:disable:next cyclomatic_complexity
     func layoutNext(_ step: LayoutStep<SP>) {
         switch step {
-        case .viewDidLoad(let subview):
+        case .viewDidLoad(let subview, _, _, _):
             switch subview {
             case .tabs:
                 tabsViewDidLoad()
@@ -348,7 +348,6 @@ private extension AppCoordinator {
         coordinator.start()
         startedCoordinator = coordinator
     }
-
     
     func insertTopSites() {
         guard let containerView = webContentContainerCoordinator?.containerView else {
@@ -428,16 +427,13 @@ private extension AppCoordinator {
     }
     
     func linkTagsViewDidLoad() {
-        let topAnchor: NSLayoutYAxisAnchor
+        let topAnchor: NSLayoutYAxisAnchor?
         let bottomAnchor: NSLayoutYAxisAnchor?
         if isPad {
-            // swiftlint:disable:next force_unwrapping
-            topAnchor = (bottomViewCoordinator?.tabletTopAnchor)!
-            // swiftlint:disable:next force_unwrapping
-            bottomAnchor = (bottomViewCoordinator?.tabletBottomAnchor)!
+            topAnchor = bottomViewCoordinator?.startedView?.topAnchor
+            bottomAnchor = bottomViewCoordinator?.startedView?.bottomAnchor
         } else {
-            // swiftlint:disable:next force_unwrapping
-            topAnchor = (toolbarCoordinator?.startedVC?.controllerView.topAnchor)!
+            topAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
             bottomAnchor = nil
         }
         linkTagsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor))
@@ -500,18 +496,21 @@ extension AppCoordinator: WebContentDelegate {
 }
 
 extension AppCoordinator: SearchBarDelegate {
-    var toolbarTopAnchor: NSLayoutYAxisAnchor {
-        // swiftlint:disable:next force_unwrapping
-        return (toolbarCoordinator?.startedVC?.controllerView.topAnchor)!
-    }
-    
-    /// Dynamicly determined height because it can be different before layout finish it's work
-    var toolbarHeight: CGFloat {
-        let toolbarHeight = toolbarCoordinator?.startedVC?.controllerView.bounds.height ?? 24
-        return toolbarHeight + (bottomViewCoordinator?.underToolbarViewBounds?.height ?? 24)
-    }
-    
     func openTab(_ content: Tab.ContentType) {
         showNext(.openTab(content))
+    }
+    
+    func layoutSuggestions() {
+        // Pass top and bottom anchors and toolbar height
+        let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
+        let bottomAnchor: NSLayoutYAxisAnchor?
+        if isPad {
+            bottomAnchor = bottomViewCoordinator?.startedView?.topAnchor
+        } else {
+            // Toolbar is only on Phone layout
+            bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
+        }
+        let toolbarHeight = toolbarCoordinator?.startedVC?.controllerView.bounds.height
+        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions, topAnchor, bottomAnchor, toolbarHeight))
     }
 }

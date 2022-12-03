@@ -78,7 +78,7 @@ extension FilesGridCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(_, let bottomAnchor):
+        case .viewDidLoad(_, let bottomAnchor, _):
             guard let anchor = bottomAnchor else {
                 return
             }

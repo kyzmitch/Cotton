@@ -76,7 +76,7 @@ extension LoadingProgressCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(let topAnchor, _):
+        case .viewDidLoad(let topAnchor, _, _):
             viewDidLoad(topAnchor)
         default:
             break
