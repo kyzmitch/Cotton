@@ -74,6 +74,8 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
 
         view.backgroundColor = UIColor.white
         
+        // Layout order matters!
+        
         if isPad {
             coordinator?.layoutNext(.viewDidLoad(.tabs))
         }

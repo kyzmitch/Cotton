@@ -84,20 +84,25 @@ private extension MainToolbarCoordinator {
         guard let toolbarView = startedVC?.controllerView else {
             return
         }
-        guard let controllerView = presenterVC?.controllerView else {
+        guard let superView = presenterVC?.controllerView else {
             return
         }
-        guard let anchor = topAnchor else {
+        guard let topViewAnchor = topAnchor else {
             return
         }
-        toolbarView.topAnchor.constraint(equalTo: anchor).isActive = true
-        toolbarView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor).isActive = true
-        toolbarView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor).isActive = true
+        toolbarView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
+        toolbarView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+        toolbarView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
         toolbarView.heightAnchor.constraint(equalToConstant: .tabBarHeight).isActive = true
+        // Using superview's bottom here, but still on the upper level
+        // we have to use a dummy view to fix a visual bug on Phone layout
+        // for some iOS versions, toolbar buttons are fully visible
+        // even with a dummy view
         if #available(iOS 11, *) {
-            toolbarView.bottomAnchor.constraint(equalTo: controllerView.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            let bottomAnchor = superView.safeAreaLayoutGuide.bottomAnchor
+            toolbarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         } else {
-            toolbarView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor).isActive = true
+            toolbarView.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
         }
     }
     

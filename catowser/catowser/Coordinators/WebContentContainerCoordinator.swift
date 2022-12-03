@@ -15,8 +15,13 @@ final class WebContentContainerCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     
+    /// Overrides base implementation because there is no view controller
+    var startedView: UIView? {
+        containerView
+    }
+    
     /// The view needed to hold tab content like WebView or favorites table view.
-    lazy var containerView: UIView = {
+    private lazy var containerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .white
@@ -43,8 +48,8 @@ extension WebContentContainerCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(_, let bottomAnchor, _):
-            viewDidLoad(bottomAnchor)
+        case .viewDidLoad(let topAnchor, let bottomAnchor, _):
+            viewDidLoad(topAnchor, bottomAnchor)
         default:
             break
         }
@@ -56,26 +61,21 @@ extension WebContentContainerCoordinator: Layouting {
 }
 
 private extension WebContentContainerCoordinator {
-    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
+    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?, _ bottomAnchor: NSLayoutYAxisAnchor?) {
         // Need to have not simple view controller view but container view
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
         // webpage controller with web view if some address entered in search bar
         
-        guard let controllerView = presenterVC?.controllerView else {
+        guard let superView = presenterVC?.controllerView else {
             return
         }
-        
-        containerView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor).isActive = true
-        
-        if isPad {
-            containerView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor).isActive = true
-        } else {
-            guard let anchor = bottomAnchor else {
-                return
-            }
-            containerView.bottomAnchor.constraint(equalTo: anchor).isActive = true
+        guard let topViewAnchor = topAnchor, let bottomViewAnchor = bottomAnchor else {
+            return
         }
+        containerView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: bottomViewAnchor).isActive = true
     }
 }

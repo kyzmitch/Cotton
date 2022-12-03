@@ -87,24 +87,24 @@ extension BottomViewCoordinator: Layouting {
 
 private extension BottomViewCoordinator {
     func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
-        guard let controllerView = presenterVC?.controllerView else {
+        guard let superView = presenterVC?.controllerView else {
             return
         }
         if isPad {
-            underLinkTagsView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor).isActive = true
-            underLinkTagsView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor).isActive = true
+            underLinkTagsView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+            underLinkTagsView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
             let linksHConstraint = underLinkTagsView.heightAnchor.constraint(equalToConstant: dummyViewHeight)
             underLinksViewHeightConstraint = linksHConstraint
             underLinksViewHeightConstraint?.isActive = true
         } else {
-            guard let anchor = topAnchor else {
+            guard let topViewAnchor = topAnchor else {
                 return
             }
-            underToolbarView.topAnchor.constraint(equalTo: anchor).isActive = true
-            underToolbarView.leadingAnchor.constraint(equalTo: controllerView.leadingAnchor).isActive = true
-            underToolbarView.trailingAnchor.constraint(equalTo: controllerView.trailingAnchor).isActive = true
-            underToolbarView.bottomAnchor.constraint(equalTo: controllerView.bottomAnchor).isActive = true
+            underToolbarView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
+            underToolbarView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+            underToolbarView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
+            underToolbarView.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
         }
     }
     

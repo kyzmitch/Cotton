@@ -128,14 +128,14 @@ extension AppCoordinator: Layouting {
             insertLoadingProgress()
         case .webContentContainer:
             insertWebContentContainer()
-        case .filesGrid:
-            insertFilesGrid()
-        case .linkTags:
-            insertLinkTags()
         case .toolbar:
             insertToolbar()
         case .dummyView:
             insertDummyView()
+        case .linkTags:
+            insertLinkTags()
+        case .filesGrid:
+            insertFilesGrid()
         }
     }
     
@@ -156,14 +156,14 @@ extension AppCoordinator: Layouting {
                 loadingProgressViewDidLoad()
             case .webContentContainer:
                 webContentContainerViewDidLoad()
-            case .filesGrid:
-                filesGridViewDidLoad()
-            case .linkTags:
-                linkTagsViewDidLoad()
             case .toolbar:
                 toolbarViewDidLoad()
             case .dummyView:
                 dummyViewDidLoad()
+            case .linkTags:
+                linkTagsViewDidLoad()
+            case .filesGrid:
+                filesGridViewDidLoad()
             }
         case .viewDidLayoutSubviews(let subview, _):
             switch subview {
@@ -306,8 +306,10 @@ private extension AppCoordinator {
     func searchBarViewDidLoad() {
         // use specific bottom anchor when it is Tablet layout
         // and the most top view is not a superview but tabs view
+        // if it is a Phone layout then topAnchor can be taken
+        // easily from presenter
         let topAnchor = tabletTabsCoordinator?.startedVC?.controllerView.bottomAnchor
-        searchBarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
+        searchBarCoordinator?.layout(.viewDidLoad(topAnchor))
     }
     
     func loadingProgressViewDidLoad() {
@@ -320,18 +322,28 @@ private extension AppCoordinator {
     }
     
     func webContentContainerViewDidLoad() {
-        let bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
-        webContentContainerCoordinator?.layout(.viewDidLoad(nil, bottomAnchor))
+        let topAnchor = loadingProgressCoordinator?.startedVC?.controllerView.bottomAnchor
+        // Web content bottom border depends on device layout
+        // for Phone layout it should be a toolbar
+        // for Tablet layout it should be a bottom dummy view
+        let bottomAnchor: NSLayoutYAxisAnchor?
+        if isPad {
+            bottomAnchor = bottomViewCoordinator?.startedView?.topAnchor
+        } else {
+            bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
+        }
+        webContentContainerCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor))
     }
     
     func toolbarViewDidLoad() {
-        let topAnchor = webContentContainerCoordinator?.containerView.bottomAnchor
+        let topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
         toolbarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
     }
     
     func dummyViewDidLoad() {
+        // top anchor is only needed on Phone layout and toolbar is only on it as well
         let topAnchor = toolbarCoordinator?.startedVC?.controllerView.bottomAnchor
-        bottomViewCoordinator?.layout(.viewDidLoad(topAnchor, nil))
+        bottomViewCoordinator?.layout(.viewDidLoad(topAnchor))
     }
     
     func dummyViewSafeAreaInsetsDidChange() {
@@ -350,7 +362,7 @@ private extension AppCoordinator {
     }
     
     func insertTopSites() {
-        guard let containerView = webContentContainerCoordinator?.containerView else {
+        guard let containerView = webContentContainerCoordinator?.startedView else {
             assertionFailure("Root view controller must have content view")
             return
         }
@@ -363,7 +375,7 @@ private extension AppCoordinator {
     }
     
     func insertBlankTab() {
-        guard let containerView = webContentContainerCoordinator?.containerView else {
+        guard let containerView = webContentContainerCoordinator?.startedView else {
             assertionFailure("Root view controller must have content view")
             return
         }
@@ -376,7 +388,7 @@ private extension AppCoordinator {
     }
     
     func insertWebTab(_ site: Site) {
-        guard let containerView = webContentContainerCoordinator?.containerView,
+        guard let containerView = webContentContainerCoordinator?.startedView,
                 let plugins = jsPluginsBuilder else {
             assertionFailure("Root view controller must have content view")
             return
@@ -427,22 +439,22 @@ private extension AppCoordinator {
     }
     
     func linkTagsViewDidLoad() {
-        let topAnchor: NSLayoutYAxisAnchor?
         let bottomAnchor: NSLayoutYAxisAnchor?
         if isPad {
-            topAnchor = bottomViewCoordinator?.startedView?.topAnchor
-            bottomAnchor = bottomViewCoordinator?.startedView?.bottomAnchor
+            // bottom dummy view top or root view bottom
+            bottomAnchor = bottomViewCoordinator?.startedView?.topAnchor
         } else {
-            topAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
-            bottomAnchor = nil
+            bottomAnchor = toolbarCoordinator?.startedVC?.controllerView.topAnchor
         }
-        linkTagsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor))
+        linkTagsCoordinator?.layout(.viewDidLoad(nil, bottomAnchor))
     }
     
     func filesGridViewDidLayoutSubviews() {
-        guard let containerHeight = webContentContainerCoordinator?.containerView.bounds.height else {
-            return
-        }
+        // Files grid view height depends on web content view height,
+        // search bar view should still be visible when files grid
+        // become visible, that is why we need to calculate good enough
+        // height of files grid view
+        let containerHeight = webContentContainerCoordinator?.startedView?.bounds.height
         linkTagsCoordinator?.layoutNext(.viewDidLayoutSubviews(.filesGrid, containerHeight))
     }
 }

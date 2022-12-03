@@ -49,10 +49,10 @@ final class LinkTagsCoordinator: Coordinator {
         startedVC = vc
         viewInterface = vc
         
-        guard let containerView = presenterVC?.controllerView else {
+        guard let superView = presenterVC?.controllerView else {
             return
         }
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: containerView)
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
     }
 }
 
@@ -101,8 +101,10 @@ extension LinkTagsCoordinator: Layouting {
     
     func layout(_ step: OwnLayoutStep) {
         switch step {
-        case .viewDidLoad(let topAnchor, let bottomAnchor, _):
-            viewDidLoad(topAnchor, bottomAnchor)
+        case .viewDidLoad(_, let bottomAnchor, _):
+            // link tags view is attached to bottom view (toolbar or superview bottom)
+            // and top is not attached, but there is a constant view height
+            viewDidLoad(bottomAnchor)
         case .viewDidLayoutSubviews:
             break
         case .viewSafeAreaInsetsDidChange:
@@ -116,18 +118,11 @@ extension LinkTagsCoordinator: Layouting {
             switch subview {
             case .filesGrid:
                 filesGridViewDidLoad()
-            default:
-                break
             }
         case .viewDidLayoutSubviews(let subview, let containerHeight):
             switch subview {
             case .filesGrid:
-                guard let height = containerHeight else {
-                    return
-                }
-                filesGridViewDidLayoutSubviews(height)
-            default:
-                break
+                filesGridViewDidLayoutSubviews(containerHeight)
             }
         case .viewSafeAreaInsetsDidChange:
             break
@@ -148,43 +143,43 @@ private extension LinkTagsCoordinator {
         filesGridCoordinator = coordinator
     }
     
-    func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?, _ bottomAnchor: NSLayoutYAxisAnchor?) {
-        guard let tagsView = startedVC?.controllerView, let containerView = presenterVC?.controllerView else {
+    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
+        guard let tagsView = startedVC?.controllerView,
+              let superView = presenterVC?.controllerView else {
             return
         }
+        guard let bottomViewAnchor = bottomAnchor else {
+            return
+        }
+        
+        tagsView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+        tagsView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
+        tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
+        
         if isPad {
-            guard let bottomAnchor = bottomAnchor, let topAnchor = topAnchor else {
-                return
-            }
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
             let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
-            hiddenTagsConstraint = bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: bottomMargin)
-            showedTagsConstraint = bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
-            
-            let tagsBottom = tagsView.bottomAnchor
-            tagsBottom.constraint(equalTo: topAnchor).isActive = true
+            hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: bottomViewAnchor,
+                                                                    constant: bottomMargin)
+            showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: bottomViewAnchor)
         } else {
-            guard let topAnchor = topAnchor else {
-                return
-            }
-            hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: topAnchor, constant: .linkTagsHeight)
-            showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: topAnchor)
+            // If we want to show/hide the link tags view
+            // we move it below bottom view on current view height
+            hiddenTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: bottomViewAnchor,
+                                                                    constant: .linkTagsHeight)
+            showedTagsConstraint = tagsView.bottomAnchor.constraint(equalTo: bottomViewAnchor)
         }
         hiddenTagsConstraint?.isActive = true
-        
-        tagsView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        tagsView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
     }
     
     func filesGridViewDidLoad() {
-        guard let anchor = startedVC?.controllerView.topAnchor else {
+        guard let bottomViewAnchor = startedVC?.controllerView.topAnchor else {
             return
         }
-        filesGridCoordinator?.layout(.viewDidLoad(nil, anchor))
+        filesGridCoordinator?.layout(.viewDidLoad(nil, bottomViewAnchor))
     }
     
-    func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat) {
+    func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat?) {
         filesGridCoordinator?.layout(.viewDidLayoutSubviews(containerHeight))
     }
     

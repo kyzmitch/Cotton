@@ -31,12 +31,6 @@ final class LoadingProgressCoordinator: Coordinator {
         let vc = vcFactory.loadingProgressViewController
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: containerView)
-        hiddenWebLoadConstraint = vc.controllerView.heightAnchor.constraint(equalToConstant: 0)
-        showedWebLoadConstraint = vc.controllerView.heightAnchor.constraint(equalToConstant: 6)
-        hiddenWebLoadConstraint?.isActive = true
-        
-        vc.controllerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        vc.controllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
     }
 }
 
@@ -91,13 +85,19 @@ extension LoadingProgressCoordinator: Layouting {
 private extension LoadingProgressCoordinator {
     func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?) {
         guard let webLoadProgressView = startedVC?.controllerView,
-              let containerView = presenterVC?.controllerView else {
+              let superView = presenterVC?.controllerView else {
             return
         }
-        guard let anchor = topAnchor else {
+        guard let topViewAnchor = topAnchor else {
             return
         }
-        webLoadProgressView.topAnchor.constraint(equalTo: anchor).isActive = true
-        containerView.topAnchor.constraint(equalTo: webLoadProgressView.bottomAnchor).isActive = true
+        webLoadProgressView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
+        
+        hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
+        showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
+        hiddenWebLoadConstraint?.isActive = true
+        
+        webLoadProgressView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+        webLoadProgressView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
     }
 }

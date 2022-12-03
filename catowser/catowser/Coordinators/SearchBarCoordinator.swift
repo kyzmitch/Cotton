@@ -166,8 +166,8 @@ private extension SearchBarCoordinator {
         guard let searchView = startedVC?.controllerView else {
             return
         }
-        if isPad, let anchor = topAnchor {
-            searchView.topAnchor.constraint(equalTo: anchor).isActive = true
+        if isPad, let topViewAnchor = topAnchor {
+            searchView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
         } else {
             if #available(iOS 11, *) {
                 searchView.topAnchor.constraint(equalTo: presenterView.safeAreaLayoutGuide.topAnchor).isActive = true

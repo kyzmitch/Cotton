@@ -37,10 +37,10 @@ final class FilesGridCoordinator: Coordinator {
             // use popover presentation on tablets
             return
         }
-        guard let containerView = presenterVC?.controllerView else {
+        guard let superView = presenterVC?.controllerView else {
             return
         }
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: containerView)
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
     }
 }
 
@@ -79,15 +79,9 @@ extension FilesGridCoordinator: Layouting {
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(_, let bottomAnchor, _):
-            guard let anchor = bottomAnchor else {
-                return
-            }
-            viewDidLoad(anchor)
+            viewDidLoad(bottomAnchor)
         case .viewDidLayoutSubviews(let containerHeight):
-            guard let height = containerHeight else {
-                return
-            }
-            viewDidLayoutSubviews(height)
+            viewDidLayoutSubviews(containerHeight)
         case .viewSafeAreaInsetsDidChange:
             break
         }
@@ -99,36 +93,34 @@ extension FilesGridCoordinator: Layouting {
 }
 
 private extension FilesGridCoordinator {
-    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor) {
+    func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
         guard !isPad else {
             return
         }
-        
-        guard let filesView: UIView = startedVC?.controllerView else {
+        guard let filesView = startedVC?.controllerView, let superView = presenterVC?.controllerView else {
             return
         }
-        guard let containerView = presenterVC?.controllerView else {
+        guard let bottomViewAnchor = bottomAnchor else {
             return
         }
-        filesView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        filesView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+        filesView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
+        filesView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
         // temporarily use 0 height because actual height of free space is
-        // unknown at the moment
-        let greedHeight: CGFloat = 0
-        hiddenFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: greedHeight)
-        showedFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        filesGreedHeightConstraint = filesView.heightAnchor.constraint(equalToConstant: greedHeight)
+        // unknown at the moment and will be calculated later (probably based on keyboard height)
+        let gridHeight: CGFloat = 0
+        hiddenFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: bottomViewAnchor, constant: gridHeight)
+        showedFilesGreedConstraint = filesView.bottomAnchor.constraint(equalTo: bottomViewAnchor)
+        filesGreedHeightConstraint = filesView.heightAnchor.constraint(equalToConstant: gridHeight)
         hiddenFilesGreedConstraint?.isActive = true
         filesGreedHeightConstraint?.isActive = true
     }
     
-    func viewDidLayoutSubviews(_ containerHeight: CGFloat) {
-        guard !isPad else {
+    func viewDidLayoutSubviews(_ containerHeight: CGFloat?) {
+        guard !isPad, let containerHeight = containerHeight else {
             return
         }
         
         let freeHeight: CGFloat = containerHeight - .linkTagsHeight
-        
         filesGreedHeightConstraint?.constant = freeHeight
         hiddenFilesGreedConstraint?.constant = freeHeight
         startedVC?.controllerView.setNeedsLayout()

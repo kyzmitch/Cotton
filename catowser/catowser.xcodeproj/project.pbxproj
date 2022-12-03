@@ -1581,18 +1581,18 @@
 				753392A92920BB6700570461 /* AppCoordinator.swift */,
 				8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */,
 				75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */,
+				8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */,
 				8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */,
-				753392B22921613E00570461 /* GlobalMenuCoordinator.swift */,
 				753392B52922C9EB00570461 /* MainToolbarCoordinator.swift */,
+				8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */,
+				753392B22921613E00570461 /* GlobalMenuCoordinator.swift */,
 				8A22D1B32923FDA1005D1F72 /* PhoneTabsCoordinator.swift */,
 				8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */,
 				8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */,
 				8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */,
-				8AE0BDDC292D079300A8BF9E /* LoadingProgressCoordinator.swift */,
 				8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */,
 				8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */,
 				8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */,
-				8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
