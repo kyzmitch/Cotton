@@ -11,9 +11,9 @@ import Foundation
 final class TabletTabsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory
     var startedCoordinator: Coordinator?
-    var parent: CoordinatorOwner?
+    weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
-    var presenterVC: AnyViewController?
+    weak var presenterVC: AnyViewController?
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {

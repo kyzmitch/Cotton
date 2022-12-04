@@ -13,12 +13,12 @@ import FeaturesFlagsKit
 import JSPlugins
 
 final class AppCoordinator: Coordinator {
+    /// Could be accessed using `WebViewsEnvironment.shared.viewControllerFactory` singleton as well
+    let vcFactory: ViewControllerFactory
     /// Currently presented (next) coordinator, to be able to stop it
     var startedCoordinator: Coordinator?
     /// Root coordinator doesn't have any parent
     weak var parent: CoordinatorOwner?
-    /// Could be accessed using `WebViewsEnvironment.shared.viewControllerFactory` singleton as well
-    let vcFactory: ViewControllerFactory
     /// This specific coordinator starts root view controller
     var startedVC: AnyViewController?
     /// There is no presenter view controller in App/root coordinator
@@ -85,7 +85,12 @@ final class AppCoordinator: Coordinator {
     }
 }
 
-extension AppCoordinator: CoordinatorOwner {}
+extension AppCoordinator: CoordinatorOwner {
+    func didFinish() {
+        // Menu view controller is stored as started which is good
+        startedCoordinator = nil
+    }
+}
 
 enum MainScreenRoute: Route {
     case menu(SiteMenuModel, UIView, CGRect)

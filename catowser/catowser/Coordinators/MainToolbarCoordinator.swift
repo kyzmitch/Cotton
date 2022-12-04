@@ -9,12 +9,12 @@
 import UIKit
 import CoreBrowser
 
-final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
+final class MainToolbarCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
-    var parent: CoordinatorOwner?
+    weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
-    var presenterVC: AnyViewController?
+    weak var presenterVC: AnyViewController?
     
     private weak var downloadDelegate: DonwloadPanelDelegate?
     private weak var settingsDelegate: GlobalMenuDelegate?
@@ -40,6 +40,13 @@ final class MainToolbarCoordinator: Coordinator, CoordinatorOwner {
         vc.view.translatesAutoresizingMaskIntoConstraints = false
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc, to: containerView)
+    }
+}
+
+extension MainToolbarCoordinator: CoordinatorOwner {
+    func didFinish() {
+        // Tabs view coordinator is stored as started
+        startedCoordinator = nil
     }
 }
 

@@ -17,9 +17,9 @@ protocol PhoneTabsDelegate: AnyObject {
 final class PhoneTabsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory
     var startedCoordinator: Coordinator?
-    var parent: CoordinatorOwner?
+    weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
-    var presenterVC: AnyViewController?
+    weak var presenterVC: AnyViewController?
     
     private weak var delegate: PhoneTabsDelegate?
     

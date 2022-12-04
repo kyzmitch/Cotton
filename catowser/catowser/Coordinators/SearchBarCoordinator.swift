@@ -108,7 +108,6 @@ extension SearchBarCoordinator: Navigating {
     
     func stop() {
         startedVC?.viewController.removeFromChild()
-        parent?.didFinish()
     }
 }
 
@@ -151,6 +150,7 @@ extension SearchBarCoordinator: Layouting {
 extension SearchBarCoordinator: CoordinatorOwner {
     func didFinish() {
         startedCoordinator = nil
+        // searhSuggestionsCoordinator = nil
     }
 }
 

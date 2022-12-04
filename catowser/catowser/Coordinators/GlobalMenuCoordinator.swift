@@ -13,7 +13,7 @@ final class GlobalMenuCoordinator: Coordinator {
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
-    var presenterVC: AnyViewController?
+    weak var presenterVC: AnyViewController?
     
     /// Data required for start of next navigation
     private let model: SiteMenuModel

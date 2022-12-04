@@ -45,6 +45,8 @@ protocol Layouting: AnyObject {
 }
 
 protocol CoordinatorOwner: AnyObject {
+    /// Usually should be called in `stop` function of a `Navigating` impl.
+    /// Default implementation should remove started coordinator reference.
     func didFinish()
 }
 
