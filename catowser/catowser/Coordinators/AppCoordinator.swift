@@ -249,6 +249,7 @@ private extension AppCoordinator {
         // to have a reference to a delegate for it
         linkTagsCoordinator = LinkTagsCoordinator(vcFactory, presenter)
         linkTagsCoordinator?.parent = self
+        
         let coordinator: SearchBarCoordinator = .init(vcFactory,
                                                       presenter,
                                                       linkTagsCoordinator,
@@ -257,6 +258,11 @@ private extension AppCoordinator {
         coordinator.parent = self
         coordinator.start()
         searchBarCoordinator = coordinator
+        
+        // The easiest way to pass the presenter which is Tablet search bar view controller.
+        // Also, need to make sure that search bar coordinator was started before
+        // this link tags coordinator to have a view controller initialized in vc factory
+        linkTagsCoordinator?.mediaLinksPresenter = vcFactory.createdDeviceSpecificSearchBarVC as? MediaLinksPresenter
     }
     
     func insertLoadingProgress() {

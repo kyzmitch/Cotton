@@ -80,17 +80,14 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
         coordinator?.layoutNext(.viewDidLoad(.searchBar))
         coordinator?.layoutNext(.viewDidLoad(.loadingProgress))
         coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
-        if isPad {
-            coordinator?.layoutNext(.viewDidLoad(.dummyView))
-            coordinator?.layoutNext(.viewDidLoad(.linkTags))
-        } else {
-            coordinator?.layoutNext(.viewDidLoad(.toolbar))
-            coordinator?.layoutNext(.viewDidLoad(.dummyView))
-            coordinator?.layoutNext(.viewDidLoad(.linkTags))
-        }
         if !isPad {
-            coordinator?.layoutNext(.viewDidLoad(.filesGrid))
+            coordinator?.layoutNext(.viewDidLoad(.toolbar))
         }
+        coordinator?.layoutNext(.viewDidLoad(.dummyView))
+        coordinator?.layoutNext(.viewDidLoad(.linkTags))
+        // Files grid is started on Tablet as well
+        // not to insert it as a subview but to init vc
+        coordinator?.layoutNext(.viewDidLoad(.filesGrid))
     }
 
     override func viewSafeAreaInsetsDidChange() {

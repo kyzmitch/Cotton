@@ -27,8 +27,9 @@ final class LinkTagsCoordinator: Coordinator {
     private var isLinkTagsShowed: Bool = false
     
     private var tagsSiteDataSource: TagsSiteDataSource?
-    private weak var viewInterface: LinkTagsPresenter?
-    private weak var mediaLinksPresenter: MediaLinksPresenter?
+    private weak var linkTagsPresenter: LinkTagsPresenter?
+    /// Needs to be set outside of init, so, it is not private
+    weak var mediaLinksPresenter: MediaLinksPresenter?
     
     // MARK: - All constraints should be stored by strong references because they are removed during deactivation
 
@@ -47,7 +48,7 @@ final class LinkTagsCoordinator: Coordinator {
         let vc = vcFactory.linkTagsViewController(self)
         vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
         startedVC = vc
-        viewInterface = vc
+        linkTagsPresenter = vc
         
         guard let superView = presenterVC?.controllerView else {
             return
@@ -190,13 +191,13 @@ private extension LinkTagsCoordinator {
     
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
         tagsSiteDataSource = .instagram(nodes)
-        viewInterface?.setLinks(nodes.count, for: .video)
+        linkTagsPresenter?.setLinks(nodes.count, for: .video)
         updateDownloadsViews()
     }
 
     func openTagsFor(html tags: [HTMLVideoTag]) {
         tagsSiteDataSource = .htmlVideos(tags)
-        viewInterface?.setLinks(tags.count, for: .video)
+        linkTagsPresenter?.setLinks(tags.count, for: .video)
         updateDownloadsViews()
     }
 
@@ -205,7 +206,7 @@ private extension LinkTagsCoordinator {
         filesGridCoordinator?.showNext(.hide)
         hideLinkTagsController()
         filesGridCoordinator?.showNext(.clear)
-        viewInterface?.clearLinks()
+        linkTagsPresenter?.clearLinks()
     }
     
     func hideLinkTagsController() {
@@ -221,10 +222,11 @@ private extension LinkTagsCoordinator {
     
     func updateDownloadsViews() {
         if isPad {
+            // probably check for Tablet is not necessary,
+            // because it is an optional presenter anyway
             mediaLinksPresenter?.didReceiveMediaLinks()
-        } else {
-            showLinkTagsControllerIfNeeded()
         }
+        showLinkTagsControllerIfNeeded()
     }
     
     func showLinkTagsControllerIfNeeded() {
