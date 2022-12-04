@@ -65,7 +65,7 @@ extension FilesGridCoordinator: Navigating {
     }
     
     func stop() {
-        // TODO: remove from parent view controller
+        parent?.didFinish()
     }
 }
 
@@ -132,13 +132,12 @@ private extension FilesGridCoordinator {
             return
         }
         isFilesGreedShowed = false
-        if !isPad {
+        if isPad {
+            startedVC?.viewController.dismiss(animated: true, completion: nil)
+        } else {
             showedFilesGreedConstraint?.isActive = false
             hiddenFilesGreedConstraint?.isActive = true
-
             startedVC?.controllerView.layoutIfNeeded()
-        } else {
-            startedVC?.viewController.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -154,11 +153,7 @@ private extension FilesGridCoordinator {
             showNext(.hide)
             return
         }
-        if !isPad {
-            interface?.reloadWith(source: tagsDataSource) { [weak self] in
-                self?.showFilesGreedOnPhoneIfNeeded()
-            }
-        } else {
+        if isPad {
             guard let vc = startedVC?.viewController else {
                 return
             }
@@ -171,6 +166,10 @@ private extension FilesGridCoordinator {
             }
             interface?.reloadWith(source: tagsDataSource, completion: nil)
             presenterVC?.viewController.present(vc, animated: true, completion: nil)
+        } else {
+            interface?.reloadWith(source: tagsDataSource) { [weak self] in
+                self?.showFilesGreedOnPhoneIfNeeded()
+            }
         }
     }
     

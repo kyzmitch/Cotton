@@ -79,11 +79,16 @@ extension LinkTagsCoordinator: Navigating {
     func stop() {
         filesGridCoordinator?.stop()
         filesGridCoordinator = nil
-        // TODO: maybe need to call `parent?.didFinish()`
+        parent?.didFinish()
     }
 }
 
-extension LinkTagsCoordinator: CoordinatorOwner {}
+extension LinkTagsCoordinator: CoordinatorOwner {
+    func didFinish() {
+        startedCoordinator = nil
+        filesGridCoordinator = nil
+    }
+}
 
 enum LinkTagsPart: SubviewPart {
     case filesGrid
