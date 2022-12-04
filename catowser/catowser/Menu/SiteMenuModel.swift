@@ -18,8 +18,12 @@ enum MenuModelStyle {
     case onlyGlobalMenu
 }
 
-protocol SiteSettingsInterface: AnyObject {
+protocol SiteMenuPresenter: AnyObject {
     func update(jsEnabled: Bool)
+}
+
+protocol DeveloperMenuPresenter: AnyObject {
+    func emulateLinkTags()
 }
 
 @available(iOS 13.0, *)
@@ -37,7 +41,8 @@ final class SiteMenuModel: ObservableObject {
     
     let siteSettings: Site.Settings?
     
-    weak var siteSettingsDelegate: SiteSettingsInterface?
+    private weak var siteMenuPresenter: SiteMenuPresenter?
+    weak var developerMenuPresenter: DeveloperMenuPresenter?
     
     var siteSectionTitle: String {
         // site section is only available for site menu
@@ -63,7 +68,7 @@ final class SiteMenuModel: ObservableObject {
     let viewTitle: String = .menuTtl
     
     init(_ menuStyle: MenuModelStyle,
-         _ siteDelegate: SiteSettingsInterface?) {
+         _ siteDelegate: SiteMenuPresenter?) {
         switch menuStyle {
         case .siteMenu(let host, let settings):
             self.host = host
@@ -75,7 +80,7 @@ final class SiteMenuModel: ObservableObject {
             // following properties can be removed later for only global kind of menues
             isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
         }
-        siteSettingsDelegate = siteDelegate
+        siteMenuPresenter = siteDelegate
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled
@@ -84,13 +89,19 @@ final class SiteMenuModel: ObservableObject {
         jsEnabledOptionCancellable = $isJavaScriptEnabled
             .dropFirst()
             .sink(receiveValue: { [weak self] (jsEnabledValue) in
-                self?.siteSettingsDelegate?.update(jsEnabled: jsEnabledValue)
+                self?.siteMenuPresenter?.update(jsEnabled: jsEnabledValue)
         })
     }
     
     deinit {
         dohChangesCancellable?.cancel()
         jsEnabledOptionCancellable?.cancel()
+    }
+    
+    // MARK: - dev/debug menu handlers
+    
+    func emulateLinkTags() {
+        developerMenuPresenter?.emulateLinkTags()
     }
 }
 

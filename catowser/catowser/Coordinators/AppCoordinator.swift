@@ -511,6 +511,7 @@ extension AppCoordinator: TabsObserver {
 extension AppCoordinator: GlobalMenuDelegate {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
         let menuModel: SiteMenuModel = .init(.onlyGlobalMenu, siteNavigationDelegate)
+        menuModel.developerMenuPresenter = self
         showNext(.menu(menuModel, sourceView, sourceRect))
     }
 }
@@ -549,5 +550,18 @@ extension AppCoordinator: SearchBarDelegate {
         }
         let toolbarHeight = toolbarCoordinator?.startedView?.bounds.height
         searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions, topAnchor, bottomAnchor, toolbarHeight))
+    }
+}
+
+extension AppCoordinator: DeveloperMenuPresenter {
+    func emulateLinkTags() {
+        // swiftlint:disable:next force_unwrapping
+        let url1 = URL(string: "https://www.mozilla.org/media/img/favicons/mozilla/apple-touch-icon.8cbe9c835c00.png")!
+        // swiftlint:disable:next force_unwrapping
+        let url2 = URL(string: "https://www.opennet.ru/opennet_120.png")!
+        let tag1: HTMLVideoTag = .init(srcURL: url1, posterURL: url1, name: "example 1")
+        let tag2: HTMLVideoTag = .init(srcURL: url2, posterURL: url2, name: "example 2")
+        let tags: [HTMLVideoTag] = [tag1, tag2]
+        didReceiveVideoTags(tags)
     }
 }

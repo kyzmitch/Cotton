@@ -13,7 +13,7 @@ import CoreBrowser
 
 // base protocol already based on `class`
 // swiftlint:disable:next class_delegate_protocol
-protocol SiteNavigationDelegate: SiteSettingsInterface {
+protocol SiteNavigationDelegate: SiteMenuPresenter {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
 

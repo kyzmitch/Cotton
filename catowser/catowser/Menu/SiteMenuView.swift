@@ -82,6 +82,9 @@ private struct _SiteMenuView: View {
                         Spacer()
                         Text(verbatim: model.selectedAsyncApiStringValue)
                     }
+                    Button("Trigger dummy link tags") {
+                        model.emulateLinkTags()
+                    }
                 }
 #endif
             }
