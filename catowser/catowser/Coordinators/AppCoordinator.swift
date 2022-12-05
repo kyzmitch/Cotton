@@ -293,6 +293,9 @@ private extension AppCoordinator {
     }
     
     func insertToolbar() {
+        guard !isPad else {
+            return
+        }
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
         // Link tags coordinator MUST be initialized before this toolbar

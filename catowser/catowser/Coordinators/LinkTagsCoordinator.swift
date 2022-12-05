@@ -16,7 +16,8 @@ protocol MediaLinksPresenter: AnyObject {
     var downloadsPopoverStartInfo: (UIView, CGRect) { get }
 }
 
-final class LinkTagsCoordinator: Coordinator {
+/// Must inherit from NSObject to implement `UINavigationControllerDelegate`
+final class LinkTagsCoordinator: NSObject, Coordinator {
     let vcFactory: any ViewControllerFactory
     var startedCoordinator: Coordinator?
     weak var parent: CoordinatorOwner?
@@ -47,7 +48,7 @@ final class LinkTagsCoordinator: Coordinator {
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
-        
+        super.init()
         // Using self before end of initializer
         let vc = vcFactory.linkTagsViewController(self)
         vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +57,7 @@ final class LinkTagsCoordinator: Coordinator {
         // Create stack here to set a root and not in show function
         // because it could be called multiple times
         navigationStack = UINavigationController(rootViewController: vc.viewController)
+        navigationStack?.delegate = self
     }
     
     func start() {
@@ -245,7 +247,7 @@ private extension LinkTagsCoordinator {
                 return
             }
             stack.modalPresentationStyle = .popover
-            stack.preferredContentSize = CGSize(width: 500, height: 600)
+            stack.preferredContentSize = CGSize(width: 300, height: .linkTagsHeight + 20)
             if let popoverPresenter = stack.popoverPresentationController,
                let popoverInfo = mediaLinksPresenter?.downloadsPopoverStartInfo {
                 popoverPresenter.permittedArrowDirections = .any
@@ -308,6 +310,19 @@ extension LinkTagsCoordinator: DownloadPanelPresenter {
         } else {
             // TODO: figure out if it is needed on Phone or this is not called at all
             filesGridCoordinator?.showNext(.show(.video, sourceView, sourceRect, source))
+        }
+    }
+}
+
+extension LinkTagsCoordinator: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController,
+                              willShow viewController: UIViewController,
+                              animated: Bool) {
+        guard let linkTagsVC = startedVC?.viewController else {
+            return
+        }
+        if linkTagsVC == viewController {
+            navigationStack?.preferredContentSize = CGSize(width: 300, height: .linkTagsHeight + 20)
         }
     }
 }

@@ -161,6 +161,7 @@ private extension FilesGridCoordinator {
                 return
             }
             interface?.reloadWith(source: tagsDataSource, completion: nil)
+            navigationStack?.preferredContentSize = CGSize(width: 500, height: 600)
             navigationStack?.pushViewController(vc, animated: true)
         } else {
             interface?.reloadWith(source: tagsDataSource) { [weak self] in

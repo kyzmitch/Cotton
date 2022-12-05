@@ -52,14 +52,18 @@ final class LinkTagsViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         ThemeProvider.shared.setupUnderLinkTags(collectionView)
 
         // Inset From property must be set to "from Content Inset"
         // in Storyboard of view controller in UICollectionView
         // overwise you will see gap from the top of cells
-        let zeroInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        let zeroInset: UIEdgeInsets
+        if isPad {
+            zeroInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        } else {
+            zeroInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
         collectionView.contentInset = zeroInset
 
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
@@ -72,6 +76,11 @@ final class LinkTagsViewController: UICollectionViewController {
         flowLayout.estimatedItemSize = estimatedSize
         /* UICollectionViewFlowLayout.automaticSize */
         flowLayout.invalidateLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

@@ -31,6 +31,9 @@ final class MainToolbarCoordinator: Coordinator {
     }
     
     func start() {
+        guard !isPad else {
+            return
+        }
         guard let vc = vcFactory.toolbarViewController(downloadDelegate, settingsDelegate, self) else {
             assertionFailure("Toolbar is only available on Phone layout")
             return

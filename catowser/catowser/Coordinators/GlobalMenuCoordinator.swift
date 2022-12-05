@@ -39,7 +39,7 @@ final class GlobalMenuCoordinator: Coordinator {
         let vc = vcFactory.siteMenuViewController(model, self)
         if isPad {
             vc.modalPresentationStyle = .popover
-            vc.preferredContentSize = CGSize(width: 400, height: 360)
+            vc.preferredContentSize = CGSize(width: 400, height: 600)
             if let popoverPresenter = vc.popoverPresentationController {
                 // for iPad
                 popoverPresenter.sourceView = sourceView
