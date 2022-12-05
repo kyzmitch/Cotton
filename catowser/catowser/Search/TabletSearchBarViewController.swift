@@ -31,11 +31,11 @@ final class TabletSearchBarViewController: BaseViewController {
     
     private weak var globalSettingsDelegate: GlobalMenuDelegate?
     
-    private weak var downloadPanelDelegate: DonwloadPanelDelegate?
+    private weak var downloadPanelDelegate: DownloadPanelPresenter?
     
     init(_ searchBarDelegate: UISearchBarDelegate,
          _ settingsDelegate: GlobalMenuDelegate?,
-         _ downloadDelegate: DonwloadPanelDelegate?) {
+         _ downloadDelegate: DownloadPanelPresenter?) {
         searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
         globalSettingsDelegate = settingsDelegate
         downloadPanelDelegate = downloadDelegate
@@ -247,6 +247,10 @@ extension TabletSearchBarViewController: MediaLinksPresenter {
     func didReceiveMediaLinks() {
         downloadLinksButton.isEnabled = true
         // can animate button to make it more noticeable for user
+    }
+    
+    var downloadsPopoverStartInfo: (UIView, CGRect) {
+        (view, downloadLinksButton.frame)
     }
 }
 

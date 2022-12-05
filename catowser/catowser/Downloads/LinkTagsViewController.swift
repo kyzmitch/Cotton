@@ -40,11 +40,10 @@ protocol LinkTagsDelegate: AnyObject {
 }
 
 final class LinkTagsViewController: UICollectionViewController {
-    fileprivate var dataSource = [LinksType: Int]()
-
-    weak var delegate: LinkTagsDelegate?
+    private var linksCounts = [LinksType: Int]()
+    private weak var delegate: LinkTagsDelegate?
     
-    static func newFromStoryboard(delegate: LinkTagsDelegate) -> LinkTagsViewController {
+    static func newFromStoryboard(delegate: LinkTagsDelegate?) -> LinkTagsViewController {
         let name = String(describing: self)
         let vc = LinkTagsViewController.instantiateFromStoryboard(name, identifier: name)
         vc.delegate = delegate
@@ -80,13 +79,13 @@ final class LinkTagsViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        return linksCounts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
-        for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
+        for (index, tuple) in linksCounts.enumerated() where index == indexPath.item {
             cell.set(tuple.value, tagName: tuple.key.description)
             break
         }
@@ -94,7 +93,7 @@ final class LinkTagsViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
+        for (index, tuple) in linksCounts.enumerated() where index == indexPath.item {
             let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
             delegate?.didSelect(type: tuple.key, from: cell)
             break
@@ -113,13 +112,13 @@ fileprivate extension LinksBadgeView {
 
 extension LinkTagsViewController: LinkTagsPresenter {
     func setLinks(_ count: Int, for type: LinksType) {
-        dataSource[type] = count
+        linksCounts[type] = count
         // no specific index
         collectionView.reloadData()
     }
     
     func clearLinks() {
-        dataSource.removeAll()
+        linksCounts.removeAll()
         collectionView.reloadData()
     }
 }

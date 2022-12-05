@@ -19,6 +19,7 @@ final class SearchSuggestionsCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     private weak var delegate: SearchSuggestionsListDelegate?
     private var _keyboardHeight: CGFloat?

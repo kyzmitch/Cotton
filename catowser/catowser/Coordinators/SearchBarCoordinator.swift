@@ -24,8 +24,9 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
-    private weak var downloadPanelDelegate: DonwloadPanelDelegate?
+    private weak var downloadPanelDelegate: DownloadPanelPresenter?
     private weak var globalMenuDelegate: GlobalMenuDelegate?
     private weak var delegate: SearchBarDelegate?
     
@@ -56,7 +57,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ downloadPanelDelegate: DonwloadPanelDelegate?,
+         _ downloadPanelDelegate: DownloadPanelPresenter?,
          _ globalMenuDelegate: GlobalMenuDelegate?,
          _ delegate: SearchBarDelegate?) {
         self.vcFactory = vcFactory

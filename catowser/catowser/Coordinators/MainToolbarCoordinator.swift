@@ -15,13 +15,14 @@ final class MainToolbarCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
-    private weak var downloadDelegate: DonwloadPanelDelegate?
+    private weak var downloadDelegate: DownloadPanelPresenter?
     private weak var settingsDelegate: GlobalMenuDelegate?
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ downloadDelegate: DonwloadPanelDelegate?,
+         _ downloadDelegate: DownloadPanelPresenter?,
          _ settingsDelegate: GlobalMenuDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter

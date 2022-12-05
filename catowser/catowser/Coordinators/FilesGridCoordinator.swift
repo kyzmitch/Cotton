@@ -14,6 +14,7 @@ final class FilesGridCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     private var filesGreedHeightConstraint: NSLayoutConstraint?
     private var hiddenFilesGreedConstraint: NSLayoutConstraint?
@@ -23,9 +24,11 @@ final class FilesGridCoordinator: Coordinator {
     private weak var interface: FilesGridPresenter?
     
     init(_ vcFactory: any ViewControllerFactory,
-         _ presenter: AnyViewController) {
+         _ presenter: AnyViewController?,
+         _ navigationStack: UINavigationController?) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
+        self.navigationStack = navigationStack
     }
     
     func start() {
@@ -47,7 +50,7 @@ final class FilesGridCoordinator: Coordinator {
 enum FilesGridRoute: Route {
     case hide
     case clear
-    case videos(LinksType, UIView, CGRect, TagsSiteDataSource)
+    case show(LinksType, UIView, CGRect, TagsSiteDataSource)
 }
 
 extension FilesGridCoordinator: Navigating {
@@ -59,7 +62,7 @@ extension FilesGridCoordinator: Navigating {
             hide()
         case .clear:
             clear()
-        case .videos(let type, let sourceView, let sourceRect, let tagsDataSource):
+        case .show(let type, let sourceView, let sourceRect, let tagsDataSource):
             showVideos(type, sourceView, sourceRect, tagsDataSource)
         }
     }
@@ -133,7 +136,7 @@ private extension FilesGridCoordinator {
         }
         isFilesGreedShowed = false
         if isPad {
-            startedVC?.viewController.dismiss(animated: true, completion: nil)
+            navigationStack?.popViewController(animated: true)
         } else {
             showedFilesGreedConstraint?.isActive = false
             hiddenFilesGreedConstraint?.isActive = true
@@ -157,15 +160,8 @@ private extension FilesGridCoordinator {
             guard let vc = startedVC?.viewController else {
                 return
             }
-            vc.modalPresentationStyle = .popover
-            vc.preferredContentSize = CGSize(width: 500, height: 600)
-            if let popoverPresenter = vc.popoverPresentationController {
-                popoverPresenter.permittedArrowDirections = .any
-                popoverPresenter.sourceRect = sourceRect
-                popoverPresenter.sourceView = sourceView
-            }
             interface?.reloadWith(source: tagsDataSource, completion: nil)
-            presenterVC?.viewController.present(vc, animated: true, completion: nil)
+            navigationStack?.pushViewController(vc, animated: true)
         } else {
             interface?.reloadWith(source: tagsDataSource) { [weak self] in
                 self?.showFilesGreedOnPhoneIfNeeded()

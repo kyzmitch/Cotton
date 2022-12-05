@@ -27,7 +27,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     // MARK: - Tablet methods
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
-                                               _ downloadDelegate: DonwloadPanelDelegate?,
+                                               _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController? {
         if let existingVC = searchBarVC {
             return existingVC
@@ -46,7 +46,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
         let vc = TabsViewController()
         return vc
     }
-    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate?,
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {
         return nil

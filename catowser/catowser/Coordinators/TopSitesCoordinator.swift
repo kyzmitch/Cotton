@@ -14,6 +14,7 @@ final class TopSitesCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     private let contentContainerView: UIView
     

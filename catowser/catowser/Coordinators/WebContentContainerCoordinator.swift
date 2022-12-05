@@ -14,6 +14,7 @@ final class WebContentContainerCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     /// Overrides base implementation because there is no view controller
     var startedView: UIView? {

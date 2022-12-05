@@ -14,6 +14,7 @@ final class LoadingProgressCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     private var hiddenWebLoadConstraint: NSLayoutConstraint?
     private var showedWebLoadConstraint: NSLayoutConstraint?

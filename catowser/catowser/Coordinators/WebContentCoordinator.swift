@@ -22,6 +22,7 @@ final class WebContentCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
 
     private let site: Site
     private let jsPluginsSource: any JSPluginsSource

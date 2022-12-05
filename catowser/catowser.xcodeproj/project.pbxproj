@@ -478,6 +478,8 @@
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
+		8ADA5822293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */; };
+		8ADA5823293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */; };
 		8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
 		8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
 		8ADC4971293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADC4970293A589200F37BF2 /* BottomViewCoordinator.swift */; };
@@ -1166,6 +1168,7 @@
 		8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsCoordinator.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramMocks.swift; sourceTree = "<group>"; };
+		8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadPanelPresenter.swift; sourceTree = "<group>"; };
 		8ADAF547240123F600A0D233 /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
 		8ADAF549240124D800A0D233 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
 		8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeatureSource.swift; sourceTree = "<group>"; };
@@ -1631,6 +1634,7 @@
 				60A82C4E22549453008210D9 /* FilesGridViewController.swift */,
 				60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */,
 				60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */,
+				8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */,
 			);
 			path = Downloads;
 			sourceTree = "<group>";
@@ -3506,6 +3510,7 @@
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989328622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
+				8ADA5822293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */,
 				8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE2028FF0D0D002063C2 /* AnyViewController.swift in Sources */,
@@ -3717,6 +3722,7 @@
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989428622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
+				8ADA5823293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */,
 				8AB9BE1228FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE1F28FF0D0D002063C2 /* AnyViewController.swift in Sources */,

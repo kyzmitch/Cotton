@@ -47,10 +47,10 @@ protocol ViewControllerFactory: AnyObject {
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> AnyViewController?
     /// Will return nil on Phone
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
-                                               _ downloadDelegate: DonwloadPanelDelegate?,
+                                               _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
-    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate?,
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
@@ -58,7 +58,7 @@ protocol ViewControllerFactory: AnyObject {
     /// Tablet specific tabs
     func tabsViewController() -> AnyViewController?
     /// Download link tags
-    func linkTagsViewController(_ delegate: LinkTagsDelegate) -> AnyViewController & LinkTagsPresenter
+    func linkTagsViewController(_ delegate: LinkTagsDelegate?) -> AnyViewController & LinkTagsPresenter
     /// The files grid controller to display links for downloads
     func filesGridViewController() -> AnyViewController & FilesGridPresenter
 }
@@ -99,7 +99,7 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func linkTagsViewController(_ delegate: LinkTagsDelegate) -> AnyViewController & LinkTagsPresenter {
+    func linkTagsViewController(_ delegate: LinkTagsDelegate?) -> AnyViewController & LinkTagsPresenter {
         let vc = LinkTagsViewController.newFromStoryboard(delegate: delegate)
         return vc
     }

@@ -82,7 +82,9 @@ private struct _SiteMenuView: View {
                         Spacer()
                         Text(verbatim: model.selectedAsyncApiStringValue)
                     }
-                    Button("Trigger dummy link tags") {
+                    Button("Simulate download resources") {
+                        // Need to dismiss menu popover first if on Tablet
+                        presentationMode.wrappedValue.dismiss()
                         model.emulateLinkTags()
                     }
                 }

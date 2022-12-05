@@ -16,12 +16,6 @@
 import UIKit
 import CoreBrowser
 
-// TODO: fix protocol name to Download
-protocol DonwloadPanelDelegate: AnyObject {
-    func didPressDownloads(to hide: Bool)
-    func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect)
-}
-
 protocol GlobalMenuDelegate: AnyObject {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect)
 }
@@ -31,7 +25,7 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     private weak var coordinator: C?
 
     init(_ coordinator: C,
-         _ downloadDelegate: DonwloadPanelDelegate?,
+         _ downloadDelegate: DownloadPanelPresenter?,
          _ globalSettingsDelegate: GlobalMenuDelegate?) {
         self.coordinator = coordinator
         downloadPanelDelegate = downloadDelegate
@@ -59,7 +53,7 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
         }
     }
     
-    private weak var downloadPanelDelegate: DonwloadPanelDelegate?
+    private weak var downloadPanelDelegate: DownloadPanelPresenter?
     private weak var globalSettingsDelegate: GlobalMenuDelegate?
 
     fileprivate var downloadsViewHidden: Bool = true {

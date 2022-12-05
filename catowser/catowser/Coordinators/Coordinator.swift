@@ -62,6 +62,8 @@ protocol Coordinator: AnyObject {
     var startedVC: AnyViewController? { get }
     /// View controller used to present/show this Coordinator's started vc
     var presenterVC: AnyViewController? { get }
+    /// Navigation stack
+    var navigationStack: UINavigationController? { get }
     
     func start()
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class TabletTabsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory
@@ -14,6 +14,7 @@ final class TabletTabsCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {

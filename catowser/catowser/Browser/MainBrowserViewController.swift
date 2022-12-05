@@ -47,17 +47,13 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
         coordinator?.insertNext(.searchBar)
         coordinator?.insertNext(.loadingProgress)
         coordinator?.insertNext(.webContentContainer)
-
-        if isPad {
-            // no need to add files greed as a child
-            // will try to show as popover
-            coordinator?.insertNext(.linkTags)
-        } else {
-            // should be added before iPhone toolbar
-            coordinator?.insertNext(.linkTags)
-            // files grid MUST be added after link tags
-            // but layout goes before link tags
-            coordinator?.insertNext(.filesGrid)
+        // Files grid needs to be added even on Tablet layout,
+        // also, it needs to be added before link tags
+        // to make link tags frontmost
+        coordinator?.insertNext(.filesGrid)
+        // should be added before iPhone toolbar
+        coordinator?.insertNext(.linkTags)
+        if !isPad {
             coordinator?.insertNext(.toolbar)
         }
         coordinator?.insertNext(.dummyView)
@@ -84,10 +80,14 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
             coordinator?.layoutNext(.viewDidLoad(.toolbar))
         }
         coordinator?.layoutNext(.viewDidLoad(.dummyView))
-        coordinator?.layoutNext(.viewDidLoad(.linkTags))
-        // Files grid is started on Tablet as well
-        // not to insert it as a subview but to init vc
-        coordinator?.layoutNext(.viewDidLoad(.filesGrid))
+        if !isPad {
+            // Link tags view won't be inserted on Tablets
+            // but will be presented as a popover
+            coordinator?.layoutNext(.viewDidLoad(.linkTags))
+            // Files grid is started on Tablet as well
+            // not to insert it as a subview but to init vc
+            coordinator?.layoutNext(.viewDidLoad(.filesGrid))
+        }
     }
 
     override func viewSafeAreaInsetsDidChange() {

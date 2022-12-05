@@ -23,6 +23,7 @@ final class AppCoordinator: Coordinator {
     var startedVC: AnyViewController?
     /// There is no presenter view controller in App/root coordinator
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     /// Phone toolbar coordinator which should stay forever
     private var toolbarCoordinator: (any Layouting)?
@@ -433,7 +434,7 @@ private extension AppCoordinator {
     
     func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
         // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
+        let presenter = vcFactory.createdDeviceSpecificSearchBarVC!
         let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
         coordinator.parent = self
         coordinator.start()

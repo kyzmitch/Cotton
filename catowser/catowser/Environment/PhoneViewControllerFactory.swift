@@ -37,12 +37,12 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     }
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
-                                               _ downloadDelegate: DonwloadPanelDelegate?,
+                                               _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController? {
         return nil
     }
     
-    func toolbarViewController<C: Navigating>(_ downloadDelegate: DonwloadPanelDelegate?,
+    func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {
         if let existingVC = toolBarVC {

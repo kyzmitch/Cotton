@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreBrowser
 
 protocol PhoneTabsDelegate: AnyObject {
@@ -20,6 +20,7 @@ final class PhoneTabsCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     private weak var delegate: PhoneTabsDelegate?
     

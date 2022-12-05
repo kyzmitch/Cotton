@@ -14,6 +14,7 @@ final class BottomViewCoordinator: Coordinator {
     weak var parent: CoordinatorOwner?
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
+    var navigationStack: UINavigationController?
     
     /// Overwritten getter because there is no view controller which holds started view
     var startedView: UIView? {
