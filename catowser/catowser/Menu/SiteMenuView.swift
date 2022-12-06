@@ -35,15 +35,15 @@ private struct _SiteMenuView: View {
             List {
                 if model.host != nil {
                     Section(header: Text(model.siteSectionTitle)) {
-                        Toggle(isOn: $model.isJavaScriptEnabled) {
-                            Text(verbatim: .jsMenuTitle)
-                        }
+                        
                     }
-                    // TODO: add setting to control JS plugins adding
                 }
                 Section(header: Text(verbatim: .globalSectionTtl)) {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
+                    }
+                    Toggle(isOn: $model.isJavaScriptEnabled) {
+                        Text(verbatim: .jsMenuTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabAddPosition, value: selected)
@@ -104,7 +104,7 @@ private extension String {
     static let devSectionTtl = NSLocalizedString("ttl_developer_menu", comment: "")
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
-    static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled_for_tab", comment: "")
+    static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled", comment: "")
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
@@ -128,7 +128,7 @@ struct SiteMenuView_Previews: PreviewProvider {
                                      canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
         let style: MenuModelStyle = .siteMenu(host!, settings)
-        let model = SiteMenuModel(style, nil)
+        let model = SiteMenuModel(style)
         return _SiteMenuView().environmentObject(model)
     }
 }

@@ -53,6 +53,8 @@ final class WebViewController: BaseViewController,
     private var dohCancellable: AnyCancellable?
     /// DoH changes disposable for rx
     private var dohDisposable: Disposable?
+    /// JS subscriber
+    private var jsStateCancellable: AnyCancellable?
     
     /// lazy loaded web view to use correct config
     lazy var webView: WKWebView = {
@@ -252,6 +254,15 @@ private extension WebViewController {
         case .asyncAwait:
             taskHandler?.cancel()
             taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        }
+        
+        jsStateCancellable?.cancel()
+        jsStateCancellable = FeatureManager.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            let enabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+            self.viewModel.setJavaScript(self.webView, enabled)
         }
     }
     

@@ -36,6 +36,8 @@ final class WebContentCoordinator: Coordinator {
         }
     }
     private weak var delegate: WebContentDelegate?
+    /// Points to web view controller
+    private var sitePresenter: SiteNavigationDelegate?
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
@@ -58,6 +60,7 @@ final class WebContentCoordinator: Coordinator {
             return
         }
         startedVC = vc
+        sitePresenter = vc
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
         
         let topSitesView: UIView = vc.controllerView
@@ -69,12 +72,19 @@ final class WebContentCoordinator: Coordinator {
     }
 }
 
-enum WebContentRoute: Route {}
+enum WebContentRoute: Route {
+    case javaScript(Bool)
+}
 
 extension WebContentCoordinator: Navigating {
     typealias R = WebContentRoute
     
-    func showNext(_ route: R) {}
+    func showNext(_ route: R) {
+        switch route {
+        case .javaScript(let enable):
+            sitePresenter?.enableJavaScript(enable)
+        }
+    }
     
     func stop() {
         // need to stop any video/audio on corresponding web view

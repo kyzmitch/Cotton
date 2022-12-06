@@ -521,7 +521,7 @@ extension AppCoordinator: TabsObserver {
 
 extension AppCoordinator: GlobalMenuDelegate {
     func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
-        let menuModel: SiteMenuModel = .init(.onlyGlobalMenu, siteNavigationDelegate)
+        let menuModel: SiteMenuModel = .init(.onlyGlobalMenu)
         menuModel.developerMenuPresenter = self
         showNext(.menu(menuModel, sourceView, sourceRect))
     }

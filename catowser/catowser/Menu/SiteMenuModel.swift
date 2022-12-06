@@ -18,10 +18,6 @@ enum MenuModelStyle {
     case onlyGlobalMenu
 }
 
-protocol SiteMenuPresenter: AnyObject {
-    func update(jsEnabled: Bool)
-}
-
 protocol DeveloperMenuPresenter: AnyObject {
     func emulateLinkTags()
 }
@@ -41,7 +37,6 @@ final class SiteMenuModel: ObservableObject {
     
     let siteSettings: Site.Settings?
     
-    private weak var siteMenuPresenter: SiteMenuPresenter?
     weak var developerMenuPresenter: DeveloperMenuPresenter?
     
     var siteSectionTitle: String {
@@ -67,8 +62,7 @@ final class SiteMenuModel: ObservableObject {
     
     let viewTitle: String = .menuTtl
     
-    init(_ menuStyle: MenuModelStyle,
-         _ siteDelegate: SiteMenuPresenter?) {
+    init(_ menuStyle: MenuModelStyle) {
         switch menuStyle {
         case .siteMenu(let host, let settings):
             self.host = host
@@ -80,7 +74,6 @@ final class SiteMenuModel: ObservableObject {
             // following properties can be removed later for only global kind of menues
             isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
         }
-        siteMenuPresenter = siteDelegate
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled
@@ -88,9 +81,7 @@ final class SiteMenuModel: ObservableObject {
             .sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
         jsEnabledOptionCancellable = $isJavaScriptEnabled
             .dropFirst()
-            .sink(receiveValue: { [weak self] (jsEnabledValue) in
-                self?.siteMenuPresenter?.update(jsEnabled: jsEnabledValue)
-        })
+            .sink { FeatureManager.setFeature(.javaScriptEnabled, value: $0) }
     }
     
     deinit {

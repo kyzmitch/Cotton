@@ -11,22 +11,14 @@ import UIKit
 import CoreHttpKit
 import CoreBrowser
 
-// base protocol already based on `class`
-// swiftlint:disable:next class_delegate_protocol
-protocol SiteNavigationDelegate: SiteMenuPresenter {
+protocol SiteNavigationDelegate: AnyObject {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
 
     func goForward()
     func goBack()
     func reload()
-    func reloadWithNewSettings(jsEnabled: Bool)
-}
-
-extension SiteNavigationDelegate {
-    func update(jsEnabled: Bool) {
-        reloadWithNewSettings(jsEnabled: jsEnabled)
-    }
+    func enableJavaScript(_ enabled: Bool)
 }
 
 protocol SiteExternalNavigationDelegate: AnyObject {
