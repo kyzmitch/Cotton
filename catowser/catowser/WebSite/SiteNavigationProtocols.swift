@@ -30,12 +30,12 @@ extension SiteNavigationDelegate {
 }
 
 protocol SiteExternalNavigationDelegate: AnyObject {
-    func didProvisionalNavigationStart()
+    func provisionalNavigationDidStart()
     func didSiteOpen(appName: String)
-    func didLoadingProgressChange(_ progress: Float)
+    func loadingProgressdDidChange(_ progress: Float)
     func didBackNavigationUpdate(to canGoBack: Bool)
     func didForwardNavigationUpdate(to canGoForward: Bool)
-    func didProgress(show: Bool)
+    func showLoadingProgress(_ show: Bool)
     func didTabPreviewChange(_ screenshot: UIImage)
 }
 

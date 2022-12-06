@@ -11,9 +11,9 @@ import CoreHttpKit
 import CoreBrowser
 
 protocol WebContentDelegate: AnyObject {
-    func didProvisionalNavigationStart()
-    func didLoadingProgressChange(_ progress: Float)
-    func didProgress(show: Bool)
+    func provisionalNavigationDidStart()
+    func loadingProgressdDidChange(_ progress: Float)
+    func showLoadingProgress(_ show: Bool)
 }
 
 final class WebContentCoordinator: Coordinator {
@@ -106,8 +106,8 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
         siteNavigationDelegate?.changeForwardButton(to: canGoForward)
     }
     
-    func didProvisionalNavigationStart() {
-        delegate?.didProvisionalNavigationStart()
+    func provisionalNavigationDidStart() {
+        delegate?.provisionalNavigationDidStart()
     }
 
     func didSiteOpen(appName: String) {
@@ -115,12 +115,12 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
         // to be able to use Cotton browser features
     }
     
-    func didLoadingProgressChange(_ progress: Float) {
-        delegate?.didLoadingProgressChange(progress)
+    func loadingProgressdDidChange(_ progress: Float) {
+        delegate?.loadingProgressdDidChange(progress)
     }
     
-    func didProgress(show: Bool) {
-        delegate?.didProgress(show: show)
+    func showLoadingProgress(_ show: Bool) {
+        delegate?.showLoadingProgress(show)
     }
     
     func didTabPreviewChange(_ screenshot: UIImage) {

@@ -155,11 +155,11 @@ final class WebViewController: BaseViewController,
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.didProgress(show: true)
+        externalNavigationDelegate?.showLoadingProgress(true)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        externalNavigationDelegate?.didProgress(show: false)
+        externalNavigationDelegate?.showLoadingProgress(false)
         
         defer {
             let snapshotConfig = WKSnapshotConfiguration()
@@ -189,7 +189,7 @@ final class WebViewController: BaseViewController,
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Error occured during a committed main frame: \(error.localizedDescription)")
-        externalNavigationDelegate?.didProgress(show: false)
+        externalNavigationDelegate?.showLoadingProgress(false)
     }
     
     func webView(_ webView: WKWebView,
@@ -197,7 +197,7 @@ final class WebViewController: BaseViewController,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         handler.solve { [weak self] in
-            self?.externalNavigationDelegate?.didProgress(show: false)
+            self?.externalNavigationDelegate?.showLoadingProgress(false)
         }
     }
     
@@ -205,7 +205,7 @@ final class WebViewController: BaseViewController,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
         print("Error occured while starting to load data: \(error.localizedDescription)")
-        externalNavigationDelegate?.didProgress(show: false)
+        externalNavigationDelegate?.showLoadingProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
     }
@@ -274,7 +274,7 @@ private extension WebViewController {
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didLoadingProgressChange(Float(value))
+            self.externalNavigationDelegate?.loadingProgressdDidChange(Float(value))
         }
     }
     

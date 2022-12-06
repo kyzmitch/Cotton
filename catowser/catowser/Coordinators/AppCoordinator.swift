@@ -23,6 +23,7 @@ final class AppCoordinator: Coordinator {
     var startedVC: AnyViewController?
     /// There is no presenter view controller in App/root coordinator
     weak var presenterVC: AnyViewController?
+    /// navigation view controller needed for some coordinators
     var navigationStack: UINavigationController?
     
     /// Phone toolbar coordinator which should stay forever
@@ -527,15 +528,15 @@ extension AppCoordinator: GlobalMenuDelegate {
 }
 
 extension AppCoordinator: WebContentDelegate {
-    func didProvisionalNavigationStart() {
+    func provisionalNavigationDidStart() {
         linkTagsCoordinator?.showNext(.closeTags)
     }
     
-    func didLoadingProgressChange(_ progress: Float) {
+    func loadingProgressdDidChange(_ progress: Float) {
         loadingProgressCoordinator?.showNext(.setProgress(progress, false))
     }
     
-    func didProgress(show: Bool) {
+    func showLoadingProgress(_ show: Bool) {
         loadingProgressCoordinator?.showNext(.showProgress(show))
         loadingProgressCoordinator?.showNext(.setProgress(0, false))
     }

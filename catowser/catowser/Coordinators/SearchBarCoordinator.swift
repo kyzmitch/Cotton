@@ -208,9 +208,7 @@ private extension SearchBarCoordinator {
                                      blockPopups: blockPopups,
                                      isJSEnabled: isJSEnabled,
                                      canLoadPlugins: true)
-        guard let site = Site.create(url: url,
-                                     searchSuggestion: suggestion,
-                                     settings: settings) else {
+        guard let site = Site(url, suggestion, settings) else {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }
