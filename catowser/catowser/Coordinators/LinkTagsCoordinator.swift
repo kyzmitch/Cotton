@@ -97,15 +97,15 @@ extension LinkTagsCoordinator: Navigating {
     
     func stop() {
         filesGridCoordinator?.stop()
-        filesGridCoordinator = nil
-        parent?.didFinish()
+        parent?.coordinatorDidFinish(self)
     }
 }
 
 extension LinkTagsCoordinator: CoordinatorOwner {
-    func didFinish() {
-        startedCoordinator = nil
-        filesGridCoordinator = nil
+    func coordinatorDidFinish(_ coordinator: Coordinator) {
+        if coordinator === filesGridCoordinator {
+            filesGridCoordinator = nil
+        }
     }
 }
 

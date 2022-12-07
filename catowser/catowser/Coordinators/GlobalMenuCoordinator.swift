@@ -51,23 +51,12 @@ final class GlobalMenuCoordinator: Coordinator {
     }
 }
 
-extension GlobalMenuCoordinator: CoordinatorOwner {
-    func didFinish() {
-        startedCoordinator = nil
-    }
-}
-
-enum MenuScreenRoute: Route {
-    case initialTabContent
-    case tabAddPolicy
-    case autocompleteProvider
-    case asyncApi
-}
+enum MenuScreenRoute: Route {}
 
 extension GlobalMenuCoordinator: Navigating {
     typealias R = MenuScreenRoute
     
-    func showNext(_ route: R) {
-        
-    }
+    func showNext(_ route: R) {}
+    
+    // Already has good enough base `stop` implementation
 }

@@ -91,11 +91,8 @@ extension SearchSuggestionsCoordinator: Navigating {
     
     func stop() {
         disposables.forEach { $0?.dispose() }
-
-        startedVC?.viewController.willMove(toParent: nil)
-        startedVC?.viewController.removeFromParent()
-        // remove view and constraints
-        startedVC?.viewController.view.removeFromSuperview()
+        startedVC?.viewController.removeFromChild()
+        parent?.coordinatorDidFinish(self)
     }
 }
 
@@ -176,11 +173,5 @@ private extension SearchSuggestionsCoordinator {
                 suggestionsView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
             }
         }
-    }
-}
-
-extension SearchSuggestionsCoordinator: CoordinatorOwner {
-    func didFinish() {
-        startedCoordinator = nil
     }
 }

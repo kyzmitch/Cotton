@@ -67,9 +67,7 @@ extension FilesGridCoordinator: Navigating {
         }
     }
     
-    func stop() {
-        parent?.didFinish()
-    }
+    // `stop` is not needed, it can be hid and showed
 }
 
 enum FilesGridPart: SubviewPart {}

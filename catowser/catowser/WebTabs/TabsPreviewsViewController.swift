@@ -196,12 +196,18 @@ where C.R == TabsScreenRoute {
         }
         
         coordinator?.showNext(.selectTab(correctTab))
+        coordinator?.stop()
     }
     
     // MARK: - private functions
 
     @objc func addTabPressed() {
         coordinator?.showNext(.addTab)
+        // on previews screen will make new added tab always selected
+        // same behaviour has Safari and Firefox
+        if DefaultTabProvider.shared.selected {
+            coordinator?.stop()
+        }
     }
 }
 

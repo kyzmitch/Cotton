@@ -135,6 +135,7 @@ extension FilesGridViewController: FileDownloadViewDelegate {
             popoverPresenter.sourceRect = btnFrame
             popoverPresenter.sourceView = sourceView
         }
+        // TODO: move to coordinator
         present(activity, animated: true)
     }
 

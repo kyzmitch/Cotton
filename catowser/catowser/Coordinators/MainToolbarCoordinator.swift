@@ -48,9 +48,11 @@ final class MainToolbarCoordinator: Coordinator {
 }
 
 extension MainToolbarCoordinator: CoordinatorOwner {
-    func didFinish() {
-        // Tabs view coordinator is stored as started
-        startedCoordinator = nil
+    func coordinatorDidFinish(_ coordinator: Coordinator) {
+        if coordinator === startedCoordinator {
+            // Tabs view coordinator is stored as started
+            startedCoordinator = nil
+        }
     }
 }
 

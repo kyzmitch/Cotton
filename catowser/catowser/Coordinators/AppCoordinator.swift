@@ -90,9 +90,23 @@ final class AppCoordinator: Coordinator {
 }
 
 extension AppCoordinator: CoordinatorOwner {
-    func didFinish() {
-        // Menu view controller is stored as started which is good
-        startedCoordinator = nil
+    func coordinatorDidFinish(_ coordinator: Coordinator) {
+        if coordinator === startedCoordinator {
+            // GlobalMenuCoordinator is stored as started which is good
+            startedCoordinator = nil
+            return
+        }
+        // Now check layout related coordinators
+        if coordinator === topSitesCoordinator {
+            topSitesCoordinator = nil
+            return
+        } else if coordinator === blankContentCoordinator {
+            blankContentCoordinator = nil
+            return
+        } else if coordinator === webContentCoordinator {
+            webContentCoordinator = nil
+            return
+        }
     }
 }
 
@@ -114,10 +128,11 @@ extension AppCoordinator: Navigating {
     }
     
     func stop() {
-        // Probably it is not necessary because this is root
+        // Probably it is not necessary because this is a root
         jsPluginsBuilder = nil
         TabsListManager.shared.detach(self)
-        parent?.didFinish()
+        // Next line is actually useless, because it is a root
+        parent?.coordinatorDidFinish(self)
     }
 }
 
@@ -446,6 +461,8 @@ private extension AppCoordinator {
         let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
         coordinator.parent = self
         coordinator.start()
+        // Using standart child property, because normal navigation
+        // would be used and not a subview layout
         startedCoordinator = coordinator
     }
     

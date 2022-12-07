@@ -103,7 +103,7 @@ extension WebContentCoordinator: Navigating {
         // It is because it's very tricky to save navigation history
         // for reused web view and for some other reasons.
         startedVC?.viewController.removeFromChild()
-        parent?.didFinish()
+        parent?.coordinatorDidFinish(self)
     }
 }
 

@@ -8,6 +8,36 @@
 
 import UIKit
 
+protocol Coordinator: AnyObject {
+    /// For now it seems we could start only one child coordinator, no need to have an array of coordinators,
+    /// but it only applies to navigation related routes (presented or pushed to navigation stack)
+    /// and not to subview layout navigation.
+    var startedCoordinator: Coordinator? { get set }
+    /// Should be defined as weak reference for `stop` operation
+    var parent: CoordinatorOwner? { get }
+    /// Started/created view controller during coordinator `start`.
+    /// It is optional because `start` is called after `init`
+    var startedVC: AnyViewController? { get }
+    /// View controller used to present/show this Coordinator's started vc
+    var presenterVC: AnyViewController? { get }
+    /// Navigation stack
+    var navigationStack: UINavigationController? { get }
+    
+    func start()
+}
+
+protocol CoordinatorOwner: AnyObject {
+    /// Usually should be called in `stop` function of a `Navigating` impl.
+    /// Default implementation should remove started coordinator reference.
+    func coordinatorDidFinish(_ coordinator: Coordinator)
+}
+
+extension Coordinator {
+    var isPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
+}
+
 protocol Route {}
 protocol SubviewPart {}
 
@@ -44,39 +74,9 @@ protocol Layouting: AnyObject {
     func layoutNext(_ step: LayoutStep<SP>)
 }
 
-protocol CoordinatorOwner: AnyObject {
-    /// Usually should be called in `stop` function of a `Navigating` impl.
-    /// Default implementation should remove started coordinator reference.
-    func didFinish()
-}
-
-protocol Coordinator: AnyObject {
-    /// For now it seems we could start only one child coordinator, no need to have an array of coordinators,
-    /// but it only applies to navigation related routes (presented or pushed to navigation stack)
-    /// and not to subview layout navigation.
-    var startedCoordinator: Coordinator? { get set }
-    /// Should be defined as weak reference for `stop` operation
-    var parent: CoordinatorOwner? { get }
-    /// Started/created view controller during coordinator `start`.
-    /// It is optional because `start` is called after `init`
-    var startedVC: AnyViewController? { get }
-    /// View controller used to present/show this Coordinator's started vc
-    var presenterVC: AnyViewController? { get }
-    /// Navigation stack
-    var navigationStack: UINavigationController? { get }
-    
-    func start()
-}
-
-extension Coordinator {
-    var isPad: Bool {
-        UIDevice.current.userInterfaceIdiom == .pad
-    }
-}
-
 extension Coordinator where Self: Navigating {
     func stop() {
-        parent?.didFinish()
+        parent?.coordinatorDidFinish(self)
     }
 }
 
@@ -87,8 +87,10 @@ extension Coordinator where Self: Layouting {
 }
 
 extension CoordinatorOwner where Self: Coordinator {
-    func didFinish() {
-        // removes previously started coordinator
-        startedCoordinator = nil
+    func coordinatorDidFinish(_ coordinator: Coordinator) {
+        if coordinator === startedCoordinator {
+            // removes previously started coordinator
+            startedCoordinator = nil
+        }
     }
 }

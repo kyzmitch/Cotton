@@ -149,9 +149,11 @@ extension SearchBarCoordinator: Layouting {
 }
 
 extension SearchBarCoordinator: CoordinatorOwner {
-    func didFinish() {
-        startedCoordinator = nil
-        // searhSuggestionsCoordinator = nil
+    func coordinatorDidFinish(_ coordinator: Coordinator) {
+        if coordinator === searhSuggestionsCoordinator {
+            // maybe need to reuse it actually and not create it each time
+            searhSuggestionsCoordinator = nil
+        }
     }
 }
 

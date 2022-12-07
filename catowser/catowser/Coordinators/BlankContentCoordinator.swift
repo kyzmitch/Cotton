@@ -49,6 +49,6 @@ extension BlankContentCoordinator: Navigating {
     
     func stop() {
         startedVC?.viewController.removeFromChild()
-        parent?.didFinish()
+        parent?.coordinatorDidFinish(self)
     }
 }

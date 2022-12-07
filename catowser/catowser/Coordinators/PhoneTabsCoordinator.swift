@@ -62,24 +62,20 @@ extension PhoneTabsCoordinator: Navigating {
             showError()
         }
     }
+    
+    func stop() {
+        startedVC?.viewController.dismiss(animated: true)
+        parent?.coordinatorDidFinish(self)
+    }
 }
 
 private extension PhoneTabsCoordinator {
     func showSelected(_ tab: Tab) {
-        startedVC?.viewController.dismiss(animated: true)
-        startedCoordinator = nil
-        
         delegate?.didTabSelect(tab)
     }
     
     func showAdded() {
         delegate?.didTabAdd()
-        // on previews screen will make new added tab always selected
-        // same behaviour has Safari and Firefox
-        if DefaultTabProvider.shared.selected {
-            startedVC?.viewController.dismiss(animated: true)
-            startedCoordinator = nil
-        }
     }
     
     func showError() {
