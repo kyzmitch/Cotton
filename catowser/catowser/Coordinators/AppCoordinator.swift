@@ -54,7 +54,7 @@ final class AppCoordinator: Coordinator {
     private let window: UIWindow
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
-    private lazy var previousTabContent: Tab.ContentType = FeatureManager.tabDefaultContentValue().contentType
+    private var previousTabContent: Tab.ContentType?
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
     
@@ -469,6 +469,11 @@ private extension AppCoordinator {
     func open(tabContent: Tab.ContentType) {
         linkTagsCoordinator?.showNext(.closeTags)
 
+        if let previousValue = previousTabContent, previousValue.isStatic && previousValue == tabContent {
+            // Optimization to not do remove & insert of the same static view
+            return
+        }
+        
         switch previousTabContent {
         case .site:
             webContentCoordinator?.stop()
