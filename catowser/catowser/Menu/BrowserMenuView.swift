@@ -1,5 +1,5 @@
 //
-//  SiteMenuView.swift
+//  BrowserMenuView.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 5/25/20.
@@ -14,16 +14,16 @@ import CoreBrowser
 import FeaturesFlagsKit
 
 @available(iOS 13.0, *)
-struct SiteMenuView: View {
-    let model: SiteMenuModel
+struct BrowserMenuView: View {
+    let model: MenuViewModel
     var body: some View {
-        _SiteMenuView().environmentObject(model)
+        _BrowserMenuView().environmentObject(model)
     }
 }
 
 @available(iOS 13.0, *)
-private struct _SiteMenuView: View {
-    @EnvironmentObject var model: SiteMenuModel
+private struct _BrowserMenuView: View {
+    @EnvironmentObject var model: MenuViewModel
     @Environment(\.presentationMode) var presentationMode
     @State private var isShowingAddTabSetting = false
     @State private var isShowingAppAsyncApiSetting = false
@@ -33,9 +33,11 @@ private struct _SiteMenuView: View {
     var body: some View {
         NavigationView {
             List {
-                if model.host != nil {
+                if case .withSiteMenu = model.style {
                     Section(header: Text(model.siteSectionTitle)) {
-                        
+                        Toggle(isOn: $model.isTabJSEnabled) {
+                            Text(verbatim: .jsMenuTitle)
+                        }
                     }
                 }
                 Section(header: Text(verbatim: .globalSectionTtl)) {
@@ -127,9 +129,9 @@ struct SiteMenuView_Previews: PreviewProvider {
                                      isJSEnabled: true,
                                      canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
-        let style: MenuModelStyle = .siteMenu(host!, settings)
-        let model = SiteMenuModel(style)
-        return _SiteMenuView().environmentObject(model)
+        let style: BrowserMenuStyle = .withSiteMenu(host!, settings)
+        let model = MenuViewModel(style)
+        return _BrowserMenuView().environmentObject(model)
     }
 }
 #endif

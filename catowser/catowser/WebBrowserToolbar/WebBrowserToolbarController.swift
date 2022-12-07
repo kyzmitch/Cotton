@@ -5,6 +5,7 @@
 //  Created by admin on 19/02/2018.
 //  Copyright © 2018 andreiermoshin. All rights reserved.
 //
+
 // This class and UI is only needed for iPhone/iPod touch
 // and it is needed to provide interface buttons
 // in the bottom of the screen for navigation on web site:
@@ -15,10 +16,6 @@
 
 import UIKit
 import CoreBrowser
-
-protocol GlobalMenuDelegate: AnyObject {
-    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect)
-}
 
 final class WebBrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
     
@@ -38,9 +35,9 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     }
     
     /// Site navigation delegate
-    private weak var siteNavigationDelegate: SiteNavigationDelegate? {
+    private weak var webViewInterface: WebViewNavigatable? {
         didSet {
-            guard siteNavigationDelegate != nil else {
+            guard webViewInterface != nil else {
                 backButton.isEnabled = false
                 forwardButton.isEnabled = false
                 reloadButton.isEnabled = false
@@ -202,25 +199,21 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     }
 
     @objc private func handleBackPressed() {
-        siteNavigationDelegate?.goBack()
+        webViewInterface?.goBack()
         refreshNavigation()
     }
 
     @objc private func handleForwardPressed() {
-        siteNavigationDelegate?.goForward()
+        webViewInterface?.goForward()
         refreshNavigation()
     }
 
     @objc private func handleReloadPressed() {
-        siteNavigationDelegate?.reload()
+        webViewInterface?.reload()
     }
     
     @objc private func handleActionsPressed() {
-        if let siteDelegate = siteNavigationDelegate {
-            // TODO: handle browser settings with Site info
-        } else {
-            globalSettingsDelegate?.didPressSettings(from: toolbarView, and: .zero)
-        }
+        globalSettingsDelegate?.settingsDidPress(from: toolbarView, and: .zero)
     }
 
     @objc private func handleShowOpenedTabsPressed() {
@@ -233,8 +226,8 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     }
     
     private func refreshNavigation() {
-        forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
-        backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
+        forwardButton.isEnabled = webViewInterface?.canGoForward ?? false
+        backButton.isEnabled = webViewInterface?.canGoBack ?? false
     }
     
     private func updateToolbar(downloadsAvailable: Bool, actionsAvailable: Bool) {
@@ -264,20 +257,20 @@ extension WebBrowserToolbarController: FullSiteNavigationComponent {
     
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         // this will be useful when user will change current web view
-        backButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
-        forwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+        backButton.isEnabled = webViewInterface?.canGoBack ?? false
+        forwardButton.isEnabled = webViewInterface?.canGoForward ?? false
         reloadButton.isEnabled = withSite
         updateToolbar(downloadsAvailable: downloadsAvailable, actionsAvailable: true)
         downloadsViewHidden = !downloadsAvailable
         enableDownloadsButton = downloadsAvailable
     }
 
-    var siteNavigator: SiteNavigationDelegate? {
+    var siteNavigator: WebViewNavigatable? {
         get {
-            return siteNavigationDelegate
+            return webViewInterface
         }
         set (newValue) {
-            siteNavigationDelegate = newValue
+            webViewInterface = newValue
         }
     }
 }

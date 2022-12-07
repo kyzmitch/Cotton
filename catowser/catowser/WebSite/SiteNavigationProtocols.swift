@@ -8,18 +8,6 @@
 
 import Foundation
 import UIKit
-import CoreHttpKit
-import CoreBrowser
-
-protocol SiteNavigationDelegate: AnyObject {
-    var canGoBack: Bool { get }
-    var canGoForward: Bool { get }
-
-    func goForward()
-    func goBack()
-    func reload()
-    func enableJavaScript(_ enabled: Bool)
-}
 
 protocol SiteExternalNavigationDelegate: AnyObject {
     func provisionalNavigationDidStart()
@@ -29,13 +17,6 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     func didForwardNavigationUpdate(to canGoForward: Bool)
     func showLoadingProgress(_ show: Bool)
     func didTabPreviewChange(_ screenshot: UIImage)
-}
-
-protocol SiteNavigationComponent: AnyObject {
-    /// Use `nil` to tell that navigation actions should be disabled
-    var siteNavigator: SiteNavigationDelegate? { get set }
-    /// Reloads state of UI components
-    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool)
 }
 
 protocol SiteNavigationChangable: AnyObject {

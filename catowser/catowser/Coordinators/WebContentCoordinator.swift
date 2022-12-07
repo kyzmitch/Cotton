@@ -37,7 +37,7 @@ final class WebContentCoordinator: Coordinator {
     }
     private weak var delegate: WebContentDelegate?
     /// Points to web view controller
-    private var sitePresenter: SiteNavigationDelegate?
+    private var sitePresenter: WebViewNavigatable?
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
@@ -73,7 +73,7 @@ final class WebContentCoordinator: Coordinator {
 }
 
 enum WebContentRoute: Route {
-    case javaScript(Bool)
+    case javaScript(Bool, Host)
 }
 
 extension WebContentCoordinator: Navigating {
@@ -81,8 +81,8 @@ extension WebContentCoordinator: Navigating {
     
     func showNext(_ route: R) {
         switch route {
-        case .javaScript(let enable):
-            sitePresenter?.enableJavaScript(enable)
+        case .javaScript(let enable, let host):
+            sitePresenter?.enableJavaScript(enable, for: host)
         }
     }
     

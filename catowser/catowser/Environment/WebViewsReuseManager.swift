@@ -52,7 +52,7 @@ final class WebViewsReuseManager {
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor(_ site: Site,
                        _ pluginsBuilder: any JSPluginsSource,
-                       _ delegate: SiteExternalNavigationDelegate) throws -> AnyViewController & SiteNavigationDelegate {
+                       _ delegate: SiteExternalNavigationDelegate) throws -> AnyViewController & WebViewNavigatable {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
             let index = searchWebViewIndex(for: site),

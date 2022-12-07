@@ -43,7 +43,7 @@ final class AppCoordinator: Coordinator {
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
     /// web view coordinator
-    private var webContentCoordinator: (any Navigating)?
+    private var webContentCoordinator: WebContentCoordinator?
     /// Only needed on Tablet
     private var tabletTabsCoordinator: (any Layouting)?
     /// App window rectangle
@@ -58,8 +58,10 @@ final class AppCoordinator: Coordinator {
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
     
-    /// Need to update this navigation delegate each time it changes in router holder
-    private weak var siteNavigationDelegate: SiteNavigationDelegate?
+    /// Need to update this navigation delegate each time it changes,
+    /// each time when new tab become visible, we have to set interface
+    /// to a new web view associated with that tab.
+    private weak var currentTabWebViewInterface: WebViewNavigatable?
     /// Web site navigation delegate
     private var navigationComponent: FullSiteNavigationComponent? {
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -95,7 +97,7 @@ extension AppCoordinator: CoordinatorOwner {
 }
 
 enum MainScreenRoute: Route {
-    case menu(SiteMenuModel, UIView, CGRect)
+    case menu(MenuViewModel, UIView, CGRect)
     case openTab(Tab.ContentType)
 }
 
@@ -203,13 +205,13 @@ extension AppCoordinator: SiteNavigationComponent {
         navigationComponent?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
     }
 
-    var siteNavigator: SiteNavigationDelegate? {
+    var siteNavigator: WebViewNavigatable? {
         get {
             return nil
         }
         set(newValue) {
             navigationComponent?.siteNavigator = newValue
-            siteNavigationDelegate = newValue
+            currentTabWebViewInterface = newValue
         }
     }
 }
@@ -361,6 +363,8 @@ private extension AppCoordinator {
                                                        plugins)
         coordinator.parent = self
         coordinator.start()
+        // Set new interface after starting, it is new for every site/webView
+        siteNavigator = coordinator.startedVC as? WebViewNavigatable
         webContentCoordinator = coordinator
     }
     
@@ -436,7 +440,7 @@ private extension AppCoordinator {
     
     // MARK: - lifecycle navigation methods
     
-    func startMenu(_ model: SiteMenuModel, _ sourceView: UIView, _ sourceRect: CGRect) {
+    func startMenu(_ model: MenuViewModel, _ sourceView: UIView, _ sourceRect: CGRect) {
         // swiftlint:disable:next force_unwrapping
         let presenter = vcFactory.createdDeviceSpecificSearchBarVC!
         let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
@@ -520,8 +524,14 @@ extension AppCoordinator: TabsObserver {
 }
 
 extension AppCoordinator: GlobalMenuDelegate {
-    func didPressSettings(from sourceView: UIView, and sourceRect: CGRect) {
-        let menuModel: SiteMenuModel = .init(.onlyGlobalMenu)
+    func settingsDidPress(from sourceView: UIView, and sourceRect: CGRect) {
+        let style: BrowserMenuStyle
+        if let interface = currentTabWebViewInterface {
+            style = .withSiteMenu(interface.host, interface.siteSettings)
+        } else {
+            style = .onlyGlobalMenu
+        }
+        let menuModel: MenuViewModel = .init(style)
         menuModel.developerMenuPresenter = self
         showNext(.menu(menuModel, sourceView, sourceRect))
     }
@@ -574,5 +584,9 @@ extension AppCoordinator: DeveloperMenuPresenter {
         let tag2: HTMLVideoTag = .init(srcURL: url2, posterURL: url2, name: "example 2")
         let tags: [HTMLVideoTag] = [tag1, tag2]
         didReceiveVideoTags(tags)
+    }
+    
+    func host(_ host: Host, willUpdateJsState enabled: Bool) {
+        webContentCoordinator?.showNext(.javaScript(enabled, host))
     }
 }

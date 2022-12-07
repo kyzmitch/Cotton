@@ -1,5 +1,5 @@
 //
-//  SiteMenuModel.swift
+//  MenuViewModel.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 5/26/20.
@@ -13,31 +13,58 @@ import CoreHttpKit
 import CoreBrowser
 import FeaturesFlagsKit
 
-enum MenuModelStyle {
-    case siteMenu(Host, Site.Settings)
+enum BrowserMenuStyle {
+    case withSiteMenu(Host, Site.Settings)
     case onlyGlobalMenu
 }
 
 protocol DeveloperMenuPresenter: AnyObject {
     func emulateLinkTags()
+    /// This method is not for dev only and should be available in any build types
+    func host(_ host: Host, willUpdateJsState enabled: Bool)
 }
 
 @available(iOS 13.0, *)
-final class SiteMenuModel: ObservableObject {
-    @Published var isDohEnabled: Bool = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+final class MenuViewModel: ObservableObject {
+    // MARK: - global settings
+    
+    @Published var isDohEnabled: Bool
     @Published var isJavaScriptEnabled: Bool
-    @Published var tabAddPosition = FeatureManager.tabAddPositionValue()
-    @Published var tabDefaultContent = FeatureManager.tabDefaultContentValue()
-    @Published var asyncApiType: AsyncApiType = FeatureManager.appAsyncApiTypeValue()
+    @Published var tabAddPosition: AddedTabPosition
+    @Published var tabDefaultContent: TabContentDefaultState
+    @Published var asyncApiType: AsyncApiType
+    
+    // MARK: - specific tab settings
+    
+    @Published var isTabJSEnabled: Bool
+    
+    // MARK: - disposables
     
     private var dohChangesCancellable: AnyCancellable?
     private var jsEnabledOptionCancellable: AnyCancellable?
+    private var tabjsEnabledCancellable: AnyCancellable?
     
-    let host: Host?
+    // MARK: - state
     
-    let siteSettings: Site.Settings?
+    let style: BrowserMenuStyle
+    private var host: Host? {
+        if case let .withSiteMenu(host, _) = style {
+            return host
+        }
+        return nil
+    }
+    private var siteSettings: Site.Settings? {
+        if case let .withSiteMenu(_, settings) = style {
+            return settings
+        }
+        return nil
+    }
+    
+    // MARK: - delegates
     
     weak var developerMenuPresenter: DeveloperMenuPresenter?
+    
+    // MARK: - text properties
     
     var siteSectionTitle: String {
         // site section is only available for site menu
@@ -62,18 +89,22 @@ final class SiteMenuModel: ObservableObject {
     
     let viewTitle: String = .menuTtl
     
-    init(_ menuStyle: MenuModelStyle) {
+    // MARK: - init
+    
+    init(_ menuStyle: BrowserMenuStyle) {
+        style = menuStyle
         switch menuStyle {
-        case .siteMenu(let host, let settings):
-            self.host = host
-            self.siteSettings = settings
-            isJavaScriptEnabled = settings.isJSEnabled
+        case .withSiteMenu(_, let settings):
+            isTabJSEnabled = settings.isJSEnabled
         case .onlyGlobalMenu:
-            host = nil
-            siteSettings = nil
-            // following properties can be removed later for only global kind of menues
-            isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+            isTabJSEnabled = true
         }
+        isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+        isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        tabAddPosition = FeatureManager.tabAddPositionValue()
+        tabDefaultContent = FeatureManager.tabDefaultContentValue()
+        asyncApiType = FeatureManager.appAsyncApiTypeValue()
+        
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled
@@ -82,11 +113,22 @@ final class SiteMenuModel: ObservableObject {
         jsEnabledOptionCancellable = $isJavaScriptEnabled
             .dropFirst()
             .sink { FeatureManager.setFeature(.javaScriptEnabled, value: $0) }
+        tabjsEnabledCancellable = $isTabJSEnabled
+            .sink(receiveValue: { [weak self] newValue in
+                guard let self = self else {
+                    return
+                }
+                guard case let .withSiteMenu(host, _) = self.style  else {
+                    return
+                }
+                self.developerMenuPresenter?.host(host, willUpdateJsState: newValue)
+            })
     }
     
     deinit {
         dohChangesCancellable?.cancel()
         jsEnabledOptionCancellable?.cancel()
+        tabjsEnabledCancellable?.cancel()
     }
     
     // MARK: - dev/debug menu handlers

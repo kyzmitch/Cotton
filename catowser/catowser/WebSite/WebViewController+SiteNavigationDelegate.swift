@@ -1,5 +1,5 @@
 //
-//  WebViewController+SiteNavigationDelegate.swift
+//  WebViewController+WebViewNavigatable.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -11,7 +11,7 @@ import CoreHttpKit
 
 // MARK: - Allow users of this delegate to control webview navigation
 
-extension WebViewController: SiteNavigationDelegate {
+extension WebViewController: WebViewNavigatable {
     var canGoBack: Bool {
         return isViewLoaded ? webView.canGoBack : false
     }
@@ -41,7 +41,17 @@ extension WebViewController: SiteNavigationDelegate {
         _ = webView.reload()
     }
     
-    func enableJavaScript(_ enabled: Bool) {
+    func enableJavaScript(_ enabled: Bool, for host: Host) {
+        guard viewModel.host == host else {
+            return
+        }
         viewModel.setJavaScript(webView, enabled)
+    }
+    
+    var host: Host {
+        viewModel.host
+    }
+    var siteSettings: Site.Settings {
+        viewModel.settings
     }
 }

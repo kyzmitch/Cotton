@@ -17,7 +17,7 @@ final class GlobalMenuCoordinator: Coordinator {
     var navigationStack: UINavigationController?
     
     /// Data required for start of next navigation
-    private let model: SiteMenuModel
+    private let model: MenuViewModel
     /// View needed when initial screen needs to be shown on Tablet
     private let sourceView: UIView
     /// Rectangle needed when initial screen needs to be shown on Tablet
@@ -25,7 +25,7 @@ final class GlobalMenuCoordinator: Coordinator {
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ model: SiteMenuModel,
+         _ model: MenuViewModel,
          _ sourceView: UIView,
          _ sourceRect: CGRect) {
         self.vcFactory = vcFactory

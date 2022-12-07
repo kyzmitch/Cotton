@@ -33,7 +33,7 @@ protocol ViewControllerFactory: AnyObject {
     var topSitesViewController: AnyViewController & TopSitesInterface { get }
     var blankWebPageViewController: UIViewController { get }
     var loadingProgressViewController: AnyViewController { get }
-    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel,
+    func siteMenuViewController<C: Navigating>(_ model: MenuViewModel,
                                                _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute
     
@@ -88,7 +88,7 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func siteMenuViewController<C: Navigating>(_ model: SiteMenuModel, _ coordinator: C) -> UIViewController
+    func siteMenuViewController<C: Navigating>(_ model: MenuViewModel, _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
         return vc

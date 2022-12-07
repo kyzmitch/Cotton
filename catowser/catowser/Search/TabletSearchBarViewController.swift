@@ -14,9 +14,9 @@ final class TabletSearchBarViewController: BaseViewController {
     private let searchBarViewController: SearchBarBaseViewController
 
     /// Site navigation delegate. It is always `nil` during initialization because no active web view is present
-    private weak var siteNavigationDelegate: SiteNavigationDelegate? {
+    private weak var webViewInterface: WebViewNavigatable? {
         didSet {
-            guard siteNavigationDelegate != nil else {
+            guard webViewInterface != nil else {
                 goBackButton.isEnabled = false
                 goForwardButton.isEnabled = false
                 reloadButton.isEnabled = false
@@ -178,11 +178,7 @@ final class TabletSearchBarViewController: BaseViewController {
     
     @objc fileprivate func actionsPressed() {
         let sourceRect = actionsButton.frame
-        if let siteDelegate = siteNavigationDelegate {
-            // TODO: open browser settings with Site info
-        } else {
-            globalSettingsDelegate?.didPressSettings(from: view, and: sourceRect)
-        }
+        globalSettingsDelegate?.settingsDidPress(from: view, and: sourceRect)
     }
     
     @objc func downloadsPressed() {
@@ -191,23 +187,23 @@ final class TabletSearchBarViewController: BaseViewController {
     }
 
     @objc fileprivate func backPressed() {
-        siteNavigationDelegate?.goBack()
+        webViewInterface?.goBack()
         refreshNavigation()
     }
 
     @objc fileprivate func forwardPressed() {
-        siteNavigationDelegate?.goForward()
+        webViewInterface?.goForward()
         refreshNavigation()
     }
     
     @objc fileprivate func reloadPressed() {
-        siteNavigationDelegate?.reload()
+        webViewInterface?.reload()
     }
     
     private func refreshNavigation() {
         // actions should be always enabled to get to global settings
-        goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
-        goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+        goBackButton.isEnabled = webViewInterface?.canGoBack ?? false
+        goForwardButton.isEnabled = webViewInterface?.canGoForward ?? false
     }
 }
 
@@ -220,18 +216,18 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
         goForwardButton.isEnabled = canGoForward
     }
     
-    var siteNavigator: SiteNavigationDelegate? {
+    var siteNavigator: WebViewNavigatable? {
         get {
-            return siteNavigationDelegate
+            return webViewInterface
         }
         set (newValue) {
-            siteNavigationDelegate = newValue
+            webViewInterface = newValue
         }
     }
 
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
-        goBackButton.isEnabled = siteNavigationDelegate?.canGoBack ?? false
-        goForwardButton.isEnabled = siteNavigationDelegate?.canGoForward ?? false
+        goBackButton.isEnabled = webViewInterface?.canGoBack ?? false
+        goForwardButton.isEnabled = webViewInterface?.canGoForward ?? false
         reloadButton.isEnabled = withSite
         downloadLinksButton.isEnabled = downloadsAvailable
     }

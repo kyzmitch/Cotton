@@ -11,20 +11,20 @@ import SwiftUI
 #endif
 
 @available(iOS 13.0, *)
-extension UIHostingController where Content == SiteMenuView {
-    static func create(_ model: SiteMenuModel) -> UIHostingController {
-        let menuView = SiteMenuView(model: model)
+extension UIHostingController where Content == BrowserMenuView {
+    static func create(_ model: MenuViewModel) -> UIHostingController {
+        let menuView = BrowserMenuView(model: model)
         return UIHostingController(rootView: menuView)
     }
 }
 
 @available(iOS 13.0.0, *)
-final class SiteMenuViewController<C: Navigating>: UIHostingController<SiteMenuView> where C.R == MenuScreenRoute {
+final class SiteMenuViewController<C: Navigating>: UIHostingController<BrowserMenuView> where C.R == MenuScreenRoute {
     private weak var coordinator: C?
     
-    init(_ model: SiteMenuModel, _ coordinator: C) {
+    init(_ model: MenuViewModel, _ coordinator: C) {
         self.coordinator = coordinator
-        let view = SiteMenuView(model: model)
+        let view = BrowserMenuView(model: model)
         super.init(rootView: view)
     }
     
