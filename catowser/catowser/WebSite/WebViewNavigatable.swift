@@ -19,4 +19,5 @@ protocol WebViewNavigatable: AnyObject {
     
     var host: Host { get }
     var siteSettings: Site.Settings { get }
+    var url: URL? { get }
 }

@@ -54,7 +54,7 @@ final class WebContentCoordinator: Coordinator {
     }
     
     func start() {
-        let webViewController = try? WebViewsEnvironment.shared.reuseManager.controllerFor(site, jsPluginsSource, self)
+        let webViewController = try? WebViewsEnvironment.shared.reuseManager.controllerFor(site, jsPluginsSource, self, self)
         guard let vc = webViewController else {
             assertionFailure("Failed create new web view for tab")
             return
@@ -74,6 +74,7 @@ final class WebContentCoordinator: Coordinator {
 
 enum WebContentRoute: Route {
     case javaScript(Bool, Host)
+    case openApp(URL)
 }
 
 extension WebContentCoordinator: Navigating {
@@ -83,6 +84,8 @@ extension WebContentCoordinator: Navigating {
         switch route {
         case .javaScript(let enable, let host):
             sitePresenter?.enableJavaScript(enable, for: host)
+        case .openApp(let url):
+            UIApplication.shared.open(url, options: [:])
         }
     }
     

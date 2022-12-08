@@ -51,7 +51,12 @@ extension WebViewController: WebViewNavigatable {
     var host: Host {
         viewModel.host
     }
+    
     var siteSettings: Site.Settings {
         viewModel.settings
+    }
+    
+    var url: URL? {
+        viewModel.currentURL
     }
 }

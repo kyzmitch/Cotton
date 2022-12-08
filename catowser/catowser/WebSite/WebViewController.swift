@@ -21,12 +21,13 @@ import CoreCatowser
 
 extension WKWebView: JavaScriptEvaluateble {}
 
-final class WebViewController: BaseViewController,
-                               WKUIDelegate,
-                               WKNavigationDelegate {
+final class WebViewController<C: Navigating>: BaseViewController,
+                                              WKUIDelegate,
+                                              WKNavigationDelegate where C.R == WebContentRoute {
     /// A view model
     let viewModel: WebViewModel
-    
+    /// A coordinator reference
+    private weak var coordinator: C?
     /// Own navigation delegate
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     /// State of observers
@@ -67,9 +68,11 @@ final class WebViewController: BaseViewController,
      Constructs web view controller for specific site with set of plugins and navigation handler
      */
     init(_ viewModel: WebViewModel,
-         _ externalNavigationDelegate: SiteExternalNavigationDelegate) {
+         _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+         _ coordinator: C?) {
         self.viewModel = viewModel
         self.externalNavigationDelegate = externalNavigationDelegate
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -130,7 +133,7 @@ final class WebViewController: BaseViewController,
         case .reattachViewObservers:
             reattachWebViewObservers()
         case .openApp(let url):
-            UIApplication.shared.open(url, options: [:])
+            coordinator?.showNext(.openApp(url))
         }
     }
     

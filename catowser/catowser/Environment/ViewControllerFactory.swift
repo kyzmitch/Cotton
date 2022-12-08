@@ -28,8 +28,9 @@ protocol ViewControllerFactory: AnyObject {
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
     
-    func webViewController(_ viewModel: WebViewModel,
-                           _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> WebViewController
+    func webViewController<C: Navigating>(_ viewModel: WebViewModel,
+                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable where C.R == WebContentRoute
     var topSitesViewController: AnyViewController & TopSitesInterface { get }
     var blankWebPageViewController: UIViewController { get }
     var loadingProgressViewController: AnyViewController { get }
@@ -82,9 +83,10 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func webViewController(_ viewModel: WebViewModel,
-                           _ externalNavigationDelegate: SiteExternalNavigationDelegate) -> WebViewController {
-        let vc: WebViewController = .init(viewModel, externalNavigationDelegate)
+    func webViewController<C: Navigating>(_ viewModel: WebViewModel,
+                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable where C.R == WebContentRoute {
+        let vc: WebViewController = .init(viewModel, externalNavigationDelegate, coordinator)
         return vc
     }
     
