@@ -16,7 +16,7 @@ protocol TopSitesInterface {
     func reload(with sites: [Site])
 }
 
-final class TopSitesViewController: UIViewController {
+final class TopSitesViewController: BaseViewController {
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
 
     fileprivate var source: [Site] = []
@@ -46,8 +46,6 @@ extension TopSitesViewController: TopSitesInterface {
         collectionView.reloadData()
     }
 }
-
-extension TopSitesViewController: AnyViewController {}
 
 extension TopSitesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -1,5 +1,5 @@
 //
-//  WebViewController+SiteNavigationDelegate.swift
+//  WebViewController+WebViewNavigatable.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/1/20.
@@ -11,7 +11,7 @@ import CoreHttpKit
 
 // MARK: - Allow users of this delegate to control webview navigation
 
-extension WebViewController: SiteNavigationDelegate {
+extension WebViewController: WebViewNavigatable {
     var canGoBack: Bool {
         return isViewLoaded ? webView.canGoBack : false
     }
@@ -22,35 +22,41 @@ extension WebViewController: SiteNavigationDelegate {
 
     func goForward() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
+        externalNavigationDelegate?.provisionalNavigationDidStart()
         viewModel.goForward()
         _ = webView.goForward()
     }
 
     func goBack() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
+        externalNavigationDelegate?.provisionalNavigationDidStart()
         viewModel.goBack()
         _ = webView.goBack()
     }
 
     func reload() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.didStartProvisionalNavigation()
+        externalNavigationDelegate?.provisionalNavigationDidStart()
         viewModel.reload()
         _ = webView.reload()
     }
     
-    /// Not only navigation of webview can be controlled, also, it's possible to show site menu,
-    /// but to show it, the user of delegate shold know site info which is stored in webview holder.
-    func openTabMenu(from sourceView: UIView, and sourceRect: CGRect) {
-        externalNavigationDelegate?.openTabMenu(from: sourceView,
-                                                and: sourceRect,
-                                                for: viewModel.host,
-                                                siteSettings: viewModel.settings)
+    func enableJavaScript(_ enabled: Bool, for host: Host) {
+        guard viewModel.host == host else {
+            return
+        }
+        viewModel.setJavaScript(webView, enabled)
     }
     
-    func reloadWithNewSettings(jsEnabled: Bool) {
-        viewModel.setJavaScript(webView, jsEnabled)
+    var host: Host {
+        viewModel.host
+    }
+    
+    var siteSettings: Site.Settings {
+        viewModel.settings
+    }
+    
+    var url: URL? {
+        viewModel.currentURL
     }
 }

@@ -11,21 +11,30 @@ import SwiftUI
 #endif
 
 @available(iOS 13.0, *)
-extension UIHostingController where Content == SiteMenuView {
-    static func create(siteMenu model: SiteMenuModel) -> UIHostingController {
-        let menuView = SiteMenuView(model: model)
+extension UIHostingController where Content == BrowserMenuView {
+    static func create(_ model: MenuViewModel) -> UIHostingController {
+        let menuView = BrowserMenuView(model: model)
         return UIHostingController(rootView: menuView)
     }
 }
 
 @available(iOS 13.0.0, *)
-final class SiteMenuViewController: UIHostingController<SiteMenuView> {
-    init(model: SiteMenuModel) {
-        let viewWithModel = SiteMenuView(model: model)
-        super.init(rootView: viewWithModel)
+final class SiteMenuViewController<C: Navigating>: UIHostingController<BrowserMenuView> where C.R == MenuScreenRoute {
+    private weak var coordinator: C?
+    
+    init(_ model: MenuViewModel, _ coordinator: C) {
+        self.coordinator = coordinator
+        let view = BrowserMenuView(model: model)
+        super.init(rootView: view)
     }
     
     @objc required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        coordinator?.stop()
     }
 }

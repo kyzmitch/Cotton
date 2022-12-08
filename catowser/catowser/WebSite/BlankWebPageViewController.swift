@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class BlankWebPageViewController: UIViewController {
+final class BlankWebPageViewController: BaseViewController {
     private let logo: UIImageView = {
         let img = UIImage(named: "Logo")
         let imgView = UIImageView(image: img)

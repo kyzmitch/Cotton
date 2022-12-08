@@ -43,11 +43,12 @@ final class SearchSuggestionsViewController: UITableViewController {
     
     /// Combine cancellable for Concurrency Published property
     private var taskHandler: AnyCancellable?
-    
-    weak var delegate: SearchSuggestionsListDelegate?
+    /// Delegate to handle suggestion selection
+    private weak var delegate: SearchSuggestionsListDelegate?
 
-    init() {
+    init(_ delegate: SearchSuggestionsListDelegate?) {
         viewModel = ViewModelFactory.shared.searchSuggestionsViewModel()
+        self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -97,10 +98,6 @@ final class SearchSuggestionsViewController: UITableViewController {
         disposable?.dispose()
         cancellable?.cancel()
         taskHandler?.cancel()
-    }
-
-    func prepareSearch(for searchText: String) {
-        viewModel.fetchSuggestions(searchText)
     }
     
     private func onStateChange(_ state: SearchSuggestionsViewState) {
@@ -156,5 +153,11 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
             return
         }
         delegate?.didSelect(content)
+    }
+}
+
+extension SearchSuggestionsViewController: SearchSuggestionsControllerInterface {
+    func prepareSearch(for searchText: String) {
+        viewModel.fetchSuggestions(searchText)
     }
 }

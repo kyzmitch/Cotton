@@ -85,6 +85,15 @@ public extension Tab {
             
             return site
         }
+        
+        /// Shows if content type static or has dynamic dependecy like `Site`
+        public var isStatic: Bool {
+            if case .site = self {
+                return false
+            } else {
+                return true
+            }
+        }
     }
 }
 

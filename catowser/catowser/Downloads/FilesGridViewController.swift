@@ -1,5 +1,5 @@
 //
-//  FilesGreedViewController.swift
+//  FilesGridViewController.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 03/04/2019.
@@ -12,7 +12,7 @@ import CoreBrowser
 import BrowserNetworking
 import JSPlugins
 
-protocol FilesGreedPresenter: AnyObject {
+protocol FilesGridPresenter: AnyObject {
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
     func clearFiles()
 }
@@ -22,7 +22,7 @@ protocol FileDownloadViewDelegate: AnyObject {
     func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void)
 }
 
-final class FilesGreedViewController: UITableViewController, CollectionViewInterface {
+final class FilesGridViewController: UITableViewController, CollectionViewInterface {
     private var backLayer: CAGradientLayer?
 
     fileprivate var filesDataSource: TagsSiteDataSource?
@@ -33,6 +33,11 @@ final class FilesGreedViewController: UITableViewController, CollectionViewInter
         view.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = Sizes.rowHeight
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func viewDidLayoutSubviews() {
@@ -45,7 +50,7 @@ final class FilesGreedViewController: UITableViewController, CollectionViewInter
     }
 }
 
-fileprivate extension FilesGreedViewController {
+fileprivate extension FilesGridViewController {
     struct Sizes {
         static let margin = CGFloat(8)
         static let imageMargin = CGFloat(14)
@@ -54,7 +59,8 @@ fileprivate extension FilesGreedViewController {
 }
 
 // MARK: UITableViewDataSource
-extension FilesGreedViewController {
+
+extension FilesGridViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -91,10 +97,9 @@ extension FilesGreedViewController {
     }
 }
 
-extension FilesGreedViewController: AnyViewController {}
-
 // MARK: Files Greed Presenter
-extension FilesGreedViewController: FilesGreedPresenter {
+
+extension FilesGridViewController: FilesGridPresenter {
     func clearFiles() {
         filesDataSource = nil
         tableView.reloadData()
@@ -117,7 +122,8 @@ extension FilesGreedViewController: FilesGreedPresenter {
 }
 
 // MARK: File Download View Delegate
-extension FilesGreedViewController: FileDownloadViewDelegate {
+
+extension FilesGridViewController: FileDownloadViewDelegate {
     func didRequestOpen(local url: URL, from sourceView: DownloadButtonCellView) {
         let activity = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activity.title = NSLocalizedString("ttl_video_share", comment: "Share video")
@@ -129,6 +135,7 @@ extension FilesGreedViewController: FileDownloadViewDelegate {
             popoverPresenter.sourceRect = btnFrame
             popoverPresenter.sourceView = sourceView
         }
+        // TODO: move to coordinator
         present(activity, animated: true)
     }
 

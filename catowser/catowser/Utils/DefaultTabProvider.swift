@@ -25,15 +25,9 @@ final class DefaultTabProvider {
                                             blockPopups: blockPopups,
                                             isJSEnabled: isJsEnabled,
                                             canLoadPlugins: true)
-        let opennet = Site.create(urlString: "https://opennet.ru",
-                           customTitle: "OpenNet",
-                           settings: settings)
-        let yahooFinance = Site.create(urlString: "https://finance.yahoo.com",
-                                customTitle: "Yahoo Finance",
-                                settings: settings)
-        let github = Site.create(urlString: "https://github.com",
-                          customTitle: "GitHub",
-                          settings: settings)
+        let opennet = Site("https://opennet.ru", "OpenNet", settings)
+        let yahooFinance = Site("https://finance.yahoo.com", "Yahoo Finance", settings)
+        let github = Site("https://github.com", "GitHub", settings)
         array = [opennet, yahooFinance, github]
         return array.compactMap {$0}
     }()
