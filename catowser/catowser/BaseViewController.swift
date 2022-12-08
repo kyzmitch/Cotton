@@ -8,5 +8,10 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController {}
+
+extension UIViewController {
+    var isPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
 }

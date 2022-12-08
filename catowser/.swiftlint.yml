@@ -10,6 +10,8 @@ identifier_name:
     min_length: 1 # warning
 nesting:
     type_level: 3
+type_name:
+    min_length: 1 # to allow usual short Generic names
 
 opt_in_rules:
     - force_unwrapping

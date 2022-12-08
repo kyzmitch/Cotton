@@ -21,13 +21,13 @@ import CoreCatowser
 
 extension WKWebView: JavaScriptEvaluateble {}
 
-final class WebViewController: BaseViewController,
-                               AnyViewController,
-                               WKUIDelegate,
-                               WKNavigationDelegate {
+final class WebViewController<C: Navigating>: BaseViewController,
+                                              WKUIDelegate,
+                                              WKNavigationDelegate where C.R == WebContentRoute {
     /// A view model
     let viewModel: WebViewModel
-    
+    /// A coordinator reference
+    private weak var coordinator: C?
     /// Own navigation delegate
     private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     /// State of observers
@@ -54,6 +54,8 @@ final class WebViewController: BaseViewController,
     private var dohCancellable: AnyCancellable?
     /// DoH changes disposable for rx
     private var dohDisposable: Disposable?
+    /// JS subscriber
+    private var jsStateCancellable: AnyCancellable?
     
     /// lazy loaded web view to use correct config
     lazy var webView: WKWebView = {
@@ -66,9 +68,11 @@ final class WebViewController: BaseViewController,
      Constructs web view controller for specific site with set of plugins and navigation handler
      */
     init(_ viewModel: WebViewModel,
-         _ externalNavigationDelegate: SiteExternalNavigationDelegate) {
+         _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+         _ coordinator: C?) {
         self.viewModel = viewModel
         self.externalNavigationDelegate = externalNavigationDelegate
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -129,7 +133,7 @@ final class WebViewController: BaseViewController,
         case .reattachViewObservers:
             reattachWebViewObservers()
         case .openApp(let url):
-            UIApplication.shared.open(url, options: [:])
+            coordinator?.showNext(.openApp(url))
         }
     }
     
@@ -149,18 +153,18 @@ final class WebViewController: BaseViewController,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let domain = viewModel.nativeAppDomainNameString {
-            externalNavigationDelegate?.didOpenSiteWith(appName: domain)
+            externalNavigationDelegate?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
         viewModel.decidePolicy(navigationAction, decisionHandler)
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.showProgress(true)
+        externalNavigationDelegate?.showLoadingProgress(true)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        externalNavigationDelegate?.showProgress(false)
+        externalNavigationDelegate?.showLoadingProgress(false)
         
         defer {
             let snapshotConfig = WKSnapshotConfiguration()
@@ -173,7 +177,7 @@ final class WebViewController: BaseViewController,
                 case (_, let err?):
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
-                    self?.externalNavigationDelegate?.updateTabPreview(img)
+                    self?.externalNavigationDelegate?.didTabPreviewChange(img)
                 default:
                     print("failed to take a screenshot")
                 }
@@ -190,7 +194,7 @@ final class WebViewController: BaseViewController,
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Error occured during a committed main frame: \(error.localizedDescription)")
-        externalNavigationDelegate?.showProgress(false)
+        externalNavigationDelegate?.showLoadingProgress(false)
     }
     
     func webView(_ webView: WKWebView,
@@ -198,7 +202,7 @@ final class WebViewController: BaseViewController,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         handler.solve { [weak self] in
-            self?.externalNavigationDelegate?.showProgress(false)
+            self?.externalNavigationDelegate?.showLoadingProgress(false)
         }
     }
     
@@ -206,7 +210,7 @@ final class WebViewController: BaseViewController,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
         print("Error occured while starting to load data: \(error.localizedDescription)")
-        externalNavigationDelegate?.showProgress(false)
+        externalNavigationDelegate?.showLoadingProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
     }
@@ -254,6 +258,15 @@ private extension WebViewController {
             taskHandler?.cancel()
             taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
         }
+        
+        jsStateCancellable?.cancel()
+        jsStateCancellable = FeatureManager.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+            let enabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+            self.viewModel.setJavaScript(self.webView, enabled)
+        }
     }
     
     func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
@@ -275,7 +288,7 @@ private extension WebViewController {
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.displayProgress(value)
+            self.externalNavigationDelegate?.loadingProgressdDidChange(Float(value))
         }
     }
     
@@ -284,7 +297,7 @@ private extension WebViewController {
         canGoBackObservation = webView.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didUpdateBackNavigation(to: value)
+            self.externalNavigationDelegate?.didBackNavigationUpdate(to: value)
         }
     }
     
@@ -293,7 +306,7 @@ private extension WebViewController {
         canGoForwardObservation = webView.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didUpdateForwardNavigation(to: value)
+            self.externalNavigationDelegate?.didForwardNavigationUpdate(to: value)
         }
     }
     

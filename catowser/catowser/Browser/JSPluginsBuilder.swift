@@ -15,22 +15,27 @@ import CoreCatowser
  */
 final class JSPluginsBuilder: JSPluginsSource {
     typealias Program = JSPluginsProgramImpl
-    private let _plugins: [any JavaScriptPlugin]
+    private var plugins: [any JavaScriptPlugin]
 
-    init(baseDelegate: BasePluginContentDelegate, instagramDelegate: InstagramContentDelegate) {
-
-        var array = [any JavaScriptPlugin]()
+    init() {
+        plugins = []
+    }
+    
+    func setBase(_ baseDelegate: BasePluginContentDelegate) -> Self {
         if let basePlugin = BasePlugin(delegate: .base(baseDelegate)) {
-            array.append(basePlugin)
+            plugins.append(basePlugin)
         }
+        return self
+    }
+    
+    func setInstagram(_ instagramDelegate: InstagramContentDelegate) -> Self {
         if let igPlugin = InstagramContentPlugin(delegate: .instagram(instagramDelegate)) {
-            array.append(igPlugin)
+            plugins.append(igPlugin)
         }
-        
-        _plugins = array
+        return self
     }
     
     var pluginsProgram: Program {
-        JSPluginsProgramImpl(_plugins)
+        JSPluginsProgramImpl(plugins)
     }
 }

@@ -14,7 +14,7 @@ public struct HTMLVideoTag {
     public let poster: URL?
     public let fileDescription: String
     
-    init(srcURL: URL, posterURL: URL?, name: String) {
+    public init(srcURL: URL, posterURL: URL?, name: String) {
         src = srcURL
         poster = posterURL
         self.fileDescription = name

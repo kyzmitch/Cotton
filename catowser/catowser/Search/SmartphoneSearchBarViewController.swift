@@ -50,8 +50,6 @@ final class SmartphoneSearchBarViewController: BaseViewController {
     }
 }
 
-extension SmartphoneSearchBarViewController: AnyViewController {}
-
 extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
     func changeState(to state: SearchBarState, animated: Bool) {
         searchBarViewController.changeState(to: state, animated: animated)

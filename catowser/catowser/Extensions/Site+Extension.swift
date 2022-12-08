@@ -18,6 +18,34 @@ import UIKit
 /// Client side extension for `CoreBrowser` `Site` type to be able to detect DoH usage
 /// and hide real domain name for favicon http requests.
 extension Site {
+    convenience init?(_ urlString: String,
+                      _ customTitle: String? = nil,
+                      _ settings: Settings) {
+        guard let decodedUrl = URL(string: urlString) else {
+            return nil
+        }
+        guard let urlInfo = URLInfo(decodedUrl) else {
+            return nil
+        }
+        
+        self.init(urlInfo: urlInfo,
+                  settings: settings,
+                  faviconData: nil,
+                  searchSuggestion: nil,
+                  userSpecifiedTitle: customTitle)
+    }
+
+    convenience init?(_ url: URL, _ suggestion: String?, _ settings: Settings) {
+        guard let urlInfo = URLInfo(url) else {
+            return nil
+        }
+        self.init(urlInfo: urlInfo,
+                  settings: settings,
+                  faviconData: nil,
+                  searchSuggestion: suggestion,
+                  userSpecifiedTitle: nil)
+    }
+    
     /// Provides only local cached URL for favicon, nil if ipAddress is nil.
     var faviconURL: URL? {
         if FeatureManager.boolValue(of: .dnsOverHTTPSAvailable) {
@@ -48,45 +76,6 @@ extension Site {
             .mapError { (dnsError) -> Error in
                 return dnsError
             }.eraseToAnyPublisher()
-    }
-    
-    static func create(urlString: String,
-                       customTitle: String? = nil,
-                       image: UIImage? = nil,
-                       settings: Settings) -> Site? {
-        guard let decodedUrl = URL(string: urlString) else {
-            return nil
-        }
-        guard let urlInfo = URLInfo(decodedUrl) else {
-            return nil
-        }
-        
-        let site = Site(urlInfo: urlInfo,
-                        settings: settings,
-                        faviconData: nil,
-                        searchSuggestion: nil,
-                        userSpecifiedTitle: customTitle)
-        
-        if let image = image {
-            return site.withFavicon(image: image)
-        } else {
-            return site
-        }
-    }
-
-    static func create(url: URL,
-                       searchSuggestion: String?,
-                       settings: Settings) -> Site? {
-        guard let urlInfo = URLInfo(url) else {
-            return nil
-        }
-        
-        let site = Site(urlInfo: urlInfo,
-                        settings: settings,
-                        faviconData: nil,
-                        searchSuggestion: searchSuggestion,
-                        userSpecifiedTitle: nil)
-        return site
     }
     
     func withUpdated(_ newSettings: Site.Settings) -> Site {

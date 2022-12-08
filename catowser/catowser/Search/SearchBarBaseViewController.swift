@@ -148,7 +148,7 @@ extension SearchBarBaseViewController: TabsObserver {
         changeState(to: state)
     }
 
-    func didSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         let state: SearchBarState
 
         switch content {

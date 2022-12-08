@@ -1,5 +1,5 @@
 //
-//  SiteMenuView.swift
+//  BrowserMenuView.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 5/25/20.
@@ -14,16 +14,17 @@ import CoreBrowser
 import FeaturesFlagsKit
 
 @available(iOS 13.0, *)
-struct SiteMenuView: View {
-    let model: SiteMenuModel
+struct BrowserMenuView: View {
+    let model: MenuViewModel
     var body: some View {
-        _SiteMenuView().environmentObject(model)
+        _BrowserMenuView().environmentObject(model)
     }
 }
 
 @available(iOS 13.0, *)
-private struct _SiteMenuView: View {
-    @EnvironmentObject var model: SiteMenuModel
+private struct _BrowserMenuView: View {
+    @EnvironmentObject var model: MenuViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var isShowingAddTabSetting = false
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
@@ -32,17 +33,19 @@ private struct _SiteMenuView: View {
     var body: some View {
         NavigationView {
             List {
-                if model.host != nil {
+                if case .withSiteMenu = model.style {
                     Section(header: Text(model.siteSectionTitle)) {
-                        Toggle(isOn: $model.isJavaScriptEnabled) {
+                        Toggle(isOn: $model.isTabJSEnabled) {
                             Text(verbatim: .jsMenuTitle)
                         }
                     }
-                    // TODO: add setting to control JS plugins adding
                 }
                 Section(header: Text(verbatim: .globalSectionTtl)) {
                     Toggle(isOn: $model.isDohEnabled) {
                         Text(verbatim: .dohMenuTitle)
+                    }
+                    Toggle(isOn: $model.isJavaScriptEnabled) {
+                        Text(verbatim: .jsMenuTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabAddPosition, value: selected)
@@ -81,11 +84,18 @@ private struct _SiteMenuView: View {
                         Spacer()
                         Text(verbatim: model.selectedAsyncApiStringValue)
                     }
+                    Button("Simulate download resources") {
+                        // Need to dismiss menu popover first if on Tablet
+                        presentationMode.wrappedValue.dismiss()
+                        model.emulateLinkTags()
+                    }
                 }
 #endif
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
-            .navigationBarItems(trailing: Button<Text>(String.dismissBtn, action: model.dismissAction))
+            .navigationBarItems(trailing: Button<Text>(String.dismissBtn) {
+                presentationMode.wrappedValue.dismiss()
+            })
         }
     }
 }
@@ -96,7 +106,7 @@ private extension String {
     static let devSectionTtl = NSLocalizedString("ttl_developer_menu", comment: "")
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
-    static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled_for_tab", comment: "")
+    static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled", comment: "")
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
@@ -119,12 +129,9 @@ struct SiteMenuView_Previews: PreviewProvider {
                                      isJSEnabled: true,
                                      canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
-        let style: MenuModelStyle = .siteMenu(host!, settings)
-        let model = SiteMenuModel(menuStyle: style,
-                                  siteDelegate: nil) {
-            print("Dismiss triggered")
-        }
-        return _SiteMenuView().environmentObject(model)
+        let style: BrowserMenuStyle = .withSiteMenu(host!, settings)
+        let model = MenuViewModel(style)
+        return _BrowserMenuView().environmentObject(model)
     }
 }
 #endif

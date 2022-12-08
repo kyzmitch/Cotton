@@ -40,11 +40,10 @@ protocol LinkTagsDelegate: AnyObject {
 }
 
 final class LinkTagsViewController: UICollectionViewController {
-    fileprivate var dataSource = [LinksType: Int]()
-
-    weak var delegate: LinkTagsDelegate?
+    private var linksCounts = [LinksType: Int]()
+    private weak var delegate: LinkTagsDelegate?
     
-    static func newFromStoryboard(delegate: LinkTagsDelegate) -> LinkTagsViewController {
+    static func newFromStoryboard(delegate: LinkTagsDelegate?) -> LinkTagsViewController {
         let name = String(describing: self)
         let vc = LinkTagsViewController.instantiateFromStoryboard(name, identifier: name)
         vc.delegate = delegate
@@ -53,14 +52,18 @@ final class LinkTagsViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         ThemeProvider.shared.setupUnderLinkTags(collectionView)
 
         // Inset From property must be set to "from Content Inset"
         // in Storyboard of view controller in UICollectionView
         // overwise you will see gap from the top of cells
-        let zeroInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        let zeroInset: UIEdgeInsets
+        if isPad {
+            zeroInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        } else {
+            zeroInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        }
         collectionView.contentInset = zeroInset
 
         guard let flowLayout = collectionViewLayout as? UICollectionViewFlowLayout else {
@@ -75,18 +78,23 @@ final class LinkTagsViewController: UICollectionViewController {
         flowLayout.invalidateLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.count
+        return linksCounts.count
     }
     
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
-        for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
+        for (index, tuple) in linksCounts.enumerated() where index == indexPath.item {
             cell.set(tuple.value, tagName: tuple.key.description)
             break
         }
@@ -94,7 +102,7 @@ final class LinkTagsViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        for (index, tuple) in dataSource.enumerated() where index == indexPath.item {
+        for (index, tuple) in linksCounts.enumerated() where index == indexPath.item {
             let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
             delegate?.didSelect(type: tuple.key, from: cell)
             break
@@ -111,17 +119,15 @@ fileprivate extension LinksBadgeView {
     }
 }
 
-extension LinkTagsViewController: AnyViewController {}
-
 extension LinkTagsViewController: LinkTagsPresenter {
     func setLinks(_ count: Int, for type: LinksType) {
-        dataSource[type] = count
+        linksCounts[type] = count
         // no specific index
         collectionView.reloadData()
     }
     
     func clearLinks() {
-        dataSource.removeAll()
+        linksCounts.removeAll()
         collectionView.reloadData()
     }
 }

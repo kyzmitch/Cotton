@@ -13,8 +13,8 @@ import Alamofire
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var window: UIWindow?
-    let themeType: ThemeType = .default
+    /// Should be stored by strong reference, because it is the only owner of App coordinator
+    private let appCoordinator: AppCoordinator = .init(WebViewsEnvironment.shared.viewControllerFactory)
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -32,15 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
-        let rect = CGRect(x: 0,
-                          y: 0,
-                          width: UIScreen.main.bounds.width,
-                          height: UIScreen.main.bounds.height)
-        window = UIWindow(frame: rect)
-        let rootViewController = MainBrowserViewController()
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
-        
+        appCoordinator.start()
         return true
     }
 }

@@ -13,22 +13,26 @@ import BrowserNetworking
 import CoreHttpKit
 import CoreCatowser
 
+struct NotSelectedIndex: Error {}
+struct OutOfBoundsIndex: Error {}
+
 /// The class to control memory usage by managing reusage of web views
 final class WebViewsReuseManager {
-    static let shared = WebViewsReuseManager()
     /// Web view controllers array, array is used to have ordering and current index
     /// But NSMapTable could be better by using Sites as keys for web views.
-    private var views: [WebViewController] = [WebViewController]()
+    private var views: [AnyViewController & WebViewNavigatable] = []
     /// How many views to store
     private let viewsLimit: Int
     /// Needed to store index of last returned view
     private var lastSelectedIndex: Int?
     /// Tells to actually use reuse manager for limiting the number of views
     private let useLimitedCache = false
+    /// view factory
+    private let vcFactory: ViewControllerFactory
 
-    private init(_ viewsLimit: Int = 10) {
+    init(_ viewControllerFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
-        
+        vcFactory = viewControllerFactory
         if viewsLimit >= 1 {
             self.viewsLimit = viewsLimit
         } else {
@@ -37,7 +41,7 @@ final class WebViewsReuseManager {
     }
     
     private func searchWebViewIndex(for site: Site) -> Int? {
-        for (i, vc) in views.enumerated() where vc.viewModel.currentURL?.absoluteString == site.urlInfo.url {
+        for (i, vc) in views.enumerated() where vc.url?.absoluteString == site.urlInfo.url {
             return i
         }
         return nil
@@ -48,10 +52,13 @@ final class WebViewsReuseManager {
     /// - Parameter site: The site object with all info for WebView.
     /// - Parameter pluginsBuilder: Source for plugins.
     /// - Parameter delegate: navigation delegate.
+    /// - Parameter coordinator: a navigation interface
     /// - Returns: Web view controller configured with `Site`.
-    func controllerFor(_ site: Site,
-                       _ pluginsBuilder: any JSPluginsSource,
-                       _ delegate: SiteExternalNavigationDelegate) throws -> WebViewController {
+    func controllerFor<C: Navigating>(_ site: Site,
+                                      _ pluginsBuilder: any JSPluginsSource,
+                                      _ delegate: SiteExternalNavigationDelegate,
+                                      _ coordinator: C?) throws -> AnyViewController & WebViewNavigatable
+    where C.R == WebContentRoute {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
             let index = searchWebViewIndex(for: site),
@@ -67,7 +74,7 @@ final class WebViewsReuseManager {
         if count >= 0 && count < viewsLimit {
             let context: WebViewContextImpl = .init(pluginsBuilder.pluginsProgram)
             let vm = ViewModelFactory.shared.webViewModel(site, context)
-            let vc: WebViewController = .init(vm, delegate)
+            let vc = vcFactory.webViewController(vm, delegate, coordinator)
             views.append(vc)
             lastSelectedIndex = count
             return vc
@@ -80,7 +87,6 @@ final class WebViewsReuseManager {
             // Another option is to initialize `lastSelectedIndex` with any number
             // anyway it will be changed to correct one in a check above when
             // collection is not full.
-            struct NotSelectedIndex: Error {}
             throw NotSelectedIndex()
         }
 
@@ -95,7 +101,6 @@ final class WebViewsReuseManager {
         }
 
         guard let vc = views[safe: nextIndex] else {
-            struct OutOfBoundsIndex: Error {}
             throw OutOfBoundsIndex()
         }
         return vc

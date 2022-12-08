@@ -122,6 +122,14 @@ final class Host @Throws(Host.Error::class) constructor (
         return domainName?.isSimilar(name) ?: false
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        other as Host
+        if (rawString != other.rawString) return false
+        if (content != other.content) return false
+        return true
+    }
+
     /**
      * Note: only ip v4 addresses can be used for host name.
      * No mention of ip v6 addresses.

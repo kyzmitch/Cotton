@@ -36,6 +36,8 @@ final class ViewModelFactory {
     }
     
     func webViewModel(_ site: Site, _ context: WebViewContext) -> WebViewModel {
+        // It is the same context for any site or view model
+        // maybe it makes sense to use only one
         let stratContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
                                        HttpEnvironment.shared.dnsClientRxSubscriber,
                                        HttpEnvironment.shared.dnsClientSubscriber)
