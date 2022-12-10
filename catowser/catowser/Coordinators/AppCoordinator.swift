@@ -337,16 +337,21 @@ private extension AppCoordinator {
     }
     
     func insertTopSites() {
-        guard let containerView = webContentContainerCoordinator?.startedView else {
-            assertionFailure("Root view controller must have content view")
-            return
+        switch FeatureManager.appUIFrameworkValue() {
+        case .uiKit:
+            guard let containerView = webContentContainerCoordinator?.startedView else {
+                assertionFailure("Root view controller must have content view")
+                return
+            }
+            // swiftlint:disable:next force_unwrapping
+            let presenter = startedVC!
+            let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, containerView)
+            coordinator.parent = self
+            coordinator.start()
+            topSitesCoordinator = coordinator
+        case .swiftUI:
+            break
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, containerView)
-        coordinator.parent = self
-        coordinator.start()
-        topSitesCoordinator = coordinator
     }
     
     func insertBlankTab() {

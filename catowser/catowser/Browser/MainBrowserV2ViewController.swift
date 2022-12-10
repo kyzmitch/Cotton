@@ -14,6 +14,8 @@ import SwiftUI
  
  @main
  struct CottonApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+ 
      var body: some Scene {
          WindowGroup {
              MainBrowserView()

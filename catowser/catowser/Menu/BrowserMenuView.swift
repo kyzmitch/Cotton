@@ -33,6 +33,7 @@ private struct _BrowserMenuView: View {
     @State private var isShowingDefaultTabContentSetting = false
     @State private var isShowingWebAutoCompleteSetting = false
     @State private var isShowingAppUIFrameworkSetting = false
+    @State private var showingAppRestartAlert = false
     
     // MARK: - Allow to update text view content dynamically
     
@@ -104,6 +105,7 @@ private struct _BrowserMenuView: View {
                         FeatureManager.setFeature(.appDefaultUIFramework, value: selected)
                         self.isShowingAppUIFrameworkSetting = false
                         uiFrameworkRowValueText = selected.description
+                        self.showingAppRestartAlert.toggle()
                     }), isActive: $isShowingAppUIFrameworkSetting) {
                         Text(verbatim: .appUIFrameworkTypeTxt)
                         Spacer()
@@ -121,7 +123,10 @@ private struct _BrowserMenuView: View {
             .navigationBarItems(trailing: Button<Text>(String.dismissBtn) {
                 presentationMode.wrappedValue.dismiss()
             })
+        }.alert(isPresented: $showingAppRestartAlert) {
+            Alert(title: Text(verbatim: "App restart is required"))
         }
+
     }
 }
 
