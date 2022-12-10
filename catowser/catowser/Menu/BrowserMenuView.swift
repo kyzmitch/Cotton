@@ -32,6 +32,7 @@ private struct _BrowserMenuView: View {
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
     @State private var isShowingWebAutoCompleteSetting = false
+    @State private var isShowingAppUIFrameworkSetting = false
     
     // MARK: - Allow to update text view content dynamically
     
@@ -39,6 +40,7 @@ private struct _BrowserMenuView: View {
     @State private var webAutocompleteRowValueText = FeatureManager.webSearchAutoCompleteValue().description
     @State private var tabAddPositionRowValueText = FeatureManager.tabAddPositionValue().description
     @State private var asyncApiRowValueText = FeatureManager.appAsyncApiTypeValue().description
+    @State private var uiFrameworkRowValueText = FeatureManager.appUIFrameworkValue().description
     
     var body: some View {
         NavigationView {
@@ -98,6 +100,15 @@ private struct _BrowserMenuView: View {
                         Spacer()
                         Text(verbatim: asyncApiRowValueText)
                     }
+                    NavigationLink(destination: BaseMenuView<UIFrameworkType>(model: .init { (selected) in
+                        FeatureManager.setFeature(.appDefaultUIFramework, value: selected)
+                        self.isShowingAppUIFrameworkSetting = false
+                        uiFrameworkRowValueText = selected.description
+                    }), isActive: $isShowingAppUIFrameworkSetting) {
+                        Text(verbatim: .appUIFrameworkTypeTxt)
+                        Spacer()
+                        Text(verbatim: uiFrameworkRowValueText)
+                    }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
                         presentationMode.wrappedValue.dismiss()
@@ -130,6 +141,7 @@ private extension String {
                                                       comment: "")
     static let webAutoCompleteSourceTxt = NSLocalizedString("ttl_web_search_auto_complete_source",
                                                         comment: "")
+    static let appUIFrameworkTypeTxt = NSLocalizedString("ttl_app_ui_framework_type", comment: "")
 }
 
 #if DEBUG

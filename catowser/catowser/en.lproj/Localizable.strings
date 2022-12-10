@@ -47,6 +47,7 @@
 "ttl_tab_default_content" = "New tab content";
 "ttl_app_async_method" = "Used Async API method";
 "ttl_web_search_auto_complete_source" = "Web search auto completion source";
+"ttl_app_ui_framework_type" = "UI framework";
 
 "txt_app_async_api_reactive" = "Reactive";
 "txt_app_async_api_combine" = "Combine";

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreCatowser
+import FeaturesFlagsKit
 
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
@@ -66,7 +67,13 @@ protocol ViewControllerFactory: AnyObject {
 
 extension ViewControllerFactory {
     func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController {
-        let vc: MainBrowserViewController = .init(coordinator)
+        let vc: AnyViewController
+        switch FeatureManager.appUIFrameworkValue() {
+        case .uiKit:
+            vc = MainBrowserViewController(coordinator)
+        case .swiftUI:
+            vc = MainBrowserV2ViewController(coordinator)
+        }
         return vc
     }
     
