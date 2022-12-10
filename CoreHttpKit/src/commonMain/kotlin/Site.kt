@@ -38,7 +38,7 @@ class Site(
         }
 
     val searchBarContent: String
-        get() = searchSuggestion ?: urlInfo.url
+        get() = searchSuggestion ?: urlInfo.urlWithoutPort
 
     /**
      * Site settings.
