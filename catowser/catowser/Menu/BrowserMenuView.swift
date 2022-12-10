@@ -25,10 +25,20 @@ struct BrowserMenuView: View {
 private struct _BrowserMenuView: View {
     @EnvironmentObject var model: MenuViewModel
     @Environment(\.presentationMode) var presentationMode
+    
+    // MARK: - State variables to be able to pop view automatically
+    
     @State private var isShowingAddTabSetting = false
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
     @State private var isShowingWebAutoCompleteSetting = false
+    
+    // MARK: - Allow to update text view content dynamically
+    
+    @State private var tabContentRowValueText = FeatureManager.tabDefaultContentValue().description
+    @State private var webAutocompleteRowValueText = FeatureManager.webSearchAutoCompleteValue().description
+    @State private var tabAddPositionRowValueText = FeatureManager.tabAddPositionValue().description
+    @State private var asyncApiRowValueText = FeatureManager.appAsyncApiTypeValue().description
     
     var body: some View {
         NavigationView {
@@ -50,28 +60,31 @@ private struct _BrowserMenuView: View {
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabAddPosition, value: selected)
                         self.isShowingAddTabSetting = false
+                        tabAddPositionRowValueText = selected.description
                     }), isActive: $isShowingAddTabSetting) {
                         Text(verbatim: .tabAddTxt)
                         Spacer()
-                        Text(verbatim: model.currentTabAddValue)
+                        Text(verbatim: tabAddPositionRowValueText)
                     }
                     NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabDefaultContent, value: selected)
                         self.isShowingDefaultTabContentSetting = false
+                        tabContentRowValueText = selected.description
                     }), isActive: $isShowingDefaultTabContentSetting) {
                         Text(verbatim: .tabContentTxt)
                         Spacer()
-                        Text(verbatim: model.currentTabDefaultContent)
+                        Text(verbatim: tabContentRowValueText)
                     }
                 }
                 Section(header: Text(verbatim: .searchSectionTtl)) {
                     NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(model: .init { (selected) in
                         FeatureManager.setFeature(.webAutoCompletionSource, value: selected)
                         self.isShowingWebAutoCompleteSetting = false
+                        webAutocompleteRowValueText = selected.description
                     }), isActive: $isShowingWebAutoCompleteSetting) {
                         Text(verbatim: .webAutoCompleteSourceTxt)
                         Spacer()
-                        Text(verbatim: model.selectedWebAutoCompleteStringValue)
+                        Text(verbatim: webAutocompleteRowValueText)
                     }
                 }
 #if DEBUG
@@ -79,10 +92,11 @@ private struct _BrowserMenuView: View {
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
+                        asyncApiRowValueText = selected.description
                     }), isActive: $isShowingAppAsyncApiSetting) {
                         Text(verbatim: .appAsyncApiTypeTxt)
                         Spacer()
-                        Text(verbatim: model.selectedAsyncApiStringValue)
+                        Text(verbatim: asyncApiRowValueText)
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet

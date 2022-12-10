@@ -71,22 +71,6 @@ final class MenuViewModel: ObservableObject {
         return .localizedStringWithFormat(.siteSectionTtl, host?.rawString ?? "")
     }
     
-    var currentTabAddValue: String {
-        return FeatureManager.tabAddPositionValue().description
-    }
-    
-    var currentTabDefaultContent: String {
-        return FeatureManager.tabDefaultContentValue().description
-    }
-    
-    var selectedAsyncApiStringValue: String {
-        return FeatureManager.appAsyncApiTypeValue().description
-    }
-    
-    var selectedWebAutoCompleteStringValue: String {
-        return FeatureManager.webSearchAutoCompleteValue().description
-    }
-    
     let viewTitle: String = .menuTtl
     
     // MARK: - init
