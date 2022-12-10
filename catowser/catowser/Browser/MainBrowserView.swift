@@ -8,14 +8,12 @@
 
 import SwiftUI
 
+// https://stackoverflow.com/questions/56490963/how-to-display-a-search-bar-with-swiftui
+
 struct MainBrowserView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-struct MainBrowserView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainBrowserView()
+        VStack {
+            SearchBarView()
+        }
     }
 }
