@@ -8,12 +8,27 @@
 
 import SwiftUI
 
-// https://stackoverflow.com/questions/56490963/how-to-display-a-search-bar-with-swiftui
-
 struct MainBrowserView: View {
     var body: some View {
+        if isPad {
+            tabletView()
+        } else {
+            phoneView()
+        }
+    }
+}
+
+private extension MainBrowserView {
+    func tabletView() -> some View {
         VStack {
             SearchBarView()
+        }
+    }
+    
+    func phoneView() -> some View {
+        VStack {
+            SearchBarView()
+            ToolbarView()
         }
     }
 }

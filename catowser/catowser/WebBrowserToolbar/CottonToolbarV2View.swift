@@ -1,0 +1,59 @@
+//
+//  CottonToolbarV2View.swift
+//  catowser
+//
+//  Created by Andrei Ermoshin on 12/11/22.
+//  Copyright © 2022 andreiermoshin. All rights reserved.
+//
+
+import SwiftUI
+
+// https://www.hackingwithswift.com/quick-start/swiftui/how-to-create-a-toolbar-and-add-buttons-to-it
+
+/**
+ 
+ */
+struct ToolbarView: View {
+    var body: some View {
+        NavigationView {
+            
+        }.toolbar {
+            ToolbarItem(placement: .principal) {
+                Button(role: nil) {
+                    
+                } label: {
+                    Image("nav-back")
+                }
+
+            }
+            ToolbarItem(placement: .principal) {
+                Button(role: nil) {
+                    
+                } label: {
+                    Image("nav-forward")
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                Button(role: nil) {
+                    
+                } label: {
+                    Image("nav-refresh")
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                Button(role: nil) {
+                    
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                }
+            }
+            ToolbarItem(placement: .principal) {
+                Button(role: nil) {
+                    
+                } label: {
+                    Image("nav-downloads")
+                }
+            }
+        }
+    }
+}

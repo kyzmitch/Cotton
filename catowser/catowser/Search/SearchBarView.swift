@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+// https://stackoverflow.com/questions/56490963/how-to-display-a-search-bar-with-swiftui
+
 /**
  There are possibly 3 options on how to create a search bar:
  - wrap UIKit's UISearchBar view into some struct which confirms to `UIViewRepresentable`
