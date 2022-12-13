@@ -6,13 +6,23 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
+import UIKit
 import SwiftUI
+
+struct ToolbarView: UIViewRepresentable {
+    func makeUIView(context: Context) -> some UIView {
+        let uiKitView = WebBrowserToolbarView(frame: .zero)
+        return uiKitView
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        
+    }
+}
 
 // https://www.hackingwithswift.com/quick-start/swiftui/how-to-create-a-toolbar-and-add-buttons-to-it
 
 /**
- 
- */
 struct ToolbarView: View {
     var body: some View {
         NavigationView {
@@ -57,3 +67,5 @@ struct ToolbarView: View {
         }
     }
 }
+ 
+ */

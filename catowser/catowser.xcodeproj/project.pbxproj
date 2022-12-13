@@ -58,7 +58,7 @@
 		6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsListManager.swift */; };
 		60A82C4D22549446008210D9 /* FilesGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */; };
 		60A82C4F22549453008210D9 /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
-		60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
+		60C12BE6226750B7004FCB14 /* WebBrowserToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */; };
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
 		60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */; };
 		60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */; };
@@ -300,7 +300,7 @@
 		8A8035B924442F0F000E035F /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
 		8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
-		8A8035BD24442F0F000E035F /* CottonToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */; };
+		8A8035BD24442F0F000E035F /* WebBrowserToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */; };
 		8A8035BE24442F0F000E035F /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
 		8A8035BF24442F0F000E035F /* MainBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MainBrowserViewController.swift */; };
 		8A8035C024442F0F000E035F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECC521F74E2900972E28 /* Theme.swift */; };
@@ -332,8 +332,8 @@
 		8A815D3D28F16367007A6926 /* JSPluginsProgramImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */; };
 		8A81C6F92945C72F0075BEF9 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6F82945C72F0075BEF9 /* View+Extension.swift */; };
 		8A81C6FA2945C72F0075BEF9 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6F82945C72F0075BEF9 /* View+Extension.swift */; };
-		8A81C6FC2945C8050075BEF9 /* CottonToolbarV2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6FB2945C8050075BEF9 /* CottonToolbarV2View.swift */; };
-		8A81C6FD2945C8050075BEF9 /* CottonToolbarV2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6FB2945C8050075BEF9 /* CottonToolbarV2View.swift */; };
+		8A81C6FC2945C8050075BEF9 /* WebBrowserToolbarV2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6FB2945C8050075BEF9 /* WebBrowserToolbarV2View.swift */; };
+		8A81C6FD2945C8050075BEF9 /* WebBrowserToolbarV2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6FB2945C8050075BEF9 /* WebBrowserToolbarV2View.swift */; };
 		8A82CDF02351095700607162 /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* RestClient.swift */; };
 		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
@@ -946,7 +946,7 @@
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60C12BE2226746EC004FCB14 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE42267480C004FCB14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
-		60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CottonToolbarView.swift; sourceTree = "<group>"; };
+		60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarView.swift; sourceTree = "<group>"; };
 		60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewController.swift; sourceTree = "<group>"; };
 		60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadViewModel.swift; sourceTree = "<group>"; };
@@ -1111,7 +1111,7 @@
 		8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmJSPluginsTests.swift; sourceTree = "<group>"; };
 		8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramImpl.swift; sourceTree = "<group>"; };
 		8A81C6F82945C72F0075BEF9 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
-		8A81C6FB2945C8050075BEF9 /* CottonToolbarV2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CottonToolbarV2View.swift; sourceTree = "<group>"; };
+		8A81C6FB2945C8050075BEF9 /* WebBrowserToolbarV2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarV2View.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* RestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClient.swift; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
 		8A8F038A293FA96200237DFF /* WebViewNavigatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewNavigatable.swift; sourceTree = "<group>"; };
@@ -1728,8 +1728,8 @@
 			isa = PBXGroup;
 			children = (
 				841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */,
-				60C12BE5226750B7004FCB14 /* CottonToolbarView.swift */,
-				8A81C6FB2945C8050075BEF9 /* CottonToolbarV2View.swift */,
+				60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */,
+				8A81C6FB2945C8050075BEF9 /* WebBrowserToolbarV2View.swift */,
 			);
 			path = WebBrowserToolbar;
 			sourceTree = "<group>";
@@ -3494,7 +3494,7 @@
 				60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */,
 				8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */,
 				8A81C6F92945C72F0075BEF9 /* View+Extension.swift in Sources */,
-				8A81C6FC2945C8050075BEF9 /* CottonToolbarV2View.swift in Sources */,
+				8A81C6FC2945C8050075BEF9 /* WebBrowserToolbarV2View.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
@@ -3535,7 +3535,7 @@
 				8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
 				8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */,
 				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
-				60C12BE6226750B7004FCB14 /* CottonToolbarView.swift in Sources */,
+				60C12BE6226750B7004FCB14 /* WebBrowserToolbarView.swift in Sources */,
 				8AED4198292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */,
 				75196D0D2944AF8B00B3A45B /* SiteMenuViewController.swift in Sources */,
 				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
@@ -3717,7 +3717,7 @@
 				8A8035AF24442F0F000E035F /* TopSitesViewController.swift in Sources */,
 				8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */,
 				8A81C6FA2945C72F0075BEF9 /* View+Extension.swift in Sources */,
-				8A81C6FD2945C8050075BEF9 /* CottonToolbarV2View.swift in Sources */,
+				8A81C6FD2945C8050075BEF9 /* WebBrowserToolbarV2View.swift in Sources */,
 				8A8035B224442F0F000E035F /* AppDelegate.swift in Sources */,
 				8A8035B324442F0F000E035F /* WebViewsReuseManager.swift in Sources */,
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
@@ -3758,7 +3758,7 @@
 				8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
 				8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */,
 				8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */,
-				8A8035BD24442F0F000E035F /* CottonToolbarView.swift in Sources */,
+				8A8035BD24442F0F000E035F /* WebBrowserToolbarView.swift in Sources */,
 				8AED4199292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */,
 				75196D0E2944AF8B00B3A45B /* SiteMenuViewController.swift in Sources */,
 				8A8035BE24442F0F000E035F /* WebBrowserToolbarController.swift in Sources */,

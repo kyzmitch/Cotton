@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreBrowser
 
 final class CounterView: UIView {
     private let digitLabel: UILabel = {
@@ -37,6 +38,11 @@ final class CounterView: UIView {
         digitLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         digitLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         digitLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        TabsListManager.shared.attach(self)
+    }
+    
+    deinit {
+        TabsListManager.shared.detach(self)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -46,5 +52,11 @@ final class CounterView: UIView {
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let expandedBounds = self.bounds.inset(by: UIEdgeInsets(equalInset: -6))
         return expandedBounds.contains(point)
+    }
+}
+
+extension CounterView: TabsObserver {
+    func update(with tabsCount: Int) {
+        self.digit = tabsCount
     }
 }

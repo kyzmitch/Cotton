@@ -28,6 +28,7 @@ private extension MainBrowserView {
     func phoneView() -> some View {
         VStack {
             SearchBarView()
+            Spacer()
             ToolbarView()
         }
     }
