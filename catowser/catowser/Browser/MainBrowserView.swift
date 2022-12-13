@@ -9,6 +9,15 @@
 import SwiftUI
 
 struct MainBrowserView: View {
+    let model: MainBrowserModel
+    var body: some View {
+        _MainBrowserView().environmentObject(model)
+    }
+}
+
+private struct _MainBrowserView: View {
+    @EnvironmentObject var model: MainBrowserModel
+    
     var body: some View {
         if isPad {
             tabletView()
@@ -18,7 +27,7 @@ struct MainBrowserView: View {
     }
 }
 
-private extension MainBrowserView {
+private extension _MainBrowserView {
     func tabletView() -> some View {
         VStack {
             SearchBarView()
@@ -28,6 +37,10 @@ private extension MainBrowserView {
     func phoneView() -> some View {
         VStack {
             SearchBarView()
+            if model.showProgress {
+                ProgressView(value: model.websiteLoadProgress)
+            }
+            WebContentContainerView()
             Spacer()
             ToolbarView()
                 .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -39,7 +52,7 @@ private extension MainBrowserView {
 
 private struct DummyView: View {
     var body: some View {
-        Divider()
+        EmptyView()
             .frame(height: 0)
             .background(Color.phoneToolbarColor)
     }
@@ -48,7 +61,8 @@ private struct DummyView: View {
 #if DEBUG
 struct MainBrowserView_Previews: PreviewProvider {
     static var previews: some View {
-        MainBrowserView()
+        let model = MainBrowserModel()
+        MainBrowserView(model: model)
     }
 }
 #endif
