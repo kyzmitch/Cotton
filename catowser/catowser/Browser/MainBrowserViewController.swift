@@ -38,25 +38,28 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
         // Your custom implementation of this method should not call super.
         view = UIView()
         
+        guard let superView = coordinator else {
+            return
+        }
         // In that method, create your view hierarchy programmatically and assign
         // the root view of that hierarchy to the view controller’s view property.
         
         if isPad {
-            coordinator?.insertNext(.tabs)
+            superView.insertNext(.tabs)
         }
-        coordinator?.insertNext(.searchBar)
-        coordinator?.insertNext(.loadingProgress)
-        coordinator?.insertNext(.webContentContainer)
+        superView.insertNext(.searchBar)
+        superView.insertNext(.loadingProgress)
+        superView.insertNext(.webContentContainer)
         // Files grid needs to be added even on Tablet layout,
         // also, it needs to be added before link tags
         // to make link tags frontmost
-        coordinator?.insertNext(.filesGrid)
+        superView.insertNext(.filesGrid)
         // should be added before iPhone toolbar
-        coordinator?.insertNext(.linkTags)
+        superView.insertNext(.linkTags)
         if !isPad {
-            coordinator?.insertNext(.toolbar)
+            superView.insertNext(.toolbar)
         }
-        coordinator?.insertNext(.dummyView)
+        superView.insertNext(.dummyView)
     }
     
     override func viewDidLoad() {
@@ -64,6 +67,9 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
 
         view.backgroundColor = UIColor.white
         
+        guard let layoutHandler = coordinator else {
+            return
+        }
         // Layout order matters!
         
         // Next sequence of calls could be replaced with just one method:
@@ -71,22 +77,22 @@ final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewContro
         // but then all this logic should be moved to coordinator
         
         if isPad {
-            coordinator?.layoutNext(.viewDidLoad(.tabs))
+            layoutHandler.layoutNext(.viewDidLoad(.tabs))
         }
-        coordinator?.layoutNext(.viewDidLoad(.searchBar))
-        coordinator?.layoutNext(.viewDidLoad(.loadingProgress))
-        coordinator?.layoutNext(.viewDidLoad(.webContentContainer))
+        layoutHandler.layoutNext(.viewDidLoad(.searchBar))
+        layoutHandler.layoutNext(.viewDidLoad(.loadingProgress))
+        layoutHandler.layoutNext(.viewDidLoad(.webContentContainer))
         if !isPad {
-            coordinator?.layoutNext(.viewDidLoad(.toolbar))
+            layoutHandler.layoutNext(.viewDidLoad(.toolbar))
         }
-        coordinator?.layoutNext(.viewDidLoad(.dummyView))
+        layoutHandler.layoutNext(.viewDidLoad(.dummyView))
         if !isPad {
             // Link tags view won't be inserted on Tablets
             // but will be presented as a popover
-            coordinator?.layoutNext(.viewDidLoad(.linkTags))
+            layoutHandler.layoutNext(.viewDidLoad(.linkTags))
             // Files grid is started on Tablet as well
             // not to insert it as a subview but to init vc
-            coordinator?.layoutNext(.viewDidLoad(.filesGrid))
+            layoutHandler.layoutNext(.viewDidLoad(.filesGrid))
         }
     }
 
