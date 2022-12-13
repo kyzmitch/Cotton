@@ -30,6 +30,25 @@ private extension MainBrowserView {
             SearchBarView()
             Spacer()
             ToolbarView()
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    DummyView()
+                }
         }
     }
 }
+
+private struct DummyView: View {
+    var body: some View {
+        Divider()
+            .frame(height: 0)
+            .background(Color.phoneToolbarColor)
+    }
+}
+
+#if DEBUG
+struct MainBrowserView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainBrowserView()
+    }
+}
+#endif

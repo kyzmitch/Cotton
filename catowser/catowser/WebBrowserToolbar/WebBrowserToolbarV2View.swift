@@ -12,6 +12,7 @@ import SwiftUI
 struct ToolbarView: UIViewRepresentable {
     func makeUIView(context: Context) -> some UIView {
         let uiKitView = WebBrowserToolbarView(frame: .zero)
+        ThemeProvider.shared.setup(uiKitView)
         return uiKitView
     }
     

@@ -71,8 +71,12 @@ final class AppCoordinator: Coordinator {
         }
     }
     
+    /// UI framework type won't change in runtime, only after app restart, so that, it is const
+    private let uiFramework: UIFrameworkType
+    
     init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
+        uiFramework = FeatureManager.appUIFrameworkValue()
         window = UIWindow(frame: windowRectangle)
     }
     
@@ -337,7 +341,7 @@ private extension AppCoordinator {
     }
     
     func insertTopSites() {
-        switch FeatureManager.appUIFrameworkValue() {
+        switch uiFramework {
         case .uiKit:
             guard let containerView = webContentContainerCoordinator?.startedView else {
                 assertionFailure("Root view controller must have content view")
@@ -368,24 +372,29 @@ private extension AppCoordinator {
     }
     
     func insertWebTab(_ site: Site) {
-        guard let containerView = webContentContainerCoordinator?.startedView,
-                let plugins = jsPluginsBuilder else {
-            assertionFailure("Root view controller must have content view")
-            return
+        switch uiFramework {
+        case .uiKit:
+            guard let containerView = webContentContainerCoordinator?.startedView,
+                    let plugins = jsPluginsBuilder else {
+                assertionFailure("Root view controller must have content view")
+                return
+            }
+            // swiftlint:disable:next force_unwrapping
+            let presenter = startedVC!
+            let coordinator: WebContentCoordinator = .init(vcFactory,
+                                                           presenter,
+                                                           containerView,
+                                                           self,
+                                                           site,
+                                                           plugins)
+            coordinator.parent = self
+            coordinator.start()
+            // Set new interface after starting, it is new for every site/webView
+            siteNavigator = coordinator.startedVC as? WebViewNavigatable
+            webContentCoordinator = coordinator
+        case .swiftUI:
+            break
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: WebContentCoordinator = .init(vcFactory,
-                                                       presenter,
-                                                       containerView,
-                                                       self,
-                                                       site,
-                                                       plugins)
-        coordinator.parent = self
-        coordinator.start()
-        // Set new interface after starting, it is new for every site/webView
-        siteNavigator = coordinator.startedVC as? WebViewNavigatable
-        webContentCoordinator = coordinator
     }
     
     // MARK: - view did load

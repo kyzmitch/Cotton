@@ -38,7 +38,6 @@ final class CounterView: UIView {
         digitLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         digitLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         digitLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
-        TabsListManager.shared.attach(self)
     }
     
     deinit {
@@ -47,6 +46,11 @@ final class CounterView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        TabsListManager.shared.attach(self)
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
