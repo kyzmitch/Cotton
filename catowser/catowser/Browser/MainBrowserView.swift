@@ -43,10 +43,15 @@ private extension _MainBrowserView {
             WebContentContainerView()
             Spacer()
             ToolbarView()
+                // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
                     DummyView()
                 }
         }
+        // Allows to not have the toolbar be attached to keyboard.
+        // So, the toolbar will stay on same position
+        // even after keyboard became visible.
+        .ignoresSafeArea(.keyboard)
     }
 }
 

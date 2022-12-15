@@ -30,9 +30,9 @@ final class WebViewsReuseManager {
     /// view factory
     private let vcFactory: ViewControllerFactory
 
-    init(_ viewControllerFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
+    init(_ vcFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
-        vcFactory = viewControllerFactory
+        self.vcFactory = vcFactory
         if viewsLimit >= 1 {
             self.viewsLimit = viewsLimit
         } else {

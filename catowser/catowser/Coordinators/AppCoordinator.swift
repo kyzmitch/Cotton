@@ -13,7 +13,7 @@ import FeaturesFlagsKit
 import JSPlugins
 
 final class AppCoordinator: Coordinator {
-    /// Could be accessed using `WebViewsEnvironment.shared.viewControllerFactory` singleton as well
+    /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well
     let vcFactory: ViewControllerFactory
     /// Currently presented (next) coordinator, to be able to stop it
     var startedCoordinator: Coordinator?
@@ -504,11 +504,13 @@ private extension AppCoordinator {
             insertWebTab(site)
         case .topSites:
             siteNavigator = nil
-            searchBarCoordinator?.showNext(.changeState(.blankSearch, true))
+            // No need to notify searchBar, because it is `TabsObserver` too.
+            // See https://github.com/kyzmitch/Cotton/issues/51
             insertTopSites()
         default:
             siteNavigator = nil
-            searchBarCoordinator?.showNext(.changeState(.blankSearch, true))
+            // No need to notify searchBar, because it is `TabsObserver` too
+            // See https://github.com/kyzmitch/Cotton/issues/51
             insertBlankTab()
         }
 

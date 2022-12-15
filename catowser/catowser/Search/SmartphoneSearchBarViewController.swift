@@ -11,7 +11,7 @@ import CoreBrowser
 
 final class SmartphoneSearchBarViewController: BaseViewController {
 
-    let searchBarViewController: SearchBarBaseViewController
+    private let searchBarViewController: SearchBarBaseViewController
 
     private let lineView: UIView = {
         let view = UIView()
@@ -20,8 +20,8 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         return view
     }()
 
-    init(_ searchBarDelegate: UISearchBarDelegate) {
-        searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
+    init(_ searchBarDelegate: UISearchBarDelegate?) {
+        searchBarViewController = ViewsEnvironment.shared.vcFactory.searchBarViewController(searchBarDelegate)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,7 +51,7 @@ final class SmartphoneSearchBarViewController: BaseViewController {
 }
 
 extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
-    func changeState(to state: SearchBarState, animated: Bool) {
-        searchBarViewController.changeState(to: state, animated: animated)
+    func changeState(to state: SearchBarState) {
+        searchBarViewController.changeState(to: state)
     }
 }

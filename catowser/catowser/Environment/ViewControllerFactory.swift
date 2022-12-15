@@ -26,7 +26,7 @@ import FeaturesFlagsKit
 protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController
 
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
@@ -46,9 +46,9 @@ protocol ViewControllerFactory: AnyObject {
     /// Convinience property to get a reference without input parameters
     var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> AnyViewController?
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> AnyViewController?
     /// Will return nil on Phone
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
@@ -77,7 +77,7 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController {
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController {
         let vc: SearchBarBaseViewController = .init(searchBarDelegate)
         return vc
     }
