@@ -361,8 +361,8 @@ private extension AppCoordinator {
             // swiftlint:disable:next force_unwrapping
             let presenter = startedVC!
             // TODO: Hack for SwiftUI path to pass something but it won't be used
-            let notUsedVIew = presenter.controllerView
-            let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, notUsedVIew)
+            let notUsedView = presenter.controllerView
+            let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, notUsedView)
             coordinator.parent = self
             topSitesCoordinator = coordinator
         }

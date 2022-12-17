@@ -43,6 +43,7 @@ private extension _MainBrowserView {
     func phoneView() -> some View {
         VStack {
             SearchBarView()
+                .frame(height: CGFloat.searchViewHeight)
             if model.showProgress {
                 ProgressView(value: model.websiteLoadProgress)
             }
