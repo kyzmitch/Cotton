@@ -28,7 +28,8 @@ struct SearchBarView: View {
 
 private struct _SearchBarLegacyView: UIViewRepresentable {
     func makeUIView(context: Context) -> some UIView {
-        let uiKitView = SearchBarLegacyView(frame: .zero)
+        let customFrame: CGRect = .init(x: 0, y: 0, width: .greatestFiniteMagnitude, height: .searchViewHeight)
+        let uiKitView = SearchBarLegacyView(frame: customFrame)
         return uiKitView
     }
     

@@ -41,7 +41,6 @@ private extension _MainBrowserView {
                 ProgressView(value: model.websiteLoadProgress)
             }
             WebContentContainerView()
-            Spacer()
             ToolbarView()
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {

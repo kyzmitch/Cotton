@@ -55,10 +55,15 @@ final class SearchBarLegacyView: UIView {
         searchBarView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         searchBarView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        searchBarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        if frame.height > 0 {
+            // SwiftUI layout fix because it can't determine the search bar height
+            searchBarView.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
+        } else {
+            searchBarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        }
 
-        siteNameLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        siteNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        siteNameLabel.topAnchor.constraint(equalTo: searchBarView.topAnchor).isActive = true
+        siteNameLabel.bottomAnchor.constraint(equalTo: searchBarView.bottomAnchor).isActive = true
         siteNameLabel.widthAnchor.constraint(equalTo: searchBarView.widthAnchor).isActive = true
         hiddenLabelConstraint.isActive = true
         
