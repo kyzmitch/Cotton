@@ -8,16 +8,22 @@
 
 import SwiftUI
 
-struct MainBrowserView: View {
-    let model: MainBrowserModel
+struct MainBrowserView<C: AppDependable>: View {
+    private let model: MainBrowserModel<C>
+    
+    init(model: MainBrowserModel<C>) {
+        self.model = model
+    }
+    
     var body: some View {
-        _MainBrowserView().environmentObject(model)
+        _MainBrowserView<C>()
+            .environmentObject(model)
     }
 }
 
-private struct _MainBrowserView: View {
-    @EnvironmentObject var model: MainBrowserModel
-    
+private struct _MainBrowserView<C: AppDependable>: View {
+    @EnvironmentObject var model: MainBrowserModel<C>
+
     var body: some View {
         if isPad {
             tabletView()
@@ -40,7 +46,8 @@ private extension _MainBrowserView {
             if model.showProgress {
                 ProgressView(value: model.websiteLoadProgress)
             }
-            WebContentContainerView()
+            BrowserContentView()
+                .environmentObject(BrowserContentModel(model.coordinator))
             ToolbarView()
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -63,9 +70,17 @@ private struct DummyView: View {
 }
 
 #if DEBUG
+class DummyDelegate: AppDependable {
+    var topSitesCoordinator: TopSitesCoordinator? {
+        nil
+    }
+}
+
 struct MainBrowserView_Previews: PreviewProvider {
+    let delegate = DummyDelegate()
+    
     static var previews: some View {
-        let model = MainBrowserModel()
+        let model = MainBrowserModel<DummyDelegate>()
         MainBrowserView(model: model)
     }
 }

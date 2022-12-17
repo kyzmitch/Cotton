@@ -7,17 +7,22 @@
 //
 
 import UIKit
-import CoreBrowser
 import FeaturesFlagsKit
 import AlamofireImage
 import CoreHttpKit
 
-protocol TopSitesInterface {
+protocol TopSitesInterface: AnyObject {
     func reload(with sites: [Site])
 }
 
-final class TopSitesViewController: BaseViewController {
+final class TopSitesViewController<C: Navigating>: BaseViewController,
+                                                   UICollectionViewDataSource,
+                                                   UICollectionViewDelegateFlowLayout
+where C.R == TopSitesRoute {
+    
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
+    
+    weak var coordinator: C?
 
     fileprivate var source: [Site] = []
 
@@ -35,19 +40,9 @@ final class TopSitesViewController: BaseViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
     }
-}
-
-extension TopSitesViewController: TopSitesInterface {
-    func reload(with sites: [Site]) {
-        source = sites
-        guard isViewLoaded else {
-            return
-        }
-        collectionView.reloadData()
-    }
-}
-
-extension TopSitesViewController: UICollectionViewDataSource {
+    
+    // MARK: - UICollectionViewDataSource
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return source.count
     }
@@ -63,9 +58,9 @@ extension TopSitesViewController: UICollectionViewDataSource {
         cell.reloadSiteCell(with: site)
         return cell
     }
-}
-
-extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -86,7 +81,17 @@ extension TopSitesViewController: UICollectionViewDelegateFlowLayout {
             return
         }
 
-        try? TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        coordinator?.showNext(.select(site))
+    }
+}
+
+extension TopSitesViewController: TopSitesInterface {
+    func reload(with sites: [Site]) {
+        source = sites
+        guard isViewLoaded else {
+            return
+        }
+        collectionView.reloadData()
     }
 }
 

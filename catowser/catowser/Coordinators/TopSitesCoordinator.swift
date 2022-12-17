@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import CoreHttpKit
+import CoreBrowser
+import FeaturesFlagsKit
 
 final class TopSitesCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
@@ -17,6 +20,7 @@ final class TopSitesCoordinator: Coordinator {
     var navigationStack: UINavigationController?
     
     private let contentContainerView: UIView
+    private let uiFramework: UIFrameworkType
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
@@ -24,10 +28,14 @@ final class TopSitesCoordinator: Coordinator {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.contentContainerView = contentContainerView
+        uiFramework = FeatureManager.appUIFrameworkValue()
     }
     
     func start() {
-        let vc = vcFactory.topSitesViewController
+        guard uiFramework == .uiKit else {
+            return
+        }
+        let vc = vcFactory.topSitesViewController(self)
         startedVC = vc
         vc.reload(with: DefaultTabProvider.shared.topSites)
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
@@ -41,12 +49,20 @@ final class TopSitesCoordinator: Coordinator {
     }
 }
 
-enum TopSitesRoute: Route {}
+enum TopSitesRoute: Route {
+    case select(Site)
+}
 
 extension TopSitesCoordinator: Navigating {
     typealias R = TopSitesRoute
     
-    func showNext(_ route: R) {}
+    func showNext(_ route: R) {
+        switch route {
+        case .select(let site):
+            // Open selected top site
+            try? TabsListManager.shared.replaceSelected(tabContent: .site(site))
+        }
+    }
     
     func stop() {
         startedVC?.viewController.removeFromChild()

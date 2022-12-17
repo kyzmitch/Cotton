@@ -12,7 +12,11 @@ import CoreHttpKit
 import FeaturesFlagsKit
 import JSPlugins
 
-final class AppCoordinator: Coordinator {
+protocol AppDependable: AnyObject {
+    var topSitesCoordinator: TopSitesCoordinator? { get }
+}
+
+final class AppCoordinator: Coordinator, AppDependable {
     /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well
     let vcFactory: ViewControllerFactory
     /// Currently presented (next) coordinator, to be able to stop it
@@ -39,7 +43,7 @@ final class AppCoordinator: Coordinator {
     /// Dummy view coordinator
     private var bottomViewCoordinator: (any Layouting)?
     /// Coordinator for inserted child view controller
-    private var topSitesCoordinator: (any Navigating)?
+    var topSitesCoordinator: TopSitesCoordinator?
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
     /// web view coordinator
@@ -354,7 +358,13 @@ private extension AppCoordinator {
             coordinator.start()
             topSitesCoordinator = coordinator
         case .swiftUI:
-            break
+            // swiftlint:disable:next force_unwrapping
+            let presenter = startedVC!
+            // TODO: Hack for SwiftUI path to pass something but it won't be used
+            let notUsedVIew = presenter.controllerView
+            let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, notUsedVIew)
+            coordinator.parent = self
+            topSitesCoordinator = coordinator
         }
     }
     
