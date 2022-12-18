@@ -35,7 +35,7 @@ private struct TopSitesLegacyView: UIViewControllerRepresentable {
             .shared
             .vcFactory
             .topSitesViewController(interface?.topSitesCoordinator)
-        vc.reload(with: DefaultTabProvider.shared.topSites)
+        vc.reload(with: model.topSites)
         return vc.viewController
     }
     

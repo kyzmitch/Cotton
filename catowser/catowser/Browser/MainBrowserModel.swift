@@ -16,7 +16,8 @@ final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
     
     weak var coordinatorsInterface: C?
     
-    init() {
+    init(_ coordinatorsInterface: C?) {
+        self.coordinatorsInterface = coordinatorsInterface
         websiteLoadProgress = 0.0
         showProgress = false
     }

@@ -11,7 +11,7 @@ import SwiftUI
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
     private let model: MainBrowserModel<C>
     
-    init(model: MainBrowserModel<C>) {
+    init(_ model: MainBrowserModel<C>) {
         self.model = model
     }
     
@@ -79,11 +79,8 @@ class DummyDelegate: BrowserContentCoordinators {
 }
 
 struct MainBrowserView_Previews: PreviewProvider {
-    let delegate = DummyDelegate()
-    
     static var previews: some View {
-        let model = MainBrowserModel<DummyDelegate>()
-        MainBrowserView(model: model)
+        MainBrowserView(MainBrowserModel(DummyDelegate()))
     }
 }
 #endif

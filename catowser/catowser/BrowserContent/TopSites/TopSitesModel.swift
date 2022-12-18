@@ -7,5 +7,12 @@
 //
 
 import SwiftUI
+import CoreHttpKit
 
-final class TopSitesModel: ObservableObject {}
+final class TopSitesModel: ObservableObject {
+    var topSites: [Site]
+    
+    init() {
+        topSites = DefaultTabProvider.shared.topSites
+    }
+}
