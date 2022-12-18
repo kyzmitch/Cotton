@@ -391,6 +391,8 @@
 		8AB4A1B527B55684008030FB /* HTTPVoidAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B427B55684008030FB /* HTTPVoidAdapter.swift */; };
 		8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B627B56CC3008030FB /* ResponseVoidHandlingApiType.swift */; };
 		8AB4A1B927B583AB008030FB /* ClosureVoidWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */; };
+		8AB5B120294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */; };
+		8AB5B121294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */; };
 		8AB5B3C4280C8B3D001F8644 /* RequestInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C3280C8B3D001F8644 /* RequestInterfaces.swift */; };
 		8AB5B3C6280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C5280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift */; };
 		8AB70E8B27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB70E8A27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift */; };
@@ -1178,6 +1180,7 @@
 		8AB4A1B427B55684008030FB /* HTTPVoidAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPVoidAdapter.swift; sourceTree = "<group>"; };
 		8AB4A1B627B56CC3008030FB /* ResponseVoidHandlingApiType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseVoidHandlingApiType.swift; sourceTree = "<group>"; };
 		8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureVoidWrappers.swift; sourceTree = "<group>"; };
+		8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extension.swift"; sourceTree = "<group>"; };
 		8AB5B3C3280C8B3D001F8644 /* RequestInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterfaces.swift; sourceTree = "<group>"; };
 		8AB5B3C5280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
 		8AB70E8A27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityAdapteeMocks.swift; sourceTree = "<group>"; };
@@ -1800,6 +1803,7 @@
 		8435A4991EED5E700020102F /* catowser */ = {
 			isa = PBXGroup;
 			children = (
+				8AB5B11E294F0CAF00C91383 /* SwiftUI+Extensions */,
 				75339298291FCEBC00570461 /* Coordinators */,
 				8A963C6F25212A63008EAB27 /* DB */,
 				8AA68A9D245BE45E00263E22 /* Environment */,
@@ -2197,6 +2201,14 @@
 				8AB022F026258B110053AFF0 /* Info.plist */,
 			);
 			path = CoreBrowserTests;
+			sourceTree = "<group>";
+		};
+		8AB5B11E294F0CAF00C91383 /* SwiftUI+Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */,
+			);
+			path = "SwiftUI+Extensions";
 			sourceTree = "<group>";
 		};
 		8AB5B3C2280C8B13001F8644 /* Interfaces */ = {
@@ -3604,6 +3616,7 @@
 				8A7B1BFC28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				753392A4291FD9A500570461 /* ViewControllerFactory.swift in Sources */,
+				8AB5B120294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */,
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989328622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
@@ -3834,6 +3847,7 @@
 				8A7B1BFD28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
 				753392A5291FD9A500570461 /* ViewControllerFactory.swift in Sources */,
+				8AB5B121294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */,
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989428622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,

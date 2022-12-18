@@ -18,8 +18,7 @@ struct BrowserContentView: View {
                 .background(.white)
         case .topSites:
             TopSitesView()
-                .environmentObject(TopSitesModel(model.coordinator))
-                .environment(\.appDependencies, model.coordinator)
+                .environmentObject(TopSitesModel())
         default:
             EmptyView()
         }

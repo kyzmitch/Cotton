@@ -18,17 +18,6 @@ struct TopSitesView: View {
     }
 }
 
-private struct AppDependenciesKey: EnvironmentKey {
-    static let defaultValue: AppDependable? = nil
-}
-
-extension EnvironmentValues {
-    var appDependencies: AppDependable? {
-        get { self[AppDependenciesKey.self] }
-        set { self[AppDependenciesKey.self] = newValue }
-    }
-}
-
 /**
  https://www.hackingwithswift.com/books/ios-swiftui/wrapping-a-uiviewcontroller-in-a-swiftui-view
  https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable/
@@ -38,27 +27,19 @@ extension EnvironmentValues {
 
 private struct TopSitesLegacyView: UIViewControllerRepresentable {
     @EnvironmentObject var model: TopSitesModel
-    @Environment(\.appDependencies) var coordinator
-    
-    class Coordinator {}
-    
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        // TODO: pass whole app dependencies reference instead of specific one because it is nil at the time of execution
+        let interface = context.environment.browserContentCoordinators
         let vc: AnyViewController & TopSitesInterface = ViewsEnvironment
             .shared
             .vcFactory
-            .topSitesViewController(coordinator?.topSitesCoordinator)
+            .topSitesViewController(interface?.topSitesCoordinator)
         vc.reload(with: DefaultTabProvider.shared.topSites)
         return vc.viewController
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        return Coordinator()
     }
 }

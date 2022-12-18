@@ -12,11 +12,12 @@ import CoreHttpKit
 import FeaturesFlagsKit
 import JSPlugins
 
-protocol AppDependable: AnyObject {
+/// Browser content related coordinators
+protocol BrowserContentCoordinators: AnyObject {
     var topSitesCoordinator: TopSitesCoordinator? { get }
 }
 
-final class AppCoordinator: Coordinator, AppDependable {
+final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well
     let vcFactory: ViewControllerFactory
     /// Currently presented (next) coordinator, to be able to stop it
@@ -42,7 +43,7 @@ final class AppCoordinator: Coordinator, AppDependable {
     private var linkTagsCoordinator: LinkTagsCoordinator?
     /// Dummy view coordinator
     private var bottomViewCoordinator: (any Layouting)?
-    /// Coordinator for inserted child view controller
+    /// Coordinator for inserted child view controller. public for SwiftUI
     var topSitesCoordinator: TopSitesCoordinator?
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
@@ -85,8 +86,13 @@ final class AppCoordinator: Coordinator, AppDependable {
     }
     
     func start() {
+        if case .swiftUI = uiFramework {
+            // must do coordinators init earlier
+            insertTopSites()
+        }
         let vc = vcFactory.rootViewController(self)
         startedVC = vc
+        
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         
@@ -345,27 +351,24 @@ private extension AppCoordinator {
     }
     
     func insertTopSites() {
+        guard topSitesCoordinator == nil else {
+            return
+        }
+        let coordinator: TopSitesCoordinator
         switch uiFramework {
         case .uiKit:
             guard let containerView = webContentContainerCoordinator?.startedView else {
                 assertionFailure("Root view controller must have content view")
                 return
             }
-            // swiftlint:disable:next force_unwrapping
-            let presenter = startedVC!
-            let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, containerView)
-            coordinator.parent = self
-            coordinator.start()
-            topSitesCoordinator = coordinator
+            coordinator = .init(vcFactory, startedVC, containerView)
         case .swiftUI:
-            // swiftlint:disable:next force_unwrapping
-            let presenter = startedVC!
-            // TODO: Hack for SwiftUI path to pass something but it won't be used
-            let notUsedView = presenter.controllerView
-            let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, notUsedView)
-            coordinator.parent = self
-            topSitesCoordinator = coordinator
+            coordinator = .init(vcFactory, startedVC, nil)
         }
+        
+        coordinator.parent = self
+        coordinator.start()
+        topSitesCoordinator = coordinator
     }
     
     func insertBlankTab() {

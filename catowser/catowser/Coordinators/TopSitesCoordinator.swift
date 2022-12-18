@@ -19,12 +19,12 @@ final class TopSitesCoordinator: Coordinator {
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
     
-    private let contentContainerView: UIView
+    private let contentContainerView: UIView?
     private let uiFramework: UIFrameworkType
     
     init(_ vcFactory: ViewControllerFactory,
-         _ presenter: AnyViewController,
-         _ contentContainerView: UIView) {
+         _ presenter: AnyViewController?,
+         _ contentContainerView: UIView?) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.contentContainerView = contentContainerView
@@ -33,6 +33,9 @@ final class TopSitesCoordinator: Coordinator {
     
     func start() {
         guard uiFramework == .uiKit else {
+            return
+        }
+        guard let contentContainerView = contentContainerView else {
             return
         }
         let vc = vcFactory.topSitesViewController(self)
@@ -65,6 +68,9 @@ extension TopSitesCoordinator: Navigating {
     }
     
     func stop() {
+        guard uiFramework == .uiKit else {
+            return
+        }
         startedVC?.viewController.removeFromChild()
         parent?.coordinatorDidFinish(self)
     }

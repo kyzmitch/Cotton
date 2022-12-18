@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MainBrowserView<C: AppDependable>: View {
+struct MainBrowserView<C: BrowserContentCoordinators>: View {
     private let model: MainBrowserModel<C>
     
     init(model: MainBrowserModel<C>) {
@@ -17,11 +17,12 @@ struct MainBrowserView<C: AppDependable>: View {
     
     var body: some View {
         _MainBrowserView<C>()
+            .environment(\.browserContentCoordinators, model.coordinatorsInterface)
             .environmentObject(model)
     }
 }
 
-private struct _MainBrowserView<C: AppDependable>: View {
+private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     @EnvironmentObject var model: MainBrowserModel<C>
 
     var body: some View {
@@ -48,7 +49,7 @@ private extension _MainBrowserView {
                 ProgressView(value: model.websiteLoadProgress)
             }
             BrowserContentView()
-                .environmentObject(BrowserContentModel(model.coordinator))
+                .environmentObject(BrowserContentModel())
             ToolbarView()
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -71,7 +72,7 @@ private struct DummyView: View {
 }
 
 #if DEBUG
-class DummyDelegate: AppDependable {
+class DummyDelegate: BrowserContentCoordinators {
     var topSitesCoordinator: TopSitesCoordinator? {
         nil
     }

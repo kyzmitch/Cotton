@@ -8,10 +8,4 @@
 
 import SwiftUI
 
-final class TopSitesModel: ObservableObject {
-    weak var coordinator: AppDependable?
-    
-    init(_ coordinator: AppDependable?) {
-        self.coordinator = coordinator
-    }
-}
+final class TopSitesModel: ObservableObject {}
