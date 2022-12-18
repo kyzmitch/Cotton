@@ -18,8 +18,8 @@ struct BrowserContentView: View {
                 .background(.white)
         case .topSites:
             TopSitesView()
-                .environmentObject(TopSitesModel(model.coordinator))
-                .environment(\.appDependencies, model.coordinator)
+                .environmentObject(TopSitesModel(model.coordinator?.coordinators))
+                .environment(\.coordinatorsInterface, model.coordinator?.coordinators)
         default:
             EmptyView()
         }

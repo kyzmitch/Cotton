@@ -18,14 +18,15 @@ struct TopSitesView: View {
     }
 }
 
-private struct AppDependenciesKey: EnvironmentKey {
-    static let defaultValue: AppDependable? = nil
+private struct CoordinatorsInterfaceKey: EnvironmentKey {
+    static let defaultValue: CoordinatorsInterface? = nil
 }
 
 extension EnvironmentValues {
-    var appDependencies: AppDependable? {
-        get { self[AppDependenciesKey.self] }
-        set { self[AppDependenciesKey.self] = newValue }
+    /// For postponed coordinators init
+    var coordinatorsInterface: CoordinatorsInterface? {
+        get { self[CoordinatorsInterfaceKey.self] }
+        set { self[CoordinatorsInterfaceKey.self] = newValue }
     }
 }
 
@@ -38,7 +39,7 @@ extension EnvironmentValues {
 
 private struct TopSitesLegacyView: UIViewControllerRepresentable {
     @EnvironmentObject var model: TopSitesModel
-    @Environment(\.appDependencies) var coordinator
+    @Environment(\.coordinatorsInterface) var coordinatorsInterface
     
     class Coordinator {}
     
@@ -49,7 +50,7 @@ private struct TopSitesLegacyView: UIViewControllerRepresentable {
         let vc: AnyViewController & TopSitesInterface = ViewsEnvironment
             .shared
             .vcFactory
-            .topSitesViewController(coordinator?.topSitesCoordinator)
+            .topSitesViewController(coordinatorsInterface)
         vc.reload(with: DefaultTabProvider.shared.topSites)
         return vc.viewController
     }

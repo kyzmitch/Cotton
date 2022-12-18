@@ -27,7 +27,7 @@ import SwiftUI
  */
 
 @available(iOS 13.0.0, *)
-final class MainBrowserV2ViewController<C: Navigating & AppDependable>: UIHostingController<MainBrowserView<C>>
+final class MainBrowserV2ViewController<C: Navigating & LimitedAppCoordinator>: UIHostingController<MainBrowserView<C>>
 where C.R == MainScreenRoute {
     private weak var coordinator: C?
     private let model: MainBrowserModel<C>

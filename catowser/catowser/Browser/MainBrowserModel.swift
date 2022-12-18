@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-final class MainBrowserModel<C: AppDependable>: ObservableObject {
+final class MainBrowserModel<C: LimitedAppCoordinator>: ObservableObject {
     /// Max value should be 1.0 because total is equals to that by default
     @State var websiteLoadProgress: Double
     @State var showProgress: Bool

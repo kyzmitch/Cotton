@@ -61,14 +61,13 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return nil
     }
     
-    func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
-    where C.R == TopSitesRoute {
+    func topSitesViewController(_ coordinator: CoordinatorsInterface?)-> AnyViewController & TopSitesInterface {
         if let existingVC = topSitesVC {
             return existingVC
         }
-        let bundle = Bundle(for: TopSitesViewController<C>.self)
-        let createdVC = TopSitesViewController<C>(nibName: "TopSitesViewController", bundle: bundle)
-        createdVC.coordinator = coordinator
+        let bundle = Bundle(for: TopSitesViewController.self)
+        let createdVC = TopSitesViewController(nibName: "TopSitesViewController", bundle: bundle)
+        createdVC.interface = coordinator
         topSitesVC = createdVC
         return createdVC
     }

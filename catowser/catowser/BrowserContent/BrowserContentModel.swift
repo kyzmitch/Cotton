@@ -12,9 +12,9 @@ import CoreBrowser
 final class BrowserContentModel: ObservableObject {
     @State var contentType: Tab.ContentType = .topSites
     
-    weak var coordinator: AppDependable?
+    weak var coordinator: LimitedAppCoordinator?
     
-    init(_ coordinator: AppDependable?) {
+    init(_ coordinator: LimitedAppCoordinator?) {
         self.coordinator = coordinator
     }
 }

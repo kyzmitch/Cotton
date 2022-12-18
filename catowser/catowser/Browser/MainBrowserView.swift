@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MainBrowserView<C: AppDependable>: View {
+struct MainBrowserView<C: LimitedAppCoordinator>: View {
     private let model: MainBrowserModel<C>
     
     init(model: MainBrowserModel<C>) {
@@ -21,7 +21,7 @@ struct MainBrowserView<C: AppDependable>: View {
     }
 }
 
-private struct _MainBrowserView<C: AppDependable>: View {
+private struct _MainBrowserView<C: LimitedAppCoordinator>: View {
     @EnvironmentObject var model: MainBrowserModel<C>
 
     var body: some View {
@@ -71,9 +71,15 @@ private struct DummyView: View {
 }
 
 #if DEBUG
-class DummyDelegate: AppDependable {
+class DummyCoordinatorInterface: CoordinatorsInterface {
     var topSitesCoordinator: TopSitesCoordinator? {
-        nil
+        return nil
+    }
+}
+
+class DummyDelegate: LimitedAppCoordinator {
+    var coordinators: CoordinatorsInterface {
+        DummyCoordinatorInterface()
     }
 }
 

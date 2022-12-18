@@ -12,11 +12,21 @@ import CoreHttpKit
 import FeaturesFlagsKit
 import JSPlugins
 
-protocol AppDependable: AnyObject {
+/// Provides access to the coordinators initialized in root coordinator
+/// It allows to check for the coordinator later even if at first it was nil.
+protocol CoordinatorsInterface: AnyObject {
     var topSitesCoordinator: TopSitesCoordinator? { get }
 }
 
-final class AppCoordinator: Coordinator, AppDependable {
+/// An interface with only required for SwiftUI properties
+/// It also allows to have an access to the properties
+/// which will be not nil later, because their initialization
+/// happens not right away.
+protocol LimitedAppCoordinator: AnyObject {
+    var coordinators: CoordinatorsInterface { get }
+}
+
+final class AppCoordinator: Coordinator {
     /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well
     let vcFactory: ViewControllerFactory
     /// Currently presented (next) coordinator, to be able to stop it
@@ -43,7 +53,7 @@ final class AppCoordinator: Coordinator, AppDependable {
     /// Dummy view coordinator
     private var bottomViewCoordinator: (any Layouting)?
     /// Coordinator for inserted child view controller
-    var topSitesCoordinator: TopSitesCoordinator?
+    private var topSitesCoordinator: TopSitesCoordinator?
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
     /// web view coordinator
@@ -78,6 +88,9 @@ final class AppCoordinator: Coordinator, AppDependable {
     /// UI framework type won't change in runtime, only after app restart, so that, it is const
     private let uiFramework: UIFrameworkType
     
+    /// A wrapper init
+    private lazy var selfWrapper: AppCoordinatorWrapper = .init(self)
+    
     init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
         uiFramework = FeatureManager.appUIFrameworkValue()
@@ -94,6 +107,19 @@ final class AppCoordinator: Coordinator, AppDependable {
         jsPluginsBuilder = JSPluginsBuilder()
             .setBase(self)
             .setInstagram(self)
+    }
+    
+    // MARK: - helper internal types
+    
+    private class AppCoordinatorWrapper: CoordinatorsInterface {
+        private weak var owner: AppCoordinator?
+        
+        init(_ owner: AppCoordinator) {
+            self.owner = owner
+        }
+        var topSitesCoordinator: TopSitesCoordinator? {
+            owner?.topSitesCoordinator
+        }
     }
 }
 
@@ -636,5 +662,11 @@ extension AppCoordinator: DeveloperMenuPresenter {
     
     func host(_ host: Host, willUpdateJsState enabled: Bool) {
         webContentCoordinator?.showNext(.javaScript(enabled, host))
+    }
+}
+
+extension AppCoordinator: LimitedAppCoordinator {
+    var coordinators: CoordinatorsInterface {
+        selfWrapper
     }
 }
