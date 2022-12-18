@@ -9,9 +9,9 @@
 import SwiftUI
 
 final class TopSitesModel: ObservableObject {
-    weak var coordinator: CoordinatorsInterface?
+    weak var coordinator: AppDependable?
     
-    init(_ coordinator: CoordinatorsInterface?) {
+    init(_ coordinator: AppDependable?) {
         self.coordinator = coordinator
     }
 }

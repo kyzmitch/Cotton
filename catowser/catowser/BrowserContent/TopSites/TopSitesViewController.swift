@@ -15,13 +15,14 @@ protocol TopSitesInterface: AnyObject {
     func reload(with sites: [Site])
 }
 
-final class TopSitesViewController: BaseViewController,
-                                    UICollectionViewDataSource,
-                                    UICollectionViewDelegateFlowLayout {
+final class TopSitesViewController<C: Navigating>: BaseViewController,
+                                                   UICollectionViewDataSource,
+                                                   UICollectionViewDelegateFlowLayout
+where C.R == TopSitesRoute {
     
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
     
-    weak var interface: CoordinatorsInterface?
+    weak var coordinator: C?
 
     fileprivate var source: [Site] = []
 
@@ -80,7 +81,7 @@ final class TopSitesViewController: BaseViewController,
             return
         }
 
-        interface?.topSitesCoordinator?.showNext(.select(site))
+        coordinator?.showNext(.select(site))
     }
 }
 
