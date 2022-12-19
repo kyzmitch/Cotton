@@ -15,6 +15,7 @@ import JSPlugins
 /// Browser content related coordinators
 protocol BrowserContentCoordinators: AnyObject {
     var topSitesCoordinator: TopSitesCoordinator? { get }
+    var webContentCoordinator: WebContentCoordinator? { get }
 }
 
 final class AppCoordinator: Coordinator, BrowserContentCoordinators {
@@ -48,7 +49,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
     /// web view coordinator
-    private var webContentCoordinator: WebContentCoordinator?
+    var webContentCoordinator: WebContentCoordinator?
     /// Only needed on Tablet
     private var tabletTabsCoordinator: (any Layouting)?
     /// App window rectangle
@@ -87,19 +88,28 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     
     func start() {
         if case .swiftUI = uiFramework {
-            // must do coordinators init earlier
+            // Must do coordinators init earlier
+            // to allow to use some of them in SwiftUI views
             insertTopSites()
         }
+        
         let vc = vcFactory.rootViewController(self)
         startedVC = vc
         
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         
-        TabsListManager.shared.attach(self)
-        jsPluginsBuilder = JSPluginsBuilder()
-            .setBase(self)
-            .setInstagram(self)
+        if case .uiKit = uiFramework {
+            // No need to use this class for other types
+            // of framework like SwiftUI to not do
+            // any not necessary layout.
+            // This will be handled by SwiftUI view model
+            // to not add too many checks in this class
+            TabsListManager.shared.attach(self)
+            jsPluginsBuilder = JSPluginsBuilder()
+                .setBase(self)
+                .setInstagram(self)
+        }
     }
 }
 
@@ -144,7 +154,9 @@ extension AppCoordinator: Navigating {
     func stop() {
         // Probably it is not necessary because this is a root
         jsPluginsBuilder = nil
-        TabsListManager.shared.detach(self)
+        if case .uiKit = uiFramework {
+            TabsListManager.shared.detach(self)
+        }
         // Next line is actually useless, because it is a root
         parent?.coordinatorDidFinish(self)
     }

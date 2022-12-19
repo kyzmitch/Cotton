@@ -49,7 +49,7 @@ private extension _MainBrowserView {
                 ProgressView(value: model.websiteLoadProgress)
             }
             BrowserContentView()
-                .environmentObject(BrowserContentModel())
+                .environmentObject(BrowserContentModel(model.jsPluginsBuilder))
             ToolbarView()
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -74,6 +74,10 @@ private struct DummyView: View {
 #if DEBUG
 class DummyDelegate: BrowserContentCoordinators {
     var topSitesCoordinator: TopSitesCoordinator? {
+        nil
+    }
+    
+    var webContentCoordinator: WebContentCoordinator? {
         nil
     }
 }

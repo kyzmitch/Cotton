@@ -54,7 +54,8 @@ final class WebContentCoordinator: Coordinator {
     }
     
     func start() {
-        let webViewController = try? ViewsEnvironment.shared.reuseManager.controllerFor(site, jsPluginsSource, self, self)
+        let manager = ViewsEnvironment.shared.reuseManager
+        let webViewController = try? manager.controllerFor(site, jsPluginsSource, self, self)
         guard let vc = webViewController else {
             assertionFailure("Failed create new web view for tab")
             return

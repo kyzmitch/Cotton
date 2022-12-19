@@ -19,6 +19,9 @@ struct BrowserContentView: View {
         case .topSites:
             TopSitesView()
                 .environmentObject(TopSitesModel())
+        case .site(let site):
+            WebViewV2()
+                .environmentObject(WebViewSwiftUIModel(site, model.jsPluginsBuilder))
         default:
             EmptyView()
         }
