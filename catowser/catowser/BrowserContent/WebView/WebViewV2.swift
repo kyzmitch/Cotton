@@ -21,12 +21,14 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        let interface = context.environment.browserContentCoordinators
+        // Usual coordinator can't really be used for SwiftUI navigation
+        // but for the legacy view it has to be passed
+        let dummyArgument: WebContentCoordinator? = nil
         let manager = ViewsEnvironment.shared.reuseManager
         let vc: (AnyViewController & WebViewNavigatable)? = try? manager.controllerFor(model.site,
                                                                                        model.jsPluginsBuilder,
                                                                                        model,
-                                                                                       interface?.webContentCoordinator)
+                                                                                       dummyArgument)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }

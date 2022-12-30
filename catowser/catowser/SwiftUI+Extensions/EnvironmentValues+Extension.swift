@@ -10,6 +10,7 @@ import SwiftUI
 
 /**
  https://sarunw.com/posts/how-to-define-custom-environment-values-in-swiftui/
+ https://useyourloaf.com/blog/swiftui-custom-environment-values/
  */
 
 private struct BrowserContentCoordinatorsKey: EnvironmentKey {
