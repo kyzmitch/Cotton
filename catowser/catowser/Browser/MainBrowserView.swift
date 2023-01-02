@@ -9,21 +9,16 @@
 import SwiftUI
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
-    private let model: MainBrowserModel<C>
-    
-    init(_ model: MainBrowserModel<C>) {
-        self.model = model
-    }
+    @ObservedObject var model: MainBrowserModel<C>
     
     var body: some View {
-        _MainBrowserView<C>()
+        _MainBrowserView<C>(model: model)
             .environment(\.browserContentCoordinators, model.coordinatorsInterface)
-            .environmentObject(model)
     }
 }
 
 private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
-    @EnvironmentObject var model: MainBrowserModel<C>
+    @ObservedObject var model: MainBrowserModel<C>
 
     var body: some View {
         if isPad {
@@ -48,8 +43,7 @@ private extension _MainBrowserView {
             if model.showProgress {
                 ProgressView(value: model.websiteLoadProgress)
             }
-            BrowserContentView()
-                .environmentObject(BrowserContentModel(model.jsPluginsBuilder))
+            BrowserContentView(model: BrowserContentModel(model.jsPluginsBuilder))
             ToolbarView()
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -84,7 +78,8 @@ class DummyDelegate: BrowserContentCoordinators {
 
 struct MainBrowserView_Previews: PreviewProvider {
     static var previews: some View {
-        MainBrowserView(MainBrowserModel(DummyDelegate()))
+        let model = MainBrowserModel(DummyDelegate())
+        MainBrowserView(model: model)
     }
 }
 #endif

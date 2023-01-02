@@ -8,16 +8,18 @@
 
 import SwiftUI
 
+/// web view specific to SwiftUI
 struct WebViewV2: View {
-    @EnvironmentObject var model: WebViewSwiftUIModel
+    @ObservedObject var model: WebViewSwiftUIModel
     
     var body: some View {
-        WebViewLegacyView()
+        WebViewLegacyView(model: model)
     }
 }
 
+/// SwiftUI wrapper around UIKit web view view controller
 private struct WebViewLegacyView: UIViewControllerRepresentable {
-    @EnvironmentObject var model: WebViewSwiftUIModel
+    @ObservedObject var model: WebViewSwiftUIModel
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

@@ -12,8 +12,8 @@ import JSPlugins
 
 final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
     /// Max value should be 1.0 because total is equals to that by default
-    @State var websiteLoadProgress: Double
-    @State var showProgress: Bool
+    @Published var websiteLoadProgress: Double
+    @Published var showProgress: Bool
     
     weak var coordinatorsInterface: C?
     /// Not a constant because can't be initialized in init

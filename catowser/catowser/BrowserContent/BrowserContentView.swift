@@ -10,18 +10,9 @@ import SwiftUI
 import CoreBrowser
 import JSPlugins
 
-/**
- To avoid this, always declare state as private,
- and place it in the highest view in the view hierarchy that needs access to the value.
- https://developer.apple.com/documentation/swiftui/state
- 
- Sooo, can't use state properties in model types, WTF???
- Looks like the state property can be used only inside body.
- */
-
 /// Dynamic content view (could be a webview, a top sites list, etc.)
 struct BrowserContentView: View {
-    @EnvironmentObject var model: BrowserContentModel
+    @ObservedObject var model: BrowserContentModel
 
     @State private var state: Tab.ContentType = DefaultTabProvider.shared.contentState
     
@@ -32,11 +23,9 @@ struct BrowserContentView: View {
                 EmptyView()
                     .background(.white)
             case .topSites:
-                TopSitesView()
-                    .environmentObject(TopSitesModel())
+                TopSitesView(model: TopSitesModel())
             case .site(let site):
-                WebViewV2()
-                    .environmentObject(WebViewSwiftUIModel(site, model.jsPluginsBuilder))
+                WebViewV2(model: WebViewSwiftUIModel(site, model.jsPluginsBuilder))
             default:
                 EmptyView()
             }

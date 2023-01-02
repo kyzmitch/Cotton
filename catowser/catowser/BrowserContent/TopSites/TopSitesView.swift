@@ -10,11 +10,10 @@ import SwiftUI
 import UIKit
 
 struct TopSitesView: View {
-    @EnvironmentObject var model: TopSitesModel
+    @ObservedObject var model: TopSitesModel
     
     var body: some View {
-        TopSitesLegacyView()
-            .environmentObject(model)
+        TopSitesLegacyView(model: model)
     }
 }
 
@@ -26,7 +25,7 @@ struct TopSitesView: View {
  */
 
 private struct TopSitesLegacyView: UIViewControllerRepresentable {
-    @EnvironmentObject var model: TopSitesModel
+    @ObservedObject var model: TopSitesModel
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
