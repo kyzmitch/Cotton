@@ -30,9 +30,6 @@ final class MenuViewModel: ObservableObject {
     
     @Published var isDohEnabled: Bool
     @Published var isJavaScriptEnabled: Bool
-    @Published var tabAddPosition: AddedTabPosition
-    @Published var tabDefaultContent: TabContentDefaultState
-    @Published var asyncApiType: AsyncApiType
     
     // MARK: - specific tab settings
     
@@ -85,9 +82,6 @@ final class MenuViewModel: ObservableObject {
         }
         isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        tabAddPosition = FeatureManager.tabAddPositionValue()
-        tabDefaultContent = FeatureManager.tabDefaultContentValue()
-        asyncApiType = FeatureManager.appAsyncApiTypeValue()
         
         // for some reason below observers gets triggered
         // right away in init
