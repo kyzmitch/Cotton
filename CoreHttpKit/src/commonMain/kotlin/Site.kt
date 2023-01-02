@@ -59,6 +59,16 @@ class Site(
                     && canLoadPlugins == other.canLoadPlugins
         }
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        other as Site
+        return urlInfo == other.urlInfo
+                && settings == other.settings
+                && searchSuggestion == other.searchSuggestion
+                && userSpecifiedTitle == other.userSpecifiedTitle
+                && faviconData == other.faviconData
+    }
 }
 
 expect class Image

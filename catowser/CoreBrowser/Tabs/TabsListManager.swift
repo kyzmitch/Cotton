@@ -297,7 +297,9 @@ extension TabsListManager: TabsSubject {
         guard let tabTuple = tabs.value.element(by: selectedId) else {
             throw TabsListError.notInitializedYet
         }
-        
+        guard tabTuple.tab.contentType != tabContent else {
+            return
+        }
         var newTab = tabTuple.tab
         let tabIndex = tabTuple.index
         newTab.contentType = tabContent
@@ -306,16 +308,14 @@ extension TabsListManager: TabsSubject {
         tabContentUpdateDisposable?.dispose()
         tabContentUpdateDisposable = storage
             .update(tab: newTab)
-            .observe(on: scheduler)
+            .observe(on: UIScheduler())
             .startWithResult({ [weak self] (result) in
                 switch result {
                 case .success:
                     self?.tabs.value[tabIndex] = newTab
                     // Need to notify observers to allow them
                     // to update title for tab view
-                    DispatchQueue.main.async { [weak self] in
-                        self?.observers.forEach { $0.tabDidReplace(newTab, at: tabIndex) }
-                    }
+                    self?.observers.forEach { $0.tabDidReplace(newTab, at: tabIndex) }
                 case .failure(let storageError):
                     print("Failed to update tab content to storage \(storageError)")
                 }
