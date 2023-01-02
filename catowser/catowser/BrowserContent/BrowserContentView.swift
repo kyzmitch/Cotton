@@ -16,48 +16,34 @@ import JSPlugins
  https://developer.apple.com/documentation/swiftui/state
  
  Sooo, can't use state properties in model types, WTF???
+ Looks like the state property can be used only inside body.
  */
 
+/// Dynamic content view (could be a webview, a top sites list, etc.)
 struct BrowserContentView: View {
     @EnvironmentObject var model: BrowserContentModel
-    /// view state
-    @State private var contentType: Tab.ContentType = DefaultTabProvider.shared.contentState
-    /// Not initialized, will be initialized after `TabsListManager`
-    /// during tab opening. Used only during tab opening for optimization
-    private var previousTabContent: Tab.ContentType?
-    
-    init() {
-        TabsListManager.shared.attach(self)
-    }
+
+    @State private var state: Tab.ContentType = DefaultTabProvider.shared.contentState
     
     var body: some View {
-        switch contentType {
-        case .blank:
-            EmptyView()
-                .background(.white)
-        case .topSites:
-            TopSitesView()
-                .environmentObject(TopSitesModel())
-        case .site(let site):
-            WebViewV2()
-                .environmentObject(WebViewSwiftUIModel(site, model.jsPluginsBuilder))
-        default:
-            EmptyView()
+        VStack {
+            switch state {
+            case .blank:
+                EmptyView()
+                    .background(.white)
+            case .topSites:
+                TopSitesView()
+                    .environmentObject(TopSitesModel())
+            case .site(let site):
+                WebViewV2()
+                    .environmentObject(WebViewSwiftUIModel(site, model.jsPluginsBuilder))
+            default:
+                EmptyView()
+            }
         }
-    }
-}
-
-extension BrowserContentView: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        if let previousValue = previousTabContent, previousValue.isStatic && previousValue == content {
-            // Optimization to not do remove & insert of the same static view
-            return
+        .onReceive(model.$contentType) { nextContentType in
+            state = nextContentType
         }
-        contentType = content
-    }
-    
-    func tabDidReplace(_ tab: Tab, at index: Int) {
-        contentType = tab.contentType
     }
 }
 
