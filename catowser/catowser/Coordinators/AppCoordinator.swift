@@ -503,8 +503,12 @@ private extension AppCoordinator {
     // MARK: - lifecycle navigation methods
     
     func startMenu(_ model: MenuViewModel, _ sourceView: UIView, _ sourceRect: CGRect) {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = vcFactory.createdDeviceSpecificSearchBarVC!
+        let presenter: UIViewController?
+        if case .uiKit = uiFramework {
+            presenter = vcFactory.createdDeviceSpecificSearchBarVC
+        } else {
+            presenter = startedVC?.viewController
+        }
         let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
         coordinator.parent = self
         coordinator.start()
