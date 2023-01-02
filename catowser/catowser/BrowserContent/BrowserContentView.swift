@@ -30,7 +30,7 @@ struct BrowserContentView: View {
                 EmptyView()
             }
         }
-        .onReceive(model.$contentType) { nextContentType in
+        .onReceive(model.$contentType.dropFirst(1)) { nextContentType in
             state = nextContentType
         }
     }
