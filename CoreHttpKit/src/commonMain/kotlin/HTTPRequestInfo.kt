@@ -13,8 +13,4 @@ data class HTTPRequestInfo(
     val headers: Set<HTTPHeader>,
     val requestTimeout: Long,
     val httpBody: ByteArray? = null
-) {
-    init {
-        freeze()
-    }
-}
+)

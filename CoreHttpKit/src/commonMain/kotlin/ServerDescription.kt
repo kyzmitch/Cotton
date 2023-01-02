@@ -26,7 +26,4 @@ enum class HttpScheme(val stringValue: String, val port: Int) {
  * @property scheme Server protocol type (could be HTTPS, HTTP, etc.)
  * */
 open class ServerDescription(val host: Host, val scheme: HttpScheme = HttpScheme.https) {
-    init {
-        freeze()
-    }
 }

@@ -58,9 +58,6 @@ class URLInfo constructor(
             }
         }
 
-    init {
-        freeze()
-    }
     /**
      * The IP address of the domain name from the initial URL is usually unknown at the start.
      * So that, with this property setter we're allowing to set it later.

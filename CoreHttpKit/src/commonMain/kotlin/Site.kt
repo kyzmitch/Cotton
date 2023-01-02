@@ -19,9 +19,6 @@ class Site(
     val searchSuggestion: String? = null,
     val userSpecifiedTitle: String? = null
 ) {
-    init {
-        freeze()
-    }
 
     val host: Host
         get() = urlInfo.host()
@@ -49,10 +46,6 @@ class Site(
         val isJSEnabled: Boolean = true,
         val canLoadPlugins: Boolean = true
     ) {
-        init {
-            freeze()
-        }
-
         fun withChanged(javaScriptEnabled: Boolean): Settings {
             return Settings(isPrivate, blockPopups, javaScriptEnabled, canLoadPlugins)
         }
