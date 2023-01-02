@@ -15,23 +15,34 @@ struct BrowserContentView: View {
     @ObservedObject var model: BrowserContentModel
 
     @State private var state: Tab.ContentType = DefaultTabProvider.shared.contentState
+    @State private var isLoading: Bool = true
     
     var body: some View {
         VStack {
-            switch state {
-            case .blank:
-                EmptyView()
-                    .background(.white)
-            case .topSites:
-                TopSitesView(model: TopSitesModel())
-            case .site(let site):
-                WebViewV2(model: WebViewSwiftUIModel(site, model.jsPluginsBuilder))
-            default:
-                EmptyView()
+            if isLoading {
+                Spacer()
+                    .background(.black)
+                    .progressViewStyle(.circular)
+            } else {
+                switch state {
+                case .blank:
+                    Spacer()
+                        .background(.black)
+                case .topSites:
+                    TopSitesView(model: TopSitesModel())
+                case .site(let site):
+                    WebView(model: WebViewSwiftUIModel(site, model.jsPluginsBuilder))
+                default:
+                    Spacer()
+                        .background(.black)
+                }
             }
         }
         .onReceive(model.$contentType.dropFirst(1)) { nextContentType in
             state = nextContentType
+        }
+        .onReceive(model.$loading.dropFirst(1)) { nextLoadingState in
+            isLoading = nextLoadingState
         }
     }
 }

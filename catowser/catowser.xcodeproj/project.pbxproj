@@ -535,8 +535,8 @@
 		8AE85DAD293491E10047F14F /* TabletTabsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */; };
 		8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D044280D388800FADE3A /* ResponseType.swift */; };
 		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
-		8AE9DD092950DBB40015E394 /* WebViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD082950DBB40015E394 /* WebViewV2.swift */; };
-		8AE9DD0A2950DBB40015E394 /* WebViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD082950DBB40015E394 /* WebViewV2.swift */; };
+		8AE9DD092950DBB40015E394 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD082950DBB40015E394 /* WebView.swift */; };
+		8AE9DD0A2950DBB40015E394 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD082950DBB40015E394 /* WebView.swift */; };
 		8AE9DD0C2950DCB00015E394 /* WebViewSwiftUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */; };
 		8AE9DD0D2950DCB00015E394 /* WebViewSwiftUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */; };
 		8AEA735D2948FDB900B2E261 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */; };
@@ -1248,7 +1248,7 @@
 		8AE85DAB293491E10047F14F /* TabletTabsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletTabsCoordinator.swift; sourceTree = "<group>"; };
 		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
 		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
-		8AE9DD082950DBB40015E394 /* WebViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewV2.swift; sourceTree = "<group>"; };
+		8AE9DD082950DBB40015E394 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSwiftUIModel.swift; sourceTree = "<group>"; };
 		8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
@@ -2141,7 +2141,7 @@
 				8A7B1BFB28EB2E59004FC135 /* WebViewContextImpl.swift */,
 				8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */,
 				607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */,
-				8AE9DD082950DBB40015E394 /* WebViewV2.swift */,
+				8AE9DD082950DBB40015E394 /* WebView.swift */,
 				8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */,
 			);
 			path = WebView;
@@ -3641,7 +3641,7 @@
 				8A82594A294E40F5007B97CF /* BrowserContentModel.swift in Sources */,
 				8AB9BE1A28FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8AED41A0292C004100A00DB2 /* ViewsEnvironment.swift in Sources */,
-				8AE9DD092950DBB40015E394 /* WebViewV2.swift in Sources */,
+				8AE9DD092950DBB40015E394 /* WebView.swift in Sources */,
 				8A437DA5247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */,
 				60C2C8EE2270739F00F5D869 /* DownloadButtonCellView.swift in Sources */,
@@ -3874,7 +3874,7 @@
 				8A82594B294E40F5007B97CF /* BrowserContentModel.swift in Sources */,
 				8AB9BE1928FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8AED41A1292C004100A00DB2 /* ViewsEnvironment.swift in Sources */,
-				8AE9DD0A2950DBB40015E394 /* WebViewV2.swift in Sources */,
+				8AE9DD0A2950DBB40015E394 /* WebView.swift in Sources */,
 				8A437DA6247E7210001C1E8B /* UIHostingController+Extension.swift in Sources */,
 				8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */,
 				8A8035CD24442F0F000E035F /* DownloadButtonCellView.swift in Sources */,

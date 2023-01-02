@@ -14,6 +14,8 @@ import CoreBrowser
 final class BrowserContentModel: ObservableObject {
     /// View content type. https://stackoverflow.com/a/56724174
     @Published var contentType: Tab.ContentType
+    /// Tab's content loading
+    @Published var loading: Bool
     /// JS plugins builder reference
     let jsPluginsBuilder: any JSPluginsSource
     /// Not initialized, will be initialized after `TabsListManager`
@@ -23,6 +25,7 @@ final class BrowserContentModel: ObservableObject {
     init(_ jsPluginsBuilder: any JSPluginsSource) {
         self.jsPluginsBuilder = jsPluginsBuilder
         contentType = DefaultTabProvider.shared.contentState
+        loading = true
         TabsListManager.shared.attach(self)
     }
     
@@ -37,10 +40,12 @@ extension BrowserContentModel: TabsObserver {
             // Optimization to not do remove & insert of the same static view
             return
         }
+        loading = false
         contentType = content
     }
     
     func tabDidReplace(_ tab: Tab, at index: Int) {
+        loading = false
         contentType = tab.contentType
     }
 }

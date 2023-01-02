@@ -1,5 +1,5 @@
 //
-//  WebViewV2.swift
+//  WebView.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 12/19/22.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// web view specific to SwiftUI
-struct WebViewV2: View {
+struct WebView: View {
     @ObservedObject var model: WebViewSwiftUIModel
     
     var body: some View {
