@@ -67,13 +67,9 @@ private struct DummyView: View {
 
 #if DEBUG
 class DummyDelegate: BrowserContentCoordinators {
-    var topSitesCoordinator: TopSitesCoordinator? {
-        nil
-    }
-    
-    var webContentCoordinator: WebContentCoordinator? {
-        nil
-    }
+    let topSitesCoordinator: TopSitesCoordinator? = nil
+    let webContentCoordinator: WebContentCoordinator? =  nil
+    let globalMenuDelegate: GlobalMenuDelegate? = nil
 }
 
 struct MainBrowserView_Previews: PreviewProvider {

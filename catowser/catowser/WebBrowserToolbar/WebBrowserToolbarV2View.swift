@@ -17,7 +17,9 @@ struct ToolbarView: View {
 
 private struct _ToolbarLegacyView: UIViewRepresentable {
     func makeUIView(context: Context) -> some UIView {
+        let interface = context.environment.browserContentCoordinators
         let uiKitView = WebBrowserToolbarView(frame: .zero)
+        uiKitView.globalSettingsDelegate = interface?.globalMenuDelegate
         ThemeProvider.shared.setup(uiKitView)
         return uiKitView
     }

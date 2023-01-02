@@ -16,6 +16,7 @@ import JSPlugins
 protocol BrowserContentCoordinators: AnyObject {
     var topSitesCoordinator: TopSitesCoordinator? { get }
     var webContentCoordinator: WebContentCoordinator? { get }
+    var globalMenuDelegate: GlobalMenuDelegate? { get }
 }
 
 final class AppCoordinator: Coordinator, BrowserContentCoordinators {
@@ -44,12 +45,8 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     private var linkTagsCoordinator: LinkTagsCoordinator?
     /// Dummy view coordinator
     private var bottomViewCoordinator: (any Layouting)?
-    /// Coordinator for inserted child view controller. public for SwiftUI
-    var topSitesCoordinator: TopSitesCoordinator?
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
-    /// web view coordinator
-    var webContentCoordinator: WebContentCoordinator?
     /// Only needed on Tablet
     private var tabletTabsCoordinator: (any Layouting)?
     /// App window rectangle
@@ -110,6 +107,17 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                 .setBase(self)
                 .setInstagram(self)
         }
+    }
+    
+    // MARK: - BrowserContentCoordinators
+    
+    /// Coordinator for inserted child view controller. public for SwiftUI
+    var topSitesCoordinator: TopSitesCoordinator?
+    /// web view coordinator
+    var webContentCoordinator: WebContentCoordinator?
+    /// Global menu delegate
+    var globalMenuDelegate: GlobalMenuDelegate? {
+        self
     }
 }
 
