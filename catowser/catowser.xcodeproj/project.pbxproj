@@ -541,8 +541,8 @@
 		8AE8D048280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */; };
 		8AE9DD092950DBB40015E394 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD082950DBB40015E394 /* WebView.swift */; };
 		8AE9DD0A2950DBB40015E394 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD082950DBB40015E394 /* WebView.swift */; };
-		8AE9DD0C2950DCB00015E394 /* WebViewSwiftUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */; };
-		8AE9DD0D2950DCB00015E394 /* WebViewSwiftUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */; };
+		8AE9DD0C2950DCB00015E394 /* WebViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD0B2950DCB00015E394 /* WebViewModelV2.swift */; };
+		8AE9DD0D2950DCB00015E394 /* WebViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE9DD0B2950DCB00015E394 /* WebViewModelV2.swift */; };
 		8AEA735D2948FDB900B2E261 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */; };
 		8AEA735E2948FDB900B2E261 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */; };
 		8AEA73602948FDDE00B2E261 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */; };
@@ -1255,7 +1255,7 @@
 		8AE8D044280D388800FADE3A /* ResponseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseType.swift; sourceTree = "<group>"; };
 		8AE8D047280D3CB500FADE3A /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
 		8AE9DD082950DBB40015E394 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewSwiftUIModel.swift; sourceTree = "<group>"; };
+		8AE9DD0B2950DCB00015E394 /* WebViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelV2.swift; sourceTree = "<group>"; };
 		8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedRestInterface.swift; sourceTree = "<group>"; };
@@ -2150,7 +2150,7 @@
 				8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */,
 				607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */,
 				8AE9DD082950DBB40015E394 /* WebView.swift */,
-				8AE9DD0B2950DCB00015E394 /* WebViewSwiftUIModel.swift */,
+				8AE9DD0B2950DCB00015E394 /* WebViewModelV2.swift */,
 			);
 			path = WebView;
 			sourceTree = "<group>";
@@ -3559,7 +3559,7 @@
 				8ADC4971293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */,
 				755E108527C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107127BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
-				8AE9DD0C2950DCB00015E394 /* WebViewSwiftUIModel.swift in Sources */,
+				8AE9DD0C2950DCB00015E394 /* WebViewModelV2.swift in Sources */,
 				753392A1291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */,
 				755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */,
 				841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */,
@@ -3794,7 +3794,7 @@
 				8ADC4972293A589200F37BF2 /* BottomViewCoordinator.swift in Sources */,
 				755E108627C16AB100D90AD0 /* BaseListModelImpl.swift in Sources */,
 				755E107227BC3DC500D90AD0 /* AppAsyncApiTypeViewPreview.swift in Sources */,
-				8AE9DD0D2950DCB00015E394 /* WebViewSwiftUIModel.swift in Sources */,
+				8AE9DD0D2950DCB00015E394 /* WebViewModelV2.swift in Sources */,
 				753392A2291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */,
 				755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */,
 				8A8035B524442F0F000E035F /* SmartphoneSearchBarViewController.swift in Sources */,

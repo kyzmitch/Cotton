@@ -11,10 +11,10 @@ import CoreHttpKit
 
 /// web view specific to SwiftUI
 struct WebView: View {
-    @ObservedObject var model: WebViewSwiftUIModel
+    @ObservedObject var model: WebViewModelV2
     private let site: Site
     
-    init(model: WebViewSwiftUIModel, site: Site) {
+    init(model: WebViewModelV2, site: Site) {
         self.model = model
         self.site = site
     }
@@ -26,7 +26,7 @@ struct WebView: View {
 
 /// SwiftUI wrapper around UIKit web view view controller
 private struct WebViewLegacyView: UIViewControllerRepresentable {
-    @ObservedObject var model: WebViewSwiftUIModel
+    @ObservedObject var model: WebViewModelV2
     let site: Site
     typealias UIViewControllerType = UIViewController
     /// Usual coordinator can't really be used for SwiftUI navigation

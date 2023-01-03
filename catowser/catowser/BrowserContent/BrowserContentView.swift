@@ -12,45 +12,44 @@ import JSPlugins
 
 /// Dynamic content view (could be a webview, a top sites list, etc.)
 struct BrowserContentView: View {
+    /// View model mainly used as a Tabs observer to know current tab's content type
     @ObservedObject var model: BrowserContentModel
-
+    /// The main state of the browser content view
     @State private var state: Tab.ContentType
+    /// Determines if the state is still loading to not show wrong content type (like default one)
     @State private var isLoading: Bool
-    private let webViewModel: WebViewSwiftUIModel
+    /// Web view view model
+    private let webViewModel: WebViewModelV2
     
     init(model: BrowserContentModel) {
         self.model = model
         state = DefaultTabProvider.shared.contentState
         isLoading = true
-        webViewModel = WebViewSwiftUIModel(model.jsPluginsBuilder)
+        webViewModel = WebViewModelV2(model.jsPluginsBuilder)
     }
     
     var body: some View {
         VStack {
             if isLoading {
                 Spacer()
-                    .background(.black)
-                    .progressViewStyle(.circular)
             } else {
                 switch state {
                 case .blank:
                     Spacer()
-                        .background(.black)
                 case .topSites:
                     TopSitesView(model: TopSitesModel())
                 case .site(let site):
                     WebView(model: webViewModel, site: site)
                 default:
                     Spacer()
-                        .background(.black)
                 }
             }
         }
         .onReceive(model.$contentType.dropFirst(1)) { nextContentType in
             state = nextContentType
         }
-        .onReceive(model.$loading.dropFirst(1)) { nextLoadingState in
-            isLoading = nextLoadingState
+        .onReceive(model.$loading.dropFirst(1)) { isStillLoading in
+            isLoading = isStillLoading
         }
         .onReceive(webViewModel.$webViewInterface) { newWebViewInterface in
             // Just passing a reference to the upper model

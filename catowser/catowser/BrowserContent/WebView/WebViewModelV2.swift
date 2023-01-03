@@ -1,5 +1,5 @@
 //
-//  WebViewSwiftUIModel.swift
+//  WebViewModelV2.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 12/19/22.
@@ -10,7 +10,7 @@ import SwiftUI
 import CoreHttpKit
 import CoreBrowser
 
-final class WebViewSwiftUIModel: ObservableObject {
+final class WebViewModelV2: ObservableObject {
     /// A reference to JavaScript plugins builder passed from root view
     let jsPluginsBuilder: any JSPluginsSource
     /// Web view interface which is set to some value only after initializing wkWebView
@@ -21,7 +21,7 @@ final class WebViewSwiftUIModel: ObservableObject {
     }
 }
 
-extension WebViewSwiftUIModel: SiteExternalNavigationDelegate {
+extension WebViewModelV2: SiteExternalNavigationDelegate {
     func didBackNavigationUpdate(to canGoBack: Bool) {
     }
     
