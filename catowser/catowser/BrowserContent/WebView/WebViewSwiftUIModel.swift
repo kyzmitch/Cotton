@@ -11,11 +11,12 @@ import CoreHttpKit
 import CoreBrowser
 
 final class WebViewSwiftUIModel: ObservableObject {
-    let site: Site
+    /// A reference to JavaScript plugins builder passed from root view
     let jsPluginsBuilder: any JSPluginsSource
+    /// Web view interface which is set to some value only after initializing wkWebView
+    @Published var webViewInterface: WebViewNavigatable?
     
-    init(_ site: Site, _ jsPluginsBuilder: any JSPluginsSource) {
-        self.site = site
+    init(_ jsPluginsBuilder: any JSPluginsSource) {
         self.jsPluginsBuilder = jsPluginsBuilder
     }
 }

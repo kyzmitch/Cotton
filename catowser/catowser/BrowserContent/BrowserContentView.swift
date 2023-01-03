@@ -14,8 +14,16 @@ import JSPlugins
 struct BrowserContentView: View {
     @ObservedObject var model: BrowserContentModel
 
-    @State private var state: Tab.ContentType = DefaultTabProvider.shared.contentState
-    @State private var isLoading: Bool = true
+    @State private var state: Tab.ContentType
+    @State private var isLoading: Bool
+    private let webViewModel: WebViewSwiftUIModel
+    
+    init(model: BrowserContentModel) {
+        self.model = model
+        state = DefaultTabProvider.shared.contentState
+        isLoading = true
+        webViewModel = WebViewSwiftUIModel(model.jsPluginsBuilder)
+    }
     
     var body: some View {
         VStack {
@@ -31,7 +39,7 @@ struct BrowserContentView: View {
                 case .topSites:
                     TopSitesView(model: TopSitesModel())
                 case .site(let site):
-                    WebView(model: WebViewSwiftUIModel(site, model.jsPluginsBuilder))
+                    WebView(model: webViewModel, site: site)
                 default:
                     Spacer()
                         .background(.black)
@@ -43,6 +51,10 @@ struct BrowserContentView: View {
         }
         .onReceive(model.$loading.dropFirst(1)) { nextLoadingState in
             isLoading = nextLoadingState
+        }
+        .onReceive(webViewModel.$webViewInterface) { newWebViewInterface in
+            // Just passing a reference to the upper model
+            model.webViewInterface = newWebViewInterface
         }
     }
 }
