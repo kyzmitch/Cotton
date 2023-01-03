@@ -64,10 +64,6 @@ struct BrowserContentView: View {
         .onReceive(model.$loading.dropFirst(1)) { isStillLoading in
             isLoading = isStillLoading
         }
-        .onReceive(webViewModel.$webViewInterface) { newWebViewInterface in
-            // Just passing a reference to the upper model
-            model.webViewInterface = newWebViewInterface
-        }
     }
 }
 

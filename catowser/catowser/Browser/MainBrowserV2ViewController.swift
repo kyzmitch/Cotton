@@ -30,7 +30,7 @@ import SwiftUI
 final class MainBrowserV2ViewController<C: Navigating & BrowserContentCoordinators>:
 UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     private weak var coordinator: C?
-
+    
     init(_ coordinator: C) {
         self.coordinator = coordinator
         let model: MainBrowserModel<C> = .init(coordinator)

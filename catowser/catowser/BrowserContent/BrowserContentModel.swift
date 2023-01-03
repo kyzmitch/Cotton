@@ -16,8 +16,6 @@ final class BrowserContentModel: ObservableObject {
     @Published var contentType: Tab.ContentType
     /// Tab's content loading
     @Published var loading: Bool
-    /// A published property needed to be able to access it in main view
-    @Published var webViewInterface: WebViewNavigatable?
     /// JS plugins builder reference
     let jsPluginsBuilder: any JSPluginsSource
     /// Not initialized, will be initialized after `TabsListManager`

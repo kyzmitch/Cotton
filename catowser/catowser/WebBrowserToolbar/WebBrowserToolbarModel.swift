@@ -9,5 +9,15 @@
 import SwiftUI
 
 final class WebBrowserToolbarModel: ObservableObject {
+    @Published var webViewInterface: WebViewNavigatable?
     
+    init() {
+        webViewInterface = nil
+    }
+}
+
+extension WebBrowserToolbarModel: WebViewCreationObserver {
+    func webViewInterfaceDidChange(_ interface: WebViewNavigatable) {
+        webViewInterface = interface
+    }
 }

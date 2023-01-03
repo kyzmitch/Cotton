@@ -20,11 +20,14 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
 private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     @ObservedObject var model: MainBrowserModel<C>
     private let browserContentModel: BrowserContentModel
-    @State private var webViewInterface: WebViewNavigatable?
+    private let toolbarModel: WebBrowserToolbarModel
     
     init(model: MainBrowserModel<C>) {
         self.model = model
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
+        toolbarModel = WebBrowserToolbarModel()
+        // Toolbar should know if current web view changes to provide navigation
+        ViewsEnvironment.shared.reuseManager.addObserver(toolbarModel)
     }
     
     var body: some View {
@@ -51,7 +54,7 @@ private extension _MainBrowserView {
                 ProgressView(value: model.websiteLoadProgress)
             }
             BrowserContentView(model: browserContentModel)
-            ToolbarView(model: WebBrowserToolbarModel(), webViewInterface: $webViewInterface)
+            ToolbarView(model: toolbarModel)
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
                     DummyView()
@@ -61,12 +64,6 @@ private extension _MainBrowserView {
         // So, the toolbar will stay on same position
         // even after keyboard became visible.
         .ignoresSafeArea(.keyboard)
-        .onReceive(browserContentModel.$webViewInterface.drop(while: { value in
-            value == nil
-        })) { newWebViewInterface in
-            // Updating the state to use that info in the toolbar view
-            webViewInterface = newWebViewInterface
-        }
     }
 }
 

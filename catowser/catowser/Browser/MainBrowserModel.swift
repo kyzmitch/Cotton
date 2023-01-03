@@ -13,7 +13,10 @@ import JSPlugins
 final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
     /// Max value should be 1.0 because total is equals to that by default
     @Published var websiteLoadProgress: Double
+    /// Tells if there is a web view content loading is in progress
     @Published var showProgress: Bool
+    /// web view interface
+    @Published var webViewInterface: WebViewNavigatable?
     
     weak var coordinatorsInterface: C?
     /// Not a constant because can't be initialized in init

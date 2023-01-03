@@ -13,8 +13,6 @@ import CoreBrowser
 final class WebViewModelV2: ObservableObject {
     /// A reference to JavaScript plugins builder passed from root view
     let jsPluginsBuilder: any JSPluginsSource
-    /// Web view interface which is set to some value only after initializing wkWebView
-    @Published var webViewInterface: WebViewNavigatable?
     
     init(_ jsPluginsBuilder: any JSPluginsSource) {
         self.jsPluginsBuilder = jsPluginsBuilder

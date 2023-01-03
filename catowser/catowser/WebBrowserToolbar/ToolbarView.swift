@@ -11,17 +11,20 @@ import SwiftUI
 
 struct ToolbarView: View {
     @ObservedObject var model: WebBrowserToolbarModel
-    @Binding var webViewInterface: WebViewNavigatable?
+    @State private var webViewInterface: WebViewNavigatable?
     
     var body: some View {
-        ToolbarLegacyView(webViewInterface: webViewInterface)
+        ToolbarLegacyView(webViewInterface: $webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)
+            .onReceive(model.$webViewInterface) { newInterface in
+                webViewInterface = newInterface
+            }
     }
 }
 
 private struct ToolbarLegacyView: UIViewControllerRepresentable {
-    let webViewInterface: WebViewNavigatable?
     typealias UIViewControllerType = UIViewController
+    @Binding var webViewInterface: WebViewNavigatable?
     
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory
@@ -33,12 +36,15 @@ private struct ToolbarLegacyView: UIViewControllerRepresentable {
                                                  interface?.globalMenuDelegate,
                                                  interface?.toolbarCoordinator,
                                                  interface?.toolbarPresenter)
-        // TODO: set webViewInterface for toolbar view from view controller
         // swiftlint:disable:next force_unwrapping
         return vc!
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
+        guard let vc = uiViewController as? WebBrowserToolbarController<MainToolbarCoordinator> else {
+            return
+        }
+        // This is the only way to set the web view interface for the toolbar
+        vc.siteNavigator = webViewInterface
     }
 }
