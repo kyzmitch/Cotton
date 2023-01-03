@@ -25,7 +25,7 @@ final class PhoneTabsCoordinator: Coordinator {
     private weak var delegate: PhoneTabsDelegate?
     
     init(_ vcFactory: any ViewControllerFactory,
-         _ presenter: AnyViewController,
+         _ presenter: AnyViewController?,
          _ delegate: PhoneTabsDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter

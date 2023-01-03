@@ -48,7 +48,8 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     }
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
-                                              _ coordinator: C?) -> UIViewController? where C.R == ToolbarRoute {
+                                              _ coordinator: C?,
+                                              _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute {
         return nil
     }
     

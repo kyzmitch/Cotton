@@ -83,6 +83,8 @@ class DummyDelegate: BrowserContentCoordinators {
     let topSitesCoordinator: TopSitesCoordinator? = nil
     let webContentCoordinator: WebContentCoordinator? =  nil
     let globalMenuDelegate: GlobalMenuDelegate? = nil
+    let toolbarCoordinator: MainToolbarCoordinator? = nil
+    let toolbarPresenter: AnyViewController? = nil
 }
 
 struct MainBrowserView_Previews: PreviewProvider {

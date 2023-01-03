@@ -27,11 +27,12 @@ private struct ToolbarLegacyView: UIViewControllerRepresentable {
         ViewsEnvironment.shared.vcFactory
     }
     
-    private let dummyArgument: MainToolbarCoordinator? = nil
-    
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
-        let vc = vcFactory.toolbarViewController(nil, interface?.globalMenuDelegate, dummyArgument)
+        let vc = vcFactory.toolbarViewController(nil,
+                                                 interface?.globalMenuDelegate,
+                                                 interface?.toolbarCoordinator,
+                                                 interface?.toolbarPresenter)
         // TODO: set webViewInterface for toolbar view from view controller
         // swiftlint:disable:next force_unwrapping
         return vc!

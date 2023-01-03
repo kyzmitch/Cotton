@@ -33,6 +33,8 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
         }
     }
     
+    var presenter: AnyViewController?
+    
     private let toolbarView: WebBrowserToolbarView
 
     init(_ coordinator: C?,
@@ -85,7 +87,8 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     // MARK: - private functions
     
     @objc private func handleShowOpenedTabsPressed() {
-        coordinator?.showNext(.tabs)
+        // Passing an optional presenter, only for SwiftUI case
+        coordinator?.showNext(.tabs, presenter)
     }
     
     private func handleDownloadsPressed() {

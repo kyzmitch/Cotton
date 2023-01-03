@@ -45,7 +45,13 @@ protocol Navigating: AnyObject {
     associatedtype R: Route
     var vcFactory: any ViewControllerFactory { get }
     func showNext(_ route: R)
+    /// Optional method needed for SwiftUI to be able to pass presenter if it is not available right away
+    func showNext(_ route: R, _ presenter: AnyViewController?)
     func stop()
+}
+
+extension Navigating {
+    /* optional */ func showNext(_ route: R, _ presenter: AnyViewController?) {}
 }
 
 enum LayoutStep<SP: SubviewPart> {

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 final class MainToolbarCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
@@ -20,21 +21,27 @@ final class MainToolbarCoordinator: Coordinator {
     private weak var downloadDelegate: DownloadPanelPresenter?
     private weak var settingsDelegate: GlobalMenuDelegate?
     
+    private let uiFramework: UIFrameworkType
+    
     init(_ vcFactory: ViewControllerFactory,
-         _ presenter: AnyViewController,
+         _ presenter: AnyViewController?,
          _ downloadDelegate: DownloadPanelPresenter?,
          _ settingsDelegate: GlobalMenuDelegate) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.downloadDelegate = downloadDelegate
         self.settingsDelegate = settingsDelegate
+        uiFramework = FeatureManager.appUIFrameworkValue()
     }
     
     func start() {
+        guard uiFramework == .uiKit else {
+            return
+        }
         guard !isPad else {
             return
         }
-        guard let vc = vcFactory.toolbarViewController(downloadDelegate, settingsDelegate, self) else {
+        guard let vc = vcFactory.toolbarViewController(downloadDelegate, settingsDelegate, self, nil) else {
             assertionFailure("Toolbar is only available on Phone layout")
             return
         }
@@ -68,6 +75,14 @@ extension MainToolbarCoordinator: Navigating {
         case .tabs:
             showTabs()
         }
+    }
+    
+    func showNext(_ route: R, _ presenter: AnyViewController?) {
+        if presenter != nil {
+            presenterVC = presenter
+        }
+        
+        showNext(route)
     }
 }
 
@@ -120,8 +135,13 @@ private extension MainToolbarCoordinator {
     }
     
     func showTabs() {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
+        let presenter: AnyViewController?
+        if case .uiKit = uiFramework {
+            presenter = startedVC
+        } else {
+            presenter = presenterVC
+        }
+        
         let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter, self)
         coordinator.parent = self
         coordinator.start()

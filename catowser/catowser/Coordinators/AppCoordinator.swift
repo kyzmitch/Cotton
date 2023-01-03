@@ -17,6 +17,8 @@ protocol BrowserContentCoordinators: AnyObject {
     var topSitesCoordinator: TopSitesCoordinator? { get }
     var webContentCoordinator: WebContentCoordinator? { get }
     var globalMenuDelegate: GlobalMenuDelegate? { get }
+    var toolbarCoordinator: MainToolbarCoordinator? { get }
+    var toolbarPresenter: AnyViewController? { get }
 }
 
 final class AppCoordinator: Coordinator, BrowserContentCoordinators {
@@ -33,8 +35,6 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     /// navigation view controller needed for some coordinators
     var navigationStack: UINavigationController?
     
-    /// Phone toolbar coordinator which should stay forever
-    private var toolbarCoordinator: (any Layouting)?
     /// Progress view coordinator
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
     /// Web content container coordinator
@@ -88,6 +88,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             // Must do coordinators init earlier
             // to allow to use some of them in SwiftUI views
             insertTopSites()
+            insertToolbar()
         }
         
         let vc = vcFactory.rootViewController(self)
@@ -118,6 +119,12 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     /// Global menu delegate
     var globalMenuDelegate: GlobalMenuDelegate? {
         self
+    }
+    /// Phone toolbar coordinator which should stay forever
+    var toolbarCoordinator: MainToolbarCoordinator?
+    /// Later initialized root view controller
+    var toolbarPresenter: AnyViewController? {
+        startedVC
     }
 }
 
@@ -348,8 +355,10 @@ private extension AppCoordinator {
         guard !isPad else {
             return
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
+        guard toolbarCoordinator == nil else {
+            return
+        }
+        let presenter = startedVC
         // Link tags coordinator MUST be initialized before this toolbar
         // and it is initialized before Search bar coordinator now
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
