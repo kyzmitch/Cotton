@@ -15,22 +15,29 @@ struct ToolbarView: View {
     
     var body: some View {
         ToolbarLegacyView(webViewInterface: webViewInterface)
+            .frame(height: CGFloat.toolbarViewHeight)
     }
 }
 
-private struct ToolbarLegacyView: UIViewRepresentable {
+private struct ToolbarLegacyView: UIViewControllerRepresentable {
     let webViewInterface: WebViewNavigatable?
+    typealias UIViewControllerType = UIViewController
     
-    func makeUIView(context: Context) -> some UIView {
-        let interface = context.environment.browserContentCoordinators
-        let uiKitView = WebBrowserToolbarView(frame: .zero)
-        uiKitView.globalSettingsDelegate = interface?.globalMenuDelegate
-        uiKitView.webViewInterface = webViewInterface
-        ThemeProvider.shared.setup(uiKitView)
-        return uiKitView
+    private var vcFactory: ViewControllerFactory {
+        ViewsEnvironment.shared.vcFactory
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-
+    private let dummyArgument: MainToolbarCoordinator? = nil
+    
+    func makeUIViewController(context: Context) -> UIViewControllerType {
+        let interface = context.environment.browserContentCoordinators
+        let vc = vcFactory.toolbarViewController(nil, interface?.globalMenuDelegate, dummyArgument)
+        // TODO: set webViewInterface for toolbar view from view controller
+        // swiftlint:disable:next force_unwrapping
+        return vc!
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        
     }
 }

@@ -35,7 +35,7 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     
     private let toolbarView: WebBrowserToolbarView
 
-    init(_ coordinator: C,
+    init(_ coordinator: C?,
          _ downloadPanelDelegate: DownloadPanelPresenter?,
          _ globalSettingsDelegate: GlobalMenuDelegate?) {
         self.coordinator = coordinator
@@ -59,6 +59,12 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        toolbarView.translatesAutoresizingMaskIntoConstraints = false
+        toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        toolbarView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -148,7 +148,7 @@ final class WebBrowserToolbarView: UIToolbar {
             
             // swiftlint:disable:next line_length
             // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
-            super.init(frame: CGRect(x: 0, y: 0, width: 1000, height: 44))
+            super.init(frame: CGRect(x: 0, y: 0, width: 1000, height: .toolbarViewHeight))
         } else {
             super.init(frame: frame)
         }

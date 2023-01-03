@@ -28,12 +28,13 @@ private struct TopSitesLegacyView: UIViewControllerRepresentable {
     @ObservedObject var model: TopSitesModel
     typealias UIViewControllerType = UIViewController
     
+    private var vcFactory: ViewControllerFactory {
+        ViewsEnvironment.shared.vcFactory
+    }
+    
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
-        let vc: AnyViewController & TopSitesInterface = ViewsEnvironment
-            .shared
-            .vcFactory
-            .topSitesViewController(interface?.topSitesCoordinator)
+        let vc: AnyViewController & TopSitesInterface = vcFactory.topSitesViewController(interface?.topSitesCoordinator)
         vc.reload(with: model.topSites)
         return vc.viewController
     }
