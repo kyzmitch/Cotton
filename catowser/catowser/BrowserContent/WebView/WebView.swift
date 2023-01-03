@@ -26,8 +26,8 @@ struct WebView: View {
 
 /// SwiftUI wrapper around UIKit web view view controller
 private struct WebViewLegacyView: UIViewControllerRepresentable {
-    @ObservedObject var model: WebViewModelV2
-    let site: Site
+    @ObservedObject private var model: WebViewModelV2
+    private let site: Site
     typealias UIViewControllerType = UIViewController
     /// Usual coordinator can't really be used for SwiftUI navigation
     /// but for the legacy view it has to be passed
@@ -35,6 +35,11 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
     /// Convinience property to get a manager
     private var manager: WebViewsReuseManager {
         ViewsEnvironment.shared.reuseManager
+    }
+    
+    init(model: WebViewModelV2, site: Site) {
+        self.model = model
+        self.site = site
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
@@ -50,6 +55,16 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
+        guard let navigatable = uiViewController as? WebViewNavigatable else {
+            return
+        }
+        print("Only for debug purposes to understand how it works")
+    }
+    
+    static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: ()) {
+        guard let navigatable = uiViewController as? WebViewNavigatable else {
+            return
+        }
+        print("Only for debug purposes to understand how it works")
     }
 }

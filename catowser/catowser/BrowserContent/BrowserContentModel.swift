@@ -48,6 +48,7 @@ extension BrowserContentModel: TabsObserver {
     
     func tabDidReplace(_ tab: Tab, at index: Int) {
         loading = false
+        // TODO: re-check whom calls `replace` because it uses same content type but it is a little bit different
         contentType = tab.contentType
     }
 }
