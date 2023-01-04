@@ -63,6 +63,32 @@ private extension SearchBarViewModel {
     }
 }
 
+extension SearchBarViewModel: SearchSuggestionsListDelegate {
+    func didSelect(_ content: SuggestionType) {
+        showSuggestions = false
+        switch content {
+        case .looksLikeURL(let likeURL):
+            guard let url = URL(string: likeURL) else {
+                assertionFailure("Failed construct site URL using edited URL")
+                return
+            }
+            replaceTab(with: url)
+        case .knownDomain(let domain):
+            guard let url = URL(string: "https://\(domain)") else {
+                assertionFailure("Failed construct site URL using domain name")
+                return
+            }
+            replaceTab(with: url)
+        case .suggestion(let suggestion):
+            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
+                assertionFailure("Failed construct search engine url from suggestion string")
+                return
+            }
+            replaceTab(with: url, with: suggestion)
+        }
+    }
+}
+
 extension SearchBarViewModel: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty || searchText.looksLikeAURL() {
@@ -115,27 +141,7 @@ extension SearchBarViewModel: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        showSuggestions = false
-        switch content {
-        case .looksLikeURL(let likeURL):
-            guard let url = URL(string: likeURL) else {
-                assertionFailure("Failed construct site URL using edited URL")
-                return
-            }
-            replaceTab(with: url)
-        case .knownDomain(let domain):
-            guard let url = URL(string: "https://\(domain)") else {
-                assertionFailure("Failed construct site URL using domain name")
-                return
-            }
-            replaceTab(with: url)
-        case .suggestion(let suggestion):
-            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
-                assertionFailure("Failed construct search engine url from suggestion string")
-                return
-            }
-            replaceTab(with: url, with: suggestion)
-        }
+        didSelect(content)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

@@ -15,8 +15,8 @@ public enum TabSubjectError: Error {
 public protocol TabsSubject {
     /// Tabs subject initialiser for Observer pattern
     init(storage: TabsStoragable, positioning: TabsStates, selectionStrategy: TabSelectionStrategy)
-    /// Add tabs observer.
-    func attach(_ observer: TabsObserver)
+    /// Add tabs observer. Notifies the new observer right away with existing data if needed.
+    func attach(_ observer: TabsObserver, notify: Bool)
     /// Removes tabs observer.
     func detach(_ observer: TabsObserver)
     /// Adds tab to memory and storage. Tab can be blank or it can contain URL address.

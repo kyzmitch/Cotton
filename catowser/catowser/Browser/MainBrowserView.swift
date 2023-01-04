@@ -72,9 +72,10 @@ private extension _MainBrowserView {
                 ProgressView(value: websiteLoadProgress)
             }
             if showSearchSuggestions {
-                SearchSuggestionsView(searchQuery: $searchQuery)
+                SearchSuggestionsView(searchQuery: $searchQuery, delegate: searchBarModel)
+            } else {
+                BrowserContentView(browserContentModel, toolbarModel)
             }
-            BrowserContentView(browserContentModel, toolbarModel)
             ToolbarView(toolbarModel)
         }
         .ignoresSafeArea(.keyboard)

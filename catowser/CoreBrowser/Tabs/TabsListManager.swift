@@ -322,9 +322,18 @@ extension TabsListManager: TabsSubject {
             })
     }
 
-    public func attach(_ observer: TabsObserver) {
+    public func attach(_ observer: TabsObserver, notify: Bool = false) {
         queue.async { [weak self] in
             self?.observers.append(observer)
+        }
+        if notify {
+            // TODO: optimize next block to notify only about missing data
+            guard let tabTuple = tabs.value.element(by: selectedId) else {
+                return
+            }
+            observer.tabDidSelect(index: tabTuple.index,
+                                  content: tabTuple.tab.contentType,
+                                  identifier: tabTuple.tab.id)
         }
     }
 
