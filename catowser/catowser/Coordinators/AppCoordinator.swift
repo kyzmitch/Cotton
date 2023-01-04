@@ -54,7 +54,9 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }()
     /// main app window
-    private let window: UIWindow
+    private lazy var window: UIWindow = {
+        UIWindow(frame: windowRectangle)
+    }()
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private var previousTabContent: Tab.ContentType?
@@ -80,7 +82,6 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
         uiFramework = FeatureManager.appUIFrameworkValue()
-        window = UIWindow(frame: windowRectangle)
     }
     
     func start() {

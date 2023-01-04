@@ -63,6 +63,8 @@ final class WebViewController<C: Navigating>: BaseViewController,
         loadingProgressObservation?.invalidate()
         return createWebView(with: viewModel.configuration)
     }()
+    /// A reference to the optional auth handler to allow use background queue for the callback
+    private var authHandlers: Set<WebViewAuthChallengeHandler> = []
 
     /**
      Constructs web view controller for specific site with set of plugins and navigation handler
@@ -81,6 +83,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
     }
     
     deinit {
+        authHandlers.removeAll()
         unsubscribe()
     }
     
@@ -201,8 +204,18 @@ final class WebViewController<C: Navigating>: BaseViewController,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
-        handler.solve { [weak self] in
-            self?.externalNavigationDelegate?.showLoadingProgress(false)
+        authHandlers.insert(handler)
+        handler.solve { [weak self, weak handler] stopLoadingProgress in
+            guard let self = self else {
+                return
+            }
+            if stopLoadingProgress != nil {
+                self.externalNavigationDelegate?.showLoadingProgress(false)
+            }
+            guard let handler = handler else {
+                return
+            }
+            self.authHandlers.remove(handler)
         }
     }
     

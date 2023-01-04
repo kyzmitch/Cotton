@@ -13,10 +13,12 @@ import Alamofire
 final class WebViewAuthChallengeHandler {
     typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     
-    let urlInfo: URLInfo
-    let challenge: URLAuthenticationChallenge
-    let completionHandler: AuthHandler
-    let webView: WKWebView
+    private let urlInfo: URLInfo
+    private let challenge: URLAuthenticationChallenge
+    private let completionHandler: AuthHandler
+    private let webView: WKWebView
+    /// There is an Xcode warning about not calling that on main thread, so, using custom queue
+    private let queue: DispatchQueue
     
     init(_ urlInfo: URLInfo,
          _ webView: WKWebView,
@@ -26,15 +28,26 @@ final class WebViewAuthChallengeHandler {
         self.webView = webView
         self.challenge = challenge
         self.completionHandler = completionHandler
+        queue = DispatchQueue(label: .queueNameWith(suffix: "webview.auth-challenge"))
     }
     
-    func solve(completion: @escaping () -> Void) {
+    func solve(completion: @escaping (Bool?) -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
-            completionHandler(.performDefaultHandling, nil)
+            queue.async { [weak self] in
+                self?.completionHandler(.performDefaultHandling, nil)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
             return
         }
         guard let serverTrust = challenge.protectionSpace.serverTrust else {
-            completionHandler(.performDefaultHandling, nil)
+            queue.async { [weak self] in
+                self?.completionHandler(.performDefaultHandling, nil)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
             return
         }
         let possibleIPAddress = urlInfo.ipAddressString
@@ -52,11 +65,20 @@ final class WebViewAuthChallengeHandler {
             // Here web site is trying to complete navigation
             // requests for supplementary hosts like analytics.
             // Obviously they're using own certificates to validate SSL
-            completionHandler(.performDefaultHandling, nil)
-            return
+            queue.async { [weak self] in
+                self?.completionHandler(.performDefaultHandling, nil)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
         } else {
             let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
+            queue.async { [weak self] in
+                self?.completionHandler(.useCredential, credential)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
         }
     }
 }
@@ -65,7 +87,7 @@ private extension WebViewAuthChallengeHandler {
     func handleServerTrust(_ serverTrust: SecTrust,
                            _ host: String,
                            _ completionHandler: @escaping AuthHandler,
-                           _ completion: @escaping () -> Void) {
+                           _ completion: @escaping (Bool?) -> Void) {
         
         do {
             let evaluator: DefaultTrustEvaluator = .ipHostEvaluator()
@@ -90,13 +112,42 @@ private extension WebViewAuthChallengeHandler {
             try serverTrust.af.setAnchorCertificates(certificates)
             try evaluator.evaluateWithRecovery(serverTrust, forHost: host)
             let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
+            queue.async { [weak self] in
+                self?.completionHandler(.useCredential, credential)
+                DispatchQueue.main.async {
+                    completion(true)
+                }
+            }
         } catch {
             let msg = "handleServerTrust: validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
             print("Error: \(msg)")
             let credential = URLCredential(trust: serverTrust)
-            completionHandler(.useCredential, credential)
-            completion()
+            queue.async { [weak self] in
+                self?.completionHandler(.useCredential, credential)
+                DispatchQueue.main.async {
+                    completion(true)
+                }
+            }
         }
+    }
+}
+
+extension WebViewAuthChallengeHandler: Hashable {
+    static func == (lhs: WebViewAuthChallengeHandler, rhs: WebViewAuthChallengeHandler) -> Bool {
+        guard lhs.webView == rhs.webView else {
+            return false
+        }
+        guard lhs.challenge == rhs.challenge else {
+            return false
+        }
+        guard lhs.urlInfo == rhs.urlInfo else {
+            return false
+        }
+        return true
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(challenge)
+        hasher.combine(urlInfo)
     }
 }
