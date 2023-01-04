@@ -11,6 +11,10 @@ import CoreBrowser
 
 final class WebBrowserToolbarModel: ObservableObject {
     @Published var webViewInterface: WebViewNavigatable?
+    /// Max value should be 1.0 because total is equals to that by default
+    @Published var websiteLoadProgress: Double
+    /// Tells if there is a web view content loading is in progress
+    @Published var showProgress: Bool
     
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory
@@ -26,6 +30,8 @@ final class WebBrowserToolbarModel: ObservableObject {
     
     init() {
         webViewInterface = nil
+        showProgress = false
+        websiteLoadProgress = 0.0
     }
 }
 
@@ -51,9 +57,11 @@ extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
     }
     
     func loadingProgressdDidChange(_ progress: Float) {
+        websiteLoadProgress = Double(progress)
     }
     
     func showLoadingProgress(_ show: Bool) {
+        showProgress = show
     }
     
     func didTabPreviewChange(_ screenshot: UIImage) {

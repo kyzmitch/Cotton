@@ -21,8 +21,12 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     @ObservedObject var model: MainBrowserModel<C>
     private let browserContentModel: BrowserContentModel
     private let toolbarModel: WebBrowserToolbarModel
+    @State var websiteLoadProgress: Double
+    @State var showProgress: Bool
     
     init(model: MainBrowserModel<C>) {
+        showProgress = false
+        websiteLoadProgress = 0.0
         self.model = model
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
@@ -50,8 +54,8 @@ private extension _MainBrowserView {
         VStack {
             SearchBarView()
                 .frame(height: CGFloat.searchViewHeight)
-            if model.showProgress {
-                ProgressView(value: model.websiteLoadProgress)
+            if showProgress {
+                ProgressView(value: websiteLoadProgress)
             }
             BrowserContentView(browserContentModel, toolbarModel)
             ToolbarView(toolbarModel)
@@ -64,6 +68,12 @@ private extension _MainBrowserView {
         // So, the toolbar will stay on same position
         // even after keyboard became visible.
         .ignoresSafeArea(.keyboard)
+        .onReceive(toolbarModel.$showProgress) { value in
+            showProgress = value
+        }
+        .onReceive(toolbarModel.$websiteLoadProgress) { value in
+            websiteLoadProgress = value
+        }
     }
 }
 

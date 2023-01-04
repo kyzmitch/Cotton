@@ -11,10 +11,6 @@ import SwiftUI
 import JSPlugins
 
 final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
-    /// Max value should be 1.0 because total is equals to that by default
-    @Published var websiteLoadProgress: Double
-    /// Tells if there is a web view content loading is in progress
-    @Published var showProgress: Bool
     /// web view interface
     @Published var webViewInterface: WebViewNavigatable?
     
@@ -26,8 +22,6 @@ final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
     
     init(_ coordinatorsInterface: C?) {
         self.coordinatorsInterface = coordinatorsInterface
-        websiteLoadProgress = 0.0
-        showProgress = false
     }
 }
 
