@@ -310,7 +310,7 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
     }
 }
 
-private extension FeatureManager {
+extension FeatureManager {
     static func searchPluginName() -> KnownSearchPluginName {
         switch webSearchAutoCompleteValue() {
         case .google:

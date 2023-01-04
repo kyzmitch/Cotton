@@ -21,15 +21,23 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     @ObservedObject var model: MainBrowserModel<C>
     private let browserContentModel: BrowserContentModel
     private let toolbarModel: WebBrowserToolbarModel
+    private let searchBarModel: SearchBarViewModel
     @State var websiteLoadProgress: Double
     @State var showProgress: Bool
+    @State var showSearchSuggestions: Bool
+    @State var searchQuery: String
+    @State var searchBarState: SearchBarState
     
     init(model: MainBrowserModel<C>) {
         showProgress = false
+        showSearchSuggestions = false
+        searchQuery = ""
+        searchBarState = .blankSearch
         websiteLoadProgress = 0.0
         self.model = model
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
+        searchBarModel = SearchBarViewModel()
         // Toolbar should know if current web view changes to provide navigation
         ViewsEnvironment.shared.reuseManager.addObserver(toolbarModel)
     }
@@ -46,7 +54,7 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
 private extension _MainBrowserView {
     func tabletView() -> some View {
         VStack {
-            SearchBarView()
+            Spacer()
         }
     }
     
@@ -59,9 +67,12 @@ private extension _MainBrowserView {
          */
         
         VStack {
-            SearchBarView()
+            SearchBarView(model: searchBarModel, stateBinding: $searchBarState)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
+            }
+            if showSearchSuggestions {
+                SearchSuggestionsView(searchQuery: $searchQuery)
             }
             BrowserContentView(browserContentModel, toolbarModel)
             ToolbarView(toolbarModel)
@@ -72,6 +83,15 @@ private extension _MainBrowserView {
         }
         .onReceive(toolbarModel.$websiteLoadProgress) { value in
             websiteLoadProgress = value
+        }
+        .onReceive(searchBarModel.$showSuggestions) { value in
+            showSearchSuggestions = value
+        }
+        .onReceive(searchBarModel.$searchText) { value in
+            searchQuery = value
+        }
+        .onReceive(searchBarModel.$searchViewState.dropFirst(1)) { value in
+            searchBarState = value
         }
     }
 }

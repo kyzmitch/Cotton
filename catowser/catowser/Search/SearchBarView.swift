@@ -8,39 +8,53 @@
 
 import SwiftUI
 
-// https://stackoverflow.com/questions/56490963/how-to-display-a-search-bar-with-swiftui
-
-/**
- There are possibly 3 options on how to create a search bar:
- - wrap UIKit's UISearchBar view into some struct which confirms to `UIViewRepresentable`
- - write own implementation as below
- - use iOS 15 `searchable` property on some view
- 
- Need to not forget to use ThemeProvider.shared.setup(view)
- for search bar view to make it similar with UIKit version.
- */
-
+/// A search bar view
 struct SearchBarView: View {
+    @ObservedObject var model: SearchBarViewModel
+    @Binding var stateBinding: SearchBarState
+    
     var body: some View {
-        _SearchBarLegacyView()
+        PhoneSearchBarLegacyView(model: model, stateBinding: $stateBinding)
             .frame(height: CGFloat.searchViewHeight)
     }
 }
 
-private struct _SearchBarLegacyView: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let customFrame: CGRect = .init(x: 0, y: 0, width: .greatestFiniteMagnitude, height: .searchViewHeight)
-        let uiKitView = SearchBarLegacyView(frame: customFrame)
-        return uiKitView
+private struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
+    @ObservedObject var model: SearchBarViewModel
+    @Binding var stateBinding: SearchBarState
+    
+    typealias UIViewControllerType = UIViewController
+    
+    private var vcFactory: ViewControllerFactory {
+        ViewsEnvironment.shared.vcFactory
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
+    func makeUIViewController(context: Context) -> UIViewControllerType {
+        let vc = vcFactory.deviceSpecificSearchBarViewController(model)
+        // swiftlint:disable:next force_unwrapping
+        return vc!.viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
+        guard let interface = uiViewController as? SearchBarControllerInterface else {
+            return
+        }
+        interface.changeState(to: stateBinding)
     }
 }
 
+#if DEBUG
 struct SearchBarView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        SearchBarView()
+        let model = SearchBarViewModel()
+        let state: Binding<SearchBarState> = .init {
+            .blankSearch
+        } set: { _ in
+            //
+        }
+
+        SearchBarView(model: model, stateBinding: state)
     }
 }
+#endif

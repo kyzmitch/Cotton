@@ -29,8 +29,8 @@ struct ToolbarView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 DummyView()
             }
-            .onReceive(model.$webViewInterface) { newInterface in
-                webViewInterface = newInterface
+            .onReceive(model.$webViewInterface) { value in
+                webViewInterface = value
             }
     }
 }

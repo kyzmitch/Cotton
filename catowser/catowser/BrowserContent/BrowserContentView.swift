@@ -61,11 +61,11 @@ struct BrowserContentView: View {
                 }
             }
         }
-        .onReceive(contentType) { nextContentType in
-            state = nextContentType
+        .onReceive(contentType) { value in
+            state = value
         }
-        .onReceive(model.$loading.dropFirst(1)) { isStillLoading in
-            isLoading = isStillLoading
+        .onReceive(model.$loading.dropFirst(1)) { value in
+            isLoading = value
         }
     }
 }

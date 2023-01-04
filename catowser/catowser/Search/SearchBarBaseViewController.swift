@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 protocol SearchBarControllerInterface: AnyObject {
     /* non optional */ func changeState(to state: SearchBarState)
@@ -18,7 +19,13 @@ final class SearchBarBaseViewController: BaseViewController {
     private let searchBarView: SearchBarLegacyView
     
     init(_ searchBarDelegate: UISearchBarDelegate?) {
-        searchBarView = .init(frame: .zero)
+        let customFrame: CGRect
+        if case .uiKit = FeatureManager.appUIFrameworkValue() {
+            customFrame = .zero
+        } else {
+            customFrame = .init(x: 0, y: 0, width: .greatestFiniteMagnitude, height: .searchViewHeight)
+        }
+        searchBarView = .init(frame: customFrame)
         searchBarView.delegate = searchBarDelegate
         super.init(nibName: nil, bundle: nil)
     }
