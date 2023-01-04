@@ -251,14 +251,18 @@ private extension WebViewController {
             // but probably not needed
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
+        reattachWebViewObservers()
         
         switch FeatureManager.appAsyncApiTypeValue() {
         case .reactive:
             disposable?.dispose()
             disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
             dohDisposable?.dispose()
-            dohDisposable = FeatureManager.rxFeatureChanges(for: .dnsOverHTTPSAvailable).producer.startWithValues { [weak self] _ in
-                self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            dohDisposable = FeatureManager
+                .rxFeatureChanges(for: .dnsOverHTTPSAvailable)
+                .producer
+                .startWithValues { [weak self] _ in
+                    self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
             }
         case .combine:
             cancellable?.cancel()
