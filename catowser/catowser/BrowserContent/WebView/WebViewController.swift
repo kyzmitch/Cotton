@@ -68,7 +68,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
      Constructs web view controller for specific site with set of plugins and navigation handler
      */
     init(_ viewModel: WebViewModel,
-         _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+         _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
          _ coordinator: C?) {
         self.viewModel = viewModel
         self.externalNavigationDelegate = externalNavigationDelegate

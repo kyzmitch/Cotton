@@ -12,6 +12,10 @@ import UIKit
 struct TopSitesView: View {
     @ObservedObject var model: TopSitesModel
     
+    init(_ model: TopSitesModel) {
+        self.model = model
+    }
+    
     var body: some View {
         TopSitesLegacyView(model: model)
     }

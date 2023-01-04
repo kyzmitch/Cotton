@@ -14,7 +14,8 @@ struct WebView: View {
     @ObservedObject var model: WebViewModelV2
     private let site: Site
     
-    init(model: WebViewModelV2, site: Site) {
+    init(_ model: WebViewModelV2,
+         _ site: Site) {
         self.model = model
         self.site = site
     }
@@ -48,7 +49,7 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
         // configured to use web views cache.
         let vc: (AnyViewController & WebViewNavigatable)? = try? manager.controllerFor(site,
                                                                                        model.jsPluginsBuilder,
-                                                                                       model,
+                                                                                       model.siteNavigation,
                                                                                        dummyArgument)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController

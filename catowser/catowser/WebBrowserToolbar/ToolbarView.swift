@@ -13,6 +13,11 @@ struct ToolbarView: View {
     @ObservedObject var model: WebBrowserToolbarModel
     @State private var webViewInterface: WebViewNavigatable?
     
+    init(_ model: WebBrowserToolbarModel) {
+        self.model = model
+        self.webViewInterface = nil
+    }
+    
     var body: some View {
         ToolbarLegacyView(webViewInterface: $webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)

@@ -53,8 +53,8 @@ private extension _MainBrowserView {
             if model.showProgress {
                 ProgressView(value: model.websiteLoadProgress)
             }
-            BrowserContentView(model: browserContentModel)
-            ToolbarView(model: toolbarModel)
+            BrowserContentView(browserContentModel, toolbarModel)
+            ToolbarView(toolbarModel)
                 // Allows to set same color for the space under toolbar
                 .safeAreaInset(edge: .bottom, spacing: 0) {
                     DummyView()

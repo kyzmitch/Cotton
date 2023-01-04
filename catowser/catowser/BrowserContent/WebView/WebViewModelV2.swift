@@ -8,37 +8,16 @@
 
 import SwiftUI
 import CoreHttpKit
-import CoreBrowser
 
 final class WebViewModelV2: ObservableObject {
     /// A reference to JavaScript plugins builder passed from root view
     let jsPluginsBuilder: any JSPluginsSource
+    /// External delegate which will be a toolbar view model
+    private(set) weak var siteNavigation: SiteExternalNavigationDelegate?
     
-    init(_ jsPluginsBuilder: any JSPluginsSource) {
+    init(_ jsPluginsBuilder: any JSPluginsSource,
+         _ siteNavigation: SiteExternalNavigationDelegate?) {
         self.jsPluginsBuilder = jsPluginsBuilder
-    }
-}
-
-extension WebViewModelV2: SiteExternalNavigationDelegate {
-    func didBackNavigationUpdate(to canGoBack: Bool) {
-    }
-    
-    func didForwardNavigationUpdate(to canGoForward: Bool) {
-    }
-    
-    func provisionalNavigationDidStart() {
-    }
-
-    func didSiteOpen(appName: String) {
-    }
-    
-    func loadingProgressdDidChange(_ progress: Float) {
-    }
-    
-    func showLoadingProgress(_ show: Bool) {
-    }
-    
-    func didTabPreviewChange(_ screenshot: UIImage) {
-        try? TabsListManager.shared.setSelectedPreview(screenshot)
+        self.siteNavigation = siteNavigation
     }
 }

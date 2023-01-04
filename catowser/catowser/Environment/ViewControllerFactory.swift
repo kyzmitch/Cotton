@@ -30,7 +30,7 @@ protocol ViewControllerFactory: AnyObject {
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
                                           _ coordinator: C?) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
@@ -94,7 +94,7 @@ extension ViewControllerFactory {
     }
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
                                           _ coordinator: C?) -> AnyViewController & WebViewNavigatable where C.R == WebContentRoute {
         let vc: WebViewController = .init(viewModel, externalNavigationDelegate, coordinator)
         return vc
