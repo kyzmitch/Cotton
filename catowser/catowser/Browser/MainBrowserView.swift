@@ -51,22 +51,21 @@ private extension _MainBrowserView {
     }
     
     func phoneView() -> some View {
+        /*
+         - ignoresSafeArea(.keyboard)
+         Allows to not have the toolbar be attached to keyboard.
+         So, the toolbar will stay on same position
+         even after keyboard became visible.
+         */
+        
         VStack {
             SearchBarView()
-                .frame(height: CGFloat.searchViewHeight)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
             BrowserContentView(browserContentModel, toolbarModel)
             ToolbarView(toolbarModel)
-                // Allows to set same color for the space under toolbar
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    DummyView()
-                }
         }
-        // Allows to not have the toolbar be attached to keyboard.
-        // So, the toolbar will stay on same position
-        // even after keyboard became visible.
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarModel.$showProgress) { value in
             showProgress = value
@@ -74,14 +73,6 @@ private extension _MainBrowserView {
         .onReceive(toolbarModel.$websiteLoadProgress) { value in
             websiteLoadProgress = value
         }
-    }
-}
-
-private struct DummyView: View {
-    var body: some View {
-        EmptyView()
-            .frame(height: 0)
-            .background(Color.phoneToolbarColor)
     }
 }
 

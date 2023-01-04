@@ -19,8 +19,16 @@ struct ToolbarView: View {
     }
     
     var body: some View {
+        /*
+         - safeAreaInset(edge: .bottom, spacing: 0)
+         Allows to set same color for the space under toolbar
+         */
+        
         ToolbarLegacyView(webViewInterface: $webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                DummyView()
+            }
             .onReceive(model.$webViewInterface) { newInterface in
                 webViewInterface = newInterface
             }
@@ -51,5 +59,13 @@ private struct ToolbarLegacyView: UIViewControllerRepresentable {
         }
         // This is the only way to set the web view interface for the toolbar
         vc.siteNavigator = webViewInterface
+    }
+}
+
+private struct DummyView: View {
+    var body: some View {
+        EmptyView()
+            .frame(height: 0)
+            .background(Color.phoneToolbarColor)
     }
 }

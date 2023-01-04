@@ -23,6 +23,7 @@ import SwiftUI
 struct SearchBarView: View {
     var body: some View {
         _SearchBarLegacyView()
+            .frame(height: CGFloat.searchViewHeight)
     }
 }
 
