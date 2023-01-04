@@ -11,25 +11,29 @@ import CoreBrowser
 import JSPlugins
 import Combine
 
-/// Dynamic content view (could be a webview, a top sites list, etc.)
+/// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
     /// View model mainly used as a Tabs observer to know current tab's content type
-    @ObservedObject var model: BrowserContentModel
+    @ObservedObject private var model: BrowserContentModel
     /// The main state of the browser content view
-    @State private var state: Tab.ContentType
-    /// Determines if the state is still loading to not show wrong content type (like default one)
-    @State private var isLoading: Bool
-    /// Web view view model
+    @Binding private var state: Tab.ContentType
+    /// Determines if the state is still loading to not show wrong content type (like default one).
+    /// Depends on main view state, because this model's init is getting called unexpectedly.
+    @Binding private var isLoading: Bool
+    /// Web view view model reference
     private let webViewModel: WebViewModelV2
-    /// Top sites model
+    /// Top sites model reference
     private let topSitesModel: TopSitesModel
     /// Improved web view content publisher, attempt to fix `removeDuplicates` part
     /// because it could be re-created during view body update.
     private let contentType: AnyPublisher<Tab.ContentType, Never>
     
-    init(_ model: BrowserContentModel, _ siteNavigation: SiteExternalNavigationDelegate?) {
-        state = DefaultTabProvider.shared.contentState
-        isLoading = true
+    init(_ model: BrowserContentModel,
+         _ siteNavigation: SiteExternalNavigationDelegate?,
+         _ isLoading: Binding<Bool>,
+         _ state: Binding<Tab.ContentType>) {
+        _isLoading = isLoading
+        _state = state
         webViewModel = WebViewModelV2(model.jsPluginsBuilder, siteNavigation)
         topSitesModel = TopSitesModel()
         // drops first value because it is default one
@@ -54,7 +58,6 @@ struct BrowserContentView: View {
                 case .topSites:
                     TopSitesView(topSitesModel)
                 case .site(let site):
-                    // TODO: web view is not re-created for a new `site`, `makeUIViewController` is not called
                     WebView(webViewModel, site)
                 default:
                     Spacer()

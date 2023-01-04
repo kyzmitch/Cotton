@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CoreBrowser
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
     @ObservedObject var model: MainBrowserModel<C>
@@ -18,22 +19,49 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
 }
 
 private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
-    @ObservedObject var model: MainBrowserModel<C>
+    // MARK: - view models of subviews
+    
+    @ObservedObject private var model: MainBrowserModel<C>
     private let browserContentModel: BrowserContentModel
     private let toolbarModel: WebBrowserToolbarModel
     private let searchBarModel: SearchBarViewModel
-    @State var websiteLoadProgress: Double
-    @State var showProgress: Bool
-    @State var showSearchSuggestions: Bool
-    @State var searchQuery: String
-    @State var searchBarState: SearchBarState
+    
+    // MARK: - web content loading state
+    
+    @State private var websiteLoadProgress: Double
+    @State private var showProgress: Bool
+    
+    // MARK: - search bar state
+    
+    @State private var showSearchSuggestions: Bool
+    @State private var searchQuery: String
+    @State private var searchBarState: SearchBarState
+    
+    // MARK: - browser content state
+    
+    @State private var isLoading: Bool
+    @State private var contentType: Tab.ContentType
     
     init(model: MainBrowserModel<C>) {
+        // Browser content state has to be stored outside in main view
+        // to allow keep current state value when `showSearchSuggestions`
+        // state variable changes
+        isLoading = true
+        contentType = DefaultTabProvider.shared.contentState
+        // web content loading state has to be stored here
+        // to get that info from toolbar model and use it
+        // for `ProgressView`
         showProgress = false
+        websiteLoadProgress = 0.0
+        // Search bar and suggestions state values
+        // have to be stored in main view
+        // to be able to replace browser content view
+        // with the search suggestions view when necessary
         showSearchSuggestions = false
         searchQuery = ""
         searchBarState = .blankSearch
-        websiteLoadProgress = 0.0
+        // Store references to subview models in the main view
+        // to be able to subscribe for the publishers
         self.model = model
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
@@ -67,14 +95,14 @@ private extension _MainBrowserView {
          */
         
         VStack {
-            SearchBarView(model: searchBarModel, stateBinding: $searchBarState)
+            SearchBarView(searchBarModel, $searchBarState)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
             if showSearchSuggestions {
-                SearchSuggestionsView(searchQuery: $searchQuery, delegate: searchBarModel)
+                SearchSuggestionsView($searchQuery, searchBarModel)
             } else {
-                BrowserContentView(browserContentModel, toolbarModel)
+                BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType)
             }
             ToolbarView(toolbarModel)
         }

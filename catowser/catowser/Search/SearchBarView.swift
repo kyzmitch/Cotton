@@ -10,18 +10,29 @@ import SwiftUI
 
 /// A search bar view
 struct SearchBarView: View {
-    @ObservedObject var model: SearchBarViewModel
-    @Binding var stateBinding: SearchBarState
+    @ObservedObject private var model: SearchBarViewModel
+    @Binding private var stateBinding: SearchBarState
+    
+    init(_ model: SearchBarViewModel,
+         _ stateBinding: Binding<SearchBarState>) {
+        self.model = model
+        _stateBinding = stateBinding
+    }
     
     var body: some View {
-        PhoneSearchBarLegacyView(model: model, stateBinding: $stateBinding)
+        PhoneSearchBarLegacyView(model, $stateBinding)
             .frame(height: CGFloat.searchViewHeight)
     }
 }
 
 private struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
-    @ObservedObject var model: SearchBarViewModel
-    @Binding var stateBinding: SearchBarState
+    @ObservedObject private var model: SearchBarViewModel
+    @Binding private var stateBinding: SearchBarState
+    
+    init(_ model: SearchBarViewModel, _ stateBinding: Binding<SearchBarState>) {
+        self.model = model
+        _stateBinding = stateBinding
+    }
     
     typealias UIViewControllerType = UIViewController
     
@@ -54,7 +65,7 @@ struct SearchBarView_Previews: PreviewProvider {
             //
         }
 
-        SearchBarView(model: model, stateBinding: state)
+        SearchBarView(model, state)
     }
 }
 #endif

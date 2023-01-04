@@ -9,19 +9,31 @@
 import SwiftUI
 
 struct SearchSuggestionsView: View {
-    @Binding var searchQuery: String
-    weak var delegate: SearchSuggestionsListDelegate?
+    @Binding private var searchQuery: String
+    private weak var delegate: SearchSuggestionsListDelegate?
+    
+    init(_ searchQuery: Binding<String>,
+         _ delegate: SearchSuggestionsListDelegate?) {
+        _searchQuery = searchQuery
+        self.delegate = delegate
+    }
     
     var body: some View {
-        SearchSuggestionsLegacyView(searchQuery: $searchQuery, delegate: delegate)
+        SearchSuggestionsLegacyView($searchQuery, delegate)
     }
 }
 
 private struct SearchSuggestionsLegacyView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     
-    @Binding var searchQuery: String
-    weak var delegate: SearchSuggestionsListDelegate?
+    @Binding private var searchQuery: String
+    private weak var delegate: SearchSuggestionsListDelegate?
+    
+    init(_ searchQuery: Binding<String>,
+         _ delegate: SearchSuggestionsListDelegate?) {
+        _searchQuery = searchQuery
+        self.delegate = delegate
+    }
     
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory

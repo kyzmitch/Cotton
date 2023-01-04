@@ -24,7 +24,7 @@ struct ToolbarView: View {
          Allows to set same color for the space under toolbar
          */
         
-        ToolbarLegacyView(webViewInterface: $webViewInterface)
+        ToolbarLegacyView($webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 DummyView()
@@ -37,7 +37,11 @@ struct ToolbarView: View {
 
 private struct ToolbarLegacyView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
-    @Binding var webViewInterface: WebViewNavigatable?
+    @Binding private var webViewInterface: WebViewNavigatable?
+    
+    init(_ webViewInterface: Binding<WebViewNavigatable?>) {
+        _webViewInterface = webViewInterface
+    }
     
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory
