@@ -20,7 +20,7 @@ struct BrowserContentView: View {
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
     @Binding private var isLoading: Bool
-    /// Binding from main view
+    /// Tells if web view needs to be updated to avoid unnecessary updates.
     @Binding private var webViewNeedsUpdate: Bool
     /// Web view view model reference
     private let webViewModel: WebViewModelV2
@@ -69,23 +69,10 @@ struct BrowserContentView: View {
             }
         }
         .onReceive(contentType) { value in
-            var siteChanges = false
-            let receivedNewSite: Bool
-            if case .site(let newSite) = value, case .site(let existingSite) = state {
-                siteChanges = true
-                receivedNewSite = newSite != existingSite
-            } else {
-                receivedNewSite = false
-            }
-            
-            if siteChanges {
-                if receivedNewSite {
-                    state = value
-                } // not changing the state if it is the same site
-            } else {
+            if state != value {
+                // using additional check because `removeDuplicates` didn't work?
                 state = value
             }
-            webViewNeedsUpdate = receivedNewSite
         }
         .onReceive(model.$loading.dropFirst(1)) { value in
             isLoading = value

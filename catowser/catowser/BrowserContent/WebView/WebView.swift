@@ -87,15 +87,11 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
         guard let reusableWebView = uiViewController as? WebViewReusable else {
             return
         }
+        // View update is getting called sometimes when it is not expected
+        // so, that, using a boolean state variable to avoid unnecessary updates
         guard webViewNeedsUpdate else {
             return
         }
-        // There is a warning:
-        // `Publishing changes from within view updates is not allowed, this will cause undefined behavior.`
-        // after replacing the UIKit's web view internally it calls body of `BrowserContentView`
-        // and model is nil for some reason, but it works as expected
-        // and allows to clear the web view navigation history
-        // before reusing the existing web view
         reusableWebView.resetTo(site)
     }
 }

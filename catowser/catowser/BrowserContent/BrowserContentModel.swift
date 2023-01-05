@@ -16,16 +16,23 @@ final class BrowserContentModel: ObservableObject {
     @Published var contentType: Tab.ContentType
     /// Tab's content loading
     @Published var loading: Bool
+    /// Web view needs an update after changing selected tab content.
+    /// Void type can be used because this model only can set it to true.
+    @Published var webViewNeedsUpdate: Void
     /// JS plugins builder reference
     let jsPluginsBuilder: any JSPluginsSource
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private var previousTabContent: Tab.ContentType?
+    /// To avoid app start case
+    private var firstTabContentSelect: Bool
     
     init(_ jsPluginsBuilder: any JSPluginsSource) {
+        firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
         contentType = DefaultTabProvider.shared.contentState
         loading = true
+        webViewNeedsUpdate = ()
         TabsListManager.shared.attach(self)
     }
     
@@ -40,12 +47,32 @@ extension BrowserContentModel: TabsObserver {
             // Optimization to not do remove & insert of the same static view
             return
         }
-        loading = false
-        contentType = content
+        if loading {
+            loading = false
+        }
+        // This is the only good place where to determine
+        // if web view which can only be re-used in SwiftUI
+        // and not re-created that it needs an update
+        // because selected tab content was changed.
+        // This can't be safely determined by comparing
+        // currently used tab content with selected one
+        if firstTabContentSelect {
+            firstTabContentSelect = false
+        } else {
+            webViewNeedsUpdate = ()
+        }
+        
+        if contentType != content {
+            contentType = content
+        }
     }
     
     func tabDidReplace(_ tab: Tab, at index: Int) {
-        loading = false
-        contentType = tab.contentType
+        if loading {
+            loading = false
+        }
+        if contentType != tab.contentType {
+            contentType = tab.contentType
+        }
     }
 }

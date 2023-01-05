@@ -128,6 +128,9 @@ private extension _MainBrowserView {
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst(1)) { _ in
             webViewNeedsUpdate = false
         }
+        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst(1)) { _ in
+            webViewNeedsUpdate = true
+        }
     }
 }
 
