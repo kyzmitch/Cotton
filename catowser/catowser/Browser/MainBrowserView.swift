@@ -41,6 +41,8 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     
     @State private var isLoading: Bool
     @State private var contentType: Tab.ContentType
+    /// A workaround to avoid unnecessary web view updates
+    @State private var webViewNeedsUpdate: Bool
     
     init(model: MainBrowserModel<C>) {
         // Browser content state has to be stored outside in main view
@@ -48,6 +50,7 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
         // state variable changes
         isLoading = true
         contentType = DefaultTabProvider.shared.contentState
+        webViewNeedsUpdate = false
         // web content loading state has to be stored here
         // to get that info from toolbar model and use it
         // for `ProgressView`
@@ -102,7 +105,7 @@ private extension _MainBrowserView {
             if showSearchSuggestions {
                 SearchSuggestionsView($searchQuery, searchBarModel)
             } else {
-                BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType)
+                BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
             }
             ToolbarView(toolbarModel)
         }
@@ -121,6 +124,9 @@ private extension _MainBrowserView {
         }
         .onReceive(searchBarModel.$searchViewState.dropFirst(1)) { value in
             searchBarState = value
+        }
+        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst(1)) { _ in
+            webViewNeedsUpdate = false
         }
     }
 }

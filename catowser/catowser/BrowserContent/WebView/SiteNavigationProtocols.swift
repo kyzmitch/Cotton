@@ -17,6 +17,8 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     func didForwardNavigationUpdate(to canGoForward: Bool)
     func showLoadingProgress(_ show: Bool)
     func didTabPreviewChange(_ screenshot: UIImage)
+    /// SwiftUI specific callback to notify that no need to initiate a re-use of web view anymore
+    func webViewDidHandleReuseAction()
 }
 
 protocol SiteNavigationChangable: AnyObject {

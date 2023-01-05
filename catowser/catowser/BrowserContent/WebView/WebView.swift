@@ -9,6 +9,12 @@
 import SwiftUI
 import CoreHttpKit
 
+/// A special case web view interface only for SwiftUI
+/// because we have to reuse existing web view for all the tabs
+protocol WebViewReusable: AnyObject {
+    func resetTo(_ site: Site)
+}
+
 /// web view specific to SwiftUI
 struct WebView: View {
     @ObservedObject var model: WebViewModelV2
@@ -56,9 +62,19 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        // Can't save web view interface here because it is immutable type.
-        // Could be possible to fetch it from `WebViewsReuseManager` if it is
+        // - Can't save web view interface here because
+        // `View` & `UIViewControllerRepresentable` is immutable type,
+        // or actually this function `makeUIViewController` is not mutable.
+        //
+        // - Could be possible to fetch it from `WebViewsReuseManager` if it is
         // configured to use web views cache.
+        //
+        // - `makeUIViewController` is not called more than once
+        // which is not expected, but at least `updateUIViewController`
+        // is getting called when the state changes. So, that a web view controller
+        // can't be replaced with a new one on SwiftUI level
+        // and most likely advantage of `WebViewsReuseManager` can't be used here.
+        // We have to re-create web view inside view controller.
         let vc: (AnyViewController & WebViewNavigatable)? = try? manager.controllerFor(site,
                                                                                        model.jsPluginsBuilder,
                                                                                        model.siteNavigation,
@@ -80,8 +96,6 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
         // and model is nil for some reason, but it works as expected
         // and allows to clear the web view navigation history
         // before reusing the existing web view
-        if reusableWebView.resetTo(site) {
-            model.stopViewUpdates = true
-        }
+        reusableWebView.resetTo(site)
     }
 }

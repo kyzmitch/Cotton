@@ -140,4 +140,8 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
     func didTabPreviewChange(_ screenshot: UIImage) {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
+    
+    func webViewDidHandleReuseAction() {
+        // no need to handle, this is SwiftUI specific
+    }
 }
