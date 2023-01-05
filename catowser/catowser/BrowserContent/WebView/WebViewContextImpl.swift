@@ -13,6 +13,8 @@ import CoreBrowser
 import JSPlugins
 import FeaturesFlagsKit
 
+private var logTabUpdate = false
+
 public final class WebViewContextImpl: WebViewContext {
     public let pluginsProgram: any JSPluginsProgram
     
@@ -41,9 +43,9 @@ public final class WebViewContextImpl: WebViewContext {
     
     public func updateTabContent(_ site: Site) throws {
         let content: Tab.ContentType = .site(site)
-#if DEBUG
-        print("Web VM tab update: \(content.debugDescription)")
-#endif
-        try TabsListManager.shared.replaceSelected(tabContent: content)
+        if logTabUpdate {
+            print("Web VM tab update: \(content.debugDescription)")
+        }
+        try TabsListManager.shared.replaceSelected(content)
     }
 }

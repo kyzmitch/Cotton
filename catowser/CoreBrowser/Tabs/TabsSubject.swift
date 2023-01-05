@@ -31,7 +31,7 @@ public protocol TabsSubject {
     /// Remembers selected tab index. Can fail silently if `tab` is not found in a list.
     func select(tab: Tab)
     /// Replaces currently active tab by combining two operations
-    func replaceSelected(tabContent: Tab.ContentType) throws
+    func replaceSelected(_ tabContent: Tab.ContentType) throws
     /// Fetches latest tabs.
     func fetch() -> [Tab]
     /// Returns tabs count

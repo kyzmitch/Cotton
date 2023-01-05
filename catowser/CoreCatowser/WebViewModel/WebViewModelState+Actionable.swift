@@ -117,6 +117,19 @@ extension WebViewModelState: Actionable {
                 // If ip address was used for URL, this reload would replace it with domain name as needed
                 nextState = .creatingRequest(urlData, settings)
             }
+        case (.viewing, .resetToSite(let site)):
+            nextState = .initialized(site)
+        case (.waitingForNavigation(let settings, let uRLInfo),
+              .reload):
+            // Sometimes state hangs `waitingForNavigation`
+            // but should be in `viewing`
+            nextState = .waitingForNavigation(settings, uRLInfo)
+        case (.waitingForNavigation(let settings, let uRLInfo),
+              .goBack):
+            nextState = .waitingForNavigation(settings, uRLInfo)
+        case (.waitingForNavigation(let settings, let uRLInfo),
+              .goForward):
+            nextState = .waitingForNavigation(settings, uRLInfo)
         default:
 #if TESTING
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")

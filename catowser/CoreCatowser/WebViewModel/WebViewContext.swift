@@ -29,6 +29,11 @@ public protocol WebViewContext {
     func isDohEnabled() -> Bool
     /// Wrapper for feature value from specific app
     func appAsyncApiTypeValue() -> AsyncApiType
-    /// Wrapper around CoreBrowser entity which is initialized only in app
+    /// Update tab's content after loading finish in case if there was a redirect and URL was changed.
+    /// Also, this method is needed because need to remember loaded site only when
+    /// it was successfully loaded which happens right before this method is getting called.
+    ///
+    /// No need to call this method if the loading was initiated from top sites or
+    /// during app start when the site is already in the tabs cache.
     func updateTabContent(_ site: Site) throws
 }

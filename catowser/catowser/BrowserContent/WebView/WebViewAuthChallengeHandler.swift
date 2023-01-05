@@ -9,6 +9,9 @@
 import WebKit
 import CoreHttpKit
 import Alamofire
+import Foundation
+
+private var logAuthChallenge = false
 
 final class WebViewAuthChallengeHandler {
     typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
@@ -53,9 +56,13 @@ final class WebViewAuthChallengeHandler {
         let possibleIPAddress = urlInfo.ipAddressString
         let rawDomainName = urlInfo.domainName.rawString
         let challengeHost = challenge.protectionSpace.host
-#if DEBUG
-        print("handleServerTrust: domainName[\(rawDomainName)], challengeHost[\(challengeHost)], ip[\(possibleIPAddress ?? "none")]")
-#endif
+        if logAuthChallenge {
+            let logString = """
+handleServerTrust: domainName[\(rawDomainName)],
+challengeHost[\(challengeHost)], ip[\(possibleIPAddress ?? "none")]
+"""
+            print(logString)
+        }
         if let ipAddress = possibleIPAddress, ipAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
                               rawDomainName,
@@ -101,13 +108,13 @@ private extension WebViewAuthChallengeHandler {
              */
             
             var certificates = serverTrust.af.certificates
-#if DEBUG
-            print("handleServerTrust: domain name - \(host) has \(certificates.count) certificates")
-            for cert in certificates {
-                let string: String? = SecCertificateCopySubjectSummary(cert) as String?
-                print("handleServerTrust: certificate[\(string ?? "none")]")
+            if logAuthChallenge {
+                print("handleServerTrust: domain name - \(host) has \(certificates.count) certificates")
+                for cert in certificates {
+                    let string: String? = SecCertificateCopySubjectSummary(cert) as String?
+                    print("handleServerTrust: certificate[\(string ?? "none")]")
+                }
             }
-#endif
             _ = certificates.removeFirst()
             try serverTrust.af.setAnchorCertificates(certificates)
             try evaluator.evaluateWithRecovery(serverTrust, forHost: host)
@@ -119,8 +126,10 @@ private extension WebViewAuthChallengeHandler {
                 }
             }
         } catch {
-            let msg = "handleServerTrust: validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
-            print("Error: \(msg)")
+            if logAuthChallenge {
+                let msg = "handleServerTrust: validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
+                print("Error: \(msg)")
+            }
             let credential = URLCredential(trust: serverTrust)
             queue.async { [weak self] in
                 self?.completionHandler(.useCredential, credential)

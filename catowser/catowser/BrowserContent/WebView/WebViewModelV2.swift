@@ -14,10 +14,13 @@ final class WebViewModelV2: ObservableObject {
     let jsPluginsBuilder: any JSPluginsSource
     /// External delegate which will be a toolbar view model
     private(set) weak var siteNavigation: SiteExternalNavigationDelegate?
+    /// A workaround to be able to update state in view update method
+    @Published var stopViewUpdates: Bool
     
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?) {
         self.jsPluginsBuilder = jsPluginsBuilder
         self.siteNavigation = siteNavigation
+        stopViewUpdates = false
     }
 }

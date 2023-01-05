@@ -13,39 +13,45 @@ import CoreHttpKit
 
 extension WebViewController: WebViewNavigatable {
     var canGoBack: Bool {
-        return isViewLoaded ? webView.canGoBack : false
+        guard let nonNilValue = webView else {
+            return false
+        }
+        return isViewLoaded ? nonNilValue.canGoBack : false
     }
 
     var canGoForward: Bool {
-        return isViewLoaded ? webView.canGoForward : false
+        guard let nonNilValue = webView else {
+            return false
+        }
+        return isViewLoaded ? nonNilValue.canGoForward : false
     }
 
     func goForward() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.provisionalNavigationDidStart()
         viewModel.goForward()
-        _ = webView.goForward()
+        _ = webView?.goForward()
     }
 
     func goBack() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.provisionalNavigationDidStart()
         viewModel.goBack()
-        _ = webView.goBack()
+        _ = webView?.goBack()
     }
 
     func reload() {
         guard isViewLoaded else { return }
         externalNavigationDelegate?.provisionalNavigationDidStart()
         viewModel.reload()
-        _ = webView.reload()
+        _ = webView?.reload()
     }
     
     func enableJavaScript(_ enabled: Bool, for host: Host) {
-        guard viewModel.host == host else {
+        guard viewModel.host == host, let jsSubject = webView else {
             return
         }
-        viewModel.setJavaScript(webView, enabled)
+        viewModel.setJavaScript(jsSubject, enabled)
     }
     
     var host: Host {

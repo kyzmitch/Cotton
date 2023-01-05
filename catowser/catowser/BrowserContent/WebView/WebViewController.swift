@@ -58,13 +58,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
     private var jsStateCancellable: AnyCancellable?
     
     /// lazy loaded web view to use correct config
-    lazy var webView: WKWebView = {
-        webViewObserversAdded = false
-        loadingProgressObservation?.invalidate()
-        return createWebView(with: viewModel.configuration)
-    }()
+    private(set) var webView: WKWebView?
     /// A reference to the optional auth handler to allow use background queue for the callback
-    private var authHandlers: Set<WebViewAuthChallengeHandler> = []
+    private(set) var authHandlers: Set<WebViewAuthChallengeHandler> = []
 
     /**
      Constructs web view controller for specific site with set of plugins and navigation handler
@@ -94,15 +90,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // try create web view only after creating
-        view.addSubview(webView)
-        isWebViewLoaded = true
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        // Not creating a web view and hoping to create it
+        // during view model state handling for `.initialized` value
+        // See `onStateChange` and `recreateView` with `reattachViewObservers`
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -120,19 +110,17 @@ final class WebViewController<C: Navigating>: BaseViewController,
         if let touchedView = touches.first?.view {
             if touchedView === webView {
                 // to fix keypad for textfields on websites
-                webView.becomeFirstResponder()
+                webView?.becomeFirstResponder()
             }
         }
     }
     
     private func onStateChange(_ state: WebPageLoadingAction) {
         switch state {
-        case .idle:
-            break
         case .load(let uRLRequest):
-            webView.load(uRLRequest)
-        case .recreateView:
-            recreateWebView(forceRecreate: true)
+            webView?.load(uRLRequest)
+        case .recreateView(let forcefullyRecreate):
+            recreateWebView(forcefullyRecreate)
         case .reattachViewObservers:
             reattachWebViewObservers()
         case .openApp(let url):
@@ -251,7 +239,6 @@ private extension WebViewController {
             // but probably not needed
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
-        reattachWebViewObservers()
         
         switch FeatureManager.appAsyncApiTypeValue() {
         case .reactive:
@@ -278,11 +265,11 @@ private extension WebViewController {
         
         jsStateCancellable?.cancel()
         jsStateCancellable = FeatureManager.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
-            guard let self = self else {
+            guard let self = self, let jsSubject = self.webView  else {
                 return
             }
             let enabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-            self.viewModel.setJavaScript(self.webView, enabled)
+            self.viewModel.setJavaScript(jsSubject, enabled)
         }
     }
     
@@ -301,7 +288,7 @@ private extension WebViewController {
         // Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
         
         loadingProgressObservation?.invalidate()
-        loadingProgressObservation = webView.observe(\.estimatedProgress,
+        loadingProgressObservation = webView?.observe(\.estimatedProgress,
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
@@ -311,7 +298,7 @@ private extension WebViewController {
     
     func addWebViewCanGoBackObserver() {
         canGoBackObservation?.invalidate()
-        canGoBackObservation = webView.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
+        canGoBackObservation = webView?.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
             self.externalNavigationDelegate?.didBackNavigationUpdate(to: value)
@@ -320,7 +307,7 @@ private extension WebViewController {
     
     func addWebViewCanGoForwardObserver() {
         canGoForwardObservation?.invalidate()
-        canGoForwardObservation = webView.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
+        canGoForwardObservation = webView?.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
             self.externalNavigationDelegate?.didForwardNavigationUpdate(to: value)
@@ -337,8 +324,8 @@ private extension WebViewController {
         addWebViewCanGoForwardObserver()
     }
     
-    func recreateWebView(forceRecreate: Bool = false) {
-        if !forceRecreate {
+    func recreateWebView(_ forcefullyRecreate: Bool = false) {
+        if !forcefullyRecreate {
             guard !isWebViewLoaded else {
                 return
             }
@@ -347,14 +334,15 @@ private extension WebViewController {
         loadingProgressObservation?.invalidate()
         webViewObserversAdded = false
         
-        webView.removeFromSuperview()
-        webView = createWebView(with: viewModel.configuration)
-        view.addSubview(webView)
+        webView?.removeFromSuperview()
+        let newWebView = createWebView(with: viewModel.configuration)
+        view.addSubview(newWebView)
         
-        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        newWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        newWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        newWebView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        newWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        webView = newWebView
     }
 }
 

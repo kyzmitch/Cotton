@@ -63,7 +63,7 @@ extension TopSitesCoordinator: Navigating {
         switch route {
         case .select(let site):
             // Open selected top site
-            try? TabsListManager.shared.replaceSelected(tabContent: .site(site))
+            try? TabsListManager.shared.replaceSelected(.site(site))
         }
     }
     

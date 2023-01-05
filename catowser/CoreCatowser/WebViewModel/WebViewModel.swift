@@ -16,7 +16,6 @@ import WebKit
 
 /// Simplified view actions for view use
 public enum WebPageLoadingAction: Equatable {
-    case idle
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
@@ -33,6 +32,8 @@ public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
     func load()
+    @discardableResult
+    func load(_ site: Site) -> Bool
     func reload()
     func goBack()
     func goForward()
@@ -50,6 +51,8 @@ public protocol WebViewModel: AnyObject {
     var currentURL: URL? { get }
     var settings: Site.Settings { get }
     var urlInfo: URLInfo { get }
+    /// Only for SwiftUI check to avoid handling of view updates
+    var isResetable: Bool { get }
     
     // MARK: - main state observers
     

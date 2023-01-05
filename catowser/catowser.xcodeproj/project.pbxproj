@@ -520,6 +520,8 @@
 		8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8A16A245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */; };
 		8AD8B47E28F2CAB100E0857D /* JSPluginsProgramMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */; };
+		8AD8C29B296616F40038FE5C /* WebViewController+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8C29A296616F40038FE5C /* WebViewController+Reusable.swift */; };
+		8AD8C29C296616F40038FE5C /* WebViewController+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD8C29A296616F40038FE5C /* WebViewController+Reusable.swift */; };
 		8ADA5822293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */; };
 		8ADA5823293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */; };
 		8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADB51F3292A1A0F00E9F66F /* TopSitesCoordinator.swift */; };
@@ -1241,6 +1243,7 @@
 		8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsCoordinator.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
 		8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramMocks.swift; sourceTree = "<group>"; };
+		8AD8C29A296616F40038FE5C /* WebViewController+Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewController+Reusable.swift"; sourceTree = "<group>"; };
 		8ADA5821293E4EA200263767 /* DownloadPanelPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadPanelPresenter.swift; sourceTree = "<group>"; };
 		8ADAF547240123F600A0D233 /* FeatureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureManager.swift; sourceTree = "<group>"; };
 		8ADAF549240124D800A0D233 /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -2155,6 +2158,7 @@
 			children = (
 				C22599621F7BEF6D000E4C3A /* WebViewController.swift */,
 				8A1C1C1C24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift */,
+				8AD8C29A296616F40038FE5C /* WebViewController+Reusable.swift */,
 				8A8F038A293FA96200237DFF /* WebViewNavigatable.swift */,
 				8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */,
 				8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */,
@@ -3653,6 +3657,7 @@
 				755E108027C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989328622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
+				8AD8C29B296616F40038FE5C /* WebViewController+Reusable.swift in Sources */,
 				8ADA5822293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */,
 				8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
@@ -3891,6 +3896,7 @@
 				755E107F27C1668A00D90AD0 /* WebSearchSettingsModel.swift in Sources */,
 				8A23989428622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
+				8AD8C29C296616F40038FE5C /* WebViewController+Reusable.swift in Sources */,
 				8ADA5823293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */,
 				8AB9BE1228FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,

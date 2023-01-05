@@ -20,6 +20,8 @@ struct BrowserContentView: View {
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
     @Binding private var isLoading: Bool
+    /// A workaround to avoid unnecessary web view updates
+    @State private var webViewNeedsUpdate: Bool
     /// Web view view model reference
     private let webViewModel: WebViewModelV2
     /// Top sites model reference
@@ -34,6 +36,7 @@ struct BrowserContentView: View {
          _ state: Binding<Tab.ContentType>) {
         _isLoading = isLoading
         _state = state
+        webViewNeedsUpdate = false
         webViewModel = WebViewModelV2(model.jsPluginsBuilder, siteNavigation)
         topSitesModel = TopSitesModel()
         // drops first value because it is default one
@@ -58,17 +61,38 @@ struct BrowserContentView: View {
                 case .topSites:
                     TopSitesView(topSitesModel)
                 case .site(let site):
-                    WebView(webViewModel, site)
+                    WebView(webViewModel, site, $webViewNeedsUpdate)
                 default:
                     Spacer()
                 }
             }
         }
         .onReceive(contentType) { value in
-            state = value
+            var siteChanges = false
+            let receivedNewSite: Bool
+            if case .site(let newSite) = value, case .site(let existingSite) = state {
+                siteChanges = true
+                receivedNewSite = newSite != existingSite
+            } else {
+                receivedNewSite = false
+            }
+            
+            if siteChanges {
+                if receivedNewSite {
+                    state = value
+                } // not changing the state if it is the same site
+            } else {
+                state = value
+            }
+            webViewNeedsUpdate = receivedNewSite
         }
         .onReceive(model.$loading.dropFirst(1)) { value in
             isLoading = value
+        }
+        .onReceive(webViewModel.$stopViewUpdates.dropFirst(1)) { value in
+            if value {
+                webViewNeedsUpdate = false
+            }
         }
     }
 }

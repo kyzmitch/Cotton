@@ -293,7 +293,7 @@ extension TabsListManager: TabsSubject {
             })
     }
 
-    public func replaceSelected(tabContent: Tab.ContentType) throws {
+    public func replaceSelected(_ tabContent: Tab.ContentType) throws {
         guard let tabTuple = tabs.value.element(by: selectedId) else {
             throw TabsListError.notInitializedYet
         }
@@ -327,7 +327,7 @@ extension TabsListManager: TabsSubject {
             self?.observers.append(observer)
         }
         if notify {
-            // TODO: optimize next block to notify only about missing data
+            // optimize next block to notify only about missing data
             guard let tabTuple = tabs.value.element(by: selectedId) else {
                 return
             }

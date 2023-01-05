@@ -12,24 +12,33 @@ import CoreHttpKit
 /// web view specific to SwiftUI
 struct WebView: View {
     @ObservedObject var model: WebViewModelV2
+    /// Initial site with an url to load the web view
     private let site: Site
+    /// A workaround to avoid unnecessary web view updates
+    @Binding private var webViewNeedsUpdate: Bool
     
     init(_ model: WebViewModelV2,
-         _ site: Site) {
+         _ site: Site,
+         _ webViewNeedsUpdate: Binding<Bool>) {
         self.model = model
         self.site = site
+        _webViewNeedsUpdate = webViewNeedsUpdate
     }
     
     var body: some View {
-        WebViewLegacyView(model: model, site: site)
+        WebViewLegacyView(model, site, $webViewNeedsUpdate)
     }
 }
 
 /// SwiftUI wrapper around UIKit web view view controller
 private struct WebViewLegacyView: UIViewControllerRepresentable {
-    @ObservedObject private var model: WebViewModelV2
-    private let site: Site
     typealias UIViewControllerType = UIViewController
+    
+    @ObservedObject private var model: WebViewModelV2
+    /// Initial site with an url to load the web view
+    private let site: Site
+    /// A workaround to avoid unnecessary web view updates
+    @Binding private var webViewNeedsUpdate: Bool
     /// Usual coordinator can't really be used for SwiftUI navigation
     /// but for the legacy view it has to be passed
     private let dummyArgument: WebContentCoordinator? = nil
@@ -38,9 +47,12 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
         ViewsEnvironment.shared.reuseManager
     }
     
-    init(model: WebViewModelV2, site: Site) {
+    init(_ model: WebViewModelV2,
+         _ site: Site,
+         _ webViewNeedsUpdate: Binding<Bool>) {
         self.model = model
         self.site = site
+        _webViewNeedsUpdate = webViewNeedsUpdate
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
@@ -56,16 +68,20 @@ private struct WebViewLegacyView: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        guard let navigatable = uiViewController as? WebViewNavigatable else {
+        guard let reusableWebView = uiViewController as? WebViewReusable else {
             return
         }
-        print("Only for debug purposes to understand how it works")
-    }
-    
-    static func dismantleUIViewController(_ uiViewController: UIViewController, coordinator: ()) {
-        guard let navigatable = uiViewController as? WebViewNavigatable else {
+        guard webViewNeedsUpdate else {
             return
         }
-        print("Only for debug purposes to understand how it works")
+        // There is a warning:
+        // `Publishing changes from within view updates is not allowed, this will cause undefined behavior.`
+        // after replacing the UIKit's web view internally it calls body of `BrowserContentView`
+        // and model is nil for some reason, but it works as expected
+        // and allows to clear the web view navigation history
+        // before reusing the existing web view
+        if reusableWebView.resetTo(site) {
+            model.stopViewUpdates = true
+        }
     }
 }
