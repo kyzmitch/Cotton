@@ -18,7 +18,9 @@ final class WebViewVMCombineTests: XCTestCase {
     let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
     // swiftlint:disable:next force_unwrapping
     lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodDnsClient: MockedRestInterface<MockedGoodDnsServer, MockedReachabilityAdaptee, MockedGoodJSONEncoding> = {
+    lazy var goodDnsClient: MockedRestInterface<MockedGoodDnsServer,
+                                                    MockedReachabilityAdaptee,
+                                                    MockedGoodJSONEncoding> = {
         .init(server: goodServerMock, jsonEncoder: goodJsonEncodingMock, reachability: goodReachabilityMock)
     }()
     let rxSubscriber: MockedDNSContext.HttpKitRxSubscriber = .init()
@@ -38,12 +40,24 @@ final class WebViewVMCombineTests: XCTestCase {
     
     // swiftlint:disable:next force_try
     let exampleDomainName: DomainName = try! .init(input: "www.example.com")
+    // swiftlint:disable:next force_try
+    let opennetDomainName: DomainName = try! .init(input: "opennet.ru")
     lazy var exampleURLInfo: URLInfo = .init(scheme: .https,
                                              path: "foo/bar",
                                              query: nil,
                                              domainName: exampleDomainName,
                                              ipAddress: nil)
+    lazy var opennetURLInfo: URLInfo = .init(scheme: .https,
+                                             path: "foo/bar",
+                                             query: nil,
+                                             domainName: opennetDomainName,
+                                             ipAddress: nil)
     lazy var exampleSite: Site = .init(urlInfo: exampleURLInfo,
+                                       settings: settings,
+                                       faviconData: nil,
+                                       searchSuggestion: nil,
+                                       userSpecifiedTitle: nil)
+    lazy var opennetSite: Site = .init(urlInfo: opennetURLInfo,
                                        settings: settings,
                                        faviconData: nil,
                                        searchSuggestion: nil,
@@ -55,6 +69,7 @@ final class WebViewVMCombineTests: XCTestCase {
     let wrongUrlV1 = URL(string: "http://www.example.com/foo/bar")
     let wrongUrlV2 = URL(string: "https://www.example.com/foo")
     let wrongUrlV3 = URL(string: "https://www.google.com/foo/bar")
+    let opennetUrlV1 = URL(string: "https://opennet.ru/foo/bar")
     
     let jsSubject: MockedWebViewWithError = .init()
 
@@ -69,19 +84,52 @@ final class WebViewVMCombineTests: XCTestCase {
         XCTAssertNotEqual(vm.currentURL, wrongUrlV2)
         XCTAssertNotEqual(vm.currentURL, wrongUrlV3)
         XCTAssertNil(vm.nativeAppDomainNameString)
-        XCTAssertEqual(vm.combineWebPageState.value, .idle)
+        XCTAssertEqual(vm.combineWebPageState.value, .recreateView(false))
         XCTAssertEqual(vm.state, .initialized(exampleSite))
     }
     
     func testLoad() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
         vm.load()
+        
+        // This is a bad path case, user has to call `finishLoading`
+        // to complete the load request and have a final state which is `.viewing`
+        
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV1: URLInfo = .init(urlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        
+        // swiftlint:disable:next force_unwrapping
+        let navActionV1 = MockedNavAction(urlV1!, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+    }
+    
+    func testLoadWithError() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        vm.load()
+        
+        // This is a bad path case, user has to call `finishLoading`
+        // to complete the load request and have a final state which is `.viewing`
+        
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         vm.load()
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        
+        // Even if reattach was called 2nd time in this case
+        // on view level it won't do anything because internal `webViewObserversAdded`
+        // will protect from the issues
+        
+        XCTAssertEqual(vm.combineWebPageState.value, .reattachViewObservers)
         let errMsg1 = "State should stay the same when wrong action is getting called"
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1), errMsg1)
         // swiftlint:disable:next force_unwrapping
@@ -92,7 +140,7 @@ final class WebViewVMCombineTests: XCTestCase {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.combineWebPageState.value, .reattachViewObservers)
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
     
@@ -136,10 +184,7 @@ final class WebViewVMCombineTests: XCTestCase {
         let urlInfoV1: URLInfo = .init(urlV1!)!
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
-        vm.load()
-        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
-        let errMsg1 = "State should stay the same when wrong action is getting called"
-        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1), errMsg1)
+        
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         vm.decidePolicy(navActionV1) { policy in
@@ -282,5 +327,59 @@ final class WebViewVMCombineTests: XCTestCase {
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV3!, jsSubject)
         XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
+    }
+    
+    func testResetWithError() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        // no call to `load` which is expected before `reset`
+        // it only can work if it is a `.viewing` state
+        // which could happen only after loading initial site
+        vm.reset(opennetSite)
+        
+        XCTAssertEqual(vm.combineWebPageState.value, .reattachViewObservers)
+        XCTAssertEqual(vm.state, .initialized(exampleSite))
+    }
+    
+    func testReset() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        vm.load()
+        
+        // This is a bad path case, user has to call `finishLoading`
+        // to complete the load request and have a final state which is `.viewing`
+        
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV1: URLInfo = .init(urlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        
+        // swiftlint:disable:next force_unwrapping
+        let navActionV1 = MockedNavAction(urlV1!, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        
+        // Now it should be a valid state for reset
+        vm.reset(opennetSite)
+        
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV2: URLInfo = .init(opennetUrlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV2.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV2))
+        
+        // swiftlint:disable:next force_unwrapping
+        let navActionV2 = MockedNavAction(opennetUrlV1!, .other)
+        vm.decidePolicy(navActionV2) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(opennetUrlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV2.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV2))
     }
 }

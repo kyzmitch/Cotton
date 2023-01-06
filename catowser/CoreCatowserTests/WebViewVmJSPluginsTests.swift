@@ -73,7 +73,7 @@ final class WebViewVmJSPluginsTests: XCTestCase {
         XCTAssertNotEqual(vm.currentURL, wrongUrlV2)
         XCTAssertNotEqual(vm.currentURL, wrongUrlV3)
         XCTAssertNil(vm.nativeAppDomainNameString)
-        XCTAssertEqual(vm.combineWebPageState.value, .idle)
+        XCTAssertEqual(vm.combineWebPageState.value, .recreateView(false))
         XCTAssertEqual(vm.state, .initialized(exampleSite))
     }
     
@@ -152,7 +152,7 @@ final class WebViewVmJSPluginsTests: XCTestCase {
     func testChangeJSstateWhenDNSoverHTTPSisEnabled() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, jsDoHWebViewContext)
         vm.load()
-        XCTAssertEqual(vm.combineWebPageState.value, .idle)
+        XCTAssertEqual(vm.combineWebPageState.value, .reattachViewObservers)
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1 = URLInfo(urlV1!)!
         let expectedStateV1: WebViewModelState = .resolvingDN(urlInfoV1, settings)

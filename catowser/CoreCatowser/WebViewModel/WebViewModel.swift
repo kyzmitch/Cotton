@@ -16,6 +16,7 @@ import WebKit
 
 /// Simplified view actions for view use
 public enum WebPageLoadingAction: Equatable {
+    //
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
@@ -32,8 +33,7 @@ public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
     func load()
-    @discardableResult
-    func load(_ site: Site) -> Bool
+    func reset(_ site: Site)
     func reload()
     func goBack()
     func goForward()

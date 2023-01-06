@@ -16,6 +16,6 @@ extension WebViewController: WebViewReusable {
             return
         }
         externalNavigationDelegate?.webViewDidHandleReuseAction()
-        viewModel.load(site)
+        viewModel.reset(site)
     }
 }

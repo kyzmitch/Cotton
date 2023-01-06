@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * Represents the URL host. Could be an ip v4 address or a domain name.
  *

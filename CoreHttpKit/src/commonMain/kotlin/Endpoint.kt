@@ -1,7 +1,6 @@
 package org.cottonweb.CoreHttpKit
 
 import kotlin.text.encodeToByteArray
-import kotlin.native.concurrent.freeze
 
 /**
  * Response type which should be associated with specific Endpoint

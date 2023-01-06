@@ -2,7 +2,6 @@ package org.cottonweb.CoreBrowser
 
 import org.cottonweb.CoreHttpKit.Host
 import org.cottonweb.CoreHttpKit.URLInfo
-import kotlin.native.concurrent.freeze
 
 /**
  *

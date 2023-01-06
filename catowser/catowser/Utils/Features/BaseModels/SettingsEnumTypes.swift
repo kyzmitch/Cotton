@@ -52,7 +52,7 @@ extension TabContentDefaultState: EnumDefaultValueSupportable {
 
 enum UIFrameworkType: Int, CaseIterable {
     case uiKit
-    case swiftUI
+    case swiftUIWrapper
 }
 
 extension UIFrameworkType: EnumDefaultValueSupportable {

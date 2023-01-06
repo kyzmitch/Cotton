@@ -44,8 +44,7 @@ extension UIApplication {
     /// based on [this](https://stackoverflow.com/a/58473985/3687284) solution.
     /// - Parameter force: set true to resign the keyboard.
     func endEditing(_ force: Bool) {
-        let scenes = UIApplication.shared.connectedScenes
-        let windowScene = scenes.first as? UIWindowScene
+        let windowScene = connectedScenes.first as? UIWindowScene
         // or use `isKeyWindow`
         let window = windowScene?.windows.first
         window?.endEditing(force)

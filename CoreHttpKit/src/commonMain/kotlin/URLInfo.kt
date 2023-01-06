@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * URL type with ip address info.
  * The ip address info usually filled in after DNS over HTTPS request.

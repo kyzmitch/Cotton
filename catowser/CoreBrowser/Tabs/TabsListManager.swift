@@ -327,13 +327,14 @@ extension TabsListManager: TabsSubject {
             self?.observers.append(observer)
         }
         if notify {
-            // optimize next block to notify only about missing data
-            guard let tabTuple = tabs.value.element(by: selectedId) else {
-                return
+            if selectedId != positioning.defaultSelectedTabId {
+                if let tabTuple = tabs.value.element(by: selectedId) {
+                    observer.tabDidSelect(index: tabTuple.index,
+                                          content: tabTuple.tab.contentType,
+                                          identifier: tabTuple.tab.id)
+                }
             }
-            observer.tabDidSelect(index: tabTuple.index,
-                                  content: tabTuple.tab.contentType,
-                                  identifier: tabTuple.tab.id)
+            // could notify about some other events in addition
         }
     }
 

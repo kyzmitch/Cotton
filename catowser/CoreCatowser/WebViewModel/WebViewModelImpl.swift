@@ -116,7 +116,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         }
     }
     
-    public func load(_ site: Site) -> Bool {
+    public func reset(_ site: Site) {
         do {
             // - Now state is set to `initialized` and can send `loadSite` action
             // - Have to delete old web view to clean web view navigation
@@ -124,10 +124,8 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             updateLoadingState(.reattachViewObservers)
             state = try state.transition(on: .resetToSite(site))
             state = try state.transition(on: .loadSite)
-            return true
         } catch {
             print("Wrong state on reset to site action: " + error.localizedDescription)
-            return false
         }
     }
     

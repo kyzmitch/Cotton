@@ -23,8 +23,8 @@ extension UIFrameworkType: CustomStringConvertible {
         switch self {
         case .uiKit:
             return "UIKit"
-        case .swiftUI:
-            return "SwiftUI"
+        case .swiftUIWrapper:
+            return "SwiftUI wraps legacy views"
         }
     }
 }

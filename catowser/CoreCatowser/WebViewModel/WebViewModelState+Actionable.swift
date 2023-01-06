@@ -93,6 +93,7 @@ extension WebViewModelState: Actionable {
         case (.viewing(let settings, let urlInfo),
               .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {
+                // maybe need to just do a return from function
                 nextState = self
             } else {
                 let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
