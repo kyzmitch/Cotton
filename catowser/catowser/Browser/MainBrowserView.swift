@@ -10,7 +10,11 @@ import SwiftUI
 import CoreBrowser
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
-    @ObservedObject var model: MainBrowserModel<C>
+    private let model: MainBrowserModel<C>
+    
+    init(_ model: MainBrowserModel<C>) {
+        self.model = model
+    }
     
     var body: some View {
         _MainBrowserView<C>(model: model)
@@ -21,7 +25,7 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
 private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     // MARK: - view models of subviews
     
-    @ObservedObject private var model: MainBrowserModel<C>
+    private var model: MainBrowserModel<C>
     private let browserContentModel: BrowserContentModel
     private let toolbarModel: WebBrowserToolbarModel
     private let searchBarModel: SearchBarViewModel
@@ -146,7 +150,7 @@ class DummyDelegate: BrowserContentCoordinators {
 struct MainBrowserView_Previews: PreviewProvider {
     static var previews: some View {
         let model = MainBrowserModel(DummyDelegate())
-        MainBrowserView(model: model)
+        MainBrowserView(model)
     }
 }
 #endif

@@ -332,8 +332,15 @@ private extension WebViewController {
         }
         
         loadingProgressObservation?.invalidate()
+        canGoForwardObservation?.invalidate()
+        canGoBackObservation?.invalidate()
         webViewObserversAdded = false
         
+        // Removing of web view from superview leads to
+        // `AttributeGraph: cycle detected through attribute` warning
+        // https://developer.apple.com/forums/thread/126890
+        // but for re-usable web view there is no other way
+        // of resetting the old navigation history
         webView?.removeFromSuperview()
         let newWebView = createWebView(with: viewModel.configuration)
         view.addSubview(newWebView)

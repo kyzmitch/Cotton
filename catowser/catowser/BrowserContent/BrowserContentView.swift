@@ -14,7 +14,7 @@ import Combine
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
     /// View model mainly used as a Tabs observer to know current tab's content type
-    @ObservedObject private var model: BrowserContentModel
+    private var model: BrowserContentModel
     /// The main state of the browser content view
     @Binding private var state: Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).

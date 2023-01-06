@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import JSPlugins
 
-final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
+final class MainBrowserModel<C: BrowserContentCoordinators> {
     /// web view interface
     @Published var webViewInterface: WebViewNavigatable?
     

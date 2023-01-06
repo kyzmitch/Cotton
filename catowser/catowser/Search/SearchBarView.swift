@@ -10,7 +10,7 @@ import SwiftUI
 
 /// A search bar view
 struct SearchBarView: View {
-    @ObservedObject private var model: SearchBarViewModel
+    private var model: SearchBarViewModel
     @Binding private var stateBinding: SearchBarState
     
     init(_ model: SearchBarViewModel,
@@ -26,10 +26,11 @@ struct SearchBarView: View {
 }
 
 private struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
-    @ObservedObject private var model: SearchBarViewModel
+    private var model: SearchBarViewModel
     @Binding private var stateBinding: SearchBarState
     
-    init(_ model: SearchBarViewModel, _ stateBinding: Binding<SearchBarState>) {
+    init(_ model: SearchBarViewModel,
+         _ stateBinding: Binding<SearchBarState>) {
         self.model = model
         _stateBinding = stateBinding
     }

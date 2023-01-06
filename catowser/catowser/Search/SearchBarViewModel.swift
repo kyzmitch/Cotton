@@ -13,7 +13,7 @@ import FeaturesFlagsKit
 import BrowserNetworking
 import CoreHttpKit
 
-final class SearchBarViewModel: NSObject, ObservableObject {
+final class SearchBarViewModel: NSObject {
     @Published var showSuggestions: Bool
     @Published var searchText: String
     @Published var searchViewState: SearchBarState

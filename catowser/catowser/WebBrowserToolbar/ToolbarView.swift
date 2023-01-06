@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 
 struct ToolbarView: View {
-    @ObservedObject var model: WebBrowserToolbarModel
+    private(set) var model: WebBrowserToolbarModel
     @State private var webViewInterface: WebViewNavigatable?
     
     init(_ model: WebBrowserToolbarModel) {
