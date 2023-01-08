@@ -170,7 +170,6 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     public func decidePolicy(_ navigationAction: NavigationActionable,
                              _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.navigationType.needsHandling else {
