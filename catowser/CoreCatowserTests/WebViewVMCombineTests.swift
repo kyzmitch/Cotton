@@ -12,69 +12,11 @@ import HttpKit
 import CoreHttpKit
 import WebKit
 
-final class WebViewVMCombineTests: XCTestCase {
-    
-    let goodServerMock: MockedGoodDnsServer = .init()
-    let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
-    // swiftlint:disable:next force_unwrapping
-    lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodDnsClient: MockedRestInterface<MockedGoodDnsServer,
-                                                    MockedReachabilityAdaptee,
-                                                    MockedGoodJSONEncoding> = {
-        .init(server: goodServerMock, jsonEncoder: goodJsonEncodingMock, reachability: goodReachabilityMock)
-    }()
-    let rxSubscriber: MockedDNSContext.HttpKitRxSubscriber = .init()
-    let subscriber: MockedDNSContext.HttpKitSubscriber = .init()
-    lazy var goodDnsContext: MockedDNSContext = {
-        .init(goodDnsClient, rxSubscriber, subscriber)
-    }()
-    lazy var goodDnsStrategy: MockedDNSStrategy = {
-        .init(goodDnsContext)
-    }()
-    let minimumWebViewContext: MockedCombineWebViewContext = .init(doh: false, js: false)
-    
-    let settings: Site.Settings = .init(isPrivate: false,
-                                        blockPopups: true,
-                                        isJSEnabled: false,
-                                        canLoadPlugins: false)
-    
-    // swiftlint:disable:next force_try
-    let exampleDomainName: DomainName = try! .init(input: "www.example.com")
-    // swiftlint:disable:next force_try
-    let opennetDomainName: DomainName = try! .init(input: "opennet.ru")
-    lazy var exampleURLInfo: URLInfo = .init(scheme: .https,
-                                             path: "foo/bar",
-                                             query: nil,
-                                             domainName: exampleDomainName,
-                                             ipAddress: nil)
-    lazy var opennetURLInfo: URLInfo = .init(scheme: .https,
-                                             path: "foo/bar",
-                                             query: nil,
-                                             domainName: opennetDomainName,
-                                             ipAddress: nil)
-    lazy var exampleSite: Site = .init(urlInfo: exampleURLInfo,
-                                       settings: settings,
-                                       faviconData: nil,
-                                       searchSuggestion: nil,
-                                       userSpecifiedTitle: nil)
-    lazy var opennetSite: Site = .init(urlInfo: opennetURLInfo,
-                                       settings: settings,
-                                       faviconData: nil,
-                                       searchSuggestion: nil,
-                                       userSpecifiedTitle: nil)
-    
-    let urlV1 = URL(string: "https://www.example.com/foo/bar")
-    let urlV2 = URL(string: "https://www.example.com/foo/bar_2")
-    let urlV3 = URL(string: "https://www.known.com/bar")
-    let wrongUrlV1 = URL(string: "http://www.example.com/foo/bar")
-    let wrongUrlV2 = URL(string: "https://www.example.com/foo")
-    let wrongUrlV3 = URL(string: "https://www.google.com/foo/bar")
-    let opennetUrlV1 = URL(string: "https://opennet.ru/foo/bar")
-    
-    let jsSubject: MockedWebViewWithError = .init()
+// swiftlint:disable:next type_body_length
+final class WebViewVMCombineTests: WebViewVMFixture {
 
     func testInit() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         XCTAssertEqual(vm.host.content, Host.Content.domainname)
         XCTAssertEqual(vm.host.rawString, exampleDomainName.rawString)
         XCTAssertEqual(vm.urlInfo, exampleURLInfo)
@@ -89,7 +31,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testLoad() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         
         // This is a bad path case, user has to call `finishLoading`
@@ -113,7 +55,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testLoadWithError() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         
         // This is a bad path case, user has to call `finishLoading`
@@ -145,7 +87,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testLinkActivation() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
@@ -178,7 +120,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testReload() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
@@ -206,7 +148,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testGoBack() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlRequestV1 = URLRequest(url: urlV1!)
@@ -261,7 +203,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testGoForward() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlRequestV1 = URLRequest(url: urlV1!)
@@ -330,7 +272,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testResetWithError() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         // no call to `load` which is expected before `reset`
         // it only can work if it is a `.viewing` state
         // which could happen only after loading initial site
@@ -341,7 +283,7 @@ final class WebViewVMCombineTests: XCTestCase {
     }
     
     func testReset() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, minimumWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         
         // This is a bad path case, user has to call `finishLoading`

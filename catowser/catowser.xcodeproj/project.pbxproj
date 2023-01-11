@@ -388,6 +388,8 @@
 		8AA6608A28F43F790058490F /* SWXMLHash in Frameworks */ = {isa = PBXBuildFile; productRef = 8AA6608928F43F790058490F /* SWXMLHash */; };
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
+		8AA89DE6296F4D6A00A6AC1A /* WebViewVMFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */; };
+		8AA89DE8296F541900A6AC1A /* WebViewVmJSPlugins+DoHTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE7296F541900A6AC1A /* WebViewVmJSPlugins+DoHTests.swift */; };
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
 		8AB022EF26258B110053AFF0 /* TabsListManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB022EE26258B110053AFF0 /* TabsListManagerTests.swift */; };
 		8AB022F126258B110053AFF0 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
@@ -1191,6 +1193,8 @@
 		8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAdapteeMocks.swift; sourceTree = "<group>"; };
 		8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCacheErrors.swift; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
+		8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMFixture.swift; sourceTree = "<group>"; };
+		8AA89DE7296F541900A6AC1A /* WebViewVmJSPlugins+DoHTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewVmJSPlugins+DoHTests.swift"; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		8AB022EC26258B110053AFF0 /* CoreBrowserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreBrowserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AB022EE26258B110053AFF0 /* TabsListManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsListManagerTests.swift; sourceTree = "<group>"; };
@@ -2082,6 +2086,7 @@
 				8A7B1BA628EB131F004FC135 /* WebViewVMCombineTests.swift */,
 				8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift */,
 				8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift */,
+				8AA89DE7296F541900A6AC1A /* WebViewVmJSPlugins+DoHTests.swift */,
 				8AB9BE0928FEB17E002063C2 /* WebSearchAutocompleteTests.swift */,
 				8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */,
 				8AFE7D8F296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift */,
@@ -2482,6 +2487,7 @@
 			isa = PBXGroup;
 			children = (
 				8AFE7D95296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift */,
+				8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -3775,7 +3781,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AA89DE8296F541900A6AC1A /* WebViewVmJSPlugins+DoHTests.swift in Sources */,
 				8A06D6F328EC2BE6001CB63D /* RestClientContextMocks.swift in Sources */,
+				8AA89DE6296F4D6A00A6AC1A /* WebViewVMFixture.swift in Sources */,
 				8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSTests.swift in Sources */,
 				8A815D3B28F15EC5007A6926 /* WebViewVmJSPluginsTests.swift in Sources */,
 				8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */,

@@ -12,54 +12,16 @@ import HttpKit
 import CoreHttpKit
 import WebKit
 
-final class WebViewVmDNSoverHTTPSTests: XCTestCase {
-    let goodServerMock: MockedGoodDnsServer = .init()
-    let goodJsonEncodingMock: MockedGoodJSONEncoding = .init()
-    // swiftlint:disable:next force_unwrapping
-    lazy var goodReachabilityMock: MockedReachabilityAdaptee = .init(server: goodServerMock)!
-    lazy var goodDnsClient: MockedRestInterface<MockedGoodDnsServer, MockedReachabilityAdaptee, MockedGoodJSONEncoding> = {
-        .init(server: goodServerMock, jsonEncoder: goodJsonEncodingMock, reachability: goodReachabilityMock)
-    }()
-    let rxSubscriber: MockedDNSContext.HttpKitRxSubscriber = .init()
-    let subscriber: MockedDNSContext.HttpKitSubscriber = .init()
-    lazy var goodDnsContext: MockedDNSContext = {
-        .init(goodDnsClient, rxSubscriber, subscriber)
-    }()
-    let exampleIpAddress = "100.0.12.7"
-    lazy var goodDnsStrategy: MockedDNSStrategy = {
-        .init(goodDnsContext, exampleIpAddress)
-    }()
-    let dohWebViewContext: MockedCombineWebViewContext = .init(doh: true, js: false)
+final class WebViewVmDNSoverHTTPSTests: WebViewVMFixture {
     
-    let settings: Site.Settings = .init(isPrivate: false,
-                                        blockPopups: true,
-                                        isJSEnabled: false,
-                                        canLoadPlugins: false)
-    
-    // swiftlint:disable:next force_try
-    let exampleDomainName: DomainName = try! .init(input: "www.example.com")
-    lazy var exampleURLInfo: URLInfo = .init(scheme: .https,
-                                             path: "foo/bar",
-                                             query: nil,
-                                             domainName: exampleDomainName,
-                                             ipAddress: nil)
-    lazy var exampleSite: Site = .init(urlInfo: exampleURLInfo,
-                                       settings: settings,
-                                       faviconData: nil,
-                                       searchSuggestion: nil,
-                                       userSpecifiedTitle: nil)
-    
-    let urlV1 = URL(string: "https://www.example.com/foo/bar")
-    let urlV2 = URL(string: "https://www.example.com/foo/bar_2")
-    let urlV3 = URL(string: "https://www.known.com/bar")
-    let wrongUrlV1 = URL(string: "http://www.example.com/foo/bar")
-    let wrongUrlV2 = URL(string: "https://www.example.com/foo")
-    let wrongUrlV3 = URL(string: "https://www.google.com/foo/bar")
-    
-    let jsSubject: MockedWebViewWithError = .init()
+    override func setUpWithError() throws {
+        exampleIpAddress = "100.0.12.7"
+        try super.setUpWithError()
+        webViewContext = .init(doh: true, js: false)
+    }
     
     func testInit() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, dohWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         XCTAssertEqual(vm.host.content, Host.Content.domainname)
         XCTAssertEqual(vm.host.rawString, exampleDomainName.rawString)
         XCTAssertEqual(vm.urlInfo, exampleURLInfo)
@@ -74,7 +36,7 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
     }
     
     func testLoad() throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, dohWebViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()
         XCTAssertEqual(vm.combineWebPageState.value, .reattachViewObservers)
         // swiftlint:disable:next force_unwrapping
@@ -83,10 +45,11 @@ final class WebViewVmDNSoverHTTPSTests: XCTestCase {
         XCTAssertEqual(vm.state, expectedStateV1)
         _ = XCTWaiter.wait(for: [expectation(description: "Wait for async domain name resolving")], timeout: 1.0)
         // swiftlint:disable:next force_unwrapping force_try
-        let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress)
+        let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress!)
         let urlRequestV1 = URLRequest(url: resolvedUrlV1)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlRequestV1))
-        let urlInfoV11: URLInfo = urlInfoV1.withIPAddress(ipAddress: exampleIpAddress)
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV11: URLInfo = urlInfoV1.withIPAddress(ipAddress: exampleIpAddress!)
         let expectedStateV11: WebViewModelState = .updatingWebView(settings, urlInfoV11)
         XCTAssertEqual(vm.state, expectedStateV11)
         
