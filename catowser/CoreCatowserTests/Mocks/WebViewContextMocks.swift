@@ -11,15 +11,17 @@ import JSPlugins
 import CoreHttpKit
 import FeaturesFlagsKit
 
-final class MockedCombineWebViewContext: WebViewContext {
+final class MockedWebViewContext: WebViewContext {
     let pluginsProgram: any JSPluginsProgram
     private let enableDoH: Bool
     private let enableJS: Bool
+    private let asyncApiType: AsyncApiType
     
-    init(doh: Bool, js: Bool) {
+    init(doh: Bool, js: Bool, asyncApiType: AsyncApiType) {
         pluginsProgram = MockedJSPluginsProgram()
         enableDoH = doh
         enableJS = js
+        self.asyncApiType = asyncApiType
     }
     
     public func nativeApp(for host: CoreHttpKit.Host) -> String? {

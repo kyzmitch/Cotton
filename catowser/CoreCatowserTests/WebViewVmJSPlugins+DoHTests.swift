@@ -17,14 +17,13 @@ final class WebViewVmJSPluginsDoHTests: WebViewVMFixture {
     override func setUpWithError() throws {
         exampleIpAddress = "100.0.12.7"
         try super.setUpWithError()
-        webViewContext = .init(doh: true, js: true)
+        webViewContext = .init(doh: true, js: true, asyncApiType: .combine)
         settings = .init(isPrivate: false,
                          blockPopups: true,
                          isJSEnabled: true,
                          canLoadPlugins: false)
     }
 
-    
     func testChangeJSstateWhenDNSoverHTTPSisEnabled() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()

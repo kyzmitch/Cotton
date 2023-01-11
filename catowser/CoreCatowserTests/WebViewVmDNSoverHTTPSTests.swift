@@ -17,7 +17,7 @@ final class WebViewVmDNSoverHTTPSTests: WebViewVMFixture {
     override func setUpWithError() throws {
         exampleIpAddress = "100.0.12.7"
         try super.setUpWithError()
-        webViewContext = .init(doh: true, js: false)
+        webViewContext = .init(doh: true, js: false, asyncApiType: .combine)
     }
     
     func testInit() throws {

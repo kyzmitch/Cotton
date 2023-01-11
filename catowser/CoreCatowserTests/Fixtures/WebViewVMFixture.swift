@@ -27,7 +27,7 @@ class WebViewVMFixture: XCTestCase {
     var exampleIpAddress: String?
     var goodDnsStrategy: MockedDNSStrategy!
     var jsSubject: MockedWebViewWithError!
-    var webViewContext: MockedCombineWebViewContext!
+    var webViewContext: MockedWebViewContext!
     var settings: Site.Settings!
     
     // MARK: - constants
@@ -85,7 +85,7 @@ class WebViewVMFixture: XCTestCase {
             goodDnsStrategy = .init(goodDnsContext)
         }
         jsSubject = .init()
-        webViewContext = .init(doh: false, js: false)
+        webViewContext = .init(doh: false, js: false, asyncApiType: .combine)
         
         settings = .init(isPrivate: false,
                          blockPopups: true,
