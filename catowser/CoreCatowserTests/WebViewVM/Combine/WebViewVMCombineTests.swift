@@ -12,9 +12,7 @@ import HttpKit
 import CoreHttpKit
 import WebKit
 
-// swiftlint:disable:next type_body_length
 final class WebViewVMCombineTests: WebViewVMFixture {
-
     func testInit() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         XCTAssertEqual(vm.host.content, Host.Content.domainname)
@@ -323,5 +321,33 @@ final class WebViewVMCombineTests: WebViewVMFixture {
         vm.finishLoading(opennetUrlV1!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV2.urlRequest))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV2))
+    }
+    
+    func testSystemAppRedirect() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        vm.load()
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV1: URLInfo = .init(urlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        // swiftlint:disable:next force_unwrapping
+        let navActionV1 = MockedNavAction(urlV1!, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        
+        // User taps on a link in web view which is actually a Deep Link for the app
+
+        let navActionV4 = MockedNavAction(urlV4, .linkActivated)
+        vm.decidePolicy(navActionV4) { policy in
+            XCTAssertEqual(policy, .cancel)
+        }
+        XCTAssertEqual(vm.combineWebPageState.value, .openApp(urlV4))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        // `finishLoading` won't be called if there was an App redirect
     }
 }

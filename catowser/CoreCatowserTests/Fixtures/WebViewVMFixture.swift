@@ -60,6 +60,8 @@ class WebViewVMFixture: XCTestCase {
     let urlV1 = URL(string: "https://www.example.com/foo/bar")
     let urlV2 = URL(string: "https://www.example.com/foo/bar_2")
     let urlV3 = URL(string: "https://www.known.com/bar")
+    // swiftlint:disable:next force_unwrapping
+    let urlV4 = URL(string: "mailto://john@example.com")!
     let wrongUrlV1 = URL(string: "http://www.example.com/foo/bar")
     let wrongUrlV2 = URL(string: "https://www.example.com/foo")
     let wrongUrlV3 = URL(string: "https://www.google.com/foo/bar")

@@ -1,5 +1,5 @@
 //
-//  WebViewVmDNSoverHTTPSTests.swift
+//  WebViewVmDNSoverHTTPSCombineTests.swift
 //  CoreCatowserTests
 //
 //  Created by Andrei Ermoshin on 10/7/22.
@@ -12,7 +12,7 @@ import HttpKit
 import CoreHttpKit
 import WebKit
 
-final class WebViewVmDNSoverHTTPSTests: WebViewVMFixture {
+final class WebViewVmDNSoverHTTPSCombineTests: WebViewVMFixture {
     
     override func setUpWithError() throws {
         exampleIpAddress = "100.0.12.7"

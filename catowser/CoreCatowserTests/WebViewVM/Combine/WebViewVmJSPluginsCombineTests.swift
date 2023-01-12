@@ -1,5 +1,5 @@
 //
-//  WebViewVmJSPluginsTests.swift
+//  WebViewVmJSPluginsCombineTests.swift
 //  CoreCatowserTests
 //
 //  Created by Andrei Ermoshin on 10/8/22.
@@ -12,7 +12,7 @@ import HttpKit
 import CoreHttpKit
 import WebKit
 
-final class WebViewVmJSPluginsTests: WebViewVMFixture {
+final class WebViewVmJSPluginsCombineTests: WebViewVMFixture {
     
     override func setUpWithError() throws {
         exampleIpAddress = "100.0.12.7"
