@@ -12,7 +12,7 @@ import Combine
 // https://www.swiftbysundell.com/articles/unit-testing-combine-based-swift-code/
 
 extension XCTestCase {
-    func awaitPublisher<T: Publisher>(
+    func awaitPublisherValue<T: Publisher>(
         _ publisher: T,
         timeout: TimeInterval = 10,
         file: StaticString = #file,
@@ -31,11 +31,10 @@ extension XCTestCase {
                 case .finished:
                     break
                 }
-
-                expectation.fulfill()
             },
             receiveValue: { value in
                 result = .success(value)
+                expectation.fulfill()
             }
         )
 

@@ -27,8 +27,8 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        // let webPageState1 = try awaitPublisher(vm.webPageStatePublisher)
-        // XCTAssertEqual(webPageState1, .load(urlInfoV1.urlRequest))
+        let webPageState1 = try awaitPublisherValue(vm.webPageStatePublisher)
+        XCTAssertEqual(webPageState1, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         
         // swiftlint:disable:next force_unwrapping
@@ -39,8 +39,8 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
-        // let webPageState2 = try awaitPublisher(vm.webPageStatePublisher)
-        // XCTAssertEqual(webPageState2, .load(urlInfoV1.urlRequest))
+        let webPageState2 = try awaitPublisherValue(vm.webPageStatePublisher)
+        XCTAssertEqual(webPageState2, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
 }

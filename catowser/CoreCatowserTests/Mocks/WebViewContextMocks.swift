@@ -37,7 +37,7 @@ final class MockedWebViewContext: WebViewContext {
     }
     
     public func appAsyncApiTypeValue() -> AsyncApiType {
-        return .combine
+        return asyncApiType
     }
     
     public func updateTabContent(_ site: Site) throws {
