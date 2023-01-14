@@ -129,9 +129,13 @@ extension WebViewModelState: Actionable {
             }
         case (.viewing, .resetToSite(let site)):
             nextState = .initialized(site)
+        case (.waitingForNavigation, .resetToSite(let site)):
+            // Could be a case when previous web view didn't finish navigation
+            // and it was asked to reset vm
+            nextState = .initialized(site)
         case (.waitingForNavigation(let settings, let uRLInfo),
               .reload):
-            // Sometimes state hangs `waitingForNavigation`
+            // Sometimes state hangs in `waitingForNavigation`
             // but should be in `viewing`
             nextState = .waitingForNavigation(settings, uRLInfo)
         case (.waitingForNavigation(let settings, let uRLInfo),

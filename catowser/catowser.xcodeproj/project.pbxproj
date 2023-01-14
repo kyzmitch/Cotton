@@ -582,6 +582,8 @@
 		8AED41A0292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
 		8AED41A1292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
 		8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift */; };
+		8AF3D424297312E90053C0C7 /* WebViewControllerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */; };
+		8AF3D425297312E90053C0C7 /* WebViewControllerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */; };
 		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */; };
 		8AF43379248EBB2A0047452B /* CssParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF43377248EBB2A0047452B /* CssParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1311,6 +1313,7 @@
 		8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelState.swift; sourceTree = "<group>"; };
 		8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewModelState+Actionable.swift"; sourceTree = "<group>"; };
 		8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAction.swift; sourceTree = "<group>"; };
+		8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerProxy.swift; sourceTree = "<group>"; };
 		8AF4336B248E129F0047452B /* HTMLContentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentMessage.swift; sourceTree = "<group>"; };
 		8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSBackgroundImage.swift; sourceTree = "<group>"; };
 		8AF43375248EBB2A0047452B /* CssParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CssParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2208,6 +2211,7 @@
 				607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */,
 				8AE9DD082950DBB40015E394 /* WebView.swift */,
 				8AE9DD0B2950DCB00015E394 /* WebViewModelV2.swift */,
+				8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */,
 			);
 			path = WebView;
 			sourceTree = "<group>";
@@ -3705,6 +3709,7 @@
 				753392B62922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
 				60A82C4F22549453008210D9 /* FilesGridViewController.swift in Sources */,
+				8AF3D424297312E90053C0C7 /* WebViewControllerProxy.swift in Sources */,
 				8ABA3CD52522608000E304E2 /* Database.swift in Sources */,
 				8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				754249DA2944CD8C002D6505 /* SearchBarView.swift in Sources */,
@@ -3960,6 +3965,7 @@
 				753392B72922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
 				8A8035B924442F0F000E035F /* FilesGridViewController.swift in Sources */,
+				8AF3D425297312E90053C0C7 /* WebViewControllerProxy.swift in Sources */,
 				8ABA3CD62522608000E304E2 /* Database.swift in Sources */,
 				8AB8018B27C3E597002D6628 /* BaseMenuView.swift in Sources */,
 				754249DB2944CD8C002D6505 /* SearchBarView.swift in Sources */,

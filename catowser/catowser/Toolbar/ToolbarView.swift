@@ -11,11 +11,11 @@ import SwiftUI
 
 struct ToolbarView: View {
     private(set) var model: WebBrowserToolbarModel
-    @State private var webViewInterface: WebViewNavigatable?
+    @Binding private var webViewInterface: WebViewNavigatable?
     
-    init(_ model: WebBrowserToolbarModel) {
+    init(_ model: WebBrowserToolbarModel, _ webViewInterface: Binding<WebViewNavigatable?>) {
         self.model = model
-        self.webViewInterface = nil
+        _webViewInterface = webViewInterface
     }
     
     var body: some View {
@@ -78,7 +78,12 @@ private struct DummyView: View {
 struct ToolbarView_Previews: PreviewProvider {
     static var previews: some View {
         let model = WebBrowserToolbarModel()
-        ToolbarView(model)
+        let state: Binding<WebViewNavigatable?> = .init {
+            nil
+        } set: { _ in
+            //
+        }
+        ToolbarView(model, state)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }
