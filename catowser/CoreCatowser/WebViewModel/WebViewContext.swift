@@ -27,6 +27,8 @@ public protocol WebViewContext {
     func isJavaScriptEnabled() -> Bool
     /// Hides app specific feature value for DNS over HTTPs
     func isDohEnabled() -> Bool
+    /// Hides app specific feature value for Native app redirects
+    func allowNativeAppRedirects() -> Bool
     /// Wrapper for feature value from specific app
     func appAsyncApiTypeValue() -> AsyncApiType
     /// Update tab's content after loading finish in case if there was a redirect and URL was changed.

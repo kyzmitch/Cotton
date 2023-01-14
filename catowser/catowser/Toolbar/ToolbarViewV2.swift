@@ -54,3 +54,12 @@ struct ToolbarViewV2: View {
         }
     }
 }
+
+#if DEBUG
+struct ToolbarViewV2_Previews: PreviewProvider {
+    static var previews: some View {
+        // Doesn't work in preview!
+        ToolbarViewV2()
+    }
+}
+#endif

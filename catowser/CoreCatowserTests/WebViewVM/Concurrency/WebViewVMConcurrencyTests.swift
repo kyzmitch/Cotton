@@ -15,7 +15,7 @@ import WebKit
 final class WebViewVMConcurrencyTests: WebViewVMFixture {
     override func setUpWithError() throws {
         try super.setUpWithError()
-        webViewContext = .init(doh: false, js: false, asyncApiType: .asyncAwait)
+        webViewContext = .init(doh: false, js: false, nativeAppRedirect: false, asyncApiType: .asyncAwait)
     }
     
     func testLoad() throws {

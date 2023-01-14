@@ -17,7 +17,7 @@ final class WebViewVmJSPluginsDoHCombineTests: WebViewVMFixture {
     override func setUpWithError() throws {
         exampleIpAddress = "100.0.12.7"
         try super.setUpWithError()
-        webViewContext = .init(doh: true, js: true, asyncApiType: .combine)
+        webViewContext = .init(doh: true, js: true, nativeAppRedirect: false, asyncApiType: .combine)
         settings = .init(isPrivate: false,
                          blockPopups: true,
                          isJSEnabled: true,

@@ -51,3 +51,16 @@ private struct SearchSuggestionsLegacyView: UIViewControllerRepresentable {
         interface.prepareSearch(for: searchQuery)
     }
 }
+
+#if DEBUG
+struct SearchSuggestionsView_Previews: PreviewProvider {
+    static var previews: some View {
+        let state: Binding<String> = .init {
+            "cotton"
+        } set: { _ in
+            //
+        }
+        SearchSuggestionsView(state, nil)
+    }
+}
+#endif

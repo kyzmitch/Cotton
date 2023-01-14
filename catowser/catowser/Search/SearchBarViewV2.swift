@@ -47,3 +47,12 @@ struct SearchBarViewV2: View {
         .navigationBarHidden(showCancelButton) // .animation(.default)
     }
 }
+
+#if DEBUG
+struct SearchBarViewV2_Previews: PreviewProvider {
+    static var previews: some View {
+        // For some reason it jumps after selection
+        SearchBarViewV2()
+    }
+}
+#endif

@@ -12,6 +12,7 @@ import HttpKit
 import CoreHttpKit
 import WebKit
 
+/// A known state against which a test is running for web view vm
 class WebViewVMFixture: XCTestCase {
     // MARK: - mocks and objects to be re-created
     
@@ -62,6 +63,8 @@ class WebViewVMFixture: XCTestCase {
     let urlV3 = URL(string: "https://www.known.com/bar")
     // swiftlint:disable:next force_unwrapping
     let urlV4 = URL(string: "mailto://john@example.com")!
+    // swiftlint:disable:next force_unwrapping
+    let urlV5 = URL(string: "https://instagram.com/")!
     let wrongUrlV1 = URL(string: "http://www.example.com/foo/bar")
     let wrongUrlV2 = URL(string: "https://www.example.com/foo")
     let wrongUrlV3 = URL(string: "https://www.google.com/foo/bar")
@@ -87,7 +90,11 @@ class WebViewVMFixture: XCTestCase {
             goodDnsStrategy = .init(goodDnsContext)
         }
         jsSubject = .init()
-        webViewContext = .init(doh: false, js: false, asyncApiType: .combine)
+        webViewContext = .init(doh: false,
+                               js: false,
+                               nativeAppRedirect: true,
+                               asyncApiType: .combine,
+                               appName: "instagram.com")
         
         settings = .init(isPrivate: false,
                          blockPopups: true,

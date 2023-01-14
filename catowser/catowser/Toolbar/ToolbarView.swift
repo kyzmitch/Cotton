@@ -73,3 +73,13 @@ private struct DummyView: View {
             .background(Color.phoneToolbarColor)
     }
 }
+
+#if DEBUG
+struct ToolbarView_Previews: PreviewProvider {
+    static var previews: some View {
+        let model = WebBrowserToolbarModel()
+        ToolbarView(model)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+    }
+}
+#endif

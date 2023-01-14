@@ -16,6 +16,7 @@ import Combine
 import BrowserNetworking
 import SwiftyMocky
 
+/// A known state against which a test is running for search suggestions vm
 class SearchSuggestionsVMFixture: XCTestCase {
     var goodServerMock: MockedGoodDnsServer!
     var goodJsonEncodingMock: MockedGoodJSONEncoding!

@@ -16,6 +16,9 @@ extension ApplicationFeature {
     static var javaScriptEnabled: ApplicationFeature<JavaScriptEnabled> {
         return ApplicationFeature<JavaScriptEnabled>()
     }
+    static var nativeAppRedirect: ApplicationFeature<NativeAppRedirect> {
+        return ApplicationFeature<NativeAppRedirect>()
+    }
 }
 
 /// DNS over HTTPS
@@ -31,5 +34,17 @@ enum JavaScriptEnabled: BasicFeature {
     typealias Value = Bool
     static let key: String = "ios.js.enabled"
     static let defaultValue: Bool = true
+    static let source: FeatureSource.Type = LocalFeatureSource.self
+}
+
+/// Native app redirect
+enum NativeAppRedirect: BasicFeature {
+    typealias Value = Bool
+    static let key = "ios.native-app-redirect"
+    /// By default it is disabled, but default value for OS is enabled.
+    /// This is because in Cotton app it is desired to keep user in the app
+    /// even for native app links to allow use html content.
+    /// But would be good to quickly revert this feature.
+    static let defaultValue = false
     static let source: FeatureSource.Type = LocalFeatureSource.self
 }

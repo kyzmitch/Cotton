@@ -14,6 +14,7 @@ import BrowserNetworking
 import ReactiveSwift
 import Combine
 import WebKit
+import FeaturesFlagsKit
 
 /**
  See `decidePolicy` method below
@@ -187,7 +188,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             decisionHandler(policy)
             return
         }
-        if let policy = isNativeAppRedirectNeeded(url) {
+        if !context.allowNativeAppRedirects(), let policy = isNativeAppRedirectNeeded(url) {
             decisionHandler(policy)
             return
         }
@@ -399,8 +400,11 @@ private extension WebViewModelImpl {
     }
     
     func isNativeAppRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
-        let isSameHost = state.sameHost(with: url)
-        guard isSameHost && nativeAppDomainNameString != nil else {
+        // Not sure why it was a check for `state.sameHost(with: url)`
+        // before native app redirect, but it doesn't make sense now.
+        // So, if user taps on a deep link then it doesn't matter
+        // what site was open before that, we should open this url anyway.
+        guard /* isSameHost && */ let newHost = url.kitHost, context.nativeApp(for: newHost) != nil else {
             return nil
         }
         let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2

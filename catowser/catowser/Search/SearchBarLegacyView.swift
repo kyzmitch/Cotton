@@ -41,35 +41,52 @@ final class SearchBarLegacyView: UIView {
     /// To remember previously entered search query
     private var searchBarContent: String?
     
+    private let uiFramework: UIFrameworkType
+    
     // MARK: - initializers
     
     override init(frame: CGRect) {
+        uiFramework = FeatureManager.appUIFrameworkValue()
         super.init(frame: frame)
         
         addSubview(searchBarView)
-        addSubview(siteNameLabel)
-        siteNameLabel.addSubview(dohStateIcon)
+        addSubview(dohStateIcon)
         
         siteNameLabel.alpha = 0
+        dohStateIcon.alpha = 0
 
         searchBarView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         searchBarView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        
+        if isPreviewingSwiftUI {
+            if isPad {
+                searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+            } else {
+                searchBarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 16).isActive = true
+            }
+        } else {
+            if case .swiftUIWrapper = uiFramework {
+                // Fix for the SwiftUI preview to have some width, otherwise whole view has 0 width
+                // and for some reason in preview mode the supr view doesn't tell the width
+                if isPad {
+                    searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+                } else {
+                    searchBarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 16).isActive = true
+                }
+            } else {
+                searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+            }
+        }
         if frame.height > 0 {
             // SwiftUI layout fix because it can't determine the search bar height
             searchBarView.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
         } else {
             searchBarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
-
-        siteNameLabel.topAnchor.constraint(equalTo: searchBarView.topAnchor).isActive = true
-        siteNameLabel.bottomAnchor.constraint(equalTo: searchBarView.bottomAnchor).isActive = true
-        siteNameLabel.widthAnchor.constraint(equalTo: searchBarView.widthAnchor).isActive = true
-        hiddenLabelConstraint.isActive = true
         
-        dohStateIcon.leadingAnchor.constraint(equalTo: siteNameLabel.leadingAnchor).isActive = true
-        dohStateIcon.topAnchor.constraint(equalTo: siteNameLabel.topAnchor).isActive = true
-        dohStateIcon.bottomAnchor.constraint(equalTo: siteNameLabel.bottomAnchor).isActive = true
+        dohStateIcon.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        dohStateIcon.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        dohStateIcon.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         dohStateIcon.widthAnchor.constraint(equalTo: dohStateIcon.heightAnchor).isActive = true
     }
     
@@ -103,6 +120,10 @@ final class SearchBarLegacyView: UIView {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isUserInteractionEnabled = true
+        label.numberOfLines = 0
+        // https://krakendev.io/blog/autolayout-magic-like-harry-potter-but-real
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
     }()
     
@@ -117,12 +138,21 @@ final class SearchBarLegacyView: UIView {
         return label
     }()
     
+    private var showedLabelConstraint: NSLayoutConstraint?
+    private func createShowedLabelConstraint() -> NSLayoutConstraint {
+        if isPad {
+            return siteNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
+        } else {
+            return siteNameLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
+        }
+    }
+    
     private lazy var hiddenLabelConstraint: NSLayoutConstraint = {
-        return siteNameLabel.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 0)
-    }()
-
-    private lazy var showedLabelConstraint: NSLayoutConstraint = {
-        return siteNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
+        if isPad {
+            return siteNameLabel.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 0)
+        } else {
+            return siteNameLabel.widthAnchor.constraint(equalToConstant: 0)
+        }
     }()
     
     private lazy var siteNameTapGesture: UITapGestureRecognizer = {
@@ -200,7 +230,20 @@ private extension SearchBarLegacyView {
     }
     
     func prepareForEditMode(and showKeyboard: Bool = false) {
-        showedLabelConstraint.isActive = false
+        if siteNameLabel.superview == nil {
+            addSubview(siteNameLabel)
+            siteNameLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            siteNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            if isPad {
+                siteNameLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+            } else {
+                siteNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            }
+        }
+        if showedLabelConstraint == nil {
+            showedLabelConstraint = createShowedLabelConstraint()
+        }
+        showedLabelConstraint?.isActive = false
         hiddenLabelConstraint.isActive = true
 
         if showKeyboard {
@@ -219,8 +262,21 @@ private extension SearchBarLegacyView {
         // Order of disabling/enabling is important
         // to not to cause errors in layout calculation.
         // First need to disable and after that enable new one.
+        if siteNameLabel.superview == nil {
+            addSubview(siteNameLabel)
+            siteNameLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+            siteNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+            if isPad {
+                siteNameLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+            } else {
+                siteNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            }
+        }
         hiddenLabelConstraint.isActive = false
-        showedLabelConstraint.isActive = true
+        if showedLabelConstraint == nil {
+            showedLabelConstraint = createShowedLabelConstraint()
+        }
+        showedLabelConstraint?.isActive = true
         
         func applyLayout() {
             siteNameLabel.layoutIfNeeded()

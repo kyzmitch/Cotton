@@ -57,15 +57,15 @@ private struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
 
 #if DEBUG
 struct SearchBarView_Previews: PreviewProvider {
-    
     static var previews: some View {
         let model = SearchBarViewModel()
         let state: Binding<SearchBarState> = .init {
+            // .viewMode("cotton", "cotton", true)
             .blankSearch
         } set: { _ in
             //
         }
-
+        // View is jumping when you tap on it
         SearchBarView(model, state)
     }
 }

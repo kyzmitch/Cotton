@@ -21,7 +21,7 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
     override func setUpWithError() throws {
         exampleIpAddress = "100.0.12.7"
         try super.setUpWithError()
-        webViewContext = .init(doh: true, js: false, asyncApiType: .asyncAwait)
+        webViewContext = .init(doh: true, js: false, nativeAppRedirect: false, asyncApiType: .asyncAwait)
         publisherValueCounter = 0
         cancellables = []
     }

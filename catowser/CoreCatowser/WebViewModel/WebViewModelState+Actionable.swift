@@ -111,6 +111,15 @@ extension WebViewModelState: Actionable {
             // Handling is similar to when state is `pendingDoHStatus`
             // and action is `resolveDomainName`, because first need to
             // make sure that domain name supports DNS over HTTPs
+            
+            // Probably need to check that current DoH state is not the same,
+            // to not do domane name resolving when it is not needed,
+            // this could be done by checking the host of current ulr data.
+            // On the other hand, this is probably not needed, because
+            // DoH state is controlled by Feature manager which is more reliable,
+            // It is because current host could be based on ip address even
+            // without DoH enabled.
+            // So, basically we have to trust the incoming value.
             if enable {
                 nextState = .checkingDNResolveSupport(urlData, settings)
             } else {

@@ -1,45 +1,32 @@
 //
-//  MainBrowserView.swift
+//  PhoneView.swift
 //  catowser
 //
-//  Created by Andrey Ermoshin on 10.12.2022.
-//  Copyright © 2022 andreiermoshin. All rights reserved.
+//  Created by Andrei Ermoshin on 1/13/23.
+//  Copyright © 2023 andreiermoshin. All rights reserved.
 //
 
 import SwiftUI
 import CoreBrowser
 
-struct MainBrowserView<C: BrowserContentCoordinators>: View {
-    private let model: MainBrowserModel<C>
-    
-    init(_ model: MainBrowserModel<C>) {
-        self.model = model
-    }
-    
-    var body: some View {
-        _MainBrowserView<C>(model: model)
-            .environment(\.browserContentCoordinators, model.coordinatorsInterface)
-    }
-}
-
-private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
+struct PhoneView<C: BrowserContentCoordinators>: View {
     // MARK: - view models of subviews
     
     private var model: MainBrowserModel<C>
+    private let searchBarModel: SearchBarViewModel
     private let browserContentModel: BrowserContentModel
     private let toolbarModel: WebBrowserToolbarModel
-    private let searchBarModel: SearchBarViewModel
-    
-    // MARK: - web content loading state
-    
-    @State private var websiteLoadProgress: Double
-    @State private var showProgress: Bool
     
     // MARK: - search bar state
     
+    @State private var searchBarState: SearchBarState
     @State private var showSearchSuggestions: Bool
     @State private var searchQuery: String
-    @State private var searchBarState: SearchBarState
+    
+    // MARK: - web content loading state
+    
+    @State private var showProgress: Bool
+    @State private var websiteLoadProgress: Double
     
     // MARK: - browser content state
     
@@ -48,7 +35,7 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool
     
-    init(model: MainBrowserModel<C>) {
+    init(_ model: MainBrowserModel<C>) {
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -78,22 +65,6 @@ private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
     }
     
     var body: some View {
-        if isPad {
-            tabletView()
-        } else {
-            phoneView()
-        }
-    }
-}
-
-private extension _MainBrowserView {
-    func tabletView() -> some View {
-        VStack {
-            Spacer()
-        }
-    }
-    
-    func phoneView() -> some View {
         /*
          - ignoresSafeArea(.keyboard)
          Allows to not have the toolbar be attached to keyboard.
@@ -126,31 +97,24 @@ private extension _MainBrowserView {
         .onReceive(searchBarModel.$searchText) { value in
             searchQuery = value
         }
-        .onReceive(searchBarModel.$searchViewState.dropFirst(1)) { value in
+        .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
             searchBarState = value
         }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst(1)) { _ in
+        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
             webViewNeedsUpdate = false
         }
-        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst(1)) { _ in
+        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
             webViewNeedsUpdate = true
         }
     }
 }
 
 #if DEBUG
-class DummyDelegate: BrowserContentCoordinators {
-    let topSitesCoordinator: TopSitesCoordinator? = nil
-    let webContentCoordinator: WebContentCoordinator? =  nil
-    let globalMenuDelegate: GlobalMenuDelegate? = nil
-    let toolbarCoordinator: MainToolbarCoordinator? = nil
-    let toolbarPresenter: AnyViewController? = nil
-}
-
-struct MainBrowserView_Previews: PreviewProvider {
+struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
         let model = MainBrowserModel(DummyDelegate())
-        MainBrowserView(model)
+        PhoneView(model)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }
 #endif

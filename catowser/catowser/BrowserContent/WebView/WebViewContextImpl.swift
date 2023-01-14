@@ -37,6 +37,10 @@ public final class WebViewContextImpl: WebViewContext {
         return FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
     }
     
+    public func allowNativeAppRedirects() -> Bool {
+        return FeatureManager.boolValue(of: .nativeAppRedirect)
+    }
+    
     public func appAsyncApiTypeValue() -> AsyncApiType {
         return FeatureManager.appAsyncApiTypeValue()
     }

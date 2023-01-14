@@ -92,6 +92,9 @@ private struct _BrowserMenuView: View {
                 }
 #if DEBUG
                 Section(header: Text(verbatim: .devSectionTtl)) {
+                    Toggle(isOn: $model.nativeAppRedirectEnabled) {
+                        Text(verbatim: .nativeAppRedirectTitle)
+                    }
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
@@ -137,6 +140,7 @@ private extension String {
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
     static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled", comment: "")
+    static let nativeAppRedirectTitle = NSLocalizedString("txt_native_app_redirect_enabled", comment: "")
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
@@ -150,7 +154,6 @@ private extension String {
 }
 
 #if DEBUG
-// swiftlint:disable type_name
 @available(iOS 13.0, *)
 struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {

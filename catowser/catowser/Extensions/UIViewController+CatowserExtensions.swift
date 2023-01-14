@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIViewController {
+extension UIViewController: SwiftUIPreviewable {
     func removeFromChild() {
         willMove(toParent: nil)
         removeFromParent()
@@ -23,5 +23,23 @@ extension UIViewController {
         // because view size can vary
         containerView.addSubview(viewController.view)
         viewController.didMove(toParent: self)
+    }
+    
+    
+}
+
+extension UIView: SwiftUIPreviewable {}
+
+protocol SwiftUIPreviewable: AnyObject {
+    var isPreviewingSwiftUI: Bool { get }
+}
+
+extension SwiftUIPreviewable {
+    /// Runtime check to determine if code was started by SwiftUI preview
+    var isPreviewingSwiftUI: Bool {
+        // https://stackoverflow.com/a/61741858
+        let value = ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"]
+        let correct = value == "1"
+        return correct
     }
 }

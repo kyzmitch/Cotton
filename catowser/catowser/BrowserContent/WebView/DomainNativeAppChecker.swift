@@ -10,15 +10,15 @@ import Foundation
 import CoreHttpKit
 
 final class DomainNativeAppChecker {
+    /// Can't use hash set because need to check not full equality but partly equal case is also works
     private static let domains: [String] = ["instagram.com", "youtube.com"]
+    /// App domain name in string
     let correspondingDomain: String
 
     init(host: Host) throws {
-        for domain in DomainNativeAppChecker.domains {
-            if host.rawString.contains(domain) {
-                correspondingDomain = domain
-                return
-            }
+        for domain in DomainNativeAppChecker.domains where host.rawString.contains(domain) {
+            correspondingDomain = domain
+            return
         }
 
         struct NoAppError: Error {}

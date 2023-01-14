@@ -8,7 +8,6 @@
 
 import SwiftUI
 import CoreBrowser
-import JSPlugins
 import Combine
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
@@ -79,27 +78,3 @@ struct BrowserContentView: View {
         }
     }
 }
-
-#if DEBUG
-
-// https://martinlasek.medium.com/swiftui-understanding-binding-8e20269a76bc
-
-class DummyJSPluginsSource: JSPluginsSource {
-    typealias Program = JSPluginsProgramImpl
-    var pluginsProgram: Program {
-        JSPluginsProgramImpl([])
-    }
-}
-
-struct BrowserContentView_Previews: PreviewProvider {
-    static let model: BrowserContentModel = {
-        let source: DummyJSPluginsSource = .init()
-        return .init(source)
-    }()
-    
-    static var previews: some View {
-        EmptyView()
-    }
-}
-
-#endif

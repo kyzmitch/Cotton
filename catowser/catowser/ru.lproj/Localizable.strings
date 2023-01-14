@@ -38,6 +38,7 @@
 "ttl_developer_menu" = "Настройки разработчика";
 "txt_doh_menu_item" = "DNS по HTTPs";
 "txt_javascript_enabled" = "JavaScript";
+"txt_native_app_redirect_enabled" = "открывать установленное приложение по Deep link";
 "btn_dismiss" = "Закрыть";
 "ttl_common_menu" = "Настройки";
 
