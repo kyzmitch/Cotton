@@ -131,15 +131,13 @@ final class WebViewVMCombineTests: WebViewVMFixture {
             XCTAssertEqual(policy, .allow)
         }
         
-        // User taps on reload before load finish - error in vm state
-        vm.reload()
-        
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
         
         vm.reload()
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
@@ -418,6 +416,90 @@ final class WebViewVMCombineTests: WebViewVMFixture {
         // swiftlint:disable:next force_unwrapping
         vm.finishLoading(urlV1!, jsSubject)
         XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+    }
+    
+    func testResetWithNotFinishedNavigation() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        vm.load()
+        
+        // This is a bad path case, user has to call `finishLoading`
+        // to complete the load request and have a final state which is `.viewing`
+        
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV1: URLInfo = .init(urlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        
+        // swiftlint:disable:next force_unwrapping
+        let navActionV1 = MockedNavAction(urlV1!, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        
+        // Now perform a navigation which, let's say, won't finish in time
+        vm.goBack()
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
+        
+        // It still should be possible to reset VM to a new site
+        // even when navigation of previous web view didn't finish in time
+        // and view state is not `viewing` but `waitingForNavigation`
+        vm.reset(opennetSite)
+        
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV2: URLInfo = .init(opennetUrlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV2.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV2))
+        
+        // swiftlint:disable:next force_unwrapping
+        let navActionV2 = MockedNavAction(opennetUrlV1!, .other)
+        vm.decidePolicy(navActionV2) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(opennetUrlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV2.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV2))
+    }
+    
+    func testReloadWithNotFinishedNavigation() throws {
+        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        vm.load()
+        // swiftlint:disable:next force_unwrapping
+        let urlInfoV1: URLInfo = .init(urlV1!)!
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        
+        // swiftlint:disable:next force_unwrapping
+        let navActionV1 = MockedNavAction(urlV1!, .other)
+        vm.decidePolicy(navActionV1) { policy in
+            XCTAssertEqual(policy, .allow)
+        }
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
+        XCTAssertEqual(vm.combineWebPageState.value, .load(urlInfoV1.urlRequest))
+        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        
+        vm.reload()
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
+        
+        // Previous navigation wasn't finished but it is possible to start
+        // new navigation, because of WKWebView behaviour
+        // maybe if navigation buttons weren't enabled for interaction
+        // then it won't be a case
+        
+        vm.reload()
+        XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
+        
+        // swiftlint:disable:next force_unwrapping
+        vm.finishLoading(urlV1!, jsSubject)
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
 }
