@@ -33,10 +33,10 @@ final class TabletSearchBarViewController: BaseViewController {
     
     private weak var downloadPanelDelegate: DownloadPanelPresenter?
     
-    init(_ searchBarDelegate: UISearchBarDelegate,
+    init(_ searchBarDelegate: UISearchBarDelegate?,
          _ settingsDelegate: GlobalMenuDelegate?,
          _ downloadDelegate: DownloadPanelPresenter?) {
-        searchBarViewController = SearchBarBaseViewController(searchBarDelegate)
+        searchBarViewController = ViewsEnvironment.shared.vcFactory.searchBarViewController(searchBarDelegate)
         globalSettingsDelegate = settingsDelegate
         downloadPanelDelegate = downloadDelegate
         super.init(nibName: nil, bundle: nil)
@@ -234,8 +234,8 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
 }
 
 extension TabletSearchBarViewController: SearchBarControllerInterface {
-    func changeState(to state: SearchBarState, animated: Bool) {
-        searchBarViewController.changeState(to: state, animated: animated)
+    func changeState(to state: SearchBarState) {
+        searchBarViewController.changeState(to: state)
     }
 }
 

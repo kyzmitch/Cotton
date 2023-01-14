@@ -21,4 +21,7 @@ extension ApplicationEnumFeature {
     static var webAutoCompletionSource: ApplicationEnumFeature<WebAutoCompletionFeature> {
         return ApplicationEnumFeature<WebAutoCompletionFeature>(feature: EnumFeaturesHolder.webAutoCompletionSource)
     }
+    static var appDefaultUIFramework: ApplicationEnumFeature<UIFrameworkFeature> {
+        return ApplicationEnumFeature<UIFrameworkFeature>(feature: EnumFeaturesHolder.selectedUIFramework)
+    }
 }

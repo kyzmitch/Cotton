@@ -24,7 +24,7 @@ final class GlobalMenuCoordinator: Coordinator {
     private let sourceRect: CGRect
     
     init(_ vcFactory: ViewControllerFactory,
-         _ presenter: AnyViewController,
+         _ presenter: AnyViewController?,
          _ model: MenuViewModel,
          _ sourceView: UIView,
          _ sourceRect: CGRect) {

@@ -54,7 +54,8 @@ final class WebContentCoordinator: Coordinator {
     }
     
     func start() {
-        let webViewController = try? WebViewsEnvironment.shared.reuseManager.controllerFor(site, jsPluginsSource, self, self)
+        let manager = ViewsEnvironment.shared.reuseManager
+        let webViewController = try? manager.controllerFor(site, jsPluginsSource, self, self)
         guard let vc = webViewController else {
             assertionFailure("Failed create new web view for tab")
             return
@@ -138,5 +139,13 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
     
     func didTabPreviewChange(_ screenshot: UIImage) {
         try? TabsListManager.shared.setSelectedPreview(screenshot)
+    }
+    
+    func webViewDidHandleReuseAction() {
+        // no need to handle, this is SwiftUI specific
+    }
+    
+    func webViewDidReplace(_ interface: WebViewNavigatable) {
+        // no need to handle, this is SwiftUI specific
     }
 }

@@ -30,9 +30,9 @@ final class WebViewsReuseManager {
     /// view factory
     private let vcFactory: ViewControllerFactory
 
-    init(_ viewControllerFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
+    init(_ vcFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
-        vcFactory = viewControllerFactory
+        self.vcFactory = vcFactory
         if viewsLimit >= 1 {
             self.viewsLimit = viewsLimit
         } else {
@@ -56,7 +56,7 @@ final class WebViewsReuseManager {
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor<C: Navigating>(_ site: Site,
                                       _ pluginsBuilder: any JSPluginsSource,
-                                      _ delegate: SiteExternalNavigationDelegate,
+                                      _ delegate: SiteExternalNavigationDelegate?,
                                       _ coordinator: C?) throws -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
         // need to search web view with same url as in `site` to restore navigation history

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreCatowser
+import FeaturesFlagsKit
 
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
@@ -25,13 +26,15 @@ import CoreCatowser
 protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController
 
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate,
-                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable where C.R == WebContentRoute
-    var topSitesViewController: AnyViewController & TopSitesInterface { get }
+                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
+                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable
+    where C.R == WebContentRoute
+    func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
+    where C.R == TopSitesRoute
     var blankWebPageViewController: UIViewController { get }
     var loadingProgressViewController: AnyViewController { get }
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel,
@@ -45,15 +48,16 @@ protocol ViewControllerFactory: AnyObject {
     /// Convinience property to get a reference without input parameters
     var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> AnyViewController?
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> AnyViewController?
     /// Will return nil on Phone
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
-                                              _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute
+                                              _ coordinator: C?,
+                                              _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
     /// Tablet specific tabs
@@ -66,11 +70,17 @@ protocol ViewControllerFactory: AnyObject {
 
 extension ViewControllerFactory {
     func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController {
-        let vc: MainBrowserViewController = .init(coordinator)
+        let vc: AnyViewController
+        switch FeatureManager.appUIFrameworkValue() {
+        case .uiKit:
+            vc = MainBrowserViewController(coordinator)
+        case .swiftUIWrapper:
+            vc = MainBrowserV2ViewController(coordinator)
+        }
         return vc
     }
     
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> UIViewController {
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController {
         let vc: SearchBarBaseViewController = .init(searchBarDelegate)
         return vc
     }
@@ -84,7 +94,7 @@ extension ViewControllerFactory {
     }
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate,
+                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
                                           _ coordinator: C?) -> AnyViewController & WebViewNavigatable where C.R == WebContentRoute {
         let vc: WebViewController = .init(viewModel, externalNavigationDelegate, coordinator)
         return vc

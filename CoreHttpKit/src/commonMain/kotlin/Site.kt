@@ -2,7 +2,6 @@ package org.cottonweb.CoreBrowser
 
 import org.cottonweb.CoreHttpKit.Host
 import org.cottonweb.CoreHttpKit.URLInfo
-import kotlin.native.concurrent.freeze
 
 /**
  *
@@ -19,9 +18,6 @@ class Site(
     val searchSuggestion: String? = null,
     val userSpecifiedTitle: String? = null
 ) {
-    init {
-        freeze()
-    }
 
     val host: Host
         get() = urlInfo.host()
@@ -49,10 +45,6 @@ class Site(
         val isJSEnabled: Boolean = true,
         val canLoadPlugins: Boolean = true
     ) {
-        init {
-            freeze()
-        }
-
         fun withChanged(javaScriptEnabled: Boolean): Settings {
             return Settings(isPrivate, blockPopups, javaScriptEnabled, canLoadPlugins)
         }
@@ -65,6 +57,16 @@ class Site(
                     && isJSEnabled == other.isJSEnabled
                     && canLoadPlugins == other.canLoadPlugins
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        other as Site
+        return urlInfo == other.urlInfo
+                && settings == other.settings
+                && searchSuggestion == other.searchSuggestion
+                && userSpecifiedTitle == other.userSpecifiedTitle
+                && faviconData == other.faviconData
     }
 }
 

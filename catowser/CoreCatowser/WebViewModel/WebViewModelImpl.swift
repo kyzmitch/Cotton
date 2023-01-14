@@ -14,6 +14,7 @@ import BrowserNetworking
 import ReactiveSwift
 import Combine
 import WebKit
+import FeaturesFlagsKit
 
 /**
  See `decidePolicy` method below
@@ -55,12 +56,12 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     }
     
     /// reactive state property
-    public var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.idle)
+    public var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.recreateView(false))
     /// combine state property
-    public var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.idle)
+    public var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.recreateView(false))
     /// wrapped value for Published
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    @Published public var webPageState: WebPageLoadingAction = .idle
+    @Published public var webPageState: WebPageLoadingAction = .recreateView(false)
     /// Combine publisher of public view state (next action)
     public var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { $webPageState }
     
@@ -83,6 +84,8 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public var urlInfo: URLInfo { state.urlInfo }
     
+    public var isResetable: Bool { state.isResetable }
+    
     public var nativeAppDomainNameString: String? {
         context.nativeApp(for: host)
     }
@@ -103,9 +106,27 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func load() {
         do {
+            // Have to ask to attach view observers here
+            // because it is not really possible to do that
+            // later only because `loadSite` is used
+            // in other method in addition
+            updateLoadingState(.reattachViewObservers)
             state = try state.transition(on: .loadSite)
         } catch {
             print("Wrong state on load action: " + error.localizedDescription)
+        }
+    }
+    
+    public func reset(_ site: Site) {
+        do {
+            // - Now state is set to `initialized` and can send `loadSite` action
+            // - Have to delete old web view to clean web view navigation
+            updateLoadingState(.recreateView(true))
+            updateLoadingState(.reattachViewObservers)
+            state = try state.transition(on: .resetToSite(site))
+            state = try state.transition(on: .loadSite)
+        } catch {
+            print("Wrong state on reset to site action: " + error.localizedDescription)
         }
     }
     
@@ -150,7 +171,6 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         }
     }
     
-    // swiftlint:disable:next cyclomatic_complexity
     public func decidePolicy(_ navigationAction: NavigationActionable,
                              _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard navigationAction.navigationType.needsHandling else {
@@ -168,7 +188,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             decisionHandler(policy)
             return
         }
-        if let policy = isNativeAppRedirectNeeded(url) {
+        if !context.allowNativeAppRedirects(), let policy = isNativeAppRedirectNeeded(url) {
             decisionHandler(policy)
             return
         }
@@ -227,7 +247,10 @@ private extension WebViewModelImpl {
     func onStateChange(_ nextState: WebViewModelState) throws {
         switch nextState {
         case .initialized:
-            updateLoadingState(.idle)
+            // No need to call `recreateView` because it is an initial state
+            // Also, `reattachViewObservers` will be called automatically
+            // before `loadSite` action
+            break
         case .pendingPlugins:
             let pluginsProgram: (any JSPluginsProgram)? = settings.canLoadPlugins ? context.pluginsProgram : nil
             state = try state.transition(on: .injectPlugins(pluginsProgram))
@@ -377,8 +400,11 @@ private extension WebViewModelImpl {
     }
     
     func isNativeAppRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
-        let isSameHost = state.sameHost(with: url)
-        guard isSameHost && nativeAppDomainNameString != nil else {
+        // Not sure why it was a check for `state.sameHost(with: url)`
+        // before native app redirect, but it doesn't make sense now.
+        // So, if user taps on a deep link then it doesn't matter
+        // what site was open before that, we should open this url anyway.
+        guard /* isSameHost && */ let newHost = url.kitHost, context.nativeApp(for: newHost) != nil else {
             return nil
         }
         let ignoreAppRawValue = WKNavigationActionPolicy.allow.rawValue + 2

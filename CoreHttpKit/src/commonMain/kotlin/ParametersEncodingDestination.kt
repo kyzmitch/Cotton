@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * Analog from Apple where the value could be optional
  * On the other hand, Parameters can store only non optional pairs
@@ -9,11 +7,7 @@ import kotlin.native.concurrent.freeze
  * @property name The name of the query parameter
  * @property value Non-optional value for the query parameter
  * */
-data class URLQueryPair(val name: String, val value: String) {
-    init {
-        freeze()
-    }
-}
+data class URLQueryPair(val name: String, val value: String)
 
 /**
  * HTTP parameters encoding method
@@ -21,21 +15,9 @@ data class URLQueryPair(val name: String, val value: String) {
  * of the actual Http request.
  * */
 sealed class ParametersEncodingDestination {
-    class QueryString(val items: Array<URLQueryPair>) : ParametersEncodingDestination() {
-        init {
-            freeze()
-        }
-    }
-    class HttpBodyJSON(val keyToValue: Map<String, Any>) : ParametersEncodingDestination() {
-        init {
-            freeze()
-        }
-    }
-    class HttpBody(val encodedData: ByteArray) : ParametersEncodingDestination() {
-        init {
-            freeze()
-        }
-    }
+    class QueryString(val items: Array<URLQueryPair>) : ParametersEncodingDestination()
+    class HttpBodyJSON(val keyToValue: Map<String, Any>) : ParametersEncodingDestination()
+    class HttpBody(val encodedData: ByteArray) : ParametersEncodingDestination()
 
     internal val contentTypeHttpHeader: HTTPHeader
         get() {

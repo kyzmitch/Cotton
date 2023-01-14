@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * A public HTTP request type used as a replacement
  * for some 3rd party library type to not expose it
@@ -13,8 +11,4 @@ data class HTTPRequestInfo(
     val headers: Set<HTTPHeader>,
     val requestTimeout: Long,
     val httpBody: ByteArray? = null
-) {
-    init {
-        freeze()
-    }
-}
+)

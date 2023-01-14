@@ -93,6 +93,7 @@ extension WebViewModelState: Actionable {
         case (.viewing(let settings, let urlInfo),
               .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {
+                // maybe need to just do a return from function
                 nextState = self
             } else {
                 let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
@@ -110,6 +111,15 @@ extension WebViewModelState: Actionable {
             // Handling is similar to when state is `pendingDoHStatus`
             // and action is `resolveDomainName`, because first need to
             // make sure that domain name supports DNS over HTTPs
+            
+            // Probably need to check that current DoH state is not the same,
+            // to not do domane name resolving when it is not needed,
+            // this could be done by checking the host of current ulr data.
+            // On the other hand, this is probably not needed, because
+            // DoH state is controlled by Feature manager which is more reliable,
+            // It is because current host could be based on ip address even
+            // without DoH enabled.
+            // So, basically we have to trust the incoming value.
             if enable {
                 nextState = .checkingDNResolveSupport(urlData, settings)
             } else {
@@ -117,6 +127,23 @@ extension WebViewModelState: Actionable {
                 // If ip address was used for URL, this reload would replace it with domain name as needed
                 nextState = .creatingRequest(urlData, settings)
             }
+        case (.viewing, .resetToSite(let site)):
+            nextState = .initialized(site)
+        case (.waitingForNavigation, .resetToSite(let site)):
+            // Could be a case when previous web view didn't finish navigation
+            // and it was asked to reset vm
+            nextState = .initialized(site)
+        case (.waitingForNavigation(let settings, let uRLInfo),
+              .reload):
+            // Sometimes state hangs in `waitingForNavigation`
+            // but should be in `viewing`
+            nextState = .waitingForNavigation(settings, uRLInfo)
+        case (.waitingForNavigation(let settings, let uRLInfo),
+              .goBack):
+            nextState = .waitingForNavigation(settings, uRLInfo)
+        case (.waitingForNavigation(let settings, let uRLInfo),
+              .goForward):
+            nextState = .waitingForNavigation(settings, uRLInfo)
         default:
 #if TESTING
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
