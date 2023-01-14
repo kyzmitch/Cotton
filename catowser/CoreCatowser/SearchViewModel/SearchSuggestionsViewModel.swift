@@ -9,6 +9,7 @@
 import Foundation
 import ReactiveSwift
 import Combine
+import CoreBrowser
 
 public typealias KnownDomains = [String]
 public typealias QuerySuggestions = [String]
@@ -32,9 +33,13 @@ public enum SearchSuggestionsViewState: Equatable {
             } else if section == 1 {
                 return querySuggestions.count
             } else {
-                // impossible case
-                assertionFailure("Not expected section number for suggestions state")
-                return 0
+                let errMsg = "Not expected section number for suggestions state"
+                #if TESTING
+                #else
+                // can't assert here because of unit tests
+                print(errMsg)
+                #endif
+                return -1
             }
         }
     }
@@ -53,7 +58,7 @@ public enum SearchSuggestionsViewState: Equatable {
     public func value(from row: Int, section: Int) -> String? {
         switch self {
         case .knownDomainsLoaded(let knownDomains):
-            return knownDomains[row]
+            return knownDomains[safe: row]
         case .everythingLoaded(let knownDomains, let querySuggestions):
             if section == 0 {
                 return knownDomains[row]
@@ -73,9 +78,12 @@ public protocol SearchSuggestionsViewModel: AnyObject {
     /// Initiate fetching only after subscribing to the async interfaces below
     func fetchSuggestions(_ query: String)
     
+    /// Rx state property signal won't emit initial/current value (comparing to Combine)
     var rxState: MutableProperty<SearchSuggestionsViewState> { get }
+    /// Combine state, emits current value for every new subscriber
     var combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> { get }
-    /// wrapped value for Published
+    /// Concurrency state, also can be used as a synchronous state. A wrapped value for Published
     var state: SearchSuggestionsViewState { get }
+    /// This is a replacement for Concurrency's `Task.Handler`, property wrapper can't be defined in protocol
     var statePublisher: Published<SearchSuggestionsViewState>.Publisher { get }
 }

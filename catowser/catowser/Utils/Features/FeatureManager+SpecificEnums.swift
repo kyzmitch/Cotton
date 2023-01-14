@@ -24,6 +24,8 @@ extension FeatureManager {
             keyStr = .tabDefaultContentKey
         case is AsyncApiType:
             keyStr = .browserAsyncApiKey
+        case is UIFrameworkType:
+            keyStr = .uiFrameworkKey
         default:
             assertionFailure("Attempt to search for not supported enum feature type")
             return nil
@@ -66,6 +68,14 @@ extension FeatureManager {
     
     static func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
         let feature: ApplicationEnumFeature = .webAutoCompletionSource
+        guard let source = source(for: feature) else {
+            return feature.defaultEnumValue
+        }
+        return source.currentEnumValue(of: feature)
+    }
+    
+    static func appUIFrameworkValue() -> UIFrameworkType {
+        let feature: ApplicationEnumFeature = .appDefaultUIFramework
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }

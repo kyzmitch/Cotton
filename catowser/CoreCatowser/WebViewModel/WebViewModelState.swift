@@ -191,6 +191,18 @@ enum WebViewModelState {
         }
     }
 
+    var isResetable: Bool {
+        switch self {
+        case .viewing:
+            return true
+        case .waitingForNavigation:
+            // Workaround for now to fix tab changes
+            // because for some reason view model is in wrong state
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 extension WebViewModelState: CustomStringConvertible {

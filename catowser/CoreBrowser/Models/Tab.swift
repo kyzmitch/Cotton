@@ -124,7 +124,21 @@ extension Tab.ContentType: Equatable {
     public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
         case (.site(let lSite), .site(let rSite)):
-            return lSite == rSite
+            // For some reason Kotlin comparison doesn't work right for the identical objects
+            // `return lSite == rSite`
+            if lSite.urlInfo.platformURL != rSite.urlInfo.platformURL {
+                return false
+            }
+            if lSite.searchSuggestion != rSite.searchSuggestion {
+                return false
+            }
+            if lSite.userSpecifiedTitle != rSite.userSpecifiedTitle {
+                return false
+            }
+            if lSite.settings != rSite.settings {
+                return false
+            }
+            return true
         case (.blank, .blank):
             return true
         case (.homepage, .homepage):

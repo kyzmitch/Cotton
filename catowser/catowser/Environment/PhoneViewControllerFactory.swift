@@ -27,7 +27,7 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     
     // MARK: - Phone methods
     
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate) -> AnyViewController? {
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> AnyViewController? {
         if let existingVC = searchBarVC {
             return existingVC
         }
@@ -36,7 +36,7 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return vc
     }
     
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate,
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController? {
         return nil
@@ -44,11 +44,14 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
-                                              _ coordinator: C) -> UIViewController? where C.R == ToolbarRoute {
+                                              _ coordinator: C?,
+                                              _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute {
         if let existingVC = toolBarVC {
             return existingVC
         }
-        toolBarVC = WebBrowserToolbarController(coordinator, downloadDelegate, settingsDelegate)
+        let vc = WebBrowserToolbarController(coordinator, downloadDelegate, settingsDelegate)
+        vc.presenter = presenter
+        toolBarVC = vc
         return toolBarVC
     }
     
@@ -61,11 +64,14 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return nil
     }
     
-    var topSitesViewController: AnyViewController & TopSitesInterface {
+    func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
+    where C.R == TopSitesRoute {
         if let existingVC = topSitesVC {
             return existingVC
         }
-        let createdVC = TopSitesViewController.newFromNib()
+        let bundle = Bundle(for: TopSitesViewController<C>.self)
+        let createdVC = TopSitesViewController<C>(nibName: "TopSitesViewController", bundle: bundle)
+        createdVC.coordinator = coordinator
         topSitesVC = createdVC
         return createdVC
     }

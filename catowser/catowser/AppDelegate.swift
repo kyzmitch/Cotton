@@ -14,7 +14,7 @@ import Alamofire
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Should be stored by strong reference, because it is the only owner of App coordinator
-    private let appCoordinator: AppCoordinator = .init(WebViewsEnvironment.shared.viewControllerFactory)
+    private let appCoordinator: AppCoordinator = .init(ViewsEnvironment.shared.vcFactory)
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -34,5 +34,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         appCoordinator.start()
         return true
+    }
+}
+
+extension UIApplication {
+    /// Resigns the keyboard.
+    ///
+    /// Used for resigning the keyboard when pressing the cancel button in a searchbar
+    /// based on [this](https://stackoverflow.com/a/58473985/3687284) solution.
+    /// - Parameter force: set true to resign the keyboard.
+    func endEditing(_ force: Bool) {
+        let windowScene = connectedScenes.first as? UIWindowScene
+        // or use `isKeyWindow`
+        let window = windowScene?.windows.first
+        window?.endEditing(force)
     }
 }

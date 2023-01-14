@@ -12,8 +12,17 @@ import CoreHttpKit
 import FeaturesFlagsKit
 import JSPlugins
 
-final class AppCoordinator: Coordinator {
-    /// Could be accessed using `WebViewsEnvironment.shared.viewControllerFactory` singleton as well
+/// Browser content related coordinators
+protocol BrowserContentCoordinators: AnyObject {
+    var topSitesCoordinator: TopSitesCoordinator? { get }
+    var webContentCoordinator: WebContentCoordinator? { get }
+    var globalMenuDelegate: GlobalMenuDelegate? { get }
+    var toolbarCoordinator: MainToolbarCoordinator? { get }
+    var toolbarPresenter: AnyViewController? { get }
+}
+
+final class AppCoordinator: Coordinator, BrowserContentCoordinators {
+    /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well
     let vcFactory: ViewControllerFactory
     /// Currently presented (next) coordinator, to be able to stop it
     var startedCoordinator: Coordinator?
@@ -26,8 +35,6 @@ final class AppCoordinator: Coordinator {
     /// navigation view controller needed for some coordinators
     var navigationStack: UINavigationController?
     
-    /// Phone toolbar coordinator which should stay forever
-    private var toolbarCoordinator: (any Layouting)?
     /// Progress view coordinator
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
     /// Web content container coordinator
@@ -38,12 +45,8 @@ final class AppCoordinator: Coordinator {
     private var linkTagsCoordinator: LinkTagsCoordinator?
     /// Dummy view coordinator
     private var bottomViewCoordinator: (any Layouting)?
-    /// Coordinator for inserted child view controller
-    private var topSitesCoordinator: (any Navigating)?
     /// blank content vc
     private var blankContentCoordinator: (any Navigating)?
-    /// web view coordinator
-    private var webContentCoordinator: WebContentCoordinator?
     /// Only needed on Tablet
     private var tabletTabsCoordinator: (any Layouting)?
     /// App window rectangle
@@ -51,7 +54,9 @@ final class AppCoordinator: Coordinator {
         CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     }()
     /// main app window
-    private let window: UIWindow
+    private lazy var window: UIWindow = {
+        UIWindow(frame: windowRectangle)
+    }()
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
     private var previousTabContent: Tab.ContentType?
@@ -71,21 +76,56 @@ final class AppCoordinator: Coordinator {
         }
     }
     
+    /// UI framework type won't change in runtime, only after app restart, so that, it is const
+    private let uiFramework: UIFrameworkType
+    
     init(_ vcFactory: ViewControllerFactory) {
         self.vcFactory = vcFactory
-        window = UIWindow(frame: windowRectangle)
+        uiFramework = FeatureManager.appUIFrameworkValue()
     }
     
     func start() {
+        if case .swiftUIWrapper = uiFramework {
+            // Must do coordinators init earlier
+            // to allow to use some of them in SwiftUI views
+            insertTopSites()
+            insertToolbar()
+        }
+        
         let vc = vcFactory.rootViewController(self)
         startedVC = vc
+        
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         
-        TabsListManager.shared.attach(self)
-        jsPluginsBuilder = JSPluginsBuilder()
-            .setBase(self)
-            .setInstagram(self)
+        if case .uiKit = uiFramework {
+            // No need to use this class for other types
+            // of framework like SwiftUI to not do
+            // any not necessary layout.
+            // This will be handled by SwiftUI view model
+            // to not add too many checks in this class
+            TabsListManager.shared.attach(self)
+            jsPluginsBuilder = JSPluginsBuilder()
+                .setBase(self)
+                .setInstagram(self)
+        }
+    }
+    
+    // MARK: - BrowserContentCoordinators
+    
+    /// Coordinator for inserted child view controller. public for SwiftUI
+    var topSitesCoordinator: TopSitesCoordinator?
+    /// web view coordinator
+    var webContentCoordinator: WebContentCoordinator?
+    /// Global menu delegate
+    var globalMenuDelegate: GlobalMenuDelegate? {
+        self
+    }
+    /// Phone toolbar coordinator which should stay forever
+    var toolbarCoordinator: MainToolbarCoordinator?
+    /// Later initialized root view controller
+    var toolbarPresenter: AnyViewController? {
+        startedVC
     }
 }
 
@@ -130,7 +170,9 @@ extension AppCoordinator: Navigating {
     func stop() {
         // Probably it is not necessary because this is a root
         jsPluginsBuilder = nil
-        TabsListManager.shared.detach(self)
+        if case .uiKit = uiFramework {
+            TabsListManager.shared.detach(self)
+        }
         // Next line is actually useless, because it is a root
         parent?.coordinatorDidFinish(self)
     }
@@ -314,8 +356,10 @@ private extension AppCoordinator {
         guard !isPad else {
             return
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
+        guard toolbarCoordinator == nil else {
+            return
+        }
+        let presenter = startedVC
         // Link tags coordinator MUST be initialized before this toolbar
         // and it is initialized before Search bar coordinator now
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
@@ -337,13 +381,21 @@ private extension AppCoordinator {
     }
     
     func insertTopSites() {
-        guard let containerView = webContentContainerCoordinator?.startedView else {
-            assertionFailure("Root view controller must have content view")
+        guard topSitesCoordinator == nil else {
             return
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: TopSitesCoordinator = .init(vcFactory, presenter, containerView)
+        let coordinator: TopSitesCoordinator
+        switch uiFramework {
+        case .uiKit:
+            guard let containerView = webContentContainerCoordinator?.startedView else {
+                assertionFailure("Root view controller must have content view")
+                return
+            }
+            coordinator = .init(vcFactory, startedVC, containerView)
+        case .swiftUIWrapper:
+            coordinator = .init(vcFactory, startedVC, nil)
+        }
+        
         coordinator.parent = self
         coordinator.start()
         topSitesCoordinator = coordinator
@@ -363,24 +415,29 @@ private extension AppCoordinator {
     }
     
     func insertWebTab(_ site: Site) {
-        guard let containerView = webContentContainerCoordinator?.startedView,
-                let plugins = jsPluginsBuilder else {
-            assertionFailure("Root view controller must have content view")
-            return
+        switch uiFramework {
+        case .uiKit:
+            guard let containerView = webContentContainerCoordinator?.startedView,
+                    let plugins = jsPluginsBuilder else {
+                assertionFailure("Root view controller must have content view")
+                return
+            }
+            // swiftlint:disable:next force_unwrapping
+            let presenter = startedVC!
+            let coordinator: WebContentCoordinator = .init(vcFactory,
+                                                           presenter,
+                                                           containerView,
+                                                           self,
+                                                           site,
+                                                           plugins)
+            coordinator.parent = self
+            coordinator.start()
+            // Set new interface after starting, it is new for every site/webView
+            siteNavigator = coordinator.startedVC as? WebViewNavigatable
+            webContentCoordinator = coordinator
+        case .swiftUIWrapper:
+            break
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: WebContentCoordinator = .init(vcFactory,
-                                                       presenter,
-                                                       containerView,
-                                                       self,
-                                                       site,
-                                                       plugins)
-        coordinator.parent = self
-        coordinator.start()
-        // Set new interface after starting, it is new for every site/webView
-        siteNavigator = coordinator.startedVC as? WebViewNavigatable
-        webContentCoordinator = coordinator
     }
     
     // MARK: - view did load
@@ -456,8 +513,12 @@ private extension AppCoordinator {
     // MARK: - lifecycle navigation methods
     
     func startMenu(_ model: MenuViewModel, _ sourceView: UIView, _ sourceRect: CGRect) {
-        // swiftlint:disable:next force_unwrapping
-        let presenter = vcFactory.createdDeviceSpecificSearchBarVC!
+        let presenter: UIViewController?
+        if case .uiKit = uiFramework {
+            presenter = vcFactory.createdDeviceSpecificSearchBarVC
+        } else {
+            presenter = startedVC?.viewController
+        }
         let coordinator: GlobalMenuCoordinator = .init(vcFactory, presenter, model, sourceView, sourceRect)
         coordinator.parent = self
         coordinator.start()
@@ -490,11 +551,13 @@ private extension AppCoordinator {
             insertWebTab(site)
         case .topSites:
             siteNavigator = nil
-            searchBarCoordinator?.showNext(.changeState(.blankSearch, true))
+            // No need to notify searchBar, because it is `TabsObserver` too.
+            // See https://github.com/kyzmitch/Cotton/issues/51
             insertTopSites()
         default:
             siteNavigator = nil
-            searchBarCoordinator?.showNext(.changeState(.blankSearch, true))
+            // No need to notify searchBar, because it is `TabsObserver` too
+            // See https://github.com/kyzmitch/Cotton/issues/51
             insertBlankTab()
         }
 

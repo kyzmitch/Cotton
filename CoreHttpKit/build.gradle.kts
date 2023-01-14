@@ -13,8 +13,8 @@ repositories {
 // https://github.com/ge-org/multiplatform-swiftpackage
 
 plugins {
-    kotlin("multiplatform") version "1.6.20"
-    kotlin("plugin.serialization") version "1.6.20"
+    kotlin("multiplatform") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.20"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
