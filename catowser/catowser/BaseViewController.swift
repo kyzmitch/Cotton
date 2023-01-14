@@ -10,7 +10,15 @@ import UIKit
 
 class BaseViewController: UIViewController {}
 
-extension UIViewController {
+extension UIViewController: UIIdiomable {}
+
+extension UIView: UIIdiomable {}
+
+protocol UIIdiomable: AnyObject {
+    var isPad: Bool { get }
+}
+
+extension UIIdiomable {
     var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }

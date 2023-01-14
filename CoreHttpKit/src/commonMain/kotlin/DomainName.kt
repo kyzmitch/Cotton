@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * Domain name.
  *
@@ -76,7 +74,6 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
             }
         }
         punycodedValue = punycodedParts.joinToString(".")
-        freeze()
     }
 
     val onlySecondLevelDomain: String
@@ -118,55 +115,15 @@ final class DomainName @Throws(DomainName.Error::class) constructor(private val 
     }
 
     sealed class Error(message: String) : Throwable(message) {
-        class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength) {
-            init {
-                freeze()
-            }
-        }
-        class EmptyString : Error("empty string") {
-            init {
-                freeze()
-            }
-        }
-        class DotAtBeginning : Error("dot at beginning") {
-            init {
-                freeze()
-            }
-        }
-        class DoubleDots : Error("double dots") {
-            init {
-                freeze()
-            }
-        }
-        class WrongPartSize(val length: Int) : Error("wrong label size: " + length) {
-            init {
-                freeze()
-            }
-        }
-        class PunycodingFailed : Error("punycode fail") {
-            init {
-                freeze()
-            }
-        }
-        class NoDomainLabelParts : Error("no domain label parts") {
-            init {
-                freeze()
-            }
-        }
-        class EmptyLastLabel : Error("last label is empty") {
-            init {
-                freeze()
-            }
-        }
-        class RightmostDomainLabelStartsWithDigit : Error("trailing domain label starts with digit") {
-            init {
-                freeze()
-            }
-        }
-        class PunycodeFail : Error("punycode util fail") {
-            init {
-                freeze()
-            }
-        }
+        class WrongLength(val inputLength: Int) : Error("wrong lenght: " + inputLength)
+        class EmptyString : Error("empty string")
+        class DotAtBeginning : Error("dot at beginning")
+        class DoubleDots : Error("double dots")
+        class WrongPartSize(val length: Int) : Error("wrong label size: " + length)
+        class PunycodingFailed : Error("punycode fail")
+        class NoDomainLabelParts : Error("no domain label parts")
+        class EmptyLastLabel : Error("last label is empty")
+        class RightmostDomainLabelStartsWithDigit : Error("trailing domain label starts with digit")
+        class PunycodeFail : Error("punycode util fail")
     }
 }

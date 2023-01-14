@@ -30,9 +30,7 @@ final class MenuViewModel: ObservableObject {
     
     @Published var isDohEnabled: Bool
     @Published var isJavaScriptEnabled: Bool
-    @Published var tabAddPosition: AddedTabPosition
-    @Published var tabDefaultContent: TabContentDefaultState
-    @Published var asyncApiType: AsyncApiType
+    @Published var nativeAppRedirectEnabled: Bool
     
     // MARK: - specific tab settings
     
@@ -43,6 +41,7 @@ final class MenuViewModel: ObservableObject {
     private var dohChangesCancellable: AnyCancellable?
     private var jsEnabledOptionCancellable: AnyCancellable?
     private var tabjsEnabledCancellable: AnyCancellable?
+    private var nativeAppRedirectCancellable: AnyCancellable?
     
     // MARK: - state
     
@@ -85,9 +84,7 @@ final class MenuViewModel: ObservableObject {
         }
         isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
         isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        tabAddPosition = FeatureManager.tabAddPositionValue()
-        tabDefaultContent = FeatureManager.tabDefaultContentValue()
-        asyncApiType = FeatureManager.appAsyncApiTypeValue()
+        nativeAppRedirectEnabled = FeatureManager.boolValue(of: .nativeAppRedirect)
         
         // for some reason below observers gets triggered
         // right away in init
@@ -107,6 +104,9 @@ final class MenuViewModel: ObservableObject {
                 }
                 self.developerMenuPresenter?.host(host, willUpdateJsState: newValue)
             })
+        nativeAppRedirectCancellable = $nativeAppRedirectEnabled
+            .dropFirst()
+            .sink { FeatureManager.setFeature(.nativeAppRedirect, value: $0) }
     }
     
     deinit {

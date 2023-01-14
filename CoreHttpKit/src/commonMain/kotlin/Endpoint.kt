@@ -1,7 +1,6 @@
 package org.cottonweb.CoreHttpKit
 
 import kotlin.text.encodeToByteArray
-import kotlin.native.concurrent.freeze
 
 /**
  * Response type which should be associated with specific Endpoint
@@ -44,7 +43,6 @@ data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
     init {
         // https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/
         // No need a static/companion fabric method for creation and calling next method
-        freeze()
     }
 
     private fun buildParameters(items: Array<URLQueryPair>): String? {

@@ -27,8 +27,15 @@ public protocol WebViewContext {
     func isJavaScriptEnabled() -> Bool
     /// Hides app specific feature value for DNS over HTTPs
     func isDohEnabled() -> Bool
+    /// Hides app specific feature value for Native app redirects
+    func allowNativeAppRedirects() -> Bool
     /// Wrapper for feature value from specific app
     func appAsyncApiTypeValue() -> AsyncApiType
-    /// Wrapper around CoreBrowser entity which is initialized only in app
+    /// Update tab's content after loading finish in case if there was a redirect and URL was changed.
+    /// Also, this method is needed because need to remember loaded site only when
+    /// it was successfully loaded which happens right before this method is getting called.
+    ///
+    /// No need to call this method if the loading was initiated from top sites or
+    /// during app start when the site is already in the tabs cache.
     func updateTabContent(_ site: Site) throws
 }

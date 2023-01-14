@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * Represents the URL host. Could be an ip v4 address or a domain name.
  *
@@ -78,7 +76,6 @@ final class Host @Throws(Host.Error::class) constructor (
         }
 
         validatedInputValue = rawInputWithoutSpaces
-        freeze()
     }
 
     /**
@@ -146,10 +143,6 @@ final class Host @Throws(Host.Error::class) constructor (
     }
 
     sealed class Error(message: String) : Throwable(message) {
-        class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message) {
-            init {
-                freeze()
-            }
-        }
+        class NotValidHostInput(val err: DomainName.Error, val wrongInput: String) : Host.Error("input: " + wrongInput + ", error: " + err.message)
     }
 }

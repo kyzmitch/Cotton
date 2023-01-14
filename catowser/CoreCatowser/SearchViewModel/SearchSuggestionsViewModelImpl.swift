@@ -20,21 +20,23 @@ public protocol SearchViewContext: AutoMockable {
 }
 
 public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutocompleteStrategy {
+    /// autocomplete client
     let autocomplete: WebSearchAutocomplete<Strategy>
+    /// search view context
+    let searchContext: SearchViewContext
     
-    public let rxState: MutableProperty<SearchSuggestionsViewState> = .init(.waitingForQuery)
+    // MARK: - state observers
     
-    public let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> = .init(.waitingForQuery)
-    
+    public let rxState: MutableProperty<SearchSuggestionsViewState>
+    public let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never>
     /// Using `Published` property wrapper from not related SwiftUI for now
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    @Published public var state: SearchSuggestionsViewState = .waitingForQuery
-    
-    /// This is a replacement for `Task.Handler`, property wrapper can't be defined in protocol
+    @Published public var state: SearchSuggestionsViewState
     public var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
     
-    private var searchSuggestionsDisposable: Disposable?
+    // MARK: - cancelation handlers
     
+    private var searchSuggestionsDisposable: Disposable?
     @available(iOS 13.0, *)
     private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
     
@@ -44,9 +46,10 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
     lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
 #endif
     
-    let searchContext: SearchViewContext
-    
     public init(_ strategy: Strategy, _ context: SearchViewContext) {
+        rxState = .init(.waitingForQuery)
+        combineState = .init(.waitingForQuery)
+        state = .waitingForQuery
         autocomplete = .init(strategy)
         searchContext = context
     }
@@ -67,19 +70,24 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
         case .reactive:
             rxState.value = .knownDomainsLoaded(domainNames)
             searchSuggestionsDisposable?.dispose()
-            searchSuggestionsDisposable = autocomplete.rxFetchSuggestions(query).startWithResult({ [weak self] result in
-                switch result {
-                case .success(let suggestions):
-                    self?.rxState.value = .everythingLoaded(domainNames, suggestions)
-                case .failure(let error):
+            searchSuggestionsDisposable = autocomplete.rxFetchSuggestions(query)
+                .flatMapError({ error in
                     print("Fail to fetch search suggestions: \(error.localizedDescription)")
+                    return WebSearchSuggestionsProducer(value: [])
+                })
+                .startWithResult({ [weak self] result in
+                    switch result {
+                    case .success(let suggestions):
+                        self?.rxState.value = .everythingLoaded(domainNames, suggestions)
+                    default:
+                        break
                 }
             })
         case .combine:
             combineState.value = .knownDomainsLoaded(domainNames)
             searchSuggestionsCancellable?.cancel()
             searchSuggestionsCancellable = autocomplete.combineFetchSuggestions(query)
-                .catch({ (error) -> Just<[String]> in
+                .catch({ error -> Just<[String]> in
                     print("Fail to fetch search suggestions: \(error.localizedDescription)")
                     return .init([])
                 })

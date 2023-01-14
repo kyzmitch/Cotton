@@ -1,7 +1,5 @@
 package org.cottonweb.CoreHttpKit
 
-import kotlin.native.concurrent.freeze
-
 /**
  * Basic HTTP method
  * */
@@ -51,26 +49,10 @@ enum class ContentTypeValue(val stringValue: String) {
 // This type is public and used to instantiate an Endpoint type
 
 sealed class HTTPHeader {
-    class ContentType(val type: ContentTypeValue) : HTTPHeader() {
-        init {
-            freeze()
-        }
-    }
-    class ContentLength(val length: Int) : HTTPHeader() {
-        init {
-            freeze()
-        }
-    }
-    class Accept(val type: ContentTypeValue) : HTTPHeader() {
-        init {
-            freeze()
-        }
-    }
-    class Authorization(val token: String) : HTTPHeader() {
-        init {
-            freeze()
-        }
-    }
+    class ContentType(val type: ContentTypeValue) : HTTPHeader()
+    class ContentLength(val length: Int) : HTTPHeader()
+    class Accept(val type: ContentTypeValue) : HTTPHeader()
+    class Authorization(val token: String) : HTTPHeader()
 
     companion object {
         internal fun createFromRaw(name: String, value: String): HTTPHeader? {

@@ -20,6 +20,7 @@ typealias IPAddress = String
 
 enum WebViewAction {
     case loadSite
+    case resetToSite(Site)
     case loadNextLink(_ url: URL)
     case injectPlugins((any JSPluginsProgram)?)
     case fetchDoHStatus
@@ -45,6 +46,8 @@ extension WebViewAction: CustomStringConvertible {
         switch self {
         case .loadSite:
             return "loadSite"
+        case .resetToSite(let site):
+            return "resetToSite (\(site.urlInfo.platformURL.absoluteString)"
         case .loadNextLink(let nextURL):
 #if DEBUG
             return "loadNextLink (\(nextURL.absoluteString))"

@@ -57,4 +57,11 @@ class DomainNameTests {
             block = { DomainName(wrongIPv4Addres1) }
         )
     }
+
+    @Test
+    fun testTopSites() {
+        val opennetCode: String = "opennet.ru"
+        val opennet = DomainName("opennet.ru")
+        assertEquals(opennetCode, opennet.rawString)
+    }
 }

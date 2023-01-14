@@ -28,7 +28,13 @@ final class DefaultTabProvider {
         let opennet = Site("https://opennet.ru", "OpenNet", settings)
         let yahooFinance = Site("https://finance.yahoo.com", "Yahoo Finance", settings)
         let github = Site("https://github.com", "GitHub", settings)
+        #if DEBUG
+        let mailToLink = Site("https://www.k8oms.net/links/mailto-link", "k8oms", settings)
+        let mapsV1 = Site("https://www.apple.com/maps/", "apple maps", settings)
+        array = [opennet, yahooFinance, github, mailToLink, mapsV1]
+        #else
         array = [opennet, yahooFinance, github]
+        #endif
         return array.compactMap {$0}
     }()
     

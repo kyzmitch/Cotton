@@ -32,6 +32,8 @@ private struct _BrowserMenuView: View {
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
     @State private var isShowingWebAutoCompleteSetting = false
+    @State private var isShowingAppUIFrameworkSetting = false
+    @State private var showingAppRestartAlert = false
     
     // MARK: - Allow to update text view content dynamically
     
@@ -39,6 +41,7 @@ private struct _BrowserMenuView: View {
     @State private var webAutocompleteRowValueText = FeatureManager.webSearchAutoCompleteValue().description
     @State private var tabAddPositionRowValueText = FeatureManager.tabAddPositionValue().description
     @State private var asyncApiRowValueText = FeatureManager.appAsyncApiTypeValue().description
+    @State private var uiFrameworkRowValueText = FeatureManager.appUIFrameworkValue().description
     
     var body: some View {
         NavigationView {
@@ -89,6 +92,9 @@ private struct _BrowserMenuView: View {
                 }
 #if DEBUG
                 Section(header: Text(verbatim: .devSectionTtl)) {
+                    Toggle(isOn: $model.nativeAppRedirectEnabled) {
+                        Text(verbatim: .nativeAppRedirectTitle)
+                    }
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
@@ -97,6 +103,16 @@ private struct _BrowserMenuView: View {
                         Text(verbatim: .appAsyncApiTypeTxt)
                         Spacer()
                         Text(verbatim: asyncApiRowValueText)
+                    }
+                    NavigationLink(destination: BaseMenuView<UIFrameworkType>(model: .init { (selected) in
+                        FeatureManager.setFeature(.appDefaultUIFramework, value: selected)
+                        self.isShowingAppUIFrameworkSetting = false
+                        uiFrameworkRowValueText = selected.description
+                        self.showingAppRestartAlert.toggle()
+                    }), isActive: $isShowingAppUIFrameworkSetting) {
+                        Text(verbatim: .appUIFrameworkTypeTxt)
+                        Spacer()
+                        Text(verbatim: uiFrameworkRowValueText)
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
@@ -110,7 +126,10 @@ private struct _BrowserMenuView: View {
             .navigationBarItems(trailing: Button<Text>(String.dismissBtn) {
                 presentationMode.wrappedValue.dismiss()
             })
+        }.alert(isPresented: $showingAppRestartAlert) {
+            Alert(title: Text(verbatim: "App restart is required"))
         }
+
     }
 }
 
@@ -121,6 +140,7 @@ private extension String {
     static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
                                                 comment: "Title of DoH menu item")
     static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled", comment: "")
+    static let nativeAppRedirectTitle = NSLocalizedString("txt_native_app_redirect_enabled", comment: "")
     static let dismissBtn = NSLocalizedString("btn_dismiss",
                                               comment: "Button dismiss text")
     static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
@@ -130,10 +150,10 @@ private extension String {
                                                       comment: "")
     static let webAutoCompleteSourceTxt = NSLocalizedString("ttl_web_search_auto_complete_source",
                                                         comment: "")
+    static let appUIFrameworkTypeTxt = NSLocalizedString("ttl_app_ui_framework_type", comment: "")
 }
 
 #if DEBUG
-// swiftlint:disable type_name
 @available(iOS 13.0, *)
 struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {

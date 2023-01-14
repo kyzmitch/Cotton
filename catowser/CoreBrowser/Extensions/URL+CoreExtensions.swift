@@ -13,7 +13,8 @@ import CoreHttpKit
 public extension URL {
     var isAppleMapsURL: Bool {
         if scheme == "http" || scheme == "https" {
-            if host == "maps.apple.com" && query != nil {
+            if host == "maps.apple.com" {
+                // Not checking query != nil because https://maps.apple.com/go won't work
                 return true
             }
         }

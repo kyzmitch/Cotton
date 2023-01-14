@@ -86,7 +86,7 @@ final class SearchSuggestionsViewController: UITableViewController {
             taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
         }
         
-        // Also would be good to obverve for changes in settings
+        // Also would be good to observe for the changes in settings
         // to notify user to close and open this search table
         // to re-create view model with recently selected auto complete source.
         // Need to update FeatureManager enum features

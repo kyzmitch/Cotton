@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 /// Convinient protocol to be able to pass view controller
 /// which confirms to some protocol
