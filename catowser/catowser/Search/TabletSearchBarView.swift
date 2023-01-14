@@ -13,15 +13,16 @@ struct TabletSearchBarView: View {
     private var model: SearchBarViewModel
     @Binding private var stateBinding: SearchBarState
     private(set) var toolbarModel: WebBrowserToolbarModel
-    @State private var webViewInterface: WebViewNavigatable?
+    @Binding private var webViewInterface: WebViewNavigatable?
     
     init(_ model: SearchBarViewModel,
          _ stateBinding: Binding<SearchBarState>,
-         _ toolbarModel: WebBrowserToolbarModel) {
+         _ toolbarModel: WebBrowserToolbarModel,
+         _ webViewInterface: Binding<WebViewNavigatable?>) {
         self.model = model
         _stateBinding = stateBinding
         self.toolbarModel = toolbarModel
-        self.webViewInterface = nil
+        _webViewInterface = webViewInterface
     }
     
     var body: some View {
@@ -81,9 +82,14 @@ struct TabletSearchBarView_Previews: PreviewProvider {
         } set: { _ in
             //
         }
+        let interface: Binding<WebViewNavigatable?> = .init {
+            nil
+        } set: { _ in
+            //
+        }
         let toolbarModel = WebBrowserToolbarModel()
         // View is jumping when you tap on it
-        TabletSearchBarView(model, state, toolbarModel)
+        TabletSearchBarView(model, state, toolbarModel, interface)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }

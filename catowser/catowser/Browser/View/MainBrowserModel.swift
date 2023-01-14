@@ -11,9 +11,6 @@ import SwiftUI
 import JSPlugins
 
 final class MainBrowserModel<C: BrowserContentCoordinators> {
-    /// web view interface
-    @Published var webViewInterface: WebViewNavigatable?
-    
     weak var coordinatorsInterface: C?
     /// Not a constant because can't be initialized in init
     lazy var jsPluginsBuilder: any JSPluginsSource = {

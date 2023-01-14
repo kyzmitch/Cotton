@@ -40,12 +40,6 @@ final class WebBrowserToolbarModel {
     }
 }
 
-extension WebBrowserToolbarModel: WebViewCreationObserver {
-    func webViewInterfaceDidChange(_ interface: WebViewNavigatable) {
-        webViewInterface = interface
-    }
-}
-
 extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
     func didBackNavigationUpdate(to canGoBack: Bool) {
         siteNavigationDelegate?.changeBackButton(to: canGoBack)
@@ -74,6 +68,15 @@ extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
     }
     
     func webViewDidHandleReuseAction() {
+        // web view was re-created, so, all next SwiftUI view updates can be ignored
         stopWebViewReuseAction = ()
+    }
+    
+    func webViewDidReplace(_ interface: WebViewNavigatable) {
+        // This will be called every time web view changes
+        // in re-usable web view controller
+        // so, it will be the same reference actually
+        // that is why no need to check for dublication.
+        webViewInterface = interface
     }
 }

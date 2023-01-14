@@ -13,10 +13,6 @@ import BrowserNetworking
 import CoreHttpKit
 import CoreCatowser
 
-protocol WebViewCreationObserver: AnyObject {
-    func webViewInterfaceDidChange(_ interface: WebViewNavigatable)
-}
-
 struct NotSelectedIndex: Error {}
 struct OutOfBoundsIndex: Error {}
 
@@ -33,10 +29,6 @@ final class WebViewsReuseManager {
     private let useLimitedCache = false
     /// view factory
     private let vcFactory: ViewControllerFactory
-    /// Observers, needed for SwiftUI only for now
-    private var observers = [WebViewCreationObserver]()
-    ///  Sync primitive for `observers`
-    private let queue: DispatchQueue
 
     init(_ vcFactory: ViewControllerFactory, _ viewsLimit: Int = 10) {
         assert(viewsLimit >= 1, "Not possible view limit")
@@ -46,7 +38,6 @@ final class WebViewsReuseManager {
         } else {
             self.viewsLimit = 2
         }
-        queue = DispatchQueue.main
     }
     
     private func searchWebViewIndex(for site: Site) -> Int? {
@@ -86,9 +77,6 @@ final class WebViewsReuseManager {
             let vc = vcFactory.webViewController(vm, delegate, coordinator)
             views.append(vc)
             lastSelectedIndex = count
-            queue.async { [weak self] in
-                self?.observers.forEach { $0.webViewInterfaceDidChange(vc) }
-            }
             return vc
         }
 
@@ -123,11 +111,5 @@ final class WebViewsReuseManager {
         guard let index = searchWebViewIndex(for: site) else { return false }
         views.remove(at: index)
         return true
-    }
-    
-    func addObserver(_ observer: WebViewCreationObserver) {
-        queue.async { [weak self] in
-            self?.observers.append(observer)
-        }
     }
 }

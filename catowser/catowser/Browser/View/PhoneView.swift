@@ -35,6 +35,10 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool
     
+    // MARK: - web view related
+    
+    @State private var webViewInterface: WebViewNavigatable?
+    
     init(_ model: MainBrowserModel<C>) {
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
@@ -42,6 +46,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         isLoading = true
         contentType = DefaultTabProvider.shared.contentState
         webViewNeedsUpdate = false
+        webViewInterface = nil
         // web content loading state has to be stored here
         // to get that info from toolbar model and use it
         // for `ProgressView`
@@ -60,8 +65,6 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
         searchBarModel = SearchBarViewModel()
-        // Toolbar should know if current web view changes to provide navigation
-        ViewsEnvironment.shared.reuseManager.addObserver(toolbarModel)
     }
     
     var body: some View {
@@ -82,7 +85,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             } else {
                 BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
             }
-            ToolbarView(toolbarModel)
+            ToolbarView(toolbarModel, $webViewInterface)
         }
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarModel.$showProgress) { value in

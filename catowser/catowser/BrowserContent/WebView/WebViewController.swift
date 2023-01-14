@@ -61,6 +61,8 @@ final class WebViewController<C: Navigating>: BaseViewController,
     private(set) var webView: WKWebView?
     /// A reference to the optional auth handler to allow use background queue for the callback
     private(set) var authHandlers: Set<WebViewAuthChallengeHandler> = []
+    /// A proxy value for re-usable web view, only one needed
+    private var proxy: WebViewControllerProxy?
 
     /**
      Constructs web view controller for specific site with set of plugins and navigation handler
@@ -350,6 +352,17 @@ private extension WebViewController {
         newWebView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         newWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         webView = newWebView
+        
+        // Somehow would be good to reset web view interface
+        // to reset navigation delegate (toolbar or table search bar)
+        // because for SwiftUI mode the same view controller stays
+        // and only web view changes, so, `WebViewsReuseManager`
+        // won't create a new view controller and notify navigation delegates
+        // that is why we have to use same `self` and it shouldn't
+        // be checked that it is the same reference.
+        let proxyValue = WebViewControllerProxy(self)
+        proxy = proxyValue
+        externalNavigationDelegate?.webViewDidReplace(proxyValue)
     }
 }
 
