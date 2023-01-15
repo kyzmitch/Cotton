@@ -165,7 +165,7 @@ struct SiteMenuView_Previews: PreviewProvider {
         // swiftlint:disable force_unwrapping
         let style: BrowserMenuStyle = .withSiteMenu(host!, settings)
         let model = MenuViewModel(style)
-        return _BrowserMenuView().environmentObject(model)
+        return BrowserMenuView(model: model)
     }
 }
 #endif
