@@ -39,7 +39,11 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     
     @State private var webViewInterface: WebViewNavigatable?
     
-    init(_ model: MainBrowserModel<C>) {
+    // MARK: - constants
+    
+    private let mode: SwiftUIMode
+    
+    init(_ model: MainBrowserModel<C>, _ mode: SwiftUIMode) {
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -65,6 +69,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
         searchBarModel = SearchBarViewModel()
+        self.mode = mode
     }
     
     var body: some View {
@@ -109,7 +114,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
 struct TabletView_Previews: PreviewProvider {
     static var previews: some View {
         let model = MainBrowserModel(DummyDelegate())
-        TabletView(model)
+        TabletView(model, .compatible)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }

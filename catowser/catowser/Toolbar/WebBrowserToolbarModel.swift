@@ -20,6 +20,13 @@ final class WebBrowserToolbarModel {
     /// Void type can be used, because only notification is needed.
     @Published var stopWebViewReuseAction: Void
     
+    // MARK: - only for SwiftUI toolbar
+    
+    @Published var goBackDisabled: Bool
+    @Published var goForwardDisabled: Bool
+    @Published var reloadDisabled: Bool
+    @Published var downloadsDisabled: Bool
+    
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory
     }
@@ -37,6 +44,22 @@ final class WebBrowserToolbarModel {
         showProgress = false
         websiteLoadProgress = 0.0
         stopWebViewReuseAction = ()
+        goBackDisabled = true
+        goForwardDisabled = true
+        reloadDisabled = true
+        downloadsDisabled = true
+    }
+    
+    func goForward() {
+        webViewInterface?.goForward()
+    }
+    
+    func goBack() {
+        webViewInterface?.goBack()
+    }
+    
+    func reload() {
+        webViewInterface?.reload()
     }
 }
 
@@ -72,11 +95,14 @@ extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
         stopWebViewReuseAction = ()
     }
     
-    func webViewDidReplace(_ interface: WebViewNavigatable) {
+    func webViewDidReplace(_ interface: WebViewNavigatable?) {
         // This will be called every time web view changes
         // in re-usable web view controller
         // so, it will be the same reference actually
         // that is why no need to check for dublication.
         webViewInterface = interface
+        reloadDisabled = interface == nil
+        goBackDisabled = interface == nil
+        goForwardDisabled = interface == nil
     }
 }

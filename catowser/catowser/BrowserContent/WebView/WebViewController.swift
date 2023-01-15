@@ -105,6 +105,11 @@ final class WebViewController<C: Navigating>: BaseViewController,
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // The only re-usable view controller is not visible now
+        // it means that it was replaced with some different content
+        // maybe top sites, so, we have to reset navigation controls
+        // and it can be done by sending `nil` interface
+        externalNavigationDelegate?.webViewDidReplace(nil)
         unsubscribe()
     }
     

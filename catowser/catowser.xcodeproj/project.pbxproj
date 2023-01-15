@@ -124,8 +124,6 @@
 		755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		75EA5425296436C900EEF533 /* WebBrowserToolbarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */; };
 		75EA5426296436C900EEF533 /* WebBrowserToolbarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */; };
-		75EA54282964376E00EEF533 /* ToolbarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA54272964376E00EEF533 /* ToolbarViewV2.swift */; };
-		75EA54292964376E00EEF533 /* ToolbarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA54272964376E00EEF533 /* ToolbarViewV2.swift */; };
 		75FAAB38292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */; };
 		75FAAB39292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
@@ -1062,7 +1060,6 @@
 		759AE09529146C96008CE4EE /* Mockfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Mockfile; sourceTree = "<group>"; };
 		75DAB6DA280C44F0005F67FE /* CoreHttpKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CoreHttpKit; path = ../CoreHttpKit/CoreHttpKit; sourceTree = "<group>"; };
 		75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarModel.swift; sourceTree = "<group>"; };
-		75EA54272964376E00EEF533 /* ToolbarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarViewV2.swift; sourceTree = "<group>"; };
 		75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCoordinator.swift; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
@@ -1817,7 +1814,6 @@
 				841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */,
 				60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */,
 				8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */,
-				75EA54272964376E00EEF533 /* ToolbarViewV2.swift */,
 				75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */,
 			);
 			path = Toolbar;
@@ -3785,7 +3781,6 @@
 				8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */,
 				8A55351A247D740900E3B330 /* MenuViewModel.swift in Sources */,
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
-				75EA54282964376E00EEF533 /* ToolbarViewV2.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
 				8A82594A294E40F5007B97CF /* BrowserContentModel.swift in Sources */,
@@ -4041,7 +4036,6 @@
 				8A1273DE2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */,
 				8A55351B247D740900E3B330 /* MenuViewModel.swift in Sources */,
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
-				75EA54292964376E00EEF533 /* ToolbarViewV2.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
 				8A8035CB24442F0F000E035F /* CounterView.swift in Sources */,
 				8A82594B294E40F5007B97CF /* BrowserContentModel.swift in Sources */,

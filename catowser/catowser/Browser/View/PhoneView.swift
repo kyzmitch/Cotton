@@ -39,7 +39,15 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     
     @State private var webViewInterface: WebViewNavigatable?
     
-    init(_ model: MainBrowserModel<C>) {
+    // MARK: - constants
+    
+    private let mode: SwiftUIMode
+    
+    // MARK: - toolbar
+    
+    @State private var toolbarVisibility: Visibility
+    
+    init(_ model: MainBrowserModel<C>, _ mode: SwiftUIMode) {
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -65,6 +73,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
         searchBarModel = SearchBarViewModel()
+        self.mode = mode
+        switch mode {
+        case .compatible:
+            toolbarVisibility = .hidden
+        case .full:
+            toolbarVisibility = .visible
+        }
     }
     
     var body: some View {
@@ -75,17 +90,63 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
          even after keyboard became visible.
          */
         
-        VStack {
-            SearchBarView(searchBarModel, $searchBarState)
-            if showProgress {
-                ProgressView(value: websiteLoadProgress)
+        NavigationView {
+            VStack {
+                SearchBarView(searchBarModel, $searchBarState)
+                if showProgress {
+                    ProgressView(value: websiteLoadProgress)
+                }
+                if showSearchSuggestions {
+                    SearchSuggestionsView($searchQuery, searchBarModel)
+                } else {
+                    BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
+                }
+                if case .compatible = mode {
+                    ToolbarView(toolbarModel, $webViewInterface)
+                }
             }
-            if showSearchSuggestions {
-                SearchSuggestionsView($searchQuery, searchBarModel)
-            } else {
-                BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        toolbarModel.goBack()
+                    } label: {
+                        Image("nav-back")
+                    }
+                    .disabled(toolbarModel.goBackDisabled)
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Spacer()
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        toolbarModel.goForward()
+                    } label: {
+                        Image("nav-forward")
+                    }
+                    .disabled(toolbarModel.goForwardDisabled)
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Spacer()
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        toolbarModel.reload()
+                    } label: {
+                        Image("nav-refresh")
+                    }
+                    .disabled(toolbarModel.reloadDisabled)
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Spacer()
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                }
             }
-            ToolbarView(toolbarModel, $webViewInterface)
         }
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarModel.$showProgress) { value in
@@ -116,7 +177,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
 struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
         let model = MainBrowserModel(DummyDelegate())
-        PhoneView(model)
+        PhoneView(model, .full)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }

@@ -24,7 +24,9 @@ extension UIFrameworkType: CustomStringConvertible {
         case .uiKit:
             return "UIKit"
         case .swiftUIWrapper:
-            return "SwiftUI wraps legacy views"
+            return "SwiftUI +/wraps UIKit"
+        case .swiftUI:
+            return "SwiftUI"
         }
     }
 }

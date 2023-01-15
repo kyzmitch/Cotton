@@ -22,7 +22,7 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     /// SwiftUI specific to notify about the same view controller when web view changes.
     /// It will pass the existing web view controller because it is reused.
     /// It is the only way to reset interface when web view is re-created.
-    func webViewDidReplace(_ interface: WebViewNavigatable)
+    func webViewDidReplace(_ interface: WebViewNavigatable?)
 }
 
 protocol SiteNavigationChangable: AnyObject {

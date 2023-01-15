@@ -51,8 +51,21 @@ extension TabContentDefaultState: EnumDefaultValueSupportable {
 // MARK: - UI settings
 
 enum UIFrameworkType: Int, CaseIterable {
+    /// Good old UIKit views
     case uiKit
+    /// SwiftUI view wraps UIKit view controller
     case swiftUIWrapper
+    /// Clear SwiftUI views without re-using UIKit
+    case swiftUI
+    
+    var swiftUIBased: Bool {
+        switch self {
+        case .swiftUI, .swiftUIWrapper:
+            return true
+        case .uiKit:
+            return false
+        }
+    }
 }
 
 extension UIFrameworkType: EnumDefaultValueSupportable {
