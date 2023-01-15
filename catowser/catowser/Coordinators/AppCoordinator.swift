@@ -85,7 +85,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
     
     func start() {
-        if case .swiftUIWrapper = uiFramework {
+        if uiFramework.swiftUIBased {
             // Must do coordinators init earlier
             // to allow to use some of them in SwiftUI views
             insertTopSites()
@@ -392,7 +392,7 @@ private extension AppCoordinator {
                 return
             }
             coordinator = .init(vcFactory, startedVC, containerView)
-        case .swiftUIWrapper:
+        case .swiftUIWrapper, .swiftUI:
             coordinator = .init(vcFactory, startedVC, nil)
         }
         
@@ -435,7 +435,7 @@ private extension AppCoordinator {
             // Set new interface after starting, it is new for every site/webView
             siteNavigator = coordinator.startedVC as? WebViewNavigatable
             webContentCoordinator = coordinator
-        case .swiftUIWrapper:
+        case .swiftUIWrapper, .swiftUI:
             break
         }
     }

@@ -145,7 +145,7 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
         // no need to handle, this is SwiftUI specific
     }
     
-    func webViewDidReplace(_ interface: WebViewNavigatable) {
+    func webViewDidReplace(_ interface: WebViewNavigatable?) {
         // no need to handle, this is SwiftUI specific
     }
 }

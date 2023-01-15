@@ -74,7 +74,7 @@ extension ViewControllerFactory {
         switch FeatureManager.appUIFrameworkValue() {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
-        case .swiftUIWrapper:
+        case .swiftUIWrapper, .swiftUI:
             vc = MainBrowserV2ViewController(coordinator)
         }
         return vc

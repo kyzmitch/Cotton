@@ -65,7 +65,7 @@ final class SearchBarLegacyView: UIView {
                 searchBarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 16).isActive = true
             }
         } else {
-            if case .swiftUIWrapper = uiFramework {
+            if uiFramework.swiftUIBased {
                 // Fix for the SwiftUI preview to have some width, otherwise whole view has 0 width
                 // and for some reason in preview mode the supr view doesn't tell the width
                 if isPad {

@@ -61,7 +61,7 @@ struct SearchBarView_Previews: PreviewProvider {
         let model = SearchBarViewModel()
         let state: Binding<SearchBarState> = .init {
             // .viewMode("cotton", "cotton", true)
-            .blankSearch
+            .startSearch
         } set: { _ in
             //
         }
