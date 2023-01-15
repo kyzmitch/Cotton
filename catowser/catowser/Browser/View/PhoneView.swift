@@ -46,6 +46,18 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     // MARK: - toolbar
     
     @State private var toolbarVisibility: Visibility
+    @State private var showingMenu: Bool
+    
+    private var menuModel: MenuViewModel {
+        let style: BrowserMenuStyle
+        if let interface = webViewInterface {
+            style = .withSiteMenu(interface.host, interface.siteSettings)
+        } else {
+            style = .onlyGlobalMenu
+        }
+        
+        return MenuViewModel(style)
+    }
     
     init(_ model: MainBrowserModel<C>, _ mode: SwiftUIMode) {
         // Browser content state has to be stored outside in main view
@@ -80,6 +92,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         case .full:
             toolbarVisibility = .visible
         }
+        showingMenu = false
     }
     
     var body: some View {
@@ -89,8 +102,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
          So, the toolbar will stay on same position
          even after keyboard became visible.
          */
-        
-        NavigationView {
+        switch mode {
+        case .compatible:
             VStack {
                 SearchBarView(searchBarModel, $searchBarState)
                 if showProgress {
@@ -105,71 +118,117 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     ToolbarView(toolbarModel, $webViewInterface)
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        toolbarModel.goBack()
-                    } label: {
-                        Image("nav-back")
+            .ignoresSafeArea(.keyboard)
+            .onReceive(toolbarModel.$showProgress) { value in
+                showProgress = value
+            }
+            .onReceive(toolbarModel.$websiteLoadProgress) { value in
+                websiteLoadProgress = value
+            }
+            .onReceive(searchBarModel.$showSuggestions) { value in
+                showSearchSuggestions = value
+            }
+            .onReceive(searchBarModel.$searchText) { value in
+                searchQuery = value
+            }
+            .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
+                searchBarState = value
+            }
+            .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
+                webViewNeedsUpdate = false
+            }
+            .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+                webViewNeedsUpdate = true
+            }
+        case .full:
+            NavigationView {
+                VStack {
+                    SearchBarView(searchBarModel, $searchBarState)
+                    if showProgress {
+                        ProgressView(value: websiteLoadProgress)
                     }
-                    .disabled(toolbarModel.goBackDisabled)
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Spacer()
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        toolbarModel.goForward()
-                    } label: {
-                        Image("nav-forward")
+                    if showSearchSuggestions {
+                        SearchSuggestionsView($searchQuery, searchBarModel)
+                    } else {
+                        BrowserContentView(browserContentModel,
+                                           toolbarModel,
+                                           $isLoading,
+                                           $contentType,
+                                           $webViewNeedsUpdate)
                     }
-                    .disabled(toolbarModel.goForwardDisabled)
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Spacer()
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        toolbarModel.reload()
-                    } label: {
-                        Image("nav-refresh")
+                    if case .compatible = mode {
+                        ToolbarView(toolbarModel, $webViewInterface)
                     }
-                    .disabled(toolbarModel.reloadDisabled)
                 }
-                ToolbarItem(placement: .bottomBar) {
-                    Spacer()
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "square.and.arrow.up")
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button {
+                            toolbarModel.goBack()
+                        } label: {
+                            Image("nav-back")
+                        }
+                        .disabled(toolbarModel.goBackDisabled)
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Spacer()
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button {
+                            toolbarModel.goForward()
+                        } label: {
+                            Image("nav-forward")
+                        }
+                        .disabled(toolbarModel.goForwardDisabled)
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Spacer()
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button {
+                            toolbarModel.reload()
+                        } label: {
+                            Image("nav-refresh")
+                        }
+                        .disabled(toolbarModel.reloadDisabled)
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Spacer()
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+                        Button {
+                            showingMenu.toggle()
+                        } label: {
+                            Image(systemName: "square.and.arrow.up")
+                        }
                     }
                 }
             }
-        }
-        .ignoresSafeArea(.keyboard)
-        .onReceive(toolbarModel.$showProgress) { value in
-            showProgress = value
-        }
-        .onReceive(toolbarModel.$websiteLoadProgress) { value in
-            websiteLoadProgress = value
-        }
-        .onReceive(searchBarModel.$showSuggestions) { value in
-            showSearchSuggestions = value
-        }
-        .onReceive(searchBarModel.$searchText) { value in
-            searchQuery = value
-        }
-        .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
-            searchBarState = value
-        }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
-            webViewNeedsUpdate = false
-        }
-        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
-            webViewNeedsUpdate = true
-        }
+            .sheet(isPresented: $showingMenu) {
+                BrowserMenuView(model: menuModel)
+            }
+            .ignoresSafeArea(.keyboard)
+            .onReceive(toolbarModel.$showProgress) { value in
+                showProgress = value
+            }
+            .onReceive(toolbarModel.$websiteLoadProgress) { value in
+                websiteLoadProgress = value
+            }
+            .onReceive(searchBarModel.$showSuggestions) { value in
+                showSearchSuggestions = value
+            }
+            .onReceive(searchBarModel.$searchText) { value in
+                searchQuery = value
+            }
+            .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
+                searchBarState = value
+            }
+            .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
+                webViewNeedsUpdate = false
+            }
+            .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+                webViewNeedsUpdate = true
+            }
+        } // switch
     }
 }
 
