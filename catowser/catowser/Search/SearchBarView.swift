@@ -12,16 +12,24 @@ import SwiftUI
 struct SearchBarView: View {
     private var model: SearchBarViewModel
     @Binding private var stateBinding: SearchBarState
+    private let mode: SwiftUIMode
     
     init(_ model: SearchBarViewModel,
-         _ stateBinding: Binding<SearchBarState>) {
+         _ stateBinding: Binding<SearchBarState>,
+         _ mode: SwiftUIMode) {
         self.model = model
         _stateBinding = stateBinding
+        self.mode = mode
     }
     
     var body: some View {
-        PhoneSearchBarLegacyView(model, $stateBinding)
-            .frame(height: CGFloat.searchViewHeight)
+        switch mode {
+        case .compatible:
+            PhoneSearchBarLegacyView(model, $stateBinding)
+                .frame(height: CGFloat.searchViewHeight)
+        case .full:
+            SearchBarViewV2(model, $stateBinding)
+        }
     }
 }
 
@@ -66,7 +74,7 @@ struct SearchBarView_Previews: PreviewProvider {
             //
         }
         // View is jumping when you tap on it
-        SearchBarView(model, state)
+        SearchBarView(model, state, .compatible)
     }
 }
 #endif

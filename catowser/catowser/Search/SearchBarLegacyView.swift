@@ -302,8 +302,3 @@ private extension SearchBarLegacyView {
 fileprivate extension Selector {
     static let siteNameTap = #selector(SearchBarLegacyView.handleSiteNameTap(_:))
 }
-
-private extension String {
-    static let placeholderText: String = NSLocalizedString("placeholder_searchbar",
-                                                           comment: "when search bar is empty")
-}

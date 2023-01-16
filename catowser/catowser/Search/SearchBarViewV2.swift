@@ -8,16 +8,29 @@
 
 import SwiftUI
 
+extension LocalizedStringKey {
+    static let placeholderTextKey: LocalizedStringKey = "placeholder_searchbar"
+}
+
 struct SearchBarViewV2: View {
-    @State private var searchText = ""
-    @State private var showCancelButton: Bool = false
+    @State private var searchText: String
+    @State private var showCancelButton: Bool
+    private var model: SearchBarViewModel
+    @Binding private var stateBinding: SearchBarState
+    
+    init(_ model: SearchBarViewModel,
+         _ stateBinding: Binding<SearchBarState>) {
+        self.searchText = ""
+        self.showCancelButton = false
+        self.model = model
+        _stateBinding = stateBinding
+    }
     
     var body: some View {
         HStack {
             HStack {
                 Image(systemName: "magnifyingglass")
-                
-                TextField("search", text: $searchText, onEditingChanged: { _ in
+                TextField(.placeholderTextKey, text: $searchText, onEditingChanged: { _ in
                     self.showCancelButton = true
                 }, onCommit: {
                     print("onCommit")
@@ -26,7 +39,8 @@ struct SearchBarViewV2: View {
                 Button(action: {
                     self.searchText = ""
                 }, label: {
-                    Image(systemName: "xmark.circle.fill").opacity(searchText == "" ? 0 : 1)
+                    Image(systemName: "xmark.circle.fill")
+                        .opacity(searchText == "" ? 0 : 1)
                 })
             }
             .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
@@ -36,7 +50,8 @@ struct SearchBarViewV2: View {
             
             if showCancelButton {
                 Button("Cancel") {
-                    UIApplication.shared.endEditing(true) // this must be placed before the other commands here
+                    // this must be placed before the other commands here
+                    UIApplication.shared.endEditing(true)
                     self.searchText = ""
                     self.showCancelButton = false
                 }
@@ -51,8 +66,14 @@ struct SearchBarViewV2: View {
 #if DEBUG
 struct SearchBarViewV2_Previews: PreviewProvider {
     static var previews: some View {
+        let model = SearchBarViewModel()
+        let state: Binding<SearchBarState> = .init {
+            .startSearch
+        } set: { _ in
+            //
+        }
         // For some reason it jumps after selection
-        SearchBarViewV2()
+        SearchBarViewV2(model, state)
     }
 }
 #endif
