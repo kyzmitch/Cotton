@@ -33,4 +33,7 @@ public extension String {
         guard self.hasPrefix(prefix) else { return nil }
         return String(self.dropFirst(prefix.count))
     }
+    
+    static let placeholderText: String = NSLocalizedString("placeholder_searchbar",
+                                                           comment: "when search bar is empty")
 }

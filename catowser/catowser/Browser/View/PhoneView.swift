@@ -105,7 +105,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         switch mode {
         case .compatible:
             VStack {
-                SearchBarView(searchBarModel, $searchBarState)
+                SearchBarView(searchBarModel, $searchBarState, mode)
                 if showProgress {
                     ProgressView(value: websiteLoadProgress)
                 }
@@ -143,7 +143,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         case .full:
             NavigationView {
                 VStack {
-                    SearchBarView(searchBarModel, $searchBarState)
+                    SearchBarView(searchBarModel, $searchBarState, mode)
                     if showProgress {
                         ProgressView(value: websiteLoadProgress)
                     }
