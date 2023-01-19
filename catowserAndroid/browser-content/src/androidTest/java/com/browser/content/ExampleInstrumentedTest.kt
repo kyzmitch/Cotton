@@ -1,4 +1,4 @@
-package com.browser.content
+package com.ae.browser.content
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -1,4 +1,4 @@
-package com.cotton
+package com.ae.cotton
 
 import org.junit.Test
 
