@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "Cotton"
 include ':app'
 include ':browser-content'
+include ':CoreHttpKit'
+project(':CoreHttpKit').projectDir=new File('../CoreHttpKit')
