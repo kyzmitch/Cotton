@@ -1,4 +1,4 @@
-package com.ae.cotton
+package com.cotton
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
