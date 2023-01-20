@@ -1,4 +1,4 @@
-package com.ae.browser.content
+package com.browser.content
 
 import org.junit.Test
 
