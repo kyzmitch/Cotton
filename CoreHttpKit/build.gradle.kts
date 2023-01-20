@@ -13,7 +13,8 @@ repositories {
 // https://github.com/ge-org/multiplatform-swiftpackage
 
 plugins {
-    kotlin("multiplatform") version "1.7.20"
+    kotlin("multiplatform")
+    id("com.android.library")
     kotlin("plugin.serialization") version "1.7.20"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
@@ -79,11 +80,7 @@ kotlin {
             xcf.add(this)
         }
     }
-}
-
-tasks.wrapper {
-    gradleVersion = "6.7.1"
-    distributionType = Wrapper.DistributionType.ALL
+    android()
 }
 
 // config JVM target to 1.8 for kotlin compilation tasks
@@ -93,4 +90,9 @@ tasks.withType<KotlinCompile>().configureEach {
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     additionalEditorconfigFile.set(file(".editorconfig"))
+}
+
+android {
+    namespace = "org.cottonweb.CoreHttpKit"
+    compileSdk = 32
 }
