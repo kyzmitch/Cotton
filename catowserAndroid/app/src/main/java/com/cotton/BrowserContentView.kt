@@ -3,6 +3,7 @@ package com.cotton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import org.cotton.base.Site
 
 sealed class TabContentType {
     class Blank(): TabContentType()

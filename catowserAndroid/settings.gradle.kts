@@ -6,8 +6,15 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 rootProject.name = "Cotton"
 include("app")
 include("browser-content")
-include(":CoreHttpKit")
-project(":CoreHttpKit").projectDir = File("../CoreHttpKit")
+include(":CottonCoreBaseKit")
+project(":CottonCoreBaseKit").projectDir = File("../CottonCoreBaseKit")
