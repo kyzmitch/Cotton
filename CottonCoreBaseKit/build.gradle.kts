@@ -2,25 +2,16 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val groupValue = "org.cotton.base"
-val versionValue = "0.1-SNAPSHOT"
-group = groupValue
-version = versionValue
+group = "org.cotton.base"
+version = "0.1-SNAPSHOT"
 
 plugins {
-    kotlin("multiplatform") version "1.7.21"
-    id("com.android.library") version "7.3.0"
-    kotlin("plugin.serialization") version "1.7.21"
+    kotlin("multiplatform") version "1.8.0"
+    id("com.android.library") version "7.0.2"
+    kotlin("plugin.serialization") version "1.8.0"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
-    id("maven-publish")
-}
-
-buildscript {
-    dependencies {
-        classpath("com.android.tools.build:gradle:7.3.0")
-    }
 }
 
 dependencies {
@@ -37,13 +28,6 @@ val frameworkName = "CottonCoreBaseKit"
 kotlin {
     val xcf = XCFramework(frameworkName)
     ios {
-        sourceSets {
-            commonMain {
-                kotlin {
-                    include("**/*.kt")
-                }
-            }
-        }
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
@@ -51,20 +35,12 @@ kotlin {
         }
     }
     macosX64 {
-        sourceSets {
-            commonMain {
-                kotlin {
-                    include("**/*.kt")
-                }
-            }
-        }
         binaries.framework {
             baseName = frameworkName
             xcf.add(this)
         }
     }
     android {
-        publishLibraryVariants("release", "debug")
         sourceSets {
             commonMain {
                 kotlin {
@@ -76,8 +52,13 @@ kotlin {
 }
 
 android {
-    namespace = groupValue
+    namespace = "org.cottonweb.CoreHttpKit"
     compileSdk = 32
+}
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:3.2")
+    }
 }
 
 multiplatformSwiftPackage {

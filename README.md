@@ -16,6 +16,14 @@ Features
 
 Building the code
 -----------------
+Environment
+-----------------
+IntelliJ IDEA 2022.2 (this is not latest version to avoid Android plugin error)
+Xcode 14.2 is supported
+Android Studio 2022.1.1 ?
+
+Steps
+-----------------
 - install `Android Studio` to have Android SDK for Kotlin Multiplatform project even for iOS build, because gradle file depends on it as well.
 - On macOS update your `.bash_profile` with
 ```

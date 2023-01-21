@@ -73,7 +73,6 @@ sealed class HTTPHeader {
                 is ContentLength -> "Content-Length"
                 is Accept -> "Accept"
                 is Authorization -> "Authorization"
-                else -> throw IllegalStateException()
             }
         }
 
@@ -84,7 +83,6 @@ sealed class HTTPHeader {
                 is ContentLength -> "$length"
                 is Accept -> type.stringValue
                 is Authorization -> "Bearer $token"
-                else -> throw IllegalStateException()
             }
         }
 }
