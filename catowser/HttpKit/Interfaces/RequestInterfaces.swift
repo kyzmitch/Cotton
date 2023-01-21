@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 import AutoMockable
 
 public protocol URLRequestCreatable: AutoMockable {

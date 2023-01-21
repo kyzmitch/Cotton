@@ -8,7 +8,7 @@
 
 import XCTest
 import CoreBrowser
-import CoreHttpKit
+import CottonCoreBaseKit
 
 extension UUID {
     static let testId1: UUID = .init(uuid: (1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))

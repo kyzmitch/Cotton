@@ -12,7 +12,7 @@ import FeaturesFlagsKit
 import Combine
 #endif
 import BrowserNetworking
-import CoreHttpKit
+import CottonCoreBaseKit
 import UIKit
 
 /// Client side extension for `CoreBrowser` `Site` type to be able to detect DoH usage

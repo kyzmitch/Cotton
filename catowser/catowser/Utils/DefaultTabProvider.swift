@@ -9,7 +9,7 @@
 import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class DefaultTabProvider {
     static let shared = DefaultTabProvider()

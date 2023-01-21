@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class TopSitesModel: ObservableObject {
     let topSites: [Site]

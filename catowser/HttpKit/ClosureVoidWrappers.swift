@@ -9,7 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
-import CoreHttpKit
+import CottonCoreBaseKit
 
 // gryphon ignore
 public class ClosureVoidWrapper<Server: ServerDescription>: Hashable {

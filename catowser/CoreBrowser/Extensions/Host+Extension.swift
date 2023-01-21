@@ -6,9 +6,9 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CoreHttpKit
+import CottonCoreBaseKit
 
-public extension CoreHttpKit.Host {
+public extension CottonCoreBaseKit.Host {
     func isSimilar(with url: URL) -> Bool {
         guard let rawHostString = url.host else { return false }
         return isSimilar(name: rawHostString)

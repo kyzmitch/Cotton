@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 
 /// A proxy type around WebViewController for SwiftUI mode only when
 /// web view can only be re-used and same web view controller

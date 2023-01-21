@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 import JSPlugins
 import FeaturesFlagsKit
 import ReactiveSwift
@@ -47,7 +47,7 @@ public protocol WebViewModel: AnyObject {
     
     var nativeAppDomainNameString: String? { get }
     var configuration: WKWebViewConfiguration { get }
-    var host: CoreHttpKit.Host { get }
+    var host: CottonCoreBaseKit.Host { get }
     var currentURL: URL? { get }
     var settings: Site.Settings { get }
     var urlInfo: URLInfo { get }

@@ -7,7 +7,7 @@
 //
 
 import WebKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 // MARK: - Allow users of this delegate to control webview navigation
 

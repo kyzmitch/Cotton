@@ -8,11 +8,11 @@
 
 import Foundation
 import WebKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 public protocol JSPluginsProgram: AnyObject, Equatable {
     var plugins: [any JavaScriptPlugin] { get }
     
-    func inject(to visitor: WKUserContentController, context: CoreHttpKit.Host, canInject: Bool)
-    func enable(on webView: JavaScriptEvaluateble, context: CoreHttpKit.Host, jsEnabled: Bool)
+    func inject(to visitor: WKUserContentController, context: CottonCoreBaseKit.Host, canInject: Bool)
+    func enable(on webView: JavaScriptEvaluateble, context: CottonCoreBaseKit.Host, jsEnabled: Bool)
 }

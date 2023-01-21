@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreGraphics
 import CoreBrowser
-import CoreHttpKit
+import CottonCoreBaseKit
 import FeaturesFlagsKit
 #if canImport(Combine)
 import Combine

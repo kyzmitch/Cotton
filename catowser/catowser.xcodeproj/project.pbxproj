@@ -223,13 +223,6 @@
 		8A5E6C93290B107B0034A78B /* AutoMockable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5E6C7D290B0E6C0034A78B /* AutoMockable.framework */; };
 		8A5E6CAF290B1D4F0034A78B /* RestInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5E6CAE290B1D4F0034A78B /* RestInterface.swift */; };
 		8A5E6CB1290B21B50034A78B /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8A5E6CB0290B21B50034A78B /* Alamofire */; };
-		8A5F71F62826C148008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F71F72826C148008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F72042826C1A7008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F72072826C410008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8A5F720A2826C432008E5638 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
 		8A5F720D2826DD16008E5638 /* ReactiveHttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; };
 		8A5F72102826DD59008E5638 /* ReactiveHttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; };
 		8A5F72112826DD59008E5638 /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -281,7 +274,6 @@
 		8A7B1BE828EB18A5004FC135 /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
 		8A7B1BEB28EB18AD004FC135 /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
 		8A7B1BEC28EB18AD004FC135 /* CoreCatowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A7B1BEF28EB18DB004FC135 /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
 		8A7B1BF228EB28D3004FC135 /* AppErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5FD6A826AF34570019384A /* AppErrors.swift */; };
 		8A7B1BF428EB2A4D004FC135 /* AsyncApiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BF328EB2A4D004FC135 /* AsyncApiType.swift */; };
 		8A7B1BF528EB2C08004FC135 /* Host+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6972628BB35DE00981BBF /* Host+Extension.swift */; };
@@ -364,6 +356,16 @@
 		8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90636824332376009D786E /* URL+CoreExtensions.swift */; };
 		8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
+		8A91694A297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A91694B297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A91694C297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A91694D297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8A91694E297C43AC00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A916951297C43B400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A916954297C43BD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A916957297C43C400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A91695A297C43CD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A91695D297C43D500F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
@@ -509,8 +511,6 @@
 		8AD4F52228F49317009C4BDC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F52128F49317009C4BDC /* Alamofire */; };
 		8AD4F52428F4931C009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F52328F4931C009C4BDC /* ReactiveSwift */; };
 		8AD4F52628F49321009C4BDC /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F52528F49321009C4BDC /* AlamofireImage */; };
-		8AD4F52728F49328009C4BDC /* CoreHttpKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; };
-		8AD4F52828F49328009C4BDC /* CoreHttpKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AD4F52928F49341009C4BDC /* BrowserNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A277137268E452000D8878C /* BrowserNetworking.framework */; };
 		8AD4F52C28F49346009C4BDC /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8AD4F52F28F49349009C4BDC /* CoreCatowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CoreCatowser.framework */; };
@@ -914,11 +914,11 @@
 				608DA752223A3BD5009F75BD /* JSPlugins.framework in Embed Frameworks */,
 				6094E724221FD2B9004269A2 /* CoreBrowser.framework in Embed Frameworks */,
 				8ABF504527CC1A64007C6427 /* FeaturesFlagsKit.framework in Embed Frameworks */,
-				8A5F71F72826C148008E5638 /* CoreHttpKit.xcframework in Embed Frameworks */,
 				8A27713F268E452000D8878C /* BrowserNetworking.framework in Embed Frameworks */,
 				8A5E6C84290B0E6C0034A78B /* AutoMockable.framework in Embed Frameworks */,
 				8AF4337D248EBB2A0047452B /* CssParser.framework in Embed Frameworks */,
 				8A5FD6A526AF31FE0019384A /* HttpKit.framework in Embed Frameworks */,
+				8A91694B297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -944,10 +944,10 @@
 				8A8035DE24442F0F000E035F /* JSPlugins.framework in Embed Frameworks */,
 				8A8035DF24442F0F000E035F /* CoreBrowser.framework in Embed Frameworks */,
 				8ABDD90B27CCFACE0028B9DE /* FeaturesFlagsKit.framework in Embed Frameworks */,
+				8A91694D297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */,
 				8A27715E268E467D00D8878C /* BrowserNetworking.framework in Embed Frameworks */,
 				8AD4F53A28F4935D009C4BDC /* HttpKit.framework in Embed Frameworks */,
 				8AD4F53328F4934E009C4BDC /* CssParser.framework in Embed Frameworks */,
-				8AD4F52828F49328009C4BDC /* CoreHttpKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1060,7 +1060,6 @@
 		755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+EnumValues.swift"; sourceTree = "<group>"; };
 		755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificApplicationEnumFeatures.swift; sourceTree = "<group>"; };
 		759AE09529146C96008CE4EE /* Mockfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Mockfile; sourceTree = "<group>"; };
-		75DAB6DA280C44F0005F67FE /* CoreHttpKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CoreHttpKit; path = ../CoreHttpKit/CoreHttpKit; sourceTree = "<group>"; };
 		75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarModel.swift; sourceTree = "<group>"; };
 		75EA54272964376E00EEF533 /* ToolbarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarViewV2.swift; sourceTree = "<group>"; };
 		75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCoordinator.swift; sourceTree = "<group>"; };
@@ -1186,6 +1185,7 @@
 		8A9069D9267F52BE0058F12D /* GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsViewPreview.swift; sourceTree = "<group>"; };
+		8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CottonCoreBaseKit.xcframework; path = ../CottonCoreBaseKit/build/XCFrameworks/release/CottonCoreBaseKit.xcframework; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
@@ -1345,9 +1345,9 @@
 			files = (
 				8AB9BE0F28FEFD84002063C2 /* UIKit.framework in Frameworks */,
 				8AD4F51228F491C8009C4BDC /* ReactiveSwift in Frameworks */,
-				8A5F71FB2826C18E008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8AB9BE2728FF1304002063C2 /* CssParser.framework in Frameworks */,
 				8A03F45A28F47ACB00E4A296 /* SwiftSoup in Frameworks */,
+				8A916954297C43BD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1357,8 +1357,8 @@
 			files = (
 				60C2C92122819AE200F5D869 /* CoreImage.framework in Frameworks */,
 				8A5E6C89290B0EAE0034A78B /* AutoMockable.framework in Frameworks */,
-				8A5F71F82826C183008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8AD4F51028F491A7009C4BDC /* ReactiveSwift in Frameworks */,
+				8A91694E297C43AC00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1371,8 +1371,8 @@
 				8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */,
 				8A7B1BE828EB18A5004FC135 /* CoreCatowser.framework in Frameworks */,
 				8AD4F51E28F492DC009C4BDC /* AlamofireImage in Frameworks */,
+				8A91694A297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 				8A5E6C83290B0E6C0034A78B /* AutoMockable.framework in Frameworks */,
-				8A5F71F62826C148008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8AD4F51C28F49219009C4BDC /* ReactiveSwift in Frameworks */,
 				8ABF504427CC1A64007C6427 /* FeaturesFlagsKit.framework in Frameworks */,
 				8A27715A268E467500D8878C /* BrowserNetworking.framework in Frameworks */,
@@ -1394,9 +1394,9 @@
 				8AA6608A28F43F790058490F /* SWXMLHash in Frameworks */,
 				8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */,
 				8AD4F51828F491F8009C4BDC /* ReactiveSwift in Frameworks */,
-				8A5F72042826C1A7008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8A5F720D2826DD16008E5638 /* ReactiveHttpKit.framework in Frameworks */,
 				8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */,
+				8A91695D297C43D500F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1418,11 +1418,11 @@
 				8A5E6C8E290B0ED10034A78B /* AutoMockable.framework in Frameworks */,
 				8A7B1BD528EB170E004FC135 /* Combine.framework in Frameworks */,
 				8A7B1BCC28EB16F4004FC135 /* HttpKit.framework in Frameworks */,
-				8A7B1BEF28EB18DB004FC135 /* CoreHttpKit.xcframework in Frameworks */,
 				8A7B1BE428EB1771004FC135 /* CoreBrowser.framework in Frameworks */,
 				8A5E6CB1290B21B50034A78B /* Alamofire in Frameworks */,
 				8AB9BE2C28FF149A002063C2 /* FeaturesFlagsKit.framework in Frameworks */,
 				8A7B1BD828EB172A004FC135 /* BrowserNetworking.framework in Frameworks */,
+				8A916951297C43B400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1450,6 +1450,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AD4F52F28F49349009C4BDC /* CoreCatowser.framework in Frameworks */,
+				8A91694C297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 				8AD4F53928F4935D009C4BDC /* HttpKit.framework in Frameworks */,
 				8AD4F54028F4936A009C4BDC /* ReactiveHttpKit.framework in Frameworks */,
 				8AD4F53628F49358009C4BDC /* FeaturesFlagsKit.framework in Frameworks */,
@@ -1465,7 +1466,6 @@
 				8AD4F52228F49317009C4BDC /* Alamofire in Frameworks */,
 				8A8035CF24442F0F000E035F /* JSPlugins.framework in Frameworks */,
 				8AD4F52928F49341009C4BDC /* BrowserNetworking.framework in Frameworks */,
-				8AD4F52728F49328009C4BDC /* CoreHttpKit.xcframework in Frameworks */,
 				8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */,
 				8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */,
 				8ABDD90A27CCFACE0028B9DE /* FeaturesFlagsKit.framework in Frameworks */,
@@ -1495,7 +1495,7 @@
 			files = (
 				8AD4F51428F491D9009C4BDC /* ReactiveSwift in Frameworks */,
 				8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */,
-				8A5F72072826C410008E5638 /* CoreHttpKit.xcframework in Frameworks */,
+				8A91695A297C43CD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1520,8 +1520,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A5F720A2826C432008E5638 /* CoreHttpKit.xcframework in Frameworks */,
 				8A5E6C93290B107B0034A78B /* AutoMockable.framework in Frameworks */,
+				8A916957297C43C400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1538,6 +1538,7 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */,
 				8A7B1BF628EB2C7F004FC135 /* WebKit.framework */,
 				8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */,
 				8ABA3CD12522602900E304E2 /* CoreData.framework */,
@@ -1826,7 +1827,6 @@
 		8435A48E1EED5E700020102F = {
 			isa = PBXGroup;
 			children = (
-				8A1C1BD4280B1D9E009B9363 /* Packages */,
 				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
 				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
 				759AE09529146C96008CE4EE /* Mockfile */,
@@ -1981,14 +1981,6 @@
 				755E107627BFF85900D90AD0 /* AlamofireHTTPAdaptee.swift */,
 			);
 			path = TransportAdapters;
-			sourceTree = "<group>";
-		};
-		8A1C1BD4280B1D9E009B9363 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				75DAB6DA280C44F0005F67FE /* CoreHttpKit */,
-			);
-			name = Packages;
 			sourceTree = "<group>";
 		};
 		8A23987A28622391005DA801 /* Autocomplete */ = {

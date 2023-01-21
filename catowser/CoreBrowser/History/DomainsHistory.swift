@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import CoreHttpKit
+import CottonCoreBaseKit
 import AutoMockable
 
 public protocol KnownDomainsSource: AutoMockable {
@@ -15,5 +15,5 @@ public protocol KnownDomainsSource: AutoMockable {
 
 /// Interface for domain checks
 public protocol DomainsHistory {
-    func remember(host: CoreHttpKit.Host)
+    func remember(host: CottonCoreBaseKit.Host)
 }
