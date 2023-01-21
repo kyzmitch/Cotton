@@ -1,6 +1,6 @@
 ![Cotton - web browser for iOS](catowser/catowser/Assets.xcassets/AppIcon.appiconset/icon_83.5@2x.png)
 
-# Cotton - web browser for iOS & Android
+# Cotton - web browser for iOS
 
 Features
 -----------------
@@ -15,19 +15,6 @@ Features
 - own JavaScript plugins (instagram content downloads, html video tags downloads) experimental state
 
 Building the code
------------------
-Environment
------------------
-IntelliJ IDEA 2022.2 (this is not latest version to avoid Android plugin error)
-Xcode 14.2 is supported
-Android Studio 2022.1.1 (Elecric Eel)
-
-- Swift 5.7
-- Kotlin 1.7.21 (not 1.8.0 because of used Android Studio stable version)
-- Gradle 7.3 (Kotlin 1.8.0 fully supports Gradle versions 7.2 and 7.3)
-
-
-Steps
 -----------------
 - install `Android Studio` to have Android SDK for Kotlin Multiplatform project even for iOS build, because gradle file depends on it as well.
 - On macOS update your `.bash_profile` with
@@ -47,8 +34,7 @@ export PATH=$PATH:$ANDROID_HOME/emulator
     - Install `Google Play Licensing Library`
 - `make`
 - open Kotlin CoreHttpKit folder using `InteliJ IDEA`
-- run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration for iOS client
-- run `[publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
+- run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
 - `cd catowser/`
 - Open `catowser.xcworkspace`
 - Build `Cotton` or `Cotton dev` build target
