@@ -6,8 +6,8 @@ group = "org.cotton.base"
 version = "0.1-SNAPSHOT"
 
 plugins {
-    kotlin("multiplatform") version "1.8.0"
-    id("com.android.library") version "7.0.2"
+    kotlin("multiplatform")
+    id("com.android.library")
     kotlin("plugin.serialization") version "1.8.0"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
