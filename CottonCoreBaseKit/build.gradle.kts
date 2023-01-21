@@ -28,6 +28,13 @@ val frameworkName = "CottonCoreBaseKit"
 kotlin {
     val xcf = XCFramework(frameworkName)
     ios {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    include("**/*.kt")
+                }
+            }
+        }
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
@@ -35,6 +42,13 @@ kotlin {
         }
     }
     macosX64 {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    include("**/*.kt")
+                }
+            }
+        }
         binaries.framework {
             baseName = frameworkName
             xcf.add(this)

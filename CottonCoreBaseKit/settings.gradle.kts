@@ -12,4 +12,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CoreHttpKit"
+rootProject.name = "CottonCoreBaseKit"
