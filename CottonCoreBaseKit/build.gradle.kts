@@ -6,12 +6,13 @@ group = "org.cotton.base"
 version = "0.1-SNAPSHOT"
 
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    kotlin("multiplatform") version "1.8.0"
+    id("com.android.library") version "7.0.2"
     kotlin("plugin.serialization") version "1.8.0"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
+    id("maven-publish")
 }
 
 dependencies {
@@ -55,11 +56,25 @@ kotlin {
         }
     }
     android {
+        publishLibraryVariants("release", "debug")
         sourceSets {
             commonMain {
                 kotlin {
                     exclude ("ByteArrayNativeUtils.kt")
                 }
+            }
+        }
+    }
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    // only Android platform needed in maven local
+    val publicationsFromMainHost = "kotlinMultiplatform"
+    publishing {
+        publications {
+            matching { it.name in publicationsFromMainHost }.all {
+                val targetPublication = this@all
+                tasks.withType<AbstractPublishToMaven>()
+                    .matching { it.publication == targetPublication }
+                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
             }
         }
     }
@@ -91,4 +106,12 @@ tasks.withType<KotlinCompile>().configureEach {
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     additionalEditorconfigFile.set(file(".editorconfig"))
+}
+
+publishing {
+    repositories {
+        maven {
+
+        }
+    }
 }
