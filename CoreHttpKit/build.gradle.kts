@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "org.cottonweb"
+group = "org.cotton.base"
 version = "0.1-SNAPSHOT"
 
 plugins {
@@ -23,7 +23,7 @@ dependencies {
     commonTestImplementation(kotlin("test-annotations-common"))
 }
 
-val frameworkName = "CoreHttpKit"
+val frameworkName = "CoreBaseKit"
 
 kotlin {
     val xcf = XCFramework(frameworkName)

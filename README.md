@@ -16,6 +16,22 @@ Features
 
 Building the code
 -----------------
+- install `Android Studio` to have Android SDK for Kotlin Multiplatform project even for iOS build, because gradle file depends on it as well.
+- On macOS update your `.bash_profile` with
+```
+export ANDROID_HOME=/Users/<username>/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/emulator
+```
+- run `source .bash_profile`
+- install `InteliJ IDEA`
+- Add `ANDROID_HOME` to path variables of `InteliJ IDEA` in settings.
+- To fix `License for package Android SDK Platform 32 not accepted.` in `InteliJ IDEA`
+    - Tools -> Android -> SDK Manager
+    - SDK Tools tab
+    - Install `Google Play Licensing Library`
 - `make`
 - open Kotlin CoreHttpKit folder using `InteliJ IDEA`
 - run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration
