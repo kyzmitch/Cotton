@@ -13,7 +13,7 @@ repositories {
 // https://github.com/ge-org/multiplatform-swiftpackage
 
 plugins {
-    kotlin("multiplatform")
+    kotlin("multiplatform") version "1.7.20"
     id("com.android.library")
     kotlin("plugin.serialization") version "1.7.20"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
@@ -80,7 +80,15 @@ kotlin {
             xcf.add(this)
         }
     }
-    android()
+    android {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    exclude ("ByteArrayNativeUtils.kt")
+                }
+            }
+        }
+    }
 }
 
 // config JVM target to 1.8 for kotlin compilation tasks

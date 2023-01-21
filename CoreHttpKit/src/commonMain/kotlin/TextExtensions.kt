@@ -7,21 +7,20 @@ import kotlin.text.encodeToByteArray
  *
  * https://stackoverflow.com/a/3585284
  * */
-@SharedImmutable
 internal val asciiRegex = Regex("\\A\\p{ASCII}*\\z")
-@SharedImmutable
+
 internal const val upBound: Char = '\uD880'
-@SharedImmutable
+
 internal const val lowerBound: Char = '\uE000'
-@SharedImmutable
+
 internal const val secondUpBound: Char = '\uFFFF' // should be 0x1FFFFF
-@SharedImmutable
+
 internal val urlAlphabet = (('a'..'z') + ('A'..'Z') + ('0'..'9')).map { it.code.toByte() }
 /**
  * Oauth specific percent encoding
  * https://tools.ietf.org/html/rfc5849#section-3.6
  */
-@SharedImmutable
+
 internal val oauthSymbols = listOf('-', '.', '_', '~').map { it.code.toByte() }
 
 internal val Char.isAscii: Boolean
