@@ -58,6 +58,7 @@ kotlin {
         }
     }
     android {
+        publishLibraryVariants("release", "debug")
         sourceSets {
             commonMain {
                 kotlin {
@@ -103,7 +104,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = groupValue
-            artifactId = groupValue
+            artifactId = "multiplatform-lib"
             version = versionValue
 
             pom {

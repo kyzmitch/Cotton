@@ -10,4 +10,3 @@ dependencyResolutionManagement {
 rootProject.name = "Cotton"
 include("app")
 include("browser-content")
-include(":CottonCoreBaseKit")
