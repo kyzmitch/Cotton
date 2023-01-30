@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":CottonCoreBaseKit"))
+    implementation("org.cotton.base:multiplatform-lib:0.1-SNAPSHOT")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("com.google.android.material:material:1.7.0")
