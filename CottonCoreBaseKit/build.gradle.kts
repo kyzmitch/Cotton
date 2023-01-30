@@ -2,8 +2,10 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "org.cotton.base"
-version = "0.1-SNAPSHOT"
+val groupValue = "org.cotton.base"
+val versionValue = "0.1-SNAPSHOT"
+group = groupValue
+version = versionValue
 
 plugins {
     kotlin("multiplatform") version "1.8.0"
@@ -56,7 +58,6 @@ kotlin {
         }
     }
     android {
-        publishLibraryVariants("release", "debug")
         sourceSets {
             commonMain {
                 kotlin {
@@ -65,25 +66,13 @@ kotlin {
             }
         }
     }
-    // https://docs.gradle.org/current/userguide/publishing_maven.html
-    // only Android platform needed in maven local
-    val publicationsFromMainHost = "kotlinMultiplatform"
-    publishing {
-        publications {
-            matching { it.name in publicationsFromMainHost }.all {
-                val targetPublication = this@all
-                tasks.withType<AbstractPublishToMaven>()
-                    .matching { it.publication == targetPublication }
-                    .configureEach { onlyIf { findProperty("isMainHost") == "true" } }
-            }
-        }
-    }
 }
 
 android {
-    namespace = "org.cottonweb.CoreHttpKit"
+    namespace = groupValue
     compileSdk = 32
 }
+
 buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:3.2")
@@ -108,10 +97,19 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     additionalEditorconfigFile.set(file(".editorconfig"))
 }
 
+// https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven:install
+// only Android platform needed in maven local
 publishing {
-    repositories {
-        maven {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = groupValue
+            artifactId = groupValue
+            version = versionValue
 
+            pom {
+                name.set("Cotton CoreBaseKit")
+                description.set("It is not possible to include it by local path, so, including over maven local repo")
+            }
         }
     }
 }
