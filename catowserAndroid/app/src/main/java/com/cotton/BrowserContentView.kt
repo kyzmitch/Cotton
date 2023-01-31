@@ -7,11 +7,10 @@ import org.cotton.base.Site
 
 sealed class TabContentType {
     class Blank(): TabContentType()
-    // Use `Site` type from KotlinMultiplatform module
     class TopSites(): TabContentType()
     class Favorites(): TabContentType()
     class Homepage(): TabContentType()
-    class Site(): TabContentType()
+    class SiteContent(val site: Site): TabContentType()
 }
 
 @Composable
