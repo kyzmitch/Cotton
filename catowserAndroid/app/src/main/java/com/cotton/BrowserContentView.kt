@@ -15,7 +15,13 @@ sealed class TabContentType {
 
 @Composable
 fun BrowserContent(contentType: TabContentType) {
-    Text(text = "To be implemented using switch over tab content")
+    when (contentType) {
+        is TabContentType.Blank -> Text(text = "Blank content")
+        is TabContentType.TopSites -> Text(text = "Top sites")
+        is TabContentType.Favorites -> Text(text = "Favorite sites")
+        is TabContentType.Homepage -> Text(text = "Home page")
+        is TabContentType.SiteContent -> Text(text = contentType.site.searchBarContent)
+    }
 }
 
 @Preview(showBackground = true)
