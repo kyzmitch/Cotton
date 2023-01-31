@@ -20,10 +20,10 @@ Environment
 -----------------
 IntelliJ IDEA 2022.2 (this is not latest version to avoid Android plugin error)
 Xcode 14.2 is supported
-Android Studio 2022.1.1 ?
+Android Studio 2022.1.1 (Elecric Eel)
 
 - Swift 5.7
-- Kotlin 1.8.0
+- Kotlin 1.7.21 (not 1.8.0 because of used Android Studio stable version)
 - Gradle 7.3 (Kotlin 1.8.0 fully supports Gradle versions 7.2 and 7.3)
 
 
@@ -48,7 +48,7 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 - `make`
 - open Kotlin CoreHttpKit folder using `InteliJ IDEA`
 - run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration for iOS client
-- run `[publishToMavenLocal]` Gradle configuration for Android client
+- run `[publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
 - `cd catowser/`
 - Open `catowser.xcworkspace`
 - Build `Cotton` or `Cotton dev` build target

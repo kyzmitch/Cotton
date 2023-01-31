@@ -8,13 +8,19 @@ group = groupValue
 version = versionValue
 
 plugins {
-    kotlin("multiplatform") version "1.8.0"
-    id("com.android.library") version "7.0.2"
-    kotlin("plugin.serialization") version "1.8.0"
+    kotlin("multiplatform") version "1.7.21"
+    id("com.android.library") version "7.3.0"
+    kotlin("plugin.serialization") version "1.7.21"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
     id("maven-publish")
+}
+
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.3.0")
+    }
 }
 
 dependencies {
@@ -74,12 +80,6 @@ android {
     compileSdk = 32
 }
 
-buildscript {
-    dependencies {
-        classpath("com.android.tools.build:gradle:3.2")
-    }
-}
-
 multiplatformSwiftPackage {
     packageName(frameworkName)
     outputDirectory(File(projectDir, "$frameworkName"))
@@ -96,21 +96,4 @@ tasks.withType<KotlinCompile>().configureEach {
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     additionalEditorconfigFile.set(file(".editorconfig"))
-}
-
-// https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven:install
-// only Android platform needed in maven local
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = groupValue
-            artifactId = "multiplatform-lib"
-            version = versionValue
-
-            pom {
-                name.set("Cotton CoreBaseKit")
-                description.set("It is not possible to include it by local path, so, including over maven local repo")
-            }
-        }
-    }
 }
