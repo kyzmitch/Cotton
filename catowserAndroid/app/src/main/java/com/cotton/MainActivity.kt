@@ -6,21 +6,53 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import com.cotton.ui.theme.CottonTheme
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.ae.cotton.ui.theme.CottonTheme
 
 class MainActivity : ComponentActivity() {
+    private var searchText: String = ""
+    private val onSearchTextChanged: (String) -> Unit = {}
+    private val onClearClick: () -> Unit = {}
+    private var matchesFound: Boolean = false
+    private val results: @Composable () -> Unit = {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CottonTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainBrowserView()
-                } // surface
-            } // cotton theme
-        } // set content
-    } // on create
+                    Box {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            SearchBar(
+                                searchText,
+                                "Search or enter address",
+                                onSearchTextChanged,
+                                onClearClick
+                            )
+                            if (matchesFound) {
+                                Text("Results", modifier = Modifier.padding(8.dp), fontWeight = FontWeight.Bold)
+                                results()
+                            } else {
+                                BrowserContent(contentType = TabContentType.Blank())
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
 }
