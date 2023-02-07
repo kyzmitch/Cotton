@@ -3,8 +3,10 @@ package com.cotton
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -13,15 +15,18 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.ae.cotton.ui.theme.Purple200
+import com.ae.cotton.ui.theme.Purple500
+import com.ae.cotton.ui.theme.Purple700
 import com.cotton.R
 
 // https://www.devbitsandbytes.com/configuring-searchview-in-jetpack-compose/
@@ -30,25 +35,25 @@ import com.cotton.R
 @Composable
 fun SearchBar(
     searchText: String,
-    placeholderText: String = "Search or enter address",
+    placeholderText: String,
     onSearchTextChanged: (String) -> Unit = {},
-    onClearClick: () -> Unit = {},
-    onNavigateBack: () -> Unit = {}
+    onClearClick: () -> Unit = {}
 ) {
     var showClearButton by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
-    TopAppBar(title = { Text("") }, navigationIcon = {
-        IconButton(onClick = { onNavigateBack() }) {
+    TopAppBar(
+        title = {
+             Spacer(modifier = Modifier.width(0.dp))
+        },
+        navigationIcon = {
             Icon(
-                imageVector = Icons.Filled.ArrowBack,
+                imageVector = Icons.Filled.Search,
                 modifier = Modifier,
-                contentDescription = stringResource(id = R.string.icn_search_back_content_description)
+                contentDescription = stringResource(id = R.string.icn_search_magnifier_icon_description)
             )
-        }
     }, actions = {
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,12 +65,14 @@ fun SearchBar(
             value = searchText,
             onValueChange = onSearchTextChanged,
             placeholder = {
-                Text(text = placeholderText)
+                Text(
+                    text = placeholderText,
+                    color = Purple700)
             },
             colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                backgroundColor = Color.Transparent,
+                focusedIndicatorColor = Purple200,
+                unfocusedIndicatorColor = Purple200,
+                backgroundColor = Purple200,
                 cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
             ),
             trailingIcon = {
@@ -74,7 +81,10 @@ fun SearchBar(
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
-                    IconButton(onClick = { onClearClick() }) {
+                    IconButton(onClick = {
+                        keyboardController?.hide()
+                        onClearClick()
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = stringResource(id = R.string.icn_search_clear_content_description)
@@ -93,9 +103,8 @@ fun SearchBar(
 
 
     })
-
-
     LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+        // Don't request focus to not have keyboard visible at app start
+        // focusRequester.requestFocus()
     }
 }
