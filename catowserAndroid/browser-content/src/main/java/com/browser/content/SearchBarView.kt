@@ -55,7 +55,8 @@ fun SearchBarView(
         placeholder = {
             Text(
                 text = placeholderText,
-                color = Purple700)
+                color = Purple700
+            ) // Placeholder
         },
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Purple200,
@@ -68,7 +69,7 @@ fun SearchBarView(
                 imageVector = Icons.Filled.Search,
                 modifier = Modifier,
                 contentDescription = stringResource(id = R.string.icn_search_magnifier_icon_description)
-            )
+            ) // Search magnifier icon in SearchBar
         },
         trailingIcon = {
             AnimatedVisibility(
@@ -84,8 +85,7 @@ fun SearchBarView(
                         imageVector = Icons.Filled.Close,
                         contentDescription = stringResource(id = R.string.icn_search_clear_content_description)
                     )
-                }
-
+                } // Cancel button for SearchBar
             }
         },
         maxLines = 1,
