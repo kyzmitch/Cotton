@@ -1,4 +1,4 @@
-package com.cotton
+package com.browser.content
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -20,20 +20,22 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.ae.cotton.ui.theme.Purple200
-import com.ae.cotton.ui.theme.Purple500
-import com.ae.cotton.ui.theme.Purple700
-import com.cotton.R
+import com.browser.content.ui.theme.Purple200
+import com.browser.content.ui.theme.Purple700
+import com.cotton.browser.R
 
-// https://www.devbitsandbytes.com/configuring-searchview-in-jetpack-compose/
+/*
+* - Uses experimental api only for `LocalSoftwareKeyboardController`
+* - whole code is a modified version from
+*   https://www.devbitsandbytes.com/configuring-searchview-in-jetpack-compose/
+* */
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchBar(
+fun SearchBarView(
     searchText: String,
     placeholderText: String,
     onSearchTextChanged: (String) -> Unit = {},
@@ -100,11 +102,8 @@ fun SearchBar(
                 keyboardController?.hide()
             }),
         )
-
-
-    })
+    }) // `TopAppBar` from `androidx.compose.material`
     LaunchedEffect(Unit) {
-        // Don't request focus to not have keyboard visible at app start
-        // focusRequester.requestFocus()
+        // Don't request focus to not have keyboard visible at app start `focusRequester.requestFocus()`
     }
 }

@@ -1,4 +1,4 @@
-package com.cotton
+package com.browser.content
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

@@ -8,12 +8,13 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ae.cotton.ui.theme.CottonTheme
+import com.browser.content.SearchBarView
+import com.browser.content.BrowserContent
+import com.browser.content.TabContentType
 
 class MainActivity : ComponentActivity() {
     private var searchText: String = ""
@@ -26,7 +27,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CottonTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            SearchBar(
+                            SearchBarView(
                                 searchText,
                                 "Search or enter address",
                                 onSearchTextChanged,
@@ -48,11 +48,10 @@ class MainActivity : ComponentActivity() {
                             } else {
                                 BrowserContent(contentType = TabContentType.Blank())
                             }
-                        }
-
-                    }
-                }
-            }
+                        } // column
+                    } // box
+                } // surface
+            } // cotton theme
         }
     }
 }

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">BrowserContent</string>
+    <string name="app_name">Cotton</string>
+    <string name="icn_search_clear_content_description">Clear search bar</string>
+    <string name="icn_search_magnifier_icon_description">Search magnifier icon</string>
 </resources>

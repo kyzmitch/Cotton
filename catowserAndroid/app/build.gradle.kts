@@ -48,6 +48,8 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":browser-content")))
+    implementation("org.cotton.base:CottonCoreBaseKit:0.1-SNAPSHOT")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:1.3.1")
@@ -60,5 +62,4 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra.get("compose_version") as String}")
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra.get("compose_version") as String}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra.get("compose_version") as String}")
-    implementation("org.cotton.base:CottonCoreBaseKit:0.1-SNAPSHOT")
 }
