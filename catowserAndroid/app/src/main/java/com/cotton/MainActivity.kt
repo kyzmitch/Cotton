@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.ae.cotton.ui.theme.CottonTheme
+import com.cotton.ui.theme.CottonTheme
 import com.browser.content.SearchBarView
 import com.browser.content.BrowserContent
 import com.browser.content.TabContentType

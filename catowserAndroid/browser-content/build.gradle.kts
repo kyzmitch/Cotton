@@ -5,11 +5,12 @@ plugins {
 
 android {
     namespace = "com.cotton.browser"
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        // `targetSdk` has no effect for libraries. This could be only used for the test APK
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -34,8 +35,8 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion =
-            rootProject.extra.get("compose_version") as String
+        // compose compiler should be 1.3.2 because project uses kotlin 1.7.20
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
     packagingOptions {
         resources {
@@ -52,6 +53,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:${rootProject.extra.get("compose_version") as String}")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra.get("compose_version") as String}")
     implementation("androidx.compose.material:material:1.1.1")
+    implementation("com.google.accompanist:accompanist-webview:0.28.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
