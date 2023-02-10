@@ -5,8 +5,8 @@ buildscript {
         mavenCentral()
     }
     extra.apply{
-        set("compose_version", "1.1.1")
-        set("kotlinVersion", "1.7.21")
+        set("compose_version", "1.3.3")
+        set("kotlinVersion", "1.7.20")
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")

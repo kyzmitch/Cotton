@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.cotton"
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.cotton"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -37,8 +37,8 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion =
-            rootProject.extra.get("compose_version") as String
+        // compose compiler should be 1.3.2 because project uses kotlin 1.7.20
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
     packagingOptions {
         resources {

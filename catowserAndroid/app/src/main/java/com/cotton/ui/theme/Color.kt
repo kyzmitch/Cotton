@@ -1,4 +1,4 @@
-package com.ae.cotton.ui.theme
+package com.cotton.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
