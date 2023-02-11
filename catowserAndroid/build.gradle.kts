@@ -6,6 +6,7 @@ buildscript {
     }
     extra.apply{
         set("compose_version", "1.3.3")
+        set("ktor_version", "2.2.3")
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")

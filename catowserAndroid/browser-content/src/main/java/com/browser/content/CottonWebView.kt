@@ -15,14 +15,15 @@ import com.google.accompanist.web.LoadingState
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewNavigator
 import com.google.accompanist.web.rememberWebViewState
+import org.cotton.base.Site
 
 @Composable
-fun CottonWebView(initialUrl: String) {
+fun CottonWebView(site: Site) {
     val webClient = remember {
         CottonWebViewClient()
     }
     val navigator = rememberWebViewNavigator()
-    val state = rememberWebViewState(url = initialUrl)
+    val state = rememberWebViewState(url = site.urlInfo.urlWithoutPort)
     val loadingState = state.loadingState
     if (loadingState is LoadingState.Loading) {
         LinearProgressIndicator(
