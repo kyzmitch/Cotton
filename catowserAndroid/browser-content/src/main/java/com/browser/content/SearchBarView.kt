@@ -45,6 +45,7 @@ fun SearchBarView(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
+            .requiredHeight(46.dp)
             .padding(vertical = 0.dp)
             .onFocusChanged { focusState ->
                 showClearButton = (focusState.isFocused)
