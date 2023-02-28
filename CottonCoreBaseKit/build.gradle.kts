@@ -68,7 +68,9 @@ kotlin {
         sourceSets {
             commonMain {
                 kotlin {
-                    exclude ("ByteArrayNativeUtils.kt")
+                    // Exclude doesn't work, using `expect` functions
+                    // instead for each platform
+                    // exclude ("ByteArrayNativeUtils.kt")
                 }
             }
         }
