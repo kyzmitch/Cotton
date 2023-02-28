@@ -44,8 +44,7 @@ fun SearchBarView(
 
     OutlinedTextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .requiredHeight(46.dp)
+            .fillMaxSize()
             .padding(vertical = 0.dp)
             .onFocusChanged { focusState ->
                 showClearButton = (focusState.isFocused)
@@ -96,7 +95,4 @@ fun SearchBarView(
             keyboardController?.hide()
         }),
     ) // OutlinedTextField
-    LaunchedEffect(Unit) {
-        // Don't request focus to not have keyboard visible at app start `focusRequester.requestFocus()`
-    }
 }

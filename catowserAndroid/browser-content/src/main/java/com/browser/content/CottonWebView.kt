@@ -33,7 +33,6 @@ fun CottonWebView(site: Site) {
     }
     WebView(
         state = state,
-        modifier = Modifier.fillMaxSize(),
         navigator = navigator,
         onCreated = { webView ->
             webView.settings.javaScriptEnabled = true
