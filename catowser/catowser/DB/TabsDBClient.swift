@@ -8,7 +8,7 @@
 
 import CoreData
 import CoreBrowser
-import CoreHttpKit
+import CottonCoreBaseKit
 
 enum TabsCoreDataError: Swift.Error {
     case noAppSettingsRecordWasFound

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Cotton</string>
+    <string name="icn_search_back_content_description">Cancel</string>
+    <string name="icn_search_clear_content_description">Search or enter address</string>
+</resources>

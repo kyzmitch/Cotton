@@ -7,7 +7,7 @@
 //
 
 import HttpKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class MockedRestInterface<S: ServerDescription,
                                 R: NetworkReachabilityAdapter,

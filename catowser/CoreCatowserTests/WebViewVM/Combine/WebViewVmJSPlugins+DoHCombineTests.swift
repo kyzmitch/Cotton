@@ -9,7 +9,7 @@
 import XCTest
 @testable import CoreCatowser
 import HttpKit
-import CoreHttpKit
+import CottonCoreBaseKit
 import WebKit
 
 final class WebViewVmJSPluginsDoHCombineTests: WebViewVMFixture {

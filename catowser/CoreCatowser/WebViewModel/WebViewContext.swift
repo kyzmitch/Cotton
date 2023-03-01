@@ -8,7 +8,7 @@
 
 import Foundation
 import JSPlugins
-import CoreHttpKit
+import CottonCoreBaseKit
 import FeaturesFlagsKit
 import CoreBrowser
 
@@ -22,7 +22,7 @@ public protocol WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
     var pluginsProgram: any JSPluginsProgram { get }
     /// Hides app specific implementation for host check
-    func nativeApp(for host: CoreHttpKit.Host) -> String?
+    func nativeApp(for host: CottonCoreBaseKit.Host) -> String?
     /// Hides app specific feature for JS value
     func isJavaScriptEnabled() -> Bool
     /// Hides app specific feature value for DNS over HTTPs

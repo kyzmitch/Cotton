@@ -7,7 +7,7 @@
 //
 
 import HttpKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class MockedReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {
     public typealias Server = S

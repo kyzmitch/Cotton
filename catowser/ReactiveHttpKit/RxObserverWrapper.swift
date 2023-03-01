@@ -8,7 +8,7 @@
 
 import HttpKit
 import ReactiveSwift
-import CoreHttpKit
+import CottonCoreBaseKit
 
 extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpError {
     public typealias Response = Value

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 
 /// Should be used for async interfaces which use RX library
 public typealias RxSubscriber<R, S, RX: RxInterface> = ClientRxSubscriber<R, S, RX>

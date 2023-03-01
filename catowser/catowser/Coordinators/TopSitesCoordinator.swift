@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreHttpKit
+import CottonCoreBaseKit
 import CoreBrowser
 import FeaturesFlagsKit
 

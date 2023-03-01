@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 
 public enum HttpError: LocalizedError, Equatable {
     /* Comon errors related to http client */

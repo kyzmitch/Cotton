@@ -9,7 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
-import CoreHttpKit
+import CottonCoreBaseKit
 
 /// Interface for some HTTP networking library (e.g. Alamofire or URLSession) to hide it and
 /// not use it directly and be able to mock it for unit testing.

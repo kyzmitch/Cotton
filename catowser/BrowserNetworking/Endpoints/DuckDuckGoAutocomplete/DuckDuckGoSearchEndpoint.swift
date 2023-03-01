@@ -9,7 +9,7 @@
 import HttpKit
 import Combine
 import ReactiveSwift
-import CoreHttpKit
+import CottonCoreBaseKit
 import ReactiveHttpKit
 import Alamofire
 
@@ -33,7 +33,7 @@ extension Endpoint where S == DuckDuckGoServer {
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "type", value: "list")
         ]
-        let headers: [CoreHttpKit.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
+        let headers: [CottonCoreBaseKit.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
         /**
          https://youtrack.jetbrains.com/issue/KT-44108

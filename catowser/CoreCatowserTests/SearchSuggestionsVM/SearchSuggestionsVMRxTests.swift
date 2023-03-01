@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import CoreCatowser
-import CoreHttpKit
+import CottonCoreBaseKit
 import HttpKit
 import ReactiveHttpKit
 import ReactiveSwift

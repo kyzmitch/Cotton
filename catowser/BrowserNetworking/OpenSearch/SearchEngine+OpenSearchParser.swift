@@ -8,7 +8,7 @@
 
 import Foundation
 import SWXMLHash
-import CoreHttpKit
+import CottonCoreBaseKit
 
 /**
  https://developer.mozilla.org/en-US/docs/Web/OpenSearch

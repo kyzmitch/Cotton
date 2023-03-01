@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 
 protocol WebViewNavigatable: AnyObject {
     var canGoBack: Bool { get }

@@ -7,7 +7,7 @@
 //
 
 import ReactiveSwift
-import CoreHttpKit
+import CottonCoreBaseKit
 
 public extension Tab {
     enum ContentType {

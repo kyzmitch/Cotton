@@ -6,10 +6,10 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CoreHttpKit
+import CottonCoreBaseKit
 import Combine
 
-extension Set where Element == CoreHttpKit.HTTPHeader {
+extension Set where Element == CottonCoreBaseKit.HTTPHeader {
     var dictionary: [String: String] {
         var dictionary = [String: String]()
         for header in self {

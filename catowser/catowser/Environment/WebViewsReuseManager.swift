@@ -10,7 +10,7 @@ import UIKit
 import CoreBrowser
 import JSPlugins
 import BrowserNetworking
-import CoreHttpKit
+import CottonCoreBaseKit
 import CoreCatowser
 
 struct NotSelectedIndex: Error {}

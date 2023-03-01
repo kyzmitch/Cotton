@@ -9,7 +9,7 @@
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
-import CoreHttpKit
+import CottonCoreBaseKit
 import CoreBrowser
 import FeaturesFlagsKit
 
