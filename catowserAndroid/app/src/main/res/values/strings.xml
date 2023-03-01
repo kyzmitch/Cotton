@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Cotton</string>
-    <string name="icn_search_clear_content_description">Clear search bar</string>
-    <string name="icn_search_magnifier_icon_description">Search magnifier icon</string>
+    <string name="icn_search_back_content_description">Cancel</string>
+    <string name="icn_search_clear_content_description">Search or enter address</string>
 </resources>
