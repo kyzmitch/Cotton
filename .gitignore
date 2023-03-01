@@ -66,10 +66,8 @@ fastlane/test_output
 
 # Catowser Xcode paths
 
-catowser/Pods
-catowser/CoreBrowserTests/GeneratedMocks
-catowser/CoreCatowserTests/GeneratedMocks
-catowser/.gryphon
+catowseriOS/CoreBrowserTests/GeneratedMocks
+catowseriOS/CoreCatowserTests/GeneratedMocks
 
 # JavaScript paths
 
