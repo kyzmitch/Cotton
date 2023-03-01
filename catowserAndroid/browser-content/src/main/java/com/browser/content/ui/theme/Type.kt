@@ -1,4 +1,4 @@
-package com.cotton.ui.theme
+package com.browser.content.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

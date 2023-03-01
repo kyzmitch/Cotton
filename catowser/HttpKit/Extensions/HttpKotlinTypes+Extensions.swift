@@ -36,7 +36,7 @@ extension HTTPRequestInfo {
         guard let encodedData = httpBody else {
             return request
         }
-        request.httpBody = ByteArrayNativeUtils.companion.convert(byteArray: encodedData)
+        request.httpBody = ByteArrayNativeUtils.companion.convertBytes(byteArray: encodedData)
         return request
     }
 }
