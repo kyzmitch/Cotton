@@ -10,7 +10,7 @@ import Foundation
 import HttpKit
 import ReactiveSwift
 import Combine
-import CoreHttpKit
+import CottonCoreBaseKit
 import ReactiveHttpKit
 import BrowserNetworking
 import AutoMockable

@@ -63,13 +63,34 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
+
+# Catowser Xcode paths
+
 catowser/Pods
-node_modules
-CoreHttpKit/.gradle
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-catowser/.gryphon
-local.properties
-CoreHttpKit/CoreHttpKit
 catowser/CoreBrowserTests/GeneratedMocks
 catowser/CoreCatowserTests/GeneratedMocks
+catowser/.gryphon
+
+# JavaScript paths
+
+node_modules
+
+# IntelliJ IDEA paths
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+local.properties
+CottonCoreBaseKit/.idea/caches
+CottonCoreBaseKit/.idea/libraries
+CottonCoreBaseKit/.idea/modules.xml
+CottonCoreBaseKit/.idea/workspace.xml
+CottonCoreBaseKit/.idea/navEditor.xml
+CottonCoreBaseKit/.idea/assetWizardSettings.xml
+CottonCoreBaseKit/CottonCoreBaseKit
+CottonCoreBaseKit/.gradle
+
+# Android Studio paths
+#
+# See `catowserAndroid/.gitignore`, it seems it is included automatically
+*.iml
+misc.xml

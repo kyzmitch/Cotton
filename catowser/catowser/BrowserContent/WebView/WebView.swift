@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CoreHttpKit
+import CottonCoreBaseKit
 
 /// A special case web view interface only for SwiftUI
 /// because we have to reuse existing web view for all the tabs

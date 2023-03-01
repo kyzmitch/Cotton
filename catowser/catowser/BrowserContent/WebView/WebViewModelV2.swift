@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class WebViewModelV2: ObservableObject {
     /// A reference to JavaScript plugins builder passed from root view

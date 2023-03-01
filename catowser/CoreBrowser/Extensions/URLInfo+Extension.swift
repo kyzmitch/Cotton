@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CoreHttpKit
+import CottonCoreBaseKit
 
 public extension URLInfo {
     private func withDifferentPathForSameIp(url: URL) -> URLInfo {

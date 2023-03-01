@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 
 extension Site {
     static func create(urlInfo: URLInfo, settings: Settings) -> Site {

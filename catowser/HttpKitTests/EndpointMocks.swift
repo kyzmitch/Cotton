@@ -7,7 +7,7 @@
 //
 
 import HttpKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 struct MockedGoodEndpointResponse: ResponseType {
     static var successCodes: [Int] {

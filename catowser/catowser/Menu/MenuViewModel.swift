@@ -9,7 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
-import CoreHttpKit
+import CottonCoreBaseKit
 import CoreBrowser
 import FeaturesFlagsKit
 

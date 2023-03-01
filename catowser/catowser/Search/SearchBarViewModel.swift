@@ -11,7 +11,7 @@ import SwiftUI
 import CoreBrowser
 import FeaturesFlagsKit
 import BrowserNetworking
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class SearchBarViewModel: NSObject {
     @Published var showSuggestions: Bool

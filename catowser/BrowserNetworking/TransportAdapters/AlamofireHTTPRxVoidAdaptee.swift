@@ -12,7 +12,7 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
-import CoreHttpKit
+import CottonCoreBaseKit
 
 final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapter where RX.Server == S {
     typealias Server = S

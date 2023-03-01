@@ -10,7 +10,7 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 import BrowserNetworking
-import CoreHttpKit
+import CottonCoreBaseKit
 
 protocol SearchBarDelegate: AnyObject {
     func openTab(_ content: Tab.ContentType)

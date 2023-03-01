@@ -8,7 +8,7 @@
 
 import Foundation
 import WebKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 /**
  An Object Structure (Program) from visitor desgin pattern. Could be a Composite
@@ -23,7 +23,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
         self.plugins = plugins
     }
 
-    public func inject(to visitor: WKUserContentController, context: CoreHttpKit.Host, canInject: Bool) {
+    public func inject(to visitor: WKUserContentController, context: CottonCoreBaseKit.Host, canInject: Bool) {
         guard !plugins.isEmpty else {
             return
         }
@@ -39,7 +39,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
         }
     }
 
-    public func enable(on webView: JavaScriptEvaluateble, context: CoreHttpKit.Host, jsEnabled: Bool) {
+    public func enable(on webView: JavaScriptEvaluateble, context: CottonCoreBaseKit.Host, jsEnabled: Bool) {
         guard !plugins.isEmpty else {
             return
         }

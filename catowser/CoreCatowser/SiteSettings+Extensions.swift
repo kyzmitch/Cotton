@@ -7,7 +7,7 @@
 //
 
 import WebKit
-import CoreHttpKit
+import CottonCoreBaseKit
 
 extension Site.Settings {
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.

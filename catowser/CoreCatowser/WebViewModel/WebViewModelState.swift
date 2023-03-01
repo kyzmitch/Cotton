@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreHttpKit
+import CottonCoreBaseKit
 import JSPlugins
 import CoreBrowser
 
@@ -41,7 +41,7 @@ enum WebViewModelState {
     }
     
     /// Returns host with domain name (ignore ip address as a host even if it is present)
-    var host: CoreHttpKit.Host {
+    var host: CottonCoreBaseKit.Host {
         switch self {
         case .initialized(let site):
             return site.host

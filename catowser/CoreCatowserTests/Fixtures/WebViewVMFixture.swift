@@ -9,7 +9,7 @@
 import XCTest
 @testable import CoreCatowser
 import HttpKit
-import CoreHttpKit
+import CottonCoreBaseKit
 import WebKit
 
 /// A known state against which a test is running for web view vm
