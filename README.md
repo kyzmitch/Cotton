@@ -1,4 +1,4 @@
-![Cotton - web browser for iOS](catowser/catowser/Assets.xcassets/AppIcon.appiconset/icon_83.5@2x.png)
+![Cotton - web browser for iOS](catowseriOS/catowser/Assets.xcassets/AppIcon.appiconset/icon_83.5@2x.png)
 
 # Cotton - web browser for iOS & Android
 
