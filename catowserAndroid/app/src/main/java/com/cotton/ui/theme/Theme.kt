@@ -1,4 +1,4 @@
-package com.cotton.ui.theme
+package com.ae.cotton.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

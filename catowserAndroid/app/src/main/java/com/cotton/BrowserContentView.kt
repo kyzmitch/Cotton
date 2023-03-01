@@ -1,4 +1,4 @@
-package com.browser.content
+package com.cotton
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +20,7 @@ fun BrowserContent(contentType: TabContentType) {
         is TabContentType.TopSites -> Text(text = "Top sites")
         is TabContentType.Favorites -> Text(text = "Favorite sites")
         is TabContentType.Homepage -> Text(text = "Home page")
-        is TabContentType.SiteContent -> CottonWebView(site = contentType.site)
+        is TabContentType.SiteContent -> Text(text = contentType.site.searchBarContent)
     }
 }
 

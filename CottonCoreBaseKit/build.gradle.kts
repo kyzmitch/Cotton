@@ -8,9 +8,9 @@ group = groupValue
 version = versionValue
 
 plugins {
-    kotlin("multiplatform") version "1.7.20"
+    kotlin("multiplatform") version "1.7.21"
     id("com.android.library") version "7.3.0"
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.21"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
     id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "10.2.1"
@@ -68,9 +68,7 @@ kotlin {
         sourceSets {
             commonMain {
                 kotlin {
-                    // Exclude doesn't work, using `expect` functions
-                    // instead for each platform
-                    // exclude ("ByteArrayNativeUtils.kt")
+                    exclude ("ByteArrayNativeUtils.kt")
                 }
             }
         }
