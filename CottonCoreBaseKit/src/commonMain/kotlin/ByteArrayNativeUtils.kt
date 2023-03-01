@@ -5,5 +5,6 @@ class ByteArrayNativeUtils private constructor() {
 }
 
 expect class Data
+
 expect fun ByteArrayNativeUtils.Companion.convertData(data: Data): ByteArray
 expect fun ByteArrayNativeUtils.Companion.convertBytes(byteArray: ByteArray): Data
