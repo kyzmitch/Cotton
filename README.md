@@ -49,9 +49,12 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 - open Kotlin `CottonCoreBaseKit` folder using `InteliJ IDEA`
 - run `CottonCoreBaseKit [assembleCottonCoreBaseKitReleaseXCFramework]` Gradle configuration for iOS client. It is located under `other` section of Gradle tasks list.
 - run `CottonCoreBaseKit [publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
-- `cd catowser/`
-- Open `catowser.xcworkspace`
-- Build `Cotton` or `Cotton dev` build target
+- for iOS client:
+    - `cd catowseriOS/`
+    - Open `catowser.xcworkspace`
+    - Build `Cotton` or `Cotton dev` build target
+- for Android client:
+    - open `catowserAndroid` using Android Studio
 
 Design documents
 -----------------
