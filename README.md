@@ -46,7 +46,7 @@ export PATH=$PATH:$ANDROID_HOME/emulator
     - SDK Tools tab
     - Install `Google Play Licensing Library`
 - `make`
-- open Kotlin CoreHttpKit folder using `InteliJ IDEA`
+- open Kotlin `CottonCoreBaseKit` folder using `InteliJ IDEA`
 - run `CoreHttpKit [assembleCoreHttpKitReleaseXCFramework]` Gradle configuration for iOS client
 - run `[publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
 - `cd catowser/`
