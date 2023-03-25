@@ -33,8 +33,7 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     
     init(_ coordinator: C) {
         self.coordinator = coordinator
-        let model: MainBrowserModel<C> = .init(coordinator)
-        let view = MainBrowserView(model)
+        let view = MainBrowserView(coordinator)
         super.init(rootView: view)
     }
     
