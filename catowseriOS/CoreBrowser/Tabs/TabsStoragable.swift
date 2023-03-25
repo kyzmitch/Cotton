@@ -16,7 +16,6 @@ public protocol TabsStoragable: AutoMockable {
     typealias TabIndex = Int
 
     /// The identifier of selected tab.
-    func fetchSelectedTabId() -> SignalProducer<UUID, TabStorageError>
     func fetchSelectedTabId() async throws -> UUID
     /// Changes selected tab only if it is presented in storage.
     ///
@@ -28,7 +27,6 @@ public protocol TabsStoragable: AutoMockable {
     /// Loads tabs data from storage.
     ///
     /// - Returns: A producer with tabs array or error.
-    func fetchAllTabs() -> SignalProducer<[Tab], TabStorageError>
     func fetchAllTabs() async throws -> [Tab]
 
     /// Adds a tab to storage
