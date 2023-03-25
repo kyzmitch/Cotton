@@ -114,59 +114,6 @@ final class TabsDBClient {
         }
     }
     
-    /// Gets all stored tabs
-    func fetchAllTabs() throws -> [Tab] {
-        var fetchError: Error?
-        var tabs = [Tab]()
-        let request: NSFetchRequest<CDTab> = CDTab.fetchRequest()
-        managedContext.performAndWait {
-            do {
-                let result = try managedContext.fetch(request)
-                // return empty array instead of error when
-                // no records were found in db
-                tabs = result.compactMap {Tab(cdTab: $0)}
-            } catch {
-                fetchError = error
-            }
-        }
-        if let cdError = fetchError {
-            throw cdError
-        }
-        return tabs
-    }
-    
-    /// Gets currently selected tab identifier or throws an exception in case of error
-    func selectedTabId() throws -> UUID {
-        var fetchError: Error?
-        var tabIdentifier: UUID?
-        let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
-        fetchRequest.fetchLimit = 1
-        managedContext.performAndWait {
-            do {
-                let result = try managedContext.fetch(fetchRequest)
-                guard !result.isEmpty else {
-                    throw TabsCoreDataError.noAppSettingsRecordWasFound
-                }
-                guard let cdSettings = result.first else {
-                    throw TabsCoreDataError.fetchedTooManyRecords
-                }
-                guard let actualSelectedTabId = cdSettings.selectedTabId else {
-                    throw TabsCoreDataError.selectedTabIdNotPresent
-                }
-                tabIdentifier = actualSelectedTabId
-            } catch {
-                fetchError = error
-            }
-        }
-        if let cdError = fetchError {
-            throw cdError
-        }
-        guard let resultId = tabIdentifier else {
-            throw TabsCoreDataError.selectedTabIdNotPresent
-        }
-        return resultId
-    }
-    
     /// Updates selected tab identifier using it from the `tab` provided as a argument
     func select(tab: Tab) throws {
         try setSelectedTab(uuid: tab.id)
@@ -312,6 +259,7 @@ fileprivate extension CDAppSettings {
 }
 
 extension TabsDBClient {
+    /// Gets all stored tabs
     func fetchAllTabs() async throws -> [Tab] {
         return try await managedContext.perform {
             let request: NSFetchRequest<CDTab> = CDTab.fetchRequest()

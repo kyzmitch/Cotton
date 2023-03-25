@@ -151,57 +151,6 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
     
-    /// Gets all tabs recorded in DB. Currently there is only one session, but later
-    /// it should be possible to store and read tabs from different sessions like
-    /// private browser session tabs & usual tabs.
-    func tabsFromLastSession() -> SignalProducer<[Tab], TabResourceError> {
-        let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                let tabs = try self.dbClient.fetchAllTabs()
-                observer.send(value: tabs)
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .fetchAllError(error))
-            }
-            
-        }
-        return producer.observe(on: scheduler)
-    }
-    
-    /// Gets an identifier of a selected tab or an error if no tab is present which isn't possible
-    /// at least blank tab should be present.
-    func selectedTabId() -> SignalProducer<UUID, TabResourceError> {
-        let producer: SignalProducer<UUID, TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                let selectedTabId = try self.dbClient.selectedTabId()
-                observer.send(value: selectedTabId)
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .selectedTabId(error))
-            }
-            
-        }
-        return producer.observe(on: scheduler)
-    }
-    
     /// Remembers tab identifier as selected one
     func selectTab(_ tab: Tab) -> SignalProducer<Void, TabResourceError> {
         let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, _) in
@@ -228,6 +177,9 @@ final class TabsResource {
 }
 
 extension TabsResource {
+    /// Gets all tabs recorded in DB. Currently there is only one session, but later
+    /// it should be possible to store and read tabs from different sessions like
+    /// private browser session tabs & usual tabs.
     func tabsFromLastSession() async throws -> [Tab] {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
@@ -246,6 +198,8 @@ extension TabsResource {
         return tab
     }
     
+    /// Gets an identifier of a selected tab or an error if no tab is present which isn't possible
+    /// at least blank tab should be present.
     func selectedTabId() async throws -> UUID {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
