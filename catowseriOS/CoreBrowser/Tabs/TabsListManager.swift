@@ -73,51 +73,26 @@ public final class TabsListManager {
     }
     
     func initTabs(with delay: TimeInterval) {
-        let disposable = storage.fetchAllTabs()
-            .delay(delay, on: scheduler)
-            .flatMap(.latest, { [weak self] (tabs) -> SignalProducer<[Tab], TabStorageError> in
-                guard let `self` = self else {
-                    return .init(error: .zombieSelf)
-                }
-                guard tabs.isEmpty else {
-                    return .init(value: tabs)
-                }
-                let tab = Tab(contentType: self.positioning.contentState)
-                return self.storage.add(tab: tab, andSelect: true).map {[$0]}
+        Task {
+            let delay = UInt64(delay * 1_000_000_000)
+            try await Task<Never, Never>.sleep(nanoseconds: delay)
+            var cachedTabs = try await storage.fetchAllTabs()
+            if cachedTabs.isEmpty {
+                let tab = Tab(contentType: positioning.contentState)
+                let savedTab = try await storage.add(tab, select: true)
+                cachedTabs = [savedTab]
+            }
+            let id = try await storage.fetchSelectedTabId()
+            guard !cachedTabs.isEmpty else {
+                return
+            }
+            tabs.value = cachedTabs
+            let disposable = UIScheduler().schedule({ [weak self] in
+                self?.observers.forEach { $0.initializeObserver(with: cachedTabs) }
             })
-            .flatMap(.latest, { [weak self] (tabs) -> SignalProducer<([Tab], UUID), TabStorageError> in
-                guard let `self` = self else {
-                    return .init(error: .zombieSelf)
-                }
-                return self.storage.fetchSelectedTabId().map {(tabs, $0)}
-            })
-            .observe(on: scheduler)
-            .startWithResult { [weak self] result in
-                switch result {
-                case .success(let tuple):
-                    guard let `self` = self else { return }
-                    let tabsArray = tuple.0
-                    let tabIdentifier = tuple.1
-                    guard !tabsArray.isEmpty else {
-                        return
-                    }
-                    self.tabs.value = tabsArray
-                    let disposable = UIScheduler().schedule({ [weak self] in
-                        // actually only one observer will use it
-                        self?.observers.forEach { $0.initializeObserver(with: tabsArray) }
-                    })
-                    // update selected tab index only after initializing observers with current tabs
-                    self.selectedTabId.value = tabIdentifier
-                    guard let initialDisposable = disposable else {
-                        return
-                    }
-                    self.disposables.append(initialDisposable)
-                case .failure(let error):
-                    print("Failed to fetch tabs from storage or no tabs at all: \(TabsListManager.self): \(error)")
-                }
+            selectedTabId.value = id
+            disposables.append(disposable)
         }
-        
-        disposables.append(disposable)
     }
     
     func subscribeForTabsCountChange() {
