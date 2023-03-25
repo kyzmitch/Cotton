@@ -13,7 +13,7 @@ import FeaturesFlagsKit
 import BrowserNetworking
 import CottonCoreBaseKit
 
-final class SearchBarViewModel: NSObject {
+/* @MainActor */ final class SearchBarViewModel: NSObject {
     @Published var showSuggestions: Bool
     @Published var searchText: String
     @Published var searchViewState: SearchBarState

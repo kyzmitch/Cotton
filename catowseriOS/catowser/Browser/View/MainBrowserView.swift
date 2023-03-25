@@ -35,32 +35,32 @@ extension UIFrameworkType {
 }
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
-    private let model: MainBrowserModel<C>
+    private weak var coordinator: C?
     
-    init(_ model: MainBrowserModel<C>) {
-        self.model = model
+    init(_ coordinator: C?) {
+        self.coordinator = coordinator
     }
     
     var body: some View {
-        _MainBrowserView<C>(model: model)
-            .environment(\.browserContentCoordinators, model.coordinatorsInterface)
+        _MainBrowserView<C>(coordinator)
+            .environment(\.browserContentCoordinators, coordinator)
     }
 }
 
 private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
-    private var model: MainBrowserModel<C>
+    private weak var coordinator: C?
     private let mode: SwiftUIMode
     
-    init(model: MainBrowserModel<C>) {
-        self.model = model
+    init(_ coordinator: C?) {
+        self.coordinator = coordinator
         mode = FeatureManager.appUIFrameworkValue().swiftUIMode
     }
     
     var body: some View {
         if isPad {
-            TabletView(model, mode)
+            TabletView(coordinator, mode)
         } else {
-            PhoneView(model, mode)
+            PhoneView(coordinator, mode)
         }
     }
 }
