@@ -17,6 +17,7 @@ public protocol TabsStoragable: AutoMockable {
 
     /// The identifier of selected tab.
     func fetchSelectedTabId() -> SignalProducer<UUID, TabStorageError>
+    func fetchSelectedTabId() async throws -> UUID
     /// Changes selected tab only if it is presented in storage.
     ///
     /// - Parameter tab: The tab object to be selected.
@@ -28,11 +29,13 @@ public protocol TabsStoragable: AutoMockable {
     ///
     /// - Returns: A producer with tabs array or error.
     func fetchAllTabs() -> SignalProducer<[Tab], TabStorageError>
+    func fetchAllTabs() async throws -> [Tab]
 
     /// Adds a tab to storage
     ///
     /// - Parameter tab: The tab object to be added.
     func add(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabStorageError>
+    func add(_ tab: Tab, select: Bool) async throws -> Tab
     
     /// Updates tab content
     ///

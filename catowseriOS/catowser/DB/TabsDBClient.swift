@@ -11,6 +11,7 @@ import CoreBrowser
 import CottonCoreBaseKit
 
 enum TabsCoreDataError: Swift.Error {
+    case mgContextNil
     case noAppSettingsRecordWasFound
     case fetchedTooManyRecords
     case selectedTabIdNotPresent
@@ -307,5 +308,74 @@ fileprivate extension CDAppSettings {
     convenience init(context: NSManagedObjectContext, selectedTabIdentifier: UUID) {
         self.init(context: context)
         self.selectedTabId = selectedTabIdentifier
+    }
+}
+
+extension TabsDBClient {
+    func fetchAllTabs() async throws -> [Tab] {
+        return try await managedContext.perform {
+            let request: NSFetchRequest<CDTab> = CDTab.fetchRequest()
+            let result = try request.execute()
+            return result.compactMap {Tab(cdTab: $0)}
+        }
+    }
+    
+    func insert(tab: Tab) async throws {
+        return try await managedContext.perform { [weak managedContext] in
+            guard let managedContext else {
+                return
+            }
+            _ = CDTab(context: managedContext, tab: tab)
+            try managedContext.save()
+        }
+    }
+    
+    func select(tab: Tab) async throws {
+        try await setSettingsSelectedTabId(tab.id)
+    }
+    
+    private func setSettingsSelectedTabId(_ uuid: UUID) async throws {
+        return try await managedContext.perform { [weak managedContext] in
+            guard let managedContext else {
+                return
+            }
+            let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
+            fetchRequest.fetchLimit = 1
+            let result = try managedContext.fetch(fetchRequest)
+            if result.isEmpty {
+                _ = CDAppSettings(context: managedContext, selectedTabIdentifier: uuid)
+                try managedContext.save()
+            } else {
+                if let existingCdSettings = result.first {
+                    existingCdSettings.selectedTabId = uuid
+                } else {
+                    _ = CDAppSettings(context: managedContext, selectedTabIdentifier: uuid)
+                }
+                try managedContext.save()
+            }
+        }
+    }
+    
+    func selectedTabId() async throws -> UUID {
+        return try await managedContext.perform { [weak managedContext] in
+            guard let managedContext else {
+                throw TabsCoreDataError.mgContextNil
+            }
+            
+            let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
+            fetchRequest.fetchLimit = 1
+            
+            let result = try managedContext.fetch(fetchRequest)
+            guard !result.isEmpty else {
+                throw TabsCoreDataError.noAppSettingsRecordWasFound
+            }
+            guard let cdSettings = result.first else {
+                throw TabsCoreDataError.fetchedTooManyRecords
+            }
+            guard let actualSelectedTabId = cdSettings.selectedTabId else {
+                throw TabsCoreDataError.selectedTabIdNotPresent
+            }
+            return actualSelectedTabId
+        }
     }
 }

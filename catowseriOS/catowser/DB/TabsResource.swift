@@ -226,3 +226,30 @@ final class TabsResource {
         return producer.observe(on: scheduler)
     }
 }
+
+extension TabsResource {
+    func tabsFromLastSession() async throws -> [Tab] {
+        guard isStoreInitialized else {
+            throw TabResourceError.storeNotInitializedYet
+        }
+        return try await dbClient.fetchAllTabs()
+    }
+    
+    func remember(tab: Tab, andSelect select: Bool) async throws -> Tab {
+        guard isStoreInitialized else {
+            throw TabResourceError.storeNotInitializedYet
+        }
+        try await dbClient.insert(tab: tab)
+        if select {
+            try await dbClient.select(tab: tab)
+        }
+        return tab
+    }
+    
+    func selectedTabId() async throws -> UUID {
+        guard isStoreInitialized else {
+            throw TabResourceError.storeNotInitializedYet
+        }
+        return try await dbClient.selectedTabId()
+    }
+}

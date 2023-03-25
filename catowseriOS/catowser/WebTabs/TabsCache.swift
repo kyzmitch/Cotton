@@ -96,4 +96,16 @@ extension TabsCacheProvider: TabsStoragable {
                 return .dbResourceError(resourceError)
             }).start(on: scheduler)
     }
+    
+    func fetchAllTabs() async throws -> [Tab] {
+        try await tabsDbResource.tabsFromLastSession()
+    }
+    
+    func add(_ tab: Tab, select: Bool) async throws -> Tab {
+        try await tabsDbResource.remember(tab: tab, andSelect: select)
+    }
+    
+    func fetchSelectedTabId() async throws -> UUID {
+        try await tabsDbResource.selectedTabId()
+    }
 }
