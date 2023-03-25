@@ -12,10 +12,16 @@ import CoreBrowser
 struct PhoneView<C: BrowserContentCoordinators>: View {
     // MARK: - view models of subviews
     
-    @StateObject private var model: MainBrowserViewModel<C>
+    private var model: MainBrowserModel<C>
     private let searchBarModel: SearchBarViewModel
     private let browserContentModel: BrowserContentModel
     private let toolbarModel: WebBrowserToolbarModel
+    
+    // MARK: - search bar state
+    
+    @State private var searchBarState: SearchBarState
+    @State private var showSearchSuggestions: Bool
+    @State private var searchQuery: String
     
     // MARK: - web content loading state
     
@@ -53,9 +59,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         return MenuViewModel(style)
     }
     
-    init(_ coordinator: C?, _ mode: SwiftUIMode) {
-        let internalModel = MainBrowserViewModel(coordinator)
-        _model = .init(wrappedValue: internalModel)
+    init(_ model: MainBrowserModel<C>, _ mode: SwiftUIMode) {
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -68,10 +72,17 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         // for `ProgressView`
         showProgress = false
         websiteLoadProgress = 0.0
-
+        // Search bar and suggestions state values
+        // have to be stored in main view
+        // to be able to replace browser content view
+        // with the search suggestions view when necessary
+        showSearchSuggestions = false
+        searchQuery = ""
+        searchBarState = .blankSearch
         // Store references to subview models in the main view
         // to be able to subscribe for the publishers
-        browserContentModel = BrowserContentModel(_model.wrappedValue.jsPluginsBuilder)
+        self.model = model
+        browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
         searchBarModel = SearchBarViewModel()
         self.mode = mode
@@ -94,12 +105,12 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         switch mode {
         case .compatible:
             VStack {
-                SearchBarView(searchBarModel, $model.searchBarState, mode)
+                SearchBarView(searchBarModel, $searchBarState, mode)
                 if showProgress {
                     ProgressView(value: websiteLoadProgress)
                 }
-                if model.showSearchSuggestions {
-                    SearchSuggestionsView($model.searchQuery, searchBarModel)
+                if showSearchSuggestions {
+                    SearchSuggestionsView($searchQuery, searchBarModel)
                 } else {
                     BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
                 }
@@ -115,13 +126,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 websiteLoadProgress = value
             }
             .onReceive(searchBarModel.$showSuggestions) { value in
-                model.showSearchSuggestions = value
+                showSearchSuggestions = value
             }
             .onReceive(searchBarModel.$searchText) { value in
-                model.searchQuery = value
+                searchQuery = value
             }
             .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
-                model.searchBarState = value
+                searchBarState = value
             }
             .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
                 webViewNeedsUpdate = false
@@ -132,12 +143,12 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         case .full:
             NavigationView {
                 VStack {
-                    SearchBarView(searchBarModel, $model.searchBarState, mode)
+                    SearchBarView(searchBarModel, $searchBarState, mode)
                     if showProgress {
                         ProgressView(value: websiteLoadProgress)
                     }
-                    if model.showSearchSuggestions {
-                        SearchSuggestionsView($model.searchQuery, searchBarModel)
+                    if showSearchSuggestions {
+                        SearchSuggestionsView($searchQuery, searchBarModel)
                     } else {
                         BrowserContentView(browserContentModel,
                                            toolbarModel,
@@ -203,13 +214,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 websiteLoadProgress = value
             }
             .onReceive(searchBarModel.$showSuggestions) { value in
-                model.showSearchSuggestions = value
+                showSearchSuggestions = value
             }
             .onReceive(searchBarModel.$searchText) { value in
-                model.searchQuery = value
+                searchQuery = value
             }
             .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
-                model.searchBarState = value
+                searchBarState = value
             }
             .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
                 webViewNeedsUpdate = false
@@ -224,8 +235,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
 #if DEBUG
 struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
-        let coordinator = DummyDelegate()
-        PhoneView(coordinator, .full)
+        let model = MainBrowserModel(DummyDelegate())
+        PhoneView(model, .full)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }
