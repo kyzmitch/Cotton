@@ -7,5 +7,5 @@ output:
 args:
 # Imports do not work for some reason
     # import: "ReactiveSwift"
-    # import: "CoreHttpKit"
+    # import: "CottonCoreBaseKit"
     # import: "CoreBrowser"

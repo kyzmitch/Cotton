@@ -364,6 +364,7 @@
 		8A916957297C43C400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
 		8A91695A297C43CD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
 		8A91695D297C43D500F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
+		8A917CAD29D4454700404256 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CAC29D4454700404256 /* AutoMockable.generated.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
@@ -525,7 +526,6 @@
 		8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */; };
 		8AD5E0402915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD5E0412915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
-		8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */; };
 		8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
 		8AD857E02939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */; };
 		8AD857E12939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */; };
@@ -1183,6 +1183,7 @@
 		8A9069EB267F535A0058F12D /* GoogleSearchEndpoint+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleSearchEndpoint+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsViewPreview.swift; sourceTree = "<group>"; };
 		8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CottonCoreBaseKit.xcframework; path = ../CottonCoreBaseKit/build/XCFrameworks/release/CottonCoreBaseKit.xcframework; sourceTree = "<group>"; };
+		8A917CAC29D4454700404256 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
@@ -1269,7 +1270,6 @@
 		8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMCombineTests.swift; sourceTree = "<group>"; };
 		8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewContextImpl.swift; sourceTree = "<group>"; };
 		8AD62B6F28F547E6003F3940 /* Sourcery */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sourcery; sourceTree = "<group>"; };
-		8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentContainerCoordinator.swift; sourceTree = "<group>"; };
 		8AD8783E29351BE400CE9253 /* LinkTagsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsCoordinator.swift; sourceTree = "<group>"; };
 		8AD8A168245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewLoadingErrorHandler.swift; sourceTree = "<group>"; };
@@ -2385,7 +2385,7 @@
 		8AD62B6928F545E5003F3940 /* GeneratedMocks */ = {
 			isa = PBXGroup;
 			children = (
-				8AD62B7828F55078003F3940 /* AutoMockable.generated.swift */,
+				8A917CAC29D4454700404256 /* AutoMockable.generated.swift */,
 			);
 			path = GeneratedMocks;
 			sourceTree = "<group>";
@@ -2921,11 +2921,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AB022F626258B110053AFF0 /* Build configuration list for PBXNativeTarget "CoreBrowserTests" */;
 			buildPhases = (
+				8AD62B6628F53B9C003F3940 /* ShellScript */,
 				8AB022E826258B110053AFF0 /* Sources */,
 				8AB022E926258B110053AFF0 /* Frameworks */,
 				8AB022EA26258B110053AFF0 /* Resources */,
 				8A03F43B28F4745200E4A296 /* ShellScript */,
-				8AD62B6628F53B9C003F3940 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -4056,7 +4056,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AB022EF26258B110053AFF0 /* TabsListManagerTests.swift in Sources */,
-				8AD62B7928F55079003F3940 /* AutoMockable.generated.swift in Sources */,
+				8A917CAD29D4454700404256 /* AutoMockable.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5037,7 +5037,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5067,7 +5067,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5195,7 +5195,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = CoreBrowserTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5222,7 +5222,7 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = CoreBrowserTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5405,7 +5405,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = JSPluginsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -5431,7 +5431,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = JSPluginsTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
