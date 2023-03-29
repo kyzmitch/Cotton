@@ -254,7 +254,6 @@
 		8A7B1BBF28EB1640004FC135 /* GoogleDNSStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC19CC0289E2F7E0021D8ED /* GoogleDNSStrategy.swift */; };
 		8A7B1BC128EB169A004FC135 /* SearchSuggestionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23988F28622E62005DA801 /* SearchSuggestionsViewModel.swift */; };
 		8A7B1BC228EB16A0004FC135 /* SearchSuggestionsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5755A928638748004D6F1E /* SearchSuggestionsViewModelImpl.swift */; };
-		8A7B1BC328EB16A4004FC135 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A624074288D98DA006DDC66 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift */; };
 		8A7B1BC428EB16C4004FC135 /* WebSearchAutocomplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23987B286223A7005DA801 /* WebSearchAutocomplete.swift */; };
 		8A7B1BC528EB16C8004FC135 /* WebSearchAutocomplete+AsyncAwait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A624077288D9AC7006DDC66 /* WebSearchAutocomplete+AsyncAwait.swift */; };
 		8A7B1BC628EB16CC004FC135 /* RestClientContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A23987E286223CE005DA801 /* RestClientContext.swift */; };
@@ -365,6 +364,8 @@
 		8A91695D297C43D500F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
 		8A917CAD29D4454700404256 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CAC29D4454700404256 /* AutoMockable.generated.swift */; };
 		8A917CAF29D49CA000404256 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CAE29D49CA000404256 /* Mock.generated.swift */; };
+		8A917CB129D4A39B00404256 /* SearchSuggestionsViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */; };
+		8A917CB229D4A39B00404256 /* SearchSuggestionsViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
@@ -1132,7 +1133,6 @@
 		8A5E6CAE290B1D4F0034A78B /* RestInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestInterface.swift; sourceTree = "<group>"; };
 		8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoreHttpKit.xcframework; path = ../CoreHttpKit/build/XCFrameworks/release/CoreHttpKit.xcframework; sourceTree = "<group>"; };
 		8A5FD6A826AF34570019384A /* AppErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppErrors.swift; sourceTree = "<group>"; };
-		8A624074288D98DA006DDC66 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchSuggestionsViewModelImpl+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A624077288D9AC7006DDC66 /* WebSearchAutocomplete+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebSearchAutocomplete+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
@@ -1184,6 +1184,7 @@
 		8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CottonCoreBaseKit.xcframework; path = ../CottonCoreBaseKit/build/XCFrameworks/release/CottonCoreBaseKit.xcframework; sourceTree = "<group>"; };
 		8A917CAC29D4454700404256 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		8A917CAE29D49CA000404256 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
+		8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewV2.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
@@ -1772,6 +1773,7 @@
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
 				C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */,
 				8A02AE7F2965CD9F004041D8 /* SearchSuggestionsView.swift */,
+				8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */,
 				8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */,
 				8A3286EF294B585100ECCAEA /* SearchBarLegacyView.swift */,
 				754249D92944CD8C002D6505 /* SearchBarView.swift */,
@@ -2131,7 +2133,6 @@
 				8A23987A28622391005DA801 /* Autocomplete */,
 				8A23988F28622E62005DA801 /* SearchSuggestionsViewModel.swift */,
 				8A5755A928638748004D6F1E /* SearchSuggestionsViewModelImpl.swift */,
-				8A624074288D98DA006DDC66 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift */,
 			);
 			path = SearchViewModel;
 			sourceTree = "<group>";
@@ -3667,6 +3668,7 @@
 				753392B32921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */,
 				60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */,
+				8A917CB129D4A39B00404256 /* SearchSuggestionsViewV2.swift in Sources */,
 				8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */,
 				8A81C6F92945C72F0075BEF9 /* View+Extension.swift in Sources */,
 				8A825947294E2E1A007B97CF /* TopSitesView.swift in Sources */,
@@ -3840,7 +3842,6 @@
 				8A7B1BBC28EB1614004FC135 /* DNSResolver.swift in Sources */,
 				8A7B1BF228EB28D3004FC135 /* AppErrors.swift in Sources */,
 				8A7B1BC528EB16C8004FC135 /* WebSearchAutocomplete+AsyncAwait.swift in Sources */,
-				8A7B1BC328EB16A4004FC135 /* SearchSuggestionsViewModelImpl+AsyncAwait.swift in Sources */,
 				8A7B1BCB28EB16DF004FC135 /* GoogleAutocompleteStrategy.swift in Sources */,
 				8A7B1BBB28EB15E6004FC135 /* WebViewContext.swift in Sources */,
 				8A7B1BC728EB16D0004FC135 /* SearchAutocompleteStrategy.swift in Sources */,
@@ -3922,6 +3923,7 @@
 				753392B42921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				8A8035AE24442F0F000E035F /* UIViewController+MainBundle.swift in Sources */,
 				8A8035AF24442F0F000E035F /* TopSitesViewController.swift in Sources */,
+				8A917CB229D4A39B00404256 /* SearchSuggestionsViewV2.swift in Sources */,
 				8A1C1C182484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */,
 				8A81C6FA2945C72F0075BEF9 /* View+Extension.swift in Sources */,
 				8A825948294E2E1A007B97CF /* TopSitesView.swift in Sources */,

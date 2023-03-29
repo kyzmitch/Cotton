@@ -77,7 +77,6 @@ public enum SearchSuggestionsViewState: Equatable {
 public protocol SearchSuggestionsViewModel: AnyObject {
     /// Initiate fetching only after subscribing to the async interfaces below
     func fetchSuggestions(_ query: String)
-    
     /// Rx state property signal won't emit initial/current value (comparing to Combine)
     var rxState: MutableProperty<SearchSuggestionsViewState> { get }
     /// Combine state, emits current value for every new subscriber
