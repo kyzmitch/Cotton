@@ -61,7 +61,7 @@ class TabsListManagerTests: XCTestCase {
 
     func testFailedInit() throws {
         tabsStates.defaultSelectedTabId = .notPossibleId
-        tabsStorageMock.fetchAllTabsReturnValue = .init(error: .notImplemented)
+        tabsStorageMock.fetchAllTabsThrowableError = TabStorageError.notImplemented
 
         let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageMock,
                                                        positioning: tabsStates,
@@ -81,8 +81,8 @@ class TabsListManagerTests: XCTestCase {
         let tabsV1: [Tab] = [tab1, tab2]
         
         tabsStates.defaultSelectedTabId = .notPossibleId
-        tabsStorageMock.fetchAllTabsReturnValue = .init(value: tabsV1)
-        tabsStorageMock.fetchSelectedTabIdReturnValue = .init(value: knownTabId)
+        tabsStorageMock.fetchAllTabsReturnValue = tabsV1
+        tabsStorageMock.fetchSelectedTabIdReturnValue = knownTabId
         let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageMock,
                                                        positioning: tabsStates,
                                                        selectionStrategy: selectionStrategyMock)
