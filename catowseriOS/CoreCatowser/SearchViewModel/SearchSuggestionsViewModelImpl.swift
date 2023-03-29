@@ -102,7 +102,10 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
                 state = .knownDomainsLoaded(domainNames)
                 searchSuggestionsTaskHandler?.cancel()
                 Task {
-                    await aaFetchSuggestions(query, domainNames)
+                    let suggestions = try await autocomplete.aaFetchSuggestions(query)
+                    await MainActor.run {
+                        state = .everythingLoaded(domainNames, suggestions)
+                    }
                 }
 #else
                 assertionFailure("Swift version isn't 5.5")

@@ -110,7 +110,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     ProgressView(value: websiteLoadProgress)
                 }
                 if showSearchSuggestions {
-                    SearchSuggestionsView($searchQuery, searchBarModel)
+                    SearchSuggestionsView($searchQuery, searchBarModel, mode)
                 } else {
                     BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
                 }
@@ -148,7 +148,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                         ProgressView(value: websiteLoadProgress)
                     }
                     if showSearchSuggestions {
-                        SearchSuggestionsView($searchQuery, searchBarModel)
+                        SearchSuggestionsView($searchQuery, searchBarModel, mode)
                     } else {
                         BrowserContentView(browserContentModel,
                                            toolbarModel,
