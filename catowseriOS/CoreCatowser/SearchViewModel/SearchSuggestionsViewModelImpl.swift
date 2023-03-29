@@ -115,4 +115,14 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
             }
         }
     }
+    
+    public func aaFetchSuggestions(_ query: String) async -> SearchSuggestionsViewState {
+        let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
+        do {
+            let suggestions = try await autocomplete.aaFetchSuggestions(query)
+            return .everythingLoaded(domainNames, suggestions)
+        } catch {
+            return .knownDomainsLoaded(domainNames)
+        }
+    }
 }

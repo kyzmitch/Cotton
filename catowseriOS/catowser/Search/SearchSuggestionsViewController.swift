@@ -114,14 +114,7 @@ extension SearchSuggestionsViewController /* UITableViewDataSource */ {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return NSLocalizedString("ttl_search_history_domains", comment: "Known domains")
-        case 1:
-            return NSLocalizedString("ttl_search_suggestions", comment: "Suggestions from search engine")
-        default:
-            return nil
-        }
+        state.sectionTitle(section: section)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

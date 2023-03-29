@@ -72,6 +72,17 @@ public enum SearchSuggestionsViewState: Equatable {
             return nil
         }
     }
+    
+    public func sectionTitle(section: Int) -> String? {
+        switch section {
+        case 0:
+            return NSLocalizedString("ttl_search_history_domains", comment: "Known domains")
+        case 1:
+            return NSLocalizedString("ttl_search_suggestions", comment: "Suggestions from search engine")
+        default:
+            return nil
+        }
+    }
 }
 
 public protocol SearchSuggestionsViewModel: AnyObject {
@@ -85,4 +96,6 @@ public protocol SearchSuggestionsViewModel: AnyObject {
     var state: SearchSuggestionsViewState { get }
     /// This is a replacement for Concurrency's `Task.Handler`, property wrapper can't be defined in protocol
     var statePublisher: Published<SearchSuggestionsViewState>.Publisher { get }
+    /// Concurrently fetch suggestions
+    func aaFetchSuggestions(_ query: String) async -> SearchSuggestionsViewState
 }
