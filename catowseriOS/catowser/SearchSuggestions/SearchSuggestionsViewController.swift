@@ -16,7 +16,7 @@ fileprivate extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
 }
 
-enum SuggestionType {
+enum SuggestionType: Equatable {
     case suggestion(String)
     case knownDomain(String)
     case looksLikeURL(String)

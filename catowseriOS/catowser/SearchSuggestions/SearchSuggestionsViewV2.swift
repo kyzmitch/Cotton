@@ -9,9 +9,19 @@
 import SwiftUI
 import CoreCatowser
 
+/**
+ List selection for different iOS versions (different SwiftUIs):
+ https://sarunw.com/posts/swiftui-list-selection/
+ */
+
 struct SearchSuggestionsViewV2: View {
+    /// Used in waitingForQuery
     @Binding private var searchQuery: String
+    /// Used when user selects suggestion
     private weak var delegate: SearchSuggestionsListDelegate?
+    /// Save currently selected suggestion to be able to observe it
+    @State private var selected: SuggestionType?
+    /// Used to update the view from loading to suggestions list
     @State private var suggestions: SearchSuggestionsViewState = .waitingForQuery
     private let vm: SearchSuggestionsViewModel
     
@@ -24,6 +34,12 @@ struct SearchSuggestionsViewV2: View {
     
     var body: some View {
         constructView()
+            .onChange(of: selected, perform: { newValue in
+                guard let newValue else {
+                    return
+                }
+                delegate?.didSelect(newValue)
+            })
     }
     
     private func constructView() -> some View {
@@ -36,7 +52,7 @@ struct SearchSuggestionsViewV2: View {
         case .knownDomainsLoaded(let knownDomains):
             return AnyView(List {
                 Section {
-                    ForEach(knownDomains) { SuggestionRow(value: $0)}
+                    ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
                 } header: {
                     Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
                 }
@@ -44,25 +60,17 @@ struct SearchSuggestionsViewV2: View {
         case .everythingLoaded(let knownDomains, let querySuggestions):
             return AnyView(List {
                 Section {
-                    ForEach(knownDomains) { SuggestionRow(value: $0)}
+                    ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
                 } header: {
                     Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
                 }
                 Section {
-                    ForEach(querySuggestions) { SuggestionRow(value: $0)}
+                    ForEach(querySuggestions) { SuggestionRowView($0, .suggestion, $selected)}
                 } header: {
                     Text(verbatim: suggestions.sectionTitle(section: 1) ?? "Suggestions from search engine")
                 }
             })
         }
-    }
-}
-
-private struct SuggestionRow: View {
-    var value: String
-    
-    var body: some View {
-        Text(value)
     }
 }
 
