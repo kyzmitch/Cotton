@@ -55,7 +55,7 @@ extension SearchBarBaseViewController: TabsObserver {
         // but at the same time it really doesn't make sense
         // to replace site on tab which is not active
         // So, assume that `tab` parameter is currently selected
-        // and will replace content which is currently disprlayed by search bar
+        // and will replace content which is currently displayed by search bar
 
         let state: SearchBarState = .viewMode(tab.title, tab.searchBarContent, true)
         changeState(to: state)
