@@ -10,7 +10,7 @@ import SwiftUI
 import UIKit
 
 struct TopSitesView: View {
-    @ObservedObject var model: TopSitesModel
+    let model: TopSitesModel
     
     init(_ model: TopSitesModel) {
         self.model = model
@@ -29,7 +29,7 @@ struct TopSitesView: View {
  */
 
 private struct TopSitesLegacyView: UIViewControllerRepresentable {
-    @ObservedObject var model: TopSitesModel
+    let model: TopSitesModel
     typealias UIViewControllerType = UIViewController
     
     private var vcFactory: ViewControllerFactory {

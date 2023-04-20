@@ -6,10 +6,9 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import SwiftUI
 import CottonCoreBaseKit
 
-final class TopSitesModel: ObservableObject {
+final class TopSitesModel {
     let topSites: [Site]
     
     init() {

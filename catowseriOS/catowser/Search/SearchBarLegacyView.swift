@@ -11,7 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 
 /// The sate of search bar
-enum SearchBarState {
+enum SearchBarState: Equatable {
     /// initial state for new blank tab
     case blankSearch
     /// keyboard and `cancel` button are visible

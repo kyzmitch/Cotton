@@ -17,7 +17,7 @@ protocol WebViewReusable: AnyObject {
 
 /// web view specific to SwiftUI
 struct WebView: View {
-    @ObservedObject var model: WebViewModelV2
+    let model: WebViewModelV2
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
@@ -40,7 +40,7 @@ struct WebView: View {
 private struct WebViewLegacyView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     
-    @ObservedObject private var model: WebViewModelV2
+    private let model: WebViewModelV2
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates

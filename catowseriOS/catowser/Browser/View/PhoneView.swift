@@ -96,12 +96,6 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     }
     
     var body: some View {
-        /*
-         - ignoresSafeArea(.keyboard)
-         Allows to not have the toolbar be attached to keyboard.
-         So, the toolbar will stay on same position
-         even after keyboard became visible.
-         */
         switch mode {
         case .compatible:
             VStack {
@@ -196,7 +190,9 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     }
                     ToolbarItem(placement: .bottomBar) {
                         Button {
-                            showingMenu.toggle()
+                            withAnimation(.easeInOut(duration: 1)) {
+                                showingMenu.toggle()
+                            }
                         } label: {
                             Image(systemName: "square.and.arrow.up")
                         }

@@ -6,10 +6,9 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import SwiftUI
 import CottonCoreBaseKit
 
-final class WebViewModelV2: ObservableObject {
+final class WebViewModelV2 {
     /// A reference to JavaScript plugins builder passed from root view
     let jsPluginsBuilder: any JSPluginsSource
     /// External delegate which will be a toolbar view model
