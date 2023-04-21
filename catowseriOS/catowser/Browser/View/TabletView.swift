@@ -73,6 +73,15 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     }
     
     var body: some View {
+        switch mode {
+        case .compatible:
+            uiKitWrapperView
+        case .full:
+            Spacer()
+        }
+    }
+    
+    private var uiKitWrapperView: some View {
         VStack {
             TabletTabsView()
             TabletSearchBarView(searchBarModel, $searchBarState, toolbarModel, $webViewInterface)
@@ -86,21 +95,11 @@ struct TabletView<C: BrowserContentCoordinators>: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-        .onReceive(toolbarModel.$showProgress) { value in
-            showProgress = value
-        }
-        .onReceive(toolbarModel.$websiteLoadProgress) { value in
-            websiteLoadProgress = value
-        }
-        .onReceive(searchBarModel.$showSuggestions) { value in
-            showSearchSuggestions = value
-        }
-        .onReceive(searchBarModel.$searchQuery) { value in
-            searchQuery = value
-        }
-        .onReceive(searchBarModel.$state.dropFirst()) { value in
-            searchBarState = value
-        }
+        .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(searchBarModel.$showSuggestions) { showSearchSuggestions = $0 }
+        .onReceive(searchBarModel.$searchQuery) { searchQuery = $0 }
+        .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
             webViewNeedsUpdate = false
         }
