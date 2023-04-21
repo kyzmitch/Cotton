@@ -19,11 +19,6 @@ struct ToolbarView: View {
     }
     
     var body: some View {
-        /*
-         - safeAreaInset(edge: .bottom, spacing: 0)
-         Allows to set same color for the space under toolbar
-         */
-        
         ToolbarLegacyView($webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)
             .safeAreaInset(edge: .bottom, spacing: 0) {
@@ -32,37 +27,6 @@ struct ToolbarView: View {
             .onReceive(model.$webViewInterface) { value in
                 webViewInterface = value
             }
-    }
-}
-
-private struct ToolbarLegacyView: UIViewControllerRepresentable {
-    typealias UIViewControllerType = UIViewController
-    @Binding private var webViewInterface: WebViewNavigatable?
-    
-    init(_ webViewInterface: Binding<WebViewNavigatable?>) {
-        _webViewInterface = webViewInterface
-    }
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
-    
-    func makeUIViewController(context: Context) -> UIViewControllerType {
-        let interface = context.environment.browserContentCoordinators
-        let vc = vcFactory.toolbarViewController(nil,
-                                                 interface?.globalMenuDelegate,
-                                                 interface?.toolbarCoordinator,
-                                                 interface?.toolbarPresenter)
-        // swiftlint:disable:next force_unwrapping
-        return vc!
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        guard let vc = uiViewController as? WebBrowserToolbarController<MainToolbarCoordinator> else {
-            return
-        }
-        // This is the only way to set the web view interface for the toolbar
-        vc.siteNavigator = webViewInterface
     }
 }
 

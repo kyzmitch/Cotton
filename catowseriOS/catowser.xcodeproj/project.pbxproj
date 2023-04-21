@@ -166,6 +166,10 @@
 		8A0FC1A129F24C950044829A /* PhoneSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC19F29F24C950044829A /* PhoneSearchBarLegacyView.swift */; };
 		8A0FC1A329F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */; };
 		8A0FC1A429F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */; };
+		8A0FC1A629F2586B0044829A /* ToolbarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */; };
+		8A0FC1A729F2586B0044829A /* ToolbarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */; };
+		8A0FC1A929F259D20044829A /* ToolbarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */; };
+		8A0FC1AA29F259D20044829A /* ToolbarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
@@ -1104,6 +1108,8 @@
 		8A0FC19A29F246640044829A /* SearchSuggestionsLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsLegacyView.swift; sourceTree = "<group>"; };
 		8A0FC19F29F24C950044829A /* PhoneSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSearchBarLegacyView.swift; sourceTree = "<group>"; };
 		8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarLegacyView.swift; sourceTree = "<group>"; };
+		8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarViewV2.swift; sourceTree = "<group>"; };
+		8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarLegacyView.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
 		8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridCoordinator.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
@@ -1827,6 +1833,8 @@
 				841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */,
 				60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */,
 				8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */,
+				8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */,
+				8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */,
 				75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */,
 			);
 			path = Toolbar;
@@ -3696,6 +3704,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0FC1A629F2586B0044829A /* ToolbarViewV2.swift in Sources */,
 				8AE3113C247C66DF00FF28B1 /* BrowserMenuView.swift in Sources */,
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
 				7533929A291FCEDD00570461 /* Coordinator.swift in Sources */,
@@ -3756,6 +3765,7 @@
 				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
 				8AE0BDDA292D06D200A8BF9E /* LoadingProgressViewController.swift in Sources */,
+				8A0FC1A929F259D20044829A /* ToolbarLegacyView.swift in Sources */,
 				8AD8783F29351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */,
 				75FAAB38292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */,
 				8A1C1C1A2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,
@@ -3956,6 +3966,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0FC1A729F2586B0044829A /* ToolbarViewV2.swift in Sources */,
 				8AE3113D247C66DF00FF28B1 /* BrowserMenuView.swift in Sources */,
 				8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */,
 				7533929B291FCEDD00570461 /* Coordinator.swift in Sources */,
@@ -4016,6 +4027,7 @@
 				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,
 				8AE0BDDB292D06D200A8BF9E /* LoadingProgressViewController.swift in Sources */,
+				8A0FC1AA29F259D20044829A /* ToolbarLegacyView.swift in Sources */,
 				8AD8784029351BE400CE9253 /* LinkTagsCoordinator.swift in Sources */,
 				75FAAB39292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */,
 				8A1C1C1B2484E6450098F2F1 /* TabDefaultContentViewPreview.swift in Sources */,

@@ -152,48 +152,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     }
                 }
                 .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Button {
-                            toolbarModel.goBack()
-                        } label: {
-                            Image("nav-back")
-                        }
-                        .disabled(toolbarModel.goBackDisabled)
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-                        Spacer()
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button {
-                            toolbarModel.goForward()
-                        } label: {
-                            Image("nav-forward")
-                        }
-                        .disabled(toolbarModel.goForwardDisabled)
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-                        Spacer()
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button {
-                            toolbarModel.reload()
-                        } label: {
-                            Image("nav-refresh")
-                        }
-                        .disabled(toolbarModel.reloadDisabled)
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-                        Spacer()
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-                        Button {
-                            withAnimation(.easeInOut(duration: 1)) {
-                                showingMenu.toggle()
-                            }
-                        } label: {
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                    }
+                    ToolbarViewV2(toolbarModel, $showingMenu)
                 }
             }
             .sheet(isPresented: $showingMenu) {
