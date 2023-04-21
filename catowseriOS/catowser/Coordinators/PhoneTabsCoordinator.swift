@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import FeaturesFlagsKit
 
 protocol PhoneTabsDelegate: AnyObject {
     func didTabSelect(_ tab: Tab)
@@ -23,6 +24,7 @@ final class PhoneTabsCoordinator: Coordinator {
     var navigationStack: UINavigationController?
     
     private weak var delegate: PhoneTabsDelegate?
+    private let uiFramework: UIFrameworkType
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController?,
@@ -30,6 +32,8 @@ final class PhoneTabsCoordinator: Coordinator {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
+        
+        uiFramework = FeatureManager.appUIFrameworkValue()
     }
     
     func start() {
@@ -38,6 +42,11 @@ final class PhoneTabsCoordinator: Coordinator {
             return
         }
         startedVC = vc
+        guard uiFramework == .uiKit else {
+            // For SwiftUI mode we still need to create view controller
+            // but presenting should happen on SwiftUI level
+            return
+        }
         presenterVC?.viewController.present(vc, animated: true, completion: nil)
     }
 }
@@ -65,6 +74,13 @@ extension PhoneTabsCoordinator: Navigating {
     
     func stop() {
         startedVC?.viewController.dismiss(animated: true)
+        guard uiFramework == .uiKit else {
+            // Need to try to save coordinator for SwiftUI mode
+            // because it was started at App start and not when
+            // user presses on tab previews button in toolbar
+            // as it is done in UIKit mode
+            return
+        }
         parent?.coordinatorDidFinish(self)
     }
 }
