@@ -103,6 +103,50 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     var body: some View {
         switch mode {
         case .compatible:
+            uiKitWrapperView
+        case .full:
+            fullySwiftUIView
+        }
+    }
+    
+    private var uiKitWrapperView: some View {
+        VStack {
+            SearchBarView(searchBarModel,
+                          $searchQuery,
+                          $searchBarState,
+                          mode)
+            if showProgress {
+                ProgressView(value: websiteLoadProgress)
+            }
+            if showSearchSuggestions {
+                SearchSuggestionsView($searchQuery,
+                                      searchBarModel,
+                                      mode)
+            } else {
+                BrowserContentView(browserContentModel,
+                                   toolbarModel,
+                                   $isLoading,
+                                   $contentType,
+                                   $webViewNeedsUpdate)
+            }
+            ToolbarView(toolbarModel, $webViewInterface)
+        }
+        .ignoresSafeArea(.keyboard)
+        .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(searchBarModel.$showSuggestions) { showSearchSuggestions = $0 }
+        .onReceive(searchBarModel.$searchQuery) { searchQuery = $0 }
+        .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
+        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
+            webViewNeedsUpdate = false
+        }
+        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+            webViewNeedsUpdate = true
+        }
+    }
+    
+    private var fullySwiftUIView: some View {
+        NavigationView {
             VStack {
                 SearchBarView(searchBarModel,
                               $searchQuery,
@@ -122,82 +166,44 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                                        $contentType,
                                        $webViewNeedsUpdate)
                 }
-                if case .compatible = mode {
-                    ToolbarView(toolbarModel, $webViewInterface)
-                }
             }
-            .ignoresSafeArea(.keyboard)
-            .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
-            .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
-            .onReceive(searchBarModel.$showSuggestions) { showSearchSuggestions = $0 }
-            .onReceive(searchBarModel.$searchQuery) { searchQuery = $0 }
-            .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
-            .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
-                webViewNeedsUpdate = false
+            .toolbar {
+                ToolbarViewV2(toolbarModel,
+                              $tabsCount,
+                              $showingMenu,
+                              $showingTabs,
+                              $showSearchSuggestions)
             }
-            .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
-                webViewNeedsUpdate = true
+        }
+        .sheet(isPresented: $showingMenu) {
+            BrowserMenuView(model: menuModel)
+        }
+        .sheet(isPresented: $showingTabs) {
+            TabsPreviewsLegacyView()
+        }
+        .ignoresSafeArea(.keyboard)
+        .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onChange(of: searchQuery) { value in
+            // Only show suggestions when User edits text in search view & query is not empty
+            showSearchSuggestions = searchBarState == .startSearch && !value.isEmpty
+        }
+        .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
+        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
+            webViewNeedsUpdate = false
+        }
+        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+            webViewNeedsUpdate = true
+        }
+        .onReceive(browserContentModel.$contentType) { value in
+            switch value {
+            case .blank, .favorites, .topSites, .homepage:
+                searchBarState = .blankSearch
+            case .site(let site):
+                searchBarState = .viewMode(site.title, site.searchBarContent, false)
             }
-        case .full:
-            NavigationView {
-                VStack {
-                    SearchBarView(searchBarModel,
-                                  $searchQuery,
-                                  $searchBarState,
-                                  mode)
-                    if showProgress {
-                        ProgressView(value: websiteLoadProgress)
-                    }
-                    if showSearchSuggestions {
-                        SearchSuggestionsView($searchQuery,
-                                              searchBarModel,
-                                              mode)
-                    } else {
-                        BrowserContentView(browserContentModel,
-                                           toolbarModel,
-                                           $isLoading,
-                                           $contentType,
-                                           $webViewNeedsUpdate)
-                    }
-                }
-                .toolbar {
-                    ToolbarViewV2(toolbarModel,
-                                  $tabsCount,
-                                  $showingMenu,
-                                  $showingTabs,
-                                  $showSearchSuggestions)
-                }
-            }
-            .sheet(isPresented: $showingMenu) {
-                BrowserMenuView(model: menuModel)
-            }
-            .sheet(isPresented: $showingTabs) {
-                TabsPreviewsLegacyView()
-            }
-            .ignoresSafeArea(.keyboard)
-            .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
-            .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
-            .onChange(of: searchQuery) { value in
-                // Only show suggestions when User edits text in search view & query is not empty
-                showSearchSuggestions = searchBarState == .startSearch && !value.isEmpty
-            }
-            .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
-            .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
-                webViewNeedsUpdate = false
-            }
-            .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
-                webViewNeedsUpdate = true
-            }
-            .onReceive(browserContentModel.$contentType) { value in
-                switch value {
-                case .blank, .favorites, .topSites, .homepage:
-                    searchBarState = .blankSearch
-                case .site(let site):
-                    searchBarState = .viewMode(site.title, site.searchBarContent, false)
-                }
-            }
-            .onReceive(browserContentModel.$tabsCount) { tabsCount = $0 }
-        } // switch
+        }
+        .onReceive(browserContentModel.$tabsCount) { tabsCount = $0 }
     }
 }
 
