@@ -34,7 +34,7 @@ struct SearchSuggestionsViewV2: View {
                 guard let newValue else {
                     return
                 }
-                delegate?.didSelect(newValue)
+                delegate?.searchSuggestionDidSelect(newValue)
             }
             .onChange(of: searchQuery) { _ in
                 if !searchQuery.isEmpty {

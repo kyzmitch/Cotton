@@ -275,7 +275,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        didSelect(content)
+        searchSuggestionDidSelect(content)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -284,7 +284,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
 }
 
 extension SearchBarCoordinator: SearchSuggestionsListDelegate {
-    func didSelect(_ content: SuggestionType) {
+    func searchSuggestionDidSelect(_ content: SuggestionType) {
         showNext(.hideSuggestions)
 
         switch content {
