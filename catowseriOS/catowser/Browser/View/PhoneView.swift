@@ -122,10 +122,10 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             .onReceive(searchBarModel.$showSuggestions) { value in
                 showSearchSuggestions = value
             }
-            .onReceive(searchBarModel.$searchText) { value in
+            .onReceive(searchBarModel.$searchQuery) { value in
                 searchQuery = value
             }
-            .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
+            .onReceive(searchBarModel.$state.dropFirst()) { value in
                 searchBarState = value
             }
             .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
@@ -149,9 +149,6 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                                            $isLoading,
                                            $contentType,
                                            $webViewNeedsUpdate)
-                    }
-                    if case .compatible = mode {
-                        ToolbarView(toolbarModel, $webViewInterface)
                     }
                 }
                 .toolbar {
@@ -212,10 +209,10 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             .onReceive(searchBarModel.$showSuggestions) { value in
                 showSearchSuggestions = value
             }
-            .onReceive(searchBarModel.$searchText) { value in
+            .onReceive(searchBarModel.$searchQuery) { value in
                 searchQuery = value
             }
-            .onReceive(searchBarModel.$searchViewState.dropFirst()) { value in
+            .onReceive(searchBarModel.$state.dropFirst()) { value in
                 searchBarState = value
             }
             .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in

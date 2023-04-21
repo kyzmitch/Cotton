@@ -160,6 +160,12 @@
 		8A0E0EAB224A94E600D86CD7 /* InstagramVideoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */; };
 		8A0E4D5A29133E77008F7964 /* SwiftyMocky in Frameworks */ = {isa = PBXBuildFile; productRef = 8A0E4D5929133E77008F7964 /* SwiftyMocky */; };
 		8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9BE0928FEB17E002063C2 /* WebSearchAutocompleteTests.swift */; };
+		8A0FC19B29F246640044829A /* SearchSuggestionsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC19A29F246640044829A /* SearchSuggestionsLegacyView.swift */; };
+		8A0FC19C29F246640044829A /* SearchSuggestionsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC19A29F246640044829A /* SearchSuggestionsLegacyView.swift */; };
+		8A0FC1A029F24C950044829A /* PhoneSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC19F29F24C950044829A /* PhoneSearchBarLegacyView.swift */; };
+		8A0FC1A129F24C950044829A /* PhoneSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC19F29F24C950044829A /* PhoneSearchBarLegacyView.swift */; };
+		8A0FC1A329F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */; };
+		8A0FC1A429F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
@@ -1095,6 +1101,9 @@
 		8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDecodable.swift; sourceTree = "<group>"; };
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
 		8A0E0EAA224A94E600D86CD7 /* InstagramVideoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoNode.swift; sourceTree = "<group>"; };
+		8A0FC19A29F246640044829A /* SearchSuggestionsLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsLegacyView.swift; sourceTree = "<group>"; };
+		8A0FC19F29F24C950044829A /* PhoneSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSearchBarLegacyView.swift; sourceTree = "<group>"; };
+		8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarLegacyView.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
 		8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridCoordinator.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
@@ -1775,15 +1784,12 @@
 		841A2D79203ACB420050A996 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */,
-				841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */,
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
 				8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */,
 				8A3286EF294B585100ECCAEA /* SearchBarLegacyView.swift */,
-				754249D92944CD8C002D6505 /* SearchBarView.swift */,
-				8A9D9D8B2971DB2F0047734C /* TabletSearchBarView.swift */,
-				8AE70EAB29648927007D56C1 /* SearchBarViewV2.swift */,
 				8A046DDF2965AC9300BB6D63 /* SearchBarViewModel.swift */,
+				8A0FC19E29F24A5D0044829A /* Phone */,
+				8A0FC19D29F24A540044829A /* Tablet */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1963,6 +1969,27 @@
 				8AF4336B248E129F0047452B /* HTMLContentMessage.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		8A0FC19D29F24A540044829A /* Tablet */ = {
+			isa = PBXGroup;
+			children = (
+				841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */,
+				8A9D9D8B2971DB2F0047734C /* TabletSearchBarView.swift */,
+				8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */,
+			);
+			path = Tablet;
+			sourceTree = "<group>";
+		};
+		8A0FC19E29F24A5D0044829A /* Phone */ = {
+			isa = PBXGroup;
+			children = (
+				841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */,
+				8A0FC19F29F24C950044829A /* PhoneSearchBarLegacyView.swift */,
+				754249D92944CD8C002D6505 /* SearchBarView.swift */,
+				8AE70EAB29648927007D56C1 /* SearchBarViewV2.swift */,
+			);
+			path = Phone;
 			sourceTree = "<group>";
 		};
 		8A16102728947C0900D45228 /* DNSResolving */ = {
@@ -2546,6 +2573,7 @@
 			children = (
 				C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */,
 				8A02AE7F2965CD9F004041D8 /* SearchSuggestionsView.swift */,
+				8A0FC19A29F246640044829A /* SearchSuggestionsLegacyView.swift */,
 				8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */,
 				8AF3351F29E4A33100A486CF /* SuggestionRowView.swift */,
 			);
@@ -3690,6 +3718,7 @@
 				8A81C6F92945C72F0075BEF9 /* View+Extension.swift in Sources */,
 				8A825947294E2E1A007B97CF /* TopSitesView.swift in Sources */,
 				8A81C6FC2945C8050075BEF9 /* ToolbarView.swift in Sources */,
+				8A0FC1A029F24C950044829A /* PhoneSearchBarLegacyView.swift in Sources */,
 				8435A49B1EED5E700020102F /* AppDelegate.swift in Sources */,
 				60724EEE220C4FDC0071BECF /* WebViewsReuseManager.swift in Sources */,
 				605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */,
@@ -3712,6 +3741,7 @@
 				8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8A9D9D892971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1628FF0C75002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
+				8A0FC1A329F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */,
 				8A02AE802965CD9F004041D8 /* SearchSuggestionsView.swift in Sources */,
 				753392B62922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
@@ -3791,6 +3821,7 @@
 				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE2028FF0D0D002063C2 /* AnyViewController.swift in Sources */,
 				8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */,
+				8A0FC19B29F246640044829A /* SearchSuggestionsLegacyView.swift in Sources */,
 				8A55351A247D740900E3B330 /* MenuViewModel.swift in Sources */,
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
@@ -3947,6 +3978,7 @@
 				8A81C6FA2945C72F0075BEF9 /* View+Extension.swift in Sources */,
 				8A825948294E2E1A007B97CF /* TopSitesView.swift in Sources */,
 				8A81C6FD2945C8050075BEF9 /* ToolbarView.swift in Sources */,
+				8A0FC1A129F24C950044829A /* PhoneSearchBarLegacyView.swift in Sources */,
 				8A8035B224442F0F000E035F /* AppDelegate.swift in Sources */,
 				8A8035B324442F0F000E035F /* WebViewsReuseManager.swift in Sources */,
 				8A8035B424442F0F000E035F /* TabsPreviewsViewController.swift in Sources */,
@@ -3969,6 +4001,7 @@
 				8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8A9D9D8A2971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1528FF0C74002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
+				8A0FC1A429F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */,
 				8A02AE812965CD9F004041D8 /* SearchSuggestionsView.swift in Sources */,
 				753392B72922C9EB00570461 /* MainToolbarCoordinator.swift in Sources */,
 				8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */,
@@ -4048,6 +4081,7 @@
 				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
 				8AB9BE1F28FF0D0D002063C2 /* AnyViewController.swift in Sources */,
 				8A1273DE2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */,
+				8A0FC19C29F246640044829A /* SearchSuggestionsLegacyView.swift in Sources */,
 				8A55351B247D740900E3B330 /* MenuViewModel.swift in Sources */,
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,

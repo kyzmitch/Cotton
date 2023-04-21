@@ -9,11 +9,6 @@
 import SwiftUI
 import CoreCatowser
 
-/**
- List selection for different iOS versions (different SwiftUIs):
- https://sarunw.com/posts/swiftui-list-selection/
- */
-
 struct SearchSuggestionsViewV2: View {
     /// Used in waitingForQuery
     @Binding private var searchQuery: String
@@ -83,8 +78,4 @@ struct SearchSuggestionsViewV2: View {
             })
         }
     }
-}
-
-private extension String {
-    static let globalSectionTtl = NSLocalizedString("ttl_global_menu", comment: "")
 }
