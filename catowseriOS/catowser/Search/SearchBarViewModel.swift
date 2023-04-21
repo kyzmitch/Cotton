@@ -15,8 +15,8 @@ import CottonCoreBaseKit
 
 final class SearchBarViewModel: NSObject {
     @Published var showSuggestions: Bool
-    @Published var searchText: String
-    @Published var searchViewState: SearchBarState
+    @Published var searchQuery: String
+    @Published var state: SearchBarState
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String
@@ -40,9 +40,9 @@ final class SearchBarViewModel: NSObject {
     
     override init() {
         showSuggestions = false
-        searchText = ""
+        searchQuery = ""
         tempSearchText = ""
-        searchViewState = .blankSearch
+        state = .blankSearch
         super.init()
     }
 }
@@ -90,12 +90,12 @@ extension SearchBarViewModel: SearchSuggestionsListDelegate {
 }
 
 extension SearchBarViewModel: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty || searchText.looksLikeAURL() {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchQuery: String) {
+        if searchQuery.isEmpty || searchQuery.looksLikeAURL() {
             showSuggestions = false
         } else {
             showSuggestions = true
-            self.searchText = searchText
+            self.searchQuery = searchQuery
         }
     }
     
@@ -120,11 +120,11 @@ extension SearchBarViewModel: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchViewState = .startSearch
+        state = .startSearch
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchViewState = .cancelTapped
+        state = .cancelTapped
         showSuggestions = false
         searchBar.resignFirstResponder()
     }

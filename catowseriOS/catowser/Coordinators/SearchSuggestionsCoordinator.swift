@@ -10,7 +10,7 @@ import UIKit
 import ReactiveSwift
 
 protocol SearchSuggestionsControllerInterface: AnyObject {
-    func prepareSearch(for searchText: String)
+    func prepareSearch(for searchQuery: String)
 }
 
 final class SearchSuggestionsCoordinator: Coordinator {
@@ -81,11 +81,11 @@ extension SearchSuggestionsCoordinator: Navigating {
     
     func showNext(_ route: SearchSuggestionsRoute) {
         switch route {
-        case .startSearch(let searchText):
+        case .startSearch(let searchQuery):
             guard let interface = startedVC?.viewController as? SearchSuggestionsControllerInterface else {
                 return
             }
-            interface.prepareSearch(for: searchText)
+            interface.prepareSearch(for: searchQuery)
         }
     }
     

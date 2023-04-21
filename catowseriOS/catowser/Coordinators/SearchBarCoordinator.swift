@@ -220,8 +220,8 @@ private extension SearchBarCoordinator {
 }
 
 extension SearchBarCoordinator: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty || searchText.looksLikeAURL() {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchQuery: String) {
+        if searchQuery.isEmpty || searchQuery.looksLikeAURL() {
             showNext(.hideSuggestions)
         } else {
             insertNext(.suggestions)
@@ -229,7 +229,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
             // because it requires layout info
             // about neighbour views (anchors and height)
             delegate?.layoutSuggestions()
-            showNext(.suggestions(searchText))
+            showNext(.suggestions(searchQuery))
         }
     }
     

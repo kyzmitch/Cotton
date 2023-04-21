@@ -16,6 +16,7 @@ struct SuggestionRowView: View {
     
     private let value: String
     private let mode: Mode
+    /// Selected row is stored in upper view with all suggestions
     @Binding private var isSelected: SuggestionType?
     
     init(_ value: String, _ mode: Mode, _ isSelected: Binding<SuggestionType?>) {
