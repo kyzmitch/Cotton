@@ -42,7 +42,7 @@ final class PhoneTabsCoordinator: Coordinator {
             return
         }
         startedVC = vc
-        guard uiFramework == .uiKit else {
+        guard !uiFramework.isUIKitFree else {
             // For SwiftUI mode we still need to create view controller
             // but presenting should happen on SwiftUI level
             return
@@ -74,7 +74,7 @@ extension PhoneTabsCoordinator: Navigating {
     
     func stop() {
         startedVC?.viewController.dismiss(animated: true)
-        guard uiFramework == .uiKit else {
+        guard !uiFramework.isUIKitFree else {
             // Need to try to save coordinator for SwiftUI mode
             // because it was started at App start and not when
             // user presses on tab previews button in toolbar

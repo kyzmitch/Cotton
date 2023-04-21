@@ -90,8 +90,10 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             // to allow to use some of them in SwiftUI views
             insertTopSites()
             insertToolbar()
-            // Need to create PhoneTabs coordinator as well
-            toolbarCoordinator?.showNext(.tabs)
+            if uiFramework.isUIKitFree {
+                // Need to create PhoneTabs coordinator as well
+                toolbarCoordinator?.showNext(.tabs)
+            }
         }
         
         let vc = vcFactory.rootViewController(self)

@@ -66,6 +66,11 @@ enum UIFrameworkType: Int, CaseIterable {
             return false
         }
     }
+    
+    /// Fully without UIKit
+    var isUIKitFree: Bool {
+        self == .swiftUI
+    }
 }
 
 extension UIFrameworkType: EnumDefaultValueSupportable {

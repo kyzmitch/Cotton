@@ -142,10 +142,17 @@ private extension MainToolbarCoordinator {
             presenter = presenterVC
         }
         
-        let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter, self)
-        coordinator.parent = self
-        coordinator.start()
-        startedCoordinator = coordinator
+        // Do we really need to re-create coordinator every time?
+        // Because user could tap on tab previews button in toolbar
+        // more than once.
+        if let existingPhoneTabsCrdr = startedCoordinator as? PhoneTabsCoordinator {
+            existingPhoneTabsCrdr.start()
+        } else {
+            let coordinator: PhoneTabsCoordinator = .init(vcFactory, presenter, self)
+            coordinator.parent = self
+            coordinator.start()
+            startedCoordinator = coordinator
+        }
     }
 }
 

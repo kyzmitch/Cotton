@@ -103,15 +103,21 @@ where C.R == TabsScreenRoute {
         })
 
         render(state: uxState.value)
-        TabsListManager.shared.attach(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        TabsListManager.shared.attach(self)
         let tabs = TabsListManager.shared.fetch()
         let tabsBox: TabsBox = TabsBox(tabs)
         uxState.value = .tabs(dataSource: tabsBox)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        TabsListManager.shared.detach(self)
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -119,7 +125,6 @@ where C.R == TabsScreenRoute {
     }
 
     deinit {
-        TabsListManager.shared.detach(self)
         disposables.forEach {$0?.dispose()}
     }
     
