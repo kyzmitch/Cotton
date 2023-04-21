@@ -31,7 +31,7 @@ struct SearchBarView: View {
             PhoneSearchBarLegacyView(model, $state)
                 .frame(height: CGFloat.searchViewHeight)
         case .full:
-            SearchBarViewV2(model, $searchQuery, $state)
+            SearchBarViewV2($searchQuery, $state)
         }
     }
 }
