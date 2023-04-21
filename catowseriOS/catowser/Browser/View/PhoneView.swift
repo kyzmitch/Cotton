@@ -190,7 +190,10 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 webViewNeedsUpdate = true
             }
             .onReceive(browserContentModel.$contentType) { value in
-                if case let .site(site) = value {
+                switch value {
+                case .blank, .favorites, .topSites, .homepage:
+                    searchBarState = .blankSearch
+                case .site(let site):
                     searchBarState = .viewMode(site.title, site.searchBarContent, false)
                 }
             }
