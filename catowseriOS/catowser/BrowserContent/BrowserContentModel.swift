@@ -19,6 +19,8 @@ final class BrowserContentModel {
     /// Web view needs an update after changing selected tab content.
     /// Void type can be used because this model only can set it to true.
     @Published var webViewNeedsUpdate: Void
+    /// Tabs count
+    @Published var tabsCount: Int
     /// JS plugins builder reference
     let jsPluginsBuilder: any JSPluginsSource
     /// Not initialized, will be initialized after `TabsListManager`
@@ -33,6 +35,7 @@ final class BrowserContentModel {
         contentType = DefaultTabProvider.shared.contentState
         loading = true
         webViewNeedsUpdate = ()
+        tabsCount = 0
         TabsListManager.shared.attach(self)
     }
     
@@ -74,5 +77,9 @@ extension BrowserContentModel: TabsObserver {
         if contentType != tab.contentType {
             contentType = tab.contentType
         }
+    }
+    
+    func update(with tabsCount: Int) {
+        self.tabsCount = tabsCount
     }
 }

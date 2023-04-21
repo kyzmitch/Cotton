@@ -194,6 +194,9 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     searchBarState = .viewMode(site.title, site.searchBarContent, false)
                 }
             }
+            .onReceive(browserContentModel.$tabsCount) { value in
+                tabsCount = value
+            }
         } // switch
     }
 }

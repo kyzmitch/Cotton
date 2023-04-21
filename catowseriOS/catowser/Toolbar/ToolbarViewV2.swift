@@ -11,7 +11,7 @@ import CoreBrowser
 
 struct ToolbarViewV2: ToolbarContent {
     private let model: WebBrowserToolbarModel
-    private let vm: ToolbarViewModel
+    @Binding private var tabsCount: Int
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
     
@@ -20,11 +20,9 @@ struct ToolbarViewV2: ToolbarContent {
          _ showingMenu: Binding<Bool>,
          _ showingTabs: Binding<Bool>) {
         self.model = model
-        vm = ToolbarViewModel(tabsCount)
+        _tabsCount = tabsCount
         _showingMenu = showingMenu
         _showingTabs = showingTabs
-        
-        TabsListManager.shared.attach(vm)
     }
     
     var body: some ToolbarContent {
@@ -63,9 +61,11 @@ struct ToolbarViewV2: ToolbarContent {
         }
         ToolbarItem(placement: .bottomBar) {
             Button {
-                showingTabs.toggle()
+                withAnimation(.easeInOut(duration: 1)) {
+                    showingTabs.toggle()
+                }
             } label: {
-                Text(verbatim: "\(vm.tabsCount)")
+                Text(verbatim: "\(tabsCount)")
             }
         }
         ToolbarItem(placement: .bottomBar) {

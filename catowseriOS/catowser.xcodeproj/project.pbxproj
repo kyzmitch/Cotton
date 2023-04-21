@@ -611,8 +611,6 @@
 		8AFE7D94296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */; };
 		8AFE7D96296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D95296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift */; };
 		8AFE7D99296B5B0400B2CF55 /* SearchSuggestionsViewStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D98296B5B0400B2CF55 /* SearchSuggestionsViewStateTests.swift */; };
-		8AFFBE1929F2DD5800AEB2EE /* ToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFFBE1829F2DD5800AEB2EE /* ToolbarViewModel.swift */; };
-		8AFFBE1A29F2DD5800AEB2EE /* ToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFFBE1829F2DD5800AEB2EE /* ToolbarViewModel.swift */; };
 		8AFFBE1C29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFFBE1B29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift */; };
 		8AFFBE1D29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFFBE1B29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift */; };
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
@@ -1351,7 +1349,6 @@
 		8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMConcurrencyTests.swift; sourceTree = "<group>"; };
 		8AFE7D95296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMFixture.swift; sourceTree = "<group>"; };
 		8AFE7D98296B5B0400B2CF55 /* SearchSuggestionsViewStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewStateTests.swift; sourceTree = "<group>"; };
-		8AFFBE1829F2DD5800AEB2EE /* ToolbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarViewModel.swift; sourceTree = "<group>"; };
 		8AFFBE1B29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPreviewsLegacyView.swift; sourceTree = "<group>"; };
 		C22599621F7BEF6D000E4C3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		C22599661F7BF301000E4C3A /* MainBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserViewController.swift; sourceTree = "<group>"; };
@@ -1843,7 +1840,6 @@
 				8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */,
 				8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */,
 				75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */,
-				8AFFBE1829F2DD5800AEB2EE /* ToolbarViewModel.swift */,
 			);
 			path = Toolbar;
 			sourceTree = "<group>";
@@ -3722,7 +3718,6 @@
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
 				8AB9BE1728FF0C98002063C2 /* ReloadWithCompletion.swift in Sources */,
-				8AFFBE1929F2DD5800AEB2EE /* ToolbarViewModel.swift in Sources */,
 				8A917CB429D4E63700404256 /* String+Extension.swift in Sources */,
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
@@ -3986,7 +3981,6 @@
 				8A8035A824442F0F000E035F /* WebViewController.swift in Sources */,
 				8A8035A924442F0F000E035F /* TabletSearchBarViewController.swift in Sources */,
 				8AB9BE1828FF0C98002063C2 /* ReloadWithCompletion.swift in Sources */,
-				8AFFBE1A29F2DD5800AEB2EE /* ToolbarViewModel.swift in Sources */,
 				8A917CB529D4E63700404256 /* String+Extension.swift in Sources */,
 				8A8035AA24442F0F000E035F /* SearchBarBaseViewController.swift in Sources */,
 				8A8035AB24442F0F000E035F /* TabsViewController.swift in Sources */,
