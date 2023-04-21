@@ -23,6 +23,7 @@ struct SearchSuggestionsViewV2: View {
     @State private var selected: SuggestionType?
     /// Used to update the view from loading to suggestions list
     @State private var suggestions: SearchSuggestionsViewState = .waitingForQuery
+    /// A view model
     private let vm: SearchSuggestionsViewModel
     
     init(_ searchQuery: Binding<String>,
@@ -34,21 +35,31 @@ struct SearchSuggestionsViewV2: View {
     
     var body: some View {
         constructView()
-            .onChange(of: selected, perform: { newValue in
+            .onChange(of: selected) { newValue in
                 guard let newValue else {
                     return
                 }
                 delegate?.didSelect(newValue)
-            })
+            }
+            .onChange(of: searchQuery) { _ in
+                if !searchQuery.isEmpty {
+                    suggestions = .waitingForQuery
+                }
+            }
     }
     
     private func constructView() -> some View {
         switch suggestions {
         case .waitingForQuery:
-            return AnyView(ProgressView()
+            return AnyView(VStack {
+                Spacer()
+                ProgressView()
+                .progressViewStyle(.circular)
                 .task {
                     suggestions = await vm.aaFetchSuggestions(searchQuery)
-                })
+                }
+                Spacer()
+            })
         case .knownDomainsLoaded(let knownDomains):
             return AnyView(List {
                 Section {
