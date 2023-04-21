@@ -71,6 +71,7 @@ struct ToolbarViewV2: ToolbarContent {
             } label: {
                 Text(verbatim: "\(tabsCount)")
             }
+            .foregroundColor(.black)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
@@ -84,6 +85,7 @@ struct ToolbarViewV2: ToolbarContent {
             } label: {
                 Image(systemName: "square.and.arrow.up")
             }
+            .foregroundColor(.black)
         }
     }
 }

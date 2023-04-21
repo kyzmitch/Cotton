@@ -125,7 +125,7 @@ private struct _BrowserMenuView: View {
             .navigationBarTitle(Text(verbatim: model.viewTitle))
             .navigationBarItems(trailing: Button<Text>(String.dismissBtn) {
                 presentationMode.wrappedValue.dismiss()
-            })
+            }.foregroundColor(.black))
         }.alert(isPresented: $showingAppRestartAlert) {
             Alert(title: Text(verbatim: "App restart is required"))
         }

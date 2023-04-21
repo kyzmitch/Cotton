@@ -84,6 +84,7 @@ struct SearchBarViewV2: View {
             Button("Cancel") {
                 self.state = .cancelTapped
             }
+            .foregroundColor(.gray)
             .foregroundColor(Color(.systemBlue))
         }.customHStackStyle())
     }
