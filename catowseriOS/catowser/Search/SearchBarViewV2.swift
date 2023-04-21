@@ -13,53 +13,99 @@ extension LocalizedStringKey {
 }
 
 struct SearchBarViewV2: View {
-    @State private var searchText: String
-    @State private var showCancelButton: Bool
     private var model: SearchBarViewModel
-    @Binding private var stateBinding: SearchBarState
+    @Binding private var query: String
+    @Binding private var state: SearchBarState
+    @FocusState private var isFocused: Bool
     
     init(_ model: SearchBarViewModel,
+         _ queryBinding: Binding<String>,
          _ stateBinding: Binding<SearchBarState>) {
-        self.searchText = ""
-        self.showCancelButton = false
         self.model = model
-        _stateBinding = stateBinding
+        _query = queryBinding
+        _state = stateBinding
     }
     
     var body: some View {
-        HStack {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                TextField(.placeholderTextKey, text: $searchText, onEditingChanged: { _ in
-                    self.showCancelButton = true
-                }, onCommit: {
-                    print("onCommit")
-                }).foregroundColor(.primary)
-                
-                Button(action: {
-                    self.searchText = ""
-                }, label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .opacity(searchText == "" ? 0 : 1)
-                })
+        containedView()
+            .onChange(of: state) { newValue in
+                switch newValue {
+                case .blankSearch:
+                    query = ""
+                case .startSearch:
+                    break
+                case .cancelTapped:
+                    query = ""
+                case .viewMode(_, let searchBarContent, _):
+                    query = searchBarContent
             }
+        }
+    }
+    
+    private func containedView() -> AnyView {
+        switch state {
+        case .blankSearch, .cancelTapped, .viewMode:
+            return searchViewInViewMode()
+        case .startSearch:
+            return searchViewInEditMode()
+        }
+    }
+    
+    private func searchViewInViewMode() -> AnyView {
+        AnyView(HStack {
+            Image(systemName: "magnifyingglass")
+            TextField(.placeholderTextKey, text: $query)
+                .foregroundColor(.primary)
+                .focused($isFocused)
+                .textInputAutocapitalization(.never)
+                .onSubmit {
+                    self.state = .startSearch
+                }
+                .onChange(of: isFocused, perform: { value in
+                    if value {
+                        state = .startSearch
+                    }
+                })
+        }.customHStackStyle())
+    }
+    
+    private func searchViewInEditMode() -> AnyView {
+        AnyView(HStack {
+            Image(systemName: "magnifyingglass")
+            TextField(.placeholderTextKey, text: $query)
+                .foregroundColor(.primary)
+                .focused($isFocused)
+                .textInputAutocapitalization(.never)
+                .onSubmit {
+                    self.state = .startSearch
+                }
+                .onChange(of: isFocused, perform: { value in
+                    if value {
+                        state = .startSearch
+                    }
+                })
+            Button("Cancel") {
+                self.state = .cancelTapped
+            }
+            .foregroundColor(Color(.systemBlue))
+        }.customHStackStyle())
+    }
+}
+
+private struct CustomHStackStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .padding(.horizontal)
             .padding(EdgeInsets(top: 8, leading: 6, bottom: 8, trailing: 6))
             .foregroundColor(.secondary)
             .background(Color(.secondarySystemBackground))
             .cornerRadius(10.0)
-            
-            if showCancelButton {
-                Button("Cancel") {
-                    // this must be placed before the other commands here
-                    UIApplication.shared.endEditing(true)
-                    self.searchText = ""
-                    self.showCancelButton = false
-                }
-                .foregroundColor(Color(.systemBlue))
-            }
-        }
-        .padding(.horizontal)
-        .navigationBarHidden(showCancelButton) // .animation(.default)
+    }
+}
+
+extension View {
+    func customHStackStyle() -> some View {
+        modifier(CustomHStackStyle())
     }
 }
 
@@ -72,8 +118,14 @@ struct SearchBarViewV2_Previews: PreviewProvider {
         } set: { _ in
             //
         }
+        let query: Binding<String> = .init {
+            ""
+        } set: { _ in
+            //
+        }
+
         // For some reason it jumps after selection
-        SearchBarViewV2(model, state)
+        SearchBarViewV2(model, query, state)
     }
 }
 #endif
