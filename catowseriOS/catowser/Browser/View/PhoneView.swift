@@ -180,6 +180,11 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
                 webViewNeedsUpdate = true
             }
+            .onReceive(browserContentModel.$contentType) { value in
+                if case let .site(site) = value {
+                    searchBarState = .viewMode(site.title, site.searchBarContent, false)
+                }
+            }
         } // switch
     }
 }

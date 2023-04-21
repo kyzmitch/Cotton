@@ -64,7 +64,7 @@ private extension SearchBarViewModel {
 }
 
 extension SearchBarViewModel: SearchSuggestionsListDelegate {
-    func didSelect(_ content: SuggestionType) {
+    func searchSuggestionDidSelect(_ content: SuggestionType) {
         showSuggestions = false
         switch content {
         case .looksLikeURL(let likeURL):
@@ -141,7 +141,7 @@ extension SearchBarViewModel: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        didSelect(content)
+        searchSuggestionDidSelect(content)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

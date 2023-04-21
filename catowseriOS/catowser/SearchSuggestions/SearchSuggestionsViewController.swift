@@ -23,7 +23,7 @@ enum SuggestionType: Equatable {
 }
 
 protocol SearchSuggestionsListDelegate: AnyObject {
-    func didSelect(_ content: SuggestionType)
+    func searchSuggestionDidSelect(_ content: SuggestionType)
 }
 
 /// View controller to control suggestions view
@@ -145,7 +145,7 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
         default:
             return
         }
-        delegate?.didSelect(content)
+        delegate?.searchSuggestionDidSelect(content)
     }
 }
 
