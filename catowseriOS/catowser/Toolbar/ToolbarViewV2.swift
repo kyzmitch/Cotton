@@ -7,15 +7,24 @@
 //
 
 import SwiftUI
+import CoreBrowser
 
 struct ToolbarViewV2: ToolbarContent {
     private let model: WebBrowserToolbarModel
+    private let vm: ToolbarViewModel
     @Binding private var showingMenu: Bool
+    @Binding private var showingTabs: Bool
     
     init(_ model: WebBrowserToolbarModel,
-         _ showingMenu: Binding<Bool>) {
+         _ tabsCount: Binding<Int>,
+         _ showingMenu: Binding<Bool>,
+         _ showingTabs: Binding<Bool>) {
         self.model = model
+        vm = ToolbarViewModel(tabsCount)
         _showingMenu = showingMenu
+        _showingTabs = showingTabs
+        
+        TabsListManager.shared.attach(vm)
     }
     
     var body: some ToolbarContent {
@@ -48,6 +57,16 @@ struct ToolbarViewV2: ToolbarContent {
                 Image("nav-refresh")
             }
             .disabled(model.reloadDisabled)
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Button {
+                showingTabs.toggle()
+            } label: {
+                Text(verbatim: "\(vm.tabsCount)")
+            }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()

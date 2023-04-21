@@ -15,6 +15,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     private var model: MainBrowserModel<C>
     private let searchBarModel: SearchBarViewModel
     private let browserContentModel: BrowserContentModel
+    /// Toolbar model needed by both UI modes
     private let toolbarModel: WebBrowserToolbarModel
     
     // MARK: - search bar state
@@ -47,6 +48,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     
     @State private var toolbarVisibility: Visibility
     @State private var showingMenu: Bool
+    @State private var showingTabs: Bool
+    @State private var tabsCount: Int
     
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
@@ -92,7 +95,9 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         case .full:
             toolbarVisibility = .visible
         }
+        tabsCount = 0
         showingMenu = false
+        showingTabs = false
     }
     
     var body: some View {
@@ -141,7 +146,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     if showProgress {
                         ProgressView(value: websiteLoadProgress)
                     }
-                    if showSearchSuggestions || !searchQuery.isEmpty {
+                    if showSearchSuggestions {
                         SearchSuggestionsView($searchQuery, searchBarModel, mode)
                     } else {
                         BrowserContentView(browserContentModel,
@@ -152,11 +157,14 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     }
                 }
                 .toolbar {
-                    ToolbarViewV2(toolbarModel, $showingMenu)
+                    ToolbarViewV2(toolbarModel, $tabsCount, $showingMenu, $showingTabs)
                 }
             }
             .sheet(isPresented: $showingMenu) {
                 BrowserMenuView(model: menuModel)
+            }
+            .sheet(isPresented: $showingTabs) {
+                TabsPreviewsLegacyView()
             }
             .ignoresSafeArea(.keyboard)
             .onReceive(toolbarModel.$showProgress) { value in
@@ -170,6 +178,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             }
             .onReceive(searchBarModel.$searchQuery) { value in
                 searchQuery = value
+                showSearchSuggestions = !value.isEmpty
             }
             .onReceive(searchBarModel.$state.dropFirst()) { value in
                 searchBarState = value
