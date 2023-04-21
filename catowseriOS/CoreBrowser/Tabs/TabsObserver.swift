@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// MARK: Tabs observer protocol.
+/// MARK: - Tabs observer protocol.
 public protocol TabsObserver {
     /// To be able to search specific observer.
     var name: String { get }
