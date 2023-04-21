@@ -13,15 +13,12 @@ extension LocalizedStringKey {
 }
 
 struct SearchBarViewV2: View {
-    private var model: SearchBarViewModel
     @Binding private var query: String
     @Binding private var state: SearchBarState
     @FocusState private var isFocused: Bool
     
-    init(_ model: SearchBarViewModel,
-         _ queryBinding: Binding<String>,
+    init(_ queryBinding: Binding<String>,
          _ stateBinding: Binding<SearchBarState>) {
-        self.model = model
         _query = queryBinding
         _state = stateBinding
     }
@@ -112,7 +109,6 @@ extension View {
 #if DEBUG
 struct SearchBarViewV2_Previews: PreviewProvider {
     static var previews: some View {
-        let model = SearchBarViewModel()
         let state: Binding<SearchBarState> = .init {
             .startSearch
         } set: { _ in
@@ -125,7 +121,7 @@ struct SearchBarViewV2_Previews: PreviewProvider {
         }
 
         // For some reason it jumps after selection
-        SearchBarViewV2(model, query, state)
+        SearchBarViewV2(query, state)
     }
 }
 #endif

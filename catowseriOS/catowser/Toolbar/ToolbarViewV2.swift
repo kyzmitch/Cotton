@@ -14,15 +14,18 @@ struct ToolbarViewV2: ToolbarContent {
     @Binding private var tabsCount: Int
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
+    @Binding private var showSearchSuggestions: Bool
     
     init(_ model: WebBrowserToolbarModel,
          _ tabsCount: Binding<Int>,
          _ showingMenu: Binding<Bool>,
-         _ showingTabs: Binding<Bool>) {
+         _ showingTabs: Binding<Bool>,
+         _ showSearchSuggestions: Binding<Bool>) {
         self.model = model
         _tabsCount = tabsCount
         _showingMenu = showingMenu
         _showingTabs = showingTabs
+        _showSearchSuggestions = showSearchSuggestions
     }
     
     var body: some ToolbarContent {
@@ -61,6 +64,7 @@ struct ToolbarViewV2: ToolbarContent {
         }
         ToolbarItem(placement: .bottomBar) {
             Button {
+                showSearchSuggestions = false
                 withAnimation(.easeInOut(duration: 1)) {
                     showingTabs.toggle()
                 }
@@ -73,6 +77,7 @@ struct ToolbarViewV2: ToolbarContent {
         }
         ToolbarItem(placement: .bottomBar) {
             Button {
+                showSearchSuggestions = false
                 withAnimation(.easeInOut(duration: 1)) {
                     showingMenu.toggle()
                 }

@@ -104,35 +104,34 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         switch mode {
         case .compatible:
             VStack {
-                SearchBarView(searchBarModel, $searchQuery, $searchBarState, mode)
+                SearchBarView(searchBarModel,
+                              $searchQuery,
+                              $searchBarState,
+                              mode)
                 if showProgress {
                     ProgressView(value: websiteLoadProgress)
                 }
                 if showSearchSuggestions {
-                    SearchSuggestionsView($searchQuery, searchBarModel, mode)
+                    SearchSuggestionsView($searchQuery,
+                                          searchBarModel,
+                                          mode)
                 } else {
-                    BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
+                    BrowserContentView(browserContentModel,
+                                       toolbarModel,
+                                       $isLoading,
+                                       $contentType,
+                                       $webViewNeedsUpdate)
                 }
                 if case .compatible = mode {
                     ToolbarView(toolbarModel, $webViewInterface)
                 }
             }
             .ignoresSafeArea(.keyboard)
-            .onReceive(toolbarModel.$showProgress) { value in
-                showProgress = value
-            }
-            .onReceive(toolbarModel.$websiteLoadProgress) { value in
-                websiteLoadProgress = value
-            }
-            .onReceive(searchBarModel.$showSuggestions) { value in
-                showSearchSuggestions = value
-            }
-            .onReceive(searchBarModel.$searchQuery) { value in
-                searchQuery = value
-            }
-            .onReceive(searchBarModel.$state.dropFirst()) { value in
-                searchBarState = value
-            }
+            .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
+            .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+            .onReceive(searchBarModel.$showSuggestions) { showSearchSuggestions = $0 }
+            .onReceive(searchBarModel.$searchQuery) { searchQuery = $0 }
+            .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
             .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
                 webViewNeedsUpdate = false
             }
@@ -142,12 +141,17 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         case .full:
             NavigationView {
                 VStack {
-                    SearchBarView(searchBarModel, $searchQuery, $searchBarState, mode)
+                    SearchBarView(searchBarModel,
+                                  $searchQuery,
+                                  $searchBarState,
+                                  mode)
                     if showProgress {
                         ProgressView(value: websiteLoadProgress)
                     }
                     if showSearchSuggestions {
-                        SearchSuggestionsView($searchQuery, searchBarModel, mode)
+                        SearchSuggestionsView($searchQuery,
+                                              searchBarModel,
+                                              mode)
                     } else {
                         BrowserContentView(browserContentModel,
                                            toolbarModel,
@@ -157,7 +161,11 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     }
                 }
                 .toolbar {
-                    ToolbarViewV2(toolbarModel, $tabsCount, $showingMenu, $showingTabs)
+                    ToolbarViewV2(toolbarModel,
+                                  $tabsCount,
+                                  $showingMenu,
+                                  $showingTabs,
+                                  $showSearchSuggestions)
                 }
             }
             .sheet(isPresented: $showingMenu) {
@@ -167,22 +175,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 TabsPreviewsLegacyView()
             }
             .ignoresSafeArea(.keyboard)
-            .onReceive(toolbarModel.$showProgress) { value in
-                showProgress = value
+            .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
+            .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+            .onChange(of: searchQuery) { value in
+                // Only show suggestions when User edits text in search view & query is not empty
+                showSearchSuggestions = searchBarState == .startSearch && !value.isEmpty
             }
-            .onReceive(toolbarModel.$websiteLoadProgress) { value in
-                websiteLoadProgress = value
-            }
-            .onReceive(searchBarModel.$showSuggestions) { value in
-                showSearchSuggestions = value
-            }
-            .onReceive(searchBarModel.$searchQuery) { value in
-                searchQuery = value
-                showSearchSuggestions = !value.isEmpty
-            }
-            .onReceive(searchBarModel.$state.dropFirst()) { value in
-                searchBarState = value
-            }
+            .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
             .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
                 webViewNeedsUpdate = false
             }
@@ -197,9 +196,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     searchBarState = .viewMode(site.title, site.searchBarContent, false)
                 }
             }
-            .onReceive(browserContentModel.$tabsCount) { value in
-                tabsCount = value
-            }
+            .onReceive(browserContentModel.$tabsCount) { tabsCount = $0 }
         } // switch
     }
 }
