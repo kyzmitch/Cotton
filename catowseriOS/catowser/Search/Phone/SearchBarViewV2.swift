@@ -21,72 +21,47 @@ struct SearchBarViewV2: View {
          _ stateBinding: Binding<SearchBarState>) {
         _query = queryBinding
         _state = stateBinding
+        isFocused = false
     }
     
     var body: some View {
-        containedView()
-            .onChange(of: state) { newValue in
-                switch newValue {
-                case .blankSearch:
-                    query = ""
-                case .startSearch:
-                    break
-                case .cancelTapped:
-                    query = ""
-                case .viewMode(_, let searchBarContent, _):
-                    query = searchBarContent
-            }
-        }
-    }
-    
-    private func containedView() -> AnyView {
-        switch state {
-        case .blankSearch, .cancelTapped, .viewMode:
-            return searchViewInViewMode()
-        case .startSearch:
-            return searchViewInEditMode()
-        }
-    }
-    
-    private func searchViewInViewMode() -> AnyView {
-        AnyView(HStack {
+        HStack {
             Image(systemName: "magnifyingglass")
             TextField(.placeholderTextKey, text: $query)
                 .foregroundColor(.primary)
                 .focused($isFocused)
                 .textInputAutocapitalization(.never)
                 .onSubmit {
-                    self.state = .startSearch
+                    state = .cancelTapped
                 }
                 .onChange(of: isFocused, perform: { value in
                     if value {
                         state = .startSearch
                     }
                 })
-        }.customHStackStyle())
-    }
-    
-    private func searchViewInEditMode() -> AnyView {
-        AnyView(HStack {
-            Image(systemName: "magnifyingglass")
-            TextField(.placeholderTextKey, text: $query)
-                .foregroundColor(.primary)
-                .focused($isFocused)
-                .textInputAutocapitalization(.never)
-                .onSubmit {
-                    self.state = .startSearch
+            if state.showCancelButton {
+                Button("Cancel") {
+                    state = .cancelTapped
                 }
-                .onChange(of: isFocused, perform: { value in
-                    if value {
-                        state = .startSearch
-                    }
-                })
-            Button("Cancel") {
-                self.state = .cancelTapped
+                .foregroundColor(.gray)
+                .foregroundColor(Color(.systemBlue))
             }
-            .foregroundColor(.gray)
-            .foregroundColor(Color(.systemBlue))
-        }.customHStackStyle())
+        }
+        .customHStackStyle()
+        .onChange(of: state) { newValue in
+            switch newValue {
+            case .blankSearch:
+                isFocused = false
+                query = ""
+            case .startSearch:
+                isFocused = true
+            case .cancelTapped:
+                isFocused = false
+            case .viewMode(_, let searchBarContent, _):
+                isFocused = false
+                query = searchBarContent
+            }
+        }
     }
 }
 

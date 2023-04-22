@@ -29,6 +29,15 @@ enum SearchBarState: Equatable {
             return .viewMode(site.title, site.searchBarContent, false)
         }
     }
+    
+    var showCancelButton: Bool {
+        switch self {
+        case .blankSearch, .viewMode, .cancelTapped:
+            return false
+        case .startSearch:
+            return true
+        }
+    }
 }
 
 final class SearchBarLegacyView: UIView {

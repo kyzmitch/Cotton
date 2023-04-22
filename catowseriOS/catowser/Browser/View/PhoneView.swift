@@ -197,6 +197,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         }
         .onReceive(browserContentModel.$contentType) { searchBarState = .create($0) }
         .onReceive(browserContentModel.$tabsCount) { tabsCount = $0 }
+        .onChange(of: showingTabs) { newValue in
+            // Reset the search bar from editing mode
+            // when new modal screen is about to get shown
+            if newValue {
+                searchBarState = .cancelTapped
+            }
+        }
     }
 }
 
