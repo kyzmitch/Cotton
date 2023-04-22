@@ -49,23 +49,23 @@ private struct _BrowserMenuView: View {
                 if case .withSiteMenu = model.style {
                     Section(header: Text(model.siteSectionTitle)) {
                         Toggle(isOn: $model.isTabJSEnabled) {
-                            Text(verbatim: .jsMenuTitle)
+                            Text(.jsMenuTitle)
                         }
                     }
                 }
-                Section(header: Text(verbatim: .globalSectionTtl)) {
+                Section(header: Text(.globalSectionTtl)) {
                     Toggle(isOn: $model.isDohEnabled) {
-                        Text(verbatim: .dohMenuTitle)
+                        Text(.dohMenuTitle)
                     }
                     Toggle(isOn: $model.isJavaScriptEnabled) {
-                        Text(verbatim: .jsMenuTitle)
+                        Text(.jsMenuTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabAddPosition, value: selected)
                         self.isShowingAddTabSetting = false
                         tabAddPositionRowValueText = selected.description
                     }), isActive: $isShowingAddTabSetting) {
-                        Text(verbatim: .tabAddTxt)
+                        Text(.tabAddTxt)
                         Spacer()
                         Text(verbatim: tabAddPositionRowValueText).alignRight()
                     }
@@ -74,33 +74,33 @@ private struct _BrowserMenuView: View {
                         self.isShowingDefaultTabContentSetting = false
                         tabContentRowValueText = selected.description
                     }), isActive: $isShowingDefaultTabContentSetting) {
-                        Text(verbatim: .tabContentTxt)
+                        Text(.tabContentTxt)
                         Spacer()
                         Text(verbatim: tabContentRowValueText).alignRight()
                     }
                 }
-                Section(header: Text(verbatim: .searchSectionTtl)) {
+                Section(header: Text(.searchSectionTtl)) {
                     NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(model: .init { (selected) in
                         FeatureManager.setFeature(.webAutoCompletionSource, value: selected)
                         self.isShowingWebAutoCompleteSetting = false
                         webAutocompleteRowValueText = selected.description
                     }), isActive: $isShowingWebAutoCompleteSetting) {
-                        Text(verbatim: .webAutoCompleteSourceTxt)
+                        Text(.webAutoCompleteSourceTxt)
                         Spacer()
                         Text(verbatim: webAutocompleteRowValueText).alignRight()
                     }
                 }
 #if DEBUG
-                Section(header: Text(verbatim: .devSectionTtl)) {
+                Section(header: Text(.devSectionTtl)) {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
-                        Text(verbatim: .nativeAppRedirectTitle)
+                        Text(.nativeAppRedirectTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
                         asyncApiRowValueText = selected.description
                     }), isActive: $isShowingAppAsyncApiSetting) {
-                        Text(verbatim: .appAsyncApiTypeTxt)
+                        Text(.appAsyncApiTypeTxt)
                         Spacer()
                         Text(verbatim: asyncApiRowValueText).alignRight()
                     }
@@ -110,7 +110,7 @@ private struct _BrowserMenuView: View {
                         uiFrameworkRowValueText = selected.description
                         self.showingAppRestartAlert.toggle()
                     }), isActive: $isShowingAppUIFrameworkSetting) {
-                        Text(verbatim: .appUIFrameworkTypeTxt)
+                        Text(.appUIFrameworkTypeTxt)
                         Spacer()
                         Text(verbatim: uiFrameworkRowValueText).alignRight()
                     }
@@ -123,7 +123,7 @@ private struct _BrowserMenuView: View {
 #endif
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
-            .navigationBarItems(trailing: Button<Text>(String.dismissBtn) {
+            .navigationBarItems(trailing: Button<Text>(.dismissBtn) {
                 presentationMode.wrappedValue.dismiss()
             }.foregroundColor(.black))
         }.alert(isPresented: $showingAppRestartAlert) {
@@ -140,24 +140,19 @@ private extension Text {
     }
 }
 
-private extension String {
-    static let globalSectionTtl = NSLocalizedString("ttl_global_menu", comment: "")
-    static let searchSectionTtl = NSLocalizedString("ttl_search_menu", comment: "")
-    static let devSectionTtl = NSLocalizedString("ttl_developer_menu", comment: "")
-    static let dohMenuTitle = NSLocalizedString("txt_doh_menu_item",
-                                                comment: "Title of DoH menu item")
-    static let jsMenuTitle = NSLocalizedString("txt_javascript_enabled", comment: "")
-    static let nativeAppRedirectTitle = NSLocalizedString("txt_native_app_redirect_enabled", comment: "")
-    static let dismissBtn = NSLocalizedString("btn_dismiss",
-                                              comment: "Button dismiss text")
-    static let tabAddTxt = NSLocalizedString("ttl_tab_positions", comment: "Tab add setting text")
-    static let tabContentTxt = NSLocalizedString("ttl_tab_default_content",
-                                                 comment: "")
-    static let appAsyncApiTypeTxt = NSLocalizedString("ttl_app_async_method",
-                                                      comment: "")
-    static let webAutoCompleteSourceTxt = NSLocalizedString("ttl_web_search_auto_complete_source",
-                                                        comment: "")
-    static let appUIFrameworkTypeTxt = NSLocalizedString("ttl_app_ui_framework_type", comment: "")
+private extension LocalizedStringKey {
+    static let globalSectionTtl: LocalizedStringKey = "ttl_global_menu"
+    static let searchSectionTtl: LocalizedStringKey = "ttl_search_menu"
+    static let devSectionTtl: LocalizedStringKey = "ttl_developer_menu"
+    static let dohMenuTitle: LocalizedStringKey = "txt_doh_menu_item"
+    static let jsMenuTitle: LocalizedStringKey = "txt_javascript_enabled"
+    static let nativeAppRedirectTitle: LocalizedStringKey = "txt_native_app_redirect_enabled"
+    static let dismissBtn: LocalizedStringKey = "btn_dismiss"
+    static let tabAddTxt: LocalizedStringKey = "ttl_tab_positions"
+    static let tabContentTxt: LocalizedStringKey = "ttl_tab_default_content"
+    static let appAsyncApiTypeTxt: LocalizedStringKey = "ttl_app_async_method"
+    static let webAutoCompleteSourceTxt: LocalizedStringKey = "ttl_web_search_auto_complete_source"
+    static let appUIFrameworkTypeTxt: LocalizedStringKey = "ttl_app_ui_framework_type"
 }
 
 #if DEBUG

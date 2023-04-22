@@ -40,7 +40,7 @@ struct SearchBarViewV2: View {
                     }
                 })
             if state.showCancelButton {
-                Button("Cancel") {
+                Button(.cancelButtonTtl) {
                     state = .cancelTapped
                 }
                 .foregroundColor(.gray)
@@ -80,6 +80,10 @@ extension View {
     func customHStackStyle() -> some View {
         modifier(CustomHStackStyle())
     }
+}
+
+private extension LocalizedStringKey {
+    static let cancelButtonTtl: LocalizedStringKey = "ttl_common_cancel"
 }
 
 #if DEBUG
