@@ -12,6 +12,13 @@ extension LocalizedStringKey {
     static let placeholderTextKey: LocalizedStringKey = "placeholder_searchbar"
 }
 
+/**
+ A search bar fully implemented in SwiftUI.
+ 
+ Still need to implement the following:
+ - after moving focus to TextField (tap on it) if query is not empty, then need to select all text
+ which would allow to easely clear/remove currently entered query string. The same behaviour has Safari for iOS.
+ */
 struct SearchBarViewV2: View {
     @Binding private var query: String
     @Binding private var state: SearchBarState
@@ -31,6 +38,7 @@ struct SearchBarViewV2: View {
                 .foregroundColor(.primary)
                 .focused($isFocused)
                 .textInputAutocapitalization(.never)
+                .textSelection(.enabled)
                 .onSubmit {
                     state = .cancelTapped
                 }
@@ -40,6 +48,13 @@ struct SearchBarViewV2: View {
                     }
                 })
             if state.showCancelButton {
+                if !query.isEmpty {
+                    Button {
+                        query = ""
+                    } label: {
+                        Image(systemName: "x.circle.fill")
+                    }
+                }
                 Button(.cancelButtonTtl) {
                     state = .cancelTapped
                 }
