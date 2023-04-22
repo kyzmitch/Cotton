@@ -46,7 +46,7 @@
 "txt_tab_add_after_selected" = "Insert after selected tab";
 "ttl_tab_positions" = "How to add new tab";
 "ttl_tab_default_content" = "New tab content";
-"ttl_app_async_method" = "Used Async API method";
+"ttl_app_async_method" = "Async API method";
 "ttl_web_search_auto_complete_source" = "Web search auto completion source";
 "ttl_app_ui_framework_type" = "UI framework";
 

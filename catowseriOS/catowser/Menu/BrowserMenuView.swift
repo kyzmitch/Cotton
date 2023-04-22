@@ -67,7 +67,7 @@ private struct _BrowserMenuView: View {
                     }), isActive: $isShowingAddTabSetting) {
                         Text(verbatim: .tabAddTxt)
                         Spacer()
-                        Text(verbatim: tabAddPositionRowValueText)
+                        Text(verbatim: tabAddPositionRowValueText).alignRight()
                     }
                     NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
                         FeatureManager.setFeature(.tabDefaultContent, value: selected)
@@ -76,7 +76,7 @@ private struct _BrowserMenuView: View {
                     }), isActive: $isShowingDefaultTabContentSetting) {
                         Text(verbatim: .tabContentTxt)
                         Spacer()
-                        Text(verbatim: tabContentRowValueText)
+                        Text(verbatim: tabContentRowValueText).alignRight()
                     }
                 }
                 Section(header: Text(verbatim: .searchSectionTtl)) {
@@ -87,7 +87,7 @@ private struct _BrowserMenuView: View {
                     }), isActive: $isShowingWebAutoCompleteSetting) {
                         Text(verbatim: .webAutoCompleteSourceTxt)
                         Spacer()
-                        Text(verbatim: webAutocompleteRowValueText)
+                        Text(verbatim: webAutocompleteRowValueText).alignRight()
                     }
                 }
 #if DEBUG
@@ -102,7 +102,7 @@ private struct _BrowserMenuView: View {
                     }), isActive: $isShowingAppAsyncApiSetting) {
                         Text(verbatim: .appAsyncApiTypeTxt)
                         Spacer()
-                        Text(verbatim: asyncApiRowValueText)
+                        Text(verbatim: asyncApiRowValueText).alignRight()
                     }
                     NavigationLink(destination: BaseMenuView<UIFrameworkType>(model: .init { (selected) in
                         FeatureManager.setFeature(.appDefaultUIFramework, value: selected)
@@ -112,7 +112,7 @@ private struct _BrowserMenuView: View {
                     }), isActive: $isShowingAppUIFrameworkSetting) {
                         Text(verbatim: .appUIFrameworkTypeTxt)
                         Spacer()
-                        Text(verbatim: uiFrameworkRowValueText)
+                        Text(verbatim: uiFrameworkRowValueText).alignRight()
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
@@ -130,6 +130,13 @@ private struct _BrowserMenuView: View {
             Alert(title: Text(verbatim: "App restart is required"))
         }
 
+    }
+}
+
+private extension Text {
+    func alignRight() -> some View {
+        self.frame(maxWidth: .infinity, alignment: .trailing)
+            .multilineTextAlignment(.trailing)
     }
 }
 

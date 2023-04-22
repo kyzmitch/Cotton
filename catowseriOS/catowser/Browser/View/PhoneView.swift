@@ -195,14 +195,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
             webViewNeedsUpdate = true
         }
-        .onReceive(browserContentModel.$contentType) { value in
-            switch value {
-            case .blank, .favorites, .topSites, .homepage:
-                searchBarState = .blankSearch
-            case .site(let site):
-                searchBarState = .viewMode(site.title, site.searchBarContent, false)
-            }
-        }
+        .onReceive(browserContentModel.$contentType) { searchBarState = .create($0) }
         .onReceive(browserContentModel.$tabsCount) { tabsCount = $0 }
     }
 }
