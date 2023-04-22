@@ -20,6 +20,15 @@ enum SearchBarState: Equatable {
     case cancelTapped
     /// when keyboard and all buttons are not displayed
     case viewMode(_ title: String, _ searchAddressContent: String, _ animated: Bool)
+    
+    static func create(_ value: Tab.ContentType) -> SearchBarState {
+        switch value {
+        case .blank, .favorites, .topSites, .homepage:
+            return .blankSearch
+        case .site(let site):
+            return .viewMode(site.title, site.searchBarContent, false)
+        }
+    }
 }
 
 final class SearchBarLegacyView: UIView {
