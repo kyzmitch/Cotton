@@ -112,6 +112,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
             contentType = value
             showSearchSuggestions = false
         }
+        .onReceive(browserContentVM.$contentType) { searchBarAction = .create($0) }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
     }
 }
