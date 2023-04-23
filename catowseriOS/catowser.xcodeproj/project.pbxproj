@@ -346,11 +346,13 @@
 		8A81C6FD2945C8050075BEF9 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */; };
 		8A825947294E2E1A007B97CF /* TopSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825946294E2E1A007B97CF /* TopSitesView.swift */; };
 		8A825948294E2E1A007B97CF /* TopSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825946294E2E1A007B97CF /* TopSitesView.swift */; };
-		8A82594A294E40F5007B97CF /* BrowserContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825949294E40F5007B97CF /* BrowserContentModel.swift */; };
-		8A82594B294E40F5007B97CF /* BrowserContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825949294E40F5007B97CF /* BrowserContentModel.swift */; };
+		8A82594A294E40F5007B97CF /* BrowserContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */; };
+		8A82594B294E40F5007B97CF /* BrowserContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */; };
 		8A82594D294E47F9007B97CF /* TopSitesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesModel.swift */; };
 		8A82594E294E47F9007B97CF /* TopSitesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesModel.swift */; };
 		8A82CDF02351095700607162 /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* RestClient.swift */; };
+		8A89E22B29F4FA5D00FE5543 /* SearchBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */; };
+		8A89E22C29F4FA5D00FE5543 /* SearchBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */; };
 		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
 		8A8F038B293FA96200237DFF /* WebViewNavigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8F038A293FA96200237DFF /* WebViewNavigatable.swift */; };
@@ -593,6 +595,8 @@
 		8AED41A0292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
 		8AED41A1292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
 		8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift */; };
+		8AEFAF7729F5538A00EF430A /* TopSitesLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEFAF7629F5538A00EF430A /* TopSitesLegacyView.swift */; };
+		8AEFAF7829F5538A00EF430A /* TopSitesLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEFAF7629F5538A00EF430A /* TopSitesLegacyView.swift */; };
 		8AF3352029E4A33100A486CF /* SuggestionRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3351F29E4A33100A486CF /* SuggestionRowView.swift */; };
 		8AF3352129E4A33100A486CF /* SuggestionRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3351F29E4A33100A486CF /* SuggestionRowView.swift */; };
 		8AF3D424297312E90053C0C7 /* WebViewControllerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */; };
@@ -1191,9 +1195,10 @@
 		8A81C6F82945C72F0075BEF9 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		8A825946294E2E1A007B97CF /* TopSitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesView.swift; sourceTree = "<group>"; };
-		8A825949294E40F5007B97CF /* BrowserContentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentModel.swift; sourceTree = "<group>"; };
+		8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentViewModel.swift; sourceTree = "<group>"; };
 		8A82594C294E47F9007B97CF /* TopSitesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesModel.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* RestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClient.swift; sourceTree = "<group>"; };
+		8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarState.swift; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
 		8A8F038A293FA96200237DFF /* WebViewNavigatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewNavigatable.swift; sourceTree = "<group>"; };
 		8A8F038D293FAB3200237DFF /* GlobalMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalMenuDelegate.swift; sourceTree = "<group>"; };
@@ -1330,6 +1335,7 @@
 		8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentCoordinator.swift; sourceTree = "<group>"; };
 		8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsEnvironment.swift; sourceTree = "<group>"; };
 		8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmDNSoverHTTPSCombineTests.swift; sourceTree = "<group>"; };
+		8AEFAF7629F5538A00EF430A /* TopSitesLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesLegacyView.swift; sourceTree = "<group>"; };
 		8AF0B95728B9FA2C001D202C /* WebViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelState.swift; sourceTree = "<group>"; };
 		8AF0B95A28B9FA8A001D202C /* WebViewModelState+Actionable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewModelState+Actionable.swift"; sourceTree = "<group>"; };
 		8AF0B95D28B9FAC8001D202C /* WebViewAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAction.swift; sourceTree = "<group>"; };
@@ -1685,6 +1691,7 @@
 				60C2C90422801F3400F5D869 /* SiteCollectionViewCell.swift */,
 				8A825946294E2E1A007B97CF /* TopSitesView.swift */,
 				8A82594C294E47F9007B97CF /* TopSitesModel.swift */,
+				8AEFAF7629F5538A00EF430A /* TopSitesLegacyView.swift */,
 			);
 			path = TopSites;
 			sourceTree = "<group>";
@@ -1794,6 +1801,7 @@
 			isa = PBXGroup;
 			children = (
 				841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */,
+				8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */,
 				8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */,
 				8A3286EF294B585100ECCAEA /* SearchBarLegacyView.swift */,
 				8A046DDF2965AC9300BB6D63 /* SearchBarViewModel.swift */,
@@ -1823,7 +1831,7 @@
 			children = (
 				750EDEBD294924A800212A4E /* BrowserContentView.swift */,
 				8A9D9D7B297194E90047734C /* BrowserContentPreview.swift */,
-				8A825949294E40F5007B97CF /* BrowserContentModel.swift */,
+				8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */,
 				841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */,
 				60C2C90122801C7600F5D869 /* TopSites */,
 				8A825945294E2DDD007B97CF /* WebView */,
@@ -3750,6 +3758,7 @@
 				605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */,
 				60C2C90522801F3400F5D869 /* SiteCollectionViewCell.swift in Sources */,
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
+				8AEFAF7729F5538A00EF430A /* TopSitesLegacyView.swift in Sources */,
 				755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A82594D294E47F9007B97CF /* TopSitesModel.swift in Sources */,
 				8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
@@ -3831,6 +3840,7 @@
 				755E109D27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
 				8AD8C29B296616F40038FE5C /* WebViewController+Reusable.swift in Sources */,
 				8ADA5822293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */,
+				8A89E22B29F4FA5D00FE5543 /* SearchBarState.swift in Sources */,
 				8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A9D9D7F2971D2300047734C /* PhoneView.swift in Sources */,
 				8A96BEC92481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
@@ -3841,7 +3851,7 @@
 				755E108227C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */,
 				60724EA921FF1BD80071BECF /* CounterView.swift in Sources */,
-				8A82594A294E40F5007B97CF /* BrowserContentModel.swift in Sources */,
+				8A82594A294E40F5007B97CF /* BrowserContentViewModel.swift in Sources */,
 				8AB9BE1A28FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8AED41A0292C004100A00DB2 /* ViewsEnvironment.swift in Sources */,
 				8AE9DD092950DBB40015E394 /* WebView.swift in Sources */,
@@ -4013,6 +4023,7 @@
 				8A8035B624442F0F000E035F /* TabPreviewCell.swift in Sources */,
 				8A8035B724442F0F000E035F /* SiteCollectionViewCell.swift in Sources */,
 				8A8035B824442F0F000E035F /* ThemeProvider.swift in Sources */,
+				8AEFAF7829F5538A00EF430A /* TopSitesLegacyView.swift in Sources */,
 				755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
 				8A82594E294E47F9007B97CF /* TopSitesModel.swift in Sources */,
 				8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
@@ -4094,6 +4105,7 @@
 				755E109E27CA3A3100D90AD0 /* SettingsEnumTypes.swift in Sources */,
 				8AD8C29C296616F40038FE5C /* WebViewController+Reusable.swift in Sources */,
 				8ADA5823293E4EA200263767 /* DownloadPanelPresenter.swift in Sources */,
+				8A89E22C29F4FA5D00FE5543 /* SearchBarState.swift in Sources */,
 				8AB9BE1228FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A9D9D802971D2300047734C /* PhoneView.swift in Sources */,
 				8A96BECA2481237B00E81C38 /* SpecificBasicFeatures.swift in Sources */,
@@ -4104,7 +4116,7 @@
 				755E108327C169AC00D90AD0 /* BaseListModel.swift in Sources */,
 				8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */,
 				8A8035CB24442F0F000E035F /* CounterView.swift in Sources */,
-				8A82594B294E40F5007B97CF /* BrowserContentModel.swift in Sources */,
+				8A82594B294E40F5007B97CF /* BrowserContentViewModel.swift in Sources */,
 				8AB9BE1928FF0CC8002063C2 /* UIImage+CatowserExtensions.swift in Sources */,
 				8AED41A1292C004100A00DB2 /* ViewsEnvironment.swift in Sources */,
 				8AE9DD0A2950DBB40015E394 /* WebView.swift in Sources */,

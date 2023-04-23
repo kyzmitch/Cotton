@@ -13,7 +13,7 @@ import Combine
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
     /// View model mainly used as a Tabs observer to know current tab's content type
-    private var model: BrowserContentModel
+    private let vm: BrowserContentViewModel
     /// The main state of the browser content view
     @Binding private var state: Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).
@@ -28,26 +28,30 @@ struct BrowserContentView: View {
     /// Improved web view content publisher, attempt to fix `removeDuplicates` part
     /// because it could be re-created during view body update.
     private let contentType: AnyPublisher<Tab.ContentType, Never>
+    /// Selected swiftUI mode which is set at app start
+    private let mode: SwiftUIMode
     
-    init(_ model: BrowserContentModel,
+    init(_ vm: BrowserContentViewModel,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Binding<Bool>,
          _ state: Binding<Tab.ContentType>,
-         _ webViewNeedsUpdate: Binding<Bool>) {
+         _ webViewNeedsUpdate: Binding<Bool>,
+         _ mode: SwiftUIMode) {
         _isLoading = isLoading
         _state = state
         _webViewNeedsUpdate = webViewNeedsUpdate
-        webViewModel = WebViewModelV2(model.jsPluginsBuilder, siteNavigation)
+        webViewModel = WebViewModelV2(vm.jsPluginsBuilder, siteNavigation)
         topSitesModel = TopSitesModel()
         // drops first value because it is default one
         // which it seems like must be initialized anyway
         // but don't need to be used
-        contentType = model
+        contentType = vm
             .$contentType
-            .dropFirst(1)
+            .dropFirst()
             .removeDuplicates()
             .eraseToAnyPublisher()
-        self.model = model
+        self.vm = vm
+        self.mode = mode
     }
     
     var body: some View {
@@ -59,9 +63,9 @@ struct BrowserContentView: View {
                 case .blank:
                     Spacer()
                 case .topSites:
-                    TopSitesView(topSitesModel)
+                    TopSitesView(topSitesModel, mode)
                 case .site(let site):
-                    WebView(webViewModel, site, $webViewNeedsUpdate)
+                    WebView(webViewModel, site, $webViewNeedsUpdate, mode)
                 default:
                     Spacer()
                 }
@@ -73,7 +77,7 @@ struct BrowserContentView: View {
                 state = value
             }
         }
-        .onReceive(model.$loading.dropFirst(1)) { value in
+        .onReceive(vm.$loading.dropFirst()) { value in
             isLoading = value
         }
     }

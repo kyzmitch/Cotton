@@ -13,14 +13,17 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     // MARK: - view models of subviews
     
     private var model: MainBrowserModel<C>
-    private let searchBarModel: SearchBarViewModel
-    private let browserContentModel: BrowserContentModel
+    private let searchBarVM: SearchBarViewModel
+    private let browserContentVM: BrowserContentViewModel
     private let toolbarModel: WebBrowserToolbarModel
     
     // MARK: - search bar state
     
-    @State private var searchBarState: SearchBarState
+    /// Search bar action is only needed for SwiftUI UIKit wrapper
+    @State private var searchBarAction: SearchBarAction
+    /// Search suggestion visibility state
     @State private var showSearchSuggestions: Bool
+    /// Search query string state which is set by SearchBar and used by SearchSuggestions
     @State private var searchQuery: String
     
     // MARK: - web content loading state
@@ -62,13 +65,13 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         // with the search suggestions view when necessary
         showSearchSuggestions = false
         searchQuery = ""
-        searchBarState = .blankSearch
+        searchBarAction = .updateView("", "")
         // Store references to subview models in the main view
         // to be able to subscribe for the publishers
         self.model = model
-        browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
+        browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
-        searchBarModel = SearchBarViewModel()
+        searchBarVM = SearchBarViewModel()
         self.mode = mode
     }
     
@@ -83,27 +86,29 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     
     private var uiKitWrapperView: some View {
         VStack {
-            TabletTabsView()
-            TabletSearchBarView(searchBarModel, $searchBarState, toolbarModel, $webViewInterface)
+            let searchBarDelegate: UISearchBarDelegate = searchBarVM
+            TabletTabsView(mode)
+            TabletSearchBarView(searchBarDelegate, $searchBarAction, toolbarModel, $webViewInterface, mode)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
             if showSearchSuggestions {
-                SearchSuggestionsView($searchQuery, searchBarModel, mode)
+                let delegate = searchBarVM
+                SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
-                BrowserContentView(browserContentModel, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate)
+                BrowserContentView(browserContentVM, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
         }
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
         .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
-        .onReceive(searchBarModel.$showSuggestions) { showSearchSuggestions = $0 }
-        .onReceive(searchBarModel.$searchQuery) { searchQuery = $0 }
-        .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
+        .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
+        .onReceive(searchBarVM.$searchQuery) { searchQuery = $0 }
+        .onReceive(searchBarVM.$action.dropFirst()) { searchBarAction = $0 }
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
             webViewNeedsUpdate = false
         }
-        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { _ in
             webViewNeedsUpdate = true
         }
     }

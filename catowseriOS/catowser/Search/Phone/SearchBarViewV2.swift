@@ -21,13 +21,15 @@ extension LocalizedStringKey {
  */
 struct SearchBarViewV2: View {
     @Binding private var query: String
-    @Binding private var state: SearchBarState
+    @Binding private var action: SearchBarAction
+    @State private var state: SearchBarState
     @FocusState private var isFocused: Bool
     
-    init(_ queryBinding: Binding<String>,
-         _ stateBinding: Binding<SearchBarState>) {
-        _query = queryBinding
-        _state = stateBinding
+    init(_ query: Binding<String>,
+         _ action: Binding<SearchBarAction>) {
+        _query = query
+        _action = action
+        state = .blankViewMode
         isFocused = false
     }
     
@@ -36,18 +38,18 @@ struct SearchBarViewV2: View {
             Image(systemName: "magnifyingglass")
             TextField(.placeholderTextKey, text: $query)
                 .foregroundColor(.primary)
-                .focused($isFocused)
                 .textInputAutocapitalization(.never)
                 .textSelection(.enabled)
+                .focused($isFocused)
                 .onSubmit {
-                    state = .cancelTapped
+                    action = .cancelTapped
                 }
                 .onChange(of: isFocused, perform: { value in
                     if value {
-                        state = .startSearch
+                        action = .startSearch
                     }
                 })
-            if state.showCancelButton {
+            if action.showCancelButton {
                 if !query.isEmpty {
                     Button {
                         query = ""
@@ -56,22 +58,33 @@ struct SearchBarViewV2: View {
                     }
                 }
                 Button(.cancelButtonTtl) {
-                    state = .cancelTapped
+                    action = .cancelTapped
                 }
                 .foregroundColor(.gray)
-                .foregroundColor(Color(.systemBlue))
             }
         }
         .customHStackStyle()
+        .onChange(of: action) { newValue in
+            switch newValue {
+            case .startSearch:
+                state = .inSearchMode(state.title, state.content)
+            case .cancelTapped:
+                if state.content.isEmpty {
+                    state = .blankViewMode
+                } else {
+                    state = .viewMode(state.title, state.content, true)
+                }
+            case .updateView(let title, let content):
+                state = .viewMode(title, content, false)
+            }
+        }
         .onChange(of: state) { newValue in
             switch newValue {
-            case .blankSearch:
+            case .blankViewMode:
                 isFocused = false
                 query = ""
-            case .startSearch:
+            case .inSearchMode:
                 isFocused = true
-            case .cancelTapped:
-                isFocused = false
             case .viewMode(_, let searchBarContent, _):
                 isFocused = false
                 query = searchBarContent
@@ -104,7 +117,7 @@ private extension LocalizedStringKey {
 #if DEBUG
 struct SearchBarViewV2_Previews: PreviewProvider {
     static var previews: some View {
-        let state: Binding<SearchBarState> = .init {
+        let state: Binding<SearchBarAction> = .init {
             .startSearch
         } set: { _ in
             //

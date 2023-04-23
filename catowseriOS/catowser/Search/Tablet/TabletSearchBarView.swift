@@ -10,37 +10,44 @@ import SwiftUI
 
 /// A search bar view
 struct TabletSearchBarView: View {
-    private var model: SearchBarViewModel
-    @Binding private var state: SearchBarState
-    private(set) var toolbarModel: WebBrowserToolbarModel
+    private weak var searchBarDelegate: UISearchBarDelegate?
+    private let toolbarModel: WebBrowserToolbarModel
+    @Binding private var action: SearchBarAction
     @Binding private var webViewInterface: WebViewNavigatable?
+    private let mode: SwiftUIMode
     
-    init(_ model: SearchBarViewModel,
-         _ state: Binding<SearchBarState>,
+    init(_ searchBarDelegate: UISearchBarDelegate?,
+         _ action: Binding<SearchBarAction>,
          _ toolbarModel: WebBrowserToolbarModel,
-         _ webViewInterface: Binding<WebViewNavigatable?>) {
-        self.model = model
-        _state = state
+         _ webViewInterface: Binding<WebViewNavigatable?>,
+         _ mode: SwiftUIMode) {
+        self.searchBarDelegate = searchBarDelegate
         self.toolbarModel = toolbarModel
+        _action = action
         _webViewInterface = webViewInterface
+        self.mode = mode
     }
     
     var body: some View {
-        TabletSearchBarLegacyView(model, $state, $webViewInterface)
-            .frame(height: CGFloat.searchViewHeight)
-            .onReceive(toolbarModel.$webViewInterface) { value in
-                webViewInterface = value
-            }
+        switch mode {
+        case .compatible:
+            TabletSearchBarLegacyView(searchBarDelegate, $action, $webViewInterface)
+                .frame(height: CGFloat.searchViewHeight)
+                .onReceive(toolbarModel.$webViewInterface) { value in
+                    webViewInterface = value
+                }
+        case .full:
+            Spacer()
+        }
     }
 }
 
 #if DEBUG
 struct TabletSearchBarView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = SearchBarViewModel()
-        let state: Binding<SearchBarState> = .init {
-            // .viewMode("cotton", "cotton", true)
-            .blankSearch
+        let searchBarDelegate: UISearchBarDelegate? = nil
+        let state: Binding<SearchBarAction> = .init {
+            .updateView("cotton", "cotton")
         } set: { _ in
             //
         }
@@ -51,7 +58,7 @@ struct TabletSearchBarView_Previews: PreviewProvider {
         }
         let toolbarModel = WebBrowserToolbarModel()
         // View is jumping when you tap on it
-        TabletSearchBarView(model, state, toolbarModel, interface)
+        TabletSearchBarView(searchBarDelegate, state, toolbarModel, interface, .compatible)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }

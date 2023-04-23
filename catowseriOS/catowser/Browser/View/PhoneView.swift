@@ -13,15 +13,18 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     // MARK: - view models of subviews
     
     private var model: MainBrowserModel<C>
-    private let searchBarModel: SearchBarViewModel
-    private let browserContentModel: BrowserContentModel
+    private let searchBarVM: SearchBarViewModel
+    private let browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
     private let toolbarModel: WebBrowserToolbarModel
     
     // MARK: - search bar state
     
-    @State private var searchBarState: SearchBarState
+    /// Search bar action is only needed for SwiftUI UIKit wrapper
+    @State private var searchBarAction: SearchBarAction
+    /// Search suggestion visibility state
     @State private var showSearchSuggestions: Bool
+    /// Search query string state which is set by SearchBar and used by SearchSuggestions
     @State private var searchQuery: String
     
     // MARK: - web content loading state
@@ -81,13 +84,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         // with the search suggestions view when necessary
         showSearchSuggestions = false
         searchQuery = ""
-        searchBarState = .blankSearch
+        searchBarAction = .updateView("", "")
         // Store references to subview models in the main view
         // to be able to subscribe for the publishers
         self.model = model
-        browserContentModel = BrowserContentModel(model.jsPluginsBuilder)
+        browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
         toolbarModel = WebBrowserToolbarModel()
-        searchBarModel = SearchBarViewModel()
+        searchBarVM = SearchBarViewModel()
         self.mode = mode
         switch mode {
         case .compatible:
@@ -111,36 +114,30 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     
     private var uiKitWrapperView: some View {
         VStack {
-            SearchBarView(searchBarModel,
-                          $searchQuery,
-                          $searchBarState,
-                          mode)
+            let searchBarDelegate: UISearchBarDelegate = searchBarVM
+            // Search query binding is not needed for UIKit mode, but we still have to pass it
+            SearchBarView(searchBarDelegate, $searchQuery, $searchBarAction, mode)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
             if showSearchSuggestions {
-                SearchSuggestionsView($searchQuery,
-                                      searchBarModel,
-                                      mode)
+                let delegate: SearchSuggestionsListDelegate = searchBarVM
+                SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
-                BrowserContentView(browserContentModel,
-                                   toolbarModel,
-                                   $isLoading,
-                                   $contentType,
-                                   $webViewNeedsUpdate)
+                BrowserContentView(browserContentVM, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
             ToolbarView(toolbarModel, $webViewInterface)
         }
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
         .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
-        .onReceive(searchBarModel.$showSuggestions) { showSearchSuggestions = $0 }
-        .onReceive(searchBarModel.$searchQuery) { searchQuery = $0 }
-        .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
+        .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
+        .onReceive(searchBarVM.$searchQuery) { searchQuery = $0 }
+        .onReceive(searchBarVM.$action.dropFirst()) { searchBarAction = $0 }
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
             webViewNeedsUpdate = false
         }
-        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { _ in
             webViewNeedsUpdate = true
         }
     }
@@ -148,31 +145,19 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     private var fullySwiftUIView: some View {
         NavigationView {
             VStack {
-                SearchBarView(searchBarModel,
-                              $searchQuery,
-                              $searchBarState,
-                              mode)
+                SearchBarView(nil, $searchQuery, $searchBarAction, mode)
                 if showProgress {
                     ProgressView(value: websiteLoadProgress)
                 }
                 if showSearchSuggestions {
-                    SearchSuggestionsView($searchQuery,
-                                          searchBarModel,
-                                          mode)
+                    let delegate: SearchSuggestionsListDelegate = searchBarVM
+                    SearchSuggestionsView($searchQuery, delegate, mode)
                 } else {
-                    BrowserContentView(browserContentModel,
-                                       toolbarModel,
-                                       $isLoading,
-                                       $contentType,
-                                       $webViewNeedsUpdate)
+                    BrowserContentView(browserContentVM, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
                 }
             }
             .toolbar {
-                ToolbarViewV2(toolbarModel,
-                              $tabsCount,
-                              $showingMenu,
-                              $showingTabs,
-                              $showSearchSuggestions)
+                ToolbarViewV2(toolbarModel, $tabsCount, $showingMenu, $showingTabs, $showSearchSuggestions)
             }
         }
         .sheet(isPresented: $showingMenu) {
@@ -186,22 +171,22 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onChange(of: searchQuery) { value in
             // Only show suggestions when User edits text in search view & query is not empty
-            showSearchSuggestions = searchBarState == .startSearch && !value.isEmpty
+            showSearchSuggestions = searchBarAction == .startSearch && !value.isEmpty && !value.looksLikeAURL()
         }
-        .onReceive(searchBarModel.$state.dropFirst()) { searchBarState = $0 }
+        .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
             webViewNeedsUpdate = false
         }
-        .onReceive(browserContentModel.$webViewNeedsUpdate.dropFirst()) { _ in
+        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { _ in
             webViewNeedsUpdate = true
         }
-        .onReceive(browserContentModel.$contentType) { searchBarState = .create($0) }
-        .onReceive(browserContentModel.$tabsCount) { tabsCount = $0 }
+        .onReceive(browserContentVM.$contentType) { searchBarAction = .create($0) }
+        .onReceive(browserContentVM.$tabsCount) { tabsCount = $0 }
         .onChange(of: showingTabs) { newValue in
             // Reset the search bar from editing mode
             // when new modal screen is about to get shown
             if newValue {
-                searchBarState = .cancelTapped
+                searchBarAction = .cancelTapped
             }
         }
     }

@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 
+/// Only UIKit wrapper which needs less amout of parameters than full SwiftUI view
 struct ToolbarView: View {
     private(set) var model: WebBrowserToolbarModel
     @Binding private var webViewInterface: WebViewNavigatable?

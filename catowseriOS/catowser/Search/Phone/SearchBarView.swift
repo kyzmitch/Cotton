@@ -10,28 +10,30 @@ import SwiftUI
 
 /// A search bar view
 struct SearchBarView: View {
-    private var model: SearchBarViewModel
+    /// Optional search bar delegate only needed for UIKit wrapper
+    private weak var searchBarDelegate: UISearchBarDelegate?
+    /// A search query stored in super view and used only by fully SwiftUI view
     @Binding private var searchQuery: String
-    @Binding private var state: SearchBarState
+    @Binding private var action: SearchBarAction
     private let mode: SwiftUIMode
     
-    init(_ model: SearchBarViewModel,
+    init(_ searchBarDelegate: UISearchBarDelegate?,
          _ searchQuery: Binding<String>,
-         _ state: Binding<SearchBarState>,
+         _ action: Binding<SearchBarAction>,
          _ mode: SwiftUIMode) {
-        self.model = model
+        self.searchBarDelegate = searchBarDelegate
         _searchQuery = searchQuery
-        _state = state
+        _action = action
         self.mode = mode
     }
     
     var body: some View {
         switch mode {
         case .compatible:
-            PhoneSearchBarLegacyView(model, $state)
+            PhoneSearchBarLegacyView(searchBarDelegate, $action)
                 .frame(height: CGFloat.searchViewHeight)
         case .full:
-            SearchBarViewV2($searchQuery, $state)
+            SearchBarViewV2($searchQuery, $action)
         }
     }
 }
@@ -39,9 +41,8 @@ struct SearchBarView: View {
 #if DEBUG
 struct SearchBarView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = SearchBarViewModel()
-        let state: Binding<SearchBarState> = .init {
-            // .viewMode("cotton", "cotton", true)
+        let searchBarDelegate: UISearchBarDelegate? = nil
+        let state: Binding<SearchBarAction> = .init {
             .startSearch
         } set: { _ in
             //
@@ -52,7 +53,7 @@ struct SearchBarView_Previews: PreviewProvider {
             //
         }
         // View is jumping when you tap on it
-        SearchBarView(model, query, state, .compatible)
+        SearchBarView(searchBarDelegate, query, state, .compatible)
     }
 }
 #endif

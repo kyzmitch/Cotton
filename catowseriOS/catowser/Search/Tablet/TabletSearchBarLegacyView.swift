@@ -9,15 +9,15 @@
 import SwiftUI
 
 struct TabletSearchBarLegacyView: UIViewControllerRepresentable {
-    private var model: SearchBarViewModel
-    @Binding private var state: SearchBarState
+    private weak var searchBarDelegate: UISearchBarDelegate?
+    @Binding private var action: SearchBarAction
     @Binding private var webViewInterface: WebViewNavigatable?
     
-    init(_ model: SearchBarViewModel,
-         _ state: Binding<SearchBarState>,
+    init(_ searchBarDelegate: UISearchBarDelegate?,
+         _ action: Binding<SearchBarAction>,
          _ webViewInterface: Binding<WebViewNavigatable?>) {
-        self.model = model
-        _state = state
+        self.searchBarDelegate = searchBarDelegate
+        _action = action
         _webViewInterface = webViewInterface
     }
     
@@ -29,14 +29,16 @@ struct TabletSearchBarLegacyView: UIViewControllerRepresentable {
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
-        let vc = vcFactory.deviceSpecificSearchBarViewController(model, nil, interface?.globalMenuDelegate)
+        let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate, nil, interface?.globalMenuDelegate)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }
     
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         if let interface = uiViewController as? SearchBarControllerInterface {
-            interface.changeState(to: state)
+            // Update UIKit search bar view when SwiftUI detects tab content replacement
+            // or User taps on Cancel button and it is detected by search bar delegate.
+            interface.handleAction(action)
         }
         
         if let vc = uiViewController as? TabletSearchBarViewController {
