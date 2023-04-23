@@ -25,7 +25,6 @@ class DummyJSPluginsSource: JSPluginsSource {
 struct BrowserContentView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        let model = BrowserContentViewModel(source)
         let isLoading: Binding<Bool> = .init {
             false
         } set: { _ in
@@ -47,7 +46,7 @@ struct BrowserContentView_Previews: PreviewProvider {
         } set: { _ in
             //
         }
-        BrowserContentView(model, nil, isLoading, state, needsUpdate, .full)
+        BrowserContentView(source, nil, isLoading, state, needsUpdate, .full)
     }
 }
 

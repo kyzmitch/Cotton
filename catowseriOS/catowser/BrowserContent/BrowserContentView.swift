@@ -12,10 +12,10 @@ import Combine
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
-    /// View model mainly used as a Tabs observer to know current tab's content type
-    private let vm: BrowserContentViewModel
+    /// Plugins builder needed by web view model but the reference needs to be holded/created by another vm on upper level
+    private let jsPluginsBuilder: any JSPluginsSource
     /// The main state of the browser content view
-    @Binding private var state: Tab.ContentType
+    @Binding private var contentType: Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
     @Binding private var isLoading: Bool
@@ -25,32 +25,21 @@ struct BrowserContentView: View {
     private let webViewModel: WebViewModelV2
     /// Top sites model reference
     private let topSitesModel: TopSitesModel
-    /// Improved web view content publisher, attempt to fix `removeDuplicates` part
-    /// because it could be re-created during view body update.
-    private let contentType: AnyPublisher<Tab.ContentType, Never>
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
-    init(_ vm: BrowserContentViewModel,
+    init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Binding<Bool>,
-         _ state: Binding<Tab.ContentType>,
+         _ contentType: Binding<Tab.ContentType>,
          _ webViewNeedsUpdate: Binding<Bool>,
          _ mode: SwiftUIMode) {
         _isLoading = isLoading
-        _state = state
+        _contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
-        webViewModel = WebViewModelV2(vm.jsPluginsBuilder, siteNavigation)
+        webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
         topSitesModel = TopSitesModel()
-        // drops first value because it is default one
-        // which it seems like must be initialized anyway
-        // but don't need to be used
-        contentType = vm
-            .$contentType
-            .dropFirst()
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-        self.vm = vm
+        self.jsPluginsBuilder = jsPluginsBuilder
         self.mode = mode
     }
     
@@ -59,7 +48,7 @@ struct BrowserContentView: View {
             if isLoading {
                 Spacer()
             } else {
-                switch state {
+                switch contentType {
                 case .blank:
                     Spacer()
                 case .topSites:
@@ -70,15 +59,6 @@ struct BrowserContentView: View {
                     Spacer()
                 }
             }
-        }
-        .onReceive(contentType) { value in
-            if state != value {
-                // using additional check because `removeDuplicates` didn't work?
-                state = value
-            }
-        }
-        .onReceive(vm.$loading.dropFirst()) { value in
-            isLoading = value
         }
     }
 }

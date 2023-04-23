@@ -124,7 +124,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
                 SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
-                BrowserContentView(browserContentVM, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                let jsPlugins = browserContentVM.jsPluginsBuilder
+                BrowserContentView(jsPlugins, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
             ToolbarView(toolbarModel, $webViewInterface)
         }
@@ -134,12 +135,13 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onReceive(searchBarVM.$searchQuery) { searchQuery = $0 }
         .onReceive(searchBarVM.$action.dropFirst()) { searchBarAction = $0 }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
-            webViewNeedsUpdate = false
+        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
+        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
+        .onReceive(browserContentVM.$contentType) { value in
+            contentType = value
+            showSearchSuggestions = false
         }
-        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { _ in
-            webViewNeedsUpdate = true
-        }
+        .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
     }
     
     private var fullySwiftUIView: some View {
@@ -153,7 +155,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
                     SearchSuggestionsView($searchQuery, delegate, mode)
                 } else {
-                    BrowserContentView(browserContentVM, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                    let jsPlugins = browserContentVM.jsPluginsBuilder
+                    BrowserContentView(jsPlugins, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
                 }
             }
             .toolbar {
