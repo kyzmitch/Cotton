@@ -13,7 +13,7 @@ import SwiftUI
 @available(iOS 13.0, *)
 extension UIHostingController where Content == BrowserMenuView {
     static func create(_ model: MenuViewModel) -> UIHostingController {
-        let menuView = BrowserMenuView(model: model)
+        let menuView = BrowserMenuView(model)
         return UIHostingController(rootView: menuView)
     }
 }

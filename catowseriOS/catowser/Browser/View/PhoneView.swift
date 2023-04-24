@@ -138,8 +138,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
         .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
         .onReceive(browserContentVM.$contentType) { value in
-            contentType = value
             showSearchSuggestions = false
+            contentType = value
         }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
     }
@@ -164,7 +164,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             }
         }
         .sheet(isPresented: $showingMenu) {
-            BrowserMenuView(model: menuModel)
+            BrowserMenuView(menuModel)
         }
         .sheet(isPresented: $showingTabs) {
             TabsPreviewsLegacyView()
@@ -172,18 +172,18 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
         .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onChange(of: searchQuery) { value in
             // Only show suggestions when User edits text in search view & query is not empty
             showSearchSuggestions = searchBarAction == .startSearch && !value.isEmpty && !value.looksLikeAURL()
         }
-        .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { _ in
-            webViewNeedsUpdate = false
+        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
+        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
+        .onReceive(browserContentVM.$contentType) { value in
+            showSearchSuggestions = false
+            contentType = value
+            searchBarAction = .create(value)
         }
-        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { _ in
-            webViewNeedsUpdate = true
-        }
-        .onReceive(browserContentVM.$contentType) { searchBarAction = .create($0) }
         .onReceive(browserContentVM.$tabsCount) { tabsCount = $0 }
         .onChange(of: showingTabs) { newValue in
             // Reset the search bar from editing mode
@@ -192,6 +192,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 searchBarAction = .cancelTapped
             }
         }
+        .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
     }
 }
 

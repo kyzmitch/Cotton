@@ -170,6 +170,8 @@
 		8A0FC1A729F2586B0044829A /* ToolbarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */; };
 		8A0FC1A929F259D20044829A /* ToolbarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */; };
 		8A0FC1AA29F259D20044829A /* ToolbarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */; };
+		8A10C77529F64A79002A429A /* TopSitesViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A10C77429F64A79002A429A /* TopSitesViewV2.swift */; };
+		8A10C77629F64A79002A429A /* TopSitesViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A10C77429F64A79002A429A /* TopSitesViewV2.swift */; };
 		8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
@@ -348,8 +350,8 @@
 		8A825948294E2E1A007B97CF /* TopSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825946294E2E1A007B97CF /* TopSitesView.swift */; };
 		8A82594A294E40F5007B97CF /* BrowserContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */; };
 		8A82594B294E40F5007B97CF /* BrowserContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */; };
-		8A82594D294E47F9007B97CF /* TopSitesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesModel.swift */; };
-		8A82594E294E47F9007B97CF /* TopSitesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesModel.swift */; };
+		8A82594D294E47F9007B97CF /* TopSitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */; };
+		8A82594E294E47F9007B97CF /* TopSitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */; };
 		8A82CDF02351095700607162 /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* RestClient.swift */; };
 		8A89E22B29F4FA5D00FE5543 /* SearchBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */; };
 		8A89E22C29F4FA5D00FE5543 /* SearchBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */; };
@@ -1116,6 +1118,7 @@
 		8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarLegacyView.swift; sourceTree = "<group>"; };
 		8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarViewV2.swift; sourceTree = "<group>"; };
 		8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarLegacyView.swift; sourceTree = "<group>"; };
+		8A10C77429F64A79002A429A /* TopSitesViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewV2.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
 		8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridCoordinator.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* DNSResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
@@ -1196,7 +1199,7 @@
 		8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		8A825946294E2E1A007B97CF /* TopSitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesView.swift; sourceTree = "<group>"; };
 		8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentViewModel.swift; sourceTree = "<group>"; };
-		8A82594C294E47F9007B97CF /* TopSitesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesModel.swift; sourceTree = "<group>"; };
+		8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewModel.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* RestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClient.swift; sourceTree = "<group>"; };
 		8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarState.swift; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
@@ -1690,8 +1693,9 @@
 				60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */,
 				60C2C90422801F3400F5D869 /* SiteCollectionViewCell.swift */,
 				8A825946294E2E1A007B97CF /* TopSitesView.swift */,
-				8A82594C294E47F9007B97CF /* TopSitesModel.swift */,
+				8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */,
 				8AEFAF7629F5538A00EF430A /* TopSitesLegacyView.swift */,
+				8A10C77429F64A79002A429A /* TopSitesViewV2.swift */,
 			);
 			path = TopSites;
 			sourceTree = "<group>";
@@ -3717,6 +3721,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A0FC1A629F2586B0044829A /* ToolbarViewV2.swift in Sources */,
+				8A10C77529F64A79002A429A /* TopSitesViewV2.swift in Sources */,
 				8AE3113C247C66DF00FF28B1 /* BrowserMenuView.swift in Sources */,
 				8435A49D1EED5E700020102F /* BaseViewController.swift in Sources */,
 				7533929A291FCEDD00570461 /* Coordinator.swift in Sources */,
@@ -3760,7 +3765,7 @@
 				6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */,
 				8AEFAF7729F5538A00EF430A /* TopSitesLegacyView.swift in Sources */,
 				755E107427BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
-				8A82594D294E47F9007B97CF /* TopSitesModel.swift in Sources */,
+				8A82594D294E47F9007B97CF /* TopSitesViewModel.swift in Sources */,
 				8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8A9D9D892971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1628FF0C75002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
@@ -3982,6 +3987,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A0FC1A729F2586B0044829A /* ToolbarViewV2.swift in Sources */,
+				8A10C77629F64A79002A429A /* TopSitesViewV2.swift in Sources */,
 				8AE3113D247C66DF00FF28B1 /* BrowserMenuView.swift in Sources */,
 				8A8035A224442F0F000E035F /* BaseViewController.swift in Sources */,
 				7533929B291FCEDD00570461 /* Coordinator.swift in Sources */,
@@ -4025,7 +4031,7 @@
 				8A8035B824442F0F000E035F /* ThemeProvider.swift in Sources */,
 				8AEFAF7829F5538A00EF430A /* TopSitesLegacyView.swift in Sources */,
 				755E107527BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift in Sources */,
-				8A82594E294E47F9007B97CF /* TopSitesModel.swift in Sources */,
+				8A82594E294E47F9007B97CF /* TopSitesViewModel.swift in Sources */,
 				8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8A9D9D8A2971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1528FF0C74002063C2 /* UIColour+CatowserExtensions.swift in Sources */,

@@ -87,3 +87,13 @@ extension Site {
                     userSpecifiedTitle: userSpecifiedTitle)
     }
 }
+
+extension Site: Identifiable {
+    public var id: String {
+        let settingsStr = "\(settings.isPrivate)\(settings.blockPopups)\(settings.isJSEnabled)\(settings.canLoadPlugins)"
+        let title = userSpecifiedTitle ?? ""
+        let urlStr = urlInfo.platformURL.absoluteString
+        let suggestion = searchSuggestion ?? ""
+        return title + urlStr + settingsStr + suggestion
+    }
+}

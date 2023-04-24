@@ -9,21 +9,25 @@
 import SwiftUI
 
 struct TopSitesView: View {
-    let model: TopSitesModel
+    let vm: TopSitesViewModel
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
-    init(_ model: TopSitesModel, _ mode: SwiftUIMode) {
-        self.model = model
+    init(_ vm: TopSitesViewModel, _ mode: SwiftUIMode) {
+        self.vm = vm
         self.mode = mode
     }
     
     var body: some View {
         switch mode {
         case .compatible:
-            TopSitesLegacyView(model: model)
+            TopSitesLegacyView(vm)
         case .full:
-            Spacer()
+            if #available(iOS 16.0, *) {
+                TopSitesViewV2(vm)
+            } else {
+                TopSitesLegacyView(vm)
+            }
         }
     }
 }

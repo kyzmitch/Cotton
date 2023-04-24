@@ -10,8 +10,12 @@ import SwiftUI
 import UIKit
 
 struct TopSitesLegacyView: UIViewControllerRepresentable {
-    let model: TopSitesModel
+    private let vm: TopSitesViewModel
     typealias UIViewControllerType = UIViewController
+    
+    init(_ vm: TopSitesViewModel) {
+        self.vm = vm
+    }
     
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory
@@ -20,11 +24,9 @@ struct TopSitesLegacyView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
         let vc: AnyViewController & TopSitesInterface = vcFactory.topSitesViewController(interface?.topSitesCoordinator)
-        vc.reload(with: model.topSites)
+        vc.reload(with: vm.topSites)
         return vc.viewController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
-    }
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
 }

@@ -15,7 +15,7 @@ final class SiteMenuViewController<C: Navigating>: UIHostingController<BrowserMe
     
     init(_ model: MenuViewModel, _ coordinator: C) {
         self.coordinator = coordinator
-        let view = BrowserMenuView(model: model)
+        let view = BrowserMenuView(model)
         super.init(rootView: view)
     }
     

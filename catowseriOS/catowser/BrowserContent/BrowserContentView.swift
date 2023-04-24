@@ -12,7 +12,8 @@ import Combine
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
-    /// Plugins builder needed by web view model but the reference needs to be holded/created by another vm on upper level
+    /// Plugins builder needed by web view model
+    /// but the reference needs to be holded/created by another vm on upper level
     private let jsPluginsBuilder: any JSPluginsSource
     /// The main state of the browser content view
     @Binding private var contentType: Tab.ContentType
@@ -24,7 +25,7 @@ struct BrowserContentView: View {
     /// Web view view model reference
     private let webViewModel: WebViewModelV2
     /// Top sites model reference
-    private let topSitesModel: TopSitesModel
+    private let topSitesModel: TopSitesViewModel
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
@@ -38,7 +39,7 @@ struct BrowserContentView: View {
         _contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
         webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
-        topSitesModel = TopSitesModel()
+        topSitesModel = TopSitesViewModel()
         self.jsPluginsBuilder = jsPluginsBuilder
         self.mode = mode
     }

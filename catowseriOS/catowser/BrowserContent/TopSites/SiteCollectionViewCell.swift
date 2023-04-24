@@ -13,6 +13,11 @@ import Combine
 #endif
 import BrowserNetworking
 
+enum ImageViewSizes {
+    static let imageHeight: CGFloat = 96
+    static let titleHeight: CGFloat = 22
+}
+
 final class SiteCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var faviconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -28,14 +33,14 @@ final class SiteCollectionViewCell: UICollectionViewCell {
     static func size(for traitCollection: UITraitCollection) -> CGSize {
         let imageViewHeight: CGFloat
         if traitCollection.verticalSizeClass == .compact {
-            imageViewHeight = 96
+            imageViewHeight = ImageViewSizes.imageHeight
         } else if traitCollection.horizontalSizeClass == .compact {
-            imageViewHeight = 96
+            imageViewHeight = ImageViewSizes.imageHeight
         } else {
-            imageViewHeight = 96
+            imageViewHeight = ImageViewSizes.imageHeight
         }
 
-        return CGSize(width: imageViewHeight, height: imageViewHeight + 22)
+        return CGSize(width: imageViewHeight, height: imageViewHeight + ImageViewSizes.titleHeight)
     }
 }
 

@@ -58,3 +58,6 @@
 "txt_tab_content_homepage" = "Homepage";
 "txt_tab_content_favorites" = "Favorites";
 "txt_tab_content_top_sites" = "Top sites";
+
+"txt_top_site_favicon" = "Favicon";
+"txt_top_site_title" = "Title";

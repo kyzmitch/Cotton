@@ -15,7 +15,12 @@ import FeaturesFlagsKit
 
 @available(iOS 13.0, *)
 struct BrowserMenuView: View {
-    let model: MenuViewModel
+    private let model: MenuViewModel
+    
+    init(_ model: MenuViewModel) {
+        self.model = model
+    }
+    
     var body: some View {
         _BrowserMenuView().environmentObject(model)
     }
@@ -167,7 +172,7 @@ struct SiteMenuView_Previews: PreviewProvider {
         // swiftlint:disable force_unwrapping
         let style: BrowserMenuStyle = .withSiteMenu(host!, settings)
         let model = MenuViewModel(style)
-        return BrowserMenuView(model: model)
+        return BrowserMenuView(model)
     }
 }
 #endif
