@@ -23,11 +23,7 @@ struct TopSitesView: View {
         case .compatible:
             TopSitesLegacyView(vm)
         case .full:
-            if #available(iOS 16.0, *) {
-                TopSitesViewV2(vm)
-            } else {
-                TopSitesLegacyView(vm)
-            }
+            TopSitesViewV2(vm)
         }
     }
 }

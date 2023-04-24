@@ -14,8 +14,9 @@ import Combine
 import BrowserNetworking
 
 enum ImageViewSizes {
-    static let imageHeight: CGFloat = 96
-    static let titleHeight: CGFloat = 22
+    static let imageHeight: CGFloat = 87
+    static let titleHeight: CGFloat = 21
+    static let spacing: CGFloat = 20
 }
 
 final class SiteCollectionViewCell: UICollectionViewCell {

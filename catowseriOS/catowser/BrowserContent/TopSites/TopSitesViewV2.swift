@@ -9,7 +9,7 @@
 import SwiftUI
 import CottonCoreBaseKit
 
-@available(iOS 16.0, *)
+@available(iOS 14.0, *)
 struct TopSitesViewV2: View {
     private let vm: TopSitesViewModel
     
@@ -17,23 +17,20 @@ struct TopSitesViewV2: View {
         self.vm = vm
     }
     
+    /// Number of items will be display in row
+    private let columns: [GridItem] = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
-        Table(vm.topSites) {
-            TableColumn("txt_top_site_favicon", content: { site in
-                AsyncImage(url: site.faviconURL) { image in
-                    image.resizable(resizingMode: .stretch)
-                } placeholder: {
-                    if let cachedImage = site.favicon() {
-                        Image(uiImage: cachedImage)
-                    } else {
-                        Color.gray
-                    }
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: ImageViewSizes.spacing) {
+                ForEach(vm.topSites) { site in
+                    TitledImageView(site.faviconURL, site.favicon(), site.title)
                 }
-                    .frame(width: ImageViewSizes.titleHeight * 3, height: ImageViewSizes.titleHeight * 3)
-                    .cornerRadius(3)
-            })
-            TableColumn("txt_top_site_title", value: \.title)
-                .width(ideal: ImageViewSizes.titleHeight * 3)
+            }
         }
     }
 }
@@ -43,6 +40,8 @@ struct TitledImageView: View {
     private let hqImage: UIImage?
     private let title: String
     
+    private let cellWidth = ImageViewSizes.imageHeight
+    
     init(_ url: URL?, _ hqImage: UIImage?, _ title: String) {
         self.url = url
         self.hqImage = hqImage
@@ -50,19 +49,21 @@ struct TitledImageView: View {
     }
     
     var body: some View {
-        let imageH = ImageViewSizes.titleHeight
-        AsyncImage(url: url) { image in
-            image.resizable(resizingMode: .tile)
-        } placeholder: {
-            if let cachedImage = hqImage {
-                Image(uiImage: cachedImage)
-            } else {
-                Color.gray
+        VStack {
+            AsyncImage(url: url) { image in
+                image.resizable(resizingMode: .stretch)
+            } placeholder: {
+                if let cachedImage = hqImage {
+                    Image(uiImage: cachedImage)
+                } else {
+                    Color.gray
+                }
             }
+                .frame(width: cellWidth, height: cellWidth)
+                .cornerRadius(3)
+            Text(verbatim: title)
+                .font(.system(size: 10))
+                .frame(maxWidth: cellWidth, maxHeight: ImageViewSizes.titleHeight)
         }
-            .frame(width: imageH, height: imageH)
-            .cornerRadius(3)
-        Text(verbatim: title)
-            .frame(width: imageH, height: ImageViewSizes.titleHeight)
     }
 }
