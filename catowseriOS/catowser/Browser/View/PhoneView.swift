@@ -174,8 +174,9 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onChange(of: searchQuery) { value in
-            // Only show suggestions when User edits text in search view & query is not empty
-            showSearchSuggestions = searchBarAction == .startSearch && !value.isEmpty && !value.looksLikeAURL()
+            let inSearchMode = searchBarAction == .startSearch
+            let validQuery = !value.isEmpty && !value.looksLikeAURL()
+            showSearchSuggestions = inSearchMode && validQuery
         }
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
         .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }

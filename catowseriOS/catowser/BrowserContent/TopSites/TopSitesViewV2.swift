@@ -8,10 +8,12 @@
 
 import SwiftUI
 import CottonCoreBaseKit
+import CoreBrowser
 
 @available(iOS 14.0, *)
 struct TopSitesViewV2: View {
     private let vm: TopSitesViewModel
+    @State private var selected: Site?
     
     init(_ vm: TopSitesViewModel) {
         self.vm = vm
@@ -27,43 +29,14 @@ struct TopSitesViewV2: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: ImageViewSizes.spacing) {
-                ForEach(vm.topSites) { site in
-                    TitledImageView(site.faviconURL, site.favicon(), site.title)
-                }
+                ForEach(vm.topSites) { TitledImageView($0, $selected) }
             }
         }
-    }
-}
-
-struct TitledImageView: View {
-    private let url: URL?
-    private let hqImage: UIImage?
-    private let title: String
-    
-    private let cellWidth = ImageViewSizes.imageHeight
-    
-    init(_ url: URL?, _ hqImage: UIImage?, _ title: String) {
-        self.url = url
-        self.hqImage = hqImage
-        self.title = title
-    }
-    
-    var body: some View {
-        VStack {
-            AsyncImage(url: url) { image in
-                image.resizable(resizingMode: .stretch)
-            } placeholder: {
-                if let cachedImage = hqImage {
-                    Image(uiImage: cachedImage)
-                } else {
-                    Color.gray
-                }
+        .onChange(of: selected) { newValue in
+            guard let newValue else {
+                return
             }
-                .frame(width: cellWidth, height: cellWidth)
-                .cornerRadius(3)
-            Text(verbatim: title)
-                .font(.system(size: 10))
-                .frame(maxWidth: cellWidth, maxHeight: ImageViewSizes.titleHeight)
+            try? TabsListManager.shared.replaceSelected(.site(newValue))
         }
     }
 }

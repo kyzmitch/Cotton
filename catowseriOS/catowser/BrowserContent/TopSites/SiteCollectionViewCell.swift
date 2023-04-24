@@ -17,6 +17,7 @@ enum ImageViewSizes {
     static let imageHeight: CGFloat = 87
     static let titleHeight: CGFloat = 21
     static let spacing: CGFloat = 20
+    static let titleFontSize: CGFloat = 10
 }
 
 final class SiteCollectionViewCell: UICollectionViewCell {
