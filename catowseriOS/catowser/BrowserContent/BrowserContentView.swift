@@ -45,7 +45,7 @@ struct BrowserContentView: View {
     }
     
     var body: some View {
-        VStack {
+        Group {
             if isLoading {
                 Spacer()
             } else {

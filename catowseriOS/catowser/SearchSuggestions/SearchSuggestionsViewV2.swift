@@ -44,38 +44,40 @@ struct SearchSuggestionsViewV2: View {
     }
     
     private func constructView() -> some View {
-        switch suggestions {
-        case .waitingForQuery:
-            return AnyView(VStack {
-                Spacer()
-                ProgressView()
-                .progressViewStyle(.circular)
-                .task {
-                    suggestions = await vm.aaFetchSuggestions(searchQuery)
+        Group {
+            switch suggestions {
+            case .waitingForQuery:
+                VStack {
+                    Spacer()
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .task {
+                            suggestions = await vm.aaFetchSuggestions(searchQuery)
+                        }
+                    Spacer()
                 }
-                Spacer()
-            })
-        case .knownDomainsLoaded(let knownDomains):
-            return AnyView(List {
-                Section {
-                    ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
-                } header: {
-                    Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
-                }
-            })
-        case .everythingLoaded(let knownDomains, let querySuggestions):
-            return AnyView(List {
-                Section {
-                    ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
-                } header: {
-                    Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
-                }
-                Section {
-                    ForEach(querySuggestions) { SuggestionRowView($0, .suggestion, $selected)}
-                } header: {
-                    Text(verbatim: suggestions.sectionTitle(section: 1) ?? "Suggestions from search engine")
-                }
-            })
-        }
-    }
+                case .knownDomainsLoaded(let knownDomains):
+                    List {
+                        Section {
+                            ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
+                        } header: {
+                            Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
+                        }
+                    }
+                case .everythingLoaded(let knownDomains, let querySuggestions):
+                    List {
+                        Section {
+                            ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
+                        } header: {
+                            Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
+                        }
+                        Section {
+                            ForEach(querySuggestions) { SuggestionRowView($0, .suggestion, $selected)}
+                        } header: {
+                            Text(verbatim: suggestions.sectionTitle(section: 1) ?? "Suggestions from search engine")
+                        }
+                    }
+                } // switch
+        } // group
+    } // construct view
 }
