@@ -17,6 +17,8 @@ struct SearchBarView: View {
     @Binding private var action: SearchBarAction
     private let mode: SwiftUIMode
     
+    private let maxWidth: CGFloat = UIScreen.main.bounds.width
+    
     init(_ searchBarDelegate: UISearchBarDelegate?,
          _ searchQuery: Binding<String>,
          _ action: Binding<SearchBarAction>,
@@ -34,6 +36,7 @@ struct SearchBarView: View {
                 .frame(height: CGFloat.searchViewHeight)
         case .full:
             SearchBarViewV2($searchQuery, $action)
+                .frame(maxWidth: maxWidth)
         }
     }
 }

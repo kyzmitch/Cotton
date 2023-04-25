@@ -29,7 +29,7 @@ struct SearchBarViewV2: View {
     private let overlayVM: TappableTextOverlayViewModel
     
     private var overlayHidden: CGFloat {
-        UIScreen.main.bounds.width
+        -UIScreen.main.bounds.width
     }
     private let overlayVisible: CGFloat = 0
     
@@ -55,10 +55,9 @@ struct SearchBarViewV2: View {
                     ClearCancelPairButton($showClearButton, cancelBtnVM)
                 }
             }.customHStackStyle()
-                .zIndex(0)
-                // .opacity(showOverlay ? 0 : 1)
+                .opacity(showOverlay ? 0 : 1)
+                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
             TappableTextOverlayView($siteName, overlayVM)
-                .zIndex(1)
                 .offset(x: showOverlay ? overlayVisible : overlayHidden, y: 0)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
         }
@@ -67,13 +66,17 @@ struct SearchBarViewV2: View {
             case .startSearch:
                 state = .inSearchMode(state.title, state.content)
             case .cancelTapped:
-                if state.content.isEmpty {
+                if state.title.isEmpty {
                     state = .blankViewMode
                 } else {
                     state = .viewMode(state.title, state.content, true)
                 }
             case .updateView(let title, let content):
-                state = .viewMode(title, content, false)
+                if title.isEmpty {
+                    state = .blankViewMode
+                } else {
+                    state = .viewMode(title, content, false)
+                }
             }
         }
         .onChange(of: state) { newValue in
