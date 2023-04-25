@@ -23,47 +23,71 @@ struct SearchBarViewV2: View {
     @Binding private var query: String
     @Binding private var action: SearchBarAction
     @State private var state: SearchBarState
+    @State private var siteName: String
+    @State private var showOverlay: Bool
     @FocusState private var isFocused: Bool
+    
+    private var overlayHidden: CGFloat {
+        -UIScreen.main.bounds.width
+    }
+    private let overlayVisible: CGFloat = 0
     
     init(_ query: Binding<String>,
          _ action: Binding<SearchBarAction>) {
         _query = query
         _action = action
         state = .blankViewMode
+        siteName = ""
+        showOverlay = true
         isFocused = false
     }
     
     var body: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-            TextField(.placeholderTextKey, text: $query)
-                .foregroundColor(.primary)
-                .textInputAutocapitalization(.never)
-                .textSelection(.enabled)
-                .focused($isFocused)
-                .onSubmit {
-                    action = .cancelTapped
-                }
-                .onChange(of: isFocused, perform: { value in
-                    if value {
-                        action = .startSearch
+        ZStack {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                TextField(.placeholderTextKey, text: $query)
+                    .textInputAutocapitalization(.never)
+                    .textSelection(.enabled)
+                    .focused($isFocused)
+                    .onSubmit {
+                        action = .cancelTapped
                     }
-                })
-            if action.showCancelButton {
-                if !query.isEmpty {
-                    Button {
-                        query = ""
-                    } label: {
-                        Image(systemName: "x.circle.fill")
+                    .onChange(of: isFocused, perform: { value in
+                        if value {
+                            action = .startSearch
+                        }
+                    })
+                if action.showCancelButton {
+                    if !query.isEmpty {
+                        Button {
+                            query = ""
+                        } label: {
+                            Image(systemName: "x.circle.fill")
+                        }
                     }
+                    Button(.cancelButtonTtl) {
+                        action = .cancelTapped
+                    }
+                    .foregroundColor(.gray)
                 }
-                Button(.cancelButtonTtl) {
-                    action = .cancelTapped
-                }
-                .foregroundColor(.gray)
             }
+                .zIndex(0)
+                .offset(x: 0, y: 0)
+                .opacity(showOverlay ? 0 : 1)
+                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
+                .customHStackStyle()
+            Text(verbatim: siteName)
+                .zIndex(1)
+                .background(Color(.secondarySystemBackground))
+                .frame(maxWidth: .infinity)
+                .scaledToFill()
+                .offset(x: showOverlay ? overlayVisible : overlayHidden, y: 0)
+                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
+                .onTapGesture {
+                    action = .startSearch
+                }
         }
-        .customHStackStyle()
         .onChange(of: action) { newValue in
             switch newValue {
             case .startSearch:
@@ -83,11 +107,16 @@ struct SearchBarViewV2: View {
             case .blankViewMode:
                 isFocused = false
                 query = ""
+                siteName = ""
+                showOverlay = true
             case .inSearchMode:
                 isFocused = true
-            case .viewMode(_, let searchBarContent, _):
+                showOverlay = false
+            case .viewMode(let title, let content, _):
                 isFocused = false
-                query = searchBarContent
+                query = content
+                siteName = title
+                showOverlay = true
             }
         }
     }

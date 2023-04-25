@@ -10,6 +10,10 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 
+enum SearchBarConstants {
+    static let animationDuration = 0.3
+}
+
 final class SearchBarLegacyView: UIView {
     /// Search bar view delegate
     weak var delegate: UISearchBarDelegate? {
@@ -243,7 +247,7 @@ private extension SearchBarLegacyView {
         siteNameLabel.alpha = 0
         dohStateIcon.alpha = 0
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: SearchBarConstants.animationDuration) {
             self.siteNameLabel.layoutIfNeeded()
             self.searchBarView.alpha = 1
         }
@@ -279,7 +283,7 @@ private extension SearchBarLegacyView {
         }
         
         if animated {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: SearchBarConstants.animationDuration) {
                 applyLayout()
             }
         } else {

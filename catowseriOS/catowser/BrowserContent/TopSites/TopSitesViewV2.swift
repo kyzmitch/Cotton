@@ -19,7 +19,7 @@ struct TopSitesViewV2: View {
         self.vm = vm
     }
     
-    /// Number of items will be display in row
+    /// Number of items which will be displayed in a row
     private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
