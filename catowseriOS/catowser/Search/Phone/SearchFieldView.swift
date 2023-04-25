@@ -53,3 +53,24 @@ struct SearchFieldView: View {
 private extension LocalizedStringKey {
     static let placeholderTextKey: LocalizedStringKey = "placeholder_searchbar"
 }
+
+#if DEBUG
+struct SearchFieldView_Previews: PreviewProvider {
+    static var previews: some View {
+        let textContent: Binding<String> = .init {
+            "example"
+        } set: { _ in
+            //
+        }
+        let showKeyboard: Binding<Bool> = .init {
+            true
+        } set: { _ in
+            //
+        }
+        let vm: SearchFieldViewModel = .init()
+
+        SearchFieldView(textContent, showKeyboard, vm)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+    }
+}
+#endif

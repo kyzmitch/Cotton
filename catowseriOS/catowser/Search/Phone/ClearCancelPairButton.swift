@@ -47,3 +47,18 @@ struct ClearCancelPairButton: View {
 private extension LocalizedStringKey {
     static let cancelButtonTtl: LocalizedStringKey = "ttl_common_cancel"
 }
+
+#if DEBUG
+struct ClearCancelPairButton_Previews: PreviewProvider {
+    static var previews: some View {
+        let showClearButton: Binding<Bool> = .init {
+            true
+        } set: { _ in
+            //
+        }
+        let vm: ClearCancelButtonViewModel = .init()
+        ClearCancelPairButton(showClearButton, vm)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+    }
+}
+#endif

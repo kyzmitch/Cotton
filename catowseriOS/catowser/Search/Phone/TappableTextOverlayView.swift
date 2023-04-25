@@ -35,3 +35,18 @@ struct TappableTextOverlayView: View {
             }
     }
 }
+
+#if DEBUG
+struct TappableTextOverlayView_Previews: PreviewProvider {
+    static var previews: some View {
+        let textContent: Binding<String> = .init {
+            "example.com"
+        } set: { _ in
+            //
+        }
+        let vm: TappableTextOverlayViewModel = .init()
+        TappableTextOverlayView(textContent, vm)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+    }
+}
+#endif

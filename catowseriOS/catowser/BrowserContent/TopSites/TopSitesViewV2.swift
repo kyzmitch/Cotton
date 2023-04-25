@@ -41,3 +41,14 @@ struct TopSitesViewV2: View {
         }
     }
 }
+
+#if DEBUG
+struct TopSitesViewV2_Previews: PreviewProvider {
+    static var previews: some View {
+        let vm: TopSitesViewModel = .init()
+
+        TopSitesViewV2(vm)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+    }
+}
+#endif

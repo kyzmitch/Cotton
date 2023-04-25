@@ -130,8 +130,8 @@ extension View {
 #if DEBUG
 struct SearchBarViewV2_Previews: PreviewProvider {
     static var previews: some View {
-        let state: Binding<SearchBarAction> = .init {
-            .startSearch
+        let action: Binding<SearchBarAction> = .init {
+            .updateView("example.com", "https://example.com/")
         } set: { _ in
             //
         }
@@ -142,7 +142,9 @@ struct SearchBarViewV2_Previews: PreviewProvider {
         }
 
         // For some reason it jumps after selection
-        SearchBarViewV2(query, state)
+        SearchBarViewV2(query, action)
+            .frame(maxWidth: 400)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }
 #endif
