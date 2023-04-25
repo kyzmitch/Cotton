@@ -43,12 +43,13 @@ final class SearchBarLegacyView: UIView {
             } else {
                 state = .viewMode(state.title, initialContent, true)
             }
-        case .updateView(let newTitle, let newContent):
-            if newContent.isEmpty {
-                state = .blankViewMode
-            } else {
-                state = .viewMode(newTitle, newContent, false)
-            }
+        case .updateView(let newTitle, let newContent) where !newTitle.isEmpty:
+            state = .viewMode(newTitle, newContent, false)
+        case .clearView:
+            state = .blankViewMode
+        default:
+            // just in case
+            state = .blankViewMode
         }
     }
     

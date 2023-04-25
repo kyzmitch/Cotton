@@ -50,7 +50,7 @@ final class SearchBarViewModel: NSObject {
         showSearchSuggestions = false
         searchQuery = ""
         tempSearchText = ""
-        action = .updateView("", "")
+        action = .clearView
         super.init()
     }
 }

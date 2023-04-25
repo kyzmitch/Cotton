@@ -64,7 +64,7 @@ extension SearchBarBaseViewController: TabsObserver {
         case .site(let site):
             handleAction(.updateView(site.title, site.searchBarContent))
         default:
-            handleAction(.updateView("", ""))
+            handleAction(.clearView)
         }
     }
 }

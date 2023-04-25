@@ -17,11 +17,13 @@ enum SearchBarAction: Equatable {
     case cancelTapped
     /// Update on new tab site content
     case updateView(_ title: String, _ searchBarContent: String)
+    /// Update to clear state
+    case clearView
     
     static func create(_ value: Tab.ContentType) -> SearchBarAction {
         switch value {
         case .blank, .favorites, .topSites, .homepage:
-            return .updateView("", "")
+            return .clearView
         case .site(let site):
             return .updateView(site.title, site.searchBarContent)
         }

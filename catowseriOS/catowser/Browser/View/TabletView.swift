@@ -65,7 +65,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         // with the search suggestions view when necessary
         showSearchSuggestions = false
         searchQuery = ""
-        searchBarAction = .updateView("", "")
+        searchBarAction = .clearView
         // Store references to subview models in the main view
         // to be able to subscribe for the publishers
         self.model = model

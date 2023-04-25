@@ -71,12 +71,13 @@ struct SearchBarViewV2: View {
                 } else {
                     state = .viewMode(state.title, state.content, true)
                 }
-            case .updateView(let title, let content):
-                if title.isEmpty {
-                    state = .blankViewMode
-                } else {
-                    state = .viewMode(title, content, false)
-                }
+            case .updateView(let title, let content) where !title.isEmpty:
+                state = .viewMode(title, content, false)
+            case .clearView:
+                state = .blankViewMode
+            default:
+                // just in case
+                state = .blankViewMode
             }
         }
         .onChange(of: state) { newValue in
