@@ -32,6 +32,7 @@ struct TopSitesViewV2: View {
                 ForEach(vm.topSites) { TitledImageView($0, $selected) }
             }
         }
+        .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
         .onChange(of: selected) { newValue in
             guard let newValue else {
                 return

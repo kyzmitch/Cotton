@@ -43,7 +43,7 @@ struct SearchBarViewV2: View {
         showClearButton = false
         state = .blankViewMode
         siteName = ""
-        showOverlay = true
+        showOverlay = false
         showKeyboard = false
     }
     
@@ -51,13 +51,14 @@ struct SearchBarViewV2: View {
         ZStack {
             HStack {
                 SearchFieldView($query, $showKeyboard, textFieldVM)
-                if action.showCancelButton {
+                if state.showCancelButton {
                     ClearCancelPairButton($showClearButton, cancelBtnVM)
                 }
             }.customHStackStyle()
-                .opacity(showOverlay ? 0 : 1)
-                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
+                .zIndex(0)
+                // .opacity(showOverlay ? 0 : 1)
             TappableTextOverlayView($siteName, overlayVM)
+                .zIndex(1)
                 .offset(x: showOverlay ? overlayVisible : overlayHidden, y: 0)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
         }
@@ -81,7 +82,7 @@ struct SearchBarViewV2: View {
                 showKeyboard = false
                 query = ""
                 siteName = ""
-                showOverlay = true
+                showOverlay = false
             case .inSearchMode:
                 showOverlay = false
                 showKeyboard = true
@@ -96,7 +97,7 @@ struct SearchBarViewV2: View {
         .onReceive(cancelBtnVM.$clearTapped.dropFirst()) { query = "" }
         .onReceive(cancelBtnVM.$cancelTapped.dropFirst()) { action = .cancelTapped }
         .onReceive(textFieldVM.$submitTapped.dropFirst()) { action = .cancelTapped }
-        .onReceive(textFieldVM.$isFocused) { newValue in
+        .onReceive(textFieldVM.$isFocused.dropFirst()) { newValue in
             if newValue {
                 action = .startSearch
             }

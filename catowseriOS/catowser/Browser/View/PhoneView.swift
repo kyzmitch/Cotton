@@ -180,7 +180,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         }
         .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
         .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
-        .onReceive(browserContentVM.$contentType) { value in
+        .onReceive(browserContentVM.$contentType.dropFirst()) { value in
             showSearchSuggestions = false
             contentType = value
             searchBarAction = .create(value)

@@ -37,7 +37,7 @@ struct ClearCancelPairButton: View {
                 }
             }
             Button(.cancelButtonTtl) {
-                vm.clearTapped = ()
+                vm.cancelTapped = ()
             }
             .foregroundColor(.gray)
         }

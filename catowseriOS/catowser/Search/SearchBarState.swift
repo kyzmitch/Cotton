@@ -18,15 +18,6 @@ enum SearchBarAction: Equatable {
     /// Update on new tab site content
     case updateView(_ title: String, _ searchBarContent: String)
     
-    var showCancelButton: Bool {
-        switch self {
-        case .cancelTapped, .updateView:
-            return false
-        case .startSearch:
-            return true
-        }
-    }
-    
     static func create(_ value: Tab.ContentType) -> SearchBarAction {
         switch value {
         case .blank, .favorites, .topSites, .homepage:
@@ -66,6 +57,15 @@ enum SearchBarState: Equatable {
             return initialContent
         case .viewMode(_, let initialContent, _):
             return initialContent
+        }
+    }
+    
+    var showCancelButton: Bool {
+        switch self {
+        case .blankViewMode, .viewMode:
+            return false
+        case .inSearchMode:
+            return true
         }
     }
 }
