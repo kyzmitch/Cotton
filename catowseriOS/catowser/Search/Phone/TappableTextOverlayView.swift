@@ -1,5 +1,5 @@
 //
-//  SearchBarOverlayView.swift
+//  TappableTextOverlayView.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 4/25/23.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class SearchBarOverlayViewModel {
+final class TappableTextOverlayViewModel {
     @Published var tapped: Void
     
     init() {
@@ -16,11 +16,11 @@ final class SearchBarOverlayViewModel {
     }
 }
 
-struct SearchBarOverlayView: View {
+struct TappableTextOverlayView: View {
     @Binding private var textContent: String
-    private let vm: SearchBarOverlayViewModel
+    private let vm: TappableTextOverlayViewModel
     
-    init(_ textContent: Binding<String>, _ vm: SearchBarOverlayViewModel) {
+    init(_ textContent: Binding<String>, _ vm: TappableTextOverlayViewModel) {
         _textContent = textContent
         self.vm = vm
     }

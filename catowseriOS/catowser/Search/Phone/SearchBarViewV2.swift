@@ -25,8 +25,8 @@ struct SearchBarViewV2: View {
     @State private var showKeyboard: Bool
     
     private let cancelBtnVM: SearchBarCancelViewModel
-    private let textFieldVM: SearchTextFieldViewModel
-    private let overlayVM: SearchBarOverlayViewModel
+    private let textFieldVM: SearchFieldViewModel
+    private let overlayVM: TappableTextOverlayViewModel
     
     private var overlayHidden: CGFloat {
         UIScreen.main.bounds.width
@@ -50,14 +50,14 @@ struct SearchBarViewV2: View {
     var body: some View {
         ZStack {
             HStack {
-                SearchTextField($query, $showKeyboard, textFieldVM)
+                SearchFieldView($query, $showKeyboard, textFieldVM)
                 if action.showCancelButton {
                     SearchBarCancelButton($showClearButton, cancelBtnVM)
                 }
             }.customHStackStyle()
                 .opacity(showOverlay ? 0 : 1)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
-            SearchBarOverlayView($siteName, overlayVM)
+            TappableTextOverlayView($siteName, overlayVM)
                 .offset(x: showOverlay ? overlayVisible : overlayHidden, y: 0)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
         }
