@@ -45,20 +45,23 @@ struct BrowserContentView: View {
     }
     
     var body: some View {
-        Group {
-            if isLoading {
+        dynamicContentView
+    }
+    
+    @ViewBuilder
+    private var dynamicContentView: some View {
+        if isLoading {
+            Spacer()
+        } else {
+            switch contentType {
+            case .blank:
                 Spacer()
-            } else {
-                switch contentType {
-                case .blank:
-                    Spacer()
-                case .topSites:
-                    TopSitesView(topSitesModel, mode)
-                case .site(let site):
-                    WebView(webViewModel, site, $webViewNeedsUpdate, mode)
-                default:
-                    Spacer()
-                }
+            case .topSites:
+                TopSitesView(topSitesModel, mode)
+            case .site(let site):
+                WebView(webViewModel, site, $webViewNeedsUpdate, mode)
+            default:
+                Spacer()
             }
         }
     }
