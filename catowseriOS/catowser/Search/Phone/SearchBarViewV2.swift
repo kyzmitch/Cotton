@@ -24,7 +24,7 @@ struct SearchBarViewV2: View {
     @State private var showOverlay: Bool
     @State private var showKeyboard: Bool
     
-    private let cancelBtnVM: SearchBarCancelViewModel
+    private let cancelBtnVM: ClearCancelButtonViewModel
     private let textFieldVM: SearchFieldViewModel
     private let overlayVM: TappableTextOverlayViewModel
     
@@ -52,7 +52,7 @@ struct SearchBarViewV2: View {
             HStack {
                 SearchFieldView($query, $showKeyboard, textFieldVM)
                 if action.showCancelButton {
-                    SearchBarCancelButton($showClearButton, cancelBtnVM)
+                    ClearCancelPairButton($showClearButton, cancelBtnVM)
                 }
             }.customHStackStyle()
                 .opacity(showOverlay ? 0 : 1)

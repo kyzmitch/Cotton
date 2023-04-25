@@ -1,5 +1,5 @@
 //
-//  SearchBarCancelButton.swift
+//  ClearCancelPairButton.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 4/25/23.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class SearchBarCancelViewModel {
+final class ClearCancelButtonViewModel {
     @Published var clearTapped: Void
     @Published var cancelTapped: Void
     
@@ -18,11 +18,11 @@ final class SearchBarCancelViewModel {
     }
 }
 
-struct SearchBarCancelButton: View {
+struct ClearCancelPairButton: View {
     @Binding private var showClearButton: Bool
-    private let vm: SearchBarCancelViewModel
+    private let vm: ClearCancelButtonViewModel
     
-    init(_ showClearButton: Binding<Bool>, _ vm: SearchBarCancelViewModel) {
+    init(_ showClearButton: Binding<Bool>, _ vm: ClearCancelButtonViewModel) {
         _showClearButton = showClearButton
         self.vm = vm
     }
