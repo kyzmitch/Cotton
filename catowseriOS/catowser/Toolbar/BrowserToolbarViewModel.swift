@@ -65,18 +65,18 @@ final class BrowserToolbarViewModel {
 
 extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
     func didBackNavigationUpdate(to canGoBack: Bool) {
+        goBackDisabled = !canGoBack
         siteNavigationDelegate?.changeBackButton(to: canGoBack)
     }
     
     func didForwardNavigationUpdate(to canGoForward: Bool) {
+        goForwardDisabled = !canGoForward
         siteNavigationDelegate?.changeForwardButton(to: canGoForward)
     }
     
-    func provisionalNavigationDidStart() {
-    }
+    func provisionalNavigationDidStart() {}
 
-    func didSiteOpen(appName: String) {
-    }
+    func didSiteOpen(appName: String) {}
     
     func loadingProgressdDidChange(_ progress: Float) {
         websiteLoadProgress = Double(progress)
@@ -102,7 +102,7 @@ extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
         // that is why no need to check for dublication.
         webViewInterface = interface
         reloadDisabled = interface == nil
-        goBackDisabled = interface == nil
-        goForwardDisabled = interface == nil
+        goBackDisabled = !(interface?.canGoBack ?? false)
+        goForwardDisabled = !(interface?.canGoForward ?? false)
     }
 }

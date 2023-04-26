@@ -16,9 +16,9 @@ struct ToolbarViewV2: ToolbarContent {
     @Binding private var showingTabs: Bool
     @Binding private var showSearchSuggestions: Bool
     
-    @State private var isGoBackEnabled: Bool
-    @State private var isGoForwardEnabled: Bool
-    @State private var isRefreshEnabled: Bool
+    @State private var isGoBackDisabled: Bool
+    @State private var isGoForwardDisabled: Bool
+    @State private var isRefreshDisabled: Bool
     
     init(_ vm: BrowserToolbarViewModel,
          _ tabsCount: Binding<Int>,
@@ -30,9 +30,9 @@ struct ToolbarViewV2: ToolbarContent {
         _showingMenu = showingMenu
         _showingTabs = showingTabs
         _showSearchSuggestions = showSearchSuggestions
-        isGoBackEnabled = false
-        isGoForwardEnabled = false
-        isRefreshEnabled = false
+        isGoBackDisabled = false
+        isGoForwardDisabled = false
+        isRefreshDisabled = false
     }
     
     var body: some ToolbarContent {
@@ -42,10 +42,9 @@ struct ToolbarViewV2: ToolbarContent {
             } label: {
                 Image("nav-back")
             }
-            .disabled(isGoBackEnabled)
-            .onReceive(vm.$goBackDisabled) { value in
-                isGoBackEnabled = !value
-            }
+            .disabled(isGoBackDisabled)
+            .opacity(isGoBackDisabled ? ThemeProvider.disabledOpacity : 1)
+            .onReceive(vm.$goBackDisabled) { isGoBackDisabled = $0 }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
@@ -56,10 +55,9 @@ struct ToolbarViewV2: ToolbarContent {
             } label: {
                 Image("nav-forward")
             }
-            .disabled(isGoForwardEnabled)
-            .onReceive(vm.$goForwardDisabled) { value in
-                isGoForwardEnabled = !value
-            }
+            .disabled(isGoForwardDisabled)
+            .opacity(isGoForwardDisabled ? ThemeProvider.disabledOpacity : 1)
+            .onReceive(vm.$goForwardDisabled) { isGoForwardDisabled = $0 }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
@@ -70,10 +68,9 @@ struct ToolbarViewV2: ToolbarContent {
             } label: {
                 Image("nav-refresh")
             }
-            .disabled(isRefreshEnabled)
-            .onReceive(vm.$reloadDisabled) { value in
-                isRefreshEnabled = !value
-            }
+            .disabled(isRefreshDisabled)
+            .opacity(isRefreshDisabled ? ThemeProvider.disabledOpacity : 1)
+            .onReceive(vm.$reloadDisabled) { isRefreshDisabled = $0 }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
