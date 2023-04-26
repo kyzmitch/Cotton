@@ -1,5 +1,5 @@
 //
-//  WebBrowserToolbarModel.swift
+//  BrowserToolbarViewModel.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 03.01.2023.
@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreBrowser
 
-final class WebBrowserToolbarModel {
+final class BrowserToolbarViewModel {
     /// Notifies if current web view changes
     @Published var webViewInterface: WebViewNavigatable?
     /// Max value should be 1.0 because total is equals to that by default
@@ -63,7 +63,7 @@ final class WebBrowserToolbarModel {
     }
 }
 
-extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
+extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
     func didBackNavigationUpdate(to canGoBack: Bool) {
         siteNavigationDelegate?.changeBackButton(to: canGoBack)
     }

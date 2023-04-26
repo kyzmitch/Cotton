@@ -80,3 +80,19 @@ struct SearchSuggestionsViewV2: View {
         } // switch
     } // construct view
 }
+
+#if DEBUG
+struct SearchSuggestionsViewV2_Previews: PreviewProvider {
+    static var previews: some View {
+        let delegate: SearchSuggestionsListDelegate? = nil
+        let searchQuery: Binding<String> = .init {
+            "e"
+        } set: { _ in
+            //
+        }
+
+        SearchSuggestionsViewV2(searchQuery, delegate)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
+    }
+}
+#endif

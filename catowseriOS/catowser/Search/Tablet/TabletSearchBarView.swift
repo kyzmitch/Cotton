@@ -11,18 +11,18 @@ import SwiftUI
 /// A search bar view
 struct TabletSearchBarView: View {
     private weak var searchBarDelegate: UISearchBarDelegate?
-    private let toolbarModel: WebBrowserToolbarModel
+    private let toolbarVM: BrowserToolbarViewModel
     @Binding private var action: SearchBarAction
     @Binding private var webViewInterface: WebViewNavigatable?
     private let mode: SwiftUIMode
     
     init(_ searchBarDelegate: UISearchBarDelegate?,
          _ action: Binding<SearchBarAction>,
-         _ toolbarModel: WebBrowserToolbarModel,
+         _ toolbarVM: BrowserToolbarViewModel,
          _ webViewInterface: Binding<WebViewNavigatable?>,
          _ mode: SwiftUIMode) {
         self.searchBarDelegate = searchBarDelegate
-        self.toolbarModel = toolbarModel
+        self.toolbarVM = toolbarVM
         _action = action
         _webViewInterface = webViewInterface
         self.mode = mode
@@ -33,7 +33,7 @@ struct TabletSearchBarView: View {
         case .compatible:
             TabletSearchBarLegacyView(searchBarDelegate, $action, $webViewInterface)
                 .frame(height: CGFloat.searchViewHeight)
-                .onReceive(toolbarModel.$webViewInterface) { value in
+                .onReceive(toolbarVM.$webViewInterface) { value in
                     webViewInterface = value
                 }
         case .full:
@@ -56,9 +56,9 @@ struct TabletSearchBarView_Previews: PreviewProvider {
         } set: { _ in
             //
         }
-        let toolbarModel = WebBrowserToolbarModel()
+        let toolbarVM = BrowserToolbarViewModel()
         // View is jumping when you tap on it
-        TabletSearchBarView(searchBarDelegate, state, toolbarModel, interface, .compatible)
+        TabletSearchBarView(searchBarDelegate, state, toolbarVM, interface, .compatible)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }

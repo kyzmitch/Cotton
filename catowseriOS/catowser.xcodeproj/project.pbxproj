@@ -58,7 +58,7 @@
 		6094E743221FE72C004269A2 /* TabsListManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607D02AE21FEF87F009FCD0B /* TabsListManager.swift */; };
 		60A82C4D22549446008210D9 /* FilesGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */; };
 		60A82C4F22549453008210D9 /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
-		60C12BE6226750B7004FCB14 /* WebBrowserToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */; };
+		60C12BE6226750B7004FCB14 /* BrowserToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* BrowserToolbarView.swift */; };
 		60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */; };
 		60C2C8D8226DE0F500F5D869 /* Data+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */; };
 		60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */; };
@@ -124,8 +124,8 @@
 		755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		75EA4E6F29F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
 		75EA4E7029F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
-		75EA5425296436C900EEF533 /* WebBrowserToolbarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */; };
-		75EA5426296436C900EEF533 /* WebBrowserToolbarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */; };
+		75EA5425296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */; };
+		75EA5426296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */; };
 		75FAAB38292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */; };
 		75FAAB39292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
@@ -135,7 +135,7 @@
 		841022D0227D89D80021516F /* HTMLVideoTagsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */; };
 		8412FF3D1F72AF050011FDD7 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
 		841A2D7E203ACC220050A996 /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
-		841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
+		841A2D80203AD0B50050A996 /* BrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* BrowserToolbarController.swift */; };
 		841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */; };
 		841A2D84203AD5690050A996 /* SmartphoneSearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */; };
 		841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */; };
@@ -314,8 +314,8 @@
 		8A8035B924442F0F000E035F /* FilesGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C4E22549453008210D9 /* FilesGridViewController.swift */; };
 		8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022BC224785340021516F /* LinksBadgeView.swift */; };
-		8A8035BD24442F0F000E035F /* WebBrowserToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */; };
-		8A8035BE24442F0F000E035F /* WebBrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */; };
+		8A8035BD24442F0F000E035F /* BrowserToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C12BE5226750B7004FCB14 /* BrowserToolbarView.swift */; };
+		8A8035BE24442F0F000E035F /* BrowserToolbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7F203AD0B50050A996 /* BrowserToolbarController.swift */; };
 		8A8035BF24442F0F000E035F /* MainBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MainBrowserViewController.swift */; };
 		8A8035C024442F0F000E035F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECC521F74E2900972E28 /* Theme.swift */; };
 		8A8035C124442F0F000E035F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
@@ -1031,7 +1031,7 @@
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60C12BE2226746EC004FCB14 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = ru; path = ru.lproj/Info.plist; sourceTree = "<group>"; };
 		60C12BE42267480C004FCB14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
-		60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarView.swift; sourceTree = "<group>"; };
+		60C12BE5226750B7004FCB14 /* BrowserToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserToolbarView.swift; sourceTree = "<group>"; };
 		60C2C8CF226DAB1700F5D869 /* TopSitesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewController.swift; sourceTree = "<group>"; };
 		60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+CatowserExtension.swift"; sourceTree = "<group>"; };
 		60C2C8EB226F32B700F5D869 /* FileDownloadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloadViewModel.swift; sourceTree = "<group>"; };
@@ -1090,7 +1090,7 @@
 		755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificApplicationEnumFeatures.swift; sourceTree = "<group>"; };
 		759AE09529146C96008CE4EE /* Mockfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Mockfile; sourceTree = "<group>"; };
 		75EA4E6E29F7055800165A07 /* TitledImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledImageView.swift; sourceTree = "<group>"; };
-		75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarModel.swift; sourceTree = "<group>"; };
+		75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserToolbarViewModel.swift; sourceTree = "<group>"; };
 		75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCoordinator.swift; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
 		841022BC224785340021516F /* LinksBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksBadgeView.swift; sourceTree = "<group>"; };
@@ -1099,7 +1099,7 @@
 		841022CF227D89D80021516F /* HTMLVideoTagsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLVideoTagsContainer.swift; sourceTree = "<group>"; };
 		8412FF3C1F72AF050011FDD7 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankWebPageViewController.swift; sourceTree = "<group>"; };
-		841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebBrowserToolbarController.swift; sourceTree = "<group>"; };
+		841A2D7F203AD0B50050A996 /* BrowserToolbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserToolbarController.swift; sourceTree = "<group>"; };
 		841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewController.swift; sourceTree = "<group>"; };
 		841A2D83203AD5690050A996 /* SmartphoneSearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartphoneSearchBarViewController.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		841A2D85203B1FA50050A996 /* SearchBarBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarBaseViewController.swift; sourceTree = "<group>"; };
@@ -1859,12 +1859,12 @@
 		841A2D7C203ACBDB0050A996 /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
-				841A2D7F203AD0B50050A996 /* WebBrowserToolbarController.swift */,
-				60C12BE5226750B7004FCB14 /* WebBrowserToolbarView.swift */,
+				841A2D7F203AD0B50050A996 /* BrowserToolbarController.swift */,
+				60C12BE5226750B7004FCB14 /* BrowserToolbarView.swift */,
 				8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */,
 				8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */,
 				8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */,
-				75EA5424296436C900EEF533 /* WebBrowserToolbarModel.swift */,
+				75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */,
 			);
 			path = Toolbar;
 			sourceTree = "<group>";
@@ -3751,7 +3751,7 @@
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
 				847D7C8D1EF6C8AC00291B87 /* TabsViewController.swift in Sources */,
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
-				75EA5425296436C900EEF533 /* WebBrowserToolbarModel.swift in Sources */,
+				75EA5425296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */,
 				8AD857E02939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */,
 				753392B32921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */,
@@ -3815,11 +3815,11 @@
 				8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */,
 				8AEEBBB329F7AA9300F23A02 /* ClearCancelPairButton.swift in Sources */,
 				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
-				60C12BE6226750B7004FCB14 /* WebBrowserToolbarView.swift in Sources */,
+				60C12BE6226750B7004FCB14 /* BrowserToolbarView.swift in Sources */,
 				8AED4198292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */,
 				75196D0D2944AF8B00B3A45B /* SiteMenuViewController.swift in Sources */,
 				8AEA735D2948FDB900B2E261 /* UIColor+Extension.swift in Sources */,
-				841A2D80203AD0B50050A996 /* WebBrowserToolbarController.swift in Sources */,
+				841A2D80203AD0B50050A996 /* BrowserToolbarController.swift in Sources */,
 				8AED419D292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */,
 				C22599671F7BF301000E4C3A /* MainBrowserViewController.swift in Sources */,
 				750EDEBE294924A800212A4E /* BrowserContentView.swift in Sources */,
@@ -4021,7 +4021,7 @@
 				8A8035AA24442F0F000E035F /* SearchBarBaseViewController.swift in Sources */,
 				8A8035AB24442F0F000E035F /* TabsViewController.swift in Sources */,
 				8A8035AD24442F0F000E035F /* TabView.swift in Sources */,
-				75EA5426296436C900EEF533 /* WebBrowserToolbarModel.swift in Sources */,
+				75EA5426296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */,
 				8AD857E12939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */,
 				753392B42921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				8A8035AE24442F0F000E035F /* UIViewController+MainBundle.swift in Sources */,
@@ -4085,11 +4085,11 @@
 				8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */,
 				8AEEBBB429F7AA9300F23A02 /* ClearCancelPairButton.swift in Sources */,
 				8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */,
-				8A8035BD24442F0F000E035F /* WebBrowserToolbarView.swift in Sources */,
+				8A8035BD24442F0F000E035F /* BrowserToolbarView.swift in Sources */,
 				8AED4199292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */,
 				75196D0E2944AF8B00B3A45B /* SiteMenuViewController.swift in Sources */,
 				8AEA735E2948FDB900B2E261 /* UIColor+Extension.swift in Sources */,
-				8A8035BE24442F0F000E035F /* WebBrowserToolbarController.swift in Sources */,
+				8A8035BE24442F0F000E035F /* BrowserToolbarController.swift in Sources */,
 				8AED419E292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */,
 				8A8035BF24442F0F000E035F /* MainBrowserViewController.swift in Sources */,
 				750EDEBF294924A800212A4E /* BrowserContentView.swift in Sources */,

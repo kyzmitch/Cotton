@@ -15,7 +15,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     private var model: MainBrowserModel<C>
     private let searchBarVM: SearchBarViewModel
     private let browserContentVM: BrowserContentViewModel
-    private let toolbarModel: WebBrowserToolbarModel
+    private let toolbarVM: BrowserToolbarViewModel
     
     // MARK: - search bar state
     
@@ -70,7 +70,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         // to be able to subscribe for the publishers
         self.model = model
         browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
-        toolbarModel = WebBrowserToolbarModel()
+        toolbarVM = BrowserToolbarViewModel()
         searchBarVM = SearchBarViewModel()
         self.mode = mode
     }
@@ -88,7 +88,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
             TabletTabsView(mode)
-            TabletSearchBarView(searchBarDelegate, $searchBarAction, toolbarModel, $webViewInterface, mode)
+            TabletSearchBarView(searchBarDelegate, $searchBarAction, toolbarVM, $webViewInterface, mode)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
@@ -97,16 +97,16 @@ struct TabletView<C: BrowserContentCoordinators>: View {
                 SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
-                BrowserContentView(jsPlugins, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, toolbarVM, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
         }
         .ignoresSafeArea(.keyboard)
-        .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
-        .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onReceive(searchBarVM.$searchQuery) { searchQuery = $0 }
         .onReceive(searchBarVM.$action.dropFirst()) { searchBarAction = $0 }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
+        .onReceive(toolbarVM.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
         .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
         .onReceive(browserContentVM.$contentType) { value in
             contentType = value

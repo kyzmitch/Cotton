@@ -16,7 +16,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     private let searchBarVM: SearchBarViewModel
     private let browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
-    private let toolbarModel: WebBrowserToolbarModel
+    private let toolbarVM: BrowserToolbarViewModel
     
     // MARK: - search bar state
     
@@ -89,7 +89,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         // to be able to subscribe for the publishers
         self.model = model
         browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
-        toolbarModel = WebBrowserToolbarModel()
+        toolbarVM = BrowserToolbarViewModel()
         searchBarVM = SearchBarViewModel()
         self.mode = mode
         switch mode {
@@ -125,17 +125,17 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
-                BrowserContentView(jsPlugins, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, toolbarVM, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
-            ToolbarView(toolbarModel, $webViewInterface)
+            ToolbarView(toolbarVM, $webViewInterface)
         }
         .ignoresSafeArea(.keyboard)
-        .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
-        .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onReceive(searchBarVM.$searchQuery) { searchQuery = $0 }
         .onReceive(searchBarVM.$action.dropFirst()) { searchBarAction = $0 }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
+        .onReceive(toolbarVM.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
         .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
         .onReceive(browserContentVM.$contentType) { value in
             showSearchSuggestions = false
@@ -156,11 +156,11 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     SearchSuggestionsView($searchQuery, delegate, mode)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
-                    BrowserContentView(jsPlugins, toolbarModel, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                    BrowserContentView(jsPlugins, toolbarVM, $isLoading, $contentType, $webViewNeedsUpdate, mode)
                 }
             }
             .toolbar {
-                ToolbarViewV2(toolbarModel, $tabsCount, $showingMenu, $showingTabs, $showSearchSuggestions)
+                ToolbarViewV2(toolbarVM, $tabsCount, $showingMenu, $showingTabs, $showSearchSuggestions)
             }
         }
         .sheet(isPresented: $showingMenu) {
@@ -170,15 +170,15 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             TabsPreviewsLegacyView()
         }
         .ignoresSafeArea(.keyboard)
-        .onReceive(toolbarModel.$showProgress) { showProgress = $0 }
-        .onReceive(toolbarModel.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onChange(of: searchQuery) { value in
             let inSearchMode = searchBarAction == .startSearch
             let validQuery = !value.isEmpty && !value.looksLikeAURL()
             showSearchSuggestions = inSearchMode && validQuery
         }
-        .onReceive(toolbarModel.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
+        .onReceive(toolbarVM.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
         .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
         .onReceive(browserContentVM.$contentType.dropFirst()) { value in
             showSearchSuggestions = false

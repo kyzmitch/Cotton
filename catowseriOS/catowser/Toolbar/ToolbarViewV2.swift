@@ -10,54 +10,70 @@ import SwiftUI
 import CoreBrowser
 
 struct ToolbarViewV2: ToolbarContent {
-    private let model: WebBrowserToolbarModel
+    private let vm: BrowserToolbarViewModel
     @Binding private var tabsCount: Int
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
     @Binding private var showSearchSuggestions: Bool
     
-    init(_ model: WebBrowserToolbarModel,
+    @State private var isGoBackEnabled: Bool
+    @State private var isGoForwardEnabled: Bool
+    @State private var isRefreshEnabled: Bool
+    
+    init(_ vm: BrowserToolbarViewModel,
          _ tabsCount: Binding<Int>,
          _ showingMenu: Binding<Bool>,
          _ showingTabs: Binding<Bool>,
          _ showSearchSuggestions: Binding<Bool>) {
-        self.model = model
+        self.vm = vm
         _tabsCount = tabsCount
         _showingMenu = showingMenu
         _showingTabs = showingTabs
         _showSearchSuggestions = showSearchSuggestions
+        isGoBackEnabled = false
+        isGoForwardEnabled = false
+        isRefreshEnabled = false
     }
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             Button {
-                model.goBack()
+                vm.goBack()
             } label: {
                 Image("nav-back")
             }
-            .disabled(model.goBackDisabled)
+            .disabled(isGoBackEnabled)
+            .onReceive(vm.$goBackDisabled) { value in
+                isGoBackEnabled = !value
+            }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
             Button {
-                model.goForward()
+                vm.goForward()
             } label: {
                 Image("nav-forward")
             }
-            .disabled(model.goForwardDisabled)
+            .disabled(isGoForwardEnabled)
+            .onReceive(vm.$goForwardDisabled) { value in
+                isGoForwardEnabled = !value
+            }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
             Button {
-                model.reload()
+                vm.reload()
             } label: {
                 Image("nav-refresh")
             }
-            .disabled(model.reloadDisabled)
+            .disabled(isRefreshEnabled)
+            .onReceive(vm.$reloadDisabled) { value in
+                isRefreshEnabled = !value
+            }
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
