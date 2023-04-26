@@ -158,6 +158,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
         .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(toolbarVM.$webViewInterface) { webViewInterface = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onChange(of: searchQuery) { value in
             let inSearchMode = searchBarAction == .startSearch
