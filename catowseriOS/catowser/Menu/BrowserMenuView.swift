@@ -6,29 +6,13 @@
 //  Copyright © 2020 andreiermoshin. All rights reserved.
 //
 
-#if canImport(SwiftUI)
 import SwiftUI
-#endif
 import CottonCoreBaseKit
 import CoreBrowser
 import FeaturesFlagsKit
 
-@available(iOS 13.0, *)
 struct BrowserMenuView: View {
-    private let model: MenuViewModel
-    
-    init(_ model: MenuViewModel) {
-        self.model = model
-    }
-    
-    var body: some View {
-        _BrowserMenuView().environmentObject(model)
-    }
-}
-
-@available(iOS 13.0, *)
-private struct _BrowserMenuView: View {
-    @EnvironmentObject var model: MenuViewModel
+    @ObservedObject private var model: MenuViewModel
     @Environment(\.presentationMode) var presentationMode
     
     // MARK: - State variables to be able to pop view automatically
@@ -47,6 +31,10 @@ private struct _BrowserMenuView: View {
     @State private var tabAddPositionRowValueText = FeatureManager.tabAddPositionValue().description
     @State private var asyncApiRowValueText = FeatureManager.appAsyncApiTypeValue().description
     @State private var uiFrameworkRowValueText = FeatureManager.appUIFrameworkValue().description
+    
+    init(_ vm: MenuViewModel) {
+        self.model = vm
+    }
     
     var body: some View {
         NavigationView {
@@ -161,7 +149,6 @@ private extension LocalizedStringKey {
 }
 
 #if DEBUG
-@available(iOS 13.0, *)
 struct SiteMenuView_Previews: PreviewProvider {
     static var previews: some View {
         let host = try? Host(input: "example.com")

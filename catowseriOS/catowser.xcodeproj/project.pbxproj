@@ -411,8 +411,6 @@
 		8A9D9D842971D6B10047734C /* TabletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D822971D6B10047734C /* TabletView.swift */; };
 		8A9D9D892971D8330047734C /* DummyDelegateForPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D882971D8330047734C /* DummyDelegateForPreview.swift */; };
 		8A9D9D8A2971D8330047734C /* DummyDelegateForPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D882971D8330047734C /* DummyDelegateForPreview.swift */; };
-		8A9D9D8C2971DB2F0047734C /* TabletSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D8B2971DB2F0047734C /* TabletSearchBarView.swift */; };
-		8A9D9D8D2971DB2F0047734C /* TabletSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D8B2971DB2F0047734C /* TabletSearchBarView.swift */; };
 		8A9D9D8F2971E05F0047734C /* TabletTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D8E2971E05F0047734C /* TabletTabsView.swift */; };
 		8A9D9D902971E05F0047734C /* TabletTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D8E2971E05F0047734C /* TabletTabsView.swift */; };
 		8AA4FFF527A013DC003C3BBA /* HTTPAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */; };
@@ -620,6 +618,14 @@
 		8AF43385248EBBA70047452B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43382248EBBA70047452B /* Parser.swift */; };
 		8AF43386248EBBA70047452B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43383248EBBA70047452B /* Token.swift */; };
 		8AF4922B235248CE00183579 /* RestClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4922A235248CE00183579 /* RestClientError.swift */; };
+		8AFDBB0029F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */; };
+		8AFDBB0129F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */; };
+		8AFDBB0329F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */; };
+		8AFDBB0429F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */; };
+		8AFDBB0629F93A05006C0E47 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0529F93A05006C0E47 /* MenuButton.swift */; };
+		8AFDBB0729F93A05006C0E47 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0529F93A05006C0E47 /* MenuButton.swift */; };
+		8AFDBB0929F979D8006C0E47 /* DisableableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */; };
+		8AFDBB0A29F979D8006C0E47 /* DisableableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */; };
 		8AFE7D90296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D8F296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift */; };
 		8AFE7D92296B488D00B2CF55 /* ErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D91296B488D00B2CF55 /* ErrorTypes.swift */; };
 		8AFE7D94296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */; };
@@ -1248,7 +1254,6 @@
 		8A9D9D7E2971D2300047734C /* PhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneView.swift; sourceTree = "<group>"; };
 		8A9D9D822971D6B10047734C /* TabletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletView.swift; sourceTree = "<group>"; };
 		8A9D9D882971D8330047734C /* DummyDelegateForPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDelegateForPreview.swift; sourceTree = "<group>"; };
-		8A9D9D8B2971DB2F0047734C /* TabletSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarView.swift; sourceTree = "<group>"; };
 		8A9D9D8E2971E05F0047734C /* TabletTabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletTabsView.swift; sourceTree = "<group>"; };
 		8AA4FFF227A006CD003C3BBA /* HttpClient+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Alamofire.swift"; sourceTree = "<group>"; };
 		8AA4FFF427A013DC003C3BBA /* HTTPAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPAdapteeMocks.swift; sourceTree = "<group>"; };
@@ -1365,6 +1370,10 @@
 		8AF43382248EBBA70047452B /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		8AF43383248EBBA70047452B /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		8AF4922A235248CE00183579 /* RestClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClientError.swift; sourceTree = "<group>"; };
+		8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletTabsLegacyView.swift; sourceTree = "<group>"; };
+		8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewV2.swift; sourceTree = "<group>"; };
+		8AFDBB0529F93A05006C0E47 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisableableButton.swift; sourceTree = "<group>"; };
 		8AFE7D8F296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMRxTests.swift; sourceTree = "<group>"; };
 		8AFE7D91296B488D00B2CF55 /* ErrorTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTypes.swift; sourceTree = "<group>"; };
 		8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMConcurrencyTests.swift; sourceTree = "<group>"; };
@@ -1839,6 +1848,7 @@
 				605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */,
 				60724EA821FF1BD80071BECF /* CounterView.swift */,
 				8A9D9D8E2971E05F0047734C /* TabletTabsView.swift */,
+				8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */,
 			);
 			path = WebTabs;
 			sourceTree = "<group>";
@@ -1865,6 +1875,8 @@
 				8A0FC1A829F259D20044829A /* ToolbarLegacyView.swift */,
 				8A0FC1A529F2586B0044829A /* ToolbarViewV2.swift */,
 				75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */,
+				8AFDBB0529F93A05006C0E47 /* MenuButton.swift */,
+				8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */,
 			);
 			path = Toolbar;
 			sourceTree = "<group>";
@@ -2012,7 +2024,7 @@
 			isa = PBXGroup;
 			children = (
 				841A2D81203AD5500050A996 /* TabletSearchBarViewController.swift */,
-				8A9D9D8B2971DB2F0047734C /* TabletSearchBarView.swift */,
+				8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */,
 				8A0FC1A229F24D320044829A /* TabletSearchBarLegacyView.swift */,
 			);
 			path = Tablet;
@@ -3746,6 +3758,7 @@
 				8AFFBE1C29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift in Sources */,
 				C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */,
 				841A2D82203AD5500050A996 /* TabletSearchBarViewController.swift in Sources */,
+				8AFDBB0929F979D8006C0E47 /* DisableableButton.swift in Sources */,
 				8AB9BE1728FF0C98002063C2 /* ReloadWithCompletion.swift in Sources */,
 				8A917CB429D4E63700404256 /* String+Extension.swift in Sources */,
 				841A2D86203B1FA50050A996 /* SearchBarBaseViewController.swift in Sources */,
@@ -3784,6 +3797,7 @@
 				8A82594D294E47F9007B97CF /* TopSitesViewModel.swift in Sources */,
 				8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8AEEBBB629F7AEA500F23A02 /* SearchFieldView.swift in Sources */,
+				8AFDBB0029F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */,
 				8A9D9D892971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1628FF0C75002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
 				8A0FC1A329F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */,
@@ -3812,6 +3826,7 @@
 				8AB9BE2528FF0FB1002063C2 /* TabsListManager+Extension.swift in Sources */,
 				8A1115EB24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
 				8AEEBBB929F7B63A00F23A02 /* TappableTextOverlayView.swift in Sources */,
+				8AFDBB0629F93A05006C0E47 /* MenuButton.swift in Sources */,
 				8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */,
 				8AEEBBB329F7AA9300F23A02 /* ClearCancelPairButton.swift in Sources */,
 				841022BD224785340021516F /* LinksBadgeView.swift in Sources */,
@@ -3831,6 +3846,7 @@
 				8A745C0D248027C600A379AD /* TabsCache.swift in Sources */,
 				753392A7291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
 				750EDEBB2949215900212A4E /* MainBrowserModel.swift in Sources */,
+				8AFDBB0329F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */,
 				8AED419B292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
@@ -3851,7 +3867,6 @@
 				8A745C112480295B00A379AD /* TabsEnvironment.swift in Sources */,
 				8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */,
 				8ABDD90827CCF4360028B9DE /* FeatureManager+SpecificEnums.swift in Sources */,
-				8A9D9D8C2971DB2F0047734C /* TabletSearchBarView.swift in Sources */,
 				8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */,
 				8A7B1BFC28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
 				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
@@ -4016,6 +4031,7 @@
 				8AFFBE1D29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift in Sources */,
 				8A8035A824442F0F000E035F /* WebViewController.swift in Sources */,
 				8A8035A924442F0F000E035F /* TabletSearchBarViewController.swift in Sources */,
+				8AFDBB0A29F979D8006C0E47 /* DisableableButton.swift in Sources */,
 				8AB9BE1828FF0C98002063C2 /* ReloadWithCompletion.swift in Sources */,
 				8A917CB529D4E63700404256 /* String+Extension.swift in Sources */,
 				8A8035AA24442F0F000E035F /* SearchBarBaseViewController.swift in Sources */,
@@ -4054,6 +4070,7 @@
 				8A82594E294E47F9007B97CF /* TopSitesViewModel.swift in Sources */,
 				8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8AEEBBB729F7AEA500F23A02 /* SearchFieldView.swift in Sources */,
+				8AFDBB0129F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */,
 				8A9D9D8A2971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1528FF0C74002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
 				8A0FC1A429F24D320044829A /* TabletSearchBarLegacyView.swift in Sources */,
@@ -4082,6 +4099,7 @@
 				8AB9BE2628FF0FB1002063C2 /* TabsListManager+Extension.swift in Sources */,
 				8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */,
 				8AEEBBBA29F7B63A00F23A02 /* TappableTextOverlayView.swift in Sources */,
+				8AFDBB0729F93A05006C0E47 /* MenuButton.swift in Sources */,
 				8A8035BB24442F0F000E035F /* TagsSiteDataSource.swift in Sources */,
 				8AEEBBB429F7AA9300F23A02 /* ClearCancelPairButton.swift in Sources */,
 				8A8035BC24442F0F000E035F /* LinksBadgeView.swift in Sources */,
@@ -4101,6 +4119,7 @@
 				8A745C0C248027C600A379AD /* TabsCache.swift in Sources */,
 				753392A8291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
 				750EDEBC2949215900212A4E /* MainBrowserModel.swift in Sources */,
+				8AFDBB0429F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */,
 				8AED419A292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
@@ -4121,7 +4140,6 @@
 				8A745C122480295B00A379AD /* TabsEnvironment.swift in Sources */,
 				8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */,
 				8ABDD90927CCF4360028B9DE /* FeatureManager+SpecificEnums.swift in Sources */,
-				8A9D9D8D2971DB2F0047734C /* TabletSearchBarView.swift in Sources */,
 				8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */,
 				8A7B1BFD28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
 				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,

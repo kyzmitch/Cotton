@@ -73,7 +73,6 @@ public extension UIImage {
         return averageColorImage?.getPixelColor(pos: point)
     }
     
-    @available(iOS 13.0, *)
     static let arropUp = UIImage(systemName: "square.and.arrow.up")
 }
 

@@ -15,9 +15,10 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     private var model: MainBrowserModel<C>
     private let searchBarVM: SearchBarViewModel
     private let browserContentVM: BrowserContentViewModel
-    private let toolbarVM: BrowserToolbarViewModel
+    /// Toolbar model needed by both UI modes
+    @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
     
-    // MARK: - search bar state
+    // MARK: - Tablet search bar state
     
     /// Search bar action is only needed for SwiftUI UIKit wrapper
     @State private var searchBarAction: SearchBarAction
@@ -25,6 +26,10 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     @State private var showSearchSuggestions: Bool
     /// Search query string state which is set by SearchBar and used by SearchSuggestions
     @State private var searchQuery: String
+    /// Tells if browser menu needs to be shown
+    @State private var showingMenu: Bool
+    /// Tabs counter
+    @State private var tabsCount: Int
     
     // MARK: - web content loading state
     
@@ -45,6 +50,17 @@ struct TabletView<C: BrowserContentCoordinators>: View {
     // MARK: - constants
     
     private let mode: SwiftUIMode
+    
+    private var menuModel: MenuViewModel {
+        let style: BrowserMenuStyle
+        if let interface = webViewInterface {
+            style = .withSiteMenu(interface.host, interface.siteSettings)
+        } else {
+            style = .onlyGlobalMenu
+        }
+        
+        return MenuViewModel(style)
+    }
     
     init(_ model: MainBrowserModel<C>, _ mode: SwiftUIMode) {
         // Browser content state has to be stored outside in main view
@@ -70,9 +86,10 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         // to be able to subscribe for the publishers
         self.model = model
         browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
-        toolbarVM = BrowserToolbarViewModel()
         searchBarVM = SearchBarViewModel()
         self.mode = mode
+        showingMenu = false
+        tabsCount = 0
     }
     
     var body: some View {
@@ -80,7 +97,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         case .compatible:
             uiKitWrapperView
         case .full:
-            Spacer()
+            fullySwiftUIView
         }
     }
     
@@ -88,21 +105,23 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
             TabletTabsView(mode)
-            TabletSearchBarView(searchBarDelegate, $searchBarAction, toolbarVM, $webViewInterface, mode)
+            TabletSearchBarLegacyView(searchBarDelegate, $searchBarAction, $webViewInterface)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
             if showSearchSuggestions {
-                let delegate = searchBarVM
+                let delegate: SearchSuggestionsListDelegate = searchBarVM
                 SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
-                BrowserContentView(jsPlugins, toolbarVM, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
+                BrowserContentView(jsPlugins, siteNavigation, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
         }
         .ignoresSafeArea(.keyboard)
         .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
         .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(toolbarVM.$webViewInterface) { webViewInterface = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
         .onReceive(searchBarVM.$searchQuery) { searchQuery = $0 }
         .onReceive(searchBarVM.$action.dropFirst()) { searchBarAction = $0 }
@@ -113,6 +132,46 @@ struct TabletView<C: BrowserContentCoordinators>: View {
             showSearchSuggestions = false
         }
         .onReceive(browserContentVM.$contentType) { searchBarAction = .create($0) }
+        .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+    }
+    
+    private var fullySwiftUIView: some View {
+        VStack {
+            TabletTabsView(mode)
+            TabletSearchBarViewV2($showingMenu, $showSearchSuggestions, $searchQuery, $searchBarAction)
+                .environmentObject(toolbarVM)
+            if showProgress {
+                ProgressView(value: websiteLoadProgress)
+            }
+            if showSearchSuggestions {
+                let delegate: SearchSuggestionsListDelegate = searchBarVM
+                SearchSuggestionsView($searchQuery, delegate, mode)
+            } else {
+                let jsPlugins = browserContentVM.jsPluginsBuilder
+                let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
+                BrowserContentView(jsPlugins, siteNavigation, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+            }
+        }
+        .sheet(isPresented: $showingMenu) {
+            BrowserMenuView(menuModel)
+        }
+        .ignoresSafeArea(.keyboard)
+        .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
+        .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
+        .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
+        .onChange(of: searchQuery) { value in
+            let inSearchMode = searchBarAction == .startSearch
+            let validQuery = !value.isEmpty && !value.looksLikeAURL()
+            showSearchSuggestions = inSearchMode && validQuery
+        }
+        .onReceive(toolbarVM.$stopWebViewReuseAction.dropFirst()) { webViewNeedsUpdate = false }
+        .onReceive(browserContentVM.$webViewNeedsUpdate.dropFirst()) { webViewNeedsUpdate = true }
+        .onReceive(browserContentVM.$contentType.dropFirst()) { value in
+            showSearchSuggestions = false
+            contentType = value
+            searchBarAction = .create(value)
+        }
+        .onReceive(browserContentVM.$tabsCount) { tabsCount = $0 }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
     }
 }

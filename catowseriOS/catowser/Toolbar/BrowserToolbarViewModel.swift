@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreBrowser
 
-final class BrowserToolbarViewModel {
+final class BrowserToolbarViewModel: ObservableObject {
     /// Notifies if current web view changes
     @Published var webViewInterface: WebViewNavigatable?
     /// Max value should be 1.0 because total is equals to that by default

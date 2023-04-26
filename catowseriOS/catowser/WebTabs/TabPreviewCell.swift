@@ -65,7 +65,6 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
 
     private var siteTitleDisposable: Disposable?
     
-    @available(iOS 13.0, *)
     private lazy var imageURLRequestCancellable: AnyCancellable? = nil
 
     private let backgroundHolder: UIView = {

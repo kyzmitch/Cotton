@@ -87,7 +87,6 @@ final class TabView: UIView {
         return line
     }()
     
-    @available(iOS 13.0, *)
     lazy var imageURLRequestCancellable: AnyCancellable? = nil
     
     required init?(coder aDecoder: NSCoder) {

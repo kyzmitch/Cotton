@@ -16,7 +16,7 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     private let searchBarVM: SearchBarViewModel
     private let browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
-    private let toolbarVM: BrowserToolbarViewModel
+    @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
     
     // MARK: - search bar state
     
@@ -89,7 +89,6 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         // to be able to subscribe for the publishers
         self.model = model
         browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
-        toolbarVM = BrowserToolbarViewModel()
         searchBarVM = SearchBarViewModel()
         self.mode = mode
         switch mode {
@@ -125,7 +124,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                 SearchSuggestionsView($searchQuery, delegate, mode)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
-                BrowserContentView(jsPlugins, toolbarVM, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
+                BrowserContentView(jsPlugins, siteNavigation, $isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
@@ -156,7 +156,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
                     SearchSuggestionsView($searchQuery, delegate, mode)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
-                    BrowserContentView(jsPlugins, toolbarVM, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                    let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
+                    BrowserContentView(jsPlugins, siteNavigation, $isLoading, $contentType, $webViewNeedsUpdate, mode)
                 }
             }
             .toolbar {

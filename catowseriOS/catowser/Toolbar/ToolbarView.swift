@@ -11,7 +11,7 @@ import SwiftUI
 
 /// Only UIKit wrapper which needs less amout of parameters than full SwiftUI view
 struct ToolbarView: View {
-    private(set) var model: BrowserToolbarViewModel
+    @ObservedObject private var model: BrowserToolbarViewModel
     @Binding private var webViewInterface: WebViewNavigatable?
     
     init(_ model: BrowserToolbarViewModel, _ webViewInterface: Binding<WebViewNavigatable?>) {

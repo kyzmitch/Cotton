@@ -10,7 +10,7 @@ import SwiftUI
 import CoreBrowser
 
 struct ToolbarViewV2: ToolbarContent {
-    private let vm: BrowserToolbarViewModel
+    @ObservedObject var vm: BrowserToolbarViewModel
     @Binding private var tabsCount: Int
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
@@ -37,40 +37,19 @@ struct ToolbarViewV2: ToolbarContent {
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                vm.goBack()
-            } label: {
-                Image("nav-back")
-            }
-            .disabled(isGoBackDisabled)
-            .opacity(isGoBackDisabled ? ThemeProvider.disabledOpacity : 1)
-            .onReceive(vm.$goBackDisabled) { isGoBackDisabled = $0 }
+            DisableableButton("nav-back", $vm.goBackDisabled, vm.goBack)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                vm.goForward()
-            } label: {
-                Image("nav-forward")
-            }
-            .disabled(isGoForwardDisabled)
-            .opacity(isGoForwardDisabled ? ThemeProvider.disabledOpacity : 1)
-            .onReceive(vm.$goForwardDisabled) { isGoForwardDisabled = $0 }
+            DisableableButton("nav-forward", $vm.goForwardDisabled, vm.goForward)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                vm.reload()
-            } label: {
-                Image("nav-refresh")
-            }
-            .disabled(isRefreshDisabled)
-            .opacity(isRefreshDisabled ? ThemeProvider.disabledOpacity : 1)
-            .onReceive(vm.$reloadDisabled) { isRefreshDisabled = $0 }
+            DisableableButton("nav-refresh", $vm.reloadDisabled, vm.reload)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
@@ -90,15 +69,7 @@ struct ToolbarViewV2: ToolbarContent {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                showSearchSuggestions = false
-                withAnimation(.easeInOut(duration: 1)) {
-                    showingMenu.toggle()
-                }
-            } label: {
-                Image(systemName: "square.and.arrow.up")
-            }
-            .foregroundColor(.black)
+            MenuButton($showSearchSuggestions, $showingMenu)
         }
     }
 }

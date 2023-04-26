@@ -21,22 +21,6 @@ struct TabletTabsView: View {
     }
 }
 
-private struct TabletTabsLegacyView: UIViewControllerRepresentable {
-    typealias UIViewControllerType = UIViewController
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
-    
-    func makeUIViewController(context: Context) -> UIViewControllerType {
-        let vc = vcFactory.tabsViewController()
-        // swiftlint:disable:next force_unwrapping
-        return vc!.viewController
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
-}
-
 #if DEBUG
 struct TabletTabsView_Previews: PreviewProvider {
     static var previews: some View {

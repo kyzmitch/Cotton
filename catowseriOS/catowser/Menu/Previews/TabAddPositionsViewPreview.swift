@@ -13,7 +13,6 @@ import SwiftUI
 
 #if DEBUG
 // swiftlint:disable type_name
-@available(iOS 13.0, *)
 struct TabAddPositionsView_Previews: PreviewProvider {
     static var previews: some View {
         let model: TabAddPositionsModel = .init { (_) in
