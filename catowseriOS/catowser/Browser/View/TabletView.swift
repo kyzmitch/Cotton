@@ -106,6 +106,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
             TabletTabsView(mode)
             TabletSearchBarLegacyView(searchBarDelegate, $searchBarAction, $webViewInterface)
+                .frame(height: .toolbarViewHeight)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
