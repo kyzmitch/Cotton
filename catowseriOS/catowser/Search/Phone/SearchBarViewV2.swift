@@ -11,27 +11,27 @@ import SwiftUI
 /**
  A search bar fully implemented in SwiftUI.
  
- Still need to implement the following:
  - after moving focus to TextField (tap on it) if query is not empty, then need to select all text
  which would allow to easely clear/remove currently entered query string. The same behaviour has Safari for iOS.
+ - need to use the same logic for overlay view to show/hide it from SearchBarLegacyView
+ createShowedLabelConstraint and hiddenLabelConstraint
  */
 struct SearchBarViewV2: View {
+    @Environment(\.horizontalSizeClass) var hSizeClass
+    
     @Binding private var query: String
     @Binding private var action: SearchBarAction
-    @State private var showClearButton: Bool
-    @State private var state: SearchBarState
-    @State private var siteName: String
-    @State private var showOverlay: Bool
-    @State private var showKeyboard: Bool
+    @State private var showClearButton: Bool = false
+    @State private var state: SearchBarState = .blankViewMode
+    @State private var siteName: String = ""
+    @State private var showOverlay: Bool = false
+    @State private var showKeyboard: Bool = false
     
     private let cancelBtnVM: ClearCancelButtonViewModel
     private let textFieldVM: SearchFieldViewModel
     private let overlayVM: TappableTextOverlayViewModel
     
-    private var overlayHidden: CGFloat {
-        -UIScreen.main.bounds.width
-    }
-    private let overlayVisible: CGFloat = 0
+    private let overlayHidden: CGFloat = -UIScreen.main.bounds.width
     
     init(_ query: Binding<String>,
          _ action: Binding<SearchBarAction>) {
@@ -40,11 +40,6 @@ struct SearchBarViewV2: View {
         cancelBtnVM = .init()
         textFieldVM = .init()
         overlayVM = .init()
-        showClearButton = false
-        state = .blankViewMode
-        siteName = ""
-        showOverlay = false
-        showKeyboard = false
     }
     
     var body: some View {
@@ -58,7 +53,8 @@ struct SearchBarViewV2: View {
                 .opacity(showOverlay ? 0 : 1)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
             TappableTextOverlayView($siteName, overlayVM)
-                .offset(x: showOverlay ? overlayVisible : overlayHidden, y: 0)
+                .opacity(showOverlay ? 1 : 0)
+                .offset(x: showOverlay ? 0 : (hSizeClass == .compact ? overlayHidden : -overlayHidden), y: 0)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
         }
         .onChange(of: action) { newValue in

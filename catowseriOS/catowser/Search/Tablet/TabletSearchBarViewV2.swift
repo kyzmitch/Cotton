@@ -31,14 +31,10 @@ struct TabletSearchBarViewV2: View {
     
     var body: some View {
         HStack {
-            MenuButton($showSearchSuggestions, $showingMenu)
-            Spacer()
-            DisableableButton("nav-back", $toolbarVM.goBackDisabled, toolbarVM.goBack)
-            Spacer()
-            DisableableButton("nav-forward", $toolbarVM.goForwardDisabled, toolbarVM.goForward)
-            Spacer()
-            DisableableButton("nav-refresh", $toolbarVM.reloadDisabled, toolbarVM.reload)
-            Spacer()
+            MenuButton($showSearchSuggestions, $showingMenu).padding()
+            DisableableButton("nav-back", $toolbarVM.goBackDisabled, toolbarVM.goBack).padding()
+            DisableableButton("nav-forward", $toolbarVM.goForwardDisabled, toolbarVM.goForward).padding()
+            DisableableButton("nav-refresh", $toolbarVM.reloadDisabled, toolbarVM.reload).padding()
             SearchBarViewV2($query, $action)
         }
         .frame(maxWidth: maxWidth)
