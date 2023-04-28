@@ -107,6 +107,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
             TabletTabsView(mode)
             TabletSearchBarLegacyView(searchBarDelegate, $searchBarAction, $webViewInterface)
                 .frame(height: .toolbarViewHeight)
+            // this should be the same with the value in `SearchBarBaseViewController`
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }

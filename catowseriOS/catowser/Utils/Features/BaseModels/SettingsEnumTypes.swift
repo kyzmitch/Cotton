@@ -71,6 +71,15 @@ enum UIFrameworkType: Int, CaseIterable {
     var isUIKitFree: Bool {
         self == .swiftUI
     }
+    
+    var uiKitBased: Bool {
+        switch self {
+        case .uiKit, .swiftUIWrapper:
+            return true
+        case .swiftUI:
+            return false
+        }
+    }
 }
 
 extension UIFrameworkType: EnumDefaultValueSupportable {

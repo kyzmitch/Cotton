@@ -114,8 +114,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     private var uiKitWrapperView: some View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
-            // Search query binding is not needed for UIKit mode, but we still have to pass it
-            SearchBarView(searchBarDelegate, $searchQuery, $searchBarAction, mode)
+            PhoneSearchBarLegacyView(searchBarDelegate, $searchBarAction)
+                .frame(minWidth: 0, maxWidth: .infinity, maxHeight: CGFloat.searchViewHeight)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
             }
@@ -148,7 +148,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
     private var fullySwiftUIView: some View {
         NavigationView {
             VStack {
-                SearchBarView(nil, $searchQuery, $searchBarAction, mode)
+                SearchBarViewV2($searchQuery, $searchBarAction)
+                    .frame(minWidth: 0, maxWidth: .infinity)
                 if showProgress {
                     ProgressView(value: websiteLoadProgress)
                 }

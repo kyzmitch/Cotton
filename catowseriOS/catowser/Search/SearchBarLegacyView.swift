@@ -79,7 +79,7 @@ final class SearchBarLegacyView: UIView {
         } else {
             if uiFramework.swiftUIBased {
                 // Fix for the SwiftUI preview to have some width, otherwise whole view has 0 width
-                // and for some reason in preview mode the supr view doesn't tell the width
+                // and for some reason in preview mode the super view doesn't tell the width
                 if isPad {
                     searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
                 } else {
@@ -107,6 +107,8 @@ final class SearchBarLegacyView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - layout
+    
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         
@@ -115,6 +117,8 @@ final class SearchBarLegacyView: UIView {
         
         siteNameLabel.addGestureRecognizer(siteNameTapGesture)
     }
+    
+    // MARK: - subview properties
     
     /// The search bar view.
     private let searchBarView: UISearchBar = {

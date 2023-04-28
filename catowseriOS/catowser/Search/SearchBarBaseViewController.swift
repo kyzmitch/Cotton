@@ -23,7 +23,7 @@ final class SearchBarBaseViewController: BaseViewController {
         if case .uiKit = FeatureManager.appUIFrameworkValue() {
             customFrame = .zero
         } else {
-            customFrame = .init(x: 0, y: 0, width: 0, height: .searchViewHeight)
+            customFrame = .init(x: 0, y: 0, width: 0, height: .toolbarViewHeight)
         }
         searchBarView = .init(frame: customFrame)
         searchBarView.delegate = searchBarDelegate
