@@ -129,7 +129,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard, edges: [.bottom])
+        .ignoresSafeArea(.container, edges: [.leading, .trailing])
         .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
         .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }
@@ -170,7 +171,8 @@ struct PhoneView<C: BrowserContentCoordinators>: View {
         .sheet(isPresented: $showingTabs) {
             TabsPreviewsLegacyView()
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard, edges: [.bottom])
+        .ignoresSafeArea(.container, edges: [.leading, .trailing])
         .onReceive(toolbarVM.$showProgress) { showProgress = $0 }
         .onReceive(toolbarVM.$websiteLoadProgress) { websiteLoadProgress = $0 }
         .onReceive(searchBarVM.$showSearchSuggestions) { showSearchSuggestions = $0 }

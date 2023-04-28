@@ -140,6 +140,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         VStack {
             TabletTabsView(mode)
             TabletSearchBarViewV2($showingMenu, $showSearchSuggestions, $searchQuery, $searchBarAction)
+                .frame(height: .toolbarViewHeight)
                 .environmentObject(toolbarVM)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)

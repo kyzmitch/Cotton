@@ -17,7 +17,13 @@ struct TabletSearchBarViewV2: View {
     /// Toolbar vm is better to be stored in Environment, because tablet view wrapper doesn't need it
     @EnvironmentObject var toolbarVM: BrowserToolbarViewModel
     
-    private let maxWidth: CGFloat = UIScreen.main.bounds.width
+    private let columns: [GridItem] = [
+        GridItem(.fixed(CGFloat.toolbarViewHeight)),
+        GridItem(.fixed(CGFloat.toolbarViewHeight)),
+        GridItem(.fixed(CGFloat.toolbarViewHeight)),
+        GridItem(.fixed(CGFloat.toolbarViewHeight)),
+        GridItem(.flexible(), spacing: 2, alignment: .center)
+    ]
     
     init(_ showingMenu: Binding<Bool>,
          _ showSearchSuggestions: Binding<Bool>,
@@ -30,13 +36,14 @@ struct TabletSearchBarViewV2: View {
     }
     
     var body: some View {
-        HStack {
-            MenuButton($showSearchSuggestions, $showingMenu).padding()
-            DisableableButton("nav-back", $toolbarVM.goBackDisabled, toolbarVM.goBack).padding()
-            DisableableButton("nav-forward", $toolbarVM.goForwardDisabled, toolbarVM.goForward).padding()
-            DisableableButton("nav-refresh", $toolbarVM.reloadDisabled, toolbarVM.reload).padding()
-            SearchBarViewV2($query, $action)
+        ScrollView {
+            LazyVGrid(columns: columns) {
+                MenuButton($showSearchSuggestions, $showingMenu).padding()
+                DisableableButton("nav-back", $toolbarVM.goBackDisabled, toolbarVM.goBack).padding()
+                DisableableButton("nav-forward", $toolbarVM.goForwardDisabled, toolbarVM.goForward).padding()
+                DisableableButton("nav-refresh", $toolbarVM.reloadDisabled, toolbarVM.reload).padding()
+                SearchBarViewV2($query, $action)
+            }
         }
-        .frame(maxWidth: maxWidth)
     }
 }

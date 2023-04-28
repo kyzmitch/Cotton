@@ -33,10 +33,10 @@ struct SearchBarView: View {
         switch mode {
         case .compatible:
             PhoneSearchBarLegacyView(searchBarDelegate, $action)
-                .frame(height: CGFloat.searchViewHeight)
+                .frame(minWidth: 0, maxWidth: .infinity, maxHeight: CGFloat.searchViewHeight)
         case .full:
             SearchBarViewV2($searchQuery, $action)
-                .frame(maxWidth: maxWidth)
+                .frame(minWidth: 0, maxWidth: .infinity)
         }
     }
 }
