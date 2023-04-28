@@ -47,6 +47,12 @@ final class SearchBarBaseViewController: BaseViewController {
 
         TabsListManager.shared.attach(self)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        searchBarView.handleTraitCollectionChange()
+    }
 }
 
 extension SearchBarBaseViewController: TabsObserver {

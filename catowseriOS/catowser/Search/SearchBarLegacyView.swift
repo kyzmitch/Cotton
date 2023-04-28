@@ -55,6 +55,9 @@ final class SearchBarLegacyView: UIView {
     
     private let uiFramework: UIFrameworkType
     
+    /// Only needed for SwiftUI wrapper for phone layout
+    private var phoneWidthConstraint: NSLayoutConstraint?
+    
     // MARK: - initializers
     
     override init(frame: CGRect) {
@@ -84,7 +87,8 @@ final class SearchBarLegacyView: UIView {
                     searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
                 } else {
                     let widthValue = UIScreen.main.bounds.width - 16
-                    searchBarView.widthAnchor.constraint(equalToConstant: widthValue).isActive = true
+                    phoneWidthConstraint = searchBarView.widthAnchor.constraint(equalToConstant: widthValue)
+                    phoneWidthConstraint?.isActive = true
                 }
             } else {
                 searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -101,6 +105,13 @@ final class SearchBarLegacyView: UIView {
         dohStateIcon.topAnchor.constraint(equalTo: topAnchor).isActive = true
         dohStateIcon.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         dohStateIcon.widthAnchor.constraint(equalTo: dohStateIcon.heightAnchor).isActive = true
+    }
+    
+    func handleTraitCollectionChange() {
+        if uiFramework.swiftUIBased && !isPad {
+            let widthValue = UIScreen.main.bounds.width - 16
+            phoneWidthConstraint?.constant = widthValue
+        }
     }
     
     required init?(coder: NSCoder) {
