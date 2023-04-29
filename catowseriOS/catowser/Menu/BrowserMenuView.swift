@@ -120,7 +120,9 @@ struct BrowserMenuView: View {
                 presentationMode.wrappedValue.dismiss()
             }.foregroundColor(.black))
         }.alert(isPresented: $showingAppRestartAlert) {
-            Alert(title: Text(verbatim: "App restart is required"))
+            Alert(title: Text(verbatim: "App restart is required"), dismissButton: .destructive(Text(verbatim: "Kill app process")) {
+                exit(0) // https://stackoverflow.com/a/8491688
+            })
         }
 
     }

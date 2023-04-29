@@ -35,32 +35,25 @@ extension UIFrameworkType {
 }
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
-    private let model: MainBrowserModel<C>
-    
-    init(_ model: MainBrowserModel<C>) {
-        self.model = model
-    }
-    
-    var body: some View {
-        _MainBrowserView<C>(model: model)
-            .environment(\.browserContentCoordinators, model.coordinatorsInterface)
-    }
-}
-
-private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
-    private var model: MainBrowserModel<C>
+    private let vm: MainBrowserModel<C>
+    /// if Developer changes it in dev settings, then it is required to restart the app.
+    /// Some other old code (coordinators and UIKit views) depends on that value
+    /// so, if new values is selected in dev menu, then it could create bugs
     private let mode: SwiftUIMode
     
-    init(model: MainBrowserModel<C>) {
-        self.model = model
+    init(_ vm: MainBrowserModel<C>) {
+        self.vm = vm
         mode = FeatureManager.appUIFrameworkValue().swiftUIMode
     }
     
     var body: some View {
-        if isPad {
-            TabletView(model, mode)
-        } else {
-            PhoneView(model, mode)
+        Group {
+            if isPad {
+                TabletView(vm, mode)
+            } else {
+                PhoneView(vm, mode)
+            }
         }
+        .environment(\.browserContentCoordinators, vm.coordinatorsInterface)
     }
 }
