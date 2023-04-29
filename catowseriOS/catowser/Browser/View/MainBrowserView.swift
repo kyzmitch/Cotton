@@ -36,6 +36,8 @@ extension UIFrameworkType {
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
     private let vm: MainBrowserModel<C>
+    ///
+    @ObservedObject private var browserContentVM: BrowserContentViewModel
     /// if Developer changes it in dev settings, then it is required to restart the app.
     /// Some other old code (coordinators and UIKit views) depends on that value
     /// so, if new values is selected in dev menu, then it could create bugs if app is not restarted
@@ -43,15 +45,16 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     
     init(_ vm: MainBrowserModel<C>) {
         self.vm = vm
+        browserContentVM = .init(vm.jsPluginsBuilder)
         mode = FeatureManager.appUIFrameworkValue().swiftUIMode
     }
     
     var body: some View {
         Group {
             if isPad {
-                TabletView(vm.jsPluginsBuilder, mode)
+                TabletView(browserContentVM, mode)
             } else {
-                PhoneView(vm.jsPluginsBuilder, mode)
+                PhoneView(browserContentVM, mode)
             }
         }
         .environment(\.browserContentCoordinators, vm.coordinatorsInterface)

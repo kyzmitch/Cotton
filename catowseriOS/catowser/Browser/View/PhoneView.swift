@@ -12,8 +12,9 @@ import CoreBrowser
 struct PhoneView: View {
     // MARK: - view models of subviews
 
-    private let searchBarVM: SearchBarViewModel
-    private let browserContentVM: BrowserContentViewModel
+    @StateObject private var searchBarVM: SearchBarViewModel = .init()
+    /// A reference to created vm in main view
+    @ObservedObject private var browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
     
@@ -64,7 +65,8 @@ struct PhoneView: View {
         return MenuViewModel(style)
     }
     
-    init(_ jsPluginsBuilder: any JSPluginsSource, _ mode: SwiftUIMode) {
+    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
+        self.browserContentVM = browserContentVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -84,8 +86,6 @@ struct PhoneView: View {
         showSearchSuggestions = false
         searchQuery = ""
         searchBarAction = .clearView
-        browserContentVM = BrowserContentViewModel(jsPluginsBuilder)
-        searchBarVM = SearchBarViewModel()
         self.mode = mode
         switch mode {
         case .compatible:
@@ -201,7 +201,8 @@ struct PhoneView: View {
 struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        PhoneView(source, .full)
+        let bvm: BrowserContentViewModel = .init(source)
+        PhoneView(bvm, .full)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }

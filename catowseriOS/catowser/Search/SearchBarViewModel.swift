@@ -17,7 +17,7 @@ import CottonCoreBaseKit
 /// and at the same time it implements `SearchSuggestionsListDelegate`
 /// and `UISearchBarDelegate` which couldn't be implemented in SwiftUI view.
 /// This class is only needed for SwiftUI mode when it uses old UKit view controller.
-final class SearchBarViewModel: NSObject {
+final class SearchBarViewModel: NSObject, ObservableObject {
     /// Based on values from observed delegates and search bar state it is possible to tell
     /// if search suggestions view can be showed or no.
     @Published var showSearchSuggestions: Bool
