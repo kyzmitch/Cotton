@@ -38,7 +38,7 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     private let vm: MainBrowserModel<C>
     /// if Developer changes it in dev settings, then it is required to restart the app.
     /// Some other old code (coordinators and UIKit views) depends on that value
-    /// so, if new values is selected in dev menu, then it could create bugs
+    /// so, if new values is selected in dev menu, then it could create bugs if app is not restarted
     private let mode: SwiftUIMode
     
     init(_ vm: MainBrowserModel<C>) {
@@ -49,9 +49,9 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     var body: some View {
         Group {
             if isPad {
-                TabletView(vm, mode)
+                TabletView(vm.jsPluginsBuilder, mode)
             } else {
-                PhoneView(vm, mode)
+                PhoneView(vm.jsPluginsBuilder, mode)
             }
         }
         .environment(\.browserContentCoordinators, vm.coordinatorsInterface)

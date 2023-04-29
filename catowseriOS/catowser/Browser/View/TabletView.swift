@@ -9,10 +9,9 @@
 import SwiftUI
 import CoreBrowser
 
-struct TabletView<C: BrowserContentCoordinators>: View {
+struct TabletView: View {
     // MARK: - view models of subviews
     
-    private var model: MainBrowserModel<C>
     private let searchBarVM: SearchBarViewModel
     private let browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
@@ -62,7 +61,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         return MenuViewModel(style)
     }
     
-    init(_ model: MainBrowserModel<C>, _ mode: SwiftUIMode) {
+    init(_ jsPluginsBuilder: any JSPluginsSource, _ mode: SwiftUIMode) {
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -82,10 +81,7 @@ struct TabletView<C: BrowserContentCoordinators>: View {
         showSearchSuggestions = false
         searchQuery = ""
         searchBarAction = .clearView
-        // Store references to subview models in the main view
-        // to be able to subscribe for the publishers
-        self.model = model
-        browserContentVM = BrowserContentViewModel(model.jsPluginsBuilder)
+        browserContentVM = BrowserContentViewModel(jsPluginsBuilder)
         searchBarVM = SearchBarViewModel()
         self.mode = mode
         showingMenu = false
@@ -183,8 +179,8 @@ struct TabletView<C: BrowserContentCoordinators>: View {
 #if DEBUG
 struct TabletView_Previews: PreviewProvider {
     static var previews: some View {
-        let model = MainBrowserModel(DummyDelegate())
-        TabletView(model, .compatible)
+        let source: DummyJSPluginsSource = .init()
+        TabletView(source, .compatible)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }
