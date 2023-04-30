@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct SearchSuggestionsLegacyView: UIViewControllerRepresentable {
+struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
     @Binding private var searchQuery: String
@@ -18,10 +18,6 @@ struct SearchSuggestionsLegacyView: UIViewControllerRepresentable {
          _ delegate: SearchSuggestionsListDelegate?) {
         _searchQuery = searchQuery
         self.delegate = delegate
-    }
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

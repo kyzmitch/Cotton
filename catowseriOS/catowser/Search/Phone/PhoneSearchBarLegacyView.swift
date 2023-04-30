@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
+struct PhoneSearchBarLegacyView: CatowserUIVCRepresentable {
     private weak var searchBarDelegate: UISearchBarDelegate?
     /// Model also has action property
     @Binding private var action: SearchBarAction
@@ -20,10 +20,6 @@ struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
     }
     
     typealias UIViewControllerType = UIViewController
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate)

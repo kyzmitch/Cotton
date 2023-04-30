@@ -8,16 +8,12 @@
 
 import SwiftUI
 
-struct ToolbarLegacyView: UIViewControllerRepresentable {
+struct ToolbarLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     @Binding private var webViewInterface: WebViewNavigatable?
     
     init(_ webViewInterface: Binding<WebViewNavigatable?>) {
         _webViewInterface = webViewInterface
-    }
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

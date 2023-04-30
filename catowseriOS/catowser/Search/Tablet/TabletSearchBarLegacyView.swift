@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct TabletSearchBarLegacyView: UIViewControllerRepresentable {
+struct TabletSearchBarLegacyView: CatowserUIVCRepresentable {
     private weak var searchBarDelegate: UISearchBarDelegate?
     @Binding private var action: SearchBarAction
     @Binding private var webViewInterface: WebViewNavigatable?
@@ -22,10 +22,6 @@ struct TabletSearchBarLegacyView: UIViewControllerRepresentable {
     }
     
     typealias UIViewControllerType = UIViewController
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators

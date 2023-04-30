@@ -9,16 +9,12 @@
 import SwiftUI
 import UIKit
 
-struct TopSitesLegacyView: UIViewControllerRepresentable {
+struct TopSitesLegacyView: CatowserUIVCRepresentable {
     private let vm: TopSitesViewModel
     typealias UIViewControllerType = UIViewController
     
     init(_ vm: TopSitesViewModel) {
         self.vm = vm
-    }
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

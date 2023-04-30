@@ -43,7 +43,7 @@ struct WebView: View {
 }
 
 /// SwiftUI wrapper around UIKit web view view controller
-private struct WebViewLegacyView: UIViewControllerRepresentable {
+private struct WebViewLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
     private let model: WebViewModelV2

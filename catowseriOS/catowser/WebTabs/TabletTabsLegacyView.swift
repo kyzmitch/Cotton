@@ -8,12 +8,8 @@
 
 import SwiftUI
 
-struct TabletTabsLegacyView: UIViewControllerRepresentable {
+struct TabletTabsLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let vc = vcFactory.tabsViewController()
