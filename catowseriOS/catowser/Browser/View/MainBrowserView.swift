@@ -35,12 +35,14 @@ extension UIFrameworkType {
 }
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
+    /// Store main view model in this main view to not have generic parameter in phone/tablet views
     private let vm: MainBrowserModel<C>
-    ///
+    /// Browser content view model
     @ObservedObject private var browserContentVM: BrowserContentViewModel
-    /// if Developer changes it in dev settings, then it is required to restart the app.
-    /// Some other old code (coordinators and UIKit views) depends on that value
-    /// so, if new values is selected in dev menu, then it could create bugs if app is not restarted
+    /// if User changes it in dev settings, then it is required to restart the app.
+    /// Some other old code paths (coordinators and UIKit views) depend on that value,
+    /// so, if new value is selected in dev menu, then it could create bugs if app is not restarted.
+    ///  At the moment app will crash if User selects new UI mode.
     private let mode: SwiftUIMode
     
     init(_ vm: MainBrowserModel<C>) {
