@@ -12,10 +12,11 @@ import Combine
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
-    /// View model mainly used as a Tabs observer to know current tab's content type
-    private var model: BrowserContentModel
+    /// Plugins builder needed by web view model
+    /// but the reference needs to be holded/created by another vm on upper level
+    private let jsPluginsBuilder: any JSPluginsSource
     /// The main state of the browser content view
-    @Binding private var state: Tab.ContentType
+    @Binding private var contentType: Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
     @Binding private var isLoading: Bool
@@ -24,57 +25,44 @@ struct BrowserContentView: View {
     /// Web view view model reference
     private let webViewModel: WebViewModelV2
     /// Top sites model reference
-    private let topSitesModel: TopSitesModel
-    /// Improved web view content publisher, attempt to fix `removeDuplicates` part
-    /// because it could be re-created during view body update.
-    private let contentType: AnyPublisher<Tab.ContentType, Never>
+    private let topSitesModel: TopSitesViewModel
+    /// Selected swiftUI mode which is set at app start
+    private let mode: SwiftUIMode
     
-    init(_ model: BrowserContentModel,
+    init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Binding<Bool>,
-         _ state: Binding<Tab.ContentType>,
-         _ webViewNeedsUpdate: Binding<Bool>) {
+         _ contentType: Binding<Tab.ContentType>,
+         _ webViewNeedsUpdate: Binding<Bool>,
+         _ mode: SwiftUIMode) {
         _isLoading = isLoading
-        _state = state
+        _contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
-        webViewModel = WebViewModelV2(model.jsPluginsBuilder, siteNavigation)
-        topSitesModel = TopSitesModel()
-        // drops first value because it is default one
-        // which it seems like must be initialized anyway
-        // but don't need to be used
-        contentType = model
-            .$contentType
-            .dropFirst(1)
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-        self.model = model
+        webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
+        topSitesModel = TopSitesViewModel()
+        self.jsPluginsBuilder = jsPluginsBuilder
+        self.mode = mode
     }
     
     var body: some View {
-        VStack {
-            if isLoading {
+        dynamicContentView
+    }
+    
+    @ViewBuilder
+    private var dynamicContentView: some View {
+        if isLoading {
+            Spacer()
+        } else {
+            switch contentType {
+            case .blank:
                 Spacer()
-            } else {
-                switch state {
-                case .blank:
-                    Spacer()
-                case .topSites:
-                    TopSitesView(topSitesModel)
-                case .site(let site):
-                    WebView(webViewModel, site, $webViewNeedsUpdate)
-                default:
-                    Spacer()
-                }
+            case .topSites:
+                TopSitesView(topSitesModel, mode)
+            case .site(let site):
+                WebView(webViewModel, site, $webViewNeedsUpdate, mode)
+            default:
+                Spacer()
             }
-        }
-        .onReceive(contentType) { value in
-            if state != value {
-                // using additional check because `removeDuplicates` didn't work?
-                state = value
-            }
-        }
-        .onReceive(model.$loading.dropFirst(1)) { value in
-            isLoading = value
         }
     }
 }

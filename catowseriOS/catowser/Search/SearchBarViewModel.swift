@@ -13,10 +13,18 @@ import FeaturesFlagsKit
 import BrowserNetworking
 import CottonCoreBaseKit
 
-final class SearchBarViewModel: NSObject {
-    @Published var showSuggestions: Bool
+/// An analog of existing SearchBar coordinator, but for SwiftUI
+/// and at the same time it implements `SearchSuggestionsListDelegate`
+/// and `UISearchBarDelegate` which couldn't be implemented in SwiftUI view.
+/// This class is only needed for SwiftUI mode when it uses old UKit view controller.
+final class SearchBarViewModel: NSObject, ObservableObject {
+    /// Based on values from observed delegates and search bar state it is possible to tell
+    /// if search suggestions view can be showed or no.
+    @Published var showSearchSuggestions: Bool
+    /// Search query which is empty by default and won't look like URL
     @Published var searchQuery: String
-    @Published var state: SearchBarState
+    /// Current action which is initiated by User to search bar which would be handled in SwiftUI view
+    @Published var action: SearchBarAction
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String
@@ -39,10 +47,10 @@ final class SearchBarViewModel: NSObject {
     }
     
     override init() {
-        showSuggestions = false
+        showSearchSuggestions = false
         searchQuery = ""
         tempSearchText = ""
-        state = .blankSearch
+        action = .clearView
         super.init()
     }
 }
@@ -65,7 +73,7 @@ private extension SearchBarViewModel {
 
 extension SearchBarViewModel: SearchSuggestionsListDelegate {
     func searchSuggestionDidSelect(_ content: SuggestionType) {
-        showSuggestions = false
+        showSearchSuggestions = false
         switch content {
         case .looksLikeURL(let likeURL):
             guard let url = URL(string: likeURL) else {
@@ -92,9 +100,9 @@ extension SearchBarViewModel: SearchSuggestionsListDelegate {
 extension SearchBarViewModel: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchQuery: String) {
         if searchQuery.isEmpty || searchQuery.looksLikeAURL() {
-            showSuggestions = false
+            showSearchSuggestions = false
         } else {
-            showSuggestions = true
+            showSearchSuggestions = true
             self.searchQuery = searchQuery
         }
     }
@@ -120,12 +128,12 @@ extension SearchBarViewModel: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        state = .startSearch
+        action = .startSearch
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        state = .cancelTapped
-        showSuggestions = false
+        action = .cancelTapped
+        showSearchSuggestions = false
         searchBar.resignFirstResponder()
     }
 

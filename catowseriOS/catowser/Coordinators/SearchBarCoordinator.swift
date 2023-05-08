@@ -85,7 +85,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
 }
 
 enum SearchBarRoute: Route {
-    case changeState(SearchBarState)
+    case handleAction(SearchBarAction)
     case suggestions(String)
     case hideSuggestions
 }
@@ -95,11 +95,11 @@ extension SearchBarCoordinator: Navigating {
     
     func showNext(_ route: R) {
         switch route {
-        case .changeState(let state):
+        case .handleAction(let action):
             guard let searchInterface = startedVC as? SearchBarControllerInterface else {
                 return
             }
-            searchInterface.changeState(to: state)
+            searchInterface.handleAction(action)
         case .suggestions(let query):
             searhSuggestionsCoordinator?.showNext(.startSearch(query))
         case .hideSuggestions:
@@ -254,13 +254,13 @@ extension SearchBarCoordinator: UISearchBarDelegate {
     }
 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        showNext(.changeState(.startSearch))
+        showNext(.handleAction(.startSearch))
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         showNext(.hideSuggestions)
         searchBar.resignFirstResponder()
-        showNext(.changeState(.cancelTapped))
+        showNext(.handleAction(.cancelTapped))
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

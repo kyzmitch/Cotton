@@ -8,75 +8,101 @@
 
 import SwiftUI
 
-extension LocalizedStringKey {
-    static let placeholderTextKey: LocalizedStringKey = "placeholder_searchbar"
-}
-
 /**
  A search bar fully implemented in SwiftUI.
  
- Still need to implement the following:
  - after moving focus to TextField (tap on it) if query is not empty, then need to select all text
  which would allow to easely clear/remove currently entered query string. The same behaviour has Safari for iOS.
+ - need to use the same logic for overlay view to show/hide it from SearchBarLegacyView
+ createShowedLabelConstraint and hiddenLabelConstraint
  */
 struct SearchBarViewV2: View {
-    @Binding private var query: String
-    @Binding private var state: SearchBarState
-    @FocusState private var isFocused: Bool
+    @Environment(\.horizontalSizeClass) var hSizeClass
     
-    init(_ queryBinding: Binding<String>,
-         _ stateBinding: Binding<SearchBarState>) {
-        _query = queryBinding
-        _state = stateBinding
-        isFocused = false
+    @Binding private var query: String
+    @Binding private var action: SearchBarAction
+    @State private var showClearButton: Bool = false
+    @State private var state: SearchBarState = .blankViewMode
+    @State private var siteName: String = ""
+    @State private var showOverlay: Bool = false
+    @State private var showKeyboard: Bool = false
+    
+    private let cancelBtnVM: ClearCancelButtonViewModel
+    private let textFieldVM: SearchFieldViewModel
+    private let overlayVM: TappableTextOverlayViewModel
+    
+    private let overlayHidden: CGFloat = -UIScreen.main.bounds.width
+    
+    init(_ query: Binding<String>,
+         _ action: Binding<SearchBarAction>) {
+        _query = query
+        _action = action
+        cancelBtnVM = .init()
+        textFieldVM = .init()
+        overlayVM = .init()
     }
     
     var body: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-            TextField(.placeholderTextKey, text: $query)
-                .foregroundColor(.primary)
-                .focused($isFocused)
-                .textInputAutocapitalization(.never)
-                .textSelection(.enabled)
-                .onSubmit {
-                    state = .cancelTapped
+        ZStack {
+            HStack {
+                SearchFieldView($query, $showKeyboard, textFieldVM)
+                if state.showCancelButton {
+                    ClearCancelPairButton($showClearButton, cancelBtnVM)
                 }
-                .onChange(of: isFocused, perform: { value in
-                    if value {
-                        state = .startSearch
-                    }
-                })
-            if state.showCancelButton {
-                if !query.isEmpty {
-                    Button {
-                        query = ""
-                    } label: {
-                        Image(systemName: "x.circle.fill")
-                    }
+            }.customHStackStyle()
+                .opacity(showOverlay ? 0 : 1)
+                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
+            TappableTextOverlayView($siteName, overlayVM)
+                .opacity(showOverlay ? 1 : 0)
+                .offset(x: showOverlay ? 0 : (hSizeClass == .compact ? overlayHidden : -overlayHidden), y: 0)
+                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
+        }
+        .onChange(of: action) { newValue in
+            switch newValue {
+            case .startSearch:
+                state = .inSearchMode(state.title, state.content)
+            case .cancelTapped:
+                if state.title.isEmpty {
+                    state = .blankViewMode
+                } else {
+                    state = .viewMode(state.title, state.content, true)
                 }
-                Button(.cancelButtonTtl) {
-                    state = .cancelTapped
-                }
-                .foregroundColor(.gray)
-                .foregroundColor(Color(.systemBlue))
+            case .updateView(let title, let content) where !title.isEmpty:
+                state = .viewMode(title, content, false)
+            case .clearView:
+                state = .blankViewMode
+            default:
+                // just in case
+                state = .blankViewMode
             }
         }
-        .customHStackStyle()
         .onChange(of: state) { newValue in
             switch newValue {
-            case .blankSearch:
-                isFocused = false
+            case .blankViewMode:
+                showKeyboard = false
                 query = ""
-            case .startSearch:
-                isFocused = true
-            case .cancelTapped:
-                isFocused = false
-            case .viewMode(_, let searchBarContent, _):
-                isFocused = false
-                query = searchBarContent
+                siteName = ""
+                showOverlay = false
+            case .inSearchMode:
+                showOverlay = false
+                showKeyboard = true
+            case .viewMode(let title, let content, _):
+                showKeyboard = false
+                query = content
+                siteName = title
+                showOverlay = true
             }
         }
+        .onChange(of: query) { showClearButton = !$0.isEmpty }
+        .onReceive(cancelBtnVM.$clearTapped.dropFirst()) { query = "" }
+        .onReceive(cancelBtnVM.$cancelTapped.dropFirst()) { action = .cancelTapped }
+        .onReceive(textFieldVM.$submitTapped.dropFirst()) { action = .cancelTapped }
+        .onReceive(textFieldVM.$isFocused.dropFirst()) { newValue in
+            if newValue {
+                action = .startSearch
+            }
+        }
+        .onReceive(overlayVM.$tapped.dropFirst()) { action = .startSearch }
     }
 }
 
@@ -97,15 +123,11 @@ extension View {
     }
 }
 
-private extension LocalizedStringKey {
-    static let cancelButtonTtl: LocalizedStringKey = "ttl_common_cancel"
-}
-
 #if DEBUG
 struct SearchBarViewV2_Previews: PreviewProvider {
     static var previews: some View {
-        let state: Binding<SearchBarState> = .init {
-            .startSearch
+        let action: Binding<SearchBarAction> = .init {
+            .updateView("example.com", "https://example.com/")
         } set: { _ in
             //
         }
@@ -116,7 +138,9 @@ struct SearchBarViewV2_Previews: PreviewProvider {
         }
 
         // For some reason it jumps after selection
-        SearchBarViewV2(query, state)
+        SearchBarViewV2(query, action)
+            .frame(maxWidth: 400)
+            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }
 #endif

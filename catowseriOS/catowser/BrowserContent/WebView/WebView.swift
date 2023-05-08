@@ -22,22 +22,28 @@ struct WebView: View {
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
     @Binding private var webViewNeedsUpdate: Bool
+    /// Selected swiftUI mode which is set at app start
+    private let mode: SwiftUIMode
     
     init(_ model: WebViewModelV2,
          _ site: Site,
-         _ webViewNeedsUpdate: Binding<Bool>) {
+         _ webViewNeedsUpdate: Binding<Bool>,
+         _ mode: SwiftUIMode) {
         self.model = model
         self.site = site
         _webViewNeedsUpdate = webViewNeedsUpdate
+        self.mode = mode
     }
     
     var body: some View {
+        // There is no system WebView type for SwiftUI
+        // so that, the mode is not used for now
         WebViewLegacyView(model, site, $webViewNeedsUpdate)
     }
 }
 
 /// SwiftUI wrapper around UIKit web view view controller
-private struct WebViewLegacyView: UIViewControllerRepresentable {
+private struct WebViewLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
     private let model: WebViewModelV2

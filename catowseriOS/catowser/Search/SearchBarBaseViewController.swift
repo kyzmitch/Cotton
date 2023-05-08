@@ -11,7 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 
 protocol SearchBarControllerInterface: AnyObject {
-    /* non optional */ func changeState(to state: SearchBarState)
+    /* non optional */ func handleAction(_ action: SearchBarAction)
 }
 
 final class SearchBarBaseViewController: BaseViewController {
@@ -23,7 +23,7 @@ final class SearchBarBaseViewController: BaseViewController {
         if case .uiKit = FeatureManager.appUIFrameworkValue() {
             customFrame = .zero
         } else {
-            customFrame = .init(x: 0, y: 0, width: 0, height: .searchViewHeight)
+            customFrame = .init(x: 0, y: 0, width: 0, height: .toolbarViewHeight)
         }
         searchBarView = .init(frame: customFrame)
         searchBarView.delegate = searchBarDelegate
@@ -47,6 +47,12 @@ final class SearchBarBaseViewController: BaseViewController {
 
         TabsListManager.shared.attach(self)
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        searchBarView.handleTraitCollectionChange()
+    }
 }
 
 extension SearchBarBaseViewController: TabsObserver {
@@ -56,29 +62,21 @@ extension SearchBarBaseViewController: TabsObserver {
         // to replace site on tab which is not active
         // So, assume that `tab` parameter is currently selected
         // and will replace content which is currently displayed by search bar
-
-        let state: SearchBarState = .viewMode(tab.title, tab.searchBarContent, true)
-        changeState(to: state)
+        handleAction(.updateView(tab.title, tab.searchBarContent))
     }
 
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        let state: SearchBarState
-
         switch content {
         case .site(let site):
-            state = .viewMode( site.title, site.searchBarContent, false)
+            handleAction(.updateView(site.title, site.searchBarContent))
         default:
-            state = .blankSearch
+            handleAction(.clearView)
         }
-
-        // run without animation, because label with search query
-        // slides when web view has already displayed
-        changeState(to: state)
     }
 }
 
 extension SearchBarBaseViewController: SearchBarControllerInterface {
-    func changeState(to state: SearchBarState) {
-        searchBarView.state = state
+    func handleAction(_ action: SearchBarAction) {
+        searchBarView.handleAction(action)
     }
 }

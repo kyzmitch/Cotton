@@ -8,24 +8,21 @@
 
 import SwiftUI
 
-struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
-    private var model: SearchBarViewModel
-    @Binding private var state: SearchBarState
+struct PhoneSearchBarLegacyView: CatowserUIVCRepresentable {
+    private weak var searchBarDelegate: UISearchBarDelegate?
+    /// Model also has action property
+    @Binding private var action: SearchBarAction
     
-    init(_ model: SearchBarViewModel,
-         _ state: Binding<SearchBarState>) {
-        self.model = model
-        _state = state
+    init(_ searchBarDelegate: UISearchBarDelegate?,
+         _ action: Binding<SearchBarAction>) {
+        self.searchBarDelegate = searchBarDelegate
+        _action = action
     }
     
     typealias UIViewControllerType = UIViewController
     
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
-    
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        let vc = vcFactory.deviceSpecificSearchBarViewController(model)
+        let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }
@@ -34,6 +31,8 @@ struct PhoneSearchBarLegacyView: UIViewControllerRepresentable {
         guard let interface = uiViewController as? SearchBarControllerInterface else {
             return
         }
-        interface.changeState(to: state)
+        // Update UIKit search bar view when SwiftUI detects tab content replacement
+        // or User taps on Cancel button and it is detected by search bar delegate.
+        interface.handleAction(action)
     }
 }

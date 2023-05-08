@@ -49,7 +49,7 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         if let existingVC = toolBarVC {
             return existingVC
         }
-        let vc = WebBrowserToolbarController(coordinator, downloadDelegate, settingsDelegate)
+        let vc = BrowserToolbarController(coordinator, downloadDelegate, settingsDelegate)
         vc.presenter = presenter
         toolBarVC = vc
         return toolBarVC

@@ -234,8 +234,8 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
 }
 
 extension TabletSearchBarViewController: SearchBarControllerInterface {
-    func changeState(to state: SearchBarState) {
-        searchBarViewController.changeState(to: state)
+    func handleAction(_ action: SearchBarAction) {
+        searchBarViewController.handleAction(action)
     }
 }
 

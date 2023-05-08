@@ -35,32 +35,30 @@ extension UIFrameworkType {
 }
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
-    private let model: MainBrowserModel<C>
-    
-    init(_ model: MainBrowserModel<C>) {
-        self.model = model
-    }
-    
-    var body: some View {
-        _MainBrowserView<C>(model: model)
-            .environment(\.browserContentCoordinators, model.coordinatorsInterface)
-    }
-}
-
-private struct _MainBrowserView<C: BrowserContentCoordinators>: View {
-    private var model: MainBrowserModel<C>
+    /// Store main view model in this main view to not have generic parameter in phone/tablet views
+    private let vm: MainBrowserModel<C>
+    /// Browser content view model
+    @ObservedObject private var browserContentVM: BrowserContentViewModel
+    /// if User changes it in dev settings, then it is required to restart the app.
+    /// Some other old code paths (coordinators and UIKit views) depend on that value,
+    /// so, if new value is selected in dev menu, then it could create bugs if app is not restarted.
+    ///  At the moment app will crash if User selects new UI mode.
     private let mode: SwiftUIMode
     
-    init(model: MainBrowserModel<C>) {
-        self.model = model
+    init(_ vm: MainBrowserModel<C>) {
+        self.vm = vm
+        browserContentVM = .init(vm.jsPluginsBuilder)
         mode = FeatureManager.appUIFrameworkValue().swiftUIMode
     }
     
     var body: some View {
-        if isPad {
-            TabletView(model, mode)
-        } else {
-            PhoneView(model, mode)
+        Group {
+            if isPad {
+                TabletView(browserContentVM, mode)
+            } else {
+                PhoneView(browserContentVM, mode)
+            }
         }
+        .environment(\.browserContentCoordinators, vm.coordinatorsInterface)
     }
 }

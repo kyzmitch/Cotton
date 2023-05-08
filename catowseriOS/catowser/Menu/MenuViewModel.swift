@@ -24,7 +24,6 @@ protocol DeveloperMenuPresenter: AnyObject {
     func host(_ host: Host, willUpdateJsState enabled: Bool)
 }
 
-@available(iOS 13.0, *)
 final class MenuViewModel: ObservableObject {
     // MARK: - global settings
     

@@ -24,8 +24,6 @@ extension UIViewController: SwiftUIPreviewable {
         containerView.addSubview(viewController.view)
         viewController.didMove(toParent: self)
     }
-    
-    
 }
 
 extension UIView: SwiftUIPreviewable {}
