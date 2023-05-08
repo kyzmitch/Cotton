@@ -1,5 +1,5 @@
 //
-//  WebBrowserToolbarController.swift
+//  BrowserToolbarController.swift
 //  catowser
 //
 //  Created by admin on 19/02/2018.
@@ -17,7 +17,7 @@
 import UIKit
 import CoreBrowser
 
-final class WebBrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
+final class BrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
     private weak var coordinator: C?
     /// download panel delegate
     private weak var downloadPanelDelegate: DownloadPanelPresenter?
@@ -35,14 +35,14 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     
     var presenter: AnyViewController?
     
-    private let toolbarView: WebBrowserToolbarView
+    private let toolbarView: BrowserToolbarView
 
     init(_ coordinator: C?,
          _ downloadPanelDelegate: DownloadPanelPresenter?,
          _ globalSettingsDelegate: GlobalMenuDelegate?) {
         self.coordinator = coordinator
         self.downloadPanelDelegate = downloadPanelDelegate
-        toolbarView = WebBrowserToolbarView(frame: .zero)
+        toolbarView = BrowserToolbarView(frame: .zero)
         toolbarView.globalSettingsDelegate = globalSettingsDelegate
         super.init(nibName: nil, bundle: nil)
     }
@@ -100,7 +100,7 @@ final class WebBrowserToolbarController<C: Navigating>: BaseViewController where
     }
 }
 
-extension WebBrowserToolbarController: FullSiteNavigationComponent {
+extension BrowserToolbarController: FullSiteNavigationComponent {
     func changeBackButton(to canGoBack: Bool) {
         let prevState = toolbarView.state
         toolbarView.state = .updateBackState(canGoBack)

@@ -13,7 +13,6 @@ import SwiftUI
 
 #if DEBUG
 // swiftlint:disable type_name
-@available(iOS 13.0, *)
 struct TabDefaultContentView_Previews: PreviewProvider {
     static var previews: some View {
         let model: TabDefaultContentModel = .init { (_) in

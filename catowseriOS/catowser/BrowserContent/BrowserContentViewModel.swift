@@ -1,5 +1,5 @@
 //
-//  BrowserContentModel.swift
+//  BrowserContentViewModel.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 12/17/22.
@@ -11,7 +11,7 @@ import CoreBrowser
 
 /// Content view model which observes for the currently selected tab content type.
 /// This reference type should be used to update the view if content changes.
-final class BrowserContentModel {
+final class BrowserContentViewModel: ObservableObject {
     /// View content type. https://stackoverflow.com/a/56724174
     @Published var contentType: Tab.ContentType
     /// Tab's content loading
@@ -44,7 +44,7 @@ final class BrowserContentModel {
     }
 }
 
-extension BrowserContentModel: TabsObserver {
+extension BrowserContentViewModel: TabsObserver {
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         if let previousValue = previousTabContent, previousValue.isStatic && previousValue == content {
             // Optimization to not do remove & insert of the same static view

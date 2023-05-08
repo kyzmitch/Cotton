@@ -7,13 +7,10 @@
 //
 
 import FeaturesFlagsKit
-#if canImport(SwiftUI)
 import SwiftUI
-#endif
 
 #if DEBUG
 // swiftlint:disable type_name
-@available(iOS 13.0, *)
 struct AppAsyncApiTypeView_Previews: PreviewProvider {
     static var previews: some View {
         let model: AppAsyncApiTypeModel = .init { (_) in

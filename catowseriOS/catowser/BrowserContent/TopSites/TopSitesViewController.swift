@@ -70,7 +70,7 @@ where C.R == TopSitesRoute {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(equalInset: 20)
+        return UIEdgeInsets(equalInset: ImageViewSizes.spacing)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

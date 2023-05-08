@@ -10,34 +10,8 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 
-/// The sate of search bar
-enum SearchBarState: Equatable {
-    /// initial state for new blank tab
-    case blankSearch
-    /// keyboard and `cancel` button are visible
-    case startSearch
-    /// keyboard is hidden and old text is visible
-    case cancelTapped
-    /// when keyboard and all buttons are not displayed
-    case viewMode(_ title: String, _ searchAddressContent: String, _ animated: Bool)
-    
-    static func create(_ value: Tab.ContentType) -> SearchBarState {
-        switch value {
-        case .blank, .favorites, .topSites, .homepage:
-            return .blankSearch
-        case .site(let site):
-            return .viewMode(site.title, site.searchBarContent, false)
-        }
-    }
-    
-    var showCancelButton: Bool {
-        switch self {
-        case .blankSearch, .viewMode, .cancelTapped:
-            return false
-        case .startSearch:
-            return true
-        }
-    }
+enum SearchBarConstants {
+    static let animationDuration = 0.3
 }
 
 final class SearchBarLegacyView: UIView {
@@ -50,16 +24,39 @@ final class SearchBarLegacyView: UIView {
     
     // MARK: - state properties
     
-    var state: SearchBarState = .blankSearch {
+    private var state: SearchBarState = .blankViewMode {
         didSet {
             onStateChange(state)
         }
     }
     
-    /// To remember previously entered search query
-    private var searchBarContent: String?
+    func handleAction(_ action: SearchBarAction) {
+        switch action {
+        case .startSearch:
+            let initialTitle = state.title
+            let initialContent = state.content
+            state = .inSearchMode(initialTitle, initialContent)
+        case .cancelTapped:
+            let initialContent = state.content
+            if initialContent.isEmpty {
+                state = .blankViewMode
+            } else {
+                state = .viewMode(state.title, initialContent, true)
+            }
+        case .updateView(let newTitle, let newContent) where !newTitle.isEmpty:
+            state = .viewMode(newTitle, newContent, false)
+        case .clearView:
+            state = .blankViewMode
+        default:
+            // just in case
+            state = .blankViewMode
+        }
+    }
     
     private let uiFramework: UIFrameworkType
+    
+    /// Only needed for SwiftUI wrapper for phone layout
+    private var phoneWidthConstraint: NSLayoutConstraint?
     
     // MARK: - initializers
     
@@ -85,11 +82,13 @@ final class SearchBarLegacyView: UIView {
         } else {
             if uiFramework.swiftUIBased {
                 // Fix for the SwiftUI preview to have some width, otherwise whole view has 0 width
-                // and for some reason in preview mode the supr view doesn't tell the width
+                // and for some reason in preview mode the super view doesn't tell the width
                 if isPad {
                     searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
                 } else {
-                    searchBarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 16).isActive = true
+                    let widthValue = UIScreen.main.bounds.width - 16
+                    phoneWidthConstraint = searchBarView.widthAnchor.constraint(equalToConstant: widthValue)
+                    phoneWidthConstraint?.isActive = true
                 }
             } else {
                 searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -108,9 +107,18 @@ final class SearchBarLegacyView: UIView {
         dohStateIcon.widthAnchor.constraint(equalTo: dohStateIcon.heightAnchor).isActive = true
     }
     
+    func handleTraitCollectionChange() {
+        if uiFramework.swiftUIBased && !isPad {
+            let widthValue = UIScreen.main.bounds.width - 16
+            phoneWidthConstraint?.constant = widthValue
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - layout
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -120,6 +128,8 @@ final class SearchBarLegacyView: UIView {
         
         siteNameLabel.addGestureRecognizer(siteNameTapGesture)
     }
+    
+    // MARK: - subview properties
     
     /// The search bar view.
     private let searchBarView: UISearchBar = {
@@ -204,8 +214,7 @@ private extension SearchBarLegacyView {
         // See `diff` comment to find a difference with previos state handling
         
         switch nextState {
-        case .blankSearch:
-            searchBarContent = nil
+        case .blankViewMode:
             searchBarView.text = nil
             siteNameLabel.text = .placeholderText
             searchBarView.setShowsCancelButton(false, animated: false)
@@ -213,37 +222,21 @@ private extension SearchBarLegacyView {
             // for blank mode it is better to hide label and
             // make search bar frontmost right away
             prepareForEditMode()
-        case .startSearch:
+        case .inSearchMode:
             searchBarView.setShowsCancelButton(true, animated: true)
             guard searchBarView.text != nil else {
                 break
             }
             // need somehow select all text in search bar view
             prepareForEditMode()
-        case .cancelTapped:
-            searchBarView.setShowsCancelButton(false, animated: true)
-            searchBarView.resignFirstResponder()
-
-            guard searchBarView.text != nil else {
-                break
-            }
-
-            let dohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-            dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
-            prepareForViewMode(animated: true, animateSecurityView: dohEnabled)
-            // even if search bar now is not visible and
-            // it is under label, need to revert text content in it
-            searchBarView.text = self.searchBarContent
         case .viewMode(let title, let searchBarContent, let animated):
+            searchBarView.resignFirstResponder()
             searchBarView.setShowsCancelButton(false, animated: animated)
             searchBarView.text = searchBarContent
             let dohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
             dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
             siteNameLabel.text = title
             prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)
-
-            // remember search query in case if it will be edited
-            self.searchBarContent = searchBarContent
         }
     }
     
@@ -270,7 +263,7 @@ private extension SearchBarLegacyView {
         siteNameLabel.alpha = 0
         dohStateIcon.alpha = 0
         
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: SearchBarConstants.animationDuration) {
             self.siteNameLabel.layoutIfNeeded()
             self.searchBarView.alpha = 1
         }
@@ -306,7 +299,7 @@ private extension SearchBarLegacyView {
         }
         
         if animated {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: SearchBarConstants.animationDuration) {
                 applyLayout()
             }
         } else {

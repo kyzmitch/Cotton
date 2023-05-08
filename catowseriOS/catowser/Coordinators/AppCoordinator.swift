@@ -533,6 +533,8 @@ private extension AppCoordinator {
     
     func open(tabContent: Tab.ContentType) {
         linkTagsCoordinator?.showNext(.closeTags)
+        // hide suggestions as well
+        searchBarCoordinator?.showNext(.hideSuggestions)
 
         if let previousValue = previousTabContent, previousValue.isStatic && previousValue == tabContent {
             // Optimization to not do remove & insert of the same static view

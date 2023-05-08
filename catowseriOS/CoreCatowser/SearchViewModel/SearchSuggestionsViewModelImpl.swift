@@ -37,7 +37,6 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
     // MARK: - cancelation handlers
     
     private var searchSuggestionsDisposable: Disposable?
-    @available(iOS 13.0, *)
     private lazy var searchSuggestionsCancellable: AnyCancellable? = nil
     
 #if swift(>=5.5)

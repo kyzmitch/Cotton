@@ -1,5 +1,5 @@
 //
-//  WebBrowserToolbarView.swift
+//  BrowserToolbarView.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 17/04/2019.
@@ -34,7 +34,7 @@ enum WebToolbarState {
     }
 }
 
-final class WebBrowserToolbarView: UIToolbar {
+final class BrowserToolbarView: UIToolbar {
     /// global settings delegate
     weak var globalSettingsDelegate: GlobalMenuDelegate?
     /// web view navigation interface
@@ -82,28 +82,28 @@ final class WebBrowserToolbarView: UIToolbar {
     
     private lazy var backButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-back")
-        let back = #selector(WebBrowserToolbarView.handleBackPressed)
+        let back = #selector(BrowserToolbarView.handleBackPressed)
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: back)
         return btn
     }()
     
     private lazy var forwardButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-forward")
-        let forward = #selector(WebBrowserToolbarView.handleForwardPressed)
+        let forward = #selector(BrowserToolbarView.handleForwardPressed)
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: forward)
         return btn
     }()
     
     private lazy var reloadButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-refresh")
-        let reload = #selector(WebBrowserToolbarView.handleReloadPressed)
+        let reload = #selector(BrowserToolbarView.handleReloadPressed)
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: reload)
         return btn
     }()
     
     private lazy var actionsButton: UIBarButtonItem = {
         let btn: UIBarButtonItem
-        let actions = #selector(WebBrowserToolbarView.handleActionsPressed)
+        let actions = #selector(BrowserToolbarView.handleActionsPressed)
         if #available(iOS 13.0, *) {
             if let systemImage = UIImage.arropUp {
                 btn = .init(image: systemImage, style: .plain, target: self, action: actions)
@@ -270,7 +270,7 @@ final class WebBrowserToolbarView: UIToolbar {
     }
 }
 
-private extension WebBrowserToolbarView {
+private extension BrowserToolbarView {
     func updateToolbar(downloadsAvailable: Bool, actionsAvailable: Bool) {
         var barItems = standardToolbarButtons
         if actionsAvailable {
@@ -296,7 +296,7 @@ private extension WebBrowserToolbarView {
     }
 }
 
-extension WebBrowserToolbarView: TabsObserver {
+extension BrowserToolbarView: TabsObserver {
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
         switch content {
         case .site:

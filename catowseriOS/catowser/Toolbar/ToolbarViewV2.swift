@@ -10,54 +10,46 @@ import SwiftUI
 import CoreBrowser
 
 struct ToolbarViewV2: ToolbarContent {
-    private let model: WebBrowserToolbarModel
+    @ObservedObject var vm: BrowserToolbarViewModel
     @Binding private var tabsCount: Int
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
     @Binding private var showSearchSuggestions: Bool
     
-    init(_ model: WebBrowserToolbarModel,
+    @State private var isGoBackDisabled: Bool
+    @State private var isGoForwardDisabled: Bool
+    @State private var isRefreshDisabled: Bool
+    
+    init(_ vm: BrowserToolbarViewModel,
          _ tabsCount: Binding<Int>,
          _ showingMenu: Binding<Bool>,
          _ showingTabs: Binding<Bool>,
          _ showSearchSuggestions: Binding<Bool>) {
-        self.model = model
+        self.vm = vm
         _tabsCount = tabsCount
         _showingMenu = showingMenu
         _showingTabs = showingTabs
         _showSearchSuggestions = showSearchSuggestions
+        isGoBackDisabled = false
+        isGoForwardDisabled = false
+        isRefreshDisabled = false
     }
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                model.goBack()
-            } label: {
-                Image("nav-back")
-            }
-            .disabled(model.goBackDisabled)
+            DisableableButton("nav-back", $vm.goBackDisabled, vm.goBack)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                model.goForward()
-            } label: {
-                Image("nav-forward")
-            }
-            .disabled(model.goForwardDisabled)
+            DisableableButton("nav-forward", $vm.goForwardDisabled, vm.goForward)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                model.reload()
-            } label: {
-                Image("nav-refresh")
-            }
-            .disabled(model.reloadDisabled)
+            DisableableButton("nav-refresh", $vm.reloadDisabled, vm.reload)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
@@ -77,15 +69,7 @@ struct ToolbarViewV2: ToolbarContent {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            Button {
-                showSearchSuggestions = false
-                withAnimation(.easeInOut(duration: 1)) {
-                    showingMenu.toggle()
-                }
-            } label: {
-                Image(systemName: "square.and.arrow.up")
-            }
-            .foregroundColor(.black)
+            MenuButton($showSearchSuggestions, $showingMenu)
         }
     }
 }

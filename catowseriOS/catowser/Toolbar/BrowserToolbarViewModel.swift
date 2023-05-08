@@ -1,5 +1,5 @@
 //
-//  WebBrowserToolbarModel.swift
+//  BrowserToolbarViewModel.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 03.01.2023.
@@ -9,7 +9,7 @@
 import SwiftUI
 import CoreBrowser
 
-final class WebBrowserToolbarModel {
+final class BrowserToolbarViewModel: ObservableObject {
     /// Notifies if current web view changes
     @Published var webViewInterface: WebViewNavigatable?
     /// Max value should be 1.0 because total is equals to that by default
@@ -63,20 +63,20 @@ final class WebBrowserToolbarModel {
     }
 }
 
-extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
+extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
     func didBackNavigationUpdate(to canGoBack: Bool) {
+        goBackDisabled = !canGoBack
         siteNavigationDelegate?.changeBackButton(to: canGoBack)
     }
     
     func didForwardNavigationUpdate(to canGoForward: Bool) {
+        goForwardDisabled = !canGoForward
         siteNavigationDelegate?.changeForwardButton(to: canGoForward)
     }
     
-    func provisionalNavigationDidStart() {
-    }
+    func provisionalNavigationDidStart() {}
 
-    func didSiteOpen(appName: String) {
-    }
+    func didSiteOpen(appName: String) {}
     
     func loadingProgressdDidChange(_ progress: Float) {
         websiteLoadProgress = Double(progress)
@@ -102,7 +102,7 @@ extension WebBrowserToolbarModel: SiteExternalNavigationDelegate {
         // that is why no need to check for dublication.
         webViewInterface = interface
         reloadDisabled = interface == nil
-        goBackDisabled = interface == nil
-        goForwardDisabled = interface == nil
+        goBackDisabled = !(interface?.canGoBack ?? false)
+        goForwardDisabled = !(interface?.canGoForward ?? false)
     }
 }

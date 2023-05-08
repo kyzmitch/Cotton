@@ -11,15 +11,11 @@ import SwiftUI
 /// Temporarily view for tabs previews, but dismiss is not implemented.
 /// Probably should be handled in MainToolbarCoordinator didTabSelect
 /// or PhoneTabsCoordinator showSelected
-struct TabsPreviewsLegacyView: UIViewControllerRepresentable {
+struct TabsPreviewsLegacyView: CatowserUIVCRepresentable {
 
     init() {}
     
     typealias UIViewControllerType = UIViewController
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators

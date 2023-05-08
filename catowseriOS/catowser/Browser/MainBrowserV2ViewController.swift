@@ -30,11 +30,14 @@ import SwiftUI
 final class MainBrowserV2ViewController<C: Navigating & BrowserContentCoordinators>:
 UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     private weak var coordinator: C?
+    /// Store it in uikit view controller to not re-create view model after every redraw of main view in SwiftUI
+    private let viewModel: MainBrowserModel<C>
     
     init(_ coordinator: C) {
         self.coordinator = coordinator
-        let model: MainBrowserModel<C> = .init(coordinator)
-        let view = MainBrowserView(model)
+        viewModel = .init(coordinator)
+        
+        let view = MainBrowserView(viewModel)
         super.init(rootView: view)
     }
     

@@ -58,3 +58,6 @@
 "txt_tab_content_homepage" = "Домашняя страница";
 "txt_tab_content_favorites" = "Избранные сайты";
 "txt_tab_content_top_sites" = "Топ сайты";
+
+"txt_top_site_favicon" = "Favicon";
+"txt_top_site_title" = "Title";

@@ -1,5 +1,5 @@
 //
-//  TopSitesModel.swift
+//  TopSitesViewModel.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 12/17/22.
@@ -8,7 +8,7 @@
 
 import CottonCoreBaseKit
 
-final class TopSitesModel {
+final class TopSitesViewModel {
     let topSites: [Site]
     
     init() {

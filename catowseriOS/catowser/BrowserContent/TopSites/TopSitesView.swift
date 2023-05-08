@@ -7,43 +7,23 @@
 //
 
 import SwiftUI
-import UIKit
 
 struct TopSitesView: View {
-    let model: TopSitesModel
+    let vm: TopSitesViewModel
+    /// Selected swiftUI mode which is set at app start
+    private let mode: SwiftUIMode
     
-    init(_ model: TopSitesModel) {
-        self.model = model
+    init(_ vm: TopSitesViewModel, _ mode: SwiftUIMode) {
+        self.vm = vm
+        self.mode = mode
     }
     
     var body: some View {
-        TopSitesLegacyView(model: model)
-    }
-}
-
-/**
- https://www.hackingwithswift.com/books/ios-swiftui/wrapping-a-uiviewcontroller-in-a-swiftui-view
- https://developer.apple.com/documentation/swiftui/uiviewcontrollerrepresentable/
- https://www.hackingwithswift.com/books/ios-swiftui/using-coordinators-to-manage-swiftui-view-controllers
- 
- */
-
-private struct TopSitesLegacyView: UIViewControllerRepresentable {
-    let model: TopSitesModel
-    typealias UIViewControllerType = UIViewController
-    
-    private var vcFactory: ViewControllerFactory {
-        ViewsEnvironment.shared.vcFactory
-    }
-    
-    func makeUIViewController(context: Context) -> UIViewControllerType {
-        let interface = context.environment.browserContentCoordinators
-        let vc: AnyViewController & TopSitesInterface = vcFactory.topSitesViewController(interface?.topSitesCoordinator)
-        vc.reload(with: model.topSites)
-        return vc.viewController
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        
+        switch mode {
+        case .compatible:
+            TopSitesLegacyView(vm)
+        case .full:
+            TopSitesViewV2(vm)
+        }
     }
 }
