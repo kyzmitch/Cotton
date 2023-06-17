@@ -18,6 +18,10 @@ class Site(
     val searchSuggestion: String? = null,
     val userSpecifiedTitle: String? = null
 ) {
+    /*
+    * Allows static properties or functions
+    * */
+    companion object {}
 
     val host: Host
         get() = urlInfo.host()

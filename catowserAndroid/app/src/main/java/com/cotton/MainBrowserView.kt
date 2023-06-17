@@ -1,18 +1,12 @@
 package com.cotton
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.browser.content.*
-import org.cotton.base.DomainName
-import org.cotton.base.HttpScheme
 import org.cotton.base.Site
-import org.cotton.base.URLInfo
 
 @Composable
 internal fun MainBrowserView() {
@@ -46,12 +40,8 @@ internal fun MainBrowserView() {
             if (matchesFound) {
                 SearchSuggestionsView()
             } else {
-                val domain = DomainName("opennet.ru")
-                val info = URLInfo(HttpScheme.https, "", null, domain)
-                val settings = Site.Settings()
-                val site = Site(info, settings)
-                val content = TabContentType.SiteContent(site)
-                BrowserContent(TabContentType.Blank())
+                val content = TabContentType.SiteContent(Site.opennetru)
+                BrowserContent(content)
             }
         }
     } // column
