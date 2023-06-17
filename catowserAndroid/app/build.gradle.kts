@@ -48,6 +48,8 @@ android {
 }
 
 dependencies {
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra.get("lifecycle_version") as String}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra.get("lifecycle_version") as String}")
     implementation(project(mapOf("path" to ":browser-content")))
     implementation("org.cotton.base:CottonCoreBaseKit:0.1-SNAPSHOT")
     implementation("androidx.core:core-ktx:1.7.0")

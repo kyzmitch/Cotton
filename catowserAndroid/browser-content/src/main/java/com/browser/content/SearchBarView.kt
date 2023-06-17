@@ -32,12 +32,7 @@ import com.cotton.browser.R
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchBarView(
-    searchText: String,
-    placeholderText: String,
-    onSearchTextChanged: (String) -> Unit = {},
-    onClearClick: () -> Unit = {}
-) {
+fun SearchBarView(viewModel: SearchBarViewModel) {
     var showClearButton by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
@@ -50,11 +45,11 @@ fun SearchBarView(
                 showClearButton = (focusState.isFocused)
             }
             .focusRequester(focusRequester),
-        value = searchText,
-        onValueChange = onSearchTextChanged,
+        value = viewModel.searchText,
+        onValueChange = viewModel.onSearchTextChanged,
         placeholder = {
             Text(
-                text = placeholderText,
+                text = viewModel.placeholderText,
                 color = Purple700
             ) // Placeholder
         },
@@ -79,7 +74,7 @@ fun SearchBarView(
             ) {
                 IconButton(onClick = {
                     keyboardController?.hide()
-                    onClearClick()
+                    viewModel.onClearClick()
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
