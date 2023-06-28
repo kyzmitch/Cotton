@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.cotton.browser.content.*
 import org.cotton.base.Site
+import org.cotton.browser.content.data.TabContentType
+import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 @Composable
 internal fun MainBrowserView(viewModel: MainBrowserViewModel, searchBarViewModel: SearchBarViewModel) {

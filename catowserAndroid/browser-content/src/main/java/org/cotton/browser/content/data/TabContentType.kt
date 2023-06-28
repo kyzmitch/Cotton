@@ -1,4 +1,4 @@
-package org.cotton.browser.content
+package org.cotton.browser.content.data
 
 import org.cotton.base.Site
 

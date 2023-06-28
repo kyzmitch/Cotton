@@ -16,6 +16,7 @@ import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewNavigator
 import com.google.accompanist.web.rememberWebViewState
 import org.cotton.base.Site
+import org.cotton.browser.content.service.CottonWebViewClient
 
 @Composable
 fun CottonWebView(site: Site) {

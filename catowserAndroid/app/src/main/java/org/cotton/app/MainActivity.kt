@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import org.cotton.browser.content.SearchBarViewModel
+import org.cotton.browser.content.viewmodel.SearchBarViewModel
 import org.cotton.app.ui.theme.CottonTheme
 
 class MainActivity : ComponentActivity() {

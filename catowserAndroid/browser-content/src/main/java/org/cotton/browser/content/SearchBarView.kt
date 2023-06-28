@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import org.cotton.browser.content.ui.theme.Purple200
 import org.cotton.browser.content.ui.theme.Purple700
 import org.cotton.browser.content.R
+import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 /*
 * - Uses experimental api only for `LocalSoftwareKeyboardController`
