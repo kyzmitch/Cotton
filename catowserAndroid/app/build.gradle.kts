@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.cotton"
+    namespace = "org.cotton.app"
     compileSdk = 33
 
     defaultConfig {
