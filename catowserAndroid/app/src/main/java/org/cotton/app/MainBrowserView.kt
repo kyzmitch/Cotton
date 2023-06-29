@@ -21,7 +21,9 @@ internal fun MainBrowserView(viewModel: MainBrowserViewModel, searchBarViewModel
             Column(modifier = Modifier
                 .width(30.dp)
                 .fillMaxHeight(), horizontalAlignment = Alignment.End) {
-                TabsCountButton(viewModel.onOpenTabs, 0u)
+                TabsCountButton({
+                    viewModel.show(MainBrowserRoute.Tabs)
+                }, 0u)
             }
         }
         Row(modifier = Modifier.fillMaxSize()) {

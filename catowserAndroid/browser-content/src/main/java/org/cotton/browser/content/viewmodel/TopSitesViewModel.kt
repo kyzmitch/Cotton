@@ -14,6 +14,6 @@ class TopSitesViewModel: ViewModel() {
     val uiState: StateFlow<TopSitesUiState> = _uiState.asStateFlow()
 
     fun load() {
-        _uiState.update { state -> TopSitesUiState.Ready(listOf(Site.opennetru, Site.github)) }
+        _uiState.update { _ -> TopSitesUiState.Ready(listOf(Site.opennetru, Site.github)) }
     }
 }
