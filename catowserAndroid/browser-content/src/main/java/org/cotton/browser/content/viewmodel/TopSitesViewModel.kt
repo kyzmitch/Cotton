@@ -1,19 +1,19 @@
 package org.cotton.browser.content.viewmodel
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-
-enum class TopSitesUiState {
-    LOADING, READY
-}
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import org.cotton.base.Site
+import org.cotton.browser.content.data.github
+import org.cotton.browser.content.data.opennetru
 
 class TopSitesViewModel: ViewModel() {
-    val uiState: Flow<TopSitesUiState> = uiStateStream()
+    private val _uiState = MutableStateFlow<TopSitesUiState>(TopSitesUiState.Loading())
+    val uiState: StateFlow<TopSitesUiState> = _uiState.asStateFlow()
 
-    private fun uiStateStream(): Flow<TopSitesUiState> {
-        flow<TopSitesUiState> {
-            emit(TopSitesUiState.LOADING)
-        }
+    fun load() {
+        _uiState.update { state -> TopSitesUiState.Ready(listOf(Site.opennetru, Site.github)) }
     }
 }

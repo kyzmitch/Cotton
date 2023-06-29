@@ -6,12 +6,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.cotton.browser.content.*
-import org.cotton.base.Site
-import org.cotton.browser.content.data.TabContentType
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
+import org.cotton.browser.content.viewmodel.TopSitesViewModel
 
 @Composable
-internal fun MainBrowserView(viewModel: MainBrowserViewModel, searchBarViewModel: SearchBarViewModel) {
+internal fun MainBrowserView(viewModel: MainBrowserViewModel, searchBarViewModel: SearchBarViewModel, topSitesVM: TopSitesViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier
             .height(viewModel.barHeight)
@@ -29,8 +28,7 @@ internal fun MainBrowserView(viewModel: MainBrowserViewModel, searchBarViewModel
             if (viewModel.matchesFound) {
                 SearchSuggestionsView()
             } else {
-                val content = TabContentType.SiteContent(Site.opennetru)
-                BrowserContent(content)
+                BrowserContent(viewModel.defaultTapContent, topSitesVM)
             }
         }
     } // column
