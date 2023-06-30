@@ -40,7 +40,10 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 ```
 - run `source .bash_profile`
 - install `InteliJ IDEA`
-- Add `ANDROID_HOME` to path variables of `InteliJ IDEA` in settings.
+- Add `ANDROID_HOME` to path variables of `InteliJ IDEA` in settings or put `local.properties` file with the following content:
+  ```
+  sdk.dir=/Users/kyzmitch/Library/Android/sdk
+  ```
 - To fix `License for package Android SDK Platform 32 not accepted.` in `InteliJ IDEA`
     - Tools -> Android -> SDK Manager
     - SDK Tools tab
