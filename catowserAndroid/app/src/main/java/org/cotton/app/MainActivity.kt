@@ -3,7 +3,6 @@ package org.cotton.app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -18,7 +17,7 @@ import org.cotton.browser.content.viewmodel.SearchBarViewModel
 import org.cotton.app.ui.theme.CottonTheme
 import org.cotton.browser.content.viewmodel.TopSitesViewModel
 
-class MainActivity : ComponentActivity() {
+class MainActivity : CottonActivity() {
     companion object {
         private const val TAG = "MainActivity"
     }
