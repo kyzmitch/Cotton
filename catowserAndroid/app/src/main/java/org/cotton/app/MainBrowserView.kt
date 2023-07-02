@@ -10,7 +10,7 @@ import org.cotton.browser.content.viewmodel.SearchBarViewModel
 import org.cotton.browser.content.viewmodel.TopSitesViewModel
 
 @Composable
-internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel, topSitesVM: TopSitesViewModel) {
+internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier
             .height(mainVM.barHeight)
@@ -21,16 +21,16 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBa
             Column(modifier = Modifier
                 .width(30.dp)
                 .fillMaxHeight(), horizontalAlignment = Alignment.End) {
-                TabsCountButton({
+                TabsCountButton(0u) {
                     mainVM.show(MainBrowserRoute.Tabs)
-                }, 0u)
+                }
             }
         }
         Row(modifier = Modifier.fillMaxSize()) {
             if (mainVM.matchesFound) {
                 SearchSuggestionsView()
             } else {
-                BrowserContent(mainVM.defaultTapContent, topSitesVM)
+                BrowserContent(mainVM.defaultTabContent)
             }
         }
     } // column

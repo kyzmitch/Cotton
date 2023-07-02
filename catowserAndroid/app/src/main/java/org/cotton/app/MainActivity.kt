@@ -39,19 +39,11 @@ class MainActivity : CottonActivity() {
             }
         }
     }
-    private val topSitesVM: TopSitesViewModel by viewModels {
-        viewModelFactory {
-            addInitializer(TopSitesViewModel::class) {
-                TopSitesViewModel()
-            }
-        }
-    }
     private val uiScope: CoroutineScope = MainScope()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        topSitesVM.load()
         setContent {
-            Content(mainVM, searchBarVM, topSitesVM)
+            Content(mainVM, searchBarVM)
         }
         mainVM.route.drop(1).onEach { handleNavigation(it)}.launchIn(uiScope)
     } // on create
@@ -69,13 +61,13 @@ class MainActivity : CottonActivity() {
 }
 
 @Composable
-internal fun Content(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel, topSitesVM: TopSitesViewModel) {
+internal fun Content(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
     CottonTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            MainBrowserView(mainVM, searchBarVM, topSitesVM)
+            MainBrowserView(mainVM, searchBarVM)
         }
     }
 }

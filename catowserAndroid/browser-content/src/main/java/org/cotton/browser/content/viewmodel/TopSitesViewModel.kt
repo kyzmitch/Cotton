@@ -21,4 +21,8 @@ class TopSitesViewModel: ViewModel() {
             _uiState.update { _ -> TopSitesUiState.Ready(listOf(Site.opennetru, Site.github)) }
         }
     }
+
+    fun selectSite(site: Site) {
+        // TODO: update BrowserContentView
+    }
 }

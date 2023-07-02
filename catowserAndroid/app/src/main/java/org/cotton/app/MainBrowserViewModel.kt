@@ -16,7 +16,7 @@ class MainBrowserViewModel: ViewModel() {
 
     val barHeight = 50.dp
     val matchesFound: Boolean = false
-    val defaultTapContent: TabContentType
+    val defaultTabContent: TabContentType
         get() = TabContentType.TopSites()
 
     fun show(route: MainBrowserRoute) {

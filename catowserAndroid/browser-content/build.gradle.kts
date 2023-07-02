@@ -66,4 +66,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra.get("compose_version") as String}")
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra.get("compose_version") as String}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra.get("compose_version") as String}")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
+
+/**
+ * Coil - image view with remote source https://github.com/coil-kt/coil#jetpack-compose
+ * */

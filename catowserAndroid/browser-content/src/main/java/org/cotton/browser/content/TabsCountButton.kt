@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun TabsCountButton(onOpenTabs: () -> Unit, count: UInt = 0u) {
+fun TabsCountButton(count: UInt = 0u, onOpenTabs: () -> Unit) {
     Button(
         onClick = onOpenTabs,
         modifier = Modifier.fillMaxSize()
