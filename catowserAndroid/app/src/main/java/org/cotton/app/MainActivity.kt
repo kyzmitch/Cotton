@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
@@ -21,9 +23,28 @@ class MainActivity : CottonActivity() {
     companion object {
         private const val TAG = "MainActivity"
     }
-    private val mainVM = MainBrowserViewModel()
-    private val searchBarVM = SearchBarViewModel()
-    private val topSitesVM = TopSitesViewModel()
+
+    private val mainVM: MainBrowserViewModel by viewModels {
+        viewModelFactory {
+            addInitializer(MainBrowserViewModel::class) {
+                MainBrowserViewModel()
+            }
+        }
+    }
+    private val searchBarVM: SearchBarViewModel by viewModels {
+        viewModelFactory {
+            addInitializer(SearchBarViewModel::class) {
+                SearchBarViewModel()
+            }
+        }
+    }
+    private val topSitesVM: TopSitesViewModel by viewModels {
+        viewModelFactory {
+            addInitializer(TopSitesViewModel::class) {
+                TopSitesViewModel()
+            }
+        }
+    }
     private val uiScope: CoroutineScope = MainScope()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +58,7 @@ class MainActivity : CottonActivity() {
     private fun handleNavigation(route: MainBrowserRoute) {
         when (route) {
             MainBrowserRoute.Tabs -> {
-                val tabsScreen = Intent(this, TabsActivity::class::java)
-                startActivity(tabsScreen)
+                startActivity(Intent(this, TabsActivity::class.java))
             }
             else -> {
                 Log.d(Companion.TAG, "handleNavigation: not handlen route")

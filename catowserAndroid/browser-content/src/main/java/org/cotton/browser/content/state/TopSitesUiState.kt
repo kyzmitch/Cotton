@@ -1,4 +1,4 @@
-package org.cotton.browser.content.viewmodel
+package org.cotton.browser.content.state
 
 import org.cotton.base.Site
 

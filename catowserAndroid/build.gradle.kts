@@ -8,6 +8,7 @@ buildscript {
         set("compose_version", "1.3.3")
         set("ktor_version", "2.2.3")
         set("lifecycle_version", "2.5.1")
+        set("android_x_activity", "1.3.1")
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
