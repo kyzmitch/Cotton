@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
@@ -52,7 +53,7 @@ class MainActivity : CottonActivity() {
         setContent {
             Content(mainVM, searchBarVM, topSitesVM)
         }
-        mainVM.route.onEach { handleNavigation(it)}.launchIn(uiScope)
+        mainVM.route.drop(1).onEach { handleNavigation(it)}.launchIn(uiScope)
     } // on create
 
     private fun handleNavigation(route: MainBrowserRoute) {
