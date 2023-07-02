@@ -99,6 +99,25 @@ class URLInfo constructor(
         return Host(domainName)
     }
 
+    /**
+     * FavIcon of website using resolved domain name ip address if it is present
+     *
+     */
+    val faviconURLFromIp: String?
+        get() {
+            if (ipAddress != null) {
+                return "https://" + ipAddress + "/favicon.ico"
+            } else {
+                return null
+            }
+        }
+
+    /**
+     * FavIcon of website using domain name
+     */
+    val faviconURLFromDomain: String
+        get() = "https://" + domainName.rawString + "/favicon.ico"
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         other as URLInfo
