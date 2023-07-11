@@ -239,7 +239,7 @@
 		8A5F72112826DD59008E5638 /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8A5FD6A426AF31FE0019384A /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
 		8A5FD6A526AF31FE0019384A /* HttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E40D245966190070F338 /* CombineExtensions.swift */; };
+		8A68E40E245966190070F338 /* Combine+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A68E40D245966190070F338 /* Combine+Extensions.swift */; };
 		8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724ED92204332B0071BECF /* DefaultTabProvider.swift */; };
@@ -355,6 +355,9 @@
 		8A82594D294E47F9007B97CF /* TopSitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */; };
 		8A82594E294E47F9007B97CF /* TopSitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */; };
 		8A82CDF02351095700607162 /* RestClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A82CDEF2351095700607162 /* RestClient.swift */; };
+		8A892ACF2A5DE3E500CAD0D9 /* HTTPTypes in Frameworks */ = {isa = PBXBuildFile; productRef = 8A892ACE2A5DE3E500CAD0D9 /* HTTPTypes */; };
+		8A892AD12A5DE3E500CAD0D9 /* HTTPTypesFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 8A892AD02A5DE3E500CAD0D9 /* HTTPTypesFoundation */; };
+		8A892AD32A5DE68600CAD0D9 /* HTTPRequestInfo+SwiftHttpExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A892AD22A5DE68600CAD0D9 /* HTTPRequestInfo+SwiftHttpExtension.swift */; };
 		8A89E22B29F4FA5D00FE5543 /* SearchBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */; };
 		8A89E22C29F4FA5D00FE5543 /* SearchBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */; };
 		8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */; };
@@ -436,7 +439,7 @@
 		8AB5B120294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */; };
 		8AB5B121294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */; };
 		8AB5B3C4280C8B3D001F8644 /* RequestInterfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C3280C8B3D001F8644 /* RequestInterfaces.swift */; };
-		8AB5B3C6280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C5280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift */; };
+		8AB5B3C6280C92B1001F8644 /* HTTPRequestInfo+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B3C5280C92B1001F8644 /* HTTPRequestInfo+Extensions.swift */; };
 		8AB70E8B27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB70E8A27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift */; };
 		8AB70E9427B7AE7A003FB59B /* ReactiveHttpKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AB70E9327B7AE7A003FB59B /* ReactiveHttpKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE6D1692350FF35006316AD /* HttpKit.framework */; };
@@ -1179,7 +1182,7 @@
 		8A624077288D9AC7006DDC66 /* WebSearchAutocomplete+AsyncAwait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebSearchAutocomplete+AsyncAwait.swift"; sourceTree = "<group>"; };
 		8A62AEDB2351CDEB001A9C83 /* GoogleServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleServer.swift; sourceTree = "<group>"; };
 		8A62AEE02351D1CE001A9C83 /* GoogleSearchEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEndpoint.swift; sourceTree = "<group>"; };
-		8A68E40D245966190070F338 /* CombineExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineExtensions.swift; sourceTree = "<group>"; };
+		8A68E40D245966190070F338 /* Combine+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Combine+Extensions.swift"; sourceTree = "<group>"; };
 		8A68E40F24597E3B0070F338 /* GDNSRequestParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GDNSRequestParams.swift; sourceTree = "<group>"; };
 		8A68E41124597E880070F338 /* DnsRR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DnsRR.swift; sourceTree = "<group>"; };
 		8A6CD6D324585D830068ACB5 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
@@ -1216,6 +1219,7 @@
 		8A825949294E40F5007B97CF /* BrowserContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentViewModel.swift; sourceTree = "<group>"; };
 		8A82594C294E47F9007B97CF /* TopSitesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewModel.swift; sourceTree = "<group>"; };
 		8A82CDEF2351095700607162 /* RestClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClient.swift; sourceTree = "<group>"; };
+		8A892AD22A5DE68600CAD0D9 /* HTTPRequestInfo+SwiftHttpExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPRequestInfo+SwiftHttpExtension.swift"; sourceTree = "<group>"; };
 		8A89E22A29F4FA5D00FE5543 /* SearchBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarState.swift; sourceTree = "<group>"; };
 		8A8EB006245EA1B90028D35C /* WebViewAuthChallengeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewAuthChallengeHandler.swift; sourceTree = "<group>"; };
 		8A8F038A293FA96200237DFF /* WebViewNavigatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewNavigatable.swift; sourceTree = "<group>"; };
@@ -1279,7 +1283,7 @@
 		8AB4A1B827B583AB008030FB /* ClosureVoidWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureVoidWrappers.swift; sourceTree = "<group>"; };
 		8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extension.swift"; sourceTree = "<group>"; };
 		8AB5B3C3280C8B3D001F8644 /* RequestInterfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterfaces.swift; sourceTree = "<group>"; };
-		8AB5B3C5280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpKotlinTypes+Extensions.swift"; sourceTree = "<group>"; };
+		8AB5B3C5280C92B1001F8644 /* HTTPRequestInfo+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTTPRequestInfo+Extensions.swift"; sourceTree = "<group>"; };
 		8AB70E8A27B7AACA003FB59B /* ReachabilityAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityAdapteeMocks.swift; sourceTree = "<group>"; };
 		8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactiveHttpKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AB70E9327B7AE7A003FB59B /* ReactiveHttpKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactiveHttpKit.h; sourceTree = "<group>"; };
@@ -1572,8 +1576,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A892ACF2A5DE3E500CAD0D9 /* HTTPTypes in Frameworks */,
 				8A5E6C93290B107B0034A78B /* AutoMockable.framework in Frameworks */,
 				8A916957297C43C400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
+				8A892AD12A5DE3E500CAD0D9 /* HTTPTypesFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2163,8 +2169,9 @@
 			isa = PBXGroup;
 			children = (
 				8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */,
-				8A68E40D245966190070F338 /* CombineExtensions.swift */,
-				8AB5B3C5280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift */,
+				8A68E40D245966190070F338 /* Combine+Extensions.swift */,
+				8AB5B3C5280C92B1001F8644 /* HTTPRequestInfo+Extensions.swift */,
+				8A892AD22A5DE68600CAD0D9 /* HTTPRequestInfo+SwiftHttpExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3115,6 +3122,10 @@
 				8A5E6C96290B107B0034A78B /* PBXTargetDependency */,
 			);
 			name = HttpKit;
+			packageProductDependencies = (
+				8A892ACE2A5DE3E500CAD0D9 /* HTTPTypes */,
+				8A892AD02A5DE3E500CAD0D9 /* HTTPTypesFoundation */,
+			);
 			productName = HttpKit;
 			productReference = 8AE6D1692350FF35006316AD /* HttpKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -3227,6 +3238,7 @@
 				8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
 				8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				8A0E4D5829133E77008F7964 /* XCRemoteSwiftPackageReference "SwiftyMocky" */,
+				8A892ACD2A5DE3E400CAD0D9 /* XCRemoteSwiftPackageReference "swift-http-types" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -4251,12 +4263,13 @@
 				8AB4A1B127B55268008030FB /* ResponseHandlingApiType.swift in Sources */,
 				8AB5B3C4280C8B3D001F8644 /* RequestInterfaces.swift in Sources */,
 				8ABDB0B427B24FB300D6EDE7 /* RestClient+Combine.swift in Sources */,
-				8A68E40E245966190070F338 /* CombineExtensions.swift in Sources */,
+				8A68E40E245966190070F338 /* Combine+Extensions.swift in Sources */,
+				8A892AD32A5DE68600CAD0D9 /* HTTPRequestInfo+SwiftHttpExtension.swift in Sources */,
 				8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */,
 				8AB4A1B927B583AB008030FB /* ClosureVoidWrappers.swift in Sources */,
 				8A5E6CAF290B1D4F0034A78B /* RestInterface.swift in Sources */,
 				8AB4A1B527B55684008030FB /* HTTPVoidAdapter.swift in Sources */,
-				8AB5B3C6280C92B1001F8644 /* HttpKotlinTypes+Extensions.swift in Sources */,
+				8AB5B3C6280C92B1001F8644 /* HTTPRequestInfo+Extensions.swift in Sources */,
 				8A328F3527B690980021F6B0 /* NetworkReachabilityAdapter.swift in Sources */,
 				8AB4A1B727B56CC3008030FB /* ResponseVoidHandlingApiType.swift in Sources */,
 				8AE8D045280D388800FADE3A /* ResponseType.swift in Sources */,
@@ -5935,6 +5948,14 @@
 				version = 4.2.0;
 			};
 		};
+		8A892ACD2A5DE3E400CAD0D9 /* XCRemoteSwiftPackageReference "swift-http-types" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-http-types.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.1;
+			};
+		};
 		8AA6608828F43F790058490F /* XCRemoteSwiftPackageReference "SWXMLHash" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/drmohundro/SWXMLHash";
@@ -5976,6 +5997,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8AC4365C247910E1008DD663 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		8A892ACE2A5DE3E500CAD0D9 /* HTTPTypes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A892ACD2A5DE3E400CAD0D9 /* XCRemoteSwiftPackageReference "swift-http-types" */;
+			productName = HTTPTypes;
+		};
+		8A892AD02A5DE3E500CAD0D9 /* HTTPTypesFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A892ACD2A5DE3E400CAD0D9 /* XCRemoteSwiftPackageReference "swift-http-types" */;
+			productName = HTTPTypesFoundation;
 		};
 		8AA6608928F43F790058490F /* SWXMLHash */ = {
 			isa = XCSwiftPackageProductDependency;

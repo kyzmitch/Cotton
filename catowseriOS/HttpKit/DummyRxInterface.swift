@@ -5,12 +5,10 @@
 //  Created by Andrei Ermoshin on 2/12/22.
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
+//  These types are needed for Combine interfaces of RestClient we don't have to pass actual ReactiveSwift types
+//  to be able to use Combine interfaces
 
 import CottonCoreBaseKit
-
-/// These types are needed for Combine interfaces of RestClient we don't have to pass actual ReactiveSwift types
-/// to be able to use Combine interfaces
-
 
 // gryphon ignore
 public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
@@ -34,7 +32,7 @@ public class DummyRxType<R,
     public typealias Server = SS
     
     public var observer: RX {
-        // TODO: think about why it ask for conversion
+        // TODO: think about why it asks for conversion
         // swiftlint:disable:next force_cast
         return DummyRxObserver<R>() as! RX
     }

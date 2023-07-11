@@ -26,7 +26,6 @@ public typealias Subscriber<R: ResponseType, S: ServerDescription> = ClientSubsc
 /// It lead to the issue that clsoures or Rx observers should be stored somewhere outside async HttpClient methods
 /// Because they can't be deallocated during async requests
 /// It must be a reference type because we will pass it to RestClient methods
-// gryphon ignore
 public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.Observer.Response == R, RX.Server == S {
     /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
     var handlers = Set<ResponseHandlingApi<R, S, RX>>()
@@ -42,7 +41,6 @@ public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.Observer.Respons
     }
 }
 
-// gryphon ignore
 public class ClientRxVoidSubscriber<S, RX: RxVoidInterface> where RX.Server == S {
     /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
     var handlers = Set<ResponseVoidHandlingApi<S, RX>>()
