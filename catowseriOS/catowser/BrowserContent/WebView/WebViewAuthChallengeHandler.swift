@@ -7,7 +7,7 @@
 //
 
 import WebKit
-import CottonCoreBaseKit
+import CottonBase
 import Alamofire
 import Foundation
 

@@ -12,7 +12,7 @@ import ReactiveSwift
 #if canImport(CryptoKit)
 import CryptoKit
 #endif
-import CottonCoreBaseKit
+import CottonBase
 
 /// Represents a remote file which can be downloaded and stored locally
 public protocol Downloadable {
@@ -207,7 +207,7 @@ extension BrowserNetworking {
                     observer.send(error: .noHttpHeadersInResponse)
                     return
                 }
-                let key = CottonCoreBaseKit.HTTPHeader.ContentLength(length: 0).key
+                let key = CottonBase.HTTPHeader.ContentLength(length: 0).key
                 guard let contentLengthValue = headers.value(for: key) else {
                     observer.send(error: .noContentLengthHeader)
                     return

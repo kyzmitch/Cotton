@@ -11,7 +11,7 @@ import Foundation
 import Combine
 #endif
 import Network
-import CottonCoreBaseKit
+import CottonBase
 
 public enum DnsError: LocalizedError {
     case zombieSelf
@@ -40,7 +40,7 @@ public typealias ResolvedURLPublisher = Result<URL, DnsError>.Publisher
 
 extension URL {
     /// Have to use module name for Host type, becuase for macOS variant there is `Foundation.Host`
-    public var kitHost: CottonCoreBaseKit.Host? {
+    public var kitHost: CottonBase.Host? {
         guard let hostString = host else {
             return nil
         }

@@ -8,7 +8,7 @@
 
 import HttpKit
 import ReactiveSwift
-import CottonCoreBaseKit
+import CottonBase
 
 /// This typealias could be an issue, because the same defined in ReactiveSwift HttpClient+RxSwift.swift
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpError>

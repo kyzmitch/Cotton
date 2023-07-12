@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBrowser
-import CottonCoreBaseKit
+import CottonBase
 import FeaturesFlagsKit
 import JSPlugins
 

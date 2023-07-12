@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 import CoreBrowser
 import JSPlugins
-import CottonCoreBaseKit
+import CottonBase
 import BrowserNetworking
 import FeaturesFlagsKit
 import ReactiveSwift

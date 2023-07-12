@@ -8,7 +8,7 @@
 
 import Foundation
 import Network
-import CottonCoreBaseKit
+import CottonBase
 
 public extension URL {
     var isAppleMapsURL: Bool {

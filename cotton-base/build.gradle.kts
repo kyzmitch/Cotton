@@ -32,7 +32,7 @@ dependencies {
     commonTestImplementation(kotlin("test-annotations-common"))
 }
 
-val frameworkName = "CottonCoreBaseKit"
+val frameworkName = "CottonBase"
 
 kotlin {
     val xcf = XCFramework(frameworkName)

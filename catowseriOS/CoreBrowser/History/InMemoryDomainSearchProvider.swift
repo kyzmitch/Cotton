@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 
 public final class InMemoryDomainSearchProvider {
     public static let shared = InMemoryDomainSearchProvider()
@@ -34,7 +34,7 @@ public final class InMemoryDomainSearchProvider {
 }
 
 extension InMemoryDomainSearchProvider: DomainsHistory {
-    public func remember(host: CottonCoreBaseKit.Host) {
+    public func remember(host: CottonBase.Host) {
         storage.insert(word: host.rawString)
         if let withoutWww = host.rawString.withoutPrefix("www.") {
             storage.insert(word: withoutWww)

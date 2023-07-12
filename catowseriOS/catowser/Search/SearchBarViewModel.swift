@@ -11,7 +11,7 @@ import SwiftUI
 import CoreBrowser
 import FeaturesFlagsKit
 import BrowserNetworking
-import CottonCoreBaseKit
+import CottonBase
 
 /// An analog of existing SearchBar coordinator, but for SwiftUI
 /// and at the same time it implements `SearchSuggestionsListDelegate`

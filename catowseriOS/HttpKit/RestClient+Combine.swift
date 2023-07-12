@@ -10,7 +10,7 @@ import Foundation
 #if canImport(Combine)
 import Combine
 #endif
-import CottonCoreBaseKit
+import CottonBase
 
 extension RestClient {
     public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpError>>>

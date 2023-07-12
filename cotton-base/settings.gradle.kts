@@ -12,4 +12,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CottonCoreBaseKit"
+rootProject.name = "cotton-base"

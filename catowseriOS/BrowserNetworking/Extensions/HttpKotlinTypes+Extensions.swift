@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 
 extension Array where Element == URLQueryItem {
     var kotlinArray: KotlinArray<URLQueryPair> {

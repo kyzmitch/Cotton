@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CottonCoreBaseKit
+import CottonBase
 
 struct TitledImageView: View {
     private let site: Site

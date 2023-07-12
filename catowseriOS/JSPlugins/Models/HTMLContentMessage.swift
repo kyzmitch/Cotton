@@ -7,17 +7,17 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 import SwiftSoup
 
 struct HTMLContentMessage: Decodable {
-    let hostname: CottonCoreBaseKit.Host
+    let hostname: CottonBase.Host
     let html: Document
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let hostnameString = try container.decode(String.self, forKey: .hostname)
-        guard let kitHost = try? CottonCoreBaseKit.Host(input: hostnameString) else {
+        guard let kitHost = try? CottonBase.Host(input: hostnameString) else {
             throw CottonError.parseHost
         }
         hostname = kitHost

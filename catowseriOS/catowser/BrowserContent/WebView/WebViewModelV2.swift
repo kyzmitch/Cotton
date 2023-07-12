@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 
 final class WebViewModelV2 {
     /// A reference to JavaScript plugins builder passed from root view

@@ -9,7 +9,7 @@
 import XCTest
 @testable import CoreCatowser
 import HttpKit
-import CottonCoreBaseKit
+import CottonBase
 import WebKit
 
 final class WebViewVMConcurrencyTests: WebViewVMFixture {

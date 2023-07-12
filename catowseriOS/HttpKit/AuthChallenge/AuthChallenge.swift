@@ -8,7 +8,7 @@
 
 import Foundation
 import Security
-import CottonCoreBaseKit
+import CottonBase
 import Alamofire
 
 /**

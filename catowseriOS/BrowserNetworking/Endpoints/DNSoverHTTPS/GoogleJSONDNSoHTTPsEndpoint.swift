@@ -7,7 +7,7 @@
 //
 
 import HttpKit
-import CottonCoreBaseKit
+import CottonBase
 import ReactiveHttpKit
 import ReactiveSwift
 #if canImport(Combine)

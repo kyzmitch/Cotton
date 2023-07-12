@@ -50,7 +50,7 @@ val ktor_version: String by project
 dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra.get("lifecycle_version") as String}")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra.get("lifecycle_version") as String}")
-    implementation("org.cotton.base:CottonCoreBaseKit:0.1-SNAPSHOT")
+    implementation("org.cotton.base:cotton-base:0.1-SNAPSHOT")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.activity:activity-compose:${rootProject.extra.get("android_x_activity") as String}")

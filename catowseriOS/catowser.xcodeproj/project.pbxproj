@@ -79,6 +79,16 @@
 		750EDEBC2949215900212A4E /* MainBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBA2949215900212A4E /* MainBrowserModel.swift */; };
 		750EDEBE294924A800212A4E /* BrowserContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBD294924A800212A4E /* BrowserContentView.swift */; };
 		750EDEBF294924A800212A4E /* BrowserContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBD294924A800212A4E /* BrowserContentView.swift */; };
+		7517D9C32A5F2E7C00D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9C42A5F2E7C00D081AD /* CottonBase.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7517D9C52A5F2E8D00D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9C62A5F2E8D00D081AD /* CottonBase.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7517D9C72A5F2E9F00D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9CA2A5F2EB800D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9CD2A5F2EC000D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9D02A5F2ED200D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9D32A5F2EDC00D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
+		7517D9D62A5F2EE600D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
 		75196D072944ABA700B3A45B /* MainBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75196D062944ABA700B3A45B /* MainBrowserView.swift */; };
 		75196D082944ABA700B3A45B /* MainBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75196D062944ABA700B3A45B /* MainBrowserView.swift */; };
 		75196D0D2944AF8B00B3A45B /* SiteMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75196D0C2944AF8B00B3A45B /* SiteMenuViewController.swift */; };
@@ -368,16 +378,6 @@
 		8A90636924332376009D786E /* URL+CoreExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90636824332376009D786E /* URL+CoreExtensions.swift */; };
 		8A90B16C248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
 		8A90B16D248246D6000618F5 /* TabAddPositionsViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B16B248246D6000618F5 /* TabAddPositionsViewPreview.swift */; };
-		8A91694A297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A91694B297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A91694C297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A91694D297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8A91694E297C43AC00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A916951297C43B400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A916954297C43BD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A916957297C43C400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A91695A297C43CD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
-		8A91695D297C43D500F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */; };
 		8A917CAD29D4454700404256 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CAC29D4454700404256 /* AutoMockable.generated.swift */; };
 		8A917CAF29D49CA000404256 /* Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CAE29D49CA000404256 /* Mock.generated.swift */; };
 		8A917CB129D4A39B00404256 /* SearchSuggestionsViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */; };
@@ -952,8 +952,8 @@
 				8A27713F268E452000D8878C /* BrowserNetworking.framework in Embed Frameworks */,
 				8A5E6C84290B0E6C0034A78B /* AutoMockable.framework in Embed Frameworks */,
 				8AF4337D248EBB2A0047452B /* CssParser.framework in Embed Frameworks */,
+				7517D9C42A5F2E7C00D081AD /* CottonBase.xcframework in Embed Frameworks */,
 				8A5FD6A526AF31FE0019384A /* HttpKit.framework in Embed Frameworks */,
-				8A91694B297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -979,7 +979,7 @@
 				8A8035DE24442F0F000E035F /* JSPlugins.framework in Embed Frameworks */,
 				8A8035DF24442F0F000E035F /* CoreBrowser.framework in Embed Frameworks */,
 				8ABDD90B27CCFACE0028B9DE /* FeaturesFlagsKit.framework in Embed Frameworks */,
-				8A91694D297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Embed Frameworks */,
+				7517D9C62A5F2E8D00D081AD /* CottonBase.xcframework in Embed Frameworks */,
 				8A27715E268E467D00D8878C /* BrowserNetworking.framework in Embed Frameworks */,
 				8AD4F53A28F4935D009C4BDC /* HttpKit.framework in Embed Frameworks */,
 				8AD4F53328F4934E009C4BDC /* CssParser.framework in Embed Frameworks */,
@@ -1060,6 +1060,7 @@
 		7509BF9122AF832200F4D701 /* Site+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Site+Extension.swift"; sourceTree = "<group>"; };
 		750EDEBA2949215900212A4E /* MainBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserModel.swift; sourceTree = "<group>"; };
 		750EDEBD294924A800212A4E /* BrowserContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentView.swift; sourceTree = "<group>"; };
+		7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CottonBase.xcframework; path = "../cotton-base/build/XCFrameworks/release/CottonBase.xcframework"; sourceTree = "<group>"; };
 		75196D062944ABA700B3A45B /* MainBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserView.swift; sourceTree = "<group>"; };
 		75196D0C2944AF8B00B3A45B /* SiteMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuViewController.swift; sourceTree = "<group>"; };
 		75196D0F2944AFD800B3A45B /* MainBrowserV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserV2ViewController.swift; sourceTree = "<group>"; };
@@ -1399,7 +1400,7 @@
 				8AD4F51228F491C8009C4BDC /* ReactiveSwift in Frameworks */,
 				8AB9BE2728FF1304002063C2 /* CssParser.framework in Frameworks */,
 				8A03F45A28F47ACB00E4A296 /* SwiftSoup in Frameworks */,
-				8A916954297C43BD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
+				7517D9CD2A5F2EC000D081AD /* CottonBase.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1407,10 +1408,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7517D9C72A5F2E9F00D081AD /* CottonBase.xcframework in Frameworks */,
 				60C2C92122819AE200F5D869 /* CoreImage.framework in Frameworks */,
 				8A5E6C89290B0EAE0034A78B /* AutoMockable.framework in Frameworks */,
 				8AD4F51028F491A7009C4BDC /* ReactiveSwift in Frameworks */,
-				8A91694E297C43AC00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1423,7 +1424,7 @@
 				8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */,
 				8A7B1BE828EB18A5004FC135 /* CoreCatowser.framework in Frameworks */,
 				8AD4F51E28F492DC009C4BDC /* AlamofireImage in Frameworks */,
-				8A91694A297C439D00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
+				7517D9C32A5F2E7C00D081AD /* CottonBase.xcframework in Frameworks */,
 				8A5E6C83290B0E6C0034A78B /* AutoMockable.framework in Frameworks */,
 				8AD4F51C28F49219009C4BDC /* ReactiveSwift in Frameworks */,
 				8ABF504427CC1A64007C6427 /* FeaturesFlagsKit.framework in Frameworks */,
@@ -1444,11 +1445,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AA6608A28F43F790058490F /* SWXMLHash in Frameworks */,
+				7517D9D62A5F2EE600D081AD /* CottonBase.xcframework in Frameworks */,
 				8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */,
 				8AD4F51828F491F8009C4BDC /* ReactiveSwift in Frameworks */,
 				8A5F720D2826DD16008E5638 /* ReactiveHttpKit.framework in Frameworks */,
 				8A7ECCBB26AF2BEF000C902F /* HttpKit.framework in Frameworks */,
-				8A91695D297C43D500F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1463,6 +1464,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7517D9CA2A5F2EB800D081AD /* CottonBase.xcframework in Frameworks */,
 				8A7B1BF728EB2C80004FC135 /* WebKit.framework in Frameworks */,
 				8A7B1BDC28EB1736004FC135 /* JSPlugins.framework in Frameworks */,
 				8A7B1BD128EB16F9004FC135 /* ReactiveHttpKit.framework in Frameworks */,
@@ -1474,7 +1476,6 @@
 				8A5E6CB1290B21B50034A78B /* Alamofire in Frameworks */,
 				8AB9BE2C28FF149A002063C2 /* FeaturesFlagsKit.framework in Frameworks */,
 				8A7B1BD828EB172A004FC135 /* BrowserNetworking.framework in Frameworks */,
-				8A916951297C43B400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1502,7 +1503,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AD4F52F28F49349009C4BDC /* CoreCatowser.framework in Frameworks */,
-				8A91694C297C43A600F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
 				8AD4F53928F4935D009C4BDC /* HttpKit.framework in Frameworks */,
 				8AD4F54028F4936A009C4BDC /* ReactiveHttpKit.framework in Frameworks */,
 				8AD4F53628F49358009C4BDC /* FeaturesFlagsKit.framework in Frameworks */,
@@ -1516,6 +1516,7 @@
 				8AE31139247C667300FF28B1 /* UIKit.framework in Frameworks */,
 				8A6CD6D524585D8C0068ACB5 /* Combine.framework in Frameworks */,
 				8AD4F52228F49317009C4BDC /* Alamofire in Frameworks */,
+				7517D9C52A5F2E8D00D081AD /* CottonBase.xcframework in Frameworks */,
 				8A8035CF24442F0F000E035F /* JSPlugins.framework in Frameworks */,
 				8AD4F52928F49341009C4BDC /* BrowserNetworking.framework in Frameworks */,
 				8A8035D124442F0F000E035F /* CoreBrowser.framework in Frameworks */,
@@ -1547,7 +1548,7 @@
 			files = (
 				8AD4F51428F491D9009C4BDC /* ReactiveSwift in Frameworks */,
 				8AB70E9827B7AEA7003FB59B /* HttpKit.framework in Frameworks */,
-				8A91695A297C43CD00F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
+				7517D9D32A5F2EDC00D081AD /* CottonBase.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1573,7 +1574,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A5E6C93290B107B0034A78B /* AutoMockable.framework in Frameworks */,
-				8A916957297C43C400F1D634 /* CottonCoreBaseKit.xcframework in Frameworks */,
+				7517D9D02A5F2ED200D081AD /* CottonBase.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1590,6 +1591,7 @@
 		5906B47E95A37FC0872DBD1A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */,
 				8A916949297C439C00F1D634 /* CottonCoreBaseKit.xcframework */,
 				8A7B1BF628EB2C7F004FC135 /* WebKit.framework */,
 				8A5F71F52826C148008E5638 /* CoreHttpKit.xcframework */,

@@ -8,7 +8,7 @@
 
 import HttpKit
 import ReactiveSwift
-import CottonCoreBaseKit
+import CottonBase
 
 extension HTTPRxAdapter {
     /* mutating */ func transferToRxState(_ observer: Signal<Response, HttpError>.Observer,

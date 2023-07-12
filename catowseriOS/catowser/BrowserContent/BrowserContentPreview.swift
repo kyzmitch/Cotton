@@ -6,7 +6,7 @@
 //  Copyright © 2023 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 import JSPlugins
 import SwiftUI
 import CoreBrowser
