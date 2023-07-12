@@ -6,7 +6,7 @@
 //  Copyright © 2023 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 
 extension WebViewController: WebViewReusable {
     func resetTo(_ site: Site) {

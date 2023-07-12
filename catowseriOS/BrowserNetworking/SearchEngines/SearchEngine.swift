@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 
 /// The model for OpenSearch format URL
 public struct SearchEngine {

@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 
 public class GoogleDnsServer: ServerDescription {
     public convenience init() {

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 import AutoMockable
 
 // Can't mock `ServerDescription` because need to call base init somehow

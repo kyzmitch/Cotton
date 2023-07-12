@@ -8,7 +8,7 @@
 
 import HttpKit
 import ReactiveSwift
-import CottonCoreBaseKit
+import CottonBase
 
 /// This typealias could be an issue, because the same defined in BrowserNetworking HttpClient+Alamofire.swift
 public typealias RxProducer<R: ResponseType> = SignalProducer<R, HttpError>

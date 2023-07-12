@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreBrowser
-import CottonCoreBaseKit
+import CottonBase
 
 enum SearchBarAction: Equatable {
     /// When search bar is in view mode - this is a request to move it to edit state

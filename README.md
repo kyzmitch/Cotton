@@ -49,9 +49,9 @@ export PATH=$PATH:$ANDROID_HOME/emulator
     - SDK Tools tab
     - Install `Google Play Licensing Library`
 - `make`
-- open Kotlin `CottonCoreBaseKit` folder using `InteliJ IDEA`
-- run `CottonCoreBaseKit [assembleCottonCoreBaseKitReleaseXCFramework]` Gradle configuration for iOS client. It is located under `other` section of Gradle tasks list.
-- run `CottonCoreBaseKit [publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
+- open Kotlin `cotton-base` folder using `InteliJ IDEA`
+- run `cotton-base [assembleCottonBaseReleaseXCFramework]` Gradle configuration for iOS client. It is located under `other` section of Gradle tasks list.
+- run `cotton-base [publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
 - for iOS client:
     - `cd catowseriOS/`
     - Open `catowser.xcworkspace`

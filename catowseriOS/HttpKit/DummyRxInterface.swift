@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 
 /// These types are needed for Combine interfaces of RestClient we don't have to pass actual ReactiveSwift types
 /// to be able to use Combine interfaces

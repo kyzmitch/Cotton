@@ -8,7 +8,7 @@
 
 import CoreData
 import CoreBrowser
-import CottonCoreBaseKit
+import CottonBase
 
 enum TabsCoreDataError: Swift.Error {
     case mgContextNil

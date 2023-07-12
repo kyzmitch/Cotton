@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 import JSPlugins
 
 extension WebViewModelState: Actionable {

@@ -8,7 +8,7 @@
 
 import JSPlugins
 import WebKit
-import CottonCoreBaseKit
+import CottonBase
 
 final class MockedJSPluginsProgram: JSPluginsProgram {
     let plugins: [any JavaScriptPlugin] = []
@@ -18,11 +18,11 @@ final class MockedJSPluginsProgram: JSPluginsProgram {
         return lhs.plugins.count == rhs.plugins.count
     }
     
-    func inject(to visitor: WKUserContentController, context: CottonCoreBaseKit.Host, canInject: Bool) {
+    func inject(to visitor: WKUserContentController, context: CottonBase.Host, canInject: Bool) {
         
     }
     
-    func enable(on webView: JSPlugins.JavaScriptEvaluateble, context: CottonCoreBaseKit.Host, jsEnabled: Bool) {
+    func enable(on webView: JSPlugins.JavaScriptEvaluateble, context: CottonBase.Host, jsEnabled: Bool) {
         
     }
 }

@@ -7,11 +7,11 @@
 //
 
 import WebKit
-import CottonCoreBaseKit
+import CottonBase
 
 /// A Concrete Visitor which is in this case only one possible type from iOS SDK WebKit
 extension WKUserContentController: JavaScriptPluginVisitor {
-    public func canVisit(_ plugin: any JavaScriptPlugin, _ host: CottonCoreBaseKit.Host, _ canInject: Bool) -> Bool {
+    public func canVisit(_ plugin: any JavaScriptPlugin, _ host: CottonBase.Host, _ canInject: Bool) -> Bool {
         guard canInject else {
             return false
         }

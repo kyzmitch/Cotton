@@ -9,7 +9,7 @@
 #if swift(>=5.5)
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 
 extension RestClient {
     @available(swift 5.5)

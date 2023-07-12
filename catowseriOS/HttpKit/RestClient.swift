@@ -10,7 +10,7 @@ import Foundation
 #if canImport(Combine)
 import Combine
 #endif
-import CottonCoreBaseKit
+import CottonBase
 
 fileprivate extension String {
     static let threadName = "Client"

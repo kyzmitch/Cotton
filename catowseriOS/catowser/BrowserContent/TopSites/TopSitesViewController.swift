@@ -9,7 +9,7 @@
 import UIKit
 import FeaturesFlagsKit
 import AlamofireImage
-import CottonCoreBaseKit
+import CottonBase
 
 protocol TopSitesInterface: AnyObject {
     func reload(with sites: [Site])

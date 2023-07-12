@@ -6,7 +6,7 @@
 //  Copyright © 2020 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 import SWXMLHash
 
 extension OpenSearch {
@@ -45,7 +45,7 @@ extension OpenSearch {
                 guard let typeString = urlElement.attribute(by: "type")?.text else {
                     continue
                 }
-                let possibleContentType: CottonCoreBaseKit.ContentTypeValue? = .companion.createFrom(rawValue: typeString)
+                let possibleContentType: CottonBase.ContentTypeValue? = .companion.createFrom(rawValue: typeString)
                 guard let contentType = possibleContentType else {
                     continue
                 }

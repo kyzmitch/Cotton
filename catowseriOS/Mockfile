@@ -14,4 +14,4 @@ CoreCatowserTarget: # Distinctive name of your mock configuration target
   targets:          # Specify XCodeproj targets for your mock. Used for linting
     - CoreCatowserTests
   testable: [CoreCatowser] 
-  import: [HttpKit, ReactiveSwift, Combine, CottonCoreBaseKit, ReactiveHttpKit, BrowserNetworking, FeaturesFlagsKit, CoreBrowser]
+  import: [HttpKit, ReactiveSwift, Combine, CottonBase, ReactiveHttpKit, BrowserNetworking, FeaturesFlagsKit, CoreBrowser]

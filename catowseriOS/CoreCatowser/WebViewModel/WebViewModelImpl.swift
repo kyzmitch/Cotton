@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 import CoreBrowser
 import JSPlugins
 import BrowserNetworking
@@ -76,7 +76,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     private lazy var dnsRequestCancellable: AnyCancellable? = nil
     lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
     
-    public var host: CottonCoreBaseKit.Host { state.host }
+    public var host: CottonBase.Host { state.host }
     
     public var currentURL: URL? { state.platformURL }
     
