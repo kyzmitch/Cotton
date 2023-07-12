@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CottonCoreBaseKit
+import CottonBase
 
 extension RestClient {
     public func makeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,

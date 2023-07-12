@@ -78,14 +78,14 @@ node_modules
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
 local.properties
-CottonCoreBaseKit/.idea/caches
-CottonCoreBaseKit/.idea/libraries
-CottonCoreBaseKit/.idea/modules.xml
-CottonCoreBaseKit/.idea/workspace.xml
-CottonCoreBaseKit/.idea/navEditor.xml
-CottonCoreBaseKit/.idea/assetWizardSettings.xml
-CottonCoreBaseKit/CottonCoreBaseKit
-CottonCoreBaseKit/.gradle
+cotton-base/.idea/caches
+cotton-base/.idea/libraries
+cotton-base/.idea/modules.xml
+cotton-base/.idea/workspace.xml
+cotton-base/.idea/navEditor.xml
+cotton-base/.idea/assetWizardSettings.xml
+cotton-base/CottonBase
+cotton-base/.gradle
 
 # Android Studio paths
 #

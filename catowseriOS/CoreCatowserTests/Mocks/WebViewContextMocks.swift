@@ -8,7 +8,7 @@
 
 import CoreCatowser
 import JSPlugins
-import CottonCoreBaseKit
+import CottonBase
 import FeaturesFlagsKit
 
 final class MockedWebViewContext: WebViewContext {
@@ -39,7 +39,7 @@ final class MockedWebViewContext: WebViewContext {
         enableDoH = enabled
     }
     
-    public func nativeApp(for host: CottonCoreBaseKit.Host) -> String? {
+    public func nativeApp(for host: CottonBase.Host) -> String? {
         guard let value = appName else {
             return nil
         }

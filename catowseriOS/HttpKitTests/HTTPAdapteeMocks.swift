@@ -9,7 +9,7 @@
 import Foundation
 @testable import HttpKit
 import Combine
-import CottonCoreBaseKit
+import CottonBase
 
 final class MockedHTTPAdapteeWithFail<R, S, RX: RxInterface>: HTTPRxAdapter where RX.Observer.Response == R, RX.Server == S {
     typealias Response = R

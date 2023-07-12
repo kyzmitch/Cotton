@@ -5,49 +5,49 @@
       location = "group:Kotlin Debug"
       name = "KotlinDebug">
       <Group
-         location = "group:../../CottonCoreBaseKit/src/commonMain"
+         location = "group:../cotton-base/src/commonMain"
          name = "commonMain">
          <Group
-            location = "group:../../../android/CottonCoreBaseKit/src/commonMain/kotlin"
+            location = "group:../../src/commonMain/kotlin"
             name = "kotlin">
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/JsonUtils.kt">
+               location = "group:../../../src/commonMain/kotlin/JsonUtils.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/DomainName.kt">
+               location = "group:../../../src/commonMain/kotlin/DomainName.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/Endpoint.kt">
+               location = "group:../../../src/commonMain/kotlin/Endpoint.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/Site.kt">
+               location = "group:../../../src/commonMain/kotlin/Site.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/ParametersEncodingDestination.kt">
+               location = "group:../../../src/commonMain/kotlin/ParametersEncodingDestination.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/TextExtensions.kt">
+               location = "group:../../../src/commonMain/kotlin/TextExtensions.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/ServerDescription.kt">
+               location = "group:../../../src/commonMain/kotlin/ServerDescription.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/Punycode.kt">
+               location = "group:../../../src/commonMain/kotlin/Punycode.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/HTTPRequestInfo.kt">
+               location = "group:../../../src/commonMain/kotlin/HTTPRequestInfo.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/ByteArrayNativeUtils.kt">
+               location = "group:../../../src/commonMain/kotlin/ByteArrayNativeUtils.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/URLInfo.kt">
+               location = "group:../../../src/commonMain/kotlin/URLInfo.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/HttpHeader.kt">
+               location = "group:../../../src/commonMain/kotlin/HttpHeader.kt">
             </FileRef>
             <FileRef
-               location = "group:../../../../../feature/android/CottonCoreBaseKit/src/commonMain/kotlin/Host.kt">
+               location = "group:../../../src/commonMain/kotlin/Host.kt">
             </FileRef>
          </Group>
       </Group>

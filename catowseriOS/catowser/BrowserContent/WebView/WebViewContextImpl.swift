@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 import CoreCatowser
 import CoreBrowser
 import JSPlugins

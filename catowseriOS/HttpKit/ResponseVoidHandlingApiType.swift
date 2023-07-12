@@ -9,7 +9,7 @@
 #if canImport(Combine)
 import Combine
 #endif
-import CottonCoreBaseKit
+import CottonBase
 
 // gryphon ignore
 public protocol RxAnyVoidObserver {

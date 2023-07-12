@@ -8,7 +8,7 @@
 
 import Foundation
 import FeaturesFlagsKit
-import CottonCoreBaseKit
+import CottonBase
 import CoreCatowser
 
 final class ViewModelFactory {

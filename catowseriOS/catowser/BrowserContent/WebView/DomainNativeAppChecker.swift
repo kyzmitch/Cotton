@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonCoreBaseKit
+import CottonBase
 
 final class DomainNativeAppChecker {
     /// Can't use hash set because need to check not full equality but partly equal case is also works

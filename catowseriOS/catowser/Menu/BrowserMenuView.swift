@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CottonCoreBaseKit
+import CottonBase
 import CoreBrowser
 import FeaturesFlagsKit
 

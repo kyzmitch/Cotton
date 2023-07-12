@@ -8,7 +8,7 @@
 
 import Foundation
 import Network
-import CottonCoreBaseKit
+import CottonBase
 
 public extension URL {
     var isAppleMapsURL: Bool {
@@ -56,16 +56,10 @@ public extension URL {
         return hasIPv4Host || hasIPv6Host
     }
     
-    init?(faviconHost: CottonCoreBaseKit.Host) {
-        let format = "https://\(faviconHost.rawString)/favicon.ico"
-        self.init(string: format)
-    }
-    
     init?(faviconIPInfo: URLInfo) {
-        guard let ipAddress = faviconIPInfo.ipAddressString else {
+        guard let faviconURLFromIp = faviconIPInfo.faviconURLFromIp else {
             return nil
         }
-        let format = "https://\(ipAddress)/favicon.ico"
-        self.init(string: format)
+        self.init(string: faviconURLFromIp)
     }
 }

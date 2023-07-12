@@ -8,7 +8,7 @@
 
 import HttpKit
 import Alamofire
-import CottonCoreBaseKit
+import CottonBase
 
 public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {
     let connectivityManager: NetworkReachabilityManager

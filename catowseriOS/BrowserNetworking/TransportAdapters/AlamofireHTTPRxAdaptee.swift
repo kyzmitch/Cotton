@@ -13,7 +13,7 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
-import CottonCoreBaseKit
+import CottonBase
 
 final class AlamofireHTTPRxAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.Observer.Response == R, RX.Server == S {
     typealias Response = R

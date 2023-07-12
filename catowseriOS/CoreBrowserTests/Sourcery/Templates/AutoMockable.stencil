@@ -3,7 +3,7 @@
 import Foundation
 import CoreBrowser
 import ReactiveSwift
-import CottonCoreBaseKit
+import CottonBase
 
 {% for import in argument.imports %}
 import {{ import }}

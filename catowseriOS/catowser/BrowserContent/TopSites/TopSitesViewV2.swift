@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CottonCoreBaseKit
+import CottonBase
 import CoreBrowser
 
 @available(iOS 14.0, *)

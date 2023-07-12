@@ -7,7 +7,7 @@
 //
 
 import HttpKit
-import CottonCoreBaseKit
+import CottonBase
 import ReactiveHttpKit
 import ReactiveSwift
 #if canImport(Combine)
@@ -48,7 +48,7 @@ extension Endpoint where S == GoogleServer {
             URLQueryItem(name: "client", value: "firefox")
         ]
         // Actually it's possible to get correct response even without any headers
-        let headers: [CottonCoreBaseKit.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
+        let headers: [CottonBase.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
         
         let frozenEndpoint = GSearchEndpoint(
             httpMethod: .get,

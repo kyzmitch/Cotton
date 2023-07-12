@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.cotton"
+    namespace = "org.cotton.app"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.cotton"
+        applicationId = "org.cotton"
         minSdk = 21
         targetSdk = 33
         versionCode = 1
@@ -48,11 +48,14 @@ android {
 }
 
 dependencies {
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra.get("lifecycle_version") as String}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra.get("lifecycle_version") as String}")
     implementation(project(mapOf("path" to ":browser-content")))
-    implementation("org.cotton.base:CottonCoreBaseKit:0.1-SNAPSHOT")
+    implementation("org.cotton.base:cotton-base:0.1-SNAPSHOT")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:1.3.1")
+    implementation("androidx.activity:activity-compose:${rootProject.extra.get("android_x_activity") as String}")
+    implementation("androidx.activity:activity-ktx:${rootProject.extra.get("android_x_activity") as String}")
     implementation("androidx.compose.ui:ui:${rootProject.extra.get("compose_version") as String}")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra.get("compose_version") as String}")
     implementation("androidx.compose.material:material:1.1.1")
