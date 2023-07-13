@@ -1,33 +1,34 @@
 //
-//  SearchSuggestionsVMRxTests.swift
+//  SearchSuggestionsVMCombineTests.swift
 //  CoreCatowserTests
 //
-//  Created by Andrei Ermoshin on 1/8/23.
-//  Copyright © 2023 andreiermoshin. All rights reserved.
+//  Created by Andrei Ermoshin on 11/4/22.
+//  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
 import XCTest
-@testable import CoreCatowser
+@testable import CottonData
 import CottonBase
 import HttpKit
 import ReactiveHttpKit
 import ReactiveSwift
+import Combine
 import BrowserNetworking
 import SwiftyMocky
 
-final class SearchSuggestionsVMRxTests: SearchSuggestionsVMFixture {
-    private var disposables: Array<Disposable>!
+final class SearchSuggestionsVMCombineTests: SearchSuggestionsVMFixture {
+    private var cancellables: Set<AnyCancellable>!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        disposables = []
+        cancellables = []
     }
-    
+
     // swiftlint:disable:next function_body_length
     func testVMInitAndSuggestionsFetch() throws {
         let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
-        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .reactive))
+        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .combine))
         let input1 = "g"
         let input2 = "o"
         let expected1 = ["google", "gmail"]
@@ -35,14 +36,21 @@ final class SearchSuggestionsVMRxTests: SearchSuggestionsVMFixture {
         let expected2 = ["opennet com", "overwatch"]
         let known2 = ["opennet.com", "blizzard.com"]
         let promiseValue1: SearchSuggestionsResponse = .init(input1, expected1)
-        let responseProducer1: SignalProducer<SearchSuggestionsResponse, HttpError> = .init(value: promiseValue1)
+        let responsePublisher1: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
+            .success(promiseValue1)
+            .eraseToAnyPublisher()
         let promiseValue2: SearchSuggestionsResponse = .init(input2, expected2)
-        let responseProducer2: SignalProducer<SearchSuggestionsResponse, HttpError> = .init(value: promiseValue2)
-        fetchSuggestionsCounter = 4
+        let responsePublisher2: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
+            .success(promiseValue2)
+            .eraseToAnyPublisher()
+        fetchSuggestionsCounter = 5
         let expectation1 = XCTestExpectation(description: "Suggestions were not received v1")
         let expectation2 = XCTestExpectation(description: "Suggestions were not received v2")
-        let disposable = vm.rxState.signal.observeValues { state in
-            if self.fetchSuggestionsCounter == 4 {
+        let cancellable = vm.combineState.sink { state in
+            if self.fetchSuggestionsCounter == 5 {
+                XCTAssertEqual(state, .waitingForQuery)
+                self.fetchSuggestionsCounter -= 1
+            } else if self.fetchSuggestionsCounter == 4 {
                 XCTAssertEqual(state, .knownDomainsLoaded(known1))
                 self.fetchSuggestionsCounter -= 1
             } else if self.fetchSuggestionsCounter == 3 {
@@ -60,20 +68,18 @@ final class SearchSuggestionsVMRxTests: SearchSuggestionsVMFixture {
                 XCTAssert(false, "Not expected state change")
             }
         }
-        if let nonNilValue = disposable {
-            disposables.append(nonNilValue)
-        }
+        cancellables.insert(cancellable)
         
-        Given(strategyMock, .suggestionsProducer(for: .value(input1), willProduce: { stubber in
-            stubber.return(responseProducer1)
+        Given(strategyMock, .suggestionsPublisher(for: .value(input1), willProduce: { stubber in
+            stubber.return(responsePublisher1)
         }))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))
         vm.fetchSuggestions(input1)
         XCTAssertEqual(vm.state, .waitingForQuery)
         wait(for: [expectation1], timeout: 1)
-        Given(strategyMock, .suggestionsProducer(for: .value(input2), willProduce: { stubber in
-            stubber.return(responseProducer2)
+        Given(strategyMock, .suggestionsPublisher(for: .value(input2), willProduce: { stubber in
+            stubber.return(responsePublisher2)
         }))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input2), willReturn: known2))
@@ -81,19 +87,23 @@ final class SearchSuggestionsVMRxTests: SearchSuggestionsVMFixture {
         XCTAssertEqual(vm.state, .waitingForQuery)
         wait(for: [expectation2], timeout: 1)
     }
-    
+
     func testSuggestionsFetchFailure() throws {
         let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
-        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .reactive))
+        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .combine))
         let input1 = "g"
         let known1 = ["google.com", "gmail.com"]
-        let error1 = HttpError.httpFailure(error: EndpointHttpError())
-        let responseProducer1: SignalProducer<SearchSuggestionsResponse, HttpError> = .init(error: error1)
-        fetchSuggestionsCounter = 2
+        let responsePublisher1: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
+            .failure(HttpError.httpFailure(error: EndpointHttpError()))
+            .eraseToAnyPublisher()
+        fetchSuggestionsCounter = 3
         let expectation1 = XCTestExpectation(description: "Suggestions were not received v1")
-        let disposable = vm.rxState.signal.observeValues { state in
-            if self.fetchSuggestionsCounter == 2 {
+        let cancellable = vm.combineState.sink { state in
+            if self.fetchSuggestionsCounter == 3 {
+                XCTAssertEqual(state, .waitingForQuery)
+                self.fetchSuggestionsCounter -= 1
+            } else if self.fetchSuggestionsCounter == 2 {
                 XCTAssertEqual(state, .knownDomainsLoaded(known1))
                 self.fetchSuggestionsCounter -= 1
             } else if self.fetchSuggestionsCounter == 1 {
@@ -104,12 +114,10 @@ final class SearchSuggestionsVMRxTests: SearchSuggestionsVMFixture {
                 XCTAssert(false, "Not expected state change")
             }
         }
-        if let nonNilValue = disposable {
-            disposables.append(nonNilValue)
-        }
+        cancellables.insert(cancellable)
         
-        Given(strategyMock, .suggestionsProducer(for: .value(input1), willProduce: { stubber in
-            stubber.return(responseProducer1)
+        Given(strategyMock, .suggestionsPublisher(for: .value(input1), willProduce: { stubber in
+            stubber.return(responsePublisher1)
         }))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))

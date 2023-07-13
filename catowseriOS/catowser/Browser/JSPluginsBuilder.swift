@@ -8,7 +8,7 @@
 
 import Foundation
 import JSPlugins
-import CoreCatowser
+import CottonData
 
 /**
  Creates the plugins by connecting them with observers (delegates).

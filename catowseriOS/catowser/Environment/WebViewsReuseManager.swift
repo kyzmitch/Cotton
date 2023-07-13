@@ -11,7 +11,7 @@ import CoreBrowser
 import JSPlugins
 import BrowserNetworking
 import CottonBase
-import CoreCatowser
+import CottonData
 
 struct NotSelectedIndex: Error {}
 struct OutOfBoundsIndex: Error {}

@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import CoreCatowser
+import CottonData
 import JSPlugins
 import CottonBase
 import FeaturesFlagsKit

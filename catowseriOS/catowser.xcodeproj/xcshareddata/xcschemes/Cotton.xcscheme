@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8A7B1B9E28EB131F004FC135"
-               BuildableName = "CoreCatowserTests.xctest"
-               BlueprintName = "CoreCatowserTests"
+               BuildableName = "CottonDataTests.xctest"
+               BlueprintName = "CottonDataTests"
                ReferencedContainer = "container:catowser.xcodeproj">
             </BuildableReference>
          </TestableReference>

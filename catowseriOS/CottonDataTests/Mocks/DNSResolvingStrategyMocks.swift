@@ -10,7 +10,7 @@ import BrowserNetworking
 import ReactiveSwift
 import Combine
 import HttpKit
-import CoreCatowser
+import CottonData
 
 final class MockedDNSStrategy: DNSResolvingStrategy {
     public typealias Context = MockedDNSContext

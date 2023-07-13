@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import CoreCatowser
+@testable import CottonData
 import HttpKit
 import CottonBase
 import WebKit

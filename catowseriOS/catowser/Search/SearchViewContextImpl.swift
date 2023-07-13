@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreCatowser
+import CottonData
 import CoreBrowser
 import FeaturesFlagsKit
 
