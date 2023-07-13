@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CottonRestKit
 
 struct MockedGoodJSONEncoding: JSONRequestEncodable {
     func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest {

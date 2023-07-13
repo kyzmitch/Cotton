@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CottonRestKit
 
 public final class MockedDNSResponse: ResponseType {
     static public var successCodes: [Int] {

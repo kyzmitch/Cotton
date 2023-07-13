@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import CottonData
-import HttpKit
+import CottonRestKit
 import CottonBase
 import WebKit
 

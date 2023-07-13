@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import HttpKit
+import CottonRestKit
 import BrowserNetworking
 import Alamofire // only needed for `JSONEncoding`
 

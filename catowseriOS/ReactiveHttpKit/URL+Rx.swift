@@ -7,7 +7,7 @@
 //
 
 import ReactiveSwift
-import HttpKit
+import CottonRestKit
 
 public typealias HostProducer = SignalProducer<String, DnsError>
 public typealias ResolvedURLProducer = SignalProducer<URL, DnsError>

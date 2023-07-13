@@ -9,7 +9,7 @@
 import Foundation
 import ReactiveSwift
 import Combine
-import HttpKit
+import CottonRestKit
 
 private extension String {
     static let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")

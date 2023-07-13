@@ -6,7 +6,7 @@
 //  Copyright © 2021 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CottonRestKit
 import CottonBase
 
 struct MockedGoodEndpointResponse: ResponseType {

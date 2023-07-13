@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import HttpKit
+@testable import CottonRestKit
 import Combine
 import CottonBase
 

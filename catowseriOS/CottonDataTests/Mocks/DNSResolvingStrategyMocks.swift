@@ -9,7 +9,7 @@
 import BrowserNetworking
 import ReactiveSwift
 import Combine
-import HttpKit
+import CottonRestKit
 import CottonData
 
 final class MockedDNSStrategy: DNSResolvingStrategy {

@@ -8,7 +8,7 @@
 
 #if swift(>=5.5)
 
-import HttpKit
+import CottonRestKit
 
 extension RestClient where Server == GoogleServer {
     @available(swift 5.5)
