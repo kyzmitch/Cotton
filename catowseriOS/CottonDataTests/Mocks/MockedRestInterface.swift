@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CottonRestKit
 import CottonBase
 
 final class MockedRestInterface<S: ServerDescription,

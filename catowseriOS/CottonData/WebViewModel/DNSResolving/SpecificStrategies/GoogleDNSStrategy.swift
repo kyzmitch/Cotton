@@ -10,7 +10,7 @@ import Foundation
 import BrowserNetworking
 import ReactiveSwift
 import Combine
-import HttpKit
+import CottonRestKit
 import Alamofire
 
 public final class GoogleDNSContext: RestClientContext {

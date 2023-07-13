@@ -10,7 +10,7 @@ import Foundation
 
 #if swift(>=5.5)
 
-import HttpKit
+import CottonRestKit
 
 extension RestClient where Server == DuckDuckGoServer {
     @available(swift 5.5)

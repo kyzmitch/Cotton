@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import HttpKit
+@testable import CottonRestKit
 import Foundation
 
 class HttpClientTests: XCTestCase {

@@ -9,7 +9,7 @@
 import XCTest
 @testable import CottonData
 import CottonBase
-import HttpKit
+import CottonRestKit
 import ReactiveHttpKit
 import ReactiveSwift
 import Combine

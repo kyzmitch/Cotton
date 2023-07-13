@@ -6,7 +6,7 @@
 //  Copyright © 2019 andreiermoshin. All rights reserved.
 //
 
-import HttpKit
+import CottonRestKit
 import CottonBase
 import ReactiveHttpKit
 import ReactiveSwift

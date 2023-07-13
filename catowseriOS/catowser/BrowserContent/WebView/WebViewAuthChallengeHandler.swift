@@ -10,6 +10,7 @@ import WebKit
 import CottonBase
 import Alamofire
 import Foundation
+import BrowserNetworking
 
 private var logAuthChallenge = false
 

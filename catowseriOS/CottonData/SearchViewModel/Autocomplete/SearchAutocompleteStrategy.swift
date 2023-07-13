@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import HttpKit
+import CottonRestKit
 import ReactiveSwift
 import Combine
 import AutoMockable
