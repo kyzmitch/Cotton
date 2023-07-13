@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 import CoreBrowser
-import JSPlugins
+import CottonPlugins
 import CottonBase
 import BrowserNetworking
 import FeaturesFlagsKit

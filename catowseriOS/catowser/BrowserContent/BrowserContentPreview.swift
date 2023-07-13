@@ -7,7 +7,7 @@
 //
 
 import CottonBase
-import JSPlugins
+import CottonPlugins
 import SwiftUI
 import CoreBrowser
 

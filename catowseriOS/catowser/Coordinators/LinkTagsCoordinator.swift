@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import JSPlugins
+import CottonPlugins
 
 /// An interface only needed on Tablet layout, tablet's search bar implements it
 protocol MediaLinksPresenter: AnyObject {

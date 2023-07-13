@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import JSPlugins
+import CottonPlugins
 import CottonData
 
 /**

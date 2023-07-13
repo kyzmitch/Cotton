@@ -8,7 +8,7 @@
 
 import Combine
 import SwiftUI
-import JSPlugins
+import CottonPlugins
 
 final class MainBrowserModel<C: BrowserContentCoordinators> {
     weak var coordinatorsInterface: C?

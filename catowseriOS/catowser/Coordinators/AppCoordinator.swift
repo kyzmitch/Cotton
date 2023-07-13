@@ -10,7 +10,7 @@ import UIKit
 import CoreBrowser
 import CottonBase
 import FeaturesFlagsKit
-import JSPlugins
+import CottonPlugins
 
 /// Browser content related coordinators
 protocol BrowserContentCoordinators: AnyObject {

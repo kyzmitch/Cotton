@@ -10,7 +10,7 @@ import UIKit
 import CoreBrowser
 // needed for `Downloadable`
 import BrowserNetworking
-import JSPlugins
+import CottonPlugins
 
 protocol FilesGridPresenter: AnyObject {
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
