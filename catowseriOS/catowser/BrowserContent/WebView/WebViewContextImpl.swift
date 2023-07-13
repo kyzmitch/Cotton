@@ -10,7 +10,7 @@ import Foundation
 import CottonBase
 import CottonData
 import CoreBrowser
-import JSPlugins
+import CottonPlugins
 import FeaturesFlagsKit
 
 private var logTabUpdate = false

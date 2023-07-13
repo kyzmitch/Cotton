@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBrowser
-import JSPlugins
+import CottonPlugins
 import BrowserNetworking
 import CottonBase
 import CottonData

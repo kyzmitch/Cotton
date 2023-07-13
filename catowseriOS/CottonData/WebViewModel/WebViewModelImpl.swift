@@ -9,7 +9,7 @@
 import Foundation
 import CottonBase
 import CoreBrowser
-import JSPlugins
+import CottonPlugins
 import BrowserNetworking
 import ReactiveSwift
 import Combine

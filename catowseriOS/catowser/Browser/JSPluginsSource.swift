@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import JSPlugins
+import CottonPlugins
 
 public protocol JSPluginsSource: AnyObject {
     associatedtype Program: JSPluginsProgram

@@ -7,7 +7,7 @@
 //
 
 import CottonData
-import JSPlugins
+import CottonPlugins
 import CottonBase
 import FeaturesFlagsKit
 

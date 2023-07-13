@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import JSPlugins
+import CottonPlugins
 
 final class MockedWebViewWithError: JavaScriptEvaluateble {
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?) {

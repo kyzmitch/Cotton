@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import JSPlugins
+import CottonPlugins
 
 enum TagsSiteDataSource {
     case instagram([InstagramVideoNode])

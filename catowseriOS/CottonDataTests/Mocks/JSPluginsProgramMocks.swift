@@ -6,7 +6,7 @@
 //  Copyright © 2022 andreiermoshin. All rights reserved.
 //
 
-import JSPlugins
+import CottonPlugins
 import WebKit
 import CottonBase
 

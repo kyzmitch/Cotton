@@ -8,7 +8,7 @@
 
 import Foundation
 import CottonBase
-import JSPlugins
+import CottonPlugins
 
 protocol Actionable {
     associatedtype Action

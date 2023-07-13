@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBrowser
-import JSPlugins
+import CottonPlugins
 
 enum LinksType: CustomStringConvertible {
     var description: String {

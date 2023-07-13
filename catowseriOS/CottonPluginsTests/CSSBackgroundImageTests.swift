@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import JSPlugins
+@testable import CottonPlugins
 
 class CSSBackgroundImageTests: XCTestCase {
 
