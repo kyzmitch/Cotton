@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import CoreCatowser
+import CottonData
 
 struct SearchSuggestionsViewV2: View {
     /// Used in waitingForQuery

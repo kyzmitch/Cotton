@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreCatowser
+import CottonData
 import FeaturesFlagsKit
 
 /**

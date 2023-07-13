@@ -17,7 +17,7 @@ import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
-import CoreCatowser
+import CottonData
 
 extension WKWebView: JavaScriptEvaluateble {}
 

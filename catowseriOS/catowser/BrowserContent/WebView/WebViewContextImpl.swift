@@ -8,7 +8,7 @@
 
 import Foundation
 import CottonBase
-import CoreCatowser
+import CottonData
 import CoreBrowser
 import JSPlugins
 import FeaturesFlagsKit

@@ -9,7 +9,7 @@
 import Foundation
 import FeaturesFlagsKit
 import CottonBase
-import CoreCatowser
+import CottonData
 
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
