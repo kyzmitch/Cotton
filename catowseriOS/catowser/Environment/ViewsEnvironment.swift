@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 final class ViewsEnvironment {
     static let shared: ViewsEnvironment = .init()
     

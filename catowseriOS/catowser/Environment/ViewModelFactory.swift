@@ -11,6 +11,11 @@ import FeaturesFlagsKit
 import CottonBase
 import CottonData
 
+/// Creates new instances of view models.
+/// Depends on feature flags to determine VM configuration/dependencies.
+///
+/// It doesn't need to be globalActor even tho it is a singleton,
+/// because it doesn't hold the state and vm creation is synchronous.
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
     
