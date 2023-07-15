@@ -2056,7 +2056,6 @@
 			children = (
 				8A23987B286223A7005DA801 /* WebSearchAutocomplete.swift */,
 				8A624077288D9AC7006DDC66 /* WebSearchAutocomplete+AsyncAwait.swift */,
-				8A23987E286223CE005DA801 /* RestClientContext.swift */,
 				8A239881286223EF005DA801 /* SearchAutocompleteStrategy.swift */,
 				8A23988B286226E1005DA801 /* SearchSuggestionsResponse.swift */,
 				8A23988728622486005DA801 /* SpecificStrategies */,
@@ -2161,6 +2160,7 @@
 				8A5FD6A826AF34570019384A /* AppErrors.swift */,
 				8A964E3924867A9400A0AABE /* SiteSettings+Extensions.swift */,
 				8A7B1BFE28EB3269004FC135 /* Site+Extensions.swift */,
+				8A23987E286223CE005DA801 /* RestClientContext.swift */,
 				8A7B1BC028EB1679004FC135 /* SearchViewModel */,
 				8A7B1BB328EB1512004FC135 /* WebViewModel */,
 			);
