@@ -12,6 +12,7 @@ import FeaturesFlagsKit
 import BrowserNetworking
 import CottonBase
 
+@MainActor
 protocol SearchBarDelegate: AnyObject {
     func openTab(_ content: Tab.ContentType)
     func layoutSuggestions()
@@ -32,8 +33,9 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     
     private var searhSuggestionsCoordinator: SearchSuggestionsCoordinator?
     
-    private var searchSuggestClient: SearchEngine {
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
+    private nonisolated func searchSuggestClient() async -> SearchEngine {
+        let selectedPluginName = await FeatureManager.shared.searchPluginName()
+        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: selectedPluginName, on: .main)
         guard let xmlData = optionalXmlData else {
             return .googleSearchEngine()
         }
@@ -204,18 +206,22 @@ private extension SearchBarCoordinator {
     }
     
     func replaceTab(with url: URL, with suggestion: String? = nil) {
-        let blockPopups = DefaultTabProvider.shared.blockPopups
-        let isJSEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        let settings = Site.Settings(isPrivate: false,
-                                     blockPopups: blockPopups,
-                                     isJSEnabled: isJSEnabled,
-                                     canLoadPlugins: true)
-        guard let site = Site(url, suggestion, settings) else {
-            assertionFailure("\(#function) failed to replace current tab - failed create site")
-            return
+        Task {
+            let blockPopups = DefaultTabProvider.shared.blockPopups
+            let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            let settings = Site.Settings(isPrivate: false,
+                                         blockPopups: blockPopups,
+                                         isJSEnabled: isJSEnabled,
+                                         canLoadPlugins: true)
+            guard let site = Site(url, suggestion, settings) else {
+                assertionFailure("\(#function) failed to replace current tab - failed create site")
+                return
+            }
+            await MainActor.run {
+                // tab content replacing will happen in `didCommit`
+                delegate?.openTab(.site(site))
+            }
         }
-        // tab content replacing will happen in `didCommit`
-        delegate?.openTab(.site(site))
     }
 }
 
@@ -301,22 +307,35 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
             }
             replaceTab(with: url)
         case .suggestion(let suggestion):
-            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
-                assertionFailure("Failed construct search engine url from suggestion string")
-                return
-            }
-            replaceTab(with: url, with: suggestion)
+            handleSuggestion(suggestion)
         }
     }
 }
 
-extension FeatureManager {
-    static func searchPluginName() -> KnownSearchPluginName {
+extension FeatureManager.FManager {
+    func searchPluginName() -> KnownSearchPluginName {
         switch webSearchAutoCompleteValue() {
         case .google:
             return .google
         case .duckduckgo:
             return .duckduckgo
+        }
+    }
+}
+
+// MARK: - Async private methods
+
+private extension SearchBarCoordinator {
+    func handleSuggestion(_ suggestion: String) {
+        Task {
+            let client = await searchSuggestClient()
+            guard let url = client.searchURLForQuery(suggestion) else {
+                assertionFailure("Failed construct search engine url from suggestion string")
+                return
+            }
+            await MainActor.run {
+                replaceTab(with: url, with: suggestion)
+            }
         }
     }
 }

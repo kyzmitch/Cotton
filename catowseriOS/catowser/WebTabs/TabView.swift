@@ -219,7 +219,7 @@ private extension TabView {
             let subscriber = HttpEnvironment.shared.dnsClientSubscriber
 
             imageURLRequestCancellable?.cancel()
-            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            let useDoH = FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in

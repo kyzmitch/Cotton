@@ -76,12 +76,11 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         }
     }
     
-    /// UI framework type won't change in runtime, only after app restart, so that, it is const
-    private let uiFramework: UIFrameworkType
+    let uiFramework: UIFrameworkType
     
-    init(_ vcFactory: ViewControllerFactory) {
+    init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
-        uiFramework = FeatureManager.appUIFrameworkValue()
+        self.uiFramework = uiFramework
     }
     
     func start() {
@@ -96,7 +95,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             }
         }
         
-        let vc = vcFactory.rootViewController(self)
+        let vc = vcFactory.rootViewController(self, uiFramework)
         startedVC = vc
         
         window.rootViewController = startedVC?.viewController

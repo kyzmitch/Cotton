@@ -24,16 +24,16 @@ final class PhoneTabsCoordinator: Coordinator {
     var navigationStack: UINavigationController?
     
     private weak var delegate: PhoneTabsDelegate?
-    private let uiFramework: UIFrameworkType
+    let uiFramework: UIFrameworkType
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController?,
-         _ delegate: PhoneTabsDelegate) {
+         _ delegate: PhoneTabsDelegate,
+         _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
-        
-        uiFramework = FeatureManager.appUIFrameworkValue()
+        self.uiFramework = uiFramework
     }
     
     func start() {

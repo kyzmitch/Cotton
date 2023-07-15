@@ -20,15 +20,16 @@ final class TopSitesCoordinator: Coordinator {
     var navigationStack: UINavigationController?
     
     private let contentContainerView: UIView?
-    private let uiFramework: UIFrameworkType
+    let uiFramework: UIFrameworkType
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController?,
-         _ contentContainerView: UIView?) {
+         _ contentContainerView: UIView?,
+         _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.contentContainerView = contentContainerView
-        uiFramework = FeatureManager.appUIFrameworkValue()
+        self.uiFramework = uiFramework
     }
     
     func start() {

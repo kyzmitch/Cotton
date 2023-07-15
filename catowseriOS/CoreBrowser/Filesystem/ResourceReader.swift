@@ -13,6 +13,7 @@ public enum KnownSearchPluginName: String {
     case duckduckgo
 }
 
+/// Resource reader parser, doesn't hold any state, so no need to be global actor
 public enum ResourceReader {
     public static func readXmlSearchPlugin(with name: KnownSearchPluginName,
                                            on bundle: Bundle) -> Data? {

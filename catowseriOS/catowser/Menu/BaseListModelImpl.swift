@@ -26,7 +26,7 @@ struct BaseListModelImpl<SourceType: FullEnumTypeConstraints>: BaseListModel whe
         // it is not possible to pass just a type name
         // swiftlint:disable:next force_unwrapping
         let enumCase = EnumDataSourceType.allCases.first!
-        selected = FeatureManager.enumValue(enumCase) ?? enumCase.defaultValue
+        selected = FeatureManager.shared.enumValue(enumCase) ?? enumCase.defaultValue
         viewTitle = title
         onPop = completion
     }

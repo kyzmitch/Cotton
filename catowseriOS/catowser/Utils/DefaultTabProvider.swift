@@ -20,7 +20,7 @@ final class DefaultTabProvider {
 
     lazy var topSites: [Site] = {
         let array: [Site?]
-        let isJsEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        let isJsEnabled = FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let settings: Site.Settings = .init(isPrivate: false,
                                             blockPopups: blockPopups,
                                             isJSEnabled: isJsEnabled,
@@ -45,11 +45,11 @@ final class DefaultTabProvider {
 
 extension DefaultTabProvider: TabsStates {
     var addPosition: AddedTabPosition {
-        FeatureManager.tabAddPositionValue()
+        FeatureManager.shared.tabAddPositionValue()
     }
     
     var contentState: Tab.ContentType {
-        FeatureManager.tabDefaultContentValue().contentType
+        FeatureManager.shared.tabDefaultContentValue().contentType
     }
     
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }

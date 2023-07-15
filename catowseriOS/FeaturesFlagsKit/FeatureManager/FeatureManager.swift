@@ -9,27 +9,29 @@
 import Foundation
 import CoreBrowser
 
+@globalActor
 public final class FeatureManager {
-    /// Shared instance has to be internal, to be able to divide code on extensions in separate files
-    public static let shared: FeatureManager = .init()
-    /// fields have to be internal, to be able to move code to extensions in separate files
-    let sources: [FeatureSource] = [LocalFeatureSource() /*, RemoteFeatureSource()*/]
-    /// temporarily create a separate array of sources for enum features
-    let enumSources: [EnumFeatureSource] = [LocalFeatureSource()]
+    public static let shared = FManager()
     
-    private init() {}
-    
-    public static func boolValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Bool where F.Value == Bool {
-        guard let source = source(for: feature) else {
-            return F.defaultValue
+    public actor FManager {
+        /// Flag value data sources. Have to be internal (not private),
+        /// to be able to move code to extensions in separate files
+        let sources: [FeatureSource] = [LocalFeatureSource() /*, RemoteFeatureSource()*/]
+        /// Temporarily create a separate array of sources for enum features
+        let enumSources: [EnumFeatureSource] = [LocalFeatureSource()]
+        
+        public func boolValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Bool where F.Value == Bool {
+            guard let source = source(for: feature) else {
+                return F.defaultValue
+            }
+            return source.currentValue(of: feature)
         }
-        return source.currentValue(of: feature)
-    }
-    
-    public static func intValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Int where F.Value == Int {
-        guard let source = source(for: feature) else {
-            return F.defaultValue
+        
+        public func intValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Int where F.Value == Int {
+            guard let source = source(for: feature) else {
+                return F.defaultValue
+            }
+            return source.currentValue(of: feature)
         }
-        return source.currentValue(of: feature)
     }
 }

@@ -53,7 +53,7 @@ final class SearchBarLegacyView: UIView {
         }
     }
     
-    private let uiFramework: UIFrameworkType
+    let uiFramework: UIFrameworkType
     
     /// Only needed for SwiftUI wrapper for phone layout
     private var phoneWidthConstraint: NSLayoutConstraint?
@@ -61,7 +61,7 @@ final class SearchBarLegacyView: UIView {
     // MARK: - initializers
     
     override init(frame: CGRect) {
-        uiFramework = FeatureManager.appUIFrameworkValue()
+        uiFramework = FeatureManager.shared.appUIFrameworkValue()
         super.init(frame: frame)
         
         addSubview(searchBarView)
@@ -233,7 +233,7 @@ private extension SearchBarLegacyView {
             searchBarView.resignFirstResponder()
             searchBarView.setShowsCancelButton(false, animated: animated)
             searchBarView.text = searchBarContent
-            let dohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+            let dohEnabled = FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
             siteNameLabel.text = title
             prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)

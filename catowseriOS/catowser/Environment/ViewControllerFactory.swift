@@ -24,7 +24,7 @@ import FeaturesFlagsKit
 /// Declares an interface for operations that create abstract product objects.
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController
+    func rootViewController(_ coordinator: AppCoordinator, _ uiFramework: UIFrameworkType) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
@@ -69,9 +69,9 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController {
+    func rootViewController(_ coordinator: AppCoordinator, _ uiFramework: UIFrameworkType) -> AnyViewController {
         let vc: AnyViewController
-        switch FeatureManager.appUIFrameworkValue() {
+        switch uiFramework {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:

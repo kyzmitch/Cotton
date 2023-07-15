@@ -48,7 +48,7 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     init(_ vm: MainBrowserModel<C>) {
         self.vm = vm
         browserContentVM = .init(vm.jsPluginsBuilder)
-        mode = FeatureManager.appUIFrameworkValue().swiftUIMode
+        mode = FeatureManager.shared.appUIFrameworkValue().swiftUIMode
     }
     
     var body: some View {

@@ -13,19 +13,17 @@ import ReactiveSwift
 
 // MARK: - basic features
 
-extension FeatureManager {
-    public static func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) {
+extension FeatureManager.FManager {
+    public func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) {
         guard let source = source(for: feature) else {
             return
         }
         source.setValue(of: feature, value: value)
     }
     
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public typealias AppFeaturePublisher<F: Feature> = AnyPublisher<ApplicationFeature<F>, Never>
     
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    public static func featureChangesPublisher<F>(for feature: ApplicationFeature<F>) -> AppFeaturePublisher<F> {
+    public func featureChangesPublisher<F>(for feature: ApplicationFeature<F>) -> AppFeaturePublisher<F> {
         guard let source = source(for: feature) as? ObservableFeatureSource else {
             let empty = Empty<ApplicationFeature<F>, Never>(completeImmediately: false)
             return empty.eraseToAnyPublisher()
@@ -35,7 +33,7 @@ extension FeatureManager {
             .eraseToAnyPublisher()
     }
     
-    public static func rxFeatureChanges<F>(for feature: ApplicationFeature<F>) -> Signal<ApplicationFeature<F>, Never> {
+    public func rxFeatureChanges<F>(for feature: ApplicationFeature<F>) -> Signal<ApplicationFeature<F>, Never> {
         guard let source = source(for: feature) as? ObservableFeatureSource else {
             return .empty
         }
@@ -43,7 +41,7 @@ extension FeatureManager {
             .compactMap { $0 == feature ? feature : nil }
     }
     
-    public static func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
-        return shared.sources.first(where: { type(of: $0) == F.source })
+    public func source<F>(for feature: ApplicationFeature<F>) -> FeatureSource? {
+        return sources.first(where: { type(of: $0) == F.source })
     }
 }

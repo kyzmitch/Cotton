@@ -247,7 +247,7 @@ private extension WebViewController {
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
         
-        switch FeatureManager.appAsyncApiTypeValue() {
+        switch FeatureManager.shared.appAsyncApiTypeValue() {
         case .reactive:
             disposable?.dispose()
             disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
@@ -256,14 +256,14 @@ private extension WebViewController {
                 .rxFeatureChanges(for: .dnsOverHTTPSAvailable)
                 .producer
                 .startWithValues { [weak self] _ in
-                    self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+                    self?.viewModel.setDoH(FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable))
             }
         case .combine:
             cancellable?.cancel()
             cancellable = viewModel.combineWebPageState.sink(receiveValue: onStateChange)
             dohCancellable?.cancel()
-            dohCancellable = FeatureManager.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { [weak self] _ in
-                self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
+            dohCancellable = FeatureManager.shared.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { [weak self] _ in
+                self?.viewModel.setDoH(FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable))
             }
         case .asyncAwait:
             taskHandler?.cancel()
@@ -271,11 +271,11 @@ private extension WebViewController {
         }
         
         jsStateCancellable?.cancel()
-        jsStateCancellable = FeatureManager.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
+        jsStateCancellable = FeatureManager.shared.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
             guard let self = self, let jsSubject = self.webView  else {
                 return
             }
-            let enabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+            let enabled = FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             self.viewModel.setJavaScript(jsSubject, enabled)
         }
     }

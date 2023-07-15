@@ -22,7 +22,7 @@ final class ViewModelFactory {
     private init() {}
     
     func searchSuggestionsViewModel() -> SearchSuggestionsViewModel {
-        let searchProviderType = FeatureManager.webSearchAutoCompleteValue()
+        let searchProviderType = FeatureManager.shared.webSearchAutoCompleteValue()
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:

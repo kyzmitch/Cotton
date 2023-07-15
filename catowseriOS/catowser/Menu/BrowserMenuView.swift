@@ -26,11 +26,11 @@ struct BrowserMenuView: View {
     
     // MARK: - Allow to update text view content dynamically
     
-    @State private var tabContentRowValueText = FeatureManager.tabDefaultContentValue().description
-    @State private var webAutocompleteRowValueText = FeatureManager.webSearchAutoCompleteValue().description
-    @State private var tabAddPositionRowValueText = FeatureManager.tabAddPositionValue().description
-    @State private var asyncApiRowValueText = FeatureManager.appAsyncApiTypeValue().description
-    @State private var uiFrameworkRowValueText = FeatureManager.appUIFrameworkValue().description
+    @State private var tabContentRowValueText = FeatureManager.shared.tabDefaultContentValue().description
+    @State private var webAutocompleteRowValueText = FeatureManager.shared.webSearchAutoCompleteValue().description
+    @State private var tabAddPositionRowValueText = FeatureManager.shared.tabAddPositionValue().description
+    @State private var asyncApiRowValueText = FeatureManager.shared.appAsyncApiTypeValue().description
+    @State private var uiFrameworkRowValueText = FeatureManager.shared.appUIFrameworkValue().description
     
     init(_ vm: MenuViewModel) {
         self.model = vm
@@ -54,7 +54,7 @@ struct BrowserMenuView: View {
                         Text(.jsMenuTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
-                        FeatureManager.setFeature(.tabAddPosition, value: selected)
+                        FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
                         self.isShowingAddTabSetting = false
                         tabAddPositionRowValueText = selected.description
                     }), isActive: $isShowingAddTabSetting) {
@@ -63,7 +63,7 @@ struct BrowserMenuView: View {
                         Text(verbatim: tabAddPositionRowValueText).alignRight()
                     }
                     NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
-                        FeatureManager.setFeature(.tabDefaultContent, value: selected)
+                        FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
                         self.isShowingDefaultTabContentSetting = false
                         tabContentRowValueText = selected.description
                     }), isActive: $isShowingDefaultTabContentSetting) {
@@ -74,7 +74,7 @@ struct BrowserMenuView: View {
                 }
                 Section(header: Text(.searchSectionTtl)) {
                     NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(model: .init { (selected) in
-                        FeatureManager.setFeature(.webAutoCompletionSource, value: selected)
+                        FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
                         self.isShowingWebAutoCompleteSetting = false
                         webAutocompleteRowValueText = selected.description
                     }), isActive: $isShowingWebAutoCompleteSetting) {
@@ -89,7 +89,7 @@ struct BrowserMenuView: View {
                         Text(.nativeAppRedirectTitle)
                     }
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
-                        FeatureManager.setFeature(.appDefaultAsyncApi, value: selected)
+                        FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
                         asyncApiRowValueText = selected.description
                     }), isActive: $isShowingAppAsyncApiSetting) {
@@ -98,7 +98,7 @@ struct BrowserMenuView: View {
                         Text(verbatim: asyncApiRowValueText).alignRight()
                     }
                     NavigationLink(destination: BaseMenuView<UIFrameworkType>(model: .init { (selected) in
-                        FeatureManager.setFeature(.appDefaultUIFramework, value: selected)
+                        FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
                         self.isShowingAppUIFrameworkSetting = false
                         uiFrameworkRowValueText = selected.description
                         self.showingAppRestartAlert.toggle()

@@ -81,18 +81,18 @@ final class MenuViewModel: ObservableObject {
         case .onlyGlobalMenu:
             isTabJSEnabled = true
         }
-        isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-        isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        nativeAppRedirectEnabled = FeatureManager.boolValue(of: .nativeAppRedirect)
+        isDohEnabled = FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+        isJavaScriptEnabled = FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+        nativeAppRedirectEnabled = FeatureManager.shared.boolValue(of: .nativeAppRedirect)
         
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled
             .dropFirst()
-            .sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
+            .sink { FeatureManager.shared.setFeature(.dnsOverHTTPSAvailable, value: $0) }
         jsEnabledOptionCancellable = $isJavaScriptEnabled
             .dropFirst()
-            .sink { FeatureManager.setFeature(.javaScriptEnabled, value: $0) }
+            .sink { FeatureManager.shared.setFeature(.javaScriptEnabled, value: $0) }
         tabjsEnabledCancellable = $isTabJSEnabled
             .sink(receiveValue: { [weak self] newValue in
                 guard let self = self else {
@@ -105,7 +105,7 @@ final class MenuViewModel: ObservableObject {
             })
         nativeAppRedirectCancellable = $nativeAppRedirectEnabled
             .dropFirst()
-            .sink { FeatureManager.setFeature(.nativeAppRedirect, value: $0) }
+            .sink { FeatureManager.shared.setFeature(.nativeAppRedirect, value: $0) }
     }
     
     deinit {

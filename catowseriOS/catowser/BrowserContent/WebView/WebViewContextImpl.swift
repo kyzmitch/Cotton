@@ -30,19 +30,19 @@ public final class WebViewContextImpl: WebViewContext {
     }
     
     public func isJavaScriptEnabled() -> Bool {
-        return FeatureManager.boolValue(of: .javaScriptEnabled)
+        return FeatureManager.shared.boolValue(of: .javaScriptEnabled)
     }
     
     public func isDohEnabled() -> Bool {
-        return FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+        return FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
     }
     
     public func allowNativeAppRedirects() -> Bool {
-        return FeatureManager.boolValue(of: .nativeAppRedirect)
+        return FeatureManager.shared.boolValue(of: .nativeAppRedirect)
     }
     
     public func appAsyncApiTypeValue() -> AsyncApiType {
-        return FeatureManager.appAsyncApiTypeValue()
+        return FeatureManager.shared.appAsyncApiTypeValue()
     }
     
     public func updateTabContent(_ site: Site) throws {

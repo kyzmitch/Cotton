@@ -9,12 +9,13 @@
 import UIKit
 import AlamofireImage
 import Alamofire
+import FeaturesFlagsKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Should be stored by strong reference, because it is the only owner of App coordinator
-    private let appCoordinator: AppCoordinator = .init(ViewsEnvironment.shared.vcFactory)
+    private var appCoordinator: AppCoordinator?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -32,8 +33,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
-        appCoordinator.start()
+        start()
         return true
+    }
+}
+
+private extension AppDelegate {
+    func start() {
+        Task {
+            let value = await FeatureManager.shared.appUIFrameworkValue()
+            await MainActor.run {
+                appCoordinator = AppCoordinator(ViewsEnvironment.shared.vcFactory, value)
+                appCoordinator?.start()
+            }
+        }
     }
 }
 

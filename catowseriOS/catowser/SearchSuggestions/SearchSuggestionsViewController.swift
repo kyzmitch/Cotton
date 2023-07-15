@@ -74,7 +74,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        switch FeatureManager.appAsyncApiTypeValue() {
+        switch FeatureManager.shared.appAsyncApiTypeValue() {
         case .reactive:
             disposable?.dispose()
             disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)

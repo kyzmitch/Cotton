@@ -30,7 +30,7 @@ final class SearchBarViewModel: NSObject, ObservableObject {
     @LeadingTrimmed private var tempSearchText: String
     
     private var searchSuggestClient: SearchEngine {
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
+        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.shared.searchPluginName(), on: .main)
         guard let xmlData = optionalXmlData else {
             return .googleSearchEngine()
         }
@@ -58,7 +58,7 @@ final class SearchBarViewModel: NSObject, ObservableObject {
 private extension SearchBarViewModel {
     func replaceTab(with url: URL, with suggestion: String? = nil) {
         let blockPopups = DefaultTabProvider.shared.blockPopups
-        let isJSEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        let isJSEnabled = FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let settings = Site.Settings(isPrivate: false,
                                      blockPopups: blockPopups,
                                      isJSEnabled: isJSEnabled,
