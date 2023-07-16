@@ -622,9 +622,16 @@ extension AppCoordinator: GlobalMenuDelegate {
         } else {
             style = .onlyGlobalMenu
         }
-        let menuModel: MenuViewModel = .init(style)
-        menuModel.developerMenuPresenter = self
-        showNext(.menu(menuModel, sourceView, sourceRect))
+        Task {
+            let isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            let isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            let nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            await MainActor.run {
+                let menuModel: MenuViewModel = .init(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
+                menuModel.developerMenuPresenter = self
+                showNext(.menu(menuModel, sourceView, sourceRect))
+            }
+        }
     }
 }
 

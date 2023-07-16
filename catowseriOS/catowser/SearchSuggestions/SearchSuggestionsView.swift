@@ -12,19 +12,22 @@ struct SearchSuggestionsView: View {
     @Binding private var searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
     private let mode: SwiftUIMode
+    private let searchProviderType: WebAutoCompletionSource
     
     init(_ searchQuery: Binding<String>,
          _ delegate: SearchSuggestionsListDelegate?,
-         _ mode: SwiftUIMode) {
+         _ mode: SwiftUIMode,
+         _ searchProviderType: WebAutoCompletionSource) {
         _searchQuery = searchQuery
         self.delegate = delegate
         self.mode = mode
+        self.searchProviderType = searchProviderType
     }
     
     var body: some View {
         switch mode {
         case .compatible:
-            SearchSuggestionsLegacyView($searchQuery, delegate)
+            SearchSuggestionsLegacyView($searchQuery, delegate, searchProviderType)
         case .full:
             SearchSuggestionsViewV2($searchQuery, delegate)
         }
@@ -39,7 +42,7 @@ struct SearchSuggestionsView_Previews: PreviewProvider {
         } set: { _ in
             //
         }
-        SearchSuggestionsView(state, nil, .compatible)
+        SearchSuggestionsView(state, nil, .compatible, .google)
     }
 }
 #endif

@@ -9,12 +9,13 @@
 import Foundation
 import FeaturesFlagsKit
 
-typealias AppAsyncApiTypeModel = BaseListModelImpl<AsyncApiType>
+typealias AppAsyncApiTypeModel = BaseListViewModelImpl<AsyncApiType>
 
-extension BaseListModelImpl where EnumDataSourceType == AsyncApiType {
-    init(_ completion: @escaping PopClosure) {
+extension BaseListViewModelImpl where EnumDataSourceType == AsyncApiType {
+    init( _ selected: EnumDataSourceType?, _ completion: @escaping PopClosure) {
         self.init(NSLocalizedString("ttl_app_async_method", comment: ""),
-                  completion)
+                  completion,
+                  selected)
     }
 }
 

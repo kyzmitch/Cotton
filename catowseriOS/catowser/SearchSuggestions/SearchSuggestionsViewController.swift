@@ -46,8 +46,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     /// Delegate to handle suggestion selection
     private weak var delegate: SearchSuggestionsListDelegate?
 
-    init(_ delegate: SearchSuggestionsListDelegate?) {
-        viewModel = ViewModelFactory.shared.searchSuggestionsViewModel()
+    init(_ delegate: SearchSuggestionsListDelegate?, _ searchProviderType: WebAutoCompletionSource) {
+        viewModel = ViewModelFactory.shared.searchSuggestionsViewModel(searchProviderType)
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }

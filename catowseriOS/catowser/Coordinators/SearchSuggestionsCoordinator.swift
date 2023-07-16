@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveSwift
+import FeaturesFlagsKit
 
 protocol SearchSuggestionsControllerInterface: AnyObject {
     func prepareSearch(for searchQuery: String)
@@ -42,11 +43,19 @@ final class SearchSuggestionsCoordinator: Coordinator {
     }
     
     func start() {
+        Task {
+            let searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            await MainActor.run {
+                internalStart(searchProviderType)
+            }
+        }
+    }
+    
+    private func internalStart(_ searchProviderType: WebAutoCompletionSource) {
         guard let controllerView = presenterVC?.controllerView else {
             return
         }
-        
-        let vc = vcFactory.searchSuggestionsViewController(delegate)
+        let vc = vcFactory.searchSuggestionsViewController(delegate, searchProviderType)
         startedVC = vc
         // adds suggestions view to root view controller
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)

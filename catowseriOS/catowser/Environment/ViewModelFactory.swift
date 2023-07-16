@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import FeaturesFlagsKit
 import CottonBase
 import CottonData
 
@@ -21,8 +20,7 @@ final class ViewModelFactory {
     
     private init() {}
     
-    func searchSuggestionsViewModel() -> SearchSuggestionsViewModel {
-        let searchProviderType = FeatureManager.shared.webSearchAutoCompleteValue()
+    func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) -> SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:

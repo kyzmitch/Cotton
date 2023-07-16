@@ -26,11 +26,11 @@ struct BrowserMenuView: View {
     
     // MARK: - Allow to update text view content dynamically
     
-    @State private var tabContentRowValueText = FeatureManager.shared.tabDefaultContentValue().description
-    @State private var webAutocompleteRowValueText = FeatureManager.shared.webSearchAutoCompleteValue().description
-    @State private var tabAddPositionRowValueText = FeatureManager.shared.tabAddPositionValue().description
-    @State private var asyncApiRowValueText = FeatureManager.shared.appAsyncApiTypeValue().description
-    @State private var uiFrameworkRowValueText = FeatureManager.shared.appUIFrameworkValue().description
+    @State private var tabContentRowValue = FeatureManager.shared.tabDefaultContentValue()
+    @State private var webAutocompleteRowValue = FeatureManager.shared.webSearchAutoCompleteValue()
+    @State private var tabAddPositionRowValue = FeatureManager.shared.tabAddPositionValue()
+    @State private var asyncApiRowValue = FeatureManager.shared.appAsyncApiTypeValue()
+    @State private var uiFrameworkRowValue = FeatureManager.shared.appUIFrameworkValue()
     
     init(_ vm: MenuViewModel) {
         self.model = vm
@@ -56,31 +56,31 @@ struct BrowserMenuView: View {
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(model: .init { (selected) in
                         FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
                         self.isShowingAddTabSetting = false
-                        tabAddPositionRowValueText = selected.description
+                        tabAddPositionRowValue = selected
                     }), isActive: $isShowingAddTabSetting) {
                         Text(.tabAddTxt)
                         Spacer()
-                        Text(verbatim: tabAddPositionRowValueText).alignRight()
+                        Text(verbatim: tabAddPositionRowValue.description).alignRight()
                     }
                     NavigationLink(destination: BaseMenuView<TabContentDefaultState>(model: .init { (selected) in
                         FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
                         self.isShowingDefaultTabContentSetting = false
-                        tabContentRowValueText = selected.description
+                        tabContentRowValue = selected
                     }), isActive: $isShowingDefaultTabContentSetting) {
                         Text(.tabContentTxt)
                         Spacer()
-                        Text(verbatim: tabContentRowValueText).alignRight()
+                        Text(verbatim: tabContentRowValue.description).alignRight()
                     }
                 }
                 Section(header: Text(.searchSectionTtl)) {
                     NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(model: .init { (selected) in
                         FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
                         self.isShowingWebAutoCompleteSetting = false
-                        webAutocompleteRowValueText = selected.description
+                        webAutocompleteRowValue = selected
                     }), isActive: $isShowingWebAutoCompleteSetting) {
                         Text(.webAutoCompleteSourceTxt)
                         Spacer()
-                        Text(verbatim: webAutocompleteRowValueText).alignRight()
+                        Text(verbatim: webAutocompleteRowValue.description).alignRight()
                     }
                 }
 #if DEBUG
@@ -91,21 +91,21 @@ struct BrowserMenuView: View {
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(model: .init { (selected) in
                         FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
                         self.isShowingAppAsyncApiSetting = false
-                        asyncApiRowValueText = selected.description
+                        asyncApiRowValue = selected
                     }), isActive: $isShowingAppAsyncApiSetting) {
                         Text(.appAsyncApiTypeTxt)
                         Spacer()
-                        Text(verbatim: asyncApiRowValueText).alignRight()
+                        Text(verbatim: asyncApiRowValue.description).alignRight()
                     }
                     NavigationLink(destination: BaseMenuView<UIFrameworkType>(model: .init { (selected) in
                         FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
                         self.isShowingAppUIFrameworkSetting = false
-                        uiFrameworkRowValueText = selected.description
+                        uiFrameworkRowValue = selected
                         self.showingAppRestartAlert.toggle()
                     }), isActive: $isShowingAppUIFrameworkSetting) {
                         Text(.appUIFrameworkTypeTxt)
                         Spacer()
-                        Text(verbatim: uiFrameworkRowValueText).alignRight()
+                        Text(verbatim: uiFrameworkRowValue.description).alignRight()
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
@@ -160,7 +160,7 @@ struct SiteMenuView_Previews: PreviewProvider {
                                      canLoadPlugins: true)
         // swiftlint:disable force_unwrapping
         let style: BrowserMenuStyle = .withSiteMenu(host!, settings)
-        let model = MenuViewModel(style)
+        let model = MenuViewModel(style, false, false, false)
         return BrowserMenuView(model)
     }
 }

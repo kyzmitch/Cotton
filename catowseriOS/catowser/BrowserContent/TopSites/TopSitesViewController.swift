@@ -104,11 +104,35 @@ extension SiteCollectionViewCell {
         }
         faviconImageView.image = nil
 
-        if #available(iOS 13.0, *) {
+        Task {
+            let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
+            let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            await MainActor.run {
+                reloadImageWith(site, asyncApi, useDoH)
+            }
+        }
+    }
+    
+    private func reloadImageWith(_ site: Site, _ asyncApi: AsyncApiType, _ useDoH: Bool) {
+        // TODO: combine with `TabView` by using common protocol with associated type for image view?
+        switch asyncApi {
+        case .reactive, .asyncAwait:
+            let source: ImageSource
+            switch (site.faviconURL(useDoH), site.favicon()) {
+            case (let url?, nil):
+                source = .url(url)
+            case (nil, let image?):
+                source = .image(image)
+            case (let url?, let image?):
+                source = .urlWithPlaceholder(url, image)
+            default:
+                return
+            }
+            faviconImageView.updateImage(from: source)
+        case .combine:
             let subscriber = HttpEnvironment.shared.dnsClientSubscriber
 
             imageURLRequestCancellable?.cancel()
-            let useDoH = FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
@@ -121,19 +145,6 @@ extension SiteCollectionViewCell {
                 }, receiveValue: { [weak self] (url) in
                     self?.faviconImageView.updateImage(from: .url(url))
                 })
-        } else {
-            let source: ImageSource
-            switch (site.faviconURL, site.favicon()) {
-            case (let url?, nil):
-                source = .url(url)
-            case (nil, let image?):
-                source = .image(image)
-            case (let url?, let image?):
-                source = .urlWithPlaceholder(url, image)
-            default:
-                return
-            }
-            faviconImageView.updateImage(from: source)
         }
     }
 }

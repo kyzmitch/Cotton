@@ -17,7 +17,7 @@ struct TitledImageView: View {
     private let titleHeight = ImageViewSizes.titleHeight
     private let titleFontSize = ImageViewSizes.titleFontSize
     
-    init(_ site: Site,  _ isSelected: Binding<Site?>) {
+    init(_ site: Site, _ isSelected: Binding<Site?>) {
         self.site = site
         _isSelected = isSelected
     }

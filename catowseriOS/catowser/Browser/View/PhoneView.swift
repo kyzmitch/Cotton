@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreBrowser
+import FeaturesFlagsKit
 
 struct PhoneView: View {
     // MARK: - view models of subviews
@@ -26,6 +27,8 @@ struct PhoneView: View {
     @State private var showSearchSuggestions: Bool
     /// Search query string state which is set by SearchBar and used by SearchSuggestions
     @State private var searchQuery: String
+    /// Needs to be fetched from global actor in task to know current value
+    @State private var searchProviderType: WebAutoCompletionSource
     
     // MARK: - web content loading state
     
@@ -54,6 +57,12 @@ struct PhoneView: View {
     @State private var showingTabs: Bool
     @State private var tabsCount: Int
     
+    // MARK: - menu
+    
+    @State private var isDohEnabled: Bool
+    @State private var isJavaScriptEnabled: Bool
+    @State private var nativeAppRedirectEnabled: Bool
+    
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
         if let interface = webViewInterface {
@@ -62,7 +71,7 @@ struct PhoneView: View {
             style = .onlyGlobalMenu
         }
         
-        return MenuViewModel(style)
+        return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
     init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
@@ -96,6 +105,14 @@ struct PhoneView: View {
         tabsCount = 0
         showingMenu = false
         showingTabs = false
+        
+        // Next states are set to some random "good" values
+        // because actualy values need to be fetched from Global actor
+        
+        searchProviderType = .google
+        isDohEnabled = false
+        isJavaScriptEnabled = true
+        nativeAppRedirectEnabled = true
     }
     
     var body: some View {
@@ -117,7 +134,7 @@ struct PhoneView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView($searchQuery, delegate, mode)
+                SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -139,6 +156,13 @@ struct PhoneView: View {
             contentType = value
         }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+        .task {
+            // Fetch data asynhroniously from Global actor:
+            searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+        }
     }
     
     private var fullySwiftUIView: some View {
@@ -151,7 +175,7 @@ struct PhoneView: View {
                 }
                 if showSearchSuggestions {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
-                    SearchSuggestionsView($searchQuery, delegate, mode)
+                    SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -194,6 +218,13 @@ struct PhoneView: View {
             }
         }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+        .task {
+            // Fetch data asynhroniously from Global actor:
+            searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+        }
     }
 }
 

@@ -71,7 +71,7 @@ final class TabView: UIView {
         return titleText
     }()
     
-    private let favicon: UIImageView = {
+    private let faviconImageView: UIImageView = {
         let favicon = UIImageView()
         favicon.layer.cornerRadius = 2.0
         favicon.layer.masksToBounds = true
@@ -117,7 +117,7 @@ final class TabView: UIView {
         
         contentMode = .redraw
         addSubview(centerBackground)
-        addSubview(favicon)
+        addSubview(faviconImageView)
         addSubview(titleText)
         addSubview(closeButton)
         addSubview(highlightLine)
@@ -131,14 +131,14 @@ final class TabView: UIView {
         centerBackground.topAnchor.constraint(equalTo: topAnchor).isActive = true
         centerBackground.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
-        favicon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        favicon.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        favicon.heightAnchor.constraint(equalTo: favicon.widthAnchor).isActive = true
-        favicon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        faviconImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        faviconImageView.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        faviconImageView.heightAnchor.constraint(equalTo: faviconImageView.widthAnchor).isActive = true
+        faviconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         
         titleText.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         titleText.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        titleText.leadingAnchor.constraint(equalTo: favicon.trailingAnchor, constant: 10).isActive = true
+        titleText.leadingAnchor.constraint(equalTo: faviconImageView.trailingAnchor, constant: 10).isActive = true
         titleText.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: 10).isActive = true
         
         closeButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -206,20 +206,44 @@ private extension TabView {
     
     func reloadFavicon(_ site: Site?) {
         guard let site = site else {
-            favicon.image = nil
+            faviconImageView.image = nil
             return
         }
         if let hqImage = site.favicon() {
-            favicon.image = hqImage
+            faviconImageView.image = hqImage
             return
         }
-        favicon.image = nil
+        faviconImageView.image = nil
         
-        if #available(iOS 13.0, *) {
+        Task {
+            let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
+            let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            await MainActor.run {
+                reloadImageWith(site, asyncApi, useDoH)
+            }
+        }
+    }
+    
+    private func reloadImageWith(_ site: Site, _ asyncApi: AsyncApiType, _ useDoH: Bool) {
+        // TODO: combine with `SiteCollectionViewCell` by using common protocol with associated type for image view?
+        switch asyncApi {
+        case .reactive, .asyncAwait:
+            let source: ImageSource
+            switch (site.faviconURL(useDoH), site.favicon()) {
+            case (let url?, nil):
+                source = .url(url)
+            case (nil, let image?):
+                source = .image(image)
+            case (let url?, let image?):
+                source = .urlWithPlaceholder(url, image)
+            default:
+                return
+            }
+            faviconImageView.updateImage(from: source)
+        case .combine:
             let subscriber = HttpEnvironment.shared.dnsClientSubscriber
 
             imageURLRequestCancellable?.cancel()
-            let useDoH = FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
                 .receive(on: DispatchQueue.main)
                 .sink(receiveCompletion: { (completion) in
@@ -230,21 +254,8 @@ private extension TabView {
                     default: break
                     }
                 }, receiveValue: { [weak self] (url) in
-                    self?.favicon.updateImage(from: .url(url))
+                    self?.faviconImageView.updateImage(from: .url(url))
                 })
-        } else {
-            let source: ImageSource
-            switch (site.faviconURL, site.favicon()) {
-            case (let url?, nil):
-                source = .url(url)
-            case (nil, let image?):
-                source = .image(image)
-            case (let url?, let image?):
-                source = .urlWithPlaceholder(url, image)
-            default:
-                return
-            }
-            favicon.updateImage(from: source)
         }
     }
 }

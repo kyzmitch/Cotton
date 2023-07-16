@@ -47,8 +47,8 @@ extension Site {
     }
     
     /// Provides only local cached URL for favicon, nil if ipAddress is nil.
-    var faviconURL: URL? {
-        if FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable) {
+    func faviconURL(_ useDoH: Bool) -> URL? {
+        if useDoH {
             return URL(faviconIPInfo: urlInfo)
         } else {
             return URL(string: urlInfo.faviconURLFromDomain)
