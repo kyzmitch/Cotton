@@ -57,24 +57,31 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     /// Tells if coordinator was already started
     private var isSuggestionsShowed: Bool = false
     
+    let uiFramework: UIFrameworkType
+    
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ downloadPanelDelegate: DownloadPanelPresenter?,
          _ globalMenuDelegate: GlobalMenuDelegate?,
-         _ delegate: SearchBarDelegate?) {
+         _ delegate: SearchBarDelegate?,
+         _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.downloadPanelDelegate = downloadPanelDelegate
         self.globalMenuDelegate = globalMenuDelegate
         self.delegate = delegate
+        self.uiFramework = uiFramework
     }
     
     func start() {
         let createdVC: (any AnyViewController)?
         if isPad {
-            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadPanelDelegate, globalMenuDelegate)
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self,
+                                                                        downloadPanelDelegate,
+                                                                        globalMenuDelegate,
+                                                                        uiFramework)
         } else {
-            createdVC = vcFactory.deviceSpecificSearchBarViewController(self)
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, uiFramework)
         }
         guard let vc = createdVC, let controllerView = presenterVC?.controllerView else {
             return

@@ -23,10 +23,12 @@ import FeaturesFlagsKit
 
 /// Declares an interface for operations that create abstract product objects.
 /// View controllers factory which doesn't depend on device type (phone or tablet)
+@MainActor
 protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator, _ uiFramework: UIFrameworkType) -> AnyViewController
 
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                 _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
@@ -48,11 +50,13 @@ protocol ViewControllerFactory: AnyObject {
     /// Convinience property to get a reference without input parameters
     var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> AnyViewController?
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController?
     /// Will return nil on Phone
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
-                                               _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController?
+                                               _ settingsDelegate: GlobalMenuDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
@@ -80,8 +84,9 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController {
-        let vc: SearchBarBaseViewController = .init(searchBarDelegate)
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                 _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController {
+        let vc: SearchBarBaseViewController = .init(searchBarDelegate, uiFramework)
         return vc
     }
     

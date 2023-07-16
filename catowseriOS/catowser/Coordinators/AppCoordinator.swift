@@ -318,7 +318,8 @@ private extension AppCoordinator {
                                                       presenter,
                                                       linkTagsCoordinator,
                                                       self,
-                                                      self)
+                                                      self,
+                                                      uiFramework)
         coordinator.parent = self
         coordinator.start()
         searchBarCoordinator = coordinator
@@ -368,7 +369,7 @@ private extension AppCoordinator {
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
                                                         linkTagsCoordinator,
-                                                        self)
+                                                        self, uiFramework)
         coordinator.parent = self
         coordinator.start()
         toolbarCoordinator = coordinator

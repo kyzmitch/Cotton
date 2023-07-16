@@ -18,14 +18,14 @@ final class SearchBarBaseViewController: BaseViewController {
     /// main search bar view
     private let searchBarView: SearchBarLegacyView
     
-    init(_ searchBarDelegate: UISearchBarDelegate?) {
+    init(_ searchBarDelegate: UISearchBarDelegate?, _ uiFramework: UIFrameworkType) {
         let customFrame: CGRect
-        if case .uiKit = FeatureManager.shared.appUIFrameworkValue() {
+        if case .uiKit = uiFramework {
             customFrame = .zero
         } else {
             customFrame = .init(x: 0, y: 0, width: 0, height: .toolbarViewHeight)
         }
-        searchBarView = .init(frame: customFrame)
+        searchBarView = .init(frame: customFrame, uiFramework: uiFramework)
         searchBarView.delegate = searchBarDelegate
         super.init(nibName: nil, bundle: nil)
     }

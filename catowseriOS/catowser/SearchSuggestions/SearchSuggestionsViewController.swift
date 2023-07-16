@@ -74,16 +74,21 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        switch FeatureManager.shared.appAsyncApiTypeValue() {
-        case .reactive:
-            disposable?.dispose()
-            disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
-        case .combine:
-            cancellable?.cancel()
-            cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
-        case .asyncAwait:
-            taskHandler?.cancel()
-            taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
+        Task {
+            let apiType = await FeatureManager.shared.appAsyncApiTypeValue()
+            await MainActor.run {
+                switch apiType {
+                case .reactive:
+                    disposable?.dispose()
+                    disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
+                case .combine:
+                    cancellable?.cancel()
+                    cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+                case .asyncAwait:
+                    taskHandler?.cancel()
+                    taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
+                }
+            }
         }
         
         // Also would be good to observe for the changes in settings

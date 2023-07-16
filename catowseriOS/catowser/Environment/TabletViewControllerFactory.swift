@@ -28,15 +28,17 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
-                                               _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController? {
+                                               _ settingsDelegate: GlobalMenuDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController? {
         if let existingVC = searchBarVC {
             return existingVC
         }
-        searchBarVC = TabletSearchBarViewController(searchBarDelegate, settingsDelegate, downloadDelegate)
+        searchBarVC = TabletSearchBarViewController(searchBarDelegate, settingsDelegate, downloadDelegate, uiFramework)
         return searchBarVC
     }
     
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> AnyViewController? {
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController? {
         return nil
     }
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {

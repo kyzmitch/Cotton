@@ -59,9 +59,10 @@ final class SearchBarLegacyView: UIView {
     private var phoneWidthConstraint: NSLayoutConstraint?
     
     // MARK: - initializers
+
     
-    override init(frame: CGRect) {
-        uiFramework = FeatureManager.shared.appUIFrameworkValue()
+    init(frame: CGRect, uiFramework: UIFrameworkType) {
+        self.uiFramework = uiFramework
         super.init(frame: frame)
         
         addSubview(searchBarView)
@@ -230,13 +231,7 @@ private extension SearchBarLegacyView {
             // need somehow select all text in search bar view
             prepareForEditMode()
         case .viewMode(let title, let searchBarContent, let animated):
-            searchBarView.resignFirstResponder()
-            searchBarView.setShowsCancelButton(false, animated: animated)
-            searchBarView.text = searchBarContent
-            let dohEnabled = FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
-            siteNameLabel.text = title
-            prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)
+            handleViewModeState(title, searchBarContent, animated)
         }
     }
     
@@ -307,6 +302,20 @@ private extension SearchBarLegacyView {
         }
         
         searchBarView.resignFirstResponder()
+    }
+    
+    func handleViewModeState(_ title: String, _ searchBarContent: String, _ animated: Bool) {
+        searchBarView.resignFirstResponder()
+        searchBarView.setShowsCancelButton(false, animated: animated)
+        searchBarView.text = searchBarContent
+        Task {
+            let dohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            await MainActor.run {
+                dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
+                siteNameLabel.text = title
+                prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)
+            }
+        }
     }
 }
 
