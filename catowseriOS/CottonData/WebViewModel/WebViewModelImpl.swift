@@ -110,6 +110,8 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         // https://forums.swift.org/t/isolated-synchronous-deinit/58177/3
         // A deinit cannot have a global actor attribute and is never a target for propagation.
         // https://github.com/apple/swift-evolution/blob/main/proposals/0316-global-actors.md
+        // Proposal about Swift6 warning in init?
+        // https://github.com/apple/swift-evolution/blob/main/proposals/0327-actor-initializers.md
         
         // Can't do `dnsRequestCancellable?.cancel()` on main actor
     }

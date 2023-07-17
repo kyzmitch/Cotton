@@ -23,7 +23,7 @@ protocol TabDelegate: AnyObject {
 }
 
 /// The tab view for tablets
-final class TabView: UIView {
+final class TabView: UIView, FaviconImageViewable {
     
     var viewModel: Tab {
         didSet {
@@ -71,14 +71,6 @@ final class TabView: UIView {
         return titleText
     }()
     
-    private let faviconImageView: UIImageView = {
-        let favicon = UIImageView()
-        favicon.layer.cornerRadius = 2.0
-        favicon.layer.masksToBounds = true
-        favicon.translatesAutoresizingMaskIntoConstraints = false
-        return favicon
-    }()
-    
     private let highlightLine: UIView = {
         let line = UIView()
         line.backgroundColor = UIConstants.webSiteTabHighlitedLineColour
@@ -87,7 +79,19 @@ final class TabView: UIView {
         return line
     }()
     
-    lazy var imageURLRequestCancellable: AnyCancellable? = nil
+    // MARK: - FaviconImageViewable
+    
+    let faviconImageView: UIImageView = {
+        let favicon = UIImageView()
+        favicon.layer.cornerRadius = 2.0
+        favicon.layer.masksToBounds = true
+        favicon.translatesAutoresizingMaskIntoConstraints = false
+        return favicon
+    }()
+    
+    var imageURLRequestCancellable: AnyCancellable?
+    
+    // MARK: - init
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("\(#function): has not been implemented")
@@ -218,44 +222,9 @@ private extension TabView {
         Task {
             let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
             let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            await MainActor.run {
-                reloadImageWith(site, asyncApi, useDoH)
+            await MainActor.run { [weak self] in
+                self?.reloadImageWith(site, asyncApi, useDoH)
             }
-        }
-    }
-    
-    private func reloadImageWith(_ site: Site, _ asyncApi: AsyncApiType, _ useDoH: Bool) {
-        // TODO: combine with `SiteCollectionViewCell`, `TabPreviewCell` by using common protocol with associated type for image view?
-        switch asyncApi {
-        case .reactive, .asyncAwait:
-            let source: ImageSource
-            switch (site.faviconURL(useDoH), site.favicon()) {
-            case (let url?, nil):
-                source = .url(url)
-            case (nil, let image?):
-                source = .image(image)
-            case (let url?, let image?):
-                source = .urlWithPlaceholder(url, image)
-            default:
-                return
-            }
-            faviconImageView.updateImage(from: source)
-        case .combine:
-            let subscriber = HttpEnvironment.shared.dnsClientSubscriber
-
-            imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure:
-                        // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
-                        break
-                    default: break
-                    }
-                }, receiveValue: { [weak self] (url) in
-                    self?.faviconImageView.updateImage(from: .url(url))
-                })
         }
     }
 }

@@ -43,7 +43,7 @@ protocol TabPreviewCellDelegate: AnyObject {
     func tabCellDidClose(at index: Int)
 }
 
-final class TabPreviewCell: UICollectionViewCell, ReusableItem {
+final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageViewable {
 
     static let borderWidth: CGFloat = 3
 
@@ -65,8 +65,6 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     private weak var delegate: TabPreviewCellDelegate?
 
     private var siteTitleDisposable: Disposable?
-    
-    private lazy var imageURLRequestCancellable: AnyCancellable? = nil
 
     private let backgroundHolder: UIView = {
         let view = UIView()
@@ -97,15 +95,6 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         return label
     }()
 
-    private let faviconImageView: UIImageView = {
-        let favicon = UIImageView()
-        favicon.backgroundColor = UIColor.clear
-        favicon.layer.cornerRadius = 2.0
-        favicon.layer.masksToBounds = true
-        favicon.translatesAutoresizingMaskIntoConstraints = false
-        return favicon
-    }()
-
     private let closeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "tabClose"), for: [])
@@ -118,6 +107,21 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     }()
 
     private let titleEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .tabTitleBlur))
+    
+    // MARK: - FaviconImageViewable
+    
+    let faviconImageView: UIImageView = {
+        let favicon = UIImageView()
+        favicon.backgroundColor = UIColor.clear
+        favicon.layer.cornerRadius = 2.0
+        favicon.layer.masksToBounds = true
+        favicon.translatesAutoresizingMaskIntoConstraints = false
+        return favicon
+    }()
+    
+    var imageURLRequestCancellable: AnyCancellable?
+    
+    // MARK: - init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -201,44 +205,9 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         Task {
             let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
             let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            await MainActor.run {
-                reloadImageWith(site, asyncApi, useDoH)
+            await MainActor.run { [weak self] in
+                self?.reloadImageWith(site, asyncApi, useDoH)
             }
-        }
-    }
-    
-    private func reloadImageWith(_ site: Site, _ asyncApi: AsyncApiType, _ useDoH: Bool) {
-        // TODO: combine with `TabView`, `SiteCollectionViewCell` by using common protocol with associated type for image view?
-        switch asyncApi {
-        case .reactive, .asyncAwait:
-            let source: ImageSource
-            switch (site.faviconURL(useDoH), site.favicon()) {
-            case (let url?, nil):
-                source = .url(url)
-            case (nil, let image?):
-                source = .image(image)
-            case (let url?, let image?):
-                source = .urlWithPlaceholder(url, image)
-            default:
-                return
-            }
-            faviconImageView.updateImage(from: source)
-        case .combine:
-            let subscriber = HttpEnvironment.shared.dnsClientSubscriber
-
-            imageURLRequestCancellable?.cancel()
-            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure:
-                        // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
-                        break
-                    default: break
-                    }
-                }, receiveValue: { [weak self] (url) in
-                    self?.faviconImageView.updateImage(from: .url(url))
-                })
         }
     }
 }
