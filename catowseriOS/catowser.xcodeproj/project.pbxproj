@@ -489,8 +489,6 @@
 		8ABF504427CC1A64007C6427 /* FeaturesFlagsKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABF503E27CC1A64007C6427 /* FeaturesFlagsKit.framework */; };
 		8ABF504527CC1A64007C6427 /* FeaturesFlagsKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABF503E27CC1A64007C6427 /* FeaturesFlagsKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8ABF504927CC1A8C007C6427 /* LocalSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54D240126F700A0D233 /* LocalSettings.swift */; };
-		8ABF504A27CC1AA1007C6427 /* LocalFeatureSource+EnumValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */; };
-		8ABF504B27CC1AA1007C6427 /* LocalFeatureSource+BasicValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */; };
 		8ABF504C27CC1AA1007C6427 /* LocalFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */; };
 		8ABF504E27CC1AE4007C6427 /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF549240124D800A0D233 /* Feature.swift */; };
 		8ABF504F27CC1AF0007C6427 /* AnyFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109027CA37F900D90AD0 /* AnyFeature.swift */; };
@@ -499,8 +497,6 @@
 		8ABF505227CC1B07007C6427 /* RawFeatureValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E108A27CA377B00D90AD0 /* RawFeatureValue.swift */; };
 		8ABF505327CC1B1A007C6427 /* GenericEnumFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */; };
 		8ABF505427CC1B32007C6427 /* FeatureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF547240123F600A0D233 /* FeatureManager.swift */; };
-		8ABF505C27CC1B5A007C6427 /* FeatureManager+BasicFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */; };
-		8ABF505D27CC1B5D007C6427 /* FeatureManager+EnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */; };
 		8ABF505F27CC1B84007C6427 /* EnumFeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */; };
 		8ABF506027CC1B93007C6427 /* FeatureSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E109327CA383800D90AD0 /* FeatureSource.swift */; };
 		8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */; };
@@ -1085,11 +1081,7 @@
 		755E109C27CA3A3100D90AD0 /* SettingsEnumTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEnumTypes.swift; sourceTree = "<group>"; };
 		755E109F27CA3A4C00D90AD0 /* GenericEnumFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericEnumFeature.swift; sourceTree = "<group>"; };
 		755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificEnumFeatures.swift; sourceTree = "<group>"; };
-		755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeatureManager+BasicFeatures.swift"; sourceTree = "<group>"; };
-		755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeatureManager+EnumFeatures.swift"; sourceTree = "<group>"; };
 		755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumFeatureSource.swift; sourceTree = "<group>"; };
-		755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+BasicValues.swift"; sourceTree = "<group>"; };
-		755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalFeatureSource+EnumValues.swift"; sourceTree = "<group>"; };
 		755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificApplicationEnumFeatures.swift; sourceTree = "<group>"; };
 		759AE09529146C96008CE4EE /* Mockfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Mockfile; sourceTree = "<group>"; };
 		75EA4E6E29F7055800165A07 /* TitledImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledImageView.swift; sourceTree = "<group>"; };
@@ -2389,12 +2381,10 @@
 		8ABF503F27CC1A64007C6427 /* FeaturesFlagsKit */ = {
 			isa = PBXGroup;
 			children = (
-				8ABF505E27CC1B64007C6427 /* FeatureManager */,
-				8ABF504D27CC1AD6007C6427 /* Models */,
+				8ADAF547240123F600A0D233 /* FeatureManager.swift */,
 				8ADAF54D240126F700A0D233 /* LocalSettings.swift */,
 				8ADAF54B2401258000A0D233 /* LocalFeatureSource.swift */,
-				755E10B027CA7C7D00D90AD0 /* LocalFeatureSource+BasicValues.swift */,
-				755E10B327CA7C8900D90AD0 /* LocalFeatureSource+EnumValues.swift */,
+				8ABF504D27CC1AD6007C6427 /* Models */,
 				8ABF504027CC1A64007C6427 /* FeaturesFlagsKit.h */,
 			);
 			path = FeaturesFlagsKit;
@@ -2414,16 +2404,6 @@
 				8A7B1BF328EB2A4D004FC135 /* AsyncApiType.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		8ABF505E27CC1B64007C6427 /* FeatureManager */ = {
-			isa = PBXGroup;
-			children = (
-				8ADAF547240123F600A0D233 /* FeatureManager.swift */,
-				755E10A727CA772200D90AD0 /* FeatureManager+BasicFeatures.swift */,
-				755E10AA27CA778500D90AD0 /* FeatureManager+EnumFeatures.swift */,
-			);
-			path = FeatureManager;
 			sourceTree = "<group>";
 		};
 		8AC19CBF289E2F690021D8ED /* SpecificStrategies */ = {
@@ -4184,14 +4164,10 @@
 			files = (
 				8ABF505F27CC1B84007C6427 /* EnumFeatureSource.swift in Sources */,
 				8ABF505427CC1B32007C6427 /* FeatureManager.swift in Sources */,
-				8ABF504A27CC1AA1007C6427 /* LocalFeatureSource+EnumValues.swift in Sources */,
-				8ABF504B27CC1AA1007C6427 /* LocalFeatureSource+BasicValues.swift in Sources */,
 				8ABF505227CC1B07007C6427 /* RawFeatureValue.swift in Sources */,
-				8ABF505C27CC1B5A007C6427 /* FeatureManager+BasicFeatures.swift in Sources */,
 				8ABF504E27CC1AE4007C6427 /* Feature.swift in Sources */,
 				8A7B1BF428EB2A4D004FC135 /* AsyncApiType.swift in Sources */,
 				8ABF506027CC1B93007C6427 /* FeatureSource.swift in Sources */,
-				8ABF505D27CC1B5D007C6427 /* FeatureManager+EnumFeatures.swift in Sources */,
 				8ABF504927CC1A8C007C6427 /* LocalSettings.swift in Sources */,
 				8ABF504C27CC1AA1007C6427 /* LocalFeatureSource.swift in Sources */,
 				8ABF505127CC1AFE007C6427 /* EnumFeature.swift in Sources */,

@@ -123,8 +123,10 @@ private extension TabsViewController {
     @objc func addTabPressed() {
         print("\(#function): add pressed")
 
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
-        TabsListManager.shared.add(tab: tab)
+        Task {
+            let tab = Tab(contentType: await DefaultTabProvider.shared.contentState)
+            TabsListManager.shared.add(tab: tab)
+        }
     }
 
     // MARK: Action response handlers

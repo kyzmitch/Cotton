@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonBase
+import FeaturesFlagsKit
 
 struct TitledImageView: View {
     private let site: Site
@@ -16,6 +17,7 @@ struct TitledImageView: View {
     private let cellWidth = ImageViewSizes.imageHeight
     private let titleHeight = ImageViewSizes.titleHeight
     private let titleFontSize = ImageViewSizes.titleFontSize
+    @State private var isDohEnabled = false
     
     init(_ site: Site, _ isSelected: Binding<Site?>) {
         self.site = site
@@ -24,7 +26,7 @@ struct TitledImageView: View {
     
     var body: some View {
         VStack {
-            AsyncImage(url: site.faviconURL) { image in
+            AsyncImage(url: site.faviconURL(isDohEnabled)) { image in
                 image.resizable(resizingMode: .stretch)
             } placeholder: {
                 if let cachedImage = site.favicon() {
@@ -41,6 +43,9 @@ struct TitledImageView: View {
         }
         .onTapGesture {
             isSelected = site
+        }
+        .task {
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
         }
     }
 }

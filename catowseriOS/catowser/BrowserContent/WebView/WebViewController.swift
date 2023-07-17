@@ -247,36 +247,34 @@ private extension WebViewController {
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
         
-        switch FeatureManager.shared.appAsyncApiTypeValue() {
-        case .reactive:
-            disposable?.dispose()
-            disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
-            dohDisposable?.dispose()
-            dohDisposable = FeatureManager
-                .rxFeatureChanges(for: .dnsOverHTTPSAvailable)
-                .producer
-                .startWithValues { [weak self] _ in
-                    self?.viewModel.setDoH(FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable))
-            }
-        case .combine:
-            cancellable?.cancel()
-            cancellable = viewModel.combineWebPageState.sink(receiveValue: onStateChange)
-            dohCancellable?.cancel()
-            dohCancellable = FeatureManager.shared.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { [weak self] _ in
-                self?.viewModel.setDoH(FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable))
-            }
-        case .asyncAwait:
-            taskHandler?.cancel()
-            taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
-        }
+        // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
         
+        taskHandler?.cancel()
+        taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        dohCancellable?.cancel()
         jsStateCancellable?.cancel()
-        jsStateCancellable = FeatureManager.shared.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
-            guard let self = self, let jsSubject = self.webView  else {
-                return
+        
+        Task {
+            dohCancellable = await FeatureManager.shared.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { _ in
+                Task {
+                    let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+                    await MainActor.run { [weak self] in
+                        self?.viewModel.setDoH(useDoH)
+                    }
+                }
             }
-            let enabled = FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-            self.viewModel.setJavaScript(jsSubject, enabled)
+            
+            jsStateCancellable = await FeatureManager.shared.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
+                Task { [weak self] in
+                    guard let self, let jsSubject = self.webView  else {
+                        return
+                    }
+                    let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+                    await MainActor.run { [weak self] in
+                        self?.viewModel.setJavaScript(jsSubject, enabled)
+                    }
+                }
+            }
         }
     }
     
