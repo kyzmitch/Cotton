@@ -29,6 +29,7 @@ public protocol NavigationActionable: AnyObject {
     var request: URLRequest { get }
 }
 
+@MainActor
 public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     

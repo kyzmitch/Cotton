@@ -29,12 +29,12 @@ public final class WebViewContextImpl: WebViewContext {
         return checker.correspondingDomain
     }
     
-    public func isJavaScriptEnabled() -> Bool {
-        return FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+    public func isJavaScriptEnabled() async -> Bool {
+        await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
     }
     
-    public func isDohEnabled() -> Bool {
-        return FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+    public func isDohEnabled() async -> Bool {
+        await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
     }
     
     public func allowNativeAppRedirects() -> Bool {

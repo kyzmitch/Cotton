@@ -261,8 +261,12 @@ private extension WebViewModelImpl {
                                   canInject: canInject)
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
-            let enabled = context.isDohEnabled()
-            state = try state.transition(on: .resolveDomainName(enabled))
+            Task {
+                let enabled = await context.isDohEnabled()
+                try await MainActor.run {
+                    state = try state.transition(on: .resolveDomainName(enabled))
+                }
+            }
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host().isDoHSupported
             // somehow url from site already or from next page request
@@ -275,8 +279,12 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .loadWebView)
         case .updatingWebView(_, let urlInfo):
             // Not storing DoH state in vm state, can fetch it from context
-            let useIPaddress = context.isDohEnabled()
-            updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
+            Task {
+                let useIPaddress = await context.isDohEnabled()
+                await MainActor.run {
+                    updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
+                }
+            }
         case .waitingForNavigation:
             break
         case .finishingLoading(let settings, let newURL, let subject, let enable, let urlData):
@@ -295,8 +303,12 @@ private extension WebViewModelImpl {
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             // Not storing DoH state in vm state, can fetch it from context
-            let useIPaddress = context.isDohEnabled()
-            updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
+            Task {
+                let useIPaddress = await context.isDohEnabled()
+                await MainActor.run {
+                    updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
+                }
+            }
         }
     }
     

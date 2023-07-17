@@ -46,11 +46,11 @@ final class MockedWebViewContext: WebViewContext {
         return host.isSimilar(name: value) ? appName : nil
     }
     
-    public func isJavaScriptEnabled() -> Bool {
+    public func isJavaScriptEnabled() async -> Bool {
         return enableJS
     }
     
-    public func isDohEnabled() -> Bool {
+    public func isDohEnabled() async -> Bool {
         return enableDoH
     }
     

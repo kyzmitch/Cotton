@@ -24,9 +24,9 @@ public protocol WebViewContext {
     /// Hides app specific implementation for host check
     func nativeApp(for host: CottonBase.Host) -> String?
     /// Hides app specific feature for JS value
-    func isJavaScriptEnabled() -> Bool
+    func isJavaScriptEnabled() async -> Bool
     /// Hides app specific feature value for DNS over HTTPs
-    func isDohEnabled() -> Bool
+    func isDohEnabled() async -> Bool
     /// Hides app specific feature value for Native app redirects
     func allowNativeAppRedirects() -> Bool
     /// Wrapper for feature value from specific app
