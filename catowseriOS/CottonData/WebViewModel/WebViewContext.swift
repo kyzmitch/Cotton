@@ -28,9 +28,9 @@ public protocol WebViewContext {
     /// Hides app specific feature value for DNS over HTTPs
     func isDohEnabled() async -> Bool
     /// Hides app specific feature value for Native app redirects
-    func allowNativeAppRedirects() -> Bool
+    func allowNativeAppRedirects() async -> Bool
     /// Wrapper for feature value from specific app
-    func appAsyncApiTypeValue() -> AsyncApiType
+    func appAsyncApiTypeValue() async -> AsyncApiType
     /// Update tab's content after loading finish in case if there was a redirect and URL was changed.
     /// Also, this method is needed because need to remember loaded site only when
     /// it was successfully loaded which happens right before this method is getting called.

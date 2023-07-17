@@ -38,7 +38,7 @@ struct PhoneView: View {
     // MARK: - browser content state
     
     @State private var isLoading: Bool
-    @State private var contentType: Tab.ContentType
+    @State private var contentType: Tab.ContentType = .blank
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool
     
@@ -80,7 +80,6 @@ struct PhoneView: View {
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
         isLoading = true
-        contentType = DefaultTabProvider.shared.contentState
         webViewNeedsUpdate = false
         webViewInterface = nil
         // web content loading state has to be stored here
@@ -162,6 +161,7 @@ struct PhoneView: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            contentType = await DefaultTabProvider.shared.contentState
         }
     }
     
@@ -224,6 +224,7 @@ struct PhoneView: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            contentType = await DefaultTabProvider.shared.contentState
         }
     }
 }
@@ -232,7 +233,7 @@ struct PhoneView: View {
 struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source)
+        let bvm: BrowserContentViewModel = .init(source, .blank)
         PhoneView(bvm, .full)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }

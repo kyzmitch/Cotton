@@ -71,13 +71,13 @@ struct TabletView: View {
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
-    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
+    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode, _ defaultContentType: Tab.ContentType) {
         self.browserContentVM = browserContentVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
         isLoading = true
-        contentType = DefaultTabProvider.shared.contentState
+        self.contentType = defaultContentType
         webViewNeedsUpdate = false
         webViewInterface = nil
         // web content loading state has to be stored here
@@ -95,7 +95,6 @@ struct TabletView: View {
         self.mode = mode
         showingMenu = false
         tabsCount = 0
-        
         
         // Next states are set to some random "good" values
         // because actualy values need to be fetched from Global actor
@@ -212,8 +211,8 @@ struct TabletView: View {
 struct TabletView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source)
-        TabletView(bvm, .compatible)
+        let bvm: BrowserContentViewModel = .init(source, .blank)
+        TabletView(bvm, .compatible, .blank)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }

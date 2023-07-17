@@ -22,10 +22,11 @@ struct SearchSuggestionsViewV2: View {
     private let vm: SearchSuggestionsViewModel
     
     init(_ searchQuery: Binding<String>,
-         _ delegate: SearchSuggestionsListDelegate?) {
+         _ delegate: SearchSuggestionsListDelegate?,
+         _ vm: SearchSuggestionsViewModel) {
         _searchQuery = searchQuery
         self.delegate = delegate
-        vm = ViewModelFactory.shared.searchSuggestionsViewModel()
+        self.vm = vm
     }
     
     var body: some View {
@@ -90,8 +91,10 @@ struct SearchSuggestionsViewV2_Previews: PreviewProvider {
         } set: { _ in
             //
         }
+        
+        let vm: SearchSuggestionsViewModel = ViewModelFactory.shared.searchSuggestionsViewModel(.duckduckgo)
 
-        SearchSuggestionsViewV2(searchQuery, delegate)
+        SearchSuggestionsViewV2(searchQuery, delegate, vm)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }
 }

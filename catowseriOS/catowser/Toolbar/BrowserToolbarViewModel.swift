@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 
+@MainActor
 final class BrowserToolbarViewModel: ObservableObject {
     /// Notifies if current web view changes
     @Published var webViewInterface: WebViewNavigatable?

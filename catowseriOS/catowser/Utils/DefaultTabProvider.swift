@@ -11,6 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 import CottonBase
 
+/// Provides default tab related constants, no need to be global actor, because read-only
 final class DefaultTabProvider {
     static let shared = DefaultTabProvider()
     
@@ -18,9 +19,8 @@ final class DefaultTabProvider {
     
     let blockPopups: Bool = false
 
-    lazy var topSites: [Site] = {
+    func topSites(_ isJsEnabled: Bool) -> [Site] {
         let array: [Site?]
-        let isJsEnabled = FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let settings: Site.Settings = .init(isPrivate: false,
                                             blockPopups: blockPopups,
                                             isJSEnabled: isJsEnabled,
@@ -36,7 +36,7 @@ final class DefaultTabProvider {
         array = [opennet, yahooFinance, github]
         #endif
         return array.compactMap {$0}
-    }()
+    }
     
     private init() {
         selected = UIDevice.current.userInterfaceIdiom == .pad
@@ -45,11 +45,15 @@ final class DefaultTabProvider {
 
 extension DefaultTabProvider: TabsStates {
     var addPosition: AddedTabPosition {
-        FeatureManager.shared.tabAddPositionValue()
+        get async {
+            await FeatureManager.shared.tabAddPositionValue()
+        }
     }
     
     var contentState: Tab.ContentType {
-        FeatureManager.shared.tabDefaultContentValue().contentType
+        get async {
+            await FeatureManager.shared.tabDefaultContentValue().contentType
+        }
     }
     
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }

@@ -114,7 +114,7 @@ extension SiteCollectionViewCell {
     }
     
     private func reloadImageWith(_ site: Site, _ asyncApi: AsyncApiType, _ useDoH: Bool) {
-        // TODO: combine with `TabView` by using common protocol with associated type for image view?
+        // TODO: combine with `TabView`, `TabPreviewCell` by using common protocol with associated type for image view?
         switch asyncApi {
         case .reactive, .asyncAwait:
             let source: ImageSource

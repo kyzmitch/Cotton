@@ -8,7 +8,6 @@
 
 import SwiftUI
 import CoreBrowser
-import FeaturesFlagsKit
 
 enum SwiftUIMode {
     /// Re-uses UIKit views
@@ -45,16 +44,16 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     ///  At the moment app will crash if User selects new UI mode.
     private let mode: SwiftUIMode
     
-    init(_ vm: MainBrowserModel<C>) {
+    init(_ vm: MainBrowserModel<C>, _ uiFrameworkType: UIFrameworkType, _ defaultContentType: Tab.ContentType) {
         self.vm = vm
-        browserContentVM = .init(vm.jsPluginsBuilder)
-        mode = FeatureManager.shared.appUIFrameworkValue().swiftUIMode
+        browserContentVM = .init(vm.jsPluginsBuilder, defaultContentType)
+        mode = uiFrameworkType.swiftUIMode
     }
     
     var body: some View {
         Group {
             if isPad {
-                TabletView(browserContentVM, mode)
+                TabletView(browserContentVM, mode, .blank)
             } else {
                 PhoneView(browserContentVM, mode)
             }

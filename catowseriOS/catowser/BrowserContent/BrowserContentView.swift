@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 import Combine
+import FeaturesFlagsKit
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
@@ -24,10 +25,10 @@ struct BrowserContentView: View {
     @Binding private var webViewNeedsUpdate: Bool
     /// Web view view model reference
     private let webViewModel: WebViewModelV2
-    /// Top sites model reference
-    private let topSitesModel: TopSitesViewModel
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
+    /// JS state needed for TopSites vm
+    @State private var isJsEnabled = true
     
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
@@ -39,13 +40,15 @@ struct BrowserContentView: View {
         _contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
         webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
-        topSitesModel = TopSitesViewModel()
         self.jsPluginsBuilder = jsPluginsBuilder
         self.mode = mode
     }
     
     var body: some View {
         dynamicContentView
+            .task {
+                isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            }
     }
     
     @ViewBuilder
@@ -57,7 +60,7 @@ struct BrowserContentView: View {
             case .blank:
                 Spacer()
             case .topSites:
-                TopSitesView(topSitesModel, mode)
+                TopSitesView(TopSitesViewModel(isJsEnabled), mode)
             case .site(let site):
                 WebView(webViewModel, site, $webViewNeedsUpdate, mode)
             default:

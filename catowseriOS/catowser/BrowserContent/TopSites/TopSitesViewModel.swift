@@ -11,7 +11,7 @@ import CottonBase
 final class TopSitesViewModel {
     let topSites: [Site]
     
-    init() {
-        topSites = DefaultTabProvider.shared.topSites
+    init(_ isJsEnabled: Bool) {
+        topSites = DefaultTabProvider.shared.topSites(isJsEnabled)
     }
 }

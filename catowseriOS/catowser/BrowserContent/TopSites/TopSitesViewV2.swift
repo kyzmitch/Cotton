@@ -45,7 +45,7 @@ struct TopSitesViewV2: View {
 #if DEBUG
 struct TopSitesViewV2_Previews: PreviewProvider {
     static var previews: some View {
-        let vm: TopSitesViewModel = .init()
+        let vm: TopSitesViewModel = .init(true)
 
         TopSitesViewV2(vm)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))

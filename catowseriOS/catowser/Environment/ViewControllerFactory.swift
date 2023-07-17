@@ -9,6 +9,7 @@
 import UIKit
 import CottonData
 import FeaturesFlagsKit
+import CoreBrowser
 
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
@@ -25,7 +26,9 @@ import FeaturesFlagsKit
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 @MainActor
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator, _ uiFramework: UIFrameworkType) -> AnyViewController
+    func rootViewController(_ coordinator: AppCoordinator,
+                            _ uiFramework: UIFrameworkType,
+                            _ defaultContentType: Tab.ContentType) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
@@ -74,13 +77,15 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator, _ uiFramework: UIFrameworkType) -> AnyViewController {
+    func rootViewController(_ coordinator: AppCoordinator,
+                            _ uiFramework: UIFrameworkType,
+                            _ defaultContentType: Tab.ContentType) -> AnyViewController {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:
-            vc = MainBrowserV2ViewController(coordinator)
+            vc = MainBrowserV2ViewController(coordinator, uiFramework, defaultContentType)
         }
         return vc
     }

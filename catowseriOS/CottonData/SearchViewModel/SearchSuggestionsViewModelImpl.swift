@@ -15,7 +15,7 @@ import AutoMockable
 
 /// This is only needed now to not have a direct dependency on FutureManager
 public protocol SearchViewContext: AutoMockable {
-    var appAsyncApiTypeValue: AsyncApiType { get }
+    var appAsyncApiTypeValue: AsyncApiType { get async }
     var knownDomainsStorage: KnownDomainsSource { get }
 }
 
@@ -65,53 +65,43 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     public func fetchSuggestions(_ query: String) {
         let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
         
-        let apiType = searchContext.appAsyncApiTypeValue
-        switch apiType {
-        case .reactive:
-            rxState.value = .knownDomainsLoaded(domainNames)
-            searchSuggestionsDisposable?.dispose()
-            searchSuggestionsDisposable = autocomplete.rxFetchSuggestions(query)
-                .flatMapError({ error in
-                    print("Fail to fetch search suggestions: \(error.localizedDescription)")
-                    return WebSearchSuggestionsProducer(value: [])
+        Task {
+            let apiType = await searchContext.appAsyncApiTypeValue
+            switch apiType {
+            case .reactive:
+                rxState.value = .knownDomainsLoaded(domainNames)
+                searchSuggestionsDisposable?.dispose()
+                searchSuggestionsDisposable = autocomplete.rxFetchSuggestions(query)
+                    .flatMapError({ error in
+                        print("Fail to fetch search suggestions: \(error.localizedDescription)")
+                        return WebSearchSuggestionsProducer(value: [])
+                    })
+                    .startWithResult({ [weak self] result in
+                        switch result {
+                        case .success(let suggestions):
+                            self?.rxState.value = .everythingLoaded(domainNames, suggestions)
+                        default:
+                            break
+                    }
                 })
-                .startWithResult({ [weak self] result in
-                    switch result {
-                    case .success(let suggestions):
-                        self?.rxState.value = .everythingLoaded(domainNames, suggestions)
-                    default:
-                        break
-                }
-            })
-        case .combine:
-            combineState.value = .knownDomainsLoaded(domainNames)
-            searchSuggestionsCancellable?.cancel()
-            searchSuggestionsCancellable = autocomplete.combineFetchSuggestions(query)
-                .catch({ error -> Just<[String]> in
-                    print("Fail to fetch search suggestions: \(error.localizedDescription)")
-                    return .init([])
-                })
-                .sink(receiveCompletion: { _ in
-                    print("Search suggestions request completed")
-                }, receiveValue: { [weak self] suggestions in
-                    self?.combineState.value = .everythingLoaded(domainNames, suggestions)
-                })
-        case .asyncAwait:
-            if #available(iOS 15.0, *) {
-#if swift(>=5.5)
+            case .combine:
+                combineState.value = .knownDomainsLoaded(domainNames)
+                searchSuggestionsCancellable?.cancel()
+                searchSuggestionsCancellable = autocomplete.combineFetchSuggestions(query)
+                    .catch({ error -> Just<[String]> in
+                        print("Fail to fetch search suggestions: \(error.localizedDescription)")
+                        return .init([])
+                    })
+                    .sink(receiveCompletion: { _ in
+                        print("Search suggestions request completed")
+                    }, receiveValue: { [weak self] suggestions in
+                        self?.combineState.value = .everythingLoaded(domainNames, suggestions)
+                    })
+            case .asyncAwait:
                 state = .knownDomainsLoaded(domainNames)
                 searchSuggestionsTaskHandler?.cancel()
-                Task {
-                    let suggestions = try await autocomplete.aaFetchSuggestions(query)
-                    await MainActor.run {
-                        state = .everythingLoaded(domainNames, suggestions)
-                    }
-                }
-#else
-                assertionFailure("Swift version isn't 5.5")
-#endif
-            } else {
-                assertionFailure("iOS version is not >= 15.x")
+                let suggestions = try await autocomplete.aaFetchSuggestions(query)
+                state = .everythingLoaded(domainNames, suggestions)
             }
         }
     }

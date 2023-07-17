@@ -54,7 +54,7 @@ final class MockedWebViewContext: WebViewContext {
         return enableDoH
     }
     
-    public func allowNativeAppRedirects() -> Bool {
+    public func allowNativeAppRedirects() async -> Bool {
         return nativeAppRedirect
     }
     

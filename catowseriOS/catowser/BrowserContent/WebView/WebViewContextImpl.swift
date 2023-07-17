@@ -37,12 +37,12 @@ public final class WebViewContextImpl: WebViewContext {
         await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
     }
     
-    public func allowNativeAppRedirects() -> Bool {
-        return FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+    public func allowNativeAppRedirects() async -> Bool {
+        await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
     }
     
-    public func appAsyncApiTypeValue() -> AsyncApiType {
-        return FeatureManager.shared.appAsyncApiTypeValue()
+    public func appAsyncApiTypeValue() async -> AsyncApiType {
+        await FeatureManager.shared.appAsyncApiTypeValue()
     }
     
     public func updateTabContent(_ site: Site) throws {

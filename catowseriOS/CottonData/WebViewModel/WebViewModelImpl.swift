@@ -101,7 +101,17 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     deinit {
         dnsRequestSubsrciption?.dispose()
-        dnsRequestCancellable?.cancel()
+        
+        // Actor deinit problem thread:
+        // https://forums.swift.org/t/deinit-and-mainactor/50132/17
+        // On Actor Initializers:
+        // https://gist.github.com/kavon/b096dfac5637540f73c90e36fb07e35b
+        // Pitch: Isolated synchronous deinit
+        // https://forums.swift.org/t/isolated-synchronous-deinit/58177/3
+        // A deinit cannot have a global actor attribute and is never a target for propagation.
+        // https://github.com/apple/swift-evolution/blob/main/proposals/0316-global-actors.md
+        
+        // Can't do `dnsRequestCancellable?.cancel()` on main actor
     }
     
     public func load() {
@@ -188,40 +198,44 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             decisionHandler(policy)
             return
         }
-        if !context.allowNativeAppRedirects(), let policy = isNativeAppRedirectNeeded(url) {
-            decisionHandler(policy)
-            return
-        }
-        
-        guard let scheme = url.scheme else {
-            decisionHandler(.allow)
-            return
-        }
-        
-        switch scheme {
-        case .http, .https:
-            let currentURLinfo = state.urlInfo
-            if currentURLinfo.platformURL == url ||
-              (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
-                decisionHandler(.allow)
-                // No need to change vm state
-                // because it is the same URL which was provided
-                // in `.load` or `.loadNextLink`
+        Task {
+            let allowRedirect = await context.allowNativeAppRedirects()
+            if !allowRedirect, let policy = isNativeAppRedirectNeeded(url) {
+                decisionHandler(policy)
                 return
             }
-            do {
-                // Cancelling navigation because it is a different URL.
-                // Need to handle DoH, plugins and vm state.
-                // It also applies for go back and forward navigation actions.
-                decisionHandler(.cancel)
-                state = try state.transition(on: .loadNextLink(url))
-            } catch {
-                print("Fail to load next URL due to error: \(error.localizedDescription)")
+            await MainActor.run {
+                guard let scheme = url.scheme else {
+                    decisionHandler(.allow)
+                    return
+                }
+                
+                switch scheme {
+                case .http, .https:
+                    let currentURLinfo = state.urlInfo
+                    if currentURLinfo.platformURL == url ||
+                      (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
+                        decisionHandler(.allow)
+                        // No need to change vm state
+                        // because it is the same URL which was provided
+                        // in `.load` or `.loadNextLink`
+                        return
+                    }
+                    do {
+                        // Cancelling navigation because it is a different URL.
+                        // Need to handle DoH, plugins and vm state.
+                        // It also applies for go back and forward navigation actions.
+                        decisionHandler(.cancel)
+                        state = try state.transition(on: .loadNextLink(url))
+                    } catch {
+                        print("Fail to load next URL due to error: \(error.localizedDescription)")
+                    }
+                case .about:
+                    decisionHandler(.allow)
+                default:
+                    decisionHandler(.cancel)
+                }
             }
-        case .about:
-            decisionHandler(.allow)
-        default:
-            decisionHandler(.cancel)
         }
     }
     
@@ -326,60 +340,52 @@ private extension WebViewModelImpl {
             return
         }
         
-        let apiType = context.appAsyncApiTypeValue()
-        switch apiType {
-        case .reactive:
-            dnsRequestSubsrciption?.dispose()
-            dnsRequestSubsrciption = dnsResolver.rxResolveDomainName(urlData.platformURL)
-                .startWithResult({ [weak self] result in
-                    guard let self = self else {
-                        return
-                    }
-                    switch result {
-                    case .success(let finalURL):
+        Task {
+            let apiType = await context.appAsyncApiTypeValue()
+            switch apiType {
+            case .reactive:
+                dnsRequestSubsrciption?.dispose()
+                dnsRequestSubsrciption = dnsResolver.rxResolveDomainName(urlData.platformURL)
+                    .startWithResult({ [weak self] result in
+                        guard let self = self else {
+                            return
+                        }
+                        switch result {
+                        case .success(let finalURL):
+                            let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
+                            guard let nextState = possibleState else {
+                                assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
+                                return
+                            }
+                            self.state = nextState
+                        case .failure(let dnsErr):
+                            print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                        }
+                    })
+            case .combine:
+                dnsRequestCancellable?.cancel()
+                dnsRequestCancellable = dnsResolver.cResolveDomainName(urlData.platformURL)
+                    .sink(receiveCompletion: { (completion) in
+                        switch completion {
+                        case .failure(let dnsErr):
+                            print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
+                        default:
+                            break
+                        }
+                    }, receiveValue: { [weak self] (finalURL) in
+                        guard let self = self else {
+                            return
+                        }
                         let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
                         guard let nextState = possibleState else {
                             assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
                             return
                         }
                         self.state = nextState
-                    case .failure(let dnsErr):
-                        print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
-                    }
-                })
-        case .combine:
-            dnsRequestCancellable?.cancel()
-            dnsRequestCancellable = dnsResolver.cResolveDomainName(urlData.platformURL)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure(let dnsErr):
-                        print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
-                    default:
-                        break
-                    }
-                }, receiveValue: { [weak self] (finalURL) in
-                    guard let self = self else {
-                        return
-                    }
-                    let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
-                    guard let nextState = possibleState else {
-                        assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
-                        return
-                    }
-                    self.state = nextState
-                })
-        case .asyncAwait:
-            if #available(iOS 15.0, *) {
-#if swift(>=5.5)
+                    })
+            case .asyncAwait:
                 dnsRequestTaskHandler?.cancel()
-                Task {
-                    await aaResolveDomainName(urlData.platformURL)
-                }
-#else
-                assertionFailure("Swift version isn't 5.5")
-#endif
-            } else {
-                assertionFailure("iOS version is not >= 15.x")
+                await aaResolveDomainName(urlData.platformURL)
             }
         }
     }
@@ -401,7 +407,6 @@ private extension WebViewModelImpl {
         }
     }
     
-    @MainActor
     func updateState(_ finalURL: URL) async {
         let possibleState = try? state.transition(on: .createRequestAnyway(finalURL.host))
         guard let nextState = possibleState else {
@@ -428,14 +433,18 @@ private extension WebViewModelImpl {
     }
     
     func updateLoadingState(_ state: WebPageLoadingAction) {
-        let apiType = context.appAsyncApiTypeValue()
-        switch apiType {
-        case .reactive:
-            rxWebPageState.value = state
-        case .combine:
-            combineWebPageState.value = state
-        case .asyncAwait:
-            webPageState = state
+        Task {
+            let apiType = await context.appAsyncApiTypeValue()
+            await MainActor.run {
+                switch apiType {
+                case .reactive:
+                    rxWebPageState.value = state
+                case .combine:
+                    combineWebPageState.value = state
+                case .asyncAwait:
+                    webPageState = state
+                }
+            }
         }
     }
     

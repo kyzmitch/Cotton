@@ -95,22 +95,27 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             }
         }
         
-        let vc = vcFactory.rootViewController(self, uiFramework)
-        startedVC = vc
-        
-        window.rootViewController = startedVC?.viewController
-        window.makeKeyAndVisible()
-        
-        if case .uiKit = uiFramework {
-            // No need to use this class for other types
-            // of framework like SwiftUI to not do
-            // any not necessary layout.
-            // This will be handled by SwiftUI view model
-            // to not add too many checks in this class
-            TabsListManager.shared.attach(self)
-            jsPluginsBuilder = JSPluginsBuilder()
-                .setBase(self)
-                .setInstagram(self)
+        Task {
+            let defaultTabContent = await DefaultTabProvider.shared.contentState
+            await MainActor.run {
+                let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent)
+                startedVC = vc
+                
+                window.rootViewController = startedVC?.viewController
+                window.makeKeyAndVisible()
+                
+                if case .uiKit = uiFramework {
+                    // No need to use this class for other types
+                    // of framework like SwiftUI to not do
+                    // any not necessary layout.
+                    // This will be handled by SwiftUI view model
+                    // to not add too many checks in this class
+                    TabsListManager.shared.attach(self)
+                    jsPluginsBuilder = JSPluginsBuilder()
+                        .setBase(self)
+                        .setInstagram(self)
+                }
+            }
         }
     }
     
@@ -395,9 +400,9 @@ private extension AppCoordinator {
                 assertionFailure("Root view controller must have content view")
                 return
             }
-            coordinator = .init(vcFactory, startedVC, containerView)
+            coordinator = .init(vcFactory, startedVC, containerView, uiFramework)
         case .swiftUIWrapper, .swiftUI:
-            coordinator = .init(vcFactory, startedVC, nil)
+            coordinator = .init(vcFactory, startedVC, nil, uiFramework)
         }
         
         coordinator.parent = self

@@ -29,10 +29,10 @@ final class BrowserContentViewModel: ObservableObject {
     /// To avoid app start case
     private var firstTabContentSelect: Bool
     
-    init(_ jsPluginsBuilder: any JSPluginsSource) {
+    init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: Tab.ContentType) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
-        contentType = DefaultTabProvider.shared.contentState
+        self.contentType = defaultContentType
         loading = true
         webViewNeedsUpdate = ()
         tabsCount = 0

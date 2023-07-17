@@ -163,10 +163,13 @@ extension MainToolbarCoordinator: PhoneTabsDelegate {
     }
     
     func didTabAdd() {
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
-        // newly added tab moves selection to itself
-        // so, it is opened by manager by default
-        // but user maybe don't want to move that tab right away
-        TabsListManager.shared.add(tab: tab)
+        Task {
+            let contentState = await DefaultTabProvider.shared.contentState
+            let tab = Tab(contentType: contentState)
+            // newly added tab moves selection to itself
+            // so, it is opened by manager by default
+            // but user maybe don't want to move that tab right away
+            TabsListManager.shared.add(tab: tab)
+        }
     }
 }

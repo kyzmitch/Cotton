@@ -85,6 +85,7 @@ public enum SearchSuggestionsViewState: Equatable {
     }
 }
 
+@MainActor
 public protocol SearchSuggestionsViewModel: AnyObject {
     /// Initiate fetching only after subscribing to the async interfaces below
     func fetchSuggestions(_ query: String)
