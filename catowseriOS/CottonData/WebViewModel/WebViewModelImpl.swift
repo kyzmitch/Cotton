@@ -306,7 +306,9 @@ private extension WebViewModelImpl {
             let updatedInfo = urlData.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             let host = updatedInfo.host()
-            InMemoryDomainSearchProvider.shared.remember(host: host)
+            Task {
+                await InMemoryDomainSearchProvider.shared.remember(host: host)
+            }
             context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
             try context.updateTabContent(site)
             state = try state.transition(on: .startView(updatedInfo))

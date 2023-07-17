@@ -63,9 +63,8 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
 extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     // swiftlint:disable:next function_body_length
     public func fetchSuggestions(_ query: String) {
-        let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
-        
         Task {
+            let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
             let apiType = await searchContext.appAsyncApiTypeValue
             switch apiType {
             case .reactive:
@@ -107,7 +106,7 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     }
     
     public func aaFetchSuggestions(_ query: String) async -> SearchSuggestionsViewState {
-        let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
+        let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
         do {
             let suggestions = try await autocomplete.aaFetchSuggestions(query)
             return .everythingLoaded(domainNames, suggestions)

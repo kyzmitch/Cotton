@@ -9,13 +9,14 @@
 import Foundation
 import CottonBase
 
+fileprivate let filename = "topdomains"
+
 @globalActor
 public final class InMemoryDomainSearchProvider {
     public static let shared = Provider()
     
     public actor Provider {
         fileprivate let storage: Trie
-        fileprivate let filename = "topdomains"
 
         init() {
             storage = Trie()
@@ -39,8 +40,7 @@ public final class InMemoryDomainSearchProvider {
 }
 
 extension InMemoryDomainSearchProvider.Provider: DomainsHistory {
-    /// TODO: this is actually must be isolated, temporarily add to fix compiler issue
-    nonisolated public func remember(host: CottonBase.Host) {
+    public func remember(host: CottonBase.Host) async {
         storage.insert(word: host.rawString)
         if let withoutWww = host.rawString.withoutPrefix("www.") {
             storage.insert(word: withoutWww)
@@ -49,8 +49,7 @@ extension InMemoryDomainSearchProvider.Provider: DomainsHistory {
 }
 
 extension InMemoryDomainSearchProvider.Provider: KnownDomainsSource {
-    /// TODO: this is actually must be isolated, temporarily add to fix compiler issue
-    nonisolated public func domainNames(whereURLContains filter: String) -> [String] {
+    public func domainNames(whereURLContains filter: String) async -> [String] {
         let words: [String] = storage.findWordsWithPrefix(prefix: filter)
         return words
     }

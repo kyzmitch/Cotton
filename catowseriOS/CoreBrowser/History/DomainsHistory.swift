@@ -10,10 +10,10 @@ import CottonBase
 import AutoMockable
 
 public protocol KnownDomainsSource: AutoMockable {
-    func domainNames(whereURLContains filter: String) -> [String]
+    func domainNames(whereURLContains filter: String) async -> [String]
 }
 
 /// Interface for domain checks
 public protocol DomainsHistory {
-    func remember(host: CottonBase.Host)
+    func remember(host: CottonBase.Host) async
 }

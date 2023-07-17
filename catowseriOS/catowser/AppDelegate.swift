@@ -33,13 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
-        start()
-        return true
+        return start()
     }
 }
 
 private extension AppDelegate {
-    func start() {
+    func start() -> Bool {
         Task {
             let value = await FeatureManager.shared.appUIFrameworkValue()
             await MainActor.run {
@@ -47,6 +46,7 @@ private extension AppDelegate {
                 appCoordinator?.start()
             }
         }
+        return true
     }
 }
 
