@@ -673,7 +673,9 @@ extension AppCoordinator: SearchBarDelegate {
             bottomAnchor = toolbarCoordinator?.startedView?.topAnchor
         }
         let toolbarHeight = toolbarCoordinator?.startedView?.bounds.height
-        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions, topAnchor, bottomAnchor, toolbarHeight))
+        // Not used, can be random
+        let randomValue: WebAutoCompletionSource = .duckduckgo
+        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions(randomValue), topAnchor, bottomAnchor, toolbarHeight))
     }
 }
 

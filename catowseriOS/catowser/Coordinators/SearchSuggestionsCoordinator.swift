@@ -33,22 +33,21 @@ final class SearchSuggestionsCoordinator: Coordinator {
         }
     }
     private var disposables = [Disposable?]()
+    private let providerType: WebAutoCompletionSource
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ delegate: SearchSuggestionsListDelegate) {
+         _ delegate: SearchSuggestionsListDelegate,
+         _ providerType: WebAutoCompletionSource) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
+        self.providerType = providerType
     }
     
     func start() {
-        Task {
-            let searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
-            await MainActor.run {
-                internalStart(searchProviderType)
-            }
-        }
+        // Used to be an async function
+        internalStart(providerType)
     }
     
     private func internalStart(_ searchProviderType: WebAutoCompletionSource) {

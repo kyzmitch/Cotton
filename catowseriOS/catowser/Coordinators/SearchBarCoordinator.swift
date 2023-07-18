@@ -122,7 +122,7 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
-    case suggestions
+    case suggestions(WebAutoCompletionSource)
 }
 
 extension SearchBarCoordinator: Layouting {
@@ -130,8 +130,8 @@ extension SearchBarCoordinator: Layouting {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .suggestions:
-            insertSearchSuggestions()
+        case .suggestions(let provider):
+            insertSearchSuggestions(provider)
         }
     }
     
@@ -188,7 +188,7 @@ private extension SearchBarCoordinator {
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
     }
     
-    func insertSearchSuggestions() {
+    func insertSearchSuggestions(_ providerType: WebAutoCompletionSource) {
         guard !isSuggestionsShowed else {
             return
         }
@@ -197,7 +197,7 @@ private extension SearchBarCoordinator {
         
         // swiftlint:disable:next force_unwrapping
         let presenter = presenterVC!
-        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self)
+        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self, providerType)
         coordinator.parent = self
         coordinator.start()
         searhSuggestionsCoordinator = coordinator
@@ -237,12 +237,15 @@ extension SearchBarCoordinator: UISearchBarDelegate {
         if searchQuery.isEmpty || searchQuery.looksLikeAURL() {
             showNext(.hideSuggestions)
         } else {
-            insertNext(.suggestions)
-            // Use delegate and not a direct call
-            // because it requires layout info
-            // about neighbour views (anchors and height)
-            delegate?.layoutSuggestions()
-            showNext(.suggestions(searchQuery))
+            Task {
+                let searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+                insertNext(.suggestions(searchProviderType))
+                // Use delegate and not a direct call
+                // because it requires layout info
+                // about neighbour views (anchors and height)
+                delegate?.layoutSuggestions()
+                showNext(.suggestions(searchQuery))
+            }
         }
     }
     
