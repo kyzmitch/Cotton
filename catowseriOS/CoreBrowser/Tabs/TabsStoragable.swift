@@ -22,7 +22,7 @@ public protocol TabsStoragable: AutoMockable {
     /// - Parameter tab: The tab object to be selected.
     ///
     /// - Returns: An identifier of the selected tab.
-    func select(tab: Tab) -> SignalProducer<UUID, TabStorageError>
+    func select(tab: Tab) async throws -> UUID
 
     /// Loads tabs data from storage.
     ///
@@ -38,7 +38,7 @@ public protocol TabsStoragable: AutoMockable {
     /// Updates tab content
     ///
     /// - Parameter tab: The tab object to be updated. Usually only tab content needs to be updated.
-    func update(tab: Tab) -> SignalProducer<Tab, TabStorageError>
+    func update(tab: Tab) throws -> Tab
     
     /// Removes tab from cache
     ///

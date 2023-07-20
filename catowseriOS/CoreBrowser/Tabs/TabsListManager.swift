@@ -46,8 +46,6 @@ public final class TabsListManager {
     private var tabAddDisposable: Disposable?
     private var tabCloseDisposable: Disposable?
     private var closeAllTabsDisposable: Disposable?
-    private var tabSelectDisposable: Disposable?
-    private var tabContentUpdateDisposable: Disposable?
 
     public init(storage: TabsStoragable, positioning: TabsStates, selectionStrategy: TabSelectionStrategy) {
         self.selectionStrategy = selectionStrategy
@@ -256,22 +254,17 @@ extension TabsListManager: TabsSubject {
     }
 
     public func select(tab: Tab) {
-        tabSelectDisposable?.dispose()
-        tabSelectDisposable = storage
-            .select(tab: tab)
-            .observe(on: scheduler)
-            .startWithResult({ [weak self] (result) in
-                switch result {
-                case .success(let identifier):
-                    guard let self = self else { return }
-                    guard identifier != self.selectedId else {
-                        return
-                    }
-                    self.selectedTabId.value = identifier
-                case .failure(let storageError):
-                    print("Failed to select tab with id \(tab.id) \(storageError)")
+        Task {
+            do {
+                let identifier = try await storage.select(tab: tab)
+                guard identifier != self.selectedId else {
+                    return
                 }
-            })
+                self.selectedTabId.value = identifier
+            } catch {
+                print("Failed to select tab with id \(tab.id) \(error)")
+            }
+        }
     }
 
     public func replaceSelected(_ tabContent: Tab.ContentType) throws {
@@ -286,21 +279,15 @@ extension TabsListManager: TabsSubject {
         newTab.contentType = tabContent
         newTab.previewData = nil
         
-        tabContentUpdateDisposable?.dispose()
-        tabContentUpdateDisposable = storage
-            .update(tab: newTab)
-            .observe(on: UIScheduler())
-            .startWithResult({ [weak self] (result) in
-                switch result {
-                case .success:
-                    self?.tabs.value[tabIndex] = newTab
-                    // Need to notify observers to allow them
-                    // to update title for tab view
-                    self?.observers.forEach { $0.tabDidReplace(newTab, at: tabIndex) }
-                case .failure(let storageError):
-                    print("Failed to update tab content to storage \(storageError)")
-                }
-            })
+        do {
+            _ = try storage.update(tab: newTab)
+            tabs.value[tabIndex] = newTab
+            // Need to notify observers to allow them
+            // to update title for tab view
+            observers.forEach { $0.tabDidReplace(newTab, at: tabIndex) }
+        } catch {
+            print("Failed to update tab content to storage \(error)")
+        }
     }
 
     public func attach(_ observer: TabsObserver, notify: Bool = false) {

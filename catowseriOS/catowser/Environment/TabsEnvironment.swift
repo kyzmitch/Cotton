@@ -45,6 +45,6 @@ private final class TabsEnvironment {
 
 extension TabsListManager {
     static var shared: TabsListManager {
-        return TabsEnvironment.shared.cachedTabsManager
+        TabsEnvironment.shared.cachedTabsManager
     }
 }

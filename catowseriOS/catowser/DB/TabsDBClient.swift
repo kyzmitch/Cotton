@@ -283,7 +283,7 @@ extension TabsDBClient {
     }
     
     private func setSettingsSelectedTabId(_ uuid: UUID) async throws {
-        return try await managedContext.perform { [weak managedContext] in
+        return try await managedContext.perform(schedule: .enqueued) { [weak managedContext] in
             guard let managedContext else {
                 return
             }

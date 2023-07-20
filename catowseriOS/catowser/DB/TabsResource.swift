@@ -80,27 +80,17 @@ final class TabsResource {
     }
     
     /// Updates tab content if tab with same identifier was found in DB or creates completely new tab
-    func update(tab: Tab) -> SignalProducer<Tab, TabResourceError> {
-        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                try self.dbClient.update(tab: tab)
-                observer.send(value: tab)
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .insertError(error))
-            }
+    func update(tab: Tab) throws -> Tab {
+        guard self.isStoreInitialized else {
+            throw TabResourceError.storeNotInitializedYet
         }
         
-        return producer.observe(on: scheduler)
+        do {
+            try self.dbClient.update(tab: tab)
+            return tab
+        } catch {
+            throw TabResourceError.insertError(error)
+        }
     }
     
     /// Removes the tab from DB
@@ -152,27 +142,16 @@ final class TabsResource {
     }
     
     /// Remembers tab identifier as selected one
-    func selectTab(_ tab: Tab) -> SignalProducer<Void, TabResourceError> {
-        let producer: SignalProducer<Void, TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                try self.dbClient.select(tab: tab)
-                observer.send(value: ())
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .selectedTabId(error))
-            }
-            
+    func selectTab(_ tab: Tab) async throws {
+        guard self.isStoreInitialized else {
+            throw TabResourceError.storeNotInitializedYet
         }
-        return producer.observe(on: scheduler)
+        
+        do {
+            try await self.dbClient.select(tab: tab)
+        } catch {
+            throw TabResourceError.selectedTabId(error)
+        }
     }
 }
 
