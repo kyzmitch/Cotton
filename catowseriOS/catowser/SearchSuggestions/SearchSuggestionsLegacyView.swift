@@ -32,6 +32,8 @@ struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
         guard let interface = uiViewController as? SearchSuggestionsControllerInterface else {
             return
         }
-        interface.prepareSearch(for: searchQuery)
+        Task {
+            await interface.prepareSearch(for: searchQuery)
+        }
     }
 }

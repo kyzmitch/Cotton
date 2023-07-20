@@ -11,7 +11,7 @@ import ReactiveSwift
 import FeaturesFlagsKit
 
 protocol SearchSuggestionsControllerInterface: AnyObject {
-    func prepareSearch(for searchQuery: String)
+    func prepareSearch(for searchQuery: String) async
 }
 
 final class SearchSuggestionsCoordinator: Coordinator {
@@ -93,7 +93,9 @@ extension SearchSuggestionsCoordinator: Navigating {
             guard let interface = startedVC?.viewController as? SearchSuggestionsControllerInterface else {
                 return
             }
-            interface.prepareSearch(for: searchQuery)
+            Task {
+                await interface.prepareSearch(for: searchQuery)
+            }
         }
     }
     

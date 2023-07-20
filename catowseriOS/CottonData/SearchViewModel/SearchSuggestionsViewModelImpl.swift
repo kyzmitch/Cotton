@@ -62,45 +62,47 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
 
 extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     // swiftlint:disable:next function_body_length
-    public func fetchSuggestions(_ query: String) {
-        Task {
-            let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
-            let apiType = await searchContext.appAsyncApiTypeValue
-            switch apiType {
-            case .reactive:
-                rxState.value = .knownDomainsLoaded(domainNames)
-                searchSuggestionsDisposable?.dispose()
-                searchSuggestionsDisposable = autocomplete.rxFetchSuggestions(query)
-                    .flatMapError({ error in
-                        print("Fail to fetch search suggestions: \(error.localizedDescription)")
-                        return WebSearchSuggestionsProducer(value: [])
-                    })
-                    .startWithResult({ [weak self] result in
-                        switch result {
-                        case .success(let suggestions):
-                            self?.rxState.value = .everythingLoaded(domainNames, suggestions)
-                        default:
-                            break
-                    }
+    public func fetchSuggestions(_ query: String) async {
+        let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
+        let apiType = await searchContext.appAsyncApiTypeValue
+        switch apiType {
+        case .reactive:
+            rxState.value = .knownDomainsLoaded(domainNames)
+            searchSuggestionsDisposable?.dispose()
+            searchSuggestionsDisposable = autocomplete.rxFetchSuggestions(query)
+                .flatMapError({ error in
+                    print("Fail to fetch search suggestions: \(error.localizedDescription)")
+                    return WebSearchSuggestionsProducer(value: [])
                 })
-            case .combine:
-                combineState.value = .knownDomainsLoaded(domainNames)
-                searchSuggestionsCancellable?.cancel()
-                searchSuggestionsCancellable = autocomplete.combineFetchSuggestions(query)
-                    .catch({ error -> Just<[String]> in
-                        print("Fail to fetch search suggestions: \(error.localizedDescription)")
-                        return .init([])
-                    })
-                    .sink(receiveCompletion: { _ in
-                        print("Search suggestions request completed")
-                    }, receiveValue: { [weak self] suggestions in
-                        self?.combineState.value = .everythingLoaded(domainNames, suggestions)
-                    })
-            case .asyncAwait:
-                state = .knownDomainsLoaded(domainNames)
-                searchSuggestionsTaskHandler?.cancel()
+                .startWithResult({ [weak self] result in
+                    switch result {
+                    case .success(let suggestions):
+                        self?.rxState.value = .everythingLoaded(domainNames, suggestions)
+                    default:
+                        break
+                }
+            })
+        case .combine:
+            combineState.value = .knownDomainsLoaded(domainNames)
+            searchSuggestionsCancellable?.cancel()
+            searchSuggestionsCancellable = autocomplete.combineFetchSuggestions(query)
+                .catch({ error -> Just<[String]> in
+                    print("Fail to fetch search suggestions: \(error.localizedDescription)")
+                    return .init([])
+                })
+                .sink(receiveCompletion: { _ in
+                    print("Search suggestions request completed")
+                }, receiveValue: { [weak self] suggestions in
+                    self?.combineState.value = .everythingLoaded(domainNames, suggestions)
+                })
+        case .asyncAwait:
+            state = .knownDomainsLoaded(domainNames)
+            searchSuggestionsTaskHandler?.cancel()
+            do {
                 let suggestions = try await autocomplete.aaFetchSuggestions(query)
                 state = .everythingLoaded(domainNames, suggestions)
+            } catch {
+                state = .everythingLoaded(domainNames, [])
             }
         }
     }

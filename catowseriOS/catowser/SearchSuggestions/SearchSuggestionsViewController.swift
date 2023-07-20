@@ -155,7 +155,7 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
 }
 
 extension SearchSuggestionsViewController: SearchSuggestionsControllerInterface {
-    func prepareSearch(for searchQuery: String) {
-        viewModel.fetchSuggestions(searchQuery)
+    func prepareSearch(for searchQuery: String) async {
+        await viewModel.fetchSuggestions(searchQuery)
     }
 }
