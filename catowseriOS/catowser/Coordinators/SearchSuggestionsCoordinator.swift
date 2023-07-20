@@ -130,7 +130,7 @@ extension SearchSuggestionsCoordinator: Layouting {
 }
 
 private extension SearchSuggestionsCoordinator {
-    func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
+    func keyboardWillChangeFrameClosure() -> @MainActor (Notification) -> Void {
         func handling(_ notification: Notification) {
             guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
             guard let value = info as? NSValue else { return }
@@ -143,7 +143,7 @@ private extension SearchSuggestionsCoordinator {
         return handling
     }
 
-    func keyboardWillHideClosure() -> (Notification) -> Void {
+    func keyboardWillHideClosure() -> @MainActor (Notification) -> Void {
         func handling(_ notification: Notification) {
             _keyboardHeight = nil
         }

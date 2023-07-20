@@ -69,9 +69,7 @@ where C.R == TopSitesRoute {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        defer {
-            collectionView.deselectItem(at: indexPath, animated: true)
-        }
+        collectionView.deselectItem(at: indexPath, animated: true)
         guard let site = source[safe: indexPath.row] else {
             return
         }

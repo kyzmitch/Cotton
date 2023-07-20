@@ -9,7 +9,7 @@
 import Foundation
 import CottonBase
 
-fileprivate let filename = "topdomains"
+private let filename = "topdomains"
 
 @globalActor
 public final class InMemoryDomainSearchProvider {

@@ -28,7 +28,7 @@ public enum TabsListError: LocalizedError {
  */
 public final class TabsListManager {
     /// Current tab selection strategy
-    var selectionStrategy: TabSelectionStrategy
+    private var selectionStrategy: TabSelectionStrategy
 
     private let tabs: MutableProperty<[Tab]>
     private let selectedTabId: MutableProperty<UUID>

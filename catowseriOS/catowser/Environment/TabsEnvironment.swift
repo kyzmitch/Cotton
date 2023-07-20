@@ -11,9 +11,9 @@ import CoreData
 
 @globalActor
 private final class TabsEnvironment {
-    static let shared: TabsActor = .init()
+    static let shared: ManagerHolder = .init()
     
-    fileprivate actor TabsActor {
+    fileprivate actor ManagerHolder {
         let cachedTabsManager: TabsListManager
         let cottonDb: Database
         

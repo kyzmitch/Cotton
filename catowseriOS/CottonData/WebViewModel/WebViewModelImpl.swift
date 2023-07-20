@@ -203,7 +203,9 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         Task {
             let allowRedirect = await context.allowNativeAppRedirects()
             if !allowRedirect, let policy = isNativeAppRedirectNeeded(url) {
-                decisionHandler(policy)
+                await MainActor.run {
+                    decisionHandler(policy)
+                }
                 return
             }
             await MainActor.run {
