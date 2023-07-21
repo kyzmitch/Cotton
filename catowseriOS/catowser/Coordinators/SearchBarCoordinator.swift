@@ -33,24 +33,6 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     
     private var searhSuggestionsCoordinator: SearchSuggestionsCoordinator?
     
-    private nonisolated func searchSuggestClient() async -> SearchEngine {
-        let selectedPluginName = await FeatureManager.shared.searchPluginName()
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: selectedPluginName, on: .main)
-        guard let xmlData = optionalXmlData else {
-            return .googleSearchEngine()
-        }
-        
-        let osDescription: OpenSearch.Description
-        do {
-            osDescription = try OpenSearch.Description(data: xmlData)
-        } catch {
-            print("Open search xml parser error: \(error.localizedDescription)")
-            return .googleSearchEngine()
-        }
-        
-        return osDescription.html
-    }
-    
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String = ""
@@ -338,7 +320,7 @@ extension FeatureManager.FManager {
 private extension SearchBarCoordinator {
     func handleSuggestion(_ suggestion: String) {
         Task {
-            let client = await searchSuggestClient()
+            let client = await HttpEnvironment.shared.searchSuggestClient()
             guard let url = client.searchURLForQuery(suggestion) else {
                 assertionFailure("Failed construct search engine url from suggestion string")
                 return
