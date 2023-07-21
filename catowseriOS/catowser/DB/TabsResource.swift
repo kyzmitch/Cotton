@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 import CoreBrowser
 import CoreData
 
@@ -23,8 +22,6 @@ final class TabsResource {
     private var isStoreInitialized = false
     
     private let queue: DispatchQueue = .init(label: .queueNameWith(suffix: .threadName))
-    
-    private lazy var scheduler = QueueScheduler(targeting: queue)
     
     /// Creates an instance of TabsResource which is a wrapper around CoreData Store class
     ///
@@ -52,36 +49,9 @@ final class TabsResource {
         }
     }
     
-    /// Saves the tab in DB without selecting it
-    func remember(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabResourceError> {
-        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                try self.dbClient.insert(tab: tab)
-                if select {
-                    try self.dbClient.select(tab: tab)
-                }
-                observer.send(value: tab)
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .insertError(error))
-            }
-        }
-        
-        return producer.observe(on: scheduler)
-    }
-    
     /// Updates tab content if tab with same identifier was found in DB or creates completely new tab
     func update(tab: Tab) throws -> Tab {
-        guard self.isStoreInitialized else {
+        guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
         
@@ -93,57 +63,27 @@ final class TabsResource {
         }
     }
     
-    /// Removes the tab from DB
-    func forget(tab: Tab) -> SignalProducer<Tab, TabResourceError> {
-        let producer: SignalProducer<Tab, TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                try self.dbClient.remove(tab: tab)
-                observer.send(value: tab)
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .deleteError(error))
-            }
-            
-        }
-        return producer.observe(on: scheduler)
-    }
-    
     /// Remove all the tabs
-    func forget(tabs: [Tab]) -> SignalProducer<[Tab], TabResourceError> {
-        let producer: SignalProducer<[Tab], TabResourceError> = .init { [weak self] (observer, _) in
-            guard let self = self else {
-                observer.send(error: .zombieSelf)
-                return
-            }
-            guard self.isStoreInitialized else {
-                observer.send(error: .storeNotInitializedYet)
-                return
-            }
-            
-            do {
-                try self.dbClient.removeAll(tabs: tabs)
-                observer.send(value: tabs)
-                observer.sendCompleted()
-            } catch {
-                observer.send(error: .deleteError(error))
-            }
-            
+    func forget(tabs: [Tab]) async throws -> [Tab] {
+        guard isStoreInitialized else {
+            throw TabResourceError.storeNotInitializedYet
         }
-        return producer.observe(on: scheduler)
+        
+        do {
+            if tabs.count == 1 {
+                try dbClient.remove(tab: tabs[0])
+            } else {
+                try dbClient.removeAll(tabs: tabs)
+            }
+            return tabs
+        } catch {
+            throw TabResourceError.deleteError(error)
+        }
     }
     
     /// Remembers tab identifier as selected one
     func selectTab(_ tab: Tab) async throws {
-        guard self.isStoreInitialized else {
+        guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
         
@@ -153,9 +93,7 @@ final class TabsResource {
             throw TabResourceError.selectedTabId(error)
         }
     }
-}
-
-extension TabsResource {
+    
     /// Gets all tabs recorded in DB. Currently there is only one session, but later
     /// it should be possible to store and read tabs from different sessions like
     /// private browser session tabs & usual tabs.

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 import CoreBrowser
 import CoreData
 
@@ -23,10 +22,6 @@ fileprivate extension String {
  with environment class which holds reference to tabs list manager it's kind of singletone.
  */
 final class TabsCacheProvider {
-    private lazy var scheduler: QueueScheduler = {
-        let schedulerOnQueue = QueueScheduler(targeting: queue)
-        return schedulerOnQueue
-    }()
     private let queue: DispatchQueue
     private let tabsDbResource: TabsResource
     
@@ -47,14 +42,6 @@ extension TabsCacheProvider: TabsStoragable {
             throw TabStorageError.dbResourceError(error)
         }
     }
-
-    func add(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabStorageError> {
-        return tabsDbResource
-            .remember(tab: tab, andSelect: select)
-            .mapError({ (resourceError) -> TabStorageError in
-                return .dbResourceError(resourceError)
-            }).start(on: scheduler)
-    }
     
     func update(tab: Tab) throws -> Tab {
         do {
@@ -64,20 +51,12 @@ extension TabsCacheProvider: TabsStoragable {
         }
     }
     
-    func remove(tab: Tab) -> SignalProducer<Tab, TabStorageError> {
-        return tabsDbResource
-            .forget(tab: tab)
-            .mapError({ (resourceError) -> TabStorageError in
-                return .dbResourceError(resourceError)
-            }).start(on: scheduler)
-    }
-    
-    func remove(tabs: [Tab]) -> SignalProducer<[Tab], TabStorageError> {
-        return tabsDbResource
-            .forget(tabs: tabs)
-            .mapError({ (resourceError) -> TabStorageError in
-                return .dbResourceError(resourceError)
-            }).start(on: scheduler)
+    func remove(tabs: [Tab]) async throws -> [Tab] {
+        do {
+            return try await tabsDbResource.forget(tabs: tabs)
+        } catch {
+            throw TabStorageError.dbResourceError(error)
+        }
     }
     
     func fetchAllTabs() async throws -> [Tab] {

@@ -43,9 +43,6 @@ public final class TabsListManager {
     }()
 
     private var disposables = [Disposable?]()
-    private var tabAddDisposable: Disposable?
-    private var tabCloseDisposable: Disposable?
-    private var closeAllTabsDisposable: Disposable?
 
     public init(storage: TabsStoragable, positioning: TabsStates, selectionStrategy: TabSelectionStrategy) {
         self.selectionStrategy = selectionStrategy
@@ -185,49 +182,30 @@ extension TabsListManager: TabsSubject {
     }
 
     public func close(tab: Tab) {
-        tabCloseDisposable?.dispose()
-        tabCloseDisposable = storage
-            .remove(tab: tab)
-            .observe(on: scheduler)
-            .startWithResult({ [weak self] (result) in
-                switch result {
-                case .failure(let storageError):
-                    // tab view should be removed immediately on view level anyway
-                    print("Failure to remove tab from cache: \(storageError)")
-                case .success(let removedTab):
-                    self?.handleCachedTabRemove(removedTab)
-                }
-        })
+        Task {
+            do {
+                let removedTabs = try await storage.remove(tabs: [tab])
+                // swiftlint:disable:next force_unwrapping
+                handleCachedTabRemove(removedTabs.first!)
+            } catch {
+                // tab view should be removed immediately on view level anyway
+                print("Failure to remove tab from cache: \(error)")
+            }
+        }
     }
 
     public func closeAll() {
-        // Should always work, don't care about errors
-        typealias TabAddProducer = SignalProducer<Tab, TabStorageError>
-        
         Task {
             let contentState = await positioning.contentState
-            closeAllTabsDisposable?.dispose()
-            closeAllTabsDisposable = storage
-                .remove(tabs: tabs.value)
-                .flatMap(.latest, { [weak self] _ -> TabAddProducer in
-                    guard let self = self else {
-                        return .init(error: TabStorageError.zombieSelf)
-                    }
-                    self.tabs.value.removeAll()
-                    let tab: Tab = .init(contentType: contentState)
-                    return self.storage.add(tab: tab, andSelect: true)
-                })
-                .observe(on: scheduler)
-                .startWithResult({ [weak self] (result) in
-                    switch result {
-                    case .failure(let storageError):
-                        // tab view should be removed immediately on view level anyway
-                        print("Failure to remove tab and reset to one tab: \(storageError)")
-                    case .success(let addedTab):
-                        guard let self = self else { return }
-                        self.handleTabAdded(addedTab, index: 0, select: true)
-                    }
-            })
+            do {
+                _ = try await storage.remove(tabs: tabs.value)
+                tabs.value.removeAll()
+                let tab: Tab = .init(contentType: contentState)
+                let addedTab = try await storage.add(tab, select: true)
+            } catch {
+                // tab view should be removed immediately on view level anyway
+                print("Failure to remove tab and reset to one tab: \(error)")
+            }
         }
     }
 
@@ -236,20 +214,13 @@ extension TabsListManager: TabsSubject {
             let positionType = await positioning.addPosition
             let newIndex = positionType.addTab(tab, to: tabs, currentlySelectedId: selectedId)
             let needSelect = selectionStrategy.makeTabActiveAfterAdding
-            tabAddDisposable?.dispose()
-            tabAddDisposable = storage
-                .add(tab: tab, andSelect: needSelect)
-                .observe(on: scheduler)
-                .startWithResult { [weak self] (result) in
-                    switch result {
-                    case .failure(let storageError):
-                        // It doesn't matter, on view level it must be added right away
-                        print("Failed to add this tab to cache: \(storageError)")
-                    case .success(let addedTab):
-                        guard let self = self else { return }
-                        self.handleTabAdded(addedTab, index: newIndex, select: needSelect)
-                    }
-                }
+            do {
+                let addedTab = try await storage.add(tab, select: needSelect)
+                handleTabAdded(addedTab, index: newIndex, select: needSelect)
+            } catch {
+                // It doesn't matter, on view level it must be added right away
+                print("Failed to add this tab to cache: \(error)")
+            }
         }
     }
 

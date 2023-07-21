@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 import AutoMockable
 
 public protocol TabsStoragable: AutoMockable {
@@ -32,7 +31,6 @@ public protocol TabsStoragable: AutoMockable {
     /// Adds a tab to storage
     ///
     /// - Parameter tab: The tab object to be added.
-    func add(tab: Tab, andSelect select: Bool) -> SignalProducer<Tab, TabStorageError>
     func add(_ tab: Tab, select: Bool) async throws -> Tab
     
     /// Updates tab content
@@ -40,11 +38,6 @@ public protocol TabsStoragable: AutoMockable {
     /// - Parameter tab: The tab object to be updated. Usually only tab content needs to be updated.
     func update(tab: Tab) throws -> Tab
     
-    /// Removes tab from cache
-    ///
-    /// - Parameter tab: The tab object to be removed from databse.
-    func remove(tab: Tab) -> SignalProducer<Tab, TabStorageError>
-    
-    /// Removes all the tabs for current session
-    func remove(tabs: [Tab]) -> SignalProducer<[Tab], TabStorageError>
+    /// Removes some tabs for current session
+    func remove(tabs: [Tab]) async throws -> [Tab]
 }
