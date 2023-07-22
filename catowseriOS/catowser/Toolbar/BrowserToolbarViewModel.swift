@@ -87,10 +87,6 @@ extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
         showProgress = show
     }
     
-    func didTabPreviewChange(_ screenshot: UIImage) {
-        try? TabsListManager.shared.setSelectedPreview(screenshot)
-    }
-    
     func webViewDidHandleReuseAction() {
         // web view was re-created, so, all next SwiftUI view updates can be ignored
         stopWebViewReuseAction = ()

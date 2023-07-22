@@ -19,3 +19,23 @@ public enum TabAddSpeed {
     case immediately
     case after(DispatchTimeInterval)
 }
+
+extension DispatchTimeInterval {
+    @available(iOS 16.0, *)
+    public var dispatchValue: Duration {
+        switch self {
+        case .seconds(let int):
+            return .seconds(int)
+        case .milliseconds(let int):
+            return .milliseconds(int)
+        case .microseconds(let int):
+            return .microseconds(int)
+        case .nanoseconds(let int):
+            return .nanoseconds(int)
+        case .never:
+            return .zero
+        @unknown default:
+            fatalError()
+        }
+    }
+}

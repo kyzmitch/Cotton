@@ -37,7 +37,14 @@ struct TopSitesViewV2: View {
             guard let newValue else {
                 return
             }
-            try? TabsListManager.shared.replaceSelected(.site(newValue))
+            Task {
+                do {
+                    try await TabsListManager.shared.replaceSelected(.site(newValue))
+                } catch {
+                    print("Fail to replace selected tab: \(error)")
+                }
+                
+            }
         }
     }
 }

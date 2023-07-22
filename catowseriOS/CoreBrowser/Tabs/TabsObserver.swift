@@ -8,18 +8,20 @@
 
 import Foundation
 
-/// MARK: - Tabs observer protocol.
+/// Tabs observer interface
+/// TODO: https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
+@MainActor
 public protocol TabsObserver {
     /// To be able to search specific observer.
-    var name: String { get }
+    var name: String { get async }
     /// Updates observer with tabs count.
     ///
     /// - Parameter tabsCount: New number of tabs.
-    func update(with tabsCount: Int)
+    func update(with tabsCount: Int) async
     /// Prodive necessary data to render UI on tablets
     ///
     /// - Parameter tabs: Tabs from cache at application start.
-    func initializeObserver(with tabs: [Tab])
+    func initializeObserver(with tabs: [Tab]) async
     /// Tells other observers about new tab.
     /// We can pause drawing new tab on view layer
     /// to be able firstly determine type of initial tab state.
@@ -34,9 +36,9 @@ public protocol TabsObserver {
     ///     - index: new selected index.
     ///     - content: Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
     ///     - identifier: needed to quickly determine visual state (selected view or not)
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID)
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async
     /// Notifies about tab content type changes or `site` changes
-    func tabDidReplace(_ tab: Tab, at index: Int)
+    func tabDidReplace(_ tab: Tab, at index: Int) async
 
     /// No need to add delegate methods for tab close case.
     /// because anyway view must be removed right away.
@@ -49,7 +51,7 @@ public extension TabsObserver {
         return String(describing: self)
     }
 
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
         // Only landscape/regular tabs list view use that
     }
 
@@ -60,7 +62,7 @@ public extension TabsObserver {
 
     /* optional */ func tabDidReplace(_ tab: Tab, at index: Int) {}
 
-    /* optional */ func update(with tabsCount: Int) {}
+    /* optional */ func update(with tabsCount: Int) async {}
 
-    /* optional */ func initializeObserver(with tabs: [Tab]) {}
+    /* optional */ func initializeObserver(with tabs: [Tab]) async {}
 }

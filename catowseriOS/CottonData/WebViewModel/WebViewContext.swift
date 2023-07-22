@@ -17,7 +17,9 @@ import CoreBrowser
  https://swiftrocks.com/whats-any-understanding-type-erasure-in-swift
  */
 
-/// web view context should carry some data or dependencies which can't be stored as a state and always are present
+/// web view context should carry some data or dependencies which can't be stored as a state and always are present.
+/// protocol with async functions which do not belong to specific actor:
+/// https://github.com/apple/swift-evolution/blob/main/proposals/0338-clarify-execution-non-actor-async.md#proposed-solution
 public protocol WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
     var pluginsProgram: any JSPluginsProgram { get }
@@ -37,5 +39,5 @@ public protocol WebViewContext {
     ///
     /// No need to call this method if the loading was initiated from top sites or
     /// during app start when the site is already in the tabs cache.
-    func updateTabContent(_ site: Site) throws
+    func updateTabContent(_ site: Site) async throws
 }

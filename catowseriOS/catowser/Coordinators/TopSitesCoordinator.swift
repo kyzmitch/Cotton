@@ -69,7 +69,13 @@ extension TopSitesCoordinator: Navigating {
         switch route {
         case .select(let site):
             // Open selected top site
-            try? TabsListManager.shared.replaceSelected(.site(site))
+            Task {
+                do {
+                    try await TabsListManager.shared.replaceSelected(.site(site))
+                } catch {
+                    print("Fail to replace selected tab: \(error)")
+                }
+            }
         }
     }
     

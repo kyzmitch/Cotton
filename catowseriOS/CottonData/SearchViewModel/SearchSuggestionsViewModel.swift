@@ -91,7 +91,7 @@ public protocol SearchSuggestionsViewModel: AnyObject {
     func fetchSuggestions(_ query: String) async
     /// Rx state property signal won't emit initial/current value (comparing to Combine)
     var rxState: MutableProperty<SearchSuggestionsViewState> { get }
-    /// Combine state, emits current value for every new subscriber
+    /// Combine state, emits current value for every new subscriber. Can be replaced with @Published
     var combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> { get }
     /// Concurrency state, also can be used as a synchronous state. A wrapped value for Published
     var state: SearchSuggestionsViewState { get }

@@ -6,11 +6,13 @@
 //  Copyright © 2017 andreiermoshin. All rights reserved.
 //
 
-import ReactiveSwift
 import CottonBase
 
+/// TODO: check how this unsafe conformance to ObjC type works
+extension Site: @unchecked Sendable {}
+
 public extension Tab {
-    enum ContentType {
+    enum ContentType: Sendable {
         case blank
         case site(Site)
         case homepage
@@ -56,7 +58,7 @@ public extension Tab {
             }
         }
 
-        var title: String {
+        public var title: String {
             switch self {
             case .blank:
                 return .defaultTitle
@@ -109,7 +111,10 @@ extension Tab.ContentType: CustomDebugStringConvertible {
         case .blank:
             return ".blank"
         case .site(let site):
-            return ".site(url[\(site.urlInfo.platformURL.absoluteString)],ip[\(site.urlInfo.ipAddressString ?? "none")])"
+            let string = """
+.site(url[\(site.urlInfo.platformURL.absoluteString)],ip[\(site.urlInfo.ipAddressString ?? "none")])
+"""
+            return string
         case .homepage:
             return ".homepage"
         case .favorites:
@@ -161,7 +166,7 @@ public extension Tab {
 }
 
 /// View model for tab view which is a website representation for specific case
-public struct Tab {
+public struct Tab: Sendable {
     // The id to be able to compare e.g. blank tabs and avoid switch to ref. type
     public let id: UUID
     // Actual website info stored only for one case
@@ -170,10 +175,6 @@ public struct Tab {
     /// Do not support moving tabs on UI, because it won't work now with timestamps
     /// It will require to store indexes in a separate data structure
     public let addedTimestamp: Date
-    /// Should be set to constants based on initial tab state (blank, top sites, etc.)
-    /// `String` type probably should be replaced with Signal to be able to
-    /// react on async title fetch from a real Site.
-    public let (titleSignal, titleObserver) = Signal<String, Never>.pipe()
 
     public var title: String {
         return contentType.title
@@ -206,8 +207,6 @@ public struct Tab {
                 created: Date = .init()) {
         self.contentType = contentType
         addedTimestamp = created
-        // set default value
-        titleObserver.send(value: contentType.title)
         id = idenifier
     }
 

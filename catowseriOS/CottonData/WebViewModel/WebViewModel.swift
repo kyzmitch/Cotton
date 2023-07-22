@@ -58,6 +58,7 @@ public protocol WebViewModel: AnyObject {
     // MARK: - main state observers
     
     var rxWebPageState: MutableProperty<WebPageLoadingAction> { get }
+    /// Can be replaced with @Published
     var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> { get }
     /// wrapped value for Published
     var webPageState: WebPageLoadingAction { get }

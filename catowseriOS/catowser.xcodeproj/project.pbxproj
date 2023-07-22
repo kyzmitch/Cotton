@@ -381,6 +381,8 @@
 		8A917CB229D4A39B00404256 /* SearchSuggestionsViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */; };
 		8A917CB429D4E63700404256 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CB329D4E63700404256 /* String+Extension.swift */; };
 		8A917CB529D4E63700404256 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A917CB329D4E63700404256 /* String+Extension.swift */; };
+		8A9495BE2A6C0023001D275D /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9495BD2A6C0023001D275D /* TabViewModel.swift */; };
+		8A9495BF2A6C0023001D275D /* TabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9495BD2A6C0023001D275D /* TabViewModel.swift */; };
 		8A95D942226E0E5200862E8D /* TagsSiteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */; };
 		8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
 		8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8A963C6B25212A55008EAB27 /* CottonDbModel.xcdatamodeld */; };
@@ -613,6 +615,8 @@
 		8AF43385248EBBA70047452B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43382248EBBA70047452B /* Parser.swift */; };
 		8AF43386248EBBA70047452B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43383248EBBA70047452B /* Token.swift */; };
 		8AF4922B235248CE00183579 /* RestClientError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4922A235248CE00183579 /* RestClientError.swift */; };
+		8AFCDBD42A6C41C10018A501 /* TabViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCDBD32A6C41C10018A501 /* TabViewState.swift */; };
+		8AFCDBD52A6C41C10018A501 /* TabViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFCDBD32A6C41C10018A501 /* TabViewState.swift */; };
 		8AFDBB0029F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */; };
 		8AFDBB0129F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */; };
 		8AFDBB0329F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */; };
@@ -1217,6 +1221,7 @@
 		8A917CAE29D49CA000404256 /* Mock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mock.generated.swift; sourceTree = "<group>"; };
 		8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewV2.swift; sourceTree = "<group>"; };
 		8A917CB329D4E63700404256 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		8A9495BD2A6C0023001D275D /* TabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewModel.swift; sourceTree = "<group>"; };
 		8A95D7B0221F17010032C156 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsSiteDataSource.swift; sourceTree = "<group>"; };
 		8A963C6C25212A55008EAB27 /* CottonDbModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CottonDbModel.xcdatamodel; sourceTree = "<group>"; };
@@ -1353,6 +1358,7 @@
 		8AF43382248EBBA70047452B /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		8AF43383248EBBA70047452B /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		8AF4922A235248CE00183579 /* RestClientError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClientError.swift; sourceTree = "<group>"; };
+		8AFCDBD32A6C41C10018A501 /* TabViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewState.swift; sourceTree = "<group>"; };
 		8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletTabsLegacyView.swift; sourceTree = "<group>"; };
 		8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewV2.swift; sourceTree = "<group>"; };
 		8AFDBB0529F93A05006C0E47 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -1821,6 +1827,8 @@
 				60724EA621FF17C90071BECF /* TabsCache.swift */,
 				847D7C881EF6C30F00291B87 /* TabsViewController.swift */,
 				84704FC11EEE769800F89F6B /* TabView.swift */,
+				8A9495BD2A6C0023001D275D /* TabViewModel.swift */,
+				8AFCDBD32A6C41C10018A501 /* TabViewState.swift */,
 				605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */,
 				8AFFBE1B29F2E1B600AEB2EE /* TabsPreviewsLegacyView.swift */,
 				605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */,
@@ -3748,6 +3756,7 @@
 				8A82594D294E47F9007B97CF /* TopSitesViewModel.swift in Sources */,
 				8ADB51F4292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8AEEBBB629F7AEA500F23A02 /* SearchFieldView.swift in Sources */,
+				8A9495BE2A6C0023001D275D /* TabViewModel.swift in Sources */,
 				8AFDBB0029F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */,
 				8A9D9D892971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1628FF0C75002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
@@ -3762,6 +3771,7 @@
 				8AE85DAC293491E10047F14F /* TabletTabsCoordinator.swift in Sources */,
 				8A046DE02965AC9300BB6D63 /* SearchBarViewModel.swift in Sources */,
 				8AB9BE1E28FF0CFF002063C2 /* ReusableItem.swift in Sources */,
+				8AFCDBD42A6C41C10018A501 /* TabViewState.swift in Sources */,
 				8A8EB007245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				75EA4E6F29F7055800165A07 /* TitledImageView.swift in Sources */,
 				8A745C0B247FE94000A379AD /* DefaultTabProvider.swift in Sources */,
@@ -4022,6 +4032,7 @@
 				8A82594E294E47F9007B97CF /* TopSitesViewModel.swift in Sources */,
 				8ADB51F5292A1A0F00E9F66F /* TopSitesCoordinator.swift in Sources */,
 				8AEEBBB729F7AEA500F23A02 /* SearchFieldView.swift in Sources */,
+				8A9495BF2A6C0023001D275D /* TabViewModel.swift in Sources */,
 				8AFDBB0129F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */,
 				8A9D9D8A2971D8330047734C /* DummyDelegateForPreview.swift in Sources */,
 				8AB9BE1528FF0C74002063C2 /* UIColour+CatowserExtensions.swift in Sources */,
@@ -4036,6 +4047,7 @@
 				8AE85DAD293491E10047F14F /* TabletTabsCoordinator.swift in Sources */,
 				8A046DE12965AC9300BB6D63 /* SearchBarViewModel.swift in Sources */,
 				8AB9BE1D28FF0CFF002063C2 /* ReusableItem.swift in Sources */,
+				8AFCDBD52A6C41C10018A501 /* TabViewState.swift in Sources */,
 				8A8EB008245EA1BA0028D35C /* WebViewAuthChallengeHandler.swift in Sources */,
 				75EA4E7029F7055800165A07 /* TitledImageView.swift in Sources */,
 				8A745C0A247FE93F00A379AD /* DefaultTabProvider.swift in Sources */,

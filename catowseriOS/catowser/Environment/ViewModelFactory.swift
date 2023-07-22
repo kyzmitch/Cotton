@@ -9,6 +9,7 @@
 import Foundation
 import CottonBase
 import CottonData
+import CoreBrowser
 
 /// Creates new instances of view models.
 /// Depends on feature flags to determine VM configuration/dependencies.
@@ -47,5 +48,12 @@ final class ViewModelFactory {
         
         let strategy = GoogleDNSStrategy(stratContext)
         return WebViewModelImpl(strategy, site, context)
+    }
+    
+    @MainActor func tabViewModel(_ tab: Tab) async -> TabViewModel {
+        let selectedTabId = await TabsListManager.shared.selectedId
+        let visualState = tab.getVisualState(selectedTabId)
+
+        return TabViewModel(tab, visualState)
     }
 }

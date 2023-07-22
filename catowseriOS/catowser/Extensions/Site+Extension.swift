@@ -49,6 +49,7 @@ extension Site {
     /// Provides only local cached URL for favicon, nil if ipAddress is nil.
     func faviconURL(_ useDoH: Bool) -> URL? {
         if useDoH {
+            // TODO: this doesn't do DNS request as Combine version, need to implement
             return URL(faviconIPInfo: urlInfo)
         } else {
             return URL(string: urlInfo.faviconURLFromDomain)
@@ -58,6 +59,8 @@ extension Site {
     /// Attempts resolve domain name from site url before using it in favicon URL.
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     func fetchFaviconURL(_ resolve: Bool, _ subscriber: GDNSJsonClientSubscriber) -> AnyPublisher<URL, Error> {
+        // TODO: this Combine based method is not used probably
+        
         typealias URLResult = Result<URL, Error>
         
         struct InvalidUrlError: Error {}

@@ -28,6 +28,7 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
     // MARK: - state observers
     
     public let rxState: MutableProperty<SearchSuggestionsViewState>
+    /// Can be replaced with @Published
     public let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never>
     /// Using `Published` property wrapper from not related SwiftUI for now
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)

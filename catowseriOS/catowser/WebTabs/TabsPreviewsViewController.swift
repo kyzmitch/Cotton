@@ -108,16 +108,21 @@ where C.R == TabsScreenRoute {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        TabsListManager.shared.attach(self)
-        let tabs = TabsListManager.shared.fetch()
-        let tabsBox: TabsBox = TabsBox(tabs)
-        uxState.value = .tabs(dataSource: tabsBox)
+        Task {
+            await TabsListManager.shared.attach(self)
+            let tabs = await TabsListManager.shared.fetch()
+            let tabsBox: TabsBox = TabsBox(tabs)
+            // TODO: replace on @Published
+            uxState.value = .tabs(dataSource: tabsBox)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        TabsListManager.shared.detach(self)
+        Task {
+            await TabsListManager.shared.detach(self)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -238,7 +243,7 @@ extension TabsPreviewsViewController: TabsObserver {
 }
 
 extension TabsPreviewsViewController: TabPreviewCellDelegate {
-    func tabCellDidClose(at index: Int) {
+    func tabCellDidClose(at index: Int) async {
         guard case let .tabs(box) = uxState.value else {
             return
         }
@@ -248,7 +253,7 @@ extension TabsPreviewsViewController: TabPreviewCellDelegate {
         if let site = tab.site {
             WebViewsReuseManager.shared.removeController(for: site)
         }
-        TabsListManager.shared.close(tab: tab)
+        await TabsListManager.shared.close(tab: tab)
     }
 }
 

@@ -18,33 +18,16 @@ import Combine
 import BrowserNetworking
 
 protocol TabDelegate: AnyObject {
-    func tabViewDidClose(_ tabView: TabView)
-    func tabDidBecomeActive(_ tab: Tab)
+    func tabViewDidClose(_ tabView: TabView) async
 }
 
 /// The tab view for tablets
 final class TabView: UIView, FaviconImageViewable {
     
-    var viewModel: Tab {
-        didSet {
-            visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
-            titleText.text = viewModel.title
-            reloadFavicon(viewModel.site)
-        }
-    }
-    
-    /// Allows change visual state without changing view model
-    var visualState: Tab.VisualState {
-        // Swift docs: You can name the parameter or use the default parameter name of `oldValue`.
-        didSet(previousVisualState) {
-            if previousVisualState == visualState {
-                return
-            }
-            updateColours()
-        }
-    }
-    
-    weak var delegate: TabDelegate?
+    private let viewModel: TabViewModel
+    private weak var delegate: TabDelegate?
+    var imageURLRequestCancellable: AnyCancellable?
+    private var stateHandler: AnyCancellable?
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
@@ -89,36 +72,33 @@ final class TabView: UIView, FaviconImageViewable {
         return favicon
     }()
     
-    var imageURLRequestCancellable: AnyCancellable?
-    
     // MARK: - init
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("\(#function): has not been implemented")
     }
     
-    convenience init(frame: CGRect, tab: Tab, delegate: TabDelegate) {
-        self.init(frame: frame)
-        // didSet for view model won't work in init
-        viewModel = tab
-        // Call function not relying on didSet
-        // swiftlint:disable:next line_length
-        // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
-        updateColours()
-        titleText.text = tab.title
+    init(_ frame: CGRect, _ viewModel: TabViewModel, _ delegate: TabDelegate) {
+        self.viewModel = viewModel
         self.delegate = delegate
-        reloadFavicon(tab.site)
+        super.init(frame: frame)
+        layout()
     }
     
-    override init(frame: CGRect) {
-        // set temporarily values before calling required base init
-        viewModel = .blank
-        visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         
-        super.init(frame: frame)
-        updateColours()
-        titleText.text = viewModel.title
+        stateHandler?.cancel()
+        stateHandler = viewModel.$state.sink(receiveValue: onStateChange)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
         
+        reloadFavicon()
+    }
+    
+    private func layout() {
         contentMode = .redraw
         addSubview(centerBackground)
         addSubview(faviconImageView)
@@ -185,19 +165,22 @@ final class TabView: UIView, FaviconImageViewable {
             }
         }
     }
+    
+    private func onStateChange(_ state: TabViewState) {
+        centerBackground.backgroundColor = state.backgroundColor
+        backgroundColor = state.realBackgroundColour
+        highlightLine.isHidden = !state.isSelected
+        titleText.textColor = state.titleColor
+        titleText.text = state.title
+    }
 }
 
 private extension TabView {
-    func updateColours() {
-        let selectedTabId = TabsListManager.shared.selectedId
-        centerBackground.backgroundColor = viewModel.backgroundColor(selectedTabId)
-        backgroundColor = viewModel.realBackgroundColour
-        highlightLine.isHidden = !viewModel.isSelected(selectedTabId)
-        titleText.textColor = viewModel.titleColor(selectedTabId)
-    }
-    
     @objc func handleClosePressed() {
-        delegate?.tabViewDidClose(self)
+        viewModel.close()
+        Task {
+            await delegate?.tabViewDidClose(self)
+        }
     }
     
     func handleTapGesture() {
@@ -205,26 +188,16 @@ private extension TabView {
         // with following code `visualState = .selected`
         // but still need to update same state for
         // previously selected tab (deselect it)
-        delegate?.tabDidBecomeActive(viewModel)
+        viewModel.activate()
     }
     
-    func reloadFavicon(_ site: Site?) {
-        guard let site = site else {
-            faviconImageView.image = nil
-            return
-        }
-        if let hqImage = site.favicon() {
-            faviconImageView.image = hqImage
-            return
-        }
+    func reloadFavicon() {
         faviconImageView.image = nil
-        
         Task {
-            let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
-            let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            await MainActor.run { [weak self] in
-                self?.reloadImageWith(site, asyncApi, useDoH)
+            guard let source = await viewModel.loadFavicon() else {
+                return
             }
+            faviconImageView.updateImage(from: source)
         }
     }
 }

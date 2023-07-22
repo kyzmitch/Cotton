@@ -20,6 +20,7 @@ protocol FaviconImageViewable: AnyObject {
 
 extension FaviconImageViewable {
     func reloadImageWith(_ site: Site, _ asyncApi: AsyncApiType, _ useDoH: Bool) {
+        // TODO: remove this protocol and extension, because it was partly moved to `TabViewModel`
         switch asyncApi {
         case .reactive, .asyncAwait:
             let source: ImageSource

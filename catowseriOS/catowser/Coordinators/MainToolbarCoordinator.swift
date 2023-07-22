@@ -158,18 +158,16 @@ private extension MainToolbarCoordinator {
 }
 
 extension MainToolbarCoordinator: PhoneTabsDelegate {
-    func didTabSelect(_ tab: CoreBrowser.Tab) {
-        TabsListManager.shared.select(tab: tab)
+    func didTabSelect(_ tab: CoreBrowser.Tab) async {
+        await TabsListManager.shared.select(tab: tab)
     }
     
-    func didTabAdd() {
-        Task {
-            let contentState = await DefaultTabProvider.shared.contentState
-            let tab = Tab(contentType: contentState)
-            // newly added tab moves selection to itself
-            // so, it is opened by manager by default
-            // but user maybe don't want to move that tab right away
-            TabsListManager.shared.add(tab: tab)
-        }
+    func didTabAdd() async {
+        let contentState = await DefaultTabProvider.shared.contentState
+        let tab = Tab(contentType: contentState)
+        // newly added tab moves selection to itself
+        // so, it is opened by manager by default
+        // but user maybe don't want to move that tab right away
+        await TabsListManager.shared.add(tab: tab)
     }
 }

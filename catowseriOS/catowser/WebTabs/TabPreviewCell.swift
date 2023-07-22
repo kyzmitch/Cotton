@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ReactiveSwift
 import CoreBrowser
 import FeaturesFlagsKit
 #if canImport(Combine)
@@ -39,8 +38,9 @@ fileprivate extension UIBlurEffect.Style {
     static let tabTitleBlur: UIBlurEffect.Style = .extraLight
 }
 
+@MainActor
 protocol TabPreviewCellDelegate: AnyObject {
-    func tabCellDidClose(at index: Int)
+    func tabCellDidClose(at index: Int) async
 }
 
 final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageViewable {
@@ -63,8 +63,6 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
     private var tabIndex: Int?
 
     private weak var delegate: TabPreviewCellDelegate?
-
-    private var siteTitleDisposable: Disposable?
 
     private let backgroundHolder: UIView = {
         let view = UIView()
@@ -174,13 +172,14 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        siteTitleDisposable?.dispose()
-    }
-
     @objc func close() {
         print("tab preview cell \(#function)")
-        tabIndex.map { delegate?.tabCellDidClose(at: $0) }
+        guard let closedIndex = tabIndex else {
+            return
+        }
+        Task {
+            await delegate?.tabCellDidClose(at: closedIndex)
+        }
     }
 
     func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
@@ -188,12 +187,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         screenshotView.image = tabCopy.preview
         
         titleText.text = tab.title
-        siteTitleDisposable?.dispose()
-        siteTitleDisposable = tab.titleSignal
-            .observe(on: UIScheduler())
-            .observeValues { [weak self] siteTitle in
-                self?.titleText.text = siteTitle
-        }
+        titleText.text = tab.contentType.title
         
         self.tabIndex = index
         self.delegate = delegate

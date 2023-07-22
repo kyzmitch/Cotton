@@ -175,7 +175,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
                 case (_, let err?):
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
-                    self?.externalNavigationDelegate?.didTabPreviewChange(img)
+                    Task {
+                        await self?.externalNavigationDelegate?.didTabPreviewChange(img)
+                    }
                 default:
                     print("failed to take a screenshot")
                 }

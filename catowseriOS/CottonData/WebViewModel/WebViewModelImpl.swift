@@ -47,17 +47,19 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /// view model state (not private for unit tests only)
     var state: WebViewModelState {
         didSet {
-            do {
-                try onStateChange(state)
-            } catch {
-                print("Wrong state: \(error.localizedDescription)")
+            Task {
+                do {
+                    try await onStateChange(state)
+                } catch {
+                    print("Wrong state: \(error.localizedDescription)")
+                }
             }
         }
     }
     
     /// reactive state property
     public var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.recreateView(false))
-    /// combine state property
+    /// Can be replaced with @Published
     public var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.recreateView(false))
     /// wrapped value for Published
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -102,18 +104,17 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     deinit {
         dnsRequestSubsrciption?.dispose()
         
-        // Actor deinit problem thread:
-        // https://forums.swift.org/t/deinit-and-mainactor/50132/17
-        // On Actor Initializers:
-        // https://gist.github.com/kavon/b096dfac5637540f73c90e36fb07e35b
-        // Pitch: Isolated synchronous deinit
-        // https://forums.swift.org/t/isolated-synchronous-deinit/58177/3
-        // A deinit cannot have a global actor attribute and is never a target for propagation.
-        // https://github.com/apple/swift-evolution/blob/main/proposals/0316-global-actors.md
-        // Proposal about Swift6 warning in init?
-        // https://github.com/apple/swift-evolution/blob/main/proposals/0327-actor-initializers.md
+        /**
         
-        // Can't do `dnsRequestCancellable?.cancel()` on main actor
+         Can't do `dnsRequestCancellable?.cancel()` on main actor because of next:
+         
+         In a class annotated with a global actor, deinit isn’t isolated to an actor.
+         It can’t be because the last reference to the actor could go out of scope on any thread/task.
+         https://forums.swift.org/t/deinit-and-mainactor/50132/2
+         
+         A deinit cannot have a global actor attribute and is never a target for propagation.
+         https://github.com/apple/swift-evolution/blob/main/proposals/0316-global-actors.md
+         */
     }
     
     public func load() {
@@ -262,7 +263,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
 
 private extension WebViewModelImpl {
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func onStateChange(_ nextState: WebViewModelState) throws {
+    func onStateChange(_ nextState: WebViewModelState) async throws {
         switch nextState {
         case .initialized:
             // No need to call `recreateView` because it is an initial state
@@ -279,11 +280,9 @@ private extension WebViewModelImpl {
                                   canInject: canInject)
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
-            Task {
-                let enabled = await context.isDohEnabled()
-                try await MainActor.run {
-                    state = try state.transition(on: .resolveDomainName(enabled))
-                }
+            let enabled = await context.isDohEnabled()
+            try await MainActor.run {
+                state = try state.transition(on: .resolveDomainName(enabled))
             }
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host().isDoHSupported
@@ -297,11 +296,9 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .loadWebView)
         case .updatingWebView(_, let urlInfo):
             // Not storing DoH state in vm state, can fetch it from context
-            Task {
-                let useIPaddress = await context.isDohEnabled()
-                await MainActor.run {
-                    updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
-                }
+            let useIPaddress = await context.isDohEnabled()
+            await MainActor.run {
+                updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
             }
         case .waitingForNavigation:
             break
@@ -310,11 +307,9 @@ private extension WebViewModelImpl {
             let updatedInfo = urlData.withSimilar(newURL)!
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             let host = updatedInfo.host()
-            Task {
-                await InMemoryDomainSearchProvider.shared.remember(host: host)
-            }
+            await InMemoryDomainSearchProvider.shared.remember(host: host)
             context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
-            try context.updateTabContent(site)
+            try await context.updateTabContent(site)
             state = try state.transition(on: .startView(updatedInfo))
         case .viewing:
             break
@@ -323,11 +318,9 @@ private extension WebViewModelImpl {
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             // Not storing DoH state in vm state, can fetch it from context
-            Task {
-                let useIPaddress = await context.isDohEnabled()
-                await MainActor.run {
-                    updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
-                }
+            let useIPaddress = await context.isDohEnabled()
+            await MainActor.run {
+                updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
             }
         }
     }

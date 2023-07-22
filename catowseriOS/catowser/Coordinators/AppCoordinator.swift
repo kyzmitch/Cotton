@@ -97,24 +97,25 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         
         Task {
             let defaultTabContent = await DefaultTabProvider.shared.contentState
+            if case .uiKit = uiFramework {
+                await TabsListManager.shared.attach(self)
+                /**
+                 No need to use this class for other types
+                 of framework like SwiftUI to not do
+                 any not necessary layout.
+                 This will be handled by SwiftUI view model
+                 to not add too many checks in this class
+                 */
+                jsPluginsBuilder = JSPluginsBuilder()
+                    .setBase(self)
+                    .setInstagram(self)
+            }
             await MainActor.run {
                 let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent)
                 startedVC = vc
                 
                 window.rootViewController = startedVC?.viewController
                 window.makeKeyAndVisible()
-                
-                if case .uiKit = uiFramework {
-                    // No need to use this class for other types
-                    // of framework like SwiftUI to not do
-                    // any not necessary layout.
-                    // This will be handled by SwiftUI view model
-                    // to not add too many checks in this class
-                    TabsListManager.shared.attach(self)
-                    jsPluginsBuilder = JSPluginsBuilder()
-                        .setBase(self)
-                        .setInstagram(self)
-                }
             }
         }
     }
@@ -179,7 +180,9 @@ extension AppCoordinator: Navigating {
         // Probably it is not necessary because this is a root
         jsPluginsBuilder = nil
         if case .uiKit = uiFramework {
-            TabsListManager.shared.detach(self)
+            Task {
+                await TabsListManager.shared.detach(self)
+            }
         }
         // Next line is actually useless, because it is a root
         parent?.coordinatorDidFinish(self)
@@ -595,7 +598,11 @@ private extension AppCoordinator {
 
 extension AppCoordinator: TabsObserver {
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        open(tabContent: content)
+        Task {
+            await MainActor.run {
+                open(tabContent: content)
+            }
+        }
     }
 
     func tabDidReplace(_ tab: Tab, at index: Int) {

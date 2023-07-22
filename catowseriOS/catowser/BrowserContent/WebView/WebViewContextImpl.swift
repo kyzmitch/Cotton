@@ -45,11 +45,11 @@ public final class WebViewContextImpl: WebViewContext {
         await FeatureManager.shared.appAsyncApiTypeValue()
     }
     
-    public func updateTabContent(_ site: Site) throws {
+    public func updateTabContent(_ site: Site) async throws {
         let content: Tab.ContentType = .site(site)
         if logTabUpdate {
             print("Web VM tab update: \(content.debugDescription)")
         }
-        try TabsListManager.shared.replaceSelected(content)
+        try await TabsListManager.shared.replaceSelected(content)
     }
 }

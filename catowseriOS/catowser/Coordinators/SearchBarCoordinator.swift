@@ -194,23 +194,19 @@ private extension SearchBarCoordinator {
         searhSuggestionsCoordinator?.stop()
     }
     
-    func replaceTab(with url: URL, with suggestion: String? = nil) {
-        Task {
-            let blockPopups = DefaultTabProvider.shared.blockPopups
-            let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-            let settings = Site.Settings(isPrivate: false,
-                                         blockPopups: blockPopups,
-                                         isJSEnabled: isJSEnabled,
-                                         canLoadPlugins: true)
-            guard let site = Site(url, suggestion, settings) else {
-                assertionFailure("\(#function) failed to replace current tab - failed create site")
-                return
-            }
-            await MainActor.run {
-                // tab content replacing will happen in `didCommit`
-                delegate?.openTab(.site(site))
-            }
+    func replaceTab(with url: URL, with suggestion: String? = nil) async {
+        let blockPopups = DefaultTabProvider.shared.blockPopups
+        let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+        let settings = Site.Settings(isPrivate: false,
+                                     blockPopups: blockPopups,
+                                     isJSEnabled: isJSEnabled,
+                                     canLoadPlugins: true)
+        guard let site = Site(url, suggestion, settings) else {
+            assertionFailure("\(#function) failed to replace current tab - failed create site")
+            return
         }
+        // tab content replacing will happen in `didCommit`
+        delegate?.openTab(.site(site))
     }
 }
 
@@ -273,7 +269,9 @@ extension SearchBarCoordinator: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        searchSuggestionDidSelect(content)
+        Task {
+            await searchSuggestionDidSelect(content)
+        }
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -282,7 +280,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
 }
 
 extension SearchBarCoordinator: SearchSuggestionsListDelegate {
-    func searchSuggestionDidSelect(_ content: SuggestionType) {
+    func searchSuggestionDidSelect(_ content: SuggestionType) async {
         showNext(.hideSuggestions)
 
         switch content {
@@ -291,15 +289,15 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
                 assertionFailure("Failed construct site URL using edited URL")
                 return
             }
-            replaceTab(with: url)
+            await replaceTab(with: url)
         case .knownDomain(let domain):
             guard let url = URL(string: "https://\(domain)") else {
                 assertionFailure("Failed construct site URL using domain name")
                 return
             }
-            replaceTab(with: url)
+            await replaceTab(with: url)
         case .suggestion(let suggestion):
-            handleSuggestion(suggestion)
+            await handleSuggestion(suggestion)
         }
     }
 }
@@ -318,16 +316,12 @@ extension FeatureManager.FManager {
 // MARK: - Async private methods
 
 private extension SearchBarCoordinator {
-    func handleSuggestion(_ suggestion: String) {
-        Task {
-            let client = await HttpEnvironment.shared.searchSuggestClient()
-            guard let url = client.searchURLForQuery(suggestion) else {
-                assertionFailure("Failed construct search engine url from suggestion string")
-                return
-            }
-            await MainActor.run {
-                replaceTab(with: url, with: suggestion)
-            }
+    func handleSuggestion(_ suggestion: String) async {
+        let client = await HttpEnvironment.shared.searchSuggestClient()
+        guard let url = client.searchURLForQuery(suggestion) else {
+            assertionFailure("Failed construct search engine url from suggestion string")
+            return
         }
+        await replaceTab(with: url, with: suggestion)
     }
 }

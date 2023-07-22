@@ -117,7 +117,6 @@ final class BrowserToolbarView: UIToolbar {
     }()
     
     private lazy var openedTabsButton: UIBarButtonItem = {
-        counterView.digit = TabsListManager.shared.tabsCount
         // Can't use simple bar button with text because it positioned incorrectly
         let btn = UIBarButtonItem(customView: counterView)
         return btn
@@ -138,6 +137,17 @@ final class BrowserToolbarView: UIToolbar {
         return barItems
     }()
     
+    func detachFromTabsListManager() async {
+        await TabsListManager.shared.detach(counterView)
+        await TabsListManager.shared.detach(self)
+    }
+    
+    /// Instead of `didMoveToSuperview`
+    func attachToTabsListManager() async {
+        await TabsListManager.shared.attach(self)
+        await TabsListManager.shared.attach(counterView)
+    }
+    
     // MARK: - initialization
     
     override init(frame: CGRect) {
@@ -156,16 +166,6 @@ final class BrowserToolbarView: UIToolbar {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        TabsListManager.shared.detach(self)
-    }
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        
-        TabsListManager.shared.attach(self)
     }
     
     // MARK: - state handler

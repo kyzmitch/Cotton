@@ -34,18 +34,24 @@ final class SearchBarBaseViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        TabsListManager.shared.detach(self)
-    }
-
     override func loadView() {
         view = searchBarView
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        TabsListManager.shared.attach(self)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Task {
+            await TabsListManager.shared.attach(self)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        Task {
+            await TabsListManager.shared.detach(self)
+        }
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -62,15 +68,23 @@ extension SearchBarBaseViewController: TabsObserver {
         // to replace site on tab which is not active
         // So, assume that `tab` parameter is currently selected
         // and will replace content which is currently displayed by search bar
-        handleAction(.updateView(tab.title, tab.searchBarContent))
+        Task {
+            await MainActor.run {
+                handleAction(.updateView(tab.title, tab.searchBarContent))
+            }
+        }
     }
 
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        switch content {
-        case .site(let site):
-            handleAction(.updateView(site.title, site.searchBarContent))
-        default:
-            handleAction(.clearView)
+        Task {
+            await MainActor.run {
+                switch content {
+                case .site(let site):
+                    handleAction(.updateView(site.title, site.searchBarContent))
+                default:
+                    handleAction(.clearView)
+                }
+            }
         }
     }
 }

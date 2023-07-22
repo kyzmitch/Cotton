@@ -36,11 +36,6 @@ final class BrowserContentViewModel: ObservableObject {
         loading = true
         webViewNeedsUpdate = ()
         tabsCount = 0
-        TabsListManager.shared.attach(self)
-    }
-    
-    deinit {
-        TabsListManager.shared.detach(self)
     }
 }
 

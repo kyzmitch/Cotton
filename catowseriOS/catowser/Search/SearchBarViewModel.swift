@@ -40,7 +40,7 @@ final class SearchBarViewModel: NSObject, ObservableObject {
 }
 
 private extension SearchBarViewModel {
-    func replaceTab(with url: URL, with suggestion: String? = nil, _ isJSEnabled: Bool) {
+    func replaceTab(with url: URL, with suggestion: String? = nil, _ isJSEnabled: Bool) async {
         let blockPopups = DefaultTabProvider.shared.blockPopups
         let settings = Site.Settings(isPrivate: false,
                                      blockPopups: blockPopups,
@@ -50,36 +50,35 @@ private extension SearchBarViewModel {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }
-        try? TabsListManager.shared.replaceSelected(.site(site))
+        try? await TabsListManager.shared.replaceSelected(.site(site))
     }
 }
 
 extension SearchBarViewModel: SearchSuggestionsListDelegate {
-    func searchSuggestionDidSelect(_ content: SuggestionType) {
+    func searchSuggestionDidSelect(_ content: SuggestionType) async {
         showSearchSuggestions = false
-        Task {
-            let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-            switch content {
-            case .looksLikeURL(let likeURL):
-                guard let url = URL(string: likeURL) else {
-                    assertionFailure("Failed construct site URL using edited URL")
-                    return
-                }
-                replaceTab(with: url, with: nil, isJSEnabled)
-            case .knownDomain(let domain):
-                guard let url = URL(string: "https://\(domain)") else {
-                    assertionFailure("Failed construct site URL using domain name")
-                    return
-                }
-                replaceTab(with: url, with: nil, isJSEnabled)
-            case .suggestion(let suggestion):
-                let client = await HttpEnvironment.shared.searchSuggestClient()
-                guard let url = client.searchURLForQuery(suggestion) else {
-                    assertionFailure("Failed construct search engine url from suggestion string")
-                    return
-                }
-                replaceTab(with: url, with: suggestion, isJSEnabled)
+        
+        let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+        switch content {
+        case .looksLikeURL(let likeURL):
+            guard let url = URL(string: likeURL) else {
+                assertionFailure("Failed construct site URL using edited URL")
+                return
             }
+             await replaceTab(with: url, with: nil, isJSEnabled)
+        case .knownDomain(let domain):
+            guard let url = URL(string: "https://\(domain)") else {
+                assertionFailure("Failed construct site URL using domain name")
+                return
+            }
+            await replaceTab(with: url, with: nil, isJSEnabled)
+        case .suggestion(let suggestion):
+            let client = await HttpEnvironment.shared.searchSuggestClient()
+            guard let url = client.searchURLForQuery(suggestion) else {
+                assertionFailure("Failed construct search engine url from suggestion string")
+                return
+            }
+            await replaceTab(with: url, with: suggestion, isJSEnabled)
         }
     }
 }
@@ -136,7 +135,9 @@ extension SearchBarViewModel: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        searchSuggestionDidSelect(content)
+        Task {
+            await searchSuggestionDidSelect(content)
+        }
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
