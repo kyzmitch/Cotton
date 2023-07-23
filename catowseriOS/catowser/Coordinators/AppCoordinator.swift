@@ -597,7 +597,7 @@ private extension AppCoordinator {
 }
 
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         open(tabContent: content)
     }
 

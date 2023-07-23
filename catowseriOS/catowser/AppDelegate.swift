@@ -10,6 +10,7 @@ import UIKit
 import AlamofireImage
 import Alamofire
 import FeaturesFlagsKit
+import CoreBrowser
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -40,6 +41,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 private extension AppDelegate {
     func start() -> Bool {
         Task {
+            // Init database for tabs first
+            _ = await TabsListManager.shared
+            // Now can start UI
             let value = await FeatureManager.shared.appUIFrameworkValue()
             await MainActor.run {
                 appCoordinator = AppCoordinator(ViewsEnvironment.shared.vcFactory, value)

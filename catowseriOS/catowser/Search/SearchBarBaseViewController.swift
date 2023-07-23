@@ -71,7 +71,7 @@ extension SearchBarBaseViewController: TabsObserver {
         handleAction(.updateView(tab.title, tab.searchBarContent))
     }
 
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         switch content {
         case .site(let site):
             handleAction(.updateView(site.title, site.searchBarContent))

@@ -104,7 +104,7 @@ final class TabsViewController: BaseViewController {
          initializeObserver will load all of the tabs and create views
          */
         Task {
-            await TabsListManager.shared.attach(self)
+            await TabsListManager.shared.attach(self, notify: true)
         }
     }
     
@@ -235,7 +235,7 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         makeTabActive(at: index, identifier: identifier)
     }
     

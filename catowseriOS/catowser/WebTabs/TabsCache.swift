@@ -25,8 +25,8 @@ final class TabsCacheProvider {
     private let queue: DispatchQueue
     private let tabsDbResource: TabsResource
     
-    init(temporaryContext: NSManagedObjectContext,
-         privateContextCreator: @escaping () -> NSManagedObjectContext?) {
+    init(_ temporaryContext: NSManagedObjectContext,
+         _ privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         queue = DispatchQueue(label: .queueNameWith(suffix: .threadName))
         tabsDbResource = .init(temporaryContext: temporaryContext,
                                privateContextCreator: privateContextCreator)

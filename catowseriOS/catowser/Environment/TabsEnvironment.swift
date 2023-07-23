@@ -42,11 +42,9 @@ private final class TabsEnvironment {
                 }
                 return dbInterface.newPrivateContext()
             }
-            let tabsCacheProvider: TabsCacheProvider = .init(temporaryContext: database.viewContext,
-                                                             privateContextCreator: contextClosure)
-            cachedTabsManager = .init(storage: tabsCacheProvider,
-                                      positioning: DefaultTabProvider.shared,
-                                      selectionStrategy: NearbySelectionStrategy())
+            let cacheProvider = TabsCacheProvider(database.viewContext, contextClosure)
+            let strategy = NearbySelectionStrategy()
+            cachedTabsManager = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
         }
     }
 }

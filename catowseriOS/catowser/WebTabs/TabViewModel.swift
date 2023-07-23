@@ -80,7 +80,7 @@ final class TabViewModel {
 }
 
 extension TabViewModel: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         if tab.contentType != content {
             // Need to reload favicon and title as well.
             // Not sure if it is possible during simple select?

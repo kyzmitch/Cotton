@@ -176,8 +176,6 @@ final class Database {
         return description
     }
     
-    // MARK: - Combine based
-    
     /// Load the persistent store from the default location.
     func loadStore() async throws {
         if let storeURL {

@@ -61,7 +61,7 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
         .environment(\.browserContentCoordinators, vm.coordinatorsInterface)
         .onAppear {
             Task {
-                await TabsListManager.shared.attach(browserContentVM)
+                await TabsListManager.shared.attach(browserContentVM, notify: true)
             }
         }
         .onDisappear {

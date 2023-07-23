@@ -42,20 +42,21 @@ public actor TabsListManager {
     private var tabsCountCancellable: AnyCancellable?
     private var selectedTabIdCancellable: AnyCancellable?
 
-    public init(storage: TabsStoragable, positioning: TabsStates, selectionStrategy: TabSelectionStrategy) {
+    public init(_ storage: TabsStoragable,
+                _ positioning: TabsStates,
+                _ selectionStrategy: TabSelectionStrategy) async {
         self.selectionStrategy = selectionStrategy
         selectedTabId = positioning.defaultSelectedTabId
-
         self.storage = storage
         self.positioning = positioning
-
-        // Temporarily delay to wait before first `observer` will be added
-        // to send data from storage to it
-        let delay = TimeInterval(1)
         
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
-        initTabs(with: delay)
+        do {
+            try await fetchTabs()
+        } catch {
+            fatalError("Fail to init tabs")
+        }
     }
 
     deinit {
@@ -63,26 +64,19 @@ public actor TabsListManager {
         selectedTabIdCancellable?.cancel()
     }
     
-    func initTabs(with delay: TimeInterval) {
-        Task {
-            let delay = UInt64(delay * 1_000_000_000)
-            try await Task<Never, Never>.sleep(nanoseconds: delay)
-            var cachedTabs = try await storage.fetchAllTabs()
-            if cachedTabs.isEmpty {
-                let tab = Tab(contentType: await positioning.contentState)
-                let savedTab = try await storage.add(tab, select: true)
-                cachedTabs = [savedTab]
-            }
-            let id = try await storage.fetchSelectedTabId()
-            guard !cachedTabs.isEmpty else {
-                return
-            }
-            tabs = cachedTabs
-            for observer in tabObservers {
-                await observer.initializeObserver(with: cachedTabs)
-            }
-            selectedTabId = id
+    func fetchTabs() async throws {
+        var cachedTabs = try await storage.fetchAllTabs()
+        if cachedTabs.isEmpty {
+            let tab = Tab(contentType: await positioning.contentState)
+            let savedTab = try await storage.add(tab, select: true)
+            cachedTabs = [savedTab]
         }
+        let id = try await storage.fetchSelectedTabId()
+        guard !cachedTabs.isEmpty else {
+            return
+        }
+        tabs = cachedTabs
+        selectedTabId = id
     }
     
     func subscribeForTabsCountChange() {
@@ -111,9 +105,7 @@ public actor TabsListManager {
                         return
                     }
                     for observer in await self.tabObservers {
-                        await observer.tabDidSelect(index: tabTuple.index,
-                                                    content: tabTuple.tab.contentType,
-                                                    identifier: tabTuple.tab.id)
+                        await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
                     }
                 }
             })
@@ -225,7 +217,7 @@ extension TabsListManager: TabsSubject {
             guard identifier != selectedTabId else {
                 return
             }
-            self.selectedTabId = identifier
+            selectedTabId = identifier
         } catch {
             print("Failed to select tab with id \(tab.id) \(error)")
         }
@@ -257,15 +249,17 @@ extension TabsListManager: TabsSubject {
 
     public func attach(_ observer: TabsObserver, notify: Bool = false) async {
         tabObservers.append(observer)
-        guard notify && selectedTabId != positioning.defaultSelectedTabId else {
+        guard notify else {
+            return
+        }
+        await observer.initializeObserver(with: tabs)
+        guard selectedTabId != positioning.defaultSelectedTabId else {
             return
         }
         guard let tabTuple = await tabs.element(by: selectedId) else {
             return
         }
-        await observer.tabDidSelect(index: tabTuple.index,
-                                    content: tabTuple.tab.contentType,
-                                    identifier: tabTuple.tab.id)
+        await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
     }
 
     public func detach(_ observer: TabsObserver) async {
