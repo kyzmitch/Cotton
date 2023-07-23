@@ -35,7 +35,8 @@ extension DispatchTimeInterval {
         case .never:
             return .zero
         @unknown default:
-            fatalError()
+            // Returning default value instead of fatalError
+            return .zero
         }
     }
 }

@@ -71,13 +71,13 @@ final class TabViewModel {
 extension TabViewModel: TabsObserver {
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
         if tab.id == identifier {
-            
+            // TODO: implement
         } else {
             
         }
     }
     
-    func tabDidReplace(_ tab: Tab, at index: Int) {
+    func tabDidReplace(_ tab: Tab, at index: Int) async {
         self.tab = tab
         state = state.withNew(tab.title)
     }

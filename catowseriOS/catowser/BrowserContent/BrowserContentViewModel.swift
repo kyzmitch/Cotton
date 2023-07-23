@@ -40,7 +40,7 @@ final class BrowserContentViewModel: ObservableObject {
 }
 
 extension BrowserContentViewModel: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
         if let previousValue = previousTabContent, previousValue.isStatic && previousValue == content {
             // Optimization to not do remove & insert of the same static view
             return
@@ -65,7 +65,7 @@ extension BrowserContentViewModel: TabsObserver {
         }
     }
     
-    func tabDidReplace(_ tab: Tab, at index: Int) {
+    func tabDidReplace(_ tab: Tab, at index: Int) async {
         if loading {
             loading = false
         }
@@ -74,7 +74,7 @@ extension BrowserContentViewModel: TabsObserver {
         }
     }
     
-    func update(with tabsCount: Int) {
+    func updateTabsCount(with tabsCount: Int) async {
         self.tabsCount = tabsCount
     }
 }

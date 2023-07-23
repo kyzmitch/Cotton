@@ -597,15 +597,11 @@ private extension AppCoordinator {
 }
 
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        Task {
-            await MainActor.run {
-                open(tabContent: content)
-            }
-        }
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+        open(tabContent: content)
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) {
+    func tabDidReplace(_ tab: Tab, at index: Int) async {
         switch previousTabContent {
         case .site:
             break

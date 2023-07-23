@@ -4,6 +4,7 @@ import org.cotton.base.Host
 import org.cotton.base.URLInfo
 
 /**
+ * IMPORTANT: Site type shouldn't mutate, on Swift language level it is required to be Sendable.
  *
  * @property urlInfo An initial URL
  * @property faviconData Used by top sites by loading high quality image from the Assets

@@ -8,7 +8,8 @@
 
 import CottonBase
 
-/// TODO: check how this unsafe conformance to ObjC type works
+/// Site is an obj-c type.
+///  https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
 extension Site: @unchecked Sendable {}
 
 public extension Tab {

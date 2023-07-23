@@ -235,41 +235,33 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
         makeTabActive(at: index, identifier: identifier)
     }
     
-    func update(with tabsCount: Int) {
-        #if DEBUG
+    func updateTabsCount(with tabsCount: Int) async {
+#if DEBUG
         showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
-        #endif
+#endif
     }
 
-    func initializeObserver(with tabs: [Tab]) {
-        Task {
-            var viewModels = [TabViewModel]()
-            for tab in tabs {
-                let vm = await ViewModelFactory.shared.tabViewModel(tab)
-                viewModels.append(vm)
-            }
-            await MainActor.run {
-                for i in (0..<tabs.count) {
-                    let tabView = TabView(calculateNextTabFrame(), viewModels[i], self)
-                    tabsStackView.insertArrangedSubview(tabView, at: i)
-                }
-                view.layoutIfNeeded()
-            }
+    func initializeObserver(with tabs: [Tab]) async {
+        var viewModels = [TabViewModel]()
+        for tab in tabs {
+            let vm = await ViewModelFactory.shared.tabViewModel(tab)
+            viewModels.append(vm)
         }
+        for i in (0..<tabs.count) {
+            let tabView = TabView(calculateNextTabFrame(), viewModels[i], self)
+            tabsStackView.insertArrangedSubview(tabView, at: i)
+        }
+        view.layoutIfNeeded()
     }
     
-    func tabDidAdd(_ tab: Tab, at index: Int) {
-        Task {
-            let vm = await ViewModelFactory.shared.tabViewModel(tab)
-            await MainActor.run {
-                let tabView = TabView(calculateNextTabFrame(), vm, self)
-                add(tabView, at: index)
-            }
-        }
+    func tabDidAdd(_ tab: Tab, at index: Int) async {
+        let vm = await ViewModelFactory.shared.tabViewModel(tab)
+        let tabView = TabView(calculateNextTabFrame(), vm, self)
+        add(tabView, at: index)
     }
 }
 

@@ -30,15 +30,14 @@ public enum TabsListError: LocalizedError {
  See https://developer.apple.com/documentation/combine/published
  */
 public actor TabsListManager {
-    /// Current tab selection strategy
-    private var selectionStrategy: TabSelectionStrategy
+    private let selectionStrategy: TabSelectionStrategy
 
     @Published private var tabs: [Tab] = []
     @Published private var selectedTabId: UUID
 
     private let storage: TabsStoragable
     private let positioning: TabsStates
-    private var observers: [TabsObserver] = [TabsObserver]()
+    private var tabObservers: [TabsObserver] = [TabsObserver]()
 
     private var tabsCountCancellable: AnyCancellable?
     private var selectedTabIdCancellable: AnyCancellable?
@@ -79,7 +78,7 @@ public actor TabsListManager {
                 return
             }
             tabs = cachedTabs
-            for observer in observers {
+            for observer in tabObservers {
                 await observer.initializeObserver(with: cachedTabs)
             }
             selectedTabId = id
@@ -93,8 +92,8 @@ public actor TabsListManager {
             .map { $0.count }
             .sink { tabsCount in
                 Task {
-                    for observer in self.observers {
-                        await observer.update(with: tabsCount)
+                    for observer in self.tabObservers {
+                        await observer.updateTabsCount(with: tabsCount)
                     }
                 }
             }
@@ -111,7 +110,7 @@ public actor TabsListManager {
                     guard let tabTuple = await self.tabs.element(by: newSelectedTabId) else {
                         return
                     }
-                    for observer in await self.observers {
+                    for observer in await self.tabObservers {
                         await observer.tabDidSelect(index: tabTuple.index,
                                                     content: tabTuple.tab.contentType,
                                                     identifier: tabTuple.tab.id)
@@ -247,9 +246,8 @@ extension TabsListManager: TabsSubject {
         do {
             _ = try storage.update(tab: newTab)
             tabs[tabIndex] = newTab
-            // Need to notify observers to allow them
-            // to update title for tab view
-            for observer in observers {
+            // Need to notify observers to allow them to update title for tab view
+            for observer in tabObservers {
                 await observer.tabDidReplace(newTab, at: tabIndex)
             }
         } catch {
@@ -258,7 +256,7 @@ extension TabsListManager: TabsSubject {
     }
 
     public func attach(_ observer: TabsObserver, notify: Bool = false) async {
-        observers.append(observer)
+        tabObservers.append(observer)
         guard notify && selectedTabId != positioning.defaultSelectedTabId else {
             return
         }
@@ -271,9 +269,9 @@ extension TabsListManager: TabsSubject {
     }
 
     public func detach(_ observer: TabsObserver) async {
-        let name = await observer.name
-        for iterator in observers.enumerated() where await iterator.element.name == name {
-            observers.remove(at: iterator.offset)
+        let name = await observer.tabsObserverName
+        for iterator in tabObservers.enumerated() where await iterator.element.tabsObserverName == name {
+            tabObservers.remove(at: iterator.offset)
             break
         }
     }
@@ -298,7 +296,7 @@ private extension TabsListManager {
         
         switch positioning.addSpeed {
         case .immediately:
-            for observer in observers {
+            for observer in tabObservers {
                 await observer.tabDidAdd(tab, at: index)
             }
             if select {
@@ -308,7 +306,7 @@ private extension TabsListManager {
             if #available(iOS 16, *) {
                 do {
                     try await Task.sleep(for: interval.dispatchValue)
-                    for observer in observers {
+                    for observer in tabObservers {
                         await observer.tabDidAdd(tab, at: index)
                     }
                     if select {
@@ -319,7 +317,7 @@ private extension TabsListManager {
                 }
             } else {
                 // TODO: implement postponed adding of a tab when before iOS 16
-                for observer in observers {
+                for observer in tabObservers {
                     await observer.tabDidAdd(tab, at: index)
                 }
                 if select {

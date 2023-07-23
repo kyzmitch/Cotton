@@ -232,7 +232,7 @@ private extension TabsPreviewsViewController {
 }
 
 extension TabsPreviewsViewController: TabsObserver {
-    func tabDidAdd(_ tab: Tab, at index: Int) {
+    func tabDidAdd(_ tab: Tab, at index: Int) async {
         guard case let .tabs(box) = uxState.value else {
             return
         }

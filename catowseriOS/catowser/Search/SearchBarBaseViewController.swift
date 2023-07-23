@@ -62,29 +62,21 @@ final class SearchBarBaseViewController: BaseViewController {
 }
 
 extension SearchBarBaseViewController: TabsObserver {
-    func tabDidReplace(_ tab: Tab, at index: Int) {
+    func tabDidReplace(_ tab: Tab, at index: Int) async {
         // this also can be called on non active tab
         // but at the same time it really doesn't make sense
         // to replace site on tab which is not active
         // So, assume that `tab` parameter is currently selected
         // and will replace content which is currently displayed by search bar
-        Task {
-            await MainActor.run {
-                handleAction(.updateView(tab.title, tab.searchBarContent))
-            }
-        }
+        handleAction(.updateView(tab.title, tab.searchBarContent))
     }
 
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        Task {
-            await MainActor.run {
-                switch content {
-                case .site(let site):
-                    handleAction(.updateView(site.title, site.searchBarContent))
-                default:
-                    handleAction(.clearView)
-                }
-            }
+    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+        switch content {
+        case .site(let site):
+            handleAction(.updateView(site.title, site.searchBarContent))
+        default:
+            handleAction(.clearView)
         }
     }
 }

@@ -8,16 +8,18 @@
 
 import Foundation
 
-/// Tabs observer interface
-/// TODO: https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
+/// Tabs observer interface.
+/// No need to add delegate methods for tab close case, because anyway view must be removed right away.
+/// Future directions:
+/// https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
 @MainActor
 public protocol TabsObserver {
     /// To be able to search specific observer.
-    var name: String { get async }
+    var tabsObserverName: String { get async }
     /// Updates observer with tabs count.
     ///
     /// - Parameter tabsCount: New number of tabs.
-    func update(with tabsCount: Int) async
+    func updateTabsCount(with tabsCount: Int) async
     /// Prodive necessary data to render UI on tablets
     ///
     /// - Parameter tabs: Tabs from cache at application start.
@@ -29,7 +31,7 @@ public protocol TabsObserver {
     /// - parameters:
     ///     - tab: new tab
     ///     - index: where to add new object
-    func tabDidAdd(_ tab: Tab, at index: Int)
+    func tabDidAdd(_ tab: Tab, at index: Int) async
     /// Tells observer that index has changed.
     ///
     /// - parameters:
@@ -38,31 +40,34 @@ public protocol TabsObserver {
     ///     - identifier: needed to quickly determine visual state (selected view or not)
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async
     /// Notifies about tab content type changes or `site` changes
+    ///
+    /// - parameters:
+    ///     - tab: new tab for replacement
+    ///     - index: original tab's index whichneeds to be replaced
     func tabDidReplace(_ tab: Tab, at index: Int) async
-
-    /// No need to add delegate methods for tab close case.
-    /// because anyway view must be removed right away.
 }
 
 /// Marks optional functions for protocol
 /// because `optional` keyword can be only used for objc types
 public extension TabsObserver {
-    var name: String {
-        return String(describing: self)
+    var tabsObserverName: String {
+        get async {
+            String(describing: self)
+        }
     }
 
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
         // Only landscape/regular tabs list view use that
     }
 
-    func tabDidAdd(_ tab: Tab, at index: Int) {
+    func tabDidAdd(_ tab: Tab, at index: Int) async {
         // e.g. Counter view doesn't need to handle that
         // as it uses another delegate method with `tabsCount`
     }
 
-    /* optional */ func tabDidReplace(_ tab: Tab, at index: Int) {}
+    /* optional */ func tabDidReplace(_ tab: Tab, at index: Int) async {}
 
-    /* optional */ func update(with tabsCount: Int) async {}
+    /* optional */ func updateTabsCount(with tabsCount: Int) async {}
 
     /* optional */ func initializeObserver(with tabs: [Tab]) async {}
 }

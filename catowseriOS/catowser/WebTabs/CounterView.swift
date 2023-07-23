@@ -53,7 +53,7 @@ final class CounterView: UIView {
 }
 
 extension CounterView: TabsObserver {
-    func update(with tabsCount: Int) {
+    func updateTabsCount(with tabsCount: Int) async {
         self.digit = tabsCount
     }
 }
