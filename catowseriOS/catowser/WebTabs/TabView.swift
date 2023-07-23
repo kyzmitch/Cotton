@@ -94,8 +94,6 @@ final class TabView: UIView, FaviconImageViewable {
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        
-        reloadFavicon()
     }
     
     private func layout() {
@@ -172,6 +170,11 @@ final class TabView: UIView, FaviconImageViewable {
         highlightLine.isHidden = !state.isSelected
         titleText.textColor = state.titleColor
         titleText.text = state.title
+        
+        guard let favicon = state.favicon else {
+            return
+        }
+        faviconImageView.updateImage(from: favicon)
     }
 }
 
@@ -189,16 +192,6 @@ private extension TabView {
         // but still need to update same state for
         // previously selected tab (deselect it)
         viewModel.activate()
-    }
-    
-    func reloadFavicon() {
-        faviconImageView.image = nil
-        Task {
-            guard let source = await viewModel.loadFavicon() else {
-                return
-            }
-            faviconImageView.updateImage(from: source)
-        }
     }
 }
 

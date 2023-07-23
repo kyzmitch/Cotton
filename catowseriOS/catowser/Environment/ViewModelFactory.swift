@@ -54,6 +54,6 @@ final class ViewModelFactory {
         let selectedTabId = await TabsListManager.shared.selectedId
         let visualState = tab.getVisualState(selectedTabId)
 
-        return TabViewModel(tab, visualState)
+        return await TabViewModel(tab, visualState)
     }
 }

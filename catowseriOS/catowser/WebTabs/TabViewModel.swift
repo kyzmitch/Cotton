@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CottonBase
 import CoreBrowser
 import FeaturesFlagsKit
 
@@ -17,21 +18,47 @@ final class TabViewModel {
     
     @Published var state: TabViewState
     
-    init(_ tab: Tab, _ visualState: Tab.VisualState) {
+    init(_ tab: Tab, _ visualState: Tab.VisualState) async {
         self.tab = tab
         self.visualState = visualState
         
-        state = .initial()
-    }
-    
-    var title: String {
-        tab.title
-    }
-    
-    func loadFavicon() async -> ImageSource? {
-        guard let site = tab.site else {
-            return nil
+        let favicon: ImageSource?
+        if let site = tab.site {
+            favicon = await TabViewModel.loadFavicon(site)
+        } else {
+            favicon = nil
         }
+        
+        switch visualState {
+        case .selected:
+            state = .selected(tab.title, favicon)
+        case .deselected:
+            state = .deSelected(tab.title, favicon)
+        }
+    }
+    
+        // MARK: - public functions
+    
+    func close() {
+        if let site = tab.site {
+            WebViewsReuseManager.shared.removeController(for: site)
+        }
+        Task {
+            await TabsListManager.shared.close(tab: tab)
+        }
+    }
+    
+    func activate() {
+        print("\(#function): selected tab with id: \(tab.id)")
+        Task {
+            await TabsListManager.shared.select(tab: tab)
+        }
+    }
+    
+    // MARK: - private
+    
+    /// Loading of favicon doesn't depend on `self`
+    private static func loadFavicon(_ site: Site) async -> ImageSource? {
         if let hqImage = site.favicon() {
             return .image(hqImage)
         }
@@ -50,35 +77,32 @@ final class TabViewModel {
         }
         return source
     }
-    
-    func close() {
-        if let site = tab.site {
-            WebViewsReuseManager.shared.removeController(for: site)
-        }
-        Task {
-            await TabsListManager.shared.close(tab: tab)
-        }
-    }
-    
-    func activate() {
-        Task {
-            print("\(#function): selected tab with id: \(tab.id)")
-            await TabsListManager.shared.select(tab: tab)
-        }
-    }
 }
 
 extension TabViewModel: TabsObserver {
     func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) async {
+        if tab.contentType != content {
+            // Need to reload favicon and title as well.
+            // Not sure if it is possible during simple select?
+        }
         if tab.id == identifier {
-            // TODO: implement
+            visualState = .selected
+            state = state.selected()
         } else {
-            
+            visualState = .deselected
+            state = state.deSelected()
         }
     }
     
     func tabDidReplace(_ tab: Tab, at index: Int) async {
         self.tab = tab
-        state = state.withNew(tab.title)
+        let favicon: ImageSource?
+        if let site = tab.site {
+            favicon = await TabViewModel.loadFavicon(site)
+        } else {
+            favicon = nil
+        }
+        
+        state = state.withNew(tab.title, favicon)
     }
 }

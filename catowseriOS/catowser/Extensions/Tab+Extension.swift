@@ -24,32 +24,6 @@ extension Tab {
             previewData = newValue?.pngData()
         }
     }
-    
-    func titleColor(_ selectedId: UUID) -> UIColor {
-        if selectedId == id {
-            return .lightGrayText
-        } else {
-            return .darkGrayText
-        }
-    }
-
-    func backgroundColor(_ selectedId: UUID) -> UIColor {
-        if selectedId == id {
-            return .superLightGray
-        } else {
-            return .normallyLightGray
-        }
-    }
-
-    func tabCurvesColour(_ selectedId: UUID) -> UIColor {
-        if selectedId == id {
-            return .superLightGray
-        } else {
-            return .normallyLightGray
-        }
-    }
-    
-    var realBackgroundColour: UIColor { UIColor.clear }
 }
 
 extension UIColor {
