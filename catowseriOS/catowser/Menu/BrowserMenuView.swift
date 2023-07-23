@@ -53,26 +53,22 @@ struct BrowserMenuView: View {
                     Toggle(isOn: $model.isJavaScriptEnabled) {
                         Text(.jsMenuTitle)
                     }
-                    NavigationLink(destination: BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { (selected) in
+                    NavigationLink(destination: BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
+                        isShowingAddTabSetting = false
+                        tabAddPositionRowValue = selected
                         Task {
                             await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
-                            await MainActor.run {
-                                isShowingAddTabSetting = false
-                                tabAddPositionRowValue = selected
-                            }
                         }
                     }), isActive: $isShowingAddTabSetting) {
                         Text(.tabAddTxt)
                         Spacer()
                         Text(verbatim: tabAddPositionRowValue.description).alignRight()
                     }
-                    NavigationLink(destination: BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { (selected) in
+                    NavigationLink(destination: BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
+                        isShowingDefaultTabContentSetting = false
+                        tabContentRowValue = selected
                         Task {
                             await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
-                            await MainActor.run {
-                                isShowingDefaultTabContentSetting = false
-                                tabContentRowValue = selected
-                            }
                         }
                     }), isActive: $isShowingDefaultTabContentSetting) {
                         Text(.tabContentTxt)
@@ -81,13 +77,11 @@ struct BrowserMenuView: View {
                     }
                 }
                 Section(header: Text(.searchSectionTtl)) {
-                    NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { (selected) in
+                    NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
+                        isShowingWebAutoCompleteSetting = false
+                        webAutocompleteRowValue = selected
                         Task {
                             await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
-                            await MainActor.run {
-                                isShowingWebAutoCompleteSetting = false
-                                webAutocompleteRowValue = selected
-                            }
                         }
                     }), isActive: $isShowingWebAutoCompleteSetting) {
                         Text(.webAutoCompleteSourceTxt)
@@ -100,27 +94,23 @@ struct BrowserMenuView: View {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
                         Text(.nativeAppRedirectTitle)
                     }
-                    NavigationLink(destination: BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { (selected) in
+                    NavigationLink(destination: BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
+                        isShowingAppAsyncApiSetting = false
+                        asyncApiRowValue = selected
                         Task {
                             await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
-                            await MainActor.run {
-                                isShowingAppAsyncApiSetting = false
-                                asyncApiRowValue = selected
-                            }
                         }
                     }), isActive: $isShowingAppAsyncApiSetting) {
                         Text(.appAsyncApiTypeTxt)
                         Spacer()
                         Text(verbatim: asyncApiRowValue.description).alignRight()
                     }
-                    NavigationLink(destination: BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { (selected) in
+                    NavigationLink(destination: BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
+                        isShowingAppUIFrameworkSetting = false
+                        uiFrameworkRowValue = selected
+                        showingAppRestartAlert.toggle()
                         Task {
                             await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
-                            await MainActor.run {
-                                isShowingAppUIFrameworkSetting = false
-                                uiFrameworkRowValue = selected
-                                showingAppRestartAlert.toggle()
-                            }
                         }
                     }), isActive: $isShowingAppUIFrameworkSetting) {
                         Text(.appUIFrameworkTypeTxt)
@@ -140,7 +130,8 @@ struct BrowserMenuView: View {
                 presentationMode.wrappedValue.dismiss()
             }.foregroundColor(.black))
         }.alert(isPresented: $showingAppRestartAlert) {
-            Alert(title: Text(verbatim: "App restart is required"), dismissButton: .destructive(Text(verbatim: "Kill app process")) {
+            Alert(title: Text(verbatim: "App restart is required"),
+                  dismissButton: .destructive(Text(verbatim: "Kill app process")) {
                 exit(0) // https://stackoverflow.com/a/8491688
             })
         }

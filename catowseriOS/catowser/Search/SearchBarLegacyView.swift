@@ -310,11 +310,9 @@ private extension SearchBarLegacyView {
         searchBarView.text = searchBarContent
         Task {
             let dohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            await MainActor.run {
-                dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
-                siteNameLabel.text = title
-                prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)
-            }
+            dohStateIcon.text = "\(dohEnabled ? "DoH" : "")"
+            siteNameLabel.text = title
+            prepareForViewMode(animated: animated, animateSecurityView: dohEnabled)
         }
     }
 }

@@ -104,6 +104,7 @@ public actor TabsListManager {
                     guard let tabTuple = await self.tabs.element(by: newSelectedTabId) else {
                         return
                     }
+                    // TODO: confirm to `AsyncSequence` for `Array<TabObserver>`
                     for observer in await self.tabObservers {
                         await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
                     }

@@ -76,18 +76,16 @@ final class SearchSuggestionsViewController: UITableViewController {
         
         Task {
             let apiType = await FeatureManager.shared.appAsyncApiTypeValue()
-            await MainActor.run {
-                switch apiType {
-                case .reactive:
-                    disposable?.dispose()
-                    disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
-                case .combine:
-                    cancellable?.cancel()
-                    cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
-                case .asyncAwait:
-                    taskHandler?.cancel()
-                    taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
-                }
+            switch apiType {
+            case .reactive:
+                disposable?.dispose()
+                disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
+            case .combine:
+                cancellable?.cancel()
+                cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+            case .asyncAwait:
+                taskHandler?.cancel()
+                taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
             }
         }
         

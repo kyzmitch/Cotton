@@ -257,26 +257,26 @@ private extension WebViewController {
         jsStateCancellable?.cancel()
         
         Task {
-            dohCancellable = await FeatureManager.shared.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { _ in
-                Task {
-                    let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-                    await MainActor.run { [weak self] in
+            dohCancellable = await FeatureManager.shared
+                .featureChangesPublisher(for: .dnsOverHTTPSAvailable)
+                .sink { _ in
+                    Task { [weak self] in
+                        let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
                         self?.viewModel.setDoH(useDoH)
                     }
                 }
-            }
             
-            jsStateCancellable = await FeatureManager.shared.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
-                Task { [weak self] in
-                    guard let self, let jsSubject = self.webView  else {
-                        return
-                    }
-                    let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-                    await MainActor.run { [weak self] in
-                        self?.viewModel.setJavaScript(jsSubject, enabled)
+            jsStateCancellable = await FeatureManager.shared
+                .featureChangesPublisher(for: .javaScriptEnabled)
+                .sink { _ in
+                    Task { [weak self] in
+                        guard let self, let jsSubject = self.webView  else {
+                            return
+                        }
+                        let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+                        self.viewModel.setJavaScript(jsSubject, enabled)
                     }
                 }
-            }
         }
     }
     

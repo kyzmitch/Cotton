@@ -43,17 +43,15 @@ final class TopSitesCoordinator: Coordinator {
         startedVC = vc
         Task {
             let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-            await MainActor.run {
-                vc.reload(with: DefaultTabProvider.shared.topSites(isJsEnabled))
-                presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-                
-                let topSitesView: UIView = vc.controllerView
-                topSitesView.translatesAutoresizingMaskIntoConstraints = false
-                topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
-                topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
-                topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
-                topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
-            }
+            vc.reload(with: DefaultTabProvider.shared.topSites(isJsEnabled))
+            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
+            
+            let topSitesView: UIView = vc.controllerView
+            topSitesView.translatesAutoresizingMaskIntoConstraints = false
+            topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
+            topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
+            topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
+            topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
         }
     }
 }

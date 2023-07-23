@@ -199,9 +199,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         Task {
             let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
             let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            await MainActor.run { [weak self] in
-                self?.reloadImageWith(site, asyncApi, useDoH)
-            }
+            reloadImageWith(site, asyncApi, useDoH)
         }
     }
 }

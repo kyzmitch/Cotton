@@ -98,7 +98,6 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         Task {
             let defaultTabContent = await DefaultTabProvider.shared.contentState
             if case .uiKit = uiFramework {
-                await TabsListManager.shared.attach(self)
                 /**
                  No need to use this class for other types
                  of framework like SwiftUI to not do
@@ -110,12 +109,16 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                     .setBase(self)
                     .setInstagram(self)
             }
-            await MainActor.run {
-                let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent)
-                startedVC = vc
-                
-                window.rootViewController = startedVC?.viewController
-                window.makeKeyAndVisible()
+            let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent)
+            startedVC = vc
+            
+            window.rootViewController = startedVC?.viewController
+            window.makeKeyAndVisible()
+            if case .uiKit = uiFramework {
+                /**
+                 Now, with introducing the actors model we need to attach observer only after adding all child coordinators
+                 */
+                await TabsListManager.shared.attach(self, notify: true)
             }
         }
     }
@@ -184,7 +187,7 @@ extension AppCoordinator: Navigating {
                 await TabsListManager.shared.detach(self)
             }
         }
-        // Next line is actually useless, because it is a root
+        // Next line is actually useless, because it is a root coordinator
         parent?.coordinatorDidFinish(self)
     }
 }
@@ -634,11 +637,9 @@ extension AppCoordinator: GlobalMenuDelegate {
             let isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             let isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             let nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
-            await MainActor.run {
-                let menuModel: MenuViewModel = .init(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
-                menuModel.developerMenuPresenter = self
-                showNext(.menu(menuModel, sourceView, sourceRect))
-            }
+            let menuModel: MenuViewModel = .init(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
+            menuModel.developerMenuPresenter = self
+            showNext(.menu(menuModel, sourceView, sourceRect))
         }
     }
 }

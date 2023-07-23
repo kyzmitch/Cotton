@@ -204,42 +204,38 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         Task {
             let allowRedirect = await context.allowNativeAppRedirects()
             if !allowRedirect, let policy = isNativeAppRedirectNeeded(url) {
-                await MainActor.run {
-                    decisionHandler(policy)
-                }
+                decisionHandler(policy)
                 return
             }
-            await MainActor.run {
-                guard let scheme = url.scheme else {
+            guard let scheme = url.scheme else {
+                decisionHandler(.allow)
+                return
+            }
+            
+            switch scheme {
+            case .http, .https:
+                let currentURLinfo = state.urlInfo
+                if currentURLinfo.platformURL == url ||
+                  (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
                     decisionHandler(.allow)
+                    // No need to change vm state
+                    // because it is the same URL which was provided
+                    // in `.load` or `.loadNextLink`
                     return
                 }
-                
-                switch scheme {
-                case .http, .https:
-                    let currentURLinfo = state.urlInfo
-                    if currentURLinfo.platformURL == url ||
-                      (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
-                        decisionHandler(.allow)
-                        // No need to change vm state
-                        // because it is the same URL which was provided
-                        // in `.load` or `.loadNextLink`
-                        return
-                    }
-                    do {
-                        // Cancelling navigation because it is a different URL.
-                        // Need to handle DoH, plugins and vm state.
-                        // It also applies for go back and forward navigation actions.
-                        decisionHandler(.cancel)
-                        state = try state.transition(on: .loadNextLink(url))
-                    } catch {
-                        print("Fail to load next URL due to error: \(error.localizedDescription)")
-                    }
-                case .about:
-                    decisionHandler(.allow)
-                default:
+                do {
+                    // Cancelling navigation because it is a different URL.
+                    // Need to handle DoH, plugins and vm state.
+                    // It also applies for go back and forward navigation actions.
                     decisionHandler(.cancel)
+                    state = try state.transition(on: .loadNextLink(url))
+                } catch {
+                    print("Fail to load next URL due to error: \(error.localizedDescription)")
                 }
+            case .about:
+                decisionHandler(.allow)
+            default:
+                decisionHandler(.cancel)
             }
         }
     }
@@ -281,9 +277,7 @@ private extension WebViewModelImpl {
             state = try state.transition(on: .fetchDoHStatus)
         case .pendingDoHStatus:
             let enabled = await context.isDohEnabled()
-            try await MainActor.run {
-                state = try state.transition(on: .resolveDomainName(enabled))
-            }
+            state = try state.transition(on: .resolveDomainName(enabled))
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host().isDoHSupported
             // somehow url from site already or from next page request
@@ -297,9 +291,7 @@ private extension WebViewModelImpl {
         case .updatingWebView(_, let urlInfo):
             // Not storing DoH state in vm state, can fetch it from context
             let useIPaddress = await context.isDohEnabled()
-            await MainActor.run {
-                updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
-            }
+            updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
         case .waitingForNavigation:
             break
         case .finishingLoading(let settings, let newURL, let subject, let enable, let urlData):
@@ -319,9 +311,7 @@ private extension WebViewModelImpl {
             updateLoadingState(.reattachViewObservers)
             // Not storing DoH state in vm state, can fetch it from context
             let useIPaddress = await context.isDohEnabled()
-            await MainActor.run {
-                updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
-            }
+            updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
         }
     }
     
@@ -434,15 +424,13 @@ private extension WebViewModelImpl {
     func updateLoadingState(_ state: WebPageLoadingAction) {
         Task {
             let apiType = await context.appAsyncApiTypeValue()
-            await MainActor.run {
-                switch apiType {
-                case .reactive:
-                    rxWebPageState.value = state
-                case .combine:
-                    combineWebPageState.value = state
-                case .asyncAwait:
-                    webPageState = state
-                }
+            switch apiType {
+            case .reactive:
+                rxWebPageState.value = state
+            case .combine:
+                combineWebPageState.value = state
+            case .asyncAwait:
+                webPageState = state
             }
         }
     }
