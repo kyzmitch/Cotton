@@ -9,32 +9,40 @@
 import CoreBrowser
 import CoreData
 
-@globalActor
 private final class TabsEnvironment {
-    static let shared: ManagerHolder = .init()
+    static func shared() async -> ManagerHolder {
+        if let holder = internalHolder {
+            return holder
+        }
+        
+        let created = await ManagerHolder()
+        internalHolder = created
+        return created
+    }
+    
+    static private var internalHolder: ManagerHolder?
     
     fileprivate actor ManagerHolder {
         let cachedTabsManager: TabsListManager
-        let cottonDb: Database
+        private let database: Database
         
-        init() {
+        init() async {
             guard let database = Database(name: "CottonDbModel") else {
                 fatalError("Failed to initialize CoreData database")
             }
-            database.loadStore { (loadingError) in
-                guard let dbLoadingError = loadingError else {
-                    return
-                }
-                fatalError("Failed to initialize Database \(dbLoadingError.localizedDescription)")
+            do {
+                try await database.loadStore()
+            } catch {
+                fatalError("Failed to initialize Database \(error.localizedDescription)")
             }
-            cottonDb = database
-            let contextClosure = { [weak cottonDb] () -> NSManagedObjectContext? in
-                guard let dbInterface = cottonDb else {
+            self.database = database
+            let contextClosure = { [weak database] () -> NSManagedObjectContext? in
+                guard let dbInterface = database else {
                     fatalError("Cotton db reference is nil")
                 }
                 return dbInterface.newPrivateContext()
             }
-            let tabsCacheProvider: TabsCacheProvider = .init(temporaryContext: cottonDb.viewContext,
+            let tabsCacheProvider: TabsCacheProvider = .init(temporaryContext: database.viewContext,
                                                              privateContextCreator: contextClosure)
             cachedTabsManager = .init(storage: tabsCacheProvider,
                                       positioning: DefaultTabProvider.shared,
@@ -45,6 +53,8 @@ private final class TabsEnvironment {
 
 extension TabsListManager {
     static var shared: TabsListManager {
-        TabsEnvironment.shared.cachedTabsManager
+        get async {
+            await TabsEnvironment.shared().cachedTabsManager
+        }
     }
 }
