@@ -94,6 +94,7 @@
 		75196D0E2944AF8B00B3A45B /* SiteMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75196D0C2944AF8B00B3A45B /* SiteMenuViewController.swift */; };
 		75196D102944AFD800B3A45B /* MainBrowserV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75196D0F2944AFD800B3A45B /* MainBrowserV2ViewController.swift */; };
 		75196D112944AFD800B3A45B /* MainBrowserV2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75196D0F2944AFD800B3A45B /* MainBrowserV2ViewController.swift */; };
+		752A8C082A7058B100804319 /* TabsListError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A8C072A7058B100804319 /* TabsListError.swift */; };
 		7533929A291FCEDD00570461 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75339299291FCEDD00570461 /* Coordinator.swift */; };
 		7533929B291FCEDD00570461 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75339299291FCEDD00570461 /* Coordinator.swift */; };
 		753392A1291FD8DA00570461 /* PhoneViewControllerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */; };
@@ -1062,6 +1063,7 @@
 		75196D062944ABA700B3A45B /* MainBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserView.swift; sourceTree = "<group>"; };
 		75196D0C2944AF8B00B3A45B /* SiteMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMenuViewController.swift; sourceTree = "<group>"; };
 		75196D0F2944AFD800B3A45B /* MainBrowserV2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserV2ViewController.swift; sourceTree = "<group>"; };
+		752A8C072A7058B100804319 /* TabsListError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsListError.swift; sourceTree = "<group>"; };
 		75339299291FCEDD00570461 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		753392A0291FD8DA00570461 /* PhoneViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewControllerFactory.swift; sourceTree = "<group>"; };
 		753392A3291FD9A500570461 /* ViewControllerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerFactory.swift; sourceTree = "<group>"; };
@@ -1623,6 +1625,7 @@
 				607D02AE21FEF87F009FCD0B /* TabsListManager.swift */,
 				8A745C0E2480287700A379AD /* TabsStoragable.swift */,
 				8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */,
+				752A8C072A7058B100804319 /* TabsListError.swift */,
 				608DA708222E6F5E009F75BD /* TabSelectionStrategy.swift */,
 				8A99805D28453DE900E18762 /* NearbySelectionStrategy.swift */,
 				8A99805F28453FFD00E18762 /* TabAddStates.swift */,
@@ -3687,6 +3690,7 @@
 				8A7B1BF528EB2C08004FC135 /* Host+Extension.swift in Sources */,
 				8A9863692822441300F679D7 /* URLInfo+Extension.swift in Sources */,
 				8A9980642845409100E18762 /* TabsSubject.swift in Sources */,
+				752A8C082A7058B100804319 /* TabsListError.swift in Sources */,
 				8A99806028453FFD00E18762 /* TabAddStates.swift in Sources */,
 				8A745C0F2480287700A379AD /* TabsStoragable.swift in Sources */,
 				8AD18E102447580A00224702 /* ResourceReader.swift in Sources */,

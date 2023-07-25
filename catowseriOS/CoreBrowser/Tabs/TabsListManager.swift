@@ -9,13 +9,6 @@
 import Foundation
 import Combine
 
-public enum TabsListError: LocalizedError {
-    case notInitializedYet
-    case selectedNotFound
-    case wrongTabContent
-    case wrongTabIndexToReplace
-}
-
 /**
  Tabs list manager.
  
@@ -62,54 +55,6 @@ public actor TabsListManager {
     deinit {
         tabsCountCancellable?.cancel()
         selectedTabIdCancellable?.cancel()
-    }
-    
-    func fetchTabs() async throws {
-        var cachedTabs = try await storage.fetchAllTabs()
-        if cachedTabs.isEmpty {
-            let tab = Tab(contentType: await positioning.contentState)
-            let savedTab = try await storage.add(tab, select: true)
-            cachedTabs = [savedTab]
-        }
-        let id = try await storage.fetchSelectedTabId()
-        guard !cachedTabs.isEmpty else {
-            return
-        }
-        tabs = cachedTabs
-        selectedTabId = id
-    }
-    
-    func subscribeForTabsCountChange() {
-        tabsCountCancellable?.cancel()
-        tabsCountCancellable = $tabs
-            .removeDuplicates { $0.count == $1.count }
-            .map { $0.count }
-            .sink { tabsCount in
-                Task {
-                    for observer in self.tabObservers {
-                        await observer.updateTabsCount(with: tabsCount)
-                    }
-                }
-            }
-    }
-    
-    func subscribeForSelectedTabIdChange() {
-        selectedTabIdCancellable?.cancel()
-        selectedTabIdCancellable = $selectedTabId
-            .sink(receiveValue: { newSelectedTabId in
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    guard let tabTuple = await self.tabs.element(by: newSelectedTabId) else {
-                        return
-                    }
-                    // TODO: confirm to `AsyncSequence` for `Array<TabObserver>`
-                    for observer in await self.tabObservers {
-                        await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
-                    }
-                }
-            })
     }
 
     /// Returns currently selected tab.
@@ -348,6 +293,61 @@ private extension TabsListManager {
             }
             selectedTabId = selectedTab.id
         }
+    }
+    
+    func fetchTabs() async throws {
+        var cachedTabs = try await storage.fetchAllTabs()
+        if cachedTabs.isEmpty {
+            let tab = Tab(contentType: await positioning.contentState)
+            let savedTab = try await storage.add(tab, select: true)
+            cachedTabs = [savedTab]
+        }
+        let id = try await storage.fetchSelectedTabId()
+        guard !cachedTabs.isEmpty else {
+            return
+        }
+        tabs = cachedTabs
+        selectedTabId = id
+    }
+    
+    func subscribeForTabsCountChange() {
+        tabsCountCancellable?.cancel()
+        tabsCountCancellable = $tabs
+            .removeDuplicates { $0.count == $1.count }
+            .map { $0.count }
+            .sink { tabsCount in
+                Task {
+                    for observer in self.tabObservers {
+                        await observer.updateTabsCount(with: tabsCount)
+                    }
+                }
+            }
+    }
+    
+    func subscribeForSelectedTabIdChange() {
+        selectedTabIdCancellable?.cancel()
+        selectedTabIdCancellable = $selectedTabId
+            .drop(while: { [weak self] identifier in
+                guard let self else {
+                    return false
+                }
+                return identifier == self.positioning.defaultSelectedTabId
+            })
+            .eraseToAnyPublisher()
+            .sink(receiveValue: { newSelectedTabId in
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    guard let tabTuple = await self.tabs.element(by: newSelectedTabId) else {
+                        return
+                    }
+                    // TODO: confirm to `AsyncSequence` for `Array<TabObserver>`
+                    for observer in await self.tabObservers {
+                        await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
+                    }
+                }
+            })
     }
 }
 
