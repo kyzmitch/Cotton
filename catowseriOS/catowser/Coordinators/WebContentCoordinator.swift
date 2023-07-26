@@ -36,7 +36,7 @@ final class WebContentCoordinator: Coordinator {
         }
     }
     private weak var delegate: WebContentDelegate?
-    /// Points to web view controller
+    /// Points to web view controller, can be a strong reference, because it is the same with `startedVC`
     private var sitePresenter: WebViewNavigatable?
     
     init(_ vcFactory: ViewControllerFactory,
