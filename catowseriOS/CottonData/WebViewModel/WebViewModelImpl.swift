@@ -47,6 +47,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /// view model state (not private for unit tests only)
     var state: WebViewModelState {
         didSet {
+            // TODO: Task doesn't work in didSet!
             Task {
                 do {
                     try await onStateChange(state)

@@ -114,10 +114,8 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             
             window.rootViewController = startedVC?.viewController
             window.makeKeyAndVisible()
+            // Now, with introducing the actors model we need to attach observer only after adding all child coordinators
             if case .uiKit = uiFramework {
-                /**
-                 Now, with introducing the actors model we need to attach observer only after adding all child coordinators
-                 */
                 await TabsListManager.shared.attach(self, notify: true)
             }
         }

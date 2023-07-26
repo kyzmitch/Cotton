@@ -253,6 +253,7 @@ extension TabsListManager: TabsSubject {
         guard notify else {
             return
         }
+        await observer.updateTabsCount(with: tabs.count)
         await observer.initializeObserver(with: tabs)
         guard selectedTabId != positioning.defaultSelectedTabId else {
             return
