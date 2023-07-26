@@ -45,15 +45,16 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     let dnsResolver: DNSResolver<Strategy>
     
     /// view model state (not private for unit tests only)
-    var state: WebViewModelState {
-        didSet {
-            // TODO: Task doesn't work in didSet!
-            Task {
-                do {
-                    try await onStateChange(state)
-                } catch {
-                    print("Wrong state: \(error.localizedDescription)")
-                }
+    var state: WebViewModelState
+    
+    /// State update function, beceuse `didSet` doesn't work with an async Task?
+    func updateState(_ state: WebViewModelState) {
+        self.state = state
+        Task {
+            do {
+                try await onStateChange(state)
+            } catch {
+                print("Wrong state: \(error.localizedDescription)")
             }
         }
     }
@@ -98,6 +99,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
      */
     public init(_ strategy: Strategy, _ site: Site, _ context: any WebViewContext) {
         dnsResolver = .init(strategy)
+        // Do we need to use `updateState` function even in init?
         state = .initialized(site)
         self.context = context
     }
@@ -125,7 +127,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             // later only because `loadSite` is used
             // in other method in addition
             updateLoadingState(.reattachViewObservers)
-            state = try state.transition(on: .loadSite)
+            updateState(try state.transition(on: .loadSite))
         } catch {
             print("Wrong state on load action: " + error.localizedDescription)
         }
@@ -137,8 +139,8 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             // - Have to delete old web view to clean web view navigation
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
-            state = try state.transition(on: .resetToSite(site))
-            state = try state.transition(on: .loadSite)
+            updateState(try state.transition(on: .resetToSite(site)))
+            updateState(try state.transition(on: .loadSite))
         } catch {
             print("Wrong state on reset to site action: " + error.localizedDescription)
         }
@@ -146,7 +148,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func reload() {
         do {
-            state = try state.transition(on: .reload)
+            updateState(try state.transition(on: .reload))
         } catch {
             print("Wrong state on re-load action: " + error.localizedDescription)
         }
@@ -154,7 +156,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func goBack() {
         do {
-            state = try state.transition(on: .goBack)
+            updateState(try state.transition(on: .goBack))
         } catch {
             print("Wrong state on go Back action: " + error.localizedDescription)
         }
@@ -162,7 +164,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func goForward() {
         do {
-            state = try state.transition(on: .goForward)
+            updateState(try state.transition(on: .goForward))
         } catch {
             print("Wrong state on go Forward action: " + error.localizedDescription)
         }
@@ -179,7 +181,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         do {
             // url can be different from initial at least during navigation back and forward actions
             // so that, it has to be passed to update current url
-            state = try state.transition(on: .finishLoading(newURL, subject, jsEnabled))
+            updateState(try state.transition(on: .finishLoading(newURL, subject, jsEnabled)))
         } catch {
             print("\(#function) - failed to replace current tab: " + error.localizedDescription)
         }
@@ -229,7 +231,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
                     // Need to handle DoH, plugins and vm state.
                     // It also applies for go back and forward navigation actions.
                     decisionHandler(.cancel)
-                    state = try state.transition(on: .loadNextLink(url))
+                    updateState(try state.transition(on: .loadNextLink(url)))
                 } catch {
                     print("Fail to load next URL due to error: \(error.localizedDescription)")
                 }
@@ -243,7 +245,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) {
         do {
-            state = try state.transition(on: .changeJavaScript(subject, enabled))
+            updateState(try state.transition(on: .changeJavaScript(subject, enabled)))
         } catch {
             print("Wrong state on JS change action: " + error.localizedDescription)
         }
@@ -251,7 +253,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     public func setDoH(_ enabled: Bool) {
         do {
-            state = try state.transition(on: .changeDoH(enabled))
+            updateState(try state.transition(on: .changeDoH(enabled)))
         } catch {
             print("Wrong state on DoH change action: " + error.localizedDescription)
         }
@@ -269,26 +271,26 @@ private extension WebViewModelImpl {
             break
         case .pendingPlugins:
             let pluginsProgram: (any JSPluginsProgram)? = settings.canLoadPlugins ? context.pluginsProgram : nil
-            state = try state.transition(on: .injectPlugins(pluginsProgram))
+            updateState(try state.transition(on: .injectPlugins(pluginsProgram)))
         case .injectingPlugins(let pluginsProgram, let urlData, let settings):
             let canInject = settings.canLoadPlugins
             pluginsProgram.inject(to: configuration.userContentController,
                                   context: urlData.host(),
                                   canInject: canInject)
-            state = try state.transition(on: .fetchDoHStatus)
+            updateState(try state.transition(on: .fetchDoHStatus))
         case .pendingDoHStatus:
             let enabled = await context.isDohEnabled()
-            state = try state.transition(on: .resolveDomainName(enabled))
+            updateState(try state.transition(on: .resolveDomainName(enabled)))
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host().isDoHSupported
             // somehow url from site already or from next page request
             // contained ip address
             let domainNameAlreadyResolved = urlData.ipAddressString != nil
-            state = try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved))
+            updateState(try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved)))
         case .resolvingDN(let urlData, _):
             resolveDomainName(urlData)
         case .creatingRequest:
-            state = try state.transition(on: .loadWebView)
+            updateState(try state.transition(on: .loadWebView))
         case .updatingWebView(_, let urlInfo):
             // Not storing DoH state in vm state, can fetch it from context
             let useIPaddress = await context.isDohEnabled()
@@ -303,7 +305,7 @@ private extension WebViewModelImpl {
             await InMemoryDomainSearchProvider.shared.remember(host: host)
             context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
             try await context.updateTabContent(site)
-            state = try state.transition(on: .startView(updatedInfo))
+            updateState(try state.transition(on: .startView(updatedInfo)))
         case .viewing:
             break
         case .updatingJS(let settings, let subject, let urlInfo):
