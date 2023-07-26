@@ -59,12 +59,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         }
     }
     
-    /// reactive state property
-    public var rxWebPageState: MutableProperty<WebPageLoadingAction> = .init(.recreateView(false))
-    /// Can be replaced with @Published
-    public var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> = .init(.recreateView(false))
     /// wrapped value for Published
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     @Published public var webPageState: WebPageLoadingAction = .recreateView(false)
     /// Combine publisher of public view state (next action)
     public var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { $webPageState }
@@ -425,17 +420,7 @@ private extension WebViewModelImpl {
     }
     
     func updateLoadingState(_ state: WebPageLoadingAction) {
-        Task {
-            let apiType = await context.appAsyncApiTypeValue()
-            switch apiType {
-            case .reactive:
-                rxWebPageState.value = state
-            case .combine:
-                combineWebPageState.value = state
-            case .asyncAwait:
-                webPageState = state
-            }
-        }
+        webPageState = state
     }
     
     func isSystemAppRedirectNeeded(_ url: URL) -> WKNavigationActionPolicy? {
