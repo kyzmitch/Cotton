@@ -22,12 +22,12 @@ protocol TabDelegate: AnyObject {
 }
 
 /// The tab view for tablets
-final class TabView: UIView, FaviconImageViewable {
+final class TabView: UIView {
     
     private let viewModel: TabViewModel
+    private var stateHandler: AnyCancellable?
     private weak var delegate: TabDelegate?
     var imageURLRequestCancellable: AnyCancellable?
-    private var stateHandler: AnyCancellable?
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
@@ -62,8 +62,6 @@ final class TabView: UIView, FaviconImageViewable {
         return line
     }()
     
-    // MARK: - FaviconImageViewable
-    
     let faviconImageView: UIImageView = {
         let favicon = UIImageView()
         favicon.layer.cornerRadius = 2.0
@@ -90,10 +88,6 @@ final class TabView: UIView, FaviconImageViewable {
         
         stateHandler?.cancel()
         stateHandler = viewModel.$state.sink(receiveValue: onStateChange)
-    }
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
     }
     
     private func layout() {

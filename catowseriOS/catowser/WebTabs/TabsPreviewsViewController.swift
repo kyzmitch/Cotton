@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import ReactiveSwift
 import CoreBrowser
+import Combine
 
 final class TabsPreviewsViewController<C: Navigating>: BaseViewController,
                                                         CollectionViewInterface,
@@ -28,7 +28,8 @@ where C.R == TabsScreenRoute {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var uxState: MutableProperty<State> = MutableProperty<State>(.loading)
+    @Published private var uxState: State = .loading
+    private var stateHandlerCancellable: AnyCancellable?
     
     typealias TabsBox = Box<[Tab]>
 
@@ -76,8 +77,6 @@ where C.R == TabsScreenRoute {
         return v
     }()
 
-    private var disposables = [Disposable?]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -96,13 +95,12 @@ where C.R == TabsScreenRoute {
         toolbar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         toolbar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-        disposables.append(uxState.signal
-            .observe(on: UIScheduler())
-            .observeValues { [weak self] state in
-                self?.render(state: state)
-        })
+        stateHandlerCancellable?.cancel()
+        stateHandlerCancellable = $uxState.sink { [weak self] nextState in
+            self?.render(state: nextState)
+        }
 
-        render(state: uxState.value)
+        render(state: uxState)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -111,9 +109,7 @@ where C.R == TabsScreenRoute {
         Task {
             await TabsListManager.shared.attach(self)
             let tabs = await TabsListManager.shared.fetch()
-            let tabsBox: TabsBox = TabsBox(tabs)
-            // TODO: replace on @Published
-            uxState.value = .tabs(dataSource: tabsBox)
+            uxState = .tabs(dataSource: .init(tabs))
         }
     }
     
@@ -125,12 +121,12 @@ where C.R == TabsScreenRoute {
         }
     }
     
+    deinit {
+        stateHandlerCancellable?.cancel()
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
-    }
-
-    deinit {
-        disposables.forEach {$0?.dispose()}
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -167,13 +163,13 @@ where C.R == TabsScreenRoute {
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return uxState.value.itemsNumber
+        return uxState.itemsNumber
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var tab: Tab?
-        switch uxState.value {
+        switch uxState {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             // must use `item` for UICollectionView
             tab = dataSource.value[safe: indexPath.item]
@@ -193,7 +189,7 @@ where C.R == TabsScreenRoute {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var tab: Tab?
-        switch uxState.value {
+        switch uxState {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             tab = dataSource.value[safe: indexPath.item]
         default:
@@ -233,23 +229,23 @@ private extension TabsPreviewsViewController {
 
 extension TabsPreviewsViewController: TabsObserver {
     func tabDidAdd(_ tab: Tab, at index: Int) async {
-        guard case let .tabs(box) = uxState.value else {
+        guard case let .tabs(box) = uxState else {
             return
         }
 
         box.value.insert(tab, at: index)
-        render(state: uxState.value)
+        render(state: uxState)
     }
 }
 
 extension TabsPreviewsViewController: TabPreviewCellDelegate {
     func tabCellDidClose(at index: Int) async {
-        guard case let .tabs(box) = uxState.value else {
+        guard case let .tabs(box) = uxState else {
             return
         }
 
         let tab = box.value.remove(at: index)
-        render(state: uxState.value)
+        render(state: uxState)
         if let site = tab.site {
             WebViewsReuseManager.shared.removeController(for: site)
         }

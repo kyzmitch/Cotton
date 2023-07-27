@@ -86,6 +86,7 @@ extension SiteCollectionViewCell: ReusableItem {}
 
 extension SiteCollectionViewCell {
     func reloadSiteCell(with site: Site) {
+        // `TabViewModel` can be used instead, but cell view init doesn't allow to inject it normally
         titleLabel.text = site.title
         if let hqImage = site.favicon() {
             faviconImageView.image = hqImage
