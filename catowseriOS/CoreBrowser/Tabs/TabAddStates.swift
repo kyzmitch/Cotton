@@ -39,4 +39,22 @@ extension DispatchTimeInterval {
             return .zero
         }
     }
+    
+    public var inNanoseconds: UInt64 {
+        switch self {
+        case .seconds(let int):
+            return 1000000000 * UInt64(int)
+        case .milliseconds(let int):
+            return 1000000 * UInt64(int)
+        case .microseconds(let int):
+            return 1000 * UInt64(int)
+        case .nanoseconds(let int):
+            return UInt64(int)
+        case .never:
+            return 0
+        @unknown default:
+            // Returning default value instead of fatalError
+            return 0
+        }
+    }
 }

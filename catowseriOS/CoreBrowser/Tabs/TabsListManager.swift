@@ -244,26 +244,21 @@ private extension TabsListManager {
                 selectedTabId = tab.id
             }
         case .after(let interval):
-            if #available(iOS 16, *) {
-                do {
+            do {
+                if #available(iOS 16, *) {
                     try await Task.sleep(for: interval.dispatchValue)
-                    for observer in tabObservers {
-                        await observer.tabDidAdd(tab, at: index)
-                    }
-                    if select {
-                        selectedTabId = tab.id
-                    }
-                } catch {
-                    print("Failed to wait before adding a new tab: \(error)")
+                    
+                } else {
+                    try await Task.sleep(nanoseconds: interval.inNanoseconds)
                 }
-            } else {
-                // TODO: implement postponed adding of a tab when before iOS 16
                 for observer in tabObservers {
                     await observer.tabDidAdd(tab, at: index)
                 }
                 if select {
                     selectedTabId = tab.id
                 }
+            } catch {
+                print("Failed to wait before adding a new tab: \(error)")
             }
         }
     }
