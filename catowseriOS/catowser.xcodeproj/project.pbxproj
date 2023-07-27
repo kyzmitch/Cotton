@@ -402,7 +402,7 @@
 		8A99806B284546BA00E18762 /* InstagramContentPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A99806A284546BA00E18762 /* InstagramContentPlugin.swift */; };
 		8A99806D284546F500E18762 /* BasePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A99806C284546F500E18762 /* BasePlugin.swift */; };
 		8A99806F2845484100E18762 /* JavaScriptEvaluateble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A99806E2845484100E18762 /* JavaScriptEvaluateble.swift */; };
-		8A998071284548C200E18762 /* JSPluginsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A998070284548C200E18762 /* JSPluginsError.swift */; };
+		8A998071284548C200E18762 /* CottonPluginError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A998070284548C200E18762 /* CottonPluginError.swift */; };
 		8A9D9D7C297194E90047734C /* BrowserContentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D7B297194E90047734C /* BrowserContentPreview.swift */; };
 		8A9D9D7D297194E90047734C /* BrowserContentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D7B297194E90047734C /* BrowserContentPreview.swift */; };
 		8A9D9D7F2971D2300047734C /* PhoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D7E2971D2300047734C /* PhoneView.swift */; };
@@ -1243,7 +1243,7 @@
 		8A99806A284546BA00E18762 /* InstagramContentPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramContentPlugin.swift; sourceTree = "<group>"; };
 		8A99806C284546F500E18762 /* BasePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePlugin.swift; sourceTree = "<group>"; };
 		8A99806E2845484100E18762 /* JavaScriptEvaluateble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JavaScriptEvaluateble.swift; sourceTree = "<group>"; };
-		8A998070284548C200E18762 /* JSPluginsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsError.swift; sourceTree = "<group>"; };
+		8A998070284548C200E18762 /* CottonPluginError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CottonPluginError.swift; sourceTree = "<group>"; };
 		8A9C9FFC22134A5A0093756C /* UIImage+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		8A9D9D7B297194E90047734C /* BrowserContentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentPreview.swift; sourceTree = "<group>"; };
 		8A9D9D7E2971D2300047734C /* PhoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneView.swift; sourceTree = "<group>"; };
@@ -1661,7 +1661,7 @@
 				8A012FA52240110000041487 /* Handlers */,
 				608DA7422238FE33009F75BD /* Scripts */,
 				60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */,
-				8A998070284548C200E18762 /* JSPluginsError.swift */,
+				8A998070284548C200E18762 /* CottonPluginError.swift */,
 				8A99806E2845484100E18762 /* JavaScriptEvaluateble.swift */,
 				608DA759223FBB3E009F75BD /* JSPluginFactory.swift */,
 				608DA75F223FD826009F75BD /* JSPluginsProgram.swift */,
@@ -3657,7 +3657,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A998071284548C200E18762 /* JSPluginsError.swift in Sources */,
+				8A998071284548C200E18762 /* CottonPluginError.swift in Sources */,
 				8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */,
 				8A815D3D28F16367007A6926 /* JSPluginsProgramImpl.swift in Sources */,
 				8A258330284B45D30047077A /* JavaScriptPluginVisitor.swift in Sources */,

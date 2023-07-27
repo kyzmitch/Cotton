@@ -62,10 +62,17 @@ final class TabViewModel {
         if let hqImage = site.favicon() {
             return .image(hqImage)
         }
-        let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+        let resolveNeeded = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+        let url: URL?
+        do {
+            url = try await site.faviconURL(resolveNeeded)
+        } catch {
+            print("Fail to resolve favicon url: \(error)")
+            url = nil
+        }
+        
         let source: ImageSource
-        // TODO: do a DNS request when useDoH is true
-        switch (site.faviconURL(useDoH), site.favicon()) {
+        switch (url, site.favicon()) {
         case (let url?, nil):
             source = .url(url)
         case (nil, let image?):

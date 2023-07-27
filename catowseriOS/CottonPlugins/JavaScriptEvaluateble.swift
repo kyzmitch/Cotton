@@ -31,7 +31,7 @@ extension JavaScriptEvaluateble {
     func evaluatePublisher(jsScript: String) -> AnyPublisher<Any, Error> {
         let p = Future<Any, Error> { [weak self] (promise) in
             guard let self = self else {
-                promise(.failure(JSPluginsError.zombiError))
+                promise(.failure(CottonPluginError.zombiError))
                 return
             }
             self.evaluateJavaScript(jsScript) { (something, error) in
@@ -40,7 +40,7 @@ extension JavaScriptEvaluateble {
                     return
                 }
                 guard let anyResult = something else {
-                    promise(.failure(JSPluginsError.nilJSEvaluationResult))
+                    promise(.failure(CottonPluginError.nilJSEvaluationResult))
                     return
                 }
                 promise(.success(anyResult))
@@ -55,7 +55,7 @@ extension JavaScriptEvaluateble {
     func rxEvaluate(jsScript: String) -> SignalProducer<Any, Error> {
         let producer: SignalProducer<Any, Error> = .init { [weak self] (observer, _) in
             guard let self = self else {
-                observer.send(error: JSPluginsError.zombiError)
+                observer.send(error: CottonPluginError.zombiError)
                 return
             }
             self.evaluateJavaScript(jsScript) { (something, error) in
@@ -64,7 +64,7 @@ extension JavaScriptEvaluateble {
                     return
                 }
                 guard let anyResult = something else {
-                    observer.send(error: JSPluginsError.nilJSEvaluationResult)
+                    observer.send(error: CottonPluginError.nilJSEvaluationResult)
                     return
                 }
                 observer.send(value: anyResult)
@@ -79,7 +79,7 @@ extension JavaScriptEvaluateble {
         typealias StringResult = Result<String, Error>
         return evaluatePublisher(jsScript: "document.title").flatMap { (anyResult) -> StringResult.Publisher in
             guard let documentTitle = anyResult as? String else {
-                return StringResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotString))
+                return StringResult.Publisher(.failure(CottonPluginError.jsEvaluationIsNotString))
             }
             return StringResult.Publisher(.success(documentTitle))
         }.eraseToAnyPublisher()
@@ -91,10 +91,10 @@ extension JavaScriptEvaluateble {
         // If we have JavaScript blocked, these will be empty.
         return evaluatePublisher(jsScript: .locationHREF).flatMap { (anyResult) -> URLResult.Publisher in
             guard let urlString = anyResult as? String else {
-                return URLResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotString))
+                return URLResult.Publisher(.failure(CottonPluginError.jsEvaluationIsNotString))
             }
             guard let url = URL(string: urlString) else {
-                return URLResult.Publisher(.failure(JSPluginsError.jsEvaluationIsNotURL))
+                return URLResult.Publisher(.failure(CottonPluginError.jsEvaluationIsNotURL))
             }
             return URLResult.Publisher(.success(url))
         }.eraseToAnyPublisher()
@@ -104,10 +104,10 @@ extension JavaScriptEvaluateble {
         return rxEvaluate(jsScript: .locationHREF)
             .flatMap(.latest) { (anyResult) -> SignalProducer<URL, Error> in
                 guard let urlString = anyResult as? String else {
-                    return .init(error: JSPluginsError.jsEvaluationIsNotString)
+                    return .init(error: CottonPluginError.jsEvaluationIsNotString)
                 }
                 guard let url = URL(string: urlString) else {
-                    return .init(error: JSPluginsError.jsEvaluationIsNotURL)
+                    return .init(error: CottonPluginError.jsEvaluationIsNotURL)
                 }
                 return .init(value: url)
         }

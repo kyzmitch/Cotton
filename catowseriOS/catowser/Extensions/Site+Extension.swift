@@ -8,9 +8,6 @@
 
 import CoreBrowser
 import FeaturesFlagsKit
-#if canImport(Combine)
-import Combine
-#endif
 import BrowserNetworking
 import CottonBase
 import UIKit
@@ -47,38 +44,18 @@ extension Site {
     }
     
     /// Provides only local cached URL for favicon, nil if ipAddress is nil.
-    func faviconURL(_ useDoH: Bool) -> URL? {
-        if useDoH {
-            // TODO: this doesn't do DNS request as Combine version, need to implement
-            return URL(faviconIPInfo: urlInfo)
-        } else {
-            return URL(string: urlInfo.faviconURLFromDomain)
-        }
-    }
-    
-    /// Attempts resolve domain name from site url before using it in favicon URL.
-    @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func fetchFaviconURL(_ resolve: Bool, _ subscriber: GDNSJsonClientSubscriber) -> AnyPublisher<URL, Error> {
-        // TODO: this Combine based method is not used probably
-        
-        typealias URLResult = Result<URL, Error>
-        
-        struct InvalidUrlError: Error {}
-        
+    func faviconURL(_ resolve: Bool) async throws -> URL {
         guard resolve else {
-            let domainURL = URL(string: urlInfo.faviconURLFromDomain)
             // swiftlint:disable:next force_unwrapping
-            let result: URLResult = domainURL != nil ? .success(domainURL!) : .failure(InvalidUrlError())
-            return URLResult.Publisher(result).eraseToAnyPublisher()
+            return URL(string: urlInfo.faviconURLFromDomain)!
         }
-        
+        if let cached = URL(faviconIPInfo: urlInfo) {
+            return cached
+        }
         guard let faviconDomainURL = URL(string: urlInfo.faviconURLFromDomain) else {
-            return URLResult.Publisher(.failure(InvalidUrlError())).eraseToAnyPublisher()
+            throw CottonError.invalidFaviconUrl
         }
-        return GoogleDnsClient.shared.resolvedDomainName(in: faviconDomainURL, subscriber)
-            .mapError { (dnsError) -> Error in
-                return dnsError
-            }.eraseToAnyPublisher()
+        return try await GoogleDnsClient.shared.aaResolvedDomainName(in: faviconDomainURL)
     }
     
     func withUpdated(_ newSettings: Site.Settings) -> Site {
@@ -91,7 +68,7 @@ extension Site {
     }
 }
 
-/// Needed for a swiftUI list view to show a list of different sites.
+/// Needed for a SwiftUI list view to show a list of different sites.
 /// `The purpose of Identifiable is to distinguish the identity of an entity from the state of an entity.`
 /// https://github.com/apple/swift-evolution/blob/main/proposals/0261-identifiable.md#concrete-conformances
 /// So, this shouldn't be similar to Hashable impl and it doesn't require to combine all the properites in one id value.

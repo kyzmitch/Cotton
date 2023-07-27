@@ -19,7 +19,7 @@ public struct InstagramVideoArray: Decodable {
             do {
                 let node = try container.decode(Dictionary<String, InstagramVideoNode>.self)
                 guard node.first?.key == "node" else {
-                    throw CottonError.notExpectedKey
+                    throw CottonPluginError.notExpectedKey
                 }
                 if let videoNode = node.first?.value {
                     nodes.append(videoNode)
@@ -35,9 +35,5 @@ public struct InstagramVideoArray: Decodable {
             }
         }
         self.nodes = nodes
-    }
-    
-    enum CottonError: Error {
-        case notExpectedKey
     }
 }

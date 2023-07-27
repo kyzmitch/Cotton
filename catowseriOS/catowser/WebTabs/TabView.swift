@@ -27,7 +27,6 @@ final class TabView: UIView {
     private let viewModel: TabViewModel
     private var stateHandler: AnyCancellable?
     private weak var delegate: TabDelegate?
-    var imageURLRequestCancellable: AnyCancellable?
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()

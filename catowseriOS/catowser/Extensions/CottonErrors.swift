@@ -10,4 +10,5 @@ import Foundation
 
 enum CottonError: Error {
     case zombieSelf
+    case invalidFaviconUrl
 }

@@ -41,8 +41,6 @@ final class SiteCollectionViewCell: UICollectionViewCell, FaviconImageViewable {
         return favicon
     }()
     
-    var imageURLRequestCancellable: AnyCancellable?
-    
     // MARK: - init
 
     override init(frame: CGRect) {
@@ -95,9 +93,8 @@ extension SiteCollectionViewCell {
         faviconImageView.image = nil
 
         Task {
-            let asyncApi = await FeatureManager.shared.appAsyncApiTypeValue()
             let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-            reloadImageWith(site, asyncApi, useDoH)
+            await reloadImageWith(site, useDoH)
         }
     }
 }
