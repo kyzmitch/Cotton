@@ -45,7 +45,7 @@ protocol TabPreviewCellDelegate: AnyObject {
 
 final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageViewable {
 
-    static let borderWidth: CGFloat = 3
+    static let borderWidth: CGFloat = 0.5
 
     static func cellHeightForCurrent(_ traitCollection: UITraitCollection) -> CGFloat {
         let shortHeight = CGFloat.textBoxHeight * 6
@@ -69,13 +69,15 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         view.layer.cornerRadius = .cornerRadius
         view.layer.masksToBounds = true
         view.backgroundColor = .cellBackground
+        view.layer.borderColor = #colorLiteral(red: 0.4509803922, green: 0.4509803922, blue: 0.4509803922, alpha: 1).cgColor
+        view.layer.borderWidth = borderWidth
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private let screenshotView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleToFill
         view.clipsToBounds = true
         view.isUserInteractionEnabled = false
         view.backgroundColor = .browserBackground

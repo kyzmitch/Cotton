@@ -10,10 +10,6 @@ import Foundation
 import CoreBrowser
 import CoreData
 
-fileprivate extension String {
-    static let threadName = "tabsCache"
-}
-
 /**
  Declaring Tab storage type in host app instead of `CoreBrowser`
  to allow use app settings like default tab content which only can be stored in host app,
@@ -22,12 +18,10 @@ fileprivate extension String {
  with environment class which holds reference to tabs list manager it's kind of singletone.
  */
 final class TabsCacheProvider {
-    private let queue: DispatchQueue
     private let tabsDbResource: TabsResource
     
     init(_ temporaryContext: NSManagedObjectContext,
          _ privateContextCreator: @escaping () -> NSManagedObjectContext?) {
-        queue = DispatchQueue(label: .queueNameWith(suffix: .threadName))
         tabsDbResource = .init(temporaryContext: temporaryContext,
                                privateContextCreator: privateContextCreator)
     }
