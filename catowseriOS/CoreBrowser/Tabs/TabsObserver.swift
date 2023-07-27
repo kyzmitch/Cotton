@@ -12,6 +12,8 @@ import Foundation
 /// No need to add delegate methods for tab close case, because anyway view must be removed right away.
 /// Future directions:
 /// https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
+///
+/// Tab did remove function is not needed, because we want to remove it from UI right away
 @MainActor
 public protocol TabsObserver {
     /// To be able to search specific observer.

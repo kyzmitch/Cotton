@@ -74,6 +74,7 @@ where C.R == TopSitesRoute {
             return
         }
 
+        // TODO: for some reason this is not called, but coordinator is not nil
         coordinator?.showNext(.select(site))
     }
 }

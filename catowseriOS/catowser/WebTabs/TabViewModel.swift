@@ -102,6 +102,9 @@ extension TabViewModel: TabsObserver {
     }
     
     func tabDidReplace(_ tab: Tab, at index: Int) async {
+        guard self.tab.id == tab.id else {
+            return
+        }
         self.tab = tab
         let favicon: ImageSource?
         if let site = tab.site {

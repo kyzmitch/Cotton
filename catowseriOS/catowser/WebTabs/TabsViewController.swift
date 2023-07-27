@@ -18,6 +18,8 @@ fileprivate extension TabsViewController {
 
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
+    private var viewModels = [TabViewModel]()
+    
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
@@ -143,7 +145,12 @@ private extension TabsViewController {
         stackViewScrollableContainer.scrollToVeryRight()
     }
 
-    func removeTabView(_ tabView: TabView) {
+    func removeTabView(_ tabView: TabView) async {
+        if let removedIndex = tabsStackView.arrangedSubviews.firstIndex(of: tabView) {
+            let removedVm = viewModels[removedIndex]
+            await TabsListManager.shared.detach(removedVm)
+            viewModels.remove(at: removedIndex)
+        }
         tabsStackView.removeArrangedSubview(tabView)
         tabView.removeFromSuperview()
         UIView.animate(withDuration: 0.5) {
@@ -177,28 +184,6 @@ private extension TabsViewController {
 
         }
         stackViewScrollableContainer.scroll(on: 100)
-    }
-
-    func makeTabActive(at index: Int, identifier: UUID) {
-        guard !tabsStackView.arrangedSubviews.isEmpty else {
-            assertionFailure("Tried to make tab view active but there are no any of them")
-            return
-        }
-        var searchedView: TabView?
-        for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
-            // swiftlint:disable:next force_cast
-            let tabView = tuple.element as! TabView
-            if tuple.offset == index {
-                searchedView = tabView
-            }
-        }
-        if let tabView = searchedView {
-            // if tab which was selected was partly hidden for example under + button
-            // need to scroll it to make it fully visible
-            makeTabFullyVisibleIfNeeded(tabView)
-        } else {
-            assertionFailure("Tried to make not existing tab active")
-        }
     }
 
     func updateTabsBackLayer(with width: CGFloat) {
@@ -236,7 +221,25 @@ private extension TabsViewController {
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
     func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
-        makeTabActive(at: index, identifier: identifier)
+        guard !tabsStackView.arrangedSubviews.isEmpty else {
+            assertionFailure("Tried to make tab view active but there are no any of them")
+            return
+        }
+        var searchedView: TabView?
+        for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
+            // swiftlint:disable:next force_cast
+            let tabView = tuple.element as! TabView
+            if tuple.offset == index {
+                searchedView = tabView
+            }
+        }
+        if let tabView = searchedView {
+            // if tab which was selected was partly hidden for example under + button
+            // need to scroll it to make it fully visible
+            makeTabFullyVisibleIfNeeded(tabView)
+        } else {
+            assertionFailure("Tried to make not existing tab active")
+        }
     }
     
     func updateTabsCount(with tabsCount: Int) async {
@@ -246,7 +249,6 @@ extension TabsViewController: TabsObserver {
     }
 
     func initializeObserver(with tabs: [Tab]) async {
-        var viewModels = [TabViewModel]()
         for tab in tabs {
             let vm = await ViewModelFactory.shared.tabViewModel(tab)
             viewModels.append(vm)
@@ -260,6 +262,7 @@ extension TabsViewController: TabsObserver {
     
     func tabDidAdd(_ tab: Tab, at index: Int) async {
         let vm = await ViewModelFactory.shared.tabViewModel(tab)
+        viewModels.insert(vm, at: index)
         let tabView = TabView(calculateNextTabFrame(), vm, self)
         add(tabView, at: index)
     }
@@ -268,7 +271,7 @@ extension TabsViewController: TabsObserver {
 extension TabsViewController: TabDelegate {
     func tabViewDidClose(_ tabView: TabView) async {
         print("\(#function): tab closed")
-        removeTabView(tabView)
+        await removeTabView(tabView)
     }
 }
 

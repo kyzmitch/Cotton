@@ -85,6 +85,9 @@ final class TabView: UIView {
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
         
+        Task {
+            await TabsListManager.shared.attach(viewModel)
+        }
         stateHandler?.cancel()
         stateHandler = viewModel.$state.sink(receiveValue: onStateChange)
     }
