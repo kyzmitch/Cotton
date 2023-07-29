@@ -11,8 +11,8 @@ import FeaturesFlagsKit
 
 // MARK: - generic GETTER method
 
-extension FeatureManager {
-    static func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F?
+extension FeatureManager.FManager {
+    func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F?
     where F.RawValue == Int {
         let keyStr: String
         switch enumCase.defaultValue {
@@ -36,8 +36,8 @@ extension FeatureManager {
 
 // MARK: - GETTER methods specific to Enum features
 
-extension FeatureManager {
-    static func tabAddPositionValue() -> AddedTabPosition {
+extension FeatureManager.FManager {
+    func tabAddPositionValue() -> AddedTabPosition {
         let feature: ApplicationEnumFeature = .tabAddPosition
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
@@ -45,7 +45,7 @@ extension FeatureManager {
         return source.currentEnumValue(of: feature)
     }
     
-    static func tabDefaultContentValue() -> TabContentDefaultState {
+    func tabDefaultContentValue() -> TabContentDefaultState {
         let feature: ApplicationEnumFeature = .tabDefaultContent
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
@@ -53,7 +53,7 @@ extension FeatureManager {
         return source.currentEnumValue(of: feature)
     }
     
-    static func appAsyncApiTypeValue() -> AsyncApiType {
+    func appAsyncApiTypeValue() -> AsyncApiType {
         let feature: ApplicationEnumFeature = .appDefaultAsyncApi
 #if DEBUG
         guard let source = source(for: feature) else {
@@ -66,7 +66,7 @@ extension FeatureManager {
 #endif
     }
     
-    static func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
+    func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
         let feature: ApplicationEnumFeature = .webAutoCompletionSource
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
@@ -74,7 +74,7 @@ extension FeatureManager {
         return source.currentEnumValue(of: feature)
     }
     
-    static func appUIFrameworkValue() -> UIFrameworkType {
+    func appUIFrameworkValue() -> UIFrameworkType {
         let feature: ApplicationEnumFeature = .appDefaultUIFramework
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue

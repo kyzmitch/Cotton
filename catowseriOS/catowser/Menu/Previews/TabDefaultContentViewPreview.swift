@@ -15,10 +15,10 @@ import SwiftUI
 // swiftlint:disable type_name
 struct TabDefaultContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let model: TabDefaultContentModel = .init { (_) in
+        let model: TabDefaultContentModel = .init(nil) { (_) in
             //
         }
-        return BaseMenuView<TabContentDefaultState>(model: model)
+        return BaseMenuView<TabContentDefaultState>(viewModel: model)
     }
 }
 #endif

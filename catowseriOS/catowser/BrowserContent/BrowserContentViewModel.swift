@@ -29,23 +29,18 @@ final class BrowserContentViewModel: ObservableObject {
     /// To avoid app start case
     private var firstTabContentSelect: Bool
     
-    init(_ jsPluginsBuilder: any JSPluginsSource) {
+    init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: Tab.ContentType) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
-        contentType = DefaultTabProvider.shared.contentState
+        self.contentType = defaultContentType
         loading = true
         webViewNeedsUpdate = ()
         tabsCount = 0
-        TabsListManager.shared.attach(self)
-    }
-    
-    deinit {
-        TabsListManager.shared.detach(self)
     }
 }
 
 extension BrowserContentViewModel: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         if let previousValue = previousTabContent, previousValue.isStatic && previousValue == content {
             // Optimization to not do remove & insert of the same static view
             return
@@ -70,7 +65,7 @@ extension BrowserContentViewModel: TabsObserver {
         }
     }
     
-    func tabDidReplace(_ tab: Tab, at index: Int) {
+    func tabDidReplace(_ tab: Tab, at index: Int) async {
         if loading {
             loading = false
         }
@@ -79,7 +74,7 @@ extension BrowserContentViewModel: TabsObserver {
         }
     }
     
-    func update(with tabsCount: Int) {
+    func updateTabsCount(with tabsCount: Int) async {
         self.tabsCount = tabsCount
     }
 }

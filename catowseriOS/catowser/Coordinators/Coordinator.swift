@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 protocol Coordinator: AnyObject {
     /// For now it seems we could start only one child coordinator, no need to have an array of coordinators,
     /// but it only applies to navigation related routes (presented or pushed to navigation stack)
@@ -26,6 +27,7 @@ protocol Coordinator: AnyObject {
     func start()
 }
 
+@MainActor
 protocol CoordinatorOwner: AnyObject {
     /// Usually should be called in `stop` function of a `Navigating` impl.
     /// Default implementation should remove started coordinator reference.
@@ -41,6 +43,7 @@ extension Coordinator {
 protocol Route {}
 protocol SubviewPart {}
 
+@MainActor
 protocol Navigating: AnyObject {
     associatedtype R: Route
     var vcFactory: any ViewControllerFactory { get }
@@ -69,6 +72,7 @@ enum OwnLayoutStep {
     case viewSafeAreaInsetsDidChange
 }
 
+@MainActor
 protocol Layouting: AnyObject {
     associatedtype SP: SubviewPart
     

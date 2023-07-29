@@ -9,39 +9,50 @@
 import CoreBrowser
 import CoreData
 
-final class TabsEnvironment {
-    static let shared: TabsEnvironment = .init()
+private final class TabsEnvironment {
+    static func shared() async -> ManagerHolder {
+        if let holder = internalHolder {
+            return holder
+        }
+        
+        let created = await ManagerHolder()
+        internalHolder = created
+        return created
+    }
     
-    let cachedTabsManager: TabsListManager
-    let cottonDb: Database
+    static private var internalHolder: ManagerHolder?
     
-    private init() {
-        guard let database = Database(name: "CottonDbModel") else {
-            fatalError("Failed to initialize CoreData database")
-        }
-        database.loadStore { (loadingError) in
-            guard let dbLoadingError = loadingError else {
-                return
+    fileprivate actor ManagerHolder {
+        let cachedTabsManager: TabsListManager
+        private let database: Database
+        
+        init() async {
+            guard let database = Database(name: "CottonDbModel") else {
+                fatalError("Failed to initialize CoreData database")
             }
-            fatalError("Failed to initialize Database \(dbLoadingError.localizedDescription)")
-        }
-        cottonDb = database
-        let contextClosure = { [weak cottonDb] () -> NSManagedObjectContext? in
-            guard let dbInterface = cottonDb else {
-                fatalError("Cotton db reference is nil")
+            do {
+                try await database.loadStore()
+            } catch {
+                fatalError("Failed to initialize Database \(error.localizedDescription)")
             }
-            return dbInterface.newPrivateContext()
+            self.database = database
+            let contextClosure = { [weak database] () -> NSManagedObjectContext? in
+                guard let dbInterface = database else {
+                    fatalError("Cotton db reference is nil")
+                }
+                return dbInterface.newPrivateContext()
+            }
+            let cacheProvider = TabsCacheProvider(database.viewContext, contextClosure)
+            let strategy = NearbySelectionStrategy()
+            cachedTabsManager = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
         }
-        let tabsCacheProvider: TabsCacheProvider = .init(temporaryContext: cottonDb.viewContext,
-                                                         privateContextCreator: contextClosure)
-        cachedTabsManager = .init(storage: tabsCacheProvider,
-                                  positioning: DefaultTabProvider.shared,
-                                  selectionStrategy: NearbySelectionStrategy())
     }
 }
 
 extension TabsListManager {
     static var shared: TabsListManager {
-        return TabsEnvironment.shared.cachedTabsManager
+        get async {
+            await TabsEnvironment.shared().cachedTabsManager
+        }
     }
 }

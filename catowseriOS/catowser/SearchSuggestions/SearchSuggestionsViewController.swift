@@ -23,7 +23,7 @@ enum SuggestionType: Equatable {
 }
 
 protocol SearchSuggestionsListDelegate: AnyObject {
-    func searchSuggestionDidSelect(_ content: SuggestionType)
+    func searchSuggestionDidSelect(_ content: SuggestionType) async
 }
 
 /// View controller to control suggestions view
@@ -46,8 +46,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     /// Delegate to handle suggestion selection
     private weak var delegate: SearchSuggestionsListDelegate?
 
-    init(_ delegate: SearchSuggestionsListDelegate?) {
-        viewModel = ViewModelFactory.shared.searchSuggestionsViewModel()
+    init(_ delegate: SearchSuggestionsListDelegate?, _ searchProviderType: WebAutoCompletionSource) {
+        viewModel = ViewModelFactory.shared.searchSuggestionsViewModel(searchProviderType)
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,16 +74,19 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        switch FeatureManager.appAsyncApiTypeValue() {
-        case .reactive:
-            disposable?.dispose()
-            disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
-        case .combine:
-            cancellable?.cancel()
-            cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
-        case .asyncAwait:
-            taskHandler?.cancel()
-            taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
+        Task {
+            let apiType = await FeatureManager.shared.appAsyncApiTypeValue()
+            switch apiType {
+            case .reactive:
+                disposable?.dispose()
+                disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
+            case .combine:
+                cancellable?.cancel()
+                cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
+            case .asyncAwait:
+                taskHandler?.cancel()
+                taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
+            }
         }
         
         // Also would be good to observe for the changes in settings
@@ -145,12 +148,14 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
         default:
             return
         }
-        delegate?.searchSuggestionDidSelect(content)
+        Task {
+            await delegate?.searchSuggestionDidSelect(content)
+        }
     }
 }
 
 extension SearchSuggestionsViewController: SearchSuggestionsControllerInterface {
-    func prepareSearch(for searchQuery: String) {
-        viewModel.fetchSuggestions(searchQuery)
+    func prepareSearch(for searchQuery: String) async {
+        await viewModel.fetchSuggestions(searchQuery)
     }
 }

@@ -10,8 +10,8 @@ import Foundation
 import AutoMockable
 
 public protocol TabsStates: AutoMockable {
-    var addPosition: AddedTabPosition { get }
-    var contentState: Tab.ContentType { get }
+    var addPosition: AddedTabPosition { get async }
+    var contentState: Tab.ContentType { get async }
     var addSpeed: TabAddSpeed { get }
     var defaultSelectedTabId: UUID { get }
 }

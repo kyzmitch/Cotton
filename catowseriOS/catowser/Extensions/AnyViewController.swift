@@ -13,6 +13,7 @@ import SwiftUI
 /// which confirms to some protocol
 ///
 /// https://ilya.puchka.me/properties-of-types-conforming-to-protocols-in-swift/
+@MainActor
 protocol AnyViewController: AnyObject {
     var viewController: UIViewController { get }
     var controllerView: UIView { get }

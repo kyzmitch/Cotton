@@ -9,13 +9,14 @@
 import CoreBrowser
 import UIKit
 
+/// manager's extension to not bring UIKit to CoreBrowser module
 extension TabsListManager {
     /// Updates preview image for selected tab if it has site content.
     ///
     /// - Parameter image: `UIImage` usually a screenshot of WKWebView.
-    func setSelectedPreview(_ image: UIImage?) throws {
-        var tab = try selectedTab()
-        let tabIndex = try selectedIndex()
+    func setSelectedPreview(_ image: UIImage?) async throws {
+        var tab = try await selectedTab()
+        let tabIndex = try await selectedIndex()
         
         if case .site = tab.contentType, image == nil {
             throw TabsListError.wrongTabContent

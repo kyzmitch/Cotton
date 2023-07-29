@@ -175,7 +175,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
                 case (_, let err?):
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
-                    self?.externalNavigationDelegate?.didTabPreviewChange(img)
+                    Task {
+                        await self?.externalNavigationDelegate?.didTabPreviewChange(img)
+                    }
                 default:
                     print("failed to take a screenshot")
                 }
@@ -247,36 +249,34 @@ private extension WebViewController {
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
         
-        switch FeatureManager.appAsyncApiTypeValue() {
-        case .reactive:
-            disposable?.dispose()
-            disposable = viewModel.rxWebPageState.signal.producer.startWithValues(onStateChange)
-            dohDisposable?.dispose()
-            dohDisposable = FeatureManager
-                .rxFeatureChanges(for: .dnsOverHTTPSAvailable)
-                .producer
-                .startWithValues { [weak self] _ in
-                    self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
-            }
-        case .combine:
-            cancellable?.cancel()
-            cancellable = viewModel.combineWebPageState.sink(receiveValue: onStateChange)
-            dohCancellable?.cancel()
-            dohCancellable = FeatureManager.featureChangesPublisher(for: .dnsOverHTTPSAvailable).sink { [weak self] _ in
-                self?.viewModel.setDoH(FeatureManager.boolValue(of: .dnsOverHTTPSAvailable))
-            }
-        case .asyncAwait:
-            taskHandler?.cancel()
-            taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
-        }
+        // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
         
+        taskHandler?.cancel()
+        taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        dohCancellable?.cancel()
         jsStateCancellable?.cancel()
-        jsStateCancellable = FeatureManager.featureChangesPublisher(for: .javaScriptEnabled).sink { [weak self] _ in
-            guard let self = self, let jsSubject = self.webView  else {
-                return
-            }
-            let enabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-            self.viewModel.setJavaScript(jsSubject, enabled)
+        
+        Task {
+            dohCancellable = await FeatureManager.shared
+                .featureChangesPublisher(for: .dnsOverHTTPSAvailable)
+                .sink { _ in
+                    Task { [weak self] in
+                        let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+                        self?.viewModel.setDoH(useDoH)
+                    }
+                }
+            
+            jsStateCancellable = await FeatureManager.shared
+                .featureChangesPublisher(for: .javaScriptEnabled)
+                .sink { _ in
+                    Task { [weak self] in
+                        guard let self, let jsSubject = self.webView  else {
+                            return
+                        }
+                        let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+                        self.viewModel.setJavaScript(jsSubject, enabled)
+                    }
+                }
         }
     }
     

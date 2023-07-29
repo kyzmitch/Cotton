@@ -18,14 +18,14 @@ public struct HTMLVideoTagsContainer {
             videoElements = try htmlMessage.html.select("video")
         } catch Exception.Error( _, let message) {
             print("Failed parse html video tags: \(message)")
-            throw CottonError.parseError
+            throw CottonPluginError.parseError
         } catch {
             print("Failed to parse html video tags")
-            throw CottonError.parseError
+            throw CottonPluginError.parseError
         }
         
         guard videoElements.size() > 0 else {
-            throw CottonError.noVideoTags
+            throw CottonPluginError.noVideoTags
         }
         let docTitle = htmlMessage.html.documentTitle
         let mainPosterURL = htmlMessage.mainPosterURL
@@ -38,17 +38,10 @@ public struct HTMLVideoTagsContainer {
         }
         
         guard result.count > 0 else {
-            throw CottonError.noVideoTags
+            throw CottonPluginError.noVideoTags
         }
         videoTags = result
     }
-}
-
-enum CottonError: Error {
-    case parseError
-    case emptyHtml
-    case noVideoTags
-    case parseHost
 }
 
 extension Document {

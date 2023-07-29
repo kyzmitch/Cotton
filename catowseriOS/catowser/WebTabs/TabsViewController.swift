@@ -18,6 +18,8 @@ fileprivate extension TabsViewController {
 
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
+    private var viewModels = [TabViewModel]()
+    
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
@@ -95,19 +97,25 @@ final class TabsViewController: BaseViewController {
 #else
         addTabButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
 #endif
-        
-        TabsListManager.shared.attach(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // initializeObserver will load all of the tabs
-        // and create views
+        /**
+         initializeObserver will load all of the tabs and create views
+         */
+        Task {
+            await TabsListManager.shared.attach(self, notify: true)
+        }
     }
     
-    deinit {
-        TabsListManager.shared.detach(self)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        Task {
+            await TabsListManager.shared.detach(self)
+        }
     }
 }
 
@@ -123,8 +131,10 @@ private extension TabsViewController {
     @objc func addTabPressed() {
         print("\(#function): add pressed")
 
-        let tab = Tab(contentType: DefaultTabProvider.shared.contentState)
-        TabsListManager.shared.add(tab: tab)
+        Task {
+            let tab = Tab(contentType: await DefaultTabProvider.shared.contentState)
+            await TabsListManager.shared.add(tab: tab)
+        }
     }
 
     // MARK: Action response handlers
@@ -135,7 +145,12 @@ private extension TabsViewController {
         stackViewScrollableContainer.scrollToVeryRight()
     }
 
-    func removeTabView(_ tabView: TabView) {
+    func removeTabView(_ tabView: TabView) async {
+        if let removedIndex = tabsStackView.arrangedSubviews.firstIndex(of: tabView) {
+            let removedVm = viewModels[removedIndex]
+            await TabsListManager.shared.detach(removedVm)
+            viewModels.remove(at: removedIndex)
+        }
         tabsStackView.removeArrangedSubview(tabView)
         tabView.removeFromSuperview()
         UIView.animate(withDuration: 0.5) {
@@ -169,29 +184,6 @@ private extension TabsViewController {
 
         }
         stackViewScrollableContainer.scroll(on: 100)
-    }
-
-    func makeTabActive(at index: Int, identifier: UUID) {
-        guard !tabsStackView.arrangedSubviews.isEmpty else {
-            assertionFailure("Tried to make tab view active but there are no any of them")
-            return
-        }
-        var searchedView: TabView?
-        for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
-            // swiftlint:disable:next force_cast
-            let tabView = tuple.element as! TabView
-            if tuple.offset == index {
-                searchedView = tabView
-            }
-            tabView.visualState = tabView.viewModel.getVisualState(identifier)
-        }
-        if let tabView = searchedView {
-            // if tab which was selected was partly hidden for example under + button
-            // need to scroll it to make it fully visible
-            makeTabFullyVisibleIfNeeded(tabView)
-        } else {
-            assertionFailure("Tried to make not existing tab active")
-        }
     }
 
     func updateTabsBackLayer(with width: CGFloat) {
@@ -228,52 +220,58 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
-        makeTabActive(at: index, identifier: identifier)
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+        guard !tabsStackView.arrangedSubviews.isEmpty else {
+            assertionFailure("Tried to make tab view active but there are no any of them")
+            return
+        }
+        var searchedView: TabView?
+        for tuple in tabsStackView.arrangedSubviews.enumerated() where tuple.element is TabView {
+            // swiftlint:disable:next force_cast
+            let tabView = tuple.element as! TabView
+            if tuple.offset == index {
+                searchedView = tabView
+            }
+        }
+        if let tabView = searchedView {
+            // if tab which was selected was partly hidden for example under + button
+            // need to scroll it to make it fully visible
+            makeTabFullyVisibleIfNeeded(tabView)
+        } else {
+            assertionFailure("Tried to make not existing tab active")
+        }
     }
     
-    func update(with tabsCount: Int) {
-        #if DEBUG
+    func updateTabsCount(with tabsCount: Int) async {
+#if DEBUG
         showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
-        #endif
+#endif
     }
 
-    func initializeObserver(with tabs: [Tab]) {
-        for (i, tab) in tabs.enumerated() {
-            let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
+    func initializeObserver(with tabs: [Tab]) async {
+        for tab in tabs {
+            let vm = await ViewModelFactory.shared.tabViewModel(tab)
+            viewModels.append(vm)
+        }
+        for i in (0..<tabs.count) {
+            let tabView = TabView(calculateNextTabFrame(), viewModels[i], self)
             tabsStackView.insertArrangedSubview(tabView, at: i)
         }
         view.layoutIfNeeded()
     }
     
-    func tabDidAdd(_ tab: Tab, at index: Int) {
-        let tabView = TabView(frame: calculateNextTabFrame(), tab: tab, delegate: self)
+    func tabDidAdd(_ tab: Tab, at index: Int) async {
+        let vm = await ViewModelFactory.shared.tabViewModel(tab)
+        viewModels.insert(vm, at: index)
+        let tabView = TabView(calculateNextTabFrame(), vm, self)
         add(tabView, at: index)
-    }
-
-    func tabDidReplace(_ tab: Tab, at index: Int) {
-        guard let view = tabsStackView.arrangedSubviews[safe: index], let tabView = view as? TabView else {
-            print("Unknown tab view index \(index) count = \(tabsStackView.arrangedSubviews.count)")
-            return
-        }
-
-        tabView.viewModel = tab
     }
 }
 
 extension TabsViewController: TabDelegate {
-    func tabViewDidClose(_ tabView: TabView) {
-        print("\(#function): closed")
-        removeTabView(tabView)
-        if let site = tabView.viewModel.site {
-            WebViewsReuseManager.shared.removeController(for: site)
-        }
-        TabsListManager.shared.close(tab: tabView.viewModel)
-    }
-    
-    func tabDidBecomeActive(_ tab: Tab) {
-        print("\(#function): selected tab with id: \(tab.id)")
-        TabsListManager.shared.select(tab: tab)
+    func tabViewDidClose(_ tabView: TabView) async {
+        print("\(#function): tab closed")
+        await removeTabView(tabView)
     }
 }
 

@@ -13,10 +13,10 @@ import SwiftUI
 // swiftlint:disable type_name
 struct AppAsyncApiTypeView_Previews: PreviewProvider {
     static var previews: some View {
-        let model: AppAsyncApiTypeModel = .init { (_) in
+        let model: AppAsyncApiTypeModel = .init(nil) { (_) in
             //
         }
-        return BaseMenuView<AsyncApiType>(model: model)
+        return BaseMenuView<AsyncApiType>(viewModel: model)
     }
 }
 #endif

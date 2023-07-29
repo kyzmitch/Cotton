@@ -7,17 +7,21 @@
 //
 
 import Foundation
-import FeaturesFlagsKit
 import CottonBase
 import CottonData
+import CoreBrowser
 
+/// Creates new instances of view models.
+/// Depends on feature flags to determine VM configuration/dependencies.
+///
+/// It doesn't need to be globalActor even tho it is a singleton,
+/// because it doesn't hold the state and vm creation is synchronous.
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
     
     private init() {}
     
-    func searchSuggestionsViewModel() -> SearchSuggestionsViewModel {
-        let searchProviderType = FeatureManager.webSearchAutoCompleteValue()
+    func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) -> SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:
@@ -35,7 +39,7 @@ final class ViewModelFactory {
         }
     }
     
-    func webViewModel(_ site: Site, _ context: WebViewContext) -> WebViewModel {
+    @MainActor func webViewModel(_ site: Site, _ context: WebViewContext) -> WebViewModel {
         // It is the same context for any site or view model
         // maybe it makes sense to use only one
         let stratContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
@@ -44,5 +48,12 @@ final class ViewModelFactory {
         
         let strategy = GoogleDNSStrategy(stratContext)
         return WebViewModelImpl(strategy, site, context)
+    }
+    
+    @MainActor func tabViewModel(_ tab: Tab) async -> TabViewModel {
+        let selectedTabId = await TabsListManager.shared.selectedId
+        let visualState = tab.getVisualState(selectedTabId)
+
+        return await TabViewModel(tab, visualState)
     }
 }

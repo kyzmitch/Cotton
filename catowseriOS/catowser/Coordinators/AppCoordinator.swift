@@ -76,12 +76,11 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         }
     }
     
-    /// UI framework type won't change in runtime, only after app restart, so that, it is const
-    private let uiFramework: UIFrameworkType
+    let uiFramework: UIFrameworkType
     
-    init(_ vcFactory: ViewControllerFactory) {
+    init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
-        uiFramework = FeatureManager.appUIFrameworkValue()
+        self.uiFramework = uiFramework
     }
     
     func start() {
@@ -96,22 +95,29 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             }
         }
         
-        let vc = vcFactory.rootViewController(self)
-        startedVC = vc
-        
-        window.rootViewController = startedVC?.viewController
-        window.makeKeyAndVisible()
-        
-        if case .uiKit = uiFramework {
-            // No need to use this class for other types
-            // of framework like SwiftUI to not do
-            // any not necessary layout.
-            // This will be handled by SwiftUI view model
-            // to not add too many checks in this class
-            TabsListManager.shared.attach(self)
-            jsPluginsBuilder = JSPluginsBuilder()
-                .setBase(self)
-                .setInstagram(self)
+        Task {
+            let defaultTabContent = await DefaultTabProvider.shared.contentState
+            if case .uiKit = uiFramework {
+                /**
+                 No need to use this class for other types
+                 of framework like SwiftUI to not do
+                 any not necessary layout.
+                 This will be handled by SwiftUI view model
+                 to not add too many checks in this class
+                 */
+                jsPluginsBuilder = JSPluginsBuilder()
+                    .setBase(self)
+                    .setInstagram(self)
+            }
+            let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent)
+            startedVC = vc
+            
+            window.rootViewController = startedVC?.viewController
+            window.makeKeyAndVisible()
+            // Now, with introducing the actors model we need to attach observer only after adding all child coordinators
+            if case .uiKit = uiFramework {
+                await TabsListManager.shared.attach(self, notify: true)
+            }
         }
     }
     
@@ -175,9 +181,11 @@ extension AppCoordinator: Navigating {
         // Probably it is not necessary because this is a root
         jsPluginsBuilder = nil
         if case .uiKit = uiFramework {
-            TabsListManager.shared.detach(self)
+            Task {
+                await TabsListManager.shared.detach(self)
+            }
         }
-        // Next line is actually useless, because it is a root
+        // Next line is actually useless, because it is a root coordinator
         parent?.coordinatorDidFinish(self)
     }
 }
@@ -319,7 +327,8 @@ private extension AppCoordinator {
                                                       presenter,
                                                       linkTagsCoordinator,
                                                       self,
-                                                      self)
+                                                      self,
+                                                      uiFramework)
         coordinator.parent = self
         coordinator.start()
         searchBarCoordinator = coordinator
@@ -369,7 +378,7 @@ private extension AppCoordinator {
         let coordinator: MainToolbarCoordinator = .init(vcFactory,
                                                         presenter,
                                                         linkTagsCoordinator,
-                                                        self)
+                                                        self, uiFramework)
         coordinator.parent = self
         coordinator.start()
         toolbarCoordinator = coordinator
@@ -395,9 +404,9 @@ private extension AppCoordinator {
                 assertionFailure("Root view controller must have content view")
                 return
             }
-            coordinator = .init(vcFactory, startedVC, containerView)
+            coordinator = .init(vcFactory, startedVC, containerView, uiFramework)
         case .swiftUIWrapper, .swiftUI:
-            coordinator = .init(vcFactory, startedVC, nil)
+            coordinator = .init(vcFactory, startedVC, nil, uiFramework)
         }
         
         coordinator.parent = self
@@ -589,11 +598,11 @@ private extension AppCoordinator {
 }
 
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(index: Int, content: Tab.ContentType, identifier: UUID) {
+    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         open(tabContent: content)
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) {
+    func tabDidReplace(_ tab: Tab, at index: Int) async {
         switch previousTabContent {
         case .site:
             break
@@ -622,9 +631,14 @@ extension AppCoordinator: GlobalMenuDelegate {
         } else {
             style = .onlyGlobalMenu
         }
-        let menuModel: MenuViewModel = .init(style)
-        menuModel.developerMenuPresenter = self
-        showNext(.menu(menuModel, sourceView, sourceRect))
+        Task {
+            let isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            let isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            let nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            let menuModel: MenuViewModel = .init(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
+            menuModel.developerMenuPresenter = self
+            showNext(.menu(menuModel, sourceView, sourceRect))
+        }
     }
 }
 
@@ -661,7 +675,9 @@ extension AppCoordinator: SearchBarDelegate {
             bottomAnchor = toolbarCoordinator?.startedView?.topAnchor
         }
         let toolbarHeight = toolbarCoordinator?.startedView?.bounds.height
-        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions, topAnchor, bottomAnchor, toolbarHeight))
+        // Not used, can be random
+        let randomValue: WebAutoCompletionSource = .duckduckgo
+        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions(randomValue), topAnchor, bottomAnchor, toolbarHeight))
     }
 }
 

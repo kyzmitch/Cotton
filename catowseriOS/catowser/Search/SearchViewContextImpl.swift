@@ -17,6 +17,8 @@ struct SearchViewContextImpl: SearchViewContext {
     }
     
     var appAsyncApiTypeValue: AsyncApiType {
-        FeatureManager.appAsyncApiTypeValue()
+        get async {
+            await FeatureManager.shared.appAsyncApiTypeValue()
+        }
     }
 }

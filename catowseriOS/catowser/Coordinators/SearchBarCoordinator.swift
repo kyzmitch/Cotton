@@ -12,6 +12,7 @@ import FeaturesFlagsKit
 import BrowserNetworking
 import CottonBase
 
+@MainActor
 protocol SearchBarDelegate: AnyObject {
     func openTab(_ content: Tab.ContentType)
     func layoutSuggestions()
@@ -32,47 +33,37 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     
     private var searhSuggestionsCoordinator: SearchSuggestionsCoordinator?
     
-    private var searchSuggestClient: SearchEngine {
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
-        guard let xmlData = optionalXmlData else {
-            return .googleSearchEngine()
-        }
-        
-        let osDescription: OpenSearch.Description
-        do {
-            osDescription = try OpenSearch.Description(data: xmlData)
-        } catch {
-            print("Open search xml parser error: \(error.localizedDescription)")
-            return .googleSearchEngine()
-        }
-        
-        return osDescription.html
-    }
-    
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String = ""
     /// Tells if coordinator was already started
     private var isSuggestionsShowed: Bool = false
     
+    let uiFramework: UIFrameworkType
+    
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ downloadPanelDelegate: DownloadPanelPresenter?,
          _ globalMenuDelegate: GlobalMenuDelegate?,
-         _ delegate: SearchBarDelegate?) {
+         _ delegate: SearchBarDelegate?,
+         _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.downloadPanelDelegate = downloadPanelDelegate
         self.globalMenuDelegate = globalMenuDelegate
         self.delegate = delegate
+        self.uiFramework = uiFramework
     }
     
     func start() {
         let createdVC: (any AnyViewController)?
         if isPad {
-            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, downloadPanelDelegate, globalMenuDelegate)
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self,
+                                                                        downloadPanelDelegate,
+                                                                        globalMenuDelegate,
+                                                                        uiFramework)
         } else {
-            createdVC = vcFactory.deviceSpecificSearchBarViewController(self)
+            createdVC = vcFactory.deviceSpecificSearchBarViewController(self, uiFramework)
         }
         guard let vc = createdVC, let controllerView = presenterVC?.controllerView else {
             return
@@ -113,7 +104,7 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
-    case suggestions
+    case suggestions(WebAutoCompletionSource)
 }
 
 extension SearchBarCoordinator: Layouting {
@@ -121,8 +112,8 @@ extension SearchBarCoordinator: Layouting {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .suggestions:
-            insertSearchSuggestions()
+        case .suggestions(let provider):
+            insertSearchSuggestions(provider)
         }
     }
     
@@ -179,7 +170,7 @@ private extension SearchBarCoordinator {
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
     }
     
-    func insertSearchSuggestions() {
+    func insertSearchSuggestions(_ providerType: WebAutoCompletionSource) {
         guard !isSuggestionsShowed else {
             return
         }
@@ -188,7 +179,7 @@ private extension SearchBarCoordinator {
         
         // swiftlint:disable:next force_unwrapping
         let presenter = presenterVC!
-        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self)
+        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self, providerType)
         coordinator.parent = self
         coordinator.start()
         searhSuggestionsCoordinator = coordinator
@@ -203,9 +194,9 @@ private extension SearchBarCoordinator {
         searhSuggestionsCoordinator?.stop()
     }
     
-    func replaceTab(with url: URL, with suggestion: String? = nil) {
+    func replaceTab(with url: URL, with suggestion: String? = nil) async {
         let blockPopups = DefaultTabProvider.shared.blockPopups
-        let isJSEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
+        let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let settings = Site.Settings(isPrivate: false,
                                      blockPopups: blockPopups,
                                      isJSEnabled: isJSEnabled,
@@ -224,12 +215,15 @@ extension SearchBarCoordinator: UISearchBarDelegate {
         if searchQuery.isEmpty || searchQuery.looksLikeAURL() {
             showNext(.hideSuggestions)
         } else {
-            insertNext(.suggestions)
-            // Use delegate and not a direct call
-            // because it requires layout info
-            // about neighbour views (anchors and height)
-            delegate?.layoutSuggestions()
-            showNext(.suggestions(searchQuery))
+            Task {
+                let searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+                insertNext(.suggestions(searchProviderType))
+                // Use delegate and not a direct call
+                // because it requires layout info
+                // about neighbour views (anchors and height)
+                delegate?.layoutSuggestions()
+                showNext(.suggestions(searchQuery))
+            }
         }
     }
     
@@ -275,7 +269,9 @@ extension SearchBarCoordinator: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        searchSuggestionDidSelect(content)
+        Task {
+            await searchSuggestionDidSelect(content)
+        }
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -284,7 +280,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
 }
 
 extension SearchBarCoordinator: SearchSuggestionsListDelegate {
-    func searchSuggestionDidSelect(_ content: SuggestionType) {
+    func searchSuggestionDidSelect(_ content: SuggestionType) async {
         showNext(.hideSuggestions)
 
         switch content {
@@ -293,30 +289,39 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
                 assertionFailure("Failed construct site URL using edited URL")
                 return
             }
-            replaceTab(with: url)
+            await replaceTab(with: url)
         case .knownDomain(let domain):
             guard let url = URL(string: "https://\(domain)") else {
                 assertionFailure("Failed construct site URL using domain name")
                 return
             }
-            replaceTab(with: url)
+            await replaceTab(with: url)
         case .suggestion(let suggestion):
-            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
-                assertionFailure("Failed construct search engine url from suggestion string")
-                return
-            }
-            replaceTab(with: url, with: suggestion)
+            await handleSuggestion(suggestion)
         }
     }
 }
 
-extension FeatureManager {
-    static func searchPluginName() -> KnownSearchPluginName {
+extension FeatureManager.FManager {
+    func searchPluginName() -> KnownSearchPluginName {
         switch webSearchAutoCompleteValue() {
         case .google:
             return .google
         case .duckduckgo:
             return .duckduckgo
         }
+    }
+}
+
+// MARK: - Async private methods
+
+private extension SearchBarCoordinator {
+    func handleSuggestion(_ suggestion: String) async {
+        let client = await HttpEnvironment.shared.searchSuggestClient()
+        guard let url = client.searchURLForQuery(suggestion) else {
+            assertionFailure("Failed construct search engine url from suggestion string")
+            return
+        }
+        await replaceTab(with: url, with: suggestion)
     }
 }

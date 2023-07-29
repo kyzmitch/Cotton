@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreBrowser
+import FeaturesFlagsKit
 
 struct TabletView: View {
     // MARK: - view models of subviews
@@ -30,6 +31,8 @@ struct TabletView: View {
     @State private var showingMenu: Bool
     /// Tabs counter
     @State private var tabsCount: Int
+    /// Needs to be fetched from global actor in task to know current value
+    @State private var searchProviderType: WebAutoCompletionSource
     
     // MARK: - web content loading state
     
@@ -51,6 +54,12 @@ struct TabletView: View {
     
     private let mode: SwiftUIMode
     
+    // MARK: - menu
+    
+    @State private var isDohEnabled: Bool
+    @State private var isJavaScriptEnabled: Bool
+    @State private var nativeAppRedirectEnabled: Bool
+    
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
         if let interface = webViewInterface {
@@ -59,16 +68,16 @@ struct TabletView: View {
             style = .onlyGlobalMenu
         }
         
-        return MenuViewModel(style)
+        return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
-    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
+    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode, _ defaultContentType: Tab.ContentType) {
         self.browserContentVM = browserContentVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
         isLoading = true
-        contentType = DefaultTabProvider.shared.contentState
+        self.contentType = defaultContentType
         webViewNeedsUpdate = false
         webViewInterface = nil
         // web content loading state has to be stored here
@@ -86,6 +95,14 @@ struct TabletView: View {
         self.mode = mode
         showingMenu = false
         tabsCount = 0
+        
+        // Next states are set to some random "good" values
+        // because actualy values need to be fetched from Global actor
+        
+        searchProviderType = .google
+        isDohEnabled = false
+        isJavaScriptEnabled = true
+        nativeAppRedirectEnabled = true
     }
     
     var body: some View {
@@ -109,7 +126,7 @@ struct TabletView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView($searchQuery, delegate, mode)
+                SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -131,6 +148,13 @@ struct TabletView: View {
         }
         .onReceive(browserContentVM.$contentType) { searchBarAction = .create($0) }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+        .task {
+            // Fetch data asynhroniously from Global actor:
+            searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+        }
     }
     
     private var fullySwiftUIView: some View {
@@ -144,7 +168,7 @@ struct TabletView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView($searchQuery, delegate, mode)
+                SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -173,6 +197,13 @@ struct TabletView: View {
         }
         .onReceive(browserContentVM.$tabsCount) { tabsCount = $0 }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+        .task {
+            // Fetch data asynhroniously from Global actor:
+            searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+        }
     }
 }
 
@@ -180,8 +211,8 @@ struct TabletView: View {
 struct TabletView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source)
-        TabletView(bvm, .compatible)
+        let bvm: BrowserContentViewModel = .init(source, .blank)
+        TabletView(bvm, .compatible, .blank)
             .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
     }
 }

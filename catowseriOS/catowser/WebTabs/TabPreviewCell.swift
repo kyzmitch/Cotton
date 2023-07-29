@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import ReactiveSwift
 import CoreBrowser
 import FeaturesFlagsKit
 #if canImport(Combine)
 import Combine
 #endif
 import BrowserNetworking
+import CottonBase
 
 fileprivate extension CGFloat {
     static let cornerRadius = CGFloat(6.0)
@@ -38,13 +38,14 @@ fileprivate extension UIBlurEffect.Style {
     static let tabTitleBlur: UIBlurEffect.Style = .extraLight
 }
 
+@MainActor
 protocol TabPreviewCellDelegate: AnyObject {
-    func tabCellDidClose(at index: Int)
+    func tabCellDidClose(at index: Int) async
 }
 
-final class TabPreviewCell: UICollectionViewCell, ReusableItem {
+final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageViewable {
 
-    static let borderWidth: CGFloat = 3
+    static let borderWidth: CGFloat = 0.5
 
     static func cellHeightForCurrent(_ traitCollection: UITraitCollection) -> CGFloat {
         let shortHeight = CGFloat.textBoxHeight * 6
@@ -63,22 +64,20 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
 
     private weak var delegate: TabPreviewCellDelegate?
 
-    private var siteTitleDisposable: Disposable?
-    
-    private lazy var imageURLRequestCancellable: AnyCancellable? = nil
-
     private let backgroundHolder: UIView = {
         let view = UIView()
         view.layer.cornerRadius = .cornerRadius
         view.layer.masksToBounds = true
         view.backgroundColor = .cellBackground
+        view.layer.borderColor = #colorLiteral(red: 0.4509803922, green: 0.4509803922, blue: 0.4509803922, alpha: 1).cgColor
+        view.layer.borderWidth = borderWidth
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     private let screenshotView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleToFill
         view.clipsToBounds = true
         view.isUserInteractionEnabled = false
         view.backgroundColor = .browserBackground
@@ -96,15 +95,6 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         return label
     }()
 
-    private let faviconImageView: UIImageView = {
-        let favicon = UIImageView()
-        favicon.backgroundColor = UIColor.clear
-        favicon.layer.cornerRadius = 2.0
-        favicon.layer.masksToBounds = true
-        favicon.translatesAutoresizingMaskIntoConstraints = false
-        return favicon
-    }()
-
     private let closeButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "tabClose"), for: [])
@@ -117,6 +107,19 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
     }()
 
     private let titleEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .tabTitleBlur))
+    
+    // MARK: - FaviconImageViewable
+    
+    let faviconImageView: UIImageView = {
+        let favicon = UIImageView()
+        favicon.backgroundColor = UIColor.clear
+        favicon.layer.cornerRadius = 2.0
+        favicon.layer.masksToBounds = true
+        favicon.translatesAutoresizingMaskIntoConstraints = false
+        return favicon
+    }()
+    
+    // MARK: - init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -169,26 +172,23 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        siteTitleDisposable?.dispose()
-    }
-
     @objc func close() {
         print("tab preview cell \(#function)")
-        tabIndex.map { delegate?.tabCellDidClose(at: $0) }
+        guard let closedIndex = tabIndex else {
+            return
+        }
+        Task {
+            await delegate?.tabCellDidClose(at: closedIndex)
+        }
     }
 
     func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
+        // `TabViewModel` can be used instead, but cell view init doesn't allow to inject it normally
         var tabCopy = tab
         screenshotView.image = tabCopy.preview
         
         titleText.text = tab.title
-        siteTitleDisposable?.dispose()
-        siteTitleDisposable = tab.titleSignal
-            .observe(on: UIScheduler())
-            .observeValues { [weak self] siteTitle in
-                self?.titleText.text = siteTitle
-        }
+        titleText.text = tab.contentType.title
         
         self.tabIndex = index
         self.delegate = delegate
@@ -197,37 +197,9 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem {
             return
         }
         
-        if #available(iOS 13.0, *) {
-            let subscriber = HttpEnvironment.shared.dnsClientSubscriber
-
-            imageURLRequestCancellable?.cancel()
-            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure:
-                        // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
-                        break
-                    default: break
-                    }
-                }, receiveValue: { [weak self] (url) in
-                    self?.faviconImageView.updateImage(from: .url(url))
-                })
-        } else {
-            let source: ImageSource
-            switch (site.faviconURL, site.favicon()) {
-            case (let url?, nil):
-                source = .url(url)
-            case (nil, let image?):
-                source = .image(image)
-            case (let url?, let image?):
-                source = .urlWithPlaceholder(url, image)
-            default:
-                return
-            }
-            faviconImageView.updateImage(from: source)
+        Task {
+            let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            await reloadImageWith(site, useDoH)
         }
-        
     }
 }

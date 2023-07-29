@@ -17,6 +17,7 @@ struct NotSelectedIndex: Error {}
 struct OutOfBoundsIndex: Error {}
 
 /// The class to control memory usage by managing reusage of web views
+@MainActor
 final class WebViewsReuseManager {
     /// Web view controllers array, array is used to have ordering and current index
     /// But NSMapTable could be better by using Sites as keys for web views.

@@ -8,12 +8,12 @@
 
 import CoreBrowser
 
-typealias TabDefaultContentModel = BaseListModelImpl<TabContentDefaultState>
+typealias TabDefaultContentModel = BaseListViewModelImpl<TabContentDefaultState>
 
-extension BaseListModelImpl where EnumDataSourceType == TabContentDefaultState {
-    init(_ completion: @escaping PopClosure) {
-        self.init(NSLocalizedString("ttl_tab_default_content", comment: ""),
-                  completion)
+extension BaseListViewModelImpl where EnumDataSourceType == TabContentDefaultState {
+    init( _ selected: EnumDataSourceType?, _ completion: @escaping PopClosure) {
+        let title = NSLocalizedString("ttl_tab_default_content", comment: "")
+        self.init(title, completion, selected)
     }
 }
 

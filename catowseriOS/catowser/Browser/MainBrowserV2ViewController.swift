@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import CoreBrowser
 
 /**
  A replacement for the native SwiftUI starting point:
@@ -33,11 +34,11 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     /// Store it in uikit view controller to not re-create view model after every redraw of main view in SwiftUI
     private let viewModel: MainBrowserModel<C>
     
-    init(_ coordinator: C) {
+    init(_ coordinator: C, _ uiFramework: UIFrameworkType, _ defaultContentType: Tab.ContentType) {
         self.coordinator = coordinator
         viewModel = .init(coordinator)
         
-        let view = MainBrowserView(viewModel)
+        let view = MainBrowserView(viewModel, uiFramework, defaultContentType)
         super.init(rootView: view)
     }
     

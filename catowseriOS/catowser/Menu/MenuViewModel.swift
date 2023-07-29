@@ -24,6 +24,7 @@ protocol DeveloperMenuPresenter: AnyObject {
     func host(_ host: Host, willUpdateJsState enabled: Bool)
 }
 
+@MainActor
 final class MenuViewModel: ObservableObject {
     // MARK: - global settings
     
@@ -73,7 +74,11 @@ final class MenuViewModel: ObservableObject {
     
     // MARK: - init
     
-    init(_ menuStyle: BrowserMenuStyle) {
+    /// Depends on menu style and initial values of feaure flags
+    init(_ menuStyle: BrowserMenuStyle,
+         _ isDohEnabled: Bool,
+         _ isJavaScriptEnabled: Bool,
+         _ nativeAppRedirectEnabled: Bool) {
         style = menuStyle
         switch menuStyle {
         case .withSiteMenu(_, let settings):
@@ -81,18 +86,26 @@ final class MenuViewModel: ObservableObject {
         case .onlyGlobalMenu:
             isTabJSEnabled = true
         }
-        isDohEnabled = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-        isJavaScriptEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
-        nativeAppRedirectEnabled = FeatureManager.boolValue(of: .nativeAppRedirect)
+        self.isDohEnabled = isDohEnabled
+        self.isJavaScriptEnabled = isJavaScriptEnabled
+        self.nativeAppRedirectEnabled = nativeAppRedirectEnabled
         
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled
             .dropFirst()
-            .sink { FeatureManager.setFeature(.dnsOverHTTPSAvailable, value: $0) }
+            .sink { value in
+                Task {
+                    await FeatureManager.shared.setFeature(.dnsOverHTTPSAvailable, value: value)
+                }
+            }
         jsEnabledOptionCancellable = $isJavaScriptEnabled
             .dropFirst()
-            .sink { FeatureManager.setFeature(.javaScriptEnabled, value: $0) }
+            .sink { value in
+                Task {
+                    await FeatureManager.shared.setFeature(.javaScriptEnabled, value: value)
+                }
+            }
         tabjsEnabledCancellable = $isTabJSEnabled
             .sink(receiveValue: { [weak self] newValue in
                 guard let self = self else {
@@ -105,7 +118,11 @@ final class MenuViewModel: ObservableObject {
             })
         nativeAppRedirectCancellable = $nativeAppRedirectEnabled
             .dropFirst()
-            .sink { FeatureManager.setFeature(.nativeAppRedirect, value: $0) }
+            .sink { value in
+                Task {
+                    await FeatureManager.shared.setFeature(.nativeAppRedirect, value: value)
+                }
+            }
     }
     
     deinit {

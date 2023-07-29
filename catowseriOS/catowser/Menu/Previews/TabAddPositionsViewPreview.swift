@@ -15,10 +15,10 @@ import SwiftUI
 // swiftlint:disable type_name
 struct TabAddPositionsView_Previews: PreviewProvider {
     static var previews: some View {
-        let model: TabAddPositionsModel = .init { (_) in
+        let model: TabAddPositionsModel = .init(nil) { (_) in
             // 
         }
-        return BaseMenuView<AddedTabPosition>(model: model)
+        return BaseMenuView<AddedTabPosition>(viewModel: model)
     }
 }
 #endif

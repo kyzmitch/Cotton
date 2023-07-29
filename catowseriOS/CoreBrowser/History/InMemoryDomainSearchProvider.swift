@@ -9,32 +9,38 @@
 import Foundation
 import CottonBase
 
+private let filename = "topdomains"
+
+@globalActor
 public final class InMemoryDomainSearchProvider {
-    public static let shared = InMemoryDomainSearchProvider()
+    public static let shared = Provider()
     
-    fileprivate let storage: Trie
-    fileprivate let filename = "topdomains"
+    public actor Provider {
+        fileprivate let storage: Trie
 
-    private init() {
-        storage = Trie()
-        let bundle = Bundle(for: InMemoryDomainSearchProvider.self)
-        
-        guard let filePath = bundle.path(forResource: filename, ofType: "txt") else {
-            assertionFailure("Failed to find \"\(filename)\" file in framework bundle")
-            return
-        }
+        init() {
+            storage = Trie()
+            let bundle = Bundle(for: Provider.self)
+            
+            guard let filePath = bundle.path(forResource: filename, ofType: "txt") else {
+                assertionFailure("Failed to find \"\(filename)\" file in framework bundle")
+                return
+            }
 
-        do {
-            let topDomains: [String] = try String(contentsOfFile: filePath).components(separatedBy: "\n")
-            topDomains.forEach { self.storage.insert(word: $0) }
-        } catch {
-            assertionFailure("Failed to create string from file")
+            do {
+                let topDomains: [String] = try String(contentsOfFile: filePath).components(separatedBy: "\n")
+                for domain in topDomains {
+                    storage.insert(word: domain)
+                }
+            } catch {
+                assertionFailure("Failed to create string from file")
+            }
         }
     }
 }
 
-extension InMemoryDomainSearchProvider: DomainsHistory {
-    public func remember(host: CottonBase.Host) {
+extension InMemoryDomainSearchProvider.Provider: DomainsHistory {
+    public func remember(host: CottonBase.Host) async {
         storage.insert(word: host.rawString)
         if let withoutWww = host.rawString.withoutPrefix("www.") {
             storage.insert(word: withoutWww)
@@ -42,8 +48,8 @@ extension InMemoryDomainSearchProvider: DomainsHistory {
     }
 }
 
-extension InMemoryDomainSearchProvider: KnownDomainsSource {
-    public func domainNames(whereURLContains filter: String) -> [String] {
+extension InMemoryDomainSearchProvider.Provider: KnownDomainsSource {
+    public func domainNames(whereURLContains filter: String) async -> [String] {
         let words: [String] = storage.findWordsWithPrefix(prefix: filter)
         return words
     }
