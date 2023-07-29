@@ -52,6 +52,9 @@ public actor TabsListManager {
         self.positioning = positioning
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
+        
+        // https://forums.swift.org/t/how-do-you-use-asyncstream-to-make-task-execution-deterministic/57968/2
+        
         self.selectedTabIdStream = UUIDStream { continuation in
             // A hack to be able to send values outside of the closure
             selectedTabIdInput = continuation

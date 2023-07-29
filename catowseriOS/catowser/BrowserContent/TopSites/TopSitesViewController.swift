@@ -74,7 +74,7 @@ where C.R == TopSitesRoute {
             return
         }
 
-        // TODO: for some reason this is not called, but coordinator is not nil
+        // TODO: for some reason this is not called after you remove tab with site
         coordinator?.showNext(.select(site))
     }
 }
