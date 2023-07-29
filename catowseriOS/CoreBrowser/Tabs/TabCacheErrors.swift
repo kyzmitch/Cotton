@@ -20,7 +20,7 @@ public enum TabResourceError: Swift.Error {
 
 public enum TabStorageError: Swift.Error {
     case zombieSelf
-    case dbResourceError(TabResourceError)
+    case dbResourceError(Error)
     case notImplemented
     case notFound
 }

@@ -9,6 +9,7 @@
 import UIKit
 import CottonData
 import FeaturesFlagsKit
+import CoreBrowser
 
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
@@ -23,11 +24,16 @@ import FeaturesFlagsKit
 
 /// Declares an interface for operations that create abstract product objects.
 /// View controllers factory which doesn't depend on device type (phone or tablet)
+@MainActor
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController
+    func rootViewController(_ coordinator: AppCoordinator,
+                            _ uiFramework: UIFrameworkType,
+                            _ defaultContentType: Tab.ContentType) -> AnyViewController
 
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController
-    func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                 _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
+    func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
+                                         _ searchProviderType: WebAutoCompletionSource) -> AnyViewController
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
                                           _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
@@ -48,11 +54,13 @@ protocol ViewControllerFactory: AnyObject {
     /// Convinience property to get a reference without input parameters
     var createdToolbaViewController: UIViewController? { get }
     /// WIll return nil on Tablet
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> AnyViewController?
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController?
     /// Will return nil on Phone
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
-                                               _ settingsDelegate: GlobalMenuDelegate?) -> AnyViewController?
+                                               _ settingsDelegate: GlobalMenuDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController?
     /// WIll return nil on Tablet. Should re-create tabs every time to update them
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
@@ -69,27 +77,31 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator) -> AnyViewController {
+    func rootViewController(_ coordinator: AppCoordinator,
+                            _ uiFramework: UIFrameworkType,
+                            _ defaultContentType: Tab.ContentType) -> AnyViewController {
         let vc: AnyViewController
-        switch FeatureManager.appUIFrameworkValue() {
+        switch uiFramework {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:
-            vc = MainBrowserV2ViewController(coordinator)
+            vc = MainBrowserV2ViewController(coordinator, uiFramework, defaultContentType)
         }
         return vc
     }
     
-    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?) -> SearchBarBaseViewController {
-        let vc: SearchBarBaseViewController = .init(searchBarDelegate)
+    func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                 _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController {
+        let vc: SearchBarBaseViewController = .init(searchBarDelegate, uiFramework)
         return vc
     }
     
-    func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?) -> AnyViewController {
+    func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
+                                         _ searchProviderType: WebAutoCompletionSource) -> AnyViewController {
         // It seems it should be computed property
         // to allow app. to use different view model
         // based on current feature flag's value
-        let vc: SearchSuggestionsViewController = .init(delegate)
+        let vc: SearchSuggestionsViewController = .init(delegate, searchProviderType)
         return vc
     }
     

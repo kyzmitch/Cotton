@@ -20,15 +20,16 @@ final class TopSitesCoordinator: Coordinator {
     var navigationStack: UINavigationController?
     
     private let contentContainerView: UIView?
-    private let uiFramework: UIFrameworkType
+    let uiFramework: UIFrameworkType
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController?,
-         _ contentContainerView: UIView?) {
+         _ contentContainerView: UIView?,
+         _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.contentContainerView = contentContainerView
-        uiFramework = FeatureManager.appUIFrameworkValue()
+        self.uiFramework = uiFramework
     }
     
     func start() {
@@ -40,15 +41,18 @@ final class TopSitesCoordinator: Coordinator {
         }
         let vc = vcFactory.topSitesViewController(self)
         startedVC = vc
-        vc.reload(with: DefaultTabProvider.shared.topSites)
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-        
-        let topSitesView: UIView = vc.controllerView
-        topSitesView.translatesAutoresizingMaskIntoConstraints = false
-        topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
-        topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
-        topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
-        topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
+        Task {
+            let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            vc.reload(with: DefaultTabProvider.shared.topSites(isJsEnabled))
+            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
+            
+            let topSitesView: UIView = vc.controllerView
+            topSitesView.translatesAutoresizingMaskIntoConstraints = false
+            topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
+            topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
+            topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
+            topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
+        }
     }
 }
 
@@ -63,7 +67,13 @@ extension TopSitesCoordinator: Navigating {
         switch route {
         case .select(let site):
             // Open selected top site
-            try? TabsListManager.shared.replaceSelected(.site(site))
+            Task {
+                do {
+                    try await TabsListManager.shared.replaceSelected(.site(site))
+                } catch {
+                    print("Fail to replace selected tab: \(error)")
+                }
+            }
         }
     }
     

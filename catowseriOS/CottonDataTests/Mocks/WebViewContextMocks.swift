@@ -46,15 +46,15 @@ final class MockedWebViewContext: WebViewContext {
         return host.isSimilar(name: value) ? appName : nil
     }
     
-    public func isJavaScriptEnabled() -> Bool {
+    public func isJavaScriptEnabled() async -> Bool {
         return enableJS
     }
     
-    public func isDohEnabled() -> Bool {
+    public func isDohEnabled() async -> Bool {
         return enableDoH
     }
     
-    public func allowNativeAppRedirects() -> Bool {
+    public func allowNativeAppRedirects() async -> Bool {
         return nativeAppRedirect
     }
     
@@ -62,7 +62,7 @@ final class MockedWebViewContext: WebViewContext {
         return asyncApiType
     }
     
-    public func updateTabContent(_ site: Site) throws {
+    public func updateTabContent(_ site: Site) async throws {
         // Do nothing
     }
 }

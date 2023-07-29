@@ -8,9 +8,10 @@
 
 import UIKit
 import ReactiveSwift
+import FeaturesFlagsKit
 
 protocol SearchSuggestionsControllerInterface: AnyObject {
-    func prepareSearch(for searchQuery: String)
+    func prepareSearch(for searchQuery: String) async
 }
 
 final class SearchSuggestionsCoordinator: Coordinator {
@@ -32,21 +33,28 @@ final class SearchSuggestionsCoordinator: Coordinator {
         }
     }
     private var disposables = [Disposable?]()
+    private let providerType: WebAutoCompletionSource
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController,
-         _ delegate: SearchSuggestionsListDelegate) {
+         _ delegate: SearchSuggestionsListDelegate,
+         _ providerType: WebAutoCompletionSource) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
+        self.providerType = providerType
     }
     
     func start() {
+        // Used to be an async function
+        internalStart(providerType)
+    }
+    
+    private func internalStart(_ searchProviderType: WebAutoCompletionSource) {
         guard let controllerView = presenterVC?.controllerView else {
             return
         }
-        
-        let vc = vcFactory.searchSuggestionsViewController(delegate)
+        let vc = vcFactory.searchSuggestionsViewController(delegate, searchProviderType)
         startedVC = vc
         // adds suggestions view to root view controller
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)
@@ -85,7 +93,9 @@ extension SearchSuggestionsCoordinator: Navigating {
             guard let interface = startedVC?.viewController as? SearchSuggestionsControllerInterface else {
                 return
             }
-            interface.prepareSearch(for: searchQuery)
+            Task {
+                await interface.prepareSearch(for: searchQuery)
+            }
         }
     }
     
@@ -120,7 +130,7 @@ extension SearchSuggestionsCoordinator: Layouting {
 }
 
 private extension SearchSuggestionsCoordinator {
-    func keyboardWillChangeFrameClosure() -> (Notification) -> Void {
+    func keyboardWillChangeFrameClosure() -> @MainActor (Notification) -> Void {
         func handling(_ notification: Notification) {
             guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
             guard let value = info as? NSValue else { return }
@@ -133,7 +143,7 @@ private extension SearchSuggestionsCoordinator {
         return handling
     }
 
-    func keyboardWillHideClosure() -> (Notification) -> Void {
+    func keyboardWillHideClosure() -> @MainActor (Notification) -> Void {
         func handling(_ notification: Notification) {
             _keyboardHeight = nil
         }

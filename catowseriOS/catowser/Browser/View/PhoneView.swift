@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreBrowser
+import FeaturesFlagsKit
 
 struct PhoneView: View {
     // MARK: - view models of subviews
@@ -26,6 +27,8 @@ struct PhoneView: View {
     @State private var showSearchSuggestions: Bool
     /// Search query string state which is set by SearchBar and used by SearchSuggestions
     @State private var searchQuery: String
+    /// Needs to be fetched from global actor in task to know current value
+    @State private var searchProviderType: WebAutoCompletionSource
     
     // MARK: - web content loading state
     
@@ -35,7 +38,7 @@ struct PhoneView: View {
     // MARK: - browser content state
     
     @State private var isLoading: Bool
-    @State private var contentType: Tab.ContentType
+    @State private var contentType: Tab.ContentType = .blank
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool
     
@@ -54,6 +57,12 @@ struct PhoneView: View {
     @State private var showingTabs: Bool
     @State private var tabsCount: Int
     
+    // MARK: - menu
+    
+    @State private var isDohEnabled: Bool
+    @State private var isJavaScriptEnabled: Bool
+    @State private var nativeAppRedirectEnabled: Bool
+    
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
         if let interface = webViewInterface {
@@ -62,7 +71,7 @@ struct PhoneView: View {
             style = .onlyGlobalMenu
         }
         
-        return MenuViewModel(style)
+        return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
     init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
@@ -71,7 +80,6 @@ struct PhoneView: View {
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
         isLoading = true
-        contentType = DefaultTabProvider.shared.contentState
         webViewNeedsUpdate = false
         webViewInterface = nil
         // web content loading state has to be stored here
@@ -96,6 +104,14 @@ struct PhoneView: View {
         tabsCount = 0
         showingMenu = false
         showingTabs = false
+        
+        // Next states are set to some random "good" values
+        // because actualy values need to be fetched from Global actor
+        
+        searchProviderType = .google
+        isDohEnabled = false
+        isJavaScriptEnabled = true
+        nativeAppRedirectEnabled = true
     }
     
     var body: some View {
@@ -117,7 +133,7 @@ struct PhoneView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView($searchQuery, delegate, mode)
+                SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -139,6 +155,14 @@ struct PhoneView: View {
             contentType = value
         }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+        .task {
+            // Fetch data asynhroniously from Global actor:
+            searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            contentType = await DefaultTabProvider.shared.contentState
+        }
     }
     
     private var fullySwiftUIView: some View {
@@ -151,7 +175,7 @@ struct PhoneView: View {
                 }
                 if showSearchSuggestions {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
-                    SearchSuggestionsView($searchQuery, delegate, mode)
+                    SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -194,6 +218,14 @@ struct PhoneView: View {
             }
         }
         .onReceive(browserContentVM.$loading.dropFirst()) { isLoading = $0 }
+        .task {
+            // Fetch data asynhroniously from Global actor:
+            searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
+            isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+            nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            contentType = await DefaultTabProvider.shared.contentState
+        }
     }
 }
 
@@ -201,7 +233,7 @@ struct PhoneView: View {
 struct PhoneView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source)
+        let bvm: BrowserContentViewModel = .init(source, .blank)
         PhoneView(bvm, .full)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }

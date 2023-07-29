@@ -9,12 +9,14 @@
 import UIKit
 import AlamofireImage
 import Alamofire
+import FeaturesFlagsKit
+import CoreBrowser
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Should be stored by strong reference, because it is the only owner of App coordinator
-    private let appCoordinator: AppCoordinator = .init(ViewsEnvironment.shared.vcFactory)
+    private var appCoordinator: AppCoordinator?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -32,7 +34,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
         
-        appCoordinator.start()
+        return start()
+    }
+}
+
+private extension AppDelegate {
+    func start() -> Bool {
+        Task {
+            // Init database for tabs first
+            _ = await TabsListManager.shared
+            // Now can start UI
+            let value = await FeatureManager.shared.appUIFrameworkValue()
+            appCoordinator = AppCoordinator(ViewsEnvironment.shared.vcFactory, value)
+            appCoordinator?.start()
+        }
         return true
     }
 }

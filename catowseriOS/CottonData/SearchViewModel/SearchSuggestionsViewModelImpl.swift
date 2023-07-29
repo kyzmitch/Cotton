@@ -15,7 +15,7 @@ import AutoMockable
 
 /// This is only needed now to not have a direct dependency on FutureManager
 public protocol SearchViewContext: AutoMockable {
-    var appAsyncApiTypeValue: AsyncApiType { get }
+    var appAsyncApiTypeValue: AsyncApiType { get async }
     var knownDomainsStorage: KnownDomainsSource { get }
 }
 
@@ -28,6 +28,7 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
     // MARK: - state observers
     
     public let rxState: MutableProperty<SearchSuggestionsViewState>
+    /// Can be replaced with @Published
     public let combineState: CurrentValueSubject<SearchSuggestionsViewState, Never>
     /// Using `Published` property wrapper from not related SwiftUI for now
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -62,10 +63,9 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
 
 extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     // swiftlint:disable:next function_body_length
-    public func fetchSuggestions(_ query: String) {
-        let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
-        
-        let apiType = searchContext.appAsyncApiTypeValue
+    public func fetchSuggestions(_ query: String) async {
+        let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
+        let apiType = await searchContext.appAsyncApiTypeValue
         switch apiType {
         case .reactive:
             rxState.value = .knownDomainsLoaded(domainNames)
@@ -97,27 +97,19 @@ extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
                     self?.combineState.value = .everythingLoaded(domainNames, suggestions)
                 })
         case .asyncAwait:
-            if #available(iOS 15.0, *) {
-#if swift(>=5.5)
-                state = .knownDomainsLoaded(domainNames)
-                searchSuggestionsTaskHandler?.cancel()
-                Task {
-                    let suggestions = try await autocomplete.aaFetchSuggestions(query)
-                    await MainActor.run {
-                        state = .everythingLoaded(domainNames, suggestions)
-                    }
-                }
-#else
-                assertionFailure("Swift version isn't 5.5")
-#endif
-            } else {
-                assertionFailure("iOS version is not >= 15.x")
+            state = .knownDomainsLoaded(domainNames)
+            searchSuggestionsTaskHandler?.cancel()
+            do {
+                let suggestions = try await autocomplete.aaFetchSuggestions(query)
+                state = .everythingLoaded(domainNames, suggestions)
+            } catch {
+                state = .everythingLoaded(domainNames, [])
             }
         }
     }
     
     public func aaFetchSuggestions(_ query: String) async -> SearchSuggestionsViewState {
-        let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
+        let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
         do {
             let suggestions = try await autocomplete.aaFetchSuggestions(query)
             return .everythingLoaded(domainNames, suggestions)

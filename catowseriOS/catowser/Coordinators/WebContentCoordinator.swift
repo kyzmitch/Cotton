@@ -36,7 +36,7 @@ final class WebContentCoordinator: Coordinator {
         }
     }
     private weak var delegate: WebContentDelegate?
-    /// Points to web view controller
+    /// Points to web view controller, can be a strong reference, because it is the same with `startedVC`
     private var sitePresenter: WebViewNavigatable?
     
     init(_ vcFactory: ViewControllerFactory,
@@ -135,10 +135,6 @@ extension WebContentCoordinator: SiteExternalNavigationDelegate {
     
     func showLoadingProgress(_ show: Bool) {
         delegate?.showLoadingProgress(show)
-    }
-    
-    func didTabPreviewChange(_ screenshot: UIImage) {
-        try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
     
     func webViewDidHandleReuseAction() {

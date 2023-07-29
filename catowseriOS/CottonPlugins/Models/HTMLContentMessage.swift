@@ -18,7 +18,7 @@ struct HTMLContentMessage: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let hostnameString = try container.decode(String.self, forKey: .hostname)
         guard let kitHost = try? CottonBase.Host(input: hostnameString) else {
-            throw CottonError.parseHost
+            throw CottonPluginError.parseHost
         }
         hostname = kitHost
         let htmlString = try container.decode(String.self, forKey: .htmlString)

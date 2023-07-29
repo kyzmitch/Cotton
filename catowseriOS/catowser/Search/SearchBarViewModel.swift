@@ -17,6 +17,7 @@ import CottonBase
 /// and at the same time it implements `SearchSuggestionsListDelegate`
 /// and `UISearchBarDelegate` which couldn't be implemented in SwiftUI view.
 /// This class is only needed for SwiftUI mode when it uses old UKit view controller.
+@MainActor
 final class SearchBarViewModel: NSObject, ObservableObject {
     /// Based on values from observed delegates and search bar state it is possible to tell
     /// if search suggestions view can be showed or no.
@@ -29,23 +30,6 @@ final class SearchBarViewModel: NSObject, ObservableObject {
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String
     
-    private var searchSuggestClient: SearchEngine {
-        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: FeatureManager.searchPluginName(), on: .main)
-        guard let xmlData = optionalXmlData else {
-            return .googleSearchEngine()
-        }
-        
-        let osDescription: OpenSearch.Description
-        do {
-            osDescription = try OpenSearch.Description(data: xmlData)
-        } catch {
-            print("Open search xml parser error: \(error.localizedDescription)")
-            return .googleSearchEngine()
-        }
-        
-        return osDescription.html
-    }
-    
     override init() {
         showSearchSuggestions = false
         searchQuery = ""
@@ -56,9 +40,8 @@ final class SearchBarViewModel: NSObject, ObservableObject {
 }
 
 private extension SearchBarViewModel {
-    func replaceTab(with url: URL, with suggestion: String? = nil) {
+    func replaceTab(with url: URL, with suggestion: String? = nil, _ isJSEnabled: Bool) async {
         let blockPopups = DefaultTabProvider.shared.blockPopups
-        let isJSEnabled = FeatureManager.boolValue(of: .javaScriptEnabled)
         let settings = Site.Settings(isPrivate: false,
                                      blockPopups: blockPopups,
                                      isJSEnabled: isJSEnabled,
@@ -67,32 +50,35 @@ private extension SearchBarViewModel {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }
-        try? TabsListManager.shared.replaceSelected(.site(site))
+        try? await TabsListManager.shared.replaceSelected(.site(site))
     }
 }
 
 extension SearchBarViewModel: SearchSuggestionsListDelegate {
-    func searchSuggestionDidSelect(_ content: SuggestionType) {
+    func searchSuggestionDidSelect(_ content: SuggestionType) async {
         showSearchSuggestions = false
+        
+        let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         switch content {
         case .looksLikeURL(let likeURL):
             guard let url = URL(string: likeURL) else {
                 assertionFailure("Failed construct site URL using edited URL")
                 return
             }
-            replaceTab(with: url)
+             await replaceTab(with: url, with: nil, isJSEnabled)
         case .knownDomain(let domain):
             guard let url = URL(string: "https://\(domain)") else {
                 assertionFailure("Failed construct site URL using domain name")
                 return
             }
-            replaceTab(with: url)
+            await replaceTab(with: url, with: nil, isJSEnabled)
         case .suggestion(let suggestion):
-            guard let url = searchSuggestClient.searchURLForQuery(suggestion) else {
+            let client = await HttpEnvironment.shared.searchSuggestClient()
+            guard let url = client.searchURLForQuery(suggestion) else {
                 assertionFailure("Failed construct search engine url from suggestion string")
                 return
             }
-            replaceTab(with: url, with: suggestion)
+            await replaceTab(with: url, with: suggestion, isJSEnabled)
         }
     }
 }
@@ -149,7 +135,9 @@ extension SearchBarViewModel: UISearchBarDelegate {
             // and specific search queue
             content = .suggestion(text)
         }
-        searchSuggestionDidSelect(content)
+        Task {
+            await searchSuggestionDidSelect(content)
+        }
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {

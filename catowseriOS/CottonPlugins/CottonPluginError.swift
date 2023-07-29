@@ -1,5 +1,5 @@
 //
-//  JSPluginsError.swift
+//  CottonPluginError.swift
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 5/30/22.
@@ -8,11 +8,14 @@
 
 import Foundation
 
-enum JSPluginsError: LocalizedError {
+enum CottonPluginError: Error {
     case zombiError
     case nilJSEvaluationResult
     case jsEvaluationIsNotString
     case jsEvaluationIsNotURL
+    case parseError
+    case emptyHtml
+    case noVideoTags
+    case parseHost
+    case notExpectedKey
 }
-
-struct EvalError: Error {}

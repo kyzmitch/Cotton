@@ -13,15 +13,18 @@ struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
     
     @Binding private var searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
+    private let searchProviderType: WebAutoCompletionSource
     
     init(_ searchQuery: Binding<String>,
-         _ delegate: SearchSuggestionsListDelegate?) {
+         _ delegate: SearchSuggestionsListDelegate?,
+         _ searchProviderType: WebAutoCompletionSource) {
         _searchQuery = searchQuery
         self.delegate = delegate
+        self.searchProviderType = searchProviderType
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        let vc = vcFactory.searchSuggestionsViewController(delegate)
+        let vc = vcFactory.searchSuggestionsViewController(delegate, searchProviderType)
         return vc.viewController
     }
     
@@ -29,6 +32,8 @@ struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
         guard let interface = uiViewController as? SearchSuggestionsControllerInterface else {
             return
         }
-        interface.prepareSearch(for: searchQuery)
+        Task {
+            await interface.prepareSearch(for: searchQuery)
+        }
     }
 }

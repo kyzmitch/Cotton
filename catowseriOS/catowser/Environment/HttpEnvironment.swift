@@ -8,8 +8,11 @@
 
 import Foundation
 import CottonRestKit
+import CoreBrowser
 import BrowserNetworking
 import Alamofire // only needed for `JSONEncoding`
+import BrowserNetworking
+import FeaturesFlagsKit
 
 final class HttpEnvironment {
     static let shared: HttpEnvironment = .init()
@@ -53,6 +56,24 @@ final class HttpEnvironment {
                                  jsonEncoder: JSONEncoding.default,
                                  reachability: ddGoAlReachability,
                                  httpTimeout: 10)
+    }
+    
+    func searchSuggestClient() async -> SearchEngine {
+        let selectedPluginName = await FeatureManager.shared.searchPluginName()
+        let optionalXmlData = ResourceReader.readXmlSearchPlugin(with: selectedPluginName, on: .main)
+        guard let xmlData = optionalXmlData else {
+            return .googleSearchEngine()
+        }
+        
+        let osDescription: OpenSearch.Description
+        do {
+            osDescription = try OpenSearch.Description(data: xmlData)
+        } catch {
+            print("Open search xml parser error: \(error.localizedDescription)")
+            return .googleSearchEngine()
+        }
+        
+        return osDescription.html
     }
 }
 

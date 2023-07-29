@@ -9,12 +9,12 @@
 import Foundation
 import CoreBrowser
 
-typealias TabAddPositionsModel = BaseListModelImpl<AddedTabPosition>
+typealias TabAddPositionsModel = BaseListViewModelImpl<AddedTabPosition>
 
-extension BaseListModelImpl where EnumDataSourceType == AddedTabPosition {
-    init(_ completion: @escaping PopClosure) {
-        self.init(NSLocalizedString("ttl_tab_positions", comment: ""),
-                  completion)
+extension BaseListViewModelImpl where EnumDataSourceType == AddedTabPosition {
+    init(_ selected: EnumDataSourceType?, _ completion: @escaping PopClosure) {
+        let localizedTitle = NSLocalizedString("ttl_tab_positions", comment: "")
+        self.init(localizedTitle, completion, selected)
     }
 }
 

@@ -10,7 +10,6 @@ import Foundation
 import CottonBase
 import CottonPlugins
 import FeaturesFlagsKit
-import ReactiveSwift
 import Combine
 import WebKit
 
@@ -29,6 +28,7 @@ public protocol NavigationActionable: AnyObject {
     var request: URLRequest { get }
 }
 
+@MainActor
 public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
@@ -55,9 +55,7 @@ public protocol WebViewModel: AnyObject {
     var isResetable: Bool { get }
     
     // MARK: - main state observers
-    
-    var rxWebPageState: MutableProperty<WebPageLoadingAction> { get }
-    var combineWebPageState: CurrentValueSubject<WebPageLoadingAction, Never> { get }
+
     /// wrapped value for Published
     var webPageState: WebPageLoadingAction { get }
     var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { get }

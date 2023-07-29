@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 final class ViewsEnvironment {
     static let shared: ViewsEnvironment = .init()
     
@@ -15,6 +16,8 @@ final class ViewsEnvironment {
     let vcFactory: ViewControllerFactory
     
     private init() {
+        // Could read global state to inject current UIFrameworkType value right away,
+        // and it will make init block this init, probably not good idea
         if UIDevice.current.userInterfaceIdiom == .pad {
             vcFactory = TabletViewControllerFactory()
         } else {

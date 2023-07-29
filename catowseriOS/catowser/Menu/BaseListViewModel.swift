@@ -1,5 +1,5 @@
 //
-//  BaseListModel.swift
+//  BaseListViewModel.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 19.02.2022.
@@ -8,7 +8,8 @@
 
 import Foundation
 
-protocol BaseListModel {
+@MainActor
+protocol BaseListViewModel {
     associatedtype EnumDataSourceType: CaseIterable
     
     typealias PopClosure = (EnumDataSourceType) -> Void

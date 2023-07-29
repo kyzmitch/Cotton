@@ -22,7 +22,7 @@ struct PhoneSearchBarLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate)
+        let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate, .swiftUIWrapper)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }

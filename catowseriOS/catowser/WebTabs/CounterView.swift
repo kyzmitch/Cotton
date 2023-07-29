@@ -16,6 +16,8 @@ final class CounterView: UIView {
         label.shadowOffset = CGSize(width: 0, height: 1)
         label.shadowColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
+        // Value will be set in `TabsObserver` below
+        label.text = ""
         return label
     }()
 
@@ -39,18 +41,9 @@ final class CounterView: UIView {
         digitLabel.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
         digitLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
-    
-    deinit {
-        TabsListManager.shared.detach(self)
-    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        TabsListManager.shared.attach(self)
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
@@ -60,7 +53,7 @@ final class CounterView: UIView {
 }
 
 extension CounterView: TabsObserver {
-    func update(with tabsCount: Int) {
+    func updateTabsCount(with tabsCount: Int) async {
         self.digit = tabsCount
     }
 }

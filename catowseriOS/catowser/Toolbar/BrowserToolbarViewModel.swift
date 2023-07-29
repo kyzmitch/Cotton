@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 
+@MainActor
 final class BrowserToolbarViewModel: ObservableObject {
     /// Notifies if current web view changes
     @Published var webViewInterface: WebViewNavigatable?
@@ -84,10 +85,6 @@ extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
     
     func showLoadingProgress(_ show: Bool) {
         showProgress = show
-    }
-    
-    func didTabPreviewChange(_ screenshot: UIImage) {
-        try? TabsListManager.shared.setSelectedPreview(screenshot)
     }
     
     func webViewDidHandleReuseAction() {

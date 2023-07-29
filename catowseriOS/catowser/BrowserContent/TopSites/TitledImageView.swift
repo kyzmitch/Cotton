@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonBase
+import FeaturesFlagsKit
 
 struct TitledImageView: View {
     private let site: Site
@@ -16,15 +17,16 @@ struct TitledImageView: View {
     private let cellWidth = ImageViewSizes.imageHeight
     private let titleHeight = ImageViewSizes.titleHeight
     private let titleFontSize = ImageViewSizes.titleFontSize
+    @State private var url: URL?
     
-    init(_ site: Site,  _ isSelected: Binding<Site?>) {
+    init(_ site: Site, _ isSelected: Binding<Site?>) {
         self.site = site
         _isSelected = isSelected
     }
     
     var body: some View {
         VStack {
-            AsyncImage(url: site.faviconURL) { image in
+            AsyncImage(url: url) { image in
                 image.resizable(resizingMode: .stretch)
             } placeholder: {
                 if let cachedImage = site.favicon() {
@@ -41,6 +43,14 @@ struct TitledImageView: View {
         }
         .onTapGesture {
             isSelected = site
+        }
+        .task {
+            let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
+            do {
+                url = try await site.faviconURL(useDoH)
+            } catch {
+                print("Fail to resolve favicon URL: \(error)")
+            }
         }
     }
 }

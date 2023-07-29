@@ -29,27 +29,27 @@ public final class WebViewContextImpl: WebViewContext {
         return checker.correspondingDomain
     }
     
-    public func isJavaScriptEnabled() -> Bool {
-        return FeatureManager.boolValue(of: .javaScriptEnabled)
+    public func isJavaScriptEnabled() async -> Bool {
+        await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
     }
     
-    public func isDohEnabled() -> Bool {
-        return FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
+    public func isDohEnabled() async -> Bool {
+        await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
     }
     
-    public func allowNativeAppRedirects() -> Bool {
-        return FeatureManager.boolValue(of: .nativeAppRedirect)
+    public func allowNativeAppRedirects() async -> Bool {
+        await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
     }
     
-    public func appAsyncApiTypeValue() -> AsyncApiType {
-        return FeatureManager.appAsyncApiTypeValue()
+    public func appAsyncApiTypeValue() async -> AsyncApiType {
+        await FeatureManager.shared.appAsyncApiTypeValue()
     }
     
-    public func updateTabContent(_ site: Site) throws {
+    public func updateTabContent(_ site: Site) async throws {
         let content: Tab.ContentType = .site(site)
         if logTabUpdate {
             print("Web VM tab update: \(content.debugDescription)")
         }
-        try TabsListManager.shared.replaceSelected(content)
+        try await TabsListManager.shared.replaceSelected(content)
     }
 }

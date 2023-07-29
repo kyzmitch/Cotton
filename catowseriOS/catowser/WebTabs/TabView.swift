@@ -18,33 +18,15 @@ import Combine
 import BrowserNetworking
 
 protocol TabDelegate: AnyObject {
-    func tabViewDidClose(_ tabView: TabView)
-    func tabDidBecomeActive(_ tab: Tab)
+    func tabViewDidClose(_ tabView: TabView) async
 }
 
 /// The tab view for tablets
 final class TabView: UIView {
     
-    var viewModel: Tab {
-        didSet {
-            visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
-            titleText.text = viewModel.title
-            reloadFavicon(viewModel.site)
-        }
-    }
-    
-    /// Allows change visual state without changing view model
-    var visualState: Tab.VisualState {
-        // Swift docs: You can name the parameter or use the default parameter name of `oldValue`.
-        didSet(previousVisualState) {
-            if previousVisualState == visualState {
-                return
-            }
-            updateColours()
-        }
-    }
-    
-    weak var delegate: TabDelegate?
+    private let viewModel: TabViewModel
+    private var stateHandler: AnyCancellable?
+    private weak var delegate: TabDelegate?
     
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
@@ -71,14 +53,6 @@ final class TabView: UIView {
         return titleText
     }()
     
-    private let favicon: UIImageView = {
-        let favicon = UIImageView()
-        favicon.layer.cornerRadius = 2.0
-        favicon.layer.masksToBounds = true
-        favicon.translatesAutoresizingMaskIntoConstraints = false
-        return favicon
-    }()
-    
     private let highlightLine: UIView = {
         let line = UIView()
         line.backgroundColor = UIConstants.webSiteTabHighlitedLineColour
@@ -87,37 +61,41 @@ final class TabView: UIView {
         return line
     }()
     
-    lazy var imageURLRequestCancellable: AnyCancellable? = nil
+    let faviconImageView: UIImageView = {
+        let favicon = UIImageView()
+        favicon.layer.cornerRadius = 2.0
+        favicon.layer.masksToBounds = true
+        favicon.translatesAutoresizingMaskIntoConstraints = false
+        return favicon
+    }()
+    
+    // MARK: - init
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("\(#function): has not been implemented")
     }
     
-    convenience init(frame: CGRect, tab: Tab, delegate: TabDelegate) {
-        self.init(frame: frame)
-        // didSet for view model won't work in init
-        viewModel = tab
-        // Call function not relying on didSet
-        // swiftlint:disable:next line_length
-        // https://stackoverflow.com/questions/25230780/is-it-possible-to-allow-didset-to-be-called-during-initialization-in-swift
-        updateColours()
-        titleText.text = tab.title
+    init(_ frame: CGRect, _ viewModel: TabViewModel, _ delegate: TabDelegate) {
+        self.viewModel = viewModel
         self.delegate = delegate
-        reloadFavicon(tab.site)
+        super.init(frame: frame)
+        layout()
     }
     
-    override init(frame: CGRect) {
-        // set temporarily values before calling required base init
-        viewModel = .blank
-        visualState = viewModel.getVisualState(TabsListManager.shared.selectedId)
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         
-        super.init(frame: frame)
-        updateColours()
-        titleText.text = viewModel.title
-        
+        Task {
+            await TabsListManager.shared.attach(viewModel)
+        }
+        stateHandler?.cancel()
+        stateHandler = viewModel.$state.sink(receiveValue: onStateChange)
+    }
+    
+    private func layout() {
         contentMode = .redraw
         addSubview(centerBackground)
-        addSubview(favicon)
+        addSubview(faviconImageView)
         addSubview(titleText)
         addSubview(closeButton)
         addSubview(highlightLine)
@@ -131,14 +109,14 @@ final class TabView: UIView {
         centerBackground.topAnchor.constraint(equalTo: topAnchor).isActive = true
         centerBackground.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 
-        favicon.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        favicon.widthAnchor.constraint(equalToConstant: 18).isActive = true
-        favicon.heightAnchor.constraint(equalTo: favicon.widthAnchor).isActive = true
-        favicon.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        faviconImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        faviconImageView.widthAnchor.constraint(equalToConstant: 18).isActive = true
+        faviconImageView.heightAnchor.constraint(equalTo: faviconImageView.widthAnchor).isActive = true
+        faviconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         
         titleText.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         titleText.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
-        titleText.leadingAnchor.constraint(equalTo: favicon.trailingAnchor, constant: 10).isActive = true
+        titleText.leadingAnchor.constraint(equalTo: faviconImageView.trailingAnchor, constant: 10).isActive = true
         titleText.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: 10).isActive = true
         
         closeButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -181,19 +159,27 @@ final class TabView: UIView {
             }
         }
     }
+    
+    private func onStateChange(_ state: TabViewState) {
+        centerBackground.backgroundColor = state.backgroundColor
+        backgroundColor = state.realBackgroundColour
+        highlightLine.isHidden = !state.isSelected
+        titleText.textColor = state.titleColor
+        titleText.text = state.title
+        
+        guard let favicon = state.favicon else {
+            return
+        }
+        faviconImageView.updateImage(from: favicon)
+    }
 }
 
 private extension TabView {
-    func updateColours() {
-        let selectedTabId = TabsListManager.shared.selectedId
-        centerBackground.backgroundColor = viewModel.backgroundColor(selectedTabId)
-        backgroundColor = viewModel.realBackgroundColour
-        highlightLine.isHidden = !viewModel.isSelected(selectedTabId)
-        titleText.textColor = viewModel.titleColor(selectedTabId)
-    }
-    
     @objc func handleClosePressed() {
-        delegate?.tabViewDidClose(self)
+        viewModel.close()
+        Task {
+            await delegate?.tabViewDidClose(self)
+        }
     }
     
     func handleTapGesture() {
@@ -201,51 +187,7 @@ private extension TabView {
         // with following code `visualState = .selected`
         // but still need to update same state for
         // previously selected tab (deselect it)
-        delegate?.tabDidBecomeActive(viewModel)
-    }
-    
-    func reloadFavicon(_ site: Site?) {
-        guard let site = site else {
-            favicon.image = nil
-            return
-        }
-        if let hqImage = site.favicon() {
-            favicon.image = hqImage
-            return
-        }
-        favicon.image = nil
-        
-        if #available(iOS 13.0, *) {
-            let subscriber = HttpEnvironment.shared.dnsClientSubscriber
-
-            imageURLRequestCancellable?.cancel()
-            let useDoH = FeatureManager.boolValue(of: .dnsOverHTTPSAvailable)
-            imageURLRequestCancellable = site.fetchFaviconURL(useDoH, subscriber)
-                .receive(on: DispatchQueue.main)
-                .sink(receiveCompletion: { (completion) in
-                    switch completion {
-                    case .failure:
-                        // print("Favicon URL failed for \(site.host.rawValue) \(error.localizedDescription)")
-                        break
-                    default: break
-                    }
-                }, receiveValue: { [weak self] (url) in
-                    self?.favicon.updateImage(from: .url(url))
-                })
-        } else {
-            let source: ImageSource
-            switch (site.faviconURL, site.favicon()) {
-            case (let url?, nil):
-                source = .url(url)
-            case (nil, let image?):
-                source = .image(image)
-            case (let url?, let image?):
-                source = .urlWithPlaceholder(url, image)
-            default:
-                return
-            }
-            favicon.updateImage(from: source)
-        }
+        viewModel.activate()
     }
 }
 
