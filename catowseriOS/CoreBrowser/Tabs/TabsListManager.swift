@@ -23,25 +23,36 @@ import Combine
  See https://developer.apple.com/documentation/combine/published
  */
 public actor TabsListManager {
+    typealias UUIDStream = AsyncStream<UUID>
+    
     private let selectionStrategy: TabSelectionStrategy
-
     @Published private var tabs: [Tab] = []
-    @Published private var selectedTabId: UUID
+    /// Async stream for the selected tab id instead of using Combine's @Published
+    private var selectedTabIdStream: UUIDStream!
+    /// Async's stream continuation to notify about new id
+    private var selectedTabIdInput: UUIDStream.Continuation!
+    ///  Simple variable needed for direct sync access and for async getter
+    private var selectedTabIdentifier: UUID
 
     private let storage: TabsStoragable
     private let positioning: TabsStates
-    private var tabObservers: [TabsObserver] = [TabsObserver]()
+    private var tabObservers: [TabsObserver]
 
     private var tabsCountCancellable: AnyCancellable?
-    private var selectedTabIdCancellable: AnyCancellable?
 
     public init(_ storage: TabsStoragable,
                 _ positioning: TabsStates,
                 _ selectionStrategy: TabSelectionStrategy) async {
         self.selectionStrategy = selectionStrategy
-        selectedTabId = positioning.defaultSelectedTabId
         self.storage = storage
         self.positioning = positioning
+        self.tabObservers = []
+        self.selectedTabIdentifier = positioning.defaultSelectedTabId
+        self.selectedTabIdStream = UUIDStream { continuation in
+            // A hack to be able to send values outside of the closure
+            selectedTabIdInput = continuation
+            continuation.yield(positioning.defaultSelectedTabId)
+        }
         
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
@@ -54,7 +65,6 @@ public actor TabsListManager {
 
     deinit {
         tabsCountCancellable?.cancel()
-        selectedTabIdCancellable?.cancel()
     }
 
     /// Returns currently selected tab.
@@ -144,7 +154,7 @@ extension TabsListManager: TabsSubject {
 
     public func add(tab: Tab) async {
         let positionType = await positioning.addPosition
-        let pair = positionType.addTab(tab, to: tabs, currentlySelectedId: selectedTabId)
+        let pair = positionType.addTab(tab, to: tabs, selectedTabIdentifier)
         let newIndex = pair.0
         tabs = pair.1
         let needSelect = selectionStrategy.makeTabActiveAfterAdding
@@ -160,10 +170,11 @@ extension TabsListManager: TabsSubject {
     public func select(tab: Tab) async {
         do {
             let identifier = try await storage.select(tab: tab)
-            guard identifier != selectedTabId else {
+            guard identifier != selectedTabIdentifier else {
                 return
             }
-            selectedTabId = identifier
+            selectedTabIdentifier = identifier
+            selectedTabIdInput.yield(identifier)
         } catch {
             print("Failed to select tab with id \(tab.id) \(error)")
         }
@@ -200,7 +211,7 @@ extension TabsListManager: TabsSubject {
         }
         await observer.updateTabsCount(with: tabs.count)
         await observer.initializeObserver(with: tabs)
-        guard selectedTabId != positioning.defaultSelectedTabId else {
+        guard selectedTabIdentifier != positioning.defaultSelectedTabId else {
             return
         }
         guard let tabTuple = await tabs.element(by: selectedId) else {
@@ -225,7 +236,7 @@ extension TabsListManager: TabsSubject {
     
     public var selectedId: UUID {
         get async {
-            selectedTabId
+            selectedTabIdentifier
         }
     }
 }
@@ -241,7 +252,8 @@ private extension TabsListManager {
                 await observer.tabDidAdd(tab, at: index)
             }
             if select {
-                selectedTabId = tab.id
+                selectedTabIdentifier = tab.id
+                selectedTabIdInput.yield(tab.id)
             }
         case .after(let interval):
             do {
@@ -255,7 +267,8 @@ private extension TabsListManager {
                     await observer.tabDidAdd(tab, at: index)
                 }
                 if select {
-                    selectedTabId = tab.id
+                    selectedTabIdentifier = tab.id
+                    selectedTabIdInput.yield(tab.id)
                 }
             } catch {
                 print("Failed to wait before adding a new tab: \(error)")
@@ -287,7 +300,8 @@ private extension TabsListManager {
             guard let selectedTab = tabs[safe: newIndex] else {
                 fatalError("Failed to find new selected tab")
             }
-            selectedTabId = selectedTab.id
+            selectedTabIdentifier = selectedTab.id
+            selectedTabIdInput.yield(selectedTab.id)
         }
     }
     
@@ -303,7 +317,8 @@ private extension TabsListManager {
             return
         }
         tabs = cachedTabs
-        selectedTabId = id
+        selectedTabIdentifier = id
+        selectedTabIdInput.yield(id)
     }
     
     func subscribeForTabsCountChange() {
@@ -321,29 +336,25 @@ private extension TabsListManager {
     }
     
     func subscribeForSelectedTabIdChange() {
-        selectedTabIdCancellable?.cancel()
-        selectedTabIdCancellable = $selectedTabId
-            .drop(while: { [weak self] identifier in
+        // This method can't be async - it blocks init,
+        // so have to use new task to avoid this.
+        Task {
+            let filteredId = selectedTabIdStream.drop(while: { [weak self] identifier in
                 guard let self else {
                     return false
                 }
                 return identifier == self.positioning.defaultSelectedTabId
             })
-            .eraseToAnyPublisher()
-            .sink(receiveValue: { newSelectedTabId in
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    guard let tabTuple = await self.tabs.element(by: newSelectedTabId) else {
-                        return
-                    }
-                    // TODO: confirm to `AsyncSequence` for `Array<TabObserver>`
-                    for observer in await self.tabObservers {
-                        await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
-                    }
+            
+            for await newSelectedTabId in filteredId {
+                guard let tabTuple = tabs.element(by: newSelectedTabId) else {
+                    continue
                 }
-            })
+                for observer in tabObservers {
+                    await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
+                }
+            }
+        }
     }
 }
 
@@ -359,7 +370,7 @@ fileprivate extension Array where Element == Tab {
 extension AddedTabPosition {
     func addTab(_ tab: Tab,
                 to currentTabs: [Tab],
-                currentlySelectedId: UUID) -> (Int, [Tab]) {
+                _ currentlySelectedId: UUID) -> (Int, [Tab]) {
         var tabs = currentTabs
         let newIndex: Int
         switch self {
