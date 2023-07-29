@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Combine
 
 /**
  Tabs list manager.
@@ -24,21 +23,26 @@ import Combine
  */
 public actor TabsListManager {
     typealias UUIDStream = AsyncStream<UUID>
+    typealias IntStream = AsyncStream<Int>
     
+    /// Tabs selection strategy
     private let selectionStrategy: TabSelectionStrategy
-    @Published private var tabs: [Tab] = []
+    /// In memory storage for the tabs
+    private var tabs: [Tab] = []
     /// Async stream for the selected tab id instead of using Combine's @Published
     private var selectedTabIdStream: UUIDStream!
     /// Async's stream continuation to notify about new id
     private var selectedTabIdInput: UUIDStream.Continuation!
     ///  Simple variable needed for direct sync access and for async getter
     private var selectedTabIdentifier: UUID
+    /// Tabs count stream
+    private var tabsCountStream: IntStream!
+    /// Tabs count input for the async stream
+    private var tabsCountInput: IntStream.Continuation!
 
     private let storage: TabsStoragable
     private let positioning: TabsStates
     private var tabObservers: [TabsObserver]
-
-    private var tabsCountCancellable: AnyCancellable?
 
     public init(_ storage: TabsStoragable,
                 _ positioning: TabsStates,
@@ -53,6 +57,9 @@ public actor TabsListManager {
             selectedTabIdInput = continuation
             continuation.yield(positioning.defaultSelectedTabId)
         }
+        self.tabsCountStream = IntStream { continuation in
+            tabsCountInput = continuation
+        }
         
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
@@ -61,10 +68,6 @@ public actor TabsListManager {
         } catch {
             fatalError("Fail to init tabs")
         }
-    }
-
-    deinit {
-        tabsCountCancellable?.cancel()
     }
 
     /// Returns currently selected tab.
@@ -157,6 +160,7 @@ extension TabsListManager: TabsSubject {
         let pair = positionType.addTab(tab, to: tabs, selectedTabIdentifier)
         let newIndex = pair.0
         tabs = pair.1
+        tabsCountInput.yield(tabs.count)
         let needSelect = selectionStrategy.makeTabActiveAfterAdding
         do {
             let addedTab = try await storage.add(tab, select: needSelect)
@@ -317,22 +321,20 @@ private extension TabsListManager {
             return
         }
         tabs = cachedTabs
+        tabsCountInput.yield(cachedTabs.count)
         selectedTabIdentifier = id
         selectedTabIdInput.yield(id)
     }
     
     func subscribeForTabsCountChange() {
-        tabsCountCancellable?.cancel()
-        tabsCountCancellable = $tabs
-            .removeDuplicates { $0.count == $1.count }
-            .map { $0.count }
-            .sink { tabsCount in
-                Task {
-                    for observer in self.tabObservers {
-                        await observer.updateTabsCount(with: tabsCount)
-                    }
+        // This method can't be async, have to use new Task
+        Task {
+            for await newTabsCount in tabsCountStream {
+                for observer in self.tabObservers {
+                    await observer.updateTabsCount(with: newTabsCount)
                 }
             }
+        }
     }
     
     func subscribeForSelectedTabIdChange() {
