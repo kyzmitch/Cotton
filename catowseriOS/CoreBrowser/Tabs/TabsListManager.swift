@@ -20,6 +20,8 @@ import Foundation
  
  @Published is used instead of MutableProperty from ReactiveSwift,
  See https://developer.apple.com/documentation/combine/published
+ 
+ https://forums.swift.org/t/how-do-you-use-asyncstream-to-make-task-execution-deterministic/57968/2
  */
 public actor TabsListManager {
     typealias UUIDStream = AsyncStream<UUID>
@@ -52,8 +54,6 @@ public actor TabsListManager {
         self.positioning = positioning
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
-        
-        // https://forums.swift.org/t/how-do-you-use-asyncstream-to-make-task-execution-deterministic/57968/2
         
         self.selectedTabIdStream = UUIDStream { continuation in
             // A hack to be able to send values outside of the closure
@@ -150,6 +150,7 @@ extension TabsListManager: TabsSubject {
         do {
             _ = try await storage.remove(tabs: tabs)
             tabs.removeAll()
+            tabsCountInput.yield(0)
             let tab: Tab = .init(contentType: contentState)
             _ = try await storage.add(tab, select: true)
         } catch {
@@ -289,6 +290,7 @@ private extension TabsListManager {
         // so, this is kind of a side effect of removing the only one last tab
         if tabs.count == 1 {
             tabs.removeAll()
+            tabsCountInput.yield(0)
             Task {
                 let contentState = await positioning.contentState
                 let tab: Tab = .init(contentType: contentState)
@@ -303,6 +305,7 @@ private extension TabsListManager {
             // need to remove it before changing selected index
             // otherwise in one case the handler will select closed tab
             tabs.remove(at: closedTabIndex)
+            tabsCountInput.yield(tabs.count)
             
             guard let selectedTab = tabs[safe: newIndex] else {
                 fatalError("Failed to find new selected tab")
