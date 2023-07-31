@@ -87,6 +87,20 @@
             }
           }
         }
+      },
+      "./brew_configs/gradle@7.rb": {
+        "version": "7.6.2",
+        "bottle": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "all": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/gradle/7/blobs/sha256:583954c653b188a520e38902056c942247196bda0f6b5936c11cd513bd2672b2",
+              "sha256": "583954c653b188a520e38902056c942247196bda0f6b5936c11cd513bd2672b2"
+            }
+          }
+        }
       }
     }
   },
@@ -101,7 +115,7 @@
         "macOS": "12.6"
       },
       "ventura": {
-        "HOMEBREW_VERSION": "4.0.28",
+        "HOMEBREW_VERSION": "4.1.3",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "",
