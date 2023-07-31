@@ -6,8 +6,13 @@ ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
 endif
 
-.PHONY: setup-ios
-setup-ios:
+.PHONY: github-workflow-ios
+github-workflow-ios:
+	cd cotton-base; gradle wrapper; ./gradlew assembleCottonBaseReleaseXCFramework; cd ..; \
+	cd catowseriOS; xcodebuild -workspace catowser.xcworkspace -scheme "Cotton dev" -configuration "Release" -sdk iphonesimulator -arch x86_64; cd ..; \
+
+.PHONY: setup-ios-dev-release
+setup-ios-dev-release:
 	gem install bundler -v '~> 1.0' --user-install
 	$(DISPLAY_SEPARATOR)
 	brew update
