@@ -3,3 +3,4 @@ brew './brew_configs/sourcery.rb'
 brew './brew_configs/swiftlint.rb'
 # mint needed to install SwiftyMocky
 brew './brew_configs/mint.rb'
+brew './brew_configs/gradle@7.rb'

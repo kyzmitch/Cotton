@@ -37,6 +37,8 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH="$PATH:/usr/local/Cellar/gradle@7/7.6.2/bin"
+export PATH="$PATH:/Users/kyzmitch/.gem/ruby/2.6.0/bin"
 ```
 - run `source .bash_profile`
 - install `InteliJ IDEA`
@@ -48,6 +50,7 @@ export PATH=$PATH:$ANDROID_HOME/emulator
     - Tools -> Android -> SDK Manager
     - SDK Tools tab
     - Install `Google Play Licensing Library`
+- Run `cd cotton-base` & `gradle wrapper` if you see an error about Gradle build.
 - `make`
 - open Kotlin `cotton-base` folder using `InteliJ IDEA`
 - run `cotton-base [assembleCottonBaseReleaseXCFramework]` Gradle configuration for iOS client. It is located under `other` section of Gradle tasks list.
