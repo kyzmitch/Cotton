@@ -5,6 +5,7 @@ excluded:
 - Carthage
 - Pods
 - CottonDataTests/GeneratedMocks
+- DerivedData
 
 identifier_name:
     min_length: 1 # warning
