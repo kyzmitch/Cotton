@@ -8,6 +8,10 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+    paths:
+      - '.github/workflows/swift.yml'
+      - 'catowseriOS/.swiftlint.yml'
+      - '**/*.swift'
 
 jobs:
   lint:
