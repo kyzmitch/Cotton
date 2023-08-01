@@ -6,6 +6,7 @@ excluded:
     - Pods
     - CottonDataTests/GeneratedMocks
     - DerivedData
+    - SourcePackages
 
 identifier_name:
     min_length: 1 # warning

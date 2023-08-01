@@ -92,3 +92,4 @@ cotton-base/.gradle
 # See `catowserAndroid/.gitignore`, it seems it is included automatically
 *.iml
 misc.xml
+catowseriOS/SourcePackages

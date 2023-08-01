@@ -12,14 +12,13 @@ github-workflow-ios:
 	./gradlew assembleCottonBaseReleaseXCFramework; \
 	cd ..; \
 	cd catowseriOS; \
-	xcodebuild build \
+	xcodebuild -scheme "Cotton dev" build \
 	-workspace catowser.xcworkspace \
 	-quiet \
-	-scheme "Cotton dev" \
 	-configuration "Release" \
 	-sdk iphonesimulator \
 	-arch x86_64 \
-	-clonedSourcePackagesDirPath SourcePackages \;
+	-clonedSourcePackagesDirPath SourcePackages; \
 	cd ..; \
 
 .PHONY: setup-ios-dev-release
