@@ -1,17 +1,22 @@
 name: Cotton-Android
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-    types: [opened]
+    types: [opened, reopened]
     paths:
-      - '.github/workflows/kotlin.yml'
-      - '**/*.kt'
+      - "**/*.kt"
 
 jobs:
+  lint-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v3
+      - name: "ktlint"
+        uses: "vroy/gha-kotlin-linter@v1"
   build-android:
+    needs: lint-android
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
