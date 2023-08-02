@@ -38,7 +38,6 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH="$PATH:/usr/local/Cellar/gradle@7/7.6.2/bin"
-export PATH="$PATH:/Users/kyzmitch/.gem/ruby/2.6.0/bin"
 ```
 - run `source .bash_profile`
 - install `InteliJ IDEA`
