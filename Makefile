@@ -6,6 +6,10 @@ ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
 endif
 
+GRADLE = /usr/local/opt/gradle@7/bin/gradle
+# bash profile update every time is not a good option
+# echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ; \
+
 .PHONY: github-workflow-ios
 github-workflow-ios:
 	cd cotton-base; \
@@ -24,13 +28,17 @@ github-workflow-ios:
 .PHONY: github-workflow-android
 github-workflow-android:
 	cd cotton-base; \
+	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
+	export ANDROID_HOME=~/Library/Android/sdk; \
+	$(call GRADLE, wrapper); \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
-	export ANDROID_HOME=$HOME/Library/Android/sdk
 	./gradlew publishAndroidDebugPublicationToMavenLocal; \
 	cd ..; \
 	cd catowserAndroid; \
+	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
+	$(call GRADLE, wrapper); \
+	./gradlew build; \
 	cd ..; \
-	# TBD
 
 .PHONY: setup
 setup:
@@ -44,8 +52,7 @@ setup:
 .PHONY: build-ios-dev-release
 build-ios-dev-release:
 	cd cotton-base; \
-	# TBD - somehow set homebrew path to bin to find gradle executable
-	gradle wrapper; \
+	$(call GRADLE, wrapper); \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
 	cd ..; \
 	cd catowseriOS; \
@@ -60,13 +67,15 @@ build-ios-dev-release:
 .PHONY: build-android-dev-release
 build-android-dev-release:
 	cd cotton-base; \
-	gradle wrapper; \
+	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
+	export ANDROID_HOME=~/Library/Android/sdk; \
+	$(call GRADLE, wrapper); \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
-	ANDROID_HOME=~/Library/Android/sdk
 	./gradlew publishAndroidReleasePublicationToMavenLocal; \
 	cd ..; \
 	cd catowserAndroid; \
-	gradle wrapper; \
+	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
+	$(call GRADLE, wrapper); \
 	./gradlew build; \
 	cd ..; \
 
@@ -79,3 +88,24 @@ clean:
 	rm -rf SourcePackages; \
 	cd ..; \
 	cd catowserAndroid; rm -rf build; cd ..; \
+
+define HELP_CONTENT
+Local and CI targets
+\tUniversal targets
+\t\t* make setup\t\t: Downloads local dependencies like SwiftLint, KtLint, Gradle for command line, etc.
+\t\t* make clean\t\t: Cleans all build artifacts for both platforms.
+
+\tiOS build
+\t\t* make build-ios-dev-release\t\t: Build Release version of Kotlin multiplatform & Xcode project.
+\t\t* make github-workflow-ios\t\t: GitHub workflow for iOS.
+
+\tAndroid build
+\t\t* make build-android-dev-release\t\t: Build Release version of Kotlin multiplatform & Android project.
+\t\t* make github-workflow-android\t\t: GitHub workflow for Android.
+endef
+
+export HELP_CONTENT
+
+.PHONY: help
+help:
+	@printf "$$HELP_CONTENT\n"
