@@ -8,7 +8,9 @@ endif
 
 GRADLE = /usr/local/opt/gradle@7/bin/gradle
 # bash profile update every time is not a good option
-# echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ; \
+# echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ;
+# specific Maven publish doesn't work and have to use `publishToMavenLocal`
+# ./gradlew publishAndroidDebugPublicationToMavenLocal; 
 
 .PHONY: github-workflow-ios
 github-workflow-ios:
@@ -30,14 +32,12 @@ github-workflow-android:
 	cd cotton-base; \
 	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
 	export ANDROID_HOME=~/Library/Android/sdk; \
-	$(call GRADLE, wrapper); \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
-	./gradlew publishAndroidDebugPublicationToMavenLocal; \
+	./gradlew publishToMavenLocal; \
 	cd ..; \
 	cd catowserAndroid; \
 	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
-	$(call GRADLE, wrapper); \
-	./gradlew build; \
+	./gradlew app:build; \
 	cd ..; \
 
 .PHONY: setup
@@ -69,14 +69,12 @@ build-android-dev-release:
 	cd cotton-base; \
 	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
 	export ANDROID_HOME=~/Library/Android/sdk; \
-	$(call GRADLE, wrapper); \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
-	./gradlew publishAndroidReleasePublicationToMavenLocal; \
+	./gradlew publishToMavenLocal; \
 	cd ..; \
 	cd catowserAndroid; \
 	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
-	$(call GRADLE, wrapper); \
-	./gradlew build; \
+	./gradlew app:build; \
 	cd ..; \
 
 .PHONY: clean
