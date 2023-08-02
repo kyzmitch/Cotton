@@ -137,7 +137,6 @@ extension TabsListManager: TabsSubject {
     public func close(tab: Tab) async {
         do {
             let removedTabs = try await storage.remove(tabs: [tab])
-            // swiftlint:disable:next force_unwrapping
             await handleCachedTabRemove(removedTabs.first!)
         } catch {
             // tab view should be removed immediately on view level anyway
