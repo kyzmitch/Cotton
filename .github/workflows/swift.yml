@@ -4,8 +4,6 @@
 name: Cotton-iOS
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
     types: [opened, reopened]
@@ -17,12 +15,13 @@ jobs:
   lint-ios:
     runs-on: ubuntu-latest
     steps:
-    - name: Fetch base ref
-      run: git fetch --no-tags --prune --depth=1 origin ${{ github.base_ref }}
+    - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: SwiftLint (Only files changed in the PR)
       uses: norio-nomura/action-swiftlint@3.2.1
       env:
-        DIFF_BASE: origin/${{ github.base_ref }}
+        DIFF_BASE: ${{ github.base_ref }}
       with:
         args: --force-exclude --strict --config catowseriOS/.swiftlint.yml
   build-ios:
