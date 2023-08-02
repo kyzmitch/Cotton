@@ -4,13 +4,10 @@
 name: Cotton-iOS
 
 on:
-  push:
-    branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-    types: [opened]
+    types: [opened, reopened]
     paths:
-      - '.github/workflows/swift.yml'
       - 'catowseriOS/.swiftlint.yml'
       - '**/*.swift'
 
@@ -19,11 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: SwiftLint (Only files changed in the PR)
       uses: norio-nomura/action-swiftlint@3.2.1
       env:
         DIFF_BASE: ${{ github.base_ref }}
+      with:
+        args: --force-exclude --strict --config catowseriOS/.swiftlint.yml
   build-ios:
+    needs: lint-ios
     runs-on: macos-latest
     env:
       MINT_PATH: .mint/lib
