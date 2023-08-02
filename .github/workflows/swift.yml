@@ -8,8 +8,9 @@ on:
     branches: [ "master" ]
     types: [opened, reopened]
     paths:
-      - 'catowseriOS/.swiftlint.yml'
-      - '**/*.swift'
+      - "catowseriOS/.swiftlint.yml"
+      - "**/*.swift"
+      - "cotton-base/**/*.kt"
 
 jobs:
   lint-ios:
@@ -24,8 +25,15 @@ jobs:
         DIFF_BASE: ${{ github.base_ref }}
       with:
         args: --force-exclude --strict --config catowseriOS/.swiftlint.yml
+  lint-kotlin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v3
+      - name: "ktlint"
+        uses: "vroy/gha-kotlin-linter@v1"
   build-ios:
-    needs: lint-ios
+    needs: [lint-ios, lint-kotlin]
     runs-on: macos-latest
     env:
       MINT_PATH: .mint/lib
