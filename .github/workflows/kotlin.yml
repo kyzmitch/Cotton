@@ -14,7 +14,7 @@ jobs:
       - name: "checkout"
         uses: actions/checkout@v3
       - name: "ktlint"
-        uses: "vroy/gha-kotlin-linter@v1"
+        uses: "vroy/gha-kotlin-linter@v4"
   build-android:
     needs: lint-android
     runs-on: macos-latest

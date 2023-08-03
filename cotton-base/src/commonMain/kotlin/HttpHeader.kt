@@ -23,6 +23,7 @@ enum class HTTPMethod(val stringValue: String) {
  * */
 enum class ContentTypeValue(val stringValue: String) {
     Json("application/json"),
+
     /**
      * The following type is used to indicate that the response will contain search suggestions.
      * Link: [doc](http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.0)

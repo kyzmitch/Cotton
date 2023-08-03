@@ -1,14 +1,14 @@
 package org.cotton.base
 
 enum class HttpScheme(val stringValue: String, val port: Int) {
-    https("https", 443),
-    http("http", 80);
+    HTTPS("https", 443),
+    HTTP("http", 80);
 
     companion object {
         fun create(rawString: String): HttpScheme? {
             return when (rawString) {
-                "https" -> https
-                "http" -> http
+                "https" -> HTTPS
+                "http" -> HTTP
                 else -> null
             }
         }
@@ -23,4 +23,4 @@ enum class HttpScheme(val stringValue: String, val port: Int) {
  * @property host A host name (usually domain name and not an ip address)
  * @property scheme Server protocol type (could be HTTPS, HTTP, etc.)
  * */
-open class ServerDescription(val host: Host, val scheme: HttpScheme = HttpScheme.https)
+open class ServerDescription(val host: Host, val scheme: HttpScheme = HttpScheme.HTTPS)

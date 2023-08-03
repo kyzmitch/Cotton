@@ -6,15 +6,19 @@ ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
 endif
 
-GRADLE = /usr/local/opt/gradle@7/bin/gradle
+# GRADLE = /usr/local/opt/gradle@7/bin/gradle
+# $(call GRADLE, wrapper);
+
 # bash profile update every time is not a good option
 # echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ;
+
 # specific Maven publish doesn't work and have to use `publishToMavenLocal`
 # ./gradlew publishAndroidDebugPublicationToMavenLocal; 
 
 .PHONY: github-workflow-ios
 github-workflow-ios:
 	cd cotton-base; \
+	./gradlew ktlintCheck; \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
 	cd ..; \
 	cd catowseriOS; \
@@ -30,13 +34,15 @@ github-workflow-ios:
 .PHONY: github-workflow-android
 github-workflow-android:
 	cd cotton-base; \
-	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
-	export ANDROID_HOME=~/Library/Android/sdk; \
+	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
+	export ANDROID_HOME=${HOME}/Library/Android/sdk; \
+	./gradlew ktlintCheck; \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
 	./gradlew publishToMavenLocal; \
 	cd ..; \
 	cd catowserAndroid; \
-	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
+	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
+	./gradlew ktlintCheck; \
 	./gradlew app:build; \
 	cd ..; \
 
@@ -52,7 +58,6 @@ setup:
 .PHONY: build-ios-dev-release
 build-ios-dev-release:
 	cd cotton-base; \
-	$(call GRADLE, wrapper); \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
 	cd ..; \
 	cd catowseriOS; \
@@ -67,13 +72,15 @@ build-ios-dev-release:
 .PHONY: build-android-dev-release
 build-android-dev-release:
 	cd cotton-base; \
-	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
-	export ANDROID_HOME=~/Library/Android/sdk; \
+	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
+	export ANDROID_HOME=$HOME/Library/Android/sdk; \
+	./gradlew ktlintCheck; \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
 	./gradlew publishToMavenLocal; \
 	cd ..; \
 	cd catowserAndroid; \
-	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
+	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
+	./gradlew ktlintCheck; \
 	./gradlew app:build; \
 	cd ..; \
 

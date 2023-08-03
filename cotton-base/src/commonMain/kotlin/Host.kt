@@ -9,7 +9,9 @@ package org.cotton.base
  * @property rawString a verified raw string representing the host value.
  * @property content a type of the host (ip address or a domain name).
  * */
-final class Host @Throws(Host.Error::class) constructor (
+final class Host
+@Throws(Host.Error::class)
+constructor(
     private val input: String
 ) {
     private val validatedInputValue: String
@@ -136,6 +138,7 @@ final class Host @Throws(Host.Error::class) constructor (
          * The fully qualified domain name of a network host
          * */
         DomainName,
+
         /**
          * its IP address as a set of four decimal digit groups separated by "."
          * */
