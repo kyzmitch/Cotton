@@ -41,7 +41,7 @@ data class Endpoint<in S : ServerDescription>(
     val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,
-    val encodingMethod: ParametersEncodingDestination,
+    val encodingMethod: ParametersEncodingDestination
 ) {
     init {
         // https://helw.net/2020/04/16/multithreading-in-kotlin-multiplatform-apps/

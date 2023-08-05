@@ -18,7 +18,7 @@ class URLInfo constructor(
     private val path: String,
     private val query: String? = null,
     val domainName: DomainName,
-    private var ipAddress: String? = null,
+    private var ipAddress: String? = null
 ) {
 
     /**

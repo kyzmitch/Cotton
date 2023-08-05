@@ -14,7 +14,7 @@ class Site(
     val settings: Settings,
     internal val faviconData: ByteArray? = null,
     val searchSuggestion: String? = null,
-    val userSpecifiedTitle: String? = null,
+    val userSpecifiedTitle: String? = null
 ) {
     /*
      * Allows static properties or functions
@@ -45,7 +45,7 @@ class Site(
         val isPrivate: Boolean = false,
         val blockPopups: Boolean = true,
         val isJSEnabled: Boolean = true,
-        val canLoadPlugins: Boolean = true,
+        val canLoadPlugins: Boolean = true
     ) {
         fun withChanged(javaScriptEnabled: Boolean): Settings {
             return Settings(isPrivate, blockPopups, javaScriptEnabled, canLoadPlugins)
