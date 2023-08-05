@@ -39,7 +39,7 @@ class EndpointTests {
         get() {
             return setOf<HTTPHeader>(
                 HTTPHeader.Accept(ContentTypeValue.JsonSuggestions),
-                HTTPHeader.ContentType(ContentTypeValue.JsonSuggestions),
+                HTTPHeader.ContentType(ContentTypeValue.JsonSuggestions)
             )
         }
 
