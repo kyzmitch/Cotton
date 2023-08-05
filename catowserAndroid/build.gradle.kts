@@ -21,7 +21,7 @@ buildscript {
 
 plugins {
     kotlin("android") version "1.7.20" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.0" apply false
 }
 
 tasks.register("clean", Delete::class) {

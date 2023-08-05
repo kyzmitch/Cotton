@@ -16,7 +16,8 @@ jobs:
       - name: "ktlint"
         uses: "vroy/gha-kotlin-linter@v4"
         with:
-          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site
+          editorconfig: catowserAndroid/.editorconfig
+          disabled_rules: "trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site"
           patterns: catowserAndroid/**/*.kt
   build-android:
     needs: [lint-android]
