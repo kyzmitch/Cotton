@@ -101,6 +101,20 @@
             }
           }
         }
+      },
+      "./brew_configs/ktlint.rb": {
+        "version": "0.50.0",
+        "bottle": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "all": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/ktlint/blobs/sha256:60dc1790cc9541b73d4b9238e1ec3f9119db2b29e9f5651e77e600eebacd8823",
+              "sha256": "60dc1790cc9541b73d4b9238e1ec3f9119db2b29e9f5651e77e600eebacd8823"
+            }
+          }
+        }
       }
     }
   },
