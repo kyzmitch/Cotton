@@ -13,7 +13,7 @@ internal val Site.Companion.opennetru: Site
         return Site(info, settings)
     }
 
-internal  val Site.Companion.github: Site
+internal val Site.Companion.github: Site
     get() {
         val domain = DomainName("github.com")
         val info = URLInfo(HttpScheme.HTTPS, "", null, domain)

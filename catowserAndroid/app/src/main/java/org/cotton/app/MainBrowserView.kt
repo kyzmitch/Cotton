@@ -7,20 +7,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.cotton.browser.content.*
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
-import org.cotton.browser.content.viewmodel.TopSitesViewModel
 
 @Composable
 internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier
-            .height(mainVM.barHeight)
-            .fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .height(mainVM.barHeight)
+                .fillMaxWidth()
+        ) {
             Column(modifier = Modifier.weight(1f)) {
                 SearchBarView(searchBarVM)
             }
-            Column(modifier = Modifier
-                .width(30.dp)
-                .fillMaxHeight(), horizontalAlignment = Alignment.End) {
+            Column(
+                modifier = Modifier
+                    .width(30.dp)
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.End
+            ) {
                 TabsCountButton(0u) {
                     mainVM.show(MainBrowserRoute.Tabs)
                 }

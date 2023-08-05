@@ -2,3 +2,4 @@
 ktlint_standard_final-import-ordering = disabled
 ktlint_standard_final-trailing-comma = disabled
 ktlint_standard_final-newline = disabled
+ktlint_standard_final-colon-spacing = disabled

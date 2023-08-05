@@ -20,17 +20,17 @@ fun TopSitesView(viewModel: TopSitesViewModel) {
     when (value) {
         is TopSitesUiState.Loading -> Text(text = "Loading...")
         is TopSitesUiState.Ready -> {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = cardSize),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            userScrollEnabled = false
-        ) {
-            items(value.sites) { site ->
-                SiteCard(site = site, cardHeight = cardSize) {
-                    viewModel.selectSite(site)
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = cardSize),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                userScrollEnabled = false
+            ) {
+                items(value.sites) { site ->
+                    SiteCard(site = site, cardHeight = cardSize) {
+                        viewModel.selectSite(site)
+                    }
                 }
             }
-        }
         }
     }
 }
