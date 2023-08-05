@@ -1,7 +1,7 @@
 package org.cotton.base
 
-import kotlinx.cinterop.readBytes
 import kotlinx.cinterop.memScoped
+import kotlinx.cinterop.readBytes
 import kotlinx.cinterop.toCValues
 import platform.Foundation.NSData
 import platform.Foundation.dataWithBytes

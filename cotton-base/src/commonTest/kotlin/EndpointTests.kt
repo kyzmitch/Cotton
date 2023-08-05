@@ -1,9 +1,9 @@
+import org.cotton.base.ContentTypeValue
 import org.cotton.base.Endpoint
-import org.cotton.base.HTTPMethod
 import org.cotton.base.HTTPHeader
 import org.cotton.base.HTTPHeader.Accept
 import org.cotton.base.HTTPHeader.ContentType
-import org.cotton.base.ContentTypeValue
+import org.cotton.base.HTTPMethod
 import org.cotton.base.ParametersEncodingDestination
 import org.cotton.base.URLQueryPair
 import kotlin.test.Test
@@ -21,7 +21,7 @@ class EndpointTests {
                 URLQueryPair("ct", ""),
                 URLQueryPair("do", "false"),
                 URLQueryPair("edns_client_subnet", "0.0.0.0/0"),
-                URLQueryPair("random_padding", "")
+                URLQueryPair("random_padding", ""),
             )
             return params
         }
@@ -30,7 +30,7 @@ class EndpointTests {
         get() {
             val params = arrayListOf<URLQueryPair>(
                 URLQueryPair("q", "kotlin swift"),
-                URLQueryPair("type", "list")
+                URLQueryPair("type", "list"),
             )
             return params
         }
@@ -39,7 +39,7 @@ class EndpointTests {
         get() {
             return setOf<HTTPHeader>(
                 HTTPHeader.Accept(ContentTypeValue.JsonSuggestions),
-                HTTPHeader.ContentType(ContentTypeValue.JsonSuggestions)
+                HTTPHeader.ContentType(ContentTypeValue.JsonSuggestions),
             )
         }
 
@@ -49,7 +49,7 @@ class EndpointTests {
                 HTTPMethod.GET,
                 "resolve",
                 null,
-                ParametersEncodingDestination.QueryString(googleDnsQueryParams.toTypedArray())
+                ParametersEncodingDestination.QueryString(googleDnsQueryParams.toTypedArray()),
             )
             return endpoint
         }
@@ -60,7 +60,7 @@ class EndpointTests {
                 HTTPMethod.GET,
                 "ac",
                 searchHeaders,
-                ParametersEncodingDestination.QueryString(ddGoQueryParams.toTypedArray())
+                ParametersEncodingDestination.QueryString(ddGoQueryParams.toTypedArray()),
             )
             return endpoint
         }

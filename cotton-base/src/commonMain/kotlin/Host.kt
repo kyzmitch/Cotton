@@ -12,7 +12,7 @@ package org.cotton.base
 final class Host
 @Throws(Host.Error::class)
 constructor(
-    private val input: String
+    private val input: String,
 ) {
     private val validatedInputValue: String
     private val hostType: Content
@@ -55,7 +55,7 @@ constructor(
             "instagram.com",
             "www.instagram.com",
             "youtube.com",
-            "m.youtube.com"
+            "m.youtube.com",
         )
     }
 
@@ -142,7 +142,7 @@ constructor(
         /**
          * its IP address as a set of four decimal digit groups separated by "."
          * */
-        IPv4
+        IPv4,
     }
 
     sealed class Error(message: String) : Throwable(message) {

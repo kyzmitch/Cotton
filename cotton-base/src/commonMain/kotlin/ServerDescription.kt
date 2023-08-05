@@ -2,7 +2,8 @@ package org.cotton.base
 
 enum class HttpScheme(val stringValue: String, val port: Int) {
     HTTPS("https", 443),
-    HTTP("http", 80);
+    HTTP("http", 80),
+    ;
 
     companion object {
         fun create(rawString: String): HttpScheme? {

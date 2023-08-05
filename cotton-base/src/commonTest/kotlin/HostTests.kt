@@ -34,12 +34,12 @@ class HostTests {
 
         assertFailsWith(
             exceptionClass = Host.Error.NotValidHostInput::class,
-            block = { Host(wrongipaddr1) }
+            block = { Host(wrongipaddr1) },
         )
 
         assertFailsWith(
             exceptionClass = Host.Error.NotValidHostInput::class,
-            block = { Host(wrongipaddr2) }
+            block = { Host(wrongipaddr2) },
         )
 
         val hostUsingDN1 = Host(wrongipaddr3)
