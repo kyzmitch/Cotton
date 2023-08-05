@@ -5,18 +5,9 @@ on:
     branches: [ "master" ]
     types: [opened, reopened]
     paths:
-      - "**/*.kt"
+      - "catowserAndroid/**/*.kt"
 
 jobs:
-  lint-kotlin-cotton-base:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v3
-      - name: "ktlint"
-        uses: "vroy/gha-kotlin-linter@v4"
-        with:
-          args: "cotton-base/**/*.kt"
   lint-android:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +18,7 @@ jobs:
         with:
           args: "catowserAndroid/**/*.kt"
   build-android:
-    needs: [lint-kotlin-cotton-base, lint-android]
+    needs: [lint-android]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
