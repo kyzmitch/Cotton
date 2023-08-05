@@ -9,7 +9,7 @@ on:
     types: [opened, reopened]
     paths:
       - "catowseriOS/.swiftlint.yml"
-      - "**/*.swift"
+      - "catowseriOS/**/*.swift"
       - "cotton-base/**/*.kt"
 
 jobs:
@@ -33,7 +33,8 @@ jobs:
       - name: "ktlint"
         uses: "vroy/gha-kotlin-linter@v4"
         with:
-          args: --editorconfig=cotton-base/ "cotton-base/**/*.kt"
+          editorconfig: cotton-base
+          version: "cotton-base/**/*.kt"
   build-ios:
     needs: [lint-ios, lint-kotlin-cotton-base]
     runs-on: macos-latest
