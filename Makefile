@@ -94,6 +94,11 @@ clean:
 	cd ..; \
 	cd catowserAndroid; rm -rf build; cd ..; \
 
+.PHONY: ios-lint
+ios-lint:
+	swiftlint --version; \
+	swiftlint lint catowseriOS --config catowseriOS/.swiftlint.yml --quiet; \
+
 define HELP_CONTENT
 Local and CI targets
 \tUniversal targets
@@ -103,6 +108,7 @@ Local and CI targets
 \tiOS build
 \t\t* make build-ios-dev-release\t\t: Build Release version of Kotlin multiplatform & Xcode project.
 \t\t* make github-workflow-ios\t\t: GitHub workflow for iOS.
+\t\t* make ios-lint\t\t: Only run linter on Swift files.
 
 \tAndroid build
 \t\t* make build-android-dev-release\t\t: Build Release version of Kotlin multiplatform & Android project.
