@@ -88,6 +88,6 @@ fun SearchBarView(viewModel: SearchBarViewModel) {
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
             keyboardController?.hide()
-        }),
+        })
     ) // OutlinedTextField
 }

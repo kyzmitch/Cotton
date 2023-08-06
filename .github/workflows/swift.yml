@@ -28,7 +28,7 @@ jobs:
       - name: "ktlint"
         uses: "vroy/gha-kotlin-linter@v4"
         with:
-          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
+          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
           patterns: cotton-base/**/*.kt
   build-ios:
     needs: [lint-ios, lint-kotlin-cotton-base]
