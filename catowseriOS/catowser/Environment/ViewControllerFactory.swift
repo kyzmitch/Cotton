@@ -65,6 +65,7 @@ protocol ViewControllerFactory: AnyObject {
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C?,
+                                              // swiftlint:disable:next line_length
                                               _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
     func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
@@ -107,7 +108,8 @@ extension ViewControllerFactory {
     
     func webViewController<C: Navigating>(_ viewModel: WebViewModel,
                                           _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
-                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable where C.R == WebContentRoute {
+                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable
+    where C.R == WebContentRoute {
         let vc: WebViewController = .init(viewModel, externalNavigationDelegate, coordinator)
         return vc
     }

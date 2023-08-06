@@ -60,7 +60,6 @@ final class SearchBarLegacyView: UIView {
     
     // MARK: - initializers
 
-    
     init(frame: CGRect, uiFramework: UIFrameworkType) {
         self.uiFramework = uiFramework
         super.init(frame: frame)

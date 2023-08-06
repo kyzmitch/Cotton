@@ -71,7 +71,7 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
             observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
             })
-        } else if case let .combine(_) = handlerType {
+        } else if case .combine = handlerType {
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }

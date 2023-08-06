@@ -68,7 +68,7 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
                 }
                 self.wrapperHandler()(result)
             })
-        if case let .combine(_) = handlerType {
+        if case .combine = handlerType {
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }

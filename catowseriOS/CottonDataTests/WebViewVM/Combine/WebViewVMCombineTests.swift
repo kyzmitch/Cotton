@@ -12,6 +12,7 @@ import CottonRestKit
 import CottonBase
 import WebKit
 
+// swiftlint:disable:next type_body_length
 final class WebViewVMCombineTests: WebViewVMFixture {
     func testInit() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)

@@ -51,6 +51,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C?,
+                                              // swiftlint:disable:next line_length
                                               _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute {
         return nil
     }

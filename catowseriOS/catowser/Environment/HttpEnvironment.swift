@@ -11,7 +11,6 @@ import CottonRestKit
 import CoreBrowser
 import BrowserNetworking
 import Alamofire // only needed for `JSONEncoding`
-import BrowserNetworking
 import FeaturesFlagsKit
 
 final class HttpEnvironment {

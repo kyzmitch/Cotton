@@ -1,6 +1,8 @@
 disabled_rules:
     - trailing_whitespace
     - implicit_getter
+    - line_length
+    - file_length
 excluded:
     - Carthage
     - Pods
