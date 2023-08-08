@@ -62,7 +62,6 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
 }
 
 extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
-    // swiftlint:disable:next function_body_length
     public func fetchSuggestions(_ query: String) async {
         let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
         let apiType = await searchContext.appAsyncApiTypeValue

@@ -15,7 +15,10 @@ import Combine
 #endif
 import CottonBase
 
-final class AlamofireHTTPRxAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where RX.Observer.Response == R, RX.Server == S {
+final class AlamofireHTTPRxAdaptee<R,
+                                   S,
+                                   RX: RxInterface>: HTTPRxAdapter where
+RX.Observer.Response == R, RX.Server == S {
     typealias Response = R
     typealias Server = S
     typealias ObserverWrapper = RX
@@ -78,7 +81,7 @@ final class AlamofireHTTPRxAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where R
             observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
             })
-        } else if case let .combine(_) = handlerType {
+        } else if case .combine = handlerType {
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
@@ -92,8 +95,10 @@ final class AlamofireHTTPRxAdaptee<R, S, RX: RxInterface>: HTTPRxAdapter where R
     }
 }
 
-/// Wrapper around Alamofire method
-extension URLRequest: URLRequestCreatable {
+/// Wrapper around Alamofire method.
+/// URLRequest is already implements same protocol in `CottonRestKit`
+/// and here it needs to overwrite that confirmance.
+extension URLRequest /* : URLRequestCreatable */ {
     public func convertToURLRequest() throws -> URLRequest {
         return try asURLRequest()
     }

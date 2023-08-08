@@ -1,26 +1,39 @@
 package org.cotton.app
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.cotton.browser.content.*
+import org.cotton.browser.content.BrowserContent
+import org.cotton.browser.content.SearchBarView
+import org.cotton.browser.content.SearchSuggestionsView
+import org.cotton.browser.content.TabsCountButton
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
-import org.cotton.browser.content.viewmodel.TopSitesViewModel
 
 @Composable
 internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier
-            .height(mainVM.barHeight)
-            .fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .height(mainVM.barHeight)
+                .fillMaxWidth()
+        ) {
             Column(modifier = Modifier.weight(1f)) {
                 SearchBarView(searchBarVM)
             }
-            Column(modifier = Modifier
-                .width(30.dp)
-                .fillMaxHeight(), horizontalAlignment = Alignment.End) {
+            Column(
+                modifier = Modifier
+                    .width(30.dp)
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.End
+            ) {
                 TabsCountButton(0u) {
                     mainVM.show(MainBrowserRoute.Tabs)
                 }

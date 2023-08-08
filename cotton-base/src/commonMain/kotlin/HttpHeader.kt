@@ -5,7 +5,8 @@ package org.cotton.base
  * */
 enum class HTTPMethod(val stringValue: String) {
     GET("GET"),
-    POST("POST");
+    POST("POST"),
+    ;
 
     companion object {
         fun createFrom(rawString: String): HTTPMethod? {
@@ -23,13 +24,15 @@ enum class HTTPMethod(val stringValue: String) {
  * */
 enum class ContentTypeValue(val stringValue: String) {
     Json("application/json"),
+
     /**
      * The following type is used to indicate that the response will contain search suggestions.
      * Link: [doc](http://www.opensearch.org/Specifications/OpenSearch/Extensions/Suggestions/1.0)
      * */
     JsonSuggestions("application/x-suggestions+json"),
     Url("application/x-www-form-urlencoded"),
-    Html("text/html");
+    Html("text/html"),
+    ;
 
     companion object {
         fun createFrom(rawValue: String): ContentTypeValue? {

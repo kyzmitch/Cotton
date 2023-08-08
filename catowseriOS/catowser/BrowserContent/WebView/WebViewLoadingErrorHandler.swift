@@ -39,7 +39,7 @@ final class WebViewLoadingErrorHandler {
         var msg = error.localizedDescription
         
         switch (error.domain, error.code) {
-        case (NSURLErrorDomain, NSURLErrorCancelled) :
+        case (NSURLErrorDomain, NSURLErrorCancelled):
             return
         case (NSURLErrorDomain, -1202):
             isTLSError = true
@@ -80,7 +80,8 @@ final class WebViewLoadingErrorHandler {
         }
 
         /**
-         TODO: Temporarily not showing the alert views, because there is a case when they could be showed infinitly on DoH case
+         TODO: Temporarily not showing the alert views,
+         because there is a case when they could be showed infinitly on DoH case
          */
     }
 }

@@ -4,7 +4,7 @@ buildscript {
         google()
         mavenCentral()
     }
-    extra.apply{
+    extra.apply {
         set("compose_version", "1.3.3")
         set("ktor_version", "2.2.3")
         set("lifecycle_version", "2.5.1")
@@ -21,6 +21,7 @@ buildscript {
 
 plugins {
     kotlin("android") version "1.7.20" apply false
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.0" apply false
 }
 
 tasks.register("clean", Delete::class) {

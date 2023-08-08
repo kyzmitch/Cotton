@@ -1,8 +1,5 @@
 package org.cotton.base
 
-import org.cotton.base.Host
-import org.cotton.base.URLInfo
-
 /**
  * IMPORTANT: Site type shouldn't mutate, on Swift language level it is required to be Sendable.
  *
@@ -20,9 +17,9 @@ class Site(
     val userSpecifiedTitle: String? = null
 ) {
     /*
-    * Allows static properties or functions
-    * */
-    companion object {}
+     * Allows static properties or functions
+     * */
+    companion object
 
     val host: Host
         get() = urlInfo.host()
@@ -57,21 +54,21 @@ class Site(
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             other as Settings
-            return isPrivate == other.isPrivate
-                    && blockPopups == other.blockPopups
-                    && isJSEnabled == other.isJSEnabled
-                    && canLoadPlugins == other.canLoadPlugins
+            return isPrivate == other.isPrivate &&
+                blockPopups == other.blockPopups &&
+                isJSEnabled == other.isJSEnabled &&
+                canLoadPlugins == other.canLoadPlugins
         }
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         other as Site
-        return urlInfo == other.urlInfo
-                && settings == other.settings
-                && searchSuggestion == other.searchSuggestion
-                && userSpecifiedTitle == other.userSpecifiedTitle
-                && faviconData == other.faviconData
+        return urlInfo == other.urlInfo &&
+            settings == other.settings &&
+            searchSuggestion == other.searchSuggestion &&
+            userSpecifiedTitle == other.userSpecifiedTitle &&
+            faviconData == other.faviconData
     }
 }
 

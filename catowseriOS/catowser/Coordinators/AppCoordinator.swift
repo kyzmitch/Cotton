@@ -114,7 +114,8 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             
             window.rootViewController = startedVC?.viewController
             window.makeKeyAndVisible()
-            // Now, with introducing the actors model we need to attach observer only after adding all child coordinators
+            // Now, with introducing the actors model
+            // we need to attach observer only after adding all child coordinators
             if case .uiKit = uiFramework {
                 await TabsListManager.shared.attach(self, notify: true)
             }
@@ -677,7 +678,10 @@ extension AppCoordinator: SearchBarDelegate {
         let toolbarHeight = toolbarCoordinator?.startedView?.bounds.height
         // Not used, can be random
         let randomValue: WebAutoCompletionSource = .duckduckgo
-        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions(randomValue), topAnchor, bottomAnchor, toolbarHeight))
+        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions(randomValue),
+                                                      topAnchor,
+                                                      bottomAnchor,
+                                                      toolbarHeight))
     }
 }
 
@@ -696,4 +700,6 @@ extension AppCoordinator: DeveloperMenuPresenter {
     func host(_ host: Host, willUpdateJsState enabled: Bool) {
         webContentCoordinator?.showNext(.javaScript(enabled, host))
     }
+    
+    // swiftlint:disable:next file_length
 }

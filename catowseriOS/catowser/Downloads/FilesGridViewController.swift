@@ -121,7 +121,7 @@ extension FilesGridViewController: FilesGridPresenter {
     }
 }
 
-// MARK: File Download View Delegate
+// MARK: - File Download View Delegate
 
 extension FilesGridViewController: FileDownloadViewDelegate {
     func didRequestOpen(local url: URL, from sourceView: DownloadButtonCellView) {
