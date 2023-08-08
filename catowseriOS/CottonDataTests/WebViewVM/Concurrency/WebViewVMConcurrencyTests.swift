@@ -168,6 +168,7 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
     }
     
+    // swiftlint:disable:next function_body_length
     func testGoForward() throws {
         let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
         vm.load()

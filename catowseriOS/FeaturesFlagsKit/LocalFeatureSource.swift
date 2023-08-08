@@ -74,7 +74,6 @@ extension LocalFeatureSource: FeatureSource {
     }
 }
 
-
 extension LocalFeatureSource: EnumFeatureSource {
     public func currentEnumValue<F: EnumFeature>(of feature: ApplicationEnumFeature<F>) -> F.EnumValue
     where F.EnumValue.RawValue == Int {

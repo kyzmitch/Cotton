@@ -1,9 +1,9 @@
+import org.cotton.base.ContentTypeValue
 import org.cotton.base.Endpoint
-import org.cotton.base.HTTPMethod
 import org.cotton.base.HTTPHeader
 import org.cotton.base.HTTPHeader.Accept
 import org.cotton.base.HTTPHeader.ContentType
-import org.cotton.base.ContentTypeValue
+import org.cotton.base.HTTPMethod
 import org.cotton.base.ParametersEncodingDestination
 import org.cotton.base.URLQueryPair
 import kotlin.test.Test

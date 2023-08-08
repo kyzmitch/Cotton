@@ -18,8 +18,7 @@ import CoreBrowser
  */
 
 /// web view context should carry some data or dependencies which can't be stored as a state and always are present.
-/// protocol with async functions which do not belong to specific actor:
-/// https://github.com/apple/swift-evolution/blob/main/proposals/0338-clarify-execution-non-actor-async.md#proposed-solution
+/// protocol with async functions which do not belong to specific actor
 public protocol WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
     var pluginsProgram: any JSPluginsProgram { get }

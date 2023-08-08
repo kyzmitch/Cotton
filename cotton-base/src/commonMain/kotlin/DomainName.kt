@@ -8,7 +8,9 @@ package org.cotton.base
  * @property input A string representation which has to be verified (should pe private because it wasn't checked for non ASCII symbols).
  * @property rawString A valid ASCII string with automatically converted symbols if they were non ASCII encoded.
  * */
-final class DomainName @Throws(DomainName.Error::class) constructor(private val input: String) {
+final class DomainName
+@Throws(DomainName.Error::class)
+constructor(private val input: String) {
     private val punycodedValue: String
     val rawString: String
         get() = punycodedValue

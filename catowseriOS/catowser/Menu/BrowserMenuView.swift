@@ -53,6 +53,7 @@ struct BrowserMenuView: View {
                     Toggle(isOn: $model.isJavaScriptEnabled) {
                         Text(.jsMenuTitle)
                     }
+                    // swiftlint:disable:next line_length
                     NavigationLink(destination: BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
                         isShowingAddTabSetting = false
                         tabAddPositionRowValue = selected
@@ -64,6 +65,7 @@ struct BrowserMenuView: View {
                         Spacer()
                         Text(verbatim: tabAddPositionRowValue.description).alignRight()
                     }
+                    // swiftlint:disable:next line_length
                     NavigationLink(destination: BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
                         isShowingDefaultTabContentSetting = false
                         tabContentRowValue = selected
@@ -77,6 +79,7 @@ struct BrowserMenuView: View {
                     }
                 }
                 Section(header: Text(.searchSectionTtl)) {
+                    // swiftlint:disable:next line_length
                     NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
                         isShowingWebAutoCompleteSetting = false
                         webAutocompleteRowValue = selected
@@ -94,6 +97,7 @@ struct BrowserMenuView: View {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
                         Text(.nativeAppRedirectTitle)
                     }
+                    // swiftlint:disable:next line_length
                     NavigationLink(destination: BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
                         isShowingAppAsyncApiSetting = false
                         asyncApiRowValue = selected
@@ -105,6 +109,7 @@ struct BrowserMenuView: View {
                         Spacer()
                         Text(verbatim: asyncApiRowValue.description).alignRight()
                     }
+                    // swiftlint:disable:next line_length
                     NavigationLink(destination: BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
                         isShowingAppUIFrameworkSetting = false
                         uiFrameworkRowValue = selected

@@ -16,6 +16,7 @@ internal const val lowerBound: Char = '\uE000'
 internal const val secondUpBound: Char = '\uFFFF' // should be 0x1FFFFF
 
 internal val urlAlphabet = (('a'..'z') + ('A'..'Z') + ('0'..'9')).map { it.code.toByte() }
+
 /**
  * Oauth specific percent encoding
  * https://tools.ietf.org/html/rfc5849#section-3.6

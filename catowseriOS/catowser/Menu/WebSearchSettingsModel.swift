@@ -38,6 +38,5 @@ extension WebAutoCompletionSource: Identifiable {
         return self.rawValue
     }
     
-    // swiftlint:disable:next type_name
     public typealias ID = RawValue
 }

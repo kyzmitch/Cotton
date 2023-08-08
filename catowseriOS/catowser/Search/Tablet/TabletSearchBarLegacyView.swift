@@ -25,7 +25,10 @@ struct TabletSearchBarLegacyView: CatowserUIVCRepresentable {
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
-        let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate, nil, interface?.globalMenuDelegate, .swiftUIWrapper)
+        let vc = vcFactory.deviceSpecificSearchBarViewController(searchBarDelegate,
+                                                                 nil,
+                                                                 interface?.globalMenuDelegate,
+            .swiftUIWrapper)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }

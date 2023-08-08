@@ -10,7 +10,6 @@ import FeaturesFlagsKit
 import SwiftUI
 
 #if DEBUG
-// swiftlint:disable type_name
 struct AppAsyncApiTypeView_Previews: PreviewProvider {
     static var previews: some View {
         let model: AppAsyncApiTypeModel = .init(nil) { (_) in

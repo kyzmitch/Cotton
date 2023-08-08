@@ -56,6 +56,7 @@ public enum HttpError: LocalizedError, Equatable {
         }
     }
     
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.zombieSelf, .zombieSelf),

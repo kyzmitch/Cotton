@@ -28,13 +28,16 @@ interface DecodableResponse {
  * and currently we actually don't do network requests
  * in Kotlin, so, we don't need to decode the http responses
  * and no need to check the http response codes.
+ *
+ * Possible generic param - out R : DecodableResponse
+ *
  * @property httpMethod usual HTTP methods like Get, Post, etc.
  * @property path slash divided string, e.g. `complete/search`
  * @property headers optional set of HTTP headers
  * @property encodingMethod The HTTP body encoding method like Query , Json, etc.
  * @constructor Creates the description for the Http request.
  */
-data class Endpoint</* out R : DecodableResponse, */ in S : ServerDescription>(
+data class Endpoint<in S : ServerDescription>(
     val httpMethod: HTTPMethod,
     val path: String,
     val headers: Set<HTTPHeader>?,

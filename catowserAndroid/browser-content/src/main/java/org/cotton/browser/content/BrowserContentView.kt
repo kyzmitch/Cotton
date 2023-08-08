@@ -1,10 +1,8 @@
 package org.cotton.browser.content
 
-import androidx.activity.viewModels
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.viewModelFactory
 import org.cotton.browser.content.data.TabContentType
 import org.cotton.browser.content.viewmodel.TopSitesViewModel
 

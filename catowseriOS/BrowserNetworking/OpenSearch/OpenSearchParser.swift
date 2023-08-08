@@ -19,6 +19,7 @@ extension OpenSearch {
             self.json = json
         }
         
+        // swiftlint:disable:next function_body_length
         public init(data: Data) throws {
             let xml = XMLHash.config { (options) in
                     options.detectParsingErrors = true

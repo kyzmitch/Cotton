@@ -12,7 +12,6 @@ import SwiftUI
 #endif
 
 #if DEBUG
-// swiftlint:disable type_name
 struct TabDefaultContentView_Previews: PreviewProvider {
     static var previews: some View {
         let model: TabDefaultContentModel = .init(nil) { (_) in
