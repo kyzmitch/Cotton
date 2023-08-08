@@ -16,11 +16,7 @@ endif
 # ./gradlew publishAndroidDebugPublicationToMavenLocal; 
 
 .PHONY: github-workflow-ios
-github-workflow-ios:
-	cd cotton-base; \
-	./gradlew ktlintCheck; \
-	./gradlew assembleCottonBaseReleaseXCFramework; \
-	cd ..; \
+github-workflow-ios: build-cotton-base-ios-release
 	cd catowseriOS; \
 	xcodebuild -scheme "Cotton dev" build \
 	-workspace catowser.xcworkspace \
@@ -32,14 +28,7 @@ github-workflow-ios:
 	cd ..; \
 
 .PHONY: github-workflow-android
-github-workflow-android:
-	cd cotton-base; \
-	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
-	export ANDROID_HOME=${HOME}/Library/Android/sdk; \
-	./gradlew ktlintCheck; \
-	./gradlew assembleCottonBaseReleaseXCFramework; \
-	./gradlew publishToMavenLocal; \
-	cd ..; \
+github-workflow-android: build-cotton-base-android-release
 	cd catowserAndroid; \
 	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
 	./gradlew ktlintCheck; \
@@ -67,7 +56,7 @@ build-ios-dev-release: build-cotton-base-ios-release ios-lint
 	 cd ..; \
 
 .PHONY: build-android-dev-release
-build-android-dev-release: build-cotton-base-android-release
+build-android-dev-release: build-cotton-base-android-release android-lint
 	cd catowserAndroid; \
 	echo "sdk.dir=${HOME}/Library/Android/sdk" > local.properties; \
 	./gradlew ktlintCheck; \
