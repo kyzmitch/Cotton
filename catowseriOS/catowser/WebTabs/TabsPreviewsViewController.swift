@@ -108,7 +108,7 @@ where C.R == TabsScreenRoute {
 
         Task {
             await TabsListManager.shared.attach(self)
-            let tabs = await TabsListManager.shared.fetch()
+            let tabs = await TabsListManager.shared.allTabs
             uxState = .tabs(dataSource: .init(tabs))
         }
     }

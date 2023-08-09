@@ -59,23 +59,24 @@ class TabsListManagerTests: XCTestCase {
                                      searchSuggestion: nil,
                                      userSpecifiedTitle: nil)
 
-    func testFailedInit() throws {
+    func testFailedInit() async throws {
         tabsStates.defaultSelectedTabId = .notPossibleId
         tabsStorageMock.fetchAllTabsThrowableError = TabStorageError.notImplemented
 
-        let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageMock,
-                                                       positioning: tabsStates,
-                                                       selectionStrategy: selectionStrategyMock)
-        XCTAssertEqual(tabsMgr.tabsCount, 0)
-        XCTAssertEqual(tabsMgr.selectedId, .notPossibleId)
+        let tabsMgr = await TabsListManager(tabsStorageMock, tabsStates, selectionStrategyMock)
+        let tabsCount = await tabsMgr.tabsCount
+        XCTAssertEqual(tabsCount, 0)
+        let selectedTabId = await tabsMgr.selectedId
+        XCTAssertEqual(selectedTabId, .notPossibleId)
         _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 1.1)
         // Not testing `tabsMgr.collectionLastIndex` and `tabsMgr.currentlySelectedIndex`
         // because they would trigger assertion failure with currently used `MockedWithErrorTabsStorage`
         // which doesn't return any initial tabs
-        XCTAssertEqual(tabsMgr.fetch(), [])
+        let tabs = await tabsMgr.allTabs
+        XCTAssertEqual(tabs, [])
     }
     
-    func testInit() throws {
+    func testInit() async throws {
         let tab1: Tab = .init(contentType: .site(exampleSite), idenifier: exampleTabId)
         let tab2: Tab = .init(contentType: .site(knownSite), idenifier: knownTabId)
         let tabsV1: [Tab] = [tab1, tab2]
@@ -83,26 +84,24 @@ class TabsListManagerTests: XCTestCase {
         tabsStates.defaultSelectedTabId = .notPossibleId
         tabsStorageMock.fetchAllTabsReturnValue = tabsV1
         tabsStorageMock.fetchSelectedTabIdReturnValue = knownTabId
-        let tabsMgr: TabsListManager = TabsListManager(storage: tabsStorageMock,
-                                                       positioning: tabsStates,
-                                                       selectionStrategy: selectionStrategyMock)
-        XCTAssertEqual(tabsMgr.tabsCount, 0)
-        XCTAssertEqual(tabsMgr.selectedId, .notPossibleId)
-        _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 1.1)
-        XCTAssertEqual(tabsMgr.selectedId, knownTabId)
-        XCTAssertEqual(tabsMgr.tabsCount, tabsV1.count)
-        XCTAssertEqual(tabsMgr.fetch(), tabsV1)
+        let tabsMgr = await TabsListManager(tabsStorageMock, tabsStates, selectionStrategyMock)
+        let tabsCount = await tabsMgr.tabsCount
+        let selectedTabId = await tabsMgr.selectedId
+        XCTAssertEqual(selectedTabId, knownTabId)
+        XCTAssertEqual(tabsCount, tabsV1.count)
+        let tabs = await tabsMgr.allTabs
+        XCTAssertEqual(tabs, tabsV1)
         
         // User selects already selected
         
-        tabsStorageMock.selectTabReturnValue = .init(value: tab2.id)
-        tabsMgr.select(tab: tab2)
-        _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 0.1)
-        XCTAssertEqual(tabsMgr.selectedId, knownTabId)
+        tabsStorageMock.selectTabReturnValue = tab2.id
+        await tabsMgr.select(tab: tab2)
+        let nextSelectedTabId2 = await tabsMgr.selectedId
+        XCTAssertEqual(nextSelectedTabId2, knownTabId)
         
-        tabsStorageMock.selectTabReturnValue = .init(value: tab1.id)
-        tabsMgr.select(tab: tab1)
-        _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 0.1)
-        XCTAssertEqual(tabsMgr.selectedId, exampleTabId)
+        tabsStorageMock.selectTabReturnValue = tab1.id
+        await tabsMgr.select(tab: tab1)
+        let nextSelectedTabId1 = await tabsMgr.selectedId
+        XCTAssertEqual(nextSelectedTabId1, exampleTabId)
     }
 }

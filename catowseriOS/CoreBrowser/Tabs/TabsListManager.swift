@@ -130,10 +130,6 @@ extension TabsListManager: IndexSelectionContext {
 }
 
 extension TabsListManager: TabsSubject {
-    public func fetch() async -> [Tab] {
-        tabs
-    }
-
     public func close(tab: Tab) async {
         do {
             let removedTabs = try await storage.remove(tabs: [tab])
@@ -245,6 +241,12 @@ extension TabsListManager: TabsSubject {
     public var selectedId: UUID {
         get async {
             selectedTabIdentifier
+        }
+    }
+    
+    public var allTabs: [Tab] {
+        get async {
+            tabs
         }
     }
 }
