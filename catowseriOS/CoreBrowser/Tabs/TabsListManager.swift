@@ -69,7 +69,11 @@ public actor TabsListManager {
         do {
             try await fetchTabs()
         } catch {
-            fatalError("Fail to init tabs")
+            if ProcessInfo.unitTesting {
+                print("Failed to init tabs manager: \(error)")
+            } else {
+                fatalError("Fail to init tabs")
+            }
         }
     }
 

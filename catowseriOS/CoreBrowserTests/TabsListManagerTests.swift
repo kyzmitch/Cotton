@@ -61,14 +61,13 @@ class TabsListManagerTests: XCTestCase {
 
     func testFailedInit() async throws {
         tabsStates.defaultSelectedTabId = .notPossibleId
-        tabsStorageMock.fetchAllTabsThrowableError = TabStorageError.notImplemented
+        tabsStorageMock.fetchAllTabsThrowableError = TabStorageError.notFound
 
         let tabsMgr = await TabsListManager(tabsStorageMock, tabsStates, selectionStrategyMock)
         let tabsCount = await tabsMgr.tabsCount
         XCTAssertEqual(tabsCount, 0)
         let selectedTabId = await tabsMgr.selectedId
         XCTAssertEqual(selectedTabId, .notPossibleId)
-        _ = XCTWaiter.wait(for: [expectation(description: "Have to wait for async tabs init from cache")], timeout: 1.1)
         // Not testing `tabsMgr.collectionLastIndex` and `tabsMgr.currentlySelectedIndex`
         // because they would trigger assertion failure with currently used `MockedWithErrorTabsStorage`
         // which doesn't return any initial tabs
