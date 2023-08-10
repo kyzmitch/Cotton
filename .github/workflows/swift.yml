@@ -30,8 +30,9 @@ jobs:
         with:
           args: --editorconfig=cotton-base/.editorconfig --disabled_rules=final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
           patterns: cotton-base/**/*.kt
-  core-browser-tests:
-    runs-on: macos-latest
+  ios-unit-tests:
+    needs: [lint-ios, lint-kotlin-cotton-base]
+    runs-on: macos-13
     steps:
       - uses: actions/cache@v3
         with:
@@ -62,10 +63,10 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
       - name: Build
-        run: make github-workflow-ios-tests-core-browser
+        run: make github-ios-unit-tests
   build-ios:
-    needs: [lint-ios, lint-kotlin-cotton-base, core-browser-tests]
-    runs-on: macos-latest
+    needs: [ios-unit-tests]
+    runs-on: macos-13
     env:
       MINT_PATH: .mint/lib
       MINT_LINK_PATH: .mint/bin

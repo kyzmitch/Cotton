@@ -17,6 +17,8 @@ endif
 
 # xcodebuild -showsdks
 
+# Github workflow builds
+
 .PHONY: github-workflow-ios
 github-workflow-ios: build-cotton-base-ios-release
 	cd catowseriOS; \
@@ -37,16 +39,7 @@ github-workflow-android: build-cotton-base-android-release
 	./gradlew app:build; \
 	cd ..; \
 
-.PHONY: setup
-setup:
-	gem install bundler -v '~> 1.0' --user-install
-	$(DISPLAY_SEPARATOR)
-	bundle install
-	$(DISPLAY_SEPARATOR)
-	brew update
-	$(DISPLAY_SEPARATOR)
-	brew bundle install --file=./brew_configs/Brewfile
-	mint install MakeAWishFoundation/SwiftyMocky
+# Local builds
 
 .PHONY: build-ios-dev-release
 build-ios-dev-release: build-cotton-base-ios-release ios-lint
@@ -67,6 +60,19 @@ build-android-dev-release: build-cotton-base-android-release android-lint
 	./gradlew app:build; \
 	cd ..; \
 
+# Setup
+
+.PHONY: setup
+setup:
+	gem install bundler -v '~> 1.0' --user-install
+	$(DISPLAY_SEPARATOR)
+	bundle install
+	$(DISPLAY_SEPARATOR)
+	brew update
+	$(DISPLAY_SEPARATOR)
+	brew bundle install --file=./brew_configs/Brewfile
+	mint install MakeAWishFoundation/SwiftyMocky
+
 .PHONY: clean
 clean:
 	cd cotton-base; rm -rf build; cd ..; \
@@ -76,6 +82,8 @@ clean:
 	rm -rf SourcePackages; \
 	cd ..; \
 	cd catowserAndroid; rm -rf build; cd ..; \
+
+# Linters
 
 .PHONY: ios-lint
 ios-lint:
@@ -87,6 +95,8 @@ android-lint:
 	ktlint catowserAndroid/**/*.kt --editorconfig=catowserAndroid/.editorconfig ; \
 	# --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,
 	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports
+
+# Cotton base builds
 
 .PHONY: build-cotton-base-ios-release
 build-cotton-base-ios-release:
@@ -107,15 +117,7 @@ build-cotton-base-android-release:
 .PHONY: build-cotton-base-release
 build-cotton-base-release: build-cotton-base-ios-release build-cotton-base-android-release
 
-.PHONY: github-workflow-ios-tests-core-browser
-github-workflow-ios-tests-core-browser: build-cotton-base-ios-release
-	cd catowseriOS; \
-	xcodebuild -scheme "CoreBrowser Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]} \
-	 cd ..; \
+# Local unit tests
 
 .PHONY: ios-tests-core-browser
 ios-tests-core-browser: build-cotton-base-ios-release
@@ -126,6 +128,61 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	 -sdk macosx13.1 \
 	 -arch x86_64 | xcpretty --test \
 	 cd ..; \
+
+.PHONY: ios-unit-tests
+ios-unit-tests: build-cotton-base-ios-release
+	cd catowseriOS; \
+	xcodebuild -scheme "CoreBrowser Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test; \
+	xcodebuild -scheme "CottonRestKit Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test; \
+	xcodebuild -scheme "CottonPlugins Unit tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test; \
+	cd ..; \
+
+#	 xcodebuild -scheme "CottonData Unit Tests" test \
+#	 -workspace catowser.xcworkspace \
+#	 -run-tests-until-failure \
+#	 -sdk macosx13.1 \
+#	 -arch x86_64 | xcpretty --test; \
+
+# Github workflow unit tests (specific macOS runners)
+
+.PHONY: github-ios-unit-tests
+github-ios-unit-tests: build-cotton-base-ios-release
+	cd catowseriOS; \
+	xcodebuild -scheme "CoreBrowser Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	xcodebuild -scheme "CottonRestKit Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	xcodebuild -scheme "CottonPlugins Unit tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 xcodebuild -scheme "CottonData Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 cd ..; \
+
+# Help
 
 define HELP_CONTENT
 Local and CI targets
@@ -150,7 +207,7 @@ Local and CI targets
 
 \tUnit tests
 \t\t* make ios-tests\t\t: Build and run iOS unit tests.
-\t\t* make cotton-base-tests\t\t: Build and run Cotton-base Kotlin unit tests.
+\t\t* make ios-tests-core-browser\t\t: Build and run Cotton-base Kotlin unit tests.
 endef
 
 export HELP_CONTENT

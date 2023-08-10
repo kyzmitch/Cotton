@@ -2903,7 +2903,7 @@
 				8AD4F54628F4941A009C4BDC /* ReactiveSwift */,
 				8A0E4D5929133E77008F7964 /* SwiftyMocky */,
 			);
-			productName = CoreCatowserTests;
+			productName = CottonDataTests;
 			productReference = 8A7B1B9F28EB131F004FC135 /* CottonDataTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -2914,7 +2914,6 @@
 				8A7EF3CD273924EF0071BB89 /* Sources */,
 				8A7EF3CE273924EF0071BB89 /* Frameworks */,
 				8A7EF3CF273924EF0071BB89 /* Resources */,
-				8A03F43C28F4745700E4A296 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2922,7 +2921,7 @@
 				8A7EF3D7273924EF0071BB89 /* PBXTargetDependency */,
 			);
 			name = CottonRestKitTests;
-			productName = HttpKitTests;
+			productName = CottonRestKitTests;
 			productReference = 8A7EF3D1273924EF0071BB89 /* CottonRestKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -3062,7 +3061,7 @@
 				8AE63B5B248EC38300D6D2E4 /* PBXTargetDependency */,
 			);
 			name = CottonPluginsTests;
-			productName = JSPluginsTests;
+			productName = CottonPluginsTests;
 			productReference = 8AE63B54248EC38300D6D2E4 /* CottonPluginsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -3409,23 +3408,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		8A03F43C28F4745700E4A296 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
 		8A03F43D28F4746A00E4A296 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -3474,11 +3456,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(PROJECT_DIR)/CoreCatowserTests/GeneratedMocks/Mock.generated.swift",
+				"$(PROJECT_DIR)/CottonDataTests/GeneratedMocks/Mock.generated.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:~/.mint/bin\"\n\nif which swiftymocky > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: swiftymocky not installed, run make\"\nfi\nswiftymocky doctor    # validate your setup\nswiftymocky generate  # generate mocks\n";
+			shellScript = "export PATH=\"$PATH:~/.mint/bin\"\n\nif which swiftymocky > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: swiftymocky not installed, run `make setup`\"\nfi\nswiftymocky doctor    # validate your setup\nswiftymocky generate  # generate mocks\n";
 		};
 		8A8035E224442F0F000E035F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5094,7 +5076,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreCatowserTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CottonDataTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;
@@ -5118,7 +5100,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CoreCatowserTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CottonDataTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
@@ -5148,7 +5130,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CottonRestKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;
@@ -5178,7 +5160,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.HttpKitTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CottonRestKitTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;
@@ -5519,7 +5501,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.JSPluginsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CottonPluginsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = macosx;
@@ -5544,7 +5526,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.JSPluginsTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CottonPluginsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
