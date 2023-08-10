@@ -93,3 +93,4 @@ cotton-base/.gradle
 *.iml
 misc.xml
 catowseriOS/SourcePackages
+CoreBrowserSwiftLint.log

@@ -15,6 +15,8 @@ endif
 # specific Maven publish doesn't work and have to use `publishToMavenLocal`
 # ./gradlew publishAndroidDebugPublicationToMavenLocal; 
 
+# xcodebuild -showsdks
+
 .PHONY: github-workflow-ios
 github-workflow-ios: build-cotton-base-ios-release
 	cd catowseriOS; \
@@ -38,6 +40,8 @@ github-workflow-android: build-cotton-base-android-release
 .PHONY: setup
 setup:
 	gem install bundler -v '~> 1.0' --user-install
+	$(DISPLAY_SEPARATOR)
+	bundle install
 	$(DISPLAY_SEPARATOR)
 	brew update
 	$(DISPLAY_SEPARATOR)
@@ -103,6 +107,26 @@ build-cotton-base-android-release:
 .PHONY: build-cotton-base-release
 build-cotton-base-release: build-cotton-base-ios-release build-cotton-base-android-release
 
+.PHONY: github-workflow-ios-tests-core-browser
+github-workflow-ios-tests-core-browser: build-cotton-base-ios-release
+	cd catowseriOS; \
+	xcodebuild -scheme "CoreBrowser Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]} \
+	 cd ..; \
+
+.PHONY: ios-tests-core-browser
+ios-tests-core-browser: build-cotton-base-ios-release
+	cd catowseriOS; \
+	xcodebuild -scheme "CoreBrowser Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -sdk macosx13.1 \
+	 -arch x86_64 | xcpretty --test \
+	 cd ..; \
+
 define HELP_CONTENT
 Local and CI targets
 \tUniversal targets
@@ -123,6 +147,10 @@ Local and CI targets
 \t\t* make build-cotton-base-ios-release\t\t: Build cotton-base XCFramework for iOS.
 \t\t* make build-cotton-base-android-release\t\t: Build & publish cotton-base to local Maven for Android.
 \t\t* make build-cotton-base-release\t\t: Build cotton-base together for iOS & Android.
+
+\tUnit tests
+\t\t* make ios-tests\t\t: Build and run iOS unit tests.
+\t\t* make cotton-base-tests\t\t: Build and run Cotton-base Kotlin unit tests.
 endef
 
 export HELP_CONTENT
