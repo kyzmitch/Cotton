@@ -159,6 +159,8 @@ ios-unit-tests: build-cotton-base-ios-release
 
 .PHONY: github-ios-unit-tests
 github-ios-unit-tests: build-cotton-base-ios-release
+	brew bundle install --file=./brew_configs/Brewfile; \
+	mint install MakeAWishFoundation/SwiftyMocky; \
 	cd catowseriOS; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \

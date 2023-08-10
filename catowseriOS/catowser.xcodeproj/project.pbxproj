@@ -261,7 +261,6 @@
 		8A745C1424802E4F00A379AD /* TabsObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A745C1324802E4F00A379AD /* TabsObserver.swift */; };
 		8A7A9BAC23F1C477008850B6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7A9BAB23F1C477008850B6 /* URL+Extensions.swift */; };
 		8A7B1BA028EB131F004FC135 /* CottonData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CottonData.framework */; };
-		8A7B1BA728EB131F004FC135 /* WebViewVMCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A7B1BA628EB131F004FC135 /* WebViewVMCombineTests.swift */; };
 		8A7B1BA828EB131F004FC135 /* CottonData.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A7B1B9A28EB131F004FC135 /* CottonData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8A7B1BAB28EB131F004FC135 /* CottonData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CottonData.framework */; };
 		8A7B1BAC28EB131F004FC135 /* CottonData.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1B9828EB131E004FC135 /* CottonData.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -350,7 +349,6 @@
 		8A8035EA24442F45000E035F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A8035E924442F45000E035F /* NetworkExtension.framework */; };
 		8A8035F224446234000E035F /* AppProxyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8035F124446234000E035F /* AppProxyProvider.swift */; };
 		8A8035F724446234000E035F /* DNSProxy.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8A8035EF24446234000E035F /* DNSProxy.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		8A815D3B28F15EC5007A6926 /* WebViewVmJSPluginsCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsCombineTests.swift */; };
 		8A815D3D28F16367007A6926 /* JSPluginsProgramImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */; };
 		8A81C6F92945C72F0075BEF9 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6F82945C72F0075BEF9 /* View+Extension.swift */; };
 		8A81C6FA2945C72F0075BEF9 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81C6F82945C72F0075BEF9 /* View+Extension.swift */; };
@@ -419,7 +417,6 @@
 		8AA68A9F245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA68AA0245BE47900263E22 /* HttpEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */; };
 		8AA89DE6296F4D6A00A6AC1A /* WebViewVMFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */; };
-		8AA89DE8296F541900A6AC1A /* WebViewVmJSPlugins+DoHCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE7296F541900A6AC1A /* WebViewVmJSPlugins+DoHCombineTests.swift */; };
 		8AA89DEA296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE9296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift */; };
 		8AA89DED296F596600A6AC1A /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DEC296F596600A6AC1A /* XCTestCase+Extension.swift */; };
 		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
@@ -594,7 +591,6 @@
 		8AED419E292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */; };
 		8AED41A0292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
 		8AED41A1292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
-		8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift */; };
 		8AEEBBB329F7AA9300F23A02 /* ClearCancelPairButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEEBBB229F7AA9300F23A02 /* ClearCancelPairButton.swift */; };
 		8AEEBBB429F7AA9300F23A02 /* ClearCancelPairButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEEBBB229F7AA9300F23A02 /* ClearCancelPairButton.swift */; };
 		8AEEBBB629F7AEA500F23A02 /* SearchFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEEBBB529F7AEA500F23A02 /* SearchFieldView.swift */; };
@@ -1188,7 +1184,6 @@
 		8A7B1B9828EB131E004FC135 /* CottonData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CottonData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7B1B9A28EB131F004FC135 /* CottonData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CottonData.h; sourceTree = "<group>"; };
 		8A7B1B9F28EB131F004FC135 /* CottonDataTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CottonDataTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A7B1BA628EB131F004FC135 /* WebViewVMCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMCombineTests.swift; sourceTree = "<group>"; };
 		8A7B1BF328EB2A4D004FC135 /* AsyncApiType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncApiType.swift; sourceTree = "<group>"; };
 		8A7B1BF628EB2C7F004FC135 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8A7B1BFB28EB2E59004FC135 /* WebViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContextImpl.swift; sourceTree = "<group>"; };
@@ -1204,7 +1199,6 @@
 		8A8035F324446234000E035F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A8035F424446234000E035F /* DNSProxy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DNSProxy.entitlements; sourceTree = "<group>"; };
 		8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSearchEngine.swift; sourceTree = "<group>"; };
-		8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmJSPluginsCombineTests.swift; sourceTree = "<group>"; };
 		8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPluginsProgramImpl.swift; sourceTree = "<group>"; };
 		8A81C6F82945C72F0075BEF9 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		8A81C6FB2945C8050075BEF9 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
@@ -1255,7 +1249,6 @@
 		8AA60B2125A33568002EF8AF /* TabCacheErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCacheErrors.swift; sourceTree = "<group>"; };
 		8AA68A9E245BE47900263E22 /* HttpEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpEnvironment.swift; sourceTree = "<group>"; };
 		8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMFixture.swift; sourceTree = "<group>"; };
-		8AA89DE7296F541900A6AC1A /* WebViewVmJSPlugins+DoHCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebViewVmJSPlugins+DoHCombineTests.swift"; sourceTree = "<group>"; };
 		8AA89DE9296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMConcurrencyTests.swift; sourceTree = "<group>"; };
 		8AA89DEC296F596600A6AC1A /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
 		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -1344,7 +1337,6 @@
 		8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankContentCoordinator.swift; sourceTree = "<group>"; };
 		8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentCoordinator.swift; sourceTree = "<group>"; };
 		8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsEnvironment.swift; sourceTree = "<group>"; };
-		8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVmDNSoverHTTPSCombineTests.swift; sourceTree = "<group>"; };
 		8AEEBBB229F7AA9300F23A02 /* ClearCancelPairButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearCancelPairButton.swift; sourceTree = "<group>"; };
 		8AEEBBB529F7AEA500F23A02 /* SearchFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldView.swift; sourceTree = "<group>"; };
 		8AEEBBB829F7B63A00F23A02 /* TappableTextOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TappableTextOverlayView.swift; sourceTree = "<group>"; };
@@ -2467,17 +2459,6 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
-		8ADE4475297062F2003D313A /* Combine */ = {
-			isa = PBXGroup;
-			children = (
-				8A7B1BA628EB131F004FC135 /* WebViewVMCombineTests.swift */,
-				8AEDCE6728F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift */,
-				8A815D3A28F15EC5007A6926 /* WebViewVmJSPluginsCombineTests.swift */,
-				8AA89DE7296F541900A6AC1A /* WebViewVmJSPlugins+DoHCombineTests.swift */,
-			);
-			path = Combine;
-			sourceTree = "<group>";
-		};
 		8ADE44762970630D003D313A /* Concurrency */ = {
 			isa = PBXGroup;
 			children = (
@@ -2491,7 +2472,6 @@
 			isa = PBXGroup;
 			children = (
 				8ADE44762970630D003D313A /* Concurrency */,
-				8ADE4475297062F2003D313A /* Combine */,
 			);
 			path = WebViewVM;
 			sourceTree = "<group>";
@@ -3460,7 +3440,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:~/.mint/bin\"\n\nif which swiftymocky > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: swiftymocky not installed, run `make setup`\"\nfi\nswiftymocky doctor    # validate your setup\nswiftymocky generate  # generate mocks\n";
+			shellScript = "export PATH=\"$PATH:~/.mint/bin\"\n\nif which swiftymocky > /dev/null; then\n  swiftymocky doctor    # validate your setup\n  swiftymocky generate  # generate mocks\nelse\n  echo \"warning: swiftymocky not installed, run `make setup`\"\nfi\n";
 		};
 		8A8035E224442F0F000E035F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3924,19 +3904,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AA89DED296F596600A6AC1A /* XCTestCase+Extension.swift in Sources */,
-				8AA89DE8296F541900A6AC1A /* WebViewVmJSPlugins+DoHCombineTests.swift in Sources */,
 				8A06D6F328EC2BE6001CB63D /* RestClientContextMocks.swift in Sources */,
 				8AA89DE6296F4D6A00A6AC1A /* WebViewVMFixture.swift in Sources */,
 				8ADE447A29706382003D313A /* WebViewVmDNSoverHTTPSConcurrencyTests.swift in Sources */,
-				8AEDCE6828F02E41008516FD /* WebViewVmDNSoverHTTPSCombineTests.swift in Sources */,
-				8A815D3B28F15EC5007A6926 /* WebViewVmJSPluginsCombineTests.swift in Sources */,
 				8AA89DEA296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift in Sources */,
 				8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */,
 				8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift in Sources */,
 				8AFE7D92296B488D00B2CF55 /* ErrorTypes.swift in Sources */,
 				8AFE7D96296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift in Sources */,
 				8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */,
-				8A7B1BA728EB131F004FC135 /* WebViewVMCombineTests.swift in Sources */,
 				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
 				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
 				8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */,
