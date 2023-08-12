@@ -64,8 +64,11 @@ build-android-dev-release: build-cotton-base-android-release android-lint
 
 .PHONY: setup
 setup:
-	gem install bundler -v '~> 1.0' --user-install
+	export PATH="${PATH}:~/.gem/ruby/2.6.0/bin"
 	$(DISPLAY_SEPARATOR)
+	gem install bundler:2.1.4 --user-install
+	$(DISPLAY_SEPARATOR)
+	bundle config set path 'vendor/bundle'
 	bundle install
 	$(DISPLAY_SEPARATOR)
 	brew update
@@ -208,7 +211,7 @@ Local and CI targets
 \t\t* make build-cotton-base-release\t\t: Build cotton-base together for iOS & Android.
 
 \tUnit tests
-\t\t* make ios-tests\t\t: Build and run iOS unit tests.
+\t\t* make ios-unit-tests\t\t: Build and run iOS unit tests.
 \t\t* make ios-tests-core-browser\t\t: Build and run Cotton-base Kotlin unit tests.
 endef
 
