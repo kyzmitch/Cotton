@@ -62,6 +62,10 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+      - uses: sourcery-ai/action@v1
+        with:
+          config: catowseriOS/CoreBrowserTests/.sourcery.yml
+          version: 1.9.0
       - name: Build
         run: make github-ios-unit-tests
   build-ios:
