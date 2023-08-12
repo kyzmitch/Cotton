@@ -12,6 +12,7 @@ import CottonRestKit
 import CottonBase
 import WebKit
 
+@MainActor
 final class WebViewVMConcurrencyTests: WebViewVMFixture {
     override func setUpWithError() throws {
         try super.setUpWithError()

@@ -16,6 +16,7 @@ import BrowserNetworking
 import Combine
 import SwiftyMocky
 
+@MainActor
 final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
     private var cancellables: Set<AnyCancellable>!
     
@@ -67,13 +68,13 @@ final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
         Given(strategyMock, .suggestionsTask(for: .value(input1), willReturn: promiseValue1))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))
-        vm.fetchSuggestions(input1)
+        await vm.fetchSuggestions(input1)
         XCTAssertEqual(vm.state, .knownDomainsLoaded(known1))
         wait(for: [expectation1], timeout: 1)
         Given(strategyMock, .suggestionsTask(for: .value(input2), willReturn: promiseValue2))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input2), willReturn: known2))
-        vm.fetchSuggestions(input2)
+        await vm.fetchSuggestions(input2)
         XCTAssertEqual(vm.state, .knownDomainsLoaded(known2))
         wait(for: [expectation2], timeout: 1)
     }
@@ -107,7 +108,7 @@ final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
         Given(strategyMock, .suggestionsTask(for: .value(input1), willThrow: error1))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))
-        vm.fetchSuggestions(input1)
+        await vm.fetchSuggestions(input1)
         XCTAssertEqual(vm.state, .knownDomainsLoaded(known1))
         wait(for: [expectation1], timeout: 1)
     }

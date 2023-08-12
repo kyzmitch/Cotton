@@ -13,6 +13,7 @@ import CottonBase
 import WebKit
 import Combine
 
+@MainActor
 final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
     // to use instead `awaitPublisherValue` for this specific test
     private var publisherValueCounter = 0

@@ -165,7 +165,6 @@
 		8A06D6F328EC2BE6001CB63D /* RestClientContextMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */; };
 		8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */; };
 		8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */; };
-		8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6F928EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift */; };
 		8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */; };
 		8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */; };
 		8A0DF900224C019C000CADA6 /* InstagramVideoArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */; };
@@ -535,7 +534,6 @@
 		8AD4F54128F4936B009C4BDC /* ReactiveHttpKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AB70E9127B7AE7A003FB59B /* ReactiveHttpKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8AD4F54528F493B8009C4BDC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54428F493B8009C4BDC /* Alamofire */; };
 		8AD4F54728F4941A009C4BDC /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8AD4F54628F4941A009C4BDC /* ReactiveSwift */; };
-		8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */; };
 		8AD5E0402915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD5E0412915485200901DA2 /* SearchViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */; };
 		8AD62B7A28F564B8003F3940 /* CoreBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */; };
@@ -582,7 +580,6 @@
 		8AEA735E2948FDB900B2E261 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */; };
 		8AEA73602948FDDE00B2E261 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */; };
 		8AEA73612948FDDE00B2E261 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */; };
-		8AEA9456290F01E800CCBB46 /* MockedRestInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */; };
 		8AED4198292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */; };
 		8AED4199292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */; };
 		8AED419A292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
@@ -624,7 +621,6 @@
 		8AFDBB0729F93A05006C0E47 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0529F93A05006C0E47 /* MenuButton.swift */; };
 		8AFDBB0929F979D8006C0E47 /* DisableableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */; };
 		8AFDBB0A29F979D8006C0E47 /* DisableableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */; };
-		8AFE7D90296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D8F296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift */; };
 		8AFE7D92296B488D00B2CF55 /* ErrorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D91296B488D00B2CF55 /* ErrorTypes.swift */; };
 		8AFE7D94296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */; };
 		8AFE7D96296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFE7D95296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift */; };
@@ -1117,7 +1113,6 @@
 		8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestClientContextMocks.swift; sourceTree = "<group>"; };
 		8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseTypeMocks.swift; sourceTree = "<group>"; };
 		8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDescriptionMocks.swift; sourceTree = "<group>"; };
-		8A06D6F928EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityAdapteeMocks.swift; sourceTree = "<group>"; };
 		8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncodableMocks.swift; sourceTree = "<group>"; };
 		8A0DF8FD224C0146000CADA6 /* DummyDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyDecodable.swift; sourceTree = "<group>"; };
 		8A0DF8FF224C019C000CADA6 /* InstagramVideoArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramVideoArray.swift; sourceTree = "<group>"; };
@@ -1300,7 +1295,6 @@
 		8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewMocks.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
 		8AD2CEE62444DD7C00FFCBC7 /* duckduckgo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = duckduckgo.xml; sourceTree = "<group>"; };
-		8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMCombineTests.swift; sourceTree = "<group>"; };
 		8AD5E03F2915485200901DA2 /* SearchViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewContextImpl.swift; sourceTree = "<group>"; };
 		8AD62B6F28F547E6003F3940 /* Sourcery */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sourcery; sourceTree = "<group>"; };
 		8AD857DF2939425400DD5F49 /* WebContentContainerCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentContainerCoordinator.swift; sourceTree = "<group>"; };
@@ -1333,7 +1327,6 @@
 		8AE9DD0B2950DCB00015E394 /* WebViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModelV2.swift; sourceTree = "<group>"; };
 		8AEA735C2948FDB900B2E261 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
-		8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockedRestInterface.swift; sourceTree = "<group>"; };
 		8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankContentCoordinator.swift; sourceTree = "<group>"; };
 		8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebContentCoordinator.swift; sourceTree = "<group>"; };
 		8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewsEnvironment.swift; sourceTree = "<group>"; };
@@ -1360,7 +1353,6 @@
 		8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewV2.swift; sourceTree = "<group>"; };
 		8AFDBB0529F93A05006C0E47 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		8AFDBB0829F979D8006C0E47 /* DisableableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisableableButton.swift; sourceTree = "<group>"; };
-		8AFE7D8F296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMRxTests.swift; sourceTree = "<group>"; };
 		8AFE7D91296B488D00B2CF55 /* ErrorTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTypes.swift; sourceTree = "<group>"; };
 		8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMConcurrencyTests.swift; sourceTree = "<group>"; };
 		8AFE7D95296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsVMFixture.swift; sourceTree = "<group>"; };
@@ -1974,7 +1966,6 @@
 		8A06D6F828EC2FB6001CB63D /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				8A06D6F928EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift */,
 				8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */,
 				8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */,
 				8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */,
@@ -1984,7 +1975,6 @@
 				8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */,
 				8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */,
 				8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */,
-				8AEA9455290F01E800CCBB46 /* MockedRestInterface.swift */,
 				8AFE7D91296B488D00B2CF55 /* ErrorTypes.swift */,
 			);
 			path = Mocks;
@@ -2479,9 +2469,7 @@
 		8ADE44782970633E003D313A /* SearchSuggestionsVM */ = {
 			isa = PBXGroup;
 			children = (
-				8AD5E03D29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift */,
 				8AFE7D93296B53EB00B2CF55 /* SearchSuggestionsVMConcurrencyTests.swift */,
-				8AFE7D8F296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift */,
 				8AFE7D98296B5B0400B2CF55 /* SearchSuggestionsViewStateTests.swift */,
 			);
 			path = SearchSuggestionsVM;
@@ -3909,15 +3897,11 @@
 				8ADE447A29706382003D313A /* WebViewVmDNSoverHTTPSConcurrencyTests.swift in Sources */,
 				8AA89DEA296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift in Sources */,
 				8A06D6FC28EC30A7001CB63D /* JSONEncodableMocks.swift in Sources */,
-				8AD5E03E29153F6200901DA2 /* SearchSuggestionsVMCombineTests.swift in Sources */,
 				8AFE7D92296B488D00B2CF55 /* ErrorTypes.swift in Sources */,
 				8AFE7D96296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift in Sources */,
 				8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */,
-				8A06D6FA28EC2FC8001CB63D /* ReachabilityAdapteeMocks.swift in Sources */,
 				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
 				8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */,
-				8AFE7D90296B486100B2CF55 /* SearchSuggestionsVMRxTests.swift in Sources */,
-				8AEA9456290F01E800CCBB46 /* MockedRestInterface.swift in Sources */,
 				8AFE7D99296B5B0400B2CF55 /* SearchSuggestionsViewStateTests.swift in Sources */,
 				8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */,
 				8A06D6F528EC2C5D001CB63D /* ResponseTypeMocks.swift in Sources */,
