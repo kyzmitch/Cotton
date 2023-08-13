@@ -159,12 +159,10 @@ ios-unit-tests: build-cotton-base-ios-release
 .PHONY: github-ios-unit-tests
 github-ios-unit-tests: build-cotton-base-ios-release
 	brew bundle install --file=./brew_configs/Brewfile; \
-	export PATH="${PATH}:~/.mint/bin" ; \
+	export PATH="${PATH}:${HOME}/.mint/bin" ; \
 	mint install MakeAWishFoundation/SwiftyMocky; \
 	sourcery --config "catowseriOS/CoreBrowserTests/.sourcery.yml"
 	cd catowseriOS; \
-	swiftymocky doctor ; \
-  	swiftymocky generate ; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
@@ -185,6 +183,10 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
 	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	cd ..; \
+	cd catowseriOS; \
+	swiftymocky doctor ; \
+	swiftymocky generate ; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
