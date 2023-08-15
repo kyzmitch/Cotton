@@ -77,6 +77,7 @@ setup:
 	$(DISPLAY_SEPARATOR)
 	mint install MakeAWishFoundation/SwiftyMocky
 	export PATH="${PATH}:~/.mint/bin"
+	xcode-kotlin sync
 
 .PHONY: clean
 clean:
@@ -140,18 +141,23 @@ ios-unit-tests: build-cotton-base-ios-release
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test; \
+	xcodebuild -scheme "CottonData Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test; \
 	cd ..; \
 
 # Github workflow unit tests (specific macOS runners)
@@ -166,23 +172,22 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -sdk macosx13.1 | xcpretty --test && exit ${PIPESTATUS[0]}; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test && exit ${PIPESTATUS[0]}; \
 	cd ..; \
 	cd catowseriOS; \
 	swiftymocky doctor ; \
@@ -190,8 +195,8 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | xcpretty --test; \
 	 cd ..; \
 
 # Help
