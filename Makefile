@@ -78,6 +78,7 @@ setup:
 	$(DISPLAY_SEPARATOR)
 	mint install MakeAWishFoundation/SwiftyMocky
 	export PATH="${PATH}:${HOME}/.mint/bin"
+	xcode-kotlin sync
 
 .PHONY: clean
 clean:
@@ -141,18 +142,23 @@ ios-unit-tests: build-cotton-base-ios-release
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	xcodebuild -scheme "CottonData Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test; \
 	cd ..; \
 
 # Github workflow unit tests (specific macOS runners)
@@ -160,37 +166,38 @@ ios-unit-tests: build-cotton-base-ios-release
 .PHONY: github-ios-unit-tests
 github-ios-unit-tests: build-cotton-base-ios-release
 	brew bundle install --file=./brew_configs/Brewfile; \
-	export PATH="${PATH}:~/.mint/bin" ; \
+	export PATH="${PATH}:${HOME}/.mint/bin" ; \
 	mint install MakeAWishFoundation/SwiftyMocky; \
 	sourcery --config "catowseriOS/CoreBrowserTests/.sourcery.yml"
 	cd catowseriOS; \
-	swiftymocky doctor ; \
-  	swiftymocky generate ; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	cd ..; \
+	cd catowseriOS; \
+	swiftymocky doctor ; \
+	swiftymocky generate ; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test; \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test; \
 	 cd ..; \
 
 # Help

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ReactiveSwift
 import Combine
 import CoreBrowser
 
@@ -89,14 +88,8 @@ public enum SearchSuggestionsViewState: Equatable {
 public protocol SearchSuggestionsViewModel: AnyObject {
     /// Initiate fetching only after subscribing to the async interfaces below
     func fetchSuggestions(_ query: String) async
-    /// Rx state property signal won't emit initial/current value (comparing to Combine)
-    var rxState: MutableProperty<SearchSuggestionsViewState> { get }
-    /// Combine state, emits current value for every new subscriber. Can be replaced with @Published
-    var combineState: CurrentValueSubject<SearchSuggestionsViewState, Never> { get }
     /// Concurrency state, also can be used as a synchronous state. A wrapped value for Published
     var state: SearchSuggestionsViewState { get }
     /// This is a replacement for Concurrency's `Task.Handler`, property wrapper can't be defined in protocol
     var statePublisher: Published<SearchSuggestionsViewState>.Publisher { get }
-    /// Concurrently fetch suggestions
-    func aaFetchSuggestions(_ query: String) async -> SearchSuggestionsViewState
 }
