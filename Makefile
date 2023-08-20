@@ -1,6 +1,8 @@
 SHELL := /bin/bash -o pipefail
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
+# Go back to the upper directory from catowseriOS
+XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty
 
 ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
@@ -64,7 +66,6 @@ build-android-dev-release: build-cotton-base-android-release android-lint
 
 .PHONY: setup
 setup:
-	export PATH="${PATH}:~/.gem/ruby/2.6.0/bin"
 	$(DISPLAY_SEPARATOR)
 	gem install bundler:2.1.4 --user-install
 	$(DISPLAY_SEPARATOR)
@@ -76,7 +77,7 @@ setup:
 	brew bundle install --file=./brew_configs/Brewfile
 	$(DISPLAY_SEPARATOR)
 	mint install MakeAWishFoundation/SwiftyMocky
-	export PATH="${PATH}:~/.mint/bin"
+	export PATH="${PATH}:${HOME}/.mint/bin"
 
 .PHONY: clean
 clean:
@@ -131,7 +132,7 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test \
+	 -arch x86_64 | $(XCPRETTY) --test \
 	 cd ..; \
 
 .PHONY: ios-unit-tests
@@ -141,17 +142,17 @@ ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -arch x86_64 | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -arch x86_64 | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -arch x86_64 | $(XCPRETTY) --test; \
 	cd ..; \
 
 # Github workflow unit tests (specific macOS runners)
@@ -169,27 +170,27 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test && exit ${PIPESTATUS[0]}; \
+	 -arch x86_64 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -sdk macosx13.1 \
-	 -arch x86_64 | xcpretty --test; \
+	 -arch x86_64 | $(XCPRETTY) --test; \
 	 cd ..; \
 
 # Help

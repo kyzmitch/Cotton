@@ -12,7 +12,7 @@ public protocol AutoMockable { }
 public protocol AutoHashable {}
 
 public extension ProcessInfo {
-    static var unitTesting : Bool {
+    static var unitTesting: Bool {
         processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }

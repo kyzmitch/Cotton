@@ -2449,19 +2449,11 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
-		8ADE44762970630D003D313A /* Concurrency */ = {
+		8ADE44772970631D003D313A /* WebViewVM */ = {
 			isa = PBXGroup;
 			children = (
 				8AA89DE9296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift */,
 				8ADE447929706382003D313A /* WebViewVmDNSoverHTTPSConcurrencyTests.swift */,
-			);
-			path = Concurrency;
-			sourceTree = "<group>";
-		};
-		8ADE44772970631D003D313A /* WebViewVM */ = {
-			isa = PBXGroup;
-			children = (
-				8ADE44762970630D003D313A /* Concurrency */,
 			);
 			path = WebViewVM;
 			sourceTree = "<group>";
