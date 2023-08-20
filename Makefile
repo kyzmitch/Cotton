@@ -132,8 +132,8 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 \
-	 -arch x86_64 | $(XCPRETTY) --test \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx13.1 | $(XCPRETTY) --test \
 	 cd ..; \
 
 .PHONY: ios-unit-tests

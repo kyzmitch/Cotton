@@ -11,7 +11,6 @@ import CottonBase
 import CoreBrowser
 import CottonPlugins
 import BrowserNetworking
-import ReactiveSwift
 import Combine
 import WebKit
 import FeaturesFlagsKit
@@ -71,8 +70,6 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /// web view model context to access plugins and other dependencies
     let context: any WebViewContext
     
-    private var dnsRequestSubsrciption: Disposable?
-    private lazy var dnsRequestCancellable: AnyCancellable? = nil
     lazy var dnsRequestTaskHandler: Task<URL, Error>? = nil
     
     public var host: CottonBase.Host { state.host }
@@ -100,12 +97,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     }
     
     deinit {
-        dnsRequestSubsrciption?.dispose()
-        
         /**
-        
-         Can't do `dnsRequestCancellable?.cancel()` on main actor because of next:
-         
          In a class annotated with a global actor, deinit isn’t isolated to an actor.
          It can’t be because the last reference to the actor could go out of scope on any thread/task.
          https://forums.swift.org/t/deinit-and-mainactor/50132/2
@@ -328,52 +320,8 @@ private extension WebViewModelImpl {
         }
         
         Task {
-            let apiType = await context.appAsyncApiTypeValue()
-            switch apiType {
-            case .reactive:
-                dnsRequestSubsrciption?.dispose()
-                dnsRequestSubsrciption = dnsResolver.rxResolveDomainName(urlData.platformURL)
-                    .startWithResult({ [weak self] result in
-                        guard let self = self else {
-                            return
-                        }
-                        switch result {
-                        case .success(let finalURL):
-                            let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
-                            guard let nextState = possibleState else {
-                                assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
-                                return
-                            }
-                            self.state = nextState
-                        case .failure(let dnsErr):
-                            print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
-                        }
-                    })
-            case .combine:
-                dnsRequestCancellable?.cancel()
-                dnsRequestCancellable = dnsResolver.cResolveDomainName(urlData.platformURL)
-                    .sink(receiveCompletion: { (completion) in
-                        switch completion {
-                        case .failure(let dnsErr):
-                            print("Fail to resolve host with DNS: \(dnsErr.localizedDescription)")
-                        default:
-                            break
-                        }
-                    }, receiveValue: { [weak self] (finalURL) in
-                        guard let self = self else {
-                            return
-                        }
-                        let possibleState = try? self.state.transition(on: .createRequestAnyway(finalURL.host))
-                        guard let nextState = possibleState else {
-                            assertionFailure("Unexpected VM state when trying to `createRequestAnyway`")
-                            return
-                        }
-                        self.state = nextState
-                    })
-            case .asyncAwait:
-                dnsRequestTaskHandler?.cancel()
-                await aaResolveDomainName(urlData.platformURL)
-            }
+            dnsRequestTaskHandler?.cancel()
+            await aaResolveDomainName(urlData.platformURL)
         }
     }
     
