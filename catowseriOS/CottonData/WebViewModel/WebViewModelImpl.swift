@@ -47,14 +47,12 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     var state: WebViewModelState
     
     /// State update function, beceuse `didSet` doesn't work with an async Task?
-    func updateState(_ state: WebViewModelState) {
+    func updateState(_ state: WebViewModelState) async {
         self.state = state
-        Task {
-            do {
-                try await onStateChange(state)
-            } catch {
-                print("Wrong state: \(error.localizedDescription)")
-            }
+        do {
+            try await onStateChange(state)
+        } catch {
+            print("Wrong state: \(error.localizedDescription)")
         }
     }
     
@@ -107,57 +105,57 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
          */
     }
     
-    public func load() {
+    public func load() async {
         do {
             // Have to ask to attach view observers here
             // because it is not really possible to do that
             // later only because `loadSite` is used
             // in other method in addition
             updateLoadingState(.reattachViewObservers)
-            updateState(try state.transition(on: .loadSite))
+            await updateState(try state.transition(on: .loadSite))
         } catch {
             print("Wrong state on load action: " + error.localizedDescription)
         }
     }
     
-    public func reset(_ site: Site) {
+    public func reset(_ site: Site) async {
         do {
             // - Now state is set to `initialized` and can send `loadSite` action
             // - Have to delete old web view to clean web view navigation
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
-            updateState(try state.transition(on: .resetToSite(site)))
-            updateState(try state.transition(on: .loadSite))
+            await updateState(try state.transition(on: .resetToSite(site)))
+            await updateState(try state.transition(on: .loadSite))
         } catch {
             print("Wrong state on reset to site action: " + error.localizedDescription)
         }
     }
     
-    public func reload() {
+    public func reload() async {
         do {
-            updateState(try state.transition(on: .reload))
+            await updateState(try state.transition(on: .reload))
         } catch {
             print("Wrong state on re-load action: " + error.localizedDescription)
         }
     }
     
-    public func goBack() {
+    public func goBack() async {
         do {
-            updateState(try state.transition(on: .goBack))
+            await updateState(try state.transition(on: .goBack))
         } catch {
             print("Wrong state on go Back action: " + error.localizedDescription)
         }
     }
     
-    public func goForward() {
+    public func goForward() async {
         do {
-            updateState(try state.transition(on: .goForward))
+            await updateState(try state.transition(on: .goForward))
         } catch {
             print("Wrong state on go Forward action: " + error.localizedDescription)
         }
     }
     
-    public func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) {
+    public func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) async {
         /**
          you must inject/re-enable plugins even if web view loaded page from same Host
          and even if ip address is used instead of domain name.
@@ -168,14 +166,14 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         do {
             // url can be different from initial at least during navigation back and forward actions
             // so that, it has to be passed to update current url
-            updateState(try state.transition(on: .finishLoading(newURL, subject, jsEnabled)))
+            await updateState(try state.transition(on: .finishLoading(newURL, subject, jsEnabled)))
         } catch {
             print("\(#function) - failed to replace current tab: " + error.localizedDescription)
         }
     }
     
     public func decidePolicy(_ navigationAction: NavigationActionable,
-                             _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+                             _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) async {
         guard navigationAction.navigationType.needsHandling else {
             print("navigationType: ignored '\(navigationAction.navigationType)'")
             decisionHandler(.allow)
@@ -191,56 +189,54 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             decisionHandler(policy)
             return
         }
-        Task {
-            let allowRedirect = await context.allowNativeAppRedirects()
-            if !allowRedirect, let policy = isNativeAppRedirectNeeded(url) {
-                decisionHandler(policy)
+        let allowRedirect = await context.allowNativeAppRedirects()
+        if !allowRedirect, let policy = isNativeAppRedirectNeeded(url) {
+            decisionHandler(policy)
+            return
+        }
+        guard let scheme = url.scheme else {
+            decisionHandler(.allow)
+            return
+        }
+        
+        switch scheme {
+        case .http, .https:
+            let currentURLinfo = state.urlInfo
+            if currentURLinfo.platformURL == url ||
+              (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
+                decisionHandler(.allow)
+                // No need to change vm state
+                // because it is the same URL which was provided
+                // in `.load` or `.loadNextLink`
                 return
             }
-            guard let scheme = url.scheme else {
-                decisionHandler(.allow)
-                return
-            }
-            
-            switch scheme {
-            case .http, .https:
-                let currentURLinfo = state.urlInfo
-                if currentURLinfo.platformURL == url ||
-                  (currentURLinfo.ipAddressString != nil && currentURLinfo.urlWithResolvedDomainName == url) {
-                    decisionHandler(.allow)
-                    // No need to change vm state
-                    // because it is the same URL which was provided
-                    // in `.load` or `.loadNextLink`
-                    return
-                }
-                do {
-                    // Cancelling navigation because it is a different URL.
-                    // Need to handle DoH, plugins and vm state.
-                    // It also applies for go back and forward navigation actions.
-                    decisionHandler(.cancel)
-                    updateState(try state.transition(on: .loadNextLink(url)))
-                } catch {
-                    print("Fail to load next URL due to error: \(error.localizedDescription)")
-                }
-            case .about:
-                decisionHandler(.allow)
-            default:
+            do {
+                // Cancelling navigation because it is a different URL.
+                // Need to handle DoH, plugins and vm state.
+                // It also applies for go back and forward navigation actions.
                 decisionHandler(.cancel)
+                await updateState(try state.transition(on: .loadNextLink(url)))
+            } catch {
+                print("Fail to load next URL due to error: \(error.localizedDescription)")
             }
+        case .about:
+            decisionHandler(.allow)
+        default:
+            decisionHandler(.cancel)
         }
     }
     
-    public func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) {
+    public func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) async {
         do {
-            updateState(try state.transition(on: .changeJavaScript(subject, enabled)))
+            await updateState(try state.transition(on: .changeJavaScript(subject, enabled)))
         } catch {
             print("Wrong state on JS change action: " + error.localizedDescription)
         }
     }
     
-    public func setDoH(_ enabled: Bool) {
+    public func setDoH(_ enabled: Bool) async {
         do {
-            updateState(try state.transition(on: .changeDoH(enabled)))
+            await updateState(try state.transition(on: .changeDoH(enabled)))
         } catch {
             print("Wrong state on DoH change action: " + error.localizedDescription)
         }
@@ -258,26 +254,26 @@ private extension WebViewModelImpl {
             break
         case .pendingPlugins:
             let pluginsProgram: (any JSPluginsProgram)? = settings.canLoadPlugins ? context.pluginsProgram : nil
-            updateState(try state.transition(on: .injectPlugins(pluginsProgram)))
+            await updateState(try state.transition(on: .injectPlugins(pluginsProgram)))
         case .injectingPlugins(let pluginsProgram, let urlData, let settings):
             let canInject = settings.canLoadPlugins
             pluginsProgram.inject(to: configuration.userContentController,
                                   context: urlData.host(),
                                   canInject: canInject)
-            updateState(try state.transition(on: .fetchDoHStatus))
+            await updateState(try state.transition(on: .fetchDoHStatus))
         case .pendingDoHStatus:
             let enabled = await context.isDohEnabled()
-            updateState(try state.transition(on: .resolveDomainName(enabled)))
+            await updateState(try state.transition(on: .resolveDomainName(enabled)))
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host().isDoHSupported
             // somehow url from site already or from next page request
             // contained ip address
             let domainNameAlreadyResolved = urlData.ipAddressString != nil
-            updateState(try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved)))
+            await updateState(try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved)))
         case .resolvingDN(let urlData, _):
-            resolveDomainName(urlData)
+            await resolveDomainName(urlData)
         case .creatingRequest:
-            updateState(try state.transition(on: .loadWebView))
+            await updateState(try state.transition(on: .loadWebView))
         case .updatingWebView(_, let urlInfo):
             // Not storing DoH state in vm state, can fetch it from context
             let useIPaddress = await context.isDohEnabled()
@@ -292,7 +288,7 @@ private extension WebViewModelImpl {
             await InMemoryDomainSearchProvider.shared.remember(host: host)
             context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
             try await context.updateTabContent(site)
-            updateState(try state.transition(on: .startView(updatedInfo)))
+            await updateState(try state.transition(on: .startView(updatedInfo)))
         case .viewing:
             break
         case .updatingJS(let settings, let subject, let urlInfo):
@@ -306,7 +302,7 @@ private extension WebViewModelImpl {
     }
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func resolveDomainName(_ urlData: URLInfo) {
+    func resolveDomainName(_ urlData: URLInfo) async {
         // Double checking even if it was checked before
         // to not perform unnecessary network requests
         guard urlData.ipAddressString == nil else {
@@ -318,11 +314,8 @@ private extension WebViewModelImpl {
             state = nextState
             return
         }
-        
-        Task {
-            dnsRequestTaskHandler?.cancel()
-            await aaResolveDomainName(urlData.platformURL)
-        }
+        dnsRequestTaskHandler?.cancel()
+        await aaResolveDomainName(urlData.platformURL)
     }
     
     @available(iOS 15.0, *)

@@ -265,6 +265,7 @@ extension WebViewModelState: CustomStringConvertible {
 }
 
 extension WebViewModelState: Equatable {
+    // swiftlint:disable:next cyclomatic_complexity
     static func == (lhs: WebViewModelState, rhs: WebViewModelState) -> Bool {
         switch (lhs, rhs) {
         case (.initialized(let lSite), .initialized(let rSite)):
@@ -292,6 +293,9 @@ extension WebViewModelState: Equatable {
         case (.updatingJS(let lSettings, let lSubject, let lInfo),
               .updatingJS(let rSettings, let rSubject, let rInfo)):
             return lSettings == rSettings && lInfo == rInfo && lSubject === rSubject
+        case (.creatingRequest(let lInfo, let lSettings),
+              .creatingRequest(let rInfo, let rSettings)):
+            return lInfo == rInfo && lSettings == rSettings
         default:
             return false
         }

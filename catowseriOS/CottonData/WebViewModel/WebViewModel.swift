@@ -32,16 +32,16 @@ public protocol NavigationActionable: AnyObject {
 public protocol WebViewModel: AnyObject {
     // MARK: - main public methods
     
-    func load()
-    func reset(_ site: Site)
-    func reload()
-    func goBack()
-    func goForward()
-    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble)
+    func load() async
+    func reset(_ site: Site) async
+    func reload() async
+    func goBack() async
+    func goForward() async
+    func finishLoading(_ newURL: URL, _ subject: JavaScriptEvaluateble) async
     func decidePolicy(_ navigationAction: NavigationActionable,
-                      _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void)
-    func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool)
-    func setDoH(_ enabled: Bool)
+                      _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) async
+    func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) async
+    func setDoH(_ enabled: Bool) async
     
     // MARK: - public properties
     
