@@ -12,7 +12,7 @@ import CottonBase
 /// A special case web view interface only for SwiftUI
 /// because we have to reuse existing web view for all the tabs
 protocol WebViewReusable: AnyObject {
-    func resetTo(_ site: Site)
+    func resetTo(_ site: Site) async
 }
 
 /// web view specific to SwiftUI
@@ -98,6 +98,8 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         guard webViewNeedsUpdate else {
             return
         }
-        reusableWebView.resetTo(site)
+        Task {
+            await reusableWebView.resetTo(site)
+        }
     }
 }
