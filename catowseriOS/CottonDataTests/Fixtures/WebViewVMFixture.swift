@@ -13,14 +13,15 @@ import CottonBase
 import WebKit
 
 /// A known state against which a test is running for web view vm
+@MainActor
 class WebViewVMFixture: XCTestCase {
     // MARK: - mocks and objects to be re-created
     
     var goodServerMock: MockedGoodDnsServer!
     var goodJsonEncodingMock: MockedGoodJSONEncoding!
-    var goodReachabilityMock: MockedReachabilityAdaptee<MockedGoodDnsServer>!
-    var goodDnsClient: MockedRestInterface<MockedGoodDnsServer,
-                                           MockedReachabilityAdaptee<MockedGoodDnsServer>,
+    var goodReachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
+    var goodDnsClient: RestInterfaceMock<MockedGoodDnsServer,
+                                           NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
                                            MockedGoodJSONEncoding>!
     var rxSubscriber: MockedDNSContext.HttpKitRxSubscriber!
     var subscriber: MockedDNSContext.HttpKitSubscriber!
@@ -79,7 +80,8 @@ class WebViewVMFixture: XCTestCase {
         goodReachabilityMock = .init(server: goodServerMock)!
         goodDnsClient = .init(server: goodServerMock,
                               jsonEncoder: goodJsonEncodingMock,
-                              reachability: goodReachabilityMock)
+                              reachability: goodReachabilityMock,
+                              httpTimeout: 0)
         
         rxSubscriber = .init()
         subscriber = .init()

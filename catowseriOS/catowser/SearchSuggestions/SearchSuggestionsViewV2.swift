@@ -44,6 +44,9 @@ struct SearchSuggestionsViewV2: View {
                     suggestions = .waitingForQuery
                 }
             }
+            .onReceive(vm.statePublisher, perform: { state in
+                suggestions = state
+            })
     }
     
     @ViewBuilder
@@ -55,7 +58,8 @@ struct SearchSuggestionsViewV2: View {
                 ProgressView()
                     .progressViewStyle(.circular)
                     .task {
-                        suggestions = await vm.aaFetchSuggestions(searchQuery)
+                        // just asking for a new state, could wait for it as well
+                        await vm.fetchSuggestions(searchQuery)
                     }
                 Spacer()
             }

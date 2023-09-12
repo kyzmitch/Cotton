@@ -20,7 +20,7 @@ jobs:
           patterns: catowserAndroid/**/*.kt
   build-android:
     needs: [lint-android]
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11

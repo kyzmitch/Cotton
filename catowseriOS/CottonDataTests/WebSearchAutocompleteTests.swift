@@ -16,24 +16,18 @@ import Combine
 import BrowserNetworking
 import SwiftyMocky
 
-struct MockedGoodResponse: ResponseType {
-    static var successCodes: [Int] {
-        return [200]
-    }
-}
-
 final class WebSearchAutocompleteTests: XCTestCase {
     private var goodServerMock: MockedGoodDnsServer!
     private var goodJsonEncodingMock: MockedGoodJSONEncoding!
     private var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
-    typealias Observer = Signal<MockedGoodResponse, HttpError>.Observer
-    typealias ObserverWrapper = RxObserverWrapper<MockedGoodResponse, MockedGoodDnsServer, Observer>
-    private var subscriber: Sub<MockedGoodResponse, MockedGoodDnsServer>!
-    private var rxSubscriber: RxSubscriber<MockedGoodResponse, MockedGoodDnsServer, ObserverWrapper>!
+    typealias Observer = Signal<MockedDNSResponse, HttpError>.Observer
+    typealias ObserverWrapper = RxObserverWrapper<MockedDNSResponse, MockedGoodDnsServer, Observer>
+    private var subscriber: Sub<MockedDNSResponse, MockedGoodDnsServer>!
+    private var rxSubscriber: RxSubscriber<MockedDNSResponse, MockedGoodDnsServer, ObserverWrapper>!
     private var goodRestClient: RestInterfaceMock<MockedGoodDnsServer,
                                                   NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
                                                   MockedGoodJSONEncoding>!
-    private lazy var goodContextMock: RestClientContextMock = .init(goodRestClient, rxSubscriber, subscriber)
+    private lazy var goodContextMock: MockedDNSContext = .init(goodRestClient, rxSubscriber, subscriber)
     private lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
     private var cancellables: Set<AnyCancellable>!
     

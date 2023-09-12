@@ -22,7 +22,7 @@ final class MockedJSPluginsProgram: JSPluginsProgram {
         
     }
     
-    func enable(on webView: JSPlugins.JavaScriptEvaluateble, context: CottonBase.Host, jsEnabled: Bool) {
+    func enable(on webView: JavaScriptEvaluateble, context: CottonBase.Host, jsEnabled: Bool) {
         
     }
 }

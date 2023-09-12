@@ -69,7 +69,11 @@ public actor TabsListManager {
         do {
             try await fetchTabs()
         } catch {
-            fatalError("Fail to init tabs")
+            if ProcessInfo.unitTesting {
+                print("Failed to init tabs manager: \(error)")
+            } else {
+                fatalError("Fail to init tabs")
+            }
         }
     }
 
@@ -130,10 +134,6 @@ extension TabsListManager: IndexSelectionContext {
 }
 
 extension TabsListManager: TabsSubject {
-    public func fetch() async -> [Tab] {
-        tabs
-    }
-
     public func close(tab: Tab) async {
         do {
             let removedTabs = try await storage.remove(tabs: [tab])
@@ -245,6 +245,12 @@ extension TabsListManager: TabsSubject {
     public var selectedId: UUID {
         get async {
             selectedTabIdentifier
+        }
+    }
+    
+    public var allTabs: [Tab] {
+        get async {
+            tabs
         }
     }
 }

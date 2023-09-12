@@ -93,3 +93,6 @@ cotton-base/.gradle
 *.iml
 misc.xml
 catowseriOS/SourcePackages
+CoreBrowserSwiftLint.log
+catowseriOS/CottonDataTests/GeneratedMocks
+vendor/bundle

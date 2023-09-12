@@ -100,7 +100,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         subscribe()
-        viewModel.load()
+        Task {
+            await viewModel.load()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -154,7 +156,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
             externalNavigationDelegate?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
-        viewModel.decidePolicy(navigationAction, decisionHandler)
+        Task {
+            await viewModel.decidePolicy(navigationAction, decisionHandler)
+        }
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
@@ -189,7 +193,9 @@ final class WebViewController<C: Navigating>: BaseViewController,
             return
         }
         
-        viewModel.finishLoading(newURL, webView)
+        Task {
+            await viewModel.finishLoading(newURL, webView)
+        }
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -262,7 +268,7 @@ private extension WebViewController {
                 .sink { _ in
                     Task { [weak self] in
                         let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-                        self?.viewModel.setDoH(useDoH)
+                        await self?.viewModel.setDoH(useDoH)
                     }
                 }
             
@@ -274,7 +280,7 @@ private extension WebViewController {
                             return
                         }
                         let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-                        self.viewModel.setJavaScript(jsSubject, enabled)
+                        await self.viewModel.setJavaScript(jsSubject, enabled)
                     }
                 }
         }

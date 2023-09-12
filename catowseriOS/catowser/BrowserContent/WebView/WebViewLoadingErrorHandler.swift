@@ -78,10 +78,5 @@ final class WebViewLoadingErrorHandler {
         if let url = urlString {
             msg += "\n\n\(url)"
         }
-
-        /**
-         TODO: Temporarily not showing the alert views,
-         because there is a case when they could be showed infinitly on DoH case
-         */
     }
 }

@@ -67,6 +67,7 @@ public enum ResponseHandlingApi<Response,
     }
     
     public func hash(into hasher: inout Hasher) {
+        /// TODO:  could use UUID for each `ResponseHandlingApi` to simplify this
         let caseNumber: Int
         switch self {
         case .closure(let closureWrapper):
