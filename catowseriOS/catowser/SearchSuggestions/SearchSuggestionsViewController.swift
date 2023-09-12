@@ -8,7 +8,6 @@
 
 import UIKit
 import FeaturesFlagsKit
-import ReactiveSwift
 import Combine
 import CottonData
 
@@ -26,8 +25,8 @@ protocol SearchSuggestionsListDelegate: AnyObject {
     func searchSuggestionDidSelect(_ content: SuggestionType) async
 }
 
-/// View controller to control suggestions view
-/// Looks similar to one in Safari
+/// View controller for suggestions view
+/// Looks similar to the one in Safari
 final class SearchSuggestionsViewController: UITableViewController {
     private let viewModel: SearchSuggestionsViewModel
     
@@ -36,10 +35,6 @@ final class SearchSuggestionsViewController: UITableViewController {
             tableView.reloadData()
         }
     }
-    
-    private var disposable: Disposable?
-    
-    private var cancellable: AnyCancellable?
     
     /// Combine cancellable for Concurrency Published property
     private var taskHandler: AnyCancellable?
@@ -53,8 +48,6 @@ final class SearchSuggestionsViewController: UITableViewController {
     }
     
     deinit {
-        cancellable?.cancel()
-        disposable?.dispose()
         taskHandler?.cancel()
     }
     
@@ -74,20 +67,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Task {
-            let apiType = await FeatureManager.shared.appAsyncApiTypeValue()
-            switch apiType {
-            case .reactive:
-                disposable?.dispose()
-                disposable = viewModel.rxState.signal.producer.startWithValues(onStateChange)
-            case .combine:
-                cancellable?.cancel()
-                cancellable = viewModel.combineState.sink(receiveValue: onStateChange)
-            case .asyncAwait:
-                taskHandler?.cancel()
-                taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
-            }
-        }
+        taskHandler?.cancel()
+        taskHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
         
         // Also would be good to observe for the changes in settings
         // to notify user to close and open this search table
@@ -98,8 +79,6 @@ final class SearchSuggestionsViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        disposable?.dispose()
-        cancellable?.cancel()
         taskHandler?.cancel()
     }
     

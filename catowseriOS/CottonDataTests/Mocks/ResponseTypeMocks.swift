@@ -21,3 +21,17 @@ public final class MockedDNSResponse: ResponseType {
         textResults = results
     }
 }
+
+public final class MockedSearchResponse: ResponseType {
+    static public var successCodes: [Int] {
+        [200]
+    }
+    
+    public let queryText: String
+    public let textResults: [String]
+    
+    public init(_ text: String, _ results: [String]) {
+        queryText = text
+        textResults = results
+    }
+}

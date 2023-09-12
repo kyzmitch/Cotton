@@ -51,7 +51,6 @@ public class RxObserverWrapper<RR,
     public typealias Observer = RX
     
     public var observer: RX {
-        // TODO: it should be recognized by compiler, don't need to force cast
         // swiftlint:disable:next force_cast
         return rxObserver as! RX
     }

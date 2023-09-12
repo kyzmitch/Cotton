@@ -17,18 +17,19 @@ import BrowserNetworking
 import SwiftyMocky
 
 /// A known state against which a test is running for search suggestions vm
+@MainActor
 class SearchSuggestionsVMFixture: XCTestCase {
-    var goodServerMock: MockedGoodDnsServer!
+    var goodServerMock: MockedGoodSearchServer!
     var goodJsonEncodingMock: MockedGoodJSONEncoding!
-    var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
-    typealias Observer = Signal<MockedGoodResponse, HttpError>.Observer
-    typealias ObserverWrapper = RxObserverWrapper<MockedGoodResponse, MockedGoodDnsServer, Observer>
-    var subscriber: Sub<MockedGoodResponse, MockedGoodDnsServer>!
-    var rxSubscriber: RxSubscriber<MockedGoodResponse, MockedGoodDnsServer, ObserverWrapper>!
-    var goodRestClient: RestInterfaceMock<MockedGoodDnsServer,
-                                                  NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
+    var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodSearchServer>!
+    typealias Observer = Signal<MockedSearchResponse, HttpError>.Observer
+    typealias ObserverWrapper = RxObserverWrapper<MockedSearchResponse, MockedGoodSearchServer, Observer>
+    var subscriber: Sub<MockedSearchResponse, MockedGoodSearchServer>!
+    var rxSubscriber: RxSubscriber<MockedSearchResponse, MockedGoodSearchServer, ObserverWrapper>!
+    var goodRestClient: RestInterfaceMock<MockedGoodSearchServer,
+                                                  NetworkReachabilityAdapterMock<MockedGoodSearchServer>,
                                                   MockedGoodJSONEncoding>!
-    lazy var goodContextMock: RestClientContextMock = .init(goodRestClient, rxSubscriber, subscriber)
+    lazy var goodContextMock: MockedSearchContext = .init(goodRestClient, rxSubscriber, subscriber)
     lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
     var searchViewContextMock: SearchViewContextMock!
     var knownDomainsStorageMock: KnownDomainsSourceMock!

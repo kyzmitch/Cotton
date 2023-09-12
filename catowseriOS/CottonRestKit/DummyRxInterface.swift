@@ -31,7 +31,6 @@ public class DummyRxType<R,
     public typealias Server = SS
     
     public var observer: RX {
-        // TODO: think about why it ask for conversion
         // swiftlint:disable:next force_cast
         return DummyRxObserver<R>() as! RX
     }

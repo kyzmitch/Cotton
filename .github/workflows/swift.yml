@@ -30,9 +30,43 @@ jobs:
         with:
           args: --editorconfig=cotton-base/.editorconfig --disabled_rules=final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
           patterns: cotton-base/**/*.kt
-  build-ios:
+  ios-unit-tests:
     needs: [lint-ios, lint-kotlin-cotton-base]
-    runs-on: macos-latest
+    runs-on: macos-13
+    steps:
+      - uses: actions/cache@v3
+        with:
+          path: .mint
+          key: ${{ runner.os }}-mint-${{ hashFiles('**/Mintfile') }}
+          restore-keys: |
+            ${{ runner.os }}-mint-
+      - uses: actions/cache@v3
+        with:
+          path: catowseriOS/SourcePackages
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+              ${{ runner.os }}-spm-
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys:  |
+            ${{ runner.os }}-gradle-
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+      - name: Build
+        run: make github-ios-unit-tests
+  build-ios:
+    needs: [ios-unit-tests]
+    runs-on: macos-13
     env:
       MINT_PATH: .mint/lib
       MINT_LINK_PATH: .mint/bin
