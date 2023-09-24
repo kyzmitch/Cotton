@@ -2696,7 +2696,6 @@
 				608DA746223A3BD4009F75BD /* Sources */,
 				608DA747223A3BD4009F75BD /* Frameworks */,
 				608DA748223A3BD4009F75BD /* Resources */,
-				8A875AC32378200E004FA50F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2720,7 +2719,6 @@
 				6094E718221FD2B9004269A2 /* Sources */,
 				6094E719221FD2B9004269A2 /* Frameworks */,
 				6094E71A221FD2B9004269A2 /* Resources */,
-				8A875AC423782019004FA50F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2744,7 +2742,6 @@
 				8435A4951EED5E700020102F /* Resources */,
 				6094E728221FD2B9004269A2 /* Embed Frameworks */,
 				60D52D03225B2A3400CB56F0 /* Embed App Extensions */,
-				8A875AC523782028004FA50F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2778,7 +2775,6 @@
 				8A277133268E452000D8878C /* Sources */,
 				8A277134268E452000D8878C /* Frameworks */,
 				8A277135268E452000D8878C /* Resources */,
-				8AB70EA827B7D639003FB59B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2822,7 +2818,6 @@
 				8A7B1B9428EB131E004FC135 /* Sources */,
 				8A7B1B9528EB131E004FC135 /* Frameworks */,
 				8A7B1B9628EB131E004FC135 /* Resources */,
-				8A03F43E28F4747400E4A296 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2894,7 +2889,6 @@
 				8A8035D324442F0F000E035F /* Resources */,
 				8A8035DD24442F0F000E035F /* Embed Frameworks */,
 				8A8035E124442F0F000E035F /* Embed App Extensions */,
-				8A8035E224442F0F000E035F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2968,7 +2962,6 @@
 				8AB70E8D27B7AE7A003FB59B /* Sources */,
 				8AB70E8E27B7AE7A003FB59B /* Frameworks */,
 				8AB70E8F27B7AE7A003FB59B /* Resources */,
-				8AB70EA727B7D629003FB59B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2991,7 +2984,6 @@
 				8ABF503A27CC1A64007C6427 /* Sources */,
 				8ABF503B27CC1A64007C6427 /* Frameworks */,
 				8ABF503C27CC1A64007C6427 /* Resources */,
-				8A03F43D28F4746A00E4A296 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3013,7 +3005,6 @@
 				8AE63B50248EC38300D6D2E4 /* Sources */,
 				8AE63B51248EC38300D6D2E4 /* Frameworks */,
 				8AE63B52248EC38300D6D2E4 /* Resources */,
-				8A03F43A28F4744B00E4A296 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3033,7 +3024,6 @@
 				8AE6D1652350FF35006316AD /* Sources */,
 				8AE6D1662350FF35006316AD /* Frameworks */,
 				8AE6D1672350FF35006316AD /* Resources */,
-				8A03F43928F4742700E4A296 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3053,7 +3043,6 @@
 				8AF43371248EBB2A0047452B /* Sources */,
 				8AF43372248EBB2A0047452B /* Frameworks */,
 				8AF43373248EBB2A0047452B /* Resources */,
-				8AB70EA927B7D641003FB59B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3333,77 +3322,6 @@
 			shellPath = /bin/sh;
 			shellScript = "gryphon \"${PROJECT_NAME}.xcodeproj\" \"${SRCROOT}/gryphonInputFiles.xcfilelist\" --verbose --continue-on-error --UseModernBuildSystem=YES --target=\"HttpKit\"\n";
 		};
-		8A03F43928F4742700E4A296 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8A03F43A28F4744B00E4A296 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8A03F43D28F4746A00E4A296 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8A03F43E28F4747400E4A296 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
 		8A03F43F28F4747900E4A296 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3421,134 +3339,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:~/.mint/bin\"\n\nif which swiftymocky > /dev/null; then\n  swiftymocky doctor    # validate your setup\n  swiftymocky generate  # generate mocks\nelse\n  echo \"warning: swiftymocky not installed, run `make setup`\"\nfi\n";
-		};
-		8A8035E224442F0F000E035F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8A875AC32378200E004FA50F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8A875AC423782019004FA50F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/CoreBrowserSwiftLint.log",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint --output CoreBrowserSwiftLint.log\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		8A875AC523782028004FA50F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		8AB70EA727B7D629003FB59B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8AB70EA827B7D639003FB59B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		8AB70EA927B7D641003FB59B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		8AD62B6628F53B9C003F3940 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
