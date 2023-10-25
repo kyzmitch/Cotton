@@ -20,7 +20,7 @@ struct BrowserContentView: View {
     @Binding private var contentType: Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
-    @Binding private var isLoading: Bool
+    private let isLoading: Bool
     /// Tells if web view needs to be updated to avoid unnecessary updates.
     @Binding private var webViewNeedsUpdate: Bool
     /// Web view view model reference
@@ -32,11 +32,11 @@ struct BrowserContentView: View {
     
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
-         _ isLoading: Binding<Bool>,
+         _ isLoading: Bool,
          _ contentType: Binding<Tab.ContentType>,
          _ webViewNeedsUpdate: Binding<Bool>,
          _ mode: SwiftUIMode) {
-        _isLoading = isLoading
+        self.isLoading = isLoading
         _contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
         webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)

@@ -133,11 +133,11 @@ struct PhoneView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
+                SearchSuggestionsView(searchQuery, delegate, mode, searchProviderType)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, siteNavigation, isLoading, $contentType, $webViewNeedsUpdate, mode)
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
@@ -175,11 +175,11 @@ struct PhoneView: View {
                 }
                 if showSearchSuggestions {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
-                    SearchSuggestionsView($searchQuery, delegate, mode, searchProviderType)
+                    SearchSuggestionsView(searchQuery, delegate, mode, searchProviderType)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                    BrowserContentView(jsPlugins, siteNavigation, $isLoading, $contentType, $webViewNeedsUpdate, mode)
+                    BrowserContentView(jsPlugins, siteNavigation, isLoading, $contentType, $webViewNeedsUpdate, mode)
                 }
             }
             .toolbar {

@@ -11,7 +11,7 @@ import CottonData
 
 struct SearchSuggestionsViewV2: View {
     /// Used in waitingForQuery
-    @Binding private var searchQuery: String
+    private var searchQuery: String
     /// Used when user selects suggestion
     private weak var delegate: SearchSuggestionsListDelegate?
     /// Save currently selected suggestion to be able to observe it
@@ -21,12 +21,16 @@ struct SearchSuggestionsViewV2: View {
     /// A view model
     private let vm: SearchSuggestionsViewModel
     
-    init(_ searchQuery: Binding<String>,
+    init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?,
          _ vm: SearchSuggestionsViewModel) {
-        _searchQuery = searchQuery
+        self.searchQuery = searchQuery
         self.delegate = delegate
         self.vm = vm
+        /// Possibly already not needed check 
+        if !searchQuery.isEmpty {
+            suggestions = .waitingForQuery
+        }
     }
     
     var body: some View {
@@ -37,11 +41,6 @@ struct SearchSuggestionsViewV2: View {
                 }
                 Task {
                     await delegate?.searchSuggestionDidSelect(newValue)
-                }
-            }
-            .onChange(of: searchQuery) { _ in
-                if !searchQuery.isEmpty {
-                    suggestions = .waitingForQuery
                 }
             }
             .onReceive(vm.statePublisher, perform: { state in
@@ -92,11 +91,7 @@ struct SearchSuggestionsViewV2: View {
 struct SearchSuggestionsViewV2_Previews: PreviewProvider {
     static var previews: some View {
         let delegate: SearchSuggestionsListDelegate? = nil
-        let searchQuery: Binding<String> = .init {
-            "e"
-        } set: { _ in
-            //
-        }
+        let searchQuery: String = "e"
         
         let vm: SearchSuggestionsViewModel = ViewModelFactory.shared.searchSuggestionsViewModel(.duckduckgo)
 
