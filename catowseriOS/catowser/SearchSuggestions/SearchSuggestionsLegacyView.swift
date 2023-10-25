@@ -11,14 +11,14 @@ import SwiftUI
 struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
-    @Binding private var searchQuery: String
+    private let searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
     private let searchProviderType: WebAutoCompletionSource
     
-    init(_ searchQuery: Binding<String>,
+    init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?,
          _ searchProviderType: WebAutoCompletionSource) {
-        _searchQuery = searchQuery
+        self.searchQuery = searchQuery
         self.delegate = delegate
         self.searchProviderType = searchProviderType
     }

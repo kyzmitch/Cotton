@@ -25,11 +25,7 @@ class DummyJSPluginsSource: JSPluginsSource {
 struct BrowserContentView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
-        let isLoading: Binding<Bool> = .init {
-            false
-        } set: { _ in
-            //
-        }
+        let isLoading = false
         let state: Binding<Tab.ContentType> = .init {
             let settings = Site.Settings(isPrivate: false,
                                          blockPopups: true,

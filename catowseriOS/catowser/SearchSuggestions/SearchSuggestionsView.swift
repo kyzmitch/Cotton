@@ -10,17 +10,17 @@ import SwiftUI
 import CottonData
 
 struct SearchSuggestionsView: View {
-    @Binding private var searchQuery: String
+    private let searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
     private let mode: SwiftUIMode
     private let searchProviderType: WebAutoCompletionSource
     private let vm: SearchSuggestionsViewModel
     
-    init(_ searchQuery: Binding<String>,
+    init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?,
          _ mode: SwiftUIMode,
          _ searchProviderType: WebAutoCompletionSource) {
-        _searchQuery = searchQuery
+        self.searchQuery = searchQuery
         self.delegate = delegate
         self.mode = mode
         self.searchProviderType = searchProviderType
@@ -30,9 +30,9 @@ struct SearchSuggestionsView: View {
     var body: some View {
         switch mode {
         case .compatible:
-            SearchSuggestionsLegacyView($searchQuery, delegate, searchProviderType)
+            SearchSuggestionsLegacyView(searchQuery, delegate, searchProviderType)
         case .full:
-            SearchSuggestionsViewV2($searchQuery, delegate, vm)
+            SearchSuggestionsViewV2(searchQuery, delegate, vm)
         }
     }
 }
@@ -40,11 +40,7 @@ struct SearchSuggestionsView: View {
 #if DEBUG
 struct SearchSuggestionsView_Previews: PreviewProvider {
     static var previews: some View {
-        let state: Binding<String> = .init {
-            "cotton"
-        } set: { _ in
-            //
-        }
+        let state: String = "cotton"
         SearchSuggestionsView(state, nil, .compatible, .google)
     }
 }
