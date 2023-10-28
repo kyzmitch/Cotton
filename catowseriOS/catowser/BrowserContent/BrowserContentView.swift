@@ -17,7 +17,7 @@ struct BrowserContentView: View {
     /// but the reference needs to be holded/created by another vm on upper level
     private let jsPluginsBuilder: any JSPluginsSource
     /// The main state of the browser content view
-    @Binding private var contentType: Tab.ContentType
+    private let contentType: Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
     private let isLoading: Bool
@@ -33,11 +33,11 @@ struct BrowserContentView: View {
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Bool,
-         _ contentType: Binding<Tab.ContentType>,
+         _ contentType: Tab.ContentType,
          _ webViewNeedsUpdate: Binding<Bool>,
          _ mode: SwiftUIMode) {
         self.isLoading = isLoading
-        _contentType = contentType
+        self.contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
         webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
         self.jsPluginsBuilder = jsPluginsBuilder
@@ -62,7 +62,7 @@ struct BrowserContentView: View {
             case .topSites:
                 TopSitesView(TopSitesViewModel(isJsEnabled), mode)
             case .site(let site):
-                WebView(webViewModel, site, $webViewNeedsUpdate, mode)
+                WebView(webViewModel, site, webViewNeedsUpdate, mode)
             default:
                 Spacer()
             }

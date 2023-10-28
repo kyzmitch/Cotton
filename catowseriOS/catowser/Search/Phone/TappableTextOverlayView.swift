@@ -17,11 +17,11 @@ final class TappableTextOverlayViewModel {
 }
 
 struct TappableTextOverlayView: View {
-    @Binding private var textContent: String
+    private let textContent: String
     private let vm: TappableTextOverlayViewModel
     
-    init(_ textContent: Binding<String>, _ vm: TappableTextOverlayViewModel) {
-        _textContent = textContent
+    init(_ textContent: String, _ vm: TappableTextOverlayViewModel) {
+        self.textContent = textContent
         self.vm = vm
     }
     
@@ -39,11 +39,7 @@ struct TappableTextOverlayView: View {
 #if DEBUG
 struct TappableTextOverlayView_Previews: PreviewProvider {
     static var previews: some View {
-        let textContent: Binding<String> = .init {
-            "example.com"
-        } set: { _ in
-            //
-        }
+        let textContent = "example.com"
         let vm: TappableTextOverlayViewModel = .init()
         TappableTextOverlayView(textContent, vm)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))

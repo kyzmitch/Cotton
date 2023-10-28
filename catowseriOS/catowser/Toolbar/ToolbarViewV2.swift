@@ -11,7 +11,7 @@ import CoreBrowser
 
 struct ToolbarViewV2: ToolbarContent {
     @ObservedObject var vm: BrowserToolbarViewModel
-    @Binding private var tabsCount: Int
+    private var tabsCount: Int
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
     @Binding private var showSearchSuggestions: Bool
@@ -21,12 +21,12 @@ struct ToolbarViewV2: ToolbarContent {
     @State private var isRefreshDisabled: Bool
     
     init(_ vm: BrowserToolbarViewModel,
-         _ tabsCount: Binding<Int>,
+         _ tabsCount: Int,
          _ showingMenu: Binding<Bool>,
          _ showingTabs: Binding<Bool>,
          _ showSearchSuggestions: Binding<Bool>) {
         self.vm = vm
-        _tabsCount = tabsCount
+        self.tabsCount = tabsCount
         _showingMenu = showingMenu
         _showingTabs = showingTabs
         _showSearchSuggestions = showSearchSuggestions
@@ -37,19 +37,19 @@ struct ToolbarViewV2: ToolbarContent {
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
-            DisableableButton("nav-back", $vm.goBackDisabled, vm.goBack)
+            DisableableButton("nav-back", vm.goBackDisabled, vm.goBack)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            DisableableButton("nav-forward", $vm.goForwardDisabled, vm.goForward)
+            DisableableButton("nav-forward", vm.goForwardDisabled, vm.goForward)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()
         }
         ToolbarItem(placement: .bottomBar) {
-            DisableableButton("nav-refresh", $vm.reloadDisabled, vm.reload)
+            DisableableButton("nav-refresh", vm.reloadDisabled, vm.reload)
         }
         ToolbarItem(placement: .bottomBar) {
             Spacer()

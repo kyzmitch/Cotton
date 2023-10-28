@@ -20,7 +20,7 @@ struct ToolbarView: View {
     }
     
     var body: some View {
-        ToolbarLegacyView($webViewInterface)
+        ToolbarLegacyView(webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 DummyView()
