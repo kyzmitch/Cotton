@@ -47,6 +47,9 @@ kotlin {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
+            if (System.getenv("XCODE_VERSION_MAJOR") == "1500") {
+                linkerOpts += "-ld64"
+            }
             xcf.add(this)
         }
     }
@@ -60,6 +63,9 @@ kotlin {
         }
         binaries.framework {
             baseName = frameworkName
+            if (System.getenv("XCODE_VERSION_MAJOR") == "1500") {
+                linkerOpts += "-ld64"
+            }
             xcf.add(this)
         }
     }
