@@ -126,7 +126,7 @@ struct PhoneView: View {
     private var uiKitWrapperView: some View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
-            PhoneSearchBarLegacyView(searchBarDelegate, $searchBarAction)
+            PhoneSearchBarLegacyView(searchBarDelegate, searchBarAction)
                 .frame(minWidth: 0, maxWidth: .infinity, maxHeight: CGFloat.searchViewHeight)
             if showProgress {
                 ProgressView(value: websiteLoadProgress)
@@ -137,7 +137,7 @@ struct PhoneView: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, $contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
@@ -179,11 +179,11 @@ struct PhoneView: View {
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                    BrowserContentView(jsPlugins, siteNavigation, isLoading, $contentType, $webViewNeedsUpdate, mode)
+                    BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
                 }
             }
             .toolbar {
-                ToolbarViewV2(toolbarVM, $tabsCount, $showingMenu, $showingTabs, $showSearchSuggestions)
+                ToolbarViewV2(toolbarVM, tabsCount, $showingMenu, $showingTabs, $showSearchSuggestions)
             }
         }
         .sheet(isPresented: $showingMenu) {

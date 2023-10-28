@@ -39,9 +39,9 @@ struct TabletSearchBarViewV2: View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 MenuButton($showSearchSuggestions, $showingMenu).padding()
-                DisableableButton("nav-back", $toolbarVM.goBackDisabled, toolbarVM.goBack).padding()
-                DisableableButton("nav-forward", $toolbarVM.goForwardDisabled, toolbarVM.goForward).padding()
-                DisableableButton("nav-refresh", $toolbarVM.reloadDisabled, toolbarVM.reload).padding()
+                DisableableButton("nav-back", toolbarVM.goBackDisabled, toolbarVM.goBack).padding()
+                DisableableButton("nav-forward", toolbarVM.goForwardDisabled, toolbarVM.goForward).padding()
+                DisableableButton("nav-refresh", toolbarVM.reloadDisabled, toolbarVM.reload).padding()
                 SearchBarViewV2($query, $action)
             }
         }

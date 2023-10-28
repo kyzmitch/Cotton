@@ -10,10 +10,10 @@ import SwiftUI
 
 struct ToolbarLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
-    @Binding private var webViewInterface: WebViewNavigatable?
+    private let webViewInterface: WebViewNavigatable?
     
-    init(_ webViewInterface: Binding<WebViewNavigatable?>) {
-        _webViewInterface = webViewInterface
+    init(_ webViewInterface: WebViewNavigatable?) {
+        self.webViewInterface = webViewInterface
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

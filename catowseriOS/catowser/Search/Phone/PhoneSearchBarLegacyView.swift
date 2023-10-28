@@ -11,12 +11,12 @@ import SwiftUI
 struct PhoneSearchBarLegacyView: CatowserUIVCRepresentable {
     private weak var searchBarDelegate: UISearchBarDelegate?
     /// Model also has action property
-    @Binding private var action: SearchBarAction
+    private let action: SearchBarAction
     
     init(_ searchBarDelegate: UISearchBarDelegate?,
-         _ action: Binding<SearchBarAction>) {
+         _ action: SearchBarAction) {
         self.searchBarDelegate = searchBarDelegate
-        _action = action
+        self.action = action
     }
     
     typealias UIViewControllerType = UIViewController

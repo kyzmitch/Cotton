@@ -45,14 +45,14 @@ struct SearchBarViewV2: View {
     var body: some View {
         ZStack {
             HStack {
-                SearchFieldView($query, $showKeyboard, textFieldVM)
+                SearchFieldView($query, showKeyboard, textFieldVM)
                 if state.showCancelButton {
-                    ClearCancelPairButton($showClearButton, cancelBtnVM)
+                    ClearCancelPairButton(showClearButton, cancelBtnVM)
                 }
             }.customHStackStyle()
                 .opacity(showOverlay ? 0 : 1)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
-            TappableTextOverlayView($siteName, overlayVM)
+            TappableTextOverlayView(siteName, overlayVM)
                 .opacity(showOverlay ? 1 : 0)
                 .offset(x: showOverlay ? 0 : (hSizeClass == .compact ? overlayHidden : -overlayHidden), y: 0)
                 .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)

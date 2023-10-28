@@ -10,15 +10,15 @@ import SwiftUI
 
 struct TabletSearchBarLegacyView: CatowserUIVCRepresentable {
     private weak var searchBarDelegate: UISearchBarDelegate?
-    @Binding private var action: SearchBarAction
-    @Binding private var webViewInterface: WebViewNavigatable?
+    private let action: SearchBarAction
+    private let webViewInterface: WebViewNavigatable?
     
     init(_ searchBarDelegate: UISearchBarDelegate?,
-         _ action: Binding<SearchBarAction>,
-         _ webViewInterface: Binding<WebViewNavigatable?>) {
+         _ action: SearchBarAction,
+         _ webViewInterface: WebViewNavigatable?) {
         self.searchBarDelegate = searchBarDelegate
-        _action = action
-        _webViewInterface = webViewInterface
+        self.action = action
+        self.webViewInterface = webViewInterface
     }
     
     typealias UIViewControllerType = UIViewController
