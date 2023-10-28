@@ -118,7 +118,7 @@ struct TabletView: View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
             TabletTabsView(mode)
-            TabletSearchBarLegacyView(searchBarDelegate, $searchBarAction, $webViewInterface)
+            TabletSearchBarLegacyView(searchBarDelegate, searchBarAction, webViewInterface)
                 .frame(height: .toolbarViewHeight)
             // this should be the same with the value in `SearchBarBaseViewController`
             if showProgress {
@@ -130,7 +130,7 @@ struct TabletView: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, $contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
             }
         }
         .ignoresSafeArea(.keyboard)
@@ -172,7 +172,7 @@ struct TabletView: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, $contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
             }
         }
         .sheet(isPresented: $showingMenu) {

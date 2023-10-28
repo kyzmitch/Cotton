@@ -19,11 +19,11 @@ final class ClearCancelButtonViewModel {
 }
 
 struct ClearCancelPairButton: View {
-    @Binding private var showClearButton: Bool
+    private let showClearButton: Bool
     private let vm: ClearCancelButtonViewModel
     
-    init(_ showClearButton: Binding<Bool>, _ vm: ClearCancelButtonViewModel) {
-        _showClearButton = showClearButton
+    init(_ showClearButton: Bool, _ vm: ClearCancelButtonViewModel) {
+        self.showClearButton = showClearButton
         self.vm = vm
     }
     
@@ -51,11 +51,7 @@ private extension LocalizedStringKey {
 #if DEBUG
 struct ClearCancelPairButton_Previews: PreviewProvider {
     static var previews: some View {
-        let showClearButton: Binding<Bool> = .init {
-            true
-        } set: { _ in
-            //
-        }
+        let showClearButton = true
         let vm: ClearCancelButtonViewModel = .init()
         ClearCancelPairButton(showClearButton, vm)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))

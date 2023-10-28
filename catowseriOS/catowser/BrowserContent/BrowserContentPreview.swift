@@ -26,17 +26,13 @@ struct BrowserContentView_Previews: PreviewProvider {
     static var previews: some View {
         let source: DummyJSPluginsSource = .init()
         let isLoading = false
-        let state: Binding<Tab.ContentType> = .init {
-            let settings = Site.Settings(isPrivate: false,
-                                         blockPopups: true,
-                                         isJSEnabled: true,
-                                         canLoadPlugins: false)
-            // swiftlint:disable:next force_unwrapping
-            let site = Site("https://opennet.ru", nil, settings)!
-            return .site(site)
-        } set: { _ in
-            //
-        }
+        let settings = Site.Settings(isPrivate: false,
+                                     blockPopups: true,
+                                     isJSEnabled: true,
+                                     canLoadPlugins: false)
+        // swiftlint:disable:next force_unwrapping
+        let site = Site("https://opennet.ru", nil, settings)!
+        let state: Tab.ContentType = .site(site)
         let needsUpdate: Binding<Bool> = .init {
             false
         } set: { _ in

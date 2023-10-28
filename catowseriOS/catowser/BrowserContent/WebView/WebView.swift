@@ -21,24 +21,24 @@ struct WebView: View {
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
-    @Binding private var webViewNeedsUpdate: Bool
+    private let webViewNeedsUpdate: Bool
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
     init(_ model: WebViewModelV2,
          _ site: Site,
-         _ webViewNeedsUpdate: Binding<Bool>,
+         _ webViewNeedsUpdate: Bool,
          _ mode: SwiftUIMode) {
         self.model = model
         self.site = site
-        _webViewNeedsUpdate = webViewNeedsUpdate
+        self.webViewNeedsUpdate = webViewNeedsUpdate
         self.mode = mode
     }
     
     var body: some View {
         // There is no system WebView type for SwiftUI
         // so that, the mode is not used for now
-        WebViewLegacyView(model, site, $webViewNeedsUpdate)
+        WebViewLegacyView(model, site, webViewNeedsUpdate)
     }
 }
 
@@ -50,7 +50,7 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
-    @Binding private var webViewNeedsUpdate: Bool
+    private let webViewNeedsUpdate: Bool
     /// Usual coordinator can't really be used for SwiftUI navigation
     /// but for the legacy view it has to be passed
     private let dummyArgument: WebContentCoordinator? = nil
@@ -61,10 +61,10 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
     
     init(_ model: WebViewModelV2,
          _ site: Site,
-         _ webViewNeedsUpdate: Binding<Bool>) {
+         _ webViewNeedsUpdate: Bool) {
         self.model = model
         self.site = site
-        _webViewNeedsUpdate = webViewNeedsUpdate
+        self.webViewNeedsUpdate = webViewNeedsUpdate
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

@@ -18,9 +18,9 @@ Building the code
 -----------------
 Environment
 -----------------
-IntelliJ IDEA 2022.2 (this is not latest version to avoid Android plugin error)
-Xcode 14.2 is supported
-Android Studio 2022.1.1 (Elecric Eel)
+- IntelliJ IDEA 2022.3.2 (this is not latest version to avoid Android plugin error) or latest 2023.2.4 CE
+- Xcode 14.2 or 15.0 are supported
+- Android Studio 2022.1.1 (Elecric Eel)
 
 - Swift 5.7
 - Kotlin 1.7.21 (not 1.8.0 because of used Android Studio stable version)

@@ -8,14 +8,15 @@
 
 import SwiftUI
 
+@MainActor
 struct DisableableButton: View {
-    @Binding private var disabled: Bool
+    private let disabled: Bool
     private let imageName: String
     private let onTap: () -> Void
     
-    init(_ imageName: String, _ disabled: Binding<Bool>, _ onTap: @escaping () -> Void) {
+    init(_ imageName: String, _ disabled: Bool, _ onTap: @MainActor @escaping () -> Void) {
         self.imageName = imageName
-        _disabled = disabled
+        self.disabled = disabled
         self.onTap = onTap
     }
     
@@ -32,11 +33,7 @@ struct DisableableButton: View {
 
 struct DisableableButton_Previews: PreviewProvider {
     static var previews: some View {
-        let disabled: Binding<Bool> = .init {
-            false
-        } set: { _ in
-            //
-        }
+        let disabled = false
         DisableableButton("square.and.arrow.up", disabled) {
             print("onTap")
         }

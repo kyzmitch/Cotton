@@ -20,17 +20,17 @@ final class SearchFieldViewModel {
 
 struct SearchFieldView: View {
     @Binding private var textContent: String
-    @Binding private var showKeyboard: Bool
+    private let showKeyboard: Bool
     @FocusState private var isFocused: Bool
     
     private let vm: SearchFieldViewModel
     
     init(_ textContent: Binding<String>,
-         _ showKeyboard: Binding<Bool>,
+         _ showKeyboard: Bool,
          _ vm: SearchFieldViewModel) {
         self.vm = vm
         _textContent = textContent
-        _showKeyboard = showKeyboard
+        self.showKeyboard = showKeyboard
         isFocused = false
     }
     
@@ -62,11 +62,7 @@ struct SearchFieldView_Previews: PreviewProvider {
         } set: { _ in
             //
         }
-        let showKeyboard: Binding<Bool> = .init {
-            true
-        } set: { _ in
-            //
-        }
+        let showKeyboard = true
         let vm: SearchFieldViewModel = .init()
 
         SearchFieldView(textContent, showKeyboard, vm)
