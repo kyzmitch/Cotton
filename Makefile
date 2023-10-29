@@ -2,7 +2,8 @@ SHELL := /bin/bash -o pipefail
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
 # Go back to the upper directory from catowseriOS
-XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty
+# XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty
+XCPRETTY := bundle exec xcpretty
 
 ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
@@ -143,22 +144,22 @@ ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	cd ..; \
 
 # Github workflow unit tests (specific macOS runners)

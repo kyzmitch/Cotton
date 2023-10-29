@@ -51,27 +51,11 @@ kotlin {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
-            if (System.getenv("XCODE_VERSION_MAJOR") == "1500") {
-                linkerOpts += "-ld64"
-            }
-            xcf.add(this)
-        }
-    }
-    macosX64 {
-        sourceSets {
-            commonMain {
-                kotlin {
-                    include("**/*.kt")
-                }
-            }
-        }
-        binaries.framework {
-            baseName = frameworkName
             linkerOpts += "-ld64"
             xcf.add(this)
         }
     }
-    macosArm64 {
+    macosX64 {
         sourceSets {
             commonMain {
                 kotlin {
@@ -109,8 +93,8 @@ multiplatformSwiftPackage {
     outputDirectory(File(projectDir, "$frameworkName"))
     swiftToolsVersion("5.7")
     targetPlatforms {
-        iOS { v("13") }
-        macOS { v("12.3") }
+        iOS { v("15") }
+        macOS { v("13.6") }
     }
 }
 
