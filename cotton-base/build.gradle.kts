@@ -69,7 +69,7 @@ kotlin {
             xcf.add(this)
         }
     }
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
         sourceSets {
             commonMain {
@@ -89,8 +89,11 @@ android {
 }
 
 multiplatformSwiftPackage {
+    buildConfiguration {
+        release()
+    }
     packageName(frameworkName)
-    outputDirectory(File(projectDir, "$frameworkName"))
+    outputDirectory(File(projectDir, "/build/XCFrameworks/release"))
     swiftToolsVersion("5.7")
     targetPlatforms {
         iOS { v("15") }

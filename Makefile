@@ -2,7 +2,8 @@ SHELL := /bin/bash -o pipefail
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
 # Go back to the upper directory from catowseriOS
-# XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty
+# Xcpretty for some reason can't be called by direct path
+# `XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty`
 XCPRETTY := bundle exec xcpretty
 
 ifeq ($(RUBY_USER_DIR),)
@@ -13,12 +14,14 @@ endif
 # $(call GRADLE, wrapper);
 
 # bash profile update every time is not a good option
-# echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ;
+# `echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ;`
 
 # specific Maven publish doesn't work and have to use `publishToMavenLocal`
-# ./gradlew publishAndroidDebugPublicationToMavenLocal; 
+# `./gradlew publishAndroidDebugPublicationToMavenLocal;`
 
-# xcodebuild -showsdks
+# Following command shows currently installed SDKs on the system
+# use `-sdk macosx13.1` for specific on CI and `-sdk macosx` means the latest for local
+# `xcodebuild -showsdks`
 
 # Github workflow builds
 
@@ -134,7 +137,7 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test \
+	 -sdk macosx | $(XCPRETTY) --test \
 	 cd ..; \
 
 .PHONY: ios-unit-tests

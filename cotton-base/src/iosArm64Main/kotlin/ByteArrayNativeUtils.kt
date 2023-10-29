@@ -23,7 +23,7 @@ actual fun ByteArrayNativeUtils.Companion.convertData(data: Data): ByteArray {
     } ?: ByteArray(0)
 }
 
-@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
+@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class, kotlinx.cinterop.BetaInteropApi::class)
 actual fun ByteArrayNativeUtils.Companion.convertBytes(byteArray: ByteArray): Data {
     return byteArray.usePinned {
         NSData.create(
