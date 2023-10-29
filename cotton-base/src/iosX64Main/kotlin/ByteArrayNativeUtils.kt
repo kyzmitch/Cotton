@@ -8,7 +8,7 @@ import platform.posix.memcpy
 
 actual typealias Data = NSData
 
-@ExperimentalUnsignedTypes
+@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 actual fun ByteArrayNativeUtils.Companion.convertData(data: Data): ByteArray {
     return data.bytes?.let { bytes ->
         ByteArray(data.length.toInt()).apply {
@@ -19,7 +19,7 @@ actual fun ByteArrayNativeUtils.Companion.convertData(data: Data): ByteArray {
     } ?: ByteArray(0)
 }
 
-@ExperimentalUnsignedTypes
+@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class, kotlinx.cinterop.BetaInteropApi::class)
 actual fun ByteArrayNativeUtils.Companion.convertBytes(byteArray: ByteArray): Data {
     return byteArray.usePinned {
         NSData.create(

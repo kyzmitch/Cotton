@@ -8,7 +8,7 @@ group = groupValue
 version = versionValue
 
 plugins {
-    kotlin("multiplatform") version "1.7.20"
+    kotlin("multiplatform") version "1.9.0"
     id("com.android.library") version "7.3.0"
     kotlin("plugin.serialization") version "1.7.20"
     id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
@@ -16,6 +16,10 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint-idea") version "11.5.0"
     id("maven-publish")
 }
+
+/// Multiplatform plugin version has to have Kotlin 1.9 which
+/// is used by Android Studio
+/// https://plugins.gradle.org/plugin/org.jetbrains.kotlin.multiplatform/1.9.0
 
 buildscript {
     dependencies {
