@@ -67,9 +67,21 @@ kotlin {
         }
         binaries.framework {
             baseName = frameworkName
-            if (System.getenv("XCODE_VERSION_MAJOR") == "1500") {
-                linkerOpts += "-ld64"
+            linkerOpts += "-ld64"
+            xcf.add(this)
+        }
+    }
+    macosArm64 {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    include("**/*.kt")
+                }
             }
+        }
+        binaries.framework {
+            baseName = frameworkName
+            linkerOpts += "-ld64"
             xcf.add(this)
         }
     }
