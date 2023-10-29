@@ -5,6 +5,7 @@ RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
 # Xcpretty for some reason can't be called by direct path
 # `XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty`
 XCPRETTY := bundle exec xcpretty
+SWIFTYMOCKY := ${HOME}/.mint/bin/swiftymocky
 
 ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
@@ -143,6 +144,8 @@ ios-tests-core-browser: build-cotton-base-ios-release
 .PHONY: ios-unit-tests
 ios-unit-tests: build-cotton-base-ios-release
 	cd catowseriOS; \
+    $(SWIFTYMOCKY) doctor ; \
+    $(SWIFTYMOCKY) generate ; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
