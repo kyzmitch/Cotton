@@ -55,6 +55,15 @@ public actor TabsListManager {
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
         
+#if swift(>=5.9)
+        let (tabIdStream, tabIdContinuation) = AsyncStream.makeStream(of: UUID.self)
+        selectedTabIdStream = tabIdStream
+        selectedTabIdInput = tabIdContinuation
+        tabIdContinuation.yield(positioning.defaultSelectedTabId)
+        let (countStream, countContinuation) = AsyncStream.makeStream(of: Int.self)
+        tabsCountStream = countStream
+        tabsCountInput = countContinuation
+#else
         self.selectedTabIdStream = UUIDStream { continuation in
             // A hack to be able to send values outside of the closure
             selectedTabIdInput = continuation
@@ -63,6 +72,7 @@ public actor TabsListManager {
         self.tabsCountStream = IntStream { continuation in
             tabsCountInput = continuation
         }
+#endif
         
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
