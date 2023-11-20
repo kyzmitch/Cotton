@@ -36,7 +36,6 @@
 		6010ECCB21F751B500972E28 /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCA21F751B500972E28 /* LightTheme.swift */; };
 		6010ECCD21F7529400972E28 /* ThemeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010ECCC21F7529400972E28 /* ThemeProvider.swift */; };
 		60271788224CB4210019EF15 /* ig.js in Resources */ = {isa = PBXBuildFile; fileRef = 60271786224CB4210019EF15 /* ig.js */; };
-		60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */; };
 		605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */; };
 		60724EA921FF1BD80071BECF /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA821FF1BD80071BECF /* CounterView.swift */; };
@@ -130,6 +129,8 @@
 		755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
 		755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		755E10B827CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
+		75D81CF72B0B077200447DC7 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
+		75D81CFB2B0B084300447DC7 /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		75EA4E6F29F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
 		75EA4E7029F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
 		75EA5425296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */; };
@@ -330,7 +331,6 @@
 		8A8035C424442F0F000E035F /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
 		8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */; };
 		8A8035C724442F0F000E035F /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8412FF3C1F72AF050011FDD7 /* UIConstants.swift */; };
-		8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		8A8035C924442F0F000E035F /* BlankWebPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A2D7D203ACC220050A996 /* BlankWebPageViewController.swift */; };
 		8A8035CB24442F0F000E035F /* CounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EA821FF1BD80071BECF /* CounterView.swift */; };
 		8A8035CC24442F0F000E035F /* Site+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7509BF9122AF832200F4D701 /* Site+Extension.swift */; };
@@ -582,8 +582,6 @@
 		8AEA73612948FDDE00B2E261 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AEA735F2948FDDE00B2E261 /* Color+Extension.swift */; };
 		8AED4198292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */; };
 		8AED4199292BF94800A00DB2 /* BlankContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED4197292BF94800A00DB2 /* BlankContentCoordinator.swift */; };
-		8AED419A292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
-		8AED419B292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
 		8AED419D292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */; };
 		8AED419E292BFE9900A00DB2 /* WebContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419C292BFE9900A00DB2 /* WebContentCoordinator.swift */; };
 		8AED41A0292C004100A00DB2 /* ViewsEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AED419F292C004100A00DB2 /* ViewsEnvironment.swift */; };
@@ -1649,10 +1647,12 @@
 				8A012FA52240110000041487 /* Handlers */,
 				608DA7422238FE33009F75BD /* Scripts */,
 				60C2C8D1226DD95100F5D869 /* Data+CatowserExtension.swift */,
+				60380EF622A15504007F06FB /* JSPluginsSource.swift */,
 				8A998070284548C200E18762 /* CottonPluginError.swift */,
 				8A99806E2845484100E18762 /* JavaScriptEvaluateble.swift */,
 				608DA759223FBB3E009F75BD /* JSPluginFactory.swift */,
 				608DA75F223FD826009F75BD /* JSPluginsProgram.swift */,
+				60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */,
 				8A815D3C28F16367007A6926 /* JSPluginsProgramImpl.swift */,
 				608DA74C223A3BD5009F75BD /* CottonPlugins.h */,
 			);
@@ -1952,8 +1952,6 @@
 				841022CA2247ACF00021516F /* UIViewController+MainBundle.swift */,
 				8A95D941226E0E5200862E8D /* TagsSiteDataSource.swift */,
 				8A8F0390293FABD000237DFF /* SiteNavigationComponent.swift */,
-				60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */,
-				60380EF622A15504007F06FB /* JSPluginsSource.swift */,
 			);
 			path = Browser;
 			sourceTree = "<group>";
@@ -3402,8 +3400,10 @@
 				C7796FF3228E70590071E69C /* HTMLVideoTag.swift in Sources */,
 				608DA75A223FBB3E009F75BD /* JSPluginFactory.swift in Sources */,
 				608DA760223FD826009F75BD /* JSPluginsProgram.swift in Sources */,
+				75D81CFB2B0B084300447DC7 /* JSPluginsBuilder.swift in Sources */,
 				8A0DF8FE224C0146000CADA6 /* DummyDecodable.swift in Sources */,
 				60C2C8F722772FEF00F5D869 /* VideoFileNameble.swift in Sources */,
+				75D81CF72B0B077200447DC7 /* JSPluginsSource.swift in Sources */,
 				8A258340284B4F090047077A /* WKUserContentController+Visitor.swift in Sources */,
 				8A012FA422400F1200041487 /* InstagramHandler.swift in Sources */,
 				8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */,
@@ -3546,7 +3546,6 @@
 				753392A7291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
 				750EDEBB2949215900212A4E /* MainBrowserModel.swift in Sources */,
 				8AFDBB0329F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */,
-				8AED419B292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8A3286F0294B585100ECCAEA /* SearchBarLegacyView.swift in Sources */,
@@ -3569,7 +3568,6 @@
 				8ABDD90827CCF4360028B9DE /* FeatureManager+SpecificEnums.swift in Sources */,
 				8ABA3CD82522623200E304E2 /* TabsResource.swift in Sources */,
 				8A7B1BFC28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
-				60380EF522A1509F007F06FB /* JSPluginsBuilder.swift in Sources */,
 				8ABCD75E2A65B81300E1AC6A /* FaviconImageViewable.swift in Sources */,
 				753392A4291FD9A500570461 /* ViewControllerFactory.swift in Sources */,
 				8AB5B120294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */,
@@ -3815,7 +3813,6 @@
 				753392A8291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
 				750EDEBC2949215900212A4E /* MainBrowserModel.swift in Sources */,
 				8AFDBB0429F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */,
-				8AED419A292BFC9400A00DB2 /* JSPluginsSource.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
 				8A3286F1294B585100ECCAEA /* SearchBarLegacyView.swift in Sources */,
@@ -3838,7 +3835,6 @@
 				8ABDD90927CCF4360028B9DE /* FeatureManager+SpecificEnums.swift in Sources */,
 				8ABA3CD92522623200E304E2 /* TabsResource.swift in Sources */,
 				8A7B1BFD28EB2E59004FC135 /* WebViewContextImpl.swift in Sources */,
-				8A8035C824442F0F000E035F /* JSPluginsBuilder.swift in Sources */,
 				8ABCD75F2A65B81300E1AC6A /* FaviconImageViewable.swift in Sources */,
 				753392A5291FD9A500570461 /* ViewControllerFactory.swift in Sources */,
 				8AB5B121294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */,

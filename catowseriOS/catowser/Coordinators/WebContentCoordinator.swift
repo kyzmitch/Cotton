@@ -9,6 +9,7 @@
 import UIKit
 import CottonBase
 import CoreBrowser
+import CottonPlugins
 
 protocol WebContentDelegate: AnyObject {
     func provisionalNavigationDidStart()
