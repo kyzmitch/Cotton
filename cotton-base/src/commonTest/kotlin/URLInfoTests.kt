@@ -5,7 +5,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class URLInfoTests {
-    val httpsScheme = HttpScheme.https
+    val httpsScheme = HttpScheme.HTTPS
     val urlPathGoogleDns = "resolve"
     val iOSurlPathFormat = "/resolve"
     val urlQueryGoogleDns = "name=apple.com&type=1&cd=false&do=false&edns_client_subnet=0.0.0.0%2F0"
