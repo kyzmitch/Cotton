@@ -15,6 +15,7 @@ import org.cotton.browser.content.BrowserContent
 import org.cotton.browser.content.SearchBarView
 import org.cotton.browser.content.SearchSuggestionsView
 import org.cotton.browser.content.TabsCountButton
+import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 @Composable
@@ -43,7 +44,8 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBa
             if (mainVM.matchesFound) {
                 SearchSuggestionsView()
             } else {
-                BrowserContent(mainVM.defaultTabContent)
+                val viewModel = BrowserContentViewModel(mainVM.defaultTabContent)
+                BrowserContent(viewModel)
             }
         }
     } // column

@@ -12,7 +12,7 @@ import org.cotton.browser.content.data.github
 import org.cotton.browser.content.data.opennetru
 import org.cotton.browser.content.state.TopSitesUiState
 
-class TopSitesViewModel : ViewModel() {
+final class TopSitesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<TopSitesUiState>(TopSitesUiState.Loading())
     val uiState: StateFlow<TopSitesUiState> = _uiState.asStateFlow()
 
@@ -20,9 +20,5 @@ class TopSitesViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { _ -> TopSitesUiState.Ready(listOf(Site.opennetru, Site.github)) }
         }
-    }
-
-    fun selectSite(site: Site) {
-        // TODO: update BrowserContentView
     }
 }

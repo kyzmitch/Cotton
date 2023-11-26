@@ -8,11 +8,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
+import org.cotton.base.Site
 import org.cotton.browser.content.state.TopSitesUiState
 import org.cotton.browser.content.viewmodel.TopSitesViewModel
 
 @Composable
-fun TopSitesView(viewModel: TopSitesViewModel) {
+fun TopSitesView(viewModel: TopSitesViewModel, onSiteSelection: (Site) -> Unit) {
     viewModel.load()
     val state = viewModel.uiState.collectAsState(initial = TopSitesUiState.Loading())
     val value = state.value
@@ -27,7 +28,7 @@ fun TopSitesView(viewModel: TopSitesViewModel) {
             ) {
                 items(value.sites) { site ->
                     SiteCard(site = site, cardHeight = cardSize) {
-                        viewModel.selectSite(site)
+                        onSiteSelection(site)
                     }
                 }
             }
