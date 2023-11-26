@@ -9,7 +9,7 @@ version = versionValue
 
 plugins {
     kotlin("multiplatform") version "1.9.20"
-    id("com.android.library") version "7.4.0"
+    id("com.android.library") version "7.4.0-beta02"
     kotlin("plugin.serialization") version "1.9.20"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "11.6.1"
