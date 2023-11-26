@@ -9,7 +9,7 @@ version = versionValue
 
 plugins {
     kotlin("multiplatform") version "1.9.20"
-    id("com.android.library") version "7.4.0-beta02"
+    id("com.android.library") version "7.4.2"
     kotlin("plugin.serialization") version "1.9.20"
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
     id("org.jlleitschuh.gradle.ktlint-idea") version "11.6.1"
@@ -18,7 +18,7 @@ plugins {
 
 buildscript {
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath("com.android.tools.build:gradle:7.4.2")
     }
 }
 
@@ -124,8 +124,4 @@ android {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    additionalEditorconfigFile.set(file(".editorconfig"))
 }
