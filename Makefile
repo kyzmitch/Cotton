@@ -1,11 +1,12 @@
 SHELL := /bin/bash -o pipefail
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
-# Go back to the upper directory from catowseriOS
-# Xcpretty for some reason can't be called by direct path
-# `XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty`
 XCPRETTY := bundle exec xcpretty
 SWIFTYMOCKY := ${HOME}/.mint/bin/swiftymocky
+# For 15.0.1 need to use next SDK
+# Have to use Beta macos-13 runner, because only there is Xcode 15
+# https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md
+MACOSSDK_VERSION := macosx14.0
 
 ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
@@ -181,21 +182,21 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	cd ..; \
 	cd catowseriOS; \
 	swiftymocky doctor ; \
@@ -204,7 +205,7 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test; \
 	 cd ..; \
 
 # Help
