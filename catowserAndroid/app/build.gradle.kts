@@ -38,8 +38,9 @@ android {
         compose = true
     }
     composeOptions {
-        // compose compiler should be 1.3.2 because project uses kotlin 1.7.20
-        kotlinCompilerExtensionVersion = "1.3.2"
+        // compose compiler should be 1.5.4 because project uses kotlin 1.9.20
+        // https://developer.android.com/jetpack/androidx/releases/compose-kotlin#kts
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     packagingOptions {
         resources {
