@@ -11,12 +11,12 @@ import org.cotton.base.Site
 import org.cotton.browser.content.data.TabContentType
 
 final class BrowserContentViewModel(private val defaultValue: TabContentType) : ViewModel() {
-    private val _uiState = MutableStateFlow<TabContentType>(defaultValue)
-    val uiState: StateFlow<TabContentType> = _uiState.asStateFlow()
+    private val _tabContent = MutableStateFlow<TabContentType>(defaultValue)
+    val tabContent: StateFlow<TabContentType> = _tabContent.asStateFlow()
 
-    fun siteSelected(site: Site) {
+    fun selectSite(site: Site): Unit {
         viewModelScope.launch {
-            _uiState.update { _ -> TabContentType.SiteContent(site) }
+            _tabContent.update { _ -> TabContentType.SiteContent(site) }
         }
     }
 }

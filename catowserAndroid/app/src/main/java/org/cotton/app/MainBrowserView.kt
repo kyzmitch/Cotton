@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.cotton.browser.content.BrowserContent
+import org.cotton.browser.content.BrowserScreen
 import org.cotton.browser.content.SearchBarView
 import org.cotton.browser.content.SearchSuggestionsView
 import org.cotton.browser.content.TabsCountButton
@@ -45,7 +45,7 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBa
                 SearchSuggestionsView()
             } else {
                 val viewModel = BrowserContentViewModel(mainVM.defaultTabContent)
-                BrowserContent(viewModel)
+                BrowserScreen(viewModel)
             }
         }
     } // column
