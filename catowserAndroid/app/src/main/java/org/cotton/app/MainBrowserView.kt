@@ -19,7 +19,9 @@ import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 @Composable
-internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
+internal fun MainBrowserView(mainVM: MainBrowserViewModel,
+                             searchBarVM: SearchBarViewModel,
+                             contentVM: BrowserContentViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
@@ -44,8 +46,7 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBa
             if (mainVM.matchesFound) {
                 SearchSuggestionsView()
             } else {
-                val viewModel = BrowserContentViewModel(mainVM.defaultTabContent)
-                BrowserScreen(viewModel)
+                BrowserScreen(contentVM)
             }
         }
     } // column
