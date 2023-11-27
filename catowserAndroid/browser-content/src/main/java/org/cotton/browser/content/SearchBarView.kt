@@ -61,27 +61,27 @@ fun SearchBarView(viewModel: SearchBarViewModel) {
         placeholder = {
             Text(
                 text = viewModel.placeholderText,
-                color = Purple700
+                color = Purple700,
             ) // Placeholder
         },
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Purple200,
             unfocusedIndicatorColor = Purple200,
             backgroundColor = Purple200,
-            cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+            cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
         ),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Filled.Search,
                 modifier = Modifier,
-                contentDescription = stringResource(id = R.string.icn_search_magnifier_icon_description)
+                contentDescription = stringResource(id = R.string.icn_search_magnifier_icon_description),
             ) // Search magnifier icon in SearchBar
         },
         trailingIcon = {
             AnimatedVisibility(
                 visible = showClearButton,
                 enter = fadeIn(),
-                exit = fadeOut()
+                exit = fadeOut(),
             ) {
                 IconButton(onClick = {
                     keyboardController?.hide()
@@ -89,7 +89,7 @@ fun SearchBarView(viewModel: SearchBarViewModel) {
                 }) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(id = R.string.icn_search_clear_content_description)
+                        contentDescription = stringResource(id = R.string.icn_search_clear_content_description),
                     )
                 } // Cancel button for SearchBar
             }
@@ -99,6 +99,6 @@ fun SearchBarView(viewModel: SearchBarViewModel) {
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
             keyboardController?.hide()
-        })
+        }),
     ) // OutlinedTextField
 }

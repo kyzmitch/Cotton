@@ -10,6 +10,7 @@ import platform.UIKit.UIImagePNGRepresentation
 
 actual typealias Image = UIImage
 
+@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 actual fun Site.withFavicon(image: Image): Site? {
     val data = UIImagePNGRepresentation(image)
     if (data == null) { return null }
@@ -18,7 +19,7 @@ actual fun Site.withFavicon(image: Image): Site? {
     return Site(this.urlInfo, this.settings, bytesPtr.readBytes(data.length.toInt()))
 }
 
-@ExperimentalUnsignedTypes
+@OptIn(kotlinx.cinterop.ExperimentalForeignApi::class)
 actual fun Site.favicon(): Image? {
     if (faviconData == null) { return null }
     return memScoped {

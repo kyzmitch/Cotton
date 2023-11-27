@@ -7,6 +7,7 @@
 //
 
 import CottonBase
+import CottonPlugins
 
 final class WebViewModelV2 {
     /// A reference to JavaScript plugins builder passed from root view

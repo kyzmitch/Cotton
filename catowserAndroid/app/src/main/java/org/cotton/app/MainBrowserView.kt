@@ -11,19 +11,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.cotton.browser.content.BrowserContent
+import org.cotton.browser.content.BrowserScreen
 import org.cotton.browser.content.SearchBarView
 import org.cotton.browser.content.SearchSuggestionsView
 import org.cotton.browser.content.TabsCountButton
+import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 @Composable
-internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
+internal fun MainBrowserView(
+    mainVM: MainBrowserViewModel,
+    searchBarVM: SearchBarViewModel,
+    contentVM: BrowserContentViewModel,
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
                 .height(mainVM.barHeight)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 SearchBarView(searchBarVM)
@@ -32,7 +37,7 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBa
                 modifier = Modifier
                     .width(30.dp)
                     .fillMaxHeight(),
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.End,
             ) {
                 TabsCountButton(0u) {
                     mainVM.show(MainBrowserRoute.Tabs)
@@ -43,7 +48,7 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel, searchBarVM: SearchBa
             if (mainVM.matchesFound) {
                 SearchSuggestionsView()
             } else {
-                BrowserContent(mainVM.defaultTabContent)
+                BrowserScreen(contentVM)
             }
         }
     } // column

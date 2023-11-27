@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 import FeaturesFlagsKit
+import CottonPlugins
 
 struct PhoneView: View {
     // MARK: - view models of subviews

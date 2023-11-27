@@ -16,7 +16,7 @@ class TabsActivity : CottonActivity() {
             CottonTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
                 ) {
                     Text(text = "Tabs")
                 } // surface
