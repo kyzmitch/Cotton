@@ -28,7 +28,7 @@ fun CottonWebView(site: Site) {
     if (loadingState is LoadingState.Loading) {
         LinearProgressIndicator(
             progress = loadingState.progress,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
     WebView(
@@ -37,7 +37,7 @@ fun CottonWebView(site: Site) {
         onCreated = { webView ->
             webView.settings.javaScriptEnabled = true
         },
-        client = webClient
+        client = webClient,
     )
 }
 
@@ -48,7 +48,7 @@ private fun WebViewPreview() {
         Text("Preview should still load but WebView will be grey box.")
         WebView(
             state = rememberWebViewState(url = "localhost"),
-            modifier = Modifier.height(100.dp)
+            modifier = Modifier.height(100.dp),
         )
     }
 }

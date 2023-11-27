@@ -14,7 +14,7 @@ final class BrowserContentViewModel(private val defaultValue: TabContentType) : 
     private val _tabContent = MutableStateFlow<TabContentType>(defaultValue)
     val tabContent: StateFlow<TabContentType> = _tabContent.asStateFlow()
 
-    fun selectSite(site: Site): Unit {
+    fun selectSite(site: Site) {
         viewModelScope.launch {
             _tabContent.update { _ -> TabContentType.SiteContent(site) }
         }

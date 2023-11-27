@@ -71,13 +71,15 @@ final class MainActivity : CottonActivity() {
 }
 
 @Composable
-internal fun Content(mainVM: MainBrowserViewModel,
-                     searchBarVM: SearchBarViewModel,
-                     contentVM: BrowserContentViewModel) {
+internal fun Content(
+    mainVM: MainBrowserViewModel,
+    searchBarVM: SearchBarViewModel,
+    contentVM: BrowserContentViewModel,
+) {
     CottonTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
+            color = MaterialTheme.colors.background,
         ) {
             MainBrowserView(mainVM, searchBarVM, contentVM)
         }

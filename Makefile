@@ -107,7 +107,12 @@ ios-lint:
 android-lint:
 	ktlint catowserAndroid/**/*.kt --editorconfig=catowserAndroid/.editorconfig ; \
 	# --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,
-	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports
+	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports,
+	# final-newline,standard:trailing-comma-on-call-site
+
+.PHONY: android-kotlin-format
+android-kotlin-format:
+	ktlint catowserAndroid/**/*.kt --format ;
 
 # Cotton base builds
 

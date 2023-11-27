@@ -15,6 +15,7 @@ fun BrowserScreen(viewModel: BrowserContentViewModel) {
     val tabContent = viewModel.tabContent.collectAsState()
     BrowserContent(tabContent = tabContent.value) { viewModel.selectSite(it) }
 }
+
 @Composable
 fun BrowserContent(tabContent: TabContentType, onSiteSelect: (Site) -> Unit) {
     when (tabContent) {

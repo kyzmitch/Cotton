@@ -25,17 +25,17 @@ fun SiteCard(site: Site, cardHeight: Dp, onTap: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
-            .height(cardHeight)
+            .height(cardHeight),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model = site.urlInfo.faviconURLFromDomain,
-                contentDescription = site.host.rawString
+                contentDescription = site.host.rawString,
             )
         }
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(text = site.host.rawString)
         }

@@ -19,14 +19,16 @@ import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 @Composable
-internal fun MainBrowserView(mainVM: MainBrowserViewModel,
-                             searchBarVM: SearchBarViewModel,
-                             contentVM: BrowserContentViewModel) {
+internal fun MainBrowserView(
+    mainVM: MainBrowserViewModel,
+    searchBarVM: SearchBarViewModel,
+    contentVM: BrowserContentViewModel,
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
                 .height(mainVM.barHeight)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 SearchBarView(searchBarVM)
@@ -35,7 +37,7 @@ internal fun MainBrowserView(mainVM: MainBrowserViewModel,
                 modifier = Modifier
                     .width(30.dp)
                     .fillMaxHeight(),
-                horizontalAlignment = Alignment.End
+                horizontalAlignment = Alignment.End,
             ) {
                 TabsCountButton(0u) {
                     mainVM.show(MainBrowserRoute.Tabs)

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 fun TabsCountButton(count: UInt = 0u, onTabsOpen: () -> Unit) {
     Button(
         onClick = onTabsOpen,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         Text(text = count.toString())
     }

@@ -14,7 +14,7 @@ fun TopSitesView(state: List<Site>, onSiteSelect: (Site) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = cardSize),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        userScrollEnabled = false
+        userScrollEnabled = false,
     ) {
         items(state) { site ->
             SiteCard(site = site, cardHeight = cardSize) {
