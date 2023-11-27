@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun TabsCountButton(count: UInt = 0u, onOpenTabs: () -> Unit) {
+fun TabsCountButton(count: UInt = 0u, onTabsOpen: () -> Unit) {
     Button(
-        onClick = onOpenTabs,
-        modifier = Modifier.fillMaxSize()
+        onClick = onTabsOpen,
+        modifier = Modifier.fillMaxSize(),
     ) {
         Text(text = count.toString())
     }

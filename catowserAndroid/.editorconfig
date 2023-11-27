@@ -5,3 +5,6 @@ ktlint_standard_final-newline = disabled
 ktlint_standard_final-colon-spacing = disabled
 ktlint_standard_final-no-wildcard-imports = disabled
 no-wildcard-imports = disabled
+final-newline = disabled
+no-consecutive-blank-lines = disabled
+trailing-comma-on-declaration-site = disabled

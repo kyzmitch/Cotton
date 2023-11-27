@@ -1,8 +1,12 @@
 SHELL := /bin/bash -o pipefail
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
-# Go back to the upper directory from catowseriOS
-XCPRETTY := ../vendor/bundle/ruby/2.6.0/bin/xcpretty
+XCPRETTY := bundle exec xcpretty
+SWIFTYMOCKY := ${HOME}/.mint/bin/swiftymocky
+# For 15.0.1 need to use next SDK
+# Have to use Beta macos-13 runner, because only there is Xcode 15
+# https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md
+MACOSSDK_VERSION := macosx14.0
 
 ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
@@ -12,12 +16,14 @@ endif
 # $(call GRADLE, wrapper);
 
 # bash profile update every time is not a good option
-# echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ;
+# `echo 'export PATH="/usr/local/opt/gradle@7/bin:$PATH"' >> ~/.bash_profile ;`
 
 # specific Maven publish doesn't work and have to use `publishToMavenLocal`
-# ./gradlew publishAndroidDebugPublicationToMavenLocal; 
+# `./gradlew publishAndroidDebugPublicationToMavenLocal;`
 
-# xcodebuild -showsdks
+# Following command shows currently installed SDKs on the system
+# use `-sdk macosx13.1` for specific on CI and `-sdk macosx` means the latest for local
+# `xcodebuild -showsdks`
 
 # Github workflow builds
 
@@ -101,7 +107,12 @@ ios-lint:
 android-lint:
 	ktlint catowserAndroid/**/*.kt --editorconfig=catowserAndroid/.editorconfig ; \
 	# --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,
-	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports
+	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports,
+	# final-newline,standard:trailing-comma-on-call-site
+
+.PHONY: android-kotlin-format
+android-kotlin-format:
+	ktlint catowserAndroid/**/*.kt --format ;
 
 # Cotton base builds
 
@@ -133,32 +144,34 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test \
+	 -sdk macosx | $(XCPRETTY) --test \
 	 cd ..; \
 
 .PHONY: ios-unit-tests
 ios-unit-tests: build-cotton-base-ios-release
 	cd catowseriOS; \
+    $(SWIFTYMOCKY) doctor ; \
+    $(SWIFTYMOCKY) generate ; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk macosx | $(XCPRETTY) --test; \
 	cd ..; \
 
 # Github workflow unit tests (specific macOS runners)
@@ -174,21 +187,21 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonRestKit Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	xcodebuild -scheme "CottonPlugins Unit tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	 xcodebuild -scheme "CottonData Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	cd ..; \
 	cd catowseriOS; \
 	swiftymocky doctor ; \
@@ -197,7 +210,7 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx13.1 | $(XCPRETTY) --test; \
+	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test; \
 	 cd ..; \
 
 # Help

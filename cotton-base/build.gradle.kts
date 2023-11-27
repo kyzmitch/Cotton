@@ -8,18 +8,17 @@ group = groupValue
 version = versionValue
 
 plugins {
-    kotlin("multiplatform") version "1.7.20"
-    id("com.android.library") version "7.3.0"
-    kotlin("plugin.serialization") version "1.7.20"
-    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
-    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
-    id("org.jlleitschuh.gradle.ktlint-idea") version "11.5.0"
+    kotlin("multiplatform") version "1.9.20"
+    id("com.android.library") version "7.4.2"
+    kotlin("plugin.serialization") version "1.9.20"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    id("org.jlleitschuh.gradle.ktlint-idea") version "11.6.1"
     id("maven-publish")
 }
 
 buildscript {
     dependencies {
-        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath("com.android.tools.build:gradle:7.4.2")
     }
 }
 
@@ -36,7 +35,7 @@ val frameworkName = "CottonBase"
 
 kotlin {
     val xcf = XCFramework(frameworkName)
-    ios {
+    iosArm64 {
         sourceSets {
             commonMain {
                 kotlin {
@@ -47,9 +46,6 @@ kotlin {
         binaries.framework {
             embedBitcode(BitcodeEmbeddingMode.BITCODE)
             baseName = frameworkName
-            if (System.getenv("XCODE_VERSION_MAJOR") == "1500") {
-                linkerOpts += "-ld64"
-            }
             xcf.add(this)
         }
     }
@@ -63,13 +59,10 @@ kotlin {
         }
         binaries.framework {
             baseName = frameworkName
-            if (System.getenv("XCODE_VERSION_MAJOR") == "1500") {
-                linkerOpts += "-ld64"
-            }
             xcf.add(this)
         }
     }
-    android {
+    androidTarget {
         publishLibraryVariants("release", "debug")
         sourceSets {
             commonMain {
@@ -81,6 +74,47 @@ kotlin {
             }
         }
     }
+    macosArm64 {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    include("**/*.kt")
+                }
+            }
+        }
+        binaries.framework {
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
+    iosSimulatorArm64 {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    include("**/*.kt")
+                }
+            }
+        }
+        binaries.framework {
+            embedBitcode(BitcodeEmbeddingMode.DISABLE)
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
+    iosX64 {
+        sourceSets {
+            commonMain {
+                kotlin {
+                    include("**/*.kt")
+                }
+            }
+        }
+        binaries.framework {
+            embedBitcode(BitcodeEmbeddingMode.DISABLE)
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
 }
 
 android {
@@ -88,20 +122,6 @@ android {
     compileSdk = 32
 }
 
-multiplatformSwiftPackage {
-    packageName(frameworkName)
-    outputDirectory(File(projectDir, "$frameworkName"))
-    swiftToolsVersion("5.7")
-    targetPlatforms {
-        iOS { v("13") }
-        macOS { v("12.3") }
-    }
-}
-
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    additionalEditorconfigFile.set(file(".editorconfig"))
 }

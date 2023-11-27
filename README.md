@@ -18,14 +18,13 @@ Building the code
 -----------------
 Environment
 -----------------
-- IntelliJ IDEA 2022.3.2 (this is not latest version to avoid Android plugin error) or latest 2023.2.4 CE
-- Xcode 14.2 or 15.0 are supported
-- Android Studio 2022.1.1 (Elecric Eel)
+- IntelliJ IDEA 2023.2.4 (Community Edition)
+- Xcode 15.0.0
+- Android Studio Giraffe | 2022.3.1 Patch 4
 
-- Swift 5.7
-- Kotlin 1.7.21 (not 1.8.0 because of used Android Studio stable version)
-- Gradle 7.3 (Kotlin 1.8.0 fully supports Gradle versions 7.2 and 7.3)
-
+- Swift 5.9
+- Kotlin 1.9.20
+- Gradle 7.4.2 for build.gradle.kts in IndelliJ IDEA, but can use 8.1 in wrapper. In Android Studio it is 7.3.0 in build.gradle.kts and 7.4 in wrapper.
 
 Steps
 -----------------

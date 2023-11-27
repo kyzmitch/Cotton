@@ -10,6 +10,7 @@ import SwiftUI
 import CoreBrowser
 import Combine
 import FeaturesFlagsKit
+import CottonPlugins
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {

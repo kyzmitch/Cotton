@@ -17,9 +17,10 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.cotton.app.ui.theme.CottonTheme
+import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
-class MainActivity : CottonActivity() {
+final class MainActivity : CottonActivity() {
     companion object {
         private const val TAG = "MainActivity"
     }
@@ -31,6 +32,7 @@ class MainActivity : CottonActivity() {
             }
         }
     }
+
     private val searchBarVM: SearchBarViewModel by viewModels {
         viewModelFactory {
             addInitializer(SearchBarViewModel::class) {
@@ -38,11 +40,20 @@ class MainActivity : CottonActivity() {
             }
         }
     }
+
+    private val browserContentVM: BrowserContentViewModel by viewModels {
+        viewModelFactory {
+            addInitializer(BrowserContentViewModel::class) {
+                BrowserContentViewModel(mainVM.defaultTabContent)
+            }
+        }
+    }
+
     private val uiScope: CoroutineScope = MainScope()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Content(mainVM, searchBarVM)
+            Content(mainVM, searchBarVM, browserContentVM)
         }
         mainVM.route.drop(1).onEach { handleNavigation(it) }.launchIn(uiScope)
     } // on create
@@ -60,13 +71,17 @@ class MainActivity : CottonActivity() {
 }
 
 @Composable
-internal fun Content(mainVM: MainBrowserViewModel, searchBarVM: SearchBarViewModel) {
+internal fun Content(
+    mainVM: MainBrowserViewModel,
+    searchBarVM: SearchBarViewModel,
+    contentVM: BrowserContentViewModel,
+) {
     CottonTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
+            color = MaterialTheme.colors.background,
         ) {
-            MainBrowserView(mainVM, searchBarVM)
+            MainBrowserView(mainVM, searchBarVM, contentVM)
         }
     }
 }
