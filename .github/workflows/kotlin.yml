@@ -19,7 +19,7 @@ jobs:
           args: --editorconfig=catowserAndroid/.editorconfig --disabled_rules=no-wildcard-imports,final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports,final-newline
           patterns: catowserAndroid/**/*.kt
   build-android:
-    needs: [lint-android]
+    needs: []
     runs-on: macos-13
     steps:
     - uses: actions/checkout@v3
