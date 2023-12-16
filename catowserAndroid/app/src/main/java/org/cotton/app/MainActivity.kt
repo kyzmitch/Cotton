@@ -20,7 +20,7 @@ import org.cotton.app.ui.theme.CottonTheme
 import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
-final class MainActivity : CottonActivity() {
+class MainActivity : CottonActivity() {
     companion object {
         private const val TAG = "MainActivity"
     }
