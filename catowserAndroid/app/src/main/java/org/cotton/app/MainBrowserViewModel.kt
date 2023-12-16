@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.cotton.browser.content.data.TabContentType
 
-final class MainBrowserViewModel : ViewModel() {
-    private val _route = MutableStateFlow<MainBrowserRoute>(MainBrowserRoute.Nothing)
+class MainBrowserViewModel : ViewModel() {
+    private val _route = MutableStateFlow(MainBrowserRoute.Nothing)
     val route: StateFlow<MainBrowserRoute> = _route.asStateFlow()
 
     val barHeight = 50.dp
