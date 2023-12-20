@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import org.cotton.browser.content.BrowserScreen
 import org.cotton.browser.content.SearchBarView
 import org.cotton.browser.content.SearchSuggestionsView
@@ -20,10 +21,12 @@ import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
 @Composable
 internal fun MainBrowserView(
-    mainVM: MainBrowserViewModel,
-    searchBarVM: SearchBarViewModel,
     contentVM: BrowserContentViewModel,
+    onOpenTabs: () -> Unit
 ) {
+    val mainVM: MainBrowserViewModel = viewModel()
+    val searchBarVM: SearchBarViewModel = viewModel()
+
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
             modifier = Modifier
@@ -39,9 +42,7 @@ internal fun MainBrowserView(
                     .fillMaxHeight(),
                 horizontalAlignment = Alignment.End,
             ) {
-                TabsCountButton(0u) {
-                    mainVM.show(MainBrowserRoute.Tabs)
-                }
+                TabsCountButton(count = 0u, onTabsOpen = onOpenTabs)
             }
         }
         Row(modifier = Modifier.fillMaxSize()) {

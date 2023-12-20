@@ -9,10 +9,11 @@ buildscript {
         set("ktor_version", "2.2.3")
         set("lifecycle_version", "2.5.1")
         set("android_x_activity", "1.3.1")
+        set("android_x_navigation", "2.7.6")
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
-        classpath("com.android.tools.build:gradle:7.3.0")
+        classpath("com.android.tools.build:gradle:8.1.1")
     }
 } // Top-level build file where you can add configuration options common to all sub-projects/modules.
 

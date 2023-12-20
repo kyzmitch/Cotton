@@ -25,21 +25,9 @@ class MainActivity : CottonActivity() {
         private const val TAG = "MainActivity"
     }
 
-    private val mainVM: MainBrowserViewModel by viewModels {
-        viewModelFactory {
-            addInitializer(MainBrowserViewModel::class) {
-                MainBrowserViewModel()
-            }
-        }
-    }
+    private val mainVM: MainBrowserViewModel by viewModels()
 
-    private val searchBarVM: SearchBarViewModel by viewModels {
-        viewModelFactory {
-            addInitializer(SearchBarViewModel::class) {
-                SearchBarViewModel()
-            }
-        }
-    }
+    private val searchBarVM: SearchBarViewModel by viewModels()
 
     private val browserContentVM: BrowserContentViewModel by viewModels {
         viewModelFactory {
@@ -49,39 +37,22 @@ class MainActivity : CottonActivity() {
         }
     }
 
-    private val uiScope: CoroutineScope = MainScope()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Content(mainVM, searchBarVM, browserContentVM)
+            Content(browserContentVM)
         }
-        mainVM.route.drop(1).onEach { handleNavigation(it) }.launchIn(uiScope)
     } // on create
-
-    private fun handleNavigation(route: MainBrowserRoute) {
-        when (route) {
-            MainBrowserRoute.Tabs -> {
-                startActivity(Intent(this, TabsActivity::class.java))
-            }
-            else -> {
-                Log.d(Companion.TAG, "handleNavigation: not handlen route")
-            }
-        }
-    }
 }
 
 @Composable
-internal fun Content(
-    mainVM: MainBrowserViewModel,
-    searchBarVM: SearchBarViewModel,
-    contentVM: BrowserContentViewModel,
-) {
+internal fun Content(contentVM: BrowserContentViewModel) {
     CottonTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background,
         ) {
-            MainBrowserView(mainVM, searchBarVM, contentVM)
+            NavigatableMainBrowserView(contentVM)
         }
     }
 }
