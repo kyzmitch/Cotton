@@ -1,4 +1,4 @@
-package org.cotton.app
+package org.cotton.app.tabs
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import org.cotton.app.CottonActivity
 import org.cotton.app.ui.theme.CottonTheme
 
 class TabsActivity : CottonActivity() {
