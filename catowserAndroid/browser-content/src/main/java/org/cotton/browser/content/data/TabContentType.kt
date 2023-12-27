@@ -3,6 +3,19 @@ package org.cotton.browser.content.data
 import org.cotton.base.Site
 
 sealed class TabContentType {
+    companion object {
+        fun createFrom(rawValue: Int, site: Site? = null): TabContentType {
+            return when (rawValue) {
+                0 -> Blank()
+                1 -> site?.let { return@let SiteContent(it) } ?: Blank()
+                2 -> Homepage()
+                3 -> Favorites()
+                4 -> TopSites()
+                else -> Blank()
+            }
+        }
+    }
+
     class Blank() : TabContentType()
     class TopSites() : TabContentType()
     class Favorites() : TabContentType()

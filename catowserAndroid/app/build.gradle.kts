@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("org.jlleitschuh.gradle.ktlint")
+    id("kotlin-kapt")
 }
 
 android {
@@ -18,6 +19,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
         }
     }
 
@@ -42,7 +51,7 @@ android {
         // https://developer.android.com/jetpack/androidx/releases/compose-kotlin#kts
         kotlinCompilerExtensionVersion = "1.5.4"
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes.add("/META-INF/{AL2.0,LGPL2.1}")
         }
@@ -50,24 +59,34 @@ android {
 }
 
 dependencies {
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra.get("lifecycle_version") as String}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra.get("lifecycle_version") as String}")
     implementation(project(mapOf("path" to ":browser-content")))
     implementation("org.cotton.base:cotton-base:0.1-SNAPSHOT")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.activity:activity-compose:${rootProject.extra.get("android_x_activity") as String}")
-    implementation("androidx.activity:activity-ktx:${rootProject.extra.get("android_x_activity") as String}")
-    implementation("androidx.compose.ui:ui:${rootProject.extra.get("compose_version") as String}")
-    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra.get("compose_version") as String}")
-    implementation("androidx.compose.material:material:1.1.1")
-    val navigationVersion = rootProject.extra.get("android_x_navigation") as String
-    implementation("androidx.navigation:navigation-runtime-ktx:${navigationVersion}")
-    implementation("androidx.navigation:navigation-compose:${navigationVersion}")
+
+    val lifecycle_version = rootProject.extra.get("lifecycle_version") as String
+    val android_x_activity = rootProject.extra.get("android_x_activity") as String
+    val compose_version = rootProject.extra.get("compose_version") as String
+    val android_x_navigation = rootProject.extra.get("android_x_navigation") as String
+    val android_x_core_ktx = rootProject.extra.get("android_x_core_ktx") as String
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation("androidx.core:core-ktx:$android_x_core_ktx")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation("androidx.activity:activity-compose:$android_x_activity")
+    implementation("androidx.activity:activity-ktx:$android_x_activity")
+    implementation("androidx.compose.ui:ui:$compose_version")
+    implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
+    implementation("androidx.compose.material:material:1.5.4")
+    implementation("androidx.navigation:navigation-runtime-ktx:$android_x_navigation")
+    implementation("androidx.navigation:navigation-compose:$android_x_navigation")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra.get("compose_version") as String}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra.get("compose_version") as String}")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra.get("compose_version") as String}")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    debugImplementation("androidx.compose.ui:ui-tooling:$compose_version")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
+
+    val room_version = rootProject.extra.get("room_version") as String
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version") /// kapt
+    implementation("androidx.room:room-ktx:$room_version")
 }

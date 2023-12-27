@@ -47,5 +47,5 @@ interface TabsStoragable {
      *
      * @param tabs Remove one or more tabs
      * */
-    fun remove(tabs: List<Tab>): List<Tab>
+    fun remove(tabs: List<UUID>): List<UUID>
 }
