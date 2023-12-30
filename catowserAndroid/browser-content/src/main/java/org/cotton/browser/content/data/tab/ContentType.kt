@@ -1,26 +1,26 @@
-package org.cotton.browser.content.data
+package org.cotton.browser.content.data.tab
 
 import org.cotton.base.Site
 
-sealed class TabContentType {
+sealed class ContentType {
     companion object {
-        fun createFrom(rawValue: Int, site: Site? = null): TabContentType {
+        fun createFrom(rawValue: Int, site: Site? = null): ContentType {
             return when (rawValue) {
-                0 -> Blank()
-                1 -> site?.let { return@let SiteContent(it) } ?: Blank()
-                2 -> Homepage()
-                3 -> Favorites()
-                4 -> TopSites()
-                else -> Blank()
+                0 -> Blank
+                1 -> site?.let { return@let SiteContent(it) } ?: Blank
+                2 -> Homepage
+                3 -> Favorites
+                4 -> TopSites
+                else -> Blank
             }
         }
     }
 
-    class Blank() : TabContentType()
-    class TopSites() : TabContentType()
-    class Favorites() : TabContentType()
-    class Homepage() : TabContentType()
-    class SiteContent(val site: Site) : TabContentType()
+    data object Blank : ContentType()
+    data object TopSites : ContentType()
+    data object Favorites : ContentType()
+    data object Homepage : ContentType()
+    class SiteContent(val site: Site) : ContentType()
 
     val title: String
         get() {

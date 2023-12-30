@@ -1,4 +1,4 @@
-package org.cotton.browser.content.data
+package org.cotton.browser.content.converter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter

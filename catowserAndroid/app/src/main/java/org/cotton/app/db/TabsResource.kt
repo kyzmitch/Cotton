@@ -2,9 +2,10 @@ package org.cotton.app.db
 
 import android.content.Context
 import org.cotton.browser.content.data.Tab
+import org.cotton.browser.content.service.tab.TabsStoragable
 import java.util.UUID
 
-class TabsResource(private val context: Context) {
+class TabsResource(private val context: Context): TabsStoragable {
     private val tabsDbClient by lazy {
         TabsDBClient.getDatabase(context).tabsDao()
     }
@@ -16,11 +17,11 @@ class TabsResource(private val context: Context) {
      * Gets an identifier of a selected tab or an error if no tab is present
      * which isn't possible at least blank tab should be present.
      * */
-    fun selectedTabId(): UUID {
+    override fun selectedTabId(): UUID {
         return appSettingsDbClient.fetchSelectedTabId()
     }
 
-    fun remember(tab: Tab, select: Boolean) {
+    override fun remember(tab: Tab, select: Boolean) {
         tabsDbClient.add(tab)
         appSettingsDbClient.select(tab.id)
     }
@@ -30,14 +31,14 @@ class TabsResource(private val context: Context) {
      * it should be possible to store and read tabs from different sessions like
      * private browser session tabs & usual tabs.
      * */
-    fun tabsFromLastSession(): List<Tab> {
+    override fun tabsFromLastSession(): List<Tab> {
         return tabsDbClient.fetchAllTabs()
     }
 
     /**
      * Remembers tab identifier as selected one
      * */
-    fun select(tab: Tab) {
+    override fun select(tab: Tab) {
         appSettingsDbClient.select(tab.id)
     }
 
@@ -49,12 +50,12 @@ class TabsResource(private val context: Context) {
      * something new which is unknown and can be based on
      * selection strategy on the upper level.
      * */
-    suspend fun forget(tabs: List<Tab>) {
+    override suspend fun forget(tabs: List<Tab>) {
         val identifiers = tabs.map {it.id }
         tabsDbClient.remove(identifiers)
     }
 
-    suspend fun update(tab: Tab) {
+    override suspend fun update(tab: Tab) {
         tabsDbClient.update(tab)
     }
 }

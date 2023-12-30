@@ -4,7 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import org.cotton.base.Site
+import org.cotton.browser.content.data.site.SiteEntity
+import org.cotton.browser.content.data.site.roomEntity
+import org.cotton.browser.content.data.tab.ContentType
 import java.util.Date
 import java.util.UUID
 
@@ -12,15 +14,15 @@ import java.util.UUID
     tableName = "tabs",
     indices = [Index("id")]
 )
-data class Tab(private val data: Triple<TabContentType, UUID, Date>) {
+data class Tab(private val data: Triple<ContentType, UUID, Date>) {
     constructor(
-        contentType: TabContentType,
+        contentType: ContentType,
         identifier: UUID = UUID.randomUUID(),
         created: Date = Date())
             : this(Triple(contentType, identifier, created))
 
     companion object {
-        val blank: Tab get() = Tab(TabContentType.Blank())
+        val blank: Tab get() = Tab(ContentType.Blank)
     }
 
     @PrimaryKey
@@ -30,11 +32,11 @@ data class Tab(private val data: Triple<TabContentType, UUID, Date>) {
     @ColumnInfo(name = "added_timestamp")
     val addedTimestamp: Date = data.third
     @ColumnInfo(name = "site")
-    val site: SiteEntity? = (data.first as? TabContentType.SiteContent)?.site?.roomEntity()
+    val site: SiteEntity? = (data.first as? ContentType.SiteContent)?.site?.roomEntity()
 
-    val contentType: TabContentType
+    val contentType: ContentType
         get() {
-            return TabContentType.createFrom(contentTypeRawValue, site?.value)
+            return ContentType.createFrom(contentTypeRawValue, site?.value)
         }
     val title: String get() = contentType.title
     val searchBarContent: String get() = contentType.searchBarContent

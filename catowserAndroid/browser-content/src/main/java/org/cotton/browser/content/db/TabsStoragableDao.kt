@@ -1,4 +1,4 @@
-package org.cotton.browser.content.service.tab
+package org.cotton.browser.content.db
 
 import androidx.room.Dao
 import androidx.room.Insert

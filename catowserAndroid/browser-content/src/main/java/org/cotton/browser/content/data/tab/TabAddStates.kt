@@ -1,4 +1,4 @@
-package org.cotton.browser.content.service.tab
+package org.cotton.browser.content.data.tab
 
 import android.icu.util.DateInterval
 
@@ -9,6 +9,6 @@ enum class AddedTabPosition {
 }
 
 sealed class TabAddSpeed {
-    class Immediately() : TabAddSpeed()
+    data object Immediately : TabAddSpeed()
     class After(val interval: DateInterval) : TabAddSpeed()
 }

@@ -1,4 +1,4 @@
-package org.cotton.browser.content.data
+package org.cotton.browser.content.data.site
 
 import org.cotton.base.DomainName
 import org.cotton.base.HttpScheme

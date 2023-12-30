@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import org.cotton.base.Site
-import org.cotton.browser.content.data.opennetru
+import org.cotton.browser.content.data.site.opennetru
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

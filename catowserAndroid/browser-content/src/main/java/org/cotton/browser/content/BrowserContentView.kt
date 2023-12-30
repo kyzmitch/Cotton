@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import org.cotton.base.Site
-import org.cotton.browser.content.data.TabContentType
-import org.cotton.browser.content.data.github
-import org.cotton.browser.content.data.opennetru
+import org.cotton.browser.content.data.tab.ContentType
+import org.cotton.browser.content.data.site.github
+import org.cotton.browser.content.data.site.opennetru
 import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 
 @Composable
@@ -17,21 +17,21 @@ fun BrowserScreen(viewModel: BrowserContentViewModel) {
 }
 
 @Composable
-fun BrowserContent(tabContent: TabContentType, onSiteSelect: (Site) -> Unit) {
+fun BrowserContent(tabContent: ContentType, onSiteSelect: (Site) -> Unit) {
     when (tabContent) {
-        is TabContentType.Blank -> Text(text = "Blank content")
-        is TabContentType.TopSites -> {
+        is ContentType.Blank -> Text(text = "Blank content")
+        is ContentType.TopSites -> {
             val topSites = listOf(Site.opennetru, Site.github)
             TopSitesView(topSites, onSiteSelect)
         }
-        is TabContentType.Favorites -> Text(text = "Favorite sites")
-        is TabContentType.Homepage -> Text(text = "Home page")
-        is TabContentType.SiteContent -> CottonWebView(site = tabContent.site)
+        is ContentType.Favorites -> Text(text = "Favorite sites")
+        is ContentType.Homepage -> Text(text = "Home page")
+        is ContentType.SiteContent -> CottonWebView(site = tabContent.site)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun BrowserContentPreview() {
-    BrowserContent(TabContentType.TopSites(), onSiteSelect = { _ -> })
+    BrowserContent(ContentType.TopSites, onSiteSelect = { _ -> })
 }

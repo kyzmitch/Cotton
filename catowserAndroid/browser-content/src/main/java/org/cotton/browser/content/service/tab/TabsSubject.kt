@@ -1,7 +1,7 @@
 package org.cotton.browser.content.service.tab
 
 import org.cotton.browser.content.data.Tab
-import org.cotton.browser.content.data.TabContentType
+import org.cotton.browser.content.data.tab.ContentType
 import java.util.UUID
 
 interface TabsSubject {
@@ -11,7 +11,7 @@ interface TabsSubject {
     suspend fun close(tab: Tab)
     suspend fun closeAll()
     suspend fun select(tab: Tab)
-    suspend fun replaceSelected(content: TabContentType)
+    suspend fun replaceSelected(content: ContentType)
     val tabsCount: Int
     val selectedId: UUID
     val allTabs: Array<Tab>

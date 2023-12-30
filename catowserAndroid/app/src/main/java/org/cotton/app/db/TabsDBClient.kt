@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import org.cotton.browser.content.data.ComplexDataConverters
+import org.cotton.browser.content.converter.ComplexDataConverters
 import org.cotton.browser.content.data.Tab
-import org.cotton.browser.content.service.tab.AppSettings
-import org.cotton.browser.content.service.tab.AppSettingsStoragableDao
-import org.cotton.browser.content.service.tab.TabsStoragableDao
+import org.cotton.browser.content.data.AppSettings
+import org.cotton.browser.content.db.AppSettingsStoragableDao
+import org.cotton.browser.content.db.TabsStoragableDao
 import kotlin.concurrent.Volatile
 
 /**

@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.cotton.base.Site
-import org.cotton.browser.content.data.TabContentType
+import org.cotton.browser.content.data.tab.ContentType
 
-final class BrowserContentViewModel(private val defaultValue: TabContentType) : ViewModel() {
-    private val _tabContent = MutableStateFlow<TabContentType>(defaultValue)
-    val tabContent: StateFlow<TabContentType> = _tabContent.asStateFlow()
+final class BrowserContentViewModel(private val defaultValue: ContentType) : ViewModel() {
+    private val _tabContent = MutableStateFlow<ContentType>(defaultValue)
+    val tabContent: StateFlow<ContentType> = _tabContent.asStateFlow()
 
     fun selectSite(site: Site) {
         viewModelScope.launch {
-            _tabContent.update { _ -> TabContentType.SiteContent(site) }
+            _tabContent.update { _ -> ContentType.SiteContent(site) }
         }
     }
 }

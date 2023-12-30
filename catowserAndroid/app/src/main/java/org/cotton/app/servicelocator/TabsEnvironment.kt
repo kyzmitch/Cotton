@@ -2,9 +2,13 @@ package org.cotton.app.servicelocator
 
 import android.content.Context
 import org.cotton.app.db.TabsResource
+import org.cotton.app.strategy.NearbySelectionStrategy
+import org.cotton.app.utils.DefaultTabProvider
+import org.cotton.browser.content.service.tab.TabsListManager
 
 class TabsEnvironment(context: Context) {
-    val tabsResource: TabsResource
+    private val tabsResource: TabsResource
+    val tabsListManager: TabsListManager
 
     companion object {
         @Volatile
@@ -26,5 +30,13 @@ class TabsEnvironment(context: Context) {
 
     init {
         tabsResource = TabsResource(context)
+        val defaultProvider = DefaultTabProvider()
+        val tabSelectionStrat = NearbySelectionStrategy()
+        val tabsAtLogin = tabsResource.tabsFromLastSession()
+        tabsListManager = TabsListManager(
+            tabsAtLogin,
+            tabsResource,
+            defaultProvider,
+            tabSelectionStrat)
     }
 }

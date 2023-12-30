@@ -1,4 +1,4 @@
-package org.cotton.browser.content.data
+package org.cotton.browser.content.data.site
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

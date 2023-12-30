@@ -1,7 +1,7 @@
 package org.cotton.browser.content.service.tab
 
 import org.cotton.browser.content.data.Tab
-import org.cotton.browser.content.data.TabContentType
+import org.cotton.browser.content.data.tab.ContentType
 import java.util.UUID
 
 interface TabsObserver {
@@ -9,6 +9,6 @@ interface TabsObserver {
     fun updateTabsCount(tabsCount: Int)
     fun initializeObserver(tabs: List<Tab>)
     fun tabDidAdd(tab: Tab, index: Int)
-    fun tabDidSelect(index: Int, contentType: TabContentType, identifier: UUID)
+    fun tabDidSelect(index: Int, contentType: ContentType, identifier: UUID)
     fun tabDidReplace(tab: Tab, index: Int)
 }
