@@ -8,12 +8,13 @@
 
 import Foundation
 
-/// Tabs observer interface.
-/// No need to add delegate methods for tab close case, because anyway view must be removed right away.
-/// Future directions:
-/// https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
+/// Tabs observer interface (observer design pattern).
+/// Notes:
+///  - No need to add delegate methods for tab close case, because anyway view must be removed right away.
+///  - Tab did remove function is not needed, because we want to remove it from UI right away.
 ///
-/// Tab did remove function is not needed, because we want to remove it from UI right away
+/// Links:
+/// [Swift proposal 0395](https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md)
 @MainActor
 public protocol TabsObserver {
     /// To be able to search specific observer.
@@ -45,7 +46,7 @@ public protocol TabsObserver {
     ///
     /// - parameters:
     ///     - tab: new tab for replacement
-    ///     - index: original tab's index whichneeds to be replaced
+    ///     - index: original tab's index which needs to be replaced
     func tabDidReplace(_ tab: Tab, at index: Int) async
 }
 

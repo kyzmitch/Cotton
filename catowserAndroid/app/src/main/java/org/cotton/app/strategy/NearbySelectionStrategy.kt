@@ -3,11 +3,15 @@ package org.cotton.app.strategy
 import org.cotton.browser.content.service.tab.IndexSelectionContext
 import org.cotton.browser.content.service.tab.TabSelectionStrategy
 
-class NearbySelectionStrategy: TabSelectionStrategy {
+/**
+ * Implements the algorithms for the nearby use case
+ * when the next closest tab needs to be selected.
+ * */
+class NearbySelectionStrategy
+    constructor(override val makeTabActiveAfterAdding: Boolean = true): TabSelectionStrategy {
     override fun autoSelectedIndexAfterTabRemove(context: IndexSelectionContext,
                                                  removedIndex: Int): Int {
         val value: Int
-
         val currentIx = context.currentlySelectedIndex
         if (currentIx == removedIndex) {
             // find if we're closing selected tab
@@ -30,5 +34,4 @@ class NearbySelectionStrategy: TabSelectionStrategy {
         }
         return value
     }
-    override val makeTabActiveAfterAdding: Boolean = true
 }
