@@ -9,7 +9,7 @@ import java.util.UUID
 
 class TabsListManager
 constructor(initialTabs: List<Tab>,
-            private val storage: TabsStoragable,
+            private val storage: TabsStoragableDao,
             private val positioning: TabsStates,
             private val selectionStrategy: TabSelectionStrategy) {
 

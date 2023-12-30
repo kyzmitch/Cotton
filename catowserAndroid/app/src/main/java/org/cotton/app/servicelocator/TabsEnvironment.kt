@@ -1,13 +1,30 @@
 package org.cotton.app.servicelocator
 
-import org.cotton.browser.content.data.Tab
+import android.content.Context
+import org.cotton.app.db.TabsResource
 
-class TabsEnvironment {
+class TabsEnvironment(context: Context) {
+    val tabsResource: TabsResource
+
     companion object {
-        val shared: TabsEnvironment = TabsEnvironment()
+        @Volatile
+        private var shared: TabsEnvironment? = null
+
+        fun getShared(context: Context): TabsEnvironment {
+            if (shared == null) {
+                synchronized(this) {
+                    shared = buildEnvironment(context)
+                }
+            }
+            return shared!!
+        }
+
+        private fun buildEnvironment(context: Context): TabsEnvironment {
+            return TabsEnvironment(context)
+        }
     }
 
     init {
-        val initialTabs = emptyList<Tab>()
+        tabsResource = TabsResource(context)
     }
 }
