@@ -4,11 +4,11 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import org.cotton.browser.content.data.Tab
 import org.cotton.browser.content.data.tab.ContentType
-import org.cotton.browser.content.db.AppSettingsStoragableDao
-import org.cotton.browser.content.db.TabsStoragableDao
+import org.cotton.browser.content.data.tab.TabAddSpeed
 import java.util.UUID
 
 /**
@@ -17,13 +17,13 @@ import java.util.UUID
  * - observer
  * - tabs management
  *
- * @property storagable A generic interface for TabsResource which deson't expose any framework
+ * @property storage A generic interface for TabsResource which deson't expose any framework
  * @property positioning A generic interface to know how the App wants to handle default states
  * @property selectionStrategy An interface to tell how app wants to handle tab selection
  * */
 class TabsListManager
 constructor(initialTabs: List<Tab>,
-            private val storagable: TabsStoragable,
+            private val storage: TabsStoragable,
             private val positioning: TabsStates,
             private val selectionStrategy: TabSelectionStrategy): IndexSelectionContext, TabsSubject {
 
@@ -33,10 +33,12 @@ constructor(initialTabs: List<Tab>,
     private val _tabsCountChannel: Channel<Int> = Channel(1, BufferOverflow.DROP_OLDEST)
     val tabsCountFlow: Flow<Int> = _tabsCountChannel.consumeAsFlow()
     private val tabObservers: MutableList<TabsObserver>
+    private val observersLock: Mutex
 
     init {
         tabs = initialTabs.toMutableList()
         tabObservers = mutableListOf()
+        observersLock = Mutex()
     }
 
     // region IndexSelectionContext
@@ -69,15 +71,40 @@ constructor(initialTabs: List<Tab>,
     // region TabsSubject
 
     override suspend fun attach(observer: TabsObserver, notify: Boolean) {
-        tabObservers.add(observer)
+        observersLock.withLock {
+            tabObservers.add(observer)
+        }
+        if (!notify) {
+            return
+        }
+        observer.updateTabsCount(tabsCount)
+        observer.initializeObserver(allTabs)
+        if (selectedId == positioning.defaultSelectedTabId) {
+            return
+        }
+        val selectedTabIndex = allTabs.indexOfFirst { it.id == selectedId }
+        if (selectedTabIndex == -1) {
+            return
+        }
+        val selectedTab = allTabs.get(selectedTabIndex)
+        observer.tabDidSelect(selectedTabIndex, selectedTab.contentType, selectedTab.id)
     }
 
     override suspend fun detach(observer: TabsObserver) {
-
+        val name = observer.tabsObserverName
+        observersLock.withLock {
+            tabObservers.removeAll { it.tabsObserverName == name }
+        }
     }
 
     override suspend fun add(tab: Tab) {
-
+        val positionType = positioning.addPosition
+        val newIndex = positionType.addTabTo(tab, allTabs, selectedId)
+        tabs.add(newIndex, tab)
+        _tabsCountChannel.send(tabs.size)
+        val needsSelect = selectionStrategy.makeTabActiveAfterAdding
+        storage.remember(tab, needsSelect)
+        handleTabAdded(tab, newIndex, needsSelect)
     }
 
     override suspend fun close(tab: Tab) {
@@ -104,4 +131,24 @@ constructor(initialTabs: List<Tab>,
     override val allTabs: List<Tab> get() = tabs.toList()
 
     // endregion TabsSubject
+
+    // region Private handlers
+
+    private suspend fun handleTabAdded(tab: Tab, index: Int, select: Boolean) {
+        // can select new tab only after adding it
+        // this is because corresponding view should be in the list
+
+        when (positioning.addSpeed) {
+            is TabAddSpeed.Immediately -> {
+                observersLock.withLock {
+                    tabObservers.forEach { it.tabDidAdd(tab, index) }
+                }
+            }
+            is TabAddSpeed.After -> {
+
+            }
+        }
+    }
+
+    // endregion Private handlers
 }
