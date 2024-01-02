@@ -9,10 +9,10 @@ import org.cotton.browser.content.service.tab.TabSelectionStrategy
  * */
 class NearbySelectionStrategy
     constructor(override val makeTabActiveAfterAdding: Boolean = true): TabSelectionStrategy {
-    override fun autoSelectedIndexAfterTabRemove(context: IndexSelectionContext,
-                                                 removedIndex: Int): Int {
+    override suspend fun autoSelectedIndexAfterTabRemove(context: IndexSelectionContext,
+                                                         removedIndex: Int): Int {
         val value: Int
-        val currentIx = context.currentlySelectedIndex
+        val currentIx = context.currentlySelectedIndex()
         if (currentIx == removedIndex) {
             // find if we're closing selected tab
             // select next - same behaviour is in Firefox for ios

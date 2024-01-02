@@ -13,7 +13,7 @@ interface TabSelectionStrategy {
      * @param removedIndex The index which was removed
      * @return computed new index of the tab which needs to be selected
      * */
-    fun autoSelectedIndexAfterTabRemove(context: IndexSelectionContext, removedIndex: Int): Int
+    suspend fun autoSelectedIndexAfterTabRemove(context: IndexSelectionContext, removedIndex: Int): Int
     /**
      * Tells if the app needs to select the new tab after it is added
      * */

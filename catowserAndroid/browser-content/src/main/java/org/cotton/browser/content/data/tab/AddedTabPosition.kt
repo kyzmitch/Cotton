@@ -27,8 +27,3 @@ enum class AddedTabPosition {
         return newIndex
     }
 }
-
-sealed class TabAddSpeed {
-    data object Immediately : TabAddSpeed()
-    class After(val interval: DateInterval) : TabAddSpeed()
-}

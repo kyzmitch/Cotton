@@ -9,7 +9,9 @@ import kotlinx.coroutines.sync.withLock
 import org.cotton.browser.content.data.Tab
 import org.cotton.browser.content.data.tab.ContentType
 import org.cotton.browser.content.data.tab.TabAddSpeed
+import java.util.Date
 import java.util.UUID
+import java.util.concurrent.TimeUnit
 
 /**
  * Tabs list manager singleton which implements various interfaces
@@ -77,16 +79,18 @@ constructor(initialTabs: List<Tab>,
         if (!notify) {
             return
         }
-        observer.updateTabsCount(tabsCount)
-        observer.initializeObserver(allTabs)
-        if (selectedId == positioning.defaultSelectedTabId) {
+        val currentTabs = allTabs()
+        observer.updateTabsCount(tabsCount())
+        observer.initializeObserver(currentTabs)
+        val selectedIdentifier = selectedId()
+        if (selectedIdentifier == positioning.defaultSelectedTabId) {
             return
         }
-        val selectedTabIndex = allTabs.indexOfFirst { it.id == selectedId }
+        val selectedTabIndex = currentTabs.indexOfFirst { it.id == selectedIdentifier }
         if (selectedTabIndex == -1) {
             return
         }
-        val selectedTab = allTabs.get(selectedTabIndex)
+        val selectedTab = currentTabs.get(selectedTabIndex)
         observer.tabDidSelect(selectedTabIndex, selectedTab.contentType, selectedTab.id)
     }
 
@@ -99,7 +103,7 @@ constructor(initialTabs: List<Tab>,
 
     override suspend fun add(tab: Tab) {
         val positionType = positioning.addPosition
-        val newIndex = positionType.addTabTo(tab, allTabs, selectedId)
+        val newIndex = positionType.addTabTo(tab, allTabs(), selectedId())
         tabs.add(newIndex, tab)
         _tabsCountChannel.send(tabs.size)
         val needsSelect = selectionStrategy.makeTabActiveAfterAdding
@@ -108,7 +112,8 @@ constructor(initialTabs: List<Tab>,
     }
 
     override suspend fun close(tab: Tab) {
-
+        storage.forget(listOf(tab))
+        handleCachedTabRemove(tab)
     }
 
     override suspend fun closeAll() {
@@ -123,12 +128,17 @@ constructor(initialTabs: List<Tab>,
 
     }
 
-    /**
-     * FIXME: But properties in Kotlin shouldn't throw
-     * */
-    override val tabsCount: Int get() = _tabsCountChannel.tryReceive().getOrThrow()
-    override val selectedId: UUID get() = _selectedTabIdChannel.tryReceive().getOrThrow()
-    override val allTabs: List<Tab> get() = tabs.toList()
+    override suspend fun tabsCount(): Int {
+        return _tabsCountChannel.tryReceive().getOrThrow()
+    }
+
+    override suspend fun selectedId(): UUID {
+        return _selectedTabIdChannel.tryReceive().getOrThrow()
+    }
+
+    override fun allTabs(): List<Tab> {
+        return tabs.toList()
+    }
 
     // endregion TabsSubject
 
@@ -138,15 +148,61 @@ constructor(initialTabs: List<Tab>,
         // can select new tab only after adding it
         // this is because corresponding view should be in the list
 
-        when (positioning.addSpeed) {
+        val speed = positioning.addSpeed
+        when (speed) {
             is TabAddSpeed.Immediately -> {
                 observersLock.withLock {
                     tabObservers.forEach { it.tabDidAdd(tab, index) }
                 }
+                if (select) {
+                    _selectedTabIdChannel.send(tab.id)
+                }
             }
             is TabAddSpeed.After -> {
-
+                Thread.sleep(speed.interval.toDate)
+                observersLock.withLock {
+                    tabObservers.forEach { it.tabDidAdd(tab, index) }
+                }
+                if (select) {
+                    _selectedTabIdChannel.send(tab.id)
+                }
             }
+        }
+    }
+
+    private suspend fun handleCachedTabRemove(tab: Tab) {
+        // if it is a last tab - replace it with a tab with default content
+        // browser can't function without at least one tab
+        // so, this is kind of a side effect of removing the only one last tab
+        val currentTabs = allTabs()
+        if (currentTabs.size == 1) {
+            tabs.clear()
+            _tabsCountChannel.send(0)
+            val contentState = positioning.contentState
+            val anotherTab = Tab(Triple(contentState, UUID.randomUUID(), Date()))
+            add(anotherTab)
+        } else {
+            val closedTabIndex = tabs.indexOfFirst { it.id == tab.id }
+            if (closedTabIndex == -1) {
+                require(closedTabIndex != -1) {
+                    "Closing non existing tab"
+                }
+                return
+            }
+
+            val newIndex = selectionStrategy.autoSelectedIndexAfterTabRemove(this, closedTabIndex)
+            // need to remove it before changing selected index
+            // otherwise in one case the handler will select closed tab
+            tabs.removeAt(closedTabIndex)
+            _tabsCountChannel.send(tabs.size)
+            val selectedTab = tabs.getOrNull(newIndex)
+            if (selectedTab == null) {
+                require(selectedTab != null) {
+                    "Failed to find new selected tab"
+                }
+                return
+            }
+            _selectedTabIdChannel.send(selectedTab.id)
         }
     }
 
