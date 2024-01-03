@@ -35,11 +35,22 @@ interface TabsStoragableDao {
     @Throws(Exception::class)
     suspend fun update(tab: Tab)
     /**
-     * Removes some tabs for current session
+     * Removes some tabs for current session.
+     *
+     * If a WHERE clause is supplied, then only those rows for which the WHERE clause
+     * boolean expression is true are deleted. https://www.sqlite.org/lang_delete.html
      *
      * @param tabsIdentifiers Remove one or more tabs with specific identifiers
      * */
     @Query("DELETE FROM tabs WHERE id in (:tabsIdentifiers)")
     @Throws(Exception::class)
     suspend fun remove(tabsIdentifiers: List<UUID>)
+    /**
+     * Removes all the tabs
+     *
+     * If the WHERE clause is not present, all records in the table are deleted.
+     * https://www.sqlite.org/lang_delete.html
+     * */
+    @Query("DELETE FROM tabs")
+    suspend fun removeAll()
 }

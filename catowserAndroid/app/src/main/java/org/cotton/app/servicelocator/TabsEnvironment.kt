@@ -7,7 +7,6 @@ import org.cotton.app.utils.DefaultTabProvider
 import org.cotton.browser.content.service.tab.TabsListManager
 
 class TabsEnvironment(context: Context) {
-    private val tabsResource: TabsResource
     val tabsListManager: TabsListManager
 
     companion object {
@@ -29,7 +28,7 @@ class TabsEnvironment(context: Context) {
     }
 
     init {
-        tabsResource = TabsResource(context)
+        val tabsResource = TabsResource(context)
         val defaultProvider = DefaultTabProvider()
         val tabSelectionStrat = NearbySelectionStrategy()
         val tabsAtLogin = tabsResource.tabsFromLastSession()

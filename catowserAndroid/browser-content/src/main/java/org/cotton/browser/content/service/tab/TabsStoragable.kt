@@ -52,4 +52,8 @@ interface TabsStoragable {
      * @param tab An updated tab.
      * */
     suspend fun update(tab: Tab)
+    /**
+     * Removes just all tabs
+     * */
+    suspend fun forgetAll()
 }

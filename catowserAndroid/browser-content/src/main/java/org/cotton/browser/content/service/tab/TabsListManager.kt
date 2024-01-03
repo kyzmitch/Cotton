@@ -117,15 +117,38 @@ constructor(initialTabs: List<Tab>,
     }
 
     override suspend fun closeAll() {
-
+        val contentState = positioning.contentState
+        storage.forgetAll()
+        tabs.clear()
+        _tabsCountChannel.send(0)
+        val anotherTab = Tab(Triple(contentState, UUID.randomUUID(), Date()))
+        add(anotherTab)
     }
 
     override suspend fun select(tab: Tab) {
-
+        storage.select(tab)
+        if (selectedId() == tab.id) {
+            return
+        }
+        _selectedTabIdChannel.send(tab.id)
     }
 
     override suspend fun replaceSelected(content: ContentType) {
-
+        val currentTabs = allTabs()
+        val selectedTabIndex = currentTabs.indexOfFirst { it.id == selectedId() }
+        if (selectedTabIndex == -1) {
+            return
+        }
+        val selectedTab = currentTabs[selectedTabIndex]
+        if (selectedTab.contentType == content) {
+            return
+        }
+        val newTab = selectedTab.copy(Triple(
+            content,
+            selectedTab.id,
+            selectedTab.addedTimestamp))
+        storage.update(newTab)
+        tabs[selectedTabIndex] = newTab
     }
 
     override suspend fun tabsCount(): Int {
