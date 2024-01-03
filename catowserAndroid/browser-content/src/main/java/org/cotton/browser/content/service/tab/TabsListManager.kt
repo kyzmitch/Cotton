@@ -36,30 +36,38 @@ constructor(initialTabs: List<Tab>,
     val tabsCountFlow: Flow<Int> = _tabsCountChannel.consumeAsFlow()
     private val tabObservers: MutableList<TabsObserver>
     private val observersLock: Mutex
+    private val tabsLock: Mutex
 
     init {
         tabs = initialTabs.toMutableList()
         tabObservers = mutableListOf()
         observersLock = Mutex()
+        tabsLock = Mutex()
     }
 
     // region IndexSelectionContext
 
-    override val collectionLastIndex: Int
-        get() {
-            // -1 index is not possible because always should be at least 1 tab
-            val amount = tabs.size
-            // Leaving assert even with unit tests
-            // https://stackoverflow.com/a/410198
-            assert(amount != 0, { "Tabs amount shouldn't be 0" })
-            return amount - 1
+    override suspend fun collectionLastIndex(): Int {
+        // -1 index is not possible because always should be at least 1 tab
+        var amount: Int = 0
+        tabsLock.withLock {
+            amount = tabs.size
         }
-    override suspend fun currentlySelectedIndex(): Int {
-        require(!tabs.isEmpty()) {
+        require(amount != 0) {
             "Tabs amount shouldn't be 0"
         }
+        return amount - 1
+    }
+
+    override suspend fun currentlySelectedIndex(): Int {
         val currentlySelectedId = _selectedTabIdChannel.receive()
-        val index = tabs.indexOfFirst { it.id == currentlySelectedId }
+        var index: Int = 0
+        tabsLock.withLock {
+            require(!tabs.isEmpty()) {
+                "Tabs amount shouldn't be 0"
+            }
+            index = tabs.indexOfFirst { it.id == currentlySelectedId }
+        }
         // tabs collection shouldn't be empty, so,
         // it is safe to return index of 1st element
         if (index == -1) {
@@ -81,6 +89,8 @@ constructor(initialTabs: List<Tab>,
         }
         val currentTabs = allTabs()
         observer.updateTabsCount(tabsCount())
+        /// Maybe not very optimal to create a huge copy of all tabs
+        /// not all of them are needed to display by the observer right away
         observer.initializeObserver(currentTabs)
         val selectedIdentifier = selectedId()
         if (selectedIdentifier == positioning.defaultSelectedTabId) {
@@ -104,22 +114,28 @@ constructor(initialTabs: List<Tab>,
     override suspend fun add(tab: Tab) {
         val positionType = positioning.addPosition
         val newIndex = positionType.addTabTo(tab, allTabs(), selectedId())
-        tabs.add(newIndex, tab)
-        _tabsCountChannel.send(tabs.size)
+        var tabsCount: Int = 0
+        tabsLock.withLock {
+            tabs.add(newIndex, tab)
+            tabsCount = tabs.size
+        }
+        _tabsCountChannel.send(tabsCount)
         val needsSelect = selectionStrategy.makeTabActiveAfterAdding
         storage.remember(tab, needsSelect)
         handleTabAdded(tab, newIndex, needsSelect)
     }
 
     override suspend fun close(tab: Tab) {
-        storage.forget(listOf(tab))
+        storage.forget(tab)
         handleCachedTabRemove(tab)
     }
 
     override suspend fun closeAll() {
         val contentState = positioning.contentState
         storage.forgetAll()
-        tabs.clear()
+        tabsLock.withLock {
+            tabs.clear()
+        }
         _tabsCountChannel.send(0)
         val anotherTab = Tab(Triple(contentState, UUID.randomUUID(), Date()))
         add(anotherTab)
@@ -134,21 +150,37 @@ constructor(initialTabs: List<Tab>,
     }
 
     override suspend fun replaceSelected(content: ContentType) {
-        val currentTabs = allTabs()
-        val selectedTabIndex = currentTabs.indexOfFirst { it.id == selectedId() }
-        if (selectedTabIndex == -1) {
+        var selectedTabIndex: Int = -1
+        var selectedTab: Tab? = null
+        var updatedSelectedTab: Tab? = null
+        tabsLock.withLock {
+            selectedTabIndex = tabs.indexOfFirst { it.id == selectedId() }
+            if (selectedTabIndex == -1) {
+                return
+            }
+            selectedTab = tabs[selectedTabIndex]
+            /// Next logic doesn't need to be in the lock
+            /// but the last line below is still needed to be protected
+            /// so that, it is better to lock once vs twice
+            val constantTab = selectedTab
+            if (constantTab == null) {
+                return
+            }
+            if (constantTab.contentType == content) {
+                return
+            }
+            val newTab = constantTab.copy(Triple(
+                content,
+                constantTab.id,
+                constantTab.addedTimestamp))
+            tabs[selectedTabIndex] = newTab
+            updatedSelectedTab = newTab
+        }
+        val updatedTab = updatedSelectedTab
+        if (updatedTab == null) {
             return
         }
-        val selectedTab = currentTabs[selectedTabIndex]
-        if (selectedTab.contentType == content) {
-            return
-        }
-        val newTab = selectedTab.copy(Triple(
-            content,
-            selectedTab.id,
-            selectedTab.addedTimestamp))
-        storage.update(newTab)
-        tabs[selectedTabIndex] = newTab
+        storage.update(updatedTab)
     }
 
     override suspend fun tabsCount(): Int {
@@ -159,8 +191,10 @@ constructor(initialTabs: List<Tab>,
         return _selectedTabIdChannel.tryReceive().getOrThrow()
     }
 
-    override fun allTabs(): List<Tab> {
-        return tabs.toList()
+    override suspend fun allTabs(): List<Tab> {
+        tabsLock.withLock {
+            return tabs.toList()
+        }
     }
 
     // endregion TabsSubject
@@ -197,9 +231,11 @@ constructor(initialTabs: List<Tab>,
         // if it is a last tab - replace it with a tab with default content
         // browser can't function without at least one tab
         // so, this is kind of a side effect of removing the only one last tab
-        val currentTabs = allTabs()
-        if (currentTabs.size == 1) {
+        tabsLock.lock(this)
+        val tabsCount = tabs.size
+        if (tabsCount == 1) {
             tabs.clear()
+            tabsLock.unlock(this)
             _tabsCountChannel.send(0)
             val contentState = positioning.contentState
             val anotherTab = Tab(Triple(contentState, UUID.randomUUID(), Date()))
@@ -212,13 +248,13 @@ constructor(initialTabs: List<Tab>,
                 }
                 return
             }
-
             val newIndex = selectionStrategy.autoSelectedIndexAfterTabRemove(this, closedTabIndex)
             // need to remove it before changing selected index
             // otherwise in one case the handler will select closed tab
             tabs.removeAt(closedTabIndex)
-            _tabsCountChannel.send(tabs.size)
             val selectedTab = tabs.getOrNull(newIndex)
+            tabsLock.unlock(this)
+            _tabsCountChannel.send(tabs.size)
             if (selectedTab == null) {
                 require(selectedTab != null) {
                     "Failed to find new selected tab"

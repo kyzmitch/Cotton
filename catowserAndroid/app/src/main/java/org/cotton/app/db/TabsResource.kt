@@ -62,4 +62,8 @@ class TabsResource(private val context: Context): TabsStoragable {
     override suspend fun forgetAll() {
         tabsDbClient.removeAll()
     }
+
+    override suspend fun forget(tab: Tab) {
+        tabsDbClient.remove(listOf(tab.id))
+    }
 }

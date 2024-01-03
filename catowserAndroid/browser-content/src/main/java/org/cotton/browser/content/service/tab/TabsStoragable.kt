@@ -56,4 +56,8 @@ interface TabsStoragable {
      * Removes just all tabs
      * */
     suspend fun forgetAll()
+    /**
+     * Removes just a single tab
+     * */
+    suspend fun forget(tab: Tab)
 }

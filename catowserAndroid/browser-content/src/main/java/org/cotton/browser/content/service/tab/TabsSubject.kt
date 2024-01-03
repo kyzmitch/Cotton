@@ -17,5 +17,5 @@ interface TabsSubject {
     suspend fun replaceSelected(content: ContentType)
     suspend fun tabsCount(): Int
     suspend fun selectedId(): UUID
-    fun allTabs(): List<Tab>
+    suspend fun allTabs(): List<Tab>
 }

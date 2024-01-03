@@ -6,6 +6,6 @@ package org.cotton.browser.content.service.tab
  * async context.
  * */
 interface IndexSelectionContext {
-    val collectionLastIndex: Int
+    suspend fun collectionLastIndex(): Int
     suspend fun currentlySelectedIndex(): Int
 }
