@@ -9,9 +9,10 @@ import kotlinx.coroutines.sync.withLock
 import org.cotton.browser.content.data.Tab
 import org.cotton.browser.content.data.tab.ContentType
 import org.cotton.browser.content.data.tab.TabAddSpeed
+import org.cotton.browser.content.usecase.ReadTabsUseCase
+import org.cotton.browser.content.usecase.WriteTabsUseCase
 import java.util.Date
 import java.util.UUID
-import java.util.concurrent.TimeUnit
 
 /**
  * Tabs list manager singleton which implements various interfaces
@@ -19,15 +20,24 @@ import java.util.concurrent.TimeUnit
  * - observer
  * - tabs management
  *
- * @property storage A generic interface for TabsResource which deson't expose any framework
+ * In android architecture it is probably right to call it as a TabsUseCase,
+ * but not sure which class will have a role of observer after that.
+ * A use case shouldn't store any state, and observer should have the state.
+ * https://developer.android.com/topic/architecture#domain-layer
+ *
+ * @property tabsRepository A generic interface for TabsResource which deson't expose any framework
  * @property positioning A generic interface to know how the App wants to handle default states
  * @property selectionStrategy An interface to tell how app wants to handle tab selection
  * */
 class TabsListManager
 constructor(initialTabs: List<Tab>,
-            private val storage: TabsStoragable,
+            private val tabsRepository: TabsRepository,
             private val positioning: TabsStates,
-            private val selectionStrategy: TabSelectionStrategy): IndexSelectionContext, TabsSubject {
+            private val selectionStrategy: TabSelectionStrategy):
+    IndexSelectionContext,
+    TabsSubject,
+    ReadTabsUseCase,
+    WriteTabsUseCase {
 
     private val tabs: MutableList<Tab>
     private val _selectedTabIdChannel: Channel<UUID> = Channel(1, BufferOverflow.DROP_OLDEST)
@@ -121,18 +131,18 @@ constructor(initialTabs: List<Tab>,
         }
         _tabsCountChannel.send(tabsCount)
         val needsSelect = selectionStrategy.makeTabActiveAfterAdding
-        storage.remember(tab, needsSelect)
+        tabsRepository.remember(tab, needsSelect)
         handleTabAdded(tab, newIndex, needsSelect)
     }
 
     override suspend fun close(tab: Tab) {
-        storage.forget(tab)
+        tabsRepository.forget(tab)
         handleCachedTabRemove(tab)
     }
 
     override suspend fun closeAll() {
         val contentState = positioning.contentState
-        storage.forgetAll()
+        tabsRepository.forgetAll()
         tabsLock.withLock {
             tabs.clear()
         }
@@ -142,7 +152,7 @@ constructor(initialTabs: List<Tab>,
     }
 
     override suspend fun select(tab: Tab) {
-        storage.select(tab)
+        tabsRepository.select(tab)
         if (selectedId() == tab.id) {
             return
         }
@@ -180,7 +190,7 @@ constructor(initialTabs: List<Tab>,
         if (updatedTab == null) {
             return
         }
-        storage.update(updatedTab)
+        tabsRepository.update(updatedTab)
     }
 
     override suspend fun tabsCount(): Int {

@@ -2,10 +2,10 @@ package org.cotton.app.db
 
 import android.content.Context
 import org.cotton.browser.content.data.Tab
-import org.cotton.browser.content.service.tab.TabsStoragable
+import org.cotton.browser.content.service.tab.TabsRepository
 import java.util.UUID
 
-class TabsResource(private val context: Context): TabsStoragable {
+class TabsResource(private val context: Context): TabsRepository {
     private val tabsDbClient by lazy {
         TabsDBClient.getDatabase(context).tabsDao()
     }

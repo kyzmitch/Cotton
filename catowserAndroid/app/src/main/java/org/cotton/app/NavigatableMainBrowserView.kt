@@ -6,11 +6,15 @@ import androidx.navigation.activity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.cotton.app.tabs.TabsActivity
+import org.cotton.app.tabs.TabsScreen
+import org.cotton.browser.content.TabsListViewModel
 import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 
 @Composable
-fun NavigatableMainBrowserView(contentVM: BrowserContentViewModel) {
+fun NavigatableMainBrowserView(
+    contentVM: BrowserContentViewModel,
+    tabsVM: TabsListViewModel
+) {
     val navController = rememberNavController()
     val navigationActions = remember(navController) {
         AppNavigationAction(navController)
@@ -23,8 +27,8 @@ fun NavigatableMainBrowserView(contentVM: BrowserContentViewModel) {
         composable(route = AppDestinations.MAIN_ROOT) {
             MainBrowserView(contentVM, onOpenTabs = navigationActions.navigateToTabs)
         }
-        activity(route = AppDestinations.TABS) {
-            this.activityClass = TabsActivity::class
+        composable(route = AppDestinations.TABS) {
+            TabsScreen(tabsVM, onSelectTab = navigationActions.navigateToMain)
         }
     }
 }

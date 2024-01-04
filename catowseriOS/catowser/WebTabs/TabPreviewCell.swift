@@ -188,7 +188,6 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         screenshotView.image = tabCopy.preview
         
         titleText.text = tab.title
-        titleText.text = tab.contentType.title
         
         self.tabIndex = index
         self.delegate = delegate

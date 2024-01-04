@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.cotton.base.Site
 import org.cotton.browser.content.data.tab.ContentType
 
-final class BrowserContentViewModel(private val defaultValue: ContentType) : ViewModel() {
+class BrowserContentViewModel(private val defaultValue: ContentType) : ViewModel() {
     private val _tabContent = MutableStateFlow<ContentType>(defaultValue)
     val tabContent: StateFlow<ContentType> = _tabContent.asStateFlow()
 

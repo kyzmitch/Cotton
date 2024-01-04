@@ -5,9 +5,11 @@ import java.util.UUID
 
 /**
  * Tabs DB access protocol which will combine
- * different Dao interfaces under the hood if needed
+ * different Dao interfaces under the hood if needed.
+ *
+ * Former TabsStoragable on iOS
  * */
-interface TabsStoragable {
+interface TabsRepository {
     /**
      * Fetches the currently selected tab identifier from DB,
      * only single Tab can be selected at a time.

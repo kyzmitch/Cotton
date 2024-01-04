@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.cotton.app.ui.theme.CottonTheme
+import org.cotton.browser.content.TabsListViewModel
 import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel
 
@@ -29,6 +30,8 @@ class MainActivity : CottonActivity() {
 
     private val searchBarVM: SearchBarViewModel by viewModels()
 
+    private val tabsVM: TabsListViewModel by viewModels()
+
     private val browserContentVM: BrowserContentViewModel by viewModels {
         viewModelFactory {
             addInitializer(BrowserContentViewModel::class) {
@@ -40,19 +43,22 @@ class MainActivity : CottonActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Content(browserContentVM)
+            Content(browserContentVM, tabsVM)
         }
     } // on create
 }
 
 @Composable
-internal fun Content(contentVM: BrowserContentViewModel) {
+internal fun Content(
+    contentVM: BrowserContentViewModel,
+    tabsVM: TabsListViewModel
+) {
     CottonTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background,
         ) {
-            NavigatableMainBrowserView(contentVM)
+            NavigatableMainBrowserView(contentVM, tabsVM)
         }
     }
 }

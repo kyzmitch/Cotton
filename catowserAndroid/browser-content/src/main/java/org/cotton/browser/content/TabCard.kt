@@ -1,5 +1,7 @@
 package org.cotton.browser.content
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,17 +11,16 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import org.cotton.base.Site
-import org.cotton.browser.content.data.site.opennetru
+import org.cotton.browser.content.data.Tab
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SiteCard(
-    site: Site,
+fun TabCard(
+    tab: Tab,
     cardHeight: Dp = 128.dp,
     onTap: () -> Unit
 ) {
@@ -32,24 +33,21 @@ fun SiteCard(
             .height(cardHeight),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = site.urlInfo.faviconURLFromDomain,
-                contentDescription = site.host.rawString,
-            )
+            val site = tab.site
+            if (site == null) {
+                Box(Modifier.background(Color.White))
+            } else {
+                AsyncImage(
+                    model = site.urlInfo.faviconURLFromDomain,
+                    contentDescription = tab.title,
+                )
+            }
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            Text(text = site.host.rawString)
+            Text(text = tab.title)
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SiteCardPreview() {
-    SiteCard(site = Site.opennetru, 128.dp) {
-        // onTap
     }
 }

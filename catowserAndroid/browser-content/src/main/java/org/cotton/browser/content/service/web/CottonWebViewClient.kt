@@ -1,4 +1,4 @@
-package org.cotton.browser.content.service
+package org.cotton.browser.content.service.web
 
 import android.content.Intent
 import android.graphics.Bitmap

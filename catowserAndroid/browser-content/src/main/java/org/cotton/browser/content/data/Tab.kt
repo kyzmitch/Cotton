@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.cotton.base.Site
 import org.cotton.browser.content.data.site.SiteEntity
 import org.cotton.browser.content.data.site.roomEntity
 import org.cotton.browser.content.data.tab.ContentType
@@ -25,6 +26,8 @@ data class Tab(private val data: Triple<ContentType, UUID, Date>) {
         val blank: Tab get() = Tab(ContentType.Blank)
     }
 
+    val site: Site? = (data.first as? ContentType.SiteContent)?.site
+
     @PrimaryKey
     val id: UUID = data.second
     @ColumnInfo(name = "content_type_raw_value")
@@ -32,11 +35,11 @@ data class Tab(private val data: Triple<ContentType, UUID, Date>) {
     @ColumnInfo(name = "added_timestamp")
     val addedTimestamp: Date = data.third
     @ColumnInfo(name = "site")
-    val site: SiteEntity? = (data.first as? ContentType.SiteContent)?.site?.roomEntity()
+    val siteEntity: SiteEntity? = site?.roomEntity()
 
     val contentType: ContentType
         get() {
-            return ContentType.createFrom(contentTypeRawValue, site?.value)
+            return ContentType.createFrom(contentTypeRawValue, siteEntity?.value)
         }
     val title: String get() = contentType.title
     val searchBarContent: String get() = contentType.searchBarContent

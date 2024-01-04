@@ -10,12 +10,4 @@ import java.util.UUID
 interface TabsSubject {
     suspend fun attach(observer: TabsObserver, notify: Boolean)
     suspend fun detach(observer: TabsObserver)
-    suspend fun add(tab: Tab)
-    suspend fun close(tab: Tab)
-    suspend fun closeAll()
-    suspend fun select(tab: Tab)
-    suspend fun replaceSelected(content: ContentType)
-    suspend fun tabsCount(): Int
-    suspend fun selectedId(): UUID
-    suspend fun allTabs(): List<Tab>
 }

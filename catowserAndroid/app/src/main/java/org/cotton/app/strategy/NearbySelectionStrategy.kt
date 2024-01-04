@@ -16,7 +16,7 @@ class NearbySelectionStrategy
         if (currentIx == removedIndex) {
             // find if we're closing selected tab
             // select next - same behaviour is in Firefox for ios
-            if (removedIndex == context.collectionLastIndex) {
+            if (removedIndex == context.collectionLastIndex()) {
                 value = removedIndex - 1
             } else {
                 // if it is not last index, then it is automatically will become next index as planned
