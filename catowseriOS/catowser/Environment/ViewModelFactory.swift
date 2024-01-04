@@ -51,7 +51,7 @@ final class ViewModelFactory {
     }
     
     @MainActor func tabViewModel(_ tab: Tab) async -> TabViewModel {
-        let selectedTabId = await TabsListManager.shared.selectedId
+        let selectedTabId = await TabsDataService.shared.selectedId
         let visualState = tab.getVisualState(selectedTabId)
 
         return await TabViewModel(tab, visualState)

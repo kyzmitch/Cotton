@@ -107,8 +107,8 @@ where C.R == TabsScreenRoute {
         super.viewWillAppear(animated)
 
         Task {
-            await TabsListManager.shared.attach(self)
-            let tabs = await TabsListManager.shared.allTabs
+            await TabsDataService.shared.attach(self)
+            let tabs = await TabsDataService.shared.allTabs
             uxState = .tabs(dataSource: .init(tabs))
         }
     }
@@ -117,7 +117,7 @@ where C.R == TabsScreenRoute {
         super.viewWillDisappear(animated)
         
         Task {
-            await TabsListManager.shared.detach(self)
+            await TabsDataService.shared.detach(self)
         }
     }
     
@@ -249,7 +249,7 @@ extension TabsPreviewsViewController: TabPreviewCellDelegate {
         if let site = tab.site {
             WebViewsReuseManager.shared.removeController(for: site)
         }
-        await TabsListManager.shared.close(tab: tab)
+        await TabsDataService.shared.close(tab: tab)
     }
 }
 

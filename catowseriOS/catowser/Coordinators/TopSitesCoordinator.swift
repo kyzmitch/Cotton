@@ -69,7 +69,7 @@ extension TopSitesCoordinator: Navigating {
             // Open selected top site
             Task {
                 do {
-                    try await TabsListManager.shared.replaceSelected(.site(site))
+                    try await TabsDataService.shared.replaceSelected(.site(site))
                 } catch {
                     print("Fail to replace selected tab: \(error)")
                 }

@@ -63,7 +63,7 @@ class TabsListManagerTests: XCTestCase {
         tabsStates.defaultSelectedTabId = .notPossibleId
         tabsStorageMock.fetchAllTabsThrowableError = TabStorageError.notFound
 
-        let tabsMgr = await TabsListManager(tabsStorageMock, tabsStates, selectionStrategyMock)
+        let tabsMgr = await TabsDataService(tabsStorageMock, tabsStates, selectionStrategyMock)
         let tabsCount = await tabsMgr.tabsCount
         XCTAssertEqual(tabsCount, 0)
         let selectedTabId = await tabsMgr.selectedId
@@ -83,7 +83,7 @@ class TabsListManagerTests: XCTestCase {
         tabsStates.defaultSelectedTabId = .notPossibleId
         tabsStorageMock.fetchAllTabsReturnValue = tabsV1
         tabsStorageMock.fetchSelectedTabIdReturnValue = knownTabId
-        let tabsMgr = await TabsListManager(tabsStorageMock, tabsStates, selectionStrategyMock)
+        let tabsMgr = await TabsDataService(tabsStorageMock, tabsStates, selectionStrategyMock)
         let tabsCount = await tabsMgr.tabsCount
         let selectedTabId = await tabsMgr.selectedId
         XCTAssertEqual(selectedTabId, knownTabId)

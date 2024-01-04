@@ -44,14 +44,14 @@ final class TabViewModel {
             WebViewsReuseManager.shared.removeController(for: site)
         }
         Task {
-            await TabsListManager.shared.close(tab: tab)
+            await TabsDataService.shared.close(tab: tab)
         }
     }
     
     func activate() {
         print("\(#function): selected tab with id: \(tab.id)")
         Task {
-            await TabsListManager.shared.select(tab: tab)
+            await TabsDataService.shared.select(tab: tab)
         }
     }
     

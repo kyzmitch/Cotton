@@ -50,6 +50,6 @@ public final class WebViewContextImpl: WebViewContext {
         if logTabUpdate {
             print("Web VM tab update: \(content.debugDescription)")
         }
-        try await TabsListManager.shared.replaceSelected(content)
+        try await TabsDataService.shared.replaceSelected(content)
     }
 }

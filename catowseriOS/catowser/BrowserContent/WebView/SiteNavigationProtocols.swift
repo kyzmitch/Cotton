@@ -29,7 +29,7 @@ protocol SiteExternalNavigationDelegate: AnyObject {
 extension SiteExternalNavigationDelegate {
     func didTabPreviewChange(_ screenshot: UIImage) async {
         do {
-            try await TabsListManager.shared.setSelectedPreview(screenshot)
+            try await TabsDataService.shared.setSelectedPreview(screenshot)
         } catch {
             print("Fail to update selected tab preview: \(error)")
         }

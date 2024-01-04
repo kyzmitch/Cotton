@@ -42,7 +42,7 @@ private extension AppDelegate {
     func start() -> Bool {
         Task {
             // Init database for tabs first
-            _ = await TabsListManager.shared
+            _ = await TabsDataService.shared
             // Now can start UI
             let value = await FeatureManager.shared.appUIFrameworkValue()
             appCoordinator = AppCoordinator(ViewsEnvironment.shared.vcFactory, value)

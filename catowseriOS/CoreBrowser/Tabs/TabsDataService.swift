@@ -23,7 +23,7 @@ import Foundation
  
  https://forums.swift.org/t/how-do-you-use-asyncstream-to-make-task-execution-deterministic/57968/2
  */
-public actor TabsListManager {
+public actor TabsDataService {
     typealias UUIDStream = AsyncStream<UUID>
     typealias IntStream = AsyncStream<Int>
     
@@ -86,26 +86,6 @@ public actor TabsListManager {
             }
         }
     }
-
-    /// Returns currently selected tab.
-    public func selectedTab() async throws -> Tab {
-        guard await selectedId != positioning.defaultSelectedTabId else {
-            throw TabsListError.notInitializedYet
-        }
-
-        guard let tabTuple = await tabs.element(by: selectedId) else {
-            throw TabsListError.selectedNotFound
-        }
-        return tabTuple.tab
-    }
-    
-    /// Returns index of selected tab
-    public func selectedIndex() async throws -> Int {
-        guard let tabTuple = await tabs.element(by: selectedId) else {
-            throw TabsListError.notInitializedYet
-        }
-        return tabTuple.index
-    }
     
     /// Replaces tab at specific index
     public func replaceInMemory(_ tab: Tab, _ index: Int) throws {
@@ -116,7 +96,7 @@ public actor TabsListManager {
     }
 }
 
-extension TabsListManager: IndexSelectionContext {
+extension TabsDataService: IndexSelectionContext {
     public var collectionLastIndex: Int {
         get async {
             // -1 index is not possible because always should be at least 1 tab
@@ -143,85 +123,7 @@ extension TabsListManager: IndexSelectionContext {
     }
 }
 
-extension TabsListManager: TabsSubject {
-    public func close(tab: Tab) async {
-        do {
-            let removedTabs = try await storage.remove(tabs: [tab])
-            // swiftlint:disable:next force_unwrapping
-            await handleCachedTabRemove(removedTabs.first!)
-        } catch {
-            // tab view should be removed immediately on view level anyway
-            print("Failure to remove tab from cache: \(error)")
-        }
-    }
-
-    public func closeAll() async {
-        let contentState = await positioning.contentState
-        do {
-            _ = try await storage.remove(tabs: tabs)
-            tabs.removeAll()
-            tabsCountInput.yield(0)
-            let tab: Tab = .init(contentType: contentState)
-            _ = try await storage.add(tab, select: true)
-        } catch {
-            // tab view should be removed immediately on view level anyway
-            print("Failure to remove tab and reset to one tab: \(error)")
-        }
-    }
-
-    public func add(tab: Tab) async {
-        let positionType = await positioning.addPosition
-        let pair = positionType.addTab(tab, to: tabs, selectedTabIdentifier)
-        let newIndex = pair.0
-        tabs = pair.1
-        tabsCountInput.yield(tabs.count)
-        let needSelect = selectionStrategy.makeTabActiveAfterAdding
-        do {
-            let addedTab = try await storage.add(tab, select: needSelect)
-            await handleTabAdded(addedTab, index: newIndex, select: needSelect)
-        } catch {
-            // It doesn't matter, on view level it must be added right away
-            print("Failed to add this tab to cache: \(error)")
-        }
-    }
-
-    public func select(tab: Tab) async {
-        do {
-            let identifier = try await storage.select(tab: tab)
-            guard identifier != selectedTabIdentifier else {
-                return
-            }
-            selectedTabIdentifier = identifier
-            selectedTabIdInput.yield(identifier)
-        } catch {
-            print("Failed to select tab with id \(tab.id) \(error)")
-        }
-    }
-
-    public func replaceSelected(_ tabContent: Tab.ContentType) async throws {
-        guard let tabTuple = await tabs.element(by: selectedId) else {
-            throw TabsListError.notInitializedYet
-        }
-        guard tabTuple.tab.contentType != tabContent else {
-            return
-        }
-        var newTab = tabTuple.tab
-        let tabIndex = tabTuple.index
-        newTab.contentType = tabContent
-        newTab.previewData = nil
-        
-        do {
-            _ = try storage.update(tab: newTab)
-            tabs[tabIndex] = newTab
-            // Need to notify observers to allow them to update title for tab view
-            for observer in tabObservers {
-                await observer.tabDidReplace(newTab, at: tabIndex)
-            }
-        } catch {
-            print("Failed to update tab content to storage \(error)")
-        }
-    }
-
+extension TabsDataService: TabsSubject {
     public func attach(_ observer: TabsObserver, notify: Bool = false) async {
         tabObservers.append(observer)
         guard notify else {
@@ -245,27 +147,9 @@ extension TabsListManager: TabsSubject {
             break
         }
     }
-    
-    public var tabsCount: Int {
-        get async {
-            tabs.count
-        }
-    }
-    
-    public var selectedId: UUID {
-        get async {
-            selectedTabIdentifier
-        }
-    }
-    
-    public var allTabs: [Tab] {
-        get async {
-            tabs
-        }
-    }
 }
 
-private extension TabsListManager {
+private extension TabsDataService {
     func handleTabAdded(_ tab: Tab, index: Int, select: Bool) async {
         // can select new tab only after adding it
         // this is because corresponding view should be in the list

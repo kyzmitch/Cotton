@@ -117,7 +117,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             // Now, with introducing the actors model
             // we need to attach observer only after adding all child coordinators
             if case .uiKit = uiFramework {
-                await TabsListManager.shared.attach(self, notify: true)
+                await TabsDataService.shared.attach(self, notify: true)
             }
         }
     }
@@ -183,7 +183,7 @@ extension AppCoordinator: Navigating {
         jsPluginsBuilder = nil
         if case .uiKit = uiFramework {
             Task {
-                await TabsListManager.shared.detach(self)
+                await TabsDataService.shared.detach(self)
             }
         }
         // Next line is actually useless, because it is a root coordinator

@@ -23,7 +23,7 @@ private final class TabsEnvironment {
     static private var internalHolder: ManagerHolder?
     
     fileprivate actor ManagerHolder {
-        let cachedTabsManager: TabsListManager
+        let cachedTabsManager: TabsDataService
         private let database: Database
         
         init() async {
@@ -49,8 +49,8 @@ private final class TabsEnvironment {
     }
 }
 
-extension TabsListManager {
-    static var shared: TabsListManager {
+extension TabsDataService {
+    static var shared: TabsDataService {
         get async {
             await TabsEnvironment.shared().cachedTabsManager
         }

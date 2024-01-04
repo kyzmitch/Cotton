@@ -61,12 +61,12 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
         .environment(\.browserContentCoordinators, vm.coordinatorsInterface)
         .onAppear {
             Task {
-                await TabsListManager.shared.attach(browserContentVM, notify: true)
+                await TabsDataService.shared.attach(browserContentVM, notify: true)
             }
         }
         .onDisappear {
             Task {
-                await TabsListManager.shared.detach(browserContentVM)
+                await TabsDataService.shared.detach(browserContentVM)
             }
         }
     }

@@ -10,7 +10,7 @@ import CoreBrowser
 import UIKit
 
 /// manager's extension to not bring UIKit to CoreBrowser module
-extension TabsListManager {
+extension TabsDataService {
     /// Updates preview image for selected tab if it has site content.
     ///
     /// - Parameter image: `UIImage` usually a screenshot of WKWebView.

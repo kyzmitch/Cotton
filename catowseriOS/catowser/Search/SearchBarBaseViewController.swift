@@ -42,7 +42,7 @@ final class SearchBarBaseViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         Task {
-            await TabsListManager.shared.attach(self)
+            await TabsDataService.shared.attach(self)
         }
     }
     
@@ -50,7 +50,7 @@ final class SearchBarBaseViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         Task {
-            await TabsListManager.shared.detach(self)
+            await TabsDataService.shared.detach(self)
         }
     }
     

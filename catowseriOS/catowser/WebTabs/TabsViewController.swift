@@ -106,7 +106,7 @@ final class TabsViewController: BaseViewController {
          initializeObserver will load all of the tabs and create views
          */
         Task {
-            await TabsListManager.shared.attach(self, notify: true)
+            await TabsDataService.shared.attach(self, notify: true)
         }
     }
     
@@ -114,7 +114,7 @@ final class TabsViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         Task {
-            await TabsListManager.shared.detach(self)
+            await TabsDataService.shared.detach(self)
         }
     }
 }
@@ -133,7 +133,7 @@ private extension TabsViewController {
 
         Task {
             let tab = Tab(contentType: await DefaultTabProvider.shared.contentState)
-            await TabsListManager.shared.add(tab: tab)
+            await TabsDataService.shared.add(tab: tab)
         }
     }
 
@@ -148,7 +148,7 @@ private extension TabsViewController {
     func removeTabView(_ tabView: TabView) async {
         if let removedIndex = tabsStackView.arrangedSubviews.firstIndex(of: tabView) {
             let removedVm = viewModels[removedIndex]
-            await TabsListManager.shared.detach(removedVm)
+            await TabsDataService.shared.detach(removedVm)
             viewModels.remove(at: removedIndex)
         }
         tabsStackView.removeArrangedSubview(tabView)

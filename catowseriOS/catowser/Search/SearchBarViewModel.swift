@@ -50,7 +50,7 @@ private extension SearchBarViewModel {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }
-        try? await TabsListManager.shared.replaceSelected(.site(site))
+        try? await TabsDataService.shared.replaceSelected(.site(site))
     }
 }
 
