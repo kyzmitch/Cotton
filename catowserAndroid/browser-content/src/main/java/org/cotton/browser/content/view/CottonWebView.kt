@@ -1,4 +1,4 @@
-package org.cotton.browser.content
+package org.cotton.browser.content.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -4,10 +4,10 @@ import android.content.Context
 import org.cotton.app.db.TabsResource
 import org.cotton.app.strategy.NearbySelectionStrategy
 import org.cotton.app.utils.DefaultTabProvider
-import org.cotton.browser.content.service.tab.TabsListManager
+import org.cotton.browser.content.service.tab.TabsDataService
 
 class TabsEnvironment(context: Context) {
-    val tabsListManager: TabsListManager
+    val tabsDataService: TabsDataService
 
     companion object {
         @Volatile
@@ -32,7 +32,7 @@ class TabsEnvironment(context: Context) {
         val defaultProvider = DefaultTabProvider()
         val tabSelectionStrat = NearbySelectionStrategy()
         val tabsAtLogin = tabsResource.tabsFromLastSession()
-        tabsListManager = TabsListManager(
+        tabsDataService = TabsDataService(
             tabsAtLogin,
             tabsResource,
             defaultProvider,

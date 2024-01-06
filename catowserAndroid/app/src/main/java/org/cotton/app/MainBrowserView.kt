@@ -12,9 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.cotton.browser.content.BrowserScreen
-import org.cotton.browser.content.SearchBarView
-import org.cotton.browser.content.SearchSuggestionsView
+import org.cotton.app.viewmodel.MainBrowserViewModel
+import org.cotton.browser.content.view.BrowserScreen
+import org.cotton.browser.content.view.SearchBarView
+import org.cotton.browser.content.view.SearchSuggestionsView
 import org.cotton.browser.content.TabsCountButton
 import org.cotton.browser.content.viewmodel.BrowserContentViewModel
 import org.cotton.browser.content.viewmodel.SearchBarViewModel

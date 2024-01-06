@@ -29,7 +29,7 @@ import java.util.UUID
  * @property positioning A generic interface to know how the App wants to handle default states
  * @property selectionStrategy An interface to tell how app wants to handle tab selection
  * */
-class TabsListManager
+class TabsDataService
 constructor(initialTabs: List<Tab>,
             private val tabsRepository: TabsRepository,
             private val positioning: TabsStates,

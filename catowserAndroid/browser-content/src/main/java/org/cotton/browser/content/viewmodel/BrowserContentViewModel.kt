@@ -10,9 +10,14 @@ import kotlinx.coroutines.launch
 import org.cotton.base.Site
 import org.cotton.browser.content.data.tab.ContentType
 
-class BrowserContentViewModel(private val defaultValue: ContentType) : ViewModel() {
-    private val _tabContent = MutableStateFlow<ContentType>(defaultValue)
-    val tabContent: StateFlow<ContentType> = _tabContent.asStateFlow()
+class BrowserContentViewModel(defaultValue: ContentType) : ViewModel() {
+    private val _tabContent: MutableStateFlow<ContentType>
+    val tabContent: StateFlow<ContentType>
+
+    init {
+        _tabContent = MutableStateFlow(defaultValue)
+        tabContent = _tabContent.asStateFlow()
+    }
 
     fun selectSite(site: Site) {
         viewModelScope.launch {
