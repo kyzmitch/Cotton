@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("org.jlleitschuh.gradle.ktlint")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp") // for `Room` db framework instead of `kotlin-kapt`
 }
 
 android {
@@ -87,6 +87,6 @@ dependencies {
 
     val room_version = rootProject.extra.get("room_version") as String
     implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version") /// kapt
+    ksp("androidx.room:room-compiler:$room_version") /// `ksp` is better than `kapt`
     implementation("androidx.room:room-ktx:$room_version")
 }

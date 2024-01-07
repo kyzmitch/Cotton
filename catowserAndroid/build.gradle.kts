@@ -21,10 +21,14 @@ buildscript {
 
 // Jetpack Lifecycle of version 2.5.1 uses Kotlin 1.7.20 which we need
 // https://developer.android.com/jetpack/androidx/releases/lifecycle#2.5.1
+// Kotlin annotations plugin:
+// https://developer.android.com/build/migrate-to-ksp
+// `ksp` for `Room` db framework annotations instead of `kotlin-kapt`
 
 plugins {
     kotlin("android") version "1.9.20" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.6.1" apply false
+    id("com.google.devtools.ksp") version "1.9.20-1.0.14" apply false
 }
 
 tasks.register("clean", Delete::class) {

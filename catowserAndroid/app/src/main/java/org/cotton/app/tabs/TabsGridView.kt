@@ -19,19 +19,17 @@ fun TabsScreen(
     onSelectTab: () -> Unit = {},
     onBack: () -> Unit = {}
 ) {
-    val state = viewModel.uxState.collectAsState()
+    val state = viewModel.uxState.collectAsState().value
     viewModel.load()
-    val stateValue = state.value
-    when (stateValue) {
+    when (state) {
         is TabsListState.Loading -> {
             Text(text = "Loading tabs")
         }
         is TabsListState.LoadedTabs -> {
-            TabsGridView(stateValue.list, onSelectTab)
+            TabsGridView(state.list, onSelectTab)
         }
     }
 }
-
 
 @Composable
 private fun TabsGridView(

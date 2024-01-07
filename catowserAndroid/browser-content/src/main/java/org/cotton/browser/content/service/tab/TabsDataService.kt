@@ -59,7 +59,7 @@ constructor(initialTabs: List<Tab>,
 
     override suspend fun collectionLastIndex(): Int {
         // -1 index is not possible because always should be at least 1 tab
-        var amount: Int = 0
+        var amount: Int
         tabsLock.withLock {
             amount = tabs.size
         }
@@ -124,7 +124,7 @@ constructor(initialTabs: List<Tab>,
     override suspend fun add(tab: Tab) {
         val positionType = positioning.addPosition
         val newIndex = positionType.addTabTo(tab, allTabs(), selectedId())
-        var tabsCount: Int = 0
+        var tabsCount: Int
         tabsLock.withLock {
             tabs.add(newIndex, tab)
             tabsCount = tabs.size
@@ -160,8 +160,8 @@ constructor(initialTabs: List<Tab>,
     }
 
     override suspend fun replaceSelected(content: ContentType) {
-        var selectedTabIndex: Int = -1
-        var selectedTab: Tab? = null
+        var selectedTabIndex: Int
+        var selectedTab: Tab?
         var updatedSelectedTab: Tab? = null
         tabsLock.withLock {
             selectedTabIndex = tabs.indexOfFirst { it.id == selectedId() }
@@ -266,7 +266,7 @@ constructor(initialTabs: List<Tab>,
             tabsLock.unlock(this)
             _tabsCountChannel.send(tabs.size)
             if (selectedTab == null) {
-                require(selectedTab != null) {
+                require(false) {
                     "Failed to find new selected tab"
                 }
                 return
