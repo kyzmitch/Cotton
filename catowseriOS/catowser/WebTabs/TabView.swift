@@ -90,6 +90,7 @@ final class TabView: UIView {
         }
         stateHandler?.cancel()
         stateHandler = viewModel.$state.sink(receiveValue: onStateChange)
+        viewModel.load()
     }
     
     private func layout() {

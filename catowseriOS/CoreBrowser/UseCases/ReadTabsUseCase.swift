@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ReadTabsUseCase: BaseUseCase {
+public protocol ReadTabsUseCase: BaseUseCase {
     /// Returns tabs count
     var tabsCount: Int { get async }
     /// Returns selected UUID, could be invalid one which is defined (to handle always not empty condition)

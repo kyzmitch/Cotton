@@ -14,44 +14,53 @@ import FeaturesFlagsKit
 @MainActor
 final class TabViewModel {
     private var tab: Tab
-    private var visualState: Tab.VisualState
+    private let readTabUseCase: ReadTabsUseCase
+    private let writeTabUseCase: WriteTabsUseCase
     
     @Published var state: TabViewState
     
-    init(_ tab: Tab, _ visualState: Tab.VisualState) async {
+    init(_ tab: Tab, 
+         _ readTabUseCase: ReadTabsUseCase,
+         _ writeTabUseCase: WriteTabsUseCase) {
         self.tab = tab
-        self.visualState = visualState
-        
-        let favicon: ImageSource?
-        if let site = tab.site {
-            favicon = await TabViewModel.loadFavicon(site)
-        } else {
-            favicon = nil
-        }
-        
-        switch visualState {
-        case .selected:
-            state = .selected(tab.title, favicon)
-        case .deselected:
-            state = .deSelected(tab.title, favicon)
-        }
+        self.readTabUseCase = readTabUseCase
+        self.writeTabUseCase = writeTabUseCase
     }
     
-        // MARK: - public functions
+    // MARK: - public functions
+    
+    func load() {
+        Task {
+            let selectedTabId = await readTabUseCase.selectedId
+            let visualState = tab.getVisualState(selectedTabId)
+            let favicon: ImageSource?
+            if let site = tab.site {
+                favicon = await TabViewModel.loadFavicon(site)
+            } else {
+                favicon = nil
+            }
+            switch visualState {
+            case .selected:
+                state = .selected(tab.title, favicon)
+            case .deselected:
+                state = .deSelected(tab.title, favicon)
+            }
+        }
+    }
     
     func close() {
         if let site = tab.site {
             WebViewsReuseManager.shared.removeController(for: site)
         }
         Task {
-            await TabsDataService.shared.close(tab: tab)
+            await writeTabUseCase.close(tab: tab)
         }
     }
     
     func activate() {
         print("\(#function): selected tab with id: \(tab.id)")
         Task {
-            await TabsDataService.shared.select(tab: tab)
+            await writeTabUseCase.select(tab: tab)
         }
     }
     

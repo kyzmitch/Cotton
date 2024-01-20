@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SelectedTabUseCase: BaseUseCase {
+public protocol SelectedTabUseCase: BaseUseCase {
     func selectedTab() async throws -> Tab
     func selectedIndex() async throws -> Int
 }

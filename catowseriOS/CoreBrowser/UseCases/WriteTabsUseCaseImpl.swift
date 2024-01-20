@@ -11,7 +11,7 @@ import Foundation
 public final class WriteTabsUseCaseImpl: WriteTabsUseCase {
     private let tabsDataService: TabsDataService
     
-    init(_ tabsDataService: TabsDataService) {
+    public init(_ tabsDataService: TabsDataService) {
         self.tabsDataService = tabsDataService
     }
     

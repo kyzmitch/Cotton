@@ -8,4 +8,4 @@
 
 import Foundation
 
-protocol BaseUseCase: AnyObject {}
+public protocol BaseUseCase: AnyObject {}

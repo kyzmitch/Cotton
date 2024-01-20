@@ -23,7 +23,7 @@ enum ServiceRecord {
     }
 }
 
-class LazyServiceLocator: ServiceLocator {
+public class LazyServiceLocator: ServiceLocator {
     /// Service registry
     private lazy var registry: [String: ServiceRecord] = [:]
 
@@ -31,22 +31,22 @@ class LazyServiceLocator: ServiceLocator {
         return (some is Any.Type) ? "\(some)" : "\(type(of: some))"
     }
 
-    func register<T>(_ recipe: @escaping () -> T) {
+    public func register<T>(_ recipe: @escaping () -> T) {
         let key = typeName(T.self)
         registry[key] = .Recipe(recipe)
     }
 
-    func register<T>(_ instance: T) {
+    public func register<T>(_ instance: T) {
         let key = typeName(T.self)
         registry[key] = .Instance(instance)
     }
 
-    func findService<T>() -> T? {
+    public func findService<T>(_ type: T.Type) -> T? {
         let key = typeName(T.self)
         var instance: T? = nil
         if let registryRec = registry[key] {
             instance = registryRec.unwrap() as? T
-            // Replace the recipe with the produced instance if this is the case
+            /// Replace the recipe with the produced instance if this is the case
             switch registryRec {
                 case .Recipe:
                     if let instance = instance {

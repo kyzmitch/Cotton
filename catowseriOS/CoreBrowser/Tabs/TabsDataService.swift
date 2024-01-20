@@ -94,6 +94,31 @@ public actor TabsDataService {
         }
         tabs[index] = tab
     }
+    
+    public func sendCommand(_ command: TabsServiceCommand) -> TabsServiceDataOutput {
+        switch command {
+        case .getTabsCount:
+            return handleTabsCountCommand()
+        case .getSelectedTabId:
+            return handleSelectedTabIdCommand()
+        case .getAllTabs:
+            return handleFetchAllTabsCommand()
+        }
+    }
+}
+
+private extension TabsDataService {
+    func handleTabsCountCommand() -> TabsServiceDataOutput {
+        return .tabsCount(tabs.count)
+    }
+    
+    func handleSelectedTabIdCommand() -> TabsServiceDataOutput {
+        return .selectedTabId(selectedTabIdentifier)
+    }
+    
+    func handleFetchAllTabsCommand() -> TabsServiceDataOutput {
+        return .allTabs(tabs)
+    }
 }
 
 extension TabsDataService: IndexSelectionContext {

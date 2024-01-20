@@ -244,7 +244,7 @@ extension TabsViewController: TabsObserver {
     
     func updateTabsCount(with tabsCount: Int) async {
 #if DEBUG
-        showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
+        showTabPreviewsButton.setTitle("\(getTabsCount)", for: .normal)
 #endif
     }
 
