@@ -98,14 +98,13 @@ final class TabViewModel {
 extension TabViewModel: TabsObserver {
     func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
         if tab.contentType != content {
-            // Need to reload favicon and title as well.
-            // Not sure if it is possible during simple select?
+            /// Need to reload favicon and title as well.
+            /// Not sure if it is possible during simple select?
         }
+        /// Next code used to change tab's VisualState `tab.getVisualState(identifier)`
         if tab.id == identifier {
-            visualState = .selected
             state = state.selected()
         } else {
-            visualState = .deselected
             state = state.deSelected()
         }
     }

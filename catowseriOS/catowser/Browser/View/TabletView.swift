@@ -59,6 +59,7 @@ struct TabletView: View {
     @State private var isDohEnabled: Bool
     @State private var isJavaScriptEnabled: Bool
     @State private var nativeAppRedirectEnabled: Bool
+    @ObservedObject private var allTabsVM: AllTabsViewModel
     
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
@@ -71,7 +72,10 @@ struct TabletView: View {
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
-    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode, _ defaultContentType: Tab.ContentType) {
+    init(_ browserContentVM: BrowserContentViewModel, 
+         _ mode: SwiftUIMode,
+         _ defaultContentType: Tab.ContentType,
+         _ allTabsVM: AllTabsViewModel) {
         self.browserContentVM = browserContentVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
@@ -103,6 +107,7 @@ struct TabletView: View {
         isDohEnabled = false
         isJavaScriptEnabled = true
         nativeAppRedirectEnabled = true
+        self.allTabsVM = allTabsVM
     }
     
     var body: some View {
@@ -117,7 +122,7 @@ struct TabletView: View {
     private var uiKitWrapperView: some View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
-            TabletTabsView(mode)
+            TabletTabsView(mode, allTabsVM)
             TabletSearchBarLegacyView(searchBarDelegate, searchBarAction, webViewInterface)
                 .frame(height: .toolbarViewHeight)
             // this should be the same with the value in `SearchBarBaseViewController`
@@ -159,7 +164,7 @@ struct TabletView: View {
     
     private var fullySwiftUIView: some View {
         VStack {
-            TabletTabsView(mode)
+            TabletTabsView(mode, allTabsVM)
             TabletSearchBarViewV2($showingMenu, $showSearchSuggestions, $searchQuery, $searchBarAction)
                 .frame(height: .toolbarViewHeight)
                 .environmentObject(toolbarVM)
@@ -206,14 +211,3 @@ struct TabletView: View {
         }
     }
 }
-
-#if DEBUG
-struct TabletView_Previews: PreviewProvider {
-    static var previews: some View {
-        let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source, .blank)
-        TabletView(bvm, .compatible, .blank)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
-    }
-}
-#endif

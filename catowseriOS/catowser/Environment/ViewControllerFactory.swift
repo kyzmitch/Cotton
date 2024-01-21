@@ -28,15 +28,15 @@ import CoreBrowser
 protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator,
                             _ uiFramework: UIFrameworkType,
-                            _ defaultContentType: Tab.ContentType) -> AnyViewController
+                            _ defaultContentType: Tab.ContentType,
+                            _ allTabsVM: AllTabsViewModel) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
                                          _ searchProviderType: WebAutoCompletionSource) -> AnyViewController
     
-    func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
+    func webViewController<C: Navigating>(_ externalNavigationDelegate: SiteExternalNavigationDelegate?,
                                           _ coordinator: C?) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
@@ -68,9 +68,12 @@ protocol ViewControllerFactory: AnyObject {
                                               // swiftlint:disable:next line_length
                                               _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
-    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute
     /// Tablet specific tabs
-    func tabsViewController() -> AnyViewController?
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController?
     /// Download link tags
     func linkTagsViewController(_ delegate: LinkTagsDelegate?) -> AnyViewController & LinkTagsPresenter
     /// The files grid controller to display links for downloads
@@ -80,13 +83,14 @@ protocol ViewControllerFactory: AnyObject {
 extension ViewControllerFactory {
     func rootViewController(_ coordinator: AppCoordinator,
                             _ uiFramework: UIFrameworkType,
-                            _ defaultContentType: Tab.ContentType) -> AnyViewController {
+                            _ defaultContentType: Tab.ContentType,
+                            _ allTabsVM: AllTabsViewModel) -> AnyViewController {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:
-            vc = MainBrowserV2ViewController(coordinator, uiFramework, defaultContentType)
+            vc = MainBrowserV2ViewController(coordinator, uiFramework, defaultContentType, allTabsVM)
         }
         return vc
     }
@@ -106,11 +110,10 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
+    func webViewController<C: Navigating>(_ externalNavigationDelegate: SiteExternalNavigationDelegate?,
                                           _ coordinator: C?) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
-        let vc: WebViewController = .init(viewModel, externalNavigationDelegate, coordinator)
+        let vc: WebViewController = .init(externalNavigationDelegate, coordinator)
         return vc
     }
     

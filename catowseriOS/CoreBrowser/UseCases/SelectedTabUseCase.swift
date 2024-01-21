@@ -6,9 +6,8 @@
 //  Copyright © 2024 andreiermoshin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public protocol SelectedTabUseCase: BaseUseCase {
-    func selectedTab() async throws -> Tab
-    func selectedIndex() async throws -> Int
+    func setSelectedPreview(_ image: Data?) async
 }

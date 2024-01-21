@@ -37,17 +37,20 @@ final class PhoneTabsCoordinator: Coordinator {
     }
     
     func start() {
-        guard let vc = vcFactory.tabsPreviewsViewController(self) else {
-            assertionFailure("Tabs previews screen is only for Phone layout")
-            return
+        Task {
+            let vm = await ViewModelFactory.shared.tabsPreviewsViewModel()
+            guard let vc = vcFactory.tabsPreviewsViewController(self, vm) else {
+                assertionFailure("Tabs previews screen is only for Phone layout")
+                return
+            }
+            startedVC = vc
+            guard !uiFramework.isUIKitFree else {
+                // For SwiftUI mode we still need to create view controller
+                // but presenting should happen on SwiftUI level
+                return
+            }
+            presenterVC?.viewController.present(vc, animated: true, completion: nil)
         }
-        startedVC = vc
-        guard !uiFramework.isUIKitFree else {
-            // For SwiftUI mode we still need to create view controller
-            // but presenting should happen on SwiftUI level
-            return
-        }
-        presenterVC?.viewController.present(vc, animated: true, completion: nil)
     }
 }
 
@@ -99,10 +102,13 @@ private extension PhoneTabsCoordinator {
     }
     
     func showError() {
-        guard let vc = vcFactory.tabsPreviewsViewController(self) else {
-            assertionFailure("Tabs previews screen is only for Phone layout")
-            return
+        Task {
+            let vm = await ViewModelFactory.shared.tabsPreviewsViewModel()
+            guard let vc = vcFactory.tabsPreviewsViewController(self, vm) else {
+                assertionFailure("Tabs previews screen is only for Phone layout")
+                return
+            }
+            AlertPresenter.present(on: vc)
         }
-        AlertPresenter.present(on: vc)
     }
 }

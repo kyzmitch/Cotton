@@ -34,11 +34,14 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     /// Store it in uikit view controller to not re-create view model after every redraw of main view in SwiftUI
     private let viewModel: MainBrowserModel<C>
     
-    init(_ coordinator: C, _ uiFramework: UIFrameworkType, _ defaultContentType: Tab.ContentType) {
+    init(_ coordinator: C, 
+         _ uiFramework: UIFrameworkType,
+         _ defaultContentType: Tab.ContentType,
+         _ allTabsVM: AllTabsViewModel) {
         self.coordinator = coordinator
         viewModel = .init(coordinator)
         
-        let view = MainBrowserView(viewModel, uiFramework, defaultContentType)
+        let view = MainBrowserView(viewModel, uiFramework, defaultContentType, allTabsVM)
         super.init(rootView: view)
     }
     

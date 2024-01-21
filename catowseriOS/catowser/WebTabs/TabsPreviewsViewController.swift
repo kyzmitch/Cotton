@@ -18,9 +18,13 @@ final class TabsPreviewsViewController<C: Navigating>: BaseViewController,
 where C.R == TabsScreenRoute {
     
     private weak var coordinator: C?
+    
+    private let viewModel: TabsPreviewsViewModel
 
-    init(_ coordinator: C) {
+    init(_ coordinator: C,
+         _ viewModel: TabsPreviewsViewModel) {
         self.coordinator = coordinator
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -28,10 +32,7 @@ where C.R == TabsScreenRoute {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @Published private var uxState: State = .loading
     private var stateHandlerCancellable: AnyCancellable?
-    
-    typealias TabsBox = Box<[Tab]>
 
     private lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: collectionLayout)
@@ -96,11 +97,11 @@ where C.R == TabsScreenRoute {
         toolbar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         stateHandlerCancellable?.cancel()
-        stateHandlerCancellable = $uxState.sink { [weak self] nextState in
+        stateHandlerCancellable = viewModel.$uxState.sink { [weak self] nextState in
             self?.render(state: nextState)
         }
 
-        render(state: uxState)
+        render(state: viewModel.uxState)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -108,8 +109,7 @@ where C.R == TabsScreenRoute {
 
         Task {
             await TabsDataService.shared.attach(self)
-            let tabs = await TabsDataService.shared.allTabs
-            uxState = .tabs(dataSource: .init(tabs))
+            viewModel.load()
         }
     }
     
@@ -163,13 +163,13 @@ where C.R == TabsScreenRoute {
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return uxState.itemsNumber
+        return viewModel.uxState.itemsNumber
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         var tab: Tab?
-        switch uxState {
+        switch viewModel.uxState {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             // must use `item` for UICollectionView
             tab = dataSource.value[safe: indexPath.item]
@@ -189,7 +189,7 @@ where C.R == TabsScreenRoute {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var tab: Tab?
-        switch uxState {
+        switch viewModel.uxState {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             tab = dataSource.value[safe: indexPath.item]
         default:
@@ -222,51 +222,25 @@ private struct Sizes {
 }
 
 private extension TabsPreviewsViewController {
-    func render(state: State) {
+    func render(state: TabsPreviewState) {
         collectionView.reloadData()
     }
 }
 
 extension TabsPreviewsViewController: TabsObserver {
     func tabDidAdd(_ tab: Tab, at index: Int) async {
-        guard case let .tabs(box) = uxState else {
+        let state = viewModel.uxState
+        guard case let .tabs(box) = state else {
             return
         }
 
         box.value.insert(tab, at: index)
-        render(state: uxState)
+        render(state: state)
     }
 }
 
 extension TabsPreviewsViewController: TabPreviewCellDelegate {
     func tabCellDidClose(at index: Int) async {
-        guard case let .tabs(box) = uxState else {
-            return
-        }
-
-        let tab = box.value.remove(at: index)
-        render(state: uxState)
-        if let site = tab.site {
-            WebViewsReuseManager.shared.removeController(for: site)
-        }
-        await TabsDataService.shared.close(tab: tab)
-    }
-}
-
-fileprivate extension TabsPreviewsViewController {
-    enum State {
-        /// Maybe it is not needed state, but it is required for scalability when some user will have 100 tabs
-        case loading
-        /// Actual collection for tabs, at least one tab always will be in it
-        case tabs(dataSource: TabsBox)
-
-        var itemsNumber: Int {
-            switch self {
-            case .loading:
-                return 0
-            case .tabs(let box):
-                return box.value.count
-            }
-        }
+        viewModel.closeTab(at: index)
     }
 }

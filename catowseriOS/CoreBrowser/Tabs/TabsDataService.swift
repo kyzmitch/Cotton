@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit /// only for tab preview ui image
 
 /**
  Tabs list manager.
@@ -87,15 +88,7 @@ public actor TabsDataService {
         }
     }
     
-    /// Replaces tab at specific index
-    public func replaceInMemory(_ tab: Tab, _ index: Int) throws {
-        guard index >= 0 && index < tabs.count else {
-            throw TabsListError.wrongTabIndexToReplace
-        }
-        tabs[index] = tab
-    }
-    
-    public func sendCommand(_ command: TabsServiceCommand) -> TabsServiceDataOutput {
+    public func sendCommand(_ command: TabsServiceCommand) async -> TabsServiceDataOutput {
         switch command {
         case .getTabsCount:
             return handleTabsCountCommand()
@@ -103,6 +96,20 @@ public actor TabsDataService {
             return handleSelectedTabIdCommand()
         case .getAllTabs:
             return handleFetchAllTabsCommand()
+        case .addTab(let value):
+            return await handleAddTabCommand(value)
+        case .closeTab(let value):
+            return await handleCloseTabCommand(value)
+        case .closeTabWithId(let value):
+            return await handleCloseTabWithIdCommand(value)
+        case .closeAll:
+            return await handleCloseAllCommand()
+        case .selectTab(let value):
+            return await handleSelectTabCommand(value)
+        case .replaceSelectedContent(let value):
+            return await handleReplaceTabContentCommand(value)
+        case .updateSelectedTabPreview(let value):
+            return await handleUpdateSelectedTabPreviewCommand(value)
         }
     }
 }
@@ -118,6 +125,119 @@ private extension TabsDataService {
     
     func handleFetchAllTabsCommand() -> TabsServiceDataOutput {
         return .allTabs(tabs)
+    }
+    
+    func handleAddTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
+        let positionType = await positioning.addPosition
+        let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
+        tabsCountInput.yield(tabs.count)
+        let needSelect = selectionStrategy.makeTabActiveAfterAdding
+        do {
+            let addedTab = try await storage.add(tab, select: needSelect)
+            await handleTabAdded(addedTab, index: newIndex, select: needSelect)
+        } catch {
+            // It doesn't matter, on view level it must be added right away
+            print("Failed to add this tab to cache: \(error)")
+        }
+        return .tabAdded
+    }
+    
+    func handleCloseTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
+        do {
+            let removedTabs = try await storage.remove(tabs: [tab])
+            // swiftlint:disable:next force_unwrapping
+            await handleCachedTabRemove(removedTabs.first!)
+        } catch {
+            // tab view should be removed immediately on view level anyway
+            print("Failure to remove tab from cache: \(error)")
+        }
+        return .tabClosed(tab.id)
+    }
+    
+    func handleCloseTabWithIdCommand(_ tabId: UUID) async -> TabsServiceDataOutput {
+        guard let tabToRemove = tabs.first(where: { $0.id == tabId }) else {
+            return .tabClosed(nil)
+        }
+        return await handleCloseTabCommand(tabToRemove)
+    }
+    
+    func handleCloseAllCommand() async -> TabsServiceDataOutput {
+        let contentState = await positioning.contentState
+        do {
+            _ = try await storage.remove(tabs: tabs)
+            tabs.removeAll()
+            tabsCountInput.yield(0)
+            let tab: Tab = .init(contentType: contentState)
+            _ = try await storage.add(tab, select: true)
+        } catch {
+            // tab view should be removed immediately on view level anyway
+            print("Failure to remove tab and reset to one tab: \(error)")
+        }
+        return .allTabsClosed
+    }
+    
+    func handleSelectTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
+        do {
+            let identifier = try await storage.select(tab: tab)
+            guard identifier != selectedTabIdentifier else {
+                return .tabSelected
+            }
+            selectedTabIdentifier = identifier
+            selectedTabIdInput.yield(identifier)
+        } catch {
+            print("Failed to select tab with id \(tab.id) \(error)")
+        }
+        return .tabSelected
+    }
+    
+    func handleReplaceTabContentCommand(_ tabContent: Tab.ContentType) async -> TabsServiceDataOutput {
+        guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
+            return .tabContentReplaced(TabsListError.notInitializedYet)
+        }
+        guard tabTuple.tab.contentType != tabContent else {
+            return .tabContentReplaced(TabsListError.tabContentAlreadySet)
+        }
+        var newTab = tabTuple.tab
+        let tabIndex = tabTuple.index
+        newTab.contentType = tabContent
+        newTab.previewData = nil
+        
+        do {
+            _ = try storage.update(tab: newTab)
+            tabs[tabIndex] = newTab
+            // Need to notify observers to allow them to update title for tab view
+            for observer in tabObservers {
+                await observer.tabDidReplace(newTab, at: tabIndex)
+            }
+            return .tabContentReplaced(nil)
+        } catch {
+            print("Failed to update tab content to storage \(error)")
+            return .tabContentReplaced(TabsListError.failToUpdateTabContent)
+        }
+    }
+    
+    func handleUpdateSelectedTabPreviewCommand(_ image: Data?) async -> TabsServiceDataOutput {
+        guard selectedTabIdentifier != positioning.defaultSelectedTabId else {
+            return .tabPreviewUpdated(TabsListError.notInitializedYet)
+        }
+        guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
+            return .tabPreviewUpdated(TabsListError.selectedNotFound)
+        }
+        var tab = tabTuple.tab
+        guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
+            return .tabPreviewUpdated(TabsListError.notInitializedYet)
+        }
+        let tabIndex = tabTuple.index
+        
+        if case .site = tab.contentType, image == nil {
+            return .tabPreviewUpdated(TabsListError.wrongTabContent)
+        }
+        tab.previewData = image
+        guard tabIndex >= 0 && tabIndex < tabs.count else {
+            return .tabPreviewUpdated(TabsListError.wrongTabIndexToReplace)
+        }
+        tabs[tabIndex] = tab
+        return .tabPreviewUpdated(nil)
     }
 }
 
@@ -138,7 +258,7 @@ extension TabsDataService: IndexSelectionContext {
             // Leaving assert even with unit tests
             // https://stackoverflow.com/a/410198
             assert(!tabs.isEmpty, "Tabs amount shouldn't be 0")
-            if let tabTuple = await tabs.element(by: selectedId) {
+            if let tabTuple = tabs.element(by: selectedTabIdentifier) {
                 return tabTuple.index
             }
             // tabs collection shouldn't be empty, so,
@@ -159,7 +279,7 @@ extension TabsDataService: TabsSubject {
         guard selectedTabIdentifier != positioning.defaultSelectedTabId else {
             return
         }
-        guard let tabTuple = await tabs.element(by: selectedId) else {
+        guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
             return
         }
         await observer.tabDidSelect(tabTuple.index, tabTuple.tab.contentType, tabTuple.tab.id)
@@ -219,7 +339,7 @@ private extension TabsDataService {
             Task {
                 let contentState = await positioning.contentState
                 let tab: Tab = .init(contentType: contentState)
-                await add(tab: tab)
+                _ = await sendCommand(.addTab(tab))
             }
         } else {
             guard let closedTabIndex = tabs.firstIndex(of: tab) else {
@@ -302,9 +422,8 @@ fileprivate extension Array where Element == Tab {
 
 extension AddedTabPosition {
     func addTab(_ tab: Tab,
-                to currentTabs: [Tab],
-                _ currentlySelectedId: UUID) -> (Int, [Tab]) {
-        var tabs = currentTabs
+                to tabs: inout [Tab],
+                _ currentlySelectedId: UUID) -> Int {
         let newIndex: Int
         switch self {
         case .listEnd:
@@ -314,12 +433,12 @@ extension AddedTabPosition {
             guard let tabTuple = tabs.element(by: currentlySelectedId) else {
                 // no previously selected tab, probably when reset to one tab happend
                 tabs.append(tab)
-                return (tabs.count - 1, tabs)
+                return tabs.count - 1
             }
             newIndex = tabTuple.index + 1
             tabs.insert(tab, at: newIndex)
         }
         
-        return (newIndex, tabs)
+        return newIndex
     }
 }

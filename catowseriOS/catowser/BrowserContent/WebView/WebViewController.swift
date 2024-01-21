@@ -24,8 +24,8 @@ extension WKWebView: JavaScriptEvaluateble {}
 final class WebViewController<C: Navigating>: BaseViewController,
                                               WKUIDelegate,
                                               WKNavigationDelegate where C.R == WebContentRoute {
-    /// A view model
-    let viewModel: WebViewModel
+    /// A view model, optional because it is tricky to inject it in constructor in init because of async dependencies
+    var viewModel: WebViewModel?
     /// A coordinator reference
     private weak var coordinator: C?
     /// Own navigation delegate
@@ -65,12 +65,12 @@ final class WebViewController<C: Navigating>: BaseViewController,
     private var proxy: WebViewControllerProxy?
 
     /**
-     Constructs web view controller for specific site with set of plugins and navigation handler
+     Constructs web view controller for specific site with set of plugins and navigation handler.
+     
+     Currently it is too tricky to inject view model right away because it has to be async
      */
-    init(_ viewModel: WebViewModel,
-         _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
+    init(_ externalNavigationDelegate: SiteExternalNavigationDelegate?,
          _ coordinator: C?) {
-        self.viewModel = viewModel
         self.externalNavigationDelegate = externalNavigationDelegate
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
@@ -101,7 +101,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
         super.viewDidAppear(animated)
         subscribe()
         Task {
-            await viewModel.load()
+            await viewModel?.load()
         }
     }
     
@@ -152,12 +152,12 @@ final class WebViewController<C: Navigating>: BaseViewController,
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let domain = viewModel.nativeAppDomainNameString {
+        if let domain = viewModel?.nativeAppDomainNameString {
             externalNavigationDelegate?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
         Task {
-            await viewModel.decidePolicy(navigationAction, decisionHandler)
+            await viewModel?.decidePolicy(navigationAction, decisionHandler)
         }
     }
 
@@ -180,7 +180,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
                     Task {
-                        await self?.externalNavigationDelegate?.didTabPreviewChange(img)
+                        await self?.viewModel?.updateTabPreview(img.pngData())
                     }
                 default:
                     print("failed to take a screenshot")
@@ -194,7 +194,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
         }
         
         Task {
-            await viewModel.finishLoading(newURL, webView)
+            await viewModel?.finishLoading(newURL, webView)
         }
     }
     
@@ -206,6 +206,11 @@ final class WebViewController<C: Navigating>: BaseViewController,
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard let viewModel else {
+            print("View model is not set")
+            assertionFailure("View model is not set")
+            return
+        }
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         authHandlers.insert(handler)
         handler.solve { [weak self, weak handler] stopLoadingProgress in
@@ -258,7 +263,7 @@ private extension WebViewController {
         // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
         
         taskHandler?.cancel()
-        taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        taskHandler = viewModel?.webPageStatePublisher.sink(receiveValue: onStateChange)
         dohCancellable?.cancel()
         jsStateCancellable?.cancel()
         
@@ -268,7 +273,7 @@ private extension WebViewController {
                 .sink { _ in
                     Task { [weak self] in
                         let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-                        await self?.viewModel.setDoH(useDoH)
+                        await self?.viewModel?.setDoH(useDoH)
                     }
                 }
             
@@ -280,7 +285,7 @@ private extension WebViewController {
                             return
                         }
                         let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-                        await self.viewModel.setJavaScript(jsSubject, enabled)
+                        await self.viewModel?.setJavaScript(jsSubject, enabled)
                     }
                 }
         }
@@ -355,6 +360,10 @@ private extension WebViewController {
         // but for re-usable web view there is no other way
         // of resetting the old navigation history
         webView?.removeFromSuperview()
+        guard let viewModel else {
+            assertionFailure("View model is not set")
+            return
+        }
         let newWebView = createWebView(with: viewModel.configuration)
         view.addSubview(newWebView)
         

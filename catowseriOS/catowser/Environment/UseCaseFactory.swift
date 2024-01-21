@@ -40,7 +40,7 @@ final class UseCaseFactory {
             let dataService = await TabsDataService.shared
             let readUseCase = ReadTabsUseCaseImpl(dataService, DefaultTabProvider.shared)
             locator.register(readUseCase)
-            let writeUseCase = WriteTabsUseCaseImpl(dataService)
+            let writeUseCase = WriteTabsUseCaseImpl(dataService, readUseCase, DefaultTabProvider.shared)
             locator.register(writeUseCase)
         }
     }

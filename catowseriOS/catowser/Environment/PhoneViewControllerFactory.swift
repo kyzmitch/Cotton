@@ -58,12 +58,15 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         return toolBarVC
     }
     
-    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
-        let vc: TabsPreviewsViewController = .init(coordinator)
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute {
+        let vc: TabsPreviewsViewController = .init(coordinator, viewModel)
         return vc
     }
     
-    func tabsViewController() -> AnyViewController? {
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
         return nil
     }
     

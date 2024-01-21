@@ -41,11 +41,14 @@ final class TabletViewControllerFactory: ViewControllerFactory {
                                                _ uiFramework: UIFrameworkType) -> AnyViewController? {
         return nil
     }
-    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute {
         return nil
     }
-    func tabsViewController() -> AnyViewController? {
-        let vc = TabsViewController()
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
+        let vc = TabsViewController(vm)
         return vc
     }
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,

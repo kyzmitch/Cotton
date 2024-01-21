@@ -10,22 +10,16 @@ import SwiftUI
 
 struct TabletTabsView: View {
     private let mode: SwiftUIMode
+    private let viewModel: AllTabsViewModel
     
-    init(_ mode: SwiftUIMode) {
+    init(_ mode: SwiftUIMode, 
+         _ viewModel: AllTabsViewModel) {
         self.mode = mode
+        self.viewModel = viewModel
     }
     
     var body: some View {
-        TabletTabsLegacyView()
+        TabletTabsLegacyView(viewModel)
             .frame(height: .tabHeight)
     }
 }
-
-#if DEBUG
-struct TabletTabsView_Previews: PreviewProvider {
-    static var previews: some View {
-        TabletTabsView(.full)
-            .previewDevice(PreviewDevice(rawValue: "iPad Pro (11-inch) (3rd generation)"))
-    }
-}
-#endif

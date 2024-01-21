@@ -84,14 +84,24 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
         context.nativeApp(for: host)
     }
     
+    private let selectTabUseCase: SelectedTabUseCase
+    
+    private let writeTabUseCase: WriteTabsUseCase
+    
     /**
      Constructs web view model
      */
-    public init(_ strategy: Strategy, _ site: Site, _ context: any WebViewContext) {
+    public init(_ strategy: Strategy, 
+                _ site: Site,
+                _ context: any WebViewContext,
+                _ selectTabUseCase: SelectedTabUseCase,
+                _ writeTabUseCase: WriteTabsUseCase) {
         dnsResolver = .init(strategy)
         // Do we need to use `updateState` function even in init?
         state = .initialized(site)
         self.context = context
+        self.selectTabUseCase = selectTabUseCase
+        self.writeTabUseCase = writeTabUseCase
     }
     
     deinit {
@@ -241,6 +251,10 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
             print("Wrong state on DoH change action: " + error.localizedDescription)
         }
     }
+    
+    public func updateTabPreview(_ screenshot: Data?) async {
+        await selectTabUseCase.setSelectedPreview(screenshot)
+    }
 }
 
 private extension WebViewModelImpl {
@@ -287,7 +301,7 @@ private extension WebViewModelImpl {
             let host = updatedInfo.host()
             await InMemoryDomainSearchProvider.shared.remember(host: host)
             context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
-            try await context.updateTabContent(site)
+            await writeTabUseCase.replaceSelected(.site(site))
             await updateState(try state.transition(on: .startView(updatedInfo)))
         case .viewing:
             break

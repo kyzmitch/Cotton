@@ -26,12 +26,15 @@ final class TabletTabsCoordinator: Coordinator {
         guard isPad else {
             return
         }
-        guard let vc = vcFactory.tabsViewController(), let superView = presenterVC?.controllerView else {
-            return
+        Task {
+            let vm = await ViewModelFactory.shared.allTabsViewModel()
+            guard let vc = vcFactory.tabsViewController(vm), let superView = presenterVC?.controllerView else {
+                return
+            }
+            startedVC = vc
+            vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
+            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
         }
-        startedVC = vc
-        vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
     }
 }
 

@@ -42,6 +42,7 @@ public protocol WebViewModel: AnyObject {
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) async
     func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) async
     func setDoH(_ enabled: Bool) async
+    func updateTabPreview(_ screenshot: Data?) async
     
     // MARK: - public properties
     

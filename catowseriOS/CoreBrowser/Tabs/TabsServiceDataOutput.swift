@@ -12,4 +12,10 @@ public enum TabsServiceDataOutput {
     case tabsCount(Int)
     case selectedTabId(UUID)
     case allTabs([Tab])
+    case tabAdded
+    case tabClosed(UUID?)
+    case allTabsClosed
+    case tabSelected
+    case tabContentReplaced(TabsListError?)
+    case tabPreviewUpdated(TabsListError?)
 }

@@ -13,4 +13,6 @@ public enum TabsListError: LocalizedError {
     case selectedNotFound
     case wrongTabContent
     case wrongTabIndexToReplace
+    case tabContentAlreadySet
+    case failToUpdateTabContent
 }

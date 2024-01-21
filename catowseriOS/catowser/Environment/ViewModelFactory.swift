@@ -39,20 +39,32 @@ final class ViewModelFactory {
         }
     }
     
-    @MainActor func webViewModel(_ site: Site, _ context: WebViewContext) -> WebViewModel {
-        // It is the same context for any site or view model
-        // maybe it makes sense to use only one
+    @MainActor func webViewModel(_ site: Site, _ context: WebViewContext) async -> WebViewModel {
+        /// It is the same context for any site or view model, maybe it makes sense to use only one
         let stratContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
-                                       HttpEnvironment.shared.dnsClientRxSubscriber,
-                                       HttpEnvironment.shared.dnsClientSubscriber)
+                                            HttpEnvironment.shared.dnsClientRxSubscriber,
+                                            HttpEnvironment.shared.dnsClientSubscriber)
         
         let strategy = GoogleDNSStrategy(stratContext)
-        return WebViewModelImpl(strategy, site, context)
+        let selectTabUseCase = await UseCaseFactory.shared().findUseCase(SelectedTabUseCase.self)
+        let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
+        return WebViewModelImpl(strategy, site, context, selectTabUseCase, writeUseCase)
     }
     
     @MainActor func tabViewModel(_ tab: Tab) async -> TabViewModel {
         let readUseCase = await UseCaseFactory.shared().findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return TabViewModel(tab, readUseCase, writeUseCase)
+    }
+    
+    @MainActor func tabsPreviewsViewModel() async -> TabsPreviewsViewModel {
+        let readUseCase = await UseCaseFactory.shared().findUseCase(ReadTabsUseCase.self)
+        let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
+        return TabsPreviewsViewModel(readUseCase, writeUseCase)
+    }
+    
+    @MainActor func allTabsViewModel() async -> AllTabsViewModel {
+        let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
+        return AllTabsViewModel(writeUseCase)
     }
 }

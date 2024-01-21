@@ -20,6 +20,17 @@ fileprivate extension TabsViewController {
 final class TabsViewController: BaseViewController {
     private var viewModels = [TabViewModel]()
     
+    private let viewModel: AllTabsViewModel
+    
+    init(_ vm: AllTabsViewModel) {
+        viewModel = vm
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
@@ -124,8 +135,7 @@ private extension TabsViewController {
 
     @objc func showTabPreviewsPressed() {
         print("\(#function): show pressed")
-        // Coordinator should be used here
-        // to show tab previews collection view modally
+        /// Coordinator should be used here, to show tab previews collection view modally
     }
 
     @objc func addTabPressed() {
@@ -133,7 +143,7 @@ private extension TabsViewController {
 
         Task {
             let tab = Tab(contentType: await DefaultTabProvider.shared.contentState)
-            await TabsDataService.shared.add(tab: tab)
+            viewModel.addTab(tab)
         }
     }
 
@@ -244,7 +254,7 @@ extension TabsViewController: TabsObserver {
     
     func updateTabsCount(with tabsCount: Int) async {
 #if DEBUG
-        showTabPreviewsButton.setTitle("\(getTabsCount)", for: .normal)
+        showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
 #endif
     }
 

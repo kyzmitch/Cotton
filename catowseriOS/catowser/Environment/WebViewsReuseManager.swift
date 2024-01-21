@@ -74,8 +74,7 @@ final class WebViewsReuseManager {
         let count = views.count
         if count >= 0 && count < viewsLimit {
             let context: WebViewContextImpl = .init(pluginsBuilder.pluginsProgram)
-            let vm = ViewModelFactory.shared.webViewModel(site, context)
-            let vc = vcFactory.webViewController(vm, delegate, coordinator)
+            let vc = vcFactory.webViewController(delegate, coordinator)
             views.append(vc)
             lastSelectedIndex = count
             return vc

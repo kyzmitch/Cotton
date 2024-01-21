@@ -50,7 +50,8 @@ private extension SearchBarViewModel {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }
-        try? await TabsDataService.shared.replaceSelected(.site(site))
+        /// TODO: think how to replace delegate with view model func and WriteTabUseCase
+        _ = await TabsDataService.shared.sendCommand(.replaceSelectedContent(.site(site)))
     }
 }
 

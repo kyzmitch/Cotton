@@ -21,5 +21,5 @@ public protocol WriteTabsUseCase: BaseUseCase {
     /// Remembers selected tab index. Can fail silently if `tab` is not found in a list.
     func select(tab: Tab) async
     /// Replaces currently active tab by combining two operations
-    func replaceSelected(_ tabContent: Tab.ContentType) async throws
+    func replaceSelected(_ tabContent: Tab.ContentType) async
 }
