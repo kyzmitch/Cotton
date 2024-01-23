@@ -19,6 +19,8 @@ struct PhoneView: View {
     @ObservedObject private var browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
+    ///
+    @ObservedObject private var topSitesVM: TopSitesViewModel
     
     // MARK: - search bar state
     
@@ -75,8 +77,11 @@ struct PhoneView: View {
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
-    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
+    init(_ browserContentVM: BrowserContentViewModel, 
+         _ mode: SwiftUIMode,
+         _ topSitesVM: TopSitesViewModel) {
         self.browserContentVM = browserContentVM
+        self.topSitesVM = topSitesVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -138,7 +143,13 @@ struct PhoneView: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins,
+                                   siteNavigation,
+                                   isLoading,
+                                   contentType,
+                                   $webViewNeedsUpdate,
+                                   mode,
+                                   topSitesVM)
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
@@ -180,7 +191,13 @@ struct PhoneView: View {
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                    BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
+                    BrowserContentView(jsPlugins,
+                                       siteNavigation,
+                                       isLoading,
+                                       contentType,
+                                       $webViewNeedsUpdate,
+                                       mode,
+                                       topSitesVM)
                 }
             }
             .toolbar {
@@ -229,14 +246,3 @@ struct PhoneView: View {
         }
     }
 }
-
-#if DEBUG
-struct PhoneView_Previews: PreviewProvider {
-    static var previews: some View {
-        let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source, .blank)
-        PhoneView(bvm, .full)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-    }
-}
-#endif

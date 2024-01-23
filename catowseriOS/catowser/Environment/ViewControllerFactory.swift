@@ -29,7 +29,8 @@ protocol ViewControllerFactory: AnyObject {
     func rootViewController(_ coordinator: AppCoordinator,
                             _ uiFramework: UIFrameworkType,
                             _ defaultContentType: Tab.ContentType,
-                            _ allTabsVM: AllTabsViewModel) -> AnyViewController
+                            _ allTabsVM: AllTabsViewModel,
+                            _ topSitesVM: TopSitesViewModel) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
@@ -84,13 +85,18 @@ extension ViewControllerFactory {
     func rootViewController(_ coordinator: AppCoordinator,
                             _ uiFramework: UIFrameworkType,
                             _ defaultContentType: Tab.ContentType,
-                            _ allTabsVM: AllTabsViewModel) -> AnyViewController {
+                            _ allTabsVM: AllTabsViewModel,
+                            _ topSitesVM: TopSitesViewModel) -> AnyViewController {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:
-            vc = MainBrowserV2ViewController(coordinator, uiFramework, defaultContentType, allTabsVM)
+            vc = MainBrowserV2ViewController(coordinator, 
+                                             uiFramework,
+                                             defaultContentType,
+                                             allTabsVM,
+                                             topSitesVM)
         }
         return vc
     }

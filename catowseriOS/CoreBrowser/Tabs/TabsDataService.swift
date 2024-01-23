@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit /// only for tab preview ui image
 
 /**
  Tabs list manager.

@@ -37,11 +37,12 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     init(_ coordinator: C, 
          _ uiFramework: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
-         _ allTabsVM: AllTabsViewModel) {
+         _ allTabsVM: AllTabsViewModel,
+         _ topSitesVM: TopSitesViewModel) {
         self.coordinator = coordinator
         viewModel = .init(coordinator)
         
-        let view = MainBrowserView(viewModel, uiFramework, defaultContentType, allTabsVM)
+        let view = MainBrowserView(viewModel, uiFramework, defaultContentType, allTabsVM, topSitesVM)
         super.init(rootView: view)
     }
     

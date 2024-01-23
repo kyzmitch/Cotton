@@ -37,25 +37,7 @@ struct TopSitesViewV2: View {
             guard let newValue else {
                 return
             }
-            Task {
-                do {
-                    try await TabsListManager.shared.replaceSelected(.site(newValue))
-                } catch {
-                    print("Fail to replace selected tab: \(error)")
-                }
-                
-            }
+            vm.replaceSelected(tabContent: .site(newValue))
         }
     }
 }
-
-#if DEBUG
-struct TopSitesViewV2_Previews: PreviewProvider {
-    static var previews: some View {
-        let vm: TopSitesViewModel = .init(true)
-
-        TopSitesViewV2(vm)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-    }
-}
-#endif

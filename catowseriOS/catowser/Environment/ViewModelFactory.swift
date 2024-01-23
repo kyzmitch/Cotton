@@ -10,6 +10,7 @@ import Foundation
 import CottonBase
 import CottonData
 import CoreBrowser
+import FeaturesFlagsKit
 
 /// Creates new instances of view models.
 /// Depends on feature flags to determine VM configuration/dependencies.
@@ -66,5 +67,11 @@ final class ViewModelFactory {
     @MainActor func allTabsViewModel() async -> AllTabsViewModel {
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return AllTabsViewModel(writeUseCase)
+    }
+    
+    @MainActor func topSitesViewModel() async -> TopSitesViewModel {
+        let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
+        let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
+        return TopSitesViewModel(isJsEnabled, writeUseCase)
     }
 }

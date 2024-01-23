@@ -45,23 +45,27 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     private let mode: SwiftUIMode
     /// all tabs view model which can be injected only in async way, so, has to pass it from outside
     @ObservedObject private var allTabsVM: AllTabsViewModel
+    /// Top sites view model has async dependencies and has to be injected
+    @ObservedObject private var topSitesVM: TopSitesViewModel
     
     init(_ vm: MainBrowserModel<C>, 
          _ uiFrameworkType: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
-         _ allTabsVM: AllTabsViewModel) {
+         _ allTabsVM: AllTabsViewModel,
+         _ topSitesVM: TopSitesViewModel) {
         self.vm = vm
         _browserContentVM = StateObject(wrappedValue: BrowserContentViewModel(vm.jsPluginsBuilder, defaultContentType))
         mode = uiFrameworkType.swiftUIMode
         self.allTabsVM = allTabsVM
+        self.topSitesVM = topSitesVM
     }
     
     var body: some View {
         Group {
             if isPad {
-                TabletView(browserContentVM, mode, .blank, allTabsVM)
+                TabletView(browserContentVM, mode, .blank, allTabsVM, topSitesVM)
             } else {
-                PhoneView(browserContentVM, mode)
+                PhoneView(browserContentVM, mode, topSitesVM)
             }
         }
         .environment(\.browserContentCoordinators, vm.coordinatorsInterface)

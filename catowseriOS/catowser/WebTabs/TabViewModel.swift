@@ -25,6 +25,7 @@ final class TabViewModel {
         self.tab = tab
         self.readTabUseCase = readTabUseCase
         self.writeTabUseCase = writeTabUseCase
+        _state = .init(initialValue: .deSelected(tab.title, nil))
     }
     
     // MARK: - public functions

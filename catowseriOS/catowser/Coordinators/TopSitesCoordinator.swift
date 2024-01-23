@@ -66,13 +66,9 @@ extension TopSitesCoordinator: Navigating {
     func showNext(_ route: R) {
         switch route {
         case .select(let site):
-            // Open selected top site
+            /// TODO: Usually it would be a view model responsibility and not coordinator
             Task {
-                do {
-                    try await TabsDataService.shared.replaceSelected(.site(site))
-                } catch {
-                    print("Fail to replace selected tab: \(error)")
-                }
+                _ = await TabsDataService.shared.sendCommand(.replaceSelectedContent(.site(site)))
             }
         }
     }

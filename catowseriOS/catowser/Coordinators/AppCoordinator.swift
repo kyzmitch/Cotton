@@ -110,7 +110,8 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                     .setInstagram(self)
             }
             let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
-            let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent, allTabsVM)
+            let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
+            let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent, allTabsVM, topSitesVM)
             startedVC = vc
             
             window.rootViewController = startedVC?.viewController

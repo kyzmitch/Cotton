@@ -18,6 +18,8 @@ struct TabletView: View {
     @ObservedObject private var browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
+    ///
+    @ObservedObject private var topSitesVM: TopSitesViewModel
     
     // MARK: - Tablet search bar state
     
@@ -75,8 +77,10 @@ struct TabletView: View {
     init(_ browserContentVM: BrowserContentViewModel, 
          _ mode: SwiftUIMode,
          _ defaultContentType: Tab.ContentType,
-         _ allTabsVM: AllTabsViewModel) {
+         _ allTabsVM: AllTabsViewModel,
+         _ topSitesVM: TopSitesViewModel) {
         self.browserContentVM = browserContentVM
+        self.topSitesVM = topSitesVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -135,7 +139,13 @@ struct TabletView: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins, 
+                                   siteNavigation,
+                                   isLoading,
+                                   contentType,
+                                   $webViewNeedsUpdate,
+                                   mode,
+                                   topSitesVM)
             }
         }
         .ignoresSafeArea(.keyboard)
@@ -177,7 +187,13 @@ struct TabletView: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins,
+                                   siteNavigation,
+                                   isLoading,
+                                   contentType,
+                                   $webViewNeedsUpdate,
+                                   mode,
+                                   topSitesVM)
             }
         }
         .sheet(isPresented: $showingMenu) {
