@@ -19,3 +19,5 @@ public enum TabsServiceDataOutput {
     case tabContentReplaced(TabsListError?)
     case tabPreviewUpdated(TabsListError?)
 }
+
+extension TabsServiceDataOutput: Equatable {}

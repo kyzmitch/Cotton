@@ -6,7 +6,7 @@
 //  Copyright © 2024 andreiermoshin. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 public protocol SelectedTabUseCase: BaseUseCase {
     func setSelectedPreview(_ image: Data?) async

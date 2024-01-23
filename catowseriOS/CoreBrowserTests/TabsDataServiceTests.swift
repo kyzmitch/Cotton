@@ -1,5 +1,5 @@
 //
-//  TabsListManagerTests.swift
+//  TabsDataServiceTests.swift
 //  CoreBrowserTests
 //
 //  Created by Andrei Ermoshin on 4/13/21.
@@ -16,7 +16,7 @@ extension UUID {
     static let notPossibleId: UUID = .init(uuid: (0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1))
 }
 
-class TabsListManagerTests: XCTestCase {
+class TabsDataServiceTests: XCTestCase {
     
     let tabsStorageMock: TabsStoragableMock = .init()
     
@@ -64,15 +64,13 @@ class TabsListManagerTests: XCTestCase {
         tabsStorageMock.fetchAllTabsThrowableError = TabStorageError.notFound
 
         let tabsMgr = await TabsDataService(tabsStorageMock, tabsStates, selectionStrategyMock)
-        let tabsCount = await tabsMgr.tabsCount
-        XCTAssertEqual(tabsCount, 0)
-        let selectedTabId = await tabsMgr.selectedId
-        XCTAssertEqual(selectedTabId, .notPossibleId)
-        // Not testing `tabsMgr.collectionLastIndex` and `tabsMgr.currentlySelectedIndex`
-        // because they would trigger assertion failure with currently used `MockedWithErrorTabsStorage`
-        // which doesn't return any initial tabs
-        let tabs = await tabsMgr.allTabs
-        XCTAssertEqual(tabs, [])
+        let tabsCountResponse = await tabsMgr.sendCommand(.getTabsCount)
+        XCTAssertEqual(tabsCountResponse, TabsServiceDataOutput.tabsCount(0))
+        
+        let selectedTabIdResponse = await tabsMgr.sendCommand(.getSelectedTabId)
+        XCTAssertEqual(selectedTabIdResponse, TabsServiceDataOutput.selectedTabId(.notPossibleId))
+        let tabsResponse = await tabsMgr.sendCommand(.getAllTabs)
+        XCTAssertEqual(tabsResponse, TabsServiceDataOutput.allTabs([]))
     }
     
     func testInit() async throws {
@@ -84,23 +82,23 @@ class TabsListManagerTests: XCTestCase {
         tabsStorageMock.fetchAllTabsReturnValue = tabsV1
         tabsStorageMock.fetchSelectedTabIdReturnValue = knownTabId
         let tabsMgr = await TabsDataService(tabsStorageMock, tabsStates, selectionStrategyMock)
-        let tabsCount = await tabsMgr.tabsCount
-        let selectedTabId = await tabsMgr.selectedId
-        XCTAssertEqual(selectedTabId, knownTabId)
-        XCTAssertEqual(tabsCount, tabsV1.count)
-        let tabs = await tabsMgr.allTabs
-        XCTAssertEqual(tabs, tabsV1)
+        let tabsCountResponse = await tabsMgr.sendCommand(.getTabsCount)
+        let selectedTabIdResponse = await tabsMgr.sendCommand(.getSelectedTabId)
+        XCTAssertEqual(selectedTabIdResponse, TabsServiceDataOutput.selectedTabId(knownTabId))
+        XCTAssertEqual(tabsCountResponse, TabsServiceDataOutput.tabsCount(tabsV1.count))
+        let tabsResponse = await tabsMgr.sendCommand(.getAllTabs)
+        XCTAssertEqual(tabsResponse, TabsServiceDataOutput.allTabs(tabsV1))
         
         // User selects already selected
         
         tabsStorageMock.selectTabReturnValue = tab2.id
-        await tabsMgr.select(tab: tab2)
-        let nextSelectedTabId2 = await tabsMgr.selectedId
-        XCTAssertEqual(nextSelectedTabId2, knownTabId)
+        _ = await tabsMgr.sendCommand(.selectTab(tab2))
+        let nextSelectedTabId2Response = await tabsMgr.sendCommand(.getSelectedTabId)
+        XCTAssertEqual(nextSelectedTabId2Response, TabsServiceDataOutput.selectedTabId(knownTabId))
         
         tabsStorageMock.selectTabReturnValue = tab1.id
-        await tabsMgr.select(tab: tab1)
-        let nextSelectedTabId1 = await tabsMgr.selectedId
-        XCTAssertEqual(nextSelectedTabId1, exampleTabId)
+        _ = await tabsMgr.sendCommand(.selectTab(tab1))
+        let nextSelectedTabId1Response = await tabsMgr.sendCommand(.getSelectedTabId)
+        XCTAssertEqual(nextSelectedTabId1Response, TabsServiceDataOutput.selectedTabId(exampleTabId))
     }
 }
