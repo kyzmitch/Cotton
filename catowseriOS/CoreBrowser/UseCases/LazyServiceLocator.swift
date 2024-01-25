@@ -10,14 +10,14 @@ import Foundation
 
 /// Registry record
 enum ServiceRecord {
-    case Instance(Any)
-    case Recipe(() -> Any)
+    case instance(Any)
+    case fromClosure(() -> Any)
     
     func unwrap() -> Any {
         switch self {
-            case .Instance(let instance):
+            case .instance(let instance):
                 return instance
-            case .Recipe(let recipe):
+            case .fromClosure(let recipe):
                 return recipe()
         }
     }
@@ -33,12 +33,12 @@ public class LazyServiceLocator: ServiceLocator {
 
     public func register<T>(_ recipe: @escaping () -> T) {
         let key = typeName(T.self)
-        registry[key] = .Recipe(recipe)
+        registry[key] = .fromClosure(recipe)
     }
 
     public func register<T>(_ instance: T) {
         let key = typeName(T.self)
-        registry[key] = .Instance(instance)
+        registry[key] = .instance(instance)
     }
 
     public func findService<T>(_ type: T.Type) -> T? {
@@ -48,7 +48,7 @@ public class LazyServiceLocator: ServiceLocator {
             instance = registryRec.unwrap() as? T
             /// Replace the recipe with the produced instance if this is the case
             switch registryRec {
-                case .Recipe:
+                case .fromClosure:
                     if let instance = instance {
                         register(instance)
                     }

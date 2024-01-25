@@ -38,9 +38,9 @@ final class UseCaseFactory {
         /// factory should be a singleton as well
         private func registerTabsUseCases() async {
             let dataService = await TabsDataService.shared
-            let readUseCase = ReadTabsUseCaseImpl(dataService, DefaultTabProvider.shared)
+            let readUseCase: ReadTabsUseCase = ReadTabsUseCaseImpl(dataService, DefaultTabProvider.shared)
             locator.register(readUseCase)
-            let writeUseCase = WriteTabsUseCaseImpl(dataService, readUseCase, DefaultTabProvider.shared)
+            let writeUseCase: WriteTabsUseCase = WriteTabsUseCaseImpl(dataService, readUseCase, DefaultTabProvider.shared)
             locator.register(writeUseCase)
         }
     }
