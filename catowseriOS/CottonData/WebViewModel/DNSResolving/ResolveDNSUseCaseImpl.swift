@@ -1,5 +1,5 @@
 //
-//  ResolverDNSUseCaseImpl.swift
+//  ResolveDNSUseCaseImpl.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 7/29/22.
@@ -15,7 +15,7 @@ private extension String {
     static let waitingQueueName: String = .queueNameWith(suffix: "dnsResolvingThrottle")
 }
 
-public final class ResolverDNSUseCaseImpl<Strategy> : ResolverDNSUseCase
+public final class ResolveDNSUseCaseImpl<Strategy> : ResolveDNSUseCase
 where Strategy: DNSResolvingStrategy {
     public let strategy: Strategy
     

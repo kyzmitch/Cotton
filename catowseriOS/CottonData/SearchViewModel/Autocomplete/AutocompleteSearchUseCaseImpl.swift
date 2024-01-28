@@ -1,5 +1,5 @@
 //
-//  AutocompleteWebSearchUseCaseImpl.swift
+//  AutocompleteSearchUseCaseImpl.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/21/22.
@@ -16,7 +16,7 @@ private extension String {
 }
 
 /// Web search suggestions (search autocomplete) facade
-public final class AutocompleteWebSearchUseCaseImpl<Strategy> : AutocompleteWebSearchUseCase
+public final class AutocompleteSearchUseCaseImpl<Strategy> : AutocompleteSearchUseCase
 where Strategy: SearchAutocompleteStrategy {
     public let strategy: Strategy
     

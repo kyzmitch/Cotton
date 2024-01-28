@@ -42,7 +42,7 @@ import FeaturesFlagsKit
 @MainActor
 public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
     /// Domain name resolver with specific strategy
-    private let resolveDnsUseCase: any ResolverDNSUseCase<Strategy>
+    private let resolveDnsUseCase: any ResolveDNSUseCase<Strategy>
     
     /// view model state (not private for unit tests only)
     var state: WebViewModelState
@@ -96,7 +96,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     /**
      Constructs web view model
      */
-    public init(_ resolveDnsUseCase: any ResolverDNSUseCase<Strategy>,
+    public init(_ resolveDnsUseCase: any ResolveDNSUseCase<Strategy>,
                 _ site: Site,
                 _ context: any WebViewContext,
                 _ selectTabUseCase: SelectedTabUseCase,

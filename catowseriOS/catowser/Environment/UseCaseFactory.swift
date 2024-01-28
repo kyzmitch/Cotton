@@ -60,14 +60,14 @@ final class UseCaseFactory {
                                               HttpEnvironment.shared.googleClientRxSubscriber,
                                               HttpEnvironment.shared.googleClientSubscriber)
             let googleStrategy = GoogleAutocompleteStrategy(googleContext)
-            let googleUseCase: any AutocompleteWebSearchUseCase = AutocompleteWebSearchUseCaseImpl(googleStrategy)
+            let googleUseCase: any AutocompleteSearchUseCase = AutocompleteSearchUseCaseImpl(googleStrategy)
             locator.registerNamed(googleUseCase, .googleAutocompleteUseCase)
             
             let ddGoContext = DDGoContext(HttpEnvironment.shared.duckduckgoClient,
                                           HttpEnvironment.shared.duckduckgoClientRxSubscriber,
                                           HttpEnvironment.shared.duckduckgoClientSubscriber)
             let ddGoStrategy = DDGoAutocompleteStrategy(ddGoContext)
-            let ddGoUseCase: any AutocompleteWebSearchUseCase = AutocompleteWebSearchUseCaseImpl(ddGoStrategy)
+            let ddGoUseCase: any AutocompleteSearchUseCase = AutocompleteSearchUseCaseImpl(ddGoStrategy)
             locator.registerNamed(ddGoUseCase, .duckDuckGoAutocompleteUseCase)
         }
         
@@ -78,7 +78,7 @@ final class UseCaseFactory {
                                                  HttpEnvironment.shared.dnsClientSubscriber)
             
             let googleStrategy = GoogleDNSStrategy(googleContext)
-            let googleUseCase: any ResolverDNSUseCase = ResolverDNSUseCaseImpl(googleStrategy)
+            let googleUseCase: any ResolveDNSUseCase = ResolveDNSUseCaseImpl(googleStrategy)
             locator.registerNamed(googleUseCase, .googleResolveDnsUseCase)
         }
     }

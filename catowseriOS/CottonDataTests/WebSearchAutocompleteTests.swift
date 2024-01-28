@@ -56,7 +56,7 @@ final class WebSearchAutocompleteTests: XCTestCase {
         typealias SuggestionProducer = SignalProducer<SearchSuggestionsResponse, HttpError>
         let responseProducer: SuggestionProducer = .init(value: searchSuggestionsResponse)
         Given(strategyMock, .suggestionsProducer(for: .value(input), willReturn: responseProducer))
-        let autoCompleteFacade: AutocompleteWebSearchUseCaseImpl = .init(strategyMock)
+        let autoCompleteFacade: AutocompleteSearchUseCaseImpl = .init(strategyMock)
         let producer = autoCompleteFacade.rxFetchSuggestions(input)
         let expectationRxSuggestionFail = XCTestExpectation(description: "Suggestions were not received")
         producer.startWithResult { result in
@@ -74,7 +74,7 @@ final class WebSearchAutocompleteTests: XCTestCase {
             .success(promiseValue)
             .eraseToAnyPublisher()
         Given(strategyMock, .suggestionsPublisher(for: .value(input), willReturn: responsePublisher))
-        let autoCompleteFacade: AutocompleteWebSearchUseCaseImpl = .init(strategyMock)
+        let autoCompleteFacade: AutocompleteSearchUseCaseImpl = .init(strategyMock)
         let publisher = autoCompleteFacade.combineFetchSuggestions(input)
         let expectationRxSuggestionFail = XCTestExpectation(description: "Suggestions were not received")
         let cancellable = publisher.sink { completion in
@@ -90,7 +90,7 @@ final class WebSearchAutocompleteTests: XCTestCase {
     func testConcurrencyWebSearchAutocomplete() async throws {
         let value: SearchSuggestionsResponse = .init(input, results)
         Given(strategyMock, .suggestionsTask(for: .value(input), willReturn: value))
-        let autoCompleteFacade: AutocompleteWebSearchUseCaseImpl = .init(strategyMock)
+        let autoCompleteFacade: AutocompleteSearchUseCaseImpl = .init(strategyMock)
         let received = try await autoCompleteFacade.aaFetchSuggestions(input)
         XCTAssertEqual(received, results)
     }

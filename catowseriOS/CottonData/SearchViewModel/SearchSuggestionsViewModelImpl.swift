@@ -20,7 +20,7 @@ public protocol SearchViewContext: AutoMockable {
 
 public final class SearchSuggestionsViewModelImpl<Strategy>: SearchSuggestionsViewModel where Strategy: SearchAutocompleteStrategy {
     /// Autocomplete client, probably need to depend on all possible use case (google, duckduckgo, etc.)
-    private let autocompleteUseCase: any AutocompleteWebSearchUseCase<Strategy>
+    private let autocompleteUseCase: any AutocompleteSearchUseCase<Strategy>
     /// search view context
     private let searchContext: SearchViewContext
     
@@ -38,7 +38,7 @@ public final class SearchSuggestionsViewModelImpl<Strategy>: SearchSuggestionsVi
     lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
 #endif
     
-    public init(_ autocompleteUseCase: any AutocompleteWebSearchUseCase<Strategy>, _ context: SearchViewContext) {
+    public init(_ autocompleteUseCase: any AutocompleteSearchUseCase<Strategy>, _ context: SearchViewContext) {
         state = .waitingForQuery
         self.autocompleteUseCase = autocompleteUseCase
         searchContext = context
