@@ -13,6 +13,12 @@ import FeaturesFlagsKit
 import CottonPlugins
 import CottonData
 
+private enum SiteLoading {
+    case noSite
+    case pendingViewModel
+    case siteReady(WebViewModel)
+}
+
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
     /// Plugins builder needed by web view model
@@ -27,10 +33,12 @@ struct BrowserContentView: View {
     @Binding private var webViewNeedsUpdate: Bool
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
-    ///
+    /// Top sites view model, possibly somehow needs to be recreated JS setting changes
     @ObservedObject private var topSitesVM: TopSitesViewModel
+    /// An addition to tab content type state to be able to create the view model, because it has async init
+    @State private var siteLoading: SiteLoading
     ///
-    private var webVM: WebViewModel!
+    private var siteNavigation: SiteExternalNavigationDelegate?
     
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
@@ -43,14 +51,30 @@ struct BrowserContentView: View {
         self.contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
         self.jsPluginsBuilder = jsPluginsBuilder
+        self.siteNavigation = siteNavigation
         self.mode = mode
         self.topSitesVM = topSitesVM
+        if contentType.isStatic {
+            siteLoading = .noSite
+        } else {
+            siteLoading = .pendingViewModel
+        }
     }
     
     var body: some View {
         dynamicContentView
             .task {
-                /// TODO: somehow init WebViewModel because it has async init
+                switch siteLoading {
+                case .noSite, .siteReady:
+                    break
+                case .pendingViewModel:
+                    guard let site = contentType.site else {
+                        return
+                    }
+                    let context = WebViewContextImpl(jsPluginsBuilder)
+                    let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, siteNavigation)
+                    siteLoading = .siteReady(viewModel)
+                }
             }
     }
     
@@ -65,7 +89,12 @@ struct BrowserContentView: View {
             case .topSites:
                 TopSitesView(topSitesVM, mode)
             case .site(let site):
-                WebView(webVM, site, webViewNeedsUpdate, mode)
+                switch siteLoading {
+                case .noSite, .pendingViewModel:
+                    Spacer()
+                case .siteReady(let viewModel):
+                    WebView(viewModel, site, webViewNeedsUpdate, mode)
+                }
             default:
                 Spacer()
             }

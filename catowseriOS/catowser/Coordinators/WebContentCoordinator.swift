@@ -66,7 +66,7 @@ final class WebContentCoordinator: Coordinator {
         sitePresenter = vc
         Task {
             let context: WebViewContextImpl = .init(jsPluginsSource)
-            let viewModel = await ViewModelFactory.shared.webViewModel(site, context, self)
+            let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, self)
             vc.setViewModel(viewModel)
             presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
             let topSitesView: UIView = vc.controllerView

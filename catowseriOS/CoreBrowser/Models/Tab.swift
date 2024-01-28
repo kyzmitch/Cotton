@@ -81,7 +81,7 @@ public extension Tab {
             }
         }
         
-        var site: Site? {
+        public var site: Site? {
             guard case let .site(site) = self else {
                 return nil
             }

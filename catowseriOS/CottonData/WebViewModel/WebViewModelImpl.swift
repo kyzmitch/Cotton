@@ -99,7 +99,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
                 _ context: any WebViewContext,
                 _ selectTabUseCase: SelectedTabUseCase,
                 _ writeTabUseCase: WriteTabsUseCase,
-                _ siteNavigation: SiteExternalNavigationDelegate) {
+                _ siteNavigation: SiteExternalNavigationDelegate?) {
         self.resolveDnsUseCase = resolveDnsUseCase
         // Do we need to use `updateState` function even in init?
         state = .initialized(site)
