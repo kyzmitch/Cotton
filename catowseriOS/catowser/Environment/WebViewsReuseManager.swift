@@ -51,13 +51,9 @@ final class WebViewsReuseManager {
     /// Returns already created view with updated site or creates new one.
     ///
     /// - Parameter site: The site object with all info for WebView.
-    /// - Parameter pluginsBuilder: Source for plugins.
-    /// - Parameter delegate: navigation delegate.
     /// - Parameter coordinator: a navigation interface
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor<C: Navigating>(_ site: Site,
-                                      _ pluginsBuilder: any JSPluginsSource,
-                                      _ delegate: SiteExternalNavigationDelegate?,
                                       _ coordinator: C?) throws -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
         // need to search web view with same url as in `site` to restore navigation history
@@ -73,7 +69,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let vc = vcFactory.webViewController(delegate, coordinator)
+            let vc = vcFactory.webViewController(coordinator)
             views.append(vc)
             lastSelectedIndex = count
             return vc

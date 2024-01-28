@@ -8,6 +8,9 @@
 
 import Foundation
 
+/**
+ Tabs service data output/response type.
+ */
 public enum TabsServiceDataOutput {
     case tabsCount(Int)
     case selectedTabId(UUID)

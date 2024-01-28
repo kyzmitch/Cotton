@@ -29,7 +29,7 @@ extension WebViewController: WebViewNavigatable {
 
     func goForward() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.provisionalNavigationDidStart()
+        viewModel?.siteNavigation?.provisionalNavigationDidStart()
         Task {
             await viewModel?.goForward()
         }
@@ -38,7 +38,7 @@ extension WebViewController: WebViewNavigatable {
 
     func goBack() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.provisionalNavigationDidStart()
+        viewModel?.siteNavigation?.provisionalNavigationDidStart()
         Task {
             await viewModel?.goBack()
         }
@@ -47,7 +47,7 @@ extension WebViewController: WebViewNavigatable {
 
     func reload() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.provisionalNavigationDidStart()
+        viewModel?.siteNavigation?.provisionalNavigationDidStart()
         Task {
             await viewModel?.reload()
         }

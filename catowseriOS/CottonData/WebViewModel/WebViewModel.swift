@@ -30,6 +30,7 @@ public protocol NavigationActionable: AnyObject {
 
 @MainActor
 public protocol WebViewModel: AnyObject {
+    
     // MARK: - main public methods
     
     func load() async
@@ -63,6 +64,5 @@ public protocol WebViewModel: AnyObject {
     
     // MARK: - new properties to have single view model for Web
     
-    var jsPluginsSource: any JSPluginsSource { get }
     var siteNavigation: SiteExternalNavigationDelegate? { get }
 }

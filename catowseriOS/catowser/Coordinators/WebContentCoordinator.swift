@@ -57,7 +57,7 @@ final class WebContentCoordinator: Coordinator {
     
     func start() {
         let manager = ViewsEnvironment.shared.reuseManager
-        let webViewController = try? manager.controllerFor(site, jsPluginsSource, self, self)
+        let webViewController = try? manager.controllerFor(site, self)
         guard let vc = webViewController else {
             assertionFailure("Failed create new web view for tab")
             return
@@ -66,7 +66,7 @@ final class WebContentCoordinator: Coordinator {
         sitePresenter = vc
         Task {
             let context: WebViewContextImpl = .init(jsPluginsSource)
-            let viewModel = await ViewModelFactory.shared.webViewModel(site, context)
+            let viewModel = await ViewModelFactory.shared.webViewModel(site, context, self)
             vc.setViewModel(viewModel)
             presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
             let topSitesView: UIView = vc.controllerView

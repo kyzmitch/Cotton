@@ -21,6 +21,6 @@ public protocol WebViewNavigatable: AnyObject {
     var siteSettings: Site.Settings { get }
     var url: URL? { get }
     
-    /// Allows to set view model after constructor of web view controller, but before viewWillAppear to allow web content loading
+    /// Allows to set view model after constructor of web view controller, because it is async dependency
     func setViewModel(_ viewModel: WebViewModel)
 }

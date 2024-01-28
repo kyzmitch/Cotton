@@ -19,11 +19,10 @@ fileprivate extension TabsViewController {
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
     private var viewModels = [TabViewModel]()
-    
     private let viewModel: AllTabsViewModel
     
-    init(_ vm: AllTabsViewModel) {
-        viewModel = vm
+    init(_ viewModel: AllTabsViewModel) {
+        self.viewModel = viewModel
         super.init()
     }
     

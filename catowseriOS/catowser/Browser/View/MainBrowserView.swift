@@ -36,29 +36,31 @@ extension UIFrameworkType {
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
     /// Store main view model in this main view to not have generic parameter in phone/tablet views
-    private let vm: MainBrowserModel<C>
+    @StateObject private var viewModel: MainBrowserModel<C>
     /// Browser content view model
     @StateObject private var browserContentVM: BrowserContentViewModel
     /// if User changes it in dev settings, then it is required to restart the app.
     /// Some other old code paths (coordinators and UIKit views) depend on that value,
     /// so, if new value is selected in dev menu, then it could create bugs if app is not restarted.
-    ///  At the moment app will crash if User selects new UI mode.
+    /// At the moment app will crash if User selects new UI mode.
     private let mode: SwiftUIMode
-    /// all tabs view model which can be injected only in async way, so, has to pass it from outside
+    /// All tabs view model which can be injected only in async way, so, has to pass it from outside
     @ObservedObject private var allTabsVM: AllTabsViewModel
     /// Top sites view model has async dependencies and has to be injected
     @ObservedObject private var topSitesVM: TopSitesViewModel
-    ///
+    /// Search suggestions view model has async dependencies and has to be injected
     private let searchSuggestionsVM: SearchSuggestionsViewModel
     
-    init(_ vm: MainBrowserModel<C>, 
+    init(_ coordinatorsInterface: C,
          _ uiFrameworkType: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
          _ searchSuggestionsVM: SearchSuggestionsViewModel) {
-        self.vm = vm
-        _browserContentVM = StateObject(wrappedValue: BrowserContentViewModel(vm.jsPluginsBuilder, defaultContentType))
+        let mainVM = MainBrowserModel(coordinatorsInterface)
+        _viewModel = StateObject(wrappedValue: mainVM)
+        let browserVM = BrowserContentViewModel(mainVM.jsPluginsBuilder, defaultContentType)
+        _browserContentVM = StateObject(wrappedValue: browserVM)
         mode = uiFrameworkType.swiftUIMode
         self.allTabsVM = allTabsVM
         self.topSitesVM = topSitesVM
@@ -73,7 +75,7 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
                 PhoneView(browserContentVM, mode, topSitesVM, searchSuggestionsVM)
             }
         }
-        .environment(\.browserContentCoordinators, vm.coordinatorsInterface)
+        .environment(\.browserContentCoordinators, viewModel.coordinatorsInterface)
         .onAppear {
             Task {
                 await TabsDataService.shared.attach(browserContentVM, notify: true)

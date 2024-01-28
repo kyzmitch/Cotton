@@ -37,12 +37,14 @@ final class ViewModelFactory {
         }
     }
     
-    func webViewModel(_ site: Site, _ context: WebViewContext) async -> WebViewModel {
+    func webViewModel(_ site: Site, 
+                      _ context: WebViewContext,
+                      _ siteNavigation: SiteExternalNavigationDelegate) async -> WebViewModel {
         let type = (any ResolveDNSUseCase<GoogleDNSStrategy>).self
         let googleDnsUseCase = await UseCaseFactory.shared().findUseCase(type, .googleResolveDnsUseCase)
         let selectTabUseCase = await UseCaseFactory.shared().findUseCase(SelectedTabUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
-        return WebViewModelImpl(googleDnsUseCase, site, context, selectTabUseCase, writeUseCase)
+        return WebViewModelImpl(googleDnsUseCase, site, context, selectTabUseCase, writeUseCase, siteNavigation)
     }
     
     func tabViewModel(_ tab: Tab) async -> TabViewModel {

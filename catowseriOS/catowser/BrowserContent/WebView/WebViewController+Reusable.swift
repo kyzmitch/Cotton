@@ -15,7 +15,7 @@ extension WebViewController: WebViewReusable {
         guard viewModel?.isResetable ?? false && viewModel?.urlInfo != site.urlInfo else {
             return
         }
-        externalNavigationDelegate?.webViewDidHandleReuseAction()
+        viewModel?.siteNavigation?.webViewDidHandleReuseAction()
         await viewModel?.reset(site)
     }
 }

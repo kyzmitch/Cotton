@@ -84,11 +84,8 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
          and most likely advantage of `WebViewsReuseManager` can't be used here.
          We have to re-create web view inside view controller.
          */
-        let vc = try? manager.controllerFor(site,
-                                            viewModel.jsPluginsSource,
-                                            viewModel.siteNavigation,
-                                            dummyArgument)
-        // TODO: Need to set web view model for vc
+        let vc = try? manager.controllerFor(site, dummyArgument)
+        vc?.setViewModel(viewModel)
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }

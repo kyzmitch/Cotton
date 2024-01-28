@@ -15,14 +15,15 @@ import CottonData
 struct PhoneView: View {
     // MARK: - view models of subviews
 
+    /// Search bar view model
     @StateObject private var searchBarVM: SearchBarViewModel = .init()
-    /// A reference to created vm in main view
+    /// A reference to created view model
     @ObservedObject private var browserContentVM: BrowserContentViewModel
-    /// Toolbar model needed by both UI modes
+    /// Toolbar view model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
-    ///
+    /// Top sites view model is async dependency, so, can only be injected from outside
     @ObservedObject private var topSitesVM: TopSitesViewModel
-    ///
+    /// Search suggestions view model has async init
     private let searchSuggestionsVM: SearchSuggestionsViewModel
     
     // MARK: - search bar state

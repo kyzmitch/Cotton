@@ -28,8 +28,6 @@ final class WebViewController<C: Navigating>: BaseViewController,
     var viewModel: WebViewModel?
     /// A coordinator reference
     private weak var coordinator: C?
-    /// Own navigation delegate
-    private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     /// State of observers
     private var webViewObserversAdded = false
     /// State of web view
@@ -69,9 +67,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
      
      Currently it is too tricky to inject view model right away because it has to be async
      */
-    init(_ externalNavigationDelegate: SiteExternalNavigationDelegate?,
-         _ coordinator: C?) {
-        self.externalNavigationDelegate = externalNavigationDelegate
+    init(_ coordinator: C?) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
@@ -115,8 +111,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
         // it means that it was replaced with some different content
         // maybe top sites, so, we have to reset navigation controls
         // and it can be done by sending `nil` interface
-        externalNavigationDelegate?.webViewDidReplace(nil)
-        unsubscribe()
+        viewModel?.siteNavigation?.webViewDidReplace(nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -157,7 +152,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let domain = viewModel?.nativeAppDomainNameString {
-            externalNavigationDelegate?.didSiteOpen(appName: domain)
+            viewModel?.siteNavigation?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
         Task {
@@ -166,11 +161,11 @@ final class WebViewController<C: Navigating>: BaseViewController,
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.showLoadingProgress(true)
+        viewModel?.siteNavigation?.showLoadingProgress(true)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        externalNavigationDelegate?.showLoadingProgress(false)
+        viewModel?.siteNavigation?.showLoadingProgress(false)
         
         defer {
             let snapshotConfig = WKSnapshotConfiguration()
@@ -204,7 +199,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Error occured during a committed main frame: \(error.localizedDescription)")
-        externalNavigationDelegate?.showLoadingProgress(false)
+        viewModel?.siteNavigation?.showLoadingProgress(false)
     }
     
     func webView(_ webView: WKWebView,
@@ -222,7 +217,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                 return
             }
             if stopLoadingProgress != nil {
-                self.externalNavigationDelegate?.showLoadingProgress(false)
+                self.viewModel?.siteNavigation?.showLoadingProgress(false)
             }
             guard let handler = handler else {
                 return
@@ -235,7 +230,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
         print("Error occured while starting to load data: \(error.localizedDescription)")
-        externalNavigationDelegate?.showLoadingProgress(false)
+        viewModel?.siteNavigation?.showLoadingProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
     }
@@ -314,7 +309,7 @@ private extension WebViewController {
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.loadingProgressdDidChange(Float(value))
+            self.viewModel?.siteNavigation?.loadingProgressdDidChange(Float(value))
         }
     }
     
@@ -323,7 +318,7 @@ private extension WebViewController {
         canGoBackObservation = webView?.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didBackNavigationUpdate(to: value)
+            self.viewModel?.siteNavigation?.didBackNavigationUpdate(to: value)
         }
     }
     
@@ -332,7 +327,7 @@ private extension WebViewController {
         canGoForwardObservation = webView?.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didForwardNavigationUpdate(to: value)
+            self.viewModel?.siteNavigation?.didForwardNavigationUpdate(to: value)
         }
     }
     
@@ -386,7 +381,7 @@ private extension WebViewController {
         // be checked that it is the same reference.
         let proxyValue = WebViewControllerProxy(self)
         proxy = proxyValue
-        externalNavigationDelegate?.webViewDidReplace(proxyValue)
+        viewModel.siteNavigation?.webViewDidReplace(proxyValue)
     }
 }
 

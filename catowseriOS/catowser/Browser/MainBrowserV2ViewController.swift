@@ -32,8 +32,6 @@ import CottonData
 final class MainBrowserV2ViewController<C: Navigating & BrowserContentCoordinators>:
 UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
     private weak var coordinator: C?
-    /// Store it in uikit view controller to not re-create view model after every redraw of main view in SwiftUI
-    private let viewModel: MainBrowserModel<C>
     
     init(_ coordinator: C, 
          _ uiFramework: UIFrameworkType,
@@ -42,9 +40,8 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
          _ topSitesVM: TopSitesViewModel,
          _ searchSuggestionsVM: SearchSuggestionsViewModel) {
         self.coordinator = coordinator
-        viewModel = .init(coordinator)
         
-        let view = MainBrowserView(viewModel,
+        let view = MainBrowserView(coordinator,
                                    uiFramework,
                                    defaultContentType,
                                    allTabsVM,

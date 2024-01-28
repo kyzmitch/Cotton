@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import CottonPlugins
 
-final class MainBrowserModel<C: BrowserContentCoordinators> {
+final class MainBrowserModel<C: BrowserContentCoordinators>: ObservableObject {
     weak var coordinatorsInterface: C?
     /// Not a constant because can't be initialized in init
     lazy var jsPluginsBuilder: any JSPluginsSource = {

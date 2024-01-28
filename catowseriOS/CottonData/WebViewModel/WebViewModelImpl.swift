@@ -89,8 +89,6 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     private let writeTabUseCase: WriteTabsUseCase
     
-    public let jsPluginsSource: any JSPluginsSource
-    
     public weak var siteNavigation: SiteExternalNavigationDelegate?
     
     /**
@@ -100,14 +98,15 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
                 _ site: Site,
                 _ context: any WebViewContext,
                 _ selectTabUseCase: SelectedTabUseCase,
-                _ writeTabUseCase: WriteTabsUseCase) {
+                _ writeTabUseCase: WriteTabsUseCase,
+                _ siteNavigation: SiteExternalNavigationDelegate) {
         self.resolveDnsUseCase = resolveDnsUseCase
         // Do we need to use `updateState` function even in init?
         state = .initialized(site)
         self.context = context
         self.selectTabUseCase = selectTabUseCase
         self.writeTabUseCase = writeTabUseCase
-        self.jsPluginsSource = context.pluginsSource
+        self.siteNavigation = siteNavigation
     }
     
     deinit {

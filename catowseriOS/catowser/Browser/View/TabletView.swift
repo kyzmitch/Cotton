@@ -19,9 +19,9 @@ struct TabletView: View {
     @ObservedObject private var browserContentVM: BrowserContentViewModel
     /// Toolbar model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
-    ///
+    /// Top sites view model is async dependency, so, can only be injected from outside
     @ObservedObject private var topSitesVM: TopSitesViewModel
-    ///
+    /// Search suggestions view model has async init
     private let searchSuggestionsVM: SearchSuggestionsViewModel
     
     // MARK: - Tablet search bar state

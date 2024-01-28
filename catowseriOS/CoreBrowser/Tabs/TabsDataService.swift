@@ -9,19 +9,7 @@
 import Foundation
 
 /**
- Tabs list manager.
- 
- Can't really implement this in Singletone pattern due to
- asynс initialization for several parameters during init.
- http://blog.stephencleary.com/2013/01/async-oop-2-constructors.html
- But if we choose some default state for this object we can make async init.
- One empty tab (`.blank` or even tab with favorite sites) will be good default
- state for time before some cached tabs will be fetched from storage.
- 
- @Published is used instead of MutableProperty from ReactiveSwift,
- See https://developer.apple.com/documentation/combine/published
- 
- https://forums.swift.org/t/how-do-you-use-asyncstream-to-make-task-execution-deterministic/57968/2
+ Tabs list data service which can be used as a subject for observers.
  */
 public actor TabsDataService {
     typealias UUIDStream = AsyncStream<UUID>
@@ -41,9 +29,11 @@ public actor TabsDataService {
     private var tabsCountStream: IntStream!
     /// Tabs count input for the async stream
     private var tabsCountInput: IntStream.Continuation!
-
+    /// Database interface
     private let storage: TabsStoragable
+    /// Default positioning settings
     private let positioning: TabsStates
+    /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
 
     public init(_ storage: TabsStoragable,
@@ -76,13 +66,14 @@ public actor TabsDataService {
         
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
+        
         do {
             try await fetchTabs()
         } catch {
             if ProcessInfo.unitTesting {
-                print("Failed to init tabs manager: \(error)")
+                print("Failed to init tabs data service: \(error)")
             } else {
-                fatalError("Fail to init tabs")
+                fatalError("Failed to init tabs data service: \(error)")
             }
         }
     }
@@ -243,10 +234,9 @@ private extension TabsDataService {
 extension TabsDataService: IndexSelectionContext {
     public var collectionLastIndex: Int {
         get async {
-            // -1 index is not possible because always should be at least 1 tab
+            /// -1 index is not possible because always should be at least 1 tab
             let amount = tabs.count
-            // Leaving assert even with unit tests
-            // https://stackoverflow.com/a/410198
+            /// Leaving assert even with unit tests, https://stackoverflow.com/a/410198
             assert(amount != 0, "Tabs amount shouldn't be 0")
             return amount - 1
         }
@@ -254,14 +244,12 @@ extension TabsDataService: IndexSelectionContext {
 
     public var currentlySelectedIndex: Int {
         get async {
-            // Leaving assert even with unit tests
-            // https://stackoverflow.com/a/410198
+            /// Leaving assert even with unit tests, https://stackoverflow.com/a/410198
             assert(!tabs.isEmpty, "Tabs amount shouldn't be 0")
             if let tabTuple = tabs.element(by: selectedTabIdentifier) {
                 return tabTuple.index
             }
-            // tabs collection shouldn't be empty, so,
-            // it is safe to return index of 1st element
+            /// tabs collection shouldn't be empty, so, it is safe to return index of 1st element
             return 0
         }
     }
@@ -295,9 +283,7 @@ extension TabsDataService: TabsSubject {
 
 private extension TabsDataService {
     func handleTabAdded(_ tab: Tab, index: Int, select: Bool) async {
-        // can select new tab only after adding it
-        // this is because corresponding view should be in the list
-        
+        /// can select new tab only after adding it, this is because corresponding view should be in the list
         switch positioning.addSpeed {
         case .immediately:
             for observer in tabObservers {
@@ -329,9 +315,9 @@ private extension TabsDataService {
     }
     
     func handleCachedTabRemove(_ tab: Tab) async {
-        // if it is a last tab - replace it with a tab with default content
-        // browser can't function without at least one tab
-        // so, this is kind of a side effect of removing the only one last tab
+        /// if it is a last tab - replace it with a tab with default content
+        /// browser can't function without at least one tab
+        /// so, this is kind of a side effect of removing the only one last tab
         if tabs.count == 1 {
             tabs.removeAll()
             tabsCountInput.yield(0)
@@ -344,13 +330,11 @@ private extension TabsDataService {
             guard let closedTabIndex = tabs.firstIndex(of: tab) else {
                 fatalError("Closing non existing tab")
             }
-
             let newIndex = await selectionStrategy.autoSelectedIndexAfterTabRemove(self, removedIndex: closedTabIndex)
-            // need to remove it before changing selected index
-            // otherwise in one case the handler will select closed tab
+            /// need to remove it before changing selected index
+            /// otherwise in one case the handler will select closed tab
             tabs.remove(at: closedTabIndex)
             tabsCountInput.yield(tabs.count)
-            
             guard let selectedTab = tabs[safe: newIndex] else {
                 fatalError("Failed to find new selected tab")
             }
@@ -377,7 +361,7 @@ private extension TabsDataService {
     }
     
     func subscribeForTabsCountChange() {
-        // This method can't be async, have to use new Task
+        /// This method can't be async, have to use new Task
         Task {
             for await newTabsCount in tabsCountStream {
                 for observer in self.tabObservers {
@@ -388,8 +372,7 @@ private extension TabsDataService {
     }
     
     func subscribeForSelectedTabIdChange() {
-        // This method can't be async - it blocks init,
-        // so have to use new task to avoid this.
+        /// This method can't be async - it blocks init,  so have to use new task to avoid this.
         Task {
             let filteredId = selectedTabIdStream.drop(while: { [weak self] identifier in
                 guard let self else {
@@ -430,14 +413,13 @@ extension AddedTabPosition {
             newIndex = tabs.count - 1
         case .afterSelected:
             guard let tabTuple = tabs.element(by: currentlySelectedId) else {
-                // no previously selected tab, probably when reset to one tab happend
+                /// no previously selected tab, probably when reset to one tab happend
                 tabs.append(tab)
                 return tabs.count - 1
             }
             newIndex = tabTuple.index + 1
             tabs.insert(tab, at: newIndex)
         }
-        
         return newIndex
     }
 }
