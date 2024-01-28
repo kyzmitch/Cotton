@@ -10,6 +10,7 @@ import UIKit
 import CottonBase
 import CoreBrowser
 import CottonPlugins
+import CottonData
 
 protocol WebContentDelegate: AnyObject {
     func provisionalNavigationDidStart()
@@ -63,14 +64,18 @@ final class WebContentCoordinator: Coordinator {
         }
         startedVC = vc
         sitePresenter = vc
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-        
-        let topSitesView: UIView = vc.controllerView
-        topSitesView.translatesAutoresizingMaskIntoConstraints = false
-        topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
-        topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
-        topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
-        topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
+        Task {
+            let context: WebViewContextImpl = .init(jsPluginsSource)
+            let viewModel = await ViewModelFactory.shared.webViewModel(site, context)
+            vc.setViewModel(viewModel)
+            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
+            let topSitesView: UIView = vc.controllerView
+            topSitesView.translatesAutoresizingMaskIntoConstraints = false
+            topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
+            topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
+            topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
+            topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
+        }
     }
 }
 

@@ -18,15 +18,14 @@ public protocol SearchViewContext: AutoMockable {
     var knownDomainsStorage: KnownDomainsSource { get }
 }
 
-public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: SearchAutocompleteStrategy {
-    /// autocomplete client
-    let autocomplete: WebSearchAutocomplete<Strategy>
+public final class SearchSuggestionsViewModelImpl<Strategy>: SearchSuggestionsViewModel where Strategy: SearchAutocompleteStrategy {
+    /// Autocomplete client, probably need to depend on all possible use case (google, duckduckgo, etc.)
+    private let autocompleteUseCase: any AutocompleteWebSearchUseCase<Strategy>
     /// search view context
-    let searchContext: SearchViewContext
+    private let searchContext: SearchViewContext
     
     // MARK: - state observers
     
-    /// Using `Published` property wrapper from not related SwiftUI for now
     @Published public var state: SearchSuggestionsViewState
     /// State publisher
     public var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
@@ -39,24 +38,22 @@ public final class SearchSuggestionsViewModelImpl<Strategy> where Strategy: Sear
     lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
 #endif
     
-    public init(_ strategy: Strategy, _ context: SearchViewContext) {
+    public init(_ autocompleteUseCase: any AutocompleteWebSearchUseCase<Strategy>, _ context: SearchViewContext) {
         state = .waitingForQuery
-        autocomplete = .init(strategy)
+        self.autocompleteUseCase = autocompleteUseCase
         searchContext = context
     }
     
     deinit {
-        searchSuggestionsTaskHandler?.cancel()
+        /// Can't cancel `searchSuggestionsTaskHandler?.cancel()` because it is async
     }
-}
-
-extension SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
+    
     public func fetchSuggestions(_ query: String) async {
         let domainNames = await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
         state = .knownDomainsLoaded(domainNames)
         searchSuggestionsTaskHandler?.cancel()
         do {
-            let suggestions = try await autocomplete.aaFetchSuggestions(query)
+            let suggestions = try await autocompleteUseCase.aaFetchSuggestions(query)
             state = .everythingLoaded(domainNames, suggestions)
         } catch {
             state = .everythingLoaded(domainNames, [])

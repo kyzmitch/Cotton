@@ -7,10 +7,9 @@
 //
 
 import Foundation
-import UIKit
 import CoreBrowser
 
-protocol SiteExternalNavigationDelegate: AnyObject {
+public protocol SiteExternalNavigationDelegate: AnyObject {
     func provisionalNavigationDidStart()
     func didSiteOpen(appName: String)
     func loadingProgressdDidChange(_ progress: Float)
@@ -25,9 +24,9 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     func webViewDidReplace(_ interface: WebViewNavigatable?)
 }
 
-protocol SiteNavigationChangable: AnyObject {
+public protocol SiteNavigationChangable: AnyObject {
     func changeBackButton(to canGoBack: Bool)
     func changeForwardButton(to canGoForward: Bool)
 }
 
-typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable
+public typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable

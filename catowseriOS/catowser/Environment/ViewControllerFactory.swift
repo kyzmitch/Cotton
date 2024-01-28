@@ -30,12 +30,13 @@ protocol ViewControllerFactory: AnyObject {
                             _ uiFramework: UIFrameworkType,
                             _ defaultContentType: Tab.ContentType,
                             _ allTabsVM: AllTabsViewModel,
-                            _ topSitesVM: TopSitesViewModel) -> AnyViewController
+                            _ topSitesVM: TopSitesViewModel,
+                            _ searchSuggestionsVM: SearchSuggestionsViewModel) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
-                                         _ searchProviderType: WebAutoCompletionSource) -> AnyViewController
+                                         _ viewModel: SearchSuggestionsViewModel) -> AnyViewController
     
     func webViewController<C: Navigating>(_ externalNavigationDelegate: SiteExternalNavigationDelegate?,
                                           _ coordinator: C?) -> AnyViewController & WebViewNavigatable
@@ -86,7 +87,8 @@ extension ViewControllerFactory {
                             _ uiFramework: UIFrameworkType,
                             _ defaultContentType: Tab.ContentType,
                             _ allTabsVM: AllTabsViewModel,
-                            _ topSitesVM: TopSitesViewModel) -> AnyViewController {
+                            _ topSitesVM: TopSitesViewModel,
+                            _ searchSuggestionsVM: SearchSuggestionsViewModel) -> AnyViewController {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
@@ -96,7 +98,8 @@ extension ViewControllerFactory {
                                              uiFramework,
                                              defaultContentType,
                                              allTabsVM,
-                                             topSitesVM)
+                                             topSitesVM,
+                                             searchSuggestionsVM)
         }
         return vc
     }
@@ -108,11 +111,11 @@ extension ViewControllerFactory {
     }
     
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
-                                         _ searchProviderType: WebAutoCompletionSource) -> AnyViewController {
+                                         _ viewModel: SearchSuggestionsViewModel) -> AnyViewController {
         // It seems it should be computed property
         // to allow app. to use different view model
         // based on current feature flag's value
-        let vc: SearchSuggestionsViewController = .init(delegate, searchProviderType)
+        let vc: SearchSuggestionsViewController = .init(delegate, viewModel)
         return vc
     }
     

@@ -9,6 +9,7 @@
 import CottonBase
 import CoreBrowser
 
+@MainActor
 final class TopSitesViewModel: ObservableObject {
     let topSites: [Site]
     private let writeTabUseCase: WriteTabsUseCase

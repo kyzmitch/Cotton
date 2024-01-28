@@ -11,6 +11,7 @@ import CoreBrowser
 import Combine
 import FeaturesFlagsKit
 import CottonPlugins
+import CottonData
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
 struct BrowserContentView: View {
@@ -24,12 +25,12 @@ struct BrowserContentView: View {
     private let isLoading: Bool
     /// Tells if web view needs to be updated to avoid unnecessary updates.
     @Binding private var webViewNeedsUpdate: Bool
-    /// Web view view model reference
-    private let webViewModel: WebViewModelV2
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     ///
     @ObservedObject private var topSitesVM: TopSitesViewModel
+    ///
+    private var webVM: WebViewModel!
     
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
@@ -41,7 +42,6 @@ struct BrowserContentView: View {
         self.isLoading = isLoading
         self.contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
-        webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
         self.jsPluginsBuilder = jsPluginsBuilder
         self.mode = mode
         self.topSitesVM = topSitesVM
@@ -49,6 +49,9 @@ struct BrowserContentView: View {
     
     var body: some View {
         dynamicContentView
+            .task {
+                /// TODO: somehow init WebViewModel because it has async init
+            }
     }
     
     @ViewBuilder
@@ -62,7 +65,7 @@ struct BrowserContentView: View {
             case .topSites:
                 TopSitesView(topSitesVM, mode)
             case .site(let site):
-                WebView(webViewModel, site, webViewNeedsUpdate, mode)
+                WebView(webVM, site, webViewNeedsUpdate, mode)
             default:
                 Spacer()
             }

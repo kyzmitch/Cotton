@@ -21,7 +21,7 @@ import CoreBrowser
 /// protocol with async functions which do not belong to specific actor
 public protocol WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
-    var pluginsProgram: any JSPluginsProgram { get }
+    var  pluginsSource: any JSPluginsSource { get }
     /// Hides app specific implementation for host check
     func nativeApp(for host: CottonBase.Host) -> String?
     /// Hides app specific feature for JS value

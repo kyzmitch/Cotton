@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import FeaturesFlagsKit
+import CottonData
 
 protocol SearchSuggestionsControllerInterface: AnyObject {
     func prepareSearch(for searchQuery: String) async
@@ -33,28 +34,23 @@ final class SearchSuggestionsCoordinator: Coordinator {
         }
     }
     private var disposables = [Disposable?]()
-    private let providerType: WebAutoCompletionSource
+    private let viewModel: SearchSuggestionsViewModel
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController,
          _ delegate: SearchSuggestionsListDelegate,
-         _ providerType: WebAutoCompletionSource) {
+         _ viewModel: SearchSuggestionsViewModel) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
-        self.providerType = providerType
+        self.viewModel = viewModel
     }
     
     func start() {
-        // Used to be an async function
-        internalStart(providerType)
-    }
-    
-    private func internalStart(_ searchProviderType: WebAutoCompletionSource) {
         guard let controllerView = presenterVC?.controllerView else {
             return
         }
-        let vc = vcFactory.searchSuggestionsViewController(delegate, searchProviderType)
+        let vc = vcFactory.searchSuggestionsViewController(delegate, viewModel)
         startedVC = vc
         // adds suggestions view to root view controller
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)

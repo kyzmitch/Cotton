@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SiteNavigationComponent: AnyObject {
+public protocol SiteNavigationComponent: AnyObject {
     /// Use `nil` to tell that navigation actions should be disabled
     var siteNavigator: WebViewNavigatable? { get set }
     /// Reloads state of UI components

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonBase
+import CottonData
 
 /// A special case web view interface only for SwiftUI
 /// because we have to reuse existing web view for all the tabs
@@ -17,7 +18,7 @@ protocol WebViewReusable: AnyObject {
 
 /// web view specific to SwiftUI
 struct WebView: View {
-    let model: WebViewModelV2
+    let viewModel: WebViewModel
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
@@ -25,11 +26,11 @@ struct WebView: View {
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
-    init(_ model: WebViewModelV2,
+    init(_ viewModel: WebViewModel,
          _ site: Site,
          _ webViewNeedsUpdate: Bool,
          _ mode: SwiftUIMode) {
-        self.model = model
+        self.viewModel = viewModel
         self.site = site
         self.webViewNeedsUpdate = webViewNeedsUpdate
         self.mode = mode
@@ -38,7 +39,7 @@ struct WebView: View {
     var body: some View {
         // There is no system WebView type for SwiftUI
         // so that, the mode is not used for now
-        WebViewLegacyView(model, site, webViewNeedsUpdate)
+        WebViewLegacyView(viewModel, site, webViewNeedsUpdate)
     }
 }
 
@@ -46,7 +47,7 @@ struct WebView: View {
 private struct WebViewLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
-    private let model: WebViewModelV2
+    private let viewModel: WebViewModel
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
@@ -59,32 +60,35 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         ViewsEnvironment.shared.reuseManager
     }
     
-    init(_ model: WebViewModelV2,
+    init(_ viewModel: WebViewModel,
          _ site: Site,
          _ webViewNeedsUpdate: Bool) {
-        self.model = model
+        self.viewModel = viewModel
         self.site = site
         self.webViewNeedsUpdate = webViewNeedsUpdate
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        // - Can't save web view interface here because
-        // `View` & `UIViewControllerRepresentable` is immutable type,
-        // or actually this function `makeUIViewController` is not mutable.
-        //
-        // - Could be possible to fetch it from `WebViewsReuseManager` if it is
-        // configured to use web views cache.
-        //
-        // - `makeUIViewController` is not called more than once
-        // which is not expected, but at least `updateUIViewController`
-        // is getting called when the state changes. So, that a web view controller
-        // can't be replaced with a new one on SwiftUI level
-        // and most likely advantage of `WebViewsReuseManager` can't be used here.
-        // We have to re-create web view inside view controller.
-        let vc: (AnyViewController & WebViewNavigatable)? = try? manager.controllerFor(site,
-                                                                                       model.jsPluginsBuilder,
-                                                                                       model.siteNavigation,
-                                                                                       dummyArgument)
+        /**
+         - Can't save web view interface here because
+         `View` & `UIViewControllerRepresentable` is immutable type,
+         or actually this function `makeUIViewController` is not mutable.
+         
+         - Could be possible to fetch it from `WebViewsReuseManager` if it is
+         configured to use web views cache.
+         
+         - `makeUIViewController` is not called more than once
+         which is not expected, but at least `updateUIViewController`
+         is getting called when the state changes. So, that a web view controller
+         can't be replaced with a new one on SwiftUI level
+         and most likely advantage of `WebViewsReuseManager` can't be used here.
+         We have to re-create web view inside view controller.
+         */
+        let vc = try? manager.controllerFor(site,
+                                            viewModel.jsPluginsSource,
+                                            viewModel.siteNavigation,
+                                            dummyArgument)
+        // TODO: Need to set web view model for vc
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }

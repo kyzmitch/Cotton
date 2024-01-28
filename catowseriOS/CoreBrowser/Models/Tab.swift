@@ -130,21 +130,7 @@ extension Tab.ContentType: Equatable {
     public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
         case (.site(let lSite), .site(let rSite)):
-            // For some reason Kotlin comparison doesn't work right for the identical objects
-            // `return lSite == rSite`
-            if lSite.urlInfo.platformURL != rSite.urlInfo.platformURL {
-                return false
-            }
-            if lSite.searchSuggestion != rSite.searchSuggestion {
-                return false
-            }
-            if lSite.userSpecifiedTitle != rSite.userSpecifiedTitle {
-                return false
-            }
-            if lSite.settings != rSite.settings {
-                return false
-            }
-            return true
+            return lSite.compareWith(rSite)
         case (.blank, .blank):
             return true
         case (.homepage, .homepage):
@@ -156,6 +142,29 @@ extension Tab.ContentType: Equatable {
         default:
             return false
         }
+    }
+}
+
+private extension Site {
+    func compareWith(_ rSite: Site) -> Bool {
+        // For some reason Kotlin comparison doesn't work right for the identical objects
+        // `return lSite == rSite`
+        let lSite = self
+        // For some reason Kotlin comparison doesn't work right for the identical objects
+        // `return lSite == rSite`
+        if lSite.urlInfo.platformURL != rSite.urlInfo.platformURL {
+            return false
+        }
+        if lSite.searchSuggestion != rSite.searchSuggestion {
+            return false
+        }
+        if lSite.userSpecifiedTitle != rSite.userSpecifiedTitle {
+            return false
+        }
+        if lSite.settings != rSite.settings {
+            return false
+        }
+        return true
     }
 }
 

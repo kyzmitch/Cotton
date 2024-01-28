@@ -24,28 +24,30 @@ enum ServiceRecord {
 }
 
 public class LazyServiceLocator: ServiceLocator {
-    /// Service registry
-    private lazy var registry: [String: ServiceRecord] = [:]
-
-    private func typeName(_ some: Any) -> String {
-        return (some is Any.Type) ? "\(some)" : "\(type(of: some))"
-    }
+    private lazy var idByRecord: [ObjectIdentifier : ServiceRecord] = [:]
+    private lazy var stringByRecord: [String : ServiceRecord] = [:]
 
     public func register<T>(_ recipe: @escaping () -> T) {
-        let key = typeName(T.self)
-        registry[key] = .fromClosure(recipe)
+        let key = ObjectIdentifier(type(of: T.self))
+        idByRecord[key] = .fromClosure(recipe)
     }
 
     public func register<T>(_ instance: T) {
-        let key = typeName(T.self)
-        registry[key] = .instance(instance)
+        let key = ObjectIdentifier(type(of: instance))
+        idByRecord[key] = .instance(instance)
+    }
+    
+    public func registerNamed<T>(_ instance: T, _ key: String) {
+        stringByRecord[key] = .instance(instance)
     }
 
-    public func findService<T>(_ type: T.Type) -> T? {
-        let key = typeName(T.self)
+    public func findService<T>(_ type: T.Type, _ key: String? = nil) -> T? {
+        let id = ObjectIdentifier(type)
         var instance: T? = nil
-        if let registryRec = registry[key] {
-            instance = registryRec.unwrap() as? T
+        
+        /// internal closure
+        func handle<B>(_ registryRec: ServiceRecord) -> B? {
+            let instance: B? = registryRec.unwrap() as? B
             /// Replace the recipe with the produced instance if this is the case
             switch registryRec {
                 case .fromClosure:
@@ -55,6 +57,13 @@ public class LazyServiceLocator: ServiceLocator {
                 default:
                     break
             }
+            return instance
+        }
+        
+        if let registryRec = idByRecord[id] {
+            instance = handle(registryRec)
+        } else if let recordKey = key, let registryRec = stringByRecord[recordKey] {
+            instance = handle(registryRec)
         }
         return instance
     }

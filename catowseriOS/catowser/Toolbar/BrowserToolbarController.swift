@@ -16,6 +16,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonData
 
 final class BrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
     private weak var coordinator: C?

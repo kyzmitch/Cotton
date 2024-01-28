@@ -9,7 +9,7 @@
 import Foundation
 import CottonBase
 
-protocol WebViewNavigatable: AnyObject {
+public protocol WebViewNavigatable: AnyObject {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
     func goForward()
@@ -20,4 +20,7 @@ protocol WebViewNavigatable: AnyObject {
     var host: Host { get }
     var siteSettings: Site.Settings { get }
     var url: URL? { get }
+    
+    /// Allows to set view model after constructor of web view controller, but before viewWillAppear to allow web content loading
+    func setViewModel(_ viewModel: WebViewModel)
 }

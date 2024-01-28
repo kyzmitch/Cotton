@@ -7,24 +7,25 @@
 //
 
 import SwiftUI
+import CottonData
 
 struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
     private let searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
-    private let searchProviderType: WebAutoCompletionSource
+    private let viewModel: SearchSuggestionsViewModel
     
     init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?,
-         _ searchProviderType: WebAutoCompletionSource) {
+         _ viewModel: SearchSuggestionsViewModel) {
         self.searchQuery = searchQuery
         self.delegate = delegate
-        self.searchProviderType = searchProviderType
+        self.viewModel = viewModel
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {
-        let vc = vcFactory.searchSuggestionsViewController(delegate, searchProviderType)
+        let vc = vcFactory.searchSuggestionsViewController(delegate, viewModel)
         return vc.viewController
     }
     

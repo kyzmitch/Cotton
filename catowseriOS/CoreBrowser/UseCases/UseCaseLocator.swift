@@ -28,7 +28,14 @@ public final class UseCaseLocator: LazyServiceLocator {
         super.register(instance)
     }
     
-    public override func findService<T>(_ type: T.Type) -> T? {
-        return super.findService(type)
+    public override func registerNamed<T>(_ instance: T, _ key: String) {
+        guard instance is BaseUseCase else {
+            return
+        }
+        super.registerNamed(instance, key)
+    }
+    
+    public override func findService<T>(_ type: T.Type, _ key: String? = nil) -> T? {
+        return super.findService(type, key)
     }
 }

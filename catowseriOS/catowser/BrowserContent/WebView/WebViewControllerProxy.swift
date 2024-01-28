@@ -8,6 +8,7 @@
 
 import Foundation
 import CottonBase
+import CottonData
 
 /// A proxy type around WebViewController for SwiftUI mode only when
 /// web view can only be re-used and same web view controller
@@ -59,5 +60,9 @@ final class WebViewControllerProxy: WebViewNavigatable {
     
     var url: URL? {
         vc?.url
+    }
+    
+    func setViewModel(_ viewModel: WebViewModel) {
+        vc?.setViewModel(viewModel)
     }
 }

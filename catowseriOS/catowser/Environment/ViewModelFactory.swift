@@ -17,59 +17,52 @@ import FeaturesFlagsKit
 ///
 /// It doesn't need to be globalActor even tho it is a singleton,
 /// because it doesn't hold the state and vm creation is synchronous.
+@MainActor
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
     
     private init() {}
     
-    func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) -> SearchSuggestionsViewModel {
+    func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) async -> SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:
-            let context = GoogleContext(HttpEnvironment.shared.googleClient,
-                                        HttpEnvironment.shared.googleClientRxSubscriber,
-                                        HttpEnvironment.shared.googleClientSubscriber)
-            let strategy = GoogleAutocompleteStrategy(context)
-            return SearchSuggestionsViewModelImpl(strategy, vmContext)
+            let type = (any AutocompleteWebSearchUseCase<GoogleAutocompleteStrategy>).self
+            let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type)
+            return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         case .duckduckgo:
-            let context = DDGoContext(HttpEnvironment.shared.duckduckgoClient,
-                                      HttpEnvironment.shared.duckduckgoClientRxSubscriber,
-                                      HttpEnvironment.shared.duckduckgoClientSubscriber)
-            let strategy = DDGoAutocompleteStrategy(context)
-            return SearchSuggestionsViewModelImpl(strategy, vmContext)
+            let type = (any AutocompleteWebSearchUseCase<DDGoAutocompleteStrategy>).self
+            let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type)
+            return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         }
     }
     
-    @MainActor func webViewModel(_ site: Site, _ context: WebViewContext) async -> WebViewModel {
-        /// It is the same context for any site or view model, maybe it makes sense to use only one
-        let stratContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
-                                            HttpEnvironment.shared.dnsClientRxSubscriber,
-                                            HttpEnvironment.shared.dnsClientSubscriber)
-        
-        let strategy = GoogleDNSStrategy(stratContext)
+    func webViewModel(_ site: Site, _ context: WebViewContext) async -> WebViewModel {
+        let type = (any ResolverDNSUseCase<GoogleDNSStrategy>).self
+        let googleDnsUseCase = await UseCaseFactory.shared().findUseCase(type)
         let selectTabUseCase = await UseCaseFactory.shared().findUseCase(SelectedTabUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
-        return WebViewModelImpl(strategy, site, context, selectTabUseCase, writeUseCase)
+        return WebViewModelImpl(googleDnsUseCase, site, context, selectTabUseCase, writeUseCase)
     }
     
-    @MainActor func tabViewModel(_ tab: Tab) async -> TabViewModel {
+    func tabViewModel(_ tab: Tab) async -> TabViewModel {
         let readUseCase = await UseCaseFactory.shared().findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return TabViewModel(tab, readUseCase, writeUseCase)
     }
     
-    @MainActor func tabsPreviewsViewModel() async -> TabsPreviewsViewModel {
+    func tabsPreviewsViewModel() async -> TabsPreviewsViewModel {
         let readUseCase = await UseCaseFactory.shared().findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return TabsPreviewsViewModel(readUseCase, writeUseCase)
     }
     
-    @MainActor func allTabsViewModel() async -> AllTabsViewModel {
+    func allTabsViewModel() async -> AllTabsViewModel {
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return AllTabsViewModel(writeUseCase)
     }
     
-    @MainActor func topSitesViewModel() async -> TopSitesViewModel {
+    func topSitesViewModel() async -> TopSitesViewModel {
         let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return TopSitesViewModel(isJsEnabled, writeUseCase)

@@ -1,5 +1,5 @@
 //
-//  WebSearchAutocomplete.swift
+//  AutocompleteWebSearchUseCaseImpl.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 6/21/22.
@@ -15,23 +15,21 @@ private extension String {
     static let waitingQueueName: String = .queueNameWith(suffix: "searchThrottle")
 }
 
-typealias WebSearchSuggestionsProducer = SignalProducer<[String], HttpError>
-typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpError>
-
 /// Web search suggestions (search autocomplete) facade
-final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteStrategy {
-    let strategy: Strategy
+public final class AutocompleteWebSearchUseCaseImpl<Strategy> : AutocompleteWebSearchUseCase
+where Strategy: SearchAutocompleteStrategy {
+    public let strategy: Strategy
     
     private lazy var waitingQueue = DispatchQueue(label: .waitingQueueName)
     private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated,
                                                        name: .waitingQueueName,
                                                        targeting: waitingQueue)
     
-    init(_ strategy: Strategy) {
+    public init(_ strategy: Strategy) {
         self.strategy = strategy
     }
     
-    func rxFetchSuggestions(_ query: String) -> WebSearchSuggestionsProducer {
+    public func rxFetchSuggestions(_ query: String) -> WebSearchSuggestionsProducer {
         let source = SignalProducer<String, Never>.init(value: query)
         return source
             .delay(0.5, on: waitingScheduler)
@@ -45,7 +43,7 @@ final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteSt
             .observe(on: QueueScheduler.main)
     }
     
-    func combineFetchSuggestions(_ query: String) -> WebSearchSuggestionsPublisher {
+    public func combineFetchSuggestions(_ query: String) -> WebSearchSuggestionsPublisher {
         let source = Just<String>(query)
         return source
             .delay(for: 0.5, scheduler: waitingQueue)
@@ -67,5 +65,10 @@ final class WebSearchAutocomplete<Strategy> where Strategy: SearchAutocompleteSt
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+    
+    public func aaFetchSuggestions(_ query: String) async throws -> [String] {
+        let response = try await strategy.suggestionsTask(for: query)
+        return response.textResults
     }
 }

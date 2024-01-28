@@ -86,17 +86,3 @@ struct SearchSuggestionsViewV2: View {
         } // switch
     } // construct view
 }
-
-#if DEBUG
-struct SearchSuggestionsViewV2_Previews: PreviewProvider {
-    static var previews: some View {
-        let delegate: SearchSuggestionsListDelegate? = nil
-        let searchQuery: String = "e"
-        
-        let vm: SearchSuggestionsViewModel = ViewModelFactory.shared.searchSuggestionsViewModel(.duckduckgo)
-
-        SearchSuggestionsViewV2(searchQuery, delegate, vm)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-    }
-}
-#endif

@@ -11,6 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 import BrowserNetworking
 import CottonBase
+import CottonData
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
@@ -104,7 +105,9 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
-    case suggestions(WebAutoCompletionSource)
+    case suggestions(SearchSuggestionsViewModel)
+    /// Similar case to the existing one, just to be able to create it without a dummy view model
+    case simplySuggestions
 }
 
 extension SearchBarCoordinator: Layouting {
@@ -112,8 +115,11 @@ extension SearchBarCoordinator: Layouting {
     
     func insertNext(_ subview: SP) {
         switch subview {
-        case .suggestions(let provider):
-            insertSearchSuggestions(provider)
+        case .suggestions(let viewModel):
+            insertSearchSuggestions(viewModel)
+        case .simplySuggestions:
+            assertionFailure("Not possible case")
+            break
         }
     }
     
@@ -130,8 +136,11 @@ extension SearchBarCoordinator: Layouting {
         switch step {
         case .viewDidLoad(let subview, let topAnchor, let bottomAnchor, let toolbarHeight):
             switch subview {
-            case .suggestions:
+            case .simplySuggestions:
                 searhSuggestionsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor, toolbarHeight))
+            case .suggestions:
+                assertionFailure("Not possible case")
+                break
             }
         default:
             break
@@ -170,7 +179,7 @@ private extension SearchBarCoordinator {
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
     }
     
-    func insertSearchSuggestions(_ providerType: WebAutoCompletionSource) {
+    func insertSearchSuggestions(_ viewModel: SearchSuggestionsViewModel) {
         guard !isSuggestionsShowed else {
             return
         }
@@ -179,7 +188,7 @@ private extension SearchBarCoordinator {
         
         // swiftlint:disable:next force_unwrapping
         let presenter = presenterVC!
-        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self, providerType)
+        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self, viewModel)
         coordinator.parent = self
         coordinator.start()
         searhSuggestionsCoordinator = coordinator
@@ -217,7 +226,8 @@ extension SearchBarCoordinator: UISearchBarDelegate {
         } else {
             Task {
                 let searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
-                insertNext(.suggestions(searchProviderType))
+                let viewModel = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProviderType)
+                insertNext(.suggestions(viewModel))
                 // Use delegate and not a direct call
                 // because it requires layout info
                 // about neighbour views (anchors and height)

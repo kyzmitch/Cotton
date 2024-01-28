@@ -8,6 +8,7 @@
 
 import WebKit
 import CottonBase
+import CottonData
 
 // MARK: - Allow users of this delegate to control webview navigation
 

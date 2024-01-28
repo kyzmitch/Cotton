@@ -85,6 +85,10 @@ final class WebViewController<C: Navigating>: BaseViewController,
         unsubscribe()
     }
     
+    func setViewModel(_ viewModel: WebViewModel) {
+        self.viewModel = viewModel
+    }
+    
     override func loadView() {
         view = UIView(frame: .zero)
     }

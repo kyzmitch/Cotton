@@ -10,15 +10,9 @@ import Foundation
 
 public final class WriteTabsUseCaseImpl: WriteTabsUseCase {
     private let tabsDataService: TabsDataService
-    private let readUseCase: ReadTabsUseCase
-    private let positioning: TabsStates
     
-    public init(_ tabsDataService: TabsDataService,
-                _ readUseCase: ReadTabsUseCase,
-                _ positioning: TabsStates) {
+    public init(_ tabsDataService: TabsDataService) {
         self.tabsDataService = tabsDataService
-        self.readUseCase = readUseCase
-        self.positioning = positioning
     }
     
     public func add(tab: Tab) async {

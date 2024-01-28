@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonData
 
 final class TabletSearchBarViewController: BaseViewController {
 

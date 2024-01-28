@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import CoreBrowser
+import CottonData
 
 /**
  A replacement for the native SwiftUI starting point:
@@ -38,11 +39,17 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
          _ uiFramework: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
-         _ topSitesVM: TopSitesViewModel) {
+         _ topSitesVM: TopSitesViewModel,
+         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
         self.coordinator = coordinator
         viewModel = .init(coordinator)
         
-        let view = MainBrowserView(viewModel, uiFramework, defaultContentType, allTabsVM, topSitesVM)
+        let view = MainBrowserView(viewModel,
+                                   uiFramework,
+                                   defaultContentType,
+                                   allTabsVM,
+                                   topSitesVM,
+                                   searchSuggestionsVM)
         super.init(rootView: view)
     }
     

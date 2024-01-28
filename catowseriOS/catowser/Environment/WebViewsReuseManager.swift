@@ -73,7 +73,6 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let context: WebViewContextImpl = .init(pluginsBuilder.pluginsProgram)
             let vc = vcFactory.webViewController(delegate, coordinator)
             views.append(vc)
             lastSelectedIndex = count

@@ -9,5 +9,5 @@ import Foundation
 
 public protocol JSPluginsSource: AnyObject {
     associatedtype Program: JSPluginsProgram
-    var pluginsProgram: Program { get }
+    var jsProgram: Program { get }
 }

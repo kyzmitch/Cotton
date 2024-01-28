@@ -38,7 +38,11 @@ final class TabView: UIView {
         let closeButton = ButtonWithDecreasedTouchArea()
         closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControl.State())
         closeButton.tintColor = UIColor.lightGray
-        closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        if #available(iOS 15, *) {
+            print("UIButton imageEdgeInsets setting is ignored")
+        } else {
+            closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        }
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         return closeButton
     }()

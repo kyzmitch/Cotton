@@ -11,6 +11,7 @@ import CoreBrowser
 import CottonBase
 import FeaturesFlagsKit
 import CottonPlugins
+import CottonData
 
 /// Browser content related coordinators
 protocol BrowserContentCoordinators: AnyObject {
@@ -111,7 +112,14 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             }
             let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
             let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
-            let vc = vcFactory.rootViewController(self, uiFramework, defaultTabContent, allTabsVM, topSitesVM)
+            let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
+            let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
+            let vc = vcFactory.rootViewController(self,
+                                                  uiFramework,
+                                                  defaultTabContent,
+                                                  allTabsVM,
+                                                  topSitesVM,
+                                                  suggestionsVM)
             startedVC = vc
             
             window.rootViewController = startedVC?.viewController
@@ -434,7 +442,7 @@ private extension AppCoordinator {
         switch uiFramework {
         case .uiKit:
             guard let containerView = webContentContainerCoordinator?.startedView,
-                    let plugins = jsPluginsBuilder else {
+                  let plugins = jsPluginsBuilder else {
                 assertionFailure("Root view controller must have content view")
                 return
             }
@@ -679,8 +687,7 @@ extension AppCoordinator: SearchBarDelegate {
         }
         let toolbarHeight = toolbarCoordinator?.startedView?.bounds.height
         // Not used, can be random
-        let randomValue: WebAutoCompletionSource = .duckduckgo
-        searchBarCoordinator?.layoutNext(.viewDidLoad(.suggestions(randomValue),
+        searchBarCoordinator?.layoutNext(.viewDidLoad(.simplySuggestions,
                                                       topAnchor,
                                                       bottomAnchor,
                                                       toolbarHeight))

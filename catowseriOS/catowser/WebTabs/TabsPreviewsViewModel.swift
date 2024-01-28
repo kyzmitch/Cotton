@@ -27,6 +27,7 @@ enum TabsPreviewState {
     }
 }
 
+@MainActor
 final class TabsPreviewsViewModel {
     @Published var uxState: TabsPreviewState = .loading
     private let readTabUseCase: ReadTabsUseCase
@@ -54,7 +55,7 @@ final class TabsPreviewsViewModel {
             /// Rewrite view model state with the updated box
             uxState = .tabs(dataSource: box)
             if let site = tab.site {
-                await WebViewsReuseManager.shared.removeController(for: site)
+                WebViewsReuseManager.shared.removeController(for: site)
             }
             await writeTabUseCase.close(tab: tab)
         }

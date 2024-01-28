@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonData
 
 enum WebToolbarState {
     case nothingToNavigate

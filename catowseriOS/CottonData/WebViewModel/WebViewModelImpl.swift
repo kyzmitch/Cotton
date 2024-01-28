@@ -39,9 +39,10 @@ import FeaturesFlagsKit
  - pending navigation request is related to initial host or similar host used by user (search bar url)
  */
 
+@MainActor
 public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
     /// Domain name resolver with specific strategy
-    let dnsResolver: DNSResolver<Strategy>
+    private let resolveDnsUseCase: any ResolverDNSUseCase<Strategy>
     
     /// view model state (not private for unit tests only)
     var state: WebViewModelState
@@ -88,20 +89,25 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     
     private let writeTabUseCase: WriteTabsUseCase
     
+    public let jsPluginsSource: any JSPluginsSource
+    
+    public weak var siteNavigation: SiteExternalNavigationDelegate?
+    
     /**
      Constructs web view model
      */
-    public init(_ strategy: Strategy, 
+    public init(_ resolveDnsUseCase: any ResolverDNSUseCase<Strategy>,
                 _ site: Site,
                 _ context: any WebViewContext,
                 _ selectTabUseCase: SelectedTabUseCase,
                 _ writeTabUseCase: WriteTabsUseCase) {
-        dnsResolver = .init(strategy)
+        self.resolveDnsUseCase = resolveDnsUseCase
         // Do we need to use `updateState` function even in init?
         state = .initialized(site)
         self.context = context
         self.selectTabUseCase = selectTabUseCase
         self.writeTabUseCase = writeTabUseCase
+        self.jsPluginsSource = context.pluginsSource
     }
     
     deinit {
@@ -267,8 +273,8 @@ private extension WebViewModelImpl {
             // before `loadSite` action
             break
         case .pendingPlugins:
-            let pluginsProgram: (any JSPluginsProgram)? = settings.canLoadPlugins ? context.pluginsProgram : nil
-            await updateState(try state.transition(on: .injectPlugins(pluginsProgram)))
+            let pluginsSource = settings.canLoadPlugins ? context.pluginsSource : nil
+            await updateState(try state.transition(on: .injectPlugins(pluginsSource?.jsProgram)))
         case .injectingPlugins(let pluginsProgram, let urlData, let settings):
             let canInject = settings.canLoadPlugins
             pluginsProgram.inject(to: configuration.userContentController,
@@ -300,13 +306,13 @@ private extension WebViewModelImpl {
             let site = Site.create(urlInfo: updatedInfo, settings: settings)
             let host = updatedInfo.host()
             await InMemoryDomainSearchProvider.shared.remember(host: host)
-            context.pluginsProgram.enable(on: subject, context: host, jsEnabled: enable)
+            context.pluginsSource.jsProgram.enable(on: subject, context: host, jsEnabled: enable)
             await writeTabUseCase.replaceSelected(.site(site))
             await updateState(try state.transition(on: .startView(updatedInfo)))
         case .viewing:
             break
         case .updatingJS(let settings, let subject, let urlInfo):
-            context.pluginsProgram.enable(on: subject, context: urlInfo.host(), jsEnabled: settings.isJSEnabled)
+            context.pluginsSource.jsProgram.enable(on: subject, context: urlInfo.host(), jsEnabled: settings.isJSEnabled)
             updateLoadingState(.recreateView(true))
             updateLoadingState(.reattachViewObservers)
             // Not storing DoH state in vm state, can fetch it from context
@@ -338,7 +344,7 @@ private extension WebViewModelImpl {
             guard let self = self else {
                 throw AppError.zombieSelf
             }
-            return try await self.dnsResolver.aaResolveDomainName(originalURL)
+            return try await self.resolveDnsUseCase.aaResolveDomainName(originalURL)
         }
         dnsRequestTaskHandler = taskHandler
         do {

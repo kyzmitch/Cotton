@@ -60,4 +60,9 @@ public protocol WebViewModel: AnyObject {
     /// wrapped value for Published
     var webPageState: WebPageLoadingAction { get }
     var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { get }
+    
+    // MARK: - new properties to have single view model for Web
+    
+    var jsPluginsSource: any JSPluginsSource { get }
+    var siteNavigation: SiteExternalNavigationDelegate? { get }
 }

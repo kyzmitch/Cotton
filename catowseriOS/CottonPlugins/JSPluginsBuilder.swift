@@ -14,7 +14,7 @@ public final class JSPluginsBuilder: JSPluginsSource {
     public typealias Program = JSPluginsProgramImpl
     private var plugins: [any JavaScriptPlugin]
 
-    public var pluginsProgram: Program {
+    public var jsProgram: Program {
         JSPluginsProgramImpl(plugins)
     }
     

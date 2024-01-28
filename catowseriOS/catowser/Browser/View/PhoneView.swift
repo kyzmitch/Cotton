@@ -10,6 +10,7 @@ import SwiftUI
 import CoreBrowser
 import FeaturesFlagsKit
 import CottonPlugins
+import CottonData
 
 struct PhoneView: View {
     // MARK: - view models of subviews
@@ -21,6 +22,8 @@ struct PhoneView: View {
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
     ///
     @ObservedObject private var topSitesVM: TopSitesViewModel
+    ///
+    private let searchSuggestionsVM: SearchSuggestionsViewModel
     
     // MARK: - search bar state
     
@@ -79,9 +82,11 @@ struct PhoneView: View {
     
     init(_ browserContentVM: BrowserContentViewModel, 
          _ mode: SwiftUIMode,
-         _ topSitesVM: TopSitesViewModel) {
+         _ topSitesVM: TopSitesViewModel,
+         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
         self.browserContentVM = browserContentVM
         self.topSitesVM = topSitesVM
+        self.searchSuggestionsVM = searchSuggestionsVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -139,7 +144,7 @@ struct PhoneView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView(searchQuery, delegate, mode, searchProviderType)
+                SearchSuggestionsView(searchQuery, delegate, mode, searchSuggestionsVM)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -187,7 +192,7 @@ struct PhoneView: View {
                 }
                 if showSearchSuggestions {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
-                    SearchSuggestionsView(searchQuery, delegate, mode, searchProviderType)
+                    SearchSuggestionsView(searchQuery, delegate, mode, searchSuggestionsVM)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM

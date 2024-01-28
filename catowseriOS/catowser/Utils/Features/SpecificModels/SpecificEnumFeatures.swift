@@ -40,10 +40,8 @@ extension GenericEnumFeature where E == AsyncApiType {
 #else
             return .combine
 #endif
-        } else if #available(iOS 13.0, *) {
-            return .combine
         } else {
-            return .reactive
+            return .combine
         }
     }
 }

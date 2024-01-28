@@ -9,6 +9,7 @@
 import Foundation
 import CoreBrowser
 
+@MainActor
 final class AllTabsViewModel: ObservableObject {
     private let writeTabUseCase: WriteTabsUseCase
     

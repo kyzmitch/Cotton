@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreBrowser
+import CottonData
 
 enum SwiftUIMode {
     /// Re-uses UIKit views
@@ -47,25 +48,29 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     @ObservedObject private var allTabsVM: AllTabsViewModel
     /// Top sites view model has async dependencies and has to be injected
     @ObservedObject private var topSitesVM: TopSitesViewModel
+    ///
+    private let searchSuggestionsVM: SearchSuggestionsViewModel
     
     init(_ vm: MainBrowserModel<C>, 
          _ uiFrameworkType: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
-         _ topSitesVM: TopSitesViewModel) {
+         _ topSitesVM: TopSitesViewModel,
+         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
         self.vm = vm
         _browserContentVM = StateObject(wrappedValue: BrowserContentViewModel(vm.jsPluginsBuilder, defaultContentType))
         mode = uiFrameworkType.swiftUIMode
         self.allTabsVM = allTabsVM
         self.topSitesVM = topSitesVM
+        self.searchSuggestionsVM = searchSuggestionsVM
     }
     
     var body: some View {
         Group {
             if isPad {
-                TabletView(browserContentVM, mode, .blank, allTabsVM, topSitesVM)
+                TabletView(browserContentVM, mode, .blank, allTabsVM, topSitesVM, searchSuggestionsVM)
             } else {
-                PhoneView(browserContentVM, mode, topSitesVM)
+                PhoneView(browserContentVM, mode, topSitesVM, searchSuggestionsVM)
             }
         }
         .environment(\.browserContentCoordinators, vm.coordinatorsInterface)

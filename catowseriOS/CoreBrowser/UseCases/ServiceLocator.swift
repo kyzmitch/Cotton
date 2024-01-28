@@ -9,5 +9,5 @@
 import Foundation
 
 protocol ServiceLocator: AnyObject {
-    func findService<T>(_ type: T.Type) -> T?
+    func findService<T>(_ type: T.Type, _ key: String?) -> T?
 }

@@ -16,10 +16,10 @@ import FeaturesFlagsKit
 private var logTabUpdate = false
 
 public final class WebViewContextImpl: WebViewContext {
-    public let pluginsProgram: any JSPluginsProgram
+    public let pluginsSource: any JSPluginsSource
     
-    init(_ program: any JSPluginsProgram) {
-        pluginsProgram = program
+    init(_ pluginsSource: any JSPluginsSource) {
+        self.pluginsSource = pluginsSource
     }
     
     public func nativeApp(for host: Host) -> String? {
