@@ -23,6 +23,8 @@ struct TabletView: View {
     @ObservedObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async init
     private let searchSuggestionsVM: SearchSuggestionsViewModel
+    /// Web view model without a specific site
+    private let webVM: any WebViewModel
     
     // MARK: - Tablet search bar state
     
@@ -82,10 +84,13 @@ struct TabletView: View {
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
+         _ searchSuggestionsVM: SearchSuggestionsViewModel,
+         _ webVM: any WebViewModel) {
         self.browserContentVM = browserContentVM
         self.topSitesVM = topSitesVM
         self.searchSuggestionsVM = searchSuggestionsVM
+        self.allTabsVM = allTabsVM
+        self.webVM = webVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -116,7 +121,6 @@ struct TabletView: View {
         isDohEnabled = false
         isJavaScriptEnabled = true
         nativeAppRedirectEnabled = true
-        self.allTabsVM = allTabsVM
     }
     
     var body: some View {
@@ -150,7 +154,8 @@ struct TabletView: View {
                                    contentType,
                                    $webViewNeedsUpdate,
                                    mode,
-                                   topSitesVM)
+                                   topSitesVM,
+                                   webVM)
             }
         }
         .ignoresSafeArea(.keyboard)
@@ -174,6 +179,7 @@ struct TabletView: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            webVM.siteNavigation = toolbarVM
         }
     }
     
@@ -198,7 +204,8 @@ struct TabletView: View {
                                    contentType,
                                    $webViewNeedsUpdate,
                                    mode,
-                                   topSitesVM)
+                                   topSitesVM,
+                                   webVM)
             }
         }
         .sheet(isPresented: $showingMenu) {
@@ -229,6 +236,7 @@ struct TabletView: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
+            webVM.siteNavigation = toolbarVM
         }
     }
 }

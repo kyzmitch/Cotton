@@ -18,6 +18,9 @@ extension WebViewModelState: Actionable {
     func transition(on action: Action) throws -> State {
         let nextState: State
         switch (self, action) {
+        case (.pendingLoad, .loadSite):
+            /// Nothing to load actually, waiting for `resetToSite` action
+            return self
         case (.initialized(let site),
               .loadSite):
             nextState = .pendingPlugins(site.urlInfo, site.settings)
@@ -132,6 +135,8 @@ extension WebViewModelState: Actionable {
         case (.waitingForNavigation, .resetToSite(let site)):
             // Could be a case when previous web view didn't finish navigation
             // and it was asked to reset vm
+            nextState = .initialized(site)
+        case (.pendingLoad, .resetToSite(let site)):
             nextState = .initialized(site)
         case (.waitingForNavigation(let settings, let uRLInfo),
               .reload):

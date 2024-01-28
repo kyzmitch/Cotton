@@ -38,7 +38,8 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
+         _ searchSuggestionsVM: SearchSuggestionsViewModel,
+         _ webVM: any WebViewModel) {
         self.coordinator = coordinator
         
         let view = MainBrowserView(coordinator,
@@ -46,7 +47,8 @@ UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
                                    defaultContentType,
                                    allTabsVM,
                                    topSitesVM,
-                                   searchSuggestionsVM)
+                                   searchSuggestionsVM,
+                                   webVM)
         super.init(rootView: view)
     }
     

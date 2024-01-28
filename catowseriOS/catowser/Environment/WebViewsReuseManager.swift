@@ -52,9 +52,11 @@ final class WebViewsReuseManager {
     ///
     /// - Parameter site: The site object with all info for WebView.
     /// - Parameter coordinator: a navigation interface
+    /// - Parameter viewModel: a view model
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor<C: Navigating>(_ site: Site,
-                                      _ coordinator: C?) throws -> AnyViewController & WebViewNavigatable
+                                      _ coordinator: C?,
+                                      _ viewModel: any WebViewModel) throws -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
@@ -69,7 +71,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let vc = vcFactory.webViewController(coordinator)
+            let vc = vcFactory.webViewController(coordinator, viewModel)
             views.append(vc)
             lastSelectedIndex = count
             return vc

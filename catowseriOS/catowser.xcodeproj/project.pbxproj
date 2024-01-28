@@ -75,8 +75,8 @@
 		7509BF9222AF832200F4D701 /* Site+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7509BF9122AF832200F4D701 /* Site+Extension.swift */; };
 		750B6DE72B5C348E00063E75 /* TabsServiceCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B6DE62B5C348E00063E75 /* TabsServiceCommand.swift */; };
 		750B6DE92B5C34D000063E75 /* TabsServiceDataOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B6DE82B5C34D000063E75 /* TabsServiceDataOutput.swift */; };
-		750EDEBB2949215900212A4E /* MainBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBA2949215900212A4E /* MainBrowserModel.swift */; };
-		750EDEBC2949215900212A4E /* MainBrowserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBA2949215900212A4E /* MainBrowserModel.swift */; };
+		750EDEBB2949215900212A4E /* MainBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBA2949215900212A4E /* MainBrowserViewModel.swift */; };
+		750EDEBC2949215900212A4E /* MainBrowserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBA2949215900212A4E /* MainBrowserViewModel.swift */; };
 		750EDEBE294924A800212A4E /* BrowserContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBD294924A800212A4E /* BrowserContentView.swift */; };
 		750EDEBF294924A800212A4E /* BrowserContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750EDEBD294924A800212A4E /* BrowserContentView.swift */; };
 		7517D9C32A5F2E7C00D081AD /* CottonBase.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */; };
@@ -1058,7 +1058,7 @@
 		7509BF9122AF832200F4D701 /* Site+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Site+Extension.swift"; sourceTree = "<group>"; };
 		750B6DE62B5C348E00063E75 /* TabsServiceCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsServiceCommand.swift; sourceTree = "<group>"; };
 		750B6DE82B5C34D000063E75 /* TabsServiceDataOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsServiceDataOutput.swift; sourceTree = "<group>"; };
-		750EDEBA2949215900212A4E /* MainBrowserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserModel.swift; sourceTree = "<group>"; };
+		750EDEBA2949215900212A4E /* MainBrowserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserViewModel.swift; sourceTree = "<group>"; };
 		750EDEBD294924A800212A4E /* BrowserContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserContentView.swift; sourceTree = "<group>"; };
 		7517D9C22A5F2E7A00D081AD /* CottonBase.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CottonBase.xcframework; path = "../cotton-base/build/XCFrameworks/release/CottonBase.xcframework"; sourceTree = "<group>"; };
 		75196D062944ABA700B3A45B /* MainBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBrowserView.swift; sourceTree = "<group>"; };
@@ -2338,7 +2338,7 @@
 				75196D062944ABA700B3A45B /* MainBrowserView.swift */,
 				8A9D9D7E2971D2300047734C /* PhoneView.swift */,
 				8A9D9D822971D6B10047734C /* TabletView.swift */,
-				750EDEBA2949215900212A4E /* MainBrowserModel.swift */,
+				750EDEBA2949215900212A4E /* MainBrowserViewModel.swift */,
 				8A9D9D882971D8330047734C /* DummyDelegateForPreview.swift */,
 			);
 			path = View;
@@ -3595,7 +3595,7 @@
 				75196D102944AFD800B3A45B /* MainBrowserV2ViewController.swift in Sources */,
 				8A745C0D248027C600A379AD /* TabsCache.swift in Sources */,
 				753392A7291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
-				750EDEBB2949215900212A4E /* MainBrowserModel.swift in Sources */,
+				750EDEBB2949215900212A4E /* MainBrowserViewModel.swift in Sources */,
 				8AFDBB0329F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */,
 				60C2C8EC226F32B700F5D869 /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1D24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,
@@ -3862,7 +3862,7 @@
 				75196D112944AFD800B3A45B /* MainBrowserV2ViewController.swift in Sources */,
 				8A745C0C248027C600A379AD /* TabsCache.swift in Sources */,
 				753392A8291FEBFD00570461 /* TabletViewControllerFactory.swift in Sources */,
-				750EDEBC2949215900212A4E /* MainBrowserModel.swift in Sources */,
+				750EDEBC2949215900212A4E /* MainBrowserViewModel.swift in Sources */,
 				8AFDBB0429F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */,
 				8A8035C224442F0F000E035F /* FileDownloadViewModel.swift in Sources */,
 				8A1C1C1E24850F3F0098F2F1 /* WebViewController+SiteNavigationDelegate.swift in Sources */,

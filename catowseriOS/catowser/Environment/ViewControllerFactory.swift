@@ -31,14 +31,16 @@ protocol ViewControllerFactory: AnyObject {
                             _ defaultContentType: Tab.ContentType,
                             _ allTabsVM: AllTabsViewModel,
                             _ topSitesVM: TopSitesViewModel,
-                            _ searchSuggestionsVM: SearchSuggestionsViewModel) -> AnyViewController
+                            _ searchSuggestionsVM: SearchSuggestionsViewModel,
+                            _ webVM: any WebViewModel) -> AnyViewController
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
                                          _ viewModel: SearchSuggestionsViewModel) -> AnyViewController
     
-    func webViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & WebViewNavigatable
+    func webViewController<C: Navigating>(_ coordinator: C?,
+                                          _ viewModel: any WebViewModel) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
     where C.R == TopSitesRoute
@@ -87,7 +89,8 @@ extension ViewControllerFactory {
                             _ defaultContentType: Tab.ContentType,
                             _ allTabsVM: AllTabsViewModel,
                             _ topSitesVM: TopSitesViewModel,
-                            _ searchSuggestionsVM: SearchSuggestionsViewModel) -> AnyViewController {
+                            _ searchSuggestionsVM: SearchSuggestionsViewModel,
+                            _ webVM: any WebViewModel) -> AnyViewController {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
@@ -98,7 +101,8 @@ extension ViewControllerFactory {
                                              defaultContentType,
                                              allTabsVM,
                                              topSitesVM,
-                                             searchSuggestionsVM)
+                                             searchSuggestionsVM,
+                                             webVM)
         }
         return vc
     }
@@ -118,10 +122,10 @@ extension ViewControllerFactory {
         return vc
     }
     
-    func webViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & WebViewNavigatable
+    func webViewController<C: Navigating>(_ coordinator: C?,
+                                          _ viewModel: any WebViewModel) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
-        let vc: WebViewController = .init(coordinator)
-        return vc
+        return WebViewController(coordinator, viewModel)
     }
     
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel, _ coordinator: C) -> UIViewController

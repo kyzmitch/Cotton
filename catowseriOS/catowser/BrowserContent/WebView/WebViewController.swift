@@ -25,7 +25,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                                               WKUIDelegate,
                                               WKNavigationDelegate where C.R == WebContentRoute {
     /// A view model, optional because it is tricky to inject it in constructor in init because of async dependencies
-    var viewModel: WebViewModel?
+    let viewModel: any WebViewModel
     /// A coordinator reference
     private weak var coordinator: C?
     /// State of observers
@@ -67,8 +67,10 @@ final class WebViewController<C: Navigating>: BaseViewController,
      
      Currently it is too tricky to inject view model right away because it has to be async
      */
-    init(_ coordinator: C?) {
+    init(_ coordinator: C?,
+         _ viewModel: any WebViewModel) {
         self.coordinator = coordinator
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -79,10 +81,6 @@ final class WebViewController<C: Navigating>: BaseViewController,
     deinit {
         authHandlers.removeAll()
         unsubscribe()
-    }
-    
-    func setViewModel(_ viewModel: WebViewModel) {
-        self.viewModel = viewModel
     }
     
     override func loadView() {
@@ -101,7 +99,8 @@ final class WebViewController<C: Navigating>: BaseViewController,
         super.viewDidAppear(animated)
         subscribe()
         Task {
-            await viewModel?.load()
+            /// Load initial site or just wait for the reset to site action
+            await viewModel.load()
         }
     }
     
@@ -111,7 +110,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
         // it means that it was replaced with some different content
         // maybe top sites, so, we have to reset navigation controls
         // and it can be done by sending `nil` interface
-        viewModel?.siteNavigation?.webViewDidReplace(nil)
+        viewModel.siteNavigation?.webViewDidReplace(nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -151,21 +150,21 @@ final class WebViewController<C: Navigating>: BaseViewController,
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let domain = viewModel?.nativeAppDomainNameString {
-            viewModel?.siteNavigation?.didSiteOpen(appName: domain)
+        if let domain = viewModel.nativeAppDomainNameString {
+            viewModel.siteNavigation?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
         Task {
-            await viewModel?.decidePolicy(navigationAction, decisionHandler)
+            await viewModel.decidePolicy(navigationAction, decisionHandler)
         }
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        viewModel?.siteNavigation?.showLoadingProgress(true)
+        viewModel.siteNavigation?.showLoadingProgress(true)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        viewModel?.siteNavigation?.showLoadingProgress(false)
+        viewModel.siteNavigation?.showLoadingProgress(false)
         
         defer {
             let snapshotConfig = WKSnapshotConfiguration()
@@ -179,7 +178,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
                     Task {
-                        await self?.viewModel?.updateTabPreview(img.pngData())
+                        await self?.viewModel.updateTabPreview(img.pngData())
                     }
                 default:
                     print("failed to take a screenshot")
@@ -193,23 +192,18 @@ final class WebViewController<C: Navigating>: BaseViewController,
         }
         
         Task {
-            await viewModel?.finishLoading(newURL, webView)
+            await viewModel.finishLoading(newURL, webView)
         }
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Error occured during a committed main frame: \(error.localizedDescription)")
-        viewModel?.siteNavigation?.showLoadingProgress(false)
+        viewModel.siteNavigation?.showLoadingProgress(false)
     }
     
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard let viewModel else {
-            print("View model is not set")
-            assertionFailure("View model is not set")
-            return
-        }
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         authHandlers.insert(handler)
         handler.solve { [weak self, weak handler] stopLoadingProgress in
@@ -217,7 +211,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                 return
             }
             if stopLoadingProgress != nil {
-                self.viewModel?.siteNavigation?.showLoadingProgress(false)
+                self.viewModel.siteNavigation?.showLoadingProgress(false)
             }
             guard let handler = handler else {
                 return
@@ -230,7 +224,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
         print("Error occured while starting to load data: \(error.localizedDescription)")
-        viewModel?.siteNavigation?.showLoadingProgress(false)
+        viewModel.siteNavigation?.showLoadingProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
     }
@@ -262,7 +256,7 @@ private extension WebViewController {
         // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
         
         taskHandler?.cancel()
-        taskHandler = viewModel?.webPageStatePublisher.sink(receiveValue: onStateChange)
+        taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
         dohCancellable?.cancel()
         jsStateCancellable?.cancel()
         
@@ -272,7 +266,7 @@ private extension WebViewController {
                 .sink { _ in
                     Task { [weak self] in
                         let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-                        await self?.viewModel?.setDoH(useDoH)
+                        await self?.viewModel.setDoH(useDoH)
                     }
                 }
             
@@ -284,7 +278,7 @@ private extension WebViewController {
                             return
                         }
                         let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-                        await self.viewModel?.setJavaScript(jsSubject, enabled)
+                        await self.viewModel.setJavaScript(jsSubject, enabled)
                     }
                 }
         }
@@ -309,7 +303,7 @@ private extension WebViewController {
                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.viewModel?.siteNavigation?.loadingProgressdDidChange(Float(value))
+            self.viewModel.siteNavigation?.loadingProgressdDidChange(Float(value))
         }
     }
     
@@ -318,7 +312,7 @@ private extension WebViewController {
         canGoBackObservation = webView?.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.viewModel?.siteNavigation?.didBackNavigationUpdate(to: value)
+            self.viewModel.siteNavigation?.didBackNavigationUpdate(to: value)
         }
     }
     
@@ -327,7 +321,7 @@ private extension WebViewController {
         canGoForwardObservation = webView?.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.viewModel?.siteNavigation?.didForwardNavigationUpdate(to: value)
+            self.viewModel.siteNavigation?.didForwardNavigationUpdate(to: value)
         }
     }
     
@@ -359,10 +353,6 @@ private extension WebViewController {
         // but for re-usable web view there is no other way
         // of resetting the old navigation history
         webView?.removeFromSuperview()
-        guard let viewModel else {
-            assertionFailure("View model is not set")
-            return
-        }
         let newWebView = createWebView(with: viewModel.configuration)
         view.addSubview(newWebView)
         

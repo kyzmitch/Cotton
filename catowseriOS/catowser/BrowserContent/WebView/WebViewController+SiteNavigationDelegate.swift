@@ -29,49 +29,49 @@ extension WebViewController: WebViewNavigatable {
 
     func goForward() {
         guard isViewLoaded else { return }
-        viewModel?.siteNavigation?.provisionalNavigationDidStart()
+        viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
-            await viewModel?.goForward()
+            await viewModel.goForward()
         }
         _ = webView?.goForward()
     }
 
     func goBack() {
         guard isViewLoaded else { return }
-        viewModel?.siteNavigation?.provisionalNavigationDidStart()
+        viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
-            await viewModel?.goBack()
+            await viewModel.goBack()
         }
         _ = webView?.goBack()
     }
 
     func reload() {
         guard isViewLoaded else { return }
-        viewModel?.siteNavigation?.provisionalNavigationDidStart()
+        viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
-            await viewModel?.reload()
+            await viewModel.reload()
         }
         _ = webView?.reload()
     }
     
     func enableJavaScript(_ enabled: Bool, for host: Host) {
-        guard viewModel?.host == host, let jsSubject = webView else {
+        guard viewModel.host == host, let jsSubject = webView else {
             return
         }
         Task {
-            await viewModel?.setJavaScript(jsSubject, enabled)
+            await viewModel.setJavaScript(jsSubject, enabled)
         }
     }
     
     var host: Host {
-        viewModel!.host
+        viewModel.host
     }
     
     var siteSettings: Site.Settings {
-        viewModel!.settings
+        viewModel.settings
     }
     
     var url: URL? {
-        viewModel?.currentURL
+        viewModel.currentURL
     }
 }

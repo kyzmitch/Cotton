@@ -18,7 +18,7 @@ protocol WebViewReusable: AnyObject {
 
 /// web view specific to SwiftUI
 struct WebView: View {
-    let viewModel: WebViewModel
+    let viewModel: any WebViewModel
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
@@ -26,7 +26,7 @@ struct WebView: View {
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
-    init(_ viewModel: WebViewModel,
+    init(_ viewModel: any WebViewModel,
          _ site: Site,
          _ webViewNeedsUpdate: Bool,
          _ mode: SwiftUIMode) {
@@ -37,8 +37,7 @@ struct WebView: View {
     }
     
     var body: some View {
-        // There is no system WebView type for SwiftUI
-        // so that, the mode is not used for now
+        /// There is no system WebView type for SwiftUI,  so that, the mode is not used for now
         WebViewLegacyView(viewModel, site, webViewNeedsUpdate)
     }
 }
@@ -47,7 +46,7 @@ struct WebView: View {
 private struct WebViewLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
-    private let viewModel: WebViewModel
+    private let viewModel: any WebViewModel
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
@@ -60,7 +59,7 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         ViewsEnvironment.shared.reuseManager
     }
     
-    init(_ viewModel: WebViewModel,
+    init(_ viewModel: any WebViewModel,
          _ site: Site,
          _ webViewNeedsUpdate: Bool) {
         self.viewModel = viewModel
@@ -84,8 +83,10 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
          and most likely advantage of `WebViewsReuseManager` can't be used here.
          We have to re-create web view inside view controller.
          */
-        let vc = try? manager.controllerFor(site, dummyArgument)
-        vc?.setViewModel(viewModel)
+        let vc = try? manager.controllerFor(site, dummyArgument, viewModel)
+        Task {
+            await viewModel.reset(site)
+        }
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }

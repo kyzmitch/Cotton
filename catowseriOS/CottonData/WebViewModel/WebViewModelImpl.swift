@@ -95,14 +95,18 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
      Constructs web view model
      */
     public init(_ resolveDnsUseCase: any ResolveDNSUseCase<Strategy>,
-                _ site: Site,
                 _ context: any WebViewContext,
                 _ selectTabUseCase: SelectedTabUseCase,
                 _ writeTabUseCase: WriteTabsUseCase,
-                _ siteNavigation: SiteExternalNavigationDelegate?) {
+                _ siteNavigation: SiteExternalNavigationDelegate?,
+                _ site: Site? = nil) {
         self.resolveDnsUseCase = resolveDnsUseCase
-        // Do we need to use `updateState` function even in init?
-        state = .initialized(site)
+        /// Do we need to use `updateState` function even in init?
+        if let site = site {
+            state = .initialized(site)
+        } else {
+            state = .pendingLoad
+        }
         self.context = context
         self.selectTabUseCase = selectTabUseCase
         self.writeTabUseCase = writeTabUseCase
@@ -266,10 +270,13 @@ private extension WebViewModelImpl {
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     func onStateChange(_ nextState: WebViewModelState) async throws {
         switch nextState {
+        case .pendingLoad:
+            /// Hoping that it is similar handling to `.initialized`
+            break
         case .initialized:
-            // No need to call `recreateView` because it is an initial state
-            // Also, `reattachViewObservers` will be called automatically
-            // before `loadSite` action
+            /// No need to call `recreateView` because it is an initial state
+            /// Also, `reattachViewObservers` will be called automatically
+            /// before `loadSite` action
             break
         case .pendingPlugins:
             let pluginsSource = settings.canLoadPlugins ? context.pluginsSource : nil

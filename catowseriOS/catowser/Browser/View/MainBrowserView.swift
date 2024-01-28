@@ -36,7 +36,7 @@ extension UIFrameworkType {
 
 struct MainBrowserView<C: BrowserContentCoordinators>: View {
     /// Store main view model in this main view to not have generic parameter in phone/tablet views
-    @StateObject private var viewModel: MainBrowserModel<C>
+    @StateObject private var viewModel: MainBrowserViewModel<C>
     /// Browser content view model
     @StateObject private var browserContentVM: BrowserContentViewModel
     /// if User changes it in dev settings, then it is required to restart the app.
@@ -50,14 +50,17 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     @ObservedObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async dependencies and has to be injected
     private let searchSuggestionsVM: SearchSuggestionsViewModel
+    /// Web view model without a specific site
+    private let webVM: any WebViewModel
     
     init(_ coordinatorsInterface: C,
          _ uiFrameworkType: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
-        let mainVM = MainBrowserModel(coordinatorsInterface)
+         _ searchSuggestionsVM: SearchSuggestionsViewModel,
+         _ webVM: any WebViewModel) {
+        let mainVM = MainBrowserViewModel(coordinatorsInterface)
         _viewModel = StateObject(wrappedValue: mainVM)
         let browserVM = BrowserContentViewModel(mainVM.jsPluginsBuilder, defaultContentType)
         _browserContentVM = StateObject(wrappedValue: browserVM)
@@ -65,14 +68,25 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
         self.allTabsVM = allTabsVM
         self.topSitesVM = topSitesVM
         self.searchSuggestionsVM = searchSuggestionsVM
+        self.webVM = webVM
     }
     
     var body: some View {
         Group {
             if isPad {
-                TabletView(browserContentVM, mode, .blank, allTabsVM, topSitesVM, searchSuggestionsVM)
+                TabletView(browserContentVM,
+                           mode,
+                           .blank,
+                           allTabsVM,
+                           topSitesVM,
+                           searchSuggestionsVM,
+                           webVM)
             } else {
-                PhoneView(browserContentVM, mode, topSitesVM, searchSuggestionsVM)
+                PhoneView(browserContentVM, 
+                          mode,
+                          topSitesVM,
+                          searchSuggestionsVM,
+                          webVM)
             }
         }
         .environment(\.browserContentCoordinators, viewModel.coordinatorsInterface)

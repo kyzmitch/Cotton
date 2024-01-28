@@ -98,28 +98,23 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         
         Task {
             let defaultTabContent = await DefaultTabProvider.shared.contentState
-            if case .uiKit = uiFramework {
-                /**
-                 No need to use this class for other types
-                 of framework like SwiftUI to not do
-                 any not necessary layout.
-                 This will be handled by SwiftUI view model
-                 to not add too many checks in this class
-                 */
-                jsPluginsBuilder = JSPluginsBuilder()
-                    .setBase(self)
-                    .setInstagram(self)
-            }
+            let pluginsSource = JSPluginsBuilder()
+                .setBase(self)
+                .setInstagram(self)
+            jsPluginsBuilder = pluginsSource
             let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
             let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
             let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
             let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
+            let webContext = WebViewContextImpl(pluginsSource)
+            let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
             let vc = vcFactory.rootViewController(self,
                                                   uiFramework,
                                                   defaultTabContent,
                                                   allTabsVM,
                                                   topSitesVM,
-                                                  suggestionsVM)
+                                                  suggestionsVM,
+                                                  webViewModel)
             startedVC = vc
             
             window.rootViewController = startedVC?.viewController

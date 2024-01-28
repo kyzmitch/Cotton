@@ -61,8 +61,4 @@ final class WebViewControllerProxy: WebViewNavigatable {
     var url: URL? {
         vc?.url
     }
-    
-    func setViewModel(_ viewModel: WebViewModel) {
-        vc?.setViewModel(viewModel)
-    }
 }

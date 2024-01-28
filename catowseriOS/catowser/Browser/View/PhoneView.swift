@@ -25,6 +25,8 @@ struct PhoneView: View {
     @ObservedObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async init
     private let searchSuggestionsVM: SearchSuggestionsViewModel
+    /// Web view model without a specific site
+    private let webVM: any WebViewModel
     
     // MARK: - search bar state
     
@@ -84,10 +86,12 @@ struct PhoneView: View {
     init(_ browserContentVM: BrowserContentViewModel, 
          _ mode: SwiftUIMode,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel) {
+         _ searchSuggestionsVM: SearchSuggestionsViewModel,
+         _ webVM: any WebViewModel) {
         self.browserContentVM = browserContentVM
         self.topSitesVM = topSitesVM
         self.searchSuggestionsVM = searchSuggestionsVM
+        self.webVM = webVM
         // Browser content state has to be stored outside in main view
         // to allow keep current state value when `showSearchSuggestions`
         // state variable changes
@@ -155,7 +159,8 @@ struct PhoneView: View {
                                    contentType,
                                    $webViewNeedsUpdate,
                                    mode,
-                                   topSitesVM)
+                                   topSitesVM,
+                                   webVM)
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
@@ -180,6 +185,7 @@ struct PhoneView: View {
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
             contentType = await DefaultTabProvider.shared.contentState
+            webVM.siteNavigation = toolbarVM
         }
     }
     
@@ -203,7 +209,8 @@ struct PhoneView: View {
                                        contentType,
                                        $webViewNeedsUpdate,
                                        mode,
-                                       topSitesVM)
+                                       topSitesVM,
+                                       webVM)
                 }
             }
             .toolbar {
@@ -249,6 +256,7 @@ struct PhoneView: View {
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
             contentType = await DefaultTabProvider.shared.contentState
+            webVM.siteNavigation = toolbarVM
         }
     }
 }

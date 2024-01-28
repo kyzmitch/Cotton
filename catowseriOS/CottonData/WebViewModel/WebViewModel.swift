@@ -29,7 +29,7 @@ public protocol NavigationActionable: AnyObject {
 }
 
 @MainActor
-public protocol WebViewModel: AnyObject {
+public protocol WebViewModel: ObservableObject {
     
     // MARK: - main public methods
     
@@ -64,5 +64,6 @@ public protocol WebViewModel: AnyObject {
     
     // MARK: - new properties to have single view model for Web
     
-    var siteNavigation: SiteExternalNavigationDelegate? { get }
+    /// Site navigation delegate property should allow to set it later, e.g. in case of SwiftUI mode (e.g. with ToolbarViewModel)
+    var siteNavigation: SiteExternalNavigationDelegate? { get set }
 }
