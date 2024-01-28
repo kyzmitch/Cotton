@@ -28,18 +28,18 @@ final class ViewModelFactory {
         switch searchProviderType {
         case .google:
             let type = (any AutocompleteWebSearchUseCase<GoogleAutocompleteStrategy>).self
-            let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type)
+            let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type, .googleAutocompleteUseCase)
             return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         case .duckduckgo:
             let type = (any AutocompleteWebSearchUseCase<DDGoAutocompleteStrategy>).self
-            let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type)
+            let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type, .duckDuckGoAutocompleteUseCase)
             return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         }
     }
     
     func webViewModel(_ site: Site, _ context: WebViewContext) async -> WebViewModel {
         let type = (any ResolverDNSUseCase<GoogleDNSStrategy>).self
-        let googleDnsUseCase = await UseCaseFactory.shared().findUseCase(type)
+        let googleDnsUseCase = await UseCaseFactory.shared().findUseCase(type, .googleResolveDnsUseCase)
         let selectTabUseCase = await UseCaseFactory.shared().findUseCase(SelectedTabUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return WebViewModelImpl(googleDnsUseCase, site, context, selectTabUseCase, writeUseCase)

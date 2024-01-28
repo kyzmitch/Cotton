@@ -10,6 +10,12 @@ import Foundation
 import CoreBrowser
 import CottonData
 
+extension String {
+    static let googleAutocompleteUseCase = "googleAutocompleteUseCase"
+    static let duckDuckGoAutocompleteUseCase = "duckDuckGoAutocompleteUseCase"
+    static let googleResolveDnsUseCase = "googleResolveDnsUseCase"
+}
+
 final class UseCaseFactory {
     static func shared() async -> UseCasesHolder {
         if let instance = internalInstance {
@@ -32,8 +38,8 @@ final class UseCaseFactory {
             registerDnsResolveUseCases()
         }
         
-        func findUseCase<T>(_ type: T.Type) -> T {
-            locator.findService(type)!
+        func findUseCase<T>(_ type: T.Type, _ key: String? = nil) -> T {
+            locator.findService(type, key)!
         }
         
         /// Have to use async functions and actor to be able to get
@@ -55,18 +61,14 @@ final class UseCaseFactory {
                                               HttpEnvironment.shared.googleClientSubscriber)
             let googleStrategy = GoogleAutocompleteStrategy(googleContext)
             let googleUseCase: any AutocompleteWebSearchUseCase = AutocompleteWebSearchUseCaseImpl(googleStrategy)
-            let googleType = (any AutocompleteWebSearchUseCase<GoogleAutocompleteStrategy>).self
-            let googleKey: String = "\(googleType))"
-            locator.registerNamed(googleUseCase, googleKey)
+            locator.registerNamed(googleUseCase, .googleAutocompleteUseCase)
             
             let ddGoContext = DDGoContext(HttpEnvironment.shared.duckduckgoClient,
                                           HttpEnvironment.shared.duckduckgoClientRxSubscriber,
                                           HttpEnvironment.shared.duckduckgoClientSubscriber)
             let ddGoStrategy = DDGoAutocompleteStrategy(ddGoContext)
             let ddGoUseCase: any AutocompleteWebSearchUseCase = AutocompleteWebSearchUseCaseImpl(ddGoStrategy)
-            let ddGoType = (any AutocompleteWebSearchUseCase<DDGoAutocompleteStrategy>).self
-            let ddGoKey: String = "\(ddGoType)"
-            locator.registerNamed(ddGoUseCase, ddGoKey)
+            locator.registerNamed(ddGoUseCase, .duckDuckGoAutocompleteUseCase)
         }
         
         private func registerDnsResolveUseCases() {
@@ -77,7 +79,7 @@ final class UseCaseFactory {
             
             let googleStrategy = GoogleDNSStrategy(googleContext)
             let googleUseCase: any ResolverDNSUseCase = ResolverDNSUseCaseImpl(googleStrategy)
-            locator.register(googleUseCase)
+            locator.registerNamed(googleUseCase, .googleResolveDnsUseCase)
         }
     }
 }
