@@ -26,13 +26,13 @@ import CoreBrowser
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 @MainActor
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator,
+    func rootViewController<W>(_ coordinator: AppCoordinator,
                             _ uiFramework: UIFrameworkType,
                             _ defaultContentType: Tab.ContentType,
                             _ allTabsVM: AllTabsViewModel,
                             _ topSitesVM: TopSitesViewModel,
                             _ searchSuggestionsVM: SearchSuggestionsViewModel,
-                            _ webVM: any WebViewModel) -> AnyViewController
+                            _ webVM: W) -> AnyViewController where W: WebViewModel
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
@@ -84,13 +84,13 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator,
+    func rootViewController<W>(_ coordinator: AppCoordinator,
                             _ uiFramework: UIFrameworkType,
                             _ defaultContentType: Tab.ContentType,
                             _ allTabsVM: AllTabsViewModel,
                             _ topSitesVM: TopSitesViewModel,
                             _ searchSuggestionsVM: SearchSuggestionsViewModel,
-                            _ webVM: any WebViewModel) -> AnyViewController {
+                            _ webVM: W) -> AnyViewController where W: WebViewModel {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:

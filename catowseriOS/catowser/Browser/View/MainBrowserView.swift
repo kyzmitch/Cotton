@@ -34,7 +34,7 @@ extension UIFrameworkType {
     }
 }
 
-struct MainBrowserView<C: BrowserContentCoordinators>: View {
+struct MainBrowserView<C: BrowserContentCoordinators, W: WebViewModel>: View {
     /// Store main view model in this main view to not have generic parameter in phone/tablet views
     @StateObject private var viewModel: MainBrowserViewModel<C>
     /// Browser content view model
@@ -45,13 +45,13 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
     /// At the moment app will crash if User selects new UI mode.
     private let mode: SwiftUIMode
     /// All tabs view model which can be injected only in async way, so, has to pass it from outside
-    @ObservedObject private var allTabsVM: AllTabsViewModel
+    @StateObject private var allTabsVM: AllTabsViewModel
     /// Top sites view model has async dependencies and has to be injected
-    @ObservedObject private var topSitesVM: TopSitesViewModel
+    @StateObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async dependencies and has to be injected
     private let searchSuggestionsVM: SearchSuggestionsViewModel
     /// Web view model without a specific site
-    private let webVM: any WebViewModel
+    @StateObject private var webVM: W
     
     init(_ coordinatorsInterface: C,
          _ uiFrameworkType: UIFrameworkType,
@@ -59,16 +59,16 @@ struct MainBrowserView<C: BrowserContentCoordinators>: View {
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
          _ searchSuggestionsVM: SearchSuggestionsViewModel,
-         _ webVM: any WebViewModel) {
+         _ webVM: W) {
         let mainVM = MainBrowserViewModel(coordinatorsInterface)
         _viewModel = StateObject(wrappedValue: mainVM)
         let browserVM = BrowserContentViewModel(mainVM.jsPluginsBuilder, defaultContentType)
         _browserContentVM = StateObject(wrappedValue: browserVM)
         mode = uiFrameworkType.swiftUIMode
-        self.allTabsVM = allTabsVM
-        self.topSitesVM = topSitesVM
+        _allTabsVM = StateObject(wrappedValue: allTabsVM)
+        _topSitesVM = StateObject(wrappedValue: topSitesVM)
         self.searchSuggestionsVM = searchSuggestionsVM
-        self.webVM = webVM
+        _webVM = StateObject(wrappedValue: webVM)
     }
     
     var body: some View {

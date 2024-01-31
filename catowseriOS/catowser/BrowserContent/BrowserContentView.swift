@@ -14,7 +14,7 @@ import CottonPlugins
 import CottonData
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
-struct BrowserContentView: View {
+struct BrowserContentView<W: WebViewModel>: View {
     /// Plugins builder needed by web view model
     /// but the reference needs to be holded/created by another vm on upper level
     private let jsPluginsBuilder: any JSPluginsSource
@@ -32,7 +32,7 @@ struct BrowserContentView: View {
     /// A delegate for the web view model
     private var siteNavigation: SiteExternalNavigationDelegate?
     /// Web view model
-    private var viewModel: any WebViewModel
+    @ObservedObject private var webVM: W
     
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
@@ -41,7 +41,7 @@ struct BrowserContentView: View {
          _ webViewNeedsUpdate: Binding<Bool>,
          _ mode: SwiftUIMode,
          _ topSitesVM: TopSitesViewModel,
-         _ viewModel: any WebViewModel) {
+         _ webVM: W) {
         self.isLoading = isLoading
         self.contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
@@ -49,7 +49,7 @@ struct BrowserContentView: View {
         self.siteNavigation = siteNavigation
         self.mode = mode
         self.topSitesVM = topSitesVM
-        self.viewModel = viewModel
+        self.webVM = webVM
     }
     
     var body: some View {
@@ -67,7 +67,7 @@ struct BrowserContentView: View {
             case .topSites:
                 TopSitesView(topSitesVM, mode)
             case .site(let site):
-                WebView(viewModel, site, webViewNeedsUpdate, mode)
+                WebView(webVM, site, webViewNeedsUpdate, mode)
             default:
                 Spacer()
             }

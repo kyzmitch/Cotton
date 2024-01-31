@@ -14,9 +14,9 @@ final class TopSitesViewModel: ObservableObject {
     let topSites: [Site]
     private let writeTabUseCase: WriteTabsUseCase
     
-    init(_ isJsEnabled: Bool,
+    init(_ topSites: [Site],
          _ writeTabUseCase: WriteTabsUseCase) {
-        topSites = DefaultTabProvider.shared.topSites(isJsEnabled)
+        self.topSites = topSites
         self.writeTabUseCase = writeTabUseCase
     }
     

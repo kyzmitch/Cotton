@@ -15,7 +15,6 @@ import WebKit
 
 /// Simplified view actions for view use
 public enum WebPageLoadingAction: Equatable {
-    //
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers

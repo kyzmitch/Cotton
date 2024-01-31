@@ -17,8 +17,8 @@ protocol WebViewReusable: AnyObject {
 }
 
 /// web view specific to SwiftUI
-struct WebView: View {
-    let viewModel: any WebViewModel
+struct WebView<W: WebViewModel>: View {
+    @ObservedObject private var viewModel: W
     /// Initial site with an url to load the web view
     private let site: Site
     /// A workaround to avoid unnecessary web view updates
@@ -26,7 +26,7 @@ struct WebView: View {
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     
-    init(_ viewModel: any WebViewModel,
+    init(_ viewModel: W,
          _ site: Site,
          _ webViewNeedsUpdate: Bool,
          _ mode: SwiftUIMode) {

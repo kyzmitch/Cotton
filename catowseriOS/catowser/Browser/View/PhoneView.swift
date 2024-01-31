@@ -12,7 +12,7 @@ import FeaturesFlagsKit
 import CottonPlugins
 import CottonData
 
-struct PhoneView: View {
+struct PhoneView<W: WebViewModel>: View {
     // MARK: - view models of subviews
 
     /// Search bar view model
@@ -26,7 +26,7 @@ struct PhoneView: View {
     /// Search suggestions view model has async init
     private let searchSuggestionsVM: SearchSuggestionsViewModel
     /// Web view model without a specific site
-    private let webVM: any WebViewModel
+    @ObservedObject private var webVM: W
     
     // MARK: - search bar state
     
@@ -87,7 +87,7 @@ struct PhoneView: View {
          _ mode: SwiftUIMode,
          _ topSitesVM: TopSitesViewModel,
          _ searchSuggestionsVM: SearchSuggestionsViewModel,
-         _ webVM: any WebViewModel) {
+         _ webVM: W) {
         self.browserContentVM = browserContentVM
         self.topSitesVM = topSitesVM
         self.searchSuggestionsVM = searchSuggestionsVM

@@ -11,7 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 import CottonData
 
-struct TabletView: View {
+struct TabletView<W: WebViewModel>: View {
     // MARK: - view models of subviews
     
     @StateObject private var searchBarVM: SearchBarViewModel = .init()
@@ -24,7 +24,7 @@ struct TabletView: View {
     /// Search suggestions view model has async init
     private let searchSuggestionsVM: SearchSuggestionsViewModel
     /// Web view model without a specific site
-    private let webVM: any WebViewModel
+    @ObservedObject private var webVM: W
     
     // MARK: - Tablet search bar state
     
@@ -84,8 +84,8 @@ struct TabletView: View {
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel,
-         _ webVM: any WebViewModel) {
+         _ searchSuggestionsVM: any SearchSuggestionsViewModel,
+         _ webVM: W) {
         self.browserContentVM = browserContentVM
         self.topSitesVM = topSitesVM
         self.searchSuggestionsVM = searchSuggestionsVM

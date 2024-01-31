@@ -67,6 +67,7 @@ final class ViewModelFactory {
     func topSitesViewModel() async -> TopSitesViewModel {
         let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
-        return TopSitesViewModel(isJsEnabled, writeUseCase)
+        let sites = DefaultTabProvider.shared.topSites(isJsEnabled)
+        return TopSitesViewModel(sites, writeUseCase)
     }
 }

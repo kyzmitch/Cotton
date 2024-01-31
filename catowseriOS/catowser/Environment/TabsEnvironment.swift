@@ -11,16 +11,16 @@ import CoreData
 
 private final class TabsEnvironment {
     static func shared() async -> ManagerHolder {
-        if let holder = internalHolder {
+        if let holder = internalInstance {
             return holder
         }
         
         let created = await ManagerHolder()
-        internalHolder = created
+        internalInstance = created
         return created
     }
     
-    static private var internalHolder: ManagerHolder?
+    static private var internalInstance: ManagerHolder?
     
     fileprivate actor ManagerHolder {
         let cachedTabsManager: TabsDataService
