@@ -10,12 +10,10 @@ import SwiftUI
 
 struct TabletTabsView: View {
     private let mode: SwiftUIMode
-    private let viewModel: AllTabsViewModel
+    @EnvironmentObject private var viewModel: AllTabsViewModel
     
-    init(_ mode: SwiftUIMode, 
-         _ viewModel: AllTabsViewModel) {
+    init(_ mode: SwiftUIMode) {
         self.mode = mode
-        self.viewModel = viewModel
     }
     
     var body: some View {

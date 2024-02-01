@@ -26,18 +26,18 @@ import CoreBrowser
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 @MainActor
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController<W>(_ coordinator: AppCoordinator,
-                            _ uiFramework: UIFrameworkType,
-                            _ defaultContentType: Tab.ContentType,
-                            _ allTabsVM: AllTabsViewModel,
-                            _ topSitesVM: TopSitesViewModel,
-                            _ searchSuggestionsVM: SearchSuggestionsViewModel,
-                            _ webVM: W) -> AnyViewController where W: WebViewModel
+    func rootViewController<W, S>(_ coordinator: AppCoordinator,
+                                  _ uiFramework: UIFrameworkType,
+                                  _ defaultContentType: Tab.ContentType,
+                                  _ allTabsVM: AllTabsViewModel,
+                                  _ topSitesVM: TopSitesViewModel,
+                                  _ searchSuggestionsVM: S,
+                                  _ webVM: W) -> AnyViewController  where W: WebViewModel, S: SearchSuggestionsViewModel
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
-                                         _ viewModel: SearchSuggestionsViewModel) -> AnyViewController
+                                         _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController
     
     func webViewController<C: Navigating>(_ coordinator: C?,
                                           _ viewModel: any WebViewModel) -> AnyViewController & WebViewNavigatable
@@ -84,13 +84,14 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController<W>(_ coordinator: AppCoordinator,
-                            _ uiFramework: UIFrameworkType,
-                            _ defaultContentType: Tab.ContentType,
-                            _ allTabsVM: AllTabsViewModel,
-                            _ topSitesVM: TopSitesViewModel,
-                            _ searchSuggestionsVM: SearchSuggestionsViewModel,
-                            _ webVM: W) -> AnyViewController where W: WebViewModel {
+    func rootViewController<W, S>(_ coordinator: AppCoordinator,
+                                  _ uiFramework: UIFrameworkType,
+                                  _ defaultContentType: Tab.ContentType,
+                                  _ allTabsVM: AllTabsViewModel,
+                                  _ topSitesVM: TopSitesViewModel,
+                                  _ searchSuggestionsVM: S,
+                                  _ webVM: W) -> AnyViewController
+    where W: WebViewModel, S: SearchSuggestionsViewModel {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
@@ -114,7 +115,7 @@ extension ViewControllerFactory {
     }
     
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
-                                         _ viewModel: SearchSuggestionsViewModel) -> AnyViewController {
+                                         _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController {
         // It seems it should be computed property
         // to allow app. to use different view model
         // based on current feature flag's value

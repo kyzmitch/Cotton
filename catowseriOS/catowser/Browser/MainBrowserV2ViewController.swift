@@ -31,8 +31,9 @@ import CottonData
 @available(iOS 13.0.0, *)
 final class MainBrowserV2ViewController<
     C: Navigating & BrowserContentCoordinators,
-    W: WebViewModel>:
-UIHostingController<MainBrowserView<C, W>> where C.R == MainScreenRoute {
+    W: WebViewModel,
+    S: SearchSuggestionsViewModel>:
+UIHostingController<MainBrowserView<C, W, S>> where C.R == MainScreenRoute {
     private weak var coordinator: C?
     
     init(_ coordinator: C, 
@@ -40,7 +41,7 @@ UIHostingController<MainBrowserView<C, W>> where C.R == MainScreenRoute {
          _ defaultContent: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel,
+         _ searchSuggestionsVM: S,
          _ webVM: W) {
         self.coordinator = coordinator
         

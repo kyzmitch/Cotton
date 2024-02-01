@@ -34,12 +34,12 @@ final class SearchSuggestionsCoordinator: Coordinator {
         }
     }
     private var disposables = [Disposable?]()
-    private let viewModel: SearchSuggestionsViewModel
+    private let viewModel: any SearchSuggestionsViewModel
     
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController,
          _ delegate: SearchSuggestionsListDelegate,
-         _ viewModel: SearchSuggestionsViewModel) {
+         _ viewModel: any SearchSuggestionsViewModel) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate

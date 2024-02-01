@@ -9,19 +9,17 @@
 import SwiftUI
 import CottonData
 
-struct SearchSuggestionsLegacyView: CatowserUIVCRepresentable {
+struct SearchSuggestionsLegacyView<S: SearchSuggestionsViewModel>: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     
     private let searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
-    private let viewModel: SearchSuggestionsViewModel
+    @EnvironmentObject private var viewModel: S
     
     init(_ searchQuery: String,
-         _ delegate: SearchSuggestionsListDelegate?,
-         _ viewModel: SearchSuggestionsViewModel) {
+         _ delegate: SearchSuggestionsListDelegate?) {
         self.searchQuery = searchQuery
         self.delegate = delegate
-        self.viewModel = viewModel
     }
     
     func makeUIViewController(context: Context) -> UIViewControllerType {

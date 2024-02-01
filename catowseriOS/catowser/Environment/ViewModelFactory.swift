@@ -23,7 +23,7 @@ final class ViewModelFactory {
     
     private init() {}
     
-    func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) async -> SearchSuggestionsViewModel {
+    func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) async -> any SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:

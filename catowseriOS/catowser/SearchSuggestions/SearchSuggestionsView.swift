@@ -9,28 +9,26 @@
 import SwiftUI
 import CottonData
 
-struct SearchSuggestionsView: View {
+struct SearchSuggestionsView<S: SearchSuggestionsViewModel>: View {
     private let searchQuery: String
     private weak var delegate: SearchSuggestionsListDelegate?
     private let mode: SwiftUIMode
-    private let viewModel: SearchSuggestionsViewModel
+    @EnvironmentObject private var viewModel: S
     
     init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?,
-         _ mode: SwiftUIMode,
-         _ viewModel: SearchSuggestionsViewModel) {
+         _ mode: SwiftUIMode) {
         self.searchQuery = searchQuery
         self.delegate = delegate
         self.mode = mode
-        self.viewModel = viewModel
     }
     
     var body: some View {
         switch mode {
         case .compatible:
-            SearchSuggestionsLegacyView(searchQuery, delegate, viewModel)
+            SearchSuggestionsLegacyView<S>(searchQuery, delegate)
         case .full:
-            SearchSuggestionsViewV2(searchQuery, delegate, viewModel)
+            SearchSuggestionsViewV2<S>(searchQuery, delegate)
         }
     }
 }

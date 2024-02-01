@@ -12,19 +12,19 @@ import FeaturesFlagsKit
 import CottonPlugins
 import CottonData
 
-struct PhoneView<W: WebViewModel>: View {
+struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     // MARK: - view models of subviews
 
     /// Search bar view model
     @StateObject private var searchBarVM: SearchBarViewModel = .init()
     /// A reference to created view model
-    @ObservedObject private var browserContentVM: BrowserContentViewModel
+    @EnvironmentObject private var browserContentVM: BrowserContentViewModel
     /// Toolbar view model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
     /// Top sites view model is async dependency, so, can only be injected from outside
-    @ObservedObject private var topSitesVM: TopSitesViewModel
+    @EnvironmentObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async init
-    private let searchSuggestionsVM: SearchSuggestionsViewModel
+    @ObservedObject private var searchSuggestionsVM: S
     /// Web view model without a specific site
     @ObservedObject private var webVM: W
     
@@ -33,27 +33,27 @@ struct PhoneView<W: WebViewModel>: View {
     /// Search bar action is only needed for SwiftUI UIKit wrapper
     @State private var searchBarAction: SearchBarAction
     /// Search suggestion visibility state
-    @State private var showSearchSuggestions: Bool
+    @State private var showSearchSuggestions: Bool = false
     /// Search query string state which is set by SearchBar and used by SearchSuggestions
-    @State private var searchQuery: String
+    @State private var searchQuery: String = ""
     /// Needs to be fetched from global actor in task to know current value
     @State private var searchProviderType: WebAutoCompletionSource
     
     // MARK: - web content loading state
     
-    @State private var showProgress: Bool
-    @State private var websiteLoadProgress: Double
+    @State private var showProgress: Bool = false
+    @State private var websiteLoadProgress: Double = 0.0
     
     // MARK: - browser content state
     
-    @State private var isLoading: Bool
+    @State private var isLoading: Bool = true
     @State private var contentType: Tab.ContentType = .blank
     /// A workaround to avoid unnecessary web view updates
-    @State private var webViewNeedsUpdate: Bool
+    @State private var webViewNeedsUpdate: Bool = false
     
     // MARK: - web view related
     
-    @State private var webViewInterface: WebViewNavigatable?
+    @State private var webViewInterface: WebViewNavigatable? = nil
     
     // MARK: - constants
     
@@ -62,9 +62,9 @@ struct PhoneView<W: WebViewModel>: View {
     // MARK: - toolbar
     
     @State private var toolbarVisibility: Visibility
-    @State private var showingMenu: Bool
-    @State private var showingTabs: Bool
-    @State private var tabsCount: Int
+    @State private var showingMenu: Bool = false
+    @State private var showingTabs: Bool = false
+    @State private var tabsCount: Int = 0
     
     // MARK: - menu
     
@@ -83,32 +83,9 @@ struct PhoneView<W: WebViewModel>: View {
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
-    init(_ browserContentVM: BrowserContentViewModel, 
-         _ mode: SwiftUIMode,
-         _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel,
-         _ webVM: W) {
-        self.browserContentVM = browserContentVM
-        self.topSitesVM = topSitesVM
-        self.searchSuggestionsVM = searchSuggestionsVM
+    init(_ mode: SwiftUIMode, _ webVM: W, _ searchVM: S) {
         self.webVM = webVM
-        // Browser content state has to be stored outside in main view
-        // to allow keep current state value when `showSearchSuggestions`
-        // state variable changes
-        isLoading = true
-        webViewNeedsUpdate = false
-        webViewInterface = nil
-        // web content loading state has to be stored here
-        // to get that info from toolbar model and use it
-        // for `ProgressView`
-        showProgress = false
-        websiteLoadProgress = 0.0
-        // Search bar and suggestions state values
-        // have to be stored in main view
-        // to be able to replace browser content view
-        // with the search suggestions view when necessary
-        showSearchSuggestions = false
-        searchQuery = ""
+        self.searchSuggestionsVM = searchVM
         searchBarAction = .clearView
         self.mode = mode
         switch mode {
@@ -117,9 +94,6 @@ struct PhoneView<W: WebViewModel>: View {
         case .full:
             toolbarVisibility = .visible
         }
-        tabsCount = 0
-        showingMenu = false
-        showingTabs = false
         
         // Next states are set to some random "good" values
         // because actualy values need to be fetched from Global actor
@@ -149,7 +123,7 @@ struct PhoneView<W: WebViewModel>: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView(searchQuery, delegate, mode, searchSuggestionsVM)
+                SearchSuggestionsView<S>(searchQuery, delegate, mode)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -159,7 +133,6 @@ struct PhoneView<W: WebViewModel>: View {
                                    contentType,
                                    $webViewNeedsUpdate,
                                    mode,
-                                   topSitesVM,
                                    webVM)
             }
             ToolbarView(toolbarVM, $webViewInterface)
@@ -199,7 +172,7 @@ struct PhoneView<W: WebViewModel>: View {
                 }
                 if showSearchSuggestions {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
-                    SearchSuggestionsView(searchQuery, delegate, mode, searchSuggestionsVM)
+                    SearchSuggestionsView<S>(searchQuery, delegate, mode)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
@@ -209,7 +182,6 @@ struct PhoneView<W: WebViewModel>: View {
                                        contentType,
                                        $webViewNeedsUpdate,
                                        mode,
-                                       topSitesVM,
                                        webVM)
                 }
             }

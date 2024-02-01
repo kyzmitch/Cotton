@@ -28,7 +28,7 @@ protocol SearchSuggestionsListDelegate: AnyObject {
 /// View controller for suggestions view
 /// Looks similar to the one in Safari
 final class SearchSuggestionsViewController: UITableViewController {
-    private let viewModel: SearchSuggestionsViewModel
+    private let viewModel: any SearchSuggestionsViewModel
     
     private var state: SearchSuggestionsViewState = .waitingForQuery {
         didSet {
@@ -41,7 +41,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     /// Delegate to handle suggestion selection
     private weak var delegate: SearchSuggestionsListDelegate?
 
-    init(_ delegate: SearchSuggestionsListDelegate?, _ viewModel: SearchSuggestionsViewModel) {
+    init(_ delegate: SearchSuggestionsListDelegate?, _ viewModel: any SearchSuggestionsViewModel) {
         self.viewModel = viewModel
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)

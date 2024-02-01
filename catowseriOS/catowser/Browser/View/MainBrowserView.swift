@@ -34,7 +34,8 @@ extension UIFrameworkType {
     }
 }
 
-struct MainBrowserView<C: BrowserContentCoordinators, W: WebViewModel>: View {
+struct MainBrowserView
+<C: BrowserContentCoordinators, W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     /// Store main view model in this main view to not have generic parameter in phone/tablet views
     @StateObject private var viewModel: MainBrowserViewModel<C>
     /// Browser content view model
@@ -49,7 +50,7 @@ struct MainBrowserView<C: BrowserContentCoordinators, W: WebViewModel>: View {
     /// Top sites view model has async dependencies and has to be injected
     @StateObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async dependencies and has to be injected
-    private let searchSuggestionsVM: SearchSuggestionsViewModel
+    private let searchSuggestionsVM: S
     /// Web view model without a specific site
     @StateObject private var webVM: W
     
@@ -58,7 +59,7 @@ struct MainBrowserView<C: BrowserContentCoordinators, W: WebViewModel>: View {
          _ defaultContentType: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
-         _ searchSuggestionsVM: SearchSuggestionsViewModel,
+         _ searchSuggestionsVM: S,
          _ webVM: W) {
         let mainVM = MainBrowserViewModel(coordinatorsInterface)
         _viewModel = StateObject(wrappedValue: mainVM)
@@ -74,22 +75,15 @@ struct MainBrowserView<C: BrowserContentCoordinators, W: WebViewModel>: View {
     var body: some View {
         Group {
             if isPad {
-                TabletView(browserContentVM,
-                           mode,
-                           .blank,
-                           allTabsVM,
-                           topSitesVM,
-                           searchSuggestionsVM,
-                           webVM)
+                TabletView(mode, .blank, webVM, searchSuggestionsVM)
             } else {
-                PhoneView(browserContentVM, 
-                          mode,
-                          topSitesVM,
-                          searchSuggestionsVM,
-                          webVM)
+                PhoneView(mode, webVM, searchSuggestionsVM)
             }
         }
         .environment(\.browserContentCoordinators, viewModel.coordinatorsInterface)
+        .environmentObject(browserContentVM)
+        .environmentObject(allTabsVM)
+        .environmentObject(topSitesVM)
         .onAppear {
             Task {
                 await TabsDataService.shared.attach(browserContentVM, notify: true)

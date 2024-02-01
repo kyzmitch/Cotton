@@ -28,7 +28,7 @@ struct BrowserContentView<W: WebViewModel>: View {
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
     /// Top sites view model, possibly somehow needs to be recreated JS setting changes
-    @ObservedObject private var topSitesVM: TopSitesViewModel
+    @EnvironmentObject private var topSitesVM: TopSitesViewModel
     /// A delegate for the web view model
     private var siteNavigation: SiteExternalNavigationDelegate?
     /// Web view model
@@ -40,7 +40,6 @@ struct BrowserContentView<W: WebViewModel>: View {
          _ contentType: Tab.ContentType,
          _ webViewNeedsUpdate: Binding<Bool>,
          _ mode: SwiftUIMode,
-         _ topSitesVM: TopSitesViewModel,
          _ webVM: W) {
         self.isLoading = isLoading
         self.contentType = contentType
@@ -48,7 +47,6 @@ struct BrowserContentView<W: WebViewModel>: View {
         self.jsPluginsBuilder = jsPluginsBuilder
         self.siteNavigation = siteNavigation
         self.mode = mode
-        self.topSitesVM = topSitesVM
         self.webVM = webVM
     }
     
