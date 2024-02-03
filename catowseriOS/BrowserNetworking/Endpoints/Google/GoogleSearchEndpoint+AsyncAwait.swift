@@ -3,7 +3,7 @@
 //  BrowserNetworking
 //
 //  Created by Ermoshin Andrey on 20.06.2021.
-//  Copyright © 2021 andreiermoshin. All rights reserved.
+//  Copyright © 2021 Cotton (former Catowser). All rights reserved.
 //
 
 #if swift(>=5.5)

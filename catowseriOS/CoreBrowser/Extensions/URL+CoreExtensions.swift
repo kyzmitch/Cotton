@@ -3,7 +3,7 @@
 //  CoreBrowser
 //
 //  Created by Andrei Ermoshin on 3/31/20.
-//  Copyright © 2020 andreiermoshin. All rights reserved.
+//  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import Foundation

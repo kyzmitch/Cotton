@@ -3,7 +3,7 @@
 //  catowser
 //
 //  Created by admin on 12/06/2017.
-//  Copyright © 2017 andreiermoshin. All rights reserved.
+//  Copyright © 2017 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import CottonBase

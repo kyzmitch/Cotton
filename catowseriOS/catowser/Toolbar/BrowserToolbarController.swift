@@ -3,7 +3,7 @@
 //  catowser
 //
 //  Created by admin on 19/02/2018.
-//  Copyright © 2018 andreiermoshin. All rights reserved.
+//  Copyright © 2018 Cotton (former Catowser). All rights reserved.
 //
 
 // This class and UI is only needed for iPhone/iPod touch
