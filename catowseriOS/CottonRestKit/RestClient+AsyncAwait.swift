@@ -3,7 +3,7 @@
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 6/10/21.
-//  Copyright © 2021 andreiermoshin. All rights reserved.
+//  Copyright © 2021 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 #if swift(>=5.5)

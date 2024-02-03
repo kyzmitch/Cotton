@@ -3,7 +3,7 @@
 //  catowser
 //
 //  Created by Andrei Ermoshin on 7/24/22.
-//  Copyright © 2022 andreiermoshin. All rights reserved.
+//  Copyright © 2022 Cotton (former Catowser). All rights reserved.
 //
 
 #if swift(>=5.5)

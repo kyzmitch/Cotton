@@ -3,7 +3,7 @@
 //  FeaturesFlagsKit
 //
 //  Created by Andrei Ermoshin on 2/27/22.
-//  Copyright © 2022 andreiermoshin. All rights reserved.
+//  Copyright © 2022 Cotton (former Catowser). All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

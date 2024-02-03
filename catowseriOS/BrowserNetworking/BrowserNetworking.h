@@ -3,7 +3,7 @@
 //  BrowserNetworking
 //
 //  Created by Ermoshin Andrey on 01.07.2021.
-//  Copyright © 2021 andreiermoshin. All rights reserved.
+//  Copyright © 2021 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

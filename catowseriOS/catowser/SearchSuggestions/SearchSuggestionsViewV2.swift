@@ -3,7 +3,7 @@
 //  catowser
 //
 //  Created by Andrei Ermoshin on 3/29/23.
-//  Copyright © 2023 andreiermoshin. All rights reserved.
+//  Copyright © 2023 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import SwiftUI

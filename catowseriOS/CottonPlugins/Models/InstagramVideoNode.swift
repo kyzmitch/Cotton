@@ -3,7 +3,7 @@
 //  JSPlugins
 //
 //  Created by Andrei Ermoshin on 3/26/19.
-//  Copyright © 2019 andreiermoshin. All rights reserved.
+//  Copyright © 2019 Cotton (former Catowser). All rights reserved.
 //
 
 import Foundation
