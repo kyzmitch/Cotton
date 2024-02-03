@@ -13,7 +13,7 @@ import CoreBrowser
 
 enum WebViewModelState {
     /// SwiftUI specific state to avoid waiting for the specific `Site` and create VM right away
-    /// to call `load(site)` method when SiwftUI aware of specific `Site`
+    /// to call `load(site)` method when SwiftUI aware of specific `Site`
     case pendingLoad
     /// Old initial state for UIKit mode as well
     case initialized(Site)
@@ -27,7 +27,6 @@ enum WebViewModelState {
     case waitingForNavigation(Site.Settings, URLInfo)
     case finishingLoading(Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
     case viewing(Site.Settings, URLInfo)
-    
     case updatingJS(Site.Settings, JavaScriptEvaluateble, URLInfo)
     
     enum Error: LocalizedError {

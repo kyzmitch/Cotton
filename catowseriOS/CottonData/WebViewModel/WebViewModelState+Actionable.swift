@@ -15,7 +15,7 @@ extension WebViewModelState: Actionable {
     typealias State = Self
     
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func transition(on action: Action) throws -> State {
+    func transition(on action: Action, _ logging: Bool = false) throws -> State {
         let nextState: State
         switch (self, action) {
         case (.pendingLoad, .loadSite):
@@ -153,12 +153,18 @@ extension WebViewModelState: Actionable {
 #if TESTING
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
 #endif
+            if logging {
+                print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
+            }
             throw Error.unexpectedStateForAction(self, action)
         }
         
 #if TESTING
         print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
 #endif
+        if logging {
+            print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
+        }
         return nextState
     }
 }

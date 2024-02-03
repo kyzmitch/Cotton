@@ -61,6 +61,8 @@ final class WebViewController<C: Navigating>: BaseViewController,
     private(set) var authHandlers: Set<WebViewAuthChallengeHandler> = []
     /// A proxy value for re-usable web view, only one needed
     private var proxy: WebViewControllerProxy?
+    /// UI framework mode to determine if need to call viewModel.load or not
+    private let mode: UIFrameworkType
 
     /**
      Constructs web view controller for specific site with set of plugins and navigation handler.
@@ -68,9 +70,11 @@ final class WebViewController<C: Navigating>: BaseViewController,
      Currently it is too tricky to inject view model right away because it has to be async
      */
     init(_ coordinator: C?,
-         _ viewModel: any WebViewModel) {
+         _ viewModel: any WebViewModel,
+         _ mode: UIFrameworkType) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.mode = mode
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -98,6 +102,12 @@ final class WebViewController<C: Navigating>: BaseViewController,
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         subscribe()
+        
+        guard mode == .uiKit else {
+            /// No need to load view model, because SwiftUI wrapper calls resetToSite
+            /// see `WebViewLegacyView` and `WebView.swift`
+            return
+        }
         Task {
             /// Load initial site or just wait for the reset to site action
             await viewModel.load()

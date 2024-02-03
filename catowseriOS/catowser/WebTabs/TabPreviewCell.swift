@@ -102,7 +102,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         button.contentMode = .center
         button.tintColor = .cellCloseButton
         if #available(iOS 15, *) {
-            print("UIButton imageEdgeInsets setting is ignored")
+            /// print("UIButton imageEdgeInsets setting is ignored")
         } else {
             button.imageEdgeInsets = UIEdgeInsets(equalInset: .closeButtonEdgeInset)
         }

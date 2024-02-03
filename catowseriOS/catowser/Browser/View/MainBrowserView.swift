@@ -53,6 +53,8 @@ struct MainBrowserView
     private let searchSuggestionsVM: S
     /// Web view model without a specific site
     @StateObject private var webVM: W
+    /// Default content type is determined in async way, so, would be good to pass it like this
+    private let defaultContentType: Tab.ContentType
     
     init(_ coordinatorsInterface: C,
          _ uiFrameworkType: UIFrameworkType,
@@ -66,6 +68,7 @@ struct MainBrowserView
         let browserVM = BrowserContentViewModel(mainVM.jsPluginsBuilder, defaultContentType)
         _browserContentVM = StateObject(wrappedValue: browserVM)
         mode = uiFrameworkType.swiftUIMode
+        self.defaultContentType = defaultContentType
         _allTabsVM = StateObject(wrappedValue: allTabsVM)
         _topSitesVM = StateObject(wrappedValue: topSitesVM)
         self.searchSuggestionsVM = searchSuggestionsVM
@@ -75,9 +78,9 @@ struct MainBrowserView
     var body: some View {
         Group {
             if isPad {
-                TabletView(mode, .blank, webVM, searchSuggestionsVM)
+                TabletView(mode, defaultContentType, webVM, searchSuggestionsVM)
             } else {
-                PhoneView(mode, webVM, searchSuggestionsVM)
+                PhoneView(mode, defaultContentType, webVM, searchSuggestionsVM)
             }
         }
         .environment(\.browserContentCoordinators, viewModel.coordinatorsInterface)

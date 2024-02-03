@@ -448,7 +448,8 @@ private extension AppCoordinator {
                                                            containerView,
                                                            self,
                                                            site,
-                                                           plugins)
+                                                           plugins,
+                                                           uiFramework)
             coordinator.parent = self
             coordinator.start()
             // Set new interface after starting, it is new for every site/webView

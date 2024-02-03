@@ -39,7 +39,7 @@ final class TabView: UIView {
         closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControl.State())
         closeButton.tintColor = UIColor.lightGray
         if #available(iOS 15, *) {
-            print("UIButton imageEdgeInsets setting is ignored")
+            /// print("UIButton imageEdgeInsets setting is ignored")
         } else {
             closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
         }

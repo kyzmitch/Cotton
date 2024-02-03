@@ -13,7 +13,13 @@ extension Site.Settings {
     /// This will be ignored for old WebViews because it can't be changed for existing WebView without recration.
     var webViewConfig: WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
-        configuration.preferences.javaScriptEnabled = isJSEnabled
+        if #available(iOS 14, *) {
+            let preferences = WKWebpagePreferences()
+            preferences.allowsContentJavaScript = isJSEnabled
+            configuration.defaultWebpagePreferences = preferences
+        } else {
+            configuration.preferences.javaScriptEnabled = isJSEnabled
+        }
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !blockPopups
 #if os(iOS)

@@ -13,7 +13,7 @@ import CottonPlugins
 protocol Actionable {
     associatedtype Action
     associatedtype State
-    func transition(on action: Action) throws -> State
+    func transition(on action: Action, _ logging: Bool) throws -> State
 }
 
 typealias IPAddress = String

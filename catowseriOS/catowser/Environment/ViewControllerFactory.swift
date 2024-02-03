@@ -40,7 +40,8 @@ protocol ViewControllerFactory: AnyObject {
                                          _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController
     
     func webViewController<C: Navigating>(_ coordinator: C?,
-                                          _ viewModel: any WebViewModel) -> AnyViewController & WebViewNavigatable
+                                          _ viewModel: any WebViewModel,
+                                          _ mode: UIFrameworkType) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
     where C.R == TopSitesRoute
@@ -124,9 +125,10 @@ extension ViewControllerFactory {
     }
     
     func webViewController<C: Navigating>(_ coordinator: C?,
-                                          _ viewModel: any WebViewModel) -> AnyViewController & WebViewNavigatable
+                                          _ viewModel: any WebViewModel,
+                                          _ mode: UIFrameworkType) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
-        return WebViewController(coordinator, viewModel)
+        return WebViewController(coordinator, viewModel, mode)
     }
     
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel, _ coordinator: C) -> UIViewController

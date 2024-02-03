@@ -40,19 +40,23 @@ final class WebContentCoordinator: Coordinator {
     private weak var delegate: WebContentDelegate?
     /// Points to web view controller, can be a strong reference, because it is the same with `startedVC`
     private var sitePresenter: WebViewNavigatable?
+    /// Mode is needed only to determine if web view model needs to call the load method or not (SwiftUI mode need to not call it)
+    private let mode: UIFrameworkType
     
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ contentContainerView: UIView,
          _ delegate: WebContentDelegate,
          _ site: Site,
-         _ jsPluginsSource: any JSPluginsSource) {
+         _ jsPluginsSource: any JSPluginsSource,
+         _ mode: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.contentContainerView = contentContainerView
         self.site = site
         self.jsPluginsSource = jsPluginsSource
         self.delegate = delegate
+        self.mode = mode
     }
     
     func start() {
@@ -60,7 +64,7 @@ final class WebContentCoordinator: Coordinator {
             let context: WebViewContextImpl = .init(jsPluginsSource)
             let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, self)
             let manager = ViewsEnvironment.shared.reuseManager
-            let webViewController = try? manager.controllerFor(site, self, viewModel)
+            let webViewController = try? manager.controllerFor(site, self, viewModel, mode)
             guard let vc = webViewController else {
                 assertionFailure("Failed create new web view for tab")
                 return

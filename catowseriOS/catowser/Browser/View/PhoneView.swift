@@ -47,7 +47,7 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     // MARK: - browser content state
     
     @State private var isLoading: Bool = true
-    @State private var contentType: Tab.ContentType = .blank
+    @State private var contentType: Tab.ContentType
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool = false
     
@@ -83,11 +83,12 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
     
-    init(_ mode: SwiftUIMode, _ webVM: W, _ searchVM: S) {
+    init(_ mode: SwiftUIMode, _ defaultContentType: Tab.ContentType, _ webVM: W, _ searchVM: S) {
         self.webVM = webVM
         self.searchSuggestionsVM = searchVM
         searchBarAction = .clearView
         self.mode = mode
+        self.contentType = defaultContentType
         switch mode {
         case .compatible:
             toolbarVisibility = .hidden
@@ -157,7 +158,6 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
-            contentType = await DefaultTabProvider.shared.contentState
             webVM.siteNavigation = toolbarVM
         }
     }
@@ -227,7 +227,6 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
-            contentType = await DefaultTabProvider.shared.contentState
             webVM.siteNavigation = toolbarVM
         }
     }

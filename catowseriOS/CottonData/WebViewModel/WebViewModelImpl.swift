@@ -92,7 +92,12 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
     public weak var siteNavigation: SiteExternalNavigationDelegate?
     
     /**
-     Constructs web view model
+     Constructs web view model.
+     For SwiftUI mode it is the same instance all the time, because web view model depends on async use cases
+     and the init is async, that is why you can't use it in SwiftUI because it can't wait asynhroniously and
+     need to build the view right away. That is why for SwiftUI mode we have to pass specific Site after view was built.
+     
+     @param site Can be nil when you are using just one same web view model because can't create new one every time in SwiftUI mode
      */
     public init(_ resolveDnsUseCase: any ResolveDNSUseCase<Strategy>,
                 _ context: any WebViewContext,
@@ -292,8 +297,7 @@ private extension WebViewModelImpl {
             await updateState(try state.transition(on: .resolveDomainName(enabled)))
         case .checkingDNResolveSupport(let urlData, _):
             let dohWillWork = urlData.host().isDoHSupported
-            // somehow url from site already or from next page request
-            // contained ip address
+            /// somehow url from site already or from next page request contained ip address
             let domainNameAlreadyResolved = urlData.ipAddressString != nil
             await updateState(try state.transition(on: .checkDNResolvingSupport(dohWillWork && !domainNameAlreadyResolved)))
         case .resolvingDN(let urlData, _):
@@ -301,7 +305,7 @@ private extension WebViewModelImpl {
         case .creatingRequest:
             await updateState(try state.transition(on: .loadWebView))
         case .updatingWebView(_, let urlInfo):
-            // Not storing DoH state in vm state, can fetch it from context
+            /// Not storing DoH state in vm state, can fetch it from context
             let useIPaddress = await context.isDohEnabled()
             updateLoadingState(.load(urlInfo.urlRequest(useIPaddress)))
         case .waitingForNavigation:
