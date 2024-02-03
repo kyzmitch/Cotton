@@ -3,7 +3,7 @@
 //  HttpKit
 //
 //  Created by Andrei Ermoshin on 4/17/22.
-//  Copyright © 2022 andreiermoshin. All rights reserved.
+//  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import Foundation
