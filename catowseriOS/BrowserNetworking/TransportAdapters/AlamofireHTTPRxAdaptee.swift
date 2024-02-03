@@ -3,7 +3,7 @@
 //  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 11/29/21.
-//  Copyright © 2021 andreiermoshin. All rights reserved.
+//  Copyright © 2021 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import CottonRestKit

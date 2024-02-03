@@ -3,7 +3,7 @@
 //  BrowserNetworking
 //
 //  Created by Andrei Ermoshin on 4/29/20.
-//  Copyright © 2020 andreiermoshin. All rights reserved.
+//  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import Foundation
