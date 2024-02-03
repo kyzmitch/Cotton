@@ -3,7 +3,7 @@
 //  JSPluginsTests
 //
 //  Created by Andrei Ermoshin on 6/8/20.
-//  Copyright © 2020 andreiermoshin. All rights reserved.
+//  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import XCTest

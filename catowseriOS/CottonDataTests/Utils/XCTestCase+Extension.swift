@@ -3,7 +3,7 @@
 //  CoreCatowserTests
 //
 //  Created by Andrei Ermoshin on 1/11/23.
-//  Copyright © 2023 andreiermoshin. All rights reserved.
+//  Copyright © 2023 Cotton (former Catowser). All rights reserved.
 //
 
 import XCTest
