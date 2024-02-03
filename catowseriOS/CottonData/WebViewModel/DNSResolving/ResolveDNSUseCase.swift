@@ -3,7 +3,7 @@
 //  CottonData
 //
 //  Created by Andrey Ermoshin on 27.01.2024.
-//  Copyright © 2024 andreiermoshin. All rights reserved.
+//  Copyright © 2024 Cotton (former Catowser). All rights reserved.
 //
 
 import Foundation
