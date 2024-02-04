@@ -512,7 +512,6 @@
 		8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */; };
 		8ACAE08D27B7D9D2001D9DCD /* URL+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */; };
 		8ACAE08F27B7DF52001D9DCD /* DummyRxInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */; };
-		8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */; };
 		8ACE7BEC28ED4FC9001CBAED /* WebViewContextMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */; };
 		8ACE7BEE28ED6E0F001CBAED /* WebViewMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */; };
 		8AD18E092447564600224702 /* google.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60724F79221695C80071BECF /* google.xml */; };
@@ -1312,7 +1311,6 @@
 		8AC6D5F828F008EC008379C0 /* NavigationActionableMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationActionableMocks.swift; sourceTree = "<group>"; };
 		8ACAE08C27B7D9D2001D9DCD /* URL+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Rx.swift"; sourceTree = "<group>"; };
 		8ACAE08E27B7DF52001D9DCD /* DummyRxInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyRxInterface.swift; sourceTree = "<group>"; };
-		8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategyMocks.swift; sourceTree = "<group>"; };
 		8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContextMocks.swift; sourceTree = "<group>"; };
 		8ACE7BED28ED6E0F001CBAED /* WebViewMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewMocks.swift; sourceTree = "<group>"; };
 		8AD18E0F2447580A00224702 /* ResourceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceReader.swift; sourceTree = "<group>"; };
@@ -2011,7 +2009,6 @@
 				8A06D6FB28EC30A7001CB63D /* JSONEncodableMocks.swift */,
 				8A06D6F628EC2CF8001CB63D /* ServerDescriptionMocks.swift */,
 				8A06D6F228EC2BE6001CB63D /* RestClientContextMocks.swift */,
-				8ACE7BE928ED4F10001CBAED /* DNSResolvingStrategyMocks.swift */,
 				8A06D6F428EC2C5D001CB63D /* ResponseTypeMocks.swift */,
 				8ACE7BEB28ED4FC9001CBAED /* WebViewContextMocks.swift */,
 				8AD8B47D28F2CAB100E0857D /* JSPluginsProgramMocks.swift */,
@@ -3737,7 +3734,6 @@
 				8AFE7D92296B488D00B2CF55 /* ErrorTypes.swift in Sources */,
 				8AFE7D96296B590A00B2CF55 /* SearchSuggestionsVMFixture.swift in Sources */,
 				8A0E4D5B29133F65008F7964 /* WebSearchAutocompleteTests.swift in Sources */,
-				8ACE7BEA28ED4F10001CBAED /* DNSResolvingStrategyMocks.swift in Sources */,
 				8AC6D5F928F008EC008379C0 /* NavigationActionableMocks.swift in Sources */,
 				8AFE7D99296B5B0400B2CF55 /* SearchSuggestionsViewStateTests.swift in Sources */,
 				8A06D6F728EC2CF8001CB63D /* ServerDescriptionMocks.swift in Sources */,

@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import AutoMockable
 
-public protocol WriteTabsUseCase: BaseUseCase {
+public protocol WriteTabsUseCase: BaseUseCase, AutoMockable {
     /// Adds tab to memory and storage. Tab can be blank or it can contain URL address.
     /// Tab will be added no matter what happen, so, function doesn't return any result.
     ///

@@ -20,7 +20,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
     
     func testLoad() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         await vm.load()
         
         // This is a bad path case, user has to call `finishLoading`
@@ -44,7 +50,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
     
     func testLinkActivation() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         await vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
@@ -77,7 +89,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
     
     func testReload() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         await vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
@@ -105,7 +123,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
     
     func testGoBack() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         await vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlRequestV1 = URLRequest(url: urlV1!)
@@ -164,7 +188,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     
     // swiftlint:disable:next function_body_length
     func testGoForward() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         await vm.load()
         // swiftlint:disable:next force_unwrapping
         let urlRequestV1 = URLRequest(url: urlV1!)
@@ -236,7 +266,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
     
     func testResetWithError() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         // no call to `load` which is expected before `reset`
         // it only can work if it is a `.viewing` state
         // which could happen only after loading initial site
@@ -248,7 +284,13 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
     
     func testReset() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         await vm.load()
         
         // This is a bad path case, user has to call `finishLoading`

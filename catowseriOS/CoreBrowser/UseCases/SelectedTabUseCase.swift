@@ -7,7 +7,8 @@
 //
 
 import Foundation
+import AutoMockable
 
-public protocol SelectedTabUseCase: BaseUseCase {
+public protocol SelectedTabUseCase: BaseUseCase, AutoMockable {
     func setSelectedPreview(_ image: Data?) async
 }

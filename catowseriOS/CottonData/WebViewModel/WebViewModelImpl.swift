@@ -40,7 +40,7 @@ import FeaturesFlagsKit
  */
 
 @MainActor
-public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
+public final class WebViewModelImpl: WebViewModel {
     /// Domain name resolver with specific strategy
     private let resolveDnsUseCase: any ResolveDNSUseCase
     

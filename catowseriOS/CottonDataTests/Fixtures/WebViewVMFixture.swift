@@ -11,6 +11,7 @@ import XCTest
 import CottonRestKit
 import CottonBase
 import WebKit
+import SwiftyMocky
 
 /// A known state against which a test is running for web view vm
 @MainActor
@@ -19,7 +20,7 @@ class WebViewVMFixture: XCTestCase {
     
     var goodServerMock: MockedGoodDnsServer!
     var goodJsonEncodingMock: MockedGoodJSONEncoding!
-    var goodReachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
+    var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
     var goodDnsClient: RestInterfaceMock<MockedGoodDnsServer,
                                            NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
                                            MockedGoodJSONEncoding>!
@@ -27,7 +28,11 @@ class WebViewVMFixture: XCTestCase {
     var subscriber: MockedDNSContext.HttpKitSubscriber!
     var goodDnsContext: MockedDNSContext!
     var exampleIpAddress: String?
-    var goodDnsStrategy: MockedDNSStrategy!
+    lazy var goodContextMock: MockedDNSContext = .init(goodDnsClient, rxSubscriber, subscriber)
+    lazy var strategyMock: DNSResolvingStrategyMock = .init(goodContextMock)
+    lazy var resolveDnsUseCaseMock = ResolveDNSUseCaseMock<DNSResolvingStrategyMock<MockedDNSContext>>()
+    lazy var selectedTabUseCaseMock = SelectedTabUseCaseMock()
+    lazy var writeTabsUseCase = WriteTabsUseCaseMock()
     var jsSubject: MockedWebViewWithError!
     var webViewContext: MockedWebViewContext!
     var settings: Site.Settings!
@@ -77,20 +82,15 @@ class WebViewVMFixture: XCTestCase {
         goodServerMock = .init()
         goodJsonEncodingMock = .init()
         // swiftlint:disable:next force_unwrapping
-        goodReachabilityMock = .init(server: goodServerMock)!
+        reachabilityMock = .init(server: goodServerMock)!
         goodDnsClient = .init(server: goodServerMock,
                               jsonEncoder: goodJsonEncodingMock,
-                              reachability: goodReachabilityMock,
+                              reachability: reachabilityMock,
                               httpTimeout: 0)
         
         rxSubscriber = .init()
         subscriber = .init()
         goodDnsContext = .init(goodDnsClient, rxSubscriber, subscriber)
-        if let ip = exampleIpAddress {
-            goodDnsStrategy = .init(goodDnsContext, ip)
-        } else {
-            goodDnsStrategy = .init(goodDnsContext)
-        }
         jsSubject = .init()
         webViewContext = .init(doh: false,
                                js: false,

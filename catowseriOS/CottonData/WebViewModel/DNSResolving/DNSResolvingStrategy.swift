@@ -10,10 +10,14 @@ import Foundation
 import CottonRestKit
 import ReactiveSwift
 import Combine
+import AutoMockable
 
-public protocol DNSResolvingStrategy: AnyObject {
-    associatedtype Context: RestClientContext
+// swiftlint:disable comment_spacing
+//sourcery: associatedtype = "Context: RestClientContext"
+public protocol DNSResolvingStrategy: AnyObject, AutoMockable {
+    // swiftlint:enable comment_spacing
     
+    associatedtype Context: RestClientContext
     init(_ context: Context)
     func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, DnsError>
     func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, DnsError>

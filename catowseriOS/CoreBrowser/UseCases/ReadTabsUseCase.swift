@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import AutoMockable
 
-public protocol ReadTabsUseCase: BaseUseCase {
+public protocol ReadTabsUseCase: BaseUseCase, AutoMockable {
     /// Returns tabs count
     var tabsCount: Int { get async }
     /// Returns selected UUID, could be invalid one which is defined (to handle always not empty condition)

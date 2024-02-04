@@ -21,7 +21,13 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
         webViewContext = .init(doh: true, js: false, nativeAppRedirect: false, asyncApiType: .asyncAwait)
     }
     func testLoad() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
         
         // swiftlint:disable:next force_unwrapping force_try
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress!)
