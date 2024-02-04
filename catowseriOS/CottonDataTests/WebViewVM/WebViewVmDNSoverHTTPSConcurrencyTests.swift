@@ -12,6 +12,7 @@ import CottonRestKit
 import CottonBase
 import WebKit
 import Combine
+import SwiftyMocky
 
 @MainActor
 final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
@@ -31,6 +32,7 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
         
         // swiftlint:disable:next force_unwrapping force_try
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress!)
+        Given(resolveDnsUseCaseMock, .aaResolveDomainName(.value(urlV1!), willReturn: resolvedUrlV1))
         await vm.load()
         
         // swiftlint:disable:next force_unwrapping
