@@ -12,7 +12,7 @@ public enum TabSubjectError: Error {
     case tabSelectionFailure
 }
 
-public protocol TabsSubject: Actor {
+public protocol TabsSubject {
     /// Add tabs observer. Notifies the new observer right away with existing data if needed.
     /// - Parameter observer: A new observer to notify from this subject
     /// - Parameter notify: Tells if newly added observer needs to be notified right away

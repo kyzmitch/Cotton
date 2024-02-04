@@ -9,7 +9,7 @@
 import Foundation
 import AutoMockable
 
-public protocol IndexSelectionContext: AutoMockable, Actor {
+public protocol IndexSelectionContext: AutoMockable {
     var collectionLastIndex: Int { get async }
     var currentlySelectedIndex: Int { get async }
 }

@@ -26,3 +26,12 @@ final class MockedJSPluginsProgram: JSPluginsProgram {
         
     }
 }
+
+final class MockedJSPluginsSource: JSPluginsSource {
+    typealias Program = MockedJSPluginsProgram
+    let jsProgram: MockedJSPluginsProgram
+    
+    init() {
+        jsProgram = MockedJSPluginsProgram()
+    }
+}

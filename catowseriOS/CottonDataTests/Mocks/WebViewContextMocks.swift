@@ -12,7 +12,7 @@ import CottonBase
 import FeaturesFlagsKit
 
 final class MockedWebViewContext: WebViewContext {
-    let pluginsProgram: any JSPluginsProgram
+    let pluginsSource: any JSPluginsSource
     private var enableDoH: Bool
     private let enableJS: Bool
     private let nativeAppRedirect: Bool
@@ -24,7 +24,7 @@ final class MockedWebViewContext: WebViewContext {
          nativeAppRedirect: Bool,
          asyncApiType: AsyncApiType,
          appName: String? = nil) {
-        pluginsProgram = MockedJSPluginsProgram()
+        pluginsSource = MockedJSPluginsSource()
         enableDoH = doh
         enableJS = js
         self.nativeAppRedirect = nativeAppRedirect

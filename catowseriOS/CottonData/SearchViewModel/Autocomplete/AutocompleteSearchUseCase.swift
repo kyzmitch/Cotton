@@ -11,11 +11,16 @@ import CoreBrowser
 import ReactiveSwift
 import Combine
 import CottonRestKit
+import AutoMockable
 
 public typealias WebSearchSuggestionsProducer = SignalProducer<[String], HttpError>
 public typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpError>
 
-public protocol AutocompleteSearchUseCase<Strategy>: BaseUseCase {
+// swiftlint:disable comment_spacing
+//sourcery: associatedtype = "Strategy: SearchAutocompleteStrategy"
+public protocol AutocompleteSearchUseCase: BaseUseCase, AutoMockable {
+    // swiftlint:enable comment_spacing
+    
     associatedtype Strategy: SearchAutocompleteStrategy
     var strategy: Strategy { get }
     func rxFetchSuggestions(_ query: String) -> WebSearchSuggestionsProducer

@@ -11,11 +11,16 @@ import CoreBrowser
 import ReactiveSwift
 import Combine
 import CottonRestKit
+import AutoMockable
 
 public typealias DNSResolvingProducer = SignalProducer<URL, DnsError>
 public typealias DNSResolvingPublisher = AnyPublisher<URL, DnsError>
 
-public protocol ResolveDNSUseCase<Strategy>: BaseUseCase {
+// swiftlint:disable comment_spacing
+//sourcery: associatedtype = "Strategy: DNSResolvingStrategy"
+public protocol ResolveDNSUseCase: BaseUseCase, AutoMockable {
+    // swiftlint:enable comment_spacing
+    
     associatedtype Strategy: DNSResolvingStrategy
     var strategy: Strategy { get }
     func rxResolveDomainName(_ url: URL) -> DNSResolvingProducer

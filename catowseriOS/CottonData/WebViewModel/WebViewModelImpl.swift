@@ -42,7 +42,7 @@ import FeaturesFlagsKit
 @MainActor
 public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSResolvingStrategy {
     /// Domain name resolver with specific strategy
-    private let resolveDnsUseCase: any ResolveDNSUseCase<Strategy>
+    private let resolveDnsUseCase: any ResolveDNSUseCase
     
     /// view model state (not private for unit tests only)
     var state: WebViewModelState
@@ -99,7 +99,7 @@ public final class WebViewModelImpl<Strategy>: WebViewModel where Strategy: DNSR
      
      @param site Can be nil when you are using just one same web view model because can't create new one every time in SwiftUI mode
      */
-    public init(_ resolveDnsUseCase: any ResolveDNSUseCase<Strategy>,
+    public init(_ resolveDnsUseCase: any ResolveDNSUseCase,
                 _ context: any WebViewContext,
                 _ selectTabUseCase: SelectedTabUseCase,
                 _ writeTabUseCase: WriteTabsUseCase,

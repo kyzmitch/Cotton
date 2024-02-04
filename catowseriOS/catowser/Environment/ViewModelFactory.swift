@@ -27,24 +27,24 @@ final class ViewModelFactory {
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
         case .google:
-            let type = (any AutocompleteSearchUseCase<GoogleAutocompleteStrategy>).self
+            let type = (any AutocompleteSearchUseCase).self
             let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type, .googleAutocompleteUseCase)
-            return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
+            return SearchSuggestionsViewModelImpl<GoogleAutocompleteStrategy>(autocompleteUseCase, vmContext)
         case .duckduckgo:
-            let type = (any AutocompleteSearchUseCase<DDGoAutocompleteStrategy>).self
+            let type = (any AutocompleteSearchUseCase).self
             let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type, .duckDuckGoAutocompleteUseCase)
-            return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
+            return SearchSuggestionsViewModelImpl<DDGoAutocompleteStrategy>(autocompleteUseCase, vmContext)
         }
     }
     
     func getWebViewModel(_ site: Site?,
                          _ context: WebViewContext,
                          _ siteNavigation: SiteExternalNavigationDelegate?) async -> any WebViewModel {
-        let type = (any ResolveDNSUseCase<GoogleDNSStrategy>).self
+        let type = (any ResolveDNSUseCase).self
         let googleDnsUseCase = await UseCaseFactory.shared().findUseCase(type, .googleResolveDnsUseCase)
         let selectTabUseCase = await UseCaseFactory.shared().findUseCase(SelectedTabUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
-        return WebViewModelImpl(googleDnsUseCase, context, selectTabUseCase, writeUseCase, siteNavigation, site)
+        return WebViewModelImpl<GoogleDNSStrategy>(googleDnsUseCase, context, selectTabUseCase, writeUseCase, siteNavigation, site)
     }
     
     func tabViewModel(_ tab: Tab) async -> TabViewModel {

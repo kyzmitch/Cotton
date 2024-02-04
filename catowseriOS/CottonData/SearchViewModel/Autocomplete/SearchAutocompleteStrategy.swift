@@ -18,7 +18,6 @@ public protocol SearchAutocompleteStrategy: AnyObject, AutoMockable {
     // swiftlint:enable comment_spacing
     
     associatedtype Context: RestClientContext
-    
     init(_ context: Context)
     func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpError>
     func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpError>
