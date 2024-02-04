@@ -48,6 +48,7 @@ enum WebViewModelState {
         switch self {
         case .pendingLoad:
             assertionFailure("No host name in pendingLoad state")
+            // swiftlint:disable:next force_try
             return try! CottonBase.Host(input: "")
         case .initialized(let site):
             return site.host
@@ -83,6 +84,7 @@ enum WebViewModelState {
         switch self {
         case .pendingLoad:
             assertionFailure("No url in pending load state")
+            // swiftlint:disable:next force_unwrapping
             return URL(string: "")!
         case .initialized(let site):
             return site.urlInfo.platformURL
@@ -182,6 +184,7 @@ enum WebViewModelState {
         switch self {
         case .pendingLoad:
             assertionFailure("No url info in pending load state")
+            // swiftlint:disable:next force_unwrapping
             return URLInfo(URL(string: "")!)!
         case .initialized(let site):
             return site.urlInfo

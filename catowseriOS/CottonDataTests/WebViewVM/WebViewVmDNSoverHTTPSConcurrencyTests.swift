@@ -32,6 +32,7 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
         
         // swiftlint:disable:next force_unwrapping force_try
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress!)
+        // swiftlint:disable:next force_unwrapping
         Given(resolveDnsUseCaseMock, .aaResolveDomainName(.value(urlV1!), willReturn: resolvedUrlV1))
         await vm.load()
         
