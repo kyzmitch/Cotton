@@ -17,7 +17,7 @@ final class TopSitesViewController<C: Navigating>: BaseViewController,
                                                    UICollectionViewDataSource,
                                                    UICollectionViewDelegateFlowLayout
 where C.R == TopSitesRoute {
-    
+
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
     weak var coordinator: C?
 
@@ -37,9 +37,9 @@ where C.R == TopSitesRoute {
         collectionView.dataSource = self
         collectionView.delegate = self
     }
-    
+
     // MARK: - UICollectionViewDataSource
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return source.count
     }
@@ -53,9 +53,9 @@ where C.R == TopSitesRoute {
         cell.reloadSiteCell(with: site)
         return cell
     }
-    
+
     // MARK: - UICollectionViewDelegateFlowLayout
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {

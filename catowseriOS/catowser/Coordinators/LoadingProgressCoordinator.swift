@@ -15,16 +15,16 @@ final class LoadingProgressCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private var hiddenWebLoadConstraint: NSLayoutConstraint?
     private var showedWebLoadConstraint: NSLayoutConstraint?
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
     }
-    
+
     func start() {
         guard let containerView = presenterVC?.controllerView else {
             return
@@ -42,7 +42,7 @@ enum LoadingProgressRoute: Route {
 
 extension LoadingProgressCoordinator: Navigating {
     typealias R = LoadingProgressRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .setProgress(let progress, let isAnimated):
@@ -66,9 +66,9 @@ enum LoadingProgressPart: SubviewPart {}
 
 extension LoadingProgressCoordinator: Layouting {
     typealias SP = LoadingProgressPart
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(let topAnchor, _, _):
@@ -77,9 +77,9 @@ extension LoadingProgressCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+
     }
 }
 
@@ -93,11 +93,11 @@ private extension LoadingProgressCoordinator {
             return
         }
         webLoadProgressView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
-        
+
         hiddenWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 0)
         showedWebLoadConstraint = webLoadProgressView.heightAnchor.constraint(equalToConstant: 6)
         hiddenWebLoadConstraint?.isActive = true
-        
+
         webLoadProgressView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
         webLoadProgressView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
     }

@@ -13,32 +13,32 @@ extension OpenSearch {
     public struct Description {
         public let html: SearchEngine
         public let json: SearchEngine?
-        
+
         init(html: SearchEngine, json: SearchEngine?) {
             self.html = html
             self.json = json
         }
-        
+
         // swiftlint:disable:next function_body_length
         public init(data: Data) throws {
             let xml = XMLHash.config { (options) in
-                    options.detectParsingErrors = true
+                options.detectParsingErrors = true
             }.parse(data)
-            
+
             let rootXml = try xml.byKey("OpenSearchDescription")
             let shortName = try rootXml.byKey("ShortName").element?.text ?? "Unnamed"
-            
+
             let imageXmlElement = try rootXml.byKey("Image")
             let imageResult = OpenSearch.ImageParseResult(image: imageXmlElement)
-            
+
             let urlObjects = rootXml["Url"].all
             guard !urlObjects.isEmpty else {
                 throw OpenSearch.Error.noAnyURLXml
             }
-            
+
             var htmlSearchEngine: SearchEngine?
             var jsonSearchEngine: SearchEngine?
-            
+
             for urlXml in urlObjects {
                 guard let urlElement = urlXml.element else {
                     continue
@@ -65,7 +65,7 @@ extension OpenSearch {
                     print("Unhandled url type for OpenSearch format: \(contentType.stringValue)")
                 }
             }
-            
+
             guard let html = htmlSearchEngine else {
                 throw OpenSearch.Error.htmlTemplateUrlNotFound
             }

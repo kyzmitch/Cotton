@@ -15,7 +15,7 @@ struct SearchViewContextImpl: SearchViewContext {
     var knownDomainsStorage: KnownDomainsSource {
         InMemoryDomainSearchProvider.shared
     }
-    
+
     var appAsyncApiTypeValue: AsyncApiType {
         get async {
             await FeatureManager.shared.appAsyncApiTypeValue()

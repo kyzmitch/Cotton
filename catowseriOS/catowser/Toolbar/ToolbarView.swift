@@ -8,17 +8,18 @@
 
 import UIKit
 import SwiftUI
+import CottonData
 
 /// Only UIKit wrapper which needs less amout of parameters than full SwiftUI view
 struct ToolbarView: View {
     @ObservedObject private var model: BrowserToolbarViewModel
     @Binding private var webViewInterface: WebViewNavigatable?
-    
+
     init(_ model: BrowserToolbarViewModel, _ webViewInterface: Binding<WebViewNavigatable?>) {
         self.model = model
         _webViewInterface = webViewInterface
     }
-    
+
     var body: some View {
         ToolbarLegacyView(webViewInterface)
             .frame(height: CGFloat.toolbarViewHeight)

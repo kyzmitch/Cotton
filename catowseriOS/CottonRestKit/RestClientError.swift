@@ -11,7 +11,7 @@ import CottonBase
 
 public enum HttpError: LocalizedError, Equatable {
     /* Comon errors related to http client */
-    
+
     case zombieSelf
     case swiftVersionIsTooLowForAsyncAwait
     case noAuthenticationToken
@@ -25,18 +25,18 @@ public enum HttpError: LocalizedError, Equatable {
     case invalidURL
     case notGoodStatusCode(Int)
     case noHostInUrl
-    
+
     /* Errors specific to endpoints */
-    
+
     case emptyQueryParam
     case spacesInQueryParam
-    
+
     case httpFailure(error: Error)
     case jsonSerialization(error: Error)
     case jsonDecoding(error: Error)
     /// can add String assiciated value for missed params
     case missingRequestParameters(String)
-    
+
     public var localizedDescription: String {
         switch self {
         case .httpFailure(error: let error):
@@ -55,23 +55,23 @@ public enum HttpError: LocalizedError, Equatable {
             return "\(self)"
         }
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.zombieSelf, .zombieSelf),
-            (.swiftVersionIsTooLowForAsyncAwait, .swiftVersionIsTooLowForAsyncAwait),
-            (.noAuthenticationToken, .noAuthenticationToken),
-            (.failedConstructRequestParameters, .failedConstructRequestParameters),
-            (.failedKotlinRequestConstruct, .failedKotlinRequestConstruct),
-            (.failedEncodeEncodable, .failedEncodeEncodable),
-            (.noInternetConnectionWithHost, .noInternetConnectionWithHost),
-            (.noHttpResponse, .noHttpResponse),
-            (.notHttpUrlResponse, .notHttpUrlResponse),
-            (.invalidURL, .invalidURL),
-            (.noHostInUrl, .noHostInUrl),
-            (.emptyQueryParam, .emptyQueryParam),
-            (.spacesInQueryParam, .spacesInQueryParam):
+             (.swiftVersionIsTooLowForAsyncAwait, .swiftVersionIsTooLowForAsyncAwait),
+             (.noAuthenticationToken, .noAuthenticationToken),
+             (.failedConstructRequestParameters, .failedConstructRequestParameters),
+             (.failedKotlinRequestConstruct, .failedKotlinRequestConstruct),
+             (.failedEncodeEncodable, .failedEncodeEncodable),
+             (.noInternetConnectionWithHost, .noInternetConnectionWithHost),
+             (.noHttpResponse, .noHttpResponse),
+             (.notHttpUrlResponse, .notHttpUrlResponse),
+             (.invalidURL, .invalidURL),
+             (.noHostInUrl, .noHostInUrl),
+             (.emptyQueryParam, .emptyQueryParam),
+             (.spacesInQueryParam, .spacesInQueryParam):
             return true
         case (let .httpFailure(lhs), let .httpFailure(rhs)):
             guard type(of: lhs) == type(of: rhs) else { return false }

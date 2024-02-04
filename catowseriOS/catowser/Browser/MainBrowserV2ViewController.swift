@@ -9,46 +9,59 @@
 import UIKit
 import SwiftUI
 import CoreBrowser
+import CottonData
 
 /**
  A replacement for the native SwiftUI starting point:
- 
+
  @main
  struct CottonApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
- 
-     var body: some Scene {
-         WindowGroup {
-             MainBrowserView()
-         }
-     }
+ @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+ var body: some Scene {
+ WindowGroup {
+ MainBrowserView()
  }
- 
+ }
+ }
+
  This allows to keep using UIKit views for now as a 2nd option.
  */
 
 @available(iOS 13.0.0, *)
-final class MainBrowserV2ViewController<C: Navigating & BrowserContentCoordinators>:
-UIHostingController<MainBrowserView<C>> where C.R == MainScreenRoute {
+final class MainBrowserV2ViewController<
+    C: Navigating & BrowserContentCoordinators,
+    W: WebViewModel,
+    S: SearchSuggestionsViewModel>:
+    UIHostingController<MainBrowserView<C, W, S>> where C.R == MainScreenRoute {
     private weak var coordinator: C?
-    /// Store it in uikit view controller to not re-create view model after every redraw of main view in SwiftUI
-    private let viewModel: MainBrowserModel<C>
-    
-    init(_ coordinator: C, _ uiFramework: UIFrameworkType, _ defaultContentType: Tab.ContentType) {
+
+    init(_ coordinator: C,
+         _ uiFramework: UIFrameworkType,
+         _ defaultContent: Tab.ContentType,
+         _ allTabsVM: AllTabsViewModel,
+         _ topSitesVM: TopSitesViewModel,
+         _ searchSuggestionsVM: S,
+         _ webVM: W) {
         self.coordinator = coordinator
-        viewModel = .init(coordinator)
-        
-        let view = MainBrowserView(viewModel, uiFramework, defaultContentType)
+
+        let view = MainBrowserView(coordinator,
+                                   uiFramework,
+                                   defaultContent,
+                                   allTabsVM,
+                                   topSitesVM,
+                                   searchSuggestionsVM,
+                                   webVM)
         super.init(rootView: view)
     }
-    
+
     @objc required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         coordinator?.stop()
     }
 }

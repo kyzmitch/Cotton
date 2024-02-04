@@ -24,26 +24,24 @@ extension WKWebView: JavaScriptEvaluateble {}
 final class WebViewController<C: Navigating>: BaseViewController,
                                               WKUIDelegate,
                                               WKNavigationDelegate where C.R == WebContentRoute {
-    /// A view model
-    let viewModel: WebViewModel
+    /// A view model, optional because it is tricky to inject it in constructor in init because of async dependencies
+    let viewModel: any WebViewModel
     /// A coordinator reference
     private weak var coordinator: C?
-    /// Own navigation delegate
-    private(set) weak var externalNavigationDelegate: SiteExternalNavigationDelegate?
     /// State of observers
     private var webViewObserversAdded = false
     /// State of web view
     private var isWebViewLoaded: Bool = false
     /// Controller first appearance
     private var isFirstAppearance = true
-    
+
     /// Need to use KVO for web view property because for some WKNavigations for
     /// not usual URLs like about:srcdoc the didCommit and didFinish won't be called
     /// and navigation button won't be updated based on state.
     private var canGoBackObservation: NSKeyValueObservation?
     private var canGoForwardObservation: NSKeyValueObservation?
     private var loadingProgressObservation: NSKeyValueObservation?
-    
+
     /// reactive disposanble needed to be able to cancel producer
     private var disposable: Disposable?
     /// needed to be able to cancel publisher
@@ -56,35 +54,39 @@ final class WebViewController<C: Navigating>: BaseViewController,
     private var dohDisposable: Disposable?
     /// JS subscriber
     private var jsStateCancellable: AnyCancellable?
-    
+
     /// lazy loaded web view to use correct config
     private(set) var webView: WKWebView?
     /// A reference to the optional auth handler to allow use background queue for the callback
     private(set) var authHandlers: Set<WebViewAuthChallengeHandler> = []
     /// A proxy value for re-usable web view, only one needed
     private var proxy: WebViewControllerProxy?
+    /// UI framework mode to determine if need to call viewModel.load or not
+    private let mode: UIFrameworkType
 
     /**
-     Constructs web view controller for specific site with set of plugins and navigation handler
+     Constructs web view controller for specific site with set of plugins and navigation handler.
+
+     Currently it is too tricky to inject view model right away because it has to be async
      */
-    init(_ viewModel: WebViewModel,
-         _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
-         _ coordinator: C?) {
-        self.viewModel = viewModel
-        self.externalNavigationDelegate = externalNavigationDelegate
+    init(_ coordinator: C?,
+         _ viewModel: any WebViewModel,
+         _ mode: UIFrameworkType) {
         self.coordinator = coordinator
+        self.viewModel = viewModel
+        self.mode = mode
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     deinit {
         authHandlers.removeAll()
         unsubscribe()
     }
-    
+
     override func loadView() {
         view = UIView(frame: .zero)
     }
@@ -96,25 +98,31 @@ final class WebViewController<C: Navigating>: BaseViewController,
         // during view model state handling for `.initialized` value
         // See `onStateChange` and `recreateView` with `reattachViewObservers`
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         subscribe()
+
+        guard mode == .uiKit else {
+            /// No need to load view model, because SwiftUI wrapper calls resetToSite
+            /// see `WebViewLegacyView` and `WebView.swift`
+            return
+        }
         Task {
+            /// Load initial site or just wait for the reset to site action
             await viewModel.load()
         }
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // The only re-usable view controller is not visible now
         // it means that it was replaced with some different content
         // maybe top sites, so, we have to reset navigation controls
         // and it can be done by sending `nil` interface
-        externalNavigationDelegate?.webViewDidReplace(nil)
-        unsubscribe()
+        viewModel.siteNavigation?.webViewDidReplace(nil)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touchedView = touches.first?.view {
             if touchedView === webView {
@@ -123,7 +131,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
             }
         }
     }
-    
+
     private func onStateChange(_ state: WebPageLoadingAction) {
         switch state {
         case .load(let uRLRequest):
@@ -136,24 +144,24 @@ final class WebViewController<C: Navigating>: BaseViewController,
             coordinator?.showNext(.openApp(url))
         }
     }
-    
+
     // MARK: - WKUIDelegate
-    
+
     func webView(_ webView: WKWebView,
                  createWebViewWith configuration: WKWebViewConfiguration,
                  for navigationAction: WKNavigationAction,
                  windowFeatures: WKWindowFeatures) -> WKWebView? {
-        
+
         return nil
     }
-    
+
     // MARK: - WKNavigationDelegate
-    
+
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let domain = viewModel.nativeAppDomainNameString {
-            externalNavigationDelegate?.didSiteOpen(appName: domain)
+            viewModel.siteNavigation?.didSiteOpen(appName: domain)
             // no need to interrupt
         }
         Task {
@@ -162,12 +170,12 @@ final class WebViewController<C: Navigating>: BaseViewController,
     }
 
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        externalNavigationDelegate?.showLoadingProgress(true)
+        viewModel.siteNavigation?.showLoadingProgress(true)
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        externalNavigationDelegate?.showLoadingProgress(false)
-        
+        viewModel.siteNavigation?.showLoadingProgress(false)
+
         defer {
             let snapshotConfig = WKSnapshotConfiguration()
             let w = webView.bounds.size.width
@@ -180,7 +188,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                     print("failed to take a screenshot \(err)")
                 case (let img?, _):
                     Task {
-                        await self?.externalNavigationDelegate?.didTabPreviewChange(img)
+                        await self?.viewModel.updateTabPreview(img.pngData())
                     }
                 default:
                     print("failed to take a screenshot")
@@ -192,17 +200,17 @@ final class WebViewController<C: Navigating>: BaseViewController,
             print("web view without url")
             return
         }
-        
+
         Task {
             await viewModel.finishLoading(newURL, webView)
         }
     }
-    
+
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("Error occured during a committed main frame: \(error.localizedDescription)")
-        externalNavigationDelegate?.showLoadingProgress(false)
+        viewModel.siteNavigation?.showLoadingProgress(false)
     }
-    
+
     func webView(_ webView: WKWebView,
                  didReceive challenge: URLAuthenticationChallenge,
                  completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
@@ -213,7 +221,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
                 return
             }
             if stopLoadingProgress != nil {
-                self.externalNavigationDelegate?.showLoadingProgress(false)
+                self.viewModel.siteNavigation?.showLoadingProgress(false)
             }
             guard let handler = handler else {
                 return
@@ -221,12 +229,12 @@ final class WebViewController<C: Navigating>: BaseViewController,
             self.authHandlers.remove(handler)
         }
     }
-    
+
     func webView(_ webView: WKWebView,
                  didFailProvisionalNavigation navigation: WKNavigation!,
                  withError error: Error) {
         print("Error occured while starting to load data: \(error.localizedDescription)")
-        externalNavigationDelegate?.showLoadingProgress(false)
+        viewModel.siteNavigation?.showLoadingProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
     }
@@ -245,7 +253,7 @@ private extension WebViewController {
         canGoForwardObservation?.invalidate()
         canGoBackObservation?.invalidate()
     }
-    
+
     func subscribe() {
         if isFirstAppearance {
             isFirstAppearance = false
@@ -254,14 +262,14 @@ private extension WebViewController {
             // but probably not needed
             assertionFailure("Resubscribtion for web view isn't implemented yet")
         }
-        
+
         // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
-        
+
         taskHandler?.cancel()
         taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
         dohCancellable?.cancel()
         jsStateCancellable?.cancel()
-        
+
         Task {
             dohCancellable = await FeatureManager.shared
                 .featureChangesPublisher(for: .dnsOverHTTPSAvailable)
@@ -271,7 +279,7 @@ private extension WebViewController {
                         await self?.viewModel.setDoH(useDoH)
                     }
                 }
-            
+
             jsStateCancellable = await FeatureManager.shared
                 .featureChangesPublisher(for: .javaScriptEnabled)
                 .sink { _ in
@@ -285,48 +293,48 @@ private extension WebViewController {
                 }
         }
     }
-    
+
     func createWebView(with config: WKWebViewConfiguration) -> WKWebView {
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.backgroundColor = .white
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
-        
+
         return webView
     }
-    
+
     func addWebViewProgressObserver() {
         // https://github.com/ole/whats-new-in-swift-4/blob/master/
         // Whats-new-in-Swift-4.playground/Pages/Key%20paths.xcplaygroundpage/Contents.swift#L53-L95
-        
+
         loadingProgressObservation?.invalidate()
         loadingProgressObservation = webView?.observe(\.estimatedProgress,
-                                                     options: [.new]) { [weak self] (_, change) in
+                                                      options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.loadingProgressdDidChange(Float(value))
+            self.viewModel.siteNavigation?.loadingProgressdDidChange(Float(value))
         }
     }
-    
+
     func addWebViewCanGoBackObserver() {
         canGoBackObservation?.invalidate()
         canGoBackObservation = webView?.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didBackNavigationUpdate(to: value)
+            self.viewModel.siteNavigation?.didBackNavigationUpdate(to: value)
         }
     }
-    
+
     func addWebViewCanGoForwardObserver() {
         canGoForwardObservation?.invalidate()
         canGoForwardObservation = webView?.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
             guard let self = self else { return }
             guard let value = change.newValue else { return }
-            self.externalNavigationDelegate?.didForwardNavigationUpdate(to: value)
+            self.viewModel.siteNavigation?.didForwardNavigationUpdate(to: value)
         }
     }
-    
+
     func reattachWebViewObservers() {
         guard !webViewObserversAdded else {
             return
@@ -336,19 +344,19 @@ private extension WebViewController {
         addWebViewCanGoBackObserver()
         addWebViewCanGoForwardObserver()
     }
-    
+
     func recreateWebView(_ forcefullyRecreate: Bool = false) {
         if !forcefullyRecreate {
             guard !isWebViewLoaded else {
                 return
             }
         }
-        
+
         loadingProgressObservation?.invalidate()
         canGoForwardObservation?.invalidate()
         canGoBackObservation?.invalidate()
         webViewObserversAdded = false
-        
+
         // Removing of web view from superview leads to
         // `AttributeGraph: cycle detected through attribute` warning
         // https://developer.apple.com/forums/thread/126890
@@ -357,13 +365,13 @@ private extension WebViewController {
         webView?.removeFromSuperview()
         let newWebView = createWebView(with: viewModel.configuration)
         view.addSubview(newWebView)
-        
+
         newWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         newWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         newWebView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         newWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         webView = newWebView
-        
+
         // Somehow would be good to reset web view interface
         // to reset navigation delegate (toolbar or table search bar)
         // because for SwiftUI mode the same view controller stays
@@ -373,7 +381,7 @@ private extension WebViewController {
         // be checked that it is the same reference.
         let proxyValue = WebViewControllerProxy(self)
         proxy = proxyValue
-        externalNavigationDelegate?.webViewDidReplace(proxyValue)
+        viewModel.siteNavigation?.webViewDidReplace(proxyValue)
     }
 }
 

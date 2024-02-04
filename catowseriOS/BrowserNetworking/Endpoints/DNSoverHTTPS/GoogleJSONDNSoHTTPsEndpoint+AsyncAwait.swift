@@ -26,7 +26,7 @@ extension RestClient where Server == GoogleDnsServer {
         guard let hostString = url.httpHost else {
             throw HttpError.noHostInUrl
         }
-            
+
         let ipAddressResponse = try await self.aaGetIPaddress(ofDomain: hostString)
         return try url.updatedHost(with: ipAddressResponse.ipAddress)
     }

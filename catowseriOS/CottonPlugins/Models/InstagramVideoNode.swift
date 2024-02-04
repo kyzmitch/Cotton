@@ -21,7 +21,7 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
     public let dimensions: CGSize?
     /// The name of video
     public let fileDescription: String
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let typeName: String = try container.decode(String.self, forKey: .typeName)
@@ -55,7 +55,7 @@ public struct InstagramVideoNode: Decodable, VideoFileNameble {
 
         let possiblePageTitle = try? container.decode(String.self, forKey: .pageTitle)
         let possibleMediaCaption = try? container.decode(IgEdgeMediaCaption.self, forKey: .mediaCaption)
-        
+
         if let pageTitle = possiblePageTitle, !pageTitle.contains("undefined") {
             fileDescription = pageTitle
         } else if let mediaCaption = possibleMediaCaption, let edge = mediaCaption.edges.first {
@@ -78,7 +78,7 @@ extension InstagramVideoNode {
         case mediaCaption = "edge_media_to_caption"
         case pageTitle = "pageTitle"
     }
-    
+
     enum DecodingError: Error {
         case notVideo
         case missingPreviewURL

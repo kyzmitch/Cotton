@@ -17,7 +17,7 @@ import Foundation
  You can use 255 for 'ANY' queries but be aware that this is not a replacement for sending queries for both A
  and AAAA or MX records. Authoritative name servers need not return all records for such queries;
  some do not respond, and others (such as cloudflare.com) return only HINFO.
- 
+
  This is wrapper around `String` type.
  https://twitter.com/nicklockwood/status/1192365612661706752?s=20
  */
@@ -25,13 +25,13 @@ public struct DnsRR: RawRepresentable {
     public init?(rawValue: String) {
         return nil
     }
-    
+
     public let rawValue: String
-    
+
     let numericValue: UInt32
-    
+
     public typealias RawValue = String
-    
+
     public init?(_ number: UInt32 = 1) {
         guard (1...65535).contains(number) else {
             return nil

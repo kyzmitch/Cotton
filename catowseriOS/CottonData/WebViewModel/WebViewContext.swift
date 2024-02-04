@@ -21,7 +21,7 @@ import CoreBrowser
 /// protocol with async functions which do not belong to specific actor
 public protocol WebViewContext {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
-    var pluginsProgram: any JSPluginsProgram { get }
+    var  pluginsSource: any JSPluginsSource { get }
     /// Hides app specific implementation for host check
     func nativeApp(for host: CottonBase.Host) -> String?
     /// Hides app specific feature for JS value
@@ -32,11 +32,4 @@ public protocol WebViewContext {
     func allowNativeAppRedirects() async -> Bool
     /// Wrapper for feature value from specific app
     func appAsyncApiTypeValue() async -> AsyncApiType
-    /// Update tab's content after loading finish in case if there was a redirect and URL was changed.
-    /// Also, this method is needed because need to remember loaded site only when
-    /// it was successfully loaded which happens right before this method is getting called.
-    ///
-    /// No need to call this method if the loading was initiated from top sites or
-    /// during app start when the site is already in the tabs cache.
-    func updateTabContent(_ site: Site) async throws
 }

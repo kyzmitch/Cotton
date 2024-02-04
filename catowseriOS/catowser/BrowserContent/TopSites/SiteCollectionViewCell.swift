@@ -30,9 +30,9 @@ final class SiteCollectionViewCell: UICollectionViewCell, FaviconImageViewable {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     // MARK: - FaviconImageViewable
-    
+
     let faviconImageView: UIImageView = {
         let favicon = UIImageView()
         favicon.layer.masksToBounds = true
@@ -40,32 +40,32 @@ final class SiteCollectionViewCell: UICollectionViewCell, FaviconImageViewable {
         favicon.translatesAutoresizingMaskIntoConstraints = false
         return favicon
     }()
-    
+
     // MARK: - init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(faviconImageView)
         addSubview(titleLabel)
-        
+
         faviconImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         faviconImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         faviconImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         faviconImageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor).isActive = true
-        
+
         titleLabel.heightAnchor.constraint(equalToConstant: ImageViewSizes.titleHeight).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - utility methods
-    
+
     static func size(for traitCollection: UITraitCollection) -> CGSize {
         let imageViewHeight: CGFloat
         if traitCollection.verticalSizeClass == .compact {

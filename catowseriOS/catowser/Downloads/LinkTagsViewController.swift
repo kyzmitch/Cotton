@@ -42,17 +42,17 @@ protocol LinkTagsDelegate: AnyObject {
 final class LinkTagsViewController: UICollectionViewController {
     private var linksCounts = [LinksType: Int]()
     private weak var delegate: LinkTagsDelegate?
-    
+
     static func newFromStoryboard(delegate: LinkTagsDelegate?) -> LinkTagsViewController {
         let name = String(describing: self)
         let vc = LinkTagsViewController.instantiateFromStoryboard(name, identifier: name)
         vc.delegate = delegate
         return vc
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         ThemeProvider.shared.setupUnderLinkTags(collectionView)
 
         // Inset From property must be set to "from Content Inset"
@@ -77,20 +77,20 @@ final class LinkTagsViewController: UICollectionViewController {
         /* UICollectionViewFlowLayout.automaticSize */
         flowLayout.invalidateLayout()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
+
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return linksCounts.count
     }
-    
+
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: LinksBadgeView = collectionView.dequeueCell(at: indexPath, type: LinksBadgeView.self)
@@ -125,7 +125,7 @@ extension LinkTagsViewController: LinkTagsPresenter {
         // no specific index
         collectionView.reloadData()
     }
-    
+
     func clearLinks() {
         linksCounts.removeAll()
         collectionView.reloadData()

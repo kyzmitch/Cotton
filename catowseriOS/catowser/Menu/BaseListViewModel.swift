@@ -11,9 +11,9 @@ import Foundation
 @MainActor
 protocol BaseListViewModel {
     associatedtype EnumDataSourceType: CaseIterable
-    
+
     typealias PopClosure = (EnumDataSourceType) -> Void
-    
+
     var dataSource: EnumDataSourceType.AllCases { get }
     var viewTitle: String { get }
     var onPop: PopClosure { get }

@@ -24,7 +24,7 @@ public enum NetworkReachabilityStatus {
         /// The connection type is a cellular connection.
         case cellular
     }
-    
+
     public var isReachable: Bool {
         switch self {
         case .unknown:

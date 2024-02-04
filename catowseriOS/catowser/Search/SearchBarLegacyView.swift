@@ -21,15 +21,15 @@ final class SearchBarLegacyView: UIView {
             searchBarView.delegate = delegate
         }
     }
-    
+
     // MARK: - state properties
-    
+
     private var state: SearchBarState = .blankViewMode {
         didSet {
             onStateChange(state)
         }
     }
-    
+
     func handleAction(_ action: SearchBarAction) {
         switch action {
         case .startSearch:
@@ -52,27 +52,27 @@ final class SearchBarLegacyView: UIView {
             state = .blankViewMode
         }
     }
-    
+
     let uiFramework: UIFrameworkType
-    
+
     /// Only needed for SwiftUI wrapper for phone layout
     private var phoneWidthConstraint: NSLayoutConstraint?
-    
+
     // MARK: - initializers
 
     init(frame: CGRect, uiFramework: UIFrameworkType) {
         self.uiFramework = uiFramework
         super.init(frame: frame)
-        
+
         addSubview(searchBarView)
         addSubview(dohStateIcon)
-        
+
         siteNameLabel.alpha = 0
         dohStateIcon.alpha = 0
 
         searchBarView.topAnchor.constraint(equalTo: topAnchor).isActive = true
         searchBarView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        
+
         if isPreviewingSwiftUI {
             if isPad {
                 searchBarView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
@@ -100,37 +100,37 @@ final class SearchBarLegacyView: UIView {
         } else {
             searchBarView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         }
-        
+
         dohStateIcon.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         dohStateIcon.topAnchor.constraint(equalTo: topAnchor).isActive = true
         dohStateIcon.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         dohStateIcon.widthAnchor.constraint(equalTo: dohStateIcon.heightAnchor).isActive = true
     }
-    
+
     func handleTraitCollectionChange() {
         if uiFramework.swiftUIBased && !isPad {
             let widthValue = UIScreen.main.bounds.width - 16
             phoneWidthConstraint?.constant = widthValue
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - layout
-    
+
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        
+
         // Not sure if this is the right place to start layout
         // maybe init is better or it could be a separate state
-        
+
         siteNameLabel.addGestureRecognizer(siteNameTapGesture)
     }
-    
+
     // MARK: - subview properties
-    
+
     /// The search bar view.
     private let searchBarView: UISearchBar = {
         let view = UISearchBar(frame: .zero)
@@ -154,7 +154,7 @@ final class SearchBarLegacyView: UIView {
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         return label
     }()
-    
+
     private let dohStateIcon: UILabel = {
         let label = UILabel(frame: .zero)
         label.textColor = .black
@@ -165,7 +165,7 @@ final class SearchBarLegacyView: UIView {
         label.isUserInteractionEnabled = true
         return label
     }()
-    
+
     private var showedLabelConstraint: NSLayoutConstraint?
     private func createShowedLabelConstraint() -> NSLayoutConstraint {
         if isPad {
@@ -174,7 +174,7 @@ final class SearchBarLegacyView: UIView {
             return siteNameLabel.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width)
         }
     }
-    
+
     private lazy var hiddenLabelConstraint: NSLayoutConstraint = {
         if isPad {
             return siteNameLabel.trailingAnchor.constraint(equalTo: leadingAnchor, constant: 0)
@@ -182,7 +182,7 @@ final class SearchBarLegacyView: UIView {
             return siteNameLabel.widthAnchor.constraint(equalToConstant: 0)
         }
     }()
-    
+
     private lazy var siteNameTapGesture: UITapGestureRecognizer = {
         // Need to init gesture lazily, if it will  be initialized as a constant
         // then it will not work :( action is not called.
@@ -196,7 +196,7 @@ final class SearchBarLegacyView: UIView {
         tap.numberOfTouchesRequired = 1
         return tap
     }()
-    
+
     @objc func handleSiteNameTap(_ gestureRecognizer: UITapGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         guard gestureRecognizer.state == .ended else { return }
@@ -209,10 +209,10 @@ final class SearchBarLegacyView: UIView {
 
 private extension SearchBarLegacyView {
     // MARK: - state handler
-    
+
     private func onStateChange(_ nextState: SearchBarState) {
         // See `diff` comment to find a difference with previos state handling
-        
+
         switch nextState {
         case .blankViewMode:
             searchBarView.text = nil
@@ -233,7 +233,7 @@ private extension SearchBarLegacyView {
             handleViewModeState(title, searchBarContent, animated)
         }
     }
-    
+
     func prepareForEditMode(and showKeyboard: Bool = false) {
         if siteNameLabel.superview == nil {
             addSubview(siteNameLabel)
@@ -256,13 +256,13 @@ private extension SearchBarLegacyView {
         }
         siteNameLabel.alpha = 0
         dohStateIcon.alpha = 0
-        
+
         UIView.animate(withDuration: SearchBarConstants.animationDuration) {
             self.siteNameLabel.layoutIfNeeded()
             self.searchBarView.alpha = 1
         }
     }
-    
+
     func prepareForViewMode(animated: Bool = true, animateSecurityView: Bool = false) {
         // Order of disabling/enabling is important
         // to not to cause errors in layout calculation.
@@ -282,7 +282,7 @@ private extension SearchBarLegacyView {
             showedLabelConstraint = createShowedLabelConstraint()
         }
         showedLabelConstraint?.isActive = true
-        
+
         func applyLayout() {
             siteNameLabel.layoutIfNeeded()
             searchBarView.alpha = 0
@@ -291,7 +291,7 @@ private extension SearchBarLegacyView {
                 dohStateIcon.alpha = 1
             }
         }
-        
+
         if animated {
             UIView.animate(withDuration: SearchBarConstants.animationDuration) {
                 applyLayout()
@@ -299,10 +299,10 @@ private extension SearchBarLegacyView {
         } else {
             applyLayout()
         }
-        
+
         searchBarView.resignFirstResponder()
     }
-    
+
     func handleViewModeState(_ title: String, _ searchBarContent: String, _ animated: Bool) {
         searchBarView.resignFirstResponder()
         searchBarView.setShowsCancelButton(false, animated: animated)

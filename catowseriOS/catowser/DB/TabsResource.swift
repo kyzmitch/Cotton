@@ -16,13 +16,13 @@ fileprivate extension String {
 
 final class TabsResource {
     private var dbClient: TabsDBClient
-    
+
     /// Needs to be checked on every access to `dbClient` to not use wrong context
     /// functions can return empty data if it's not initialized state
     private var isStoreInitialized = false
-    
+
     private let queue: DispatchQueue = .init(label: .queueNameWith(suffix: .threadName))
-    
+
     /// Creates an instance of TabsResource which is a wrapper around CoreData Store class
     ///
     /// - Parameters:
@@ -48,13 +48,13 @@ final class TabsResource {
             self.isStoreInitialized = true
         }
     }
-    
+
     /// Updates tab content if tab with same identifier was found in DB or creates completely new tab
     func update(tab: Tab) throws -> Tab {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
-        
+
         do {
             try self.dbClient.update(tab: tab)
             return tab
@@ -62,13 +62,13 @@ final class TabsResource {
             throw TabResourceError.insertError(error)
         }
     }
-    
+
     /// Remove all the tabs
     func forget(tabs: [Tab]) async throws -> [Tab] {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
-        
+
         do {
             if tabs.count == 1 {
                 try dbClient.remove(tab: tabs[0])
@@ -80,20 +80,20 @@ final class TabsResource {
             throw TabResourceError.deleteError(error)
         }
     }
-    
+
     /// Remembers tab identifier as selected one
     func selectTab(_ tab: Tab) async throws {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
-        
+
         do {
             try await self.dbClient.select(tab: tab)
         } catch {
             throw TabResourceError.selectedTabId(error)
         }
     }
-    
+
     /// Gets all tabs recorded in DB. Currently there is only one session, but later
     /// it should be possible to store and read tabs from different sessions like
     /// private browser session tabs & usual tabs.
@@ -103,7 +103,7 @@ final class TabsResource {
         }
         return try await dbClient.fetchAllTabs()
     }
-    
+
     func remember(tab: Tab, andSelect select: Bool) async throws -> Tab {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
@@ -114,7 +114,7 @@ final class TabsResource {
         }
         return tab
     }
-    
+
     /// Gets an identifier of a selected tab or an error if no tab is present which isn't possible
     /// at least blank tab should be present.
     func selectedTabId() async throws -> UUID {

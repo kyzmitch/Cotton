@@ -15,9 +15,9 @@ final class BlankContentCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private let contentContainerView: UIView
-    
+
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ contentContainerView: UIView) {
@@ -25,12 +25,12 @@ final class BlankContentCoordinator: Coordinator {
         self.presenterVC = presenter
         self.contentContainerView = contentContainerView
     }
-    
+
     func start() {
         let vc = vcFactory.blankWebPageViewController
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-        
+
         let topSitesView: UIView = vc.controllerView
         topSitesView.translatesAutoresizingMaskIntoConstraints = false
         topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
@@ -44,9 +44,9 @@ enum BlankContentRoute: Route {}
 
 extension BlankContentCoordinator: Navigating {
     typealias R = BlankContentRoute
-    
+
     func showNext(_ route: R) {}
-    
+
     func stop() {
         startedVC?.viewController.removeFromChild()
         parent?.coordinatorDidFinish(self)

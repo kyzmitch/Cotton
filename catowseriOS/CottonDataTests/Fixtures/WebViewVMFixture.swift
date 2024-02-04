@@ -11,29 +11,34 @@ import XCTest
 import CottonRestKit
 import CottonBase
 import WebKit
+import SwiftyMocky
 
 /// A known state against which a test is running for web view vm
 @MainActor
 class WebViewVMFixture: XCTestCase {
     // MARK: - mocks and objects to be re-created
-    
+
     var goodServerMock: MockedGoodDnsServer!
     var goodJsonEncodingMock: MockedGoodJSONEncoding!
-    var goodReachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
+    var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
     var goodDnsClient: RestInterfaceMock<MockedGoodDnsServer,
-                                           NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
-                                           MockedGoodJSONEncoding>!
+                                         NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
+                                         MockedGoodJSONEncoding>!
     var rxSubscriber: MockedDNSContext.HttpKitRxSubscriber!
     var subscriber: MockedDNSContext.HttpKitSubscriber!
     var goodDnsContext: MockedDNSContext!
     var exampleIpAddress: String?
-    var goodDnsStrategy: MockedDNSStrategy!
+    lazy var goodContextMock: MockedDNSContext = .init(goodDnsClient, rxSubscriber, subscriber)
+    lazy var strategyMock: DNSResolvingStrategyMock = .init(goodContextMock)
+    lazy var resolveDnsUseCaseMock = ResolveDNSUseCaseMock<DNSResolvingStrategyMock<MockedDNSContext>>()
+    lazy var selectedTabUseCaseMock = SelectedTabUseCaseMock()
+    lazy var writeTabsUseCase = WriteTabsUseCaseMock()
     var jsSubject: MockedWebViewWithError!
     var webViewContext: MockedWebViewContext!
     var settings: Site.Settings!
-    
+
     // MARK: - constants
-    
+
     // swiftlint:disable:next force_try
     let exampleDomainName: DomainName = try! .init(input: "www.example.com")
     // swiftlint:disable:next force_try
@@ -58,7 +63,7 @@ class WebViewVMFixture: XCTestCase {
                                        faviconData: nil,
                                        searchSuggestion: nil,
                                        userSpecifiedTitle: nil)
-    
+
     let urlV1 = URL(string: "https://www.example.com/foo/bar")
     let urlV2 = URL(string: "https://www.example.com/foo/bar_2")
     let urlV3 = URL(string: "https://www.known.com/bar")
@@ -70,34 +75,29 @@ class WebViewVMFixture: XCTestCase {
     let wrongUrlV2 = URL(string: "https://www.example.com/foo")
     let wrongUrlV3 = URL(string: "https://www.google.com/foo/bar")
     let opennetUrlV1 = URL(string: "https://opennet.ru/foo/bar")
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
-        
+
         goodServerMock = .init()
         goodJsonEncodingMock = .init()
         // swiftlint:disable:next force_unwrapping
-        goodReachabilityMock = .init(server: goodServerMock)!
+        reachabilityMock = .init(server: goodServerMock)!
         goodDnsClient = .init(server: goodServerMock,
                               jsonEncoder: goodJsonEncodingMock,
-                              reachability: goodReachabilityMock,
+                              reachability: reachabilityMock,
                               httpTimeout: 0)
-        
+
         rxSubscriber = .init()
         subscriber = .init()
         goodDnsContext = .init(goodDnsClient, rxSubscriber, subscriber)
-        if let ip = exampleIpAddress {
-            goodDnsStrategy = .init(goodDnsContext, ip)
-        } else {
-            goodDnsStrategy = .init(goodDnsContext)
-        }
         jsSubject = .init()
         webViewContext = .init(doh: false,
                                js: false,
                                nativeAppRedirect: true,
                                asyncApiType: .combine,
                                appName: "instagram.com")
-        
+
         settings = .init(isPrivate: false,
                          blockPopups: true,
                          isJSEnabled: false,

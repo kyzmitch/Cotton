@@ -14,19 +14,19 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
     private var toolBarVC: UIViewController?
     private var topSitesVC: (AnyViewController & TopSitesInterface)?
     private var blankVC: UIViewController?
-    
+
     init() {}
-    
+
     var createdDeviceSpecificSearchBarVC: UIViewController? {
         return searchBarVC
     }
-    
+
     var createdToolbaViewController: UIViewController? {
         return toolBarVC
     }
-    
+
     // MARK: - Phone methods
-    
+
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ uiFramework: UIFrameworkType) -> AnyViewController? {
         if let existingVC = searchBarVC {
@@ -36,14 +36,14 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         searchBarVC = vc
         return vc
     }
-    
+
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?,
                                                _ uiFramework: UIFrameworkType) -> AnyViewController? {
         return nil
     }
-    
+
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C?,
@@ -57,16 +57,19 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         toolBarVC = vc
         return toolBarVC
     }
-    
-    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
-        let vc: TabsPreviewsViewController = .init(coordinator)
+
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute {
+        let vc: TabsPreviewsViewController = .init(coordinator, viewModel)
         return vc
     }
-    
-    func tabsViewController() -> AnyViewController? {
+
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
         return nil
     }
-    
+
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
     where C.R == TopSitesRoute {
         if let existingVC = topSitesVC {
@@ -78,7 +81,7 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         topSitesVC = createdVC
         return createdVC
     }
-    
+
     var blankWebPageViewController: UIViewController {
         if let existingVC = blankVC {
             return existingVC

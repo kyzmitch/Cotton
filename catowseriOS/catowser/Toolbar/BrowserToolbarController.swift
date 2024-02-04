@@ -16,6 +16,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonData
 
 final class BrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
     private weak var coordinator: C?
@@ -32,9 +33,9 @@ final class BrowserToolbarController<C: Navigating>: BaseViewController where C.
             toolbarView.state = .readyForNavigation
         }
     }
-    
+
     var presenter: AnyViewController?
-    
+
     private let toolbarView: BrowserToolbarView
 
     init(_ coordinator: C?,
@@ -46,7 +47,7 @@ final class BrowserToolbarController<C: Navigating>: BaseViewController where C.
         toolbarView.globalSettingsDelegate = globalSettingsDelegate
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -55,28 +56,28 @@ final class BrowserToolbarController<C: Navigating>: BaseViewController where C.
         view = toolbarView
         ThemeProvider.shared.setup(toolbarView)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         toolbarView.translatesAutoresizingMaskIntoConstraints = false
         toolbarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         toolbarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         toolbarView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         toolbarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         Task {
             await toolbarView.detachFromTabsListManager()
         }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         Task {
             await toolbarView.attachToTabsListManager()
         }
@@ -96,14 +97,14 @@ final class BrowserToolbarController<C: Navigating>: BaseViewController where C.
             }
         }
     }
-    
+
     // MARK: - private functions
-    
+
     @objc private func handleShowOpenedTabsPressed() {
         // Passing an optional presenter, only for SwiftUI case
         coordinator?.showNext(.tabs, presenter)
     }
-    
+
     private func handleDownloadsPressed() {
         guard toolbarView.state.downloadsAvailable else {
             return
@@ -119,13 +120,13 @@ extension BrowserToolbarController: FullSiteNavigationComponent {
         toolbarView.state = .updateBackState(canGoBack)
         toolbarView.state = prevState
     }
-    
+
     func changeForwardButton(to canGoForward: Bool) {
         let prevState = toolbarView.state
         toolbarView.state = .updateForwardState(canGoForward)
         toolbarView.state = prevState
     }
-    
+
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         switch (withSite, downloadsAvailable) {
         case (false, _):

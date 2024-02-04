@@ -18,14 +18,14 @@ extension URL {
         guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
             return .init(error: .notHttpScheme)
         }
-        
+
         guard let host = host else {
             return .init(error: .noHost)
         }
-        
+
         return .init(value: host)
     }
-    
+
     public func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return .init(error: .urlComponentsFail)

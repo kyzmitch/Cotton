@@ -22,7 +22,7 @@ extension BaseListViewModelImpl where EnumDataSourceType == AsyncApiType {
 extension AsyncApiType: CustomStringConvertible {
     public var description: String {
         let key: String
-        
+
         switch self {
         case .reactive:
             key = "txt_app_async_api_reactive"
@@ -39,6 +39,6 @@ extension AsyncApiType: Identifiable {
     public var id: RawValue {
         return self.rawValue
     }
-    
+
     public typealias ID = RawValue
 }

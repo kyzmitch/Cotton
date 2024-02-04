@@ -47,8 +47,8 @@ public struct InstagramContentPlugin: JavaScriptPlugin {
 extension InstagramContentPlugin: Equatable {
     public static func == (lhs: InstagramContentPlugin, rhs: InstagramContentPlugin) -> Bool {
         return lhs.jsFileName == rhs.jsFileName
-        && lhs.messageHandlerName == rhs.messageHandlerName
-        && lhs.hostKeyword == rhs.hostKeyword
-        && lhs.isMainFrameOnly == rhs.isMainFrameOnly
+            && lhs.messageHandlerName == rhs.messageHandlerName
+            && lhs.hostKeyword == rhs.hostKeyword
+            && lhs.isMainFrameOnly == rhs.isMainFrameOnly
     }
 }

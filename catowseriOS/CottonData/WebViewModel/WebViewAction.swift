@@ -13,7 +13,7 @@ import CottonPlugins
 protocol Actionable {
     associatedtype Action
     associatedtype State
-    func transition(on action: Action) throws -> State
+    func transition(on action: Action, _ logging: Bool) throws -> State
 }
 
 typealias IPAddress = String
@@ -30,9 +30,9 @@ enum WebViewAction {
     case loadWebView
     case finishLoading(URL, JavaScriptEvaluateble, _ jsEnabled: Bool)
     case startView(URLInfo)
-    
+
     // middle actions
-    
+
     case changeJavaScript(JavaScriptEvaluateble, Bool)
     case reload
     case goBack
@@ -49,11 +49,11 @@ extension WebViewAction: CustomStringConvertible {
         case .resetToSite(let site):
             return "resetToSite (\(site.urlInfo.platformURL.absoluteString)"
         case .loadNextLink(let nextURL):
-#if DEBUG
+            #if DEBUG
             return "loadNextLink (\(nextURL.absoluteString))"
-#else
+            #else
             return "loadNextLink"
-#endif
+            #endif
         case .reload:
             return "reload"
         case .injectPlugins:

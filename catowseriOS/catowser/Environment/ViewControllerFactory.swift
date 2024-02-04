@@ -15,10 +15,10 @@ import CoreBrowser
  Tried to make view controller factory generic and depend on one generic parameter which
  would be layout type (phone or tablet), but it doesn't give the benefits which are needed, like
  only specific layout can have specific methods which are not needed on another layout.
- 
+
  It has to be stored as `any ViewControllerFactory` and info about specific layout
  is erased.
- 
+
  As a current solution some methods could return nil in concrete factory impl.
  */
 
@@ -26,18 +26,22 @@ import CoreBrowser
 /// View controllers factory which doesn't depend on device type (phone or tablet)
 @MainActor
 protocol ViewControllerFactory: AnyObject {
-    func rootViewController(_ coordinator: AppCoordinator,
-                            _ uiFramework: UIFrameworkType,
-                            _ defaultContentType: Tab.ContentType) -> AnyViewController
+    func rootViewController<W, S>(_ coordinator: AppCoordinator,
+                                  _ uiFramework: UIFrameworkType,
+                                  _ defaultContentType: Tab.ContentType,
+                                  _ allTabsVM: AllTabsViewModel,
+                                  _ topSitesVM: TopSitesViewModel,
+                                  _ searchSuggestionsVM: S,
+                                  _ webVM: W) -> AnyViewController  where W: WebViewModel, S: SearchSuggestionsViewModel
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
-                                         _ searchProviderType: WebAutoCompletionSource) -> AnyViewController
-    
-    func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
-                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable
+                                         _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController
+
+    func webViewController<C: Navigating>(_ coordinator: C?,
+                                          _ viewModel: any WebViewModel,
+                                          _ mode: UIFrameworkType) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
     where C.R == TopSitesRoute
@@ -46,9 +50,9 @@ protocol ViewControllerFactory: AnyObject {
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel,
                                                _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute
-    
+
     // MARK: - layout specific methods with optional results
-    
+
     /// Convinience property to get a reference without input parameters
     var createdDeviceSpecificSearchBarVC: UIViewController? { get }
     /// Convinience property to get a reference without input parameters
@@ -68,9 +72,12 @@ protocol ViewControllerFactory: AnyObject {
                                               // swiftlint:disable:next line_length
                                               _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute
     /// WIll return nil on Tablet
-    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute
     /// Tablet specific tabs
-    func tabsViewController() -> AnyViewController?
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController?
     /// Download link tags
     func linkTagsViewController(_ delegate: LinkTagsDelegate?) -> AnyViewController & LinkTagsPresenter
     /// The files grid controller to display links for downloads
@@ -78,58 +85,68 @@ protocol ViewControllerFactory: AnyObject {
 }
 
 extension ViewControllerFactory {
-    func rootViewController(_ coordinator: AppCoordinator,
-                            _ uiFramework: UIFrameworkType,
-                            _ defaultContentType: Tab.ContentType) -> AnyViewController {
+    func rootViewController<W, S>(_ coordinator: AppCoordinator,
+                                  _ uiFramework: UIFrameworkType,
+                                  _ defaultContentType: Tab.ContentType,
+                                  _ allTabsVM: AllTabsViewModel,
+                                  _ topSitesVM: TopSitesViewModel,
+                                  _ searchSuggestionsVM: S,
+                                  _ webVM: W) -> AnyViewController
+    where W: WebViewModel, S: SearchSuggestionsViewModel {
         let vc: AnyViewController
         switch uiFramework {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:
-            vc = MainBrowserV2ViewController(coordinator, uiFramework, defaultContentType)
+            vc = MainBrowserV2ViewController(coordinator,
+                                             uiFramework,
+                                             defaultContentType,
+                                             allTabsVM,
+                                             topSitesVM,
+                                             searchSuggestionsVM,
+                                             webVM)
         }
         return vc
     }
-    
+
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController {
         let vc: SearchBarBaseViewController = .init(searchBarDelegate, uiFramework)
         return vc
     }
-    
+
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
-                                         _ searchProviderType: WebAutoCompletionSource) -> AnyViewController {
+                                         _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController {
         // It seems it should be computed property
         // to allow app. to use different view model
         // based on current feature flag's value
-        let vc: SearchSuggestionsViewController = .init(delegate, searchProviderType)
+        let vc: SearchSuggestionsViewController = .init(delegate, viewModel)
         return vc
     }
-    
-    func webViewController<C: Navigating>(_ viewModel: WebViewModel,
-                                          _ externalNavigationDelegate: SiteExternalNavigationDelegate?,
-                                          _ coordinator: C?) -> AnyViewController & WebViewNavigatable
+
+    func webViewController<C: Navigating>(_ coordinator: C?,
+                                          _ viewModel: any WebViewModel,
+                                          _ mode: UIFrameworkType) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
-        let vc: WebViewController = .init(viewModel, externalNavigationDelegate, coordinator)
-        return vc
+        return WebViewController(coordinator, viewModel, mode)
     }
-    
+
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel, _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
         return vc
     }
-    
+
     var loadingProgressViewController: AnyViewController {
         let vc: LoadingProgressViewController = .init()
         return vc
     }
-    
+
     func linkTagsViewController(_ delegate: LinkTagsDelegate?) -> AnyViewController & LinkTagsPresenter {
         let vc = LinkTagsViewController.newFromStoryboard(delegate: delegate)
         return vc
     }
-    
+
     func filesGridViewController() -> AnyViewController & FilesGridPresenter {
         let vc = FilesGridViewController.newFromStoryboard()
         return vc

@@ -13,10 +13,10 @@ struct TabletSearchBarViewV2: View {
     @Binding private var showingMenu: Bool
     @Binding private var query: String
     @Binding private var action: SearchBarAction
-    
+
     /// Toolbar vm is better to be stored in Environment, because tablet view wrapper doesn't need it
     @EnvironmentObject var toolbarVM: BrowserToolbarViewModel
-    
+
     private let columns: [GridItem] = [
         GridItem(.fixed(CGFloat.toolbarViewHeight)),
         GridItem(.fixed(CGFloat.toolbarViewHeight)),
@@ -24,7 +24,7 @@ struct TabletSearchBarViewV2: View {
         GridItem(.fixed(CGFloat.toolbarViewHeight)),
         GridItem(.flexible(), spacing: 2, alignment: .center)
     ]
-    
+
     init(_ showingMenu: Binding<Bool>,
          _ showSearchSuggestions: Binding<Bool>,
          _ query: Binding<String>,
@@ -34,7 +34,7 @@ struct TabletSearchBarViewV2: View {
         _query = query
         _action = action
     }
-    
+
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) {

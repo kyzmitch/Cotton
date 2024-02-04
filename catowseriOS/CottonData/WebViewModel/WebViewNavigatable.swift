@@ -9,15 +9,15 @@
 import Foundation
 import CottonBase
 
-protocol WebViewNavigatable: AnyObject {
+public protocol WebViewNavigatable: AnyObject {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }
     func goForward()
     func goBack()
     func reload()
-    func enableJavaScript(_ enabled: Bool, for host: Host)
-    
-    var host: Host { get }
+    func enableJavaScript(_ enabled: Bool, for host: CottonBase.Host)
+
+    var host: CottonBase.Host { get }
     var siteSettings: Site.Settings { get }
     var url: URL? { get }
 }

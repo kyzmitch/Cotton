@@ -29,7 +29,7 @@ public extension URL {
         }
         return false
     }
-    
+
     var hasIPv4Host: Bool {
         guard let actualHost = host else {
             return false
@@ -37,10 +37,10 @@ public extension URL {
         guard IPv4Address(actualHost) != nil else {
             return false
         }
-        
+
         return true
     }
-    
+
     var hasIPv6Host: Bool {
         guard let actualHost = host else {
             return false
@@ -48,14 +48,14 @@ public extension URL {
         guard IPv6Address(actualHost) != nil else {
             return false
         }
-        
+
         return true
     }
-    
+
     var hasIPHost: Bool {
         return hasIPv4Host || hasIPv6Host
     }
-    
+
     init?(faviconIPInfo: URLInfo) {
         guard let faviconURLFromIp = faviconIPInfo.faviconURLFromIp else {
             return nil

@@ -17,7 +17,7 @@ protocol SearchBarControllerInterface: AnyObject {
 final class SearchBarBaseViewController: BaseViewController {
     /// main search bar view
     private let searchBarView: SearchBarLegacyView
-    
+
     init(_ searchBarDelegate: UISearchBarDelegate?, _ uiFramework: UIFrameworkType) {
         let customFrame: CGRect
         if case .uiKit = uiFramework {
@@ -29,7 +29,7 @@ final class SearchBarBaseViewController: BaseViewController {
         searchBarView.delegate = searchBarDelegate
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -37,26 +37,26 @@ final class SearchBarBaseViewController: BaseViewController {
     override func loadView() {
         view = searchBarView
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         Task {
-            await TabsListManager.shared.attach(self)
+            await TabsDataService.shared.attach(self)
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         Task {
-            await TabsListManager.shared.detach(self)
+            await TabsDataService.shared.detach(self)
         }
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
+
         searchBarView.handleTraitCollectionChange()
     }
 }

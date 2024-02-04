@@ -10,7 +10,7 @@ import UIKit
 
 final class ThemeProvider {
     static let shared = ThemeProvider()
-    
+
     static let disabledOpacity = 0.4
 
     var themeType: ThemeType {

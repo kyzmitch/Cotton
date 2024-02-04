@@ -13,11 +13,14 @@ import CottonPlugins
 extension WebViewModelState: Actionable {
     typealias Action = WebViewAction
     typealias State = Self
-    
+
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func transition(on action: Action) throws -> State {
+    func transition(on action: Action, _ logging: Bool = false) throws -> State {
         let nextState: State
         switch (self, action) {
+        case (.pendingLoad, .loadSite):
+            /// Nothing to load actually, waiting for `resetToSite` action
+            return self
         case (.initialized(let site),
               .loadSite):
             nextState = .pendingPlugins(site.urlInfo, site.settings)
@@ -111,7 +114,7 @@ extension WebViewModelState: Actionable {
             // Handling is similar to when state is `pendingDoHStatus`
             // and action is `resolveDomainName`, because first need to
             // make sure that domain name supports DNS over HTTPs
-            
+
             // Probably need to check that current DoH state is not the same,
             // to not do domane name resolving when it is not needed,
             // this could be done by checking the host of current ulr data.
@@ -133,6 +136,8 @@ extension WebViewModelState: Actionable {
             // Could be a case when previous web view didn't finish navigation
             // and it was asked to reset vm
             nextState = .initialized(site)
+        case (.pendingLoad, .resetToSite(let site)):
+            nextState = .initialized(site)
         case (.waitingForNavigation(let settings, let uRLInfo),
               .reload):
             // Sometimes state hangs in `waitingForNavigation`
@@ -145,15 +150,21 @@ extension WebViewModelState: Actionable {
               .goForward):
             nextState = .waitingForNavigation(settings, uRLInfo)
         default:
-#if TESTING
+            #if TESTING
             print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
-#endif
+            #endif
+            if logging {
+                print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
+            }
             throw Error.unexpectedStateForAction(self, action)
         }
-        
-#if TESTING
+
+        #if TESTING
         print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
-#endif
+        #endif
+        if logging {
+            print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
+        }
         return nextState
     }
 }

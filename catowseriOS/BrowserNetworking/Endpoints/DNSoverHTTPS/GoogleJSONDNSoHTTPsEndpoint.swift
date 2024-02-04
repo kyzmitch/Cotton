@@ -36,7 +36,7 @@ public typealias GDNSjsonProducer = SignalProducer<GoogleDNSOverJSONResponse, Ht
 public typealias GDNSjsonPublisher = AnyPublisher<GoogleDNSOverJSONResponse, HttpError>
 
 extension Endpoint where S == GoogleDnsServer {
-     
+
     static func googleDnsOverHTTPSJson(_ params: GDNSRequestParams) throws -> GDNSjsonEndpoint {
         /**
          To minimize this risk, send only the HTTP headers required for DoH:
@@ -50,13 +50,13 @@ extension Endpoint where S == GoogleDnsServer {
             encodingMethod: .QueryString(items: params.urlQueryItems.kotlinArray))
         return frozenEndpoint
     }
-    
+
     static func googleDnsOverHTTPSJson(_ domainName: String) throws -> GDNSjsonEndpoint {
         let domainObject = try DomainName(input: domainName)
         guard let params = GDNSRequestParams(domainName: domainObject) else {
             throw HttpError.missingRequestParameters("google dns params")
         }
-        
+
         return try .googleDnsOverHTTPSJson(params)
     }
 }
@@ -71,19 +71,19 @@ public struct GoogleDNSOverJSONResponse: ResponseType {
     public static var successCodes: [Int] {
         [200]
     }
-    
+
     fileprivate let answer: [Answer]
     /**
      Note: An HTTP success may still be a DNS failure.
      Check the DNS response code (JSON "Status" field) for the
      DNS errors SERVFAIL, FORMERR, REFUSED, and NOTIMP.
-    */
+     */
     let status: Int32
     /// NOERROR - Standard DNS response code (32 bit integer).
     let noError: Int32 = 0
-    
+
     public let ipAddress: String
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         answer = try container.decode([Answer].self, forKey: .answer)
@@ -97,7 +97,7 @@ public struct GoogleDNSOverJSONResponse: ResponseType {
         }
         ipAddress = firstAddress
     }
-    
+
     fileprivate enum CodingKeys: String, CodingKey {
         case answer = "Answer"
         case status = "Status"
@@ -108,7 +108,7 @@ public enum GoogleDNSEndpointError: LocalizedError {
     case emptyAnswers
     case dnsStatusError(Int32)
     case recordTypeParsing(UInt32)
-    
+
     public var errorDescription: String? {
         return "Google DSN over JSON `\(self)`"
     }
@@ -124,7 +124,7 @@ private struct Answer: Decodable {
     let recordType: DnsRR
     /// Data for A - IP address as text or some different thing like `z-p42-instagram.c10r.facebook.com.`
     let ipAddress: String
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
@@ -135,7 +135,7 @@ private struct Answer: Decodable {
         }
         recordType = dnsRR
     }
-    
+
     fileprivate enum CodingKeys: String, CodingKey {
         case name
         case ipAddress = "data"
@@ -166,14 +166,14 @@ extension RestClient where Server == GoogleDnsServer {
         } catch {
             return GDNSjsonProducer(error: HttpError.failedConstructRequestParameters)
         }
-        
+
         let adapter: AlamofireHTTPRxAdaptee<GoogleDNSOverJSONResponse,
                                             GoogleDnsServer,
                                             GDNSjsonRxInterface> = .init(.waitsForRxObserver)
         let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber: subscriber)
         return producer
     }
-    
+
     public func rxResolvedDomainName(in url: URL, _ subscriber: GDNSJsonClientRxSubscriber) -> ResolvedURLProducer {
         return url.rxHttpHost
             .flatMapError({ _ -> SignalProducer<String, HttpError> in
@@ -189,7 +189,7 @@ extension RestClient where Server == GoogleDnsServer {
                 return url.rxUpdatedHost(with: response.ipAddress)
             })
     }
-    
+
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     func cGetIPaddress(ofDomain domainName: String, _ subscriber: GDNSJsonClientSubscriber) -> GDNSjsonPublisher {
         let endpoint: GDNSjsonEndpoint
@@ -203,25 +203,25 @@ extension RestClient where Server == GoogleDnsServer {
         } catch {
             return GDNSjsonPublisher(Future.failure(HttpError.failedConstructRequestParameters))
         }
-        
+
         let adapter: AlamofireHTTPAdaptee<GoogleDNSOverJSONResponse,
                                           GoogleDnsServer> = .init(.waitsForCombinePromise)
         let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber: subscriber)
         return future.eraseToAnyPublisher()
     }
-    
+
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func resolvedDomainName(in url: URL, _ subscriber: GDNSJsonClientSubscriber) -> AnyPublisher<URL, DnsError> {
         return url.cHttpHost
-        .mapError { _ -> HttpError in
-            return .failedConstructRequestParameters
-        }
-        .flatMap { self.cGetIPaddress(ofDomain: $0, subscriber) }
-        .map { $0.ipAddress}
-        .mapError { (kitErr) -> DnsError in
-            return .httpError(kitErr)
-        }
-        .flatMap { url.cUpdatedHost(with: $0) }
-        .eraseToAnyPublisher()
+            .mapError { _ -> HttpError in
+                return .failedConstructRequestParameters
+            }
+            .flatMap { self.cGetIPaddress(ofDomain: $0, subscriber) }
+            .map { $0.ipAddress}
+            .mapError { (kitErr) -> DnsError in
+                return .httpError(kitErr)
+            }
+            .flatMap { url.cUpdatedHost(with: $0) }
+            .eraseToAnyPublisher()
     }
 }

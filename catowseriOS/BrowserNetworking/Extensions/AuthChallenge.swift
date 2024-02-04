@@ -13,7 +13,7 @@ import Alamofire
 
 /**
  https://developer.apple.com/library/archive/technotes/tn2232/_index.html
- 
+
  The DNS name in the certificate might be a wildcard name, for example, "*.apple.com".
  but `host` parameter could be specific address like "m.apple.com"
  so that, it's required to convert it to wildcard name before check
@@ -30,7 +30,7 @@ import Alamofire
  https://support.apple.com/en-us/HT210176
  TLS server certificates must present the DNS name of the server in the Subject Alternative Name extension
  of the certificate. DNS names in the CommonName of a certificate are no longer trusted.
- 
+
  https://developer.apple.com/documentation/security/certificate_key_and_trust_services/trust/configuring_a_trust
  */
 
@@ -39,7 +39,7 @@ extension DefaultTrustEvaluator {
     public static func ipHostEvaluator() -> Self {
         return .init(validateHost: false)
     }
-    
+
     /// Evaluates server trust.
     /// `host` is used only for error messages since it is ip address and should be used for evaluation
     // swiftlint:disable:next cyclomatic_complexity
@@ -48,7 +48,7 @@ extension DefaultTrustEvaluator {
             try evaluate(trust, forHost: host)
             return
         }
-        
+
         do {
             try evaluate(trust, forHost: kitHost.rawString)
         } catch AFError.serverTrustEvaluationFailed(let reason) {
@@ -63,21 +63,21 @@ extension DefaultTrustEvaluator {
             default:
                 throw AFError.serverTrustEvaluationFailed(reason: reason)
             }
-            
+
             guard let output = optionalOutput else {
                 throw AFError.serverTrustEvaluationFailed(reason: reason)
             }
-            
+
             switch output.result {
             case .recoverableTrustFailure:
-#if os(iOS)
+                #if os(iOS)
                 guard let cookie = SecTrustCopyExceptions(trust) else {
                     struct OpaqueCookieNil: Error {}
                     throw OpaqueCookieNil()
                 }
-#elseif os(macOS)
+                #elseif os(macOS)
                 let cookie = SecTrustCopyExceptions(trust)
-#endif
+                #endif
                 SecTrustSetExceptions(trust, cookie)
                 guard SecTrustSetExceptions(trust, cookie) else {
                     throw AFError.serverTrustEvaluationFailed(reason: reason)

@@ -8,6 +8,7 @@
 
 import WebKit
 import CottonBase
+import CottonData
 
 // MARK: - Allow users of this delegate to control webview navigation
 
@@ -28,7 +29,7 @@ extension WebViewController: WebViewNavigatable {
 
     func goForward() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.provisionalNavigationDidStart()
+        viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
             await viewModel.goForward()
         }
@@ -37,7 +38,7 @@ extension WebViewController: WebViewNavigatable {
 
     func goBack() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.provisionalNavigationDidStart()
+        viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
             await viewModel.goBack()
         }
@@ -46,13 +47,13 @@ extension WebViewController: WebViewNavigatable {
 
     func reload() {
         guard isViewLoaded else { return }
-        externalNavigationDelegate?.provisionalNavigationDidStart()
+        viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
             await viewModel.reload()
         }
         _ = webView?.reload()
     }
-    
+
     func enableJavaScript(_ enabled: Bool, for host: Host) {
         guard viewModel.host == host, let jsSubject = webView else {
             return
@@ -61,15 +62,15 @@ extension WebViewController: WebViewNavigatable {
             await viewModel.setJavaScript(jsSubject, enabled)
         }
     }
-    
+
     var host: Host {
         viewModel.host
     }
-    
+
     var siteSettings: Site.Settings {
         viewModel.settings
     }
-    
+
     var url: URL? {
         viewModel.currentURL
     }

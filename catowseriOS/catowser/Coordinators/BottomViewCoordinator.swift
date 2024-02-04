@@ -15,7 +15,7 @@ final class BottomViewCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     /// Overwritten getter because there is no view controller which holds started view
     var startedView: UIView? {
         if isPad {
@@ -24,14 +24,14 @@ final class BottomViewCoordinator: Coordinator {
             return underToolbarView
         }
     }
-    
+
     private lazy var underLinkTagsView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         ThemeProvider.shared.setupUnderLinkTags(v)
         return v
     }()
-    
+
     /// View to make color under toolbar is the same on iPhone x without home button
     private lazy var underToolbarView: UIView = {
         let v = UIView()
@@ -39,20 +39,20 @@ final class BottomViewCoordinator: Coordinator {
         ThemeProvider.shared.setupUnderToolbar(v)
         return v
     }()
-    
+
     private var underLinksViewHeightConstraint: NSLayoutConstraint?
-    
+
     /// Convinience property for specific view bounds
     var underToolbarViewBounds: CGRect? {
         underToolbarView.bounds
     }
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
     }
-    
+
     func start() {
         if isPad {
             presenterVC?.controllerView.addSubview(underLinkTagsView)
@@ -67,9 +67,9 @@ enum BottomViewPart: SubviewPart {}
 
 extension BottomViewCoordinator: Layouting {
     typealias SP = BottomViewPart
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(let topAnchor, _, _):
@@ -80,9 +80,9 @@ extension BottomViewCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+
     }
 }
 
@@ -97,7 +97,7 @@ private extension BottomViewCoordinator {
             // but provided anchor of web content container view MUST be set
             // so that, setting it here
             topAnchor?.constraint(equalTo: superView.bottomAnchor).isActive = true
-            
+
             underLinkTagsView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
             underLinkTagsView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
@@ -114,7 +114,7 @@ private extension BottomViewCoordinator {
             underToolbarView.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
         }
     }
-    
+
     func viewSafeAreaInsetsDidChange() {
         guard isPad else {
             return

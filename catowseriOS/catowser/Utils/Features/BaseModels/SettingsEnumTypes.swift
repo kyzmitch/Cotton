@@ -39,12 +39,12 @@ extension AddedTabPosition: EnumDefaultValueSupportable {
 
 extension TabContentDefaultState: EnumDefaultValueSupportable {
     public var defaultValue: TabContentDefaultState {
-#if DEBUG
+        #if DEBUG
         return TabContentDefaultState.topSites
-#else
+        #else
         // In Release builds only User can decide which web sites to show by default
         return TabContentDefaultState.favorites
-#endif
+        #endif
     }
 }
 
@@ -57,7 +57,7 @@ enum UIFrameworkType: Int, CaseIterable {
     case swiftUIWrapper
     /// Clear SwiftUI views without re-using UIKit
     case swiftUI
-    
+
     var swiftUIBased: Bool {
         switch self {
         case .swiftUI, .swiftUIWrapper:
@@ -66,12 +66,12 @@ enum UIFrameworkType: Int, CaseIterable {
             return false
         }
     }
-    
+
     /// Fully without UIKit
     var isUIKitFree: Bool {
         self == .swiftUI
     }
-    
+
     var uiKitBased: Bool {
         switch self {
         case .uiKit, .swiftUIWrapper:

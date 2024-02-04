@@ -17,19 +17,19 @@ public typealias FullEnumTypeConstraints = CaseIterable & RawRepresentable & Enu
 public struct GenericEnumFeature<E: FullEnumTypeConstraints>: EnumFeature where E.RawValue == Int {
     public typealias RawValue = E.RawValue
     public typealias EnumValue = E
-    
+
     let wrappedEnumValue: EnumValue
-    
+
     public var defaultEnumValue: EnumValue {
         return wrappedEnumValue.defaultValue
     }
-    
+
     public var defaultRawValue: RawValue {
         return defaultEnumValue.rawValue
     }
-    
+
     public let key: String
-    
+
     public init(_ key: String) {
         // swiftlint:disable:next force_unwrapping
         wrappedEnumValue = E.allCases.first!

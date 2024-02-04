@@ -19,7 +19,7 @@ public extension Combine.Future {
         }
         return future
     }
-    
+
     static func success(_ value: Output) -> Future<Output, Failure> {
         let future: Future<Output, Failure> = .init { (promise) in
             promise(.success(value))

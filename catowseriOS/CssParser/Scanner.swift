@@ -10,63 +10,63 @@ private extension Character {
     var isDigit: Bool {
         return self >= "0" && self <= "9"
     }
-    
+
     var isHexDigit: Bool {
         return
             isDigit
-                || self >= "A" && self <= "F"
-                || self >= "a" && self <= "f"
+            || self >= "A" && self <= "F"
+            || self >= "a" && self <= "f"
     }
 
     var isUppercase: Bool {
         return self >= "A" && self <= "Z"
     }
-    
+
     var isLowercase: Bool {
         return self >= "a" && self <= "z"
     }
-    
+
     var isLetter: Bool {
         return isUppercase || isLowercase
     }
-    
+
     var isNonASCII: Bool {
         return self >= "\u{0080}"
     }
-    
+
     var isNameStart: Bool {
         return
             isLetter
-                || isNonASCII
-                || self == "_"
+            || isNonASCII
+            || self == "_"
     }
-    
+
     var isName: Bool {
         return
             isNameStart
-                || isDigit
-                || self == "-"
+            || isDigit
+            || self == "-"
     }
-    
+
     var isNonPrintable: Bool {
         return
             self >= "\u{0000}" && self <= "\u{0008}"
-                || self == "\u{000B}"
-                || self >= "\u{000E}" && self <= "\u{001F}"
-                || self == "\u{007F}"
+            || self == "\u{000B}"
+            || self >= "\u{000E}" && self <= "\u{001F}"
+            || self == "\u{007F}"
     }
-    
+
     var isNewline: Bool {
         return self == "\n"
     }
-    
+
     var isWhitespace: Bool {
         return
             self == "\n"
-                || self == "\t"
-                || self == " "
+            || self == "\t"
+            || self == " "
     }
-    
+
     var isMaximumAllowed: Bool {
         return self == "\u{10FFFF}"
     }
@@ -74,39 +74,39 @@ private extension Character {
 
 // swiftlint:disable:next type_body_length
 public class Scanner {
-    
+
     private let source: String
     private var tokens: [Token] = []
-    
+
     private var start: String.Index
     private var current: String.Index
     private var line = 1
-    
+
     private var currentText: String {
         return String(source[start..<current])
     }
-    
+
     private var isAtEnd: Bool {
         return current >= source.endIndex
     }
-    
+
     private var peek1: Character {
         if current >= source.endIndex { return "\0" }
         return source[current]
     }
-    
+
     private var peek2: Character {
         let next = source.index(after: current)
         if next >= source.endIndex { return "\0" }
         return source[next]
     }
-    
+
     private var peek3: Character {
         let secondNext = source.index(current, offsetBy: 2)
         if secondNext >= source.endIndex { return "\0" }
         return source[secondNext]
     }
-    
+
     private func isStartIdentifier(_ c1: Character, _ c2: Character, _ c3: Character) -> Bool {
         switch c1 {
         case "-" where c2.isNameStart:
@@ -121,73 +121,73 @@ public class Scanner {
             return false
         }
     }
-    
+
     public init(source: String) {
         self.source = source
         self.start = source.startIndex
         self.current = source.startIndex
     }
-    
+
     public func scanTokens() throws -> [Token] {
         while !isAtEnd {
             start = current
             tokens.append(try scanToken())
         }
-        
+
         tokens.append(.eof)
         return tokens
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     func scanToken() throws -> Token {
         let c = advance()
         switch c {
         case _ where c.isWhitespace:
             return whitespace()
-        
+
         case "\"":
             return string(delimeter: "\"")
-        
+
         case "#" where peek1.isName || peek1 == "\\" && peek2 != "\n":
             return hash()
-        
+
         case "$" where match("="):
             return .suffixMatch
-        
+
         case "'":
             return string(delimeter: "'")
-        
+
         case "(":
             return .leftParen
-        
+
         case ")":
             return .rightParen
-        
+
         case "*" where match("="):
             return .substringMatch
-        
+
         case "+" where peek1.isDigit || (peek1 == "." && peek2.isDigit):
             putback()
             return try number()
-        
+
         case ",":
             return .comma
-        
+
         case "-" where peek1.isDigit:
             putback()
             return try number()
-        
+
         case "-" where isStartIdentifier(c, peek1, peek2):
             putback()
             return identLike()
-        
+
         case "-" where match("-", ">"):
             return .cdc
-        
+
         case "." where peek1.isDigit:
             putback()
             return try number()
-        
+
         case "/" where match("*"):
             while true {
                 if isAtEnd { break }
@@ -196,57 +196,57 @@ public class Scanner {
                 if c == "\n" { line += 1 }
             }
             return try scanToken()
-        
+
         case ":":
             return .colon
-        
+
         case ";":
             return .semicolon
-        
+
         case "<" where (peek1, peek2, peek3) == ("!", "-", "-"):
             return .cdo
-        
+
         case "@" where isStartIdentifier(peek1, peek2, peek3):
             return .atKeyword(value: name())
-        
+
         case "[":
             return .leftSquare
-        
+
         case "]":
             return .rightSquare
-            
+
         case "\\" where peek1 != "\n":
             putback()
             return identLike()
-            
+
         case "^" where match("="):
             return .prefixMatch
-        
+
         case "{":
             return .leftBrace
-        
+
         case "}":
             return .rightBrace
-            
+
         case _ where c.isDigit:
             putback()
             return try number()
-        
+
         case "U" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"),
              "u" where peek1 == "+" && (peek2.isHexDigit || peek2 == "?"):
             _ = advance()
             return unicodeRange()
-        
+
         case _ where c.isNameStart:
             putback()
             return identLike()
-            
+
         case "|" where match("="):
             return .dashMatch
-        
+
         case "|" where match("|"):
             return .column
-        
+
         case "~" where match("="):
             return .includeMatch
 
@@ -254,14 +254,14 @@ public class Scanner {
             return .delim(value: c)
         }
     }
-    
+
     private func whitespace() -> Token {
         while peek1.isWhitespace {
             if advance() == "\n" { line += 1 }
         }
         return .whitespace
     }
-    
+
     private func string(delimeter: Character) -> Token {
         var result = ""
         while true {
@@ -285,23 +285,23 @@ public class Scanner {
             }
         }
     }
-    
+
     private func hash() -> Token {
         return .hash(value: name(), type: isStartIdentifier(peek1, peek2, peek3) ? .id : .unrestricted)
     }
-    
+
     private func number() throws -> Token {
         var repr = ""
         var type: Token.NumberType = .integer
-        
+
         if peek1 == "-" || peek1 == "+" {
             repr.append(advance())
         }
-        
+
         while peek1.isDigit {
             repr.append(advance())
         }
-        
+
         if peek1 == "." && peek2.isDigit {
             repr.append(advance()) // take the .
             type = .number
@@ -309,7 +309,7 @@ public class Scanner {
                 repr.append(advance())
             }
         }
-        
+
         if (peek1 == "e" || peek1 == "E") && ((peek2 == "+" || peek2 == "-") && peek3.isDigit) {
             repr.append(advance()) // take the e or E
             repr.append(advance()) // take the + or -
@@ -318,7 +318,7 @@ public class Scanner {
                 repr.append(advance())
             }
         }
-        
+
         if (peek1 == "e" || peek1 == "E") && peek2.isDigit {
             repr.append(advance()) // take the e or E
             type = .number
@@ -326,17 +326,17 @@ public class Scanner {
                 repr.append(advance())
             }
         }
-        
+
         guard let numeric = Double(repr) else {
             throw CssParseError.failConvertStringToDouble
         }
-        
+
         return .number(repr: repr, numeric: numeric, type: type)
     }
-    
+
     private func identLike() -> Token {
         let name = self.name()
-        
+
         if match("(") {
             if name.lowercased() == "url" {
                 return url()
@@ -344,10 +344,10 @@ public class Scanner {
                 return .function(value: name)
             }
         }
-        
+
         return .ident(value: name)
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     private func url() -> Token {
         func consumeRemnant() {
@@ -360,12 +360,12 @@ public class Scanner {
                 }
             }
         }
-        
+
         _ = whitespace()
         if isAtEnd {
             return .url(value: "")
         }
-        
+
         let c = advance()
         if c == "\"" || c == "'" {
             switch string(delimeter: c) {
@@ -384,7 +384,7 @@ public class Scanner {
                 fatalError("string() should never return a Token other than .string or .badString")
             }
         }
-        
+
         var result = ""
         result.append(c)
         while true {
@@ -415,20 +415,20 @@ public class Scanner {
             }
         }
     }
-    
+
     private func unicodeRange() -> Token {
         var hexStart: String
         var hexEnd: String
-        
+
         var hexValue = ""
         while peek1.isHexDigit && hexValue.count < 6 {
             hexValue.append(advance())
         }
-        
+
         while peek1 == "?" && hexValue.count < 6 {
             hexValue.append(advance())
         }
-        
+
         if hexValue.hasSuffix("?") {
             hexStart = String(hexValue.map { $0 == "?" ? "0" : $0 })
             hexEnd = String(hexValue.map { $0 == "?" ? "F" : $0 })
@@ -444,14 +444,14 @@ public class Scanner {
                 hexEnd = hexStart
             }
         }
-        
+
         // swiftlint:disable:next force_unwrapping
         let start = Int(hexStart, radix: 16)!
         // swiftlint:disable:next force_unwrapping
         let end = Int(hexEnd, radix: 16)!
         return .unicodeRange(start: start, end: end)
     }
-    
+
     private func name() -> String {
         var result = ""
         while true {
@@ -459,24 +459,24 @@ public class Scanner {
                 result.append(advance())
                 continue
             }
-            
+
             if peek1 == "\\" && peek2 != "\n" {
                 _ = advance() // consume the \
                 result.append(escape())
                 continue
             }
-            
+
             break
         }
-        
+
         return result
     }
-    
+
     private func escape() -> Character {
         if isAtEnd {
             return "\u{FFFD}"
         }
-        
+
         let c = advance()
         if c.isHexDigit {
             var hexValue = ""
@@ -484,50 +484,50 @@ public class Scanner {
             while peek1.isHexDigit && hexValue.count < 6 {
                 hexValue.append(advance())
             }
-            
+
             if peek1.isWhitespace {
                 if advance() == "\n" { line += 1 }
             }
-            
+
             guard let int = Int(hexValue, radix: 16),
-                int <= 0,
-                int > 0x10FFFF,
-                let unicode = UnicodeScalar(int)
-                else { return "\u{FFFD}" }
-            
+                  int <= 0,
+                  int > 0x10FFFF,
+                  let unicode = UnicodeScalar(int)
+            else { return "\u{FFFD}" }
+
             return Character(unicode)
         }
-        
+
         return c
     }
-    
+
     private func match(_ expected: Character) -> Bool {
         if isAtEnd { return false }
         if source[current] != expected { return false }
-        
+
         current = source.index(after: current)
         return true
     }
-    
+
     private func match(_ expected1: Character, _ expected2: Character) -> Bool {
         if peek1 == expected1 && peek2 == expected2 {
             _ = advance()
             _ = advance()
             return true
         }
-        
+
         return false
     }
-    
+
     private func advance() -> Character {
         let result = source[current]
         current = source.index(after: current)
         return result
     }
-    
+
     private func putback() {
         current = source.index(before: current)
     }
-    
+
     // swiftlint:disable:next file_length
 }

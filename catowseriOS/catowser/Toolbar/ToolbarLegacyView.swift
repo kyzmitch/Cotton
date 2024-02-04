@@ -7,15 +7,16 @@
 //
 
 import SwiftUI
+import CottonData
 
 struct ToolbarLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
     private let webViewInterface: WebViewNavigatable?
-    
+
     init(_ webViewInterface: WebViewNavigatable?) {
         self.webViewInterface = webViewInterface
     }
-    
+
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
         let vc = vcFactory.toolbarViewController(nil,
@@ -25,7 +26,7 @@ struct ToolbarLegacyView: CatowserUIVCRepresentable {
         // swiftlint:disable:next force_unwrapping
         return vc!
     }
-    
+
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         guard let vc = uiViewController as? BrowserToolbarController<MainToolbarCoordinator> else {
             return

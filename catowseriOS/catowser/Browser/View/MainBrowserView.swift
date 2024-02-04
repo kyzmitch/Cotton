@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreBrowser
+import CottonData
 
 enum SwiftUIMode {
     /// Re-uses UIKit views
@@ -33,40 +34,67 @@ extension UIFrameworkType {
     }
 }
 
-struct MainBrowserView<C: BrowserContentCoordinators>: View {
+struct MainBrowserView
+<C: BrowserContentCoordinators, W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     /// Store main view model in this main view to not have generic parameter in phone/tablet views
-    private let vm: MainBrowserModel<C>
+    @StateObject private var viewModel: MainBrowserViewModel<C>
     /// Browser content view model
-    @ObservedObject private var browserContentVM: BrowserContentViewModel
+    @StateObject private var browserContentVM: BrowserContentViewModel
     /// if User changes it in dev settings, then it is required to restart the app.
     /// Some other old code paths (coordinators and UIKit views) depend on that value,
     /// so, if new value is selected in dev menu, then it could create bugs if app is not restarted.
-    ///  At the moment app will crash if User selects new UI mode.
+    /// At the moment app will crash if User selects new UI mode.
     private let mode: SwiftUIMode
-    
-    init(_ vm: MainBrowserModel<C>, _ uiFrameworkType: UIFrameworkType, _ defaultContentType: Tab.ContentType) {
-        self.vm = vm
-        browserContentVM = .init(vm.jsPluginsBuilder, defaultContentType)
+    /// All tabs view model which can be injected only in async way, so, has to pass it from outside
+    @StateObject private var allTabsVM: AllTabsViewModel
+    /// Top sites view model has async dependencies and has to be injected
+    @StateObject private var topSitesVM: TopSitesViewModel
+    /// Search suggestions view model has async dependencies and has to be injected
+    private let searchSuggestionsVM: S
+    /// Web view model without a specific site
+    @StateObject private var webVM: W
+    /// Default content type is determined in async way, so, would be good to pass it like this
+    private let defaultContentType: Tab.ContentType
+
+    init(_ coordinatorsInterface: C,
+         _ uiFrameworkType: UIFrameworkType,
+         _ defaultContentType: Tab.ContentType,
+         _ allTabsVM: AllTabsViewModel,
+         _ topSitesVM: TopSitesViewModel,
+         _ searchSuggestionsVM: S,
+         _ webVM: W) {
+        let mainVM = MainBrowserViewModel(coordinatorsInterface)
+        _viewModel = StateObject(wrappedValue: mainVM)
+        let browserVM = BrowserContentViewModel(mainVM.jsPluginsBuilder, defaultContentType)
+        _browserContentVM = StateObject(wrappedValue: browserVM)
         mode = uiFrameworkType.swiftUIMode
+        self.defaultContentType = defaultContentType
+        _allTabsVM = StateObject(wrappedValue: allTabsVM)
+        _topSitesVM = StateObject(wrappedValue: topSitesVM)
+        self.searchSuggestionsVM = searchSuggestionsVM
+        _webVM = StateObject(wrappedValue: webVM)
     }
-    
+
     var body: some View {
         Group {
             if isPad {
-                TabletView(browserContentVM, mode, .blank)
+                TabletView(mode, defaultContentType, webVM, searchSuggestionsVM)
             } else {
-                PhoneView(browserContentVM, mode)
+                PhoneView(mode, defaultContentType, webVM, searchSuggestionsVM)
             }
         }
-        .environment(\.browserContentCoordinators, vm.coordinatorsInterface)
+        .environment(\.browserContentCoordinators, viewModel.coordinatorsInterface)
+        .environmentObject(browserContentVM)
+        .environmentObject(allTabsVM)
+        .environmentObject(topSitesVM)
         .onAppear {
             Task {
-                await TabsListManager.shared.attach(browserContentVM, notify: true)
+                await TabsDataService.shared.attach(browserContentVM, notify: true)
             }
         }
         .onDisappear {
             Task {
-                await TabsListManager.shared.detach(browserContentVM)
+                await TabsDataService.shared.detach(browserContentVM)
             }
         }
     }

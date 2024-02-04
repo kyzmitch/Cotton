@@ -39,7 +39,7 @@ extension DispatchTimeInterval {
             return .zero
         }
     }
-    
+
     public var inNanoseconds: UInt64 {
         switch self {
         case .seconds(let int):

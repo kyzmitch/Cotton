@@ -15,7 +15,6 @@ import WebKit
 
 /// Simplified view actions for view use
 public enum WebPageLoadingAction: Equatable {
-    //
     case recreateView(Bool)
     case load(URLRequest)
     case reattachViewObservers
@@ -29,9 +28,10 @@ public protocol NavigationActionable: AnyObject {
 }
 
 @MainActor
-public protocol WebViewModel: AnyObject {
+public protocol WebViewModel: ObservableObject {
+
     // MARK: - main public methods
-    
+
     func load() async
     func reset(_ site: Site) async
     func reload() async
@@ -42,9 +42,10 @@ public protocol WebViewModel: AnyObject {
                       _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) async
     func setJavaScript(_ subject: JavaScriptEvaluateble, _ enabled: Bool) async
     func setDoH(_ enabled: Bool) async
-    
+    func updateTabPreview(_ screenshot: Data?) async
+
     // MARK: - public properties
-    
+
     var nativeAppDomainNameString: String? { get }
     var configuration: WKWebViewConfiguration { get }
     var host: CottonBase.Host { get }
@@ -53,10 +54,15 @@ public protocol WebViewModel: AnyObject {
     var urlInfo: URLInfo { get }
     /// Only for SwiftUI check to avoid handling of view updates
     var isResetable: Bool { get }
-    
+
     // MARK: - main state observers
 
     /// wrapped value for Published
     var webPageState: WebPageLoadingAction { get }
     var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { get }
+
+    // MARK: - new properties to have single view model for Web
+
+    /// Site navigation delegate property should allow to set it later, e.g. in case of SwiftUI mode (e.g. with ToolbarViewModel)
+    var siteNavigation: SiteExternalNavigationDelegate? { get set }
 }

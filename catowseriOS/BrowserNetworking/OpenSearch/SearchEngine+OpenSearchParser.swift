@@ -36,10 +36,10 @@ extension SearchEngine {
          indexer: XMLIndexer,
          shortName: String,
          imageData: OpenSearch.ImageParseResult) throws {
-        
+
         self.shortName = shortName
         self.imageData = imageData
-        
+
         let httpMethod: HTTPMethod
         if let methodString = element.attribute(by: "method")?.text {
             guard let enumValue = HTTPMethod.companion.createFrom(rawString: methodString) else {
@@ -50,7 +50,7 @@ extension SearchEngine {
             httpMethod = .get
         }
         self.httpMethod = httpMethod
-        
+
         let optionalTemplateString = element.attribute(by: "template")?.text
         guard var templateString = optionalTemplateString else {
             throw OpenSearch.Error.noTemplateParameter
@@ -61,7 +61,7 @@ extension SearchEngine {
         guard let url = URL(string: templateString) else {
             throw OpenSearch.Error.templateIsNotURL
         }
-        
+
         let optionalComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
         guard let components = optionalComponents else {
             throw OpenSearch.Error.notValidURL
@@ -75,13 +75,13 @@ extension SearchEngine {
             self.queryItems = components.queryItems?.filter {!($0.value?.isEmpty ?? true)} ?? []
         }
     }
-    
+
     private static func parseURLParams(indexer: XMLIndexer) -> [URLQueryItem]? {
         let paramsObjects = indexer["Param"].all
         guard !paramsObjects.isEmpty else {
             return nil
         }
-        
+
         var items = [URLQueryItem]()
         for paramXml in paramsObjects {
             guard let element = paramXml.element else {
@@ -107,12 +107,12 @@ extension OpenSearch {
     enum ImageEncoding: String {
         case xIcon = "image/x-icon"
     }
-    
+
     public enum ImageParseResult {
         case base64(Data)
         case url(URL)
         case none
-        
+
         init(image xmlIndexer: XMLIndexer) {
             guard let encodedImageString = xmlIndexer.element?.text else {
                 self = .none
@@ -135,20 +135,20 @@ extension OpenSearch {
                 self = .none
                 return
             }
-            
+
             var imgURL: URL?
             switch knownType {
             case .xIcon:
                 imgURL = URL(string: encodedImageString)
             }
-            
+
             guard let iconURL = imgURL else {
                 self = .none
                 return
             }
             self = .url(iconURL)
         }
-        
+
         private static func parseImageXmlTag(content: String) -> Data? {
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
             // data:[<mediatype>][;base64],<data>

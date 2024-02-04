@@ -15,11 +15,11 @@ struct ToolbarViewV2: ToolbarContent {
     @Binding private var showingMenu: Bool
     @Binding private var showingTabs: Bool
     @Binding private var showSearchSuggestions: Bool
-    
+
     @State private var isGoBackDisabled: Bool
     @State private var isGoForwardDisabled: Bool
     @State private var isRefreshDisabled: Bool
-    
+
     init(_ vm: BrowserToolbarViewModel,
          _ tabsCount: Int,
          _ showingMenu: Binding<Bool>,
@@ -34,7 +34,7 @@ struct ToolbarViewV2: ToolbarContent {
         isGoForwardDisabled = false
         isRefreshDisabled = false
     }
-    
+
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             DisableableButton("nav-back", vm.goBackDisabled, vm.goBack)

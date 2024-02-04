@@ -62,7 +62,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
  cannot use the == operator to compare 2 instances of existential type.
  https://swiftsenpai.com/swift/understanding-some-and-any/
  https://www.hackingwithswift.com/swift/5.7/unlock-existentials
- 
+
  Also see "type erasure" techniques but without using any keyword:
  https://www.swiftbysundell.com/articles/different-flavors-of-type-erasure-in-swift/
  https://khawerkhaliq.com/blog/swift-protocols-equatable-part-two/
@@ -73,7 +73,7 @@ public extension JSPluginsProgramImpl {
         guard lhs.plugins.count == rhs.plugins.count else {
             return false
         }
-        
+
         var index = 0
         while index < lhs.plugins.count {
             let lv = lhs.plugins[index]

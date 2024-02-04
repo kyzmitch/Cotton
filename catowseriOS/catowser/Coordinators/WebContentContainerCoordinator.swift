@@ -15,12 +15,12 @@ final class WebContentContainerCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     /// Overrides base implementation because there is no view controller
     var startedView: UIView? {
         containerView
     }
-    
+
     /// The view needed to hold tab content like WebView or favorites table view.
     private lazy var containerView: UIView = {
         let v = UIView()
@@ -28,13 +28,13 @@ final class WebContentContainerCoordinator: Coordinator {
         v.backgroundColor = .white
         return v
     }()
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
     }
-    
+
     func start() {
         presenterVC?.controllerView.addSubview(containerView)
     }
@@ -44,9 +44,9 @@ enum ContentContainerPart: SubviewPart {}
 
 extension WebContentContainerCoordinator: Layouting {
     typealias SP = ContentContainerPart
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(let topAnchor, _, _):
@@ -55,9 +55,9 @@ extension WebContentContainerCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+
     }
 }
 
@@ -67,7 +67,7 @@ private extension WebContentContainerCoordinator {
         // to have ability to insert to it and show view controller with
         // bookmarks in case if search bar has no any address entered or
         // webpage controller with web view if some address entered in search bar
-        
+
         guard let superView = presenterVC?.controllerView else {
             return
         }
@@ -77,7 +77,7 @@ private extension WebContentContainerCoordinator {
         containerView.topAnchor.constraint(equalTo: topViewAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
-        
+
         // Note that bottomAnchor will be set later by bottom dummy or toolbar coordinators
     }
 }

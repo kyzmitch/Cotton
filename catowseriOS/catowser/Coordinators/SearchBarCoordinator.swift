@@ -11,6 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 import BrowserNetworking
 import CottonBase
+import CottonData
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
@@ -26,21 +27,21 @@ final class SearchBarCoordinator: NSObject, Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private weak var downloadPanelDelegate: DownloadPanelPresenter?
     private weak var globalMenuDelegate: GlobalMenuDelegate?
     private weak var delegate: SearchBarDelegate?
-    
+
     private var searhSuggestionsCoordinator: SearchSuggestionsCoordinator?
-    
+
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String = ""
     /// Tells if coordinator was already started
     private var isSuggestionsShowed: Bool = false
-    
+
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
          _ downloadPanelDelegate: DownloadPanelPresenter?,
@@ -54,7 +55,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
         self.delegate = delegate
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
         let createdVC: (any AnyViewController)?
         if isPad {
@@ -68,7 +69,7 @@ final class SearchBarCoordinator: NSObject, Coordinator {
         guard let vc = createdVC, let controllerView = presenterVC?.controllerView else {
             return
         }
-        
+
         vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
         startedVC = vc
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)
@@ -83,7 +84,7 @@ enum SearchBarRoute: Route {
 
 extension SearchBarCoordinator: Navigating {
     typealias R = SearchBarRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .handleAction(let action):
@@ -97,26 +98,30 @@ extension SearchBarCoordinator: Navigating {
             hideSearchController()
         }
     }
-    
+
     func stop() {
         startedVC?.viewController.removeFromChild()
     }
 }
 
 enum SearchBarPart: SubviewPart {
-    case suggestions(WebAutoCompletionSource)
+    case suggestions(any SearchSuggestionsViewModel)
+    /// Similar case to the existing one, just to be able to create it without a dummy view model
+    case simplySuggestions
 }
 
 extension SearchBarCoordinator: Layouting {
     typealias SP = SearchBarPart
-    
+
     func insertNext(_ subview: SP) {
         switch subview {
-        case .suggestions(let provider):
-            insertSearchSuggestions(provider)
+        case .suggestions(let viewModel):
+            insertSearchSuggestions(viewModel)
+        case .simplySuggestions:
+            assertionFailure("Not possible case")
         }
     }
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(let topAnchor, _, _):
@@ -125,13 +130,15 @@ extension SearchBarCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
         switch step {
         case .viewDidLoad(let subview, let topAnchor, let bottomAnchor, let toolbarHeight):
             switch subview {
-            case .suggestions:
+            case .simplySuggestions:
                 searhSuggestionsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor, toolbarHeight))
+            case .suggestions:
+                assertionFailure("Not possible case")
             }
         default:
             break
@@ -169,22 +176,22 @@ private extension SearchBarCoordinator {
         searchView.trailingAnchor.constraint(equalTo: presenterView.trailingAnchor).isActive = true
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
     }
-    
-    func insertSearchSuggestions(_ providerType: WebAutoCompletionSource) {
+
+    func insertSearchSuggestions(_ viewModel: any SearchSuggestionsViewModel) {
         guard !isSuggestionsShowed else {
             return
         }
         isSuggestionsShowed = true
         // Presenter for suggestions is root view controller
-        
+
         // swiftlint:disable:next force_unwrapping
         let presenter = presenterVC!
-        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self, providerType)
+        let coordinator: SearchSuggestionsCoordinator = .init(vcFactory, presenter, self, viewModel)
         coordinator.parent = self
         coordinator.start()
         searhSuggestionsCoordinator = coordinator
     }
-    
+
     func hideSearchController() {
         guard isSuggestionsShowed else {
             print("Attempted to hide suggestions when they are not showed")
@@ -193,7 +200,7 @@ private extension SearchBarCoordinator {
         isSuggestionsShowed = false
         searhSuggestionsCoordinator?.stop()
     }
-    
+
     func replaceTab(with url: URL, with suggestion: String? = nil) async {
         let blockPopups = DefaultTabProvider.shared.blockPopups
         let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
@@ -217,7 +224,8 @@ extension SearchBarCoordinator: UISearchBarDelegate {
         } else {
             Task {
                 let searchProviderType = await FeatureManager.shared.webSearchAutoCompleteValue()
-                insertNext(.suggestions(searchProviderType))
+                let viewModel = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProviderType)
+                insertNext(.suggestions(viewModel))
                 // Use delegate and not a direct call
                 // because it requires layout info
                 // about neighbour views (anchors and height)
@@ -226,7 +234,7 @@ extension SearchBarCoordinator: UISearchBarDelegate {
             }
         }
     }
-    
+
     func searchBar(_ searchBar: UISearchBar,
                    shouldChangeTextIn range: NSRange,
                    replacementText text: String) -> Bool {

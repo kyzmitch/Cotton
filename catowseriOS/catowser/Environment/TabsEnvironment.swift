@@ -11,21 +11,21 @@ import CoreData
 
 private final class TabsEnvironment {
     static func shared() async -> ManagerHolder {
-        if let holder = internalHolder {
+        if let holder = internalInstance {
             return holder
         }
-        
+
         let created = await ManagerHolder()
-        internalHolder = created
+        internalInstance = created
         return created
     }
-    
-    static private var internalHolder: ManagerHolder?
-    
+
+    static private var internalInstance: ManagerHolder?
+
     fileprivate actor ManagerHolder {
-        let cachedTabsManager: TabsListManager
+        let cachedTabsManager: TabsDataService
         private let database: Database
-        
+
         init() async {
             guard let database = Database(name: "CottonDbModel") else {
                 fatalError("Failed to initialize CoreData database")
@@ -49,8 +49,8 @@ private final class TabsEnvironment {
     }
 }
 
-extension TabsListManager {
-    static var shared: TabsListManager {
+extension TabsDataService {
+    static var shared: TabsDataService {
         get async {
             await TabsEnvironment.shared().cachedTabsManager
         }

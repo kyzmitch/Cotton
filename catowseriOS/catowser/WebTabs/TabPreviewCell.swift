@@ -101,15 +101,17 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         button.imageView?.contentMode = .scaleAspectFit
         button.contentMode = .center
         button.tintColor = .cellCloseButton
-        button.imageEdgeInsets = UIEdgeInsets(equalInset: .closeButtonEdgeInset)
+        if #unavailable(iOS 15) {
+            button.imageEdgeInsets = UIEdgeInsets(equalInset: .closeButtonEdgeInset)
+        }
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
     private let titleEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .tabTitleBlur))
-    
+
     // MARK: - FaviconImageViewable
-    
+
     let faviconImageView: UIImageView = {
         let favicon = UIImageView()
         favicon.backgroundColor = UIColor.clear
@@ -118,7 +120,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         favicon.translatesAutoresizingMaskIntoConstraints = false
         return favicon
     }()
-    
+
     // MARK: - init
 
     override init(frame: CGRect) {
@@ -186,16 +188,14 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         // `TabViewModel` can be used instead, but cell view init doesn't allow to inject it normally
         var tabCopy = tab
         screenshotView.image = tabCopy.preview
-        
         titleText.text = tab.title
-        
         self.tabIndex = index
         self.delegate = delegate
         guard case let .site(site) = tab.contentType else {
             faviconImageView.image = nil
             return
         }
-        
+
         Task {
             let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             await reloadImageWith(site, useDoH)

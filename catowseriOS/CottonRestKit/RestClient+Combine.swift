@@ -14,7 +14,7 @@ import CottonBase
 
 extension RestClient {
     public typealias ResponseFuture<T> = Deferred<Publishers.HandleEvents<Future<T, HttpError>>>
-    
+
     public func cMakeRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                 withAccessToken accessToken: String?,
                                                 transport adapter: B,
@@ -28,7 +28,7 @@ extension RestClient {
                     promise(.failure(.zombieSelf))
                     return
                 }
-                
+
                 adapter.transferToCombineState(promise, endpoint)
                 subscriber.insert(adapter.handlerType)
                 self.makeRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
