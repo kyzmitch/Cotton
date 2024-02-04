@@ -29,11 +29,11 @@ final class ViewModelFactory {
         case .google:
             let type = (any AutocompleteSearchUseCase).self
             let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type, .googleAutocompleteUseCase)
-            return SearchSuggestionsViewModelImpl<GoogleAutocompleteStrategy>(autocompleteUseCase, vmContext)
+            return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         case .duckduckgo:
             let type = (any AutocompleteSearchUseCase).self
             let autocompleteUseCase = await UseCaseFactory.shared().findUseCase(type, .duckDuckGoAutocompleteUseCase)
-            return SearchSuggestionsViewModelImpl<DDGoAutocompleteStrategy>(autocompleteUseCase, vmContext)
+            return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         }
     }
     
@@ -44,7 +44,7 @@ final class ViewModelFactory {
         let googleDnsUseCase = await UseCaseFactory.shared().findUseCase(type, .googleResolveDnsUseCase)
         let selectTabUseCase = await UseCaseFactory.shared().findUseCase(SelectedTabUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
-        return WebViewModelImpl<GoogleDNSStrategy>(googleDnsUseCase, context, selectTabUseCase, writeUseCase, siteNavigation, site)
+        return WebViewModelImpl(googleDnsUseCase, context, selectTabUseCase, writeUseCase, siteNavigation, site)
     }
     
     func tabViewModel(_ tab: Tab) async -> TabViewModel {
