@@ -21,6 +21,6 @@ extension TabContentDefaultState: Identifiable {
     public var id: RawValue {
         return self.rawValue
     }
-    
+
     public typealias ID = RawValue
 }

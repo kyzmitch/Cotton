@@ -13,7 +13,7 @@ import CoreBrowser
 
 final class DownloadButtonCellView: UITableViewCell {
     fileprivate static let bytesInMegabyte: Int = 1048576 // 1024 * 1024
-    
+
     /// Video preview
     @IBOutlet weak var previewImageView: UIImageView! {
         didSet {
@@ -29,7 +29,7 @@ final class DownloadButtonCellView: UITableViewCell {
             downloadButton.addTarget(self, action: .downloadPressed, for: .touchUpInside)
         }
     }
-    
+
     /// Video title label view
     @IBOutlet weak var titleLabel: UILabel!
     /// Displays filename, can't use title because it's too complicated for file name
@@ -72,7 +72,7 @@ final class DownloadButtonCellView: UITableViewCell {
                 .observe(on: UIScheduler())
                 .observeValues { [weak self] state in
                     self?.setButtonState(toDownloadState: state)
-            }
+                }
             resourceSizeDisposable?.dispose()
             resourceSizeDisposable = vm.resourceSizeSignal
                 .observe(on: UIScheduler())
@@ -80,7 +80,7 @@ final class DownloadButtonCellView: UITableViewCell {
                     let rounted = bytesCount / Self.bytesInMegabyte
                     let sizeInt = Int(rounted)
                     self?.resourceSizeLabel.text = "\(sizeInt) mb"
-            }
+                }
         }
     }
 
@@ -116,7 +116,7 @@ final class DownloadButtonCellView: UITableViewCell {
             self.viewModel = nil
         }
     }
-    
+
     deinit {
         downloadStateDisposable?.dispose()
         resourceSizeDisposable?.dispose()

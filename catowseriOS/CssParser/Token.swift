@@ -10,26 +10,26 @@ public enum Token {
     public enum HashType {
         case id, unrestricted
     }
-    
+
     public enum NumberType {
         case integer, number
     }
-    
+
     case ident(value: String)
     case function(value: String)
     case atKeyword(value: String)
     case hash(value: String, type: HashType)
     case string(value: String)
     case url(value: String)
-    
+
     case delim(value: Character)
-    
+
     case number(repr: String, numeric: Double, type: NumberType)
     case percentage(repr: String, numeric: Double)
     case dimention(repr: String, numeric: Double, type: NumberType, unit: String)
-    
+
     case unicodeRange(start: Int, end: Int)
-    
+
     case badString
     case badUrl
     case includeMatch
@@ -50,6 +50,6 @@ public enum Token {
     case rightParen
     case leftBrace
     case rightBrace
-    
+
     case eof
 }

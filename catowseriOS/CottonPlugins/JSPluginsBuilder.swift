@@ -14,21 +14,21 @@ public final class JSPluginsBuilder: JSPluginsSource {
     public typealias Program = JSPluginsProgramImpl
     private var plugins: [any JavaScriptPlugin]
 
-    public var pluginsProgram: Program {
+    public var jsProgram: Program {
         JSPluginsProgramImpl(plugins)
     }
-    
+
     public init() {
         plugins = []
     }
-    
+
     public func setBase(_ baseDelegate: BasePluginContentDelegate) -> Self {
         if let basePlugin = BasePlugin(delegate: .base(baseDelegate)) {
             plugins.append(basePlugin)
         }
         return self
     }
-    
+
     public func setInstagram(_ instagramDelegate: InstagramContentDelegate) -> Self {
         if let igPlugin = InstagramContentPlugin(delegate: .instagram(instagramDelegate)) {
             plugins.append(igPlugin)

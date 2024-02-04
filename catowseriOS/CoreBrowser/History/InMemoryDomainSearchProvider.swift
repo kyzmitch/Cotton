@@ -14,14 +14,14 @@ private let filename = "topdomains"
 @globalActor
 public final class InMemoryDomainSearchProvider {
     public static let shared = Provider()
-    
+
     public actor Provider {
         fileprivate let storage: Trie
 
         init() {
             storage = Trie()
             let bundle = Bundle(for: Provider.self)
-            
+
             guard let filePath = bundle.path(forResource: filename, ofType: "txt") else {
                 assertionFailure("Failed to find \"\(filename)\" file in framework bundle")
                 return

@@ -15,11 +15,11 @@ final class LoadingProgressViewController: BaseViewController {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
+
     override func loadView() {
         view = webLoadProgressView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }

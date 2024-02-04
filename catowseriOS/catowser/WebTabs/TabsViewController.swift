@@ -19,7 +19,17 @@ fileprivate extension TabsViewController {
 /// The tabs controller for landscape mode (tablets)
 final class TabsViewController: BaseViewController {
     private var viewModels = [TabViewModel]()
-    
+    private let viewModel: AllTabsViewModel
+
+    init(_ viewModel: AllTabsViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private let tabsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
@@ -29,7 +39,7 @@ final class TabsViewController: BaseViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
     private let stackViewScrollableContainer: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
@@ -37,7 +47,7 @@ final class TabsViewController: BaseViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-    
+
     private lazy var addTabButton: UIButton = {
         let addButton = UIButton()
         let image = UIImage(imageLiteralResourceName: "newTabButton-Normal")
@@ -46,7 +56,7 @@ final class TabsViewController: BaseViewController {
         addButton.translatesAutoresizingMaskIntoConstraints = false
         return addButton
     }()
-    
+
     private lazy var showTabPreviewsButton: UIButton = {
         let showTabsButton = UIButton()
         showTabsButton.setTitleShadowColor(.black, for: .normal)
@@ -58,45 +68,45 @@ final class TabsViewController: BaseViewController {
     }()
 
     private var tabsViewBackLayer: CAGradientLayer?
-    
+
     override func loadView() {
         view = UIView()
-        
+
         view.addSubview(stackViewScrollableContainer)
         stackViewScrollableContainer.addSubview(tabsStackView)
         view.addSubview(addTabButton)
-#if DEBUG
+        #if DEBUG
         view.addSubview(showTabPreviewsButton)
-#endif
+        #endif
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         stackViewScrollableContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         stackViewScrollableContainer.trailingAnchor.constraint(equalTo: addTabButton.leadingAnchor).isActive = true
         stackViewScrollableContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         stackViewScrollableContainer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        
+
         tabsStackView.topAnchor.constraint(equalTo: stackViewScrollableContainer.topAnchor).isActive = true
         tabsStackView.bottomAnchor.constraint(equalTo: stackViewScrollableContainer.bottomAnchor).isActive = true
         tabsStackView.leadingAnchor.constraint(equalTo: stackViewScrollableContainer.leadingAnchor).isActive = true
         tabsStackView.trailingAnchor.constraint(equalTo: stackViewScrollableContainer.trailingAnchor).isActive = true
-        
+
         addTabButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         addTabButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         addTabButton.leadingAnchor.constraint(equalTo: stackViewScrollableContainer.trailingAnchor).isActive = true
         addTabButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
-#if DEBUG
+
+        #if DEBUG
         showTabPreviewsButton.leadingAnchor.constraint(equalTo: addTabButton.trailingAnchor).isActive = true
         showTabPreviewsButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         showTabPreviewsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         showTabPreviewsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         showTabPreviewsButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-#else
+        #else
         addTabButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-#endif
+        #endif
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -106,15 +116,15 @@ final class TabsViewController: BaseViewController {
          initializeObserver will load all of the tabs and create views
          */
         Task {
-            await TabsListManager.shared.attach(self, notify: true)
+            await TabsDataService.shared.attach(self, notify: true)
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         Task {
-            await TabsListManager.shared.detach(self)
+            await TabsDataService.shared.detach(self)
         }
     }
 }
@@ -124,8 +134,7 @@ private extension TabsViewController {
 
     @objc func showTabPreviewsPressed() {
         print("\(#function): show pressed")
-        // Coordinator should be used here
-        // to show tab previews collection view modally
+        /// Coordinator should be used here, to show tab previews collection view modally
     }
 
     @objc func addTabPressed() {
@@ -133,7 +142,7 @@ private extension TabsViewController {
 
         Task {
             let tab = Tab(contentType: await DefaultTabProvider.shared.contentState)
-            await TabsListManager.shared.add(tab: tab)
+            viewModel.addTab(tab)
         }
     }
 
@@ -148,7 +157,7 @@ private extension TabsViewController {
     func removeTabView(_ tabView: TabView) async {
         if let removedIndex = tabsStackView.arrangedSubviews.firstIndex(of: tabView) {
             let removedVm = viewModels[removedIndex]
-            await TabsListManager.shared.detach(removedVm)
+            await TabsDataService.shared.detach(removedVm)
             viewModels.remove(at: removedIndex)
         }
         tabsStackView.removeArrangedSubview(tabView)
@@ -157,9 +166,9 @@ private extension TabsViewController {
             self.view.layoutIfNeeded()
         }
         let count = tabsStackView.arrangedSubviews.count
-#if DEBUG
+        #if DEBUG
         showTabPreviewsButton.setTitle("\(count)", for: .normal)
-#endif
+        #endif
     }
 
     func makeTabFullyVisibleIfNeeded(_ tabView: TabView) {
@@ -241,11 +250,11 @@ extension TabsViewController: TabsObserver {
             assertionFailure("Tried to make not existing tab active")
         }
     }
-    
+
     func updateTabsCount(with tabsCount: Int) async {
-#if DEBUG
+        #if DEBUG
         showTabPreviewsButton.setTitle("\(tabsCount)", for: .normal)
-#endif
+        #endif
     }
 
     func initializeObserver(with tabs: [Tab]) async {
@@ -259,7 +268,7 @@ extension TabsViewController: TabsObserver {
         }
         view.layoutIfNeeded()
     }
-    
+
     func tabDidAdd(_ tab: Tab, at index: Int) async {
         let vm = await ViewModelFactory.shared.tabViewModel(tab)
         viewModels.insert(vm, at: index)
@@ -302,7 +311,7 @@ extension UIScrollView {
         let bottomOffset = CGPoint(x: self.contentSize.width - self.bounds.size.width, y: 0)
         self.setContentOffset(bottomOffset, animated: true)
     }
-    
+
     func  scroll(on pixels: CGFloat) {
         // pixels could be negative to scroll to the left
         // https://github.com/kyzmitch/Cotton/issues/15

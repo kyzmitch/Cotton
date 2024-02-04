@@ -21,7 +21,7 @@ public struct SearchEngine {
     let imageData: OpenSearch.ImageParseResult
     /// So far not used parameter,  but it is present in OpenSearch format
     let httpMethod: HTTPMethod
-    
+
     init(shortName: String,
          domainName: String,
          path: String,
@@ -29,7 +29,7 @@ public struct SearchEngine {
          imageData: OpenSearch.ImageParseResult = .none,
          httpMethod: HTTPMethod = .get) {
         self.shortName = shortName
-        
+
         var components = URLComponents()
         components.scheme = "https"
         components.host = domainName
@@ -50,7 +50,7 @@ public struct SearchEngine {
         var items = queryItems
         items.append(item)
         mutableComponents.queryItems = items
-        
+
         return mutableComponents.url
     }
 }

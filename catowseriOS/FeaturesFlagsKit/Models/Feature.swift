@@ -32,6 +32,6 @@ public struct ApplicationFeature<F: Feature> {
     public var defaultValue: F.Value {
         return F.defaultValue
     }
-    
+
     public init() {}
 }

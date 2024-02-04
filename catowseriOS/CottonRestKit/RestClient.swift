@@ -25,17 +25,17 @@ public class RestClient<S: ServerDescription,
     public typealias Server = S
     public typealias Reachability = R
     public typealias Encoder = E
-    
+
     public let server: Server
     public let jsonEncoder: Encoder
     private let connectivityManager: R
     let httpTimeout: TimeInterval
     var reachabilityStatus: NetworkReachabilityStatus = .unknown
-    
+
     private lazy var hostListener: NetworkReachabilityAdapter.Listener = { [weak self] status in
         self?.reachabilityStatus = status
     }
-    
+
     public required init(server: S,
                          jsonEncoder: E,
                          reachability: R,
@@ -49,7 +49,7 @@ public class RestClient<S: ServerDescription,
             return
         }
     }
-    
+
     deinit {
         connectivityManager.stopListening()
     }

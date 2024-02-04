@@ -13,7 +13,7 @@ import CottonBase
 public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {
     let connectivityManager: NetworkReachabilityManager
     public typealias Server = S
-    
+
     public init?(server: Server) {
         if let manager = NetworkReachabilityManager(host: server.host.rawString) {
             connectivityManager = manager
@@ -24,14 +24,14 @@ public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkRe
             return nil
         }
     }
-    
+
     public func startListening(onQueue queue: DispatchQueue, onUpdatePerforming listener: @escaping Listener) -> Bool {
         let closure = { (status: Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus) -> Void in
             listener(status.httpKitValue)
         }
         return connectivityManager.startListening(onQueue: queue, onUpdatePerforming: closure)
     }
-    
+
     public func stopListening() {
         connectivityManager.stopListening()
     }

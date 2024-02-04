@@ -14,7 +14,7 @@ import CottonBase
  */
 public struct DummyRxObserver<RR: ResponseType>: RxAnyObserver {
     public typealias Response = RR
-    
+
     public func newSend(value: Response) {}
     public func newSend(error: HttpError) {}
     public func newComplete() {}
@@ -29,25 +29,25 @@ public class DummyRxType<R,
                          RX: RxAnyObserver>: RxInterface where RX.Response == R {
     public typealias Observer = RX
     public typealias Server = SS
-    
+
     public var observer: RX {
         // swiftlint:disable:next force_cast
         return DummyRxObserver<R>() as! RX
     }
-    
+
     public var lifetime: RxAnyLifetime {
         return DummyRxLifetime()
     }
-    
+
     public var endpoint: Endpoint<Server> {
         let encodingMethod: ParametersEncodingDestination.QueryString = .init(items: .empty)
         return Endpoint(httpMethod: .get, path: "", headers: nil, encodingMethod: encodingMethod)
     }
-    
+
     public static func == (lhs: DummyRxType<R, SS, RX>, rhs: DummyRxType<R, SS, RX>) -> Bool {
         return lhs.endpoint == rhs.endpoint
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine("DummyRxType")
         hasher.combine(endpoint)

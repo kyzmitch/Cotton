@@ -40,7 +40,7 @@ final class WebViewsReuseManager {
             self.viewsLimit = 2
         }
     }
-    
+
     private func searchWebViewIndex(for site: Site) -> Int? {
         for (i, vc) in views.enumerated() where vc.url?.absoluteString == site.urlInfo.url {
             return i
@@ -51,19 +51,18 @@ final class WebViewsReuseManager {
     /// Returns already created view with updated site or creates new one.
     ///
     /// - Parameter site: The site object with all info for WebView.
-    /// - Parameter pluginsBuilder: Source for plugins.
-    /// - Parameter delegate: navigation delegate.
     /// - Parameter coordinator: a navigation interface
+    /// - Parameter viewModel: a view model
     /// - Returns: Web view controller configured with `Site`.
     func controllerFor<C: Navigating>(_ site: Site,
-                                      _ pluginsBuilder: any JSPluginsSource,
-                                      _ delegate: SiteExternalNavigationDelegate?,
-                                      _ coordinator: C?) throws -> AnyViewController & WebViewNavigatable
+                                      _ coordinator: C?,
+                                      _ viewModel: any WebViewModel,
+                                      _ mode: UIFrameworkType) throws -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
-            let index = searchWebViewIndex(for: site),
-            let vc = views[safe: index] {
+           let index = searchWebViewIndex(for: site),
+           let vc = views[safe: index] {
             lastSelectedIndex = index
             return vc
         }
@@ -73,9 +72,7 @@ final class WebViewsReuseManager {
         // then need to create completely new web view
         let count = views.count
         if count >= 0 && count < viewsLimit {
-            let context: WebViewContextImpl = .init(pluginsBuilder.pluginsProgram)
-            let vm = ViewModelFactory.shared.webViewModel(site, context)
-            let vc = vcFactory.webViewController(vm, delegate, coordinator)
+            let vc = vcFactory.webViewController(coordinator, viewModel, mode)
             views.append(vc)
             lastSelectedIndex = count
             return vc
@@ -106,7 +103,7 @@ final class WebViewsReuseManager {
         }
         return vc
     }
-    
+
     @discardableResult
     func removeController(for site: Site) -> Bool {
         guard let index = searchWebViewIndex(for: site) else { return false }

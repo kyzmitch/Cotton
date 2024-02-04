@@ -30,7 +30,7 @@ extension RestClient {
         let codes = T.successCodes
         return try await adapter.performAsyncRequest(httpRequest, sucessCodes: codes)
     }
-    
+
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func aaMakePublicRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
@@ -38,7 +38,7 @@ extension RestClient {
     where B.Response == T, B.Server == Server {
         return try await aaMakeRequest(for: endpoint, withAccessToken: nil, transport: adapter)
     }
-    
+
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     func aaMakeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,

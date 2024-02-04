@@ -12,6 +12,7 @@ import CottonRestKit
 import CottonBase
 import WebKit
 import Combine
+import SwiftyMocky
 
 @MainActor
 final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
@@ -21,19 +22,27 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
         webViewContext = .init(doh: true, js: false, nativeAppRedirect: false, asyncApiType: .asyncAwait)
     }
     func testLoad() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(goodDnsStrategy, exampleSite, webViewContext)
-        
+        let vm: WebViewModelImpl = WebViewModelImpl(
+            resolveDnsUseCaseMock,
+            webViewContext,
+            selectedTabUseCaseMock,
+            writeTabsUseCase,
+            nil,
+            exampleSite)
+
         // swiftlint:disable:next force_unwrapping force_try
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress!)
+        // swiftlint:disable:next force_unwrapping
+        Given(resolveDnsUseCaseMock, .aaResolveDomainName(.value(urlV1!), willReturn: resolvedUrlV1))
         await vm.load()
-        
+
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1 = URLInfo(urlV1!)!
         // swiftlint:disable:next force_unwrapping
         let urlInfoV11: URLInfo = urlInfoV1.withIPAddress(ipAddress: exampleIpAddress!)
         let expectedStateV1: WebViewModelState = .creatingRequest(urlInfoV11, settings)
         XCTAssertEqual(vm.state, expectedStateV1)
-        
+
         let navActionV1 = MockedNavAction(resolvedUrlV1, .other)
         await vm.decidePolicy(navActionV1) { policy in
             XCTAssertEqual(policy, .allow)

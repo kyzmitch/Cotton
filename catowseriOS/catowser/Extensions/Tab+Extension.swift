@@ -19,7 +19,7 @@ extension Tab {
                 return nil
             }
         }
-        
+
         set {
             previewData = newValue?.pngData()
         }

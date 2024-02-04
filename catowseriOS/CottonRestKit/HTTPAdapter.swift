@@ -24,9 +24,9 @@ public protocol HTTPRxAdapter: AnyObject {
     associatedtype Response
     associatedtype Server
     associatedtype ObserverWrapper: RxInterface where ObserverWrapper.Observer.Response == Response,
-                                                        ObserverWrapper.Server == Server
+                                                      ObserverWrapper.Server == Server
     init(_ handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>)
-    
+
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
     /// Should be the main closure which should call basic closure and Rx stuff (observer, lifetime) and Async stuff
@@ -35,7 +35,7 @@ public protocol HTTPRxAdapter: AnyObject {
     func wrapperHandler() -> (Result<Response, HttpError>) -> Void
     /// Should refer to simple closure api
     var handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper> { get set }
-    
+
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                                _ endpoint: Endpoint<Server>)
 }
@@ -44,11 +44,11 @@ public protocol HTTPRxAdapter: AnyObject {
 public protocol HTTPAdapter: AnyObject {
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription
-    
+
     typealias RxFreeDummy<R: ResponseType, S: ServerDescription> = RxFreeInterface<R, S>
-    
+
     init(_ handlerType: ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>)
-    
+
     func performRequest(_ request: URLRequest,
                         sucessCodes: [Int])
     func performAsyncRequest(_ request: URLRequest,
@@ -61,7 +61,7 @@ public protocol HTTPAdapter: AnyObject {
     var handlerType: ResponseHandlingApi<Response,
                                          Server,
                                          RxFreeDummy<Response, Server>> { get set }
-    
+
     /* mutating */ func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                                _ endpoint: Endpoint<Server>)
 }

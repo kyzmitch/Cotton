@@ -23,37 +23,37 @@ extension RestClient {
     where B.Response == T, B.Server == Server {
         makeRxRequest(for: endpoint, withAccessToken: nil, transport: adapter)
     }
-    
+
     public func makeAuthorizedRequest<T, B: HTTPRxAdapter>(for endpoint: Endpoint<Server>,
                                                            withAccessToken accessToken: String,
                                                            transport adapter: B)
     where B.Response == T, B.Server == Server {
         makeRxRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
     }
-    
+
     public func rxMakePublicRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint<Server>,
                                                              transport adapter: B,
                                                              subscriber: RxSubscriber<T, Server, RX>) -> RxProducer<T>
     where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer = rxMakeRequest(for: endpoint,
-                                        withAccessToken: nil,
-                                        transport: adapter,
-                                        subscriber: subscriber)
+                                     withAccessToken: nil,
+                                     transport: adapter,
+                                     subscriber: subscriber)
         return producer
     }
-    
+
     public func rxMakeAuthorizedRequest<T, B: HTTPRxAdapter, RX>(for endpoint: Endpoint<Server>,
                                                                  withAccessToken accessToken: String,
                                                                  transport adapter: B,
                                                                  subscriber: RxSub<T, Server, RX>) -> RxProducer<T>
     where B.Response == T, B.Server == Server, B.ObserverWrapper == RX {
         let producer = rxMakeRequest(for: endpoint,
-                                        withAccessToken: accessToken,
-                                        transport: adapter,
-                                        subscriber: subscriber)
+                                     withAccessToken: accessToken,
+                                     transport: adapter,
+                                     subscriber: subscriber)
         return producer
     }
-    
+
     public func cMakePublicRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                       transport adapter: B,
                                                       subscriber: Sub<T, Server>) -> ResponseFuture<T>
@@ -64,7 +64,7 @@ extension RestClient {
                                   subscriber: subscriber)
         return future
     }
-    
+
     public func cMakeAuthorizedRequest<T, B: HTTPAdapter>(for endpoint: Endpoint<Server>,
                                                           withAccessToken accessToken: String,
                                                           transport adapter: B,

@@ -13,18 +13,18 @@ struct SuggestionRowView: View {
         case domain
         case suggestion
     }
-    
+
     private let value: String
     private let mode: Mode
     /// Selected row is stored in upper view with all suggestions
     @Binding private var isSelected: SuggestionType?
-    
+
     init(_ value: String, _ mode: Mode, _ isSelected: Binding<SuggestionType?>) {
         self.value = value
         self.mode = mode
         _isSelected = isSelected
     }
-    
+
     var body: some View {
         Text(value)
             .onTapGesture {
@@ -45,7 +45,7 @@ struct SuggestionRowView_Previews: PreviewProvider {
         } set: { _ in
             //
         }
-        
+
         SuggestionRowView("example.com", .domain, selected)
             .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
     }

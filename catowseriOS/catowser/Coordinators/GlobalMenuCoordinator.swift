@@ -15,14 +15,14 @@ final class GlobalMenuCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     /// Data required for start of next navigation
     private let model: MenuViewModel
     /// View needed when initial screen needs to be shown on Tablet
     private let sourceView: UIView
     /// Rectangle needed when initial screen needs to be shown on Tablet
     private let sourceRect: CGRect
-    
+
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ model: MenuViewModel,
@@ -34,7 +34,7 @@ final class GlobalMenuCoordinator: Coordinator {
         self.sourceView = sourceView
         self.sourceRect = sourceRect
     }
-    
+
     func start() {
         let vc = vcFactory.siteMenuViewController(model, self)
         if isPad {
@@ -55,8 +55,8 @@ enum MenuScreenRoute: Route {}
 
 extension GlobalMenuCoordinator: Navigating {
     typealias R = MenuScreenRoute
-    
+
     func showNext(_ route: R) {}
-    
+
     // Already has good enough base `stop` implementation
 }

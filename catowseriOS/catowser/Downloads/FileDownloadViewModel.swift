@@ -17,24 +17,24 @@ protocol FileDownloadDelegate: AnyObject {
 
 final class FileDownloadViewModel {
     fileprivate let batch: Downloadable
-    
+
     fileprivate let downloadOutput: MutableProperty<DownloadState>
     fileprivate let resourceSizeOutput: MutableProperty<Int>
 
     lazy var downloadStateSignal: Signal<DownloadState, Never> = {
         return downloadOutput.signal
     }()
-    
+
     /// resource size value is async and requires http request to be made
     lazy var resourceSizeSignal: Signal<Int, Never> = {
         return resourceSizeOutput.signal
     }()
-    
+
     /// Current download state, can be used for download button state and progress indicator
     var downloadState: DownloadState {
         return downloadOutput.value
     }
-    
+
     /// Name of media file which can be used for label content
     let labelText: String
 
@@ -51,7 +51,7 @@ final class FileDownloadViewModel {
         downloadOutput = .init(downloadState)
         resourceSizeOutput = .init(0)
         labelText = name
-        
+
         BrowserNetworking.fetchRemoteResourceInfo(url: batch.url)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
@@ -65,12 +65,12 @@ final class FileDownloadViewModel {
                 case .failure(let error):
                     print("Fail to fetch file size: \(error.localizedDescription)")
                 }
-        }
+            }
     }
 
     func download() {
         downloadOutput.value = .started
-        
+
         BrowserNetworking.download(file: batch)
             .observe(on: QueueScheduler.main)
             .startWithResult { [weak self] (result) in
@@ -91,7 +91,7 @@ final class FileDownloadViewModel {
                     print("download error: \(error)")
                     self.downloadOutput.value = .error(error)
                 }
-        }
+            }
     }
 }
 

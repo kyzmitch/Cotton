@@ -29,7 +29,7 @@ final class SearchBarViewModel: NSObject, ObservableObject {
     /// Temporary property which automatically removes leading spaces.
     /// Can't declare it private due to compiler error.
     @LeadingTrimmed private var tempSearchText: String
-    
+
     override init() {
         showSearchSuggestions = false
         searchQuery = ""
@@ -50,14 +50,15 @@ private extension SearchBarViewModel {
             assertionFailure("\(#function) failed to replace current tab - failed create site")
             return
         }
-        try? await TabsListManager.shared.replaceSelected(.site(site))
+        /// TODO: think how to replace delegate with view model func and WriteTabUseCase
+        _ = await TabsDataService.shared.sendCommand(.replaceSelectedContent(.site(site)))
     }
 }
 
 extension SearchBarViewModel: SearchSuggestionsListDelegate {
     func searchSuggestionDidSelect(_ content: SuggestionType) async {
         showSearchSuggestions = false
-        
+
         let isJSEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         switch content {
         case .looksLikeURL(let likeURL):
@@ -65,7 +66,7 @@ extension SearchBarViewModel: SearchSuggestionsListDelegate {
                 assertionFailure("Failed construct site URL using edited URL")
                 return
             }
-             await replaceTab(with: url, with: nil, isJSEnabled)
+            await replaceTab(with: url, with: nil, isJSEnabled)
         case .knownDomain(let domain):
             guard let url = URL(string: "https://\(domain)") else {
                 assertionFailure("Failed construct site URL using domain name")
@@ -92,7 +93,7 @@ extension SearchBarViewModel: UISearchBarDelegate {
             self.searchQuery = searchQuery
         }
     }
-    
+
     func searchBar(_ searchBar: UISearchBar,
                    shouldChangeTextIn range: NSRange,
                    replacementText text: String) -> Bool {

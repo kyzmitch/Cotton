@@ -19,7 +19,7 @@ public extension Tab {
         case homepage
         case favorites
         case topSites
-        
+
         /// Needed for database representation
         public var rawValue: Int16 {
             switch self {
@@ -35,7 +35,7 @@ public extension Tab {
                 return 4
             }
         }
-        
+
         /// Returns .blank for wrong parameters
         public static func create(rawValue: Int16, site: Site? = nil) -> ContentType? {
             switch rawValue {
@@ -80,15 +80,15 @@ public extension Tab {
                 return ""
             }
         }
-        
-        var site: Site? {
+
+        public var site: Site? {
             guard case let .site(site) = self else {
                 return nil
             }
-            
+
             return site
         }
-        
+
         /// Shows if content type static or has dynamic dependecy like `Site`
         public var isStatic: Bool {
             if case .site = self {
@@ -130,21 +130,7 @@ extension Tab.ContentType: Equatable {
     public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
         case (.site(let lSite), .site(let rSite)):
-            // For some reason Kotlin comparison doesn't work right for the identical objects
-            // `return lSite == rSite`
-            if lSite.urlInfo.platformURL != rSite.urlInfo.platformURL {
-                return false
-            }
-            if lSite.searchSuggestion != rSite.searchSuggestion {
-                return false
-            }
-            if lSite.userSpecifiedTitle != rSite.userSpecifiedTitle {
-                return false
-            }
-            if lSite.settings != rSite.settings {
-                return false
-            }
-            return true
+            return lSite.compareWith(rSite)
         case (.blank, .blank):
             return true
         case (.homepage, .homepage):
@@ -156,6 +142,29 @@ extension Tab.ContentType: Equatable {
         default:
             return false
         }
+    }
+}
+
+private extension Site {
+    func compareWith(_ rSite: Site) -> Bool {
+        // For some reason Kotlin comparison doesn't work right for the identical objects
+        // `return lSite == rSite`
+        let lSite = self
+        // For some reason Kotlin comparison doesn't work right for the identical objects
+        // `return lSite == rSite`
+        if lSite.urlInfo.platformURL != rSite.urlInfo.platformURL {
+            return false
+        }
+        if lSite.searchSuggestion != rSite.searchSuggestion {
+            return false
+        }
+        if lSite.userSpecifiedTitle != rSite.userSpecifiedTitle {
+            return false
+        }
+        if lSite.settings != rSite.settings {
+            return false
+        }
+        return true
     }
 }
 
@@ -180,22 +189,22 @@ public struct Tab: Sendable {
     public var title: String {
         return contentType.title
     }
-    
+
     /// Not using `UIImage` to not depend on UIKit
     public var previewData: Data?
 
     public var searchBarContent: String {
         return contentType.searchBarContent
     }
-    
+
     public var site: Site? {
         return contentType.site
     }
-    
+
     public func isSelected(_ selectedId: UUID) -> Bool {
         return selectedId == id
     }
-    
+
     public func getVisualState(_ selectedId: UUID) -> VisualState {
         return isSelected(selectedId) ? .selected : .deselected
     }

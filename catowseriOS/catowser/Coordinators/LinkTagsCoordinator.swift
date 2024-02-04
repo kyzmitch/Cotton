@@ -24,25 +24,25 @@ final class LinkTagsCoordinator: NSObject, Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     // MARK: - state properties
-    
+
     /// Specific coordinator type
     private var filesGridCoordinator: FilesGridCoordinator?
     private var isLinkTagsShowed: Bool = false
-    
+
     private var tagsSiteDataSource: TagsSiteDataSource?
     private weak var linkTagsPresenter: LinkTagsPresenter?
     /// Needs to be set outside of init, so, it is not private
     weak var mediaLinksPresenter: MediaLinksPresenter?
-    
+
     // All constraints should be stored by strong references because they are removed during deactivation
 
     private var hiddenTagsConstraint: NSLayoutConstraint?
     private var showedTagsConstraint: NSLayoutConstraint?
-    
+
     // MARK: - init and start
-    
+
     /// @param presenter is only needed for Phony layout, Tablet layout should use search bar view controller
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
@@ -59,7 +59,7 @@ final class LinkTagsCoordinator: NSObject, Coordinator {
         navigationStack = UINavigationController(rootViewController: vc.viewController)
         navigationStack?.delegate = self
     }
-    
+
     func start() {
         guard !isPad else {
             // use popover presentation on tablets
@@ -83,7 +83,7 @@ enum LinkTagsRoute: Route {
 
 extension LinkTagsCoordinator: Navigating {
     typealias R = LinkTagsRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .openInstagramTags(let tags):
@@ -94,7 +94,7 @@ extension LinkTagsCoordinator: Navigating {
             closeTags()
         }
     }
-    
+
     func stop() {
         filesGridCoordinator?.stop()
         parent?.coordinatorDidFinish(self)
@@ -115,14 +115,14 @@ enum LinkTagsPart: SubviewPart {
 
 extension LinkTagsCoordinator: Layouting {
     typealias SP = LinkTagsPart
-    
+
     func insertNext(_ subview: SP) {
         switch subview {
         case .filesGrid:
             insertFilesGrid()
         }
     }
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(_, let bottomAnchor, _):
@@ -135,7 +135,7 @@ extension LinkTagsCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
         switch step {
         case .viewDidLoad(let subview, _, _, _):
@@ -158,13 +158,13 @@ private extension LinkTagsCoordinator {
     func insertFilesGrid() {
         // Using root view controller as a presenter
         // for this specific coordinator, not currently started view controller
-        
+
         let coordinator: FilesGridCoordinator = .init(vcFactory, presenterVC, navigationStack)
         coordinator.parent = self
         coordinator.start()
         filesGridCoordinator = coordinator
     }
-    
+
     func viewDidLoad(_ bottomAnchor: NSLayoutYAxisAnchor?) {
         guard !isPad else {
             return
@@ -176,11 +176,11 @@ private extension LinkTagsCoordinator {
         guard let bottomViewAnchor = bottomAnchor else {
             return
         }
-        
+
         tagsView.leadingAnchor.constraint(equalTo: superView.leadingAnchor).isActive = true
         tagsView.trailingAnchor.constraint(equalTo: superView.trailingAnchor).isActive = true
         tagsView.heightAnchor.constraint(equalToConstant: .linkTagsHeight).isActive = true
-        
+
         if isPad {
             let dummyViewHeight: CGFloat = .safeAreaBottomMargin
             let bottomMargin: CGFloat = dummyViewHeight + .linkTagsHeight
@@ -196,18 +196,18 @@ private extension LinkTagsCoordinator {
         }
         hiddenTagsConstraint?.isActive = true
     }
-    
+
     func filesGridViewDidLoad() {
         guard let bottomViewAnchor = startedVC?.controllerView.topAnchor else {
             return
         }
         filesGridCoordinator?.layout(.viewDidLoad(nil, bottomViewAnchor))
     }
-    
+
     func filesGridViewDidLayoutSubviews(_ containerHeight: CGFloat?) {
         filesGridCoordinator?.layout(.viewDidLayoutSubviews(containerHeight))
     }
-    
+
     func openTagsFor(instagram nodes: [InstagramVideoNode]) {
         tagsSiteDataSource = .instagram(nodes)
         linkTagsPresenter?.setLinks(nodes.count, for: .video)
@@ -227,7 +227,7 @@ private extension LinkTagsCoordinator {
         filesGridCoordinator?.showNext(.clear)
         linkTagsPresenter?.clearLinks()
     }
-    
+
     func hideLinkTagsController() {
         guard isLinkTagsShowed else {
             return
@@ -239,7 +239,7 @@ private extension LinkTagsCoordinator {
             self.startedVC?.controllerView.layoutIfNeeded()
         }
     }
-    
+
     func updateDownloadsViews() {
         if isPad {
             mediaLinksPresenter?.didReceiveMediaLinks()
@@ -262,7 +262,7 @@ private extension LinkTagsCoordinator {
             showLinkTagsControllerIfNeeded()
         }
     }
-    
+
     func showLinkTagsControllerIfNeeded() {
         guard !isLinkTagsShowed else {
             return
@@ -299,12 +299,12 @@ extension LinkTagsCoordinator: DownloadPanelPresenter {
             updateDownloadsViews()
         }
     }
-    
+
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect) {
         guard let source = tagsSiteDataSource else {
             return
         }
-        
+
         if isPad {
             updateDownloadsViews()
         } else {

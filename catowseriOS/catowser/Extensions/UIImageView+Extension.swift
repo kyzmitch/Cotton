@@ -19,7 +19,7 @@ extension UIImageView {
     func updateImage(from source: ImageSource, calculateAverageColor: Bool = true) {
         af.cancelImageRequest()
         image = nil
-        
+
         switch source {
         case .image(let cachedImage):
             image = cachedImage
@@ -29,7 +29,7 @@ extension UIImageView {
             loadImageFrom(url: imageURL, cachedImage: cachedImage, calculateAverageColor: calculateAverageColor)
         }
     }
-    
+
     private func loadImageFrom(url: URL, cachedImage: UIImage? = nil, calculateAverageColor: Bool) {
         // https://github.com/Alamofire/AlamofireImage/issues/134#issuecomment-245177689
         // Can't solve image loading for URLs with invalid SSL certificate
@@ -45,7 +45,7 @@ extension UIImageView {
             backgroundColor = .black
             return
         }
-        
+
         // swiftlint:disable:next line_length
         af.setImage(withURL: url, placeholderImage: cachedImage, progressQueue: .global(qos: .userInteractive), imageTransition: .noTransition, runImageTransitionIfCached: false) { [weak self] (dataResponse) in
             guard calculateAverageColor else {
@@ -57,12 +57,12 @@ extension UIImageView {
                 guard let color = averageColor else {
                     return
                 }
-                
+
                 self?.backgroundColor = color
             case .failure(let afError):
                 print("Failed to download image using url: \(afError.localizedDescription)")
             }
-            
+
         }
     }
 }

@@ -22,10 +22,10 @@ final class PhoneTabsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private weak var delegate: PhoneTabsDelegate?
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ delegate: PhoneTabsDelegate,
@@ -35,19 +35,22 @@ final class PhoneTabsCoordinator: Coordinator {
         self.delegate = delegate
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
-        guard let vc = vcFactory.tabsPreviewsViewController(self) else {
-            assertionFailure("Tabs previews screen is only for Phone layout")
-            return
+        Task {
+            let vm = await ViewModelFactory.shared.tabsPreviewsViewModel()
+            guard let vc = vcFactory.tabsPreviewsViewController(self, vm) else {
+                assertionFailure("Tabs previews screen is only for Phone layout")
+                return
+            }
+            startedVC = vc
+            guard !uiFramework.isUIKitFree else {
+                // For SwiftUI mode we still need to create view controller
+                // but presenting should happen on SwiftUI level
+                return
+            }
+            presenterVC?.viewController.present(vc, animated: true, completion: nil)
         }
-        startedVC = vc
-        guard !uiFramework.isUIKitFree else {
-            // For SwiftUI mode we still need to create view controller
-            // but presenting should happen on SwiftUI level
-            return
-        }
-        presenterVC?.viewController.present(vc, animated: true, completion: nil)
     }
 }
 
@@ -58,9 +61,9 @@ enum TabsScreenRoute: Route {
 }
 
 extension PhoneTabsCoordinator: Navigating {
-    
+
     typealias R = TabsScreenRoute
-    
+
     func showNext(_ route: TabsScreenRoute) {
         switch route {
         case .selectTab(let contentType):
@@ -71,7 +74,7 @@ extension PhoneTabsCoordinator: Navigating {
             showError()
         }
     }
-    
+
     func stop() {
         startedVC?.viewController.dismiss(animated: true)
         guard !uiFramework.isUIKitFree else {
@@ -91,18 +94,21 @@ private extension PhoneTabsCoordinator {
             await delegate?.didTabSelect(tab)
         }
     }
-    
+
     func showAdded() {
         Task {
             await delegate?.didTabAdd()
         }
     }
-    
+
     func showError() {
-        guard let vc = vcFactory.tabsPreviewsViewController(self) else {
-            assertionFailure("Tabs previews screen is only for Phone layout")
-            return
+        Task {
+            let vm = await ViewModelFactory.shared.tabsPreviewsViewModel()
+            guard let vc = vcFactory.tabsPreviewsViewController(self, vm) else {
+                assertionFailure("Tabs previews screen is only for Phone layout")
+                return
+            }
+            AlertPresenter.present(on: vc)
         }
-        AlertPresenter.present(on: vc)
     }
 }

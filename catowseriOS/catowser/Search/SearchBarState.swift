@@ -19,7 +19,7 @@ enum SearchBarAction: Equatable {
     case updateView(_ title: String, _ searchBarContent: String)
     /// Update to clear state
     case clearView
-    
+
     static func create(_ value: Tab.ContentType) -> SearchBarAction {
         switch value {
         case .blank, .favorites, .topSites, .homepage:
@@ -39,7 +39,7 @@ enum SearchBarState: Equatable {
     case inSearchMode(_ initialTitle: String, _ initialSearchBarContent: String)
     /// When keyboard and all buttons are not displayed.
     case viewMode(_ title: String, _ searchBarContent: String, _ animated: Bool)
-    
+
     var title: String {
         switch self {
         case .blankViewMode:
@@ -50,7 +50,7 @@ enum SearchBarState: Equatable {
             return initialTitle
         }
     }
-    
+
     var content: String {
         switch self {
         case .blankViewMode:
@@ -61,7 +61,7 @@ enum SearchBarState: Equatable {
             return initialContent
         }
     }
-    
+
     var showCancelButton: Bool {
         switch self {
         case .blankViewMode, .viewMode:

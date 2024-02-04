@@ -12,7 +12,7 @@ extension View {
     var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
-    
+
     func resignKeyboardOnDragGesture() -> some View {
         return modifier(ResignKeyboardOnDragGesture())
     }

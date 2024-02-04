@@ -18,10 +18,10 @@ final class TopSitesCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private let contentContainerView: UIView?
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ contentContainerView: UIView?,
@@ -31,7 +31,7 @@ final class TopSitesCoordinator: Coordinator {
         self.contentContainerView = contentContainerView
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
         guard uiFramework == .uiKit else {
             return
@@ -45,7 +45,7 @@ final class TopSitesCoordinator: Coordinator {
             let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             vc.reload(with: DefaultTabProvider.shared.topSites(isJsEnabled))
             presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-            
+
             let topSitesView: UIView = vc.controllerView
             topSitesView.translatesAutoresizingMaskIntoConstraints = false
             topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
@@ -62,21 +62,17 @@ enum TopSitesRoute: Route {
 
 extension TopSitesCoordinator: Navigating {
     typealias R = TopSitesRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .select(let site):
-            // Open selected top site
+            /// TODO: Usually it would be a view model responsibility and not coordinator
             Task {
-                do {
-                    try await TabsListManager.shared.replaceSelected(.site(site))
-                } catch {
-                    print("Fail to replace selected tab: \(error)")
-                }
+                _ = await TabsDataService.shared.sendCommand(.replaceSelectedContent(.site(site)))
             }
         }
     }
-    
+
     func stop() {
         guard uiFramework == .uiKit else {
             return

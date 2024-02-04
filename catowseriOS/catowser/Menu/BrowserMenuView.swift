@@ -14,28 +14,28 @@ import FeaturesFlagsKit
 struct BrowserMenuView: View {
     @ObservedObject private var model: MenuViewModel
     @Environment(\.presentationMode) var presentationMode
-    
+
     // MARK: - State variables to be able to pop view automatically
-    
+
     @State private var isShowingAddTabSetting = false
     @State private var isShowingAppAsyncApiSetting = false
     @State private var isShowingDefaultTabContentSetting = false
     @State private var isShowingWebAutoCompleteSetting = false
     @State private var isShowingAppUIFrameworkSetting = false
     @State private var showingAppRestartAlert = false
-    
+
     // MARK: - Allow to update text view content dynamically
-    
+
     @State private var tabContentRowValue: TabContentDefaultState = .favorites
     @State private var webAutocompleteRowValue: WebAutoCompletionSource = .google
     @State private var tabAddPositionRowValue: AddedTabPosition = .afterSelected
     @State private var asyncApiRowValue: AsyncApiType = .asyncAwait
     @State private var uiFrameworkRowValue: UIFrameworkType = .uiKit
-    
+
     init(_ vm: MenuViewModel) {
         self.model = vm
     }
-    
+
     var body: some View {
         NavigationView {
             List {
@@ -92,7 +92,7 @@ struct BrowserMenuView: View {
                         Text(verbatim: webAutocompleteRowValue.description).alignRight()
                     }
                 }
-#if DEBUG
+                #if DEBUG
                 Section(header: Text(.devSectionTtl)) {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
                         Text(.nativeAppRedirectTitle)
@@ -128,7 +128,7 @@ struct BrowserMenuView: View {
                         model.emulateLinkTags()
                     }
                 }
-#endif
+                #endif
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
             .navigationBarItems(trailing: Button<Text>(.dismissBtn) {
@@ -137,8 +137,8 @@ struct BrowserMenuView: View {
         }.alert(isPresented: $showingAppRestartAlert) {
             Alert(title: Text(verbatim: "App restart is required"),
                   dismissButton: .destructive(Text(verbatim: "Kill app process")) {
-                exit(0) // https://stackoverflow.com/a/8491688
-            })
+                    exit(0) // https://stackoverflow.com/a/8491688
+                  })
         }
         .task {
             tabContentRowValue = await FeatureManager.shared.tabDefaultContentValue()

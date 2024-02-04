@@ -5,6 +5,9 @@ CottonDataTarget: # Distinctive name of your mock configuration target
     include:        # All swift files here would be scanned for AutoMockable types
         - ./CottonData/SearchViewModel/Autocomplete
         - ./CottonData/SearchViewModel
+        - ./CottonData/WebViewModel/DNSResolving
+        - ./CottonData/WebViewModel
+        - ./CoreBrowser/UseCases
         - ./CottonRestKit
         - ./CottonRestKit/Interfaces
         - ./CoreBrowser/History

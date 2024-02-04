@@ -32,20 +32,20 @@ public protocol JavaScriptPlugin: Equatable {
     /**
      Constructs a JavaScript string with specific variable
      for controlling specific plugin in web view
-     
+
      - Parameters:
-        - enable determines if specific plugin should be turned on/off
+     - enable determines if specific plugin should be turned on/off
      */
     func scriptString(_ enable: Bool) -> String?
     init?(delegate: PluginHandlerDelegateType)
     init?(anyProtocol: Any)
-    
+
     /**
      Handles the visitor depending on context.
-     
+
      - Parameters:
-        - host represents the hostname from web view (can be used to determine if specific plugin is applicable or not)
-        - canInject shows if this specific plugin needs to be injected or can be skipped.
+     - host represents the hostname from web view (can be used to determine if specific plugin is applicable or not)
+     - canInject shows if this specific plugin needs to be injected or can be skipped.
      */
     func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) throws
 }
@@ -62,9 +62,9 @@ extension JavaScriptPlugin {
 public extension JavaScriptPlugin {
     static func == (lhs: any JavaScriptPlugin, rhs: any JavaScriptPlugin) -> Bool {
         return lhs.jsFileName == rhs.jsFileName
-                && lhs.messageHandlerName == rhs.messageHandlerName
-                && lhs.isMainFrameOnly == rhs.isMainFrameOnly
-                && lhs.hostKeyword == rhs.hostKeyword
-                && lhs.scriptString(true) == rhs.scriptString(true)
+            && lhs.messageHandlerName == rhs.messageHandlerName
+            && lhs.isMainFrameOnly == rhs.isMainFrameOnly
+            && lhs.hostKeyword == rhs.hostKeyword
+            && lhs.scriptString(true) == rhs.scriptString(true)
     }
 }

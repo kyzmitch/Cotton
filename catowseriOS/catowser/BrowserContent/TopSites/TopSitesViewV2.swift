@@ -14,18 +14,18 @@ import CoreBrowser
 struct TopSitesViewV2: View {
     private let vm: TopSitesViewModel
     @State private var selected: Site?
-    
+
     init(_ vm: TopSitesViewModel) {
         self.vm = vm
     }
-    
+
     /// Number of items which will be displayed in a row
     private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
-    
+
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: ImageViewSizes.spacing) {
@@ -37,25 +37,7 @@ struct TopSitesViewV2: View {
             guard let newValue else {
                 return
             }
-            Task {
-                do {
-                    try await TabsListManager.shared.replaceSelected(.site(newValue))
-                } catch {
-                    print("Fail to replace selected tab: \(error)")
-                }
-                
-            }
+            vm.replaceSelected(tabContent: .site(newValue))
         }
     }
 }
-
-#if DEBUG
-struct TopSitesViewV2_Previews: PreviewProvider {
-    static var previews: some View {
-        let vm: TopSitesViewModel = .init(true)
-
-        TopSitesViewV2(vm)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-    }
-}
-#endif

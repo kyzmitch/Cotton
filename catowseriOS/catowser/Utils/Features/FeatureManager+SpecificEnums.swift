@@ -44,7 +44,7 @@ extension FeatureManager.FManager {
         }
         return source.currentEnumValue(of: feature)
     }
-    
+
     func tabDefaultContentValue() -> TabContentDefaultState {
         let feature: ApplicationEnumFeature = .tabDefaultContent
         guard let source = source(for: feature) else {
@@ -52,20 +52,20 @@ extension FeatureManager.FManager {
         }
         return source.currentEnumValue(of: feature)
     }
-    
+
     func appAsyncApiTypeValue() -> AsyncApiType {
         let feature: ApplicationEnumFeature = .appDefaultAsyncApi
-#if DEBUG
+        #if DEBUG
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
         return source.currentEnumValue(of: feature)
-#else
+        #else
         // We don't need to change this in Release builds
         return feature.defaultEnumValue
-#endif
+        #endif
     }
-    
+
     func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
         let feature: ApplicationEnumFeature = .webAutoCompletionSource
         guard let source = source(for: feature) else {
@@ -73,7 +73,7 @@ extension FeatureManager.FManager {
         }
         return source.currentEnumValue(of: feature)
     }
-    
+
     func appUIFrameworkValue() -> UIFrameworkType {
         let feature: ApplicationEnumFeature = .appDefaultUIFramework
         guard let source = source(for: feature) else {

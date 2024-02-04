@@ -28,9 +28,9 @@ extension RestClient {
         let codes = T.successCodes
         adapter.performRequest(httpRequest, sucessCodes: codes)
     }
-    
+
     // MARK: - Clear RX capable functions without dependencies
-    
+
     public func makeRxRequest<T, B: HTTPRxAdapter>(for endpoint: Endpoint<Server>,
                                                    withAccessToken accessToken: String?,
                                                    transport adapter: B) where B.Response == T, B.Server == Server {
@@ -50,7 +50,7 @@ extension RestClient {
         let codes = T.successCodes
         adapter.performRequest(httpRequest, sucessCodes: codes)
     }
-    
+
     public func makeRxVoidRequest<B: HTTPRxVoidAdapter>(for endpoint: Endpoint<Server>,
                                                         withAccessToken accessToken: String?,
                                                         transport adapter: B) where B.Server == Server {

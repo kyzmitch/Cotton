@@ -12,7 +12,7 @@ import FeaturesFlagsKit
 
 protocol FaviconImageViewable: AnyObject {
     var faviconImageView: UIImageView { get }
-    
+
     func reloadImageWith(_ site: Site, _ useDoH: Bool) async
 }
 
@@ -26,7 +26,7 @@ extension FaviconImageViewable {
             print("Fail to resolve favicon url: \(error)")
             url = nil
         }
-        
+
         switch (url, site.favicon()) {
         case (let url?, nil):
             source = .url(url)

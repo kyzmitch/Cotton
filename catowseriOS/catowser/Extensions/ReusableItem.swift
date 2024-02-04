@@ -29,10 +29,10 @@ public extension UICollectionView {
 
     func dequeueSupplementaryView<View: UICollectionReusableView>(at indexPath: IndexPath,
                                                                   ofKind kind: String, type: View.Type) -> View
-        where View: ReusableItem {
-            return dequeueReusableSupplementaryView(ofKind: kind,
-                                                    withReuseIdentifier: View.reuseID,
-                                                    for: indexPath) as! View
+    where View: ReusableItem {
+        return dequeueReusableSupplementaryView(ofKind: kind,
+                                                withReuseIdentifier: View.reuseID,
+                                                for: indexPath) as! View
     }
 
     func register<Cell: UICollectionViewCell>(_ type: Cell.Type) where Cell: ReusableItem {

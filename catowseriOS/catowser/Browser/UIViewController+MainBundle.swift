@@ -25,7 +25,7 @@ extension UIViewController {
     static func instantiateFromStoryboard(_ storyboardName: String, identifier: String) -> Self {
         return instantiateFromStoryboardHelper(storyboardName, identifier: identifier)
     }
-    
+
     fileprivate static func instantiateFromStoryboardHelper<T>(_ storyboardName: String, identifier: String) -> T {
         let currentBundle = Bundle(for: self)
         let storyboard = UIStoryboard(name: storyboardName, bundle: currentBundle)

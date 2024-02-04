@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonData
 
 enum WebToolbarState {
     case nothingToNavigate
@@ -16,7 +17,7 @@ enum WebToolbarState {
     case downloadsTapped
     case updateBackState(Bool)
     case updateForwardState(Bool)
-    
+
     var downloadsAvailable: Bool {
         switch self {
         case .nothingToNavigate:
@@ -39,68 +40,68 @@ final class BrowserToolbarView: UIToolbar {
     weak var globalSettingsDelegate: GlobalMenuDelegate?
     /// web view navigation interface
     weak var webViewInterface: WebViewNavigatable?
-    
+
     // MARK: - state properties
-    
+
     var state: WebToolbarState = .nothingToNavigate {
         didSet {
             onStateChange(state)
         }
     }
-    
+
     // MARK: - private stored properties
-    
+
     private var enableDownloadsButton: Bool = false {
         didSet {
             downloadLinksButton.isEnabled = enableDownloadsButton
             downloadsView.alpha = enableDownloadsButton ? 1.0 : 0.3
         }
     }
-    
+
     private var downloadsViewHidden: Bool = true {
         didSet {
             animateDownloadsArrow(down: !downloadsViewHidden)
         }
     }
-    
+
     // MARK: - subviews
-    
+
     let counterView: CounterView = .init(frame: .zero)
-    
+
     lazy var downloadsView: UIImageView = {
         let img = UIImage(named: "nav-downloads")
         let imgView = UIImageView(image: img)
         return imgView
     }()
-    
+
     private lazy var downloadLinksButton: UIBarButtonItem = {
         let btn = UIBarButtonItem(customView: downloadsView)
         // Setting the action handler doesn't work.
         // Using `touchesBegan` in view controller instead.
         return btn
     }()
-    
+
     private lazy var backButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-back")
         let back = #selector(BrowserToolbarView.handleBackPressed)
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: back)
         return btn
     }()
-    
+
     private lazy var forwardButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-forward")
         let forward = #selector(BrowserToolbarView.handleForwardPressed)
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: forward)
         return btn
     }()
-    
+
     private lazy var reloadButton: UIBarButtonItem = {
         let img = UIImage(named: "nav-refresh")
         let reload = #selector(BrowserToolbarView.handleReloadPressed)
         let btn = UIBarButtonItem(image: img, style: .plain, target: self, action: reload)
         return btn
     }()
-    
+
     private lazy var actionsButton: UIBarButtonItem = {
         let btn: UIBarButtonItem
         let actions = #selector(BrowserToolbarView.handleActionsPressed)
@@ -115,13 +116,13 @@ final class BrowserToolbarView: UIToolbar {
         }
         return btn
     }()
-    
+
     private lazy var openedTabsButton: UIBarButtonItem = {
         // Can't use simple bar button with text because it positioned incorrectly
         let btn = UIBarButtonItem(customView: counterView)
         return btn
     }()
-    
+
     private lazy var standardToolbarButtons: [UIBarButtonItem] = {
         var barItems = [UIBarButtonItem]()
         barItems.append(backButton)
@@ -136,26 +137,26 @@ final class BrowserToolbarView: UIToolbar {
         barItems.append(openedTabsButton)
         return barItems
     }()
-    
+
     func detachFromTabsListManager() async {
-        await TabsListManager.shared.detach(counterView)
-        await TabsListManager.shared.detach(self)
+        await TabsDataService.shared.detach(counterView)
+        await TabsDataService.shared.detach(self)
     }
-    
+
     /// Instead of `didMoveToSuperview`
     func attachToTabsListManager() async {
-        await TabsListManager.shared.attach(self)
-        await TabsListManager.shared.attach(counterView, notify: true)
+        await TabsDataService.shared.attach(self)
+        await TabsDataService.shared.attach(counterView, notify: true)
     }
-    
+
     // MARK: - initialization
-    
+
     override init(frame: CGRect) {
         if frame.width <= 10 {
             // iOS 13.x fix for layout errors for code
             // which works on iOS 13.x on iPad
             // and worked for iOS 12.x for all kind of devices
-            
+
             // swiftlint:disable:next line_length
             // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
             super.init(frame: CGRect(x: 0, y: 0, width: 1000, height: .toolbarViewHeight))
@@ -163,16 +164,16 @@ final class BrowserToolbarView: UIToolbar {
             super.init(frame: frame)
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - state handler
-    
+
     private func onStateChange(_ nextState: WebToolbarState) {
         // See `diff` comment to find a difference with previos state handling
-        
+
         switch nextState {
         case .nothingToNavigate:
             backButton.isEnabled = false
@@ -217,9 +218,9 @@ final class BrowserToolbarView: UIToolbar {
             forwardButton.isEnabled = canGoForward
         }
     }
-    
+
     // MARK: - overrides
-    
+
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         guard isUserInteractionEnabled else { return nil }
 
@@ -246,25 +247,25 @@ final class BrowserToolbarView: UIToolbar {
 
         return super.hitTest(point, with: event)
     }
-    
+
     // MARK: - action handlers
-    
+
     @objc private func handleBackPressed() {
         forwardButton.isEnabled = webViewInterface?.canGoForward ?? false
         backButton.isEnabled = webViewInterface?.canGoBack ?? false
         webViewInterface?.goBack()
     }
-    
+
     @objc private func handleForwardPressed() {
         forwardButton.isEnabled = webViewInterface?.canGoForward ?? false
         backButton.isEnabled = webViewInterface?.canGoBack ?? false
         webViewInterface?.goForward()
     }
-    
+
     @objc private func handleReloadPressed() {
         webViewInterface?.reload()
     }
-    
+
     @objc private func handleActionsPressed() {
         globalSettingsDelegate?.settingsDidPress(from: self, and: .zero)
     }
@@ -285,7 +286,7 @@ private extension BrowserToolbarView {
         }
         setItems(barItems, animated: true)
     }
-    
+
     func animateDownloadsArrow(down: Bool) {
         let rotate = UIViewPropertyAnimator(duration: 0.33, curve: .easeIn)
         rotate.addAnimations {

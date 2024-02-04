@@ -16,7 +16,7 @@ struct TabViewState {
     let titleColor: UIColor
     let title: String
     let favicon: ImageSource?
-    
+
     init(_ backgroundColor: UIColor,
          _ realBackgroundColour: UIColor,
          _ isSelected: Bool,
@@ -30,23 +30,23 @@ struct TabViewState {
         self.title = title
         self.favicon = favicon
     }
-    
+
     static func selected(_ title: String, _ newFavicon: ImageSource?) -> TabViewState {
         TabViewState(.superLightGray, UIColor.clear, true, .lightGrayText, title, newFavicon)
     }
-    
+
     static func deSelected(_ title: String, _ newFavicon: ImageSource?) -> TabViewState {
         .init(.normallyLightGray, UIColor.clear, false, .darkGrayText, title, newFavicon)
     }
-    
+
     func withNew(_ title: String, _ newFavicon: ImageSource?) -> TabViewState {
         TabViewState(backgroundColor, realBackgroundColour, isSelected, titleColor, title, newFavicon)
     }
-    
+
     func selected() -> TabViewState {
         TabViewState(.superLightGray, UIColor.clear, true, .lightGrayText, title, favicon)
     }
-    
+
     func deSelected() -> TabViewState {
         TabViewState(.normallyLightGray, UIColor.clear, false, .darkGrayText, title, favicon)
     }

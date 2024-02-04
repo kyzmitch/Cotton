@@ -17,27 +17,27 @@ public extension UIImage {
         UIRectFill(rect)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
     }
-    
+
     func withRoundCorners(_ cornerRadius: CGFloat) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         let rect = CGRect(origin: CGPoint.zero, size: size)
         let context = UIGraphicsGetCurrentContext()
         let path = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
-        
+
         context?.beginPath()
         context?.addPath(path.cgPath)
         context?.closePath()
         context?.clip()
-        
+
         draw(at: CGPoint.zero)
-        
+
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        
+
         return image
     }
 
@@ -59,7 +59,7 @@ public extension UIImage {
         let cgOutput = convertCIImageToCGImage(inputImage: outputImage)
         return cgOutput
     }
-    
+
     fileprivate func convertCIImageToCGImage(inputImage: CIImage) -> CGImage? {
         let context = CIContext(options: nil)
         if let cgImage = context.createCGImage(inputImage, from: inputImage.extent) {
@@ -72,7 +72,7 @@ public extension UIImage {
         let point = CGPoint(x: 0, y: 0)
         return averageColorImage?.getPixelColor(pos: point)
     }
-    
+
     static let arropUp = UIImage(systemName: "square.and.arrow.up")
 }
 

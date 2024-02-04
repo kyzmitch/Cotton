@@ -10,7 +10,7 @@ import SwiftUI
 
 final class TappableTextOverlayViewModel {
     @Published var tapped: Void
-    
+
     init() {
         tapped = ()
     }
@@ -19,12 +19,12 @@ final class TappableTextOverlayViewModel {
 struct TappableTextOverlayView: View {
     private let textContent: String
     private let vm: TappableTextOverlayViewModel
-    
+
     init(_ textContent: String, _ vm: TappableTextOverlayViewModel) {
         self.textContent = textContent
         self.vm = vm
     }
-    
+
     var body: some View {
         Text(verbatim: textContent)
             .background(Color(.secondarySystemBackground))

@@ -19,16 +19,15 @@ import SwiftyMocky
 @MainActor
 final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
     private var cancellables: Set<AnyCancellable>!
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         cancellables = []
     }
-    
+
     func testVMInitAndSuggestionsFetch() async throws {
-        let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
+        let vm: SearchSuggestionsViewModelImpl = .init(autocompleteUseCaseMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
-        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .asyncAwait))
         let input1 = "g"
         let input2 = "o"
         let expected1 = ["google", "gmail"]
@@ -37,28 +36,27 @@ final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
         let known2 = ["opennet.com", "blizzard.com"]
         let promiseValue1: SearchSuggestionsResponse = .init(input1, expected1)
         let promiseValue2: SearchSuggestionsResponse = .init(input2, expected2)
-        
-        Given(strategyMock, .suggestionsTask(for: .value(input1), willReturn: promiseValue1))
+
+        Given(autocompleteUseCaseMock, .aaFetchSuggestions(.value(input1), willReturn: promiseValue1.textResults))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))
         await vm.fetchSuggestions(input1)
         XCTAssertEqual(vm.state, .everythingLoaded(known1, expected1))
-        Given(strategyMock, .suggestionsTask(for: .value(input2), willReturn: promiseValue2))
+        Given(autocompleteUseCaseMock, .aaFetchSuggestions(.value(input2), willReturn: promiseValue2.textResults))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input2), willReturn: known2))
         await vm.fetchSuggestions(input2)
         XCTAssertEqual(vm.state, .everythingLoaded(known2, expected2))
     }
-    
+
     func testSuggestionsFetchFailure() async throws {
-        let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
+        let vm: SearchSuggestionsViewModelImpl = .init(autocompleteUseCaseMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
-        Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .asyncAwait))
         let input1 = "g"
         let known1 = ["google.com", "gmail.com"]
-        
+
         let error1 = HttpError.httpFailure(error: EndpointHttpError())
-        Given(strategyMock, .suggestionsTask(for: .value(input1), willThrow: error1))
+        Given(autocompleteUseCaseMock, .aaFetchSuggestions(.value(input1), willThrow: error1))
         Given(searchViewContextMock, .knownDomainsStorage(getter: knownDomainsStorageMock))
         Given(knownDomainsStorageMock, .domainNames(whereURLContains: .value(input1), willReturn: known1))
         await vm.fetchSuggestions(input1)

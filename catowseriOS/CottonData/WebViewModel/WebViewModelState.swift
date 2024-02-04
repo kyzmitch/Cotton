@@ -12,6 +12,10 @@ import CottonPlugins
 import CoreBrowser
 
 enum WebViewModelState {
+    /// SwiftUI specific state to avoid waiting for the specific `Site` and create VM right away
+    /// to call `load(site)` method when SwiftUI aware of specific `Site`
+    case pendingLoad
+    /// Old initial state for UIKit mode as well
     case initialized(Site)
     case pendingPlugins(URLInfo, Site.Settings)
     case injectingPlugins(any JSPluginsProgram, URLInfo, Site.Settings)
@@ -23,13 +27,12 @@ enum WebViewModelState {
     case waitingForNavigation(Site.Settings, URLInfo)
     case finishingLoading(Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
     case viewing(Site.Settings, URLInfo)
-    
     case updatingJS(Site.Settings, JavaScriptEvaluateble, URLInfo)
-    
+
     enum Error: LocalizedError {
         case unexpectedStateForAction(WebViewModelState, WebViewAction)
         case notImplemented
-        
+
         public var localizedDescription: String {
             switch self {
             case .unexpectedStateForAction(let state, let action):
@@ -39,10 +42,14 @@ enum WebViewModelState {
             }
         }
     }
-    
+
     /// Returns host with domain name (ignore ip address as a host even if it is present)
     var host: CottonBase.Host {
         switch self {
+        case .pendingLoad:
+            assertionFailure("No host name in pendingLoad state")
+            // swiftlint:disable:next force_try
+            return try! CottonBase.Host(input: "")
         case .initialized(let site):
             return site.host
         case .pendingPlugins(let uRLData, _):
@@ -71,10 +78,14 @@ enum WebViewModelState {
             return uRLInfo.host()
         }
     }
-    
+
     /// Returns URL with domain name, not with ip address as a host
     var platformURL: URL {
         switch self {
+        case .pendingLoad:
+            assertionFailure("No url in pending load state")
+            // swiftlint:disable:next force_unwrapping
+            return URL(string: "")!
         case .initialized(let site):
             return site.urlInfo.platformURL
         case .pendingPlugins(let uRLData, _):
@@ -101,10 +112,15 @@ enum WebViewModelState {
             return uRLData.platformURL
         }
     }
-    
+
     /// Returns settings which are always present in any VM state
     var settings: Site.Settings {
         switch self {
+        case .pendingLoad:
+            return Site.Settings(isPrivate: false,
+                                 blockPopups: false,
+                                 isJSEnabled: false,
+                                 canLoadPlugins: false)
         case .initialized(let site):
             return site.settings
         case .pendingPlugins(_, let settings):
@@ -131,10 +147,12 @@ enum WebViewModelState {
             return settings
         }
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity
     func sameHost(with url: URL) -> Bool {
         switch self {
+        case .pendingLoad:
+            return false
         case .initialized(let site):
             return site.host.isSimilar(with: url)
         case .pendingPlugins(let uRLData, _):
@@ -161,9 +179,13 @@ enum WebViewModelState {
             return uRLInfo.host().rawString == url.host || uRLInfo.ipAddressString == url.host
         }
     }
-    
+
     var urlInfo: URLInfo {
         switch self {
+        case .pendingLoad:
+            assertionFailure("No url info in pending load state")
+            // swiftlint:disable:next force_unwrapping
+            return URLInfo(URL(string: "")!)!
         case .initialized(let site):
             return site.urlInfo
         case .pendingPlugins(let uRLData, _):
@@ -208,12 +230,14 @@ enum WebViewModelState {
 extension WebViewModelState: CustomStringConvertible {
     var description: String {
         switch self {
+        case .pendingLoad:
+            return "pendingLoad"
         case .initialized(let site):
-#if DEBUG
+            #if DEBUG
             return "initialized (\(site.urlInfo.debugDescription))"
-#else
+            #else
             return "initialized"
-#endif
+            #endif
         case .pendingPlugins:
             return "pendingPlugins"
         case .injectingPlugins:
@@ -223,43 +247,43 @@ extension WebViewModelState: CustomStringConvertible {
         case .checkingDNResolveSupport:
             return "checkingDNResolveSupport"
         case .resolvingDN(let urlData, let settings):
-#if DEBUG
+            #if DEBUG
             return "resolvingDN (\(urlData.debugDescription), \(settings.description))"
-#else
+            #else
             return "resolvingDN"
-#endif
+            #endif
         case .creatingRequest:
             return "creatingRequest"
         case .updatingWebView(_, let urlData):
-#if DEBUG
+            #if DEBUG
             return "updatingWebView ([\(urlData.debugDescription)])"
-#else
+            #else
             return "updatingWebView"
-#endif
+            #endif
         case .waitingForNavigation(_, let urlInfo):
-#if DEBUG
+            #if DEBUG
             return "waitingForNavigation ([\(urlInfo.debugDescription)])"
-#else
+            #else
             return "waitingForNavigation"
-#endif
+            #endif
         case .finishingLoading(_, _, _, _, let urlInfo):
-#if DEBUG
+            #if DEBUG
             return "finishingLoading ([\(urlInfo.debugDescription)])"
-#else
+            #else
             return "finishingLoading"
-#endif
+            #endif
         case .viewing(_, let urlInfo):
-#if DEBUG
+            #if DEBUG
             return "viewing ([\(urlInfo.debugDescription)])"
-#else
+            #else
             return "viewing"
-#endif
+            #endif
         case .updatingJS(let settings, _, let urlData):
-#if DEBUG
+            #if DEBUG
             return "updatingJS (settings[\(settings.description)], [\(urlData.debugDescription)]"
-#else
+            #else
             return "updatingJS"
-#endif
+            #endif
         }
     }
 }

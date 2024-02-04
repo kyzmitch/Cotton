@@ -23,7 +23,7 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         }
         return true
     }
-    
+
     public func visit(_ plugin: any JavaScriptPlugin) throws {
         if let base = plugin as? BasePlugin {
             try visit(basePlugin: base)
@@ -31,21 +31,21 @@ extension WKUserContentController: JavaScriptPluginVisitor {
             try visit(instagramPlugin: instagram)
         }
     }
-    
+
     private func visit(basePlugin: BasePlugin) throws {
         let wkScript = try JSPluginFactory.shared.script(for: basePlugin,
-                                                        with: .atDocumentEnd,
-                                                        isMainFrameOnly: true)
+                                                         with: .atDocumentEnd,
+                                                         isMainFrameOnly: true)
         addHandler(wkScript, basePlugin.messageHandlerName, basePlugin.handler)
     }
-    
+
     private func visit(instagramPlugin: InstagramContentPlugin) throws {
         let wkScript = try JSPluginFactory.shared.script(for: instagramPlugin,
                                                          with: .atDocumentStart,
                                                          isMainFrameOnly: instagramPlugin.isMainFrameOnly)
         addHandler(wkScript, instagramPlugin.messageHandlerName, instagramPlugin.handler)
     }
-    
+
     private func addHandler(_ script: WKUserScript, _ handlerName: String, _ handler: WKScriptMessageHandler) {
         addUserScript(script)
         removeScriptMessageHandler(forName: handlerName)

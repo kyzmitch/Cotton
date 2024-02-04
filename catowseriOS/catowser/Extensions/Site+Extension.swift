@@ -24,7 +24,7 @@ extension Site {
         guard let urlInfo = URLInfo(decodedUrl) else {
             return nil
         }
-        
+
         self.init(urlInfo: urlInfo,
                   settings: settings,
                   faviconData: nil,
@@ -42,7 +42,7 @@ extension Site {
                   searchSuggestion: suggestion,
                   userSpecifiedTitle: nil)
     }
-    
+
     /// Provides only local cached URL for favicon, nil if ipAddress is nil.
     func faviconURL(_ resolve: Bool) async throws -> URL {
         guard resolve else {
@@ -57,7 +57,7 @@ extension Site {
         }
         return try await GoogleDnsClient.shared.aaResolvedDomainName(in: faviconDomainURL)
     }
-    
+
     func withUpdated(_ newSettings: Site.Settings) -> Site {
         // Can't figure out how to pass favicon data again
         return Site(urlInfo: urlInfo,

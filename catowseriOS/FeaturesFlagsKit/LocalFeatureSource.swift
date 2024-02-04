@@ -14,7 +14,7 @@ import Combine
 public final class LocalFeatureSource {
     private let (featureChangeSignal, featureObserver) = Signal<AnyFeature, Never>.pipe()
     private lazy var featureSubject: PassthroughSubject<AnyFeature, Never> = .init()
-    
+
     init() {}
 }
 
@@ -51,7 +51,7 @@ extension LocalFeatureSource: FeatureSource {
             return F.defaultValue
         }
     }
-    
+
     public func setValue<F>(of feature: ApplicationFeature<F>, value: F.Value?) where F: BasicFeature {
         switch F.defaultValue {
         case is Bool:
@@ -65,7 +65,7 @@ extension LocalFeatureSource: FeatureSource {
         default:
             assertionFailure("Value settings in Local source isn't implemented for other types")
         }
-        
+
         let value = AnyFeature(feature)
         if #available(iOS 13.0, *) {
             self.featureSubject.send(value)
@@ -82,14 +82,14 @@ extension LocalFeatureSource: EnumFeatureSource {
         }
         return F.EnumValue(rawValue: result) ?? feature.defaultEnumValue
     }
-    
+
     public func setEnumValue<F: EnumFeature>(of feature: ApplicationEnumFeature<F>, value: F.EnumValue?)
     where F.EnumValue.RawValue == Int {
         guard let intValue = value?.rawValue else {
             return
         }
         LocalSettings.setGlobalIntSetting(for: feature.feature.key.prefixedEnum(), value: intValue)
-        
+
         let value = AnyFeature(feature)
         if #available(iOS 13.0, *) {
             self.featureSubject.send(value)
@@ -102,7 +102,7 @@ private extension String {
     func prefixedEnum() -> String {
         return "CottonPrefix-Enum"+self
     }
-    
+
     func prefixedBasic() -> String {
         return "CottonPrefix-Basic"+self
     }
