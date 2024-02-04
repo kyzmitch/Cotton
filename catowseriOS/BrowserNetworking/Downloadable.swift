@@ -35,7 +35,7 @@ extension Downloadable {
     public var excludeFromBackup: Bool {
         return true
     }
-    
+
     public var fileName: String {
         if #available(iOS 13.0, *) {
             var md5Hasher = Insecure.MD5()
@@ -49,7 +49,7 @@ extension Downloadable {
             return "\(hostname)_\(hasher.finalize())"
         }
     }
-    
+
     public func fileAtDestination() -> URL? {
         do {
             let destination = try sandboxDestination()
@@ -62,7 +62,7 @@ extension Downloadable {
             return nil
         }
     }
-    
+
     /// Path to temporary file to not waste RAM.
     /// You can't participate in the files app (or iTunes File Sharing)
     /// if you don't store your files in the Documents folder.
@@ -131,10 +131,10 @@ extension BrowserNetworking {
     fileprivate var appGroupIdentifier: String {
         "group.com.ae.cotton-browser"
     }
-    
+
     public typealias FileDownloadProducer = SignalProducer<ProgressResponse<URL>, DownloadError>
     public typealias RemoteFileInfoProducer = SignalProducer<Int, DownloadError>
-    
+
     /// Sends download request for remote file
     ///
     /// - Parameter file: All info about remote file and info about how it should be saved
@@ -179,7 +179,7 @@ extension BrowserNetworking {
 
         return producer
     }
-    
+
     /**
      Fetches info of remote file like file size which expect to be dowloaded.
      https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length
@@ -187,7 +187,7 @@ extension BrowserNetworking {
      https://tools.ietf.org/html/rfc7230#section-3.3.2
      A server MAY send a Content-Length header field in a response to a
      HEAD request.
-     
+
      */
     public static func fetchRemoteResourceInfo(url: URL) -> RemoteFileInfoProducer {
         let producer = RemoteFileInfoProducer { (observer, _) in

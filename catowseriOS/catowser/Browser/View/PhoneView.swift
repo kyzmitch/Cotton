@@ -10,60 +10,68 @@ import SwiftUI
 import CoreBrowser
 import FeaturesFlagsKit
 import CottonPlugins
+import CottonData
 
-struct PhoneView: View {
+struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     // MARK: - view models of subviews
 
+    /// Search bar view model
     @StateObject private var searchBarVM: SearchBarViewModel = .init()
-    /// A reference to created vm in main view
-    @ObservedObject private var browserContentVM: BrowserContentViewModel
-    /// Toolbar model needed by both UI modes
+    /// A reference to created view model
+    @EnvironmentObject private var browserContentVM: BrowserContentViewModel
+    /// Toolbar view model needed by both UI modes
     @StateObject private var toolbarVM: BrowserToolbarViewModel = .init()
-    
+    /// Top sites view model is async dependency, so, can only be injected from outside
+    @EnvironmentObject private var topSitesVM: TopSitesViewModel
+    /// Search suggestions view model has async init
+    @ObservedObject private var searchSuggestionsVM: S
+    /// Web view model without a specific site
+    @ObservedObject private var webVM: W
+
     // MARK: - search bar state
-    
+
     /// Search bar action is only needed for SwiftUI UIKit wrapper
     @State private var searchBarAction: SearchBarAction
     /// Search suggestion visibility state
-    @State private var showSearchSuggestions: Bool
+    @State private var showSearchSuggestions: Bool = false
     /// Search query string state which is set by SearchBar and used by SearchSuggestions
-    @State private var searchQuery: String
+    @State private var searchQuery: String = ""
     /// Needs to be fetched from global actor in task to know current value
     @State private var searchProviderType: WebAutoCompletionSource
-    
+
     // MARK: - web content loading state
-    
-    @State private var showProgress: Bool
-    @State private var websiteLoadProgress: Double
-    
+
+    @State private var showProgress: Bool = false
+    @State private var websiteLoadProgress: Double = 0.0
+
     // MARK: - browser content state
-    
-    @State private var isLoading: Bool
-    @State private var contentType: Tab.ContentType = .blank
+
+    @State private var isLoading: Bool = true
+    @State private var contentType: Tab.ContentType
     /// A workaround to avoid unnecessary web view updates
-    @State private var webViewNeedsUpdate: Bool
-    
+    @State private var webViewNeedsUpdate: Bool = false
+
     // MARK: - web view related
-    
+
     @State private var webViewInterface: WebViewNavigatable?
-    
+
     // MARK: - constants
-    
+
     private let mode: SwiftUIMode
-    
+
     // MARK: - toolbar
-    
+
     @State private var toolbarVisibility: Visibility
-    @State private var showingMenu: Bool
-    @State private var showingTabs: Bool
-    @State private var tabsCount: Int
-    
+    @State private var showingMenu: Bool = false
+    @State private var showingTabs: Bool = false
+    @State private var tabsCount: Int = 0
+
     // MARK: - menu
-    
+
     @State private var isDohEnabled: Bool
     @State private var isJavaScriptEnabled: Bool
     @State private var nativeAppRedirectEnabled: Bool
-    
+
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
         if let interface = webViewInterface {
@@ -71,50 +79,32 @@ struct PhoneView: View {
         } else {
             style = .onlyGlobalMenu
         }
-        
+
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
-    
-    init(_ browserContentVM: BrowserContentViewModel, _ mode: SwiftUIMode) {
-        self.browserContentVM = browserContentVM
-        // Browser content state has to be stored outside in main view
-        // to allow keep current state value when `showSearchSuggestions`
-        // state variable changes
-        isLoading = true
-        webViewNeedsUpdate = false
-        webViewInterface = nil
-        // web content loading state has to be stored here
-        // to get that info from toolbar model and use it
-        // for `ProgressView`
-        showProgress = false
-        websiteLoadProgress = 0.0
-        // Search bar and suggestions state values
-        // have to be stored in main view
-        // to be able to replace browser content view
-        // with the search suggestions view when necessary
-        showSearchSuggestions = false
-        searchQuery = ""
+
+    init(_ mode: SwiftUIMode, _ defaultContentType: Tab.ContentType, _ webVM: W, _ searchVM: S) {
+        self.webVM = webVM
+        self.searchSuggestionsVM = searchVM
         searchBarAction = .clearView
         self.mode = mode
+        self.contentType = defaultContentType
         switch mode {
         case .compatible:
             toolbarVisibility = .hidden
         case .full:
             toolbarVisibility = .visible
         }
-        tabsCount = 0
-        showingMenu = false
-        showingTabs = false
-        
+
         // Next states are set to some random "good" values
         // because actualy values need to be fetched from Global actor
-        
+
         searchProviderType = .google
         isDohEnabled = false
         isJavaScriptEnabled = true
         nativeAppRedirectEnabled = true
     }
-    
+
     var body: some View {
         switch mode {
         case .compatible:
@@ -123,7 +113,7 @@ struct PhoneView: View {
             fullySwiftUIView
         }
     }
-    
+
     private var uiKitWrapperView: some View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
@@ -134,11 +124,17 @@ struct PhoneView: View {
             }
             if showSearchSuggestions {
                 let delegate: SearchSuggestionsListDelegate = searchBarVM
-                SearchSuggestionsView(searchQuery, delegate, mode, searchProviderType)
+                SearchSuggestionsView<S>(searchQuery, delegate, mode)
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
+                BrowserContentView(jsPlugins,
+                                   siteNavigation,
+                                   isLoading,
+                                   contentType,
+                                   $webViewNeedsUpdate,
+                                   mode,
+                                   webVM)
             }
             ToolbarView(toolbarVM, $webViewInterface)
         }
@@ -162,10 +158,10 @@ struct PhoneView: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
-            contentType = await DefaultTabProvider.shared.contentState
+            webVM.siteNavigation = toolbarVM
         }
     }
-    
+
     private var fullySwiftUIView: some View {
         NavigationView {
             VStack {
@@ -176,11 +172,17 @@ struct PhoneView: View {
                 }
                 if showSearchSuggestions {
                     let delegate: SearchSuggestionsListDelegate = searchBarVM
-                    SearchSuggestionsView(searchQuery, delegate, mode, searchProviderType)
+                    SearchSuggestionsView<S>(searchQuery, delegate, mode)
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                    BrowserContentView(jsPlugins, siteNavigation, isLoading, contentType, $webViewNeedsUpdate, mode)
+                    BrowserContentView(jsPlugins,
+                                       siteNavigation,
+                                       isLoading,
+                                       contentType,
+                                       $webViewNeedsUpdate,
+                                       mode,
+                                       webVM)
                 }
             }
             .toolbar {
@@ -225,18 +227,7 @@ struct PhoneView: View {
             isDohEnabled = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
             isJavaScriptEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             nativeAppRedirectEnabled = await FeatureManager.shared.boolValue(of: .nativeAppRedirect)
-            contentType = await DefaultTabProvider.shared.contentState
+            webVM.siteNavigation = toolbarVM
         }
     }
 }
-
-#if DEBUG
-struct PhoneView_Previews: PreviewProvider {
-    static var previews: some View {
-        let source: DummyJSPluginsSource = .init()
-        let bvm: BrowserContentViewModel = .init(source, .blank)
-        PhoneView(bvm, .full)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-    }
-}
-#endif

@@ -9,7 +9,7 @@
 import SwiftUI
 import CottonData
 
-struct SearchSuggestionsViewV2: View {
+struct SearchSuggestionsViewV2<S: SearchSuggestionsViewModel>: View {
     /// Used in waitingForQuery
     private var searchQuery: String
     /// Used when user selects suggestion
@@ -19,20 +19,18 @@ struct SearchSuggestionsViewV2: View {
     /// Used to update the view from loading to suggestions list
     @State private var suggestions: SearchSuggestionsViewState = .waitingForQuery
     /// A view model
-    private let vm: SearchSuggestionsViewModel
-    
+    @EnvironmentObject private var viewModel: S
+
     init(_ searchQuery: String,
-         _ delegate: SearchSuggestionsListDelegate?,
-         _ vm: SearchSuggestionsViewModel) {
+         _ delegate: SearchSuggestionsListDelegate?) {
         self.searchQuery = searchQuery
         self.delegate = delegate
-        self.vm = vm
-        /// Possibly already not needed check 
+        /// Possibly already not needed check
         if !searchQuery.isEmpty {
             suggestions = .waitingForQuery
         }
     }
-    
+
     var body: some View {
         dynamicView
             .onChange(of: selected) { newValue in
@@ -43,11 +41,11 @@ struct SearchSuggestionsViewV2: View {
                     await delegate?.searchSuggestionDidSelect(newValue)
                 }
             }
-            .onReceive(vm.statePublisher, perform: { state in
+            .onReceive(viewModel.statePublisher, perform: { state in
                 suggestions = state
             })
     }
-    
+
     @ViewBuilder
     private var dynamicView: some View {
         switch suggestions {
@@ -57,8 +55,8 @@ struct SearchSuggestionsViewV2: View {
                 ProgressView()
                     .progressViewStyle(.circular)
                     .task {
-                        // just asking for a new state, could wait for it as well
-                        await vm.fetchSuggestions(searchQuery)
+                        /// just asking for a new state, could wait for it as well
+                        await viewModel.fetchSuggestions(searchQuery)
                     }
                 Spacer()
             }
@@ -86,17 +84,3 @@ struct SearchSuggestionsViewV2: View {
         } // switch
     } // construct view
 }
-
-#if DEBUG
-struct SearchSuggestionsViewV2_Previews: PreviewProvider {
-    static var previews: some View {
-        let delegate: SearchSuggestionsListDelegate? = nil
-        let searchQuery: String = "e"
-        
-        let vm: SearchSuggestionsViewModel = ViewModelFactory.shared.searchSuggestionsViewModel(.duckduckgo)
-
-        SearchSuggestionsViewV2(searchQuery, delegate, vm)
-            .previewDevice(PreviewDevice(rawValue: "iPhone 14"))
-    }
-}
-#endif

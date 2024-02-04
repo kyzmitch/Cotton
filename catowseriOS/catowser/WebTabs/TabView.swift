@@ -23,26 +23,28 @@ protocol TabDelegate: AnyObject {
 
 /// The tab view for tablets
 final class TabView: UIView {
-    
+
     private let viewModel: TabViewModel
     private var stateHandler: AnyCancellable?
     private weak var delegate: TabDelegate?
-    
+
     private lazy var centerBackground: UIView = {
         let centerBackground = UIView()
         centerBackground.translatesAutoresizingMaskIntoConstraints = false
         return centerBackground
     }()
-    
+
     private let closeButton: ButtonWithDecreasedTouchArea = {
         let closeButton = ButtonWithDecreasedTouchArea()
         closeButton.setImage(UIImage(named: "tabCloseButton-Normal"), for: UIControl.State())
         closeButton.tintColor = UIColor.lightGray
-        closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        if #unavailable(iOS 15) {
+            closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 10.0)
+        }
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         return closeButton
     }()
-    
+
     private let titleText: UILabel = {
         let titleText = UILabel()
         titleText.textAlignment = .left
@@ -52,7 +54,7 @@ final class TabView: UIView {
         titleText.translatesAutoresizingMaskIntoConstraints = false
         return titleText
     }()
-    
+
     private let highlightLine: UIView = {
         let line = UIView()
         line.backgroundColor = UIConstants.webSiteTabHighlitedLineColour
@@ -60,7 +62,7 @@ final class TabView: UIView {
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
-    
+
     let faviconImageView: UIImageView = {
         let favicon = UIImageView()
         favicon.layer.cornerRadius = 2.0
@@ -68,30 +70,31 @@ final class TabView: UIView {
         favicon.translatesAutoresizingMaskIntoConstraints = false
         return favicon
     }()
-    
+
     // MARK: - init
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("\(#function): has not been implemented")
     }
-    
+
     init(_ frame: CGRect, _ viewModel: TabViewModel, _ delegate: TabDelegate) {
         self.viewModel = viewModel
         self.delegate = delegate
         super.init(frame: frame)
         layout()
     }
-    
+
     override func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
-        
+
         Task {
-            await TabsListManager.shared.attach(viewModel)
+            await TabsDataService.shared.attach(viewModel)
         }
         stateHandler?.cancel()
         stateHandler = viewModel.$state.sink(receiveValue: onStateChange)
+        viewModel.load()
     }
-    
+
     private func layout() {
         contentMode = .redraw
         addSubview(centerBackground)
@@ -99,11 +102,11 @@ final class TabView: UIView {
         addSubview(titleText)
         addSubview(closeButton)
         addSubview(highlightLine)
-        
+
         closeButton.addTarget(self,
                               action: #selector(handleClosePressed),
                               for: .touchUpInside)
-        
+
         centerBackground.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         centerBackground.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         centerBackground.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -113,23 +116,23 @@ final class TabView: UIView {
         faviconImageView.widthAnchor.constraint(equalToConstant: 18).isActive = true
         faviconImageView.heightAnchor.constraint(equalTo: faviconImageView.widthAnchor).isActive = true
         faviconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        
+
         titleText.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         titleText.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         titleText.leadingAnchor.constraint(equalTo: faviconImageView.trailingAnchor, constant: 10).isActive = true
         titleText.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: 10).isActive = true
-        
+
         closeButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         closeButton.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
         closeButton.widthAnchor.constraint(equalTo: heightAnchor).isActive = true
         closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
-        
+
         highlightLine.topAnchor.constraint(equalTo: topAnchor).isActive = true
         highlightLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -2).isActive = true
         highlightLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 2).isActive = true
         highlightLine.heightAnchor.constraint(equalToConstant: .highlightLineWidth).isActive = true
     }
-    
+
     override var intrinsicContentSize: CGSize {
         get {
             if traitCollection.horizontalSizeClass == .compact {
@@ -141,14 +144,14 @@ final class TabView: UIView {
             }
         }
     }
-    
+
     override var canBecomeFirstResponder: Bool {
         get {
             // NOTE: experimenting with UIResponder methods, default is NO
             return false
         }
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             // https://github.com/kyzmitch/Cotton/issues/16
@@ -159,14 +162,14 @@ final class TabView: UIView {
             }
         }
     }
-    
+
     private func onStateChange(_ state: TabViewState) {
         centerBackground.backgroundColor = state.backgroundColor
         backgroundColor = state.realBackgroundColour
         highlightLine.isHidden = !state.isSelected
         titleText.textColor = state.titleColor
         titleText.text = state.title
-        
+
         guard let favicon = state.favicon else {
             return
         }
@@ -181,7 +184,7 @@ private extension TabView {
             await delegate?.tabViewDidClose(self)
         }
     }
-    
+
     func handleTapGesture() {
         // Can mark it as selected on view layer right away
         // with following code `visualState = .selected`
@@ -204,7 +207,7 @@ extension UIEdgeInsets {
 private class ButtonWithDecreasedTouchArea: UIButton {
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         // decrease touch area for control in all directions by 20
-        
+
         let area = self.bounds.insetBy(dx: 5, dy: 5)
         return area.contains(point)
     }

@@ -20,7 +20,7 @@ public struct GDNSRequestParams {
      string, default: 1
      */
     let type: DnsRR
-    
+
     /**
      boolean, default: false
 
@@ -28,7 +28,7 @@ public struct GDNSRequestParams {
      use cd=0, cd=false, or no cd parameter to enable DNSSEC validation.
      */
     let cd: Bool
-    
+
     /**
      string, default: empty
 
@@ -37,7 +37,7 @@ public struct GDNSRequestParams {
      request JSON text. Other content type values are ignored and default JSON content is returned.
      */
     let ct: String
-    
+
     /**
      boolean, default: false
 
@@ -49,7 +49,7 @@ public struct GDNSRequestParams {
      responses in the future. (Binary DNS message responses always respect the value of the DO flag.)
      */
     let `do`: Bool
-    
+
     /**
      string, default: empty
 
@@ -62,7 +62,7 @@ public struct GDNSRequestParams {
      information (usually zeroing out the last part of your IPv4 address).
      */
     let ednsClientSubnet: String // IPv4Address
-    
+
     /**
      string, ignored
 
@@ -74,7 +74,7 @@ public struct GDNSRequestParams {
      unreserved URL characters: upper- and lower-case letters, digits, hyphen, period, underscore and tilde.
      */
     let randomPadding: String
-    
+
     public init?(domainName: DomainName) {
         name = domainName
         guard let rrType = DnsRR() else {
@@ -87,9 +87,9 @@ public struct GDNSRequestParams {
         ednsClientSubnet = "0.0.0.0/0"
         randomPadding = ""
     }
-    
+
     var urlQueryItems: [URLQueryItem] {
-        
+
         let items: [URLQueryItem] = [
             URLQueryItem(name: "name", value: name.rawString),
             URLQueryItem(name: "type", value: type.rawValue),

@@ -14,9 +14,9 @@ import CottonBase
 /// Provides default tab related constants, no need to be global actor, because read-only
 final class DefaultTabProvider {
     static let shared = DefaultTabProvider()
-    
+
     let selected: Bool
-    
+
     let blockPopups: Bool = false
 
     func topSites(_ isJsEnabled: Bool) -> [Site] {
@@ -37,7 +37,7 @@ final class DefaultTabProvider {
         #endif
         return array.compactMap {$0}
     }
-    
+
     private init() {
         selected = UIDevice.current.userInterfaceIdiom == .pad
     }
@@ -49,15 +49,15 @@ extension DefaultTabProvider: TabsStates {
             await FeatureManager.shared.tabAddPositionValue()
         }
     }
-    
+
     var contentState: Tab.ContentType {
         get async {
             await FeatureManager.shared.tabDefaultContentValue().contentType
         }
     }
-    
+
     var addSpeed: TabAddSpeed { .after(.milliseconds(300)) }
-    
+
     var defaultSelectedTabId: UUID { .notPossibleId }
 }
 

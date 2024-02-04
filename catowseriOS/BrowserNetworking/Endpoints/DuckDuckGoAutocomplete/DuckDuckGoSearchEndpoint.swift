@@ -23,21 +23,21 @@ extension Endpoint where S == DuckDuckGoServer {
         guard !query.isEmpty else {
             throw HttpError.emptyQueryParam
         }
-        
+
         let withoutSpaces = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !withoutSpaces.isEmpty else {
             throw HttpError.spacesInQueryParam
         }
-        
+
         let items: [URLQueryItem] = [
             URLQueryItem(name: "q", value: query),
             URLQueryItem(name: "type", value: "list")
         ]
         let headers: [CottonBase.HTTPHeader] = [.ContentType(type: .jsonsuggestions), .Accept(type: .jsonsuggestions)]
-        
+
         /**
          https://youtrack.jetbrains.com/issue/KT-44108
-         
+
          .freeze() doesn't affect Swift or Objective-C objects, they are just opaque for freezing,
          and anything these objects refer doesn't get frozen as well.
          */
@@ -54,10 +54,10 @@ public struct DDGoSuggestionsResponse: ResponseType {
     public static var successCodes: [Int] {
         [200]
     }
-    
+
     public let queryText: String
     public let textResults: [String]
-    
+
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         queryText = try container.decode(String.self)
@@ -88,14 +88,14 @@ extension RestClient where Server == DuckDuckGoServer {
         } catch {
             return DDGoSuggestionsProducer.init(error: .failedConstructRequestParameters)
         }
-        
+
         let adapter: AlamofireHTTPRxAdaptee<DDGoSuggestionsResponse,
                                             DuckDuckGoServer,
                                             DDGoRxInterface> = .init(.waitsForRxObserver)
         let producer = self.rxMakePublicRequest(for: endpoint, transport: adapter, subscriber: subscriber)
         return producer
     }
-    
+
     public func cDuckDuckgoSuggestions(for text: String,
                                        subscriber: DDGoSuggestionsClientSubscriber) -> DDGoSuggestionsPublisher {
         let endpoint: DDGoSuggestionsEndpoint
@@ -106,7 +106,7 @@ extension RestClient where Server == DuckDuckGoServer {
         } catch {
             return DDGoSuggestionsPublisher(Future.failure(.failedConstructRequestParameters))
         }
-        
+
         let adapter: AlamofireHTTPAdaptee<DDGoSuggestionsResponse, DuckDuckGoServer> = .init(.waitsForCombinePromise)
         let future = self.cMakePublicRequest(for: endpoint, transport: adapter, subscriber: subscriber)
         return future.eraseToAnyPublisher()

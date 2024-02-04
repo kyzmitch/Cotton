@@ -25,12 +25,12 @@ extension RestClient {
                 observer.send(error: .zombieSelf)
                 return
             }
-            
+
             adapter.transferToRxState(observer, lifetime, endpoint)
             subscriber.insert(adapter.handlerType)
             self.makeRxRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)
         }
-        
+
         return producer.on(failed: { [weak subscriber] _ in
             subscriber?.remove(adapter.handlerType)
         }, completed: { [weak subscriber, weak adapter] in
@@ -40,7 +40,7 @@ extension RestClient {
             subscriber?.remove(adapter.handlerType)
         })
     }
-    
+
     public func rxMakeVoidRequest<B: HTTPRxVoidAdapter, RX>(for endpoint: Endpoint<Server>,
                                                             withAccessToken accessToken: String?,
                                                             transport adapter: B,
@@ -51,7 +51,7 @@ extension RestClient {
                 observer.send(error: .zombieSelf)
                 return
             }
-            
+
             adapter.transferToRxState(observer, lifetime, endpoint)
             subscriber.insert(adapter.handlerType)
             self.makeRxVoidRequest(for: endpoint, withAccessToken: accessToken, transport: adapter)

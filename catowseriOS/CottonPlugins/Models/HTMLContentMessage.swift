@@ -13,7 +13,7 @@ import SwiftSoup
 struct HTMLContentMessage: Decodable {
     let hostname: CottonBase.Host
     let html: Document
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let hostnameString = try container.decode(String.self, forKey: .hostname)
@@ -24,7 +24,7 @@ struct HTMLContentMessage: Decodable {
         let htmlString = try container.decode(String.self, forKey: .htmlString)
         html = try SwiftSoup.parse(htmlString)
     }
-    
+
     var mainPosterURL: URL? {
         if hostname.isSimilar(name: "youtube.com") {
             let divs: Elements
@@ -51,7 +51,7 @@ struct HTMLContentMessage: Decodable {
         }
         return nil
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case hostname
         case htmlString

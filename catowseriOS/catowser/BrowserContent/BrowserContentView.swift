@@ -11,9 +11,10 @@ import CoreBrowser
 import Combine
 import FeaturesFlagsKit
 import CottonPlugins
+import CottonData
 
 /// Dynamic content view (could be a webview, a top sites list or something else)
-struct BrowserContentView: View {
+struct BrowserContentView<W: WebViewModel>: View {
     /// Plugins builder needed by web view model
     /// but the reference needs to be holded/created by another vm on upper level
     private let jsPluginsBuilder: any JSPluginsSource
@@ -24,34 +25,35 @@ struct BrowserContentView: View {
     private let isLoading: Bool
     /// Tells if web view needs to be updated to avoid unnecessary updates.
     @Binding private var webViewNeedsUpdate: Bool
-    /// Web view view model reference
-    private let webViewModel: WebViewModelV2
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
-    /// JS state needed for TopSites vm
-    @State private var isJsEnabled = true
-    
+    /// Top sites view model, possibly somehow needs to be recreated JS setting changes
+    @EnvironmentObject private var topSitesVM: TopSitesViewModel
+    /// A delegate for the web view model
+    private var siteNavigation: SiteExternalNavigationDelegate?
+    /// Web view model
+    @ObservedObject private var webVM: W
+
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Bool,
          _ contentType: Tab.ContentType,
          _ webViewNeedsUpdate: Binding<Bool>,
-         _ mode: SwiftUIMode) {
+         _ mode: SwiftUIMode,
+         _ webVM: W) {
         self.isLoading = isLoading
         self.contentType = contentType
         _webViewNeedsUpdate = webViewNeedsUpdate
-        webViewModel = WebViewModelV2(jsPluginsBuilder, siteNavigation)
         self.jsPluginsBuilder = jsPluginsBuilder
+        self.siteNavigation = siteNavigation
         self.mode = mode
+        self.webVM = webVM
     }
-    
+
     var body: some View {
         dynamicContentView
-            .task {
-                isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-            }
     }
-    
+
     @ViewBuilder
     private var dynamicContentView: some View {
         if isLoading {
@@ -61,9 +63,9 @@ struct BrowserContentView: View {
             case .blank:
                 Spacer()
             case .topSites:
-                TopSitesView(TopSitesViewModel(isJsEnabled), mode)
+                TopSitesView(topSitesVM, mode)
             case .site(let site):
-                WebView(webViewModel, site, webViewNeedsUpdate, mode)
+                WebView(webVM, site, webViewNeedsUpdate, mode)
             default:
                 Spacer()
             }

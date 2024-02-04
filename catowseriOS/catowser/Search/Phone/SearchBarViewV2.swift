@@ -10,7 +10,7 @@ import SwiftUI
 
 /**
  A search bar fully implemented in SwiftUI.
- 
+
  - after moving focus to TextField (tap on it) if query is not empty, then need to select all text
  which would allow to easely clear/remove currently entered query string. The same behaviour has Safari for iOS.
  - need to use the same logic for overlay view to show/hide it from SearchBarLegacyView
@@ -18,7 +18,7 @@ import SwiftUI
  */
 struct SearchBarViewV2: View {
     @Environment(\.horizontalSizeClass) var hSizeClass
-    
+
     @Binding private var query: String
     @Binding private var action: SearchBarAction
     @State private var showClearButton: Bool = false
@@ -26,13 +26,13 @@ struct SearchBarViewV2: View {
     @State private var siteName: String = ""
     @State private var showOverlay: Bool = false
     @State private var showKeyboard: Bool = false
-    
+
     private let cancelBtnVM: ClearCancelButtonViewModel
     private let textFieldVM: SearchFieldViewModel
     private let overlayVM: TappableTextOverlayViewModel
-    
+
     private let overlayHidden: CGFloat = -UIScreen.main.bounds.width
-    
+
     init(_ query: Binding<String>,
          _ action: Binding<SearchBarAction>) {
         _query = query
@@ -41,7 +41,7 @@ struct SearchBarViewV2: View {
         textFieldVM = .init()
         overlayVM = .init()
     }
-    
+
     var body: some View {
         ZStack {
             HStack {
@@ -50,8 +50,8 @@ struct SearchBarViewV2: View {
                     ClearCancelPairButton(showClearButton, cancelBtnVM)
                 }
             }.customHStackStyle()
-                .opacity(showOverlay ? 0 : 1)
-                .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
+            .opacity(showOverlay ? 0 : 1)
+            .animation(.easeInOut(duration: SearchBarConstants.animationDuration), value: showOverlay)
             TappableTextOverlayView(siteName, overlayVM)
                 .opacity(showOverlay ? 1 : 0)
                 .offset(x: showOverlay ? 0 : (hSizeClass == .compact ? overlayHidden : -overlayHidden), y: 0)

@@ -19,11 +19,11 @@ public final class GoogleDNSContext: RestClientContext {
     public typealias ReachabilityAdapter = AlamofireReachabilityAdaptee<Server>
     public typealias Encoder = JSONEncoding
     public typealias Client = RestClient<Server, ReachabilityAdapter, Encoder>
-    
+
     public let client: Client
     public let rxSubscriber: HttpKitRxSubscriber
     public let subscriber: HttpKitSubscriber
-    
+
     public init(_ client: Client,
                 _ rxSubscriber: HttpKitRxSubscriber,
                 _ subscriber: HttpKitSubscriber) {
@@ -35,22 +35,22 @@ public final class GoogleDNSContext: RestClientContext {
 
 public final class GoogleDNSStrategy: DNSResolvingStrategy {
     public typealias Context = GoogleDNSContext
-    
+
     private let context: Context
-    
+
     public init(_ context: Context) {
         self.context = context
     }
-    
+
     public func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, DnsError> {
         context.client.rxResolvedDomainName(in: originalURL, context.rxSubscriber)
     }
-    
+
     public func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, DnsError> {
         context.client.resolvedDomainName(in: originalURL, context.subscriber)
             .eraseToAnyPublisher()
     }
-    
+
     @available(swift 5.5)
     @available(macOS 12, iOS 15.0, tvOS 15.0, watchOS 8.0, *)
     public func domainNameResolvingTask(_ originalURL: URL) async throws -> URL {

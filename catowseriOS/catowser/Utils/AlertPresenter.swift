@@ -14,12 +14,12 @@ final class AlertPresenter {
                         title: String? = NSLocalizedString("Error", comment: ""),
                         style: UIAlertController.Style = .alert,
                         actions: [UIAlertAction]? = [.defaultAction()]) {
-        
+
         let controller: UIAlertController = .build(message: message,
                                                    title: title,
                                                    style: style,
                                                    actions: actions)
-        
+
         presenter.present(controller, animated: true)
     }
 }
@@ -44,12 +44,12 @@ extension UIAlertController {
 
 extension UIAlertAction {
     typealias ActionHandler = (UIAlertAction) -> Void
-    
+
     class func defaultAction(_ title: String? = NSLocalizedString("OK", comment: ""),
                              handler: ActionHandler? = nil) -> UIAlertAction {
         return UIAlertAction(title: title, style: .default, handler: handler)
     }
-    
+
     class func destructiveAction(_ title: String?, handler: ActionHandler? = nil) -> UIAlertAction {
         return UIAlertAction(title: title, style: .destructive, handler: handler)
     }

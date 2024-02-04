@@ -15,7 +15,7 @@ public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
     case homepage
     case favorites
     case topSites
-    
+
     public var contentType: Tab.ContentType {
         switch self {
         case .blank:
@@ -28,10 +28,10 @@ public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
             return .topSites
         }
     }
-    
+
     public var description: String {
         let key: String
-        
+
         switch self {
         case .blank:
             key = "txt_tab_content_blank"

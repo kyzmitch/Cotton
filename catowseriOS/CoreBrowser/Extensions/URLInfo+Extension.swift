@@ -22,14 +22,14 @@ public extension URLInfo {
         guard var components = newComponents else { return self }
         components.host = domainName.rawString
         guard let updatedURL = components.url else { return self }
-        
+
         return URLInfo(scheme: .https,
                        path: updatedURL.path,
                        query: updatedURL.query,
                        domainName: domainName,
                        ipAddress: ipAddressString)
     }
-    
+
     private func withDifferentPathForSameHost(url: URL) -> URLInfo {
         guard !url.hasIPHost else {
             return self
@@ -54,13 +54,13 @@ public extension URLInfo {
         }
         return platformURL
     }
-    
+
     /// Returns an URL with ip address in place of host
     var urlWithResolvedDomainName: URL {
         // swiftlint:disable:next force_unwrapping
         return URL(string: urlWithIPaddressWithoutPort())!
     }
-    
+
     /// Constructs a URLRequest depending on current host
     var urlRequest: URLRequest {
         let requestedURL: URL
@@ -72,7 +72,7 @@ public extension URLInfo {
         let request = URLRequest(url: requestedURL)
         return request
     }
-    
+
     /// Constructs a URLRequest depending on current host and if we need to use ip address for the host
     func urlRequest(_ useIPAddressHost: Bool) -> URLRequest {
         let requestedURL: URL
@@ -84,7 +84,7 @@ public extension URLInfo {
         let request = URLRequest(url: requestedURL)
         return request
     }
-    
+
     func sameHost(with url: URL) -> Bool {
         let isSameHost: Bool
         if url.hasIPHost {
@@ -94,7 +94,7 @@ public extension URLInfo {
         }
         return isSameHost
     }
-    
+
     convenience init?(_ url: URL) {
         guard !url.hasIPHost else {
             // Need to have domain name to create url info
@@ -108,7 +108,7 @@ public extension URLInfo {
         let scheme: HttpScheme = .companion.create(rawString: schemeString) ?? HttpScheme.https
         self.init(scheme: scheme, path: url.path, query: url.query, domainName: domain, ipAddress: nil)
     }
-    
+
     func withSimilar(_ newURL: URL) -> URLInfo? {
         if newURL.hasIPHost {
             return withDifferentPathForSameIp(url: newURL)
@@ -123,11 +123,5 @@ public extension URLInfo {
             assertionFailure("Impossible case with new URL: \(newURL)")
             return nil
         }
-    }
-}
-
-extension URLInfo: CustomDebugStringConvertible {
-    public override var debugDescription: String {
-        return "url[\(platformURL.absoluteString)],ip[\(ipAddressString ?? "none")]"
     }
 }

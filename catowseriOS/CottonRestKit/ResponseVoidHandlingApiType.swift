@@ -21,7 +21,7 @@ public protocol RxAnyVoidObserver {
 // gryphon ignore
 public protocol RxVoidInterface: Hashable {
     associatedtype Server: ServerDescription
-    
+
     var observer: RxAnyVoidObserver { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
@@ -37,7 +37,7 @@ public enum ResponseVoidHandlingApi<Server, Observer: RxVoidInterface>: Hashable
     case combine(CombinePromiseVoidWrapper<Server>)
     case waitsForCombinePromise
     case asyncAwaitConcurrency
-    
+
     public func hash(into hasher: inout Hasher) {
         let caseNumber: Int
         switch self {
@@ -59,7 +59,7 @@ public enum ResponseVoidHandlingApi<Server, Observer: RxVoidInterface>: Hashable
         }
         hasher.combine(caseNumber)
     }
-    
+
     public static func == (lhs: ResponseVoidHandlingApi<Server, Observer>,
                            rhs: ResponseVoidHandlingApi<Server, Observer>) -> Bool {
         switch (lhs, rhs) {

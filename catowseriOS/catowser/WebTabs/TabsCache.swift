@@ -19,7 +19,7 @@ import CoreData
  */
 final class TabsCacheProvider {
     private let tabsDbResource: TabsResource
-    
+
     init(_ temporaryContext: NSManagedObjectContext,
          _ privateContextCreator: @escaping () -> NSManagedObjectContext?) {
         tabsDbResource = .init(temporaryContext: temporaryContext,
@@ -36,7 +36,7 @@ extension TabsCacheProvider: TabsStoragable {
             throw TabStorageError.dbResourceError(error)
         }
     }
-    
+
     func update(tab: Tab) throws -> Tab {
         do {
             return try tabsDbResource.update(tab: tab)
@@ -44,7 +44,7 @@ extension TabsCacheProvider: TabsStoragable {
             throw TabStorageError.dbResourceError(error)
         }
     }
-    
+
     func remove(tabs: [Tab]) async throws -> [Tab] {
         do {
             return try await tabsDbResource.forget(tabs: tabs)
@@ -52,15 +52,15 @@ extension TabsCacheProvider: TabsStoragable {
             throw TabStorageError.dbResourceError(error)
         }
     }
-    
+
     func fetchAllTabs() async throws -> [Tab] {
         try await tabsDbResource.tabsFromLastSession()
     }
-    
+
     func add(_ tab: Tab, select: Bool) async throws -> Tab {
         try await tabsDbResource.remember(tab: tab, andSelect: select)
     }
-    
+
     func fetchSelectedTabId() async throws -> UUID {
         try await tabsDbResource.selectedTabId()
     }

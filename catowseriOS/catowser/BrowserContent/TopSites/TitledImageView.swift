@@ -13,17 +13,17 @@ import FeaturesFlagsKit
 struct TitledImageView: View {
     private let site: Site
     @Binding private var isSelected: Site?
-    
+
     private let cellWidth = ImageViewSizes.imageHeight
     private let titleHeight = ImageViewSizes.titleHeight
     private let titleFontSize = ImageViewSizes.titleFontSize
     @State private var url: URL?
-    
+
     init(_ site: Site, _ isSelected: Binding<Site?>) {
         self.site = site
         _isSelected = isSelected
     }
-    
+
     var body: some View {
         VStack {
             AsyncImage(url: url) { image in
@@ -35,8 +35,8 @@ struct TitledImageView: View {
                     Color.gray
                 }
             }
-                .frame(width: cellWidth, height: cellWidth)
-                .cornerRadius(3)
+            .frame(width: cellWidth, height: cellWidth)
+            .cornerRadius(3)
             Text(verbatim: site.title)
                 .font(.system(size: titleFontSize))
                 .frame(maxWidth: cellWidth, maxHeight: titleHeight)

@@ -24,15 +24,15 @@ extension HTTPRequestInfo {
         guard let url = URL(string: rawURL) else {
             return nil
         }
-        
+
         let portedTimeoutValue = TimeInterval(requestTimeout)
-        
+
         var request = URLRequest(url: url,
                                  cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
                                  timeoutInterval: portedTimeoutValue)
         request.httpMethod = method.stringValue
         request.allHTTPHeaderFields = headers.dictionary
-        
+
         guard let encodedData = httpBody else {
             return request
         }

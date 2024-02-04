@@ -13,9 +13,9 @@ typealias SwiftUIValueRequirements = Hashable & Identifiable & CustomStringConve
 
 struct BaseMenuView<SourceType: FullEnumTypeConstraints & SwiftUIValueRequirements>: View
 where SourceType.RawValue == Int, SourceType.AllCases: RandomAccessCollection {
-    
+
     let viewModel: BaseListViewModelImpl<SourceType>
-    
+
     var body: some View {
         List(viewModel.dataSource) { selectedCase in
             if selectedCase == self.viewModel.selected {
@@ -23,12 +23,12 @@ where SourceType.RawValue == Int, SourceType.AllCases: RandomAccessCollection {
                     .font(Font.headline)
                     .onTapGesture {
                         self.viewModel.onPop(selectedCase)
-                }
+                    }
             } else {
                 Text(selectedCase.description)
                     .onTapGesture {
                         self.viewModel.onPop(selectedCase)
-                }
+                    }
             }
         }
         .navigationBarTitle(Text(verbatim: viewModel.viewTitle))

@@ -9,6 +9,7 @@
 import UIKit
 import ReactiveSwift
 import FeaturesFlagsKit
+import CottonData
 
 protocol SearchSuggestionsControllerInterface: AnyObject {
     func prepareSearch(for searchQuery: String) async
@@ -21,7 +22,7 @@ final class SearchSuggestionsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private weak var delegate: SearchSuggestionsListDelegate?
     private var _keyboardHeight: CGFloat?
     private var keyboardHeight: CGFloat? {
@@ -33,47 +34,42 @@ final class SearchSuggestionsCoordinator: Coordinator {
         }
     }
     private var disposables = [Disposable?]()
-    private let providerType: WebAutoCompletionSource
-    
+    private let viewModel: any SearchSuggestionsViewModel
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController,
          _ delegate: SearchSuggestionsListDelegate,
-         _ providerType: WebAutoCompletionSource) {
+         _ viewModel: any SearchSuggestionsViewModel) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
         self.delegate = delegate
-        self.providerType = providerType
+        self.viewModel = viewModel
     }
-    
+
     func start() {
-        // Used to be an async function
-        internalStart(providerType)
-    }
-    
-    private func internalStart(_ searchProviderType: WebAutoCompletionSource) {
         guard let controllerView = presenterVC?.controllerView else {
             return
         }
-        let vc = vcFactory.searchSuggestionsViewController(delegate, searchProviderType)
+        let vc = vcFactory.searchSuggestionsViewController(delegate, viewModel)
         startedVC = vc
         // adds suggestions view to root view controller
         presenterVC?.viewController.add(asChildViewController: vc.viewController, to: controllerView)
-        
+
         disposables.forEach { $0?.dispose() }
-        
+
         let disposeB = NotificationCenter.default.reactive
             .notifications(forName: UIResponder.keyboardWillHideNotification)
             .observe(on: UIScheduler())
             .observeValues { [weak self] (notification) in
                 self?.keyboardWillHideClosure()(notification)
-        }
+            }
 
         let disposeA = NotificationCenter.default.reactive
             .notifications(forName: UIResponder.keyboardDidChangeFrameNotification)
             .observe(on: UIScheduler())
             .observeValues { [weak self] notification in
                 self?.keyboardWillChangeFrameClosure()(notification)
-        }
+            }
 
         disposables.append(disposeB)
         disposables.append(disposeA)
@@ -86,7 +82,7 @@ enum SearchSuggestionsRoute: Route {
 
 extension SearchSuggestionsCoordinator: Navigating {
     typealias R = SearchSuggestionsRoute
-    
+
     func showNext(_ route: SearchSuggestionsRoute) {
         switch route {
         case .startSearch(let searchQuery):
@@ -98,7 +94,7 @@ extension SearchSuggestionsCoordinator: Navigating {
             }
         }
     }
-    
+
     func stop() {
         disposables.forEach { $0?.dispose() }
         startedVC?.viewController.removeFromChild()
@@ -110,11 +106,11 @@ enum SearchSuggestionsPart: SubviewPart {}
 
 extension SearchSuggestionsCoordinator: Layouting {
     typealias SP = SearchSuggestionsPart
-    
+
     func insertNext(_ subview: SP) {
-        
+
     }
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(let topAnchor, let bottomAnchor, let toolbarHeight):
@@ -123,9 +119,9 @@ extension SearchSuggestionsCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+
     }
 }
 
@@ -150,7 +146,7 @@ private extension SearchSuggestionsCoordinator {
 
         return handling
     }
-    
+
     func viewDidLoad(_ topAnchor: NSLayoutYAxisAnchor?,
                      _ bottomAnchor: NSLayoutYAxisAnchor?,
                      _ toolbarHeight: CGFloat?) {

@@ -10,11 +10,11 @@ import WebKit
 import UIKit
 
 /**
-Called when an error occurs while the web view is loading content.
-In our case it happens on auth challenge fail when entered domain name doesn't match with one
-in server SSL certificate or when ip address was used for DNS over HTTPS and it can't
-be equal with domain names from SSL certificate.
-*/
+ Called when an error occurs while the web view is loading content.
+ In our case it happens on auth challenge fail when entered domain name doesn't match with one
+ in server SSL certificate or when ip address was used for DNS over HTTPS and it can't
+ be equal with domain names from SSL certificate.
+ */
 
 /**
  If this is an invalid certificate, show a certificate error allowing the
@@ -25,19 +25,19 @@ final class WebViewLoadingErrorHandler {
     let error: NSError
     let webView: WKWebView
     let url: URL?
-    
+
     init(_ error: Error, _ webView: WKWebView) {
         self.error = error as NSError
         self.webView = webView
         self.url = webView.url
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity
     func recover(_ presentationController: UIViewController) {
         // https://opensource.apple.com/source/libsecurity_ssl/libsecurity_ssl-36800/lib/SecureTransport.h
         var isTLSError = false
         var msg = error.localizedDescription
-        
+
         switch (error.domain, error.code) {
         case (NSURLErrorDomain, NSURLErrorCancelled):
             return

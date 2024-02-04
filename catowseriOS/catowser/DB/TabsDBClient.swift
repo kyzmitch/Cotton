@@ -19,11 +19,11 @@ enum TabsCoreDataError: Swift.Error {
 
 final class TabsDBClient {
     private let managedContext: NSManagedObjectContext
-    
+
     init(_ managedContext: NSManagedObjectContext) {
         self.managedContext = managedContext
     }
-    
+
     /// Adds the tab without selecting it
     func insert(tab: Tab) throws {
         var saveError: Error?
@@ -39,7 +39,7 @@ final class TabsDBClient {
             throw actualError
         }
     }
-    
+
     /// Updates existing tab record with new content.
     /// E.g. when it was topSites and now it is actual web site
     func update(tab: Tab) throws {
@@ -47,7 +47,7 @@ final class TabsDBClient {
         let fetchRequest: NSFetchRequest<CDTab> = CDTab.fetchRequest()
         let query = NSPredicate(format: "%K = %@", "id", tab.id as CVarArg)
         fetchRequest.predicate = query
-        
+
         managedContext.performAndWait {
             do {
                 let result = try managedContext.fetch(fetchRequest)
@@ -73,7 +73,7 @@ final class TabsDBClient {
             throw actualError
         }
     }
-    
+
     /// Removes the tab, if it was selected it doesn't do de-selection logic
     /// De-selection should happen on application side because different auto-selection
     /// strategies could be used and it shouldn't be performed as a side-effect
@@ -94,7 +94,7 @@ final class TabsDBClient {
             throw actualError
         }
     }
-    
+
     /// Removes all the records of tabs
     func removeAll(tabs: [Tab]) throws {
         var cdError: Error?
@@ -113,16 +113,16 @@ final class TabsDBClient {
             throw actualError
         }
     }
-    
+
     /// Updates selected tab identifier using it from the `tab` provided as a argument
     func select(tab: Tab) throws {
         try setSelectedTab(uuid: tab.id)
     }
-    
+
     /// Updates selected tab identifier using `uuid` argument
     func setSelectedTab(uuid: UUID) throws {
         var setError: Error?
-        
+
         managedContext.performAndWait {
             do {
                 try setSettingsSelectedTabId(uuid)
@@ -134,7 +134,7 @@ final class TabsDBClient {
             throw cdError
         }
     }
-    
+
     /// Updates existing db record or creates a brand new one for selected tab identifier
     private func setSettingsSelectedTabId(_ uuid: UUID) throws {
         var fetchError: Error?
@@ -158,7 +158,7 @@ final class TabsDBClient {
                 fetchError = error
             }
         }
-        
+
         if let cdError = fetchError {
             throw cdError
         }
@@ -202,7 +202,7 @@ fileprivate extension Tab {
         } else {
             cachedSite = nil
         }
-        
+
         guard let cachedContentType = Tab.ContentType.create(rawValue: cdTab.contentType, site: cachedSite) else {
             return nil
         }
@@ -215,7 +215,7 @@ fileprivate extension Tab {
         self.init(contentType: cachedContentType,
                   idenifier: identifier,
                   created: createdTime)
-        
+
     }
 }
 
@@ -267,7 +267,7 @@ extension TabsDBClient {
             return result.compactMap {Tab(cdTab: $0)}
         }
     }
-    
+
     func insert(tab: Tab) async throws {
         return try await managedContext.perform { [weak managedContext] in
             guard let managedContext else {
@@ -277,11 +277,11 @@ extension TabsDBClient {
             try managedContext.save()
         }
     }
-    
+
     func select(tab: Tab) async throws {
         try await setSettingsSelectedTabId(tab.id)
     }
-    
+
     private func setSettingsSelectedTabId(_ uuid: UUID) async throws {
         return try await managedContext.perform(schedule: .enqueued) { [weak managedContext] in
             guard let managedContext else {
@@ -303,16 +303,16 @@ extension TabsDBClient {
             }
         }
     }
-    
+
     func selectedTabId() async throws -> UUID {
         return try await managedContext.perform { [weak managedContext] in
             guard let managedContext else {
                 throw TabsCoreDataError.mgContextNil
             }
-            
+
             let fetchRequest: NSFetchRequest<CDAppSettings> = CDAppSettings.fetchRequest()
             fetchRequest.fetchLimit = 1
-            
+
             let result = try managedContext.fetch(fetchRequest)
             guard !result.isEmpty else {
                 throw TabsCoreDataError.noAppSettingsRecordWasFound

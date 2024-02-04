@@ -13,13 +13,13 @@ struct DisableableButton: View {
     private let disabled: Bool
     private let imageName: String
     private let onTap: () -> Void
-    
+
     init(_ imageName: String, _ disabled: Bool, _ onTap: @MainActor @escaping () -> Void) {
         self.imageName = imageName
         self.disabled = disabled
         self.onTap = onTap
     }
-    
+
     var body: some View {
         Button {
             onTap()

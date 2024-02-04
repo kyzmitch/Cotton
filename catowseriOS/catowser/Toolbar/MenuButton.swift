@@ -11,13 +11,13 @@ import SwiftUI
 struct MenuButton: View {
     @Binding private var showSearchSuggestions: Bool
     @Binding private var showingMenu: Bool
-    
+
     init(_ showSearchSuggestions: Binding<Bool>,
          _ showingMenu: Binding<Bool>) {
         _showSearchSuggestions = showSearchSuggestions
         _showingMenu = showingMenu
     }
-    
+
     var body: some View {
         Button {
             showSearchSuggestions = false

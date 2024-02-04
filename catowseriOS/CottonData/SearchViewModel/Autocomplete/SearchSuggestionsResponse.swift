@@ -13,17 +13,17 @@ import BrowserNetworking
 public struct SearchSuggestionsResponse {
     let queryText: String
     let textResults: [String]
-    
+
     init(_ googleResponse: GSearchSuggestionsResponse) {
         queryText = googleResponse.queryText
         textResults = googleResponse.textResults
     }
-    
+
     init(_ ddgoResponse: DDGoSuggestionsResponse) {
         queryText = ddgoResponse.queryText
         textResults = ddgoResponse.textResults
     }
-    
+
     init(_ query: String, _ results: [String]) {
         queryText = query
         textResults = results

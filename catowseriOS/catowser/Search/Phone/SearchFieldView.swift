@@ -11,7 +11,7 @@ import SwiftUI
 final class SearchFieldViewModel {
     @Published var isFocused: Bool
     @Published var submitTapped: Void
-    
+
     init() {
         self.isFocused = false
         submitTapped = ()
@@ -22,9 +22,9 @@ struct SearchFieldView: View {
     @Binding private var textContent: String
     private let showKeyboard: Bool
     @FocusState private var isFocused: Bool
-    
+
     private let vm: SearchFieldViewModel
-    
+
     init(_ textContent: Binding<String>,
          _ showKeyboard: Bool,
          _ vm: SearchFieldViewModel) {
@@ -33,7 +33,7 @@ struct SearchFieldView: View {
         self.showKeyboard = showKeyboard
         isFocused = false
     }
-    
+
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")

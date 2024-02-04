@@ -75,7 +75,7 @@ private extension BaseJSHandler {
         delegate?.didReceiveVideoTags(videoTags.videoTags)
         return true
     }
-    
+
     func handleDOMVideoTags(_ value: Any) -> Bool {
         guard let jsonObject = Data.dataFrom(value) else {
             return false

@@ -13,7 +13,7 @@ public protocol ResponseType: Decodable {
 }
 
 extension ResponseType {
-     static var successCodes: [Int] {
-         return [200, 201]
-     }
+    static var successCodes: [Int] {
+        return [200, 201]
+    }
 }

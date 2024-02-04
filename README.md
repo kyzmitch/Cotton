@@ -2,8 +2,7 @@
 
 # Cotton - web browser for iOS & Android
 
-Features
------------------
+## Features
 - web search autocomplete (DuckDuckGo, google)
 - DNS over https (google) alpha state (can't fully support without VPN profiles)
 - tabs
@@ -14,10 +13,8 @@ Features
 - tabs cache/restore to be able to see the same web sites after app restart
 - own JavaScript plugins (instagram content downloads, html video tags downloads) experimental state
 
-Building the code
------------------
-Environment
------------------
+## Building the code
+### Environment
 - IntelliJ IDEA 2023.2.4 (Community Edition)
 - Xcode 15.0.0
 - Android Studio Giraffe | 2022.3.1 Patch 4
@@ -26,8 +23,11 @@ Environment
 - Kotlin 1.9.20
 - Gradle 7.4.2 for build.gradle.kts in IndelliJ IDEA, but can use 8.1 in wrapper. In Android Studio it is 7.3.0 in build.gradle.kts and 7.4 in wrapper.
 
-Steps
------------------
+### Steps
+#### Make commands
+If you have everything installed, then use `make help` to see how to build `cotton-base` which is needed for Xcode project, if no, then do the following steps
+
+#### Full clear setup
 - install `Android Studio` to have Android SDK for Kotlin Multiplatform project even for iOS build, because gradle file depends on it as well.
 - On macOS update your `.bash_profile` with
 ```
@@ -48,17 +48,19 @@ export PATH="$PATH:/usr/local/Cellar/gradle@7/7.6.2/bin"
     - Tools -> Android -> SDK Manager
     - SDK Tools tab
     - Install `Google Play Licensing Library`
-- Run `cd cotton-base` & `gradle wrapper` if you see an error about Gradle build.
-- `make`
-- open Kotlin `cotton-base` folder using `InteliJ IDEA`
-- run `cotton-base [assembleCottonBaseReleaseXCFramework]` Gradle configuration for iOS client. It is located under `other` section of Gradle tasks list.
-- run `cotton-base [publishAndroidDebugPublicationToMavenLocal]` Gradle configuration for Android client
-- for iOS client:
-    - `cd catowseriOS/`
-    - Open `catowser.xcworkspace`
-    - Build `Cotton` or `Cotton dev` build target
-- for Android client:
-    - open `catowserAndroid` using Android Studio
+
+#### CottonBase common dependency
+##### for iOS client
+- run `make build-cotton-base-ios-release`
+- `cd catowseriOS/`
+- `open catowser.xcworkspace`
+- Build `Cotton` or `Cotton dev` build target from Xcode
+
+##### for Android client
+1. if you use Terminal run `make build-cotton-base-android-release`
+2. if you use IntelliJ IDEA run `cotton-base [publishAndroidDebugPublicationToMavenLocal]` Gradle task
+
+Open `catowserAndroid` folder using Android Studio after that.
 
 Design documents
 -----------------

@@ -12,7 +12,7 @@ import XCTest
 final class SearchSuggestionsViewStateTests: XCTestCase {
     let known1 = ["google.com", "gmail.com"]
     let expected1 = ["google", "gmail"]
-    
+
     func testWaitingForQuery() throws {
         let state: SearchSuggestionsViewState = .waitingForQuery
         XCTAssertEqual(state, .waitingForQuery)
@@ -22,7 +22,7 @@ final class SearchSuggestionsViewStateTests: XCTestCase {
         let section =  Int.random(in: -1000...1000)
         XCTAssertNil(state.value(from: row, section: section))
     }
-    
+
     func testKnownDomainsLoaded() throws {
         let state: SearchSuggestionsViewState = .knownDomainsLoaded(known1)
         XCTAssertEqual(state, .knownDomainsLoaded(known1))
@@ -33,7 +33,7 @@ final class SearchSuggestionsViewStateTests: XCTestCase {
         XCTAssertEqual(state.value(from: 0, section: section), known1[0])
         XCTAssertEqual(state.value(from: 1, section: section), known1[1])
     }
-    
+
     func testEverythingLoaded() throws {
         let state: SearchSuggestionsViewState = .everythingLoaded(known1, expected1)
         XCTAssertEqual(state, .everythingLoaded(known1, expected1))

@@ -40,8 +40,8 @@ class HttpClientTests: XCTestCase {
                                                          RxFreeInterface<MockedGoodEndpointResponse,
                                                                          MockedGoodServer>> = .init(.closure(closureWrapper))
         goodHttpClient.makeRxRequest(for: goodEndpointMock,
-                                        withAccessToken: nil,
-                                        transport: badNetBackendMock)
+                                     withAccessToken: nil,
+                                     transport: badNetBackendMock)
         wait(for: [expectationUrlFail], timeout: 1.0)
     }
 }

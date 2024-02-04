@@ -7,17 +7,15 @@
 //
 
 import Foundation
-import UIKit
 import CoreBrowser
 
-protocol SiteExternalNavigationDelegate: AnyObject {
+public protocol SiteExternalNavigationDelegate: AnyObject {
     func provisionalNavigationDidStart()
     func didSiteOpen(appName: String)
     func loadingProgressdDidChange(_ progress: Float)
     func didBackNavigationUpdate(to canGoBack: Bool)
     func didForwardNavigationUpdate(to canGoForward: Bool)
     func showLoadingProgress(_ show: Bool)
-    func didTabPreviewChange(_ screenshot: UIImage) async
     /// SwiftUI specific callback to notify that no need to initiate a re-use of web view anymore
     func webViewDidHandleReuseAction()
     /// SwiftUI specific to notify about the same view controller when web view changes.
@@ -26,19 +24,9 @@ protocol SiteExternalNavigationDelegate: AnyObject {
     func webViewDidReplace(_ interface: WebViewNavigatable?)
 }
 
-extension SiteExternalNavigationDelegate {
-    func didTabPreviewChange(_ screenshot: UIImage) async {
-        do {
-            try await TabsListManager.shared.setSelectedPreview(screenshot)
-        } catch {
-            print("Fail to update selected tab preview: \(error)")
-        }
-    }
-}
-
-protocol SiteNavigationChangable: AnyObject {
+public protocol SiteNavigationChangable: AnyObject {
     func changeBackButton(to canGoBack: Bool)
     func changeForwardButton(to canGoForward: Bool)
 }
 
-typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable
+public typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable

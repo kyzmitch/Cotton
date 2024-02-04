@@ -21,7 +21,7 @@ extension BaseListViewModelImpl where EnumDataSourceType == WebAutoCompletionSou
 extension WebAutoCompletionSource: CustomStringConvertible {
     public var description: String {
         let key: String
-        
+
         // No need to localize the names
         switch self {
         case .duckduckgo:
@@ -37,6 +37,6 @@ extension WebAutoCompletionSource: Identifiable {
     public var id: RawValue {
         return self.rawValue
     }
-    
+
     public typealias ID = RawValue
 }

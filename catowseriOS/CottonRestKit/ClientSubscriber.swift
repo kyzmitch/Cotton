@@ -11,9 +11,9 @@ import CottonBase
 
 /// Should be used for async interfaces which use RX library
 public typealias RxSubscriber<R, S, RX: RxInterface> = ClientRxSubscriber<R, S, RX>
-    where RX.Server == S, RX.Observer.Response == R
+where RX.Server == S, RX.Observer.Response == R
 public typealias RxVoidSubscriber<S, RX: RxVoidInterface> = ClientRxVoidSubscriber<S, RX>
-    where RX.Server == S
+where RX.Server == S
 /// Can be used for async interfaces which do not need RX stuff, like Combine or simple Closures
 public typealias Subscriber<R: ResponseType, S: ServerDescription> = ClientSubscriber<R, S>
 
@@ -30,13 +30,13 @@ public typealias Subscriber<R: ResponseType, S: ServerDescription> = ClientSubsc
 public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.Observer.Response == R, RX.Server == S {
     /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
     var handlers = Set<ResponseHandlingApi<R, S, RX>>()
-    
+
     public init() {}
-    
+
     public func insert(_ handler: ResponseHandlingApi<R, S, RX>) {
         handlers.insert(handler)
     }
-    
+
     public func remove(_ handler: ResponseHandlingApi<R, S, RX>) {
         handlers.remove(handler)
     }
@@ -46,13 +46,13 @@ public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.Observer.Respons
 public class ClientRxVoidSubscriber<S, RX: RxVoidInterface> where RX.Server == S {
     /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
     var handlers = Set<ResponseVoidHandlingApi<S, RX>>()
-    
+
     public init() {}
-    
+
     public func insert(_ handler: ResponseVoidHandlingApi<S, RX>) {
         handlers.insert(handler)
     }
-    
+
     public func remove(_ handler: ResponseVoidHandlingApi<S, RX>) {
         handlers.remove(handler)
     }

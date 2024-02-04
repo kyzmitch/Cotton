@@ -13,19 +13,19 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     private var searchBarVC: UIViewController?
     private var topSitesVC: (AnyViewController & TopSitesInterface)?
     private var blankVC: UIViewController?
-    
+
     init() {}
-    
+
     var createdDeviceSpecificSearchBarVC: UIViewController? {
         return searchBarVC
     }
-    
+
     var createdToolbaViewController: UIViewController? {
         return nil
     }
-    
+
     // MARK: - Tablet methods
-    
+
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?,
@@ -36,16 +36,19 @@ final class TabletViewControllerFactory: ViewControllerFactory {
         searchBarVC = TabletSearchBarViewController(searchBarDelegate, settingsDelegate, downloadDelegate, uiFramework)
         return searchBarVC
     }
-    
+
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ uiFramework: UIFrameworkType) -> AnyViewController? {
         return nil
     }
-    func tabsPreviewsViewController<C: Navigating>(_ coordinator: C) -> UIViewController? where C.R == TabsScreenRoute {
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute {
         return nil
     }
-    func tabsViewController() -> AnyViewController? {
-        let vc = TabsViewController()
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
+        let vc = TabsViewController(vm)
         return vc
     }
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
@@ -55,7 +58,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
                                               _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute {
         return nil
     }
-    
+
     func topSitesViewController<C: Navigating>(_ coordinator: C?) -> AnyViewController & TopSitesInterface
     where C.R == TopSitesRoute {
         if let existingVC = topSitesVC {
@@ -67,7 +70,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
         topSitesVC = createdVC
         return createdVC
     }
-    
+
     var blankWebPageViewController: UIViewController {
         if let existingVC = blankVC {
             return existingVC

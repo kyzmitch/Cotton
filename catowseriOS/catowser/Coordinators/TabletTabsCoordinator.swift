@@ -15,23 +15,26 @@ final class TabletTabsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
     }
-    
+
     func start() {
         guard isPad else {
             return
         }
-        guard let vc = vcFactory.tabsViewController(), let superView = presenterVC?.controllerView else {
-            return
+        Task {
+            let vm = await ViewModelFactory.shared.allTabsViewModel()
+            guard let vc = vcFactory.tabsViewController(vm), let superView = presenterVC?.controllerView else {
+                return
+            }
+            startedVC = vc
+            vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
+            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
         }
-        startedVC = vc
-        vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
-        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
     }
 }
 
@@ -39,9 +42,9 @@ enum TabletTabsSubview: SubviewPart {}
 
 extension TabletTabsCoordinator: Layouting {
     typealias SP = TabletTabsSubview
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad:
@@ -50,7 +53,7 @@ extension TabletTabsCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {}
 }
 

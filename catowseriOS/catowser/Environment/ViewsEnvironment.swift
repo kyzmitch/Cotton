@@ -11,10 +11,10 @@ import UIKit
 @MainActor
 final class ViewsEnvironment {
     static let shared: ViewsEnvironment = .init()
-    
+
     let reuseManager: WebViewsReuseManager
     let vcFactory: ViewControllerFactory
-    
+
     private init() {
         // Could read global state to inject current UIFrameworkType value right away,
         // and it will make init block this init, probably not good idea
