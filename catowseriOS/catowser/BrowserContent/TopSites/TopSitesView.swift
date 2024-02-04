@@ -12,12 +12,12 @@ struct TopSitesView: View {
     let vm: TopSitesViewModel
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
-    
+
     init(_ vm: TopSitesViewModel, _ mode: SwiftUIMode) {
         self.vm = vm
         self.mode = mode
     }
-    
+
     var body: some View {
         switch mode {
         case .compatible:

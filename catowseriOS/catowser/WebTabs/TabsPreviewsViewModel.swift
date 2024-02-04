@@ -32,20 +32,20 @@ final class TabsPreviewsViewModel {
     @Published var uxState: TabsPreviewState = .loading
     private let readTabUseCase: ReadTabsUseCase
     private let writeTabUseCase: WriteTabsUseCase
-    
+
     init(_ readTabUseCase: ReadTabsUseCase,
          _ writeTabUseCase: WriteTabsUseCase) {
         self.readTabUseCase = readTabUseCase
         self.writeTabUseCase = writeTabUseCase
     }
-    
+
     func load() {
         Task {
             let tabs = await readTabUseCase.allTabs
             uxState = .tabs(dataSource: .init(tabs))
         }
     }
-    
+
     func closeTab(at index: Int) {
         Task {
             guard case let .tabs(box) = uxState else {

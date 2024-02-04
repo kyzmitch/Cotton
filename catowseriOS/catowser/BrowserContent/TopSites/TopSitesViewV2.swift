@@ -14,18 +14,18 @@ import CoreBrowser
 struct TopSitesViewV2: View {
     private let vm: TopSitesViewModel
     @State private var selected: Site?
-    
+
     init(_ vm: TopSitesViewModel) {
         self.vm = vm
     }
-    
+
     /// Number of items which will be displayed in a row
     private let columns: [GridItem] = [
         GridItem(.flexible()),
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
-    
+
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: ImageViewSizes.spacing) {

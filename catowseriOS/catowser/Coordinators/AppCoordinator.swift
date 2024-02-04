@@ -35,7 +35,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     weak var presenterVC: AnyViewController?
     /// navigation view controller needed for some coordinators
     var navigationStack: UINavigationController?
-    
+
     /// Progress view coordinator
     private var loadingProgressCoordinator: LoadingProgressCoordinator?
     /// Web content container coordinator
@@ -63,7 +63,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     private var previousTabContent: Tab.ContentType?
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
-    
+
     /// Need to update this navigation delegate each time it changes,
     /// each time when new tab become visible, we have to set interface
     /// to a new web view associated with that tab.
@@ -76,14 +76,14 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             return vcFactory.createdDeviceSpecificSearchBarVC as? FullSiteNavigationComponent
         }
     }
-    
+
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
         if uiFramework.swiftUIBased {
             // Must do coordinators init earlier
@@ -95,7 +95,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                 toolbarCoordinator?.showNext(.tabs)
             }
         }
-        
+
         Task {
             let defaultTabContent = await DefaultTabProvider.shared.contentState
             let pluginsSource = JSPluginsBuilder()
@@ -116,7 +116,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                                                   suggestionsVM,
                                                   webViewModel)
             startedVC = vc
-            
+
             window.rootViewController = startedVC?.viewController
             window.makeKeyAndVisible()
             // Now, with introducing the actors model
@@ -126,9 +126,9 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
             }
         }
     }
-    
+
     // MARK: - BrowserContentCoordinators
-    
+
     /// Coordinator for inserted child view controller. public for SwiftUI
     var topSitesCoordinator: TopSitesCoordinator?
     /// web view coordinator
@@ -173,7 +173,7 @@ enum MainScreenRoute: Route {
 
 extension AppCoordinator: Navigating {
     typealias R = MainScreenRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .menu(let model, let sourceView, let sourceRect):
@@ -182,7 +182,7 @@ extension AppCoordinator: Navigating {
             open(tabContent: content)
         }
     }
-    
+
     func stop() {
         // Probably it is not necessary because this is a root
         jsPluginsBuilder = nil
@@ -209,7 +209,7 @@ enum MainScreenSubview: SubviewPart {
 
 extension AppCoordinator: Layouting {
     typealias SP = MainScreenSubview
-    
+
     func insertNext(_ subview: SP) {
         switch subview {
         case .tabs:
@@ -230,11 +230,11 @@ extension AppCoordinator: Layouting {
             insertFilesGrid()
         }
     }
-    
+
     func layout(_ step: OwnLayoutStep) {
         // Could do root layout here instead of view controller
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity
     func layoutNext(_ step: LayoutStep<SP>) {
         switch step {
@@ -306,9 +306,9 @@ extension AppCoordinator: BasePluginContentDelegate {
 }
 
 private extension AppCoordinator {
-    
+
     // MARK: - insert methods to start subview coordinators
-    
+
     func insertTabs() {
         guard isPad else {
             return
@@ -320,7 +320,7 @@ private extension AppCoordinator {
         coordinator.start()
         tabletTabsCoordinator = coordinator
     }
-    
+
     func insertSearchBar() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
@@ -328,7 +328,7 @@ private extension AppCoordinator {
         // to have a reference to a delegate for it
         linkTagsCoordinator = LinkTagsCoordinator(vcFactory, presenter)
         linkTagsCoordinator?.parent = self
-        
+
         let coordinator: SearchBarCoordinator = .init(vcFactory,
                                                       presenter,
                                                       linkTagsCoordinator,
@@ -338,13 +338,13 @@ private extension AppCoordinator {
         coordinator.parent = self
         coordinator.start()
         searchBarCoordinator = coordinator
-        
+
         // The easiest way to pass the presenter which is Tablet search bar view controller.
         // Also, need to make sure that search bar coordinator was started before
         // this link tags coordinator to have a view controller initialized in vc factory
         linkTagsCoordinator?.mediaLinksPresenter = vcFactory.createdDeviceSpecificSearchBarVC as? MediaLinksPresenter
     }
-    
+
     func insertLoadingProgress() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
@@ -353,7 +353,7 @@ private extension AppCoordinator {
         coordinator.start()
         loadingProgressCoordinator = coordinator
     }
-    
+
     func insertWebContentContainer() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
@@ -362,15 +362,15 @@ private extension AppCoordinator {
         coordinator.start()
         webContentContainerCoordinator = coordinator
     }
-    
+
     func insertFilesGrid() {
         linkTagsCoordinator?.insertNext(.filesGrid)
     }
-    
+
     func insertLinkTags() {
         linkTagsCoordinator?.start()
     }
-    
+
     func insertToolbar() {
         guard !isPad else {
             return
@@ -389,7 +389,7 @@ private extension AppCoordinator {
         coordinator.start()
         toolbarCoordinator = coordinator
     }
-    
+
     func insertDummyView() {
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
@@ -398,7 +398,7 @@ private extension AppCoordinator {
         coordinator.start()
         bottomViewCoordinator = coordinator
     }
-    
+
     func insertTopSites() {
         guard topSitesCoordinator == nil else {
             return
@@ -414,12 +414,12 @@ private extension AppCoordinator {
         case .swiftUIWrapper, .swiftUI:
             coordinator = .init(vcFactory, startedVC, nil, uiFramework)
         }
-        
+
         coordinator.parent = self
         coordinator.start()
         topSitesCoordinator = coordinator
     }
-    
+
     func insertBlankTab() {
         guard let containerView = webContentContainerCoordinator?.startedView else {
             assertionFailure("Root view controller must have content view")
@@ -432,7 +432,7 @@ private extension AppCoordinator {
         coordinator.start()
         blankContentCoordinator = coordinator
     }
-    
+
     func insertWebTab(_ site: Site) {
         switch uiFramework {
         case .uiKit:
@@ -459,16 +459,16 @@ private extension AppCoordinator {
             break
         }
     }
-    
+
     // MARK: - view did load
-    
+
     func tabsViewDidLoad() {
         guard isPad else {
             return
         }
         tabletTabsCoordinator?.layout(.viewDidLoad())
     }
-    
+
     func searchBarViewDidLoad() {
         // use specific bottom anchor when it is Tablet layout
         // and the most top view is not a superview but tabs view
@@ -477,16 +477,16 @@ private extension AppCoordinator {
         let topAnchor = tabletTabsCoordinator?.startedView?.bottomAnchor
         searchBarCoordinator?.layout(.viewDidLoad(topAnchor))
     }
-    
+
     func loadingProgressViewDidLoad() {
         let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
         loadingProgressCoordinator?.layout(.viewDidLoad(topAnchor))
     }
-    
+
     func filesGridViewDidLoad() {
         linkTagsCoordinator?.layoutNext(.viewDidLoad(.filesGrid))
     }
-    
+
     func webContentContainerViewDidLoad() {
         let topAnchor = loadingProgressCoordinator?.startedVC?.controllerView.bottomAnchor
         // Web content bottom border depends on device layout
@@ -499,12 +499,12 @@ private extension AppCoordinator {
         // MUST be attached later during layout of toolbar or dummy coordinators
         webContentContainerCoordinator?.layout(.viewDidLoad(topAnchor))
     }
-    
+
     func toolbarViewDidLoad() {
         let topAnchor = webContentContainerCoordinator?.startedView?.bottomAnchor
         toolbarCoordinator?.layout(.viewDidLoad(topAnchor, nil))
     }
-    
+
     func dummyViewDidLoad() {
         // top anchor is different on Tablet it is web content container bottom anchor
         // and on Phone it is toolbar bottom anchor
@@ -517,7 +517,7 @@ private extension AppCoordinator {
         }
         bottomViewCoordinator?.layout(.viewDidLoad(topAnchor))
     }
-    
+
     func linkTagsViewDidLoad() {
         let bottomAnchor: NSLayoutYAxisAnchor?
         if isPad {
@@ -529,9 +529,9 @@ private extension AppCoordinator {
         }
         linkTagsCoordinator?.layout(.viewDidLoad(nil, bottomAnchor))
     }
-    
+
     // MARK: - lifecycle navigation methods
-    
+
     func startMenu(_ model: MenuViewModel, _ sourceView: UIView, _ sourceRect: CGRect) {
         let presenter: UIViewController?
         if case .uiKit = uiFramework {
@@ -546,7 +546,7 @@ private extension AppCoordinator {
         // would be used and not a subview layout
         startedCoordinator = coordinator
     }
-    
+
     func open(tabContent: Tab.ContentType) {
         linkTagsCoordinator?.showNext(.closeTags)
         // hide suggestions as well
@@ -556,7 +556,7 @@ private extension AppCoordinator {
             // Optimization to not do remove & insert of the same static view
             return
         }
-        
+
         switch previousTabContent {
         case .site:
             webContentCoordinator?.stop()
@@ -585,15 +585,15 @@ private extension AppCoordinator {
 
         previousTabContent = tabContent
     }
-    
+
     // MARK: - safe area insets
-    
+
     func dummyViewSafeAreaInsetsDidChange() {
         bottomViewCoordinator?.layout(.viewSafeAreaInsetsDidChange)
     }
-    
+
     // MARK: - did layout subviews
-    
+
     func filesGridViewDidLayoutSubviews() {
         // Files grid view height depends on web content view height,
         // search bar view should still be visible when files grid
@@ -653,11 +653,11 @@ extension AppCoordinator: WebContentDelegate {
     func provisionalNavigationDidStart() {
         linkTagsCoordinator?.showNext(.closeTags)
     }
-    
+
     func loadingProgressdDidChange(_ progress: Float) {
         loadingProgressCoordinator?.showNext(.setProgress(progress, false))
     }
-    
+
     func showLoadingProgress(_ show: Bool) {
         loadingProgressCoordinator?.showNext(.showProgress(show))
         loadingProgressCoordinator?.showNext(.setProgress(0, false))
@@ -668,7 +668,7 @@ extension AppCoordinator: SearchBarDelegate {
     func openTab(_ content: Tab.ContentType) {
         showNext(.openTab(content))
     }
-    
+
     func layoutSuggestions() {
         // Pass top and bottom anchors and toolbar height
         let topAnchor = searchBarCoordinator?.startedVC?.controllerView.bottomAnchor
@@ -701,10 +701,10 @@ extension AppCoordinator: DeveloperMenuPresenter {
         let tags: [HTMLVideoTag] = [tag1, tag2]
         didReceiveVideoTags(tags)
     }
-    
+
     func host(_ host: Host, willUpdateJsState enabled: Bool) {
         webContentCoordinator?.showNext(.javaScript(enabled, host))
     }
-    
+
     // swiftlint:disable:next file_length
 }

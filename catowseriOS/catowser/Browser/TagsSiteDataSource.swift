@@ -12,7 +12,7 @@ import CottonPlugins
 enum TagsSiteDataSource {
     case instagram([InstagramVideoNode])
     case htmlVideos([HTMLVideoTag])
-    
+
     var itemsCount: Int {
         switch self {
         case .instagram(let nodes):

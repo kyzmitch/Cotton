@@ -23,7 +23,7 @@ extension BaseListViewModelImpl where EnumDataSourceType == AddedTabPosition {
 extension AddedTabPosition: CustomStringConvertible {
     public var description: String {
         let key: String
-        
+
         switch self {
         case .listEnd:
             key = "txt_tab_add_list_end"
@@ -38,6 +38,6 @@ extension AddedTabPosition: Identifiable {
     public var id: RawValue {
         return self.rawValue
     }
-    
+
     public typealias ID = RawValue
 }

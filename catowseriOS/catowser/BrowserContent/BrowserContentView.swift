@@ -33,7 +33,7 @@ struct BrowserContentView<W: WebViewModel>: View {
     private var siteNavigation: SiteExternalNavigationDelegate?
     /// Web view model
     @ObservedObject private var webVM: W
-    
+
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Bool,
@@ -49,11 +49,11 @@ struct BrowserContentView<W: WebViewModel>: View {
         self.mode = mode
         self.webVM = webVM
     }
-    
+
     var body: some View {
         dynamicContentView
     }
-    
+
     @ViewBuilder
     private var dynamicContentView: some View {
         if isLoading {

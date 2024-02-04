@@ -35,11 +35,11 @@ enum EnumFeaturesHolder {
 extension GenericEnumFeature where E == AsyncApiType {
     var defaultEnumValue: AsyncApiType {
         if #available(iOS 15.0, *) {
-#if swift(>=5.5)
+            #if swift(>=5.5)
             return .asyncAwait
-#else
+            #else
             return .combine
-#endif
+            #endif
         } else {
             return .combine
         }

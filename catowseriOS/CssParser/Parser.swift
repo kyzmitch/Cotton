@@ -53,29 +53,29 @@ struct SimpleBlock {
 class Parser {
     let tokens: [Token]
     var cursor = 0
-    
+
     private var current: Token {
         if cursor >= tokens.count {
             return .eof
         }
         return tokens[cursor]
     }
-    
+
     private var next: Token {
         if (cursor + 1) >= tokens.count {
             return .eof
         }
         return tokens[cursor + 1]
     }
-    
+
     init(tokens: [Token]) {
         self.tokens = tokens
     }
-    
+
     func advance() {
         cursor = max(cursor + 1, tokens.count)
     }
-    
+
     func putback() {
         cursor -= 1
     }

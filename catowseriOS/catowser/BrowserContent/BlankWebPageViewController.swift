@@ -15,16 +15,16 @@ final class BlankWebPageViewController: BaseViewController {
         imgView.translatesAutoresizingMaskIntoConstraints = false
         return imgView
     }()
-    
+
     override func loadView() {
         view = UIView()
 
         view.addSubview(logo)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = .white
 
         logo.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true

@@ -11,14 +11,14 @@ import CoreBrowser
 import Combine
 
 final class TabsPreviewsViewController<C: Navigating>: BaseViewController,
-                                                        CollectionViewInterface,
-                                                        UICollectionViewDelegateFlowLayout,
-                                                        UICollectionViewDataSource,
-                                                        UICollectionViewDelegate
+                                                       CollectionViewInterface,
+                                                       UICollectionViewDelegateFlowLayout,
+                                                       UICollectionViewDataSource,
+                                                       UICollectionViewDelegate
 where C.R == TabsScreenRoute {
-    
+
     private weak var coordinator: C?
-    
+
     private let viewModel: TabsPreviewsViewModel
 
     init(_ coordinator: C,
@@ -112,25 +112,25 @@ where C.R == TabsScreenRoute {
             viewModel.load()
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         Task {
             await TabsDataService.shared.detach(self)
         }
     }
-    
+
     deinit {
         stateHandlerCancellable?.cancel()
     }
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+
     // MARK: - UICollectionViewDelegateFlowLayout
-    
+
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -159,9 +159,9 @@ where C.R == TabsScreenRoute {
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return Sizes.margin
     }
-    
+
     // MARK: - UICollectionViewDataSource
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.uxState.itemsNumber
     }
@@ -184,9 +184,9 @@ where C.R == TabsScreenRoute {
         cell.configure(with: correctTab, at: indexPath.item, delegate: self)
         return cell
     }
-    
+
     // MARK: - UICollectionViewDelegate
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var tab: Tab?
         switch viewModel.uxState {
@@ -195,16 +195,16 @@ where C.R == TabsScreenRoute {
         default:
             coordinator?.showNext(.error)
         }
-        
+
         guard let correctTab = tab else {
             assertionFailure("\(#function) selected tab wasn't found")
             return
         }
-        
+
         coordinator?.showNext(.selectTab(correctTab))
         coordinator?.stop()
     }
-    
+
     // MARK: - private functions
 
     @objc func addTabPressed() {

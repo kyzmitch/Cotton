@@ -13,13 +13,13 @@ public struct HTMLVideoTag {
     public let src: URL
     public let poster: URL?
     public let fileDescription: String
-    
+
     public init(srcURL: URL, posterURL: URL?, name: String) {
         src = srcURL
         poster = posterURL
         self.fileDescription = name
     }
-    
+
     init?(_ videoElement: Element,
           _ elementIndex: Int,
           _ docTitle: String,
@@ -50,15 +50,15 @@ public struct HTMLVideoTag {
         guard let srcURL = URL(string: videoUrl) else {
             return nil
         }
-        
+
         self.src = srcURL
         self.poster = Self.finalPosterURL(thumbnailURLString, mainPosterURL)
         self.fileDescription = tagName
     }
-    
+
     private static func finalPosterURL(_ specificThumbnail: String?, _ mainPosterURL: URL?) -> URL? {
         if let bestThumbnail = specificThumbnail,
-            let thumbnailURL = URL(string: bestThumbnail) {
+           let thumbnailURL = URL(string: bestThumbnail) {
             return thumbnailURL
         }
         return mainPosterURL

@@ -13,7 +13,7 @@ import CottonData
 
 struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     // MARK: - view models of subviews
-    
+
     @StateObject private var searchBarVM: SearchBarViewModel = .init()
     /// A reference to created vm in main view
     @EnvironmentObject private var browserContentVM: BrowserContentViewModel
@@ -27,9 +27,9 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     @ObservedObject private var webVM: W
     /// All tabs view model specific only to table layout
     @EnvironmentObject private var allTabsVM: AllTabsViewModel
-    
+
     // MARK: - Tablet search bar state
-    
+
     /// Search bar action is only needed for SwiftUI UIKit wrapper
     @State private var searchBarAction: SearchBarAction = .clearView
     /// Search suggestion visibility state
@@ -42,33 +42,33 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     @State private var tabsCount: Int = 0
     /// Needs to be fetched from global actor in task to know current value
     @State private var searchProviderType: WebAutoCompletionSource
-    
+
     // MARK: - web content loading state
-    
+
     @State private var showProgress: Bool = false
     @State private var websiteLoadProgress: Double = 0.0
-    
+
     // MARK: - browser content state
-    
+
     @State private var isLoading: Bool = true
     @State private var contentType: Tab.ContentType
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool = false
-    
+
     // MARK: - web view related
-    
-    @State private var webViewInterface: WebViewNavigatable? = nil
-    
+
+    @State private var webViewInterface: WebViewNavigatable?
+
     // MARK: - constants
-    
+
     private let mode: SwiftUIMode
-    
+
     // MARK: - menu
-    
+
     @State private var isDohEnabled: Bool
     @State private var isJavaScriptEnabled: Bool
     @State private var nativeAppRedirectEnabled: Bool
-    
+
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
         if let interface = webViewInterface {
@@ -76,11 +76,11 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
         } else {
             style = .onlyGlobalMenu
         }
-        
+
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
-    
-    init(_ mode: SwiftUIMode, 
+
+    init(_ mode: SwiftUIMode,
          _ defaultContentType: Tab.ContentType,
          _ webVM: W,
          _ searchVM: S) {
@@ -88,16 +88,16 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
         self.searchSuggestionsVM = searchVM
         self.contentType = defaultContentType
         self.mode = mode
-        
+
         // Next states are set to some random "good" values
         // because actualy values need to be fetched from Global actor
-        
+
         searchProviderType = .google
         isDohEnabled = false
         isJavaScriptEnabled = true
         nativeAppRedirectEnabled = true
     }
-    
+
     var body: some View {
         switch mode {
         case .compatible:
@@ -106,7 +106,7 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             fullySwiftUIView
         }
     }
-    
+
     private var uiKitWrapperView: some View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
@@ -123,7 +123,7 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             } else {
                 let jsPlugins = browserContentVM.jsPluginsBuilder
                 let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                BrowserContentView(jsPlugins, 
+                BrowserContentView(jsPlugins,
                                    siteNavigation,
                                    isLoading,
                                    contentType,
@@ -156,7 +156,7 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             webVM.siteNavigation = toolbarVM
         }
     }
-    
+
     private var fullySwiftUIView: some View {
         VStack {
             TabletTabsView(mode)

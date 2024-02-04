@@ -11,12 +11,12 @@ import Foundation
 public final class ReadTabsUseCaseImpl: ReadTabsUseCase {
     private let tabsDataService: TabsDataService
     private let positioning: TabsStates
-    
+
     public init(_ tabsDataService: TabsDataService, _ positioning: TabsStates) {
         self.tabsDataService = tabsDataService
         self.positioning = positioning
     }
-    
+
     public var tabsCount: Int {
         get async {
             let response = await tabsDataService.sendCommand(.getTabsCount)
@@ -26,7 +26,7 @@ public final class ReadTabsUseCaseImpl: ReadTabsUseCase {
             return value
         }
     }
-    
+
     public var selectedId: UUID {
         get async {
             let response = await tabsDataService.sendCommand(.getSelectedTabId)
@@ -36,7 +36,7 @@ public final class ReadTabsUseCaseImpl: ReadTabsUseCase {
             return value
         }
     }
-    
+
     public var allTabs: [Tab] {
         get async {
             let response = await tabsDataService.sendCommand(.getAllTabs)

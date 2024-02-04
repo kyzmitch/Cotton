@@ -15,14 +15,14 @@ final class FilesGridCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private var filesGreedHeightConstraint: NSLayoutConstraint?
     private var hiddenFilesGreedConstraint: NSLayoutConstraint?
     private var showedFilesGreedConstraint: NSLayoutConstraint?
-    
+
     private(set) var isFilesGreedShowed: Bool = false
     private weak var interface: FilesGridPresenter?
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ navigationStack: UINavigationController?) {
@@ -30,12 +30,12 @@ final class FilesGridCoordinator: Coordinator {
         self.presenterVC = presenter
         self.navigationStack = navigationStack
     }
-    
+
     func start() {
         let vc = vcFactory.filesGridViewController()
         interface = vc
         startedVC = vc
-        
+
         guard !isPad else {
             // use popover presentation on tablets
             return
@@ -55,7 +55,7 @@ enum FilesGridRoute: Route {
 
 extension FilesGridCoordinator: Navigating {
     typealias R = FilesGridRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .hide:
@@ -66,7 +66,7 @@ extension FilesGridCoordinator: Navigating {
             showVideos(type, sourceView, sourceRect, tagsDataSource)
         }
     }
-    
+
     // `stop` is not needed, it can be hid and showed
 }
 
@@ -74,9 +74,9 @@ enum FilesGridPart: SubviewPart {}
 
 extension FilesGridCoordinator: Layouting {
     typealias SP = FilesGridPart
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(_, let bottomAnchor, _):
@@ -87,9 +87,9 @@ extension FilesGridCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+
     }
 }
 
@@ -115,19 +115,19 @@ private extension FilesGridCoordinator {
         hiddenFilesGreedConstraint?.isActive = true
         filesGreedHeightConstraint?.isActive = true
     }
-    
+
     func viewDidLayoutSubviews(_ containerHeight: CGFloat?) {
         guard !isPad, let containerHeight = containerHeight else {
             return
         }
-        
+
         let freeHeight: CGFloat = containerHeight - .linkTagsHeight
         filesGreedHeightConstraint?.constant = freeHeight
         hiddenFilesGreedConstraint?.constant = freeHeight
         startedVC?.controllerView.setNeedsLayout()
         startedVC?.controllerView.layoutIfNeeded()
     }
-    
+
     func hide() {
         guard isFilesGreedShowed else {
             return
@@ -141,11 +141,11 @@ private extension FilesGridCoordinator {
             startedVC?.controllerView.layoutIfNeeded()
         }
     }
-    
+
     func clear() {
         interface?.clearFiles()
     }
-    
+
     func showVideos(_ type: LinksType,
                     _ sourceView: UIView,
                     _ sourceRect: CGRect,
@@ -167,7 +167,7 @@ private extension FilesGridCoordinator {
             }
         }
     }
-    
+
     /// Shows files greed view, designed only for Phone layout
     /// for Tablet layout we're using popover.
     func showFilesGreedOnPhoneIfNeeded() {

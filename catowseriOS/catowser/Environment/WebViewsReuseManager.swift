@@ -40,7 +40,7 @@ final class WebViewsReuseManager {
             self.viewsLimit = 2
         }
     }
-    
+
     private func searchWebViewIndex(for site: Site) -> Int? {
         for (i, vc) in views.enumerated() where vc.url?.absoluteString == site.urlInfo.url {
             return i
@@ -61,8 +61,8 @@ final class WebViewsReuseManager {
     where C.R == WebContentRoute {
         // need to search web view with same url as in `site` to restore navigation history
         if useLimitedCache,
-            let index = searchWebViewIndex(for: site),
-            let vc = views[safe: index] {
+           let index = searchWebViewIndex(for: site),
+           let vc = views[safe: index] {
             lastSelectedIndex = index
             return vc
         }
@@ -103,7 +103,7 @@ final class WebViewsReuseManager {
         }
         return vc
     }
-    
+
     @discardableResult
     func removeController(for site: Site) -> Bool {
         guard let index = searchWebViewIndex(for: site) else { return false }

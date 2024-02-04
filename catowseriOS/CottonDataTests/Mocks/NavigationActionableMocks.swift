@@ -12,7 +12,7 @@ import WebKit
 class MockedNavAction: NavigationActionable {
     let navigationType: WKNavigationType
     let request: URLRequest
-    
+
     init(_ url: URL, _ type: WKNavigationType) {
         request = URLRequest(url: url)
         navigationType = type

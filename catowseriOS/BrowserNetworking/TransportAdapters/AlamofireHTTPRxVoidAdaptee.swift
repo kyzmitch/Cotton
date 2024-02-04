@@ -19,11 +19,11 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
     typealias ObserverWrapper = RX
 
     var handlerType: ResponseVoidHandlingApi<Server, ObserverWrapper>
-    
+
     init(_ handlerType: ResponseVoidHandlingApi<Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
-    
+
     func wrapperHandler() -> (Result<Void, HttpError>) -> Void {
         let closure = { [weak self] (result: Result<Void, HttpError>) in
             guard let self = self else {
@@ -51,7 +51,7 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
         }
         return closure
     }
-    
+
     func performVoidRequest(_ request: URLRequest, sucessCodes: [Int]) {
         let dataRequest: DataRequest = AF.request(request)
         dataRequest
@@ -66,7 +66,7 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
                     result = .success(value)
                 }
                 self?.wrapperHandler()(result)
-        }
+            }
         if case let .rxObserver(observerWrapper) = handlerType {
             observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
@@ -75,7 +75,7 @@ final class AlamofireHTTPRxVoidAdaptee<S, RX: RxVoidInterface>: HTTPRxVoidAdapte
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
-    
+
     func transferToCombineState(_ promise: @escaping Future<Void, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {

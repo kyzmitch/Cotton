@@ -20,12 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+
         // This is to fix favicon.ico for Instagram site, calling it once
         // https://github.com/Alamofire/AlamofireImage/issues/378#issuecomment-537275604
-        
+
         ImageResponseSerializer.addAcceptableImageContentTypes(["image/vnd.microsoft.icon", "application/octet-stream"])
-        
+
         // Disable checks for SSL for favicons, but it doesn't work for some reason
         let config: URLSessionConfiguration = ImageDownloader.defaultURLSessionConfiguration()
         let serverTrustManager: ServerTrustManager = .init(allHostsMustBeEvaluated: false, evaluators: [:])
@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                               startRequestsImmediately: false,
                               serverTrustManager: serverTrustManager)
         UIImageView.af.sharedImageDownloader = ImageDownloader(session: session)
-        
+
         return start()
     }
 }

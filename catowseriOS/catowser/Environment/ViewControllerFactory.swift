@@ -15,10 +15,10 @@ import CoreBrowser
  Tried to make view controller factory generic and depend on one generic parameter which
  would be layout type (phone or tablet), but it doesn't give the benefits which are needed, like
  only specific layout can have specific methods which are not needed on another layout.
- 
+
  It has to be stored as `any ViewControllerFactory` and info about specific layout
  is erased.
- 
+
  As a current solution some methods could return nil in concrete factory impl.
  */
 
@@ -38,7 +38,7 @@ protocol ViewControllerFactory: AnyObject {
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
                                          _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController
-    
+
     func webViewController<C: Navigating>(_ coordinator: C?,
                                           _ viewModel: any WebViewModel,
                                           _ mode: UIFrameworkType) -> AnyViewController & WebViewNavigatable
@@ -50,9 +50,9 @@ protocol ViewControllerFactory: AnyObject {
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel,
                                                _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute
-    
+
     // MARK: - layout specific methods with optional results
-    
+
     /// Convinience property to get a reference without input parameters
     var createdDeviceSpecificSearchBarVC: UIViewController? { get }
     /// Convinience property to get a reference without input parameters
@@ -98,7 +98,7 @@ extension ViewControllerFactory {
         case .uiKit:
             vc = MainBrowserViewController(coordinator)
         case .swiftUIWrapper, .swiftUI:
-            vc = MainBrowserV2ViewController(coordinator, 
+            vc = MainBrowserV2ViewController(coordinator,
                                              uiFramework,
                                              defaultContentType,
                                              allTabsVM,
@@ -108,13 +108,13 @@ extension ViewControllerFactory {
         }
         return vc
     }
-    
+
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController {
         let vc: SearchBarBaseViewController = .init(searchBarDelegate, uiFramework)
         return vc
     }
-    
+
     func searchSuggestionsViewController(_ delegate: SearchSuggestionsListDelegate?,
                                          _ viewModel: any SearchSuggestionsViewModel) -> AnyViewController {
         // It seems it should be computed property
@@ -123,30 +123,30 @@ extension ViewControllerFactory {
         let vc: SearchSuggestionsViewController = .init(delegate, viewModel)
         return vc
     }
-    
+
     func webViewController<C: Navigating>(_ coordinator: C?,
                                           _ viewModel: any WebViewModel,
                                           _ mode: UIFrameworkType) -> AnyViewController & WebViewNavigatable
     where C.R == WebContentRoute {
         return WebViewController(coordinator, viewModel, mode)
     }
-    
+
     func siteMenuViewController<C: Navigating>(_ model: MenuViewModel, _ coordinator: C) -> UIViewController
     where C.R == MenuScreenRoute {
         let vc: SiteMenuViewController = .init(model, coordinator)
         return vc
     }
-    
+
     var loadingProgressViewController: AnyViewController {
         let vc: LoadingProgressViewController = .init()
         return vc
     }
-    
+
     func linkTagsViewController(_ delegate: LinkTagsDelegate?) -> AnyViewController & LinkTagsPresenter {
         let vc = LinkTagsViewController.newFromStoryboard(delegate: delegate)
         return vc
     }
-    
+
     func filesGridViewController() -> AnyViewController & FilesGridPresenter {
         let vc = FilesGridViewController.newFromStoryboard()
         return vc

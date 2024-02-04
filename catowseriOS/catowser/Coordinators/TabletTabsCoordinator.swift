@@ -15,13 +15,13 @@ final class TabletTabsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
     }
-    
+
     func start() {
         guard isPad else {
             return
@@ -42,9 +42,9 @@ enum TabletTabsSubview: SubviewPart {}
 
 extension TabletTabsCoordinator: Layouting {
     typealias SP = TabletTabsSubview
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad:
@@ -53,7 +53,7 @@ extension TabletTabsCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {}
 }
 

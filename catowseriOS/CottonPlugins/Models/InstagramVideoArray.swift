@@ -11,7 +11,7 @@ import Foundation
 @available(*, deprecated, message: "Parsing logic moved to JavaScript extension")
 public struct InstagramVideoArray: Decodable {
     public let nodes: [InstagramVideoNode]
-    
+
     public init(from decoder: Decoder) throws {
         var nodes = [InstagramVideoNode]()
         var container = try decoder.unkeyedContainer()

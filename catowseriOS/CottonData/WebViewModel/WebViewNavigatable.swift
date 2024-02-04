@@ -16,7 +16,7 @@ public protocol WebViewNavigatable: AnyObject {
     func goBack()
     func reload()
     func enableJavaScript(_ enabled: Bool, for host: CottonBase.Host)
-    
+
     var host: CottonBase.Host { get }
     var siteSettings: Site.Settings { get }
     var url: URL? { get }

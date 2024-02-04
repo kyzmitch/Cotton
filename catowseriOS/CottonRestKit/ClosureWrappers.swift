@@ -18,14 +18,14 @@ public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: 
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     let endpoint: Endpoint<Server>
     let responseType: Response.Type
-    
+
     public init(_ closure: @escaping (Result<Response, HttpError>) -> Void,
                 _ endpoint: Endpoint<Server>) {
         self.closure = closure
         self.endpoint = endpoint
         responseType = Response.self
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         let typeString = String(describing: responseType)
         hasher.combine(typeString)
@@ -37,7 +37,7 @@ public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: 
             hasher.combine(strAddrs)
         }
     }
-    
+
     public static func == (lhs: ClosureWrapper<Response, Server>, rhs: ClosureWrapper<Response, Server>) -> Bool {
         return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
     }
@@ -50,14 +50,14 @@ public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescrip
     /// Don't need to use endpoint here, but it is needed to create unique hash value for the closure
     let endpoint: Endpoint<Server>
     let responseType: Response.Type
-    
+
     public init(_ promise: @escaping Future<Response, HttpError>.Promise,
                 _ endpoint: Endpoint<Server>) {
         self.promise = promise
         self.endpoint = endpoint
         responseType = Response.self
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         let typeString = String(describing: responseType)
         hasher.combine(typeString)
@@ -69,7 +69,7 @@ public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescrip
             hasher.combine(strAddrs)
         }
     }
-    
+
     public static func == (lhs: CombinePromiseWrapper<Response, Server>,
                            rhs: CombinePromiseWrapper<Response, Server>) -> Bool {
         return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint

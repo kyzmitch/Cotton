@@ -20,9 +20,9 @@ import FeaturesFlagsKit
 @MainActor
 final class ViewModelFactory {
     static let shared: ViewModelFactory = .init()
-    
+
     private init() {}
-    
+
     func searchSuggestionsViewModel(_ searchProviderType: WebAutoCompletionSource) async -> any SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         switch searchProviderType {
@@ -36,7 +36,7 @@ final class ViewModelFactory {
             return SearchSuggestionsViewModelImpl(autocompleteUseCase, vmContext)
         }
     }
-    
+
     func getWebViewModel(_ site: Site?,
                          _ context: WebViewContext,
                          _ siteNavigation: SiteExternalNavigationDelegate?) async -> any WebViewModel {
@@ -46,24 +46,24 @@ final class ViewModelFactory {
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return WebViewModelImpl(googleDnsUseCase, context, selectTabUseCase, writeUseCase, siteNavigation, site)
     }
-    
+
     func tabViewModel(_ tab: Tab) async -> TabViewModel {
         let readUseCase = await UseCaseFactory.shared().findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return TabViewModel(tab, readUseCase, writeUseCase)
     }
-    
+
     func tabsPreviewsViewModel() async -> TabsPreviewsViewModel {
         let readUseCase = await UseCaseFactory.shared().findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return TabsPreviewsViewModel(readUseCase, writeUseCase)
     }
-    
+
     func allTabsViewModel() async -> AllTabsViewModel {
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)
         return AllTabsViewModel(writeUseCase)
     }
-    
+
     func topSitesViewModel() async -> TopSitesViewModel {
         let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         let writeUseCase = await UseCaseFactory.shared().findUseCase(WriteTabsUseCase.self)

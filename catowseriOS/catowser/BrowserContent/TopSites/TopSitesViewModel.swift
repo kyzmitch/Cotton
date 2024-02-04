@@ -13,13 +13,13 @@ import CoreBrowser
 final class TopSitesViewModel: ObservableObject {
     let topSites: [Site]
     private let writeTabUseCase: WriteTabsUseCase
-    
+
     init(_ topSites: [Site],
          _ writeTabUseCase: WriteTabsUseCase) {
         self.topSites = topSites
         self.writeTabUseCase = writeTabUseCase
     }
-    
+
     func replaceSelected(tabContent: Tab.ContentType) {
         Task {
             _ = await writeTabUseCase.replaceSelected(tabContent)

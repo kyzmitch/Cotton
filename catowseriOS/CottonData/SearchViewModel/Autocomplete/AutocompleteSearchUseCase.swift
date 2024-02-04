@@ -20,7 +20,7 @@ public typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpErro
 //sourcery: associatedtype = "Strategy: SearchAutocompleteStrategy"
 public protocol AutocompleteSearchUseCase: BaseUseCase, AutoMockable {
     // swiftlint:enable comment_spacing
-    
+
     associatedtype Strategy: SearchAutocompleteStrategy
     var strategy: Strategy { get }
     func rxFetchSuggestions(_ query: String) -> WebSearchSuggestionsProducer

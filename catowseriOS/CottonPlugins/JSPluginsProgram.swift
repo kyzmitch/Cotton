@@ -12,7 +12,7 @@ import CottonBase
 
 public protocol JSPluginsProgram: AnyObject, Equatable {
     var plugins: [any JavaScriptPlugin] { get }
-    
+
     func inject(to visitor: WKUserContentController, context: CottonBase.Host, canInject: Bool)
     func enable(on webView: JavaScriptEvaluateble, context: CottonBase.Host, jsEnabled: Bool)
 }

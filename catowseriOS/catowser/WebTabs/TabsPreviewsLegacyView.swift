@@ -14,9 +14,9 @@ import SwiftUI
 struct TabsPreviewsLegacyView: CatowserUIVCRepresentable {
 
     init() {}
-    
+
     typealias UIViewControllerType = UIViewController
-    
+
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
         guard let coordinator = interface?.toolbarCoordinator?.startedCoordinator as? PhoneTabsCoordinator else {
@@ -27,6 +27,6 @@ struct TabsPreviewsLegacyView: CatowserUIVCRepresentable {
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }
-    
+
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
 }

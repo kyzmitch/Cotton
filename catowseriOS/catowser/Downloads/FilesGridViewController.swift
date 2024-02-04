@@ -34,7 +34,7 @@ final class FilesGridViewController: UITableViewController, CollectionViewInterf
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = Sizes.rowHeight
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -79,7 +79,7 @@ extension FilesGridViewController {
         cell.titleLabel.preferredMaxLayoutWidth = desiredLabelW
 
         cell.delegate = self
-        
+
         guard let source = filesDataSource else { return cell }
 
         switch source {
@@ -104,7 +104,7 @@ extension FilesGridViewController: FilesGridPresenter {
         filesDataSource = nil
         tableView.reloadData()
     }
-    
+
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)? = nil) {
         guard filesDataSource != source else {
             completion?()
@@ -152,7 +152,7 @@ extension InstagramVideoNode: Downloadable {
     public var url: URL {
         return videoUrl
     }
-    
+
     public var hostname: String {
         return "instagram.com"
     }
@@ -162,7 +162,7 @@ extension HTMLVideoTag: Downloadable {
     public var url: URL {
         return src
     }
-    
+
     public var hostname: String {
         return src.host ?? "unknown_host"
     }

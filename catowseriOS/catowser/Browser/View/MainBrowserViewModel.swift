@@ -16,7 +16,7 @@ final class MainBrowserViewModel<C: BrowserContentCoordinators>: ObservableObjec
     lazy var jsPluginsBuilder: any JSPluginsSource = {
         JSPluginsBuilder().setBase(self).setInstagram(self)
     }()
-    
+
     init(_ coordinatorsInterface: C?) {
         self.coordinatorsInterface = coordinatorsInterface
     }

@@ -22,10 +22,10 @@ final class PhoneTabsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private weak var delegate: PhoneTabsDelegate?
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: any ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ delegate: PhoneTabsDelegate,
@@ -35,7 +35,7 @@ final class PhoneTabsCoordinator: Coordinator {
         self.delegate = delegate
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
         Task {
             let vm = await ViewModelFactory.shared.tabsPreviewsViewModel()
@@ -61,9 +61,9 @@ enum TabsScreenRoute: Route {
 }
 
 extension PhoneTabsCoordinator: Navigating {
-    
+
     typealias R = TabsScreenRoute
-    
+
     func showNext(_ route: TabsScreenRoute) {
         switch route {
         case .selectTab(let contentType):
@@ -74,7 +74,7 @@ extension PhoneTabsCoordinator: Navigating {
             showError()
         }
     }
-    
+
     func stop() {
         startedVC?.viewController.dismiss(animated: true)
         guard !uiFramework.isUIKitFree else {
@@ -94,13 +94,13 @@ private extension PhoneTabsCoordinator {
             await delegate?.didTabSelect(tab)
         }
     }
-    
+
     func showAdded() {
         Task {
             await delegate?.didTabAdd()
         }
     }
-    
+
     func showError() {
         Task {
             let vm = await ViewModelFactory.shared.tabsPreviewsViewModel()

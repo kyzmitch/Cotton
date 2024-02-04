@@ -53,7 +53,7 @@ extension WebViewController: WebViewNavigatable {
         }
         _ = webView?.reload()
     }
-    
+
     func enableJavaScript(_ enabled: Bool, for host: Host) {
         guard viewModel.host == host, let jsSubject = webView else {
             return
@@ -62,15 +62,15 @@ extension WebViewController: WebViewNavigatable {
             await viewModel.setJavaScript(jsSubject, enabled)
         }
     }
-    
+
     var host: Host {
         viewModel.host
     }
-    
+
     var siteSettings: Site.Settings {
         viewModel.settings
     }
-    
+
     var url: URL? {
         viewModel.currentURL
     }

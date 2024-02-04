@@ -27,9 +27,9 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     @ObservedObject private var searchSuggestionsVM: S
     /// Web view model without a specific site
     @ObservedObject private var webVM: W
-    
+
     // MARK: - search bar state
-    
+
     /// Search bar action is only needed for SwiftUI UIKit wrapper
     @State private var searchBarAction: SearchBarAction
     /// Search suggestion visibility state
@@ -38,40 +38,40 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     @State private var searchQuery: String = ""
     /// Needs to be fetched from global actor in task to know current value
     @State private var searchProviderType: WebAutoCompletionSource
-    
+
     // MARK: - web content loading state
-    
+
     @State private var showProgress: Bool = false
     @State private var websiteLoadProgress: Double = 0.0
-    
+
     // MARK: - browser content state
-    
+
     @State private var isLoading: Bool = true
     @State private var contentType: Tab.ContentType
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool = false
-    
+
     // MARK: - web view related
-    
-    @State private var webViewInterface: WebViewNavigatable? = nil
-    
+
+    @State private var webViewInterface: WebViewNavigatable?
+
     // MARK: - constants
-    
+
     private let mode: SwiftUIMode
-    
+
     // MARK: - toolbar
-    
+
     @State private var toolbarVisibility: Visibility
     @State private var showingMenu: Bool = false
     @State private var showingTabs: Bool = false
     @State private var tabsCount: Int = 0
-    
+
     // MARK: - menu
-    
+
     @State private var isDohEnabled: Bool
     @State private var isJavaScriptEnabled: Bool
     @State private var nativeAppRedirectEnabled: Bool
-    
+
     private var menuModel: MenuViewModel {
         let style: BrowserMenuStyle
         if let interface = webViewInterface {
@@ -79,10 +79,10 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
         } else {
             style = .onlyGlobalMenu
         }
-        
+
         return MenuViewModel(style, isDohEnabled, isJavaScriptEnabled, nativeAppRedirectEnabled)
     }
-    
+
     init(_ mode: SwiftUIMode, _ defaultContentType: Tab.ContentType, _ webVM: W, _ searchVM: S) {
         self.webVM = webVM
         self.searchSuggestionsVM = searchVM
@@ -95,16 +95,16 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
         case .full:
             toolbarVisibility = .visible
         }
-        
+
         // Next states are set to some random "good" values
         // because actualy values need to be fetched from Global actor
-        
+
         searchProviderType = .google
         isDohEnabled = false
         isJavaScriptEnabled = true
         nativeAppRedirectEnabled = true
     }
-    
+
     var body: some View {
         switch mode {
         case .compatible:
@@ -113,7 +113,7 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             fullySwiftUIView
         }
     }
-    
+
     private var uiKitWrapperView: some View {
         VStack {
             let searchBarDelegate: UISearchBarDelegate = searchBarVM
@@ -161,7 +161,7 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             webVM.siteNavigation = toolbarVM
         }
     }
-    
+
     private var fullySwiftUIView: some View {
         NavigationView {
             VStack {

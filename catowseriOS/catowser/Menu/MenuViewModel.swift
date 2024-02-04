@@ -27,24 +27,24 @@ protocol DeveloperMenuPresenter: AnyObject {
 @MainActor
 final class MenuViewModel: ObservableObject {
     // MARK: - global settings
-    
+
     @Published var isDohEnabled: Bool
     @Published var isJavaScriptEnabled: Bool
     @Published var nativeAppRedirectEnabled: Bool
-    
+
     // MARK: - specific tab settings
-    
+
     @Published var isTabJSEnabled: Bool
-    
+
     // MARK: - disposables
-    
+
     private var dohChangesCancellable: AnyCancellable?
     private var jsEnabledOptionCancellable: AnyCancellable?
     private var tabjsEnabledCancellable: AnyCancellable?
     private var nativeAppRedirectCancellable: AnyCancellable?
-    
+
     // MARK: - state
-    
+
     let style: BrowserMenuStyle
     private var host: Host? {
         if case let .withSiteMenu(host, _) = style {
@@ -58,22 +58,22 @@ final class MenuViewModel: ObservableObject {
         }
         return nil
     }
-    
+
     // MARK: - delegates
-    
+
     weak var developerMenuPresenter: DeveloperMenuPresenter?
-    
+
     // MARK: - text properties
-    
+
     var siteSectionTitle: String {
         // site section is only available for site menu
         return .localizedStringWithFormat(.siteSectionTtl, host?.rawString ?? "")
     }
-    
+
     let viewTitle: String = .menuTtl
-    
+
     // MARK: - init
-    
+
     /// Depends on menu style and initial values of feaure flags
     init(_ menuStyle: BrowserMenuStyle,
          _ isDohEnabled: Bool,
@@ -89,7 +89,7 @@ final class MenuViewModel: ObservableObject {
         self.isDohEnabled = isDohEnabled
         self.isJavaScriptEnabled = isJavaScriptEnabled
         self.nativeAppRedirectEnabled = nativeAppRedirectEnabled
-        
+
         // for some reason below observers gets triggered
         // right away in init
         dohChangesCancellable = $isDohEnabled
@@ -124,15 +124,15 @@ final class MenuViewModel: ObservableObject {
                 }
             }
     }
-    
+
     deinit {
         dohChangesCancellable?.cancel()
         jsEnabledOptionCancellable?.cancel()
         tabjsEnabledCancellable?.cancel()
     }
-    
+
     // MARK: - dev/debug menu handlers
-    
+
     func emulateLinkTags() {
         developerMenuPresenter?.emulateLinkTags()
     }

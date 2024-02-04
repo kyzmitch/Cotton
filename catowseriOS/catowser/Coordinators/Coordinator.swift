@@ -23,7 +23,7 @@ protocol Coordinator: AnyObject {
     var presenterVC: AnyViewController? { get }
     /// Navigation stack
     var navigationStack: UINavigationController? { get }
-    
+
     func start()
 }
 
@@ -75,10 +75,10 @@ enum OwnLayoutStep {
 @MainActor
 protocol Layouting: AnyObject {
     associatedtype SP: SubviewPart
-    
+
     /// Inserted started view, could be redefined when there is no view controller for coordinator
     var startedView: UIView? { get }
-    
+
     func insertNext(_ subview: SP)
     func layout(_ step: OwnLayoutStep)
     func layoutNext(_ step: LayoutStep<SP>)

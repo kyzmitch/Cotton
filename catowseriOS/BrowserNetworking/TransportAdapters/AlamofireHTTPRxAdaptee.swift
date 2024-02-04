@@ -18,17 +18,17 @@ import CottonBase
 final class AlamofireHTTPRxAdaptee<R,
                                    S,
                                    RX: RxInterface>: HTTPRxAdapter where
-RX.Observer.Response == R, RX.Server == S {
+    RX.Observer.Response == R, RX.Server == S {
     typealias Response = R
     typealias Server = S
     typealias ObserverWrapper = RX
-    
+
     var handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>
-    
+
     init(_ handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
-    
+
     func wrapperHandler() -> (Result<Response, HttpError>) -> Void {
         let closure = { [weak self] (result: Result<Response, HttpError>) in
             guard let self = self else {
@@ -55,7 +55,7 @@ RX.Observer.Response == R, RX.Server == S {
         }
         return closure
     }
-    
+
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
         let dataRequest: DataRequest = AF.request(request)
         dataRequest
@@ -64,19 +64,19 @@ RX.Observer.Response == R, RX.Server == S {
                                queue: .main,
                                decoder: JSONDecoder(),
                                completionHandler: { [weak self] (response) in
-                let result: Result<Response, HttpError>
-                switch response.result {
-                case .success(let value):
-                    result = .success(value)
-                case .failure(let error):
-                    result = .failure(.httpFailure(error: error))
-                }
-                guard let self = self else {
-                    print("Networking backend was deallocated")
-                    return
-                }
-                self.wrapperHandler()(result)
-            })
+                                let result: Result<Response, HttpError>
+                                switch response.result {
+                                case .success(let value):
+                                    result = .success(value)
+                                case .failure(let error):
+                                    result = .failure(.httpFailure(error: error))
+                                }
+                                guard let self = self else {
+                                    print("Networking backend was deallocated")
+                                    return
+                                }
+                                self.wrapperHandler()(result)
+                               })
         if case let .rxObserver(observerWrapper) = handlerType {
             observerWrapper.lifetime.newObserveEnded({
                 dataRequest.cancel()
@@ -85,7 +85,7 @@ RX.Observer.Response == R, RX.Server == S {
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
-    
+
     func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {

@@ -30,10 +30,10 @@ final class WebSearchAutocompleteTests: XCTestCase {
     private lazy var goodContextMock: MockedDNSContext = .init(goodRestClient, rxSubscriber, subscriber)
     private lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
     private var cancellables: Set<AnyCancellable>!
-    
+
     private let input = "g"
     private let results = ["google", "gmail"]
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         cancellables = []
@@ -50,7 +50,7 @@ final class WebSearchAutocompleteTests: XCTestCase {
         goodContextMock = .init(goodRestClient, rxSubscriber, subscriber)
         strategyMock = .init(goodContextMock)
     }
-    
+
     func testRxWebSearchAutocomplete() throws {
         let searchSuggestionsResponse: SearchSuggestionsResponse = .init(input, results)
         typealias SuggestionProducer = SignalProducer<SearchSuggestionsResponse, HttpError>
@@ -67,7 +67,7 @@ final class WebSearchAutocompleteTests: XCTestCase {
         }
         wait(for: [expectationRxSuggestionFail], timeout: 1)
     }
-    
+
     func testCombineWebSearchAutocomplete() throws {
         let promiseValue: SearchSuggestionsResponse = .init(input, results)
         let responsePublisher: AnyPublisher<SearchSuggestionsResponse, HttpError> = Future
@@ -86,7 +86,7 @@ final class WebSearchAutocompleteTests: XCTestCase {
         cancellables.insert(cancellable)
         wait(for: [expectationRxSuggestionFail], timeout: 1)
     }
-    
+
     func testConcurrencyWebSearchAutocomplete() async throws {
         let value: SearchSuggestionsResponse = .init(input, results)
         Given(strategyMock, .suggestionsTask(for: .value(input), willReturn: value))

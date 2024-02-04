@@ -16,19 +16,19 @@ private extension String {
 }
 
 /// Web search suggestions (search autocomplete) facade
-public final class AutocompleteSearchUseCaseImpl<Strategy> : AutocompleteSearchUseCase
+public final class AutocompleteSearchUseCaseImpl<Strategy>: AutocompleteSearchUseCase
 where Strategy: SearchAutocompleteStrategy {
     public let strategy: Strategy
-    
+
     private lazy var waitingQueue = DispatchQueue(label: .waitingQueueName)
     private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated,
                                                        name: .waitingQueueName,
                                                        targeting: waitingQueue)
-    
+
     public init(_ strategy: Strategy) {
         self.strategy = strategy
     }
-    
+
     public func rxFetchSuggestions(_ query: String) -> WebSearchSuggestionsProducer {
         let source = SignalProducer<String, Never>.init(value: query)
         return source
@@ -42,7 +42,7 @@ where Strategy: SearchAutocompleteStrategy {
             })
             .observe(on: QueueScheduler.main)
     }
-    
+
     public func combineFetchSuggestions(_ query: String) -> WebSearchSuggestionsPublisher {
         let source = Just<String>(query)
         return source
@@ -66,7 +66,7 @@ where Strategy: SearchAutocompleteStrategy {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
+
     public func aaFetchSuggestions(_ query: String) async throws -> [String] {
         let response = try await strategy.suggestionsTask(for: query)
         return response.textResults

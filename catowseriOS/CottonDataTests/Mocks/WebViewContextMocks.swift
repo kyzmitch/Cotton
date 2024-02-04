@@ -18,7 +18,7 @@ final class MockedWebViewContext: WebViewContext {
     private let nativeAppRedirect: Bool
     private let asyncApiType: AsyncApiType
     private let appName: String?
-    
+
     init(doh: Bool,
          js: Bool,
          nativeAppRedirect: Bool,
@@ -31,33 +31,33 @@ final class MockedWebViewContext: WebViewContext {
         self.asyncApiType = asyncApiType
         self.appName = appName
     }
-    
+
     /// Method needed to be able to test change of DoH
     /// because View model doesn't save DoH state
     /// and uses Context for that
     func setDNSoverHTTPs(_ enabled: Bool) {
         enableDoH = enabled
     }
-    
+
     public func nativeApp(for host: CottonBase.Host) -> String? {
         guard let value = appName else {
             return nil
         }
         return host.isSimilar(name: value) ? appName : nil
     }
-    
+
     public func isJavaScriptEnabled() async -> Bool {
         return enableJS
     }
-    
+
     public func isDohEnabled() async -> Bool {
         return enableDoH
     }
-    
+
     public func allowNativeAppRedirects() async -> Bool {
         return nativeAppRedirect
     }
-    
+
     public func appAsyncApiTypeValue() -> AsyncApiType {
         return asyncApiType
     }

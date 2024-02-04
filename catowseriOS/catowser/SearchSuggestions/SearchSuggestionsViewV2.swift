@@ -20,17 +20,17 @@ struct SearchSuggestionsViewV2<S: SearchSuggestionsViewModel>: View {
     @State private var suggestions: SearchSuggestionsViewState = .waitingForQuery
     /// A view model
     @EnvironmentObject private var viewModel: S
-    
+
     init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?) {
         self.searchQuery = searchQuery
         self.delegate = delegate
-        /// Possibly already not needed check 
+        /// Possibly already not needed check
         if !searchQuery.isEmpty {
             suggestions = .waitingForQuery
         }
     }
-    
+
     var body: some View {
         dynamicView
             .onChange(of: selected) { newValue in
@@ -45,7 +45,7 @@ struct SearchSuggestionsViewV2<S: SearchSuggestionsViewModel>: View {
                 suggestions = state
             })
     }
-    
+
     @ViewBuilder
     private var dynamicView: some View {
         switch suggestions {

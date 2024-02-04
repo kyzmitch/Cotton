@@ -25,23 +25,23 @@ final class UseCaseFactory {
         internalInstance = created
         return created
     }
-    
+
     static private var internalInstance: UseCasesHolder?
-    
+
     actor UseCasesHolder {
         private let locator: UseCaseLocator
-        
+
         init() async {
             locator = .init()
             await registerTabsUseCases()
             registerSearchAutocompleteUseCases()
             registerDnsResolveUseCases()
         }
-        
+
         func findUseCase<T>(_ type: T.Type, _ key: String? = nil) -> T {
             locator.findService(type, key)!
         }
-        
+
         /// Have to use async functions and actor to be able to get
         /// a reference to data service and also because this
         /// factory should be a singleton as well
@@ -54,7 +54,7 @@ final class UseCaseFactory {
             let selectedTabUseCase: SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
             locator.register(selectedTabUseCase)
         }
-        
+
         private func registerSearchAutocompleteUseCases() {
             let googleContext = GoogleContext(HttpEnvironment.shared.googleClient,
                                               HttpEnvironment.shared.googleClientRxSubscriber,
@@ -62,7 +62,7 @@ final class UseCaseFactory {
             let googleStrategy = GoogleAutocompleteStrategy(googleContext)
             let googleUseCase: any AutocompleteSearchUseCase = AutocompleteSearchUseCaseImpl(googleStrategy)
             locator.registerNamed(googleUseCase, .googleAutocompleteUseCase)
-            
+
             let ddGoContext = DDGoContext(HttpEnvironment.shared.duckduckgoClient,
                                           HttpEnvironment.shared.duckduckgoClientRxSubscriber,
                                           HttpEnvironment.shared.duckduckgoClientSubscriber)
@@ -70,13 +70,13 @@ final class UseCaseFactory {
             let ddGoUseCase: any AutocompleteSearchUseCase = AutocompleteSearchUseCaseImpl(ddGoStrategy)
             locator.registerNamed(ddGoUseCase, .duckDuckGoAutocompleteUseCase)
         }
-        
+
         private func registerDnsResolveUseCases() {
             /// It is the same context for any site or view model, maybe it makes sense to use only one
             let googleContext = GoogleDNSContext(HttpEnvironment.shared.dnsClient,
                                                  HttpEnvironment.shared.dnsClientRxSubscriber,
                                                  HttpEnvironment.shared.dnsClientSubscriber)
-            
+
             let googleStrategy = GoogleDNSStrategy(googleContext)
             let googleUseCase: any ResolveDNSUseCase = ResolveDNSUseCaseImpl(googleStrategy)
             locator.registerNamed(googleUseCase, .googleResolveDnsUseCase)

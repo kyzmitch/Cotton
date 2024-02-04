@@ -16,10 +16,10 @@ final class TabViewModel {
     private var tab: Tab
     private let readTabUseCase: ReadTabsUseCase
     private let writeTabUseCase: WriteTabsUseCase
-    
+
     @Published var state: TabViewState
-    
-    init(_ tab: Tab, 
+
+    init(_ tab: Tab,
          _ readTabUseCase: ReadTabsUseCase,
          _ writeTabUseCase: WriteTabsUseCase) {
         self.tab = tab
@@ -27,9 +27,9 @@ final class TabViewModel {
         self.writeTabUseCase = writeTabUseCase
         _state = .init(initialValue: .deSelected(tab.title, nil))
     }
-    
+
     // MARK: - public functions
-    
+
     func load() {
         Task {
             let selectedTabId = await readTabUseCase.selectedId
@@ -48,7 +48,7 @@ final class TabViewModel {
             }
         }
     }
-    
+
     func close() {
         if let site = tab.site {
             WebViewsReuseManager.shared.removeController(for: site)
@@ -57,16 +57,16 @@ final class TabViewModel {
             await writeTabUseCase.close(tab: tab)
         }
     }
-    
+
     func activate() {
         print("\(#function): selected tab with id: \(tab.id)")
         Task {
             await writeTabUseCase.select(tab: tab)
         }
     }
-    
+
     // MARK: - private
-    
+
     /// Loading of favicon doesn't depend on `self`
     private static func loadFavicon(_ site: Site) async -> ImageSource? {
         if let hqImage = site.favicon() {
@@ -80,7 +80,7 @@ final class TabViewModel {
             print("Fail to resolve favicon url: \(error)")
             url = nil
         }
-        
+
         let source: ImageSource
         switch (url, site.favicon()) {
         case (let url?, nil):
@@ -109,7 +109,7 @@ extension TabViewModel: TabsObserver {
             state = state.deSelected()
         }
     }
-    
+
     func tabDidReplace(_ tab: Tab, at index: Int) async {
         guard self.tab.id == tab.id else {
             return
@@ -121,7 +121,7 @@ extension TabViewModel: TabsObserver {
         } else {
             favicon = nil
         }
-        
+
         state = state.withNew(tab.title, favicon)
     }
 }

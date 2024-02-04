@@ -14,17 +14,17 @@ import CottonBase
 final class MockedHTTPAdapteeWithFail<R,
                                       S,
                                       RX: RxInterface>: HTTPRxAdapter where
-RX.Observer.Response == R, RX.Server == S {
+    RX.Observer.Response == R, RX.Server == S {
     typealias Response = R
     typealias Server = S
     typealias ObserverWrapper = RX
-    
+
     var handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>
-    
+
     init(_ handlerType: ResponseHandlingApi<Response, Server, ObserverWrapper>) {
         self.handlerType = handlerType
     }
-    
+
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
@@ -32,7 +32,7 @@ RX.Observer.Response == R, RX.Server == S {
             self?.wrapperHandler()(result)
         }
     }
-    
+
     func wrapperHandler() -> (Result<Response, HttpError>) -> Void {
         let closure = { [weak self] (result: Result<Response, HttpError>) in
             guard let self = self else {
@@ -59,9 +59,9 @@ RX.Observer.Response == R, RX.Server == S {
         }
         return closure
     }
-    
+
     func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
-        
+
     }
 }

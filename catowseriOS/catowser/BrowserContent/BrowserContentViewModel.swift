@@ -29,7 +29,7 @@ final class BrowserContentViewModel: ObservableObject {
     private var previousTabContent: Tab.ContentType?
     /// To avoid app start case
     private var firstTabContentSelect: Bool
-    
+
     init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: Tab.ContentType) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
@@ -60,12 +60,12 @@ extension BrowserContentViewModel: TabsObserver {
         } else {
             webViewNeedsUpdate = ()
         }
-        
+
         if contentType != content {
             contentType = content
         }
     }
-    
+
     func tabDidReplace(_ tab: Tab, at index: Int) async {
         if loading {
             loading = false
@@ -74,7 +74,7 @@ extension BrowserContentViewModel: TabsObserver {
             contentType = tab.contentType
         }
     }
-    
+
     func updateTabsCount(with tabsCount: Int) async {
         self.tabsCount = tabsCount
     }

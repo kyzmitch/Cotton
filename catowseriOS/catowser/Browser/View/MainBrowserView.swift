@@ -55,7 +55,7 @@ struct MainBrowserView
     @StateObject private var webVM: W
     /// Default content type is determined in async way, so, would be good to pass it like this
     private let defaultContentType: Tab.ContentType
-    
+
     init(_ coordinatorsInterface: C,
          _ uiFrameworkType: UIFrameworkType,
          _ defaultContentType: Tab.ContentType,
@@ -74,7 +74,7 @@ struct MainBrowserView
         self.searchSuggestionsVM = searchSuggestionsVM
         _webVM = StateObject(wrappedValue: webVM)
     }
-    
+
     var body: some View {
         Group {
             if isPad {

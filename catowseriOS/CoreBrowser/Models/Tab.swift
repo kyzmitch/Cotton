@@ -19,7 +19,7 @@ public extension Tab {
         case homepage
         case favorites
         case topSites
-        
+
         /// Needed for database representation
         public var rawValue: Int16 {
             switch self {
@@ -35,7 +35,7 @@ public extension Tab {
                 return 4
             }
         }
-        
+
         /// Returns .blank for wrong parameters
         public static func create(rawValue: Int16, site: Site? = nil) -> ContentType? {
             switch rawValue {
@@ -80,15 +80,15 @@ public extension Tab {
                 return ""
             }
         }
-        
+
         public var site: Site? {
             guard case let .site(site) = self else {
                 return nil
             }
-            
+
             return site
         }
-        
+
         /// Shows if content type static or has dynamic dependecy like `Site`
         public var isStatic: Bool {
             if case .site = self {
@@ -189,22 +189,22 @@ public struct Tab: Sendable {
     public var title: String {
         return contentType.title
     }
-    
+
     /// Not using `UIImage` to not depend on UIKit
     public var previewData: Data?
 
     public var searchBarContent: String {
         return contentType.searchBarContent
     }
-    
+
     public var site: Site? {
         return contentType.site
     }
-    
+
     public func isSelected(_ selectedId: UUID) -> Bool {
         return selectedId == id
     }
-    
+
     public func getVisualState(_ selectedId: UUID) -> VisualState {
         return isSelected(selectedId) ? .selected : .deselected
     }

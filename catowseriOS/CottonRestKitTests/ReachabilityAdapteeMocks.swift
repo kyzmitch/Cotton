@@ -11,14 +11,14 @@ import CottonBase
 
 final class MockedReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {
     public typealias Server = S
-    
+
     public init?(server: Server) {}
-    
+
     public func startListening(onQueue queue: DispatchQueue, onUpdatePerforming listener: @escaping Listener) -> Bool {
         listener(.reachable(.ethernetOrWiFi))
         return true
     }
-    
+
     public func stopListening() {
     }
 }

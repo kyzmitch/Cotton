@@ -18,10 +18,10 @@ final class TopSitesCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private let contentContainerView: UIView?
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ contentContainerView: UIView?,
@@ -31,7 +31,7 @@ final class TopSitesCoordinator: Coordinator {
         self.contentContainerView = contentContainerView
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
         guard uiFramework == .uiKit else {
             return
@@ -45,7 +45,7 @@ final class TopSitesCoordinator: Coordinator {
             let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
             vc.reload(with: DefaultTabProvider.shared.topSites(isJsEnabled))
             presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-            
+
             let topSitesView: UIView = vc.controllerView
             topSitesView.translatesAutoresizingMaskIntoConstraints = false
             topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
@@ -62,7 +62,7 @@ enum TopSitesRoute: Route {
 
 extension TopSitesCoordinator: Navigating {
     typealias R = TopSitesRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .select(let site):
@@ -72,7 +72,7 @@ extension TopSitesCoordinator: Navigating {
             }
         }
     }
-    
+
     func stop() {
         guard uiFramework == .uiKit else {
             return

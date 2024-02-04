@@ -14,18 +14,18 @@ private final class TabsEnvironment {
         if let holder = internalInstance {
             return holder
         }
-        
+
         let created = await ManagerHolder()
         internalInstance = created
         return created
     }
-    
+
     static private var internalInstance: ManagerHolder?
-    
+
     fileprivate actor ManagerHolder {
         let cachedTabsManager: TabsDataService
         private let database: Database
-        
+
         init() async {
             guard let database = Database(name: "CottonDbModel") else {
                 fatalError("Failed to initialize CoreData database")

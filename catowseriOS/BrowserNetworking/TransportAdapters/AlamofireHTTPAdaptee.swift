@@ -18,13 +18,13 @@ import CottonBase
 final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAdapter {
     typealias Response = R
     typealias Server = S
-    
+
     var handlerType: ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>
-    
+
     init(_ handlerType: ResponseHandlingApi<Response, Server, RxFreeDummy<Response, Server>>) {
         self.handlerType = handlerType
     }
-    
+
     func wrapperHandler() -> (Result<Response, HttpError>) -> Void {
         let closure = { [weak self] (result: Result<Response, HttpError>) in
             guard let self = self else {
@@ -45,7 +45,7 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
         }
         return closure
     }
-    
+
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
         let dataRequest: DataRequest = AF.request(request)
         dataRequest
@@ -54,25 +54,25 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
                                queue: .main,
                                decoder: JSONDecoder(),
                                completionHandler: { [weak self] (response) in
-                let result: Result<Response, HttpError>
-                switch response.result {
-                case .success(let value):
-                    result = .success(value)
-                case .failure(let error):
-                    print("Http request failed: \(error.localizedDescription)")
-                    result = .failure(.httpFailure(error: error))
-                }
-                guard let self = self else {
-                    print("Networking backend was deallocated")
-                    return
-                }
-                self.wrapperHandler()(result)
-            })
+                                let result: Result<Response, HttpError>
+                                switch response.result {
+                                case .success(let value):
+                                    result = .success(value)
+                                case .failure(let error):
+                                    print("Http request failed: \(error.localizedDescription)")
+                                    result = .failure(.httpFailure(error: error))
+                                }
+                                guard let self = self else {
+                                    print("Networking backend was deallocated")
+                                    return
+                                }
+                                self.wrapperHandler()(result)
+                               })
         if case .combine = handlerType {
             // https://github.com/kyzmitch/Cotton/issues/14
         }
     }
-    
+
     func transferToCombineState(_ promise: @escaping Future<Response, HttpError>.Promise,
                                 _ endpoint: Endpoint<Server>) {
         if case .waitsForCombinePromise = handlerType {
@@ -80,7 +80,7 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
             handlerType = .combine(promiseWrapper)
         }
     }
-    
+
     func performAsyncRequest(_ request: URLRequest,
                              sucessCodes: [Int]) async throws -> Response {
         do {
@@ -92,6 +92,6 @@ final class AlamofireHTTPAdaptee<R: ResponseType, S: ServerDescription>: HTTPAda
         } catch {
             throw HttpError.httpFailure(error: error)
         }
-        
+
     }
 }

@@ -15,11 +15,11 @@ extension SearchEngine {
             URLQueryItem(name: "oe", value: "utf-8"),
             URLQueryItem(name: "client", value: "firefox")
         ]
-        
+
         return SearchEngine(shortName: "Google",
-                                    domainName: "www.google.com",
-                                    path: "search",
-                                    queryItems: items,
-                                    imageData: .none)
+                            domainName: "www.google.com",
+                            path: "search",
+                            queryItems: items,
+                            imageData: .none)
     }
 }

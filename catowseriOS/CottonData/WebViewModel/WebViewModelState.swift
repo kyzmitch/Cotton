@@ -28,11 +28,11 @@ enum WebViewModelState {
     case finishingLoading(Site.Settings, URL, JavaScriptEvaluateble, _ jsEnabled: Bool, URLInfo)
     case viewing(Site.Settings, URLInfo)
     case updatingJS(Site.Settings, JavaScriptEvaluateble, URLInfo)
-    
+
     enum Error: LocalizedError {
         case unexpectedStateForAction(WebViewModelState, WebViewAction)
         case notImplemented
-        
+
         public var localizedDescription: String {
             switch self {
             case .unexpectedStateForAction(let state, let action):
@@ -42,7 +42,7 @@ enum WebViewModelState {
             }
         }
     }
-    
+
     /// Returns host with domain name (ignore ip address as a host even if it is present)
     var host: CottonBase.Host {
         switch self {
@@ -78,7 +78,7 @@ enum WebViewModelState {
             return uRLInfo.host()
         }
     }
-    
+
     /// Returns URL with domain name, not with ip address as a host
     var platformURL: URL {
         switch self {
@@ -112,12 +112,12 @@ enum WebViewModelState {
             return uRLData.platformURL
         }
     }
-    
+
     /// Returns settings which are always present in any VM state
     var settings: Site.Settings {
         switch self {
         case .pendingLoad:
-            return Site.Settings(isPrivate: false, 
+            return Site.Settings(isPrivate: false,
                                  blockPopups: false,
                                  isJSEnabled: false,
                                  canLoadPlugins: false)
@@ -147,7 +147,7 @@ enum WebViewModelState {
             return settings
         }
     }
-    
+
     // swiftlint:disable:next cyclomatic_complexity
     func sameHost(with url: URL) -> Bool {
         switch self {
@@ -179,7 +179,7 @@ enum WebViewModelState {
             return uRLInfo.host().rawString == url.host || uRLInfo.ipAddressString == url.host
         }
     }
-    
+
     var urlInfo: URLInfo {
         switch self {
         case .pendingLoad:
@@ -233,11 +233,11 @@ extension WebViewModelState: CustomStringConvertible {
         case .pendingLoad:
             return "pendingLoad"
         case .initialized(let site):
-#if DEBUG
+            #if DEBUG
             return "initialized (\(site.urlInfo.debugDescription))"
-#else
+            #else
             return "initialized"
-#endif
+            #endif
         case .pendingPlugins:
             return "pendingPlugins"
         case .injectingPlugins:
@@ -247,43 +247,43 @@ extension WebViewModelState: CustomStringConvertible {
         case .checkingDNResolveSupport:
             return "checkingDNResolveSupport"
         case .resolvingDN(let urlData, let settings):
-#if DEBUG
+            #if DEBUG
             return "resolvingDN (\(urlData.debugDescription), \(settings.description))"
-#else
+            #else
             return "resolvingDN"
-#endif
+            #endif
         case .creatingRequest:
             return "creatingRequest"
         case .updatingWebView(_, let urlData):
-#if DEBUG
+            #if DEBUG
             return "updatingWebView ([\(urlData.debugDescription)])"
-#else
+            #else
             return "updatingWebView"
-#endif
+            #endif
         case .waitingForNavigation(_, let urlInfo):
-#if DEBUG
+            #if DEBUG
             return "waitingForNavigation ([\(urlInfo.debugDescription)])"
-#else
+            #else
             return "waitingForNavigation"
-#endif
+            #endif
         case .finishingLoading(_, _, _, _, let urlInfo):
-#if DEBUG
+            #if DEBUG
             return "finishingLoading ([\(urlInfo.debugDescription)])"
-#else
+            #else
             return "finishingLoading"
-#endif
+            #endif
         case .viewing(_, let urlInfo):
-#if DEBUG
+            #if DEBUG
             return "viewing ([\(urlInfo.debugDescription)])"
-#else
+            #else
             return "viewing"
-#endif
+            #endif
         case .updatingJS(let settings, _, let urlData):
-#if DEBUG
+            #if DEBUG
             return "updatingJS (settings[\(settings.description)], [\(urlData.debugDescription)]"
-#else
+            #else
             return "updatingJS"
-#endif
+            #endif
         }
     }
 }

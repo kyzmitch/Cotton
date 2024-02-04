@@ -14,7 +14,7 @@ import Foundation
 public actor TabsDataService {
     typealias UUIDStream = AsyncStream<UUID>
     typealias IntStream = AsyncStream<Int>
-    
+
     /// Tabs selection strategy
     private let selectionStrategy: TabSelectionStrategy
     /// In memory storage for the tabs
@@ -44,8 +44,8 @@ public actor TabsDataService {
         self.positioning = positioning
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
-        
-#if swift(>=5.9)
+
+        #if swift(>=5.9)
         let (tabIdStream, tabIdContinuation) = AsyncStream.makeStream(of: UUID.self)
         selectedTabIdStream = tabIdStream
         selectedTabIdInput = tabIdContinuation
@@ -53,7 +53,7 @@ public actor TabsDataService {
         let (countStream, countContinuation) = AsyncStream.makeStream(of: Int.self)
         tabsCountStream = countStream
         tabsCountInput = countContinuation
-#else
+        #else
         self.selectedTabIdStream = UUIDStream { continuation in
             // A hack to be able to send values outside of the closure
             selectedTabIdInput = continuation
@@ -62,11 +62,11 @@ public actor TabsDataService {
         self.tabsCountStream = IntStream { continuation in
             tabsCountInput = continuation
         }
-#endif
-        
+        #endif
+
         subscribeForTabsCountChange()
         subscribeForSelectedTabIdChange()
-        
+
         do {
             try await fetchTabs()
         } catch {
@@ -77,7 +77,7 @@ public actor TabsDataService {
             }
         }
     }
-    
+
     public func sendCommand(_ command: TabsServiceCommand) async -> TabsServiceDataOutput {
         switch command {
         case .getTabsCount:
@@ -108,15 +108,15 @@ private extension TabsDataService {
     func handleTabsCountCommand() -> TabsServiceDataOutput {
         return .tabsCount(tabs.count)
     }
-    
+
     func handleSelectedTabIdCommand() -> TabsServiceDataOutput {
         return .selectedTabId(selectedTabIdentifier)
     }
-    
+
     func handleFetchAllTabsCommand() -> TabsServiceDataOutput {
         return .allTabs(tabs)
     }
-    
+
     func handleAddTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
@@ -131,7 +131,7 @@ private extension TabsDataService {
         }
         return .tabAdded
     }
-    
+
     func handleCloseTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
         do {
             let removedTabs = try await storage.remove(tabs: [tab])
@@ -143,14 +143,14 @@ private extension TabsDataService {
         }
         return .tabClosed(tab.id)
     }
-    
+
     func handleCloseTabWithIdCommand(_ tabId: UUID) async -> TabsServiceDataOutput {
         guard let tabToRemove = tabs.first(where: { $0.id == tabId }) else {
             return .tabClosed(nil)
         }
         return await handleCloseTabCommand(tabToRemove)
     }
-    
+
     func handleCloseAllCommand() async -> TabsServiceDataOutput {
         let contentState = await positioning.contentState
         do {
@@ -165,7 +165,7 @@ private extension TabsDataService {
         }
         return .allTabsClosed
     }
-    
+
     func handleSelectTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
         do {
             let identifier = try await storage.select(tab: tab)
@@ -179,7 +179,7 @@ private extension TabsDataService {
         }
         return .tabSelected
     }
-    
+
     func handleReplaceTabContentCommand(_ tabContent: Tab.ContentType) async -> TabsServiceDataOutput {
         guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
             return .tabContentReplaced(TabsListError.notInitializedYet)
@@ -191,7 +191,7 @@ private extension TabsDataService {
         let tabIndex = tabTuple.index
         newTab.contentType = tabContent
         newTab.previewData = nil
-        
+
         do {
             _ = try storage.update(tab: newTab)
             tabs[tabIndex] = newTab
@@ -205,7 +205,7 @@ private extension TabsDataService {
             return .tabContentReplaced(TabsListError.failToUpdateTabContent)
         }
     }
-    
+
     func handleUpdateSelectedTabPreviewCommand(_ image: Data?) async -> TabsServiceDataOutput {
         guard selectedTabIdentifier != positioning.defaultSelectedTabId else {
             return .tabPreviewUpdated(TabsListError.notInitializedYet)
@@ -218,7 +218,7 @@ private extension TabsDataService {
             return .tabPreviewUpdated(TabsListError.notInitializedYet)
         }
         let tabIndex = tabTuple.index
-        
+
         if case .site = tab.contentType, image == nil {
             return .tabPreviewUpdated(TabsListError.wrongTabContent)
         }
@@ -297,7 +297,7 @@ private extension TabsDataService {
             do {
                 if #available(iOS 16, *) {
                     try await Task.sleep(for: interval.dispatchValue)
-                    
+
                 } else {
                     try await Task.sleep(nanoseconds: interval.inNanoseconds)
                 }
@@ -313,7 +313,7 @@ private extension TabsDataService {
             }
         }
     }
-    
+
     func handleCachedTabRemove(_ tab: Tab) async {
         /// if it is a last tab - replace it with a tab with default content
         /// browser can't function without at least one tab
@@ -342,7 +342,7 @@ private extension TabsDataService {
             selectedTabIdInput.yield(selectedTab.id)
         }
     }
-    
+
     func fetchTabs() async throws {
         var cachedTabs = try await storage.fetchAllTabs()
         if cachedTabs.isEmpty {
@@ -359,7 +359,7 @@ private extension TabsDataService {
         selectedTabIdentifier = id
         selectedTabIdInput.yield(id)
     }
-    
+
     func subscribeForTabsCountChange() {
         /// This method can't be async, have to use new Task
         Task {
@@ -370,7 +370,7 @@ private extension TabsDataService {
             }
         }
     }
-    
+
     func subscribeForSelectedTabIdChange() {
         /// This method can't be async - it blocks init,  so have to use new task to avoid this.
         Task {
@@ -380,7 +380,7 @@ private extension TabsDataService {
                 }
                 return identifier == self.positioning.defaultSelectedTabId
             })
-            
+
             for await newSelectedTabId in filteredId {
                 guard let tabTuple = tabs.element(by: newSelectedTabId) else {
                     continue

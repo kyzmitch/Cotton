@@ -20,7 +20,7 @@ public typealias DNSResolvingPublisher = AnyPublisher<URL, DnsError>
 //sourcery: associatedtype = "Strategy: DNSResolvingStrategy"
 public protocol ResolveDNSUseCase: BaseUseCase, AutoMockable {
     // swiftlint:enable comment_spacing
-    
+
     associatedtype Strategy: DNSResolvingStrategy
     var strategy: Strategy { get }
     func rxResolveDomainName(_ url: URL) -> DNSResolvingProducer

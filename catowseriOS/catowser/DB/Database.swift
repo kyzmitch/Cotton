@@ -134,7 +134,7 @@ final class Database {
     private func replacePersistentStore(at url: URL, withPersistentStoreFrom sourceURL: URL) throws {
         let psc = persistentContainer.persistentStoreCoordinator
         try psc.replacePersistentStore(at: url, destinationOptions: nil,
-            withPersistentStoreFrom: sourceURL, sourceOptions: nil, ofType: NSSQLiteStoreType)
+                                       withPersistentStoreFrom: sourceURL, sourceOptions: nil, ofType: NSSQLiteStoreType)
     }
 
     /// Create and return a new private queue `NSManagedObjectContext`. The
@@ -175,14 +175,14 @@ final class Database {
         description.isReadOnly = isReadOnly
         return description
     }
-    
+
     /// Load the persistent store from the default location.
     func loadStore() async throws {
         if let storeURL {
             let description = storeDescription(with: storeURL)
             persistentContainer.persistentStoreDescriptions = [description]
         }
-        
+
         let result: Void = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {
                 continuation.resume(with: .failure(CottonError.zombieSelf))

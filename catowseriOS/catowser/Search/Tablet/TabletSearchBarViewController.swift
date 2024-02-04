@@ -29,11 +29,11 @@ final class TabletSearchBarViewController: BaseViewController {
             reloadNavigationElements(true)
         }
     }
-    
+
     private weak var globalSettingsDelegate: GlobalMenuDelegate?
-    
+
     private weak var downloadPanelDelegate: DownloadPanelPresenter?
-    
+
     init(_ searchBarDelegate: UISearchBarDelegate?,
          _ settingsDelegate: GlobalMenuDelegate?,
          _ downloadDelegate: DownloadPanelPresenter?,
@@ -45,11 +45,11 @@ final class TabletSearchBarViewController: BaseViewController {
         downloadPanelDelegate = downloadDelegate
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private lazy var actionsButton: UIButton = {
         let btn: UIButton
         if #available(iOS 13.0, *) {
@@ -68,7 +68,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
-    
+
     private lazy var downloadLinksButton: UIButton = {
         let img = UIImage(named: "nav-downloads")
         let btn = UIButton()
@@ -77,7 +77,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
-    
+
     private lazy var goBackButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-back")
@@ -87,7 +87,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
-    
+
     private lazy var goForwardButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-forward")
@@ -97,7 +97,7 @@ final class TabletSearchBarViewController: BaseViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
-    
+
     private lazy var reloadButton: UIButton = {
         let btn = UIButton()
         let img = UIImage(named: "nav-refresh")
@@ -114,10 +114,10 @@ final class TabletSearchBarViewController: BaseViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     override func loadView() {
         view = UIView()
-        
+
         view.addSubview(actionsButton)
         view.addSubview(goBackButton)
         view.addSubview(goForwardButton)
@@ -126,7 +126,7 @@ final class TabletSearchBarViewController: BaseViewController {
         add(asChildViewController: searchBarViewController, to: view)
         view.addSubview(lineView)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -140,35 +140,35 @@ final class TabletSearchBarViewController: BaseViewController {
         downloadLinksButton.isEnabled = false
 
         view.backgroundColor = UIConstants.searchBarBackgroundColour
-        
+
         actionsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         actionsButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         actionsButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         actionsButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
+
         goBackButton.leadingAnchor.constraint(equalTo: actionsButton.trailingAnchor).isActive = true
         goBackButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         goBackButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         goBackButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
+
         goForwardButton.leadingAnchor.constraint(equalTo: goBackButton.trailingAnchor).isActive = true
         goForwardButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         goForwardButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         goForwardButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
+
         reloadButton.leadingAnchor.constraint(equalTo: goForwardButton.trailingAnchor).isActive = true
         reloadButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         reloadButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         reloadButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
+
         downloadLinksButton.leadingAnchor.constraint(equalTo: reloadButton.trailingAnchor).isActive = true
         downloadLinksButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         downloadLinksButton.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         downloadLinksButton.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        
+
         let searchBarView: UIView = searchBarViewController.view
         searchBarView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         searchBarView.leadingAnchor.constraint(equalTo: downloadLinksButton.trailingAnchor).isActive = true
         searchBarView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         searchBarView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -179,12 +179,12 @@ final class TabletSearchBarViewController: BaseViewController {
         lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
-    
+
     @objc fileprivate func actionsPressed() {
         let sourceRect = actionsButton.frame
         globalSettingsDelegate?.settingsDidPress(from: view, and: sourceRect)
     }
-    
+
     @objc func downloadsPressed() {
         let sourceRect = downloadLinksButton.frame
         downloadPanelDelegate?.didPressTabletLayoutDownloads(from: view, and: sourceRect)
@@ -199,11 +199,11 @@ final class TabletSearchBarViewController: BaseViewController {
         webViewInterface?.goForward()
         refreshNavigation()
     }
-    
+
     @objc fileprivate func reloadPressed() {
         webViewInterface?.reload()
     }
-    
+
     private func refreshNavigation() {
         // actions should be always enabled to get to global settings
         goBackButton.isEnabled = webViewInterface?.canGoBack ?? false
@@ -215,11 +215,11 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
     func changeBackButton(to canGoBack: Bool) {
         goBackButton.isEnabled = canGoBack
     }
-    
+
     func changeForwardButton(to canGoForward: Bool) {
         goForwardButton.isEnabled = canGoForward
     }
-    
+
     var siteNavigator: WebViewNavigatable? {
         get {
             return webViewInterface
@@ -248,7 +248,7 @@ extension TabletSearchBarViewController: MediaLinksPresenter {
         downloadLinksButton.isEnabled = true
         // can animate button to make it more noticeable for user
     }
-    
+
     var downloadsPopoverStartInfo: (UIView, CGRect) {
         (view, downloadLinksButton.frame)
     }

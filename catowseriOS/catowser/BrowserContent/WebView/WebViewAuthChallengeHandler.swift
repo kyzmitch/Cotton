@@ -16,14 +16,14 @@ private var logAuthChallenge = false
 
 final class WebViewAuthChallengeHandler {
     typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
-    
+
     private let urlInfo: URLInfo
     private let challenge: URLAuthenticationChallenge
     private let completionHandler: AuthHandler
     private let webView: WKWebView
     /// There is an Xcode warning about not calling that on main thread, so, using custom queue
     private let queue: DispatchQueue
-    
+
     init(_ urlInfo: URLInfo,
          _ webView: WKWebView,
          _ challenge: URLAuthenticationChallenge,
@@ -34,7 +34,7 @@ final class WebViewAuthChallengeHandler {
         self.completionHandler = completionHandler
         queue = DispatchQueue(label: .queueNameWith(suffix: "webview.auth-challenge"))
     }
-    
+
     func solve(completion: @escaping (Bool?) -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
             queue.async { [weak self] in
@@ -96,7 +96,7 @@ private extension WebViewAuthChallengeHandler {
                            _ host: String,
                            _ completionHandler: @escaping AuthHandler,
                            _ completion: @escaping (Bool?) -> Void) {
-        
+
         do {
             let evaluator: DefaultTrustEvaluator = .ipHostEvaluator()
             /**
@@ -107,7 +107,7 @@ private extension WebViewAuthChallengeHandler {
              So that, possibly by removing specific certificate from chain
              it will be possible to validate only by using root certificates.
              */
-            
+
             var certificates = serverTrust.af.certificates
             if logAuthChallenge {
                 print("handleServerTrust: domain name - \(host) has \(certificates.count) certificates")
@@ -155,7 +155,7 @@ extension WebViewAuthChallengeHandler: Hashable {
         }
         return true
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         hasher.combine(challenge)
         hasher.combine(urlInfo)

@@ -14,7 +14,7 @@ struct SearchSuggestionsView<S: SearchSuggestionsViewModel>: View {
     private weak var delegate: SearchSuggestionsListDelegate?
     private let mode: SwiftUIMode
     @EnvironmentObject private var viewModel: S
-    
+
     init(_ searchQuery: String,
          _ delegate: SearchSuggestionsListDelegate?,
          _ mode: SwiftUIMode) {
@@ -22,7 +22,7 @@ struct SearchSuggestionsView<S: SearchSuggestionsViewModel>: View {
         self.delegate = delegate
         self.mode = mode
     }
-    
+
     var body: some View {
         switch mode {
         case .compatible:

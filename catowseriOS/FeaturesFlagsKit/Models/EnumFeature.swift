@@ -13,7 +13,7 @@ import Foundation
 public protocol EnumFeature {
     associatedtype EnumValue: CaseIterable & RawRepresentable
     associatedtype RawValue
-    
+
     var defaultEnumValue: EnumValue { get }
     var defaultRawValue: RawValue { get }
     var source: EnumFeatureSource.Type { get }
@@ -36,15 +36,15 @@ extension EnumFeature {
 
 public struct ApplicationEnumFeature<F: EnumFeature> {
     let feature: F
-    
+
     public init(feature: F) {
         self.feature = feature
     }
-    
+
     public var defaultValue: F.RawValue {
         return feature.defaultRawValue
     }
-    
+
     public var defaultEnumValue: F.EnumValue {
         return feature.defaultEnumValue
     }

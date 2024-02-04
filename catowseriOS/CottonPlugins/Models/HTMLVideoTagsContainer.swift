@@ -11,7 +11,7 @@ import SwiftSoup
 
 public struct HTMLVideoTagsContainer {
     public let videoTags: [HTMLVideoTag]
-    
+
     init(htmlMessage: HTMLContentMessage) throws {
         let videoElements: Elements
         do {
@@ -23,20 +23,20 @@ public struct HTMLVideoTagsContainer {
             print("Failed to parse html video tags")
             throw CottonPluginError.parseError
         }
-        
+
         guard videoElements.size() > 0 else {
             throw CottonPluginError.noVideoTags
         }
         let docTitle = htmlMessage.html.documentTitle
         let mainPosterURL = htmlMessage.mainPosterURL
-        
+
         var result: [HTMLVideoTag] = []
         for (i, videoElement) in videoElements.enumerated() {
             let htmlVideoTag = HTMLVideoTag(videoElement, i, docTitle, mainPosterURL)
             guard let tag = htmlVideoTag else { continue }
             result.append(tag)
         }
-        
+
         guard result.count > 0 else {
             throw CottonPluginError.noVideoTags
         }
@@ -50,7 +50,7 @@ extension Document {
         if let title = try? title() {
             docTitle = title
         } else if let docURL = URL(string: location()),
-            let hostname = docURL.host {
+                  let hostname = docURL.host {
             docTitle = hostname
         } else {
             docTitle = UUID().uuidString

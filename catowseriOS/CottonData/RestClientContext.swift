@@ -33,7 +33,7 @@ public protocol RestClientContext: AnyObject, AutoMockable {
     associatedtype ReachabilityAdapter: NetworkReachabilityAdapter where ReachabilityAdapter.Server == Server
     associatedtype Encoder: JSONRequestEncodable
     associatedtype Client: RestInterface where Client.Reachability == ReachabilityAdapter, Client.Encoder == Encoder
-    
+
     /// Alias for a ReactiveSwift type with specific types in place of generics
     typealias Observer = Signal<Response, HttpError>.Observer
     /// Alias for a real type, no need to hide it under protocol
@@ -42,11 +42,11 @@ public protocol RestClientContext: AnyObject, AutoMockable {
     typealias HttpKitRxSubscriber = RxSubscriber<Response, Server, ObserverWrapper>
     /// Alias for a real type, no need to hide it under protocol
     typealias HttpKitSubscriber = Sub<Response, Server>
-    
+
     var client: Client { get }
     var rxSubscriber: HttpKitRxSubscriber { get }
     var subscriber: HttpKitSubscriber { get }
-    
+
     init(_ client: Client,
          _ rxSubscriber: HttpKitRxSubscriber,
          _ subscriber: HttpKitSubscriber)

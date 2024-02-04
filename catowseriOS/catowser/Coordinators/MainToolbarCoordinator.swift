@@ -17,12 +17,12 @@ final class MainToolbarCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
-    
+
     private weak var downloadDelegate: DownloadPanelPresenter?
     private weak var settingsDelegate: GlobalMenuDelegate?
-    
+
     let uiFramework: UIFrameworkType
-    
+
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController?,
          _ downloadDelegate: DownloadPanelPresenter?,
@@ -34,7 +34,7 @@ final class MainToolbarCoordinator: Coordinator {
         self.settingsDelegate = settingsDelegate
         self.uiFramework = uiFramework
     }
-    
+
     func start() {
         guard uiFramework == .uiKit else {
             return
@@ -70,19 +70,19 @@ enum ToolbarRoute: Route {
 
 extension MainToolbarCoordinator: Navigating {
     typealias R = ToolbarRoute
-    
+
     func showNext(_ route: R) {
         switch route {
         case .tabs:
             showTabs()
         }
     }
-    
+
     func showNext(_ route: R, _ presenter: AnyViewController?) {
         if presenter != nil {
             presenterVC = presenter
         }
-        
+
         showNext(route)
     }
 }
@@ -91,9 +91,9 @@ enum ToolbarPart: SubviewPart {}
 
 extension MainToolbarCoordinator: Layouting {
     typealias SP = ToolbarPart
-    
+
     func insertNext(_ subview: SP) {}
-    
+
     func layout(_ step: OwnLayoutStep) {
         switch step {
         case .viewDidLoad(let topAnchor, _, _):
@@ -102,9 +102,9 @@ extension MainToolbarCoordinator: Layouting {
             break
         }
     }
-    
+
     func layoutNext(_ step: LayoutStep<SP>) {
-        
+
     }
 }
 
@@ -134,7 +134,7 @@ private extension MainToolbarCoordinator {
             toolbarView.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
         }
     }
-    
+
     func showTabs() {
         let presenter: AnyViewController?
         if case .uiKit = uiFramework {
@@ -142,7 +142,7 @@ private extension MainToolbarCoordinator {
         } else {
             presenter = presenterVC
         }
-        
+
         // Do we really need to re-create coordinator every time?
         // Because user could tap on tab previews button in toolbar
         // more than once.
@@ -162,7 +162,7 @@ extension MainToolbarCoordinator: PhoneTabsDelegate {
         /// TODO: replace this delegate in Coordinator with new ViewModel which uses WriteTabUseCase
         _ = await TabsDataService.shared.sendCommand(.selectTab(tab))
     }
-    
+
     func didTabAdd() async {
         let contentState = await DefaultTabProvider.shared.contentState
         let tab = Tab(contentType: contentState)

@@ -13,18 +13,18 @@ import CottonData
 
 /**
  A replacement for the native SwiftUI starting point:
- 
+
  @main
  struct CottonApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
- 
-     var body: some Scene {
-         WindowGroup {
-             MainBrowserView()
-         }
-     }
+ @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
+ var body: some Scene {
+ WindowGroup {
+ MainBrowserView()
  }
- 
+ }
+ }
+
  This allows to keep using UIKit views for now as a 2nd option.
  */
 
@@ -33,10 +33,10 @@ final class MainBrowserV2ViewController<
     C: Navigating & BrowserContentCoordinators,
     W: WebViewModel,
     S: SearchSuggestionsViewModel>:
-UIHostingController<MainBrowserView<C, W, S>> where C.R == MainScreenRoute {
+    UIHostingController<MainBrowserView<C, W, S>> where C.R == MainScreenRoute {
     private weak var coordinator: C?
-    
-    init(_ coordinator: C, 
+
+    init(_ coordinator: C,
          _ uiFramework: UIFrameworkType,
          _ defaultContent: Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
@@ -44,7 +44,7 @@ UIHostingController<MainBrowserView<C, W, S>> where C.R == MainScreenRoute {
          _ searchSuggestionsVM: S,
          _ webVM: W) {
         self.coordinator = coordinator
-        
+
         let view = MainBrowserView(coordinator,
                                    uiFramework,
                                    defaultContent,
@@ -54,14 +54,14 @@ UIHostingController<MainBrowserView<C, W, S>> where C.R == MainScreenRoute {
                                    webVM)
         super.init(rootView: view)
     }
-    
+
     @objc required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         coordinator?.stop()
     }
 }

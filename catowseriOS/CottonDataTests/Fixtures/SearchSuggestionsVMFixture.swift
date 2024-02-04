@@ -27,15 +27,15 @@ class SearchSuggestionsVMFixture: XCTestCase {
     var subscriber: Sub<MockedSearchResponse, MockedGoodSearchServer>!
     var rxSubscriber: RxSubscriber<MockedSearchResponse, MockedGoodSearchServer, ObserverWrapper>!
     var goodRestClient: RestInterfaceMock<MockedGoodSearchServer,
-                                                  NetworkReachabilityAdapterMock<MockedGoodSearchServer>,
-                                                  MockedGoodJSONEncoding>!
+                                          NetworkReachabilityAdapterMock<MockedGoodSearchServer>,
+                                          MockedGoodJSONEncoding>!
     lazy var goodContextMock: MockedSearchContext = .init(goodRestClient, rxSubscriber, subscriber)
     lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
     lazy var autocompleteUseCaseMock = AutocompleteSearchUseCaseMock<SearchAutocompleteStrategyMock<MockedSearchContext>>()
     var searchViewContextMock: SearchViewContextMock!
     var knownDomainsStorageMock: KnownDomainsSourceMock!
     var fetchSuggestionsCounter = 0
-    
+
     override func setUpWithError() throws {
         try super.setUpWithError()
         goodServerMock = .init()

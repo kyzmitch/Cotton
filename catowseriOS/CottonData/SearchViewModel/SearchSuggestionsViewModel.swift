@@ -19,7 +19,7 @@ public enum SearchSuggestionsViewState: Equatable {
     case waitingForQuery
     case knownDomainsLoaded(KnownDomains)
     case everythingLoaded(KnownDomains, QuerySuggestions)
-    
+
     public func rowsCount(_ section: Int) -> Int {
         switch self {
         case .waitingForQuery:
@@ -42,7 +42,7 @@ public enum SearchSuggestionsViewState: Equatable {
             }
         }
     }
-    
+
     public var sectionsNumber: Int {
         switch self {
         case .waitingForQuery:
@@ -53,7 +53,7 @@ public enum SearchSuggestionsViewState: Equatable {
             return 2
         }
     }
-    
+
     public func value(from row: Int, section: Int) -> String? {
         switch self {
         case .knownDomainsLoaded(let knownDomains):
@@ -71,7 +71,7 @@ public enum SearchSuggestionsViewState: Equatable {
             return nil
         }
     }
-    
+
     public func sectionTitle(section: Int) -> String? {
         switch section {
         case 0:

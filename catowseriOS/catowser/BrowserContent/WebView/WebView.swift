@@ -25,7 +25,7 @@ struct WebView<W: WebViewModel>: View {
     private let webViewNeedsUpdate: Bool
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
-    
+
     init(_ viewModel: W,
          _ site: Site,
          _ webViewNeedsUpdate: Bool,
@@ -35,7 +35,7 @@ struct WebView<W: WebViewModel>: View {
         self.webViewNeedsUpdate = webViewNeedsUpdate
         self.mode = mode
     }
-    
+
     var body: some View {
         /// There is no system WebView type for SwiftUI,  so that, the mode is not used for now
         WebViewLegacyView(viewModel, site, webViewNeedsUpdate)
@@ -45,7 +45,7 @@ struct WebView<W: WebViewModel>: View {
 /// SwiftUI wrapper around UIKit web view view controller
 private struct WebViewLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
-    
+
     private let viewModel: any WebViewModel
     /// Initial site with an url to load the web view
     private let site: Site
@@ -58,7 +58,7 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
     private var manager: WebViewsReuseManager {
         ViewsEnvironment.shared.reuseManager
     }
-    
+
     init(_ viewModel: any WebViewModel,
          _ site: Site,
          _ webViewNeedsUpdate: Bool) {
@@ -66,16 +66,16 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         self.site = site
         self.webViewNeedsUpdate = webViewNeedsUpdate
     }
-    
+
     func makeUIViewController(context: Context) -> UIViewControllerType {
         /**
          - Can't save web view interface here because
          `View` & `UIViewControllerRepresentable` is immutable type,
          or actually this function `makeUIViewController` is not mutable.
-         
+
          - Could be possible to fetch it from `WebViewsReuseManager` if it is
          configured to use web views cache.
-         
+
          - `makeUIViewController` is not called more than once
          which is not expected, but at least `updateUIViewController`
          is getting called when the state changes. So, that a web view controller
@@ -90,7 +90,7 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
     }
-    
+
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
         guard let reusableWebView = uiViewController as? WebViewReusable else {
             return

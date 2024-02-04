@@ -33,7 +33,7 @@ public protocol RxAnyLifetime {
 public protocol RxInterface: Hashable, AnyObject {
     associatedtype Observer: RxAnyObserver
     associatedtype Server: ServerDescription
-    
+
     var observer: Observer { get }
     var lifetime: RxAnyLifetime { get }
     /// Not needed actually, but maybe we have to use S type somewhere
@@ -55,17 +55,17 @@ public enum ResponseHandlingApi<Response,
     case combine(CombinePromiseWrapper<Response, Server>)
     case waitsForCombinePromise
     case asyncAwaitConcurrency
-    
+
     public typealias ResponseApi<R, S, O> = ResponseHandlingApi<Response, Server, Observer>
-    
+
     // MARK: - convenience methods
-    
+
     public static func closure(_ closure: @escaping (Result<Response, HttpError>) -> Void,
                                _ endpoint: Endpoint<Server>) -> ResponseApi<Response, Server, Observer> {
         let closureWrapper: ClosureWrapper<Response, Server> = .init(closure, endpoint)
         return ResponseHandlingApi<Response, Server, Observer>.closure(closureWrapper)
     }
-    
+
     public func hash(into hasher: inout Hasher) {
         /// TODO:  could use UUID for each `ResponseHandlingApi` to simplify this
         let caseNumber: Int
@@ -88,12 +88,12 @@ public enum ResponseHandlingApi<Response,
         }
         hasher.combine(caseNumber)
     }
-    
+
     public static func == (lhs: ResponseHandlingApi<Response, Server, Observer>,
                            rhs: ResponseHandlingApi<Response, Server, Observer>) -> Bool {
         /**
          Can't compare closures/functions and it is intended.
-         
+
          https://stackoverflow.com/a/25694072
          equality of this sort would be extremely surprising in some generics contexts,
          where you can get reabstraction thunks that adjust the actual signature

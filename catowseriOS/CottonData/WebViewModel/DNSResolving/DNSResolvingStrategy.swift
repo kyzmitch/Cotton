@@ -16,7 +16,7 @@ import AutoMockable
 //sourcery: associatedtype = "Context: RestClientContext"
 public protocol DNSResolvingStrategy: AnyObject, AutoMockable {
     // swiftlint:enable comment_spacing
-    
+
     associatedtype Context: RestClientContext
     init(_ context: Context)
     func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, DnsError>

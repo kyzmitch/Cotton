@@ -12,11 +12,11 @@ import CoreBrowser
 @MainActor
 final class AllTabsViewModel: ObservableObject {
     private let writeTabUseCase: WriteTabsUseCase
-    
+
     init(_ writeTabUseCase: WriteTabsUseCase) {
         self.writeTabUseCase = writeTabUseCase
     }
-    
+
     func addTab(_ tab: Tab) {
         Task {
             await writeTabUseCase.add(tab: tab)

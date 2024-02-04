@@ -54,8 +54,8 @@ extension String {
 extension BasePlugin: Equatable {
     public static func == (lhs: BasePlugin, rhs: BasePlugin) -> Bool {
         return lhs.jsFileName == rhs.jsFileName
-        && lhs.messageHandlerName == rhs.messageHandlerName
-        && lhs.hostKeyword == rhs.hostKeyword
-        && lhs.isMainFrameOnly == rhs.isMainFrameOnly
+            && lhs.messageHandlerName == rhs.messageHandlerName
+            && lhs.hostKeyword == rhs.hostKeyword
+            && lhs.isMainFrameOnly == rhs.isMainFrameOnly
     }
 }

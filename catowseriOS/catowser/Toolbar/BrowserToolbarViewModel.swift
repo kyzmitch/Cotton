@@ -21,18 +21,18 @@ final class BrowserToolbarViewModel: ObservableObject {
     /// Tells that web view has handled re-use action and it is not needed anymore.
     /// Void type can be used, because only notification is needed.
     @Published var stopWebViewReuseAction: Void
-    
+
     // MARK: - only for SwiftUI toolbar
-    
+
     @Published var goBackDisabled: Bool
     @Published var goForwardDisabled: Bool
     @Published var reloadDisabled: Bool
     @Published var downloadsDisabled: Bool
-    
+
     private var vcFactory: ViewControllerFactory {
         ViewsEnvironment.shared.vcFactory
     }
-    
+
     private var siteNavigationDelegate: SiteNavigationChangable? {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return vcFactory.createdToolbaViewController as? SiteNavigationChangable
@@ -40,7 +40,7 @@ final class BrowserToolbarViewModel: ObservableObject {
             return vcFactory.createdDeviceSpecificSearchBarVC as? SiteNavigationChangable
         }
     }
-    
+
     init() {
         webViewInterface = nil
         showProgress = false
@@ -51,15 +51,15 @@ final class BrowserToolbarViewModel: ObservableObject {
         reloadDisabled = true
         downloadsDisabled = true
     }
-    
+
     func goForward() {
         webViewInterface?.goForward()
     }
-    
+
     func goBack() {
         webViewInterface?.goBack()
     }
-    
+
     func reload() {
         webViewInterface?.reload()
     }
@@ -70,29 +70,29 @@ extension BrowserToolbarViewModel: SiteExternalNavigationDelegate {
         goBackDisabled = !canGoBack
         siteNavigationDelegate?.changeBackButton(to: canGoBack)
     }
-    
+
     func didForwardNavigationUpdate(to canGoForward: Bool) {
         goForwardDisabled = !canGoForward
         siteNavigationDelegate?.changeForwardButton(to: canGoForward)
     }
-    
+
     func provisionalNavigationDidStart() {}
 
     func didSiteOpen(appName: String) {}
-    
+
     func loadingProgressdDidChange(_ progress: Float) {
         websiteLoadProgress = Double(progress)
     }
-    
+
     func showLoadingProgress(_ show: Bool) {
         showProgress = show
     }
-    
+
     func webViewDidHandleReuseAction() {
         // web view was re-created, so, all next SwiftUI view updates can be ignored
         stopWebViewReuseAction = ()
     }
-    
+
     func webViewDidReplace(_ interface: WebViewNavigatable?) {
         // This will be called every time web view changes
         // in re-usable web view controller
