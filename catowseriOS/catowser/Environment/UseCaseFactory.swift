@@ -39,6 +39,7 @@ final class UseCaseFactory {
         }
 
         func findUseCase<T>(_ type: T.Type, _ key: String? = nil) -> T {
+            // swiftlint:disable:next force_unwrapping
             locator.findService(type, key)!
         }
 

@@ -119,7 +119,6 @@ extension SearchBarCoordinator: Layouting {
             insertSearchSuggestions(viewModel)
         case .simplySuggestions:
             assertionFailure("Not possible case")
-            break
         }
     }
 
@@ -140,7 +139,6 @@ extension SearchBarCoordinator: Layouting {
                 searhSuggestionsCoordinator?.layout(.viewDidLoad(topAnchor, bottomAnchor, toolbarHeight))
             case .suggestions:
                 assertionFailure("Not possible case")
-                break
             }
         default:
             break
