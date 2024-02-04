@@ -31,6 +31,7 @@ class SearchSuggestionsVMFixture: XCTestCase {
                                                   MockedGoodJSONEncoding>!
     lazy var goodContextMock: MockedSearchContext = .init(goodRestClient, rxSubscriber, subscriber)
     lazy var strategyMock: SearchAutocompleteStrategyMock = .init(goodContextMock)
+    lazy var autocompleteUseCaseMock = AutocompleteSearchUseCaseMock<SearchAutocompleteStrategyMock<MockedSearchContext>>()
     var searchViewContextMock: SearchViewContextMock!
     var knownDomainsStorageMock: KnownDomainsSourceMock!
     var fetchSuggestionsCounter = 0

@@ -26,7 +26,7 @@ final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
     }
     
     func testVMInitAndSuggestionsFetch() async throws {
-        let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
+        let vm: SearchSuggestionsViewModelImpl = .init(autocompleteUseCaseMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
         Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .asyncAwait))
         let input1 = "g"
@@ -51,7 +51,7 @@ final class SearchSuggestionsVMConcurrencyTests: SearchSuggestionsVMFixture {
     }
     
     func testSuggestionsFetchFailure() async throws {
-        let vm: SearchSuggestionsViewModelImpl = .init(strategyMock, searchViewContextMock)
+        let vm: SearchSuggestionsViewModelImpl = .init(autocompleteUseCaseMock, searchViewContextMock)
         XCTAssertEqual(vm.state, .waitingForQuery)
         Given(searchViewContextMock, .appAsyncApiTypeValue(getter: .asyncAwait))
         let input1 = "g"

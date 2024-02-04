@@ -18,7 +18,7 @@ public protocol SearchViewContext: AutoMockable {
     var knownDomainsStorage: KnownDomainsSource { get }
 }
 
-public final class SearchSuggestionsViewModelImpl<Strategy>: SearchSuggestionsViewModel where Strategy: SearchAutocompleteStrategy {
+public final class SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     /// Autocomplete client, probably need to depend on all possible use case (google, duckduckgo, etc.)
     private let autocompleteUseCase: any AutocompleteSearchUseCase
     /// search view context
