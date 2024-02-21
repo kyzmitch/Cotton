@@ -50,7 +50,7 @@ struct MainBrowserView
     /// Top sites view model has async dependencies and has to be injected
     @StateObject private var topSitesVM: TopSitesViewModel
     /// Search suggestions view model has async dependencies and has to be injected
-    private let searchSuggestionsVM: S
+    @StateObject private var searchSuggestionsVM: S
     /// Web view model without a specific site
     @StateObject private var webVM: W
     /// Default content type is determined in async way, so, would be good to pass it like this
@@ -71,7 +71,7 @@ struct MainBrowserView
         self.defaultContentType = defaultContentType
         _allTabsVM = StateObject(wrappedValue: allTabsVM)
         _topSitesVM = StateObject(wrappedValue: topSitesVM)
-        self.searchSuggestionsVM = searchSuggestionsVM
+        _searchSuggestionsVM = StateObject(wrappedValue: searchSuggestionsVM)
         _webVM = StateObject(wrappedValue: webVM)
     }
 
@@ -87,6 +87,7 @@ struct MainBrowserView
         .environmentObject(browserContentVM)
         .environmentObject(allTabsVM)
         .environmentObject(topSitesVM)
+        .environmentObject(searchSuggestionsVM)
         .onAppear {
             Task {
                 await TabsDataService.shared.attach(browserContentVM, notify: true)
