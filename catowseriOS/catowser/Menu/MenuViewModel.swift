@@ -136,6 +136,38 @@ final class MenuViewModel: ObservableObject {
     func emulateLinkTags() {
         developerMenuPresenter?.emulateLinkTags()
     }
+    
+    // MARK: - public interface
+    
+    func setTabAddPosition(_ selected: AddedTabPosition) {
+        Task {
+            await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
+        }
+    }
+    
+    func setTabContent(_ selected: TabContentDefaultState) {
+        Task {
+            await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
+        }
+    }
+    
+    func setAutocomplete(_ selected: WebAutoCompletionSource) {
+        Task {
+            await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
+        }
+    }
+    
+    func setAsyncApi(_ selected: AsyncApiType) {
+        Task {
+            await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
+        }
+    }
+    
+    func setUiFramework(_ selected: UIFrameworkType) {
+        Task {
+            await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
+        }
+    }
 }
 
 private extension String {

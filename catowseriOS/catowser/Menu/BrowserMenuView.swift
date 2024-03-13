@@ -84,38 +84,28 @@ struct BrowserMenuView: View {
                 case .tabAddPosition:
                     BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
                         tabAddPositionRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
-                        }
+                        model.setTabAddPosition(selected)
                     })
                 case .defaultTabContent:
                     BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
                         tabContentRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
-                        }
+                        model.setTabContent(selected)
                     })
                 case .webAutocompletionSource:
                     BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
                         webAutocompleteRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
-                        }
+                        model.setAutocomplete(selected)
                     })
                 case .asyncApi:
                     BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
                         asyncApiRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
-                        }
+                        model.setAsyncApi(selected)
                     })
                 case .uiFramework:
                     BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
                         uiFrameworkRowValue = selected
                         showingAppRestartAlert.toggle()
-                        Task {
-                            await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
-                        }
+                        model.setUiFramework(selected)
                     })
                 }
             })
