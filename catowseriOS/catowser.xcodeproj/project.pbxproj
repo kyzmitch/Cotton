@@ -255,6 +255,8 @@
 		8A4815072922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */; };
 		8A49D80C2BA1EF7100F84700 /* MenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49D80B2BA1EF7100F84700 /* MenuItems.swift */; };
 		8A49D80D2BA1EF7100F84700 /* MenuItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49D80B2BA1EF7100F84700 /* MenuItems.swift */; };
+		8A49D80F2BA21B9B00F84700 /* MenuStatefullLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49D80E2BA21B9B00F84700 /* MenuStatefullLabelView.swift */; };
+		8A49D8102BA21B9B00F84700 /* MenuStatefullLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A49D80E2BA21B9B00F84700 /* MenuStatefullLabelView.swift */; };
 		8A55351A247D740900E3B330 /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A553519247D740900E3B330 /* MenuViewModel.swift */; };
 		8A55351B247D740900E3B330 /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A553519247D740900E3B330 /* MenuViewModel.swift */; };
 		8A566F7F245D7D7B00E71221 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */; };
@@ -1182,6 +1184,7 @@
 		8A478EC12AEE5CEA00DAD162 /* CottonBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CottonBase.framework; path = "../cotton-base/build/bin/iosArm64/releaseFramework/CottonBase.framework"; sourceTree = "<group>"; };
 		8A4815052922A4B700F9DA1F /* SearchSuggestionsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsCoordinator.swift; sourceTree = "<group>"; };
 		8A49D80B2BA1EF7100F84700 /* MenuItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItems.swift; sourceTree = "<group>"; };
+		8A49D80E2BA21B9B00F84700 /* MenuStatefullLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStatefullLabelView.swift; sourceTree = "<group>"; };
 		8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteNavigationProtocols.swift; sourceTree = "<group>"; };
 		8A553519247D740900E3B330 /* MenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewModel.swift; sourceTree = "<group>"; };
 		8A566F7E245D7D7B00E71221 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
@@ -2515,6 +2518,7 @@
 			children = (
 				8AB8018C27C3EDFF002D6628 /* Previews */,
 				8AE3113B247C66DF00FF28B1 /* BrowserMenuView.swift */,
+				8A49D80E2BA21B9B00F84700 /* MenuStatefullLabelView.swift */,
 				8A553519247D740900E3B330 /* MenuViewModel.swift */,
 				8A49D80B2BA1EF7100F84700 /* MenuItems.swift */,
 				8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */,
@@ -3609,6 +3613,7 @@
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
 				8AF305162A6D40720080C93D /* CottonErrors.swift in Sources */,
 				8AE0BDDD292D079300A8BF9E /* LoadingProgressCoordinator.swift in Sources */,
+				8A49D80F2BA21B9B00F84700 /* MenuStatefullLabelView.swift in Sources */,
 				755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
 				8A22D1B42923FDA1005D1F72 /* PhoneTabsCoordinator.swift in Sources */,
 				8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
@@ -3876,6 +3881,7 @@
 				8A8035C524442F0F000E035F /* DomainNativeAppChecker.swift in Sources */,
 				8AF305172A6D40720080C93D /* CottonErrors.swift in Sources */,
 				8AE0BDDE292D079300A8BF9E /* LoadingProgressCoordinator.swift in Sources */,
+				8A49D8102BA21B9B00F84700 /* MenuStatefullLabelView.swift in Sources */,
 				755E10A627CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */,
 				8A22D1B52923FDA1005D1F72 /* PhoneTabsCoordinator.swift in Sources */,
 				8A963C6E25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,

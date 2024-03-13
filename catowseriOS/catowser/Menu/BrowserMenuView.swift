@@ -57,9 +57,7 @@ struct BrowserMenuView: View {
                             }
                         })
                     } label: {
-                        Text(LocalizedStringKey(.tabAddTxt))
-                        Spacer()
-                        Text(verbatim: tabAddPositionRowValue.description).alignRight()
+                        MenuStatefullLabelView(.tabAddTxt, tabAddPositionRowValue.description)
                     }
                     NavigationLink {
                         BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
@@ -69,9 +67,7 @@ struct BrowserMenuView: View {
                             }
                         })
                     } label: {
-                        Text(LocalizedStringKey(.tabContentTxt))
-                        Spacer()
-                        Text(verbatim: tabContentRowValue.description).alignRight()
+                        MenuStatefullLabelView(.tabContentTxt, tabContentRowValue.description)
                     }
                 }
                 Section(header: Text(LocalizedStringKey(.searchSectionTtl))) {
@@ -83,9 +79,7 @@ struct BrowserMenuView: View {
                             }
                         })
                     } label: {
-                        Text(LocalizedStringKey(.autoCompletionKey))
-                        Spacer()
-                        Text(verbatim: webAutocompleteRowValue.description).alignRight()
+                        MenuStatefullLabelView(.autoCompletionKey, webAutocompleteRowValue.description)
                     }
                 }
                 #if DEBUG
@@ -101,9 +95,7 @@ struct BrowserMenuView: View {
                             }
                         })
                     } label: {
-                        Text(LocalizedStringKey(.appAsyncApiTypeTxt))
-                        Spacer()
-                        Text(verbatim: asyncApiRowValue.description).alignRight()
+                        MenuStatefullLabelView(.appAsyncApiTypeTxt, asyncApiRowValue.description)
                     }
                     NavigationLink {
                         BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
@@ -114,9 +106,7 @@ struct BrowserMenuView: View {
                             }
                         })
                     } label: {
-                        Text(LocalizedStringKey(.appUIFrameworkTypeTxt))
-                        Spacer()
-                        Text(verbatim: uiFrameworkRowValue.description).alignRight()
+                        MenuStatefullLabelView(.appUIFrameworkTypeTxt, uiFrameworkRowValue.description)
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
@@ -151,13 +141,6 @@ struct BrowserMenuView: View {
             asyncApiRowValue = await FeatureManager.shared.appAsyncApiTypeValue()
             uiFrameworkRowValue = await FeatureManager.shared.appUIFrameworkValue()
         }
-    }
-}
-
-private extension Text {
-    func alignRight() -> some View {
-        self.frame(maxWidth: .infinity, alignment: .trailing)
-            .multilineTextAlignment(.trailing)
     }
 }
 
