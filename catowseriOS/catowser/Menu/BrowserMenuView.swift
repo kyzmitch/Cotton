@@ -18,7 +18,6 @@ struct BrowserMenuView: View {
     // MARK: - State variables to be able to pop view automatically
 
     @State private var showingAppRestartAlert = false
-    @State private var selected: CottonMenuItem?
 
     // MARK: - Allow to update text view content dynamically
 
@@ -49,37 +48,16 @@ struct BrowserMenuView: View {
                     Toggle(isOn: $model.isJavaScriptEnabled) {
                         Text(LocalizedStringKey(.jsMenuTitle))
                     }
-                    NavigationLink {
-                        BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
-                            tabAddPositionRowValue = selected
-                            Task {
-                                await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
-                            }
-                        })
-                    } label: {
+                    NavigationLink(value: CottonMenuItem.tabAddPosition) {
                         MenuStatefullLabelView(.tabAddTxt, tabAddPositionRowValue.description)
                     }
-                    NavigationLink {
-                        BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
-                            tabContentRowValue = selected
-                            Task {
-                                await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
-                            }
-                        })
-                    } label: {
+                    NavigationLink(value: CottonMenuItem.defaultTabContent) {
                         MenuStatefullLabelView(.tabContentTxt, tabContentRowValue.description)
                     }
                 }
                 Section(header: Text(LocalizedStringKey(.searchSectionTtl))) {
-                    NavigationLink {
-                        BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
-                            webAutocompleteRowValue = selected
-                            Task {
-                                await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
-                            }
-                        })
-                    } label: {
-                        MenuStatefullLabelView(.autoCompletionKey, webAutocompleteRowValue.description)
+                    NavigationLink(value: CottonMenuItem.webAutocompletionSource) {
+                        MenuStatefullLabelView(.webAutoCompleteSourceTxt, webAutocompleteRowValue.description)
                     }
                 }
                 #if DEBUG
@@ -87,25 +65,10 @@ struct BrowserMenuView: View {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
                         Text(LocalizedStringKey(.nativeAppRedirectTitle))
                     }
-                    NavigationLink {
-                        BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
-                            asyncApiRowValue = selected
-                            Task {
-                                await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
-                            }
-                        })
-                    } label: {
+                    NavigationLink(value: CottonMenuItem.asyncApi) {
                         MenuStatefullLabelView(.appAsyncApiTypeTxt, asyncApiRowValue.description)
                     }
-                    NavigationLink {
-                        BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
-                            uiFrameworkRowValue = selected
-                            showingAppRestartAlert.toggle()
-                            Task {
-                                await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
-                            }
-                        })
-                    } label: {
+                    NavigationLink(value: CottonMenuItem.uiFramework) {
                         MenuStatefullLabelView(.appUIFrameworkTypeTxt, uiFrameworkRowValue.description)
                     }
                     Button("Simulate download resources") {
@@ -116,6 +79,46 @@ struct BrowserMenuView: View {
                 }
                 #endif
             }
+            .navigationDestination(for: CottonMenuItem.self, destination: { item in
+                switch item {
+                case .tabAddPosition:
+                    BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
+                        tabAddPositionRowValue = selected
+                        Task {
+                            await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
+                        }
+                    })
+                case .defaultTabContent:
+                    BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
+                        tabContentRowValue = selected
+                        Task {
+                            await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
+                        }
+                    })
+                case .webAutocompletionSource:
+                    BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
+                        webAutocompleteRowValue = selected
+                        Task {
+                            await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
+                        }
+                    })
+                case .asyncApi:
+                    BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
+                        asyncApiRowValue = selected
+                        Task {
+                            await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
+                        }
+                    })
+                case .uiFramework:
+                    BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
+                        uiFrameworkRowValue = selected
+                        showingAppRestartAlert.toggle()
+                        Task {
+                            await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
+                        }
+                    })
+                }
+            })
             .navigationBarTitle(Text(verbatim: model.viewTitle))
             .navigationBarItems(trailing: Button<Text>(LocalizedStringKey(.dismissBtn)) { presentationMode.wrappedValue.dismiss() }
             .foregroundColor(.black))
