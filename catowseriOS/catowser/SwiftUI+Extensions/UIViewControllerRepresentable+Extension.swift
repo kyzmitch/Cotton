@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+@MainActor
 protocol CatowserUIVCRepresentable: UIViewControllerRepresentable {
     var vcFactory: ViewControllerFactory { get }
 }
