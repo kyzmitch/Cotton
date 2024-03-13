@@ -17,12 +17,8 @@ struct BrowserMenuView: View {
 
     // MARK: - State variables to be able to pop view automatically
 
-    @State private var isShowingAddTabSetting = false
-    @State private var isShowingAppAsyncApiSetting = false
-    @State private var isShowingDefaultTabContentSetting = false
-    @State private var isShowingWebAutoCompleteSetting = false
-    @State private var isShowingAppUIFrameworkSetting = false
     @State private var showingAppRestartAlert = false
+    @State private var selected: CottonMenuItem?
 
     // MARK: - Allow to update text view content dynamically
 
@@ -37,88 +33,88 @@ struct BrowserMenuView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 if case .withSiteMenu = model.style {
                     Section(header: Text(model.siteSectionTitle)) {
                         Toggle(isOn: $model.isTabJSEnabled) {
-                            Text(.jsMenuTitle)
+                            Text(LocalizedStringKey(.jsMenuTitle))
                         }
                     }
                 }
-                Section(header: Text(.globalSectionTtl)) {
+                Section(header: Text(LocalizedStringKey(.globalSectionTtl))) {
                     Toggle(isOn: $model.isDohEnabled) {
-                        Text(.dohMenuTitle)
+                        Text(LocalizedStringKey(.dohMenuTitle))
                     }
                     Toggle(isOn: $model.isJavaScriptEnabled) {
-                        Text(.jsMenuTitle)
+                        Text(LocalizedStringKey(.jsMenuTitle))
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
-                        isShowingAddTabSetting = false
-                        tabAddPositionRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
-                        }
-                    }), isActive: $isShowingAddTabSetting) {
-                        Text(.tabAddTxt)
+                    NavigationLink {
+                        BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
+                            tabAddPositionRowValue = selected
+                            Task {
+                                await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
+                            }
+                        })
+                    } label: {
+                        Text(LocalizedStringKey(.tabAddTxt))
                         Spacer()
                         Text(verbatim: tabAddPositionRowValue.description).alignRight()
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
-                        isShowingDefaultTabContentSetting = false
-                        tabContentRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
-                        }
-                    }), isActive: $isShowingDefaultTabContentSetting) {
-                        Text(.tabContentTxt)
+                    NavigationLink {
+                        BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
+                            tabContentRowValue = selected
+                            Task {
+                                await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
+                            }
+                        })
+                    } label: {
+                        Text(LocalizedStringKey(.tabContentTxt))
                         Spacer()
                         Text(verbatim: tabContentRowValue.description).alignRight()
                     }
                 }
-                Section(header: Text(.searchSectionTtl)) {
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
-                        isShowingWebAutoCompleteSetting = false
-                        webAutocompleteRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
-                        }
-                    }), isActive: $isShowingWebAutoCompleteSetting) {
-                        Text(.webAutoCompleteSourceTxt)
+                Section(header: Text(LocalizedStringKey(.searchSectionTtl))) {
+                    NavigationLink {
+                        BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
+                            webAutocompleteRowValue = selected
+                            Task {
+                                await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
+                            }
+                        })
+                    } label: {
+                        Text(LocalizedStringKey(.autoCompletionKey))
                         Spacer()
                         Text(verbatim: webAutocompleteRowValue.description).alignRight()
                     }
                 }
                 #if DEBUG
-                Section(header: Text(.devSectionTtl)) {
+                Section(header: Text(LocalizedStringKey(.devSectionTtl))) {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
-                        Text(.nativeAppRedirectTitle)
+                        Text(LocalizedStringKey(.nativeAppRedirectTitle))
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
-                        isShowingAppAsyncApiSetting = false
-                        asyncApiRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
-                        }
-                    }), isActive: $isShowingAppAsyncApiSetting) {
-                        Text(.appAsyncApiTypeTxt)
+                    NavigationLink {
+                        BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
+                            asyncApiRowValue = selected
+                            Task {
+                                await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
+                            }
+                        })
+                    } label: {
+                        Text(LocalizedStringKey(.appAsyncApiTypeTxt))
                         Spacer()
                         Text(verbatim: asyncApiRowValue.description).alignRight()
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
-                        isShowingAppUIFrameworkSetting = false
-                        uiFrameworkRowValue = selected
-                        showingAppRestartAlert.toggle()
-                        Task {
-                            await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
-                        }
-                    }), isActive: $isShowingAppUIFrameworkSetting) {
-                        Text(.appUIFrameworkTypeTxt)
+                    NavigationLink {
+                        BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
+                            uiFrameworkRowValue = selected
+                            showingAppRestartAlert.toggle()
+                            Task {
+                                await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
+                            }
+                        })
+                    } label: {
+                        Text(LocalizedStringKey(.appUIFrameworkTypeTxt))
                         Spacer()
                         Text(verbatim: uiFrameworkRowValue.description).alignRight()
                     }
@@ -131,10 +127,18 @@ struct BrowserMenuView: View {
                 #endif
             }
             .navigationBarTitle(Text(verbatim: model.viewTitle))
-            .navigationBarItems(trailing: Button<Text>(.dismissBtn) {
-                presentationMode.wrappedValue.dismiss()
-            }.foregroundColor(.black))
-        }.alert(isPresented: $showingAppRestartAlert) {
+            .navigationBarItems(trailing: Button<Text>(LocalizedStringKey(.dismissBtn)) { presentationMode.wrappedValue.dismiss() }
+            .foregroundColor(.black))
+            .navigationDestination(for: CottonMenuItem.self) { menuItem in
+                switch menuItem {
+                case .tabAddPosition:
+                    Text(LocalizedStringKey(.tabAddTxt))
+                default:
+                    Text("Not implemented")
+                }
+            }
+        }
+        .alert(isPresented: $showingAppRestartAlert) {
             Alert(title: Text(verbatim: "App restart is required"),
                   dismissButton: .destructive(Text(verbatim: "Kill app process")) {
                     exit(0) // https://stackoverflow.com/a/8491688
@@ -155,21 +159,6 @@ private extension Text {
         self.frame(maxWidth: .infinity, alignment: .trailing)
             .multilineTextAlignment(.trailing)
     }
-}
-
-private extension LocalizedStringKey {
-    static let globalSectionTtl: LocalizedStringKey = "ttl_global_menu"
-    static let searchSectionTtl: LocalizedStringKey = "ttl_search_menu"
-    static let devSectionTtl: LocalizedStringKey = "ttl_developer_menu"
-    static let dohMenuTitle: LocalizedStringKey = "txt_doh_menu_item"
-    static let jsMenuTitle: LocalizedStringKey = "txt_javascript_enabled"
-    static let nativeAppRedirectTitle: LocalizedStringKey = "txt_native_app_redirect_enabled"
-    static let dismissBtn: LocalizedStringKey = "btn_dismiss"
-    static let tabAddTxt: LocalizedStringKey = "ttl_tab_positions"
-    static let tabContentTxt: LocalizedStringKey = "ttl_tab_default_content"
-    static let appAsyncApiTypeTxt: LocalizedStringKey = "ttl_app_async_method"
-    static let webAutoCompleteSourceTxt: LocalizedStringKey = "ttl_web_search_auto_complete_source"
-    static let appUIFrameworkTypeTxt: LocalizedStringKey = "ttl_app_ui_framework_type"
 }
 
 #if DEBUG
