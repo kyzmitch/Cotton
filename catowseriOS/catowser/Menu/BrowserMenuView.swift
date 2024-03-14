@@ -18,6 +18,7 @@ struct BrowserMenuView: View {
     // MARK: - State variables to be able to pop view automatically
 
     @State private var showingAppRestartAlert = false
+    @State private var path: [CottonMenuItem] = []
 
     // MARK: - Allow to update text view content dynamically
 
@@ -32,7 +33,7 @@ struct BrowserMenuView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 if case .withSiteMenu = model.style {
                     Section(header: Text(model.siteSectionTitle)) {
@@ -85,27 +86,32 @@ struct BrowserMenuView: View {
                     BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
                         tabAddPositionRowValue = selected
                         model.setTabAddPosition(selected)
+                        path = []
                     })
                 case .defaultTabContent:
                     BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
                         tabContentRowValue = selected
                         model.setTabContent(selected)
+                        path = []
                     })
                 case .webAutocompletionSource:
                     BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
                         webAutocompleteRowValue = selected
                         model.setAutocomplete(selected)
+                        path = []
                     })
                 case .asyncApi:
                     BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
                         asyncApiRowValue = selected
                         model.setAsyncApi(selected)
+                        path = []
                     })
                 case .uiFramework:
                     BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
                         uiFrameworkRowValue = selected
                         showingAppRestartAlert.toggle()
                         model.setUiFramework(selected)
+                        path = []
                     })
                 }
             })
