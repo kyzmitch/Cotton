@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MenuStatefullLabelView: View {
+struct MenuStatefullLabel: View {
     let menuLocalizationKey: String
     let menuCurrentValue: String
     
@@ -20,17 +20,19 @@ struct MenuStatefullLabelView: View {
     var body: some View {
         Text(LocalizedStringKey(menuLocalizationKey))
         Spacer()
-        Text(verbatim: menuCurrentValue).alignRight()
+        Text(verbatim: menuCurrentValue)
+            .modifier(AlignTextRight())
     }
 }
 
-extension Text {
-    func alignRight() -> some View {
-        self.frame(maxWidth: .infinity, alignment: .trailing)
+struct AlignTextRight: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity, alignment: .trailing)
             .multilineTextAlignment(.trailing)
     }
 }
 
 #Preview {
-    MenuStatefullLabelView(.appUIFrameworkTypeTxt, "Some value")
+    MenuStatefullLabel(.appUIFrameworkTypeTxt, "Some value")
 }

@@ -50,15 +50,15 @@ struct BrowserMenuView: View {
                         Text(LocalizedStringKey(.jsMenuTitle))
                     }
                     NavigationLink(value: CottonMenuItem.tabAddPosition) {
-                        MenuStatefullLabelView(.tabAddTxt, tabAddPositionRowValue.description)
+                        MenuStatefullLabel(.tabAddTxt, tabAddPositionRowValue.description)
                     }
                     NavigationLink(value: CottonMenuItem.defaultTabContent) {
-                        MenuStatefullLabelView(.tabContentTxt, tabContentRowValue.description)
+                        MenuStatefullLabel(.tabContentTxt, tabContentRowValue.description)
                     }
                 }
                 Section(header: Text(LocalizedStringKey(.searchSectionTtl))) {
                     NavigationLink(value: CottonMenuItem.webAutocompletionSource) {
-                        MenuStatefullLabelView(.webAutoCompleteSourceTxt, webAutocompleteRowValue.description)
+                        MenuStatefullLabel(.webAutoCompleteSourceTxt, webAutocompleteRowValue.description)
                     }
                 }
                 #if DEBUG
@@ -67,10 +67,10 @@ struct BrowserMenuView: View {
                         Text(LocalizedStringKey(.nativeAppRedirectTitle))
                     }
                     NavigationLink(value: CottonMenuItem.asyncApi) {
-                        MenuStatefullLabelView(.appAsyncApiTypeTxt, asyncApiRowValue.description)
+                        MenuStatefullLabel(.appAsyncApiTypeTxt, asyncApiRowValue.description)
                     }
                     NavigationLink(value: CottonMenuItem.uiFramework) {
-                        MenuStatefullLabelView(.appUIFrameworkTypeTxt, uiFrameworkRowValue.description)
+                        MenuStatefullLabel(.appUIFrameworkTypeTxt, uiFrameworkRowValue.description)
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet

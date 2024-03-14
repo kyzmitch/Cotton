@@ -23,7 +23,7 @@ extension String {
     static let appUIFrameworkTypeTxt: String = "ttl_app_ui_framework_type"
 }
 
-enum CottonMenuItem: Hashable {
+enum CottonMenuItem {
     case tabAddPosition
     case defaultTabContent
     case webAutocompletionSource
