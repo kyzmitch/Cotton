@@ -54,10 +54,6 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
     /// Usual coordinator can't really be used for SwiftUI navigation
     /// but for the legacy view it has to be passed
     private let dummyArgument: WebContentCoordinator? = nil
-    /// Convinience property to get a manager
-    private var manager: WebViewsReuseManager {
-        ViewsEnvironment.shared.reuseManager
-    }
 
     init(_ viewModel: any WebViewModel,
          _ site: Site,
@@ -83,6 +79,7 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
          and most likely advantage of `WebViewsReuseManager` can't be used here.
          We have to re-create web view inside view controller.
          */
+        let manager = ViewsEnvironment.shared.reuseManager
         let vc = try? manager.controllerFor(site, dummyArgument, viewModel, .swiftUIWrapper)
         Task {
             await viewModel.reset(site)

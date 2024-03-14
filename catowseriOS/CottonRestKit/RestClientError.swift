@@ -75,28 +75,19 @@ public enum HttpError: LocalizedError, Equatable {
             return true
         case (let .httpFailure(lhs), let .httpFailure(rhs)):
             guard type(of: lhs) == type(of: rhs) else { return false }
-            if lhs is NSError && rhs is NSError {
-                let error1 = lhs as NSError
-                let error2 = rhs as NSError
-                return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
-            }
-            return false
+            let error1 = lhs as NSError
+            let error2 = rhs as NSError
+            return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
         case (let .jsonSerialization(lhs), let .jsonSerialization(rhs)):
             guard type(of: lhs) == type(of: rhs) else { return false }
-            if lhs is NSError && rhs is NSError {
-                let error1 = lhs as NSError
-                let error2 = rhs as NSError
-                return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
-            }
-            return false
+            let error1 = lhs as NSError
+            let error2 = rhs as NSError
+            return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
         case (let .jsonDecoding(lhs), let .jsonDecoding(rhs)):
             guard type(of: lhs) == type(of: rhs) else { return false }
-            if lhs is NSError && rhs is NSError {
-                let error1 = lhs as NSError
-                let error2 = rhs as NSError
-                return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
-            }
-            return false
+            let error1 = lhs as NSError
+            let error2 = rhs as NSError
+            return error1.domain == error2.domain && error1.code == error2.code && "\(lhs)" == "\(rhs)"
         case (let .missingRequestParameters(lStr), let .missingRequestParameters(rStr)):
             return lStr == rStr
         case (let .invalidDomainName(error: lhs), let .invalidDomainName(error: rhs)):

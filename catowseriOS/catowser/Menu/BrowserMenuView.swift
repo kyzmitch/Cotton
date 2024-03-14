@@ -17,110 +17,52 @@ struct BrowserMenuView: View {
 
     // MARK: - State variables to be able to pop view automatically
 
-    @State private var isShowingAddTabSetting = false
-    @State private var isShowingAppAsyncApiSetting = false
-    @State private var isShowingDefaultTabContentSetting = false
-    @State private var isShowingWebAutoCompleteSetting = false
-    @State private var isShowingAppUIFrameworkSetting = false
     @State private var showingAppRestartAlert = false
-
-    // MARK: - Allow to update text view content dynamically
-
-    @State private var tabContentRowValue: TabContentDefaultState = .favorites
-    @State private var webAutocompleteRowValue: WebAutoCompletionSource = .google
-    @State private var tabAddPositionRowValue: AddedTabPosition = .afterSelected
-    @State private var asyncApiRowValue: AsyncApiType = .asyncAwait
-    @State private var uiFrameworkRowValue: UIFrameworkType = .uiKit
+    @State private var path: [CottonMenuItem] = []
 
     init(_ vm: MenuViewModel) {
         self.model = vm
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             List {
                 if case .withSiteMenu = model.style {
                     Section(header: Text(model.siteSectionTitle)) {
                         Toggle(isOn: $model.isTabJSEnabled) {
-                            Text(.jsMenuTitle)
+                            Text(LocalizedStringKey(.jsMenuTitle))
                         }
                     }
                 }
-                Section(header: Text(.globalSectionTtl)) {
+                Section(header: Text(LocalizedStringKey(.globalSectionTtl))) {
                     Toggle(isOn: $model.isDohEnabled) {
-                        Text(.dohMenuTitle)
+                        Text(LocalizedStringKey(.dohMenuTitle))
                     }
                     Toggle(isOn: $model.isJavaScriptEnabled) {
-                        Text(.jsMenuTitle)
+                        Text(LocalizedStringKey(.jsMenuTitle))
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
-                        isShowingAddTabSetting = false
-                        tabAddPositionRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
-                        }
-                    }), isActive: $isShowingAddTabSetting) {
-                        Text(.tabAddTxt)
-                        Spacer()
-                        Text(verbatim: tabAddPositionRowValue.description).alignRight()
+                    NavigationLink(value: CottonMenuItem.tabAddPosition) {
+                        MenuStatefullLabel(.tabAddTxt, model.tabAddPositionRowValue.description)
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
-                        isShowingDefaultTabContentSetting = false
-                        tabContentRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
-                        }
-                    }), isActive: $isShowingDefaultTabContentSetting) {
-                        Text(.tabContentTxt)
-                        Spacer()
-                        Text(verbatim: tabContentRowValue.description).alignRight()
+                    NavigationLink(value: CottonMenuItem.defaultTabContent) {
+                        MenuStatefullLabel(.tabContentTxt, model.tabContentRowValue.description)
                     }
                 }
-                Section(header: Text(.searchSectionTtl)) {
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
-                        isShowingWebAutoCompleteSetting = false
-                        webAutocompleteRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
-                        }
-                    }), isActive: $isShowingWebAutoCompleteSetting) {
-                        Text(.webAutoCompleteSourceTxt)
-                        Spacer()
-                        Text(verbatim: webAutocompleteRowValue.description).alignRight()
+                Section(header: Text(LocalizedStringKey(.searchSectionTtl))) {
+                    NavigationLink(value: CottonMenuItem.webAutocompletionSource) {
+                        MenuStatefullLabel(.webAutoCompleteSourceTxt, model.webAutocompleteRowValue.description)
                     }
                 }
                 #if DEBUG
-                Section(header: Text(.devSectionTtl)) {
+                Section(header: Text(LocalizedStringKey(.devSectionTtl))) {
                     Toggle(isOn: $model.nativeAppRedirectEnabled) {
-                        Text(.nativeAppRedirectTitle)
+                        Text(LocalizedStringKey(.nativeAppRedirectTitle))
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
-                        isShowingAppAsyncApiSetting = false
-                        asyncApiRowValue = selected
-                        Task {
-                            await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
-                        }
-                    }), isActive: $isShowingAppAsyncApiSetting) {
-                        Text(.appAsyncApiTypeTxt)
-                        Spacer()
-                        Text(verbatim: asyncApiRowValue.description).alignRight()
+                    NavigationLink(value: CottonMenuItem.asyncApi) {
+                        MenuStatefullLabel(.appAsyncApiTypeTxt, model.asyncApiRowValue.description)
                     }
-                    // swiftlint:disable:next line_length
-                    NavigationLink(destination: BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
-                        isShowingAppUIFrameworkSetting = false
-                        uiFrameworkRowValue = selected
-                        showingAppRestartAlert.toggle()
-                        Task {
-                            await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
-                        }
-                    }), isActive: $isShowingAppUIFrameworkSetting) {
-                        Text(.appUIFrameworkTypeTxt)
-                        Spacer()
-                        Text(verbatim: uiFrameworkRowValue.description).alignRight()
+                    NavigationLink(value: CottonMenuItem.uiFramework) {
+                        MenuStatefullLabel(.appUIFrameworkTypeTxt, model.uiFrameworkRowValue.description)
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
@@ -130,46 +72,50 @@ struct BrowserMenuView: View {
                 }
                 #endif
             }
+            .navigationDestination(for: CottonMenuItem.self, destination: { item in
+                switch item {
+                case .tabAddPosition:
+                    BaseMenuView<AddedTabPosition>(viewModel: .init(model.tabAddPositionRowValue) { selected in
+                        model.setTabAddPosition(selected)
+                        path = []
+                    })
+                case .defaultTabContent:
+                    BaseMenuView<TabContentDefaultState>(viewModel: .init(model.tabContentRowValue) { selected in
+                        model.setTabContent(selected)
+                        path = []
+                    })
+                case .webAutocompletionSource:
+                    BaseMenuView<WebAutoCompletionSource>(viewModel: .init(model.webAutocompleteRowValue) { selected in
+                        model.setAutocomplete(selected)
+                        path = []
+                    })
+                case .asyncApi:
+                    BaseMenuView<AsyncApiType>(viewModel: .init(model.asyncApiRowValue) { selected in
+                        model.setAsyncApi(selected)
+                        path = []
+                    })
+                case .uiFramework:
+                    BaseMenuView<UIFrameworkType>(viewModel: .init(model.uiFrameworkRowValue) { selected in
+                        showingAppRestartAlert.toggle()
+                        model.setUiFramework(selected)
+                        path = []
+                    })
+                }
+            })
             .navigationBarTitle(Text(verbatim: model.viewTitle))
-            .navigationBarItems(trailing: Button<Text>(.dismissBtn) {
-                presentationMode.wrappedValue.dismiss()
-            }.foregroundColor(.black))
-        }.alert(isPresented: $showingAppRestartAlert) {
+            .navigationBarItems(trailing: Button<Text>(LocalizedStringKey(.dismissBtn)) { presentationMode.wrappedValue.dismiss() }
+            .foregroundColor(.black))
+        }
+        .alert(isPresented: $showingAppRestartAlert) {
             Alert(title: Text(verbatim: "App restart is required"),
                   dismissButton: .destructive(Text(verbatim: "Kill app process")) {
                     exit(0) // https://stackoverflow.com/a/8491688
                   })
         }
         .task {
-            tabContentRowValue = await FeatureManager.shared.tabDefaultContentValue()
-            webAutocompleteRowValue = await FeatureManager.shared.webSearchAutoCompleteValue()
-            tabAddPositionRowValue = await FeatureManager.shared.tabAddPositionValue()
-            asyncApiRowValue = await FeatureManager.shared.appAsyncApiTypeValue()
-            uiFrameworkRowValue = await FeatureManager.shared.appUIFrameworkValue()
+            await model.load()
         }
     }
-}
-
-private extension Text {
-    func alignRight() -> some View {
-        self.frame(maxWidth: .infinity, alignment: .trailing)
-            .multilineTextAlignment(.trailing)
-    }
-}
-
-private extension LocalizedStringKey {
-    static let globalSectionTtl: LocalizedStringKey = "ttl_global_menu"
-    static let searchSectionTtl: LocalizedStringKey = "ttl_search_menu"
-    static let devSectionTtl: LocalizedStringKey = "ttl_developer_menu"
-    static let dohMenuTitle: LocalizedStringKey = "txt_doh_menu_item"
-    static let jsMenuTitle: LocalizedStringKey = "txt_javascript_enabled"
-    static let nativeAppRedirectTitle: LocalizedStringKey = "txt_native_app_redirect_enabled"
-    static let dismissBtn: LocalizedStringKey = "btn_dismiss"
-    static let tabAddTxt: LocalizedStringKey = "ttl_tab_positions"
-    static let tabContentTxt: LocalizedStringKey = "ttl_tab_default_content"
-    static let appAsyncApiTypeTxt: LocalizedStringKey = "ttl_app_async_method"
-    static let webAutoCompleteSourceTxt: LocalizedStringKey = "ttl_web_search_auto_complete_source"
-    static let appUIFrameworkTypeTxt: LocalizedStringKey = "ttl_app_ui_framework_type"
 }
 
 #if DEBUG

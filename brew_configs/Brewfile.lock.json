@@ -176,12 +176,12 @@
         "macOS": "13.4.1"
       },
       "sonoma": {
-        "HOMEBREW_VERSION": "4.2.5",
+        "HOMEBREW_VERSION": "4.2.12",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "",
-        "Xcode": "15.0",
-        "macOS": "14.2.1"
+        "Xcode": "15.3",
+        "macOS": "14.3.1"
       }
     }
   }
