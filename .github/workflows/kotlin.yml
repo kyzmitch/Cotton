@@ -2,7 +2,7 @@ name: Cotton-Android
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: [ "develop" ]
     types: [opened, reopened]
     paths:
       - "catowserAndroid/**/*.kt"
