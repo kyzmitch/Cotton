@@ -2,7 +2,7 @@ name: Cotton-iOS
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: [ "develop" ]
     types: [opened, reopened]
     paths:
       - "catowseriOS/.swiftlint.yml"
