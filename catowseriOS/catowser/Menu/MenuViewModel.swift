@@ -31,6 +31,14 @@ final class MenuViewModel: ObservableObject {
     @Published var isDohEnabled: Bool
     @Published var isJavaScriptEnabled: Bool
     @Published var nativeAppRedirectEnabled: Bool
+    
+    // MARK: - Allow to update text view content dynamically
+
+    @Published var tabContentRowValue: TabContentDefaultState = .favorites
+    @Published var webAutocompleteRowValue: WebAutoCompletionSource = .google
+    @Published var tabAddPositionRowValue: AddedTabPosition = .afterSelected
+    @Published var asyncApiRowValue: AsyncApiType = .asyncAwait
+    @Published var uiFrameworkRowValue: UIFrameworkType = .uiKit
 
     // MARK: - specific tab settings
 
@@ -143,30 +151,43 @@ final class MenuViewModel: ObservableObject {
         Task {
             await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
         }
+        tabAddPositionRowValue = selected
     }
     
     func setTabContent(_ selected: TabContentDefaultState) {
         Task {
             await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
         }
+        tabContentRowValue = selected
     }
     
     func setAutocomplete(_ selected: WebAutoCompletionSource) {
         Task {
             await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
         }
+        webAutocompleteRowValue = selected
     }
     
     func setAsyncApi(_ selected: AsyncApiType) {
         Task {
             await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
         }
+        asyncApiRowValue = selected
     }
     
     func setUiFramework(_ selected: UIFrameworkType) {
         Task {
             await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
         }
+        uiFrameworkRowValue = selected
+    }
+    
+    func load() async {
+        tabContentRowValue = await FeatureManager.shared.tabDefaultContentValue()
+        webAutocompleteRowValue = await FeatureManager.shared.webSearchAutoCompleteValue()
+        tabAddPositionRowValue = await FeatureManager.shared.tabAddPositionValue()
+        asyncApiRowValue = await FeatureManager.shared.appAsyncApiTypeValue()
+        uiFrameworkRowValue = await FeatureManager.shared.appUIFrameworkValue()
     }
 }
 

@@ -20,14 +20,6 @@ struct BrowserMenuView: View {
     @State private var showingAppRestartAlert = false
     @State private var path: [CottonMenuItem] = []
 
-    // MARK: - Allow to update text view content dynamically
-
-    @State private var tabContentRowValue: TabContentDefaultState = .favorites
-    @State private var webAutocompleteRowValue: WebAutoCompletionSource = .google
-    @State private var tabAddPositionRowValue: AddedTabPosition = .afterSelected
-    @State private var asyncApiRowValue: AsyncApiType = .asyncAwait
-    @State private var uiFrameworkRowValue: UIFrameworkType = .uiKit
-
     init(_ vm: MenuViewModel) {
         self.model = vm
     }
@@ -50,15 +42,15 @@ struct BrowserMenuView: View {
                         Text(LocalizedStringKey(.jsMenuTitle))
                     }
                     NavigationLink(value: CottonMenuItem.tabAddPosition) {
-                        MenuStatefullLabel(.tabAddTxt, tabAddPositionRowValue.description)
+                        MenuStatefullLabel(.tabAddTxt, model.tabAddPositionRowValue.description)
                     }
                     NavigationLink(value: CottonMenuItem.defaultTabContent) {
-                        MenuStatefullLabel(.tabContentTxt, tabContentRowValue.description)
+                        MenuStatefullLabel(.tabContentTxt, model.tabContentRowValue.description)
                     }
                 }
                 Section(header: Text(LocalizedStringKey(.searchSectionTtl))) {
                     NavigationLink(value: CottonMenuItem.webAutocompletionSource) {
-                        MenuStatefullLabel(.webAutoCompleteSourceTxt, webAutocompleteRowValue.description)
+                        MenuStatefullLabel(.webAutoCompleteSourceTxt, model.webAutocompleteRowValue.description)
                     }
                 }
                 #if DEBUG
@@ -67,10 +59,10 @@ struct BrowserMenuView: View {
                         Text(LocalizedStringKey(.nativeAppRedirectTitle))
                     }
                     NavigationLink(value: CottonMenuItem.asyncApi) {
-                        MenuStatefullLabel(.appAsyncApiTypeTxt, asyncApiRowValue.description)
+                        MenuStatefullLabel(.appAsyncApiTypeTxt, model.asyncApiRowValue.description)
                     }
                     NavigationLink(value: CottonMenuItem.uiFramework) {
-                        MenuStatefullLabel(.appUIFrameworkTypeTxt, uiFrameworkRowValue.description)
+                        MenuStatefullLabel(.appUIFrameworkTypeTxt, model.uiFrameworkRowValue.description)
                     }
                     Button("Simulate download resources") {
                         // Need to dismiss menu popover first if on Tablet
@@ -83,32 +75,27 @@ struct BrowserMenuView: View {
             .navigationDestination(for: CottonMenuItem.self, destination: { item in
                 switch item {
                 case .tabAddPosition:
-                    BaseMenuView<AddedTabPosition>(viewModel: .init(tabAddPositionRowValue) { selected in
-                        tabAddPositionRowValue = selected
+                    BaseMenuView<AddedTabPosition>(viewModel: .init(model.tabAddPositionRowValue) { selected in
                         model.setTabAddPosition(selected)
                         path = []
                     })
                 case .defaultTabContent:
-                    BaseMenuView<TabContentDefaultState>(viewModel: .init(tabContentRowValue) { selected in
-                        tabContentRowValue = selected
+                    BaseMenuView<TabContentDefaultState>(viewModel: .init(model.tabContentRowValue) { selected in
                         model.setTabContent(selected)
                         path = []
                     })
                 case .webAutocompletionSource:
-                    BaseMenuView<WebAutoCompletionSource>(viewModel: .init(webAutocompleteRowValue) { selected in
-                        webAutocompleteRowValue = selected
+                    BaseMenuView<WebAutoCompletionSource>(viewModel: .init(model.webAutocompleteRowValue) { selected in
                         model.setAutocomplete(selected)
                         path = []
                     })
                 case .asyncApi:
-                    BaseMenuView<AsyncApiType>(viewModel: .init(asyncApiRowValue) { selected in
-                        asyncApiRowValue = selected
+                    BaseMenuView<AsyncApiType>(viewModel: .init(model.asyncApiRowValue) { selected in
                         model.setAsyncApi(selected)
                         path = []
                     })
                 case .uiFramework:
-                    BaseMenuView<UIFrameworkType>(viewModel: .init(uiFrameworkRowValue) { selected in
-                        uiFrameworkRowValue = selected
+                    BaseMenuView<UIFrameworkType>(viewModel: .init(model.uiFrameworkRowValue) { selected in
                         showingAppRestartAlert.toggle()
                         model.setUiFramework(selected)
                         path = []
@@ -118,14 +105,6 @@ struct BrowserMenuView: View {
             .navigationBarTitle(Text(verbatim: model.viewTitle))
             .navigationBarItems(trailing: Button<Text>(LocalizedStringKey(.dismissBtn)) { presentationMode.wrappedValue.dismiss() }
             .foregroundColor(.black))
-            .navigationDestination(for: CottonMenuItem.self) { menuItem in
-                switch menuItem {
-                case .tabAddPosition:
-                    Text(LocalizedStringKey(.tabAddTxt))
-                default:
-                    Text("Not implemented")
-                }
-            }
         }
         .alert(isPresented: $showingAppRestartAlert) {
             Alert(title: Text(verbatim: "App restart is required"),
@@ -134,11 +113,7 @@ struct BrowserMenuView: View {
                   })
         }
         .task {
-            tabContentRowValue = await FeatureManager.shared.tabDefaultContentValue()
-            webAutocompleteRowValue = await FeatureManager.shared.webSearchAutoCompleteValue()
-            tabAddPositionRowValue = await FeatureManager.shared.tabAddPositionValue()
-            asyncApiRowValue = await FeatureManager.shared.appAsyncApiTypeValue()
-            uiFrameworkRowValue = await FeatureManager.shared.appUIFrameworkValue()
+            await model.load()
         }
     }
 }
