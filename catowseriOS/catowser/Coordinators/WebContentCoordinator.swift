@@ -42,6 +42,8 @@ final class WebContentCoordinator: Coordinator {
     private var sitePresenter: WebViewNavigatable?
     /// Mode is needed only to determine if web view model needs to call the load method or not (SwiftUI mode need to not call it)
     private let mode: UIFrameworkType
+    /// View model should be not private to be able to set it later, because it has async init
+    var viewModel: (any WebViewModel)?
 
     init(_ vcFactory: ViewControllerFactory,
          _ presenter: AnyViewController,
@@ -60,25 +62,24 @@ final class WebContentCoordinator: Coordinator {
     }
 
     func start() {
-        Task {
-            let context: WebViewContextImpl = .init(jsPluginsSource)
-            let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, self)
-            let manager = ViewsEnvironment.shared.reuseManager
-            let webViewController = try? manager.controllerFor(site, self, viewModel, mode)
-            guard let vc = webViewController else {
-                assertionFailure("Failed create new web view for tab")
-                return
-            }
-            startedVC = vc
-            sitePresenter = vc
-            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
-            let topSitesView: UIView = vc.controllerView
-            topSitesView.translatesAutoresizingMaskIntoConstraints = false
-            topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
-            topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
-            topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
-            topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
+        let manager = ViewsEnvironment.shared.reuseManager
+        guard let viewModel else {
+            return
         }
+        let webViewController = try? manager.controllerFor(site, self, viewModel, mode)
+        guard let vc = webViewController else {
+            assertionFailure("Failed create new web view for tab")
+            return
+        }
+        startedVC = vc
+        sitePresenter = vc
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
+        let topSitesView: UIView = vc.controllerView
+        topSitesView.translatesAutoresizingMaskIntoConstraints = false
+        topSitesView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor).isActive = true
+        topSitesView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor).isActive = true
+        topSitesView.topAnchor.constraint(equalTo: contentContainerView.topAnchor).isActive = true
+        topSitesView.bottomAnchor.constraint(equalTo: contentContainerView.bottomAnchor).isActive = true
     }
 }
 

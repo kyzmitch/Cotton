@@ -451,10 +451,16 @@ private extension AppCoordinator {
                                                            plugins,
                                                            uiFramework)
             coordinator.parent = self
-            coordinator.start()
-            // Set new interface after starting, it is new for every site/webView
-            siteNavigator = coordinator.startedVC as? WebViewNavigatable
-            webContentCoordinator = coordinator
+            let context: WebViewContextImpl = .init(plugins)
+            Task {
+                /// Need to do init of view model from outside, because `start` needs to be synhronious to be able to get non nil `startedVC`
+                let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, coordinator)
+                coordinator.viewModel = viewModel
+                coordinator.start()
+                // Set new interface after starting, it is new for every site/webView
+                siteNavigator = coordinator.startedVC as? WebViewNavigatable
+                webContentCoordinator = coordinator
+            }
         case .swiftUIWrapper, .swiftUI:
             break
         }
