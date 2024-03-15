@@ -313,12 +313,15 @@ private extension AppCoordinator {
         guard isPad else {
             return
         }
-        // swiftlint:disable:next force_unwrapping
-        let presenter = startedVC!
-        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter)
-        coordinator.parent = self
-        coordinator.start()
-        tabletTabsCoordinator = coordinator
+        Task {
+            let vm = await ViewModelFactory.shared.allTabsViewModel()
+            // swiftlint:disable:next force_unwrapping
+            let presenter = startedVC!
+            let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter, vm)
+            coordinator.parent = self
+            coordinator.start()
+            tabletTabsCoordinator = coordinator
+        }
     }
 
     func insertSearchBar() {

@@ -15,26 +15,26 @@ final class TabletTabsCoordinator: Coordinator {
     var startedVC: AnyViewController?
     weak var presenterVC: AnyViewController?
     var navigationStack: UINavigationController?
+    private let vm: AllTabsViewModel
 
     init(_ vcFactory: any ViewControllerFactory,
-         _ presenter: AnyViewController) {
+         _ presenter: AnyViewController,
+         _ vm: AllTabsViewModel) {
         self.vcFactory = vcFactory
         self.presenterVC = presenter
+        self.vm = vm
     }
 
     func start() {
         guard isPad else {
             return
         }
-        Task {
-            let vm = await ViewModelFactory.shared.allTabsViewModel()
-            guard let vc = vcFactory.tabsViewController(vm), let superView = presenterVC?.controllerView else {
-                return
-            }
-            startedVC = vc
-            vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
-            presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
+        guard let vc = vcFactory.tabsViewController(vm), let superView = presenterVC?.controllerView else {
+            return
         }
+        startedVC = vc
+        vc.controllerView.translatesAutoresizingMaskIntoConstraints = false
+        presenterVC?.viewController.add(asChildViewController: vc.viewController, to: superView)
     }
 }
 

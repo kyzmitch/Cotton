@@ -23,7 +23,7 @@ final class TabsViewController: BaseViewController {
 
     init(_ viewModel: AllTabsViewModel) {
         self.viewModel = viewModel
-        super.init()
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
