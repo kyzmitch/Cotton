@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class ClearCancelButtonViewModel {
+final class ClearCancelButtonViewModel: ObservableObject {
     @Published var clearTapped: Void
     @Published var cancelTapped: Void
 
@@ -20,7 +20,7 @@ final class ClearCancelButtonViewModel {
 
 struct ClearCancelPairButton: View {
     private let showClearButton: Bool
-    private let vm: ClearCancelButtonViewModel
+    @ObservedObject private var vm: ClearCancelButtonViewModel
 
     init(_ showClearButton: Bool, _ vm: ClearCancelButtonViewModel) {
         self.showClearButton = showClearButton

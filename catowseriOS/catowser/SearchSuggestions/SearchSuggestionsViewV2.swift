@@ -71,14 +71,14 @@ struct SearchSuggestionsViewV2<S: SearchSuggestionsViewModel>: View {
         case .everythingLoaded(let knownDomains, let querySuggestions):
             List {
                 Section {
-                    ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
-                } header: {
-                    Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
-                }
-                Section {
                     ForEach(querySuggestions) { SuggestionRowView($0, .suggestion, $selected)}
                 } header: {
                     Text(verbatim: suggestions.sectionTitle(section: 1) ?? "Suggestions from search engine")
+                }
+                Section {
+                    ForEach(knownDomains) { SuggestionRowView($0, .domain, $selected)}
+                } header: {
+                    Text(verbatim: suggestions.sectionTitle(section: 0) ?? "Known domains")
                 }
             }
         } // switch

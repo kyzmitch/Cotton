@@ -27,9 +27,9 @@ struct SearchBarViewV2: View {
     @State private var showOverlay: Bool = false
     @State private var showKeyboard: Bool = false
 
-    private let cancelBtnVM: ClearCancelButtonViewModel
-    private let textFieldVM: SearchFieldViewModel
-    private let overlayVM: TappableTextOverlayViewModel
+    @StateObject private var cancelBtnVM: ClearCancelButtonViewModel = .init()
+    @StateObject private var textFieldVM: SearchFieldViewModel = .init()
+    @StateObject private var overlayVM: TappableTextOverlayViewModel = .init()
 
     private let overlayHidden: CGFloat = -UIScreen.main.bounds.width
 
@@ -37,9 +37,6 @@ struct SearchBarViewV2: View {
          _ action: Binding<SearchBarAction>) {
         _query = query
         _action = action
-        cancelBtnVM = .init()
-        textFieldVM = .init()
-        overlayVM = .init()
     }
 
     var body: some View {

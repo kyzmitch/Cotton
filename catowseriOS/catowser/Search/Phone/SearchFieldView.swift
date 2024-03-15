@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class SearchFieldViewModel {
+final class SearchFieldViewModel: ObservableObject {
     @Published var isFocused: Bool
     @Published var submitTapped: Void
 
@@ -23,7 +23,7 @@ struct SearchFieldView: View {
     private let showKeyboard: Bool
     @FocusState private var isFocused: Bool
 
-    private let vm: SearchFieldViewModel
+    @ObservedObject private var vm: SearchFieldViewModel
 
     init(_ textContent: Binding<String>,
          _ showKeyboard: Bool,

@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-final class TappableTextOverlayViewModel {
+final class TappableTextOverlayViewModel: ObservableObject {
     @Published var tapped: Void
 
     init() {
@@ -18,7 +18,7 @@ final class TappableTextOverlayViewModel {
 
 struct TappableTextOverlayView: View {
     private let textContent: String
-    private let vm: TappableTextOverlayViewModel
+    @ObservedObject private var vm: TappableTextOverlayViewModel
 
     init(_ textContent: String, _ vm: TappableTextOverlayViewModel) {
         self.textContent = textContent
