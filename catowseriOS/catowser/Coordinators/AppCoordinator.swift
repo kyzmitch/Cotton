@@ -78,6 +78,10 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
 
     let uiFramework: UIFrameworkType
+    
+    /// Tablet specific view model which has to be initialised in async way earlier
+    /// to not do async coordinator start for the tabs
+    private var allTabsVM: AllTabsViewModel?
 
     init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
@@ -103,6 +107,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                 .setInstagram(self)
             jsPluginsBuilder = pluginsSource
             let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
+            self.allTabsVM = allTabsVM
             let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
             let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
             let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
@@ -116,7 +121,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                                                   suggestionsVM,
                                                   webViewModel)
             startedVC = vc
-
+            
             window.rootViewController = startedVC?.viewController
             window.makeKeyAndVisible()
             // Now, with introducing the actors model
@@ -310,18 +315,15 @@ private extension AppCoordinator {
     // MARK: - insert methods to start subview coordinators
 
     func insertTabs() {
-        guard isPad else {
+        guard isPad, let allTabsVM else {
             return
         }
-        Task {
-            let vm = await ViewModelFactory.shared.allTabsViewModel()
-            // swiftlint:disable:next force_unwrapping
-            let presenter = startedVC!
-            let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter, vm)
-            coordinator.parent = self
-            coordinator.start()
-            tabletTabsCoordinator = coordinator
-        }
+        // swiftlint:disable:next force_unwrapping
+        let presenter = startedVC!
+        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter, allTabsVM)
+        coordinator.parent = self
+        coordinator.start()
+        tabletTabsCoordinator = coordinator
     }
 
     func insertSearchBar() {

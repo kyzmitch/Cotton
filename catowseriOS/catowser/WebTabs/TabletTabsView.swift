@@ -10,14 +10,13 @@ import SwiftUI
 
 struct TabletTabsView: View {
     private let mode: SwiftUIMode
-    @EnvironmentObject private var viewModel: AllTabsViewModel
 
     init(_ mode: SwiftUIMode) {
         self.mode = mode
     }
 
     var body: some View {
-        TabletTabsLegacyView(viewModel)
+        TabletTabsLegacyView()
             .frame(height: .tabHeight)
     }
 }
