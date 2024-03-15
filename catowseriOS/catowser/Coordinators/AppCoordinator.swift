@@ -457,6 +457,9 @@ private extension AppCoordinator {
                                                            uiFramework)
             coordinator.parent = self
             let context: WebViewContextImpl = .init(plugins)
+            /// It is fine to do async coordinator start in this specific case
+            /// first because it requires new Site every time
+            /// second, layout is done in scope of start, so, coordinator won't be nil during layout request
             Task {
                 /// Need to do init of view model from outside, because `start` needs to be synhronious to be able to get non nil `startedVC`
                 let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, coordinator)
