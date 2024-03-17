@@ -49,7 +49,7 @@ extension URL {
     }
 
     public var httpHost: String? {
-        guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
+        guard let scheme = scheme, scheme == "http" || scheme == "https" else {
             return nil
         }
 
@@ -59,7 +59,7 @@ extension URL {
     /// Not required to be public
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public var cHttpHost: AnyPublisher<String, DnsError> {
-        guard let scheme = scheme, (scheme == "http" || scheme == "https") else {
+        guard let scheme = scheme, scheme == "http" || scheme == "https" else {
             return HostPublisher(.failure(.notHttpScheme)).eraseToAnyPublisher()
         }
 
