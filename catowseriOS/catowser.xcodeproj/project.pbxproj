@@ -212,6 +212,7 @@
 		8A1115EC24837DA400E63114 /* TabAddPositionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */; };
 		8A1273DD2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
 		8A1273DE2937B7FC0022B934 /* FilesGridCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */; };
+		8A15A4292BA75E370082E7E6 /* TabsDataSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A15A4282BA75E360082E7E6 /* TabsDataSubject.swift */; };
 		8A1A1CE727B1966E0052A2A3 /* AlamofireHTTPRxAdaptee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB0D4102755075700493EC3 /* AlamofireHTTPRxAdaptee.swift */; };
 		8A1C1BD9280B1E2D009B9363 /* RestClient+Kotlin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */; };
 		8A1C1C172484E5900098F2F1 /* TabDefaultContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */; };
@@ -1153,6 +1154,7 @@
 		8A10C77429F64A79002A429A /* TopSitesViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSitesViewV2.swift; sourceTree = "<group>"; };
 		8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabAddPositionsModel.swift; sourceTree = "<group>"; };
 		8A1273DC2937B7FC0022B934 /* FilesGridCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridCoordinator.swift; sourceTree = "<group>"; };
+		8A15A4282BA75E360082E7E6 /* TabsDataSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsDataSubject.swift; sourceTree = "<group>"; };
 		8A16102828947C2F00D45228 /* ResolveDNSUseCaseImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolveDNSUseCaseImpl.swift; sourceTree = "<group>"; };
 		8A16102E28947D2100D45228 /* DNSResolvingStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSResolvingStrategy.swift; sourceTree = "<group>"; };
 		8A1C1BD8280B1E2D009B9363 /* RestClient+Kotlin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RestClient+Kotlin.swift"; sourceTree = "<group>"; };
@@ -1634,6 +1636,7 @@
 				8A745C1324802E4F00A379AD /* TabsObserver.swift */,
 				8A9980632845409100E18762 /* TabsSubject.swift */,
 				607D02AE21FEF87F009FCD0B /* TabsDataService.swift */,
+				8A15A4282BA75E360082E7E6 /* TabsDataSubject.swift */,
 				750B6DE62B5C348E00063E75 /* TabsServiceCommand.swift */,
 				750B6DE82B5C34D000063E75 /* TabsServiceDataOutput.swift */,
 				8A745C0E2480287700A379AD /* TabsStoragable.swift */,
@@ -3464,6 +3467,7 @@
 			files = (
 				75458E562B47115000004581 /* UseCaseLocator.swift in Sources */,
 				6094E732221FE2EF004269A2 /* Collection+CatowserExtensions.swift in Sources */,
+				8A15A4292BA75E370082E7E6 /* TabsDataSubject.swift in Sources */,
 				8A99805E28453DE900E18762 /* NearbySelectionStrategy.swift in Sources */,
 				75458E5C2B471A4700004581 /* SelectedTabUseCaseImpl.swift in Sources */,
 				8A7B1BF528EB2C08004FC135 /* Host+Extension.swift in Sources */,

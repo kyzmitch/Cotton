@@ -35,6 +35,16 @@ public actor TabsDataService {
     private let positioning: TabsStates
     /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
+    /// A workaround to be able to use available marker
+    private var _tabsSubject: Any? = nil
+    /// Yet another way for observing, the most modern way
+    @available(iOS 17.0, *)
+    public var tabsSubject: TabsDataSubject {
+        if _tabsSubject == nil {
+            _tabsSubject = TabsDataSubject(positioning)
+        }
+        return _tabsSubject as! TabsDataSubject
+    }
 
     public init(_ storage: TabsStoragable,
                 _ positioning: TabsStates,
@@ -120,7 +130,11 @@ private extension TabsDataService {
     func handleAddTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
-        tabsCountInput.yield(tabs.count)
+        if #available(iOS 17.0, *) {
+            tabsSubject.tabs = tabs
+        } else {
+            tabsCountInput.yield(tabs.count)
+        }
         let needSelect = selectionStrategy.makeTabActiveAfterAdding
         do {
             let addedTab = try await storage.add(tab, select: needSelect)
@@ -155,9 +169,14 @@ private extension TabsDataService {
         let contentState = await positioning.contentState
         do {
             _ = try await storage.remove(tabs: tabs)
-            tabs.removeAll()
-            tabsCountInput.yield(0)
             let tab: Tab = .init(contentType: contentState)
+            if #available(iOS 17.0, *) {
+                tabsSubject.tabs = []
+            } else {
+                tabs.removeAll()
+                tabsCountInput.yield(0)
+            }
+            /// TODO: do we need to add automatic default tab to the subject?
             _ = try await storage.add(tab, select: true)
         } catch {
             // tab view should be removed immediately on view level anyway
@@ -172,8 +191,12 @@ private extension TabsDataService {
             guard identifier != selectedTabIdentifier else {
                 return .tabSelected
             }
-            selectedTabIdentifier = identifier
-            selectedTabIdInput.yield(identifier)
+            if #available(iOS 17.0, *) {
+                tabsSubject.selectedTabId = identifier
+            } else {
+                selectedTabIdentifier = identifier
+                selectedTabIdInput.yield(identifier)
+            }
         } catch {
             print("Failed to select tab with id \(tab.id) \(error)")
         }
@@ -194,10 +217,14 @@ private extension TabsDataService {
 
         do {
             _ = try storage.update(tab: newTab)
-            tabs[tabIndex] = newTab
-            // Need to notify observers to allow them to update title for tab view
-            for observer in tabObservers {
-                await observer.tabDidReplace(newTab, at: tabIndex)
+            if #available(iOS 17.0, *) {
+                tabsSubject.tabs[tabIndex] = newTab
+            } else {
+                tabs[tabIndex] = newTab
+                // Need to notify observers to allow them to update title for tab view
+                for observer in tabObservers {
+                    await observer.tabDidReplace(newTab, at: tabIndex)
+                }
             }
             return .tabContentReplaced(nil)
         } catch {
@@ -226,7 +253,11 @@ private extension TabsDataService {
         guard tabIndex >= 0 && tabIndex < tabs.count else {
             return .tabPreviewUpdated(TabsListError.wrongTabIndexToReplace)
         }
-        tabs[tabIndex] = tab
+        if #available(iOS 17.0, *) {
+            tabsSubject.tabs[tabIndex] = tab
+        } else {
+            tabs[tabIndex] = tab
+        }
         return .tabPreviewUpdated(nil)
     }
 }
@@ -290,8 +321,12 @@ private extension TabsDataService {
                 await observer.tabDidAdd(tab, at: index)
             }
             if select {
-                selectedTabIdentifier = tab.id
-                selectedTabIdInput.yield(tab.id)
+                if #available(iOS 17.0, *) {
+                    tabsSubject.selectedTabId = tab.id
+                } else {
+                    selectedTabIdentifier = tab.id
+                    selectedTabIdInput.yield(tab.id)
+                }
             }
         case .after(let interval):
             do {
@@ -305,8 +340,12 @@ private extension TabsDataService {
                     await observer.tabDidAdd(tab, at: index)
                 }
                 if select {
-                    selectedTabIdentifier = tab.id
-                    selectedTabIdInput.yield(tab.id)
+                    if #available(iOS 17.0, *) {
+                        tabsSubject.selectedTabId = tab.id
+                    } else {
+                        selectedTabIdentifier = tab.id
+                        selectedTabIdInput.yield(tab.id)
+                    }
                 }
             } catch {
                 print("Failed to wait before adding a new tab: \(error)")
@@ -354,10 +393,15 @@ private extension TabsDataService {
         guard !cachedTabs.isEmpty else {
             return
         }
-        tabs = cachedTabs
-        tabsCountInput.yield(cachedTabs.count)
-        selectedTabIdentifier = id
-        selectedTabIdInput.yield(id)
+        if #available(iOS 17.0, *) {
+            tabsSubject.tabs = cachedTabs
+            tabsSubject.selectedTabId = id
+        } else {
+            tabs = cachedTabs
+            tabsCountInput.yield(cachedTabs.count)
+            selectedTabIdentifier = id
+            selectedTabIdInput.yield(id)
+        }
     }
 
     func subscribeForTabsCountChange() {
