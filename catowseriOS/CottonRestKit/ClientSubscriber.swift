@@ -17,16 +17,20 @@ where RX.Server == S
 /// Can be used for async interfaces which do not need RX stuff, like Combine or simple Closures
 public typealias Subscriber<R: ResponseType, S: ServerDescription> = ClientSubscriber<R, S>
 
-/// I already don't like this idea and this class, it will be for every endpoint
-/// This is only because I want to support generics for endpoints
-/// The main issue which needs to be solved by this class is to not add ResponseType
-/// or Endpoint type to the HttpClient
-/// HttpClient should only be dependent on ServerDescription
-/// And it all started because I wanted to remove Alamofire from direct dependency in HttpClient
-/// It lead to the issue that clsoures or Rx observers should be stored somewhere outside async HttpClient methods
-/// Because they can't be deallocated during async requests
-/// It must be a reference type because we will pass it to RestClient methods
-// gryphon ignore
+/// Rest client reactive capable subscriber.
+///
+/// This is not entirely perfect approach and this class, it will be for every endpoint.
+/// This is only because it was desired to support generics for the endpoints.
+///
+/// The main issue which needs to be solved by this class is to not add `ResponseType`
+/// or `Endpoint` type to the `RestClient`.
+///
+/// `RestClient` should only be dependent on `ServerDescription`.
+/// And it all started because it was desired to remove Alamofire from direct dependency in `RestClient`.
+///
+/// It lead to the issue that clsoures or Rx observers should be stored somewhere outside async `RestClient` methods.
+/// Because they can't be deallocated during async requests.
+/// It must be a reference type because we will pass it to `RestClient` methods.
 public class ClientRxSubscriber<R, S, RX: RxInterface> where RX.Observer.Response == R, RX.Server == S {
     /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
     var handlers = Set<ResponseHandlingApi<R, S, RX>>()

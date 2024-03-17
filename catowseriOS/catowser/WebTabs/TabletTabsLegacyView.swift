@@ -11,11 +11,9 @@ import SwiftUI
 struct TabletTabsLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
 
-    private let viewModel: AllTabsViewModel
+    @EnvironmentObject private var viewModel: AllTabsViewModel
 
-    init(_ viewModel: AllTabsViewModel) {
-        self.viewModel = viewModel
-    }
+    init() {}
 
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let vc = vcFactory.tabsViewController(viewModel)

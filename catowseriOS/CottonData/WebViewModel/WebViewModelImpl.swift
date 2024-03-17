@@ -272,7 +272,7 @@ public final class WebViewModelImpl: WebViewModel {
 }
 
 private extension WebViewModelImpl {
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    // swiftlint:disable:next cyclomatic_complexity
     func onStateChange(_ nextState: WebViewModelState) async throws {
         switch nextState {
         case .pendingLoad:
@@ -331,7 +331,6 @@ private extension WebViewModelImpl {
         }
     }
 
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func resolveDomainName(_ urlData: URLInfo) async {
         // Double checking even if it was checked before
         // to not perform unnecessary network requests

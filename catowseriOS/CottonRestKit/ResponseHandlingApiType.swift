@@ -19,11 +19,12 @@ public protocol RxAnyObserver {
     func newComplete()
 }
 
+/// Reactive specific Lifetime protocol.
+///
 /// Can't add similar Lifetime method because it returns a Disposable which is not a type but protocol already
 /// So, can't extend swift protocol like RxAnyDisposable, in other words
 /// can't extend swift protocol Disposable with our RxAnyDisposable
 /// As a workaround this method doesn't return Disposable
-// gryphon ignore
 public protocol RxAnyLifetime {
     func newObserveEnded(_ action: @escaping () -> Void)
 }
@@ -67,7 +68,7 @@ public enum ResponseHandlingApi<Response,
     }
 
     public func hash(into hasher: inout Hasher) {
-        /// TODO:  could use UUID for each `ResponseHandlingApi` to simplify this
+        /// https://github.com/kyzmitch/Cotton/issues/79
         let caseNumber: Int
         switch self {
         case .closure(let closureWrapper):

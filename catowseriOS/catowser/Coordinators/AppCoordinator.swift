@@ -78,6 +78,10 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
 
     let uiFramework: UIFrameworkType
+    
+    /// Tablet specific view model which has to be initialised in async way earlier
+    /// to not do async coordinator start for the tabs
+    private var allTabsVM: AllTabsViewModel?
 
     init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
         self.vcFactory = vcFactory
@@ -103,6 +107,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                 .setInstagram(self)
             jsPluginsBuilder = pluginsSource
             let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
+            self.allTabsVM = allTabsVM
             let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
             let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
             let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
@@ -116,7 +121,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                                                   suggestionsVM,
                                                   webViewModel)
             startedVC = vc
-
+            
             window.rootViewController = startedVC?.viewController
             window.makeKeyAndVisible()
             // Now, with introducing the actors model
@@ -310,12 +315,12 @@ private extension AppCoordinator {
     // MARK: - insert methods to start subview coordinators
 
     func insertTabs() {
-        guard isPad else {
+        guard isPad, let allTabsVM else {
             return
         }
         // swiftlint:disable:next force_unwrapping
         let presenter = startedVC!
-        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter)
+        let coordinator: TabletTabsCoordinator = .init(vcFactory, presenter, allTabsVM)
         coordinator.parent = self
         coordinator.start()
         tabletTabsCoordinator = coordinator
@@ -452,6 +457,9 @@ private extension AppCoordinator {
                                                            uiFramework)
             coordinator.parent = self
             let context: WebViewContextImpl = .init(plugins)
+            /// It is fine to do async coordinator start in this specific case
+            /// first because it requires new Site every time
+            /// second, layout is done in scope of start, so, coordinator won't be nil during layout request
             Task {
                 /// Need to do init of view model from outside, because `start` needs to be synhronious to be able to get non nil `startedVC`
                 let viewModel = await ViewModelFactory.shared.getWebViewModel(site, context, coordinator)
