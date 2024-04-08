@@ -89,6 +89,10 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
 
     func start() {
+        Task {
+            await prepareBeforeStart()
+        }
+        
         if uiFramework.swiftUIBased {
             // Must do coordinators init earlier
             // to allow to use some of them in SwiftUI views
@@ -99,37 +103,37 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                 toolbarCoordinator?.showNext(.tabs)
             }
         }
-
-        Task {
-            await UseCaseFactory.shared.registerUseCases()
-            let defaultTabContent = await DefaultTabProvider.shared.contentState
-            let pluginsSource = JSPluginsBuilder()
-                .setBase(self)
-                .setInstagram(self)
-            jsPluginsBuilder = pluginsSource
-            let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
-            self.allTabsVM = allTabsVM
-            let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
-            let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
-            let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
-            let webContext = WebViewContextImpl(pluginsSource)
-            let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
-            let vc = vcFactory.rootViewController(self,
-                                                  uiFramework,
-                                                  defaultTabContent,
-                                                  allTabsVM,
-                                                  topSitesVM,
-                                                  suggestionsVM,
-                                                  webViewModel)
-            startedVC = vc
-            
-            window.rootViewController = startedVC?.viewController
-            window.makeKeyAndVisible()
-            // Now, with introducing the actors model
-            // we need to attach observer only after adding all child coordinators
-            if case .uiKit = uiFramework {
-                await TabsDataService.shared.attach(self, notify: true)
-            }
+    }
+    
+    private func prepareBeforeStart() async {
+        await UseCaseFactory.shared.registerUseCases()
+        let defaultTabContent = await DefaultTabProvider.shared.contentState
+        let pluginsSource = JSPluginsBuilder()
+            .setBase(self)
+            .setInstagram(self)
+        jsPluginsBuilder = pluginsSource
+        let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
+        self.allTabsVM = allTabsVM
+        let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
+        let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
+        let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
+        let webContext = WebViewContextImpl(pluginsSource)
+        let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
+        let vc = vcFactory.rootViewController(self,
+                                              uiFramework,
+                                              defaultTabContent,
+                                              allTabsVM,
+                                              topSitesVM,
+                                              suggestionsVM,
+                                              webViewModel)
+        startedVC = vc
+        
+        window.rootViewController = startedVC?.viewController
+        window.makeKeyAndVisible()
+        // Now, with introducing the actors model
+        // we need to attach observer only after adding all child coordinators
+        if case .uiKit = uiFramework {
+            await TabsDataService.shared.attach(self, notify: true)
         }
     }
 
