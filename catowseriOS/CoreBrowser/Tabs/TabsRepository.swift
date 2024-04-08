@@ -9,7 +9,7 @@
 import Foundation
 import AutoMockable
 
-public protocol TabsStoragable: AutoMockable {
+public protocol TabsRepository: AutoMockable {
     /// Defines human redable name for Int if it is describes index.
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int

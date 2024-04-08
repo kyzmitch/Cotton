@@ -30,17 +30,17 @@ public actor TabsDataService {
     /// Tabs count input for the async stream
     private var tabsCountInput: IntStream.Continuation!
     /// Database interface
-    private let storage: TabsStoragable
+    private let tabsRepository: TabsRepository
     /// Default positioning settings
     private let positioning: TabsStates
     /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
 
-    public init(_ storage: TabsStoragable,
+    public init(_ storage: TabsRepository,
                 _ positioning: TabsStates,
                 _ selectionStrategy: TabSelectionStrategy) async {
         self.selectionStrategy = selectionStrategy
-        self.storage = storage
+        self.tabsRepository = storage
         self.positioning = positioning
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
@@ -123,7 +123,7 @@ private extension TabsDataService {
         tabsCountInput.yield(tabs.count)
         let needSelect = selectionStrategy.makeTabActiveAfterAdding
         do {
-            let addedTab = try await storage.add(tab, select: needSelect)
+            let addedTab = try await tabsRepository.add(tab, select: needSelect)
             await handleTabAdded(addedTab, index: newIndex, select: needSelect)
         } catch {
             // It doesn't matter, on view level it must be added right away
@@ -134,7 +134,7 @@ private extension TabsDataService {
 
     func handleCloseTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
         do {
-            let removedTabs = try await storage.remove(tabs: [tab])
+            let removedTabs = try await tabsRepository.remove(tabs: [tab])
             // swiftlint:disable:next force_unwrapping
             await handleCachedTabRemove(removedTabs.first!)
         } catch {
@@ -154,11 +154,11 @@ private extension TabsDataService {
     func handleCloseAllCommand() async -> TabsServiceDataOutput {
         let contentState = await positioning.contentState
         do {
-            _ = try await storage.remove(tabs: tabs)
+            _ = try await tabsRepository.remove(tabs: tabs)
             tabs.removeAll()
             tabsCountInput.yield(0)
             let tab: Tab = .init(contentType: contentState)
-            _ = try await storage.add(tab, select: true)
+            _ = try await tabsRepository.add(tab, select: true)
         } catch {
             // tab view should be removed immediately on view level anyway
             print("Failure to remove tab and reset to one tab: \(error)")
@@ -168,7 +168,7 @@ private extension TabsDataService {
 
     func handleSelectTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
         do {
-            let identifier = try await storage.select(tab: tab)
+            let identifier = try await tabsRepository.select(tab: tab)
             guard identifier != selectedTabIdentifier else {
                 return .tabSelected
             }
@@ -193,7 +193,7 @@ private extension TabsDataService {
         newTab.previewData = nil
 
         do {
-            _ = try storage.update(tab: newTab)
+            _ = try tabsRepository.update(tab: newTab)
             tabs[tabIndex] = newTab
             // Need to notify observers to allow them to update title for tab view
             for observer in tabObservers {
@@ -344,13 +344,13 @@ private extension TabsDataService {
     }
 
     func fetchTabs() async throws {
-        var cachedTabs = try await storage.fetchAllTabs()
+        var cachedTabs = try await tabsRepository.fetchAllTabs()
         if cachedTabs.isEmpty {
             let tab = Tab(contentType: await positioning.contentState)
-            let savedTab = try await storage.add(tab, select: true)
+            let savedTab = try await tabsRepository.add(tab, select: true)
             cachedTabs = [savedTab]
         }
-        let id = try await storage.fetchSelectedTabId()
+        let id = try await tabsRepository.fetchSelectedTabId()
         guard !cachedTabs.isEmpty else {
             return
         }

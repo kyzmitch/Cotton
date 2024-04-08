@@ -23,7 +23,7 @@ private final class TabsEnvironment {
     static private var internalInstance: ManagerHolder?
 
     fileprivate actor ManagerHolder {
-        let cachedTabsManager: TabsDataService
+        let tabsDataService: TabsDataService
         private let database: Database
 
         init() async {
@@ -42,9 +42,9 @@ private final class TabsEnvironment {
                 }
                 return dbInterface.newPrivateContext()
             }
-            let cacheProvider = TabsCacheProvider(database.viewContext, contextClosure)
+            let cacheProvider = TabsRepositoryImpl(database.viewContext, contextClosure)
             let strategy = NearbySelectionStrategy()
-            cachedTabsManager = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
+            tabsDataService = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
         }
     }
 }
@@ -52,7 +52,7 @@ private final class TabsEnvironment {
 extension TabsDataService {
     static var shared: TabsDataService {
         get async {
-            await TabsEnvironment.shared().cachedTabsManager
+            await TabsEnvironment.shared().tabsDataService
         }
     }
 }

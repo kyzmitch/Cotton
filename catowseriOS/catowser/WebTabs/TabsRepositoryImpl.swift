@@ -11,13 +11,12 @@ import CoreBrowser
 import CoreData
 
 /**
- Declaring Tab storage type in host app instead of `CoreBrowser`
- to allow use app settings like default tab content which only can be stored in host app,
- because it can't be passed as an argument to Tabs manager since it is a singleton.
- Anyway, now it's not a singletone, since we're passing tabs store instance to it, but
- with environment class which holds reference to tabs list manager it's kind of singletone.
+ Declaring Tab storage type in host app instead of `CoreBrowser` framework,
+ to allow use app settings like default tab content which only can be stored in host app.
+ 
+ Later need to add tabs rest/firebase client dependency to use it as a 2nd (remote) data source.
  */
-final class TabsCacheProvider {
+final class TabsRepositoryImpl {
     private let tabsDbResource: TabsResource
 
     init(_ temporaryContext: NSManagedObjectContext,
@@ -27,7 +26,7 @@ final class TabsCacheProvider {
     }
 }
 
-extension TabsCacheProvider: TabsStoragable {
+extension TabsRepositoryImpl: TabsRepository {
     func select(tab: Tab) async throws -> UUID {
         do {
             try await tabsDbResource.selectTab(tab)
