@@ -82,11 +82,6 @@ final class WebViewController<C: Navigating>: BaseViewController,
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        authHandlers.removeAll()
-        unsubscribe()
-    }
-
     override func loadView() {
         view = UIView(frame: .zero)
     }
@@ -121,6 +116,8 @@ final class WebViewController<C: Navigating>: BaseViewController,
         // maybe top sites, so, we have to reset navigation controls
         // and it can be done by sending `nil` interface
         viewModel.siteNavigation?.webViewDidReplace(nil)
+        authHandlers.removeAll()
+        unsubscribe()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

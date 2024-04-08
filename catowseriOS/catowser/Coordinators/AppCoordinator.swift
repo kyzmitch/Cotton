@@ -101,6 +101,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         }
 
         Task {
+            await UseCaseFactory.shared.registerUseCases()
             let defaultTabContent = await DefaultTabProvider.shared.contentState
             let pluginsSource = JSPluginsBuilder()
                 .setBase(self)

@@ -16,23 +16,18 @@ extension String {
     static let googleResolveDnsUseCase = "googleResolveDnsUseCase"
 }
 
+@globalActor
 final class UseCaseFactory {
-    static func shared() async -> UseCasesHolder {
-        if let instance = internalInstance {
-            return instance
-        }
-        let created = await UseCasesHolder()
-        internalInstance = created
-        return created
-    }
-
-    static private var internalInstance: UseCasesHolder?
-
+    static let shared = UseCasesHolder()
+    
     actor UseCasesHolder {
         private let locator: UseCaseLocator
 
-        init() async {
+        init() {
             locator = .init()
+        }
+        
+        func registerUseCases() async {
             await registerTabsUseCases()
             registerSearchAutocompleteUseCases()
             registerDnsResolveUseCases()
