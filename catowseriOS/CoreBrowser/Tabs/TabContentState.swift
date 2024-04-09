@@ -10,7 +10,7 @@ import Foundation
 
 /// Twin type for `Tab.ContentType` to have `rawValue`
 /// and use it for settings.
-public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible {
+public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible, Sendable {
     case blank
     case homepage
     case favorites

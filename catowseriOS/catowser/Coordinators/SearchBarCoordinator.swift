@@ -311,7 +311,7 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
     }
 }
 
-extension FeatureManager.FManager {
+extension FeatureManager.StateHolder {
     func searchPluginName() -> KnownSearchPluginName {
         switch webSearchAutoCompleteValue() {
         case .google:

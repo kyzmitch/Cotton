@@ -207,7 +207,8 @@ private extension TabsDataService {
     }
 
     func handleUpdateSelectedTabPreviewCommand(_ image: Data?) async -> TabsServiceDataOutput {
-        guard selectedTabIdentifier != positioning.defaultSelectedTabId else {
+        let defaultValue = positioning.defaultSelectedTabId
+        guard selectedTabIdentifier != defaultValue else {
             return .tabPreviewUpdated(TabsListError.notInitializedYet)
         }
         guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
@@ -263,7 +264,8 @@ extension TabsDataService: TabsSubject {
         }
         await observer.updateTabsCount(with: tabs.count)
         await observer.initializeObserver(with: tabs)
-        guard selectedTabIdentifier != positioning.defaultSelectedTabId else {
+        let defaultValue = positioning.defaultSelectedTabId
+        guard selectedTabIdentifier != defaultValue else {
             return
         }
         guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
@@ -378,7 +380,8 @@ private extension TabsDataService {
                 guard let self else {
                     return false
                 }
-                return identifier == self.positioning.defaultSelectedTabId
+                let defaultValue = self.positioning.defaultSelectedTabId
+                return identifier == defaultValue
             })
 
             for await newSelectedTabId in filteredId {

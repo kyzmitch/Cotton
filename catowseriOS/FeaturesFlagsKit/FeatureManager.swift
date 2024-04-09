@@ -13,9 +13,9 @@ import Combine
 
 @globalActor
 public final class FeatureManager {
-    public static let shared = FManager()
+    public static let shared = StateHolder()
 
-    public actor FManager {
+    public actor StateHolder {
         /// Flag value data sources.
         private let sources: [FeatureSource] = [LocalFeatureSource() /*, RemoteFeatureSource()*/]
         /// Temporarily create a separate array of sources for enum features

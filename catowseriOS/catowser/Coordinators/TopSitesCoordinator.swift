@@ -44,7 +44,7 @@ final class TopSitesCoordinator: Coordinator {
         /// Async start should be fine here, because layout is in the same closure
         Task {
             let isJsEnabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-            vc.reload(with: DefaultTabProvider.shared.topSites(isJsEnabled))
+            vc.reload(with: await DefaultTabProvider.shared.topSites(isJsEnabled))
             presenterVC?.viewController.add(asChildViewController: vc.viewController, to: contentContainerView)
 
             let topSitesView: UIView = vc.controllerView

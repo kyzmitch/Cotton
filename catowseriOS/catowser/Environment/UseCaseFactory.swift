@@ -18,9 +18,9 @@ extension String {
 
 @globalActor
 final class UseCaseFactory {
-    static let shared = UseCasesHolder()
+    static let shared = StateHolder()
     
-    actor UseCasesHolder {
+    actor StateHolder {
         private let locator: UseCaseLocator
 
         init() {

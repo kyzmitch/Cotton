@@ -211,8 +211,10 @@ where C.R == TabsScreenRoute {
         coordinator?.showNext(.addTab)
         // on previews screen will make new added tab always selected
         // same behaviour has Safari and Firefox
-        if DefaultTabProvider.shared.selected {
-            coordinator?.stop()
+        Task {
+            if await DefaultTabProvider.shared.selected {
+                coordinator?.stop()
+            }
         }
     }
 }

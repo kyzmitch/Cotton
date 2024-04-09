@@ -11,7 +11,7 @@ import FeaturesFlagsKit
 
 // MARK: - generic GETTER method
 
-extension FeatureManager.FManager {
+extension FeatureManager.StateHolder {
     func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F?
     where F.RawValue == Int {
         let keyStr: String
@@ -36,7 +36,7 @@ extension FeatureManager.FManager {
 
 // MARK: - GETTER methods specific to Enum features
 
-extension FeatureManager.FManager {
+extension FeatureManager.StateHolder {
     func tabAddPositionValue() -> AddedTabPosition {
         let feature: ApplicationEnumFeature = .tabAddPosition
         guard let source = source(for: feature) else {
