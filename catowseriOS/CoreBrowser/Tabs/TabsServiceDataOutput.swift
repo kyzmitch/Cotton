@@ -11,7 +11,7 @@ import Foundation
 /**
  Tabs service data output/response type.
  */
-public enum TabsServiceDataOutput {
+public enum TabsServiceDataOutput: Sendable {
     case tabsCount(Int)
     case selectedTabId(UUID)
     case allTabs([Tab])

@@ -18,6 +18,7 @@ protocol WebContentDelegate: AnyObject {
     func showLoadingProgress(_ show: Bool)
 }
 
+@MainActor
 final class WebContentCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?

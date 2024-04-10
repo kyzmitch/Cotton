@@ -11,6 +11,7 @@ import CottonBase
 import CoreBrowser
 import FeaturesFlagsKit
 
+@MainActor
 final class TopSitesCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?

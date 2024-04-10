@@ -14,7 +14,8 @@ import CottonPlugins
 import CottonData
 
 /// Browser content related coordinators
-protocol BrowserContentCoordinators: AnyObject {
+@MainActor
+protocol BrowserContentCoordinators: AnyObject, Sendable {
     var topSitesCoordinator: TopSitesCoordinator? { get }
     var webContentCoordinator: WebContentCoordinator? { get }
     var globalMenuDelegate: GlobalMenuDelegate? { get }

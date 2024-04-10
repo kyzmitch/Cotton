@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 protocol GlobalMenuDelegate: AnyObject {
     func settingsDidPress(from sourceView: UIView, and sourceRect: CGRect)
 }

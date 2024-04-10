@@ -12,7 +12,7 @@ import Foundation
  Tabs data service commands for the Command design pattern.
  Each command case can carry the input data.
  */
-public enum TabsServiceCommand {
+public enum TabsServiceCommand: Sendable {
     case getTabsCount
     case getSelectedTabId
     case getAllTabs

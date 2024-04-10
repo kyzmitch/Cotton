@@ -39,6 +39,8 @@ public final class InMemoryDomainSearchProvider {
     }
 }
 
+extension CottonBase.Host: @unchecked Sendable {}
+
 extension InMemoryDomainSearchProvider.StateHolder: DomainsHistory {
     public func remember(host: CottonBase.Host) async {
         storage.insert(word: host.rawString)

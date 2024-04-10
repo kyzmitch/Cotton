@@ -119,9 +119,6 @@ where C.R == TabsScreenRoute {
         Task {
             await TabsDataService.shared.detach(self)
         }
-    }
-
-    deinit {
         stateHandlerCancellable?.cancel()
     }
 
@@ -208,10 +205,10 @@ where C.R == TabsScreenRoute {
     // MARK: - private functions
 
     @objc func addTabPressed() {
-        coordinator?.showNext(.addTab)
-        // on previews screen will make new added tab always selected
-        // same behaviour has Safari and Firefox
         Task {
+            coordinator?.showNext(.addTab)
+            // on previews screen will make new added tab always selected
+            // same behaviour has Safari and Firefox
             if await DefaultTabProvider.shared.selected {
                 coordinator?.stop()
             }

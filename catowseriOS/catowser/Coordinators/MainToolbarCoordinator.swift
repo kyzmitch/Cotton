@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 
+@MainActor
 final class MainToolbarCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?
