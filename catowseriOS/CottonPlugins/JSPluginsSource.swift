@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 public protocol JSPluginsSource: AnyObject {
     associatedtype Program: JSPluginsProgram
     var jsProgram: Program { get }

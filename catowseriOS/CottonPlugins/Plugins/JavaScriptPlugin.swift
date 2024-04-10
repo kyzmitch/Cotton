@@ -23,6 +23,7 @@ public enum PluginHandlerDelegateType {
  Describes the JavaScript plugin model.
  An Element from visitor design pattern.
  */
+@MainActor
 public protocol JavaScriptPlugin: Equatable {
     var jsFileName: String { get }
     var messageHandlerName: String { get }
@@ -47,15 +48,15 @@ public protocol JavaScriptPlugin: Equatable {
      - host represents the hostname from web view (can be used to determine if specific plugin is applicable or not)
      - canInject shows if this specific plugin needs to be injected or can be skipped.
      */
-    func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) throws
+    func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) async throws
 }
 
 extension JavaScriptPlugin {
-    public func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) throws {
+    public func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) async throws {
         guard visitor.canVisit(self, host, canInject) else {
             return
         }
-        try visitor.visit(self)
+        try await visitor.visit(self)
     }
 }
 

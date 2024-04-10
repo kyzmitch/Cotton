@@ -39,7 +39,7 @@ public enum NetworkReachabilityStatus {
 
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "Server: ServerDescription"
-public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable {
+public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable, Sendable {
     // swiftlint:enable comment_spacing
     associatedtype Server: ServerDescription
     typealias Listener = (NetworkReachabilityStatus) -> Void

@@ -14,8 +14,10 @@ import Foundation
 /// https://github.com/apple/swift-evolution/blob/main/proposals/0395-observability.md
 ///
 /// Tab did remove function is not needed, because we want to remove it from UI right away
+///
+/// This can be sendable, because all actor types are, and this one is Main actor
 @MainActor
-public protocol TabsObserver {
+public protocol TabsObserver: Sendable {
     /// To be able to search specific observer.
     var tabsObserverName: String { get async }
     /// Updates observer with tabs count.

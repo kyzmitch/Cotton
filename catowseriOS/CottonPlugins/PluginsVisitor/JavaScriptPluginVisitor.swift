@@ -10,6 +10,7 @@ import Foundation
 import CottonBase
 
 /// Will be used for `WKUserContentController` because it is actually the only possible visitor
+@MainActor
 public protocol JavaScriptPluginVisitor: AnyObject {
     /**
      Determines if specific plugin can be used on specific host
@@ -26,5 +27,5 @@ public protocol JavaScriptPluginVisitor: AnyObject {
      - Parameters:
      - plugin JavaScript plugin
      */
-    func visit(_ plugin: any JavaScriptPlugin) throws
+    func visit(_ plugin: any JavaScriptPlugin) async throws
 }

@@ -10,6 +10,7 @@ import Foundation
 import WebKit
 import CottonBase
 
+@MainActor
 public protocol JSPluginsProgram: AnyObject, Equatable {
     var plugins: [any JavaScriptPlugin] { get }
 

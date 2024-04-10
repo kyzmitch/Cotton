@@ -22,7 +22,7 @@ extension URLRequest: URLRequestCreatable {
 
 /// Interface for some JSON encoder (e.g. Alamofire implementation) to hide it and
 /// not use it directly and be able to mock it for unit testing
-public protocol JSONRequestEncodable: AutoMockable {
+public protocol JSONRequestEncodable: AutoMockable, Sendable {
     func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest
 }
 

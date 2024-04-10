@@ -16,9 +16,11 @@ import AutoMockable
 public typealias WebSearchSuggestionsProducer = SignalProducer<[String], HttpError>
 public typealias WebSearchSuggestionsPublisher = AnyPublisher<[String], HttpError>
 
+/// Autocomplete search use case.
+/// Use cases do not hold any mutable state, so that, any of them can be sendable.
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "Strategy: SearchAutocompleteStrategy"
-public protocol AutocompleteSearchUseCase: BaseUseCase, AutoMockable {
+public protocol AutocompleteSearchUseCase: BaseUseCase, AutoMockable, Sendable {
     // swiftlint:enable comment_spacing
 
     associatedtype Strategy: SearchAutocompleteStrategy

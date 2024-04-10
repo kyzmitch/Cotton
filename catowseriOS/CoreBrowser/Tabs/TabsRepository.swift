@@ -9,7 +9,10 @@
 import Foundation
 import AutoMockable
 
-public protocol TabsRepository: AutoMockable {
+/// Tabs repository protocol can be sendable, because implementation
+/// doesn't hold any state, only interface to the DB for now
+/// so that, no need any synhronization.
+public protocol TabsRepository: AutoMockable, Sendable {
     /// Defines human redable name for Int if it is describes index.
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int

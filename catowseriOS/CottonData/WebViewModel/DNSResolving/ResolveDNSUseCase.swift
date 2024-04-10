@@ -16,9 +16,11 @@ import AutoMockable
 public typealias DNSResolvingProducer = SignalProducer<URL, DnsError>
 public typealias DNSResolvingPublisher = AnyPublisher<URL, DnsError>
 
+/// Resolve Domain name use case.
+/// Use cases do not hold any mutable state, so that, any of them can be sendable.
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "Strategy: DNSResolvingStrategy"
-public protocol ResolveDNSUseCase: BaseUseCase, AutoMockable {
+public protocol ResolveDNSUseCase: BaseUseCase, AutoMockable, Sendable {
     // swiftlint:enable comment_spacing
 
     associatedtype Strategy: DNSResolvingStrategy

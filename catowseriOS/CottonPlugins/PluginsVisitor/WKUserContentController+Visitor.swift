@@ -24,25 +24,25 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         return true
     }
 
-    public func visit(_ plugin: any JavaScriptPlugin) throws {
+    public func visit(_ plugin: any JavaScriptPlugin) async throws {
         if let base = plugin as? BasePlugin {
-            try visit(basePlugin: base)
+            try await visit(basePlugin: base)
         } else if let instagram = plugin as? InstagramContentPlugin {
-            try visit(instagramPlugin: instagram)
+            try await visit(instagramPlugin: instagram)
         }
     }
 
-    private func visit(basePlugin: BasePlugin) throws {
-        let wkScript = try JSPluginFactory.shared.script(for: basePlugin,
-                                                         with: .atDocumentEnd,
-                                                         isMainFrameOnly: true)
+    private func visit(basePlugin: BasePlugin) async throws {
+        let wkScript = try await JSPluginFactory.shared.script(for: basePlugin,
+                                                               with: .atDocumentEnd,
+                                                               isMainFrameOnly: true)
         addHandler(wkScript, basePlugin.messageHandlerName, basePlugin.handler)
     }
 
-    private func visit(instagramPlugin: InstagramContentPlugin) throws {
-        let wkScript = try JSPluginFactory.shared.script(for: instagramPlugin,
-                                                         with: .atDocumentStart,
-                                                         isMainFrameOnly: instagramPlugin.isMainFrameOnly)
+    private func visit(instagramPlugin: InstagramContentPlugin) async throws {
+        let wkScript = try await JSPluginFactory.shared.script(for: instagramPlugin,
+                                                               with: .atDocumentStart,
+                                                               isMainFrameOnly: instagramPlugin.isMainFrameOnly)
         addHandler(wkScript, instagramPlugin.messageHandlerName, instagramPlugin.handler)
     }
 

@@ -15,6 +15,8 @@ import ReactiveHttpKit
 import BrowserNetworking
 import AutoMockable
 
+extension CottonBase.ServerDescription: @unchecked Sendable {}
+
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "R: ResponseType"
 //sourcery: associatedtype = "S: ServerDescription"
@@ -26,7 +28,7 @@ import AutoMockable
 //sourcery: typealias = "ReachabilityAdapter = RA"
 //sourcery: typealias = "Encoder = E"
 //sourcery: typealias = "Client = C"
-public protocol RestClientContext: AnyObject, AutoMockable {
+public protocol RestClientContext: AnyObject, AutoMockable, Sendable {
     // swiftlint:enable comment_spacing
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription

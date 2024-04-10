@@ -14,7 +14,9 @@ public protocol IndexSelectionContext: AutoMockable {
     var currentlySelectedIndex: Int { get async }
 }
 
-public protocol TabSelectionStrategy: AutoMockable {
+/// Tab selection protocol can be sendable, because implementation
+/// only hold a constant which can't be mutated, so that, no any mutable state for now.
+public protocol TabSelectionStrategy: AutoMockable, Sendable {
     /**
      A Tab selection strategy (Compositor) defines the algorithms of tab selection in specific cases
      - when tab was removed and need to select another

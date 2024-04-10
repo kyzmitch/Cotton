@@ -10,6 +10,8 @@ import Foundation
 import WebKit
 import CottonBase
 
+extension CottonBase.Host: @unchecked Sendable {}
+
 /**
  An Object Structure (Program) from visitor desgin pattern. Could be a Composite
  */
@@ -32,10 +34,14 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
             return
         }
         visitor.removeAllUserScripts() // reset old state
-        do {
-            try plugins.forEach { try $0.accept(visitor, context, canInject) }
-        } catch {
-            print("\(#function) failed to load plugin: \(error.localizedDescription)")
+        plugins.forEach { plugin in
+            Task {
+                do {
+                    try await plugin.accept(visitor, context, canInject)
+                } catch {
+                    print("\(#function) failed to load plugin: \(error.localizedDescription)")
+                }
+            }
         }
     }
 
@@ -69,7 +75,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
  */
 
 public extension JSPluginsProgramImpl {
-    static func == (lhs: JSPluginsProgramImpl, rhs: JSPluginsProgramImpl) -> Bool {
+    nonisolated static func == (lhs: JSPluginsProgramImpl, rhs: JSPluginsProgramImpl) -> Bool {
         guard lhs.plugins.count == rhs.plugins.count else {
             return false
         }
