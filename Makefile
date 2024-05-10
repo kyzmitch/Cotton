@@ -229,21 +229,21 @@ Local and CI targets
 \tiOS build
 \t\t* make build-ios-dev-release\t\t: Build Release version of Kotlin multiplatform & Xcode project.
 \t\t* make github-workflow-ios\t\t: GitHub workflow for iOS.
-\t\t* make ios-lint\t\t: Only run linter on Swift files.
+\t\t* make ios-lint\t\t\t\t: Only run linter on Swift files.
 
 \tAndroid build
 \t\t* make build-android-dev-release\t\t: Build Release version of Kotlin multiplatform & Android project.
-\t\t* make github-workflow-android\t\t: GitHub workflow for Android.
-\t\t* make android-lint\t\t: CLI kotlin lint.
+\t\t* make github-workflow-android\t\t\t: GitHub workflow for Android.
+\t\t* make android-lint\t\t\t\t: CLI kotlin lint.
 
 \tCotton-Base build
 \t\t* make build-cotton-base-ios-release\t\t: Build cotton-base XCFramework for iOS.
-\t\t* make build-cotton-base-android-release\t\t: Build & publish cotton-base to local Maven for Android.
+\t\t* make build-cotton-base-android-release\t: Build & publish cotton-base to local Maven for Android.
 \t\t* make build-cotton-base-release\t\t: Build cotton-base together for iOS & Android.
 
 \tUnit tests
-\t\t* make ios-unit-tests\t\t: Build and run iOS unit tests.
-\t\t* make ios-tests-core-browser\t\t: Build and run Cotton-base Kotlin unit tests.
+\t\t* make ios-unit-tests\t\t\t\t: Build and run iOS unit tests.
+\t\t* make ios-tests-core-browser\t\t\t: Build and run Cotton-base Kotlin unit tests.
 endef
 
 export HELP_CONTENT
