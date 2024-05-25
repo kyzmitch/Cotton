@@ -20,7 +20,9 @@ public class TabsDataSubject {
     }
     public var tabs: [Tab] = []
     
-    init(_ positioning: TabsStates) {
+    public init(_ positioning: TabsStates, _ tabs: [Tab] = []) {
         self.selectedTabId = positioning.defaultSelectedTabId
+        self.tabs = tabs
+        
     }
 }

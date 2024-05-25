@@ -171,7 +171,7 @@ private extension TabsDataService {
             _ = try await storage.remove(tabs: tabs)
             let tab: Tab = .init(contentType: contentState)
             if #available(iOS 17.0, *) {
-                tabsSubject.tabs = []
+                tabsSubject.tabs.removeAll()
             } else {
                 tabs.removeAll()
                 tabsCountInput.yield(0)
