@@ -15,11 +15,11 @@ public final class WriteTabsUseCaseImpl: WriteTabsUseCase {
         self.tabsDataService = tabsDataService
     }
 
-    public func add(tab: Tab) async {
+    public func add(tab: CoreBrowser.Tab) async {
         _ = await tabsDataService.sendCommand(.addTab(tab))
     }
 
-    public func close(tab: Tab) async {
+    public func close(tab: CoreBrowser.Tab) async {
         _ = await tabsDataService.sendCommand(.closeTab(tab))
     }
 
@@ -27,11 +27,11 @@ public final class WriteTabsUseCaseImpl: WriteTabsUseCase {
         _ = await tabsDataService.sendCommand(.closeAll)
     }
 
-    public func select(tab: Tab) async {
+    public func select(tab: CoreBrowser.Tab) async {
         _ = await tabsDataService.sendCommand(.selectTab(tab))
     }
 
-    public func replaceSelected(_ tabContent: Tab.ContentType) async {
+    public func replaceSelected(_ tabContent: CoreBrowser.Tab.ContentType) async {
         _ = await tabsDataService.sendCommand(.replaceSelectedContent(tabContent))
     }
 }

@@ -9,30 +9,28 @@
 import Foundation
 import WebKit
 
-@globalActor
+@MainActor
 final class JSPluginFactory {
-    static let shared = StateHolder()
+    static let shared = JSPluginFactory()
 
-    actor StateHolder {
-        private let scripts = NSCache<NSString, WKUserScript>()
+    private let scripts = NSCache<NSString, WKUserScript>()
 
-        func script(for plugin: any JavaScriptPlugin,
-                    with injectionTime: WKUserScriptInjectionTime,
-                    isMainFrameOnly: Bool) throws -> WKUserScript {
-            let typeName = plugin.jsFileName
-            if let existingJS = scripts.object(forKey: typeName as NSString) {
-                return existingJS
-            } else {
-                let source = try Self.loadScriptSource(typeName)
-                let wkScript = WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: isMainFrameOnly)
-                scripts.setObject(wkScript, forKey: typeName as NSString)
-                return wkScript
-            }
+    func script(for plugin: any JavaScriptPlugin,
+                with injectionTime: WKUserScriptInjectionTime,
+                isMainFrameOnly: Bool) throws -> WKUserScript {
+        let typeName = plugin.jsFileName
+        if let existingJS = scripts.object(forKey: typeName as NSString) {
+            return existingJS
+        } else {
+            let source = try Self.loadScriptSource(typeName)
+            let wkScript = WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: isMainFrameOnly)
+            scripts.setObject(wkScript, forKey: typeName as NSString)
+            return wkScript
         }
     }
 }
 
-fileprivate extension JSPluginFactory.StateHolder {
+fileprivate extension JSPluginFactory {
     static func loadScriptSource(_ resourceName: String) throws -> String {
         guard let filepath = Bundle.init(for: self).path(forResource: resourceName, ofType: "js") else {
             print("\(resourceName).js not found!")

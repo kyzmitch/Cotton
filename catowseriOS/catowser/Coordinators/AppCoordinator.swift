@@ -61,7 +61,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }()
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
-    private var previousTabContent: Tab.ContentType?
+    private var previousTabContent: CoreBrowser.Tab.ContentType?
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
 
@@ -179,7 +179,7 @@ extension AppCoordinator: CoordinatorOwner {
 
 enum MainScreenRoute: Route {
     case menu(MenuViewModel, UIView, CGRect)
-    case openTab(Tab.ContentType)
+    case openTab(CoreBrowser.Tab.ContentType)
 }
 
 extension AppCoordinator: Navigating {
@@ -567,7 +567,7 @@ private extension AppCoordinator {
         startedCoordinator = coordinator
     }
 
-    func open(tabContent: Tab.ContentType) {
+    func open(tabContent: CoreBrowser.Tab.ContentType) {
         linkTagsCoordinator?.showNext(.closeTags)
         // hide suggestions as well
         searchBarCoordinator?.showNext(.hideSuggestions)
@@ -625,11 +625,11 @@ private extension AppCoordinator {
 }
 
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         open(tabContent: content)
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) async {
+    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
         switch previousTabContent {
         case .site:
             break
@@ -685,7 +685,7 @@ extension AppCoordinator: WebContentDelegate {
 }
 
 extension AppCoordinator: SearchBarDelegate {
-    func openTab(_ content: Tab.ContentType) {
+    func openTab(_ content: CoreBrowser.Tab.ContentType) {
         showNext(.openTab(content))
     }
 

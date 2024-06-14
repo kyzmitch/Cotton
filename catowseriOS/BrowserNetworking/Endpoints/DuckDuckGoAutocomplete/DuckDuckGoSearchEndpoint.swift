@@ -8,7 +8,7 @@
 
 import CottonRestKit
 import Combine
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonBase
 import ReactiveHttpKit
 import Alamofire

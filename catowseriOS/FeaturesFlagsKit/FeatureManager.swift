@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreBrowser
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 
 @globalActor

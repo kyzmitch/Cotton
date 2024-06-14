@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 
 /// FeatureSource that uses UserDefaults

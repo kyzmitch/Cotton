@@ -13,7 +13,7 @@ import CottonPlugins
 import CottonBase
 import BrowserNetworking
 import FeaturesFlagsKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif

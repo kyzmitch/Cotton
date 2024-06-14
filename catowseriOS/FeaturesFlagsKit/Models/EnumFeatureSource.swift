@@ -6,7 +6,7 @@
 //  Copyright © 2022 Cotton (former Catowser). All rights reserved.
 //
 
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif

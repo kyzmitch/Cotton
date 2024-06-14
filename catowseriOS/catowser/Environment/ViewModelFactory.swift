@@ -47,7 +47,7 @@ final class ViewModelFactory {
         return WebViewModelImpl(googleDnsUseCase, context, selectTabUseCase, writeUseCase, siteNavigation, site)
     }
 
-    func tabViewModel(_ tab: Tab) async -> TabViewModel {
+    func tabViewModel(_ tab: CoreBrowser.Tab) async -> TabViewModel {
         let readUseCase = await UseCaseFactory.shared.findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseFactory.shared.findUseCase(WriteTabsUseCase.self)
         return TabViewModel(tab, readUseCase, writeUseCase)

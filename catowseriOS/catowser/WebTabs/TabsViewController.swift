@@ -141,7 +141,7 @@ private extension TabsViewController {
         print("\(#function): add pressed")
 
         Task {
-            let tab = Tab(contentType: await DefaultTabProvider.shared.contentState)
+            let tab = CoreBrowser.Tab(contentType: await DefaultTabProvider.shared.contentState)
             viewModel.addTab(tab)
         }
     }
@@ -229,7 +229,7 @@ private extension TabsViewController {
 
 // MARK: Tabs observer
 extension TabsViewController: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         guard !tabsStackView.arrangedSubviews.isEmpty else {
             assertionFailure("Tried to make tab view active but there are no any of them")
             return
@@ -257,7 +257,7 @@ extension TabsViewController: TabsObserver {
         #endif
     }
 
-    func initializeObserver(with tabs: [Tab]) async {
+    func initializeObserver(with tabs: [CoreBrowser.Tab]) async {
         for tab in tabs {
             let vm = await ViewModelFactory.shared.tabViewModel(tab)
             viewModels.append(vm)
@@ -269,7 +269,7 @@ extension TabsViewController: TabsObserver {
         view.layoutIfNeeded()
     }
 
-    func tabDidAdd(_ tab: Tab, at index: Int) async {
+    func tabDidAdd(_ tab: CoreBrowser.Tab, at index: Int) async {
         let vm = await ViewModelFactory.shared.tabViewModel(tab)
         viewModels.insert(vm, at: index)
         let tabView = TabView(calculateNextTabFrame(), vm, self)

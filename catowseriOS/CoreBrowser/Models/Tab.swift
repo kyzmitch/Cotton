@@ -1,5 +1,5 @@
 //
-//  Tab.swift
+//  CoreBrowser.Tab.swift
 //  catowser
 //
 //  Created by admin on 12/06/2017.
@@ -43,7 +43,7 @@ public extension Tab {
                 return .blank
             case 1:
                 guard let actualSite = site else {
-                    print("No site instance for Tab.ContentType site \(rawValue)")
+                    print("No site instance for CoreBrowser.Tab.ContentType site \(rawValue)")
                     return nil
                 }
                 return .site(actualSite)
@@ -54,7 +54,7 @@ public extension Tab {
             case 4:
                 return .topSites
             default:
-                print("Unexpected Tab.ContentType \(rawValue)")
+                print("Unexpected CoreBrowser.Tab.ContentType \(rawValue)")
                 return nil
             }
         }
@@ -101,7 +101,7 @@ public extension Tab {
 }
 
 extension Tab.ContentType: CaseIterable {
-    public static var allCases: [Tab.ContentType] {
+    public static var allCases: [CoreBrowser.Tab.ContentType] {
         [.blank, .homepage, .topSites, .favorites]
     }
 }
@@ -127,7 +127,7 @@ extension Tab.ContentType: CustomDebugStringConvertible {
 }
 
 extension Tab.ContentType: Equatable {
-    public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
+    public static func == (lhs: CoreBrowser.Tab.ContentType, rhs: CoreBrowser.Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
         case (.site(let lSite), .site(let rSite)):
             return lSite.compareWith(rSite)
@@ -210,7 +210,7 @@ public struct Tab: Sendable {
     }
 
     /**
-     Initializes an instance of `Tab` type.
+     Initializes an instance of `CoreBrowser.Tab` type.
      */
     public init(contentType: ContentType,
                 idenifier: UUID = .init(),
@@ -220,11 +220,11 @@ public struct Tab: Sendable {
         id = idenifier
     }
 
-    public static let blank: Tab = Tab(contentType: .blank)
+    public static let blank: CoreBrowser.Tab = CoreBrowser.Tab(contentType: .blank)
 }
 
 extension Tab: Equatable {
-    public static func == (lhs: Tab, rhs: Tab) -> Bool {
+    public static func == (lhs: CoreBrowser.Tab, rhs: CoreBrowser.Tab) -> Bool {
         return lhs.id == rhs.id
     }
 }

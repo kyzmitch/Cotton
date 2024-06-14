@@ -11,7 +11,7 @@ import CoreBrowser
 import FeaturesFlagsKit
 
 protocol PhoneTabsDelegate: AnyObject {
-    func didTabSelect(_ tab: Tab) async
+    func didTabSelect(_ tab: CoreBrowser.Tab) async
     func didTabAdd() async
 }
 
@@ -58,7 +58,7 @@ final class PhoneTabsCoordinator: Coordinator {
 
 enum TabsScreenRoute: Route {
     case error
-    case selectTab(Tab)
+    case selectTab(CoreBrowser.Tab)
     case addTab
 }
 
@@ -91,7 +91,7 @@ extension PhoneTabsCoordinator: Navigating {
 }
 
 private extension PhoneTabsCoordinator {
-    func showSelected(_ tab: Tab) {
+    func showSelected(_ tab: CoreBrowser.Tab) {
         Task {
             await delegate?.didTabSelect(tab)
         }

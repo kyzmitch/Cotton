@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 import CottonRestKit
 

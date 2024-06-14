@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import FeaturesFlagsKit
 import CottonData
 

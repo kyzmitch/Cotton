@@ -19,7 +19,7 @@ struct BrowserContentView<W: WebViewModel>: View {
     /// but the reference needs to be holded/created by another vm on upper level
     private let jsPluginsBuilder: any JSPluginsSource
     /// The main state of the browser content view
-    private let contentType: Tab.ContentType
+    private let contentType: CoreBrowser.Tab.ContentType
     /// Determines if the state is still loading to not show wrong content type (like default one).
     /// Depends on main view state, because this model's init is getting called unexpectedly.
     private let isLoading: Bool
@@ -37,7 +37,7 @@ struct BrowserContentView<W: WebViewModel>: View {
     init(_ jsPluginsBuilder: any JSPluginsSource,
          _ siteNavigation: SiteExternalNavigationDelegate?,
          _ isLoading: Bool,
-         _ contentType: Tab.ContentType,
+         _ contentType: CoreBrowser.Tab.ContentType,
          _ webViewNeedsUpdate: Binding<Bool>,
          _ mode: SwiftUIMode,
          _ webVM: W) {

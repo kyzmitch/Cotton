@@ -17,5 +17,5 @@ public protocol ReadTabsUseCase: BaseUseCase, AutoMockable, Sendable {
     /// Returns selected UUID, could be invalid one which is defined (to handle always not empty condition)
     var selectedId: UUID { get async }
     /// Fetches latest tabs.
-    var allTabs: [Tab] { get async }
+    var allTabs: [CoreBrowser.Tab] { get async }
 }

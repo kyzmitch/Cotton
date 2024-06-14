@@ -20,7 +20,7 @@ final class TopSitesViewModel: ObservableObject {
         self.writeTabUseCase = writeTabUseCase
     }
 
-    func replaceSelected(tabContent: Tab.ContentType) {
+    func replaceSelected(tabContent: CoreBrowser.Tab.ContentType) {
         Task {
             _ = await writeTabUseCase.replaceSelected(tabContent)
         }

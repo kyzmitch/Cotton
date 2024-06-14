@@ -18,7 +18,7 @@ public actor TabsDataService {
     /// Tabs selection strategy
     private let selectionStrategy: TabSelectionStrategy
     /// In memory storage for the tabs
-    private var tabs: [Tab] = []
+    private var tabs: [CoreBrowser.Tab] = []
     /// Async stream for the selected tab id instead of using Combine's @Published
     private var selectedTabIdStream: UUIDStream!
     /// Async's stream continuation to notify about new id
@@ -117,7 +117,7 @@ private extension TabsDataService {
         return .allTabs(tabs)
     }
 
-    func handleAddTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
+    func handleAddTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceDataOutput {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
         tabsCountInput.yield(tabs.count)
@@ -132,7 +132,7 @@ private extension TabsDataService {
         return .tabAdded
     }
 
-    func handleCloseTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
+    func handleCloseTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceDataOutput {
         do {
             let removedTabs = try await tabsRepository.remove(tabs: [tab])
             // swiftlint:disable:next force_unwrapping
@@ -157,7 +157,7 @@ private extension TabsDataService {
             _ = try await tabsRepository.remove(tabs: tabs)
             tabs.removeAll()
             tabsCountInput.yield(0)
-            let tab: Tab = .init(contentType: contentState)
+            let tab: CoreBrowser.Tab = .init(contentType: contentState)
             _ = try await tabsRepository.add(tab, select: true)
         } catch {
             // tab view should be removed immediately on view level anyway
@@ -166,7 +166,7 @@ private extension TabsDataService {
         return .allTabsClosed
     }
 
-    func handleSelectTabCommand(_ tab: Tab) async -> TabsServiceDataOutput {
+    func handleSelectTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceDataOutput {
         do {
             let identifier = try await tabsRepository.select(tab: tab)
             guard identifier != selectedTabIdentifier else {
@@ -180,7 +180,7 @@ private extension TabsDataService {
         return .tabSelected
     }
 
-    func handleReplaceTabContentCommand(_ tabContent: Tab.ContentType) async -> TabsServiceDataOutput {
+    func handleReplaceTabContentCommand(_ tabContent: CoreBrowser.Tab.ContentType) async -> TabsServiceDataOutput {
         guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
             return .tabContentReplaced(TabsListError.notInitializedYet)
         }
@@ -284,7 +284,7 @@ extension TabsDataService: TabsSubject {
 }
 
 private extension TabsDataService {
-    func handleTabAdded(_ tab: Tab, index: Int, select: Bool) async {
+    func handleTabAdded(_ tab: CoreBrowser.Tab, index: Int, select: Bool) async {
         /// can select new tab only after adding it, this is because corresponding view should be in the list
         switch positioning.addSpeed {
         case .immediately:
@@ -316,7 +316,7 @@ private extension TabsDataService {
         }
     }
 
-    func handleCachedTabRemove(_ tab: Tab) async {
+    func handleCachedTabRemove(_ tab: CoreBrowser.Tab) async {
         /// if it is a last tab - replace it with a tab with default content
         /// browser can't function without at least one tab
         /// so, this is kind of a side effect of removing the only one last tab
@@ -325,7 +325,7 @@ private extension TabsDataService {
             tabsCountInput.yield(0)
             Task {
                 let contentState = await positioning.contentState
-                let tab: Tab = .init(contentType: contentState)
+                let tab: CoreBrowser.Tab = .init(contentType: contentState)
                 _ = await sendCommand(.addTab(tab))
             }
         } else {
@@ -348,7 +348,7 @@ private extension TabsDataService {
     func fetchTabs() async throws {
         var cachedTabs = try await tabsRepository.fetchAllTabs()
         if cachedTabs.isEmpty {
-            let tab = Tab(contentType: await positioning.contentState)
+            let tab = CoreBrowser.Tab(contentType: await positioning.contentState)
             let savedTab = try await tabsRepository.add(tab, select: true)
             cachedTabs = [savedTab]
         }
@@ -396,8 +396,8 @@ private extension TabsDataService {
     }
 }
 
-fileprivate extension Array where Element == Tab {
-    func element(by uuid: UUID) -> (tab: Tab, index: Int)? {
+fileprivate extension Array where Element == CoreBrowser.Tab {
+    func element(by uuid: UUID) -> (tab: CoreBrowser.Tab, index: Int)? {
         for (ix, tab) in self.enumerated() where tab.id == uuid {
             return (tab, ix)
         }
@@ -406,8 +406,8 @@ fileprivate extension Array where Element == Tab {
 }
 
 extension AddedTabPosition {
-    func addTab(_ tab: Tab,
-                to tabs: inout [Tab],
+    func addTab(_ tab: CoreBrowser.Tab,
+                to tabs: inout [CoreBrowser.Tab],
                 _ currentlySelectedId: UUID) -> Int {
         let newIndex: Int
         switch self {

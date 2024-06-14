@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 // needed for `Downloadable`
 import BrowserNetworking
 

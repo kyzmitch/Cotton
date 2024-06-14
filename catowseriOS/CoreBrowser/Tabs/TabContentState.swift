@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Twin type for `Tab.ContentType` to have `rawValue`
+/// Twin type for `CoreBrowser.Tab.ContentType` to have `rawValue`
 /// and use it for settings.
 public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible, Sendable {
     case blank
@@ -16,7 +16,7 @@ public enum TabContentDefaultState: Int, CaseIterable, CustomStringConvertible, 
     case favorites
     case topSites
 
-    public var contentType: Tab.ContentType {
+    public var contentType: CoreBrowser.Tab.ContentType {
         switch self {
         case .blank:
             return .blank

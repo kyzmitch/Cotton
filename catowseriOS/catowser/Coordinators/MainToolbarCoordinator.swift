@@ -166,7 +166,7 @@ extension MainToolbarCoordinator: PhoneTabsDelegate {
 
     func didTabAdd() async {
         let contentState = await DefaultTabProvider.shared.contentState
-        let tab = Tab(contentType: contentState)
+        let tab = CoreBrowser.Tab(contentType: contentState)
         /// newly added tab moves selection to itself
         /// so, it is opened by manager by default
         /// but user maybe don't want to move that tab right away

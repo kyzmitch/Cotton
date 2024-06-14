@@ -14,7 +14,7 @@ import Foundation
 public enum TabsServiceDataOutput: Sendable {
     case tabsCount(Int)
     case selectedTabId(UUID)
-    case allTabs([Tab])
+    case allTabs([CoreBrowser.Tab])
     case tabAdded
     case tabClosed(UUID?)
     case allTabsClosed

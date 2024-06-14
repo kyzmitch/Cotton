@@ -50,7 +50,7 @@ final class DefaultTabProvider {
             }
         }
 
-        var contentState: Tab.ContentType {
+        var contentState: CoreBrowser.Tab.ContentType {
             get async {
                 await FeatureManager.shared.tabDefaultContentValue().contentType
             }

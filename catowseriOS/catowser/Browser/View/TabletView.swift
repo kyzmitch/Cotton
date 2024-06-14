@@ -51,7 +51,7 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     // MARK: - browser content state
 
     @State private var isLoading: Bool = true
-    @State private var contentType: Tab.ContentType
+    @State private var contentType: CoreBrowser.Tab.ContentType
     /// A workaround to avoid unnecessary web view updates
     @State private var webViewNeedsUpdate: Bool = false
 
@@ -81,7 +81,7 @@ struct TabletView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
     }
 
     init(_ mode: SwiftUIMode,
-         _ defaultContentType: Tab.ContentType,
+         _ defaultContentType: CoreBrowser.Tab.ContentType,
          _ webVM: W,
          _ searchVM: S) {
         self.webVM = webVM

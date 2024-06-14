@@ -17,7 +17,7 @@ final class AllTabsViewModel: ObservableObject {
         self.writeTabUseCase = writeTabUseCase
     }
 
-    func addTab(_ tab: Tab) {
+    func addTab(_ tab: CoreBrowser.Tab) {
         Task {
             await writeTabUseCase.add(tab: tab)
         }

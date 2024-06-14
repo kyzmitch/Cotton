@@ -11,7 +11,7 @@ import CoreBrowser
 import CoreData
 
 /**
- Declaring Tab storage type in host app instead of `CoreBrowser` framework,
+ Declaring CoreBrowser.Tab storage type in host app instead of `CoreBrowser` framework,
  to allow use app settings like default tab content which only can be stored in host app.
  
  Later need to add tabs rest/firebase client dependency to use it as a 2nd (remote) data source.
@@ -27,7 +27,7 @@ final class TabsRepositoryImpl {
 }
 
 extension TabsRepositoryImpl: TabsRepository {
-    func select(tab: Tab) async throws -> UUID {
+    func select(tab: CoreBrowser.Tab) async throws -> UUID {
         do {
             try await tabsDbResource.selectTab(tab)
             return tab.id
@@ -36,7 +36,7 @@ extension TabsRepositoryImpl: TabsRepository {
         }
     }
 
-    func update(tab: Tab) throws -> Tab {
+    func update(tab: CoreBrowser.Tab) throws -> CoreBrowser.Tab {
         do {
             return try tabsDbResource.update(tab: tab)
         } catch {
@@ -44,7 +44,7 @@ extension TabsRepositoryImpl: TabsRepository {
         }
     }
 
-    func remove(tabs: [Tab]) async throws -> [Tab] {
+    func remove(tabs: [CoreBrowser.Tab]) async throws -> [CoreBrowser.Tab] {
         do {
             return try await tabsDbResource.forget(tabs: tabs)
         } catch {
@@ -52,11 +52,11 @@ extension TabsRepositoryImpl: TabsRepository {
         }
     }
 
-    func fetchAllTabs() async throws -> [Tab] {
+    func fetchAllTabs() async throws -> [CoreBrowser.Tab] {
         try await tabsDbResource.tabsFromLastSession()
     }
 
-    func add(_ tab: Tab, select: Bool) async throws -> Tab {
+    func add(_ tab: CoreBrowser.Tab, select: Bool) async throws -> CoreBrowser.Tab {
         try await tabsDbResource.remember(tab: tab, andSelect: select)
     }
 

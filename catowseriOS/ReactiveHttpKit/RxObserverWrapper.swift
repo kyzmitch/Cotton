@@ -7,7 +7,7 @@
 //
 
 import CottonRestKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonBase
 
 extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpError {

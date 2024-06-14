@@ -11,7 +11,7 @@ import XCTest
 import CottonBase
 import CottonRestKit
 import ReactiveHttpKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 import BrowserNetworking
 import SwiftyMocky

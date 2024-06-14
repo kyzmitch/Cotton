@@ -15,7 +15,7 @@ import CottonData
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
-    func openTab(_ content: Tab.ContentType)
+    func openTab(_ content: CoreBrowser.Tab.ContentType)
     func layoutSuggestions()
 }
 

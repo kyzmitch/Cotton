@@ -9,7 +9,7 @@
 import CottonRestKit
 import ReactiveHttpKit
 import Alamofire
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif

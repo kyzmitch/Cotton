@@ -12,8 +12,8 @@ import AutoMockable
 /// Write tabs use case.
 /// Use cases do not hold any mutable state, so that, any of them can be sendable.
 public protocol WriteTabsUseCase: BaseUseCase, AutoMockable, Sendable {
-    /// Adds tab to memory and storage. Tab can be blank or it can contain URL address.
-    /// Tab will be added no matter what happen, so, function doesn't return any result.
+    /// Adds tab to memory and storage. CoreBrowser.Tab can be blank or it can contain URL address.
+    /// CoreBrowser.Tab will be added no matter what happen, so, function doesn't return any result.
     ///
     /// - Parameter tab: A tab.
     func add(tab: Tab) async

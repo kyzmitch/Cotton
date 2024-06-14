@@ -8,7 +8,7 @@
 
 import Foundation
 import Combine
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 
 public protocol JavaScriptEvaluateble: AnyObject {
     func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)

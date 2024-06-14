@@ -8,7 +8,7 @@
 
 import Foundation
 import CottonRestKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 import AutoMockable
 

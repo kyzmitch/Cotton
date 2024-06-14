@@ -8,7 +8,7 @@
 
 import Foundation
 import Alamofire
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 #if canImport(CryptoKit)
 import CryptoKit
 #endif

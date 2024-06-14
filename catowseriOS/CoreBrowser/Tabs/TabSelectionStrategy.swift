@@ -14,11 +14,11 @@ public protocol IndexSelectionContext: AutoMockable {
     var currentlySelectedIndex: Int { get async }
 }
 
-/// Tab selection protocol can be sendable, because implementation
+/// CoreBrowser.Tab selection protocol can be sendable, because implementation
 /// only hold a constant which can't be mutated, so that, no any mutable state for now.
 public protocol TabSelectionStrategy: AutoMockable, Sendable {
     /**
-     A Tab selection strategy (Compositor) defines the algorithms of tab selection in specific cases
+     A CoreBrowser.Tab selection strategy (Compositor) defines the algorithms of tab selection in specific cases
      - when tab was removed and need to select another
      */
     func autoSelectedIndexAfterTabRemove(_ context: IndexSelectionContext, removedIndex: Int) async -> Int

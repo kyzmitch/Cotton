@@ -6,7 +6,7 @@
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonRestKit
 
 public typealias HostProducer = SignalProducer<String, DnsError>
