@@ -15,7 +15,7 @@ import BrowserNetworking
 import FeaturesFlagsKit
 @preconcurrency import ReactiveSwift
 #if canImport(Combine)
-import Combine
+@preconcurrency import Combine
 #endif
 import CottonData
 

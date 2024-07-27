@@ -11,7 +11,10 @@ import Combine
 @preconcurrency import ReactiveSwift
 
 public protocol JavaScriptEvaluateble: AnyObject {
-    func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
+    func evaluateJavaScript(
+        _ javaScriptString: String,
+        completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    )
 }
 
 extension JavaScriptEvaluateble {
