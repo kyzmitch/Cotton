@@ -11,17 +11,36 @@ import Combine
 @preconcurrency import ReactiveSwift
 
 public protocol JavaScriptEvaluateble: AnyObject {
-    func evaluateJavaScript(
+    func evaluateJavaScriptV2(
         _ javaScriptString: String,
         completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
     )
+    func evaluateJavaScriptV1(
+        _ javaScriptString: String,
+        completionHandler: ((Any?, Error?) -> Void)?
+    )
+}
+
+extension JavaScriptEvaluateble {
+    func commonHandleJavaScript(
+        _ javaScriptString: String,
+        _ completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    ) {
+        if #available(iOS 18.0, *) {
+            evaluateJavaScriptV2(javaScriptString, completionHandler: completionHandler)
+        } else {
+            #if swift(<6.0)
+            evaluateJavaScriptV1(javaScriptString, completionHandler: completionHandler)
+            #endif
+        }
+    }
 }
 
 extension JavaScriptEvaluateble {
     func evaluate(jsScript: String) {
         // swiftlint:disable:next line_length
         // https://github.com/WebKit/webkit/blob/39a299616172a4d4fe1f7aaf573b41020a1d7358/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm#L1009
-        evaluateJavaScript(jsScript, completionHandler: {(something, error) in
+        commonHandleJavaScript(jsScript, {(something, error) in
             if let err = error {
                 print("Error evaluating JavaScript: \(err)")
             } else if let thing = something {
@@ -37,7 +56,7 @@ extension JavaScriptEvaluateble {
                 promise(.failure(CottonPluginError.zombiError))
                 return
             }
-            self.evaluateJavaScript(jsScript) { (something, error) in
+            self.commonHandleJavaScript(jsScript) { (something, error) in
                 if let realError = error {
                     promise(.failure(realError))
                     return
@@ -61,7 +80,7 @@ extension JavaScriptEvaluateble {
                 observer.send(error: CottonPluginError.zombiError)
                 return
             }
-            self.evaluateJavaScript(jsScript) { (something, error) in
+            self.commonHandleJavaScript(jsScript) { (something, error) in
                 if let realError = error {
                     observer.send(error: realError)
                     return

@@ -19,7 +19,20 @@ import FeaturesFlagsKit
 #endif
 import CottonData
 
-extension WKWebView: JavaScriptEvaluateble {}
+extension WKWebView: JavaScriptEvaluateble {
+    public func evaluateJavaScriptV2(
+        _ javaScriptString: String,
+        completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    ) {
+        evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+    }
+    public func evaluateJavaScriptV1(
+        _ javaScriptString: String,
+        completionHandler: ((Any?, Error?) -> Void)?
+    ) {
+        evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+    }
+}
 
 final class WebViewController<C: Navigating>: BaseViewController,
                                               WKUIDelegate,
