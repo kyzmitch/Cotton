@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23173.10" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AppSettings" representedClassName="CDAppSettings" syncable="YES" codeGenerationType="class">
         <attribute name="selectedTabId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-    </entity>
-    <entity name="CoreBrowser.Tab" representedClassName="CDTab" syncable="YES" codeGenerationType="class">
-        <attribute name="addedTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="contentType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <relationship name="site" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Site" inverseName="tab" inverseEntity="Site"/>
     </entity>
     <entity name="Site" representedClassName="CDSite" syncable="YES" codeGenerationType="class">
         <attribute name="searchSuggestion" optional="YES" attributeType="String"/>
         <attribute name="siteUrl" attributeType="URI"/>
         <attribute name="userSpecifiedTitle" optional="YES" attributeType="String"/>
         <relationship name="settings" maxCount="1" deletionRule="Cascade" destinationEntity="SiteSettings" inverseName="site" inverseEntity="SiteSettings"/>
-        <relationship name="tab" maxCount="1" deletionRule="Nullify" destinationEntity="CoreBrowser.Tab" inverseName="site" inverseEntity="CoreBrowser.Tab"/>
+        <relationship name="tab" maxCount="1" deletionRule="Nullify" destinationEntity="Tab" inverseName="site" inverseEntity="Tab"/>
     </entity>
     <entity name="SiteSettings" representedClassName="CDSiteSettings" syncable="YES" codeGenerationType="class">
         <attribute name="blockPopups" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -22,5 +16,11 @@
         <attribute name="isJsEnabled" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isPrivate" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="site" maxCount="1" deletionRule="Nullify" destinationEntity="Site" inverseName="settings" inverseEntity="Site"/>
+    </entity>
+    <entity name="Tab" representedClassName="CDTab" syncable="YES" codeGenerationType="class">
+        <attribute name="addedTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="contentType" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="site" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Site" inverseName="tab" inverseEntity="Site"/>
     </entity>
 </model>
