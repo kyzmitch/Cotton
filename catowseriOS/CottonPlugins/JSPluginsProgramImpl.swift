@@ -10,17 +10,20 @@ import Foundation
 import WebKit
 import CottonBase
 
-extension CottonBase.Host: @unchecked Sendable {}
+extension CottonBase.Host: @unchecked @retroactive Sendable {}
 
 /**
  An Object Structure (Program) from visitor desgin pattern. Could be a Composite
  */
+@MainActor
 public final class JSPluginsProgramImpl: JSPluginsProgram {
-    public let plugins: [any JavaScriptPlugin]
+    public let plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
 
-    public init(_ plugins: [any JavaScriptPlugin]) {
-        if plugins.count == 0 {
-            print("Plugins program was initialized with 0 JS plugins")
+    public init(
+        _ plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
+    ) {
+        guard !plugins.isEmpty else {
+            fatalError("Plugins program was initialized with 0 JS plugins")
         }
         self.plugins = plugins
     }
@@ -34,13 +37,11 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
             return
         }
         visitor.removeAllUserScripts() // reset old state
-        plugins.forEach { plugin in
-            Task {
-                do {
-                    try await plugin.accept(visitor, context, canInject)
-                } catch {
-                    print("\(#function) failed to load plugin: \(error.localizedDescription)")
-                }
+        plugins.forEach { pair in
+            do {
+                try pair.0.accept(visitor, context, canInject, pair.1)
+            } catch {
+                print("\(#function) failed to load plugin: \(error.localizedDescription)")
             }
         }
     }
@@ -50,8 +51,8 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
             return
         }
         plugins
-            .filter { plugin in
-                guard let pluginHostName = plugin.hostKeyword else {
+            .filter { pair in
+                guard let pluginHostName = pair.0.hostKeyword else {
                     return true
                 }
                 guard context.isSimilar(name: pluginHostName) else {
@@ -59,39 +60,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
                 }
                 return true
             }
-            .compactMap { $0.scriptString(jsEnabled) }
+            .compactMap { $0.0.scriptString(jsEnabled) }
             .forEach { webView.evaluate(jsScript: $0)}
-    }
-}
-
-/**
- cannot use the == operator to compare 2 instances of existential type.
- https://swiftsenpai.com/swift/understanding-some-and-any/
- https://www.hackingwithswift.com/swift/5.7/unlock-existentials
-
- Also see "type erasure" techniques but without using any keyword:
- https://www.swiftbysundell.com/articles/different-flavors-of-type-erasure-in-swift/
- https://khawerkhaliq.com/blog/swift-protocols-equatable-part-two/
- */
-
-public extension JSPluginsProgramImpl {
-    nonisolated static func == (lhs: JSPluginsProgramImpl, rhs: JSPluginsProgramImpl) -> Bool {
-        guard lhs.plugins.count == rhs.plugins.count else {
-            return false
-        }
-
-        var index = 0
-        while index < lhs.plugins.count {
-            let lv = lhs.plugins[index]
-            let rv = rhs.plugins[index]
-            if let blv = lv as? BasePlugin, let brv = rv as? BasePlugin, blv != brv {
-                return false
-            } else if let ilv = lv as? InstagramContentPlugin, let irv = rv as? InstagramContentPlugin, ilv != irv {
-                return false
-            }
-            index += 1
-        }
-        return true
-
     }
 }

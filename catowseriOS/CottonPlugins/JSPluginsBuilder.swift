@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import WebKit
 
 /**
  Creates the plugins by connecting them with observers (delegates).
  */
 public final class JSPluginsBuilder: JSPluginsSource {
     public typealias Program = JSPluginsProgramImpl
-    private var plugins: [any JavaScriptPlugin]
+    private var plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
 
     public var jsProgram: Program {
         JSPluginsProgramImpl(plugins)
@@ -23,16 +24,14 @@ public final class JSPluginsBuilder: JSPluginsSource {
     }
 
     public func setBase(_ baseDelegate: BasePluginContentDelegate) -> Self {
-        if let basePlugin = BasePlugin(delegate: .base(baseDelegate)) {
-            plugins.append(basePlugin)
-        }
+        let basePlugin = BasePlugin()
+        plugins.append((basePlugin, BaseJSHandler(baseDelegate)))
         return self
     }
 
     public func setInstagram(_ instagramDelegate: InstagramContentDelegate) -> Self {
-        if let igPlugin = InstagramContentPlugin(delegate: .instagram(instagramDelegate)) {
-            plugins.append(igPlugin)
-        }
+        let igPlugin = InstagramContentPlugin()
+        plugins.append((igPlugin, InstagramHandler(instagramDelegate)))
         return self
     }
 }

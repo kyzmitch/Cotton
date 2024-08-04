@@ -8,38 +8,41 @@
 
 import Foundation
 
+@globalActor
 final class LocalSettings {
-    private static let shared: LocalSettings = .init()
+    static let shared = StateHolder()
 
-    private let userDefaults: UserDefaults
+    actor StateHolder {
+        private let userDefaults: UserDefaults
 
-    private init() {
-        userDefaults = .init()
-    }
-
-    static func getGlobalStringSetting(for key: String) -> String? {
-        return shared.userDefaults.string(forKey: key)
-    }
-
-    static func getGlobalIntSetting(for key: String) -> Int? {
-        guard shared.userDefaults.object(forKey: key) != nil else {
-            return nil
+        init() {
+            userDefaults = .init()
         }
-        return shared.userDefaults.integer(forKey: key)
-    }
 
-    static func getGlobalBoolSetting(for key: String) -> Bool? {
-        guard shared.userDefaults.object(forKey: key) != nil else {
-            return nil
+        func getGlobalStringSetting(for key: String) -> String? {
+            return userDefaults.string(forKey: key)
         }
-        return shared.userDefaults.bool(forKey: key)
-    }
 
-    static func setGlobalBoolSetting(for key: String, value: Bool) {
-        shared.userDefaults.set(value, forKey: key)
-    }
+        func getGlobalIntSetting(for key: String) -> Int? {
+            guard userDefaults.object(forKey: key) != nil else {
+                return nil
+            }
+            return userDefaults.integer(forKey: key)
+        }
 
-    static func setGlobalIntSetting(for key: String, value: Int) {
-        shared.userDefaults.set(value, forKey: key)
+        func getGlobalBoolSetting(for key: String) -> Bool? {
+            guard userDefaults.object(forKey: key) != nil else {
+                return nil
+            }
+            return userDefaults.bool(forKey: key)
+        }
+
+        func setGlobalBoolSetting(for key: String, value: Bool) {
+            userDefaults.set(value, forKey: key)
+        }
+
+        func setGlobalIntSetting(for key: String, value: Int) {
+            userDefaults.set(value, forKey: key)
+        }
     }
 }

@@ -23,12 +23,10 @@ public enum PluginHandlerDelegateType {
  Describes the JavaScript plugin model.
  An Element from visitor design pattern.
  */
-@MainActor
 public protocol JavaScriptPlugin: Equatable {
     var jsFileName: String { get }
     var messageHandlerName: String { get }
     var isMainFrameOnly: Bool { get }
-    var handler: WKScriptMessageHandler { get }
     var hostKeyword: String? { get }
     /**
      Constructs a JavaScript string with specific variable
@@ -38,8 +36,6 @@ public protocol JavaScriptPlugin: Equatable {
      - enable determines if specific plugin should be turned on/off
      */
     func scriptString(_ enable: Bool) -> String?
-    init?(delegate: PluginHandlerDelegateType)
-    init?(anyProtocol: Any)
 
     /**
      Handles the visitor depending on context.
@@ -48,15 +44,27 @@ public protocol JavaScriptPlugin: Equatable {
      - host represents the hostname from web view (can be used to determine if specific plugin is applicable or not)
      - canInject shows if this specific plugin needs to be injected or can be skipped.
      */
-    func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) async throws
+    @MainActor
+    func accept(
+        _ visitor: JavaScriptPluginVisitor,
+        _ host: CottonBase.Host,
+        _ canInject: Bool,
+        _ handler: WKScriptMessageHandler
+    ) throws
 }
 
 extension JavaScriptPlugin {
-    public func accept(_ visitor: JavaScriptPluginVisitor, _ host: CottonBase.Host, _ canInject: Bool) async throws {
-        guard visitor.canVisit(self, host, canInject) else {
+    @MainActor
+    public func accept(
+        _ visitor: JavaScriptPluginVisitor,
+        _ host: CottonBase.Host,
+        _ canInject: Bool,
+        _ handler: WKScriptMessageHandler
+    ) throws {
+        guard visitor.canVisit(self, host, canInject, handler) else {
             return
         }
-        try await visitor.visit(self)
+        try visitor.visit(self)
     }
 }
 

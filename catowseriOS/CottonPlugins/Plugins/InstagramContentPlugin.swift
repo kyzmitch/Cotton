@@ -14,8 +14,6 @@ public protocol InstagramContentDelegate: AnyObject {
 }
 
 public struct InstagramContentPlugin: JavaScriptPlugin {
-    public let handler: WKScriptMessageHandler
-
     public let jsFileName: String = "ig"
 
     public let messageHandlerName: String = "igHandler"
@@ -27,21 +25,6 @@ public struct InstagramContentPlugin: JavaScriptPlugin {
     }
 
     public let isMainFrameOnly: Bool = true
-
-    public init?(delegate: PluginHandlerDelegateType) {
-        guard case let .instagram(actualDelegate) = delegate else {
-            assertionFailure("failed to create object")
-            return nil
-        }
-        handler = InstagramHandler(actualDelegate)
-    }
-
-    public init?(anyProtocol: Any) {
-        guard let igDelegate = anyProtocol as? InstagramContentDelegate else {
-            return nil
-        }
-        handler = InstagramHandler(igDelegate)
-    }
 }
 
 extension InstagramContentPlugin: Equatable {

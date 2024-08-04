@@ -27,23 +27,6 @@ public struct BasePlugin: JavaScriptPlugin {
     }
 
     public let isMainFrameOnly: Bool = true
-
-    public let handler: WKScriptMessageHandler
-
-    public init?(delegate: PluginHandlerDelegateType) {
-        guard case let .base(actualDelegate) = delegate else {
-            assertionFailure("failed to create BasePlugin because of wrong delegate")
-            return nil
-        }
-        handler = BaseJSHandler(actualDelegate)
-    }
-
-    public init?(anyProtocol: Any) {
-        guard let baseDelegate = anyProtocol as? BasePluginContentDelegate else {
-            return nil
-        }
-        handler = BaseJSHandler(baseDelegate)
-    }
 }
 
 extension String {

@@ -39,7 +39,7 @@ extension JavaScriptEvaluateble {
 extension JavaScriptEvaluateble {
     func evaluate(jsScript: String) {
         // swiftlint:disable:next line_length
-        // https://github.com/WebKit/webkit/blob/39a299616172a4d4fe1f7aaf573b41020a1d7358/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm#L1009
+        // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm
         commonHandleJavaScript(jsScript, {(something, error) in
             if let err = error {
                 print("Error evaluating JavaScript: \(err)")
@@ -56,7 +56,7 @@ extension JavaScriptEvaluateble {
                 promise(.failure(CottonPluginError.zombiError))
                 return
             }
-            self.commonHandleJavaScript(jsScript) { (something, error) in
+            commonHandleJavaScript(jsScript) { (something, error) in
                 if let realError = error {
                     promise(.failure(realError))
                     return

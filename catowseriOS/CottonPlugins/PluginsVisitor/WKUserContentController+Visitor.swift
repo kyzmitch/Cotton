@@ -11,7 +11,12 @@ import CottonBase
 
 /// A Concrete Visitor which is in this case only one possible type from iOS SDK WebKit
 extension WKUserContentController: JavaScriptPluginVisitor {
-    public func canVisit(_ plugin: any JavaScriptPlugin, _ host: CottonBase.Host, _ canInject: Bool) -> Bool {
+    public func canVisit(
+        _ plugin: any JavaScriptPlugin,
+        _ host: CottonBase.Host,
+        _ canInject: Bool,
+        _ handler: WKScriptMessageHandler
+    ) -> Bool {
         guard canInject else {
             return false
         }
@@ -24,23 +29,23 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         return true
     }
 
-    public func visit(_ plugin: any JavaScriptPlugin) async throws {
+    public func visit(_ plugin: any JavaScriptPlugin) throws {
         if let base = plugin as? BasePlugin {
-            try await visit(basePlugin: base)
+            try visit(basePlugin: base)
         } else if let instagram = plugin as? InstagramContentPlugin {
-            try await visit(instagramPlugin: instagram)
+            try visit(instagramPlugin: instagram)
         }
     }
 
-    private func visit(basePlugin: BasePlugin) async throws {
-        let wkScript = try await JSPluginFactory.shared.script(for: basePlugin,
+    private func visit(basePlugin: BasePlugin) throws {
+        let wkScript = try JSPluginFactory.shared.script(for: basePlugin,
                                                                with: .atDocumentEnd,
                                                                isMainFrameOnly: true)
         addHandler(wkScript, basePlugin.messageHandlerName, basePlugin.handler)
     }
 
-    private func visit(instagramPlugin: InstagramContentPlugin) async throws {
-        let wkScript = try await JSPluginFactory.shared.script(for: instagramPlugin,
+    private func visit(instagramPlugin: InstagramContentPlugin) throws {
+        let wkScript = try JSPluginFactory.shared.script(for: instagramPlugin,
                                                                with: .atDocumentStart,
                                                                isMainFrameOnly: instagramPlugin.isMainFrameOnly)
         addHandler(wkScript, instagramPlugin.messageHandlerName, instagramPlugin.handler)
