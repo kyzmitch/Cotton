@@ -7,7 +7,7 @@
 //
 
 import CottonRestKit
-import Alamofire
+@preconcurrency import Alamofire
 import CottonBase
 
 public final class AlamofireReachabilityAdaptee<S: ServerDescription>: NetworkReachabilityAdapter {

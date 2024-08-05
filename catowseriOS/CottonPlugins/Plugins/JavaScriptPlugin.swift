@@ -64,7 +64,7 @@ extension JavaScriptPlugin {
         guard visitor.canVisit(self, host, canInject, handler) else {
             return
         }
-        try visitor.visit(self)
+        try visitor.visit(self, handler)
     }
 }
 

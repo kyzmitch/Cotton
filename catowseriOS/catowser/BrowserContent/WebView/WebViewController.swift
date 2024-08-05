@@ -19,7 +19,7 @@ import FeaturesFlagsKit
 #endif
 import CottonData
 
-extension WKWebView: JavaScriptEvaluateble {
+extension WKWebView: @retroactive JavaScriptEvaluateble {
     public func evaluateJavaScriptV2(
         _ javaScriptString: String,
         completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
@@ -30,7 +30,9 @@ extension WKWebView: JavaScriptEvaluateble {
         _ javaScriptString: String,
         completionHandler: ((Any?, Error?) -> Void)?
     ) {
-        evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+#if swift(<6.0)
+            evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+#endif
     }
 }
 

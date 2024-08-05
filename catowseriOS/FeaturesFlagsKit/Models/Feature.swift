@@ -28,7 +28,7 @@ extension Feature {
 }
 
 /// For `syntatic sugar`
-public struct ApplicationFeature<F: Feature> {
+public struct ApplicationFeature<F: Feature>: Sendable {
     public var defaultValue: F.Value {
         return F.defaultValue
     }

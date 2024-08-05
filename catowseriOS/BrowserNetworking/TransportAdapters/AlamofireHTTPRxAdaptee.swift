@@ -6,6 +6,7 @@
 //  Copyright © 2021 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
+import AutoMockable
 import CottonRestKit
 import ReactiveHttpKit
 import Alamofire
@@ -105,7 +106,9 @@ extension URLRequest /* : URLRequestCreatable */ {
 }
 
 /// Wrapper around Alamofire method
-extension JSONEncoding: JSONRequestEncodable {
+extension JSONEncoding: @unchecked @retroactive Sendable {}
+extension JSONEncoding: @retroactive AutoMockable {}
+extension JSONEncoding: @retroactive JSONRequestEncodable {
     public func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest {
         return try encode(urlRequest.convertToURLRequest(), with: parameters)
     }
