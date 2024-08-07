@@ -19,7 +19,7 @@ import CoreBrowser
 
 /// web view context should carry some data or dependencies which can't be stored as a state and always are present.
 /// protocol with async functions which do not belong to specific actor
-public protocol WebViewContext {
+public protocol WebViewContext: Sendable {
     /// Plugins are optional because there is possibility that js files are not present or plugins delegates are not set
     var  pluginsSource: any JSPluginsSource { get }
     /// Hides app specific implementation for host check

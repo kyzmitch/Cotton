@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-public protocol JSPluginsSource: AnyObject {
+public protocol JSPluginsSource: AnyObject, Sendable {
     associatedtype Program: JSPluginsProgram
     var jsProgram: Program { get }
 }

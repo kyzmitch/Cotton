@@ -9,6 +9,7 @@
 import Foundation
 import CoreBrowser
 
+@MainActor
 public protocol SiteExternalNavigationDelegate: AnyObject {
     func provisionalNavigationDidStart()
     func didSiteOpen(appName: String)

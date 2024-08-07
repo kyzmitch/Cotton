@@ -301,7 +301,7 @@ extension WebViewModelState: Equatable {
             return lData == rData && lSettings == rSettings
         case (.injectingPlugins(let lProgram, let lData, let lSettings),
               .injectingPlugins(let rProgram, let rData, let rSettings)):
-            if let lp = lProgram as? JSPluginsProgramImpl, let rp = rProgram as? JSPluginsProgramImpl, lp != rp {
+            if let lp = lProgram as? JSPluginsProgramImpl, let rp = rProgram as? JSPluginsProgramImpl /*, lp != rp */ {
                 return false
             }
             return lData == rData && lSettings == rSettings
