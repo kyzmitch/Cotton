@@ -12,7 +12,7 @@ import Combine
 
 /// Протокол для вэб вью по выполнения JavaScript, должно быть на main thread
 @MainActor
-public protocol JavaScriptEvaluateble: AnyObject {
+public protocol JavaScriptEvaluateble: AnyObject, Sendable {
     func evaluateJavaScriptV2(
         _ javaScriptString: String,
         completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?

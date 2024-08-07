@@ -11,7 +11,10 @@ import CottonBase
 import CottonPlugins
 import CoreBrowser
 
-enum WebViewModelState {
+extension CottonBase.Site.Settings: @unchecked @retroactive Sendable {}
+extension CottonBase.URLInfo: @unchecked @retroactive Sendable {}
+
+enum WebViewModelState: Sendable {
     /// SwiftUI specific state to avoid waiting for the specific `Site` and create VM right away
     /// to call `load(site)` method when SwiftUI aware of specific `Site`
     case pendingLoad

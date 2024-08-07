@@ -11,7 +11,7 @@ import WebKit
 import CottonBase
 
 @MainActor
-public protocol JSPluginsProgram: AnyObject {
+public protocol JSPluginsProgram: AnyObject, Sendable {
     var plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)] { get }
 
     func inject(to visitor: WKUserContentController, context: CottonBase.Host, canInject: Bool)

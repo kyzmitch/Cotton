@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonBase
+@preconcurrency import CottonBase
 import CottonPlugins
 
 protocol Actionable {
@@ -18,7 +18,7 @@ protocol Actionable {
 
 typealias IPAddress = String
 
-enum WebViewAction {
+enum WebViewAction: Sendable {
     case loadSite
     case resetToSite(Site)
     case loadNextLink(_ url: URL)

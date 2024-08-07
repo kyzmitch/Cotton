@@ -19,11 +19,11 @@ fileprivate extension String {
 public typealias HttpTypedResult<T> = Result<T, HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
-extension CottonBase.ServerDescription: @unchecked Sendable {}
+extension CottonBase.ServerDescription: @unchecked @retroactive Sendable {}
 
 public final class RestClient<S: ServerDescription,
                               R: NetworkReachabilityAdapter,
-                              E: JSONRequestEncodable>: RestInterface where R.Server == S {
+                              E: JSONRequestEncodable>: @unchecked Sendable, RestInterface where R.Server == S {
     public typealias Server = S
     public typealias Reachability = R
     public typealias Encoder = E

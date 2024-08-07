@@ -154,7 +154,9 @@ private extension TabsDataService {
     func handleCloseAllCommand() async -> TabsServiceDataOutput {
         let contentState = await positioning.contentState
         do {
-            _ = try await tabsRepository.remove(tabs: tabs)
+            // workaround https://forums.swift.org/t/why-does-sending-a-sendable-value-risk-causing-data-races/73074/4
+            var tabsCopy = tabs
+            _ = try await tabsRepository.remove(tabs: tabsCopy)
             tabs.removeAll()
             tabsCountInput.yield(0)
             let tab: CoreBrowser.Tab = .init(contentType: contentState)
@@ -263,7 +265,9 @@ extension TabsDataService: TabsSubject {
             return
         }
         await observer.updateTabsCount(with: tabs.count)
-        await observer.initializeObserver(with: tabs)
+        // workaround https://forums.swift.org/t/why-does-sending-a-sendable-value-risk-causing-data-races/73074/4
+        var tabsCopy = tabs
+        await observer.initializeObserver(with: tabsCopy)
         let defaultValue = positioning.defaultSelectedTabId
         guard selectedTabIdentifier != defaultValue else {
             return
