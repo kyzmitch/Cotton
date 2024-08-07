@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol Feature {
-    associatedtype Value
+    associatedtype Value: Sendable
 
     static var source: FeatureSource.Type { get }
     static var defaultValue: Value { get }

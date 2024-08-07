@@ -11,7 +11,7 @@
 import Combine
 #endif
 
-public protocol FeatureSource {
+public protocol FeatureSource: Sendable {
     func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) async -> F.Value
     func setValue<F: BasicFeature>(of feature: ApplicationFeature<F>, value: F.Value?) async
 }

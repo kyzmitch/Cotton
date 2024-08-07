@@ -15,33 +15,35 @@ final class LocalSettings {
     actor StateHolder {
         private let userDefaults: UserDefaults
 
-        init() {
-            userDefaults = .init()
+        init(
+            userDefaults: UserDefaults = .init()
+        ) {
+            self.userDefaults = userDefaults
         }
 
-        func getGlobalStringSetting(for key: String) -> String? {
+        func getString(for key: String) -> String? {
             return userDefaults.string(forKey: key)
         }
 
-        func getGlobalIntSetting(for key: String) -> Int? {
+        func getInt(for key: String) -> Int? {
             guard userDefaults.object(forKey: key) != nil else {
                 return nil
             }
             return userDefaults.integer(forKey: key)
         }
 
-        func getGlobalBoolSetting(for key: String) -> Bool? {
+        func getBool(for key: String) -> Bool? {
             guard userDefaults.object(forKey: key) != nil else {
                 return nil
             }
             return userDefaults.bool(forKey: key)
         }
 
-        func setGlobalBoolSetting(for key: String, value: Bool) {
+        func setBool(for key: String, value: Bool) {
             userDefaults.set(value, forKey: key)
         }
 
-        func setGlobalIntSetting(for key: String, value: Int) {
+        func setInt(for key: String, value: Int) {
             userDefaults.set(value, forKey: key)
         }
     }
