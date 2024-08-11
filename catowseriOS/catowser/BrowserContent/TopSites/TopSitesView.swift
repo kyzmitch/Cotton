@@ -9,12 +9,11 @@
 import SwiftUI
 
 struct TopSitesView: View {
-    let vm: TopSitesViewModel
+    @EnvironmentObject private var vm: TopSitesViewModel
     /// Selected swiftUI mode which is set at app start
     private let mode: SwiftUIMode
 
-    init(_ vm: TopSitesViewModel, _ mode: SwiftUIMode) {
-        self.vm = vm
+    init(_ mode: SwiftUIMode) {
         self.mode = mode
     }
 

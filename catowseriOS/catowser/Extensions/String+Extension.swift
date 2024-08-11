@@ -12,7 +12,7 @@ import Foundation
 // blob/592b76cce844f7474499831e6bd2c76ef485fed1/Queries/ContentView.swift
 
 /// Allows to use String in SwiftUI List view
-extension String: Identifiable {
+extension String: @retroactive Identifiable {
     public typealias ID = Int
     public var id: Int {
         return hash

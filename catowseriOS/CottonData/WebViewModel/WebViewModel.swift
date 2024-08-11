@@ -22,7 +22,7 @@ public enum WebPageLoadingAction: Equatable {
 }
 
 /// Interface for system's type `WKNavigationAction` from WebKit framework to be able to mock it
-public protocol NavigationActionable: AnyObject {
+@MainActor public protocol NavigationActionable: AnyObject {
     var navigationType: WKNavigationType { get }
     var request: URLRequest { get }
 }

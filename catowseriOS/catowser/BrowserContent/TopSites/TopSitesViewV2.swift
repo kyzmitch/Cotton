@@ -12,12 +12,10 @@ import CoreBrowser
 
 @available(iOS 14.0, *)
 struct TopSitesViewV2: View {
-    private let vm: TopSitesViewModel
+    @EnvironmentObject private var vm: TopSitesViewModel
     @State private var selected: Site?
 
-    init(_ vm: TopSitesViewModel) {
-        self.vm = vm
-    }
+    init() { }
 
     /// Number of items which will be displayed in a row
     private let columns: [GridItem] = [

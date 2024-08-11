@@ -42,7 +42,7 @@ final class SearchBarBaseViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         Task {
-            await TabsDataService.shared.attach(self)
+            await TabsDataService.shared.attach(self, notify: false)
         }
     }
 

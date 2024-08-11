@@ -108,7 +108,7 @@ where C.R == TabsScreenRoute {
         super.viewWillAppear(animated)
 
         Task {
-            await TabsDataService.shared.attach(self)
+            await TabsDataService.shared.attach(self, notify: false)
             viewModel.load()
         }
     }
