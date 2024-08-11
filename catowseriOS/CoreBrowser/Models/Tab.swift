@@ -9,7 +9,7 @@
 import CottonBase
 
 /// Site is an obj-c type.
-///  https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
+/// can mark with retroactive because Site type is from my CottonBase library
 extension Site: @unchecked @retroactive Sendable {}
 
 public extension Tab {

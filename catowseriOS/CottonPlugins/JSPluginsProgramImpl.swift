@@ -10,6 +10,8 @@ import Foundation
 import WebKit
 import CottonBase
 
+/// Host type is a model and can be sendable.
+/// Can mark it as retroactive because it is from my CottonBase library.
 extension CottonBase.Host: @unchecked @retroactive Sendable {}
 
 /**

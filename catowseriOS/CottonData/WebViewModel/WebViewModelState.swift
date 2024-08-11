@@ -11,7 +11,12 @@ import CottonBase
 import CottonPlugins
 import CoreBrowser
 
+/// Settings of the site can be sendable cause it is a model.
+/// Can mark it as retroactive because it is from my CottonBase library.
 extension CottonBase.Site.Settings: @unchecked @retroactive Sendable {}
+
+/// URL info type can be sendable cause it is a model.
+/// Can mark it as retroactive because it is from my CottonBase library.
 extension CottonBase.URLInfo: @unchecked @retroactive Sendable {}
 
 enum WebViewModelState: Sendable {

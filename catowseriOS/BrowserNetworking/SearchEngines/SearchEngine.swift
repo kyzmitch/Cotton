@@ -7,9 +7,10 @@
 //
 
 import Foundation
-@preconcurrency import CottonBase
+import CottonBase
 
-extension HTTPMethod: @unchecked @retroactive Sendable { }
+/// Alamofire's http method type can't be retroactivly silenced because sendable is a system protocol.
+extension HTTPMethod: @unchecked Sendable { }
 
 /// The model for OpenSearch format URL
 public struct SearchEngine: Sendable {

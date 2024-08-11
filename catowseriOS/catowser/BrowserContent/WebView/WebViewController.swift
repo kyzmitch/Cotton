@@ -13,12 +13,15 @@ import CottonPlugins
 import CottonBase
 import BrowserNetworking
 import FeaturesFlagsKit
-@preconcurrency import ReactiveSwift
+import ReactiveSwift
 #if canImport(Combine)
 @preconcurrency import Combine
 #endif
 import CottonData
 
+/// Can't retroactivly mark web view as sendable, it is a system protocol.
+extension WKWebView: @unchecked Sendable { }
+/// Can be retroactive because Web view Apple devs don't know about JavaScriptEvaluateble protocol.
 extension WKWebView: @retroactive JavaScriptEvaluateble {
     public func evaluateJavaScriptV2(
         _ javaScriptString: String,
@@ -406,7 +409,8 @@ private extension WebViewController {
     }
 }
 
-extension WKNavigationType: @retroactive CustomDebugStringConvertible {
+/// Can't be retroactive for CustomDebugStringConvertible cause it is a system protocol.
+extension WKNavigationType: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .linkActivated:
@@ -427,4 +431,5 @@ extension WKNavigationType: @retroactive CustomDebugStringConvertible {
     }
 }
 
+/// Can be retroactive because NavigationActionable is unknown for web view Apple devs
 extension WKNavigationAction: @retroactive NavigationActionable {}
