@@ -25,6 +25,7 @@ public protocol SiteExternalNavigationDelegate: AnyObject {
     func webViewDidReplace(_ interface: WebViewNavigatable?)
 }
 
+@MainActor
 public protocol SiteNavigationChangable: AnyObject {
     func changeBackButton(to canGoBack: Bool)
     func changeForwardButton(to canGoForward: Bool)

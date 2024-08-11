@@ -20,7 +20,7 @@ final class TabsRepositoryImpl {
     private let tabsDbResource: TabsResource
 
     init(_ temporaryContext: NSManagedObjectContext,
-         _ privateContextCreator: @escaping () -> NSManagedObjectContext?) {
+         _ privateContextCreator: @escaping @Sendable () -> NSManagedObjectContext?) {
         tabsDbResource = .init(temporaryContext: temporaryContext,
                                privateContextCreator: privateContextCreator)
     }

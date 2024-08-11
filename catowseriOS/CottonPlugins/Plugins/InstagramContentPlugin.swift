@@ -9,6 +9,7 @@
 import Foundation
 import WebKit
 
+@MainActor
 public protocol InstagramContentDelegate: AnyObject {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode])
 }

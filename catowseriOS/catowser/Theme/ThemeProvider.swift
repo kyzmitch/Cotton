@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 final class ThemeProvider {
     static let shared = ThemeProvider()
 

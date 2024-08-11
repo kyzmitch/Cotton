@@ -17,7 +17,8 @@ enum TabsCoreDataError: Swift.Error {
     case selectedTabIdNotPresent
 }
 
-final class TabsDBClient {
+/// Клиент для файлов базы данных, имеет синхронизацию через `performAndWait`
+final class TabsDBClient: @unchecked Sendable {
     private let managedContext: NSManagedObjectContext
 
     init(_ managedContext: NSManagedObjectContext) {

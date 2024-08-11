@@ -8,6 +8,7 @@
 
 import WebKit
 
+@MainActor
 final class BaseJSHandler: NSObject {
     private weak var delegate: BasePluginContentDelegate?
 

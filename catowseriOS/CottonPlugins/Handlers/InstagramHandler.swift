@@ -9,6 +9,7 @@
 import Foundation
 import WebKit
 
+@MainActor
 final class InstagramHandler: NSObject {
     private weak var delegate: InstagramContentDelegate?
     init(_ delegate: InstagramContentDelegate) {

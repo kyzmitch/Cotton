@@ -22,7 +22,7 @@ final class Database {
     }
 
     /// A read-only flag indicating if the persistent store is loaded.
-    private (set) var isStoreLoaded = false
+    private(set) var isStoreLoaded = false
 
     /// The managed object context associated with the main queue (read-only).
     /// To perform tasks on a private background queue see

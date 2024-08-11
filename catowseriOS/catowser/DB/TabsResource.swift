@@ -14,7 +14,8 @@ fileprivate extension String {
     static let threadName = "tabsStore"
 }
 
-final class TabsResource {
+/// Класс обертка над клиентом базы данных, имеет синхронизацию через DispatchQueue
+final class TabsResource: @unchecked Sendable {
     private var dbClient: TabsDBClient
 
     /// Needs to be checked on every access to `dbClient` to not use wrong context
@@ -32,7 +33,7 @@ final class TabsResource {
     ///   - privateContextCreator: We have to call this closure on specific thread and
     ///    use same thread for any other usages of this context.
     init(temporaryContext: NSManagedObjectContext,
-         privateContextCreator: @escaping () -> NSManagedObjectContext?) {
+         privateContextCreator: @escaping @Sendable () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
         let dummyStore: TabsDBClient = .init(temporaryContext)

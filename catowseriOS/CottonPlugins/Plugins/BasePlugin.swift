@@ -9,6 +9,7 @@
 import Foundation
 import WebKit
 
+@MainActor
 public protocol BasePluginContentDelegate: AnyObject {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag])
 }
