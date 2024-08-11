@@ -12,6 +12,7 @@ import CoreBrowser
 import CottonPlugins
 import CottonData
 
+@MainActor
 protocol WebContentDelegate: AnyObject {
     func provisionalNavigationDidStart()
     func loadingProgressdDidChange(_ progress: Float)

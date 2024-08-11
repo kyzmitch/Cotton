@@ -12,11 +12,13 @@ import CoreBrowser
 import BrowserNetworking
 import CottonPlugins
 
+@MainActor
 protocol FilesGridPresenter: AnyObject {
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
     func clearFiles()
 }
 
+@MainActor
 protocol FileDownloadViewDelegate: AnyObject {
     func didRequestOpen(local url: URL, from sourceView: DownloadButtonCellView)
     func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void)

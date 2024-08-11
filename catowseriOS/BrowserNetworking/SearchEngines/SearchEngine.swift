@@ -7,10 +7,12 @@
 //
 
 import Foundation
-import CottonBase
+@preconcurrency import CottonBase
+
+extension HTTPMethod: @unchecked @retroactive Sendable { }
 
 /// The model for OpenSearch format URL
-public struct SearchEngine {
+public struct SearchEngine: Sendable {
     /// Name e.g. "DuckDuckGo"
     let shortName: String
     /// Valid components for final URL

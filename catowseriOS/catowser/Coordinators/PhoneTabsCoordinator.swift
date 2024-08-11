@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 
+@MainActor
 protocol PhoneTabsDelegate: AnyObject {
     func didTabSelect(_ tab: CoreBrowser.Tab) async
     func didTabAdd() async

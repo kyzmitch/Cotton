@@ -108,7 +108,7 @@ extension OpenSearch {
         case xIcon = "image/x-icon"
     }
 
-    public enum ImageParseResult {
+    public enum ImageParseResult: Sendable {
         case base64(Data)
         case url(URL)
         case none

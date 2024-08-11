@@ -7,7 +7,7 @@
 //
 
 #if canImport(Combine)
-import Combine
+@preconcurrency import Combine
 #endif
 import CottonBase
 import CoreBrowser
@@ -18,6 +18,7 @@ enum BrowserMenuStyle {
     case onlyGlobalMenu
 }
 
+@MainActor
 protocol DeveloperMenuPresenter: AnyObject {
     func emulateLinkTags()
     /// This method is not for dev only and should be available in any build types

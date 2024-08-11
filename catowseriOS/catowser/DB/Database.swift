@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-final class Database {
+final class Database: Sendable {
 
     /// The default directory for the persistent stores on the current platform.
     ///
@@ -22,7 +22,8 @@ final class Database {
     }
 
     /// A read-only flag indicating if the persistent store is loaded.
-    private(set) var isStoreLoaded = false
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    nonisolated(unsafe) private(set) var isStoreLoaded = false
 
     /// The managed object context associated with the main queue (read-only).
     /// To perform tasks on a private background queue see
@@ -56,25 +57,33 @@ final class Database {
     /// to YES before loading the persistent store if you want a read-only
     /// store (for example if loading from the application bundle).
     /// Default is false.
-    private var isReadOnly = false
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    nonisolated(unsafe) private var isReadOnly = false
 
     /// A flag that indicates whether the store is added asynchronously.
     /// Set this value before loading the persistent store.
     /// Default is true.
-    private var shouldAddStoreAsynchronously = false
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    nonisolated(unsafe) private var shouldAddStoreAsynchronously = false
 
     /// A flag that indicates whether the store should be migrated
     /// automatically if the store model version does not match the
     /// coordinators model version.
     /// Set this value before loading the persistent store.
     /// Default is true.
-    private var shouldMigrateStoreAutomatically = true
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    nonisolated(unsafe) private var shouldMigrateStoreAutomatically = true
 
     /// A flag that indicates whether a mapping model should be inferred
     /// when migrating a store.
     /// Set this value before loading the persistent store.
     /// Default is true.
-    private var shouldInferMappingModelAutomatically = true
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    nonisolated(unsafe) private var shouldInferMappingModelAutomatically = true
 
     /// Creates and returns a `CoreDataController` object. This is the designated
     /// initializer for the class. It creates the managed object model,

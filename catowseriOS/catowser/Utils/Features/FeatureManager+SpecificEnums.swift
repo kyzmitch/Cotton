@@ -12,7 +12,7 @@ import FeaturesFlagsKit
 // MARK: - generic GETTER method
 
 extension FeatureManager.StateHolder {
-    func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) -> F?
+    func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F) async -> F?
     where F.RawValue == Int {
         let keyStr: String
         switch enumCase.defaultValue {
@@ -30,55 +30,55 @@ extension FeatureManager.StateHolder {
             assertionFailure("Attempt to search for not supported enum feature type")
             return nil
         }
-        return enumValue(enumCase, keyStr)
+        return await enumValue(enumCase, keyStr)
     }
 }
 
 // MARK: - GETTER methods specific to Enum features
 
 extension FeatureManager.StateHolder {
-    func tabAddPositionValue() -> AddedTabPosition {
+    func tabAddPositionValue() async -> AddedTabPosition {
         let feature: ApplicationEnumFeature = .tabAddPosition
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
-        return source.currentEnumValue(of: feature)
+        return await source.currentEnumValue(of: feature)
     }
 
-    func tabDefaultContentValue() -> TabContentDefaultState {
+    func tabDefaultContentValue() async -> TabContentDefaultState {
         let feature: ApplicationEnumFeature = .tabDefaultContent
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
-        return source.currentEnumValue(of: feature)
+        return await source.currentEnumValue(of: feature)
     }
 
-    func appAsyncApiTypeValue() -> AsyncApiType {
+    func appAsyncApiTypeValue() async -> AsyncApiType {
         let feature: ApplicationEnumFeature = .appDefaultAsyncApi
         #if DEBUG
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
-        return source.currentEnumValue(of: feature)
+        return await source.currentEnumValue(of: feature)
         #else
         // We don't need to change this in Release builds
         return feature.defaultEnumValue
         #endif
     }
 
-    func webSearchAutoCompleteValue() -> WebAutoCompletionSource {
+    func webSearchAutoCompleteValue() async -> WebAutoCompletionSource {
         let feature: ApplicationEnumFeature = .webAutoCompletionSource
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
-        return source.currentEnumValue(of: feature)
+        return await source.currentEnumValue(of: feature)
     }
 
-    func appUIFrameworkValue() -> UIFrameworkType {
+    func appUIFrameworkValue() async -> UIFrameworkType {
         let feature: ApplicationEnumFeature = .appDefaultUIFramework
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
-        return source.currentEnumValue(of: feature)
+        return await source.currentEnumValue(of: feature)
     }
 }

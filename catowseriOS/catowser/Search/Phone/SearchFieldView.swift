@@ -50,6 +50,9 @@ struct SearchFieldView: View {
     }
 }
 
+/// A value type struct from SwiftUICore system module which wasn't sendable out of the box
+extension LocalizedStringKey: @unchecked @retroactive Sendable { }
+
 private extension LocalizedStringKey {
     static let placeholderTextKey: LocalizedStringKey = "placeholder_searchbar"
 }
