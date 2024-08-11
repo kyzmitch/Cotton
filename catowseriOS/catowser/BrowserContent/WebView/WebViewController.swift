@@ -169,7 +169,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
 
     // MARK: - WKNavigationDelegate
 
-    func webView(_ webView: WKWebView,
+    private func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let domain = viewModel.nativeAppDomainNameString {
@@ -223,19 +223,19 @@ final class WebViewController<C: Navigating>: BaseViewController,
         viewModel.siteNavigation?.showLoadingProgress(false)
     }
 
-    func webView(_ webView: WKWebView,
-                 didReceive challenge: URLAuthenticationChallenge,
-                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    private func webView(_ webView: WKWebView,
+                         didReceive challenge: URLAuthenticationChallenge,
+                         completionHandler: @escaping @Sendable (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         authHandlers.insert(handler)
         handler.solve { [weak self, weak handler] stopLoadingProgress in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             if stopLoadingProgress != nil {
-                self.viewModel.siteNavigation?.showLoadingProgress(false)
+                viewModel.siteNavigation?.showLoadingProgress(false)
             }
-            guard let handler = handler else {
+            guard let handler else {
                 return
             }
             self.authHandlers.remove(handler)
@@ -323,27 +323,36 @@ private extension WebViewController {
         loadingProgressObservation?.invalidate()
         loadingProgressObservation = webView?.observe(\.estimatedProgress,
                                                       options: [.new]) { [weak self] (_, change) in
-            guard let self = self else { return }
-            guard let value = change.newValue else { return }
-            self.viewModel.siteNavigation?.loadingProgressdDidChange(Float(value))
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel.siteNavigation?.loadingProgressdDidChange(Float(value))
+            }
         }
     }
 
     func addWebViewCanGoBackObserver() {
         canGoBackObservation?.invalidate()
         canGoBackObservation = webView?.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
-            guard let self = self else { return }
-            guard let value = change.newValue else { return }
-            self.viewModel.siteNavigation?.didBackNavigationUpdate(to: value)
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel.siteNavigation?.didBackNavigationUpdate(to: value)
+            }
         }
     }
 
     func addWebViewCanGoForwardObserver() {
         canGoForwardObservation?.invalidate()
         canGoForwardObservation = webView?.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
-            guard let self = self else { return }
-            guard let value = change.newValue else { return }
-            self.viewModel.siteNavigation?.didForwardNavigationUpdate(to: value)
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel.siteNavigation?.didForwardNavigationUpdate(to: value)
+            }
         }
     }
 
@@ -397,7 +406,7 @@ private extension WebViewController {
     }
 }
 
-extension WKNavigationType: CustomDebugStringConvertible {
+extension WKNavigationType: @retroactive CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .linkActivated:
@@ -418,4 +427,4 @@ extension WKNavigationType: CustomDebugStringConvertible {
     }
 }
 
-extension WKNavigationAction: NavigationActionable {}
+extension WKNavigationAction: @retroactive NavigationActionable {}

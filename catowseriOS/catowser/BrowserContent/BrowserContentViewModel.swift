@@ -12,7 +12,7 @@ import CottonPlugins
 
 /// Content view model which observes for the currently selected tab content type.
 /// This reference type should be used to update the view if content changes.
-final class BrowserContentViewModel: ObservableObject {
+@MainActor final class BrowserContentViewModel: ObservableObject {
     /// View content type. https://stackoverflow.com/a/56724174
     @Published var contentType: CoreBrowser.Tab.ContentType
     /// Tab's content loading

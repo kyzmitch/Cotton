@@ -312,8 +312,8 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
 }
 
 extension FeatureManager.StateHolder {
-    func searchPluginName() -> KnownSearchPluginName {
-        switch webSearchAutoCompleteValue() {
+    func searchPluginName() async -> KnownSearchPluginName {
+        switch await webSearchAutoCompleteValue() {
         case .google:
             return .google
         case .duckduckgo:

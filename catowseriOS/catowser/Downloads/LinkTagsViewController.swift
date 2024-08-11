@@ -36,6 +36,7 @@ protocol LinkTagsPresenter: AnyObject {
     func clearLinks()
 }
 
+@MainActor
 protocol LinkTagsDelegate: AnyObject {
     func didSelect(type: LinksType, from sourceView: UIView)
 }

@@ -10,7 +10,7 @@ import CottonBase
 
 /// Site is an obj-c type.
 ///  https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
-extension Site: @unchecked Sendable {}
+extension Site: @unchecked @retroactive Sendable {}
 
 public extension Tab {
     enum ContentType: Sendable {

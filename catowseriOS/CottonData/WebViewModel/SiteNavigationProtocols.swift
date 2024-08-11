@@ -9,8 +9,10 @@
 import Foundation
 import CoreBrowser
 
+/// Interface for the site navigation for the external consumers,
+/// can be sendable because it is a main actor.
 @MainActor
-public protocol SiteExternalNavigationDelegate: AnyObject {
+public protocol SiteExternalNavigationDelegate: AnyObject, Sendable {
     func provisionalNavigationDidStart()
     func didSiteOpen(appName: String)
     func loadingProgressdDidChange(_ progress: Float)

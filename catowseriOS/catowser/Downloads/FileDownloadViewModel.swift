@@ -11,7 +11,7 @@ import Foundation
 // needed for `Downloadable`
 import BrowserNetworking
 
-protocol FileDownloadDelegate: AnyObject {
+@MainActor protocol FileDownloadDelegate: AnyObject {
     func didPressOpenFile(withLocal url: URL)
 }
 

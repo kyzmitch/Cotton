@@ -27,8 +27,9 @@ public protocol NavigationActionable: AnyObject {
     var request: URLRequest { get }
 }
 
+/// Web view model interface, can be sendable because it is an actor (main one)
 @MainActor
-public protocol WebViewModel: ObservableObject {
+public protocol WebViewModel: ObservableObject, Sendable {
 
     // MARK: - main public methods
 

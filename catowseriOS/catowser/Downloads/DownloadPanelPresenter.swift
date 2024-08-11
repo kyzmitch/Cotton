@@ -9,7 +9,7 @@
 import UIKit
 
 /// Used by tablet search bar on Tablet and by toolbar on Phone
-protocol DownloadPanelPresenter: AnyObject {
+@MainActor protocol DownloadPanelPresenter: AnyObject {
     func didPressDownloads(to hide: Bool)
     func didPressTabletLayoutDownloads(from sourceView: UIView, and sourceRect: CGRect)
 }

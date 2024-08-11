@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ReloadableCollection {
+@MainActor protocol ReloadableCollection {
     func reloadData()
     func reloadData(_ closure: @escaping (() -> Void))
 }
