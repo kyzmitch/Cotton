@@ -9,8 +9,8 @@
 import SwiftUI
 import CoreBrowser
 
-@MainActor @preconcurrency
-struct ToolbarViewV2: @preconcurrency ToolbarContent {
+#if swift(<6.0)
+struct ToolbarViewV2: ToolbarContent {
     @ObservedObject var vm: BrowserToolbarViewModel
     private var tabsCount: Int
     @Binding private var showingMenu: Bool
@@ -35,8 +35,8 @@ struct ToolbarViewV2: @preconcurrency ToolbarContent {
         isGoForwardDisabled = false
         isRefreshDisabled = false
     }
-
-    @MainActor @preconcurrency var body: some ToolbarContent {
+    
+    var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             DisableableButton("nav-back", vm.goBackDisabled, vm.goBack)
         }
@@ -74,3 +74,4 @@ struct ToolbarViewV2: @preconcurrency ToolbarContent {
         }
     }
 }
+#endif

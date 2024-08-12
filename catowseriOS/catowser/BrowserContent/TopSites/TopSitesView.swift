@@ -20,9 +20,9 @@ struct TopSitesView: View {
     var body: some View {
         switch mode {
         case .compatible:
-            TopSitesLegacyView(vm)
+            TopSitesLegacyView()
         case .full:
-            TopSitesViewV2(vm)
+            TopSitesViewV2()
         }
     }
 }

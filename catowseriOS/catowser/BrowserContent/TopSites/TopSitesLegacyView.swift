@@ -10,12 +10,10 @@ import SwiftUI
 import UIKit
 
 struct TopSitesLegacyView: CatowserUIVCRepresentable {
-    private let vm: TopSitesViewModel
+    @EnvironmentObject private var vm: TopSitesViewModel
     typealias UIViewControllerType = UIViewController
 
-    init(_ vm: TopSitesViewModel) {
-        self.vm = vm
-    }
+    init() { }
 
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators

@@ -12,18 +12,20 @@ import SwiftUI
 struct DisableableButton: View {
     private let disabled: Bool
     private let imageName: String
-    private let onTap: () -> Void
+    private let onTap: @MainActor () -> Void
 
-    init(_ imageName: String, _ disabled: Bool, _ onTap: @MainActor @escaping () -> Void) {
+    init(
+        _ imageName: String,
+        _ disabled: Bool,
+        _ onTap: @escaping @MainActor () -> Void
+    ) {
         self.imageName = imageName
         self.disabled = disabled
         self.onTap = onTap
     }
 
     var body: some View {
-        Button {
-            onTap()
-        } label: {
+        Button(action: onTap) {
             Image(imageName)
         }
         .disabled(disabled)

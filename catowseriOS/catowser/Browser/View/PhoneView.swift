@@ -176,18 +176,30 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
                 } else {
                     let jsPlugins = browserContentVM.jsPluginsBuilder
                     let siteNavigation: SiteExternalNavigationDelegate = toolbarVM
-                    BrowserContentView(jsPlugins,
-                                       siteNavigation,
-                                       isLoading,
-                                       contentType,
-                                       $webViewNeedsUpdate,
-                                       mode,
-                                       webVM)
+                    BrowserContentView(
+                        jsPlugins,
+                        siteNavigation,
+                        isLoading,
+                        contentType,
+                        $webViewNeedsUpdate,
+                        mode,
+                        webVM
+                    )
                 }
             }
+#if swift(<6.0)
             .toolbar {
-                ToolbarViewV2(toolbarVM, tabsCount, $showingMenu, $showingTabs, $showSearchSuggestions)
+                ToolbarViewV2(
+                    toolbarVM,
+                    tabsCount,
+                    $showingMenu,
+                    $showingTabs,
+                    $showSearchSuggestions
+                )
             }
+#else
+            .toolbar(content: toolBarContent)
+#endif
         }
         .sheet(isPresented: $showingMenu) {
             BrowserMenuView(menuModel)
@@ -230,4 +242,59 @@ struct PhoneView<W: WebViewModel, S: SearchSuggestionsViewModel>: View {
             webVM.siteNavigation = toolbarVM
         }
     }
+
+#if swift(>=6.0)
+    /// A workaround for swift 6.0 Xcode 16 beta 4 to compile the project
+    /// and use instead of `ToolbarViewV2` type
+    @ToolbarContentBuilder
+    func toolBarContent() -> some ToolbarContent {
+        ToolbarItem(placement: .bottomBar) {
+            DisableableButton(
+                "nav-back",
+                toolbarVM.goBackDisabled,
+                toolbarVM.goBack
+            )
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
+        ToolbarItem(placement: .bottomBar) {
+            DisableableButton(
+                "nav-forward",
+                toolbarVM.goForwardDisabled,
+                toolbarVM.goForward
+            )
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
+        ToolbarItem(placement: .bottomBar) {
+            DisableableButton(
+                "nav-refresh",
+                toolbarVM.reloadDisabled,
+                toolbarVM.reload
+            )
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Button {
+                showSearchSuggestions = false
+                withAnimation(.easeInOut(duration: 1)) {
+                    showingTabs.toggle()
+                }
+            } label: {
+                Text(verbatim: "\(tabsCount)")
+            }
+            .foregroundColor(.black)
+        }
+        ToolbarItem(placement: .bottomBar) {
+            Spacer()
+        }
+        ToolbarItem(placement: .bottomBar) {
+            MenuButton($showSearchSuggestions, $showingMenu)
+        }
+    }
+#endif
 }

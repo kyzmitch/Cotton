@@ -63,7 +63,7 @@ struct BrowserContentView<W: WebViewModel>: View {
             case .blank:
                 Spacer()
             case .topSites:
-                TopSitesView(topSitesVM, mode)
+                TopSitesView(mode)
             case .site(let site):
                 WebView(webVM, site, webViewNeedsUpdate, mode)
             default:
