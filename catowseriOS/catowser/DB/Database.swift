@@ -9,6 +9,12 @@
 import Foundation
 import CoreData
 
+/// A Database class, can't be an actor for now because,
+/// private core data managed context must be initialised and used
+/// on the same dispatch queue or thread and not clear how to
+/// use it if it is created from an actor.
+///
+/// Also, NSManagedObjectContext class is not sendable for an actor.
 final class Database: Sendable {
 
     /// The default directory for the persistent stores on the current platform.
@@ -23,7 +29,7 @@ final class Database: Sendable {
 
     /// A read-only flag indicating if the persistent store is loaded.
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    nonisolated(unsafe) private(set) var isStoreLoaded = false
+    private(set) nonisolated(unsafe) var isStoreLoaded = false
 
     /// The managed object context associated with the main queue (read-only).
     /// To perform tasks on a private background queue see
@@ -59,14 +65,14 @@ final class Database: Sendable {
     /// Default is false.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    nonisolated(unsafe) private var isReadOnly = false
+    private nonisolated(unsafe) var isReadOnly = false
 
     /// A flag that indicates whether the store is added asynchronously.
     /// Set this value before loading the persistent store.
     /// Default is true.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    nonisolated(unsafe) private var shouldAddStoreAsynchronously = false
+    private nonisolated(unsafe) var shouldAddStoreAsynchronously = false
 
     /// A flag that indicates whether the store should be migrated
     /// automatically if the store model version does not match the
@@ -75,7 +81,7 @@ final class Database: Sendable {
     /// Default is true.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    nonisolated(unsafe) private var shouldMigrateStoreAutomatically = true
+    private nonisolated(unsafe) var shouldMigrateStoreAutomatically = true
 
     /// A flag that indicates whether a mapping model should be inferred
     /// when migrating a store.
@@ -83,7 +89,7 @@ final class Database: Sendable {
     /// Default is true.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    nonisolated(unsafe) private var shouldInferMappingModelAutomatically = true
+    private nonisolated(unsafe) var shouldInferMappingModelAutomatically = true
 
     /// Creates and returns a `CoreDataController` object. This is the designated
     /// initializer for the class. It creates the managed object model,
@@ -197,21 +203,17 @@ final class Database: Sendable {
                 continuation.resume(with: .failure(CottonError.zombieSelf))
                 return
             }
-            self.persistentContainer.loadPersistentStores { [weak self] (_, error) in
-                guard let self else {
-                    continuation.resume(with: .failure(CottonError.zombieSelf))
-                    return
-                }
-                if let actualError = error {
-                    continuation.resume(with: .failure(actualError))
+            persistentContainer.loadPersistentStores { (_, error) in
+                if let error {
+                    continuation.resume(with: .failure(error))
                 } else {
-                    // Side effects!
-                    self.isStoreLoaded = true
-                    self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
                     continuation.resume(with: .success(()))
                 }
             }
         }
+        // should be called only if no errors were thrown on libe above
+        isStoreLoaded = true
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         return result
     }
 }

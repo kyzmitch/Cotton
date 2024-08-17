@@ -154,8 +154,14 @@ private extension TabsDataService {
     func handleCloseAllCommand() async -> TabsServiceDataOutput {
         let contentState = await positioning.contentState
         do {
-            // workaround https://forums.swift.org/t/why-does-sending-a-sendable-value-risk-causing-data-races/73074/4
-            var tabsCopy = tabs
+            // because `tabs` field isolated to data service actor
+            // and observer is another actor (main)
+            //
+            // workaround at https://forums.swift.org/t/
+            // why-does-sending-a-sendable-value-risk-causing-data-races/73074/4
+            //
+            // need to create a local copy to unlink data from the actor
+            let tabsCopy = tabs
             _ = try await tabsRepository.remove(tabs: tabsCopy)
             tabs.removeAll()
             tabsCountInput.yield(0)
@@ -265,8 +271,14 @@ extension TabsDataService: TabsSubject {
             return
         }
         await observer.updateTabsCount(with: tabs.count)
-        // workaround https://forums.swift.org/t/why-does-sending-a-sendable-value-risk-causing-data-races/73074/4
-        var tabsCopy = tabs
+        // because `tabs` field isolated to data service actor
+        // and observer is another actor (main)
+        //
+        // workaround at https://forums.swift.org/t/
+        // why-does-sending-a-sendable-value-risk-causing-data-races/73074/4
+        //
+        // need to create a local copy to unlink data from the actor
+        let tabsCopy = tabs
         await observer.initializeObserver(with: tabsCopy)
         let defaultValue = positioning.defaultSelectedTabId
         guard selectedTabIdentifier != defaultValue else {
