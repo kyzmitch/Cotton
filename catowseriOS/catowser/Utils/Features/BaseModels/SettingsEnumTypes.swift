@@ -23,7 +23,7 @@ extension WebAutoCompletionSource: EnumDefaultValueSupportable {
     }
 }
 
-extension AsyncApiType: EnumDefaultValueSupportable {
+extension AsyncApiType: @retroactive EnumDefaultValueSupportable {
     public var defaultValue: AsyncApiType {
         return .combine
     }
@@ -31,19 +31,19 @@ extension AsyncApiType: EnumDefaultValueSupportable {
 
 // MARK: - types from CoreBrowser
 
-extension AddedTabPosition: EnumDefaultValueSupportable {
+extension AddedTabPosition: @retroactive EnumDefaultValueSupportable {
     public var defaultValue: AddedTabPosition {
         return .listEnd
     }
 }
 
-extension TabContentDefaultState: EnumDefaultValueSupportable {
-    public var defaultValue: TabContentDefaultState {
+extension CoreBrowser.Tab.ContentType: @retroactive EnumDefaultValueSupportable {
+    public var defaultValue: CoreBrowser.Tab.ContentType {
         #if DEBUG
-        return TabContentDefaultState.topSites
+        return CoreBrowser.Tab.ContentType.topSites
         #else
         // In Release builds only User can decide which web sites to show by default
-        return TabContentDefaultState.favorites
+        return CoreBrowser.Tab.ContentType.favorites
         #endif
     }
 }

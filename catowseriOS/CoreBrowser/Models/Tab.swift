@@ -8,12 +8,29 @@
 
 import CottonBase
 
-/// Site is an obj-c type.
-/// can mark with retroactive because Site type is from my CottonBase library
+/// Site is an obj-c model type.
+///Ccan mark with retroactive because Site type is from own CottonBase library
 extension Site: @unchecked @retroactive Sendable {}
 
 public extension Tab {
-    enum ContentType: Sendable {
+    enum ContentType: Sendable, RawRepresentable {
+        public init?(rawValue: Int) {
+            switch rawValue {
+            case 0:
+                self = .blank
+            case 1:
+                return nil
+            case 2:
+                self = .homepage
+            case 3:
+                self = .favorites
+            case 4:
+                self = .topSites
+            default:
+                return nil
+            }
+        }
+        
         case blank
         case site(Site)
         case homepage
@@ -21,7 +38,7 @@ public extension Tab {
         case topSites
 
         /// Needed for database representation
-        public var rawValue: Int16 {
+        public var rawValue: Int {
             switch self {
             case .blank:
                 return 0
@@ -235,3 +252,34 @@ fileprivate extension String {
     static let topSitesTitle = NSLocalizedString("ttl_tab_short_top_sites",
                                                  comment: "Title for tab with list of favorite sites")
 }
+
+extension Tab.ContentType: Identifiable {
+    public var id: RawValue {
+        return self.rawValue
+    }
+
+    public typealias ID = RawValue
+}
+
+extension Tab.ContentType: CustomStringConvertible {
+    public var description: String {
+        let key: String
+
+        switch self {
+        case .blank:
+            key = "txt_tab_content_blank"
+        case .homepage:
+            key = "txt_tab_content_homepage"
+        case .favorites:
+            key = "txt_tab_content_favorites"
+        case .topSites:
+            key = "txt_tab_content_top_sites"
+        case .site:
+            // site can't be used as a default content for now
+            key = ""
+        }
+        return NSLocalizedString(key, comment: "")
+    }
+}
+
+extension Tab.ContentType: Hashable { }

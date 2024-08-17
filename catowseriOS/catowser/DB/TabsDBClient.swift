@@ -53,7 +53,7 @@ final class TabsDBClient: @unchecked Sendable {
             do {
                 let result = try managedContext.fetch(fetchRequest)
                 if !result.isEmpty, let cdTab = result.first {
-                    cdTab.contentType = tab.contentType.rawValue
+                    cdTab.contentType = Int16(tab.contentType.rawValue)
                     if let oldCdSite = cdTab.site {
                         managedContext.delete(oldCdSite)
                     }
@@ -224,7 +224,7 @@ fileprivate extension CDTab {
     convenience init(context: NSManagedObjectContext, tab: CoreBrowser.Tab) {
         self.init(context: context)
         id = tab.id
-        contentType = tab.contentType.rawValue
+        contentType = Int16(tab.contentType.rawValue)
         addedTimestamp = tab.addedTimestamp
         if case .site(let siteContent) = tab.contentType {
             site = CDSite(context: context, site: siteContent)

@@ -20,7 +20,7 @@ extension FeatureManager.StateHolder {
             keyStr = .autoCompletionKey
         case is AddedTabPosition:
             keyStr = .tabAddPositionKey
-        case is TabContentDefaultState:
+        case is CoreBrowser.Tab.ContentType:
             keyStr = .tabDefaultContentKey
         case is AsyncApiType:
             keyStr = .browserAsyncApiKey
@@ -45,7 +45,7 @@ extension FeatureManager.StateHolder {
         return await source.currentEnumValue(of: feature)
     }
 
-    func tabDefaultContentValue() async -> TabContentDefaultState {
+    func tabDefaultContentValue() async -> CoreBrowser.Tab.ContentType {
         let feature: ApplicationEnumFeature = .tabDefaultContent
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue

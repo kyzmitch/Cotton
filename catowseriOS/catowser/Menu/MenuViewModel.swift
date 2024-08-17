@@ -35,7 +35,7 @@ final class MenuViewModel: ObservableObject {
     
     // MARK: - Allow to update text view content dynamically
 
-    @Published var tabContentRowValue: TabContentDefaultState = .favorites
+    @Published var tabContentRowValue: CoreBrowser.Tab.ContentType = .favorites
     @Published var webAutocompleteRowValue: WebAutoCompletionSource = .google
     @Published var tabAddPositionRowValue: AddedTabPosition = .afterSelected
     @Published var asyncApiRowValue: AsyncApiType = .asyncAwait
@@ -155,7 +155,7 @@ final class MenuViewModel: ObservableObject {
         tabAddPositionRowValue = selected
     }
     
-    func setTabContent(_ selected: TabContentDefaultState) {
+    func setTabContent(_ selected: CoreBrowser.Tab.ContentType) {
         Task {
             await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
         }

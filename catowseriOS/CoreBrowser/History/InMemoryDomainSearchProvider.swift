@@ -39,7 +39,8 @@ public final class InMemoryDomainSearchProvider {
     }
 }
 
-extension CottonBase.Host: @unchecked Sendable {}
+/// Can be retroactive because it is own library in Kotlin
+extension CottonBase.Host: @unchecked @retroactive Sendable {}
 
 extension InMemoryDomainSearchProvider.StateHolder: DomainsHistory {
     public func remember(host: CottonBase.Host) async {

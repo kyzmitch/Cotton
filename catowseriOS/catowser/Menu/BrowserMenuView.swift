@@ -80,7 +80,7 @@ struct BrowserMenuView: View {
                         path = []
                     })
                 case .defaultTabContent:
-                    BaseMenuView<TabContentDefaultState>(viewModel: .init(model.tabContentRowValue) { selected in
+                    BaseMenuView<CoreBrowser.Tab.ContentType>(viewModel: .init(model.tabContentRowValue) { selected in
                         model.setTabContent(selected)
                         path = []
                     })
