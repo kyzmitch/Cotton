@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@preconcurrency import CottonBase
+import CottonBase
 import CottonPlugins
 
 protocol Actionable {

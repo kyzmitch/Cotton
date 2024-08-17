@@ -17,6 +17,9 @@ import AutoMockable
 
 extension CottonBase.ServerDescription: @unchecked Sendable {}
 
+/// Rest client context should be sendable, because it is used by the strategies
+/// and a strategy is used by the use cases which shouldn't store any state (state-less).
+/// It means that a use case must be sendable which requires the context to be sendable as well.
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "R: ResponseType"
 //sourcery: associatedtype = "S: ServerDescription"

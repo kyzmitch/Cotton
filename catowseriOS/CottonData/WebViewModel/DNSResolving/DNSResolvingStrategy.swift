@@ -12,6 +12,8 @@ import CottonRestKit
 import Combine
 import AutoMockable
 
+/// DNS resolving strategy interface should be sendable, because it is used by the use cases,
+/// and any use case has to be sendable because a use case shouldn't have any state.
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "Context: RestClientContext"
 public protocol DNSResolvingStrategy: AnyObject, AutoMockable, Sendable {
