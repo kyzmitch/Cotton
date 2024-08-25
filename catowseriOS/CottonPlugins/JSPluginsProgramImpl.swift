@@ -18,7 +18,7 @@ extension CottonBase.Host: @unchecked @retroactive Sendable {}
  An Object Structure (Program) from visitor desgin pattern. Could be a Composite
  */
 @MainActor
-public final class JSPluginsProgramImpl: JSPluginsProgram {
+public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equatable {
     public let plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
 
     public init(
@@ -64,5 +64,29 @@ public final class JSPluginsProgramImpl: JSPluginsProgram {
             }
             .compactMap { $0.0.scriptString(jsEnabled) }
             .forEach { webView.evaluate(jsScript: $0)}
+    }
+}
+
+extension JSPluginsProgramImpl {
+    public static func == (lhs: JSPluginsProgramImpl, rhs: JSPluginsProgramImpl) -> Bool {
+        guard lhs.plugins.count == rhs.plugins.count else {
+            return false
+        }
+        var index = 0
+        while index < lhs.plugins.count {
+            let lPair = lhs.plugins[index]
+            let rPair = rhs.plugins[index]
+            #warning("TODO: rework or remove, cause this code is hard to scale")
+            if let lInst = lPair.0 as? InstagramContentPlugin, let rInst = rPair.0 as? InstagramContentPlugin, lInst == rInst {
+                index += 1
+                continue
+            } else if let lInst = lPair.0 as? BasePlugin, let rInst = rPair.0 as? BasePlugin, lInst == rInst {
+                index += 1
+                continue
+            } else {
+                return false
+            }
+        }
+        return true
     }
 }
