@@ -13,35 +13,34 @@ import Foundation
  */
 public final class UseCaseLocator: LazyServiceLocator {
     public override init() {}
-
-    public override func register<T>(_ recipe: @escaping () -> T) {
-        guard T.self is BaseUseCase.Type else {
-            return
-        }
+    
+    /// Register a closure which could create an instance of a use case
+    /// - Parameter instance: an instance (without generic parameters) which is stored by the specific metatype id
+    public func register<T: BaseUseCase>(_ recipe: @escaping () -> T) {
         super.register(recipe)
     }
-
-    public override func register<T>(_ instance: T) {
-        guard instance is BaseUseCase else {
-            return
-        }
+    
+    /// Register an instance of a use case
+    /// - Parameter instance: an instance (without generic parameters) which is stored by the specific metatype id
+    public func register<T: BaseUseCase>(_ instance: T) {
         super.register(instance)
     }
 
-    /// Register an instance of a certain type using a string constant
-    /// it is for the types with a generic parameter which are not
+    /// Register an instance using a string constant
+    /// it is for the types with the generic parameters which are not
     /// convinient to store by specific metatype
     ///
     /// - Parameter instance: an object instance stored in a service locator
     /// - Parameter key: a string key to store an object instance
-    public override func registerNamed<T>(_ instance: T, _ key: String) {
-        guard instance is BaseUseCase else {
-            return
-        }
+    public func registerNamed<T: BaseUseCase>(_ instance: T, _ key: String) {
         super.registerNamed(instance, key)
     }
-
-    public override func findService<T>(_ type: T.Type, _ key: String? = nil) -> T? {
-        return super.findService(type, key)
+    
+    /// Register an instance using a concrete type metadata which can't be determined automatically
+    ///
+    /// - Parameter instance: an object instance stored in a service locator
+    /// - Parameter type: a metatype to use as a unique key
+    public func registerTyped<T: BaseUseCase>(_ instance: T, of type: Any.Type) {
+        super.registerTyped(instance, of: type)
     }
 }

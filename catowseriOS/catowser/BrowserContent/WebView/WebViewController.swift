@@ -431,5 +431,5 @@ extension WKNavigationType: CustomDebugStringConvertible {
     }
 }
 
-/// Can be retroactive because NavigationActionable is unknown for web view Apple devs
+/// Can be retroactive because NavigationActionable is unknown for web view Apple devs.
 extension WKNavigationAction: @retroactive NavigationActionable {}

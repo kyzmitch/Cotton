@@ -44,11 +44,11 @@ final class UseCaseFactory {
         private func registerTabsUseCases() async {
             let dataService = await TabsDataService.shared
             let readUseCase: ReadTabsUseCase = ReadTabsUseCaseImpl(dataService, DefaultTabProvider.shared)
-            locator.register(readUseCase)
+            locator.registerTyped(readUseCase, of: ReadTabsUseCase.self)
             let writeUseCase: WriteTabsUseCase = WriteTabsUseCaseImpl(dataService)
-            locator.register(writeUseCase)
+            locator.registerTyped(writeUseCase, of: WriteTabsUseCase.self)
             let selectedTabUseCase: SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
-            locator.register(selectedTabUseCase)
+            locator.registerTyped(selectedTabUseCase, of: SelectedTabUseCase.self)
         }
 
         private func registerSearchAutocompleteUseCases() {
