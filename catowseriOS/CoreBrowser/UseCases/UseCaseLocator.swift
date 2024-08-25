@@ -13,29 +13,20 @@ import Foundation
  */
 public final class UseCaseLocator: LazyServiceLocator {
     public override init() {}
-
-    public override func register<T>(_ recipe: @escaping () -> T) {
-        guard T.self is BaseUseCase.Type else {
-            return
-        }
+    
+    public func register<T: BaseUseCase>(_ recipe: @escaping () -> T) {
         super.register(recipe)
     }
-
-    public override func register<T>(_ instance: T) {
-        guard instance is BaseUseCase else {
-            return
-        }
+    
+    public func register<T: BaseUseCase>(_ instance: T) {
         super.register(instance)
     }
 
-    public override func registerNamed<T>(_ instance: T, _ key: String) {
-        guard instance is BaseUseCase else {
-            return
-        }
+    public func registerNamed<T: BaseUseCase>(_ instance: T, _ key: String) {
         super.registerNamed(instance, key)
     }
-
-    public override func findService<T>(_ type: T.Type, _ key: String? = nil) -> T? {
-        return super.findService(type, key)
+    
+    public func registerTyped<T: BaseUseCase>(_ instance: T, of type: Any.Type) {
+        super.registerTyped(instance, of: type)
     }
 }

@@ -33,12 +33,18 @@ public class LazyServiceLocator: ServiceLocator {
     }
 
     public func register<T>(_ instance: T) {
-        let key = ObjectIdentifier(type(of: instance))
+        let type = type(of: instance)
+        let key = ObjectIdentifier(type)
         idByRecord[key] = .instance(instance)
     }
 
     public func registerNamed<T>(_ instance: T, _ key: String) {
         stringByRecord[key] = .instance(instance)
+    }
+    
+    public func registerTyped<T>(_ instance: T, of type: Any.Type) {
+        let key = ObjectIdentifier(type)
+        idByRecord[key] = .instance(instance)
     }
 
     public func findService<T>(_ type: T.Type, _ key: String? = nil) -> T? {
