@@ -28,6 +28,12 @@ public final class UseCaseLocator: LazyServiceLocator {
         super.register(instance)
     }
 
+    /// Register an instance of a certain type using a string constant
+    /// it is for the types with a generic parameter which are not
+    /// convinient to store by specific metatype
+    ///
+    /// - Parameter instance: an object instance stored in a service locator
+    /// - Parameter key: a string key to store an object instance
     public override func registerNamed<T>(_ instance: T, _ key: String) {
         guard instance is BaseUseCase else {
             return
