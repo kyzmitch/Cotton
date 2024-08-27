@@ -9,7 +9,7 @@
 import Foundation
 import CottonBase
 
-extension DomainName.Error: @unchecked Sendable {}
+extension DomainName.Error: @unchecked @retroactive Sendable {}
 
 public enum HttpError: LocalizedError, Equatable {
     /* Comon errors related to http client */

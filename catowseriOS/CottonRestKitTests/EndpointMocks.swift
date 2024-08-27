@@ -15,7 +15,7 @@ struct MockedGoodEndpointResponse: ResponseType {
     }
 }
 
-class MockedGoodServer: ServerDescription {
+class MockedGoodServer: ServerDescription, @unchecked Sendable {
     convenience init() {
         // swiftlint:disable:next force_try
         let host = try! Host(input: "www.example.com")

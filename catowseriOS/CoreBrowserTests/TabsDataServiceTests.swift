@@ -18,7 +18,7 @@ extension UUID {
 
 class TabsDataServiceTests: XCTestCase {
 
-    let tabsStorageMock: TabsStoragableMock = .init()
+    let tabsStorageMock: TabsRepositoryMock = .init()
 
     let tabsStates: TabsStatesMock = .init()
 
