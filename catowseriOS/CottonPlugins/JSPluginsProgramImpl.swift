@@ -15,14 +15,16 @@ import CottonBase
 extension CottonBase.Host: @unchecked @retroactive Sendable {}
 
 /**
- An Object Structure (Program) from visitor desgin pattern. Could be a Composite
+ An Object Structure (Program) from visitor desgin pattern. Could be a Composite.
+ Should be main actor because it stores wk handlers which are marked as
+ main actors in the sdk.
  */
 @MainActor
 public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equatable {
-    public let plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
+    public let plugins: [HandlablePlugin]
 
     public init(
-        _ plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
+        _ plugins: [HandlablePlugin]
     ) {
         guard !plugins.isEmpty else {
             fatalError("Plugins program was initialized with 0 JS plugins")
@@ -30,7 +32,11 @@ public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equat
         self.plugins = plugins
     }
 
-    public func inject(to visitor: WKUserContentController, context: CottonBase.Host, canInject: Bool) {
+    public func inject(
+        to visitor: WKUserContentController,
+        context: CottonBase.Host,
+        canInject: Bool
+    ) {
         guard !plugins.isEmpty else {
             return
         }
@@ -41,20 +47,24 @@ public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equat
         visitor.removeAllUserScripts() // reset old state
         plugins.forEach { pair in
             do {
-                try pair.0.accept(visitor, context, canInject, pair.1)
+                try pair.plugin.accept(visitor, context, canInject, pair.handler)
             } catch {
                 print("\(#function) failed to load plugin: \(error.localizedDescription)")
             }
         }
     }
 
-    public func enable(on webView: JavaScriptEvaluateble, context: CottonBase.Host, jsEnabled: Bool) {
+    public func enable(
+        on webView: JavaScriptEvaluateble,
+        context: CottonBase.Host,
+        jsEnabled: Bool
+    ) {
         guard !plugins.isEmpty else {
             return
         }
         plugins
             .filter { pair in
-                guard let pluginHostName = pair.0.hostKeyword else {
+                guard let pluginHostName = pair.plugin.hostKeyword else {
                     return true
                 }
                 guard context.isSimilar(name: pluginHostName) else {
@@ -62,7 +72,7 @@ public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equat
                 }
                 return true
             }
-            .compactMap { $0.0.scriptString(jsEnabled) }
+            .compactMap { $0.plugin.scriptString(jsEnabled) }
             .forEach { webView.evaluate(jsScript: $0)}
     }
 }
@@ -77,10 +87,10 @@ extension JSPluginsProgramImpl {
             let lPair = lhs.plugins[index]
             let rPair = rhs.plugins[index]
             #warning("TODO: rework or remove, cause this code is hard to scale")
-            if let lInst = lPair.0 as? InstagramContentPlugin, let rInst = rPair.0 as? InstagramContentPlugin, lInst == rInst {
+            if let lInst = lPair.plugin as? InstagramContentPlugin, let rInst = rPair.plugin as? InstagramContentPlugin, lInst == rInst {
                 index += 1
                 continue
-            } else if let lInst = lPair.0 as? BasePlugin, let rInst = rPair.0 as? BasePlugin, lInst == rInst {
+            } else if let lInst = lPair.plugin as? BasePlugin, let rInst = rPair.plugin as? BasePlugin, lInst == rInst {
                 index += 1
                 continue
             } else {

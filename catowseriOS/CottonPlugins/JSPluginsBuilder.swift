@@ -13,7 +13,7 @@ import WebKit
  */
 public final class JSPluginsBuilder: JSPluginsSource {
     public typealias Program = JSPluginsProgramImpl
-    private var plugins: [(any JavaScriptPlugin, WKScriptMessageHandler)]
+    private var plugins: [HandlablePlugin]
 
     public var jsProgram: Program {
         JSPluginsProgramImpl(plugins)
@@ -25,13 +25,21 @@ public final class JSPluginsBuilder: JSPluginsSource {
 
     public func setBase(_ baseDelegate: BasePluginContentDelegate) -> Self {
         let basePlugin = BasePlugin()
-        plugins.append((basePlugin, BaseJSHandler(baseDelegate)))
+        let value = HandlablePlugin(
+            plugin: basePlugin,
+            handler: BaseJSHandler(baseDelegate)
+        )
+        plugins.append(value)
         return self
     }
 
     public func setInstagram(_ instagramDelegate: InstagramContentDelegate) -> Self {
         let igPlugin = InstagramContentPlugin()
-        plugins.append((igPlugin, InstagramHandler(instagramDelegate)))
+        let value = HandlablePlugin(
+            plugin: igPlugin,
+            handler: InstagramHandler(instagramDelegate)
+        )
+        plugins.append(value)
         return self
     }
 }
