@@ -23,6 +23,10 @@ public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 /// Can mark it as retroactive because it is from my CottonBase library.
 extension CottonBase.ServerDescription: @unchecked @retroactive Sendable {}
 
+/// Rest client.
+///
+/// It should be sendable because is used in the context for the strategy
+/// and strategy is used by the use cases which can't store any mutable state.
 public final class RestClient<S: ServerDescription,
                               R: NetworkReachabilityAdapter,
                               E: JSONRequestEncodable>: @unchecked Sendable, RestInterface where R.Server == S {

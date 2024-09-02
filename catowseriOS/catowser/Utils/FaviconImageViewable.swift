@@ -10,7 +10,7 @@ import UIKit
 import CottonBase
 import FeaturesFlagsKit
 
-protocol FaviconImageViewable: AnyObject {
+@MainActor protocol FaviconImageViewable: AnyObject {
     var faviconImageView: UIImageView { get }
 
     func reloadImageWith(_ site: Site, _ useDoH: Bool) async

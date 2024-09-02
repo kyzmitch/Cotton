@@ -121,6 +121,7 @@
 		755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
 		755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		7570F7462B5C07E90066ABF1 /* UseCaseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7570F7452B5C07E90066ABF1 /* UseCaseFactory.swift */; };
+		759E3E4D2C863B3D00245B44 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 759E3E4C2C863B3D00245B44 /* Atomics */; };
 		75A764302B64BBB100D9D158 /* SiteNavigationProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A510F622424ADC30070503C /* SiteNavigationProtocols.swift */; };
 		75A764312B64BBDF00D9D158 /* WebViewNavigatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8F038A293FA96200237DFF /* WebViewNavigatable.swift */; };
 		75A764322B64BC3800D9D158 /* SiteNavigationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8F0390293FABD000237DFF /* SiteNavigationComponent.swift */; };
@@ -1105,6 +1106,7 @@
 				8A5E6C83290B0E6C0034A78B /* AutoMockable.framework in Frameworks */,
 				8AD4F51C28F49219009C4BDC /* ReactiveSwift in Frameworks */,
 				8ABF504427CC1A64007C6427 /* FeaturesFlagsKit.framework in Frameworks */,
+				759E3E4D2C863B3D00245B44 /* Atomics in Frameworks */,
 				8A27715A268E467500D8878C /* BrowserNetworking.framework in Frameworks */,
 				8AD4F52028F49303009C4BDC /* Alamofire in Frameworks */,
 				8AF4337C248EBB2A0047452B /* CssParser.framework in Frameworks */,
@@ -2454,6 +2456,7 @@
 				8AD4F51B28F49219009C4BDC /* ReactiveSwift */,
 				8AD4F51D28F492DC009C4BDC /* AlamofireImage */,
 				8AD4F51F28F49303009C4BDC /* Alamofire */,
+				759E3E4C2C863B3D00245B44 /* Atomics */,
 			);
 			productName = catowser;
 			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
@@ -2793,6 +2796,7 @@
 				8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */,
 				8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				8A0E4D5829133E77008F7964 /* XCRemoteSwiftPackageReference "SwiftyMocky" */,
+				759E3E4B2C863B3D00245B44 /* XCRemoteSwiftPackageReference "swift-atomics" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -5020,6 +5024,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		759E3E4B2C863B3D00245B44 /* XCRemoteSwiftPackageReference "swift-atomics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:apple/swift-atomics.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.2.0;
+			};
+		};
 		8A03F44028F4769B00E4A296 /* XCRemoteSwiftPackageReference "ReactiveSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveCocoa/ReactiveSwift";
@@ -5071,6 +5083,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		759E3E4C2C863B3D00245B44 /* Atomics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 759E3E4B2C863B3D00245B44 /* XCRemoteSwiftPackageReference "swift-atomics" */;
+			productName = Atomics;
+		};
 		8A03F45928F47ACB00E4A296 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */;

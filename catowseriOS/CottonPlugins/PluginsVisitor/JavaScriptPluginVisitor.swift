@@ -10,9 +10,9 @@ import Foundation
 import CottonBase
 import WebKit
 
-/// Will be used for `WKUserContentController` because it is actually the only possible visitor
-@MainActor
-public protocol JavaScriptPluginVisitor: AnyObject {
+/// Will be used for `WKUserContentController` because it is actually the only possible visitor.
+/// Should be main actor because both functions have main actor specific parameters.
+@MainActor public protocol JavaScriptPluginVisitor: AnyObject {
     /**
      Determines if specific plugin can be used on specific host
 

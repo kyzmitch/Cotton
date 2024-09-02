@@ -6,6 +6,7 @@
 //  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
+import Atomics
 import Foundation
 import CoreData
 
@@ -29,7 +30,7 @@ final class Database: Sendable {
 
     /// A read-only flag indicating if the persistent store is loaded.
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    private(set) nonisolated(unsafe) var isStoreLoaded = false
+    let isStoreLoaded = ManagedAtomic(false)
 
     /// The managed object context associated with the main queue (read-only).
     /// To perform tasks on a private background queue see
@@ -65,14 +66,14 @@ final class Database: Sendable {
     /// Default is false.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    private nonisolated(unsafe) var isReadOnly = false
+    private let isReadOnly = ManagedAtomic(false)
 
     /// A flag that indicates whether the store is added asynchronously.
     /// Set this value before loading the persistent store.
     /// Default is true.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    private nonisolated(unsafe) var shouldAddStoreAsynchronously = false
+    private let shouldAddStoreAsynchronously = ManagedAtomic(false)
 
     /// A flag that indicates whether the store should be migrated
     /// automatically if the store model version does not match the
@@ -81,7 +82,7 @@ final class Database: Sendable {
     /// Default is true.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    private nonisolated(unsafe) var shouldMigrateStoreAutomatically = true
+    private let shouldMigrateStoreAutomatically = ManagedAtomic(true)
 
     /// A flag that indicates whether a mapping model should be inferred
     /// when migrating a store.
@@ -89,7 +90,7 @@ final class Database: Sendable {
     /// Default is true.
     ///
     /// Can be nonisolated unsafe, because it is a Scalar bool type.
-    private nonisolated(unsafe) var shouldInferMappingModelAutomatically = true
+    private let shouldInferMappingModelAutomatically = ManagedAtomic(true)
 
     /// Creates and returns a `CoreDataController` object. This is the designated
     /// initializer for the class. It creates the managed object model,
@@ -184,10 +185,10 @@ final class Database: Sendable {
 
     private func storeDescription(with url: URL) -> NSPersistentStoreDescription {
         let description = NSPersistentStoreDescription(url: url)
-        description.shouldMigrateStoreAutomatically = shouldMigrateStoreAutomatically
-        description.shouldInferMappingModelAutomatically = shouldInferMappingModelAutomatically
-        description.shouldAddStoreAsynchronously = shouldAddStoreAsynchronously
-        description.isReadOnly = isReadOnly
+        description.shouldMigrateStoreAutomatically = shouldMigrateStoreAutomatically.load(ordering: .relaxed)
+        description.shouldInferMappingModelAutomatically = shouldInferMappingModelAutomatically.load(ordering: .relaxed)
+        description.shouldAddStoreAsynchronously = shouldAddStoreAsynchronously.load(ordering: .relaxed)
+        description.isReadOnly = isReadOnly.load(ordering: .relaxed)
         return description
     }
 
@@ -212,7 +213,7 @@ final class Database: Sendable {
             }
         }
         // should be called only if no errors were thrown on libe above
-        isStoreLoaded = true
+        isStoreLoaded.store(true, ordering: .relaxed)
         persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         return result
     }

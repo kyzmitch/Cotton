@@ -1,5 +1,5 @@
 {
-  "originHash" : "29574935b175a0ed7b4cd37b499db86e4bbe4391b57214b44fdfa51e5b2ad0b7",
+  "originHash" : "3a477979511422683063c0d7fbd3d91a7eaf00ba30f60e08688793f78eed17d9",
   "pins" : [
     {
       "identity" : "aexml",
@@ -89,6 +89,15 @@
       "state" : {
         "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
         "version" : "0.10.1"
+      }
+    },
+    {
+      "identity" : "swift-atomics",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:apple/swift-atomics.git",
+      "state" : {
+        "revision" : "cd142fd2f64be2100422d658e7411e39489da985",
+        "version" : "1.2.0"
       }
     },
     {

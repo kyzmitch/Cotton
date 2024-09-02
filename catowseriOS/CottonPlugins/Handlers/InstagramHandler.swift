@@ -9,8 +9,12 @@
 import Foundation
 import WebKit
 
-@MainActor
-final class InstagramHandler: NSObject {
+/// Handler for the instagram web site,
+///
+/// should be main actor because it confirms to `WKScriptMessageHandler`.
+/// Also, it should subclass from NSObject because confirmation to `WKScriptMessageHandler`
+/// is based on `NSObjectProtocol`.
+@MainActor final class InstagramHandler: NSObject {
     private weak var delegate: InstagramContentDelegate?
     init(_ delegate: InstagramContentDelegate) {
         self.delegate = delegate
