@@ -19,8 +19,9 @@ import ReactiveSwift
 #endif
 import CottonData
 
-/// Can't retroactivly mark web view as sendable, it is a system protocol.
+/// Can't retroactivly mark web view as sendable, it is a system type and protocol.
 extension WKWebView: @unchecked Sendable { }
+
 /// Can be retroactive because Web view Apple devs don't know about JavaScriptEvaluateble protocol.
 extension WKWebView: @retroactive JavaScriptEvaluateble {
     public func evaluateJavaScriptV2(

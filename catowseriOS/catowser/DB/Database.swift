@@ -204,16 +204,15 @@ final class Database: Sendable {
                 continuation.resume(with: .failure(CottonError.zombieSelf))
                 return
             }
-            persistentContainer.loadPersistentStores { (_, error) in
+            persistentContainer.loadPersistentStores { [weak self] (_, error) in
                 if let error {
                     continuation.resume(with: .failure(error))
                 } else {
+                    self?.isStoreLoaded.store(true, ordering: .relaxed)
                     continuation.resume(with: .success(()))
                 }
             }
         }
-        // should be called only if no errors were thrown on libe above
-        isStoreLoaded.store(true, ordering: .relaxed)
         persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         return result
     }
