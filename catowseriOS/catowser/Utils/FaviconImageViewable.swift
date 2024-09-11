@@ -37,6 +37,6 @@ extension FaviconImageViewable {
         default:
             return
         }
-        await faviconImageView.updateImage(from: source)
+        faviconImageView.updateImage(from: source)
     }
 }

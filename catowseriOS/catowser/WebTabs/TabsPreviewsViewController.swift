@@ -205,13 +205,11 @@ where C.R == TabsScreenRoute {
     // MARK: - private functions
 
     @objc func addTabPressed() {
-        Task {
-            coordinator?.showNext(.addTab)
-            // on previews screen will make new added tab always selected
-            // same behaviour has Safari and Firefox
-            if await DefaultTabProvider.shared.selected {
-                coordinator?.stop()
-            }
+        coordinator?.showNext(.addTab)
+        // on previews screen will make new added tab always selected
+        // same behaviour has Safari and Firefox
+        if DefaultTabProvider.shared.selected {
+            coordinator?.stop()
         }
     }
 }
