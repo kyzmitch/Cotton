@@ -9,6 +9,7 @@
 import Foundation
 import CottonBase
 
+@MainActor
 public protocol WebViewNavigatable: AnyObject {
     var canGoBack: Bool { get }
     var canGoForward: Bool { get }

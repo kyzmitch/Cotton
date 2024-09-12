@@ -9,7 +9,10 @@
 import Foundation
 import CoreBrowser
 
-public protocol SiteExternalNavigationDelegate: AnyObject {
+/// Interface for the site navigation for the external consumers,
+/// can be sendable because it is a main actor.
+@MainActor
+public protocol SiteExternalNavigationDelegate: AnyObject, Sendable {
     func provisionalNavigationDidStart()
     func didSiteOpen(appName: String)
     func loadingProgressdDidChange(_ progress: Float)
@@ -24,6 +27,7 @@ public protocol SiteExternalNavigationDelegate: AnyObject {
     func webViewDidReplace(_ interface: WebViewNavigatable?)
 }
 
+@MainActor
 public protocol SiteNavigationChangable: AnyObject {
     func changeBackButton(to canGoBack: Bool)
     func changeForwardButton(to canGoForward: Bool)

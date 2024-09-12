@@ -10,7 +10,7 @@ import UIKit
 import CoreBrowser
 import FeaturesFlagsKit
 
-protocol SearchBarControllerInterface: AnyObject {
+@MainActor protocol SearchBarControllerInterface: AnyObject {
     /* non optional */ func handleAction(_ action: SearchBarAction)
 }
 
@@ -42,7 +42,7 @@ final class SearchBarBaseViewController: BaseViewController {
         super.viewWillAppear(animated)
 
         Task {
-            await TabsDataService.shared.attach(self)
+            await TabsDataService.shared.attach(self, notify: false)
         }
     }
 
@@ -62,7 +62,7 @@ final class SearchBarBaseViewController: BaseViewController {
 }
 
 extension SearchBarBaseViewController: TabsObserver {
-    func tabDidReplace(_ tab: Tab, at index: Int) async {
+    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
         // this also can be called on non active tab
         // but at the same time it really doesn't make sense
         // to replace site on tab which is not active
@@ -71,7 +71,7 @@ extension SearchBarBaseViewController: TabsObserver {
         handleAction(.updateView(tab.title, tab.searchBarContent))
     }
 
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         switch content {
         case .site(let site):
             handleAction(.updateView(site.title, site.searchBarContent))

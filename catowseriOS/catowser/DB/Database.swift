@@ -6,10 +6,17 @@
 //  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
+import Atomics
 import Foundation
 import CoreData
 
-final class Database {
+/// A Database class, can't be an actor for now because,
+/// private core data managed context must be initialised and used
+/// on the same dispatch queue or thread and not clear how to
+/// use it if it is created from an actor.
+///
+/// Also, NSManagedObjectContext class is not sendable for an actor.
+final class Database: Sendable {
 
     /// The default directory for the persistent stores on the current platform.
     ///
@@ -22,7 +29,8 @@ final class Database {
     }
 
     /// A read-only flag indicating if the persistent store is loaded.
-    private (set) var isStoreLoaded = false
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    let isStoreLoaded = ManagedAtomic(false)
 
     /// The managed object context associated with the main queue (read-only).
     /// To perform tasks on a private background queue see
@@ -56,25 +64,33 @@ final class Database {
     /// to YES before loading the persistent store if you want a read-only
     /// store (for example if loading from the application bundle).
     /// Default is false.
-    private var isReadOnly = false
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    private let isReadOnly = ManagedAtomic(false)
 
     /// A flag that indicates whether the store is added asynchronously.
     /// Set this value before loading the persistent store.
     /// Default is true.
-    private var shouldAddStoreAsynchronously = false
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    private let shouldAddStoreAsynchronously = ManagedAtomic(false)
 
     /// A flag that indicates whether the store should be migrated
     /// automatically if the store model version does not match the
     /// coordinators model version.
     /// Set this value before loading the persistent store.
     /// Default is true.
-    private var shouldMigrateStoreAutomatically = true
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    private let shouldMigrateStoreAutomatically = ManagedAtomic(true)
 
     /// A flag that indicates whether a mapping model should be inferred
     /// when migrating a store.
     /// Set this value before loading the persistent store.
     /// Default is true.
-    private var shouldInferMappingModelAutomatically = true
+    ///
+    /// Can be nonisolated unsafe, because it is a Scalar bool type.
+    private let shouldInferMappingModelAutomatically = ManagedAtomic(true)
 
     /// Creates and returns a `CoreDataController` object. This is the designated
     /// initializer for the class. It creates the managed object model,
@@ -169,10 +185,10 @@ final class Database {
 
     private func storeDescription(with url: URL) -> NSPersistentStoreDescription {
         let description = NSPersistentStoreDescription(url: url)
-        description.shouldMigrateStoreAutomatically = shouldMigrateStoreAutomatically
-        description.shouldInferMappingModelAutomatically = shouldInferMappingModelAutomatically
-        description.shouldAddStoreAsynchronously = shouldAddStoreAsynchronously
-        description.isReadOnly = isReadOnly
+        description.shouldMigrateStoreAutomatically = shouldMigrateStoreAutomatically.load(ordering: .relaxed)
+        description.shouldInferMappingModelAutomatically = shouldInferMappingModelAutomatically.load(ordering: .relaxed)
+        description.shouldAddStoreAsynchronously = shouldAddStoreAsynchronously.load(ordering: .relaxed)
+        description.isReadOnly = isReadOnly.load(ordering: .relaxed)
         return description
     }
 
@@ -188,21 +204,16 @@ final class Database {
                 continuation.resume(with: .failure(CottonError.zombieSelf))
                 return
             }
-            self.persistentContainer.loadPersistentStores { [weak self] (_, error) in
-                guard let self else {
-                    continuation.resume(with: .failure(CottonError.zombieSelf))
-                    return
-                }
-                if let actualError = error {
-                    continuation.resume(with: .failure(actualError))
+            persistentContainer.loadPersistentStores { [weak self] (_, error) in
+                if let error {
+                    continuation.resume(with: .failure(error))
                 } else {
-                    // Side effects!
-                    self.isStoreLoaded = true
-                    self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+                    self?.isStoreLoaded.store(true, ordering: .relaxed)
                     continuation.resume(with: .success(()))
                 }
             }
         }
+        persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
         return result
     }
 }

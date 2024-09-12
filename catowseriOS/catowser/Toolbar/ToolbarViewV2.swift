@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 
+#if swift(<6.0)
 struct ToolbarViewV2: ToolbarContent {
     @ObservedObject var vm: BrowserToolbarViewModel
     private var tabsCount: Int
@@ -34,7 +35,7 @@ struct ToolbarViewV2: ToolbarContent {
         isGoForwardDisabled = false
         isRefreshDisabled = false
     }
-
+    
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             DisableableButton("nav-back", vm.goBackDisabled, vm.goBack)
@@ -73,3 +74,4 @@ struct ToolbarViewV2: ToolbarContent {
         }
     }
 }
+#endif

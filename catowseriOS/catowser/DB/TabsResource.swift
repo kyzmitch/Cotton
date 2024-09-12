@@ -14,7 +14,8 @@ fileprivate extension String {
     static let threadName = "tabsStore"
 }
 
-final class TabsResource {
+/// Класс обертка над клиентом базы данных, имеет синхронизацию через DispatchQueue
+final class TabsResource: @unchecked Sendable {
     private var dbClient: TabsDBClient
 
     /// Needs to be checked on every access to `dbClient` to not use wrong context
@@ -32,7 +33,7 @@ final class TabsResource {
     ///   - privateContextCreator: We have to call this closure on specific thread and
     ///    use same thread for any other usages of this context.
     init(temporaryContext: NSManagedObjectContext,
-         privateContextCreator: @escaping () -> NSManagedObjectContext?) {
+         privateContextCreator: @escaping @Sendable () -> NSManagedObjectContext?) {
         // Creating temporary instance to be able to use background thread
         // to properly create private CoreData context
         let dummyStore: TabsDBClient = .init(temporaryContext)
@@ -50,7 +51,7 @@ final class TabsResource {
     }
 
     /// Updates tab content if tab with same identifier was found in DB or creates completely new tab
-    func update(tab: Tab) throws -> Tab {
+    func update(tab: CoreBrowser.Tab) throws -> CoreBrowser.Tab {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
@@ -64,7 +65,7 @@ final class TabsResource {
     }
 
     /// Remove all the tabs
-    func forget(tabs: [Tab]) async throws -> [Tab] {
+    func forget(tabs: [CoreBrowser.Tab]) async throws -> [CoreBrowser.Tab] {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
@@ -82,7 +83,7 @@ final class TabsResource {
     }
 
     /// Remembers tab identifier as selected one
-    func selectTab(_ tab: Tab) async throws {
+    func selectTab(_ tab: CoreBrowser.Tab) async throws {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
@@ -97,14 +98,14 @@ final class TabsResource {
     /// Gets all tabs recorded in DB. Currently there is only one session, but later
     /// it should be possible to store and read tabs from different sessions like
     /// private browser session tabs & usual tabs.
-    func tabsFromLastSession() async throws -> [Tab] {
+    func tabsFromLastSession() async throws -> [CoreBrowser.Tab] {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }
         return try await dbClient.fetchAllTabs()
     }
 
-    func remember(tab: Tab, andSelect select: Bool) async throws -> Tab {
+    func remember(tab: CoreBrowser.Tab, andSelect select: Bool) async throws -> CoreBrowser.Tab {
         guard isStoreInitialized else {
             throw TabResourceError.storeNotInitializedYet
         }

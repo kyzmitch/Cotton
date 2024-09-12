@@ -18,7 +18,7 @@ extension UUID {
 
 class TabsDataServiceTests: XCTestCase {
 
-    let tabsStorageMock: TabsStoragableMock = .init()
+    let tabsStorageMock: TabsRepositoryMock = .init()
 
     let tabsStates: TabsStatesMock = .init()
 
@@ -74,9 +74,9 @@ class TabsDataServiceTests: XCTestCase {
     }
 
     func testInit() async throws {
-        let tab1: Tab = .init(contentType: .site(exampleSite), idenifier: exampleTabId)
-        let tab2: Tab = .init(contentType: .site(knownSite), idenifier: knownTabId)
-        let tabsV1: [Tab] = [tab1, tab2]
+        let tab1: CoreBrowser.Tab = .init(contentType: .site(exampleSite), idenifier: exampleTabId)
+        let tab2: CoreBrowser.Tab = .init(contentType: .site(knownSite), idenifier: knownTabId)
+        let tabsV1: [CoreBrowser.Tab] = [tab1, tab2]
 
         tabsStates.defaultSelectedTabId = .notPossibleId
         tabsStorageMock.fetchAllTabsReturnValue = tabsV1

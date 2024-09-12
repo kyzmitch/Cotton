@@ -19,9 +19,17 @@ fileprivate extension String {
 public typealias HttpTypedResult<T> = Result<T, HttpError>
 public typealias TypedResponseClosure<T> = (HttpTypedResult<T>) -> Void
 
-public class RestClient<S: ServerDescription,
-                        R: NetworkReachabilityAdapter,
-                        E: JSONRequestEncodable>: RestInterface where R.Server == S {
+/// An interface of a server description can be sendable because it is a model.
+/// Can mark it as retroactive because it is from my CottonBase library.
+extension CottonBase.ServerDescription: @unchecked @retroactive Sendable {}
+
+/// Rest client.
+///
+/// It should be sendable because is used in the context for the strategy
+/// and strategy is used by the use cases which can't store any mutable state.
+public final class RestClient<S: ServerDescription,
+                              R: NetworkReachabilityAdapter,
+                              E: JSONRequestEncodable>: @unchecked Sendable, RestInterface where R.Server == S {
     public typealias Server = S
     public typealias Reachability = R
     public typealias Encoder = E

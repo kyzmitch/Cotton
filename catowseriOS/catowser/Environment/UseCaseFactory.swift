@@ -16,23 +16,18 @@ extension String {
     static let googleResolveDnsUseCase = "googleResolveDnsUseCase"
 }
 
+@globalActor
 final class UseCaseFactory {
-    static func shared() async -> UseCasesHolder {
-        if let instance = internalInstance {
-            return instance
-        }
-        let created = await UseCasesHolder()
-        internalInstance = created
-        return created
-    }
-
-    static private var internalInstance: UseCasesHolder?
-
-    actor UseCasesHolder {
+    static let shared = StateHolder()
+    
+    actor StateHolder {
         private let locator: UseCaseLocator
 
-        init() async {
+        init() {
             locator = .init()
+        }
+        
+        func registerUseCases() async {
             await registerTabsUseCases()
             registerSearchAutocompleteUseCases()
             registerDnsResolveUseCases()
@@ -49,11 +44,11 @@ final class UseCaseFactory {
         private func registerTabsUseCases() async {
             let dataService = await TabsDataService.shared
             let readUseCase: ReadTabsUseCase = ReadTabsUseCaseImpl(dataService, DefaultTabProvider.shared)
-            locator.register(readUseCase)
+            locator.registerTyped(readUseCase, of: ReadTabsUseCase.self)
             let writeUseCase: WriteTabsUseCase = WriteTabsUseCaseImpl(dataService)
-            locator.register(writeUseCase)
+            locator.registerTyped(writeUseCase, of: WriteTabsUseCase.self)
             let selectedTabUseCase: SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
-            locator.register(selectedTabUseCase)
+            locator.registerTyped(selectedTabUseCase, of: SelectedTabUseCase.self)
         }
 
         private func registerSearchAutocompleteUseCases() {

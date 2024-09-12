@@ -184,7 +184,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
         }
     }
 
-    func configure(with tab: Tab, at index: Int, delegate: TabPreviewCellDelegate) {
+    func configure(with tab: CoreBrowser.Tab, at index: Int, delegate: TabPreviewCellDelegate) {
         // `TabViewModel` can be used instead, but cell view init doesn't allow to inject it normally
         var tabCopy = tab
         screenshotView.image = tabCopy.preview

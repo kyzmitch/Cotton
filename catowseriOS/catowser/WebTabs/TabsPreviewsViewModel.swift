@@ -9,7 +9,7 @@
 import Foundation
 import CoreBrowser
 
-typealias TabsBox = Box<[Tab]>
+typealias TabsBox = Box<[CoreBrowser.Tab]>
 
 enum TabsPreviewState {
     /// Maybe it is not needed state, but it is required for scalability when some user will have 100 tabs

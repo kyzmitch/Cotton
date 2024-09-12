@@ -8,7 +8,7 @@
 
 import Foundation
 import BrowserNetworking
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 import CottonRestKit
 import Alamofire

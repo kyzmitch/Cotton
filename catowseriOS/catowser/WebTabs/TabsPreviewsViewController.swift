@@ -108,7 +108,7 @@ where C.R == TabsScreenRoute {
         super.viewWillAppear(animated)
 
         Task {
-            await TabsDataService.shared.attach(self)
+            await TabsDataService.shared.attach(self, notify: false)
             viewModel.load()
         }
     }
@@ -119,9 +119,6 @@ where C.R == TabsScreenRoute {
         Task {
             await TabsDataService.shared.detach(self)
         }
-    }
-
-    deinit {
         stateHandlerCancellable?.cancel()
     }
 
@@ -168,7 +165,7 @@ where C.R == TabsScreenRoute {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        var tab: Tab?
+        var tab: CoreBrowser.Tab?
         switch viewModel.uxState {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             // must use `item` for UICollectionView
@@ -188,7 +185,7 @@ where C.R == TabsScreenRoute {
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var tab: Tab?
+        var tab: CoreBrowser.Tab?
         switch viewModel.uxState {
         case .tabs(let dataSource) where indexPath.item < dataSource.value.count:
             tab = dataSource.value[safe: indexPath.item]
@@ -228,7 +225,7 @@ private extension TabsPreviewsViewController {
 }
 
 extension TabsPreviewsViewController: TabsObserver {
-    func tabDidAdd(_ tab: Tab, at index: Int) async {
+    func tabDidAdd(_ tab: CoreBrowser.Tab, at index: Int) async {
         let state = viewModel.uxState
         guard case let .tabs(box) = state else {
             return

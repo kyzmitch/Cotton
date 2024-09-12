@@ -9,7 +9,7 @@
 import CottonBase
 import AutoMockable
 
-public enum NetworkReachabilityStatus {
+public enum NetworkReachabilityStatus: Sendable {
     /// It is unknown whether the network is reachable.
     case unknown
     /// The network is not reachable.
@@ -18,7 +18,7 @@ public enum NetworkReachabilityStatus {
     case reachable(ConnectionType)
 
     /// Defines the various connection types detected by reachability flags.
-    public enum ConnectionType {
+    public enum ConnectionType: Sendable {
         /// The connection type is either over Ethernet or WiFi.
         case ethernetOrWiFi
         /// The connection type is a cellular connection.
@@ -39,7 +39,7 @@ public enum NetworkReachabilityStatus {
 
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "Server: ServerDescription"
-public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable {
+public protocol NetworkReachabilityAdapter: AnyObject, AutoMockable, Sendable {
     // swiftlint:enable comment_spacing
     associatedtype Server: ServerDescription
     typealias Listener = (NetworkReachabilityStatus) -> Void

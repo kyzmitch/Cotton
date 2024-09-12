@@ -13,14 +13,14 @@ private let filename = "topdomains"
 
 @globalActor
 public final class InMemoryDomainSearchProvider {
-    public static let shared = Provider()
+    public static let shared = StateHolder()
 
-    public actor Provider {
+    public actor StateHolder {
         fileprivate let storage: Trie
 
         init() {
             storage = Trie()
-            let bundle = Bundle(for: Provider.self)
+            let bundle = Bundle(for: StateHolder.self)
 
             guard let filePath = bundle.path(forResource: filename, ofType: "txt") else {
                 assertionFailure("Failed to find \"\(filename)\" file in framework bundle")
@@ -39,7 +39,10 @@ public final class InMemoryDomainSearchProvider {
     }
 }
 
-extension InMemoryDomainSearchProvider.Provider: DomainsHistory {
+/// Can be retroactive because it is own library in Kotlin
+extension CottonBase.Host: @unchecked @retroactive Sendable {}
+
+extension InMemoryDomainSearchProvider.StateHolder: DomainsHistory {
     public func remember(host: CottonBase.Host) async {
         storage.insert(word: host.rawString)
         if let withoutWww = host.rawString.withoutPrefix("www.") {
@@ -48,7 +51,7 @@ extension InMemoryDomainSearchProvider.Provider: DomainsHistory {
     }
 }
 
-extension InMemoryDomainSearchProvider.Provider: KnownDomainsSource {
+extension InMemoryDomainSearchProvider.StateHolder: KnownDomainsSource {
     public func domainNames(whereURLContains filter: String) async -> [String] {
         let words: [String] = storage.findWordsWithPrefix(prefix: filter)
         return words

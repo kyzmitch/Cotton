@@ -54,11 +54,11 @@ struct MainBrowserView
     /// Web view model without a specific site
     @StateObject private var webVM: W
     /// Default content type is determined in async way, so, would be good to pass it like this
-    private let defaultContentType: Tab.ContentType
+    private let defaultContentType: CoreBrowser.Tab.ContentType
 
     init(_ coordinatorsInterface: C,
          _ uiFrameworkType: UIFrameworkType,
-         _ defaultContentType: Tab.ContentType,
+         _ defaultContentType: CoreBrowser.Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
          _ searchSuggestionsVM: S,

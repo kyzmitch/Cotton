@@ -17,7 +17,7 @@ import Combine
 #endif
 import BrowserNetworking
 
-protocol TabDelegate: AnyObject {
+@MainActor protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView) async
 }
 
@@ -88,7 +88,7 @@ final class TabView: UIView {
         super.willMove(toSuperview: newSuperview)
 
         Task {
-            await TabsDataService.shared.attach(viewModel)
+            await TabsDataService.shared.attach(viewModel, notify: false)
         }
         stateHandler?.cancel()
         stateHandler = viewModel.$state.sink(receiveValue: onStateChange)

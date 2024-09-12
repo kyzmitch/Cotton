@@ -29,7 +29,8 @@ If you have everything installed, then use `make help` to see how to build `cott
 
 #### Full clear setup
 - install `Android Studio` to have Android SDK for Kotlin Multiplatform project even for iOS build, because gradle file depends on it as well.
-- On macOS update your `.bash_profile` with
+- run `echo 'export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"' >> ~/.zprofile` to make Java visible (it comes together with Homebrew?)
+- On macOS update your `.bash_profile` or `.zprofile` with
 ```
 export ANDROID_HOME=/Users/<username>/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/platform-tools
@@ -38,7 +39,7 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH="$PATH:/usr/local/Cellar/gradle@7/7.6.2/bin"
 ```
-- run `source .bash_profile`
+- run `source ~/.bash_profile` or `source ~/.zprofile`
 - install `InteliJ IDEA`
 - Add `ANDROID_HOME` to path variables of `InteliJ IDEA` in settings or put `local.properties` file with the following content:
   ```

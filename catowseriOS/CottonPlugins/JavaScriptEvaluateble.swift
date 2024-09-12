@@ -8,17 +8,40 @@
 
 import Foundation
 import Combine
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 
-public protocol JavaScriptEvaluateble: AnyObject {
-    func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?)
+/// Протокол для вэб вью по выполнения JavaScript, должно быть на main thread
+@MainActor
+public protocol JavaScriptEvaluateble: AnyObject, Sendable {
+    func evaluateJavaScriptV2(
+        _ javaScriptString: String,
+        completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    )
+    func evaluateJavaScriptV1(
+        _ javaScriptString: String,
+        completionHandler: ((Any?, Error?) -> Void)?
+    )
+}
+
+extension JavaScriptEvaluateble {
+    func commonHandleJavaScript(
+        _ javaScriptString: String,
+        _ completionHandler: (@Sendable (Any?, (any Error)?) -> Void)?
+    ) {
+        if #available(iOS 18.0, *) {
+            evaluateJavaScriptV2(javaScriptString, completionHandler: completionHandler)
+        } else {
+            #if swift(<6.0)
+            evaluateJavaScriptV1(javaScriptString, completionHandler: completionHandler)
+            #endif
+        }
+    }
 }
 
 extension JavaScriptEvaluateble {
     func evaluate(jsScript: String) {
-        // swiftlint:disable:next line_length
-        // https://github.com/WebKit/webkit/blob/39a299616172a4d4fe1f7aaf573b41020a1d7358/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm#L1009
-        evaluateJavaScript(jsScript, completionHandler: {(something, error) in
+        // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm
+        commonHandleJavaScript(jsScript, {(something, error) in
             if let err = error {
                 print("Error evaluating JavaScript: \(err)")
             } else if let thing = something {
@@ -28,27 +51,32 @@ extension JavaScriptEvaluateble {
     }
 
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    func evaluatePublisher(jsScript: String) -> AnyPublisher<Any, Error> {
-        let p = Future<Any, Error> { [weak self] (promise) in
+    func evaluatePublisher(jsScript: String) -> AnyPublisher<String, Error> {
+        let future = Future<String, Error> { @MainActor @Sendable [weak self] promise in
             guard let self = self else {
                 promise(.failure(CottonPluginError.zombiError))
                 return
             }
-            self.evaluateJavaScript(jsScript) { (something, error) in
-                if let realError = error {
-                    promise(.failure(realError))
+#if swift(>=6)
+            // workaround until Apple Combine fixes the future/promise by adding Sendable conformance
+            nonisolated(unsafe) let promise = promise
+#endif
+            commonHandleJavaScript(jsScript) { @Sendable (something, error) in
+                if let error {
+                    promise(.failure(error))
                     return
                 }
-                guard let anyResult = something else {
+                guard let anyResult = something, let stringResult = anyResult as? String else {
                     promise(.failure(CottonPluginError.nilJSEvaluationResult))
                     return
                 }
-                promise(.success(anyResult))
+                promise(.success(stringResult))
             }
         }
-
+        // Internally it is a WebView, so that, scheduler should be a Main thread
         return Deferred {
-            return p
+            future
+                .subscribe(on: RunLoop.main)
         }.eraseToAnyPublisher()
     }
 
@@ -58,7 +86,7 @@ extension JavaScriptEvaluateble {
                 observer.send(error: CottonPluginError.zombiError)
                 return
             }
-            self.evaluateJavaScript(jsScript) { (something, error) in
+            self.commonHandleJavaScript(jsScript) { (something, error) in
                 if let realError = error {
                     observer.send(error: realError)
                     return
@@ -77,10 +105,7 @@ extension JavaScriptEvaluateble {
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func titlePublisher() -> AnyPublisher<String, Error> {
         typealias StringResult = Result<String, Error>
-        return evaluatePublisher(jsScript: "document.title").flatMap { (anyResult) -> StringResult.Publisher in
-            guard let documentTitle = anyResult as? String else {
-                return StringResult.Publisher(.failure(CottonPluginError.jsEvaluationIsNotString))
-            }
+        return evaluatePublisher(jsScript: "document.title").flatMap { (documentTitle) -> StringResult.Publisher in
             return StringResult.Publisher(.success(documentTitle))
         }.eraseToAnyPublisher()
     }
@@ -89,10 +114,7 @@ extension JavaScriptEvaluateble {
     public func finalURLPublisher() -> AnyPublisher<URL, Error> {
         typealias URLResult = Result<URL, Error>
         // If we have JavaScript blocked, these will be empty.
-        return evaluatePublisher(jsScript: .locationHREF).flatMap { (anyResult) -> URLResult.Publisher in
-            guard let urlString = anyResult as? String else {
-                return URLResult.Publisher(.failure(CottonPluginError.jsEvaluationIsNotString))
-            }
+        return evaluatePublisher(jsScript: .locationHREF).flatMap { (urlString) -> URLResult.Publisher in
             guard let url = URL(string: urlString) else {
                 return URLResult.Publisher(.failure(CottonPluginError.jsEvaluationIsNotURL))
             }

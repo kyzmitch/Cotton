@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import FeaturesFlagsKit
 import CottonData
 
@@ -126,22 +126,22 @@ extension SearchSuggestionsCoordinator: Layouting {
 }
 
 private extension SearchSuggestionsCoordinator {
-    func keyboardWillChangeFrameClosure() -> @MainActor (Notification) -> Void {
-        func handling(_ notification: Notification) {
+    func keyboardWillChangeFrameClosure() -> @MainActor @Sendable (Notification) -> Void {
+        let handling: @MainActor @Sendable (Notification) -> Void = { [weak self] notification in
             guard let info = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] else { return }
             guard let value = info as? NSValue else { return }
             let rect = value.cgRectValue
 
             // need to reduce search suggestions list height
-            _keyboardHeight = rect.size.height
+            self?._keyboardHeight = rect.size.height
         }
 
         return handling
     }
 
-    func keyboardWillHideClosure() -> @MainActor (Notification) -> Void {
-        func handling(_ notification: Notification) {
-            _keyboardHeight = nil
+    func keyboardWillHideClosure() -> @MainActor @Sendable (Notification) -> Void {
+        let handling: @MainActor @Sendable (Notification) -> Void = { [weak self] notification in
+            self?._keyboardHeight = nil
         }
 
         return handling

@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol Feature {
-    associatedtype Value
+    associatedtype Value: Sendable
 
     static var source: FeatureSource.Type { get }
     static var defaultValue: Value { get }
@@ -28,7 +28,7 @@ extension Feature {
 }
 
 /// For `syntatic sugar`
-public struct ApplicationFeature<F: Feature> {
+public struct ApplicationFeature<F: Feature>: Sendable {
     public var defaultValue: F.Value {
         return F.defaultValue
     }

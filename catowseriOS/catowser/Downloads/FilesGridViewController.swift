@@ -12,11 +12,13 @@ import CoreBrowser
 import BrowserNetworking
 import CottonPlugins
 
+@MainActor
 protocol FilesGridPresenter: AnyObject {
     func reloadWith(source: TagsSiteDataSource, completion: (() -> Void)?)
     func clearFiles()
 }
 
+@MainActor
 protocol FileDownloadViewDelegate: AnyObject {
     func didRequestOpen(local url: URL, from sourceView: DownloadButtonCellView)
     func didPressDownload(callback: @escaping (FileDownloadViewModel?) -> Void)
@@ -148,7 +150,7 @@ extension FilesGridViewController: FileDownloadViewDelegate {
 
 /// Declaring following properties here, because type and protocol are from different frameworks.
 /// So, this place is neutral.
-extension InstagramVideoNode: Downloadable {
+extension InstagramVideoNode: @retroactive Downloadable {
     public var url: URL {
         return videoUrl
     }
@@ -158,7 +160,7 @@ extension InstagramVideoNode: Downloadable {
     }
 }
 
-extension HTMLVideoTag: Downloadable {
+extension HTMLVideoTag: @retroactive Downloadable {
     public var url: URL {
         return src
     }

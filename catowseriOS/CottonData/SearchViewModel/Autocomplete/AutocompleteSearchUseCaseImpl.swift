@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 import CottonRestKit
 
@@ -20,13 +20,15 @@ public final class AutocompleteSearchUseCaseImpl<Strategy>: AutocompleteSearchUs
 where Strategy: SearchAutocompleteStrategy {
     public let strategy: Strategy
 
-    private lazy var waitingQueue = DispatchQueue(label: .waitingQueueName)
-    private lazy var waitingScheduler = QueueScheduler(qos: .userInitiated,
-                                                       name: .waitingQueueName,
-                                                       targeting: waitingQueue)
+    private let waitingQueue: DispatchQueue
+    private let waitingScheduler: QueueScheduler
 
     public init(_ strategy: Strategy) {
         self.strategy = strategy
+        waitingQueue = DispatchQueue(label: .waitingQueueName)
+        waitingScheduler = QueueScheduler(qos: .userInitiated,
+                                          name: .waitingQueueName,
+                                          targeting: waitingQueue)
     }
 
     public func rxFetchSuggestions(_ query: String) -> WebSearchSuggestionsProducer {

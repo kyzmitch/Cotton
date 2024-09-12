@@ -8,13 +8,18 @@
 
 import Foundation
 import CottonRestKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 import CottonBase
 import ReactiveHttpKit
 import BrowserNetworking
 import AutoMockable
 
+extension CottonBase.ServerDescription: @unchecked Sendable {}
+
+/// Rest client context should be sendable, because it is used by the strategies
+/// and a strategy is used by the use cases which shouldn't store any state (state-less).
+/// It means that a use case must be sendable which requires the context to be sendable as well.
 // swiftlint:disable comment_spacing
 //sourcery: associatedtype = "R: ResponseType"
 //sourcery: associatedtype = "S: ServerDescription"
@@ -26,7 +31,7 @@ import AutoMockable
 //sourcery: typealias = "ReachabilityAdapter = RA"
 //sourcery: typealias = "Encoder = E"
 //sourcery: typealias = "Client = C"
-public protocol RestClientContext: AnyObject, AutoMockable {
+public protocol RestClientContext: AnyObject, AutoMockable, Sendable {
     // swiftlint:enable comment_spacing
     associatedtype Response: ResponseType
     associatedtype Server: ServerDescription

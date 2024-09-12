@@ -17,7 +17,7 @@ struct TabDefaultContentView_Previews: PreviewProvider {
         let model: TabDefaultContentModel = .init(nil) { (_) in
             //
         }
-        return BaseMenuView<TabContentDefaultState>(viewModel: model)
+        return BaseMenuView<CoreBrowser.Tab.ContentType>(viewModel: model)
     }
 }
 #endif

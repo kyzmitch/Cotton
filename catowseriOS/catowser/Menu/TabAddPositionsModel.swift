@@ -20,7 +20,7 @@ extension BaseListViewModelImpl where EnumDataSourceType == AddedTabPosition {
 
 /// Declare string representation for CoreBrowser enum
 /// in host app to use localized strings.
-extension AddedTabPosition: CustomStringConvertible {
+extension AddedTabPosition: @retroactive CustomStringConvertible {
     public var description: String {
         let key: String
 
@@ -34,7 +34,7 @@ extension AddedTabPosition: CustomStringConvertible {
     }
 }
 
-extension AddedTabPosition: Identifiable {
+extension AddedTabPosition: @retroactive Identifiable {
     public var id: RawValue {
         return self.rawValue
     }

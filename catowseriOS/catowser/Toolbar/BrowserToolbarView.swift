@@ -145,7 +145,7 @@ final class BrowserToolbarView: UIToolbar {
 
     /// Instead of `didMoveToSuperview`
     func attachToTabsListManager() async {
-        await TabsDataService.shared.attach(self)
+        await TabsDataService.shared.attach(self, notify: false)
         await TabsDataService.shared.attach(counterView, notify: true)
     }
 
@@ -298,7 +298,7 @@ private extension BrowserToolbarView {
 }
 
 extension BrowserToolbarView: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         switch content {
         case .site:
             updateToolbar(downloadsAvailable: false, actionsAvailable: true)

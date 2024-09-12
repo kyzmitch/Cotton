@@ -9,7 +9,7 @@
 import CottonRestKit
 import CottonBase
 import ReactiveHttpKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif

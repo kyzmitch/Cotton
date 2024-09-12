@@ -9,6 +9,7 @@
 import UIKit
 import CottonBase
 
+@MainActor
 protocol TopSitesInterface: AnyObject {
     func reload(with sites: [Site])
 }

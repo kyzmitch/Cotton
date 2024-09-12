@@ -21,6 +21,7 @@ import UIKit
  user to go back or continue.
  */
 
+@MainActor
 final class WebViewLoadingErrorHandler {
     let error: NSError
     let webView: WKWebView

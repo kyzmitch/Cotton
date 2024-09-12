@@ -13,8 +13,6 @@ import CoreBrowser
 import CottonPlugins
 import FeaturesFlagsKit
 
-private var logTabUpdate = false
-
 public final class WebViewContextImpl: WebViewContext {
     public let pluginsSource: any JSPluginsSource
 

@@ -1,5 +1,5 @@
 //
-//  Tab+Extension.swift
+//  CoreBrowser.Tab+Extension.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 10/18/22.
@@ -9,7 +9,7 @@
 import CoreBrowser
 import UIKit
 
-extension Tab {
+extension CoreBrowser.Tab {
     /// Preview image of the site if content is .site
     var preview: UIImage? {
         mutating get {

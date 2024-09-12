@@ -12,10 +12,9 @@ import Alamofire
 import Foundation
 import BrowserNetworking
 
-private var logAuthChallenge = false
-
-final class WebViewAuthChallengeHandler {
-    typealias AuthHandler = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+/// Web view authentication challenge handler, should be on main actor because it uses web view
+@MainActor final class WebViewAuthChallengeHandler: Sendable {
+    typealias AuthHandler = @Sendable (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
 
     private let urlInfo: URLInfo
     private let challenge: URLAuthenticationChallenge
@@ -23,6 +22,7 @@ final class WebViewAuthChallengeHandler {
     private let webView: WKWebView
     /// There is an Xcode warning about not calling that on main thread, so, using custom queue
     private let queue: DispatchQueue
+    private var logAuthChallenge = false
 
     init(_ urlInfo: URLInfo,
          _ webView: WKWebView,
@@ -35,10 +35,12 @@ final class WebViewAuthChallengeHandler {
         queue = DispatchQueue(label: .queueNameWith(suffix: "webview.auth-challenge"))
     }
 
-    func solve(completion: @escaping (Bool?) -> Void) {
+    func solve(completion: @MainActor @Sendable @escaping (Bool?) -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust else {
-            queue.async { [weak self] in
-                self?.completionHandler(.performDefaultHandling, nil)
+            queue.async {
+                Task { [weak self] in
+                    self?.completionHandler(.performDefaultHandling, nil)
+                }
                 DispatchQueue.main.async {
                     completion(nil)
                 }
@@ -95,7 +97,7 @@ private extension WebViewAuthChallengeHandler {
     func handleServerTrust(_ serverTrust: SecTrust,
                            _ host: String,
                            _ completionHandler: @escaping AuthHandler,
-                           _ completion: @escaping (Bool?) -> Void) {
+                           _ completion: @MainActor @escaping @Sendable (Bool?) -> Void) {
 
         do {
             let evaluator: DefaultTrustEvaluator = .ipHostEvaluator()
@@ -143,8 +145,8 @@ private extension WebViewAuthChallengeHandler {
 }
 
 extension WebViewAuthChallengeHandler: Hashable {
-    static func == (lhs: WebViewAuthChallengeHandler, rhs: WebViewAuthChallengeHandler) -> Bool {
-        guard lhs.webView == rhs.webView else {
+    nonisolated static func == (lhs: WebViewAuthChallengeHandler, rhs: WebViewAuthChallengeHandler) -> Bool {
+        guard lhs.webView === rhs.webView else {
             return false
         }
         guard lhs.challenge == rhs.challenge else {
@@ -156,7 +158,7 @@ extension WebViewAuthChallengeHandler: Hashable {
         return true
     }
 
-    public func hash(into hasher: inout Hasher) {
+    nonisolated public func hash(into hasher: inout Hasher) {
         hasher.combine(challenge)
         hasher.combine(urlInfo)
     }

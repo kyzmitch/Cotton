@@ -15,7 +15,7 @@ import CottonData
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
-    func openTab(_ content: Tab.ContentType)
+    func openTab(_ content: CoreBrowser.Tab.ContentType)
     func layoutSuggestions()
 }
 
@@ -311,9 +311,9 @@ extension SearchBarCoordinator: SearchSuggestionsListDelegate {
     }
 }
 
-extension FeatureManager.FManager {
-    func searchPluginName() -> KnownSearchPluginName {
-        switch webSearchAutoCompleteValue() {
+extension FeatureManager.StateHolder {
+    func searchPluginName() async -> KnownSearchPluginName {
+        switch await webSearchAutoCompleteValue() {
         case .google:
             return .google
         case .duckduckgo:
