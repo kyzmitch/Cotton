@@ -9,12 +9,11 @@
 import Foundation
 import WebKit
 
+@MainActor
 final class JSPluginFactory {
     static let shared = JSPluginFactory()
 
     private let scripts = NSCache<NSString, WKUserScript>()
-
-    private init() {}
 
     func script(for plugin: any JavaScriptPlugin,
                 with injectionTime: WKUserScriptInjectionTime,

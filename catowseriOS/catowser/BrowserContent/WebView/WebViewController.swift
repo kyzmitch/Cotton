@@ -15,11 +15,30 @@ import BrowserNetworking
 import FeaturesFlagsKit
 import ReactiveSwift
 #if canImport(Combine)
-import Combine
+@preconcurrency import Combine
 #endif
 import CottonData
 
-extension WKWebView: JavaScriptEvaluateble {}
+/// Can't retroactivly mark web view as sendable, it is a system type and protocol.
+extension WKWebView: @unchecked Sendable { }
+
+/// Can be retroactive because Web view Apple devs don't know about JavaScriptEvaluateble protocol.
+extension WKWebView: @retroactive JavaScriptEvaluateble {
+    public func evaluateJavaScriptV2(
+        _ javaScriptString: String,
+        completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    ) {
+        evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+    }
+    public func evaluateJavaScriptV1(
+        _ javaScriptString: String,
+        completionHandler: ((Any?, Error?) -> Void)?
+    ) {
+#if swift(<6.0)
+            evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+#endif
+    }
+}
 
 final class WebViewController<C: Navigating>: BaseViewController,
                                               WKUIDelegate,
@@ -82,11 +101,6 @@ final class WebViewController<C: Navigating>: BaseViewController,
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        authHandlers.removeAll()
-        unsubscribe()
-    }
-
     override func loadView() {
         view = UIView(frame: .zero)
     }
@@ -121,6 +135,8 @@ final class WebViewController<C: Navigating>: BaseViewController,
         // maybe top sites, so, we have to reset navigation controls
         // and it can be done by sending `nil` interface
         viewModel.siteNavigation?.webViewDidReplace(nil)
+        authHandlers.removeAll()
+        unsubscribe()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -157,7 +173,7 @@ final class WebViewController<C: Navigating>: BaseViewController,
 
     // MARK: - WKNavigationDelegate
 
-    func webView(_ webView: WKWebView,
+    private func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if let domain = viewModel.nativeAppDomainNameString {
@@ -211,19 +227,19 @@ final class WebViewController<C: Navigating>: BaseViewController,
         viewModel.siteNavigation?.showLoadingProgress(false)
     }
 
-    func webView(_ webView: WKWebView,
-                 didReceive challenge: URLAuthenticationChallenge,
-                 completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+    private func webView(_ webView: WKWebView,
+                         didReceive challenge: URLAuthenticationChallenge,
+                         completionHandler: @escaping @Sendable (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         let handler = WebViewAuthChallengeHandler(viewModel.urlInfo, webView, challenge, completionHandler)
         authHandlers.insert(handler)
         handler.solve { [weak self, weak handler] stopLoadingProgress in
-            guard let self = self else {
+            guard let self else {
                 return
             }
             if stopLoadingProgress != nil {
-                self.viewModel.siteNavigation?.showLoadingProgress(false)
+                viewModel.siteNavigation?.showLoadingProgress(false)
             }
-            guard let handler = handler else {
+            guard let handler else {
                 return
             }
             self.authHandlers.remove(handler)
@@ -311,27 +327,36 @@ private extension WebViewController {
         loadingProgressObservation?.invalidate()
         loadingProgressObservation = webView?.observe(\.estimatedProgress,
                                                       options: [.new]) { [weak self] (_, change) in
-            guard let self = self else { return }
-            guard let value = change.newValue else { return }
-            self.viewModel.siteNavigation?.loadingProgressdDidChange(Float(value))
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel.siteNavigation?.loadingProgressdDidChange(Float(value))
+            }
         }
     }
 
     func addWebViewCanGoBackObserver() {
         canGoBackObservation?.invalidate()
         canGoBackObservation = webView?.observe(\.canGoBack, options: [.new]) { [weak self] (_, change) in
-            guard let self = self else { return }
-            guard let value = change.newValue else { return }
-            self.viewModel.siteNavigation?.didBackNavigationUpdate(to: value)
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel.siteNavigation?.didBackNavigationUpdate(to: value)
+            }
         }
     }
 
     func addWebViewCanGoForwardObserver() {
         canGoForwardObservation?.invalidate()
         canGoForwardObservation = webView?.observe(\.canGoForward, options: [.new]) { [weak self] (_, change) in
-            guard let self = self else { return }
-            guard let value = change.newValue else { return }
-            self.viewModel.siteNavigation?.didForwardNavigationUpdate(to: value)
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel.siteNavigation?.didForwardNavigationUpdate(to: value)
+            }
         }
     }
 
@@ -385,6 +410,7 @@ private extension WebViewController {
     }
 }
 
+/// Can't be retroactive for CustomDebugStringConvertible cause it is a system protocol.
 extension WKNavigationType: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
@@ -406,4 +432,5 @@ extension WKNavigationType: CustomDebugStringConvertible {
     }
 }
 
-extension WKNavigationAction: NavigationActionable {}
+/// Can be retroactive because NavigationActionable is unknown for web view Apple devs.
+extension WKNavigationAction: @retroactive NavigationActionable {}

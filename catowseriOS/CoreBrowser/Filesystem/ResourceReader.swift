@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum KnownSearchPluginName: String {
+public enum KnownSearchPluginName: String, Sendable {
     case google
     case duckduckgo
 }

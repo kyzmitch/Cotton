@@ -18,6 +18,7 @@ extension CGFloat {
     static let tagLabelHorizontalMargin = CGFloat(10.0)
     static let safeAreaBottomMargin = CGFloat(20.0) /* view.safeAreaInsets.bottom */
 
+    @MainActor
     static var tabWidth: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return 40.0

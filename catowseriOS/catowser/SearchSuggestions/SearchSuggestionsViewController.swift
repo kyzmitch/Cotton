@@ -21,6 +21,7 @@ enum SuggestionType: Equatable {
     case looksLikeURL(String)
 }
 
+@MainActor
 protocol SearchSuggestionsListDelegate: AnyObject {
     func searchSuggestionDidSelect(_ content: SuggestionType) async
 }
@@ -48,7 +49,8 @@ final class SearchSuggestionsViewController: UITableViewController {
     }
 
     deinit {
-        taskHandler?.cancel()
+        #warning("AnyCancellable is not sendable, so, skipping cancel")
+        // taskHandler?.cancel()
     }
 
     required init?(coder: NSCoder) {

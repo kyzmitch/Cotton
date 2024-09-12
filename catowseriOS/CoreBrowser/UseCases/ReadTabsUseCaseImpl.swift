@@ -37,7 +37,7 @@ public final class ReadTabsUseCaseImpl: ReadTabsUseCase {
         }
     }
 
-    public var allTabs: [Tab] {
+    public var allTabs: [CoreBrowser.Tab] {
         get async {
             let response = await tabsDataService.sendCommand(.getAllTabs)
             guard case .allTabs(let value) = response else {

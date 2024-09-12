@@ -8,14 +8,14 @@
 
 import Foundation
 import CoreBrowser
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import Combine
 
 @globalActor
 public final class FeatureManager {
-    public static let shared = FManager()
+    public static let shared = StateHolder()
 
-    public actor FManager {
+    public actor StateHolder {
         /// Flag value data sources.
         private let sources: [FeatureSource] = [LocalFeatureSource() /*, RemoteFeatureSource()*/]
         /// Temporarily create a separate array of sources for enum features
@@ -23,45 +23,52 @@ public final class FeatureManager {
 
         // MARK: - read
 
-        public func boolValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Bool where F.Value == Bool {
+        public func boolValue<F: BasicFeature>(
+            of feature: ApplicationFeature<F>
+        ) async -> Bool where F.Value == Bool {
             guard let source = source(for: feature) else {
                 return F.defaultValue
             }
-            return source.currentValue(of: feature)
+            return await source.currentValue(of: feature)
         }
 
-        public func intValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> Int where F.Value == Int {
+        public func intValue<F: BasicFeature>(
+            of feature: ApplicationFeature<F>
+        ) async -> Int where F.Value == Int {
             guard let source = source(for: feature) else {
                 return F.defaultValue
             }
-            return source.currentValue(of: feature)
+            return await source.currentValue(of: feature)
         }
 
-        public func enumValue<F: FullEnumTypeConstraints>(_ enumCase: F, _ key: String) -> F?
+        public func enumValue<F: FullEnumTypeConstraints>(
+            _ enumCase: F,
+            _ key: String
+        ) async -> F?
         where F.RawValue == Int {
             let enumFeature = GenericEnumFeature<F>(key)
             let feature: ApplicationEnumFeature = .init(feature: enumFeature)
             guard let source = source(for: feature) else {
                 return feature.defaultEnumValue
             }
-            return source.currentEnumValue(of: feature)
+            return await source.currentEnumValue(of: feature)
         }
 
         // MARK: - write
 
-        public func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) {
+        public func setFeature<F: BasicFeature>(_ feature: ApplicationFeature<F>, value: F.Value?) async {
             guard let source = source(for: feature) else {
                 return
             }
-            source.setValue(of: feature, value: value)
+            await source.setValue(of: feature, value: value)
         }
 
-        public func setFeature<F: EnumFeature>(_ feature: ApplicationEnumFeature<F>, value: F.EnumValue?)
+        public func setFeature<F: EnumFeature>(_ feature: ApplicationEnumFeature<F>, value: F.EnumValue?) async
         where F.EnumValue.RawValue == Int {
             guard let source = source(for: feature) else {
                 return
             }
-            source.setEnumValue(of: feature, value: value)
+            await source.setEnumValue(of: feature, value: value)
         }
 
         // MARK: - sources

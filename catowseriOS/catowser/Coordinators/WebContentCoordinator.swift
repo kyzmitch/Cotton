@@ -12,12 +12,14 @@ import CoreBrowser
 import CottonPlugins
 import CottonData
 
+@MainActor
 protocol WebContentDelegate: AnyObject {
     func provisionalNavigationDidStart()
     func loadingProgressdDidChange(_ progress: Float)
     func showLoadingProgress(_ show: Bool)
 }
 
+@MainActor
 final class WebContentCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory
     var startedCoordinator: Coordinator?

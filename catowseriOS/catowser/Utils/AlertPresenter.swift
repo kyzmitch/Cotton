@@ -8,6 +8,7 @@
 
 import UIKit
 
+@MainActor
 final class AlertPresenter {
     static func present(on presenter: UIViewController,
                         message: String? = nil,

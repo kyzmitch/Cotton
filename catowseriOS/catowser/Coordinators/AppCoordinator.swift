@@ -14,7 +14,8 @@ import CottonPlugins
 import CottonData
 
 /// Browser content related coordinators
-protocol BrowserContentCoordinators: AnyObject {
+@MainActor
+protocol BrowserContentCoordinators: AnyObject, Sendable {
     var topSitesCoordinator: TopSitesCoordinator? { get }
     var webContentCoordinator: WebContentCoordinator? { get }
     var globalMenuDelegate: GlobalMenuDelegate? { get }
@@ -60,7 +61,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }()
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
-    private var previousTabContent: Tab.ContentType?
+    private var previousTabContent: CoreBrowser.Tab.ContentType?
     /// Not a constant because can't be initialized in init
     private var jsPluginsBuilder: (any JSPluginsSource)?
 
@@ -89,6 +90,10 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
 
     func start() {
+        Task {
+            await prepareBeforeStart()
+        }
+        
         if uiFramework.swiftUIBased {
             // Must do coordinators init earlier
             // to allow to use some of them in SwiftUI views
@@ -99,36 +104,37 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
                 toolbarCoordinator?.showNext(.tabs)
             }
         }
-
-        Task {
-            let defaultTabContent = await DefaultTabProvider.shared.contentState
-            let pluginsSource = JSPluginsBuilder()
-                .setBase(self)
-                .setInstagram(self)
-            jsPluginsBuilder = pluginsSource
-            let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
-            self.allTabsVM = allTabsVM
-            let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
-            let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
-            let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
-            let webContext = WebViewContextImpl(pluginsSource)
-            let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
-            let vc = vcFactory.rootViewController(self,
-                                                  uiFramework,
-                                                  defaultTabContent,
-                                                  allTabsVM,
-                                                  topSitesVM,
-                                                  suggestionsVM,
-                                                  webViewModel)
-            startedVC = vc
-            
-            window.rootViewController = startedVC?.viewController
-            window.makeKeyAndVisible()
-            // Now, with introducing the actors model
-            // we need to attach observer only after adding all child coordinators
-            if case .uiKit = uiFramework {
-                await TabsDataService.shared.attach(self, notify: true)
-            }
+    }
+    
+    private func prepareBeforeStart() async {
+        await UseCaseFactory.shared.registerUseCases()
+        let defaultTabContent = await DefaultTabProvider.shared.contentState
+        let pluginsSource = JSPluginsBuilder()
+            .setBase(self)
+            .setInstagram(self)
+        jsPluginsBuilder = pluginsSource
+        let allTabsVM = await ViewModelFactory.shared.allTabsViewModel()
+        self.allTabsVM = allTabsVM
+        let topSitesVM = await ViewModelFactory.shared.topSitesViewModel()
+        let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
+        let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
+        let webContext = WebViewContextImpl(pluginsSource)
+        let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
+        let vc = vcFactory.rootViewController(self,
+                                              uiFramework,
+                                              defaultTabContent,
+                                              allTabsVM,
+                                              topSitesVM,
+                                              suggestionsVM,
+                                              webViewModel)
+        startedVC = vc
+        
+        window.rootViewController = startedVC?.viewController
+        window.makeKeyAndVisible()
+        // Now, with introducing the actors model
+        // we need to attach observer only after adding all child coordinators
+        if case .uiKit = uiFramework {
+            await TabsDataService.shared.attach(self, notify: true)
         }
     }
 
@@ -173,7 +179,7 @@ extension AppCoordinator: CoordinatorOwner {
 
 enum MainScreenRoute: Route {
     case menu(MenuViewModel, UIView, CGRect)
-    case openTab(Tab.ContentType)
+    case openTab(CoreBrowser.Tab.ContentType)
 }
 
 extension AppCoordinator: Navigating {
@@ -561,7 +567,7 @@ private extension AppCoordinator {
         startedCoordinator = coordinator
     }
 
-    func open(tabContent: Tab.ContentType) {
+    func open(tabContent: CoreBrowser.Tab.ContentType) {
         linkTagsCoordinator?.showNext(.closeTags)
         // hide suggestions as well
         searchBarCoordinator?.showNext(.hideSuggestions)
@@ -619,11 +625,11 @@ private extension AppCoordinator {
 }
 
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         open(tabContent: content)
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) async {
+    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
         switch previousTabContent {
         case .site:
             break
@@ -679,7 +685,7 @@ extension AppCoordinator: WebContentDelegate {
 }
 
 extension AppCoordinator: SearchBarDelegate {
-    func openTab(_ content: Tab.ContentType) {
+    func openTab(_ content: CoreBrowser.Tab.ContentType) {
         showNext(.openTab(content))
     }
 

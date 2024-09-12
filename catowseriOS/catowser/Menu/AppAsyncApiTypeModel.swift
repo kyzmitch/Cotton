@@ -19,7 +19,7 @@ extension BaseListViewModelImpl where EnumDataSourceType == AsyncApiType {
     }
 }
 
-extension AsyncApiType: CustomStringConvertible {
+extension AsyncApiType: @retroactive CustomStringConvertible {
     public var description: String {
         let key: String
 
@@ -35,7 +35,7 @@ extension AsyncApiType: CustomStringConvertible {
     }
 }
 
-extension AsyncApiType: Identifiable {
+extension AsyncApiType: @retroactive Identifiable {
     public var id: RawValue {
         return self.rawValue
     }

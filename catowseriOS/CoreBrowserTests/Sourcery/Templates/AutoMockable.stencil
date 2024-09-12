@@ -2,7 +2,7 @@
 
 import Foundation
 import CoreBrowser
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonBase
 
 {% for import in argument.imports %}

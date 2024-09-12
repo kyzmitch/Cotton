@@ -11,7 +11,15 @@ import CottonBase
 import CottonPlugins
 import CoreBrowser
 
-enum WebViewModelState {
+/// Settings of the site can be sendable cause it is a model.
+/// Can mark it as retroactive because it is from my CottonBase library.
+extension CottonBase.Site.Settings: @unchecked @retroactive Sendable {}
+
+/// URL info type can be sendable cause it is a model.
+/// Can mark it as retroactive because it is from my CottonBase library.
+extension CottonBase.URLInfo: @unchecked @retroactive Sendable {}
+
+enum WebViewModelState: Sendable {
     /// SwiftUI specific state to avoid waiting for the specific `Site` and create VM right away
     /// to call `load(site)` method when SwiftUI aware of specific `Site`
     case pendingLoad

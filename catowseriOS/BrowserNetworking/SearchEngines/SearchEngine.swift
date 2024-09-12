@@ -6,11 +6,13 @@
 //  Copyright © 2019 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
-import Foundation
 import CottonBase
 
+/// Alamofire's http method type can't be retroactivly silenced because sendable is a system protocol.
+extension CottonBase.HTTPMethod: @unchecked @retroactive Sendable { }
+
 /// The model for OpenSearch format URL
-public struct SearchEngine {
+public struct SearchEngine: Sendable {
     /// Name e.g. "DuckDuckGo"
     let shortName: String
     /// Valid components for final URL

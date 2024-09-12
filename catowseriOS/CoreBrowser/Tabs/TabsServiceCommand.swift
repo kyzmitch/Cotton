@@ -12,15 +12,15 @@ import Foundation
  Tabs data service commands for the Command design pattern.
  Each command case can carry the input data.
  */
-public enum TabsServiceCommand {
+public enum TabsServiceCommand: Sendable {
     case getTabsCount
     case getSelectedTabId
     case getAllTabs
-    case addTab(Tab)
-    case closeTab(Tab)
+    case addTab(CoreBrowser.Tab)
+    case closeTab(CoreBrowser.Tab)
     case closeTabWithId(UUID)
     case closeAll
-    case selectTab(Tab)
-    case replaceSelectedContent(Tab.ContentType)
+    case selectTab(CoreBrowser.Tab)
+    case replaceSelectedContent(CoreBrowser.Tab.ContentType)
     case updateSelectedTabPreview(Data?)
 }

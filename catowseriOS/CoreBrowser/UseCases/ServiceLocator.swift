@@ -16,5 +16,6 @@ protocol ServiceLocator: AnyObject {
     ///
     /// @param type of the service which instance need to find
     /// @param key A string key if the service instance was registered not using type object id
+    /// @return a reference to already stored object instance found by the key or type or nil if it wasn't registered
     func findService<T>(_ type: T.Type, _ key: String?) -> T?
 }

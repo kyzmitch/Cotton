@@ -9,7 +9,7 @@
 import Foundation
 
 /// More simple analog for HttpKit.ResponseHandlingApi
-public enum AsyncApiType: Int, CaseIterable {
+public enum AsyncApiType: Int, CaseIterable, Sendable {
     case reactive
     case combine
     case asyncAwait

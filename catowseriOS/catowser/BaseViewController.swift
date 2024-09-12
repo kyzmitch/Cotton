@@ -14,7 +14,7 @@ extension UIViewController: UIIdiomable {}
 
 extension UIView: UIIdiomable {}
 
-protocol UIIdiomable: AnyObject {
+@MainActor protocol UIIdiomable: AnyObject {
     var isPad: Bool { get }
 }
 

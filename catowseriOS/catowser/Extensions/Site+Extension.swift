@@ -72,7 +72,7 @@ extension Site {
 /// `The purpose of Identifiable is to distinguish the identity of an entity from the state of an entity.`
 /// https://github.com/apple/swift-evolution/blob/main/proposals/0261-identifiable.md#concrete-conformances
 /// So, this shouldn't be similar to Hashable impl and it doesn't require to combine all the properites in one id value.
-extension Site: Identifiable {
+extension Site: @retroactive Identifiable {
     public var id: String {
         // So, it is partly depencs on a state
         urlInfo.platformURL.absoluteString

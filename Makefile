@@ -152,11 +152,21 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	 -sdk macosx | $(XCPRETTY) --test \
 	 cd ..; \
 
+.PHONY: ios-tests-cotton-data
+ios-tests-cotton-data: build-cotton-base-ios-release
+	cd catowseriOS; \
+	$(SWIFTYMOCKY) doctor ; \
+    $(SWIFTYMOCKY) generate ; \
+	xcodebuild -scheme "CottonData Unit Tests" test \
+	 -workspace catowser.xcworkspace \
+	 -run-tests-until-failure \
+	 -destination platform=macOS, arch=x86_64 \
+	 -sdk macosx | $(XCPRETTY) --test \
+	 cd ..; \
+
 .PHONY: ios-unit-tests
 ios-unit-tests: build-cotton-base-ios-release
 	cd catowseriOS; \
-    $(SWIFTYMOCKY) doctor ; \
-    $(SWIFTYMOCKY) generate ; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
 	 -workspace catowser.xcworkspace \
 	 -run-tests-until-failure \
@@ -172,12 +182,15 @@ ios-unit-tests: build-cotton-base-ios-release
 	 -run-tests-until-failure \
 	 -destination platform=macOS, arch=x86_64 \
 	 -sdk macosx | $(XCPRETTY) --test; \
-	xcodebuild -scheme "CottonData Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx | $(XCPRETTY) --test; \
 	cd ..; \
+
+# $(SWIFTYMOCKY) doctor ; \
+# $(SWIFTYMOCKY) generate ; \
+# xcodebuild -scheme "CottonData Unit Tests" test \
+# -workspace catowser.xcworkspace \
+# -run-tests-until-failure \
+# -destination platform=macOS, arch=x86_64 \
+# -sdk macosx | $(XCPRETTY) --test; \
 
 # Github workflow unit tests (specific macOS runners)
 
@@ -185,7 +198,7 @@ ios-unit-tests: build-cotton-base-ios-release
 github-ios-unit-tests: build-cotton-base-ios-release
 	brew bundle install --file=./brew_configs/Brewfile; \
 	export PATH="${PATH}:${HOME}/.mint/bin" ; \
-	mint install MakeAWishFoundation/SwiftyMocky; \
+	@echo "mint install MakeAWishFoundation/SwiftyMocky;" ; \
 	sourcery --config "catowseriOS/CoreBrowserTests/.sourcery.yml"
 	cd catowseriOS; \
 	xcodebuild -scheme "CoreBrowser Unit Tests" test \
@@ -209,14 +222,16 @@ github-ios-unit-tests: build-cotton-base-ios-release
 	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
 	cd ..; \
 	cd catowseriOS; \
-	swiftymocky doctor ; \
-	swiftymocky generate ; \
-	 xcodebuild -scheme "CottonData Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test; \
 	 cd ..; \
+
+# mint install MakeAWishFoundation/SwiftyMocky; \
+# swiftymocky doctor ; \
+# swiftymocky generate ; \
+# xcodebuild -scheme "CottonData Unit Tests" test \
+# -workspace catowser.xcworkspace \
+# -run-tests-until-failure \
+# -destination platform=macOS, arch=x86_64 \
+# -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test; \
 
 # Help
 
@@ -227,23 +242,24 @@ Local and CI targets
 \t\t* make clean\t\t: Cleans all build artifacts for both platforms.
 
 \tiOS build
-\t\t* make build-ios-dev-release\t\t: Build Release version of Kotlin multiplatform & Xcode project.
-\t\t* make github-workflow-ios\t\t: GitHub workflow for iOS.
-\t\t* make ios-lint\t\t: Only run linter on Swift files.
+\t\t* make build-ios-dev-release\t: Build Release version of Kotlin multiplatform & Xcode project.
+\t\t* make github-workflow-ios\t: GitHub workflow for iOS.
+\t\t* make ios-lint\t\t\t: Only run linter on Swift files.
 
 \tAndroid build
-\t\t* make build-android-dev-release\t\t: Build Release version of Kotlin multiplatform & Android project.
-\t\t* make github-workflow-android\t\t: GitHub workflow for Android.
+\t\t* make build-android-dev-release: Build Release version of Kotlin multiplatform & Android project.
+\t\t* make github-workflow-android\t: GitHub workflow for Android.
 \t\t* make android-lint\t\t: CLI kotlin lint.
 
 \tCotton-Base build
 \t\t* make build-cotton-base-ios-release\t\t: Build cotton-base XCFramework for iOS.
-\t\t* make build-cotton-base-android-release\t\t: Build & publish cotton-base to local Maven for Android.
+\t\t* make build-cotton-base-android-release\t: Build & publish cotton-base to local Maven for Android.
 \t\t* make build-cotton-base-release\t\t: Build cotton-base together for iOS & Android.
 
 \tUnit tests
-\t\t* make ios-unit-tests\t\t: Build and run iOS unit tests.
+\t\t* make ios-unit-tests\t\t\t: Build and run iOS unit tests.
 \t\t* make ios-tests-core-browser\t\t: Build and run Cotton-base Kotlin unit tests.
+\t\t* make ios-tests-cotton-data\t\t: run Swiftymocky based tests
 endef
 
 export HELP_CONTENT

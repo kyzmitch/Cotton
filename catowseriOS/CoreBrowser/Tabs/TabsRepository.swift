@@ -9,7 +9,10 @@
 import Foundation
 import AutoMockable
 
-public protocol TabsStoragable: AutoMockable {
+/// Tabs repository protocol can be sendable, because implementation
+/// doesn't hold any state, only interface to the DB for now
+/// so that, no need any synhronization.
+public protocol TabsRepository: AutoMockable, Sendable {
     /// Defines human redable name for Int if it is describes index.
     /// e.g. implementation could use Index type instead.
     typealias TabIndex = Int
@@ -21,23 +24,23 @@ public protocol TabsStoragable: AutoMockable {
     /// - Parameter tab: The tab object to be selected.
     ///
     /// - Returns: An identifier of the selected tab.
-    func select(tab: Tab) async throws -> UUID
+    func select(tab: CoreBrowser.Tab) async throws -> UUID
 
     /// Loads tabs data from storage.
     ///
     /// - Returns: A producer with tabs array or error.
-    func fetchAllTabs() async throws -> [Tab]
+    func fetchAllTabs() async throws -> [CoreBrowser.Tab]
 
     /// Adds a tab to storage
     ///
     /// - Parameter tab: The tab object to be added.
-    func add(_ tab: Tab, select: Bool) async throws -> Tab
+    func add(_ tab: CoreBrowser.Tab, select: Bool) async throws -> CoreBrowser.Tab
 
     /// Updates tab content
     ///
     /// - Parameter tab: The tab object to be updated. Usually only tab content needs to be updated.
-    func update(tab: Tab) throws -> Tab
+    func update(tab: CoreBrowser.Tab) throws -> CoreBrowser.Tab
 
     /// Removes some tabs for current session
-    func remove(tabs: [Tab]) async throws -> [Tab]
+    func remove(tabs: [CoreBrowser.Tab]) async throws -> [CoreBrowser.Tab]
 }

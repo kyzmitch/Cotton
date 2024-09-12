@@ -8,6 +8,7 @@
 
 import Foundation
 
+@MainActor
 public protocol SiteNavigationComponent: AnyObject {
     /// Use `nil` to tell that navigation actions should be disabled
     var siteNavigator: WebViewNavigatable? { get set }

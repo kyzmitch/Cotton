@@ -7,10 +7,10 @@
 //
 
 import CottonRestKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonBase
 
-extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == HttpError {
+extension Signal.Observer: @retroactive RxAnyObserver where Value: ResponseType, Error == HttpError {
     public typealias Response = Value
 
     public func newSend(value: Response) {
@@ -25,7 +25,7 @@ extension Signal.Observer: RxAnyObserver where Value: ResponseType, Error == Htt
     }
 }
 
-extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpError {
+extension Signal.Observer: @retroactive RxAnyVoidObserver where Value == Void, Error == HttpError {
     public func newSend(value: Value) {
         send(value: value)
     }
@@ -38,7 +38,7 @@ extension Signal.Observer: RxAnyVoidObserver where Value == Void, Error == HttpE
     }
 }
 
-extension Lifetime: RxAnyLifetime {
+extension Lifetime: @retroactive RxAnyLifetime {
     public func newObserveEnded(_ action: @escaping () -> Void) {
         observeEnded(action)
     }

@@ -6,14 +6,14 @@
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 #if canImport(Combine)
 import Combine
 #endif
 
-public protocol FeatureSource {
-    func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) -> F.Value
-    func setValue<F: BasicFeature>(of feature: ApplicationFeature<F>, value: F.Value?)
+public protocol FeatureSource: Sendable {
+    func currentValue<F: BasicFeature>(of feature: ApplicationFeature<F>) async -> F.Value
+    func setValue<F: BasicFeature>(of feature: ApplicationFeature<F>, value: F.Value?) async
 }
 
 /**

@@ -7,7 +7,7 @@
 //
 
 import CottonRestKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonBase
 
 /// This typealias could be an issue, because the same defined in ReactiveSwift HttpClient+RxSwift.swift

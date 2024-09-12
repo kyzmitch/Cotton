@@ -20,10 +20,11 @@ private final class TabsEnvironment {
         return created
     }
 
-    static private var internalInstance: ManagerHolder?
+    /// Nonisolsated unsafe because it is private field and actual `shared()` is async and that is why it is ok
+    static nonisolated(unsafe) private var internalInstance: ManagerHolder?
 
     fileprivate actor ManagerHolder {
-        let cachedTabsManager: TabsDataService
+        let tabsDataService: TabsDataService
         private let database: Database
 
         init() async {
@@ -36,15 +37,15 @@ private final class TabsEnvironment {
                 fatalError("Failed to initialize Database \(error.localizedDescription)")
             }
             self.database = database
-            let contextClosure = { [weak database] () -> NSManagedObjectContext? in
+            let contextClosure = { @Sendable [weak database] () -> NSManagedObjectContext? in
                 guard let dbInterface = database else {
                     fatalError("Cotton db reference is nil")
                 }
                 return dbInterface.newPrivateContext()
             }
-            let cacheProvider = TabsCacheProvider(database.viewContext, contextClosure)
+            let cacheProvider = TabsRepositoryImpl(database.viewContext, contextClosure)
             let strategy = NearbySelectionStrategy()
-            cachedTabsManager = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
+            tabsDataService = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
         }
     }
 }
@@ -52,7 +53,7 @@ private final class TabsEnvironment {
 extension TabsDataService {
     static var shared: TabsDataService {
         get async {
-            await TabsEnvironment.shared().cachedTabsManager
+            await TabsEnvironment.shared().tabsDataService
         }
     }
 }

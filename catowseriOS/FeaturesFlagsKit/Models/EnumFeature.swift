@@ -10,8 +10,8 @@ import Foundation
 
 /// Should be used for generic enum types, so, no static properties are allowed
 /// Can't be a subset of a `BasicFeature` or `Feature` which have static properties
-public protocol EnumFeature {
-    associatedtype EnumValue: CaseIterable & RawRepresentable
+public protocol EnumFeature: Sendable {
+    associatedtype EnumValue: CaseIterable & RawRepresentable & Sendable
     associatedtype RawValue
 
     var defaultEnumValue: EnumValue { get }
@@ -34,7 +34,7 @@ extension EnumFeature {
     }
 }
 
-public struct ApplicationEnumFeature<F: EnumFeature> {
+public struct ApplicationEnumFeature<F: EnumFeature>: Sendable {
     let feature: F
 
     public init(feature: F) {

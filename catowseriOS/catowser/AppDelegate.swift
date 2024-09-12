@@ -12,7 +12,7 @@ import Alamofire
 import FeaturesFlagsKit
 import CoreBrowser
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Should be stored by strong reference, because it is the only owner of App coordinator

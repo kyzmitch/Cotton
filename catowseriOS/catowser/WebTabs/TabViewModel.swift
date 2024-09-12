@@ -13,13 +13,13 @@ import FeaturesFlagsKit
 
 @MainActor
 final class TabViewModel {
-    private var tab: Tab
+    private var tab: CoreBrowser.Tab
     private let readTabUseCase: ReadTabsUseCase
     private let writeTabUseCase: WriteTabsUseCase
 
     @Published var state: TabViewState
 
-    init(_ tab: Tab,
+    init(_ tab: CoreBrowser.Tab,
          _ readTabUseCase: ReadTabsUseCase,
          _ writeTabUseCase: WriteTabsUseCase) {
         self.tab = tab
@@ -97,7 +97,7 @@ final class TabViewModel {
 }
 
 extension TabViewModel: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         if tab.contentType != content {
             /// Need to reload favicon and title as well.
             /// Not sure if it is possible during simple select?
@@ -110,7 +110,7 @@ extension TabViewModel: TabsObserver {
         }
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) async {
+    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
         guard self.tab.id == tab.id else {
             return
         }

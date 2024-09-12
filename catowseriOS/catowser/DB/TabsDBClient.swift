@@ -17,7 +17,8 @@ enum TabsCoreDataError: Swift.Error {
     case selectedTabIdNotPresent
 }
 
-final class TabsDBClient {
+/// Клиент для файлов базы данных, имеет синхронизацию через `performAndWait`
+final class TabsDBClient: @unchecked Sendable {
     private let managedContext: NSManagedObjectContext
 
     init(_ managedContext: NSManagedObjectContext) {
@@ -25,7 +26,7 @@ final class TabsDBClient {
     }
 
     /// Adds the tab without selecting it
-    func insert(tab: Tab) throws {
+    func insert(tab: CoreBrowser.Tab) throws {
         var saveError: Error?
         managedContext.performAndWait {
             _ = CDTab(context: managedContext, tab: tab)
@@ -42,7 +43,7 @@ final class TabsDBClient {
 
     /// Updates existing tab record with new content.
     /// E.g. when it was topSites and now it is actual web site
-    func update(tab: Tab) throws {
+    func update(tab: CoreBrowser.Tab) throws {
         var saveError: Error?
         let fetchRequest: NSFetchRequest<CDTab> = CDTab.fetchRequest()
         let query = NSPredicate(format: "%K = %@", "id", tab.id as CVarArg)
@@ -52,7 +53,7 @@ final class TabsDBClient {
             do {
                 let result = try managedContext.fetch(fetchRequest)
                 if !result.isEmpty, let cdTab = result.first {
-                    cdTab.contentType = tab.contentType.rawValue
+                    cdTab.contentType = Int16(tab.contentType.rawValue)
                     if let oldCdSite = cdTab.site {
                         managedContext.delete(oldCdSite)
                     }
@@ -77,7 +78,7 @@ final class TabsDBClient {
     /// Removes the tab, if it was selected it doesn't do de-selection logic
     /// De-selection should happen on application side because different auto-selection
     /// strategies could be used and it shouldn't be performed as a side-effect
-    func remove(tab: Tab) throws {
+    func remove(tab: CoreBrowser.Tab) throws {
         var cdError: Error?
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDTab.fetchRequest()
         let query = NSPredicate(format: "%K = %@", "id", tab.id as CVarArg)
@@ -96,7 +97,7 @@ final class TabsDBClient {
     }
 
     /// Removes all the records of tabs
-    func removeAll(tabs: [Tab]) throws {
+    func removeAll(tabs: [CoreBrowser.Tab]) throws {
         var cdError: Error?
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDTab.fetchRequest()
         let query = NSPredicate(format: "id = %@", argumentArray: tabs.map {$0.id})
@@ -115,7 +116,7 @@ final class TabsDBClient {
     }
 
     /// Updates selected tab identifier using it from the `tab` provided as a argument
-    func select(tab: Tab) throws {
+    func select(tab: CoreBrowser.Tab) throws {
         try setSelectedTab(uuid: tab.id)
     }
 
@@ -194,7 +195,7 @@ fileprivate extension Site {
     }
 }
 
-fileprivate extension Tab {
+fileprivate extension CoreBrowser.Tab {
     init?(cdTab: CDTab) {
         let cachedSite: Site?
         if let cdSite = cdTab.site {
@@ -203,7 +204,7 @@ fileprivate extension Tab {
             cachedSite = nil
         }
 
-        guard let cachedContentType = Tab.ContentType.create(rawValue: cdTab.contentType, site: cachedSite) else {
+        guard let cachedContentType = CoreBrowser.Tab.ContentType.create(rawValue: cdTab.contentType, site: cachedSite) else {
             return nil
         }
         guard let identifier = cdTab.id else {
@@ -220,10 +221,10 @@ fileprivate extension Tab {
 }
 
 fileprivate extension CDTab {
-    convenience init(context: NSManagedObjectContext, tab: Tab) {
+    convenience init(context: NSManagedObjectContext, tab: CoreBrowser.Tab) {
         self.init(context: context)
         id = tab.id
-        contentType = tab.contentType.rawValue
+        contentType = Int16(tab.contentType.rawValue)
         addedTimestamp = tab.addedTimestamp
         if case .site(let siteContent) = tab.contentType {
             site = CDSite(context: context, site: siteContent)
@@ -260,15 +261,15 @@ fileprivate extension CDAppSettings {
 
 extension TabsDBClient {
     /// Gets all stored tabs
-    func fetchAllTabs() async throws -> [Tab] {
+    func fetchAllTabs() async throws -> [CoreBrowser.Tab] {
         return try await managedContext.perform {
             let request: NSFetchRequest<CDTab> = CDTab.fetchRequest()
             let result = try request.execute()
-            return result.compactMap {Tab(cdTab: $0)}
+            return result.compactMap {CoreBrowser.Tab(cdTab: $0)}
         }
     }
 
-    func insert(tab: Tab) async throws {
+    func insert(tab: CoreBrowser.Tab) async throws {
         return try await managedContext.perform { [weak managedContext] in
             guard let managedContext else {
                 return
@@ -278,7 +279,7 @@ extension TabsDBClient {
         }
     }
 
-    func select(tab: Tab) async throws {
+    func select(tab: CoreBrowser.Tab) async throws {
         try await setSettingsSelectedTabId(tab.id)
     }
 

@@ -12,9 +12,9 @@ import CottonPlugins
 
 /// Content view model which observes for the currently selected tab content type.
 /// This reference type should be used to update the view if content changes.
-final class BrowserContentViewModel: ObservableObject {
+@MainActor final class BrowserContentViewModel: ObservableObject {
     /// View content type. https://stackoverflow.com/a/56724174
-    @Published var contentType: Tab.ContentType
+    @Published var contentType: CoreBrowser.Tab.ContentType
     /// Tab's content loading
     @Published var loading: Bool
     /// Web view needs an update after changing selected tab content.
@@ -26,11 +26,11 @@ final class BrowserContentViewModel: ObservableObject {
     let jsPluginsBuilder: any JSPluginsSource
     /// Not initialized, will be initialized after `TabsListManager`
     /// during tab opening. Used only during tab opening for optimization
-    private var previousTabContent: Tab.ContentType?
+    private var previousTabContent: CoreBrowser.Tab.ContentType?
     /// To avoid app start case
     private var firstTabContentSelect: Bool
 
-    init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: Tab.ContentType) {
+    init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: CoreBrowser.Tab.ContentType) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
         self.contentType = defaultContentType
@@ -41,7 +41,7 @@ final class BrowserContentViewModel: ObservableObject {
 }
 
 extension BrowserContentViewModel: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
         if let previousValue = previousTabContent, previousValue.isStatic && previousValue == content {
             // Optimization to not do remove & insert of the same static view
             return
@@ -66,7 +66,7 @@ extension BrowserContentViewModel: TabsObserver {
         }
     }
 
-    func tabDidReplace(_ tab: Tab, at index: Int) async {
+    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
         if loading {
             loading = false
         }

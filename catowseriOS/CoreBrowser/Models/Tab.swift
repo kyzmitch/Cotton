@@ -1,5 +1,5 @@
 //
-//  Tab.swift
+//  CoreBrowser.Tab.swift
 //  catowser
 //
 //  Created by admin on 12/06/2017.
@@ -8,12 +8,29 @@
 
 import CottonBase
 
-/// Site is an obj-c type.
-///  https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
-extension Site: @unchecked Sendable {}
+/// Site is an obj-c model type.
+///Ccan mark with retroactive because Site type is from own CottonBase library
+extension Site: @unchecked @retroactive Sendable {}
 
 public extension Tab {
-    enum ContentType: Sendable {
+    enum ContentType: Sendable, RawRepresentable {
+        public init?(rawValue: Int) {
+            switch rawValue {
+            case 0:
+                self = .blank
+            case 1:
+                return nil
+            case 2:
+                self = .homepage
+            case 3:
+                self = .favorites
+            case 4:
+                self = .topSites
+            default:
+                return nil
+            }
+        }
+        
         case blank
         case site(Site)
         case homepage
@@ -21,7 +38,7 @@ public extension Tab {
         case topSites
 
         /// Needed for database representation
-        public var rawValue: Int16 {
+        public var rawValue: Int {
             switch self {
             case .blank:
                 return 0
@@ -43,7 +60,7 @@ public extension Tab {
                 return .blank
             case 1:
                 guard let actualSite = site else {
-                    print("No site instance for Tab.ContentType site \(rawValue)")
+                    print("No site instance for CoreBrowser.Tab.ContentType site \(rawValue)")
                     return nil
                 }
                 return .site(actualSite)
@@ -54,7 +71,7 @@ public extension Tab {
             case 4:
                 return .topSites
             default:
-                print("Unexpected Tab.ContentType \(rawValue)")
+                print("Unexpected CoreBrowser.Tab.ContentType \(rawValue)")
                 return nil
             }
         }
@@ -101,7 +118,7 @@ public extension Tab {
 }
 
 extension Tab.ContentType: CaseIterable {
-    public static var allCases: [Tab.ContentType] {
+    public static var allCases: [CoreBrowser.Tab.ContentType] {
         [.blank, .homepage, .topSites, .favorites]
     }
 }
@@ -127,7 +144,7 @@ extension Tab.ContentType: CustomDebugStringConvertible {
 }
 
 extension Tab.ContentType: Equatable {
-    public static func == (lhs: Tab.ContentType, rhs: Tab.ContentType) -> Bool {
+    public static func == (lhs: CoreBrowser.Tab.ContentType, rhs: CoreBrowser.Tab.ContentType) -> Bool {
         switch (lhs, rhs) {
         case (.site(let lSite), .site(let rSite)):
             return lSite.compareWith(rSite)
@@ -210,7 +227,7 @@ public struct Tab: Sendable {
     }
 
     /**
-     Initializes an instance of `Tab` type.
+     Initializes an instance of `CoreBrowser.Tab` type.
      */
     public init(contentType: ContentType,
                 idenifier: UUID = .init(),
@@ -220,11 +237,11 @@ public struct Tab: Sendable {
         id = idenifier
     }
 
-    public static let blank: Tab = Tab(contentType: .blank)
+    public static let blank: CoreBrowser.Tab = CoreBrowser.Tab(contentType: .blank)
 }
 
 extension Tab: Equatable {
-    public static func == (lhs: Tab, rhs: Tab) -> Bool {
+    public static func == (lhs: CoreBrowser.Tab, rhs: CoreBrowser.Tab) -> Bool {
         return lhs.id == rhs.id
     }
 }
@@ -235,3 +252,34 @@ fileprivate extension String {
     static let topSitesTitle = NSLocalizedString("ttl_tab_short_top_sites",
                                                  comment: "Title for tab with list of favorite sites")
 }
+
+extension Tab.ContentType: Identifiable {
+    public var id: RawValue {
+        return self.rawValue
+    }
+
+    public typealias ID = RawValue
+}
+
+extension Tab.ContentType: CustomStringConvertible {
+    public var description: String {
+        let key: String
+
+        switch self {
+        case .blank:
+            key = "txt_tab_content_blank"
+        case .homepage:
+            key = "txt_tab_content_homepage"
+        case .favorites:
+            key = "txt_tab_content_favorites"
+        case .topSites:
+            key = "txt_tab_content_top_sites"
+        case .site:
+            // site can't be used as a default content for now
+            key = ""
+        }
+        return NSLocalizedString(key, comment: "")
+    }
+}
+
+extension Tab.ContentType: Hashable { }

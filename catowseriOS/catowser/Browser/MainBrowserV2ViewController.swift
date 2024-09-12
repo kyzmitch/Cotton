@@ -38,7 +38,7 @@ final class MainBrowserV2ViewController<
 
     init(_ coordinator: C,
          _ uiFramework: UIFrameworkType,
-         _ defaultContent: Tab.ContentType,
+         _ defaultContent: CoreBrowser.Tab.ContentType,
          _ allTabsVM: AllTabsViewModel,
          _ topSitesVM: TopSitesViewModel,
          _ searchSuggestionsVM: S,

@@ -8,7 +8,7 @@
 
 import CottonBase
 
-public class GoogleServer: ServerDescription {
+public class GoogleServer: ServerDescription, @unchecked Sendable {
     public convenience init() {
         // swiftlint:disable:next force_try
         let host = try! Host(input: "www.google.com")

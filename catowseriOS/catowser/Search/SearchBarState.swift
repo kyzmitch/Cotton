@@ -20,7 +20,7 @@ enum SearchBarAction: Equatable {
     /// Update to clear state
     case clearView
 
-    static func create(_ value: Tab.ContentType) -> SearchBarAction {
+    static func create(_ value: CoreBrowser.Tab.ContentType) -> SearchBarAction {
         switch value {
         case .blank, .favorites, .topSites, .homepage:
             return .clearView

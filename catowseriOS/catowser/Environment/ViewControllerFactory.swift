@@ -28,7 +28,7 @@ import CoreBrowser
 protocol ViewControllerFactory: AnyObject {
     func rootViewController<W, S>(_ coordinator: AppCoordinator,
                                   _ uiFramework: UIFrameworkType,
-                                  _ defaultContentType: Tab.ContentType,
+                                  _ defaultContentType: CoreBrowser.Tab.ContentType,
                                   _ allTabsVM: AllTabsViewModel,
                                   _ topSitesVM: TopSitesViewModel,
                                   _ searchSuggestionsVM: S,
@@ -87,7 +87,7 @@ protocol ViewControllerFactory: AnyObject {
 extension ViewControllerFactory {
     func rootViewController<W, S>(_ coordinator: AppCoordinator,
                                   _ uiFramework: UIFrameworkType,
-                                  _ defaultContentType: Tab.ContentType,
+                                  _ defaultContentType: CoreBrowser.Tab.ContentType,
                                   _ allTabsVM: AllTabsViewModel,
                                   _ topSitesVM: TopSitesViewModel,
                                   _ searchSuggestionsVM: S,

@@ -8,7 +8,12 @@
 
 import WebKit
 
-final class BaseJSHandler: NSObject {
+/// Handler for the base java script based web site,
+///
+/// should be main actor because it confirms to `WKScriptMessageHandler`.
+/// Also, it should subclass from NSObject because confirmation to `WKScriptMessageHandler`
+/// is based on `NSObjectProtocol`.
+@MainActor final class BaseJSHandler: NSObject {
     private weak var delegate: BasePluginContentDelegate?
 
     init(_ delegate: BasePluginContentDelegate) {

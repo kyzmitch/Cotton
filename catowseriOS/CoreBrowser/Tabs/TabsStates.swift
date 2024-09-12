@@ -9,7 +9,7 @@
 import Foundation
 import AutoMockable
 
-public protocol TabsStates: AutoMockable {
+public protocol TabsStates: AutoMockable, Sendable {
     var addPosition: AddedTabPosition { get async }
     var contentState: Tab.ContentType { get async }
     var addSpeed: TabAddSpeed { get }

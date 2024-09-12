@@ -7,7 +7,7 @@
 //
 
 import CottonRestKit
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CottonBase
 
 extension HTTPRxAdapter {

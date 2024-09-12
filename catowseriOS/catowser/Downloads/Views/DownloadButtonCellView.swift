@@ -8,7 +8,7 @@
 
 import UIKit
 import AlamofireImage
-import ReactiveSwift
+@preconcurrency import ReactiveSwift
 import CoreBrowser
 
 final class DownloadButtonCellView: UITableViewCell {

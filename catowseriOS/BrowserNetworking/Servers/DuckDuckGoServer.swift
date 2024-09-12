@@ -8,7 +8,7 @@
 
 import CottonBase
 
-public class DuckDuckGoServer: ServerDescription {
+public class DuckDuckGoServer: ServerDescription, @unchecked Sendable {
     public convenience init() {
         // swiftlint:disable:next force_try
         let host = try! Host(input: "ac.duckduckgo.com")
