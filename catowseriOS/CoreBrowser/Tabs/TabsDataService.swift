@@ -35,10 +35,18 @@ public actor TabsDataService {
     private let positioning: TabsStates
     /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
-    /// A workaround to be able to use available marker
+    /// A workaround to be able to use available marker.
+    ///
+    /// Should be main actor data beacuse observed almost
+    /// everytime in some view controller.
+    @MainActor
     private var _tabsSubject: Any? = nil
-    /// Yet another way for observing, the most modern way
+    /// Yet another way for observing, the most modern way.
+    ///
+    /// Should be main actor instead of data service own actor,
+    /// because it will be observed almost everytime in some view controller.
     @available(iOS 17.0, *)
+    @MainActor
     public var tabsSubject: TabsDataSubject {
         if _tabsSubject == nil {
             _tabsSubject = TabsDataSubject(positioning)
@@ -114,6 +122,35 @@ public actor TabsDataService {
     }
 }
 
+// MARK: - Main actor methods
+
+private extension TabsDataService {
+    @available(iOS 17.0, *)
+    @MainActor func notifyObservationAboutNewTabs(_ tabs: [CoreBrowser.Tab]) async {
+        tabsSubject.tabs = tabs
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor func notifyObservationAboutClearTabs() async {
+        tabsSubject.tabs.removeAll()
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor func notifyObservationAboutNewSelectedTabId(_ tabId: UUID) async {
+        tabsSubject.selectedTabId = tabId
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor func notifyObservationAboutReplacedTab(
+        at tabIndex: Int,
+        newTab: CoreBrowser.Tab
+    ) async {
+        tabsSubject.tabs[tabIndex] = newTab
+    }
+}
+
+// MARK: - Private functions
+
 private extension TabsDataService {
     func handleTabsCountCommand() -> TabsServiceDataOutput {
         return .tabsCount(tabs.count)
@@ -131,7 +168,7 @@ private extension TabsDataService {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
         if #available(iOS 17.0, *) {
-            tabsSubject.tabs = tabs
+            await notifyObservationAboutNewTabs(tabs)
         } else {
             tabsCountInput.yield(tabs.count)
         }
@@ -178,7 +215,7 @@ private extension TabsDataService {
             let tabsCopy = tabs
             _ = try await tabsRepository.remove(tabs: tabsCopy)
             if #available(iOS 17.0, *) {
-                tabsSubject.tabs.removeAll()
+                await notifyObservationAboutClearTabs()
             } else {
                 tabs.removeAll()
                 tabsCountInput.yield(0)
@@ -199,7 +236,7 @@ private extension TabsDataService {
                 return .tabSelected
             }
             if #available(iOS 17.0, *) {
-                tabsSubject.selectedTabId = identifier
+                await notifyObservationAboutNewSelectedTabId(identifier)
             } else {
                 selectedTabIdentifier = identifier
                 selectedTabIdInput.yield(identifier)
@@ -225,7 +262,7 @@ private extension TabsDataService {
         do {
             _ = try tabsRepository.update(tab: newTab)
             if #available(iOS 17.0, *) {
-                tabsSubject.tabs[tabIndex] = newTab
+                await notifyObservationAboutReplacedTab(at: tabIndex, newTab: newTab)
             } else {
                 tabs[tabIndex] = newTab
                 // Need to notify observers to allow them to update title for tab view
@@ -262,7 +299,7 @@ private extension TabsDataService {
             return .tabPreviewUpdated(TabsListError.wrongTabIndexToReplace)
         }
         if #available(iOS 17.0, *) {
-            tabsSubject.tabs[tabIndex] = tab
+            await notifyObservationAboutReplacedTab(at: tabIndex, newTab: tab)
         } else {
             tabs[tabIndex] = tab
         }
@@ -339,7 +376,7 @@ private extension TabsDataService {
             }
             if select {
                 if #available(iOS 17.0, *) {
-                    tabsSubject.selectedTabId = tab.id
+                    await notifyObservationAboutNewSelectedTabId(tab.id)
                 } else {
                     selectedTabIdentifier = tab.id
                     selectedTabIdInput.yield(tab.id)
@@ -358,7 +395,7 @@ private extension TabsDataService {
                 }
                 if select {
                     if #available(iOS 17.0, *) {
-                        tabsSubject.selectedTabId = tab.id
+                        await notifyObservationAboutNewSelectedTabId(tab.id)
                     } else {
                         selectedTabIdentifier = tab.id
                         selectedTabIdInput.yield(tab.id)
@@ -411,8 +448,8 @@ private extension TabsDataService {
             return
         }
         if #available(iOS 17.0, *) {
-            tabsSubject.tabs = cachedTabs
-            tabsSubject.selectedTabId = id
+            await notifyObservationAboutNewTabs(cachedTabs)
+            await notifyObservationAboutNewSelectedTabId(id)
         } else {
             tabs = cachedTabs
             tabsCountInput.yield(cachedTabs.count)
@@ -422,7 +459,11 @@ private extension TabsDataService {
     }
 
     func subscribeForTabsCountChange() {
-        /// This method can't be async, have to use new Task
+        /// This method can't be async, have to use new Task.
+        /// ! Forgot to explain why it can't be async!! everything in it requires it, but I'm guessing the AsyncStream
+        /// doesn't like it somehow.
+        ///
+        /// This unstructured task will use data service actor instead of global or main actors.
         Task {
             for await newTabsCount in tabsCountStream {
                 for observer in self.tabObservers {
