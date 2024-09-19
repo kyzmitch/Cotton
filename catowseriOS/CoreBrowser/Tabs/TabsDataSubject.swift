@@ -11,10 +11,20 @@ import Foundation
 import Observation
 #endif
 
+/// An interface for the tabs data source for observing
+@MainActor public protocol TabsDataSubjectProtocol: AnyObject, Sendable {
+    /// An identifier of the selected tab
+    var selectedTabId: UUID { get set }
+    /// An array of all tabs
+    var tabs: [Tab] { get set }
+    /// The amount of tabs
+    var tabsCount: Int { get }
+    /// Index of the replaced tab, have to use separate property because tabs array can't provide that info
+    var replacedTabIndex: Int? { get set }
+}
+
 @available(iOS 17.0, *)
-@MainActor
-@Observable
-public final class TabsDataSubject {
+@MainActor @Observable public final class TabsDataSubject: TabsDataSubjectProtocol {
     /// An identifier of the selected tab
     public var selectedTabId: UUID
     /// The amount of tabs
@@ -26,6 +36,7 @@ public final class TabsDataSubject {
     /// Index of the replaced tab, have to use separate property because tabs array can't provide that info
     public var replacedTabIndex: Int?
     
+    /// Init
     public init(
         _ positioning: TabsStates,
         _ tabs: [Tab] = []

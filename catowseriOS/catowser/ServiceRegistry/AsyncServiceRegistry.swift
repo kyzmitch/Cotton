@@ -15,7 +15,7 @@ private final class AsyncServiceRegistry {
             return holder
         }
 
-        let created = await ManagerHolder()
+        let created = await ManagerHolder(UIServiceRegistry.shared().tabsSubject)
         internalInstance = created
         return created
     }
@@ -27,7 +27,7 @@ private final class AsyncServiceRegistry {
         let tabsDataService: TabsDataService
         private let database: Database
 
-        init() async {
+        init(_ tabsSubject: TabsDataSubjectProtocol) async {
             guard let database = Database(name: "CottonDbModel") else {
                 fatalError("Failed to initialize CoreData database")
             }
@@ -45,7 +45,12 @@ private final class AsyncServiceRegistry {
             }
             let cacheProvider = TabsRepositoryImpl(database.viewContext, contextClosure)
             let strategy = NearbySelectionStrategy()
-            tabsDataService = await .init(cacheProvider, DefaultTabProvider.shared, strategy)
+            tabsDataService = await .init(
+                cacheProvider,
+                DefaultTabProvider.shared,
+                strategy,
+                tabsSubject
+            )
         }
     }
 }

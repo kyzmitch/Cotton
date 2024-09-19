@@ -35,13 +35,18 @@ public actor TabsDataService {
     private let positioning: TabsStates
     /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
+    ///
+    private let tabsSubject: TabsDataSubjectProtocol
 
-    public init(_ storage: TabsRepository,
+    public init(_ tabsRepository: TabsRepository,
                 _ positioning: TabsStates,
-                _ selectionStrategy: TabSelectionStrategy) async {
-        self.selectionStrategy = selectionStrategy
-        self.tabsRepository = storage
+                _ selectionStrategy: TabSelectionStrategy,
+                _ tabsSubject: TabsDataSubjectProtocol
+    ) async {
+        self.tabsRepository = tabsRepository
         self.positioning = positioning
+        self.selectionStrategy = selectionStrategy
+        self.tabsSubject = tabsSubject
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
 

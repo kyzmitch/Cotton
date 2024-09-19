@@ -74,7 +74,7 @@ extension SearchBarViewModel: SearchSuggestionsListDelegate {
             }
             await replaceTab(with: url, with: nil, isJSEnabled)
         case .suggestion(let suggestion):
-            let client = await HttpEnvironment.shared.searchSuggestClient()
+            let client = await ServiceRegistry.shared.searchSuggestClient()
             guard let url = client.searchURLForQuery(suggestion) else {
                 assertionFailure("Failed construct search engine url from suggestion string")
                 return

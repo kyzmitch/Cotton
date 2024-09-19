@@ -45,7 +45,7 @@ private extension AppDelegate {
             _ = await TabsDataService.shared
             // Now can start UI
             let value = await FeatureManager.shared.appUIFrameworkValue()
-            appCoordinator = AppCoordinator(ViewsEnvironment.shared.vcFactory, value)
+            appCoordinator = AppCoordinator(UIServiceRegistry.shared().vcFactory, value)
             appCoordinator?.start()
         }
         return true
