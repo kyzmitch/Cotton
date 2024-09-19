@@ -107,7 +107,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
     
     private func prepareBeforeStart() async {
-        await UseCaseFactory.shared.registerUseCases()
+        await UseCaseRegistry.shared.registerUseCases()
         let defaultTabContent = await DefaultTabProvider.shared.contentState
         let pluginsSource = JSPluginsBuilder()
             .setBase(self)
@@ -625,7 +625,11 @@ private extension AppCoordinator {
 }
 
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         open(tabContent: content)
     }
 

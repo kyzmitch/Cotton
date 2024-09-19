@@ -35,24 +35,6 @@ public actor TabsDataService {
     private let positioning: TabsStates
     /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
-    /// A workaround to be able to use available marker.
-    ///
-    /// Should be main actor data beacuse observed almost
-    /// everytime in some view controller.
-    @MainActor
-    private var _tabsSubject: Any? = nil
-    /// Yet another way for observing, the most modern way.
-    ///
-    /// Should be main actor instead of data service own actor,
-    /// because it will be observed almost everytime in some view controller.
-    @available(iOS 17.0, *)
-    @MainActor
-    public var tabsSubject: TabsDataSubject {
-        if _tabsSubject == nil {
-            _tabsSubject = TabsDataSubject(positioning)
-        }
-        return _tabsSubject as! TabsDataSubject
-    }
 
     public init(_ storage: TabsRepository,
                 _ positioning: TabsStates,

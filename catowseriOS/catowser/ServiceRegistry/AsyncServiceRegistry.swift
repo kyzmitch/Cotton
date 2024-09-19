@@ -1,5 +1,5 @@
 //
-//  TabsEnvironment.swift
+//  AsyncServiceRegistry.swift
 //  catowser
 //
 //  Created by Andrei Ermoshin on 5/28/20.
@@ -9,7 +9,7 @@
 import CoreBrowser
 import CoreData
 
-private final class TabsEnvironment {
+private final class AsyncServiceRegistry {
     static func shared() async -> ManagerHolder {
         if let holder = internalInstance {
             return holder
@@ -53,7 +53,7 @@ private final class TabsEnvironment {
 extension TabsDataService {
     static var shared: TabsDataService {
         get async {
-            await TabsEnvironment.shared().tabsDataService
+            await AsyncServiceRegistry.shared().tabsDataService
         }
     }
 }

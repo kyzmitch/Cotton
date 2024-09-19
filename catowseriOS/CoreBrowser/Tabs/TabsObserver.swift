@@ -42,7 +42,11 @@ public protocol TabsObserver: Sendable {
     ///     - index: new selected index.
     ///     - content: CoreBrowser.Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
     ///     - identifier: needed to quickly determine visual state (selected view or not)
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async
     /// Notifies about tab content type changes or `site` changes
     ///
     /// - parameters:
