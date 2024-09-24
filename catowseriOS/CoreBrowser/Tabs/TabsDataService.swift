@@ -6,12 +6,13 @@
 //  Copyright © 2019 Cotton (former Catowser). All rights reserved.
 //
 
+import DataServiceKit
 import Foundation
 
 /**
  Tabs list data service which can be used as a subject for observers.
  */
-public actor TabsDataService {
+public actor TabsDataService: GenericDataServiceProtocol {
     typealias UUIDStream = AsyncStream<UUID>
     typealias IntStream = AsyncStream<Int>
 
