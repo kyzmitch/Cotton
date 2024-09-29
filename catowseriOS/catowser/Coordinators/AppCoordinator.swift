@@ -134,8 +134,54 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         // Now, with introducing the actors model
         // we need to attach observer only after adding all child coordinators
         if case .uiKit = uiFramework {
-            await TabsDataService.shared.attach(self, notify: true)
+            if #available(iOS 17.0, *) {
+                startTabsObservation()
+            } else {
+                await TabsDataService.shared.attach(self, notify: true)
+            }
         }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeReplacedTab()
+            }
+        }
+    }
+    
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeReplacedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.replacedTabIndex else {
+            return
+        }
+        await tabDidReplace(subject.tabs[index], at: index)
     }
 
     // MARK: - BrowserContentCoordinators
@@ -155,6 +201,8 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         startedVC
     }
 }
+
+// MARK: - CoordinatorOwner
 
 extension AppCoordinator: CoordinatorOwner {
     func coordinatorDidFinish(_ coordinator: Coordinator) {
@@ -177,10 +225,14 @@ extension AppCoordinator: CoordinatorOwner {
     }
 }
 
+// MARK: - MainScreenRoute type
+
 enum MainScreenRoute: Route {
     case menu(MenuViewModel, UIView, CGRect)
     case openTab(CoreBrowser.Tab.ContentType)
 }
+
+// MARK: - Navigating
 
 extension AppCoordinator: Navigating {
     typealias R = MainScreenRoute
@@ -207,6 +259,8 @@ extension AppCoordinator: Navigating {
     }
 }
 
+// MARK: - MainScreenSubview type
+
 enum MainScreenSubview: SubviewPart {
     case tabs
     case searchBar
@@ -217,6 +271,8 @@ enum MainScreenSubview: SubviewPart {
     case toolbar
     case dummyView
 }
+
+// MARK: - Layouting
 
 extension AppCoordinator: Layouting {
     typealias SP = MainScreenSubview
@@ -286,6 +342,8 @@ extension AppCoordinator: Layouting {
     }
 }
 
+// MARK: - SiteNavigationComponent
+
 extension AppCoordinator: SiteNavigationComponent {
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         navigationComponent?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
@@ -302,12 +360,16 @@ extension AppCoordinator: SiteNavigationComponent {
     }
 }
 
+// MARK: - InstagramContentDelegate
+
 extension AppCoordinator: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linkTagsCoordinator?.showNext(.openInstagramTags(nodes))
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
+
+// MARK: - BasePluginContentDelegate
 
 extension AppCoordinator: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
@@ -623,6 +685,8 @@ private extension AppCoordinator {
         linkTagsCoordinator?.layoutNext(.viewDidLayoutSubviews(.filesGrid, containerHeight))
     }
 }
+
+// MARK: - TabsObserver
 
 extension AppCoordinator: TabsObserver {
     func tabDidSelect(

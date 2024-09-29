@@ -28,6 +28,10 @@ final class SearchBarBaseViewController: BaseViewController {
         searchBarView = .init(frame: customFrame, uiFramework: uiFramework)
         searchBarView.delegate = searchBarDelegate
         super.init(nibName: nil, bundle: nil)
+        
+        if #available(iOS 17.0, *) {
+            startTabsObservation()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -59,7 +63,50 @@ final class SearchBarBaseViewController: BaseViewController {
 
         searchBarView.handleTraitCollectionChange()
     }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeReplacedTab()
+            }
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeReplacedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.replacedTabIndex else {
+            return
+        }
+        await tabDidReplace(subject.tabs[index], at: index)
+    }
 }
+
+// MARK: - TabsObserver
 
 extension SearchBarBaseViewController: TabsObserver {
     func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
@@ -71,7 +118,11 @@ extension SearchBarBaseViewController: TabsObserver {
         handleAction(.updateView(tab.title, tab.searchBarContent))
     }
 
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         switch content {
         case .site(let site):
             handleAction(.updateView(site.title, site.searchBarContent))

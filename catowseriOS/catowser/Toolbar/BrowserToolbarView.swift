@@ -297,8 +297,14 @@ private extension BrowserToolbarView {
     }
 }
 
+// MARK: - TabsObserver
+
 extension BrowserToolbarView: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         switch content {
         case .site:
             updateToolbar(downloadsAvailable: false, actionsAvailable: true)

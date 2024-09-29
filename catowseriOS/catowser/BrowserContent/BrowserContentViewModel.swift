@@ -30,7 +30,10 @@ import CottonPlugins
     /// To avoid app start case
     private var firstTabContentSelect: Bool
 
-    init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: CoreBrowser.Tab.ContentType) {
+    init(
+        _ jsPluginsBuilder: any JSPluginsSource,
+        _ defaultContentType: CoreBrowser.Tab.ContentType
+    ) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
         self.contentType = defaultContentType
@@ -39,31 +42,38 @@ import CottonPlugins
         tabsCount = 0
         
         if #available(iOS 17.0, *) {
-            withObservationTracking {
-                _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
-            } onChange: {
-                Task { [weak self] in
-                    await self?.observeSelectedTab()
-                }
+            startTabsObservation()
+        }
+        // Fallback for before iOS 17 is outside in
+        // `MainBrowserView.onAppear` by calling `attach`
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
             }
-            withObservationTracking {
-                _ = UIServiceRegistry.shared().tabsSubject.tabsCount
-            } onChange: {
-                Task { [weak self] in
-                    await self?.observeTabsCount()
-                }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.tabsCount
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeTabsCount()
             }
-            withObservationTracking {
-                _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
-            } onChange: {
-                Task { [weak self] in
-                    await self?.observeReplacedTab()
-                }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeReplacedTab()
             }
-        } else {
-            // Fallback to earlier version
         }
     }
+    
     
     @available(iOS 17.0, *)
     @MainActor
