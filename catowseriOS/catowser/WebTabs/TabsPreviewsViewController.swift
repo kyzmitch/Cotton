@@ -26,6 +26,10 @@ where C.R == TabsScreenRoute {
         self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        if #available(iOS 17.0, *) {
+            startTabsObservation()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -212,17 +216,39 @@ where C.R == TabsScreenRoute {
             coordinator?.stop()
         }
     }
+    
+    private func render(state: TabsPreviewState) {
+        collectionView.reloadData()
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.addedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeAddedTabs()
+            }
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeAddedTabs() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.addedTabIndex else {
+            return
+        }
+        await tabDidAdd(subject.tabs[index], at: index)
+    }
 }
 
 private struct Sizes {
     static let margin = CGFloat(15)
 }
 
-private extension TabsPreviewsViewController {
-    func render(state: TabsPreviewState) {
-        collectionView.reloadData()
-    }
-}
+// MARK: - TabsObserver
 
 extension TabsPreviewsViewController: TabsObserver {
     func tabDidAdd(_ tab: CoreBrowser.Tab, at index: Int) async {
@@ -235,6 +261,8 @@ extension TabsPreviewsViewController: TabsObserver {
         render(state: state)
     }
 }
+
+// MARK: - TabPreviewCellDelegate
 
 extension TabsPreviewsViewController: TabPreviewCellDelegate {
     func tabCellDidClose(at index: Int) async {

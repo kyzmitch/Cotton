@@ -163,6 +163,10 @@ final class BrowserToolbarView: UIToolbar {
         } else {
             super.init(frame: frame)
         }
+        
+        if #available(iOS 17.0, *) {
+            startTabsObservation()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -294,6 +298,31 @@ private extension BrowserToolbarView {
             self.downloadsView.transform = CGAffineTransform(rotationAngle: angle)
         }
         rotate.startAnimation()
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+
     }
 }
 

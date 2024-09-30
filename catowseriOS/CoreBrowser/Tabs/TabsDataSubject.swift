@@ -21,6 +21,8 @@ import Observation
     var tabsCount: Int { get }
     /// Index of the replaced tab, have to use separate property because tabs array can't provide that info
     var replacedTabIndex: Int? { get set }
+    /// Added tab index
+    var addedTabIndex: Int? { get set }
 }
 
 @available(iOS 17.0, *)
@@ -35,6 +37,8 @@ import Observation
     public var tabs: [Tab] = []
     /// Index of the replaced tab, have to use separate property because tabs array can't provide that info
     public var replacedTabIndex: Int?
+    /// Added tab index
+    public var addedTabIndex: Int?
     
     /// Init
     public init(

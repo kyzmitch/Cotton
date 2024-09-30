@@ -114,8 +114,13 @@ public actor TabsDataService: GenericDataServiceProtocol {
 
 private extension TabsDataService {
     @available(iOS 17.0, *)
-    @MainActor func notifyObservationAboutNewTabs(_ tabs: [CoreBrowser.Tab]) async {
+    /// If addedIndex is nil then it is an initial load
+    @MainActor func notifyObservationAboutNewTabs(
+        _ tabs: [CoreBrowser.Tab],
+        _ addedIndex: Int?
+    ) async {
         tabsSubject.tabs = tabs
+        tabsSubject.addedTabIndex = addedIndex
     }
     
     @available(iOS 17.0, *)
@@ -156,7 +161,7 @@ private extension TabsDataService {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
         if #available(iOS 17.0, *) {
-            await notifyObservationAboutNewTabs(tabs)
+            await notifyObservationAboutNewTabs(tabs, newIndex)
         } else {
             tabsCountInput.yield(tabs.count)
         }
@@ -436,7 +441,7 @@ private extension TabsDataService {
             return
         }
         if #available(iOS 17.0, *) {
-            await notifyObservationAboutNewTabs(cachedTabs)
+            await notifyObservationAboutNewTabs(cachedTabs, nil)
             await notifyObservationAboutNewSelectedTabId(id)
         } else {
             tabs = cachedTabs
