@@ -38,11 +38,14 @@ public actor TabsDataService: GenericDataServiceProtocol {
     private var tabObservers: [TabsObserver]
     ///
     private let tabsSubject: TabsDataSubjectProtocol
+    /// Type of observation, should be passed from the client app, change should require restart
+    private let observingType: ObservingApiType
 
     public init(_ tabsRepository: TabsRepository,
                 _ positioning: TabsStates,
                 _ selectionStrategy: TabSelectionStrategy,
-                _ tabsSubject: TabsDataSubjectProtocol
+                _ tabsSubject: TabsDataSubjectProtocol,
+                _ observingType: ObservingApiType = .observerDesignPattern
     ) async {
         self.tabsRepository = tabsRepository
         self.positioning = positioning
@@ -50,6 +53,7 @@ public actor TabsDataService: GenericDataServiceProtocol {
         self.tabsSubject = tabsSubject
         self.tabObservers = []
         self.selectedTabIdentifier = positioning.defaultSelectedTabId
+        self.observingType = observingType
 
         #if swift(>=5.9)
         let (tabIdStream, tabIdContinuation) = AsyncStream.makeStream(of: UUID.self)
@@ -160,8 +164,12 @@ private extension TabsDataService {
     func handleAddTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceDataOutput {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
-        if #available(iOS 17.0, *) {
-            await notifyObservationAboutNewTabs(tabs, newIndex)
+        if case .systemObservation = observingType {
+            if #available(iOS 17.0, *) {
+                await notifyObservationAboutNewTabs(tabs, newIndex)
+            } else {
+                tabsCountInput.yield(tabs.count)
+            }
         } else {
             tabsCountInput.yield(tabs.count)
         }

@@ -8,6 +8,7 @@
 
 import CoreBrowser
 import CoreData
+import FeaturesFlagsKit
 
 private final class AsyncServiceRegistry {
     static func shared() async -> ManagerHolder {
@@ -49,7 +50,8 @@ private final class AsyncServiceRegistry {
                 cacheProvider,
                 DefaultTabProvider.shared,
                 strategy,
-                tabsSubject
+                tabsSubject,
+                FeatureManager.shared.observingApiTypeValue()
             )
         }
     }

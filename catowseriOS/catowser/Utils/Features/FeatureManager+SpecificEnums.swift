@@ -81,4 +81,12 @@ extension FeatureManager.StateHolder {
         }
         return await source.currentEnumValue(of: feature)
     }
+    
+    func observingApiTypeValue() async -> ObservingApiType {
+        let feature: ApplicationEnumFeature = .observingApi
+        guard let source = source(for: feature) else {
+            return feature.defaultEnumValue
+        }
+        return await source.currentEnumValue(of: feature)
+    }
 }
