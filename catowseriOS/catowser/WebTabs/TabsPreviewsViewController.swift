@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import Combine
+import FeaturesFlagsKit
 
 final class TabsPreviewsViewController<C: Navigating>: BaseViewController,
                                                        CollectionViewInterface,
@@ -20,12 +21,21 @@ where C.R == TabsScreenRoute {
     private weak var coordinator: C?
 
     private let viewModel: TabsPreviewsViewModel
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ coordinator: C,
-         _ viewModel: TabsPreviewsViewModel) {
+    init(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.featureManager = featureManager
         super.init(nibName: nil, bundle: nil)
+        
+        Task {
+            await checkObservation()
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -212,17 +222,46 @@ where C.R == TabsScreenRoute {
             coordinator?.stop()
         }
     }
+    
+    private func render(state: TabsPreviewState) {
+        collectionView.reloadData()
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.addedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeAddedTabs()
+            }
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeAddedTabs() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.addedTabIndex else {
+            return
+        }
+        await tabDidAdd(subject.tabs[index], at: index)
+    }
 }
 
 private struct Sizes {
     static let margin = CGFloat(15)
 }
 
-private extension TabsPreviewsViewController {
-    func render(state: TabsPreviewState) {
-        collectionView.reloadData()
-    }
-}
+// MARK: - TabsObserver
 
 extension TabsPreviewsViewController: TabsObserver {
     func tabDidAdd(_ tab: CoreBrowser.Tab, at index: Int) async {
@@ -235,6 +274,8 @@ extension TabsPreviewsViewController: TabsObserver {
         render(state: state)
     }
 }
+
+// MARK: - TabPreviewCellDelegate
 
 extension TabsPreviewsViewController: TabPreviewCellDelegate {
     func tabCellDidClose(at index: Int) async {

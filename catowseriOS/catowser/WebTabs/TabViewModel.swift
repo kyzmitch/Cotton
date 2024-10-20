@@ -16,16 +16,24 @@ final class TabViewModel {
     private var tab: CoreBrowser.Tab
     private let readTabUseCase: ReadTabsUseCase
     private let writeTabUseCase: WriteTabsUseCase
+    private let featureManager: FeatureManager.StateHolder
 
     @Published var state: TabViewState
 
     init(_ tab: CoreBrowser.Tab,
          _ readTabUseCase: ReadTabsUseCase,
-         _ writeTabUseCase: WriteTabsUseCase) {
+         _ writeTabUseCase: WriteTabsUseCase,
+         _ featureManager: FeatureManager.StateHolder
+    ) {
         self.tab = tab
         self.readTabUseCase = readTabUseCase
         self.writeTabUseCase = writeTabUseCase
+        self.featureManager = featureManager
         _state = .init(initialValue: .deSelected(tab.title, nil))
+        
+        Task {
+            await checkObservation()
+        }
     }
 
     // MARK: - public functions
@@ -94,10 +102,65 @@ final class TabViewModel {
         }
         return source
     }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeReplacedTab()
+            }
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeReplacedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.replacedTabIndex else {
+            return
+        }
+        await tabDidReplace(subject.tabs[index], at: index)
+    }
 }
 
+// MARK: - TabsObserver
+
 extension TabViewModel: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         if tab.contentType != content {
             /// Need to reload favicon and title as well.
             /// Not sure if it is possible during simple select?
@@ -110,7 +173,10 @@ extension TabViewModel: TabsObserver {
         }
     }
 
-    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
+    func tabDidReplace(
+        _ tab: CoreBrowser.Tab,
+        at index: Int
+    ) async {
         guard self.tab.id == tab.id else {
             return
         }

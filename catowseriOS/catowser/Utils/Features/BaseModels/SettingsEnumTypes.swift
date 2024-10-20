@@ -29,6 +29,12 @@ extension AsyncApiType: @retroactive EnumDefaultValueSupportable {
     }
 }
 
+extension ObservingApiType: @retroactive EnumDefaultValueSupportable {
+    public var defaultValue: ObservingApiType {
+        return .observerDesignPattern
+    }
+}
+
 // MARK: - types from CoreBrowser
 
 extension AddedTabPosition: @retroactive EnumDefaultValueSupportable {

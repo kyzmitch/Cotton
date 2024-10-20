@@ -18,16 +18,16 @@ import Foundation
 /// This can be sendable, because all actor types are, and this one is Main actor
 @MainActor
 public protocol TabsObserver: Sendable {
+    /// Prodive necessary data to render UI on tablets
+    ///
+    /// - Parameter tabs: Tabs from cache at application start.
+    func initializeObserver(with tabs: [CoreBrowser.Tab]) async
     /// To be able to search specific observer.
     var tabsObserverName: String { get async }
     /// Updates observer with tabs count.
     ///
     /// - Parameter tabsCount: New number of tabs.
     func updateTabsCount(with tabsCount: Int) async
-    /// Prodive necessary data to render UI on tablets
-    ///
-    /// - Parameter tabs: Tabs from cache at application start.
-    func initializeObserver(with tabs: [CoreBrowser.Tab]) async
     /// Tells other observers about new tab.
     /// We can pause drawing new tab on view layer
     /// to be able firstly determine type of initial tab state.
@@ -42,7 +42,11 @@ public protocol TabsObserver: Sendable {
     ///     - index: new selected index.
     ///     - content: CoreBrowser.Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
     ///     - identifier: needed to quickly determine visual state (selected view or not)
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async
     /// Notifies about tab content type changes or `site` changes
     ///
     /// - parameters:

@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import CottonData
+import FeaturesFlagsKit
 
 enum WebToolbarState {
     case nothingToNavigate
@@ -40,6 +41,8 @@ final class BrowserToolbarView: UIToolbar {
     weak var globalSettingsDelegate: GlobalMenuDelegate?
     /// web view navigation interface
     weak var webViewInterface: WebViewNavigatable?
+    /// Feature manager
+    private let featureManager: FeatureManager.StateHolder
 
     // MARK: - state properties
 
@@ -151,17 +154,26 @@ final class BrowserToolbarView: UIToolbar {
 
     // MARK: - initialization
 
-    override init(frame: CGRect) {
+    init(
+        frame: CGRect,
+        featureManager: FeatureManager.StateHolder
+    ) {
+        self.featureManager = featureManager
         if frame.width <= 10 {
             // iOS 13.x fix for layout errors for code
             // which works on iOS 13.x on iPad
             // and worked for iOS 12.x for all kind of devices
 
             // swiftlint:disable:next line_length
-            // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
+            // https://github.com/hackiftekhar/IQKeyboardManager/pull/1598/
+            // files#diff-f73f23d86e3154de71cd5bd9abf275f0R146
             super.init(frame: CGRect(x: 0, y: 0, width: 1000, height: .toolbarViewHeight))
         } else {
             super.init(frame: frame)
+        }
+        
+        Task {
+            await checkIfNeedToSubscribe()
         }
     }
 
@@ -170,6 +182,13 @@ final class BrowserToolbarView: UIToolbar {
     }
 
     // MARK: - state handler
+    
+    private func checkIfNeedToSubscribe() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), observingType == .systemObservation {
+            startTabsObservation()
+        }
+    }
 
     private func onStateChange(_ nextState: WebToolbarState) {
         // See `diff` comment to find a difference with previos state handling
@@ -295,10 +314,41 @@ private extension BrowserToolbarView {
         }
         rotate.startAnimation()
     }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+
+    }
 }
 
+// MARK: - TabsObserver
+
 extension BrowserToolbarView: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         switch content {
         case .site:
             updateToolbar(downloadsAvailable: false, actionsAvailable: true)

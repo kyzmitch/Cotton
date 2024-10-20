@@ -83,10 +83,17 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     /// Tablet specific view model which has to be initialised in async way earlier
     /// to not do async coordinator start for the tabs
     private var allTabsVM: AllTabsViewModel?
+    /// Feature manager
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
+    init(
+        _ vcFactory: ViewControllerFactory,
+        _ uiFramework: UIFrameworkType,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         self.vcFactory = vcFactory
         self.uiFramework = uiFramework
+        self.featureManager = featureManager
     }
 
     func start() {
@@ -107,7 +114,7 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     }
     
     private func prepareBeforeStart() async {
-        await UseCaseFactory.shared.registerUseCases()
+        await UseCaseRegistry.shared.registerUseCases()
         let defaultTabContent = await DefaultTabProvider.shared.contentState
         let pluginsSource = JSPluginsBuilder()
             .setBase(self)
@@ -119,23 +126,76 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
         let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
         let webContext = WebViewContextImpl(pluginsSource)
-        let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
-        let vc = vcFactory.rootViewController(self,
-                                              uiFramework,
-                                              defaultTabContent,
-                                              allTabsVM,
-                                              topSitesVM,
-                                              suggestionsVM,
-                                              webViewModel)
+        let webViewModel = await ViewModelFactory.shared.getWebViewModel(
+            nil,
+            webContext,
+            nil
+        )
+        let vc = vcFactory.rootViewController(
+            self,
+            uiFramework,
+            defaultTabContent,
+            allTabsVM,
+            topSitesVM,
+            suggestionsVM,
+            webViewModel
+        )
         startedVC = vc
         
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         // Now, with introducing the actors model
         // we need to attach observer only after adding all child coordinators
+        let observingType = await featureManager.observingApiTypeValue()
         if case .uiKit = uiFramework {
-            await TabsDataService.shared.attach(self, notify: true)
+            if #available(iOS 17.0, *), .systemObservation == observingType {
+                startTabsObservation()
+            } else {
+                await TabsDataService.shared.attach(self, notify: true)
+            }
         }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeReplacedTab()
+            }
+        }
+    }
+    
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeReplacedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.replacedTabIndex else {
+            return
+        }
+        await tabDidReplace(subject.tabs[index], at: index)
     }
 
     // MARK: - BrowserContentCoordinators
@@ -155,6 +215,8 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         startedVC
     }
 }
+
+// MARK: - CoordinatorOwner
 
 extension AppCoordinator: CoordinatorOwner {
     func coordinatorDidFinish(_ coordinator: Coordinator) {
@@ -177,10 +239,14 @@ extension AppCoordinator: CoordinatorOwner {
     }
 }
 
+// MARK: - MainScreenRoute type
+
 enum MainScreenRoute: Route {
     case menu(MenuViewModel, UIView, CGRect)
     case openTab(CoreBrowser.Tab.ContentType)
 }
+
+// MARK: - Navigating
 
 extension AppCoordinator: Navigating {
     typealias R = MainScreenRoute
@@ -207,6 +273,8 @@ extension AppCoordinator: Navigating {
     }
 }
 
+// MARK: - MainScreenSubview type
+
 enum MainScreenSubview: SubviewPart {
     case tabs
     case searchBar
@@ -217,6 +285,8 @@ enum MainScreenSubview: SubviewPart {
     case toolbar
     case dummyView
 }
+
+// MARK: - Layouting
 
 extension AppCoordinator: Layouting {
     typealias SP = MainScreenSubview
@@ -286,6 +356,8 @@ extension AppCoordinator: Layouting {
     }
 }
 
+// MARK: - SiteNavigationComponent
+
 extension AppCoordinator: SiteNavigationComponent {
     func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         navigationComponent?.reloadNavigationElements(withSite, downloadsAvailable: downloadsAvailable)
@@ -302,12 +374,16 @@ extension AppCoordinator: SiteNavigationComponent {
     }
 }
 
+// MARK: - InstagramContentDelegate
+
 extension AppCoordinator: InstagramContentDelegate {
     func didReceiveVideoNodes(_ nodes: [InstagramVideoNode]) {
         linkTagsCoordinator?.showNext(.openInstagramTags(nodes))
         reloadNavigationElements(true, downloadsAvailable: true)
     }
 }
+
+// MARK: - BasePluginContentDelegate
 
 extension AppCoordinator: BasePluginContentDelegate {
     func didReceiveVideoTags(_ tags: [HTMLVideoTag]) {
@@ -624,8 +700,14 @@ private extension AppCoordinator {
     }
 }
 
+// MARK: - TabsObserver
+
 extension AppCoordinator: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         open(tabContent: content)
     }
 

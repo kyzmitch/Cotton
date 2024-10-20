@@ -1,16 +1,18 @@
 //
-//  TabletViewControllerFactory.swift
+//  PhoneViewControllerFactory.swift
 //  catowser
 //
 //  Created by Andrey Ermoshin on 12.11.2022.
-//  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
+//  Copyright © 2022 Cotton (former Catowser). All rights reserved.
 //
 
+import FeaturesFlagsKit
 import UIKit
 
-/// Implements the operations to create tablet layout product objects.
-final class TabletViewControllerFactory: ViewControllerFactory {
+/// Implements the operations to create phone layout product objects.
+final class PhoneViewControllerFactory: ViewControllerFactory {
     private var searchBarVC: UIViewController?
+    private var toolBarVC: UIViewController?
     private var topSitesVC: (AnyViewController & TopSitesInterface)?
     private var blankVC: UIViewController?
 
@@ -21,41 +23,60 @@ final class TabletViewControllerFactory: ViewControllerFactory {
     }
 
     var createdToolbaViewController: UIViewController? {
-        return nil
+        return toolBarVC
     }
 
-    // MARK: - Tablet methods
+    // MARK: - Phone methods
+
+    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
+                                               _ uiFramework: UIFrameworkType) -> AnyViewController? {
+        if let existingVC = searchBarVC {
+            return existingVC
+        }
+        let vc = SmartphoneSearchBarViewController(searchBarDelegate, uiFramework)
+        searchBarVC = vc
+        return vc
+    }
 
     func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                                _ downloadDelegate: DownloadPanelPresenter?,
                                                _ settingsDelegate: GlobalMenuDelegate?,
                                                _ uiFramework: UIFrameworkType) -> AnyViewController? {
-        if let existingVC = searchBarVC {
-            return existingVC
-        }
-        searchBarVC = TabletSearchBarViewController(searchBarDelegate, settingsDelegate, downloadDelegate, uiFramework)
-        return searchBarVC
+        return nil
     }
 
-    func deviceSpecificSearchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
-                                               _ uiFramework: UIFrameworkType) -> AnyViewController? {
-        return nil
-    }
-    func tabsPreviewsViewController<C: Navigating>(
-        _ coordinator: C,
-        _ viewModel: TabsPreviewsViewModel
-    ) -> UIViewController? where C.R == TabsScreenRoute {
-        return nil
-    }
-    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
-        let vc = TabsViewController(vm)
-        return vc
-    }
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,
                                               _ settingsDelegate: GlobalMenuDelegate?,
                                               _ coordinator: C?,
                                               // swiftlint:disable:next line_length
                                               _ presenter: AnyViewController?) -> UIViewController? where C.R == ToolbarRoute {
+        if let existingVC = toolBarVC {
+            return existingVC
+        }
+        let vc = BrowserToolbarController(
+            coordinator,
+            downloadDelegate,
+            settingsDelegate,
+            FeatureManager.shared
+        )
+        vc.presenter = presenter
+        toolBarVC = vc
+        return toolBarVC
+    }
+
+    func tabsPreviewsViewController<C: Navigating>(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel
+    ) -> UIViewController? where C.R == TabsScreenRoute {
+        let vc: TabsPreviewsViewController = .init(
+            coordinator,
+            viewModel,
+            FeatureManager.shared
+        )
+        return vc
+    }
+
+    func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
         return nil
     }
 

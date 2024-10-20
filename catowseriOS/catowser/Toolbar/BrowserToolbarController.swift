@@ -17,6 +17,7 @@
 import UIKit
 import CoreBrowser
 import CottonData
+import FeaturesFlagsKit
 
 final class BrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
     private weak var coordinator: C?
@@ -38,12 +39,18 @@ final class BrowserToolbarController<C: Navigating>: BaseViewController where C.
 
     private let toolbarView: BrowserToolbarView
 
-    init(_ coordinator: C?,
-         _ downloadPanelDelegate: DownloadPanelPresenter?,
-         _ globalSettingsDelegate: GlobalMenuDelegate?) {
+    init(
+        _ coordinator: C?,
+        _ downloadPanelDelegate: DownloadPanelPresenter?,
+        _ globalSettingsDelegate: GlobalMenuDelegate?,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         self.coordinator = coordinator
         self.downloadPanelDelegate = downloadPanelDelegate
-        toolbarView = BrowserToolbarView(frame: .zero)
+        toolbarView = BrowserToolbarView(
+            frame: .zero,
+            featureManager: FeatureManager.shared
+        )
         toolbarView.globalSettingsDelegate = globalSettingsDelegate
         super.init(nibName: nil, bundle: nil)
     }

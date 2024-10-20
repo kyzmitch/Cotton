@@ -111,7 +111,11 @@ extension ViewControllerFactory {
 
     func searchBarViewController(_ searchBarDelegate: UISearchBarDelegate?,
                                  _ uiFramework: UIFrameworkType) -> SearchBarBaseViewController {
-        let vc: SearchBarBaseViewController = .init(searchBarDelegate, uiFramework)
+        let vc: SearchBarBaseViewController = .init(
+            searchBarDelegate,
+            uiFramework,
+            FeatureManager.shared
+        )
         return vc
     }
 

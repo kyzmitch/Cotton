@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 import CottonPlugins
+import FeaturesFlagsKit
 
 /// Content view model which observes for the currently selected tab content type.
 /// This reference type should be used to update the view if content changes.
@@ -29,19 +30,99 @@ import CottonPlugins
     private var previousTabContent: CoreBrowser.Tab.ContentType?
     /// To avoid app start case
     private var firstTabContentSelect: Bool
+    /// Feature manager to determine which observing method to use
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ jsPluginsBuilder: any JSPluginsSource, _ defaultContentType: CoreBrowser.Tab.ContentType) {
+    init(
+        _ jsPluginsBuilder: any JSPluginsSource,
+        _ defaultContentType: CoreBrowser.Tab.ContentType,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
         self.contentType = defaultContentType
+        self.featureManager = featureManager
         loading = true
         webViewNeedsUpdate = ()
         tabsCount = 0
+        
+        Task {
+            await checkObservation()
+        }
+        // Fallback for before iOS 17 is outside in
+        // `MainBrowserView.onAppear` by calling `attach`
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func startTabsObservation() {
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.selectedTabId
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeSelectedTab()
+            }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.tabsCount
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeTabsCount()
+            }
+        }
+        withObservationTracking {
+            _ = UIServiceRegistry.shared().tabsSubject.replacedTabIndex
+        } onChange: {
+            Task { [weak self] in
+                await self?.observeReplacedTab()
+            }
+        }
+    }
+    
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeSelectedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        let tabId = subject.selectedTabId
+        guard let index = subject.tabs
+            .firstIndex(where: { $0.id == tabId }) else {
+            return
+        }
+        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeTabsCount() async {
+        let count = UIServiceRegistry.shared().tabsSubject.tabsCount
+        await updateTabsCount(with: count)
+    }
+    
+    @available(iOS 17.0, *)
+    @MainActor
+    private func observeReplacedTab() async {
+        let subject = UIServiceRegistry.shared().tabsSubject
+        guard let index = subject.replacedTabIndex else {
+            return
+        }
+        await tabDidReplace(subject.tabs[index], at: index)
     }
 }
 
 extension BrowserContentViewModel: TabsObserver {
-    func tabDidSelect(_ index: Int, _ content: CoreBrowser.Tab.ContentType, _ identifier: UUID) async {
+    func tabDidSelect(
+        _ index: Int,
+        _ content: CoreBrowser.Tab.ContentType,
+        _ identifier: UUID
+    ) async {
         if let previousValue = previousTabContent, previousValue.isStatic && previousValue == content {
             // Optimization to not do remove & insert of the same static view
             return
@@ -66,7 +147,10 @@ extension BrowserContentViewModel: TabsObserver {
         }
     }
 
-    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
+    func tabDidReplace(
+        _ tab: CoreBrowser.Tab,
+        at index: Int
+    ) async {
         if loading {
             loading = false
         }
