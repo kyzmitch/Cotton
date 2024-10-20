@@ -26,6 +26,8 @@ extension FeatureManager.StateHolder {
             keyStr = .browserAsyncApiKey
         case is UIFrameworkType:
             keyStr = .uiFrameworkKey
+        case is ObservingApiType:
+            keyStr = .observingApiKey
         default:
             assertionFailure("Attempt to search for not supported enum feature type")
             return nil

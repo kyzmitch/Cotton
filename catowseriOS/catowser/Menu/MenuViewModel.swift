@@ -200,6 +200,7 @@ final class MenuViewModel: ObservableObject {
         tabAddPositionRowValue = await FeatureManager.shared.tabAddPositionValue()
         asyncApiRowValue = await FeatureManager.shared.appAsyncApiTypeValue()
         uiFrameworkRowValue = await FeatureManager.shared.appUIFrameworkValue()
+        observingApiRowValue = await FeatureManager.shared.observingApiTypeValue()
     }
 }
 
