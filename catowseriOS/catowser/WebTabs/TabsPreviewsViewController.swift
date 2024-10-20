@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import Combine
+import FeaturesFlagsKit
 
 final class TabsPreviewsViewController<C: Navigating>: BaseViewController,
                                                        CollectionViewInterface,
@@ -20,15 +21,20 @@ where C.R == TabsScreenRoute {
     private weak var coordinator: C?
 
     private let viewModel: TabsPreviewsViewModel
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ coordinator: C,
-         _ viewModel: TabsPreviewsViewModel) {
+    init(
+        _ coordinator: C,
+        _ viewModel: TabsPreviewsViewModel,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         self.coordinator = coordinator
         self.viewModel = viewModel
+        self.featureManager = featureManager
         super.init(nibName: nil, bundle: nil)
         
-        if #available(iOS 17.0, *) {
-            startTabsObservation()
+        Task {
+            await checkObservation()
         }
     }
 
@@ -219,6 +225,13 @@ where C.R == TabsScreenRoute {
     
     private func render(state: TabsPreviewState) {
         collectionView.reloadData()
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
     }
     
     @available(iOS 17.0, *)

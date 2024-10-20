@@ -6,6 +6,7 @@
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
+import FeaturesFlagsKit
 import UIKit
 
 /// Implements the operations to create tablet layout product objects.
@@ -48,7 +49,10 @@ final class TabletViewControllerFactory: ViewControllerFactory {
         return nil
     }
     func tabsViewController(_ vm: AllTabsViewModel) -> AnyViewController? {
-        let vc = TabsViewController(vm)
+        let vc = TabsViewController(
+            vm,
+            FeatureManager.shared
+        )
         return vc
     }
     func toolbarViewController<C: Navigating>(_ downloadDelegate: DownloadPanelPresenter?,

@@ -83,10 +83,17 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
     /// Tablet specific view model which has to be initialised in async way earlier
     /// to not do async coordinator start for the tabs
     private var allTabsVM: AllTabsViewModel?
+    /// Feature manager
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ vcFactory: ViewControllerFactory, _ uiFramework: UIFrameworkType) {
+    init(
+        _ vcFactory: ViewControllerFactory,
+        _ uiFramework: UIFrameworkType,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         self.vcFactory = vcFactory
         self.uiFramework = uiFramework
+        self.featureManager = featureManager
     }
 
     func start() {
@@ -119,22 +126,29 @@ final class AppCoordinator: Coordinator, BrowserContentCoordinators {
         let searchProvider = await FeatureManager.shared.webSearchAutoCompleteValue()
         let suggestionsVM = await ViewModelFactory.shared.searchSuggestionsViewModel(searchProvider)
         let webContext = WebViewContextImpl(pluginsSource)
-        let webViewModel = await ViewModelFactory.shared.getWebViewModel(nil, webContext, nil)
-        let vc = vcFactory.rootViewController(self,
-                                              uiFramework,
-                                              defaultTabContent,
-                                              allTabsVM,
-                                              topSitesVM,
-                                              suggestionsVM,
-                                              webViewModel)
+        let webViewModel = await ViewModelFactory.shared.getWebViewModel(
+            nil,
+            webContext,
+            nil
+        )
+        let vc = vcFactory.rootViewController(
+            self,
+            uiFramework,
+            defaultTabContent,
+            allTabsVM,
+            topSitesVM,
+            suggestionsVM,
+            webViewModel
+        )
         startedVC = vc
         
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         // Now, with introducing the actors model
         // we need to attach observer only after adding all child coordinators
+        let observingType = await featureManager.observingApiTypeValue()
         if case .uiKit = uiFramework {
-            if #available(iOS 17.0, *) {
+            if #available(iOS 17.0, *), .systemObservation == observingType {
                 startTabsObservation()
             } else {
                 await TabsDataService.shared.attach(self, notify: true)

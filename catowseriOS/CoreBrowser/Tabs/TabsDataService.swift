@@ -36,9 +36,10 @@ public actor TabsDataService: GenericDataServiceProtocol {
     private let positioning: TabsStates
     /// A list of observers, usually some views which need to observer tabs count or changes to the tabs list
     private var tabObservers: [TabsObserver]
-    ///
+    /// A subject for observing
     private let tabsSubject: TabsDataSubjectProtocol
     /// Type of observation, should be passed from the client app, change should require restart
+    /// because subscribing usually happens in init or viewDidLoad during app start.
     private let observingType: ObservingApiType
 
     public init(_ tabsRepository: TabsRepository,
@@ -164,12 +165,8 @@ private extension TabsDataService {
     func handleAddTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceDataOutput {
         let positionType = await positioning.addPosition
         let newIndex = positionType.addTab(tab, to: &tabs, selectedTabIdentifier)
-        if case .systemObservation = observingType {
-            if #available(iOS 17.0, *) {
-                await notifyObservationAboutNewTabs(tabs, newIndex)
-            } else {
-                tabsCountInput.yield(tabs.count)
-            }
+        if #available(iOS 17.0, *), case .systemObservation = observingType {
+            await notifyObservationAboutNewTabs(tabs, newIndex)
         } else {
             tabsCountInput.yield(tabs.count)
         }
@@ -215,7 +212,7 @@ private extension TabsDataService {
             // need to create a local copy to unlink data from the actor
             let tabsCopy = tabs
             _ = try await tabsRepository.remove(tabs: tabsCopy)
-            if #available(iOS 17.0, *) {
+            if #available(iOS 17.0, *), case .systemObservation = observingType {
                 await notifyObservationAboutClearTabs()
             } else {
                 tabs.removeAll()
@@ -236,7 +233,7 @@ private extension TabsDataService {
             guard identifier != selectedTabIdentifier else {
                 return .tabSelected
             }
-            if #available(iOS 17.0, *) {
+            if #available(iOS 17.0, *), case .systemObservation = observingType {
                 await notifyObservationAboutNewSelectedTabId(identifier)
             } else {
                 selectedTabIdentifier = identifier
@@ -262,7 +259,7 @@ private extension TabsDataService {
 
         do {
             _ = try tabsRepository.update(tab: newTab)
-            if #available(iOS 17.0, *) {
+            if #available(iOS 17.0, *), case .systemObservation = observingType {
                 await notifyObservationAboutReplacedTab(at: tabIndex, newTab: newTab)
             } else {
                 tabs[tabIndex] = newTab
@@ -299,7 +296,7 @@ private extension TabsDataService {
         guard tabIndex >= 0 && tabIndex < tabs.count else {
             return .tabPreviewUpdated(TabsListError.wrongTabIndexToReplace)
         }
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, *), case .systemObservation = observingType {
             await notifyObservationAboutReplacedTab(at: tabIndex, newTab: tab)
         } else {
             tabs[tabIndex] = tab
@@ -376,7 +373,7 @@ private extension TabsDataService {
                 await observer.tabDidAdd(tab, at: index)
             }
             if select {
-                if #available(iOS 17.0, *) {
+                if #available(iOS 17.0, *), .systemObservation == observingType {
                     await notifyObservationAboutNewSelectedTabId(tab.id)
                 } else {
                     selectedTabIdentifier = tab.id
@@ -395,7 +392,7 @@ private extension TabsDataService {
                     await observer.tabDidAdd(tab, at: index)
                 }
                 if select {
-                    if #available(iOS 17.0, *) {
+                    if #available(iOS 17.0, *), .systemObservation == observingType {
                         await notifyObservationAboutNewSelectedTabId(tab.id)
                     } else {
                         selectedTabIdentifier = tab.id
@@ -448,7 +445,7 @@ private extension TabsDataService {
         guard !cachedTabs.isEmpty else {
             return
         }
-        if #available(iOS 17.0, *) {
+        if #available(iOS 17.0, *), case .systemObservation = observingType {
             await notifyObservationAboutNewTabs(cachedTabs, nil)
             await notifyObservationAboutNewSelectedTabId(id)
         } else {

@@ -9,6 +9,7 @@
 import SwiftUI
 import CoreBrowser
 import CottonPlugins
+import FeaturesFlagsKit
 
 /// Content view model which observes for the currently selected tab content type.
 /// This reference type should be used to update the view if content changes.
@@ -29,23 +30,34 @@ import CottonPlugins
     private var previousTabContent: CoreBrowser.Tab.ContentType?
     /// To avoid app start case
     private var firstTabContentSelect: Bool
+    /// Feature manager to determine which observing method to use
+    private let featureManager: FeatureManager.StateHolder
 
     init(
         _ jsPluginsBuilder: any JSPluginsSource,
-        _ defaultContentType: CoreBrowser.Tab.ContentType
+        _ defaultContentType: CoreBrowser.Tab.ContentType,
+        _ featureManager: FeatureManager.StateHolder
     ) {
         firstTabContentSelect = true
         self.jsPluginsBuilder = jsPluginsBuilder
         self.contentType = defaultContentType
+        self.featureManager = featureManager
         loading = true
         webViewNeedsUpdate = ()
         tabsCount = 0
         
-        if #available(iOS 17.0, *) {
-            startTabsObservation()
+        Task {
+            await checkObservation()
         }
         // Fallback for before iOS 17 is outside in
         // `MainBrowserView.onAppear` by calling `attach`
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
     }
     
     @available(iOS 17.0, *)

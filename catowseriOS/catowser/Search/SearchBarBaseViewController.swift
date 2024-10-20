@@ -17,8 +17,13 @@ import FeaturesFlagsKit
 final class SearchBarBaseViewController: BaseViewController {
     /// main search bar view
     private let searchBarView: SearchBarLegacyView
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ searchBarDelegate: UISearchBarDelegate?, _ uiFramework: UIFrameworkType) {
+    init(
+        _ searchBarDelegate: UISearchBarDelegate?,
+        _ uiFramework: UIFrameworkType,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         let customFrame: CGRect
         if case .uiKit = uiFramework {
             customFrame = .zero
@@ -27,10 +32,11 @@ final class SearchBarBaseViewController: BaseViewController {
         }
         searchBarView = .init(frame: customFrame, uiFramework: uiFramework)
         searchBarView.delegate = searchBarDelegate
+        self.featureManager = featureManager
         super.init(nibName: nil, bundle: nil)
         
-        if #available(iOS 17.0, *) {
-            startTabsObservation()
+        Task {
+            await checkObservation()
         }
     }
 
@@ -62,6 +68,13 @@ final class SearchBarBaseViewController: BaseViewController {
         super.traitCollectionDidChange(previousTraitCollection)
 
         searchBarView.handleTraitCollectionChange()
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
     }
     
     @available(iOS 17.0, *)

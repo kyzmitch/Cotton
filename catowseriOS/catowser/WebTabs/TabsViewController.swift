@@ -9,6 +9,7 @@
 import UIKit
 import CoreGraphics
 import CoreBrowser
+import FeaturesFlagsKit
 
 fileprivate extension TabsViewController {
     struct Sizes {
@@ -20,13 +21,18 @@ fileprivate extension TabsViewController {
 final class TabsViewController: BaseViewController {
     private var viewModels = [TabViewModel]()
     private let viewModel: AllTabsViewModel
+    private let featureManager: FeatureManager.StateHolder
 
-    init(_ viewModel: AllTabsViewModel) {
+    init(
+        _ viewModel: AllTabsViewModel,
+        _ featureManager: FeatureManager.StateHolder
+    ) {
         self.viewModel = viewModel
+        self.featureManager = featureManager
         super.init(nibName: nil, bundle: nil)
         
-        if #available(iOS 17.0, *) {
-            startTabsObservation()
+        Task {
+            await checkObservation()
         }
     }
 
@@ -228,6 +234,13 @@ private extension TabsViewController {
             newlyAddedTabFrame = CGRect.zero
         }
         return newlyAddedTabFrame
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
     }
     
     @available(iOS 17.0, *)

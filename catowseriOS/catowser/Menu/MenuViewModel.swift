@@ -40,6 +40,7 @@ final class MenuViewModel: ObservableObject {
     @Published var tabAddPositionRowValue: AddedTabPosition = .afterSelected
     @Published var asyncApiRowValue: AsyncApiType = .asyncAwait
     @Published var uiFrameworkRowValue: UIFrameworkType = .uiKit
+    @Published var observingApiRowValue: ObservingApiType = .observerDesignPattern
 
     // MARK: - specific tab settings
 
@@ -181,6 +182,16 @@ final class MenuViewModel: ObservableObject {
             await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
         }
         uiFrameworkRowValue = selected
+    }
+    
+    func setObservingApi(_ selected: ObservingApiType) {
+        Task {
+            await FeatureManager.shared.setFeature(
+                .observingApi,
+                value: selected
+            )
+        }
+        observingApiRowValue = selected
     }
     
     func load() async {

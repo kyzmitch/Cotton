@@ -50,7 +50,12 @@ final class ViewModelFactory {
     func tabViewModel(_ tab: CoreBrowser.Tab) async -> TabViewModel {
         let readUseCase = await UseCaseRegistry.shared.findUseCase(ReadTabsUseCase.self)
         let writeUseCase = await UseCaseRegistry.shared.findUseCase(WriteTabsUseCase.self)
-        return TabViewModel(tab, readUseCase, writeUseCase)
+        return TabViewModel(
+            tab,
+            readUseCase,
+            writeUseCase,
+            FeatureManager.shared
+        )
     }
 
     func tabsPreviewsViewModel() async -> TabsPreviewsViewModel {

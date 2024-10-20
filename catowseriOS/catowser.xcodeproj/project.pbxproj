@@ -140,6 +140,7 @@
 		75EA4E6F29F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
 		75EA5425296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */; };
 		75EFE95F2CC1A33A001CD0E6 /* ObservingApiType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C412222C9544D4007E6043 /* ObservingApiType.swift */; };
+		75EFE9692CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EFE9682CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift */; };
 		75F342472A6063A400E66192 /* AuthChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F342462A6063A400E66192 /* AuthChallenge.swift */; };
 		75FAAB38292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
@@ -839,6 +840,7 @@
 		75DA4C7A2C9C7F40009AE049 /* UIServiceRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIServiceRegistry.swift; sourceTree = "<group>"; };
 		75EA4E6E29F7055800165A07 /* TitledImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledImageView.swift; sourceTree = "<group>"; };
 		75EA5424296436C900EEF533 /* BrowserToolbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserToolbarViewModel.swift; sourceTree = "<group>"; };
+		75EFE9682CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservingApiTypeModel.swift; sourceTree = "<group>"; };
 		75F342462A6063A400E66192 /* AuthChallenge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthChallenge.swift; sourceTree = "<group>"; };
 		75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCoordinator.swift; sourceTree = "<group>"; };
 		841022B8224781A20021516F /* LinkTagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTagsViewController.swift; sourceTree = "<group>"; };
@@ -2265,6 +2267,7 @@
 				8A1115EA24837DA400E63114 /* TabAddPositionsModel.swift */,
 				8A1C1C162484E5900098F2F1 /* TabDefaultContentModel.swift */,
 				755E107327BC3E0800D90AD0 /* AppAsyncApiTypeModel.swift */,
+				75EFE9682CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift */,
 				754249D22944B3F9002D6505 /* AppUIFrameworkTypeModel.swift */,
 				755E107D27C1660200D90AD0 /* WebSearchSettingsModel.swift */,
 				755E108127C169AC00D90AD0 /* BaseListViewModel.swift */,
@@ -3302,6 +3305,7 @@
 				84704FC21EEE769800F89F6B /* TabView.swift in Sources */,
 				75EA5425296436C900EEF533 /* BrowserToolbarViewModel.swift in Sources */,
 				8AD857E02939425400DD5F49 /* WebContentContainerCoordinator.swift in Sources */,
+				75EFE9692CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift in Sources */,
 				753392B32921613E00570461 /* GlobalMenuCoordinator.swift in Sources */,
 				841022CB2247ACF00021516F /* UIViewController+MainBundle.swift in Sources */,
 				60C2C8D0226DAB1700F5D869 /* TopSitesViewController.swift in Sources */,

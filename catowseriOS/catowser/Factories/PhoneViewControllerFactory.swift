@@ -6,6 +6,7 @@
 //  Copyright © 2022 Cotton (former Catowser). All rights reserved.
 //
 
+import FeaturesFlagsKit
 import UIKit
 
 /// Implements the operations to create phone layout product objects.
@@ -52,7 +53,12 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         if let existingVC = toolBarVC {
             return existingVC
         }
-        let vc = BrowserToolbarController(coordinator, downloadDelegate, settingsDelegate)
+        let vc = BrowserToolbarController(
+            coordinator,
+            downloadDelegate,
+            settingsDelegate,
+            FeatureManager.shared
+        )
         vc.presenter = presenter
         toolBarVC = vc
         return toolBarVC
@@ -62,7 +68,11 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         _ coordinator: C,
         _ viewModel: TabsPreviewsViewModel
     ) -> UIViewController? where C.R == TabsScreenRoute {
-        let vc: TabsPreviewsViewController = .init(coordinator, viewModel)
+        let vc: TabsPreviewsViewController = .init(
+            coordinator,
+            viewModel,
+            FeatureManager.shared
+        )
         return vc
     }
 

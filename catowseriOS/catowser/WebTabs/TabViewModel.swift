@@ -16,19 +16,23 @@ final class TabViewModel {
     private var tab: CoreBrowser.Tab
     private let readTabUseCase: ReadTabsUseCase
     private let writeTabUseCase: WriteTabsUseCase
+    private let featureManager: FeatureManager.StateHolder
 
     @Published var state: TabViewState
 
     init(_ tab: CoreBrowser.Tab,
          _ readTabUseCase: ReadTabsUseCase,
-         _ writeTabUseCase: WriteTabsUseCase) {
+         _ writeTabUseCase: WriteTabsUseCase,
+         _ featureManager: FeatureManager.StateHolder
+    ) {
         self.tab = tab
         self.readTabUseCase = readTabUseCase
         self.writeTabUseCase = writeTabUseCase
+        self.featureManager = featureManager
         _state = .init(initialValue: .deSelected(tab.title, nil))
         
-        if #available(iOS 17.0, *) {
-            startTabsObservation()
+        Task {
+            await checkObservation()
         }
     }
 
@@ -97,6 +101,13 @@ final class TabViewModel {
             return nil
         }
         return source
+    }
+    
+    private func checkObservation() async {
+        let observingType = await featureManager.observingApiTypeValue()
+        if #available(iOS 17.0, *), .systemObservation == observingType {
+            startTabsObservation()
+        }
     }
     
     @available(iOS 17.0, *)
