@@ -48,3 +48,13 @@ extension GenericEnumFeature where E == AsyncApiType {
         }
     }
 }
+
+extension GenericEnumFeature where E == ObservingApiType {
+    var defaultEnumValue: ObservingApiType {
+        if #available(iOS 17.0, *) {
+            return .observerDesignPattern
+        } else {
+            return .observerDesignPattern
+        }
+    }
+}
