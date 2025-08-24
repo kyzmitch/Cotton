@@ -67,13 +67,3 @@ extension JavaScriptPlugin {
         try visitor.visit(self, handler)
     }
 }
-
-public extension JavaScriptPlugin {
-    static func == (lhs: any JavaScriptPlugin, rhs: any JavaScriptPlugin) -> Bool {
-        return lhs.jsFileName == rhs.jsFileName
-            && lhs.messageHandlerName == rhs.messageHandlerName
-            && lhs.isMainFrameOnly == rhs.isMainFrameOnly
-            && lhs.hostKeyword == rhs.hostKeyword
-            && lhs.scriptString(true) == rhs.scriptString(true)
-    }
-}
