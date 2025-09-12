@@ -175,6 +175,7 @@
 		7586ABF12D197F9300D981B6 /* BrowserToolbarViewContextImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7586ABF02D197F9000D981B6 /* BrowserToolbarViewContextImpl.swift */; };
 		759A30102D2B1C8300109A64 /* SearchFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759A300F2D2B1C8200109A64 /* SearchFieldViewModel.swift */; };
 		759E3E4D2C863B3D00245B44 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 759E3E4C2C863B3D00245B44 /* Atomics */; };
+		75D2ECBC2E74B20000556C5B /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2ECBB2E74B20000556C5B /* Domain */; };
 		75D81CF72B0B077200447DC7 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
 		75D81CFB2B0B084300447DC7 /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		75DA4C7B2C9C7F4D009AE049 /* UIServiceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA4C7A2C9C7F40009AE049 /* UIServiceRegistry.swift */; };
@@ -1389,6 +1390,7 @@
 				8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */,
 				8AD4F51E28F492DC009C4BDC /* AlamofireImage in Frameworks */,
 				7517D9C32A5F2E7C00D081AD /* CottonBase.xcframework in Frameworks */,
+				75D2ECBC2E74B20000556C5B /* Domain in Frameworks */,
 				8A5E6C83290B0E6C0034A78B /* AutoMockable.framework in Frameworks */,
 				8AD4F51C28F49219009C4BDC /* ReactiveSwift in Frameworks */,
 				8ABF504427CC1A64007C6427 /* FeatureFlagsKit.framework in Frameworks */,
@@ -2942,6 +2944,7 @@
 				8AD4F51D28F492DC009C4BDC /* AlamofireImage */,
 				8AD4F51F28F49303009C4BDC /* Alamofire */,
 				759E3E4C2C863B3D00245B44 /* Atomics */,
+				75D2ECBB2E74B20000556C5B /* Domain */,
 			);
 			productName = catowser;
 			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
@@ -3281,6 +3284,7 @@
 				8A03F45828F47ACB00E4A296 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				8A0E4D5829133E77008F7964 /* XCRemoteSwiftPackageReference "SwiftyMocky" */,
 				759E3E4B2C863B3D00245B44 /* XCRemoteSwiftPackageReference "swift-atomics" */,
+				75D2ECBA2E74B1FF00556C5B /* XCLocalSwiftPackageReference "Domain" */,
 			);
 			productRefGroup = 8435A4981EED5E700020102F /* Products */;
 			projectDirPath = "";
@@ -6573,6 +6577,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		75D2ECBA2E74B1FF00556C5B /* XCLocalSwiftPackageReference "Domain" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Domain;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		759E3E4B2C863B3D00245B44 /* XCRemoteSwiftPackageReference "swift-atomics" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -6657,6 +6668,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 759E3E4B2C863B3D00245B44 /* XCRemoteSwiftPackageReference "swift-atomics" */;
 			productName = Atomics;
+		};
+		75D2ECBB2E74B20000556C5B /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
 		};
 		8A03F45928F47ACB00E4A296 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;
