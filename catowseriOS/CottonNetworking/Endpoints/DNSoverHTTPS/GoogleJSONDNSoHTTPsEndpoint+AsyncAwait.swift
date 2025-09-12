@@ -9,6 +9,7 @@
 #if swift(>=5.5)
 
 import CottonRestKit
+import Foundation
 
 extension RestClient where Server == GoogleDnsServer {
     @available(swift 5.5)

@@ -10,6 +10,7 @@ private extension String {
     // MARK: - Root
     
     static let domainPackage = "Domain"
+    static let basePackage = "Base"
     
     // MARK: - Libraries
     
@@ -32,6 +33,9 @@ let package = Package(
             name: .genericServiceKit,
             targets: [.genericServiceKit]
         )
+    ],
+    dependencies: [
+        .package(path: "../Base")
     ],
     targets: [
         .target(

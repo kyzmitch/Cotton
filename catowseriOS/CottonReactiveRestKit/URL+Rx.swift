@@ -8,6 +8,7 @@
 
 @preconcurrency import ReactiveSwift
 import CottonRestKit
+import Foundation
 
 public typealias HostProducer = SignalProducer<String, DnsError>
 public typealias ResolvedURLProducer = SignalProducer<URL, DnsError>
