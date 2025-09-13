@@ -121,9 +121,9 @@ extension URLRequest /* : URLRequestCreatable */ {
 /// Can't be retroactive because it is from 3rd party Alamofire lib.
 extension JSONEncoding: @unchecked Sendable {}
 /// Can be retroactively Auto mockable because it is our own protocol which can't be known by Alamofire devs.
-extension JSONEncoding: @retroactive AutoMockable {}
+extension JSONEncoding: AutoMockable {}
 /// Can be retroactively conforming to `JSONRequestEncodable` because Alamofire devs won't know that protocol for sure.
-extension JSONEncoding: @retroactive JSONRequestEncodable {
+extension JSONEncoding: JSONRequestEncodable {
     public func encodeRequest(
         _ urlRequest: URLRequestCreatable,
         with parameters: [String: Any]?

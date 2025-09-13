@@ -11,7 +11,12 @@ private extension String {
 
     static let basePackage = "Base"
     static let cottonBase = "CottonBase"
-    static let reactiveSwift = "ReactiveSwift"
+    
+    // MARK: - 3rd party
+
+    static let reactiveSwiftFramework = "ReactiveSwift"
+    static let swXmlHashFramework = "SWXMLHash"
+    static let alamofireFramework = "Alamofire"
     
     // MARK: - Libraries
     
@@ -20,6 +25,7 @@ private extension String {
     static let cottonRestKit = "CottonRestKit"
     static let autoMockableKit = "AutoMockable"
     static let cottonReactiveRestKit = "CottonReactiveRestKit"
+    static let cottonNetworkingLibrary = "CottonNetworking"
 }
 
 let package = Package(
@@ -58,12 +64,26 @@ let package = Package(
             targets: [
                 .cottonBase
             ]
-        )
+        ),
+        .library(
+            name: .cottonNetworkingLibrary,
+            targets: [
+                .cottonNetworkingLibrary
+            ]
+        ),
     ],
     dependencies: [
         .package(
             url: "https://github.com/ReactiveCocoa/ReactiveSwift",
             exact: "7.0.0"
+        ),
+        .package(
+            url: "https://github.com/Alamofire/Alamofire.git",
+            exact: "5.9.1"
+        ),
+        .package(
+            url: "https://github.com/drmohundro/SWXMLHash",
+            exact: "7.0.1"
         )
     ],
     targets: [
@@ -86,7 +106,19 @@ let package = Package(
                 .target(name: .cottonRestKit),
                 .target(name: .cottonBase),
                 .target(name: .autoMockableKit),
-                .product(name: .reactiveSwift, package: .reactiveSwift)
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
+            ]
+        ),
+        .target(
+            name: .cottonNetworkingLibrary,
+            dependencies: [
+                .target(name: .cottonRestKit),
+                .target(name: .cottonReactiveRestKit),
+                .target(name: .cottonBase),
+                .target(name: .autoMockableKit),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
+                .product(name: .swXmlHashFramework, package: .swXmlHashFramework),
+                .product(name: .alamofireFramework, package: .alamofireFramework)
             ]
         ),
         .binaryTarget(
