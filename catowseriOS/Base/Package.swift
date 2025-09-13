@@ -11,6 +11,7 @@ private extension String {
 
     static let basePackage = "Base"
     static let cottonBase = "CottonBase"
+    static let reactiveSwift = "ReactiveSwift"
     
     // MARK: - Libraries
     
@@ -18,6 +19,7 @@ private extension String {
     
     static let cottonRestKit = "CottonRestKit"
     static let autoMockableKit = "AutoMockable"
+    static let cottonReactiveRestKit = "CottonReactiveRestKit"
 }
 
 let package = Package(
@@ -40,6 +42,12 @@ let package = Package(
             ]
         ),
         .library(
+            name: .cottonReactiveRestKit,
+            targets: [
+                .cottonReactiveRestKit
+            ]
+        ),
+        .library(
             name: .autoMockableKit,
             targets: [
                 .autoMockableKit
@@ -50,6 +58,12 @@ let package = Package(
             targets: [
                 .cottonBase
             ]
+        )
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/ReactiveCocoa/ReactiveSwift",
+            exact: "7.0.0"
         )
     ],
     targets: [
@@ -64,6 +78,15 @@ let package = Package(
             dependencies: [
                 .target(name: .cottonBase),
                 .target(name: .autoMockableKit)
+            ]
+        ),
+        .target(
+            name: .cottonReactiveRestKit,
+            dependencies: [
+                .target(name: .cottonRestKit),
+                .target(name: .cottonBase),
+                .target(name: .autoMockableKit),
+                .product(name: .reactiveSwift, package: .reactiveSwift)
             ]
         ),
         .binaryTarget(

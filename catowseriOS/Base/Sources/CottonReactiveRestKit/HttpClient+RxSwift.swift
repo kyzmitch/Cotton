@@ -1,6 +1,6 @@
 //
 //  HttpClient+RxSwift.swift
-//  ReactiveHttpKit
+//  CottonReactiveRestKit
 //
 //  Created by Andrei Ermoshin on 11/29/21.
 //  Copyright © 2021 Cotton (former Catowser). All rights reserved.

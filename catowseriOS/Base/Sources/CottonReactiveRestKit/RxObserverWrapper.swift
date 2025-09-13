@@ -1,6 +1,6 @@
 //
 //  RxObserverWrapper.swift
-//  ReactiveHttpKit
+//  CottonReactiveRestKit
 //
 //  Created by Andrei Ermoshin on 2/12/22.
 //  Copyright © 2022 Cotton (former Catowser). All rights reserved.
@@ -10,7 +10,7 @@ import CottonRestKit
 @preconcurrency import ReactiveSwift
 import CottonBase
 
-extension Signal.Observer: @retroactive RxAnyObserver
+extension Signal.Observer: RxAnyObserver
 where Value: ResponseType, Error == HttpError {
     public typealias Response = Value
 
@@ -25,7 +25,7 @@ where Value: ResponseType, Error == HttpError {
     }
 }
 
-extension Signal.Observer: @retroactive RxAnyVoidObserver
+extension Signal.Observer: RxAnyVoidObserver
 where Value == Void, Error == HttpError {
     public func newSend(value: Value) {
         send(value: value)
@@ -38,7 +38,7 @@ where Value == Void, Error == HttpError {
     }
 }
 
-extension Lifetime: @retroactive RxAnyLifetime {
+extension Lifetime: RxAnyLifetime {
     public func newObserveEnded(_ action: @escaping () -> Void) {
         observeEnded(action)
     }

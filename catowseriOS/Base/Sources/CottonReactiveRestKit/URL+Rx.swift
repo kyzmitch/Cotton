@@ -1,6 +1,6 @@
 //
 //  URL+Rx.swift
-//  ReactiveHttpKit
+//  CottonReactiveRestKit
 //
 //  Created by Andrei Ermoshin on 2/12/22.
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
@@ -10,7 +10,9 @@
 import CottonRestKit
 import Foundation
 
+/// Reactive reducer which returns host or DNS error
 public typealias HostProducer = SignalProducer<String, DnsError>
+/// Reactive reducer which returns resolved URL with a host or an error
 public typealias ResolvedURLProducer = SignalProducer<URL, DnsError>
 
 extension URL {
@@ -27,6 +29,7 @@ extension URL {
         return .init(value: host)
     }
 
+    /// Reactive update to the host
     public func rxUpdatedHost(with ipAddress: String) -> ResolvedURLProducer {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             return .init(error: .urlComponentsFail)
