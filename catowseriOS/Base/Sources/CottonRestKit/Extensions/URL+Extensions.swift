@@ -1,6 +1,6 @@
 //
 //  URL+Extensions.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 2/10/20.
 //  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
@@ -13,6 +13,7 @@ import Combine
 import Network
 import CottonBase
 
+/// DNS error cases
 public enum DnsError: LocalizedError {
     case zombieSelf
     case httpError(HttpError)
@@ -23,7 +24,8 @@ public enum DnsError: LocalizedError {
     case urlHostReplaceFail
     case hostIsNotIpAddress
 
-    public var localizedDescription: String {
+    /// DNS error text
+    public var errorDescription: String? {
         switch self {
         case .httpError(let httpErr):
             return "dns err: \(httpErr.localizedDescription)"
@@ -35,6 +37,8 @@ public enum DnsError: LocalizedError {
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 typealias HostPublisher = Result<String, DnsError>.Publisher
+
+/// Combine publisher with a result type for an URL or a typed DNS error
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
 public typealias ResolvedURLPublisher = Result<URL, DnsError>.Publisher
 
@@ -48,6 +52,7 @@ extension URL {
         return try? Host(input: hostString)
     }
 
+    /// Http host
     public var httpHost: String? {
         guard let scheme = scheme, scheme == "http" || scheme == "https" else {
             return nil
@@ -71,6 +76,9 @@ extension URL {
         return HostPublisher(.success(host)).eraseToAnyPublisher()
     }
 
+    /// Make a copy of a URL with updated host using ip address
+    ///
+    /// - Parameter ipAddress: An ip address
     public func updatedHost(with ipAddress: String) throws -> URL {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {
             throw DnsError.urlComponentsFail
@@ -82,6 +90,10 @@ extension URL {
         return clearURL
     }
 
+    /// Combine version for the host update
+    ///
+    /// - Parameter ipAddress: An ip address
+    /// - Returns A combine publisher with updated URL
     @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
     public func cUpdatedHost(with ipAddress: String) -> ResolvedURLPublisher {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: true) else {

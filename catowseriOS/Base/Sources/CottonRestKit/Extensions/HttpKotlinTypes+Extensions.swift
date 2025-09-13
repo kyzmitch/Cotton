@@ -1,6 +1,6 @@
 //
 //  HttpKotlinTypes+Extensions.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 4/17/22.
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.

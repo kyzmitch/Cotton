@@ -1,6 +1,6 @@
 //
 //  RestClient.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 10/11/19.
 //  Copyright © 2019 Cotton/Catowser Andrei Ermoshin. All rights reserved.

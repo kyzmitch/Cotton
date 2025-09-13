@@ -1,6 +1,6 @@
 //
 //  ClosureWrappers.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 2/10/22.
 //  Copyright © 2022 Cotton (former Catowser). All rights reserved.
@@ -19,13 +19,17 @@ public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: 
     let endpoint: Endpoint<Server>
     let responseType: Response.Type
 
-    public init(_ closure: @escaping (Result<Response, HttpError>) -> Void,
-                _ endpoint: Endpoint<Server>) {
+    /// Init
+    public init(
+        _ closure: @escaping (Result<Response, HttpError>) -> Void,
+        _ endpoint: Endpoint<Server>
+    ) {
         self.closure = closure
         self.endpoint = endpoint
         responseType = Response.self
     }
 
+    /// Hash into
     public func hash(into hasher: inout Hasher) {
         let typeString = String(describing: responseType)
         hasher.combine(typeString)
@@ -38,12 +42,16 @@ public class ClosureWrapper<Response: ResponseType, Server: ServerDescription>: 
         }
     }
 
-    public static func == (lhs: ClosureWrapper<Response, Server>, rhs: ClosureWrapper<Response, Server>) -> Bool {
+    /// Equality operator
+    public static func == (
+        lhs: ClosureWrapper<Response, Server>,
+        rhs: ClosureWrapper<Response, Server>
+    ) -> Bool {
         return lhs.responseType == rhs.responseType && lhs.endpoint == rhs.endpoint
     }
 }
 
-// gryphon ignore
+/// Combine promise wrapper
 public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescription>: Hashable {
     /// Should be let constant, but var is needed to get ab address of it which should be added to a hash value
     public var promise: Future<Response, HttpError>.Promise
@@ -51,13 +59,17 @@ public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescrip
     let endpoint: Endpoint<Server>
     let responseType: Response.Type
 
-    public init(_ promise: @escaping Future<Response, HttpError>.Promise,
-                _ endpoint: Endpoint<Server>) {
+    /// Init
+    public init(
+        _ promise: @escaping Future<Response, HttpError>.Promise,
+        _ endpoint: Endpoint<Server>
+    ) {
         self.promise = promise
         self.endpoint = endpoint
         responseType = Response.self
     }
 
+    /// Hash into
     public func hash(into hasher: inout Hasher) {
         let typeString = String(describing: responseType)
         hasher.combine(typeString)
@@ -70,6 +82,7 @@ public class CombinePromiseWrapper<Response: ResponseType, Server: ServerDescrip
         }
     }
 
+    /// Equality
     public static func == (
         lhs: CombinePromiseWrapper<Response, Server>,
         rhs: CombinePromiseWrapper<Response, Server>

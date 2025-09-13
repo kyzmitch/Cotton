@@ -1,6 +1,6 @@
 //
 //  RestClient+AsyncAwait.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 6/10/21.
 //  Copyright © 2021 Cotton/Catowser Andrei Ermoshin. All rights reserved.

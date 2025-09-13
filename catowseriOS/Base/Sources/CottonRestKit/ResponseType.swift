@@ -1,6 +1,6 @@
 //
 //  ResponseType.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 4/18/22.
 //  Copyright © 2022 Cotton (former Catowser). All rights reserved.

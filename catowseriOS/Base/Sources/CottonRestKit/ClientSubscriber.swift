@@ -1,6 +1,6 @@
 //
 //  HttpResponsesPool.swift
-//  HttpKit
+//  CottonRestKit
 //
 //  Created by Andrei Ermoshin on 2/10/22.
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
@@ -46,24 +46,28 @@ public final class ClientRxSubscriber<R, S, RX: RxInterface>: @unchecked Sendabl
     }
 }
 
-// gryphon ignore
+/// Client reactive void subscriber
 public class ClientRxVoidSubscriber<S, RX: RxVoidInterface> where RX.Server == S {
     /// Can't use protocol type because it has associated type, should be associated with Endpoint response type
     var handlers = Set<ResponseVoidHandlingApi<S, RX>>()
 
+    /// Init
     public init() {}
 
+    /// Insert handler
     public func insert(_ handler: ResponseVoidHandlingApi<S, RX>) {
         handlers.insert(handler)
     }
 
+    /// Remove handler
     public func remove(_ handler: ResponseVoidHandlingApi<S, RX>) {
         handlers.remove(handler)
     }
 }
 
-// gryphon ignore
+/// Reactive free interface
 public typealias RxFreeInterface<R: ResponseType, S: ServerDescription> = DummyRxType<R, S, DummyRxObserver<R>>
-// gryphon ignore
+
+/// Client subscriber
 public typealias ClientSubscriber<R: ResponseType,
                                   S: ServerDescription> = ClientRxSubscriber<R, S, RxFreeInterface<R, S>>
