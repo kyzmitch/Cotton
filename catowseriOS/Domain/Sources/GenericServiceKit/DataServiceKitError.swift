@@ -1,10 +1,12 @@
 //
 //  DataServiceKitError.swift
-//  catowser
+//  GenericServiceKit
 //
 //  Created by Andrey Ermoshin on 26.11.2024.
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
+
+import Foundation
 
 /// Common interface for a data service errors
 public protocol DataServiceKitError: LocalizedError, Sendable, Equatable {

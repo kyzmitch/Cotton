@@ -1,6 +1,6 @@
 //
 //  Downloadable.swift
-//  BrowserNetworking
+//  CottonNetworking
 //
 //  Created by Andrei Ermoshin on 4/22/20.
 //  Copyright © 2020 Cotton/Catowser Andrei Ermoshin. All rights reserved.
@@ -33,10 +33,15 @@ public protocol Downloadable {
 
 /// Protocol extension adds default implemention
 extension Downloadable {
+    /// iOS sandbox specific option which prevents iCloud from backing up the local file
     public var excludeFromBackup: Bool {
         return true
     }
 
+    /**
+     Local file name, must be the same for same file description and
+     hostname to be able to not re-download same resource
+     */
     public var fileName: String {
         if #available(iOS 13.0, *) {
             var md5Hasher = Insecure.MD5()
@@ -51,6 +56,7 @@ extension Downloadable {
         }
     }
 
+    /// URL of the file at destination
     public func fileAtDestination() -> URL? {
         do {
             let destination = try sandboxDestination()
@@ -91,11 +97,15 @@ fileprivate extension URL {
 
 /// Progress model
 public enum ProgressResponse<T> {
+    /// Some progress value state
     case progress(Progress)
+    /// Completed state
     case complete(T)
 }
 
+/// Reactive producer which returns progress with an URL or an error
 public typealias FileDownloadProducer = SignalProducer<ProgressResponse<URL>, DownloadError>
+/// Reactive producer which returns File info (an integer) or an error
 public typealias RemoteFileInfoProducer = SignalProducer<Int, DownloadError>
 
 /// Sends download request for remote file

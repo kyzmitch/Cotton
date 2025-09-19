@@ -1,6 +1,6 @@
 //
 //  ServiceLocator.swift
-//  catowser
+//  GenericServiceKit
 //
 //  Created by Andrey Ermoshin on 04.01.2024.
 //  Copyright © 2024 Cotton (former Catowser). All rights reserved.
@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A service locator interface
 protocol ServiceLocator: AnyObject {
     /// Searches for the service instance based on the object identifier which can be
     /// computed automatically and if it is not possible to compute it,

@@ -6,7 +6,7 @@
 //  Copyright © 2024 Cotton (former Catowser). All rights reserved.
 //
 
-import DataServiceKit
+import GenericServiceKit
 import Foundation
 import CoreBrowser
 import CottonDataServices

@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreBrowser
-import DataServiceKit
+import GenericServiceKit
 
 /// Search data service commands,
 /// each command has unique id as well to be able to cache

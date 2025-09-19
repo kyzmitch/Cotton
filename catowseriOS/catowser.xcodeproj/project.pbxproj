@@ -95,10 +95,6 @@
 		755E10A527CA3FC300D90AD0 /* SpecificEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10A427CA3FC300D90AD0 /* SpecificEnumFeatures.swift */; };
 		755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		75664D6B2C93531C0025BE77 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75664D6A2C93531C0025BE77 /* Theme.swift */; };
-		756AE6C42CA348BF00938FCC /* DataServiceKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */; };
-		756AE6CF2CA348BF00938FCC /* DataServiceKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */; };
-		756AE6D02CA348BF00938FCC /* DataServiceKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		756AE6E52CA34B8E00938FCC /* DataServiceKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */; };
 		7570F7462B5C07E90066ABF1 /* UseCaseRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7570F7452B5C07E90066ABF1 /* UseCaseRegistry.swift */; };
 		75869DC12D00C0D100D981B6 /* WebAutoCompletionSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753752CF2CFED1DC008D40CF /* WebAutoCompletionSource.swift */; };
 		75869DD32D01B1D400D981B6 /* CottonUseCases.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75869DC92D01B1D400D981B6 /* CottonUseCases.framework */; };
@@ -127,9 +123,7 @@
 		75869FAA2D02F6CF00D981B6 /* ReactiveSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 75869FA92D02F6CF00D981B6 /* ReactiveSwift */; };
 		75869FB52D030A8600D981B6 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A6CD6D324585D830068ACB5 /* Combine.framework */; };
 		75869FBB2D030AB900D981B6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A7B1BF628EB2C7F004FC135 /* WebKit.framework */; };
-		7586A1C12D05C06800D981B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7586A1C02D05C06800D981B6 /* Foundation.framework */; };
 		7586A1C22D05C08600D981B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7586A1C02D05C06800D981B6 /* Foundation.framework */; };
-		7586A3932D08B3FB00D981B6 /* DataServiceKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */; };
 		7586A3982D0C152C00D981B6 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724F76221693670071BECF /* SearchEngine.swift */; };
 		7586A3992D0C154000D981B6 /* GoogleSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8035FC24449C9D000E035F /* GoogleSearchEngine.swift */; };
 		7586A39A2D0C155200D981B6 /* SiteSettings+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A964E3924867A9400A0AABE /* SiteSettings+Extensions.swift */; };
@@ -156,6 +150,8 @@
 		759E3E4D2C863B3D00245B44 /* Atomics in Frameworks */ = {isa = PBXBuildFile; productRef = 759E3E4C2C863B3D00245B44 /* Atomics */; };
 		75AE46BC2E754FFF0088C26E /* CottonRestKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75AE46BB2E754FFF0088C26E /* CottonRestKit */; };
 		75AE46BE2E7550100088C26E /* CottonNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 75AE46BD2E7550100088C26E /* CottonNetworking */; };
+		75C252B82E75E7A5000D457A /* GenericServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75C252B72E75E7A5000D457A /* GenericServiceKit */; };
+		75C252BA2E75E7F9000D457A /* GenericServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75C252B92E75E7F9000D457A /* GenericServiceKit */; };
 		75D2F3012E74C0DD00556C5B /* CottonBase in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2F3002E74C0DD00556C5B /* CottonBase */; };
 		75D2F3032E74C0EC00556C5B /* CottonBase in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2F3022E74C0EC00556C5B /* CottonBase */; };
 		75D2F3052E74C0F800556C5B /* CottonBase in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2F3042E74C0F800556C5B /* CottonBase */; };
@@ -165,6 +161,7 @@
 		75D2F3152E74C1F400556C5B /* AutoMockable in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2F3142E74C1F400556C5B /* AutoMockable */; };
 		75D2F3172E74C21600556C5B /* AutoMockable in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2F3162E74C21600556C5B /* AutoMockable */; };
 		75D2F3192E74C23100556C5B /* AutoMockable in Frameworks */ = {isa = PBXBuildFile; productRef = 75D2F3182E74C23100556C5B /* AutoMockable */; };
+		75D6F4492E7DE344000524BF /* GenericServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75D6F4482E7DE344000524BF /* GenericServiceKit */; };
 		75D81CF72B0B077200447DC7 /* JSPluginsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF622A15504007F06FB /* JSPluginsSource.swift */; };
 		75D81CFB2B0B084300447DC7 /* JSPluginsBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60380EF422A1509F007F06FB /* JSPluginsBuilder.swift */; };
 		75DA4C7B2C9C7F4D009AE049 /* UIServiceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA4C7A2C9C7F40009AE049 /* UIServiceRegistry.swift */; };
@@ -381,27 +378,6 @@
 			remoteGlobalIDString = 6094E71B221FD2B9004269A2;
 			remoteInfo = CoreBrowser;
 		};
-		756AE6C52CA348BF00938FCC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 756AE6B92CA348BF00938FCC;
-			remoteInfo = DataServiceKit;
-		};
-		756AE6C72CA348BF00938FCC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8435A4961EED5E700020102F;
-			remoteInfo = Cotton;
-		};
-		756AE6CD2CA348BF00938FCC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 756AE6B92CA348BF00938FCC;
-			remoteInfo = DataServiceKit;
-		};
 		756AE6E62CA34B8E00938FCC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -521,13 +497,6 @@
 			remoteGlobalIDString = 75869E7D2D01DDBB00D981B6;
 			remoteInfo = CottonDataServices;
 		};
-		7586A3952D08B3FB00D981B6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 756AE6B92CA348BF00938FCC;
-			remoteInfo = DataServiceKit;
-		};
 		7586A9042D11CA9C00D981B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
@@ -614,7 +583,6 @@
 				8ABF504527CC1A64007C6427 /* FeatureFlagsKit.framework in Embed Frameworks */,
 				8AF4337D248EBB2A0047452B /* CssParser.framework in Embed Frameworks */,
 				75869E292D01B4BD00D981B6 /* CottonViewModels.framework in Embed Frameworks */,
-				756AE6D02CA348BF00938FCC /* DataServiceKit.framework in Embed Frameworks */,
 				7586A90F2D11CA9C00D981B6 /* ViewModelKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -717,8 +685,6 @@
 		755E10AD27CA783B00D90AD0 /* EnumFeatureSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumFeatureSource.swift; sourceTree = "<group>"; };
 		755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificApplicationEnumFeatures.swift; sourceTree = "<group>"; };
 		75664D6A2C93531C0025BE77 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataServiceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		756AE6C32CA348BF00938FCC /* DataServiceKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataServiceKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7570F7452B5C07E90066ABF1 /* UseCaseRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseRegistry.swift; sourceTree = "<group>"; };
 		75869D9E2CFEE2D400D981B6 /* UseCaseLocator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseLocator.swift; sourceTree = "<group>"; };
 		75869DC92D01B1D400D981B6 /* CottonUseCases.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CottonUseCases.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -931,13 +897,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		756AE6D52CA348BF00938FCC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				DataServiceKit.h,
-			);
-			target = 756AE6B92CA348BF00938FCC /* DataServiceKit */;
-		};
 		75869DE02D01B1D400D981B6 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
@@ -969,8 +928,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		756AE6BB2CA348BF00938FCC /* DataServiceKit */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (756AE6D52CA348BF00938FCC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = DataServiceKit; sourceTree = "<group>"; };
-		756AE6C92CA348BF00938FCC /* DataServiceKitTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DataServiceKitTests; sourceTree = "<group>"; };
 		75869DCA2D01B1D400D981B6 /* CottonUseCases */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (75869DE02D01B1D400D981B6 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = CottonUseCases; sourceTree = "<group>"; };
 		75869DD82D01B1D400D981B6 /* CottonUseCasesTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CottonUseCasesTests; sourceTree = "<group>"; };
 		75869E142D01B4BD00D981B6 /* CottonViewModels */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (75869E2A2D01B4BD00D981B6 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = CottonViewModels; sourceTree = "<group>"; };
@@ -1007,27 +964,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		756AE6B72CA348BF00938FCC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				7586A1C12D05C06800D981B6 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		756AE6C02CA348BF00938FCC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				756AE6C42CA348BF00938FCC /* DataServiceKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		75869DC62D01B1D400D981B6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				75869E0D2D01B44100D981B6 /* Combine.framework in Frameworks */,
+				75D6F4492E7DE344000524BF /* GenericServiceKit in Frameworks */,
 				75D2F3152E74C1F400556C5B /* AutoMockable in Frameworks */,
 				75869DFB2D01B2ED00D981B6 /* CoreBrowser.framework in Frameworks */,
 				75869E0C2D01B43A00D981B6 /* ReactiveSwift in Frameworks */,
@@ -1074,12 +1016,12 @@
 			files = (
 				75869FA72D02F6B100D981B6 /* Alamofire in Frameworks */,
 				75D2F3132E74C1DC00556C5B /* AutoMockable in Frameworks */,
-				7586A3932D08B3FB00D981B6 /* DataServiceKit.framework in Frameworks */,
 				75869FAA2D02F6CF00D981B6 /* ReactiveSwift in Frameworks */,
 				75869EF42D01DF4800D981B6 /* CoreBrowser.framework in Frameworks */,
 				75AE46BC2E754FFF0088C26E /* CottonRestKit in Frameworks */,
 				75869FA82D02F6BF00D981B6 /* Combine.framework in Frameworks */,
 				75AE46BE2E7550100088C26E /* CottonNetworking in Frameworks */,
+				75C252B82E75E7A5000D457A /* GenericServiceKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1113,7 +1055,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				608DA751223A3BD5009F75BD /* CottonPlugins.framework in Frameworks */,
-				756AE6E52CA34B8E00938FCC /* DataServiceKit.framework in Frameworks */,
 				75D2F3012E74C0DD00556C5B /* CottonBase in Frameworks */,
 				8AE31138247C666A00FF28B1 /* UIKit.framework in Frameworks */,
 				8AD4F51E28F492DC009C4BDC /* AlamofireImage in Frameworks */,
@@ -1128,9 +1069,9 @@
 				8AE31136247C664600FF28B1 /* SwiftUI.framework in Frameworks */,
 				8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */,
 				75D2F3192E74C23100556C5B /* AutoMockable in Frameworks */,
+				75C252BA2E75E7F9000D457A /* GenericServiceKit in Frameworks */,
 				8A6CD6D424585D830068ACB5 /* Combine.framework in Frameworks */,
 				75869E932D01DDBB00D981B6 /* CottonDataServices.framework in Frameworks */,
-				756AE6CF2CA348BF00938FCC /* DataServiceKit.framework in Frameworks */,
 				7586A90E2D11CA9C00D981B6 /* ViewModelKit.framework in Frameworks */,
 				75869E282D01B4BD00D981B6 /* CottonViewModels.framework in Frameworks */,
 			);
@@ -1495,8 +1436,6 @@
 				8AE63B55248EC38300D6D2E4 /* CottonPluginsTests */,
 				8AB022ED26258B110053AFF0 /* CoreBrowserTests */,
 				8A7B1BA528EB131F004FC135 /* CottonDataTests */,
-				756AE6BB2CA348BF00938FCC /* DataServiceKit */,
-				756AE6C92CA348BF00938FCC /* DataServiceKitTests */,
 				75869DCA2D01B1D400D981B6 /* CottonUseCases */,
 				75869DD82D01B1D400D981B6 /* CottonUseCasesTests */,
 				75869E142D01B4BD00D981B6 /* CottonViewModels */,
@@ -1522,8 +1461,6 @@
 				8AB022EC26258B110053AFF0 /* CoreBrowserTests.xctest */,
 				8ABF503E27CC1A64007C6427 /* FeatureFlagsKit.framework */,
 				8A7B1B9F28EB131F004FC135 /* CottonDataTests.xctest */,
-				756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */,
-				756AE6C32CA348BF00938FCC /* DataServiceKitTests.xctest */,
 				75869DC92D01B1D400D981B6 /* CottonUseCases.framework */,
 				75869DD22D01B1D400D981B6 /* CottonUseCasesTests.xctest */,
 				75869E132D01B4BD00D981B6 /* CottonViewModels.framework */,
@@ -2018,13 +1955,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		756AE6B52CA348BF00938FCC /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		75869DC42D01B1D400D981B6 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2120,53 +2050,6 @@
 			productReference = 6094E71C221FD2B9004269A2 /* CoreBrowser.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		756AE6B92CA348BF00938FCC /* DataServiceKit */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 756AE6D62CA348BF00938FCC /* Build configuration list for PBXNativeTarget "DataServiceKit" */;
-			buildPhases = (
-				756AE6B52CA348BF00938FCC /* Headers */,
-				756AE6B62CA348BF00938FCC /* Sources */,
-				756AE6B72CA348BF00938FCC /* Frameworks */,
-				756AE6B82CA348BF00938FCC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				756AE6BB2CA348BF00938FCC /* DataServiceKit */,
-			);
-			name = DataServiceKit;
-			packageProductDependencies = (
-			);
-			productName = DataServiceKit;
-			productReference = 756AE6BA2CA348BF00938FCC /* DataServiceKit.framework */;
-			productType = "com.apple.product-type.framework";
-		};
-		756AE6C22CA348BF00938FCC /* DataServiceKitTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 756AE6D72CA348BF00938FCC /* Build configuration list for PBXNativeTarget "DataServiceKitTests" */;
-			buildPhases = (
-				756AE6BF2CA348BF00938FCC /* Sources */,
-				756AE6C02CA348BF00938FCC /* Frameworks */,
-				756AE6C12CA348BF00938FCC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				756AE6C62CA348BF00938FCC /* PBXTargetDependency */,
-				756AE6C82CA348BF00938FCC /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				756AE6C92CA348BF00938FCC /* DataServiceKitTests */,
-			);
-			name = DataServiceKitTests;
-			packageProductDependencies = (
-			);
-			productName = DataServiceKitTests;
-			productReference = 756AE6C32CA348BF00938FCC /* DataServiceKitTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		75869DC82D01B1D400D981B6 /* CottonUseCases */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 75869DE12D01B1D400D981B6 /* Build configuration list for PBXNativeTarget "CottonUseCases" */;
@@ -2189,6 +2072,7 @@
 			packageProductDependencies = (
 				75869E0B2D01B43A00D981B6 /* ReactiveSwift */,
 				75D2F3142E74C1F400556C5B /* AutoMockable */,
+				75D6F4482E7DE344000524BF /* GenericServiceKit */,
 			);
 			productName = CottonUseCases;
 			productReference = 75869DC92D01B1D400D981B6 /* CottonUseCases.framework */;
@@ -2285,7 +2169,6 @@
 			);
 			dependencies = (
 				75869EF72D01DF4800D981B6 /* PBXTargetDependency */,
-				7586A3962D08B3FB00D981B6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				75869E7F2D01DDBB00D981B6 /* CottonDataServices */,
@@ -2297,6 +2180,7 @@
 				75D2F3122E74C1DC00556C5B /* AutoMockable */,
 				75AE46BB2E754FFF0088C26E /* CottonRestKit */,
 				75AE46BD2E7550100088C26E /* CottonNetworking */,
+				75C252B72E75E7A5000D457A /* GenericServiceKit */,
 			);
 			productName = CottonDataServices;
 			productReference = 75869E7E2D01DDBB00D981B6 /* CottonDataServices.framework */;
@@ -2390,7 +2274,6 @@
 				608DA750223A3BD5009F75BD /* PBXTargetDependency */,
 				8AF4337B248EBB2A0047452B /* PBXTargetDependency */,
 				8ABF504327CC1A64007C6427 /* PBXTargetDependency */,
-				756AE6CE2CA348BF00938FCC /* PBXTargetDependency */,
 				756AE6E72CA34B8E00938FCC /* PBXTargetDependency */,
 				75869DDD2D01B1D400D981B6 /* PBXTargetDependency */,
 				75869E272D01B4BD00D981B6 /* PBXTargetDependency */,
@@ -2405,6 +2288,7 @@
 				759E3E4C2C863B3D00245B44 /* Atomics */,
 				75D2F3002E74C0DD00556C5B /* CottonBase */,
 				75D2F3182E74C23100556C5B /* AutoMockable */,
+				75C252B92E75E7F9000D457A /* GenericServiceKit */,
 			);
 			productName = catowser;
 			productReference = 8435A4971EED5E700020102F /* Cotton Dev.app */;
@@ -2544,12 +2428,6 @@
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1100;
 					};
-					756AE6B92CA348BF00938FCC = {
-						CreatedOnToolsVersion = 16.0;
-					};
-					756AE6C22CA348BF00938FCC = {
-						CreatedOnToolsVersion = 16.0;
-					};
 					75869DC82D01B1D400D981B6 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -2638,7 +2516,6 @@
 				608DA749223A3BD4009F75BD /* CottonPlugins */,
 				8AF43374248EBB2A0047452B /* CssParser */,
 				8ABF503D27CC1A64007C6427 /* FeatureFlagsKit */,
-				756AE6B92CA348BF00938FCC /* DataServiceKit */,
 				7586A8F82D11CA9C00D981B6 /* ViewModelKit */,
 				75869DC82D01B1D400D981B6 /* CottonUseCases */,
 				75869E122D01B4BD00D981B6 /* CottonViewModels */,
@@ -2649,7 +2526,6 @@
 				8AE63B53248EC38300D6D2E4 /* CottonPluginsTests */,
 				8AB022EB26258B110053AFF0 /* CoreBrowserTests */,
 				8A7B1B9E28EB131F004FC135 /* CottonDataTests */,
-				756AE6C22CA348BF00938FCC /* DataServiceKitTests */,
 				75869DD12D01B1D400D981B6 /* CottonUseCasesTests */,
 				75869E1B2D01B4BD00D981B6 /* CottonViewModelsTests */,
 				75869E862D01DDBB00D981B6 /* CottonDataServicesTests */,
@@ -2673,20 +2549,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				60D52D43225F55B400CB56F0 /* topdomains.txt in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		756AE6B82CA348BF00938FCC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		756AE6C12CA348BF00938FCC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2938,20 +2800,6 @@
 				60D52D3E225F47DB00CB56F0 /* InMemoryDomainSearchProvider.swift in Sources */,
 				75EFE97B2CD2CA15001CD0E6 /* WeakWrapper.swift in Sources */,
 				6094E740221FE6CB004269A2 /* Box.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		756AE6B62CA348BF00938FCC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		756AE6BF2CA348BF00938FCC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3267,24 +3115,8 @@
 			target = 6094E71B221FD2B9004269A2 /* CoreBrowser */;
 			targetProxy = 6094E721221FD2B9004269A2 /* PBXContainerItemProxy */;
 		};
-		756AE6C62CA348BF00938FCC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 756AE6B92CA348BF00938FCC /* DataServiceKit */;
-			targetProxy = 756AE6C52CA348BF00938FCC /* PBXContainerItemProxy */;
-		};
-		756AE6C82CA348BF00938FCC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8435A4961EED5E700020102F /* Cotton */;
-			targetProxy = 756AE6C72CA348BF00938FCC /* PBXContainerItemProxy */;
-		};
-		756AE6CE2CA348BF00938FCC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 756AE6B92CA348BF00938FCC /* DataServiceKit */;
-			targetProxy = 756AE6CD2CA348BF00938FCC /* PBXContainerItemProxy */;
-		};
 		756AE6E72CA34B8E00938FCC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 756AE6B92CA348BF00938FCC /* DataServiceKit */;
 			targetProxy = 756AE6E62CA34B8E00938FCC /* PBXContainerItemProxy */;
 		};
 		75869DD52D01B1D400D981B6 /* PBXTargetDependency */ = {
@@ -3367,11 +3199,6 @@
 			isa = PBXTargetDependency;
 			target = 75869E7D2D01DDBB00D981B6 /* CottonDataServices */;
 			targetProxy = 75869F002D02DA5300D981B6 /* PBXContainerItemProxy */;
-		};
-		7586A3962D08B3FB00D981B6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 756AE6B92CA348BF00938FCC /* DataServiceKit */;
-			targetProxy = 7586A3952D08B3FB00D981B6 /* PBXContainerItemProxy */;
 		};
 		7586A9052D11CA9C00D981B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3664,172 +3491,6 @@
 				SUPPORTS_MACCATALYST = FALSE;
 			};
 			name = Debug;
-		};
-		756AE6D12CA348BF00938FCC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Cotton (Catowser). All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-no-verify-emitted-module-interface";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.DataServiceKit.debug;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REGISTER_APP_GROUPS = NO;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		756AE6D22CA348BF00938FCC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Cotton (Catowser). All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.0;
-				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
-				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-no-verify-emitted-module-interface";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.DataServiceKit;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				REGISTER_APP_GROUPS = NO;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_INSTALL_OBJC_HEADER = NO;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		756AE6D32CA348BF00938FCC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = ae.DataServiceKitTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = NO;
-				SUPPORTED_PLATFORMS = macosx;
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		756AE6D42CA348BF00938FCC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MARKETING_VERSION = 1.0;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = ae.DataServiceKitTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = NO;
-				SUPPORTED_PLATFORMS = macosx;
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
 		};
 		75869DE22D01B1D400D981B6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5074,24 +4735,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		756AE6D62CA348BF00938FCC /* Build configuration list for PBXNativeTarget "DataServiceKit" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				756AE6D12CA348BF00938FCC /* Debug */,
-				756AE6D22CA348BF00938FCC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		756AE6D72CA348BF00938FCC /* Build configuration list for PBXNativeTarget "DataServiceKitTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				756AE6D32CA348BF00938FCC /* Debug */,
-				756AE6D42CA348BF00938FCC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		75869DE12D01B1D400D981B6 /* Build configuration list for PBXNativeTarget "CottonUseCases" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -5362,6 +5005,16 @@
 			package = 75D2EDC82E74BB0D00556C5B /* XCLocalSwiftPackageReference "Base" */;
 			productName = CottonNetworking;
 		};
+		75C252B72E75E7A5000D457A /* GenericServiceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75D2ECBA2E74B1FF00556C5B /* XCLocalSwiftPackageReference "Domain" */;
+			productName = GenericServiceKit;
+		};
+		75C252B92E75E7F9000D457A /* GenericServiceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75D2ECBA2E74B1FF00556C5B /* XCLocalSwiftPackageReference "Domain" */;
+			productName = GenericServiceKit;
+		};
 		75D2F3002E74C0DD00556C5B /* CottonBase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 75D2EDC82E74BB0D00556C5B /* XCLocalSwiftPackageReference "Base" */;
@@ -5406,6 +5059,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 75D2EDC82E74BB0D00556C5B /* XCLocalSwiftPackageReference "Base" */;
 			productName = AutoMockable;
+		};
+		75D6F4482E7DE344000524BF /* GenericServiceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75D2ECBA2E74B1FF00556C5B /* XCLocalSwiftPackageReference "Domain" */;
+			productName = GenericServiceKit;
 		};
 		8A03F45928F47ACB00E4A296 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;

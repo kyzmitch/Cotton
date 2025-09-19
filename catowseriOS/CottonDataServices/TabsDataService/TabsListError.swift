@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import DataServiceKit
+import GenericServiceKit
 
 /// Tabs data service errors
 public enum TabsListError: DataServiceKitError {

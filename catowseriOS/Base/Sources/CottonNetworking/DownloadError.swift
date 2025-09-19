@@ -1,6 +1,6 @@
 //
 //  DownloadError.swift
-//  catowser
+//  CottonNetworking
 //
 //  Created by Andrey Ermoshin on 09.12.2024.
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
@@ -22,7 +22,8 @@ public enum DownloadError: LocalizedError {
     case stringToIntFailed
     case urlRequestInit(Error)
 
-    public var description: String {
+    /// Error text
+    public var errorDescription: String? {
         switch self {
         case .failedExcludeFromBackup(let error):
             return "failed to exclude download url from backup: \(error)"

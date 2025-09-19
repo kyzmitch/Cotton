@@ -7,7 +7,7 @@
 //
 
 import CoreBrowser
-import DataServiceKit
+import GenericServiceKit
 
 /// Input data for a search suggestions command
 public struct SuggestionsRequest: Sendable {

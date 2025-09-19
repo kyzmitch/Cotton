@@ -7,7 +7,7 @@
 //
 
 import CoreBrowser
-import DataServiceKit
+import GenericServiceKit
 
 /**
  Tabs data service commands for the Command design pattern.

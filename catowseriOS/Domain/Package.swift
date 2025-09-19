@@ -17,6 +17,7 @@ private extension String {
     // MARK: - Frameworks/Kits
     
     static let genericServiceKit = "GenericServiceKit"
+    static let baseUseCaseKit = "BaseUseCaseKit"
 }
 
 // MARK: - Package
@@ -32,6 +33,10 @@ let package = Package(
         .library(
             name: .genericServiceKit,
             targets: [.genericServiceKit]
+        ),
+        .library(
+            name: .baseUseCaseKit,
+            targets: [.baseUseCaseKit]
         )
     ],
     dependencies: [
@@ -48,6 +53,10 @@ let package = Package(
             name: .genericServiceKit,
             dependencies: []
         ),
+        .target(
+            name: .baseUseCaseKit,
+            dependencies: []
+        ),
         .testTarget(
             name: "DomainTests",
             dependencies: [
@@ -56,6 +65,12 @@ let package = Package(
         ),
         .testTarget(
             name: "GenericServiceKitTests",
+            dependencies: [
+                .target(name: .genericServiceKit)
+            ]
+        ),
+        .testTarget(
+            name: "BaseUseCaseKitTests",
             dependencies: [
                 .target(name: .genericServiceKit)
             ]

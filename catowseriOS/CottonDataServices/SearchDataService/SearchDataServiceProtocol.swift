@@ -6,7 +6,7 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
-import DataServiceKit
+import GenericServiceKit
 
 /// Search data service interface
 public protocol SearchDataServiceProtocol: GenericDataServiceProtocol, Sendable where

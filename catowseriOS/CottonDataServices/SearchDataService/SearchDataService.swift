@@ -8,7 +8,7 @@
 
 import Combine
 import CoreBrowser
-import DataServiceKit
+import GenericServiceKit
 
 /// An interface for a factory to be able to mock it for the unit tests
 public protocol SearchStrategiesFactoryProtocol: AnyObject {

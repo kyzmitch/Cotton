@@ -1,10 +1,12 @@
 //
 //  GenericConcurrentDataService.swift
-//  catowser
+//  GenericServiceKit
 //
 //  Created by Andrei Ermoshin on 11/22/24.
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
+
+import Foundation
 
 /// Base generic data service which will use dispatch queue as a synhronization.
 /// There is another approach in this framework using an actor base protocol.
@@ -27,6 +29,10 @@ open class GenericConcurrentDataService<
     public let lock: NSRecursiveLock
     private(set) var commandToPromise: [Command: Promise]
     
+    /// Init the data service
+    ///
+    /// - Parameter executionQueue: Dispatch queue to execute any async code
+    /// - Parameter responseQueue: Dispatch queue to return the response on
     public init(
         executionQueue: DispatchQueueInterface = DispatchQueue.global(),
         responseQueue: DispatchQueueInterface = DispatchQueue.main
@@ -38,6 +44,11 @@ open class GenericConcurrentDataService<
         commandToPromise = [:]
     }
     
+    /// Send a command to the data service
+    ///
+    /// - Parameter command: Data service command
+    /// - Parameter input: Input data for the service or a command
+    /// - Parameter onComplete: A closure to return an async response for the command
     public func sendCommand(
         _ command: Command,
         _ input: ServiceData?,

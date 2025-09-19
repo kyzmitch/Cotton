@@ -6,7 +6,7 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
-import DataServiceKit
+import GenericServiceKit
 
 /// Tabs data service interface
 public protocol TabsDataServiceProtocol: GenericDataServiceActorProtocol, TabsSubject where

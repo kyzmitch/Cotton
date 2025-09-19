@@ -6,7 +6,7 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
-import DataServiceKit
+import GenericServiceKit
 
 /// Data service factory to create the data services
 public class DataServiceFactory {

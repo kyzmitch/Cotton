@@ -7,7 +7,7 @@
 //
 
 import CoreBrowser
-import DataServiceKit
+import GenericServiceKit
 
 public typealias TabIndex = Array<Tab>.Index
 public typealias SelectedTabId = Tab.ID

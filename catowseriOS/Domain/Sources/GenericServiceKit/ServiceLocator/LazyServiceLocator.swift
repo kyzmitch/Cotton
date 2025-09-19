@@ -1,6 +1,6 @@
 //
 //  LazyServiceLocator.swift
-//  catowser
+//  GenericServiceKit
 //
 //  Created by Andrey Ermoshin on 04.01.2024.
 //  Copyright © 2024 Cotton (former Catowser). All rights reserved.
@@ -8,11 +8,10 @@
 
 import Foundation
 
-/// Registry record
 enum ServiceRecord {
     case instance(Any)
     case fromClosure(() -> Any)
-
+    
     func unwrap() -> Any {
         switch self {
         case .instance(let instance):

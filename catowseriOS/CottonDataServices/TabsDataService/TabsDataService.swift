@@ -7,7 +7,7 @@
 //
 
 import CoreBrowser
-import DataServiceKit
+import GenericServiceKit
 import Foundation
 
 /// Tabs list data service which can be used as a subject for observers.
