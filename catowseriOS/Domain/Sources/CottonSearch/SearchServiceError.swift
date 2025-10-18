@@ -7,6 +7,7 @@
 //
 
 import GenericServiceKit
+import Foundation
 
 /// Search data service errors
 public enum SearchServiceError: DataServiceKitError {

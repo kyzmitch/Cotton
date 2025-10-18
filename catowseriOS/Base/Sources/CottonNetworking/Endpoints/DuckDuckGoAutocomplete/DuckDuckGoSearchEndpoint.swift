@@ -50,14 +50,19 @@ extension Endpoint where S == DuckDuckGoServer {
     }
 }
 
+/// Duck duck  go suggestions response
 public struct DDGoSuggestionsResponse: ResponseType {
+    /// Success codes to expect
     public static var successCodes: [Int] {
         [200]
     }
 
+    /// Query text
     public let queryText: String
+    /// Results of the query
     public let textResults: [String]
 
+    /// Init from json
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         queryText = try container.decode(String.self)

@@ -13,6 +13,9 @@ import Combine
 import CottonRestKit
 import Alamofire
 
+// MARK: - Context
+
+/// Duck duck go rest client context
 public final class DDGoContext: RestClientContext {
     public typealias Response = DDGoSuggestionsResponse
     public typealias Server = DuckDuckGoServer
@@ -24,15 +27,20 @@ public final class DDGoContext: RestClientContext {
     public let rxSubscriber: HttpKitRxSubscriber
     public let subscriber: HttpKitSubscriber
 
-    public init(_ client: Client,
-                _ rxSubscriber: HttpKitRxSubscriber,
-                _ subscriber: HttpKitSubscriber) {
+    public init(
+        _ client: Client,
+        _ rxSubscriber: HttpKitRxSubscriber,
+        _ subscriber: HttpKitSubscriber
+    ) {
         self.client = client
         self.rxSubscriber = rxSubscriber
         self.subscriber = subscriber
     }
 }
 
+// MARK: - Strategy
+
+/// Duck duck go autocomplete strategy
 public final class DDGoAutocompleteStrategy: SearchAutocompleteStrategy {
     public typealias Context = DDGoContext
 

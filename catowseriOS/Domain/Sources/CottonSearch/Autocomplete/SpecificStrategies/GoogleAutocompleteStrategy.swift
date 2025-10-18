@@ -13,6 +13,9 @@ import Combine
 import CottonRestKit
 import Alamofire
 
+// MARK: - Context
+
+/// Google rest client context
 public final class GoogleContext: RestClientContext {
     public typealias Response = GSearchSuggestionsResponse
     public typealias Server = GoogleServer
@@ -24,15 +27,20 @@ public final class GoogleContext: RestClientContext {
     public let rxSubscriber: HttpKitRxSubscriber
     public let subscriber: HttpKitSubscriber
 
-    public init(_ client: Client,
-                _ rxSubscriber: HttpKitRxSubscriber,
-                _ subscriber: HttpKitSubscriber) {
+    public init(
+        _ client: Client,
+        _ rxSubscriber: HttpKitRxSubscriber,
+        _ subscriber: HttpKitSubscriber
+    ) {
         self.client = client
         self.rxSubscriber = rxSubscriber
         self.subscriber = subscriber
     }
 }
 
+// MARK: - Strategy
+
+/// Google autocomplete strategy
 public final class GoogleAutocompleteStrategy: SearchAutocompleteStrategy {
     public typealias Context = GoogleContext
 

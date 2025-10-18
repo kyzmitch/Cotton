@@ -772,7 +772,6 @@
 		8A7B1BF628EB2C7F004FC135 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8A7B1BFB28EB2E59004FC135 /* WebViewContextImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContextImpl.swift; sourceTree = "<group>"; };
 		8A8035E724442F0F000E035F /* Info-dnsext.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Info-dnsext.plist"; path = "/Users/aermoshin/prj/catowser/catowser/Info-dnsext.plist"; sourceTree = "<absolute>"; };
-		8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "catowser dnsextDebug.entitlements"; sourceTree = "<group>"; };
 		8A8035E924442F45000E035F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		8A8035EF24446234000E035F /* DNSProxy.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DNSProxy.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A8035F124446234000E035F /* AppProxyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppProxyProvider.swift; sourceTree = "<group>"; };
@@ -1425,7 +1424,6 @@
 			isa = PBXGroup;
 			children = (
 				60D52D26225CAE0300CB56F0 /* catowser.entitlements */,
-				8A8035E824442F45000E035F /* catowser dnsextDebug.entitlements */,
 				759AE09529146C96008CE4EE /* Mockfile */,
 				8435A4991EED5E700020102F /* catowser */,
 				6094E71D221FD2B9004269A2 /* CoreBrowser */,

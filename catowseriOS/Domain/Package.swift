@@ -14,10 +14,22 @@ private extension String {
     
     // MARK: - Libraries
     
+    static let searchLibrary = "CottonSearch"
+    
     // MARK: - Frameworks/Kits
     
     static let genericServiceKit = "GenericServiceKit"
     static let baseUseCaseKit = "BaseUseCaseKit"
+    
+    // MARK: - Frameworks/Kits from Base package
+
+    static let cottonNetworkingLibrary = "CottonNetworking"
+    static let cottonRestKit = "CottonRestKit"
+    
+    // MARK: - 3rd party
+
+    static let reactiveSwiftFramework = "ReactiveSwift"
+    static let alamofireFramework = "Alamofire"
 }
 
 // MARK: - Package
@@ -37,6 +49,10 @@ let package = Package(
         .library(
             name: .baseUseCaseKit,
             targets: [.baseUseCaseKit]
+        ),
+        .library(
+            name: .searchLibrary,
+            targets: [.searchLibrary]
         )
     ],
     dependencies: [
@@ -56,6 +72,16 @@ let package = Package(
         .target(
             name: .baseUseCaseKit,
             dependencies: []
+        ),
+        .target(
+            name: .searchLibrary,
+            dependencies: [
+                .target(name: .genericServiceKit),
+                .product(name: .cottonNetworkingLibrary, package: .basePackage),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
+                .product(name: .alamofireFramework, package: .alamofireFramework),
+                .product(name: .cottonRestKit, package: .basePackage)
+            ]
         ),
         .testTarget(
             name: "DomainTests",

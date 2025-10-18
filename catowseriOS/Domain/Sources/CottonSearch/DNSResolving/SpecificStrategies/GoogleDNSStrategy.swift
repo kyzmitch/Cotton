@@ -13,6 +13,8 @@ import Combine
 import CottonRestKit
 import Alamofire
 
+// MARK: - Context
+
 /// DNS over HTTPs google context for strategy class
 public final class GoogleDNSContext: RestClientContext {
     public typealias Response = GoogleDNSOverJSONResponse
@@ -33,6 +35,8 @@ public final class GoogleDNSContext: RestClientContext {
         self.subscriber = subscriber
     }
 }
+
+// MARK: - Strategy
 
 /// DNS over HTTPs google strategy to use google APIs
 public final class GoogleDNSStrategy: DNSResolvingStrategy {

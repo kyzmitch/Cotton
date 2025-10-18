@@ -1,6 +1,6 @@
 //
 //  RestClientContext.swift
-//  catowser
+//  CottonNetworking
 //
 //  Created by Andrei Ermoshin on 6/21/22.
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
@@ -12,7 +12,6 @@ import CottonRestKit
 import Combine
 import CottonBase
 import CottonReactiveRestKit
-import CottonNetworking
 import AutoMockable
 
 extension CottonBase.ServerDescription: @unchecked Sendable {}
@@ -55,7 +54,9 @@ public protocol RestClientContext: AnyObject, AutoMockable, Sendable {
     /// Any other type of subscriber
     var subscriber: HttpKitSubscriber { get }
 
-    init(_ client: Client,
-         _ rxSubscriber: HttpKitRxSubscriber,
-         _ subscriber: HttpKitSubscriber)
+    init(
+        _ client: Client,
+        _ rxSubscriber: HttpKitRxSubscriber,
+        _ subscriber: HttpKitSubscriber
+    )
 }
