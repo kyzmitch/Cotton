@@ -56,7 +56,15 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Base")
+        .package(path: "../Base"),
+        .package(
+            url: "https://github.com/ReactiveCocoa/ReactiveSwift",
+            exact: "7.0.0"
+        ),
+        .package(
+            url: "https://github.com/Alamofire/Alamofire.git",
+            exact: "5.9.1"
+        )
     ],
     targets: [
         .target(

@@ -7,6 +7,7 @@
 //
 
 import GenericServiceKit
+import CottonSearch
 
 /// Data service factory to create the data services
 public class DataServiceFactory {
