@@ -21,6 +21,7 @@ private extension String {
     // MARK: - Frameworks/Kits
     
     static let genericServiceKit = "GenericServiceKit"
+    static let viewModelKit = "ViewModelKit"
     static let baseUseCaseKit = "BaseUseCaseKit"
     
     // MARK: - Frameworks/Kits from Base package
@@ -47,6 +48,10 @@ let package = Package(
         .library(
             name: .genericServiceKit,
             targets: [.genericServiceKit]
+        ),
+        .library(
+            name: .viewModelKit,
+            targets: [.viewModelKit]
         ),
         .library(
             name: .baseUseCaseKit,
@@ -85,6 +90,10 @@ let package = Package(
         ),
         .target(
             name: .genericServiceKit,
+            dependencies: []
+        ),
+        .target(
+            name: .viewModelKit,
             dependencies: []
         ),
         .target(
