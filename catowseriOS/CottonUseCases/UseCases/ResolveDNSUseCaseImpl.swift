@@ -7,7 +7,7 @@
 //
 
 import Combine
-import CottonDataServices
+import CottonSearch
 import Foundation
 @preconcurrency import ReactiveSwift
 

@@ -9,6 +9,9 @@
 import Combine
 import CoreBrowser
 import GenericServiceKit
+import CottonDependencyAssembly
+
+// MARK: - Strats interface
 
 /// An interface for a factory to be able to mock it for the unit tests
 public protocol SearchStrategiesFactoryProtocol: AnyObject {
@@ -16,6 +19,8 @@ public protocol SearchStrategiesFactoryProtocol: AnyObject {
     func duckDuckGoSearchStrategy() -> any SearchAutocompleteStrategy
     func googleSearchStrategy() -> any SearchAutocompleteStrategy
 }
+
+// MARK: - Search data service
 
 /// A data service needed to find/search any data needed for the app.
 /// Currently it searches for the search suggestions to support auto-completion
@@ -67,7 +72,7 @@ final class SearchDataService: GenericConcurrentDataService<SearchServiceCommand
     }
 }
 
-// MARK: - private functions
+// MARK: - Private functions
 
 private extension SearchDataService {
     
@@ -191,5 +196,22 @@ private extension SearchDataService {
         // could be improved later by searching for all similar
         // commands and finishing them with the same output
         finishCommand(command, output)
+    }
+}
+
+// MARK: - Dependency
+
+extension DataServiceFactory {
+    /// Factory method to create search data service and hide an actual implementation
+    public static func createSearchService(
+        executionQueue: any DispatchQueueInterface,
+        responseQueue: any DispatchQueueInterface,
+        stratsFactory: SearchStrategiesFactoryProtocol
+    ) -> any SearchDataServiceProtocol {
+        SearchDataService(
+            executionQueue: executionQueue,
+            responseQueue: responseQueue,
+            stratsFactory: stratsFactory
+        )
     }
 }

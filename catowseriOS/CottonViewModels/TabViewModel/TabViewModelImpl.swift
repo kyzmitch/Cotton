@@ -12,7 +12,7 @@ import CottonBase
 import CoreBrowser
 import FeatureFlagsKit
 import CottonUseCases
-import CottonDataServices
+import CottonTabs
 
 /// Tab view model implementation
 @MainActor final class TabViewModelImpl: TabViewModel {

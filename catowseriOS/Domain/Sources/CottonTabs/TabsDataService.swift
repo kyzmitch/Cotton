@@ -9,6 +9,7 @@
 import CoreBrowser
 import GenericServiceKit
 import Foundation
+import CottonDependencyAssembly
 
 /// Tabs list data service which can be used as a subject for observers.
 actor TabsDataService: TabsDataServiceProtocol {
@@ -784,3 +785,25 @@ struct TabsAppStartInfo {
         self.defaultContentType = defaultContentType
     }
 }
+
+// MARK: - Dependency
+
+extension DataServiceFactory {
+    /// Factory method to create tabs data service and hide an actual implementation
+    public static func createTabsService(
+        _ tabsRepository: TabsRepository,
+        _ positioning: TabsStatesInterface,
+        _ selectionStrategy: TabSelectionStrategy,
+        _ tabsSubject: TabsDataSubjectProtocol?,
+        _ observingType: ObservingApiType
+    ) async -> any TabsDataServiceProtocol {
+        await TabsDataService(
+            tabsRepository,
+            positioning,
+            selectionStrategy,
+            tabsSubject,
+            observingType
+        )
+    }
+}
+

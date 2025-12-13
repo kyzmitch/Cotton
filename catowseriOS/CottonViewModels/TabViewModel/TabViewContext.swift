@@ -7,7 +7,7 @@
 //
 
 import CottonBase
-import CottonDataServices
+import CottonTabs
 
 /// Tab view model context to abstract out some app dependencies
 public protocol TabViewModelContext: AnyObject, Sendable {

@@ -9,7 +9,7 @@
 import CottonPlugins
 import FeatureFlagsKit
 import CoreBrowser
-import CottonDataServices
+import CottonSearch
 import CottonViewModels
 
 /// Central class for application initialization

@@ -7,7 +7,7 @@
 //
 
 import Combine
-import CottonDataServices
+import CottonTabs
 
 /// Tab view model interface
 @MainActor public protocol TabViewModel: TabsObserver, AnyObject, Sendable {

@@ -9,7 +9,7 @@
 @preconcurrency import ReactiveSwift
 import Combine
 import CoreBrowser
-import CottonDataServices
+import CottonSearch
 import Foundation
 
 private extension String {

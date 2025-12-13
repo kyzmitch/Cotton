@@ -9,7 +9,7 @@
 import Foundation
 import CoreBrowser
 import CottonViewModels
-import CottonDataServices
+import CottonTabs
 
 typealias TabAddPositionsModel = BaseListViewModel<AddedTabPosition>
 

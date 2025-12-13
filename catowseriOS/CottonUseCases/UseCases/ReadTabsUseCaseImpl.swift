@@ -7,7 +7,7 @@
 //
 
 import CoreBrowser
-import CottonDataServices
+import CottonTabs
 
 public final class ReadTabsUseCaseImpl: ReadTabsUseCase {
     private let tabsDataService: any TabsDataServiceProtocol

@@ -9,12 +9,18 @@
 import CoreBrowser
 import GenericServiceKit
 
+/// Tab's index type
 public typealias TabIndex = Array<Tab>.Index
+/// Selected tab id type
 public typealias SelectedTabId = Tab.ID
 
+/// Tabs count service data
 public typealias TabsCountData = CommandExecutionData<Void, Int, TabsListError>
+/// Selected tab service data
 public typealias SelectedTabData = CommandExecutionData<Void, Tab.ID, TabsListError>
+/// All tabs service data
 public typealias AllTabsData = CommandExecutionData<Void, [Tab], TabsListError>
+
 /// Input can be a newly added tab, but it is passed in a command.
 /// Output is the index of the added tab.
 public typealias AddTabData = CommandExecutionData<
@@ -31,13 +37,19 @@ public typealias CloseTabData = CommandExecutionData<
     SelectedTabId?,
     TabsListError
 >
+
+/// Close all tabs service data
 public typealias CloseAllTabsData = CommandExecutionData<Void, Void, TabsListError>
+/// Select tab service data
 public typealias SelectTabData = CommandExecutionData<Void, Void, TabsListError>
+/// Replace tab service data
 public typealias ReplaceTabContentData = CommandExecutionData<Void, Void, TabsListError>
+/// Update tab preview service data
 public typealias UpdateTabPreviewData = CommandExecutionData<Void, Void, TabsListError>
 
 /// Tabs service data output/response type.
 public struct TabsServiceData: GenericServiceData, Sendable {
+    /// Init
     public init() {
         tabsCount = .notStarted
         selectedTabId = .notStarted
@@ -62,10 +74,13 @@ public struct TabsServiceData: GenericServiceData, Sendable {
     public var tabAdded: AddTabData
     /// Result of closed tab
     public var tabClosed: CloseTabData
-    ///
+    /// Result of all tabs closed
     public var allTabsClosed: CloseAllTabsData
+    /// Result of tab selected
     public var tabSelected: SelectTabData
+    /// Result of tab content replaced
     public var tabContentReplaced: ReplaceTabContentData
+    /// Result of tab preview updated
     public var tabPreviewUpdated: UpdateTabPreviewData
 }
 

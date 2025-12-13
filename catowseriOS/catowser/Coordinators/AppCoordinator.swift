@@ -12,7 +12,7 @@ import CottonBase
 import FeatureFlagsKit
 import CottonPlugins
 import CottonViewModels
-import CottonDataServices
+import CottonTabs
 
 final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsProxyDelegate {
     /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well

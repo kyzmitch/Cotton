@@ -16,7 +16,7 @@ import FeatureFlagsKit
 import Combine
 #endif
 import CottonNetworking
-import CottonDataServices
+import CottonTabs
 import CottonViewModels
 
 @MainActor protocol TabDelegate: AnyObject {

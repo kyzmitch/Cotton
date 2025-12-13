@@ -11,7 +11,7 @@ import Combine
 import CottonBase
 import CoreBrowser
 import CottonUseCases
-import CottonDataServices
+import CottonTabs
 import ViewModelKit
 
 /// Tab previews view model

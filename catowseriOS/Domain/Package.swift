@@ -15,6 +15,8 @@ private extension String {
     // MARK: - Libraries
     
     static let searchLibrary = "CottonSearch"
+    static let tabsLibrary = "CottonTabs"
+    static let cottonDependencyAssembly = "CottonDependencyAssembly"
     
     // MARK: - Frameworks/Kits
     
@@ -53,6 +55,14 @@ let package = Package(
         .library(
             name: .searchLibrary,
             targets: [.searchLibrary]
+        ),
+        .library(
+            name: .tabsLibrary,
+            targets: [.tabsLibrary]
+        ),
+        .library(
+            name: .cottonDependencyAssembly,
+            targets: [.cottonDependencyAssembly]
         )
     ],
     dependencies: [
@@ -85,11 +95,27 @@ let package = Package(
             name: .searchLibrary,
             dependencies: [
                 .target(name: .genericServiceKit),
+                .target(name: .cottonDependencyAssembly),
                 .product(name: .cottonNetworkingLibrary, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework),
                 .product(name: .cottonRestKit, package: .basePackage)
             ]
+        ),
+        .target(
+            name: .tabsLibrary,
+            dependencies: [
+                .target(name: .genericServiceKit),
+                .target(name: .cottonDependencyAssembly),
+                .product(name: .cottonNetworkingLibrary, package: .basePackage),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
+                .product(name: .alamofireFramework, package: .alamofireFramework),
+                .product(name: .cottonRestKit, package: .basePackage)
+            ]
+        ),
+        .target(
+            name: .cottonDependencyAssembly,
+            dependencies: []
         ),
         .testTarget(
             name: "DomainTests",

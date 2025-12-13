@@ -9,7 +9,8 @@
 import CottonPlugins
 import CoreBrowser
 import CottonViewModels
-import CottonDataServices
+import CottonSearch
+import CottonTabs
 
 /// A simple type to return multiple view models from one function
 /// instead of a tuple.

@@ -8,7 +8,7 @@
 
 import CoreBrowser
 import UIKit
-import CottonDataServices
+import CottonTabs
 
 /// A service registry used only as a main actor for UI
 /// to be able to use it in SwiftUI or UIKit views for observing

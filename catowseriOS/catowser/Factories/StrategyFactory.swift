@@ -6,7 +6,7 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
-import CottonDataServices
+import CottonSearch
 
 /// Strategies factory.
 ///

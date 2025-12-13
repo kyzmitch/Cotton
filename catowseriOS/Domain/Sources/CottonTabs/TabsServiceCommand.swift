@@ -9,10 +9,8 @@
 import CoreBrowser
 import GenericServiceKit
 
-/**
- Tabs data service commands for the Command design pattern.
- Each command case can carry the input data.
- */
+/// Tabs data service commands for the Command design pattern.
+/// Each command case can carry the input data.
 public enum TabsServiceCommand: GenericDataServiceCommand, Sendable {
     case getTabsCount
     case getSelectedTabId
@@ -25,6 +23,7 @@ public enum TabsServiceCommand: GenericDataServiceCommand, Sendable {
     case replaceContent(Tab.ContentType)
     case updateSelectedTabPreview(Data?)
     
+    /// All enum cases
     public static let allCases: [TabsServiceCommand] = [
         .getTabsCount,
         .getSelectedTabId,

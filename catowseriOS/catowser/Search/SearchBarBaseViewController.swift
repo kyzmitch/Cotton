@@ -9,7 +9,7 @@
 import UIKit
 import CoreBrowser
 import FeatureFlagsKit
-import CottonDataServices
+import CottonTabs
 import CottonViewModels
 
 @MainActor protocol SearchBarControllerInterface: AnyObject {

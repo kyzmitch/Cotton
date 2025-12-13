@@ -11,6 +11,8 @@
 /// 
 /// The detach function is not needed now, since the moment
 /// when subject started to store observers by weak references.
+///
+/// Used only outside of this module.
 public protocol TabsSubject: Sendable {
     /// Add tabs observer. Notifies the new observer right away with existing data if needed.
     /// - Parameter observer: A new observer to notify from this subject

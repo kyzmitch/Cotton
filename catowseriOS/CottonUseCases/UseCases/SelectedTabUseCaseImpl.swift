@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonDataServices
+import CottonTabs
 
 public final class SelectedTabUseCaseImpl: SelectedTabUseCase {
     private let tabsDataService: any TabsDataServiceProtocol
@@ -16,15 +16,11 @@ public final class SelectedTabUseCaseImpl: SelectedTabUseCase {
         self.tabsDataService = tabsDataService
     }
 
-    public func setSelectedPreview(_ image: Data?) async throws(AppError) {
+    public func setSelectedPreview(_ image: Data?) async throws {
         let serviceData = await tabsDataService.sendCommand(.updateSelectedTabPreview(image), nil)
         guard case let .finished(result) = serviceData.tabPreviewUpdated else {
-            throw .commandNotFinishedYet
+            throw AppError.commandNotFinishedYet
         }
-        do {
-            _ = try result.get()
-        } catch {
-            throw .tabsServiceError(error)
-        }
+        _ = try result.get()
     }
 }

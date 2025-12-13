@@ -7,7 +7,7 @@
 //
 
 import CoreBrowser
-import CottonDataServices
+import CottonTabs
 
 public final class WriteTabsUseCaseImpl: WriteTabsUseCase {
     private let tabsDataService: any TabsDataServiceProtocol
@@ -16,28 +16,28 @@ public final class WriteTabsUseCaseImpl: WriteTabsUseCase {
         self.tabsDataService = tabsDataService
     }
 
-    public func add(tab: CoreBrowser.Tab) async throws(AppError) {
+    public func add(tab: CoreBrowser.Tab) async throws {
         let serviceData = await tabsDataService.sendCommand(.addTab(tab), nil)
         guard case let .finished(result) = serviceData.tabAdded else {
-            throw .commandNotFinishedYet
+            throw AppError.commandNotFinishedYet
         }
         switch result {
         case .failure(let error):
-            throw .tabsServiceError(error)
+            throw error
         case .success:
             return
         }
     }
 
-    public func close(tab: CoreBrowser.Tab) async throws(AppError) -> Tab.ID? {
+    public func close(tab: CoreBrowser.Tab) async throws -> Tab.ID? {
         #warning("TODO: https://github.com/kyzmitch/Cotton/issues/92")
         let serviceData = await tabsDataService.sendCommand(.closeTab(tab), nil)
         guard case let .finished(result) = serviceData.tabClosed else {
-            throw .commandNotFinishedYet
+            throw AppError.commandNotFinishedYet
         }
         switch result {
         case .failure(let error):
-            throw .tabsServiceError(error)
+            throw error
         case .success(let newSelectedId):
             return newSelectedId
         }

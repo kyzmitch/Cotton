@@ -6,7 +6,8 @@
 //  Copyright © 2021 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
-import CottonDataServices
+import CottonTabs
+import CottonSearch
 
 /// Errors used on use case level
 public enum AppError: LocalizedError {
