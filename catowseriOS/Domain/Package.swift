@@ -17,6 +17,7 @@ private extension String {
     static let searchLibrary = "CottonSearch"
     static let tabsLibrary = "CottonTabs"
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
+    static let coreBrowserLibrary = "CoreBrowser"
     
     // MARK: - Frameworks/Kits
     
@@ -28,11 +29,14 @@ private extension String {
 
     static let cottonNetworkingLibrary = "CottonNetworking"
     static let cottonRestKit = "CottonRestKit"
+    static let cottonBase = "CottonBase"
+    static let autoMockableKit = "AutoMockable"
     
     // MARK: - 3rd party
 
     static let reactiveSwiftFramework = "ReactiveSwift"
     static let alamofireFramework = "Alamofire"
+    static let swXmlHashFramework = "SWXMLHash"
 }
 
 // MARK: - Package
@@ -68,6 +72,10 @@ let package = Package(
         .library(
             name: .cottonDependencyAssembly,
             targets: [.cottonDependencyAssembly]
+        ),
+        .library(
+            name: .coreBrowserLibrary,
+            targets: [.coreBrowserLibrary]
         )
     ],
     dependencies: [
@@ -79,6 +87,10 @@ let package = Package(
         .package(
             url: "https://github.com/Alamofire/Alamofire.git",
             exact: "5.9.1"
+        ),
+        .package(
+            url: "https://github.com/drmohundro/SWXMLHash",
+            exact: "7.0.1"
         )
     ],
     targets: [
@@ -125,6 +137,19 @@ let package = Package(
         .target(
             name: .cottonDependencyAssembly,
             dependencies: []
+        ),
+        .target(
+            name: .coreBrowserLibrary,
+            dependencies: [
+                .product(name: .cottonBase, package: .basePackage),
+                .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
+                .product(name: .swXmlHashFramework, package: .swXmlHashFramework)
+            ]
+        ),
+        .binaryTarget(
+            name: .cottonBase,
+            path: "../../cotton-base/build/XCFrameworks/release/CottonBase.xcframework"
         ),
         .testTarget(
             name: "DomainTests",
