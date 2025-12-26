@@ -7,6 +7,7 @@
 //
 
 import CoreBrowser
+import Foundation
 
 /// Tabs observer interface.
 /// No need to add delegate methods for tab close case, because anyway view must be removed right away.

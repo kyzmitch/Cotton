@@ -117,6 +117,7 @@ let package = Package(
             dependencies: [
                 .target(name: .genericServiceKit),
                 .target(name: .cottonDependencyAssembly),
+                .target(name: .coreBrowserLibrary),
                 .product(name: .cottonNetworkingLibrary, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework),

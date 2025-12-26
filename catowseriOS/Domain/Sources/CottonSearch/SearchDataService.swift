@@ -10,6 +10,7 @@ import Combine
 import CoreBrowser
 import GenericServiceKit
 import CottonDependencyAssembly
+import Foundation
 
 // MARK: - Strats interface
 
