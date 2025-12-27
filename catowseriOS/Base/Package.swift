@@ -17,10 +17,12 @@ private extension String {
     static let reactiveSwiftFramework = "ReactiveSwift"
     static let swXmlHashFramework = "SWXMLHash"
     static let alamofireFramework = "Alamofire"
+    static let swiftSoupFramework = "SwiftSoup"
     
     // MARK: - Libraries
     
     static let cssParserLibrary = "CssParser"
+    static let cottonPluginsLibrary = "CottonPlugins"
     
     // MARK: - Frameworks/Kits
     
@@ -74,6 +76,12 @@ let package = Package(
             ]
         ),
         .library(
+            name: .cottonPluginsLibrary,
+            targets: [
+                .cottonPluginsLibrary
+            ]
+        ),
+        .library(
             name: .cssParserLibrary,
             targets: [
                 .cssParserLibrary
@@ -92,6 +100,10 @@ let package = Package(
         .package(
             url: "https://github.com/drmohundro/SWXMLHash",
             exact: "7.0.1"
+        ),
+        .package(
+            url: "https://github.com/scinfu/SwiftSoup.git",
+            exact: "2.4.3"
         )
     ],
     targets: [
@@ -109,6 +121,15 @@ let package = Package(
             dependencies: [
                 .target(name: .cottonBase),
                 .target(name: .autoMockableKit)
+            ]
+        ),
+        .target(
+            name: .cottonPluginsLibrary,
+            dependencies: [
+                .target(name: .cottonBase),
+                .target(name: .cssParserLibrary),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
+                .product(name: .swiftSoupFramework, package: .swiftSoupFramework)
             ]
         ),
         .target(
@@ -148,6 +169,12 @@ let package = Package(
                 .target(name: .cottonRestKit)
             ]
         ),
+        .testTarget(
+            name: "CottonPluginsTests",
+            dependencies: [
+                .target(name: .cottonPluginsLibrary)
+            ]
+        )
     ],
     swiftLanguageModes: [.v6]
 )
