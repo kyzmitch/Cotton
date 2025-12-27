@@ -24,6 +24,7 @@ private extension String {
     static let genericServiceKit = "GenericServiceKit"
     static let viewModelKit = "ViewModelKit"
     static let baseUseCaseKit = "BaseUseCaseKit"
+    static let featureFlagsKit = "FeatureFlagsKit"
     
     // MARK: - Frameworks/Kits from Base package
 
@@ -60,6 +61,10 @@ let package = Package(
         .library(
             name: .baseUseCaseKit,
             targets: [.baseUseCaseKit]
+        ),
+        .library(
+            name: .featureFlagsKit,
+            targets: [.featureFlagsKit]
         ),
         .library(
             name: .searchLibrary,
@@ -111,6 +116,13 @@ let package = Package(
         .target(
             name: .baseUseCaseKit,
             dependencies: []
+        ),
+        .target(
+            name: .featureFlagsKit,
+            dependencies: [
+                .target(name: .coreBrowserLibrary),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
+            ]
         ),
         .target(
             name: .searchLibrary,
