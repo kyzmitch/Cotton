@@ -20,7 +20,7 @@ public final class InMemoryDomainSearchProvider {
 
         init() {
             storage = Trie()
-            let bundle = Bundle(for: StateHolder.self)
+            let bundle = Bundle.module
 
             guard let filePath = bundle.path(forResource: filename, ofType: "txt") else {
                 assertionFailure("Failed to find \"\(filename)\" file in framework bundle")

@@ -158,6 +158,9 @@ let package = Package(
                 .product(name: .autoMockableKit, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swXmlHashFramework, package: .swXmlHashFramework)
+            ],
+            resources: [
+                .process("Resources/topdomains.txt")
             ]
         ),
         .binaryTarget(
