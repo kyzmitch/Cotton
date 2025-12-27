@@ -84,6 +84,7 @@
 		755E10B727CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755E10B627CA81B600D90AD0 /* SpecificApplicationEnumFeatures.swift */; };
 		756137912EFFB51F00A6F605 /* FeatureFlagsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 756137902EFFB51F00A6F605 /* FeatureFlagsKit */; };
 		756137932EFFB53C00A6F605 /* FeatureFlagsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 756137922EFFB53C00A6F605 /* FeatureFlagsKit */; };
+		756137952EFFBB4100A6F605 /* CssParser in Frameworks */ = {isa = PBXBuildFile; productRef = 756137942EFFBB4100A6F605 /* CssParser */; };
 		75664D6B2C93531C0025BE77 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75664D6A2C93531C0025BE77 /* Theme.swift */; };
 		75696D262EFF1D71007C26DC /* CottonRestKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75696D252EFF1D71007C26DC /* CottonRestKit */; };
 		75696D282EFF1DAA007C26DC /* CottonRestKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75696D272EFF1DAA007C26DC /* CottonRestKit */; };
@@ -221,7 +222,6 @@
 		8AA89DE6296F4D6A00A6AC1A /* WebViewVMFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */; };
 		8AA89DEA296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DE9296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift */; };
 		8AA89DED296F596600A6AC1A /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA89DEC296F596600A6AC1A /* XCTestCase+Extension.swift */; };
-		8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA9E69A251F3DC3004C7C22 /* Errors.swift */; };
 		8AB5B120294F0CCA00C91383 /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */; };
 		8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB8018927C3E597002D6628 /* BaseMenuView.swift */; };
 		8AB9BE0F28FEFD84002063C2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607CC66622A5505F0037E5EC /* UIKit.framework */; platformFilter = ios; };
@@ -234,7 +234,6 @@
 		8AB9BE1E28FF0CFF002063C2 /* ReusableItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C550621F8AA5900B3DC73 /* ReusableItem.swift */; };
 		8AB9BE2028FF0D0D002063C2 /* AnyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60724EE82209C9A20071BECF /* AnyViewController.swift */; };
 		8AB9BE2228FF0D5C002063C2 /* Tab+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB9BE2128FF0D5C002063C2 /* Tab+Extension.swift */; };
-		8AB9BE2728FF1304002063C2 /* CssParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF43375248EBB2A0047452B /* CssParser.framework */; };
 		8ABA3CCF2522601800E304E2 /* TabsDBClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CCE2522601800E304E2 /* TabsDBClient.swift */; };
 		8ABA3CD22522602900E304E2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ABA3CD12522602900E304E2 /* CoreData.framework */; };
 		8ABA3CD52522608000E304E2 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABA3CD42522608000E304E2 /* Database.swift */; };
@@ -283,12 +282,6 @@
 		8AF3D424297312E90053C0C7 /* WebViewControllerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */; };
 		8AF4336C248E129F0047452B /* HTMLContentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336B248E129F0047452B /* HTMLContentMessage.swift */; };
 		8AF4336F248EA3BE0047452B /* CSSBackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */; };
-		8AF43379248EBB2A0047452B /* CssParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF43377248EBB2A0047452B /* CssParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8AF4337C248EBB2A0047452B /* CssParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF43375248EBB2A0047452B /* CssParser.framework */; };
-		8AF4337D248EBB2A0047452B /* CssParser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8AF43375248EBB2A0047452B /* CssParser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8AF43384248EBBA70047452B /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43381248EBBA70047452B /* Scanner.swift */; };
-		8AF43385248EBBA70047452B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43382248EBBA70047452B /* Parser.swift */; };
-		8AF43386248EBBA70047452B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF43383248EBBA70047452B /* Token.swift */; };
 		8AFDBB0029F938D8006C0E47 /* TabletTabsLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */; };
 		8AFDBB0329F93980006C0E47 /* TabletSearchBarViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */; };
 		8AFDBB0629F93A05006C0E47 /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFDBB0529F93A05006C0E47 /* MenuButton.swift */; };
@@ -376,26 +369,12 @@
 			remoteGlobalIDString = 608DA749223A3BD4009F75BD;
 			remoteInfo = CottonPlugins;
 		};
-		8AB9BE2928FF1304002063C2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8AF43374248EBB2A0047452B;
-			remoteInfo = CssParser;
-		};
 		8AE63B5A248EC38300D6D2E4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 608DA749223A3BD4009F75BD;
 			remoteInfo = JSPlugins;
-		};
-		8AF4337A248EBB2A0047452B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8435A48F1EED5E700020102F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8AF43374248EBB2A0047452B;
-			remoteInfo = CssParser;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -408,7 +387,6 @@
 			files = (
 				608DA752223A3BD5009F75BD /* CottonPlugins.framework in Embed Frameworks */,
 				75869DDF2D01B1D400D981B6 /* CottonUseCases.framework in Embed Frameworks */,
-				8AF4337D248EBB2A0047452B /* CssParser.framework in Embed Frameworks */,
 				75869E292D01B4BD00D981B6 /* CottonViewModels.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -604,7 +582,6 @@
 		8AA89DE5296F4D6A00A6AC1A /* WebViewVMFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMFixture.swift; sourceTree = "<group>"; };
 		8AA89DE9296F55D900A6AC1A /* WebViewVMConcurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVMConcurrencyTests.swift; sourceTree = "<group>"; };
 		8AA89DEC296F596600A6AC1A /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
-		8AA9E69A251F3DC3004C7C22 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		8AB5B11F294F0CCA00C91383 /* EnvironmentValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extension.swift"; sourceTree = "<group>"; };
 		8AB8018927C3E597002D6628 /* BaseMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMenuView.swift; sourceTree = "<group>"; };
 		8AB9BE0928FEB17E002063C2 /* WebSearchAutocompleteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSearchAutocompleteTests.swift; sourceTree = "<group>"; };
@@ -650,11 +627,6 @@
 		8AF3D423297312E90053C0C7 /* WebViewControllerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerProxy.swift; sourceTree = "<group>"; };
 		8AF4336B248E129F0047452B /* HTMLContentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentMessage.swift; sourceTree = "<group>"; };
 		8AF4336E248EA3BE0047452B /* CSSBackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSBackgroundImage.swift; sourceTree = "<group>"; };
-		8AF43375248EBB2A0047452B /* CssParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CssParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8AF43377248EBB2A0047452B /* CssParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CssParser.h; sourceTree = "<group>"; };
-		8AF43381248EBBA70047452B /* Scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
-		8AF43382248EBBA70047452B /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		8AF43383248EBBA70047452B /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		8AFDBAFF29F938D8006C0E47 /* TabletTabsLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletTabsLegacyView.swift; sourceTree = "<group>"; };
 		8AFDBB0229F93980006C0E47 /* TabletSearchBarViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarViewV2.swift; sourceTree = "<group>"; };
 		8AFDBB0529F93A05006C0E47 /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
@@ -703,9 +675,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756137952EFFBB4100A6F605 /* CssParser in Frameworks */,
 				8AB9BE0F28FEFD84002063C2 /* UIKit.framework in Frameworks */,
 				8AD4F51228F491C8009C4BDC /* ReactiveSwift in Frameworks */,
-				8AB9BE2728FF1304002063C2 /* CssParser.framework in Frameworks */,
 				75D2F3052E74C0F800556C5B /* CottonBase in Frameworks */,
 				8A03F45A28F47ACB00E4A296 /* SwiftSoup in Frameworks */,
 			);
@@ -777,7 +749,6 @@
 				75696D2A2EFF1DBE007C26DC /* CottonNetworking in Frameworks */,
 				759E3E4D2C863B3D00245B44 /* Atomics in Frameworks */,
 				8AD4F52028F49303009C4BDC /* Alamofire in Frameworks */,
-				8AF4337C248EBB2A0047452B /* CssParser.framework in Frameworks */,
 				7586A1C22D05C08600D981B6 /* Foundation.framework in Frameworks */,
 				75AC6A112EED51DA006325AB /* CottonDependencyAssembly in Frameworks */,
 				75869DDE2D01B1D400D981B6 /* CottonUseCases.framework in Frameworks */,
@@ -811,13 +782,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AE63B59248EC38300D6D2E4 /* CottonPlugins.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8AF43372248EBB2A0047452B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1079,7 +1043,6 @@
 				8435A4991EED5E700020102F /* catowser */,
 				608DA74B223A3BD5009F75BD /* CottonPlugins */,
 				8A8035F024446234000E035F /* DNSProxy */,
-				8AF43376248EBB2A0047452B /* CssParser */,
 				8AE63B55248EC38300D6D2E4 /* CottonPluginsTests */,
 				8A7B1BA528EB131F004FC135 /* CottonDataTests */,
 				75869DCA2D01B1D400D981B6 /* CottonUseCases */,
@@ -1097,7 +1060,6 @@
 				8435A4971EED5E700020102F /* Cotton Dev.app */,
 				608DA74A223A3BD4009F75BD /* CottonPlugins.framework */,
 				8A8035EF24446234000E035F /* DNSProxy.appex */,
-				8AF43375248EBB2A0047452B /* CssParser.framework */,
 				8AE63B54248EC38300D6D2E4 /* CottonPluginsTests.xctest */,
 				8A7B1B9F28EB131F004FC135 /* CottonDataTests.xctest */,
 				75869DC92D01B1D400D981B6 /* CottonUseCases.framework */,
@@ -1439,18 +1401,6 @@
 			path = CSSModels;
 			sourceTree = "<group>";
 		};
-		8AF43376248EBB2A0047452B /* CssParser */ = {
-			isa = PBXGroup;
-			children = (
-				8AF43382248EBBA70047452B /* Parser.swift */,
-				8AF43381248EBBA70047452B /* Scanner.swift */,
-				8AF43383248EBBA70047452B /* Token.swift */,
-				8AF43377248EBB2A0047452B /* CssParser.h */,
-				8AA9E69A251F3DC3004C7C22 /* Errors.swift */,
-			);
-			path = CssParser;
-			sourceTree = "<group>";
-		};
 		8AFE7D97296B59D300B2CF55 /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
@@ -1493,14 +1443,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8AF43370248EBB2A0047452B /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8AF43379248EBB2A0047452B /* CssParser.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -1516,13 +1458,13 @@
 			buildRules = (
 			);
 			dependencies = (
-				8AB9BE2A28FF1304002063C2 /* PBXTargetDependency */,
 			);
 			name = CottonPlugins;
 			packageProductDependencies = (
 				8A03F45928F47ACB00E4A296 /* SwiftSoup */,
 				8AD4F51128F491C8009C4BDC /* ReactiveSwift */,
 				75D2F3042E74C0F800556C5B /* CottonBase */,
+				756137942EFFBB4100A6F605 /* CssParser */,
 			);
 			productName = JSPlugins;
 			productReference = 608DA74A223A3BD4009F75BD /* CottonPlugins.framework */;
@@ -1651,7 +1593,6 @@
 			);
 			dependencies = (
 				608DA750223A3BD5009F75BD /* PBXTargetDependency */,
-				8AF4337B248EBB2A0047452B /* PBXTargetDependency */,
 				756AE6E72CA34B8E00938FCC /* PBXTargetDependency */,
 				75869DDD2D01B1D400D981B6 /* PBXTargetDependency */,
 				75869E272D01B4BD00D981B6 /* PBXTargetDependency */,
@@ -1734,24 +1675,6 @@
 			productReference = 8AE63B54248EC38300D6D2E4 /* CottonPluginsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		8AF43374248EBB2A0047452B /* CssParser */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8AF43380248EBB2A0047452B /* Build configuration list for PBXNativeTarget "CssParser" */;
-			buildPhases = (
-				8AF43370248EBB2A0047452B /* Headers */,
-				8AF43371248EBB2A0047452B /* Sources */,
-				8AF43372248EBB2A0047452B /* Frameworks */,
-				8AF43373248EBB2A0047452B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = CssParser;
-			productName = CssParser;
-			productReference = 8AF43375248EBB2A0047452B /* CssParser.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1798,10 +1721,6 @@
 					8AE63B53248EC38300D6D2E4 = {
 						CreatedOnToolsVersion = 11.5;
 					};
-					8AF43374248EBB2A0047452B = {
-						CreatedOnToolsVersion = 11.5;
-						LastSwiftMigration = 1150;
-					};
 				};
 			};
 			buildConfigurationList = 8435A4921EED5E700020102F /* Build configuration list for PBXProject "catowser" */;
@@ -1831,7 +1750,6 @@
 			targets = (
 				8435A4961EED5E700020102F /* Cotton */,
 				608DA749223A3BD4009F75BD /* CottonPlugins */,
-				8AF43374248EBB2A0047452B /* CssParser */,
 				75869DC82D01B1D400D981B6 /* CottonUseCases */,
 				75869E122D01B4BD00D981B6 /* CottonViewModels */,
 				8A8035EE24446234000E035F /* DNSProxy */,
@@ -1913,13 +1831,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8AE63B52248EC38300D6D2E4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8AF43373248EBB2A0047452B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2249,17 +2160,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8AF43371248EBB2A0047452B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8AA9E69B251F3DC3004C7C22 /* Errors.swift in Sources */,
-				8AF43386248EBBA70047452B /* Token.swift in Sources */,
-				8AF43385248EBBA70047452B /* Parser.swift in Sources */,
-				8AF43384248EBBA70047452B /* Scanner.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2313,20 +2213,10 @@
 			target = 608DA749223A3BD4009F75BD /* CottonPlugins */;
 			targetProxy = 75869E642D01BAC100D981B6 /* PBXContainerItemProxy */;
 		};
-		8AB9BE2A28FF1304002063C2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8AF43374248EBB2A0047452B /* CssParser */;
-			targetProxy = 8AB9BE2928FF1304002063C2 /* PBXContainerItemProxy */;
-		};
 		8AE63B5B248EC38300D6D2E4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 608DA749223A3BD4009F75BD /* CottonPlugins */;
 			targetProxy = 8AE63B5A248EC38300D6D2E4 /* PBXContainerItemProxy */;
-		};
-		8AF4337B248EBB2A0047452B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8AF43374248EBB2A0047452B /* CssParser */;
-			targetProxy = 8AF4337A248EBB2A0047452B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3162,91 +3052,6 @@
 			};
 			name = Release;
 		};
-		8AF4337E248EBB2A0047452B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Cotton/Catowser Andrei Ermoshin. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CssParser.debug;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		8AF4337F248EBB2A0047452B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Cotton/Catowser Andrei Ermoshin. All rights reserved.";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 13.5;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ae.CssParser;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_STRICT_CONCURRENCY = complete;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3349,15 +3154,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8AF43380248EBB2A0047452B /* Build configuration list for PBXNativeTarget "CssParser" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8AF4337E248EBB2A0047452B /* Debug */,
-				8AF4337F248EBB2A0047452B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		96240751EF5B429984D7B470 /* Build configuration list for PBXAggregateTarget "Gryphon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3449,6 +3245,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 75D2ECBA2E74B1FF00556C5B /* XCLocalSwiftPackageReference "Domain" */;
 			productName = FeatureFlagsKit;
+		};
+		756137942EFFBB4100A6F605 /* CssParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75D2EDC82E74BB0D00556C5B /* XCLocalSwiftPackageReference "Base" */;
+			productName = CssParser;
 		};
 		75696D252EFF1D71007C26DC /* CottonRestKit */ = {
 			isa = XCSwiftPackageProductDependency;

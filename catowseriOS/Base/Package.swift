@@ -20,6 +20,8 @@ private extension String {
     
     // MARK: - Libraries
     
+    static let cssParserLibrary = "CssParser"
+    
     // MARK: - Frameworks/Kits
     
     static let cottonRestKit = "CottonRestKit"
@@ -71,6 +73,12 @@ let package = Package(
                 .cottonNetworkingLibrary
             ]
         ),
+        .library(
+            name: .cssParserLibrary,
+            targets: [
+                .cssParserLibrary
+            ]
+        )
     ],
     dependencies: [
         .package(
@@ -92,6 +100,9 @@ let package = Package(
         ),
         .target(
             name: .autoMockableKit
+        ),
+        .target(
+            name: .cssParserLibrary
         ),
         .target(
             name: .cottonRestKit,
