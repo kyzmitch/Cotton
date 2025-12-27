@@ -8,6 +8,7 @@
 
 import CottonTabs
 import CottonSearch
+import Foundation
 
 /// Errors used on use case level
 public enum AppError: LocalizedError {

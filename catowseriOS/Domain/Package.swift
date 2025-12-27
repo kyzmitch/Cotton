@@ -18,6 +18,7 @@ private extension String {
     static let tabsLibrary = "CottonTabs"
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
     static let coreBrowserLibrary = "CoreBrowser"
+    static let useCasesLibrary = "CottonUseCases"
     
     // MARK: - Frameworks/Kits
     
@@ -57,6 +58,10 @@ let package = Package(
         .library(
             name: .viewModelKit,
             targets: [.viewModelKit]
+        ),
+        .library(
+            name: .useCasesLibrary,
+            targets: [.useCasesLibrary]
         ),
         .library(
             name: .baseUseCaseKit,
@@ -121,6 +126,7 @@ let package = Package(
             name: .featureFlagsKit,
             dependencies: [
                 .target(name: .coreBrowserLibrary),
+                .target(name: .genericServiceKit),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
             ]
         ),
@@ -161,6 +167,17 @@ let package = Package(
             ],
             resources: [
                 .process("Resources/topdomains.txt")
+            ]
+        ),
+        .target(
+            name: .useCasesLibrary,
+            dependencies: [
+                .target(name: .coreBrowserLibrary),
+                .target(name: .searchLibrary),
+                .target(name: .tabsLibrary),
+                .target(name: .genericServiceKit),
+                .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
             ]
         ),
         .binaryTarget(
