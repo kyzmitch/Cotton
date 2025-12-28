@@ -221,6 +221,12 @@ let package = Package(
             dependencies: [
                 .target(name: .genericServiceKit)
             ]
+        ),
+        .testTarget(
+            name: "CottonViewModelsTests",
+            dependencies: [
+                .target(name: .viewModelsLibrary)
+            ]
         )
     ],
     swiftLanguageModes: [.v6]
