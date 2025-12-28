@@ -19,6 +19,7 @@ private extension String {
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
     static let coreBrowserLibrary = "CoreBrowser"
     static let useCasesLibrary = "CottonUseCases"
+    static let viewModelsLibrary = "CottonViewModels"
     
     // MARK: - Frameworks/Kits
     
@@ -33,6 +34,7 @@ private extension String {
     static let cottonRestKit = "CottonRestKit"
     static let cottonBase = "CottonBase"
     static let autoMockableKit = "AutoMockable"
+    static let cottonPluginsLibrary = "CottonPlugins"
     
     // MARK: - 3rd party
 
@@ -45,7 +47,7 @@ private extension String {
 
 let package = Package(
     name: .domainPackage,
-    platforms: [.iOS(.v13)],
+    platforms: [.iOS(.v15)],
     products: [
         .library(
             name: .domainPackage,
@@ -62,6 +64,10 @@ let package = Package(
         .library(
             name: .useCasesLibrary,
             targets: [.useCasesLibrary]
+        ),
+        .library(
+            name: .viewModelsLibrary,
+            targets: [.viewModelsLibrary]
         ),
         .library(
             name: .baseUseCaseKit,
@@ -178,6 +184,20 @@ let package = Package(
                 .target(name: .genericServiceKit),
                 .product(name: .autoMockableKit, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
+            ]
+        ),
+        .target(
+            name: .viewModelsLibrary,
+            dependencies: [
+                .product(name: .autoMockableKit, package: .basePackage),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .cottonBase, package: .basePackage),
+                .product(name: .cottonPluginsLibrary, package: .basePackage),
+                .product(name: .cottonRestKit, package: .basePackage),
+                .target(name: .useCasesLibrary),
+                .target(name: .featureFlagsKit),
+                .target(name: .tabsLibrary),
+                .target(name: .viewModelKit)
             ]
         ),
         .binaryTarget(

@@ -8,6 +8,7 @@
 
 import CoreBrowser
 import ViewModelKit
+import Foundation
 
 /// Info about the tabs and selected tab
 public struct PreviewsInfo {

@@ -6,6 +6,8 @@
 //  Copyright © 2025 Cotton (Catowser). All rights reserved.
 //
 
+import Foundation
+
 /// Tab previews view model errors
 public enum TabsPreviewsError: LocalizedError {
     case failToLoad

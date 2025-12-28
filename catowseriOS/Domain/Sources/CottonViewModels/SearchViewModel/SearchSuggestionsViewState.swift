@@ -6,6 +6,7 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
+import Foundation
 
 public typealias KnownDomains = [String]
 public typealias QuerySuggestions = [String]

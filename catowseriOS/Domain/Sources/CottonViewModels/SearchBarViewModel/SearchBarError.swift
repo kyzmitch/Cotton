@@ -6,6 +6,8 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
+import Foundation
+
 /// Search bar view model errors
 public enum SearchBarError: LocalizedError {
     case invalidDummyState

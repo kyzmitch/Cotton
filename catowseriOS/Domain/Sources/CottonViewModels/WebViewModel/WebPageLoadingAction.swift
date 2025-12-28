@@ -6,6 +6,8 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
+import Foundation
+
 /// Simplified view actions for view use
 public enum WebPageLoadingAction: Equatable {
     /// Create web view from the scratch

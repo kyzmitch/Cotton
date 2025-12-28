@@ -8,6 +8,7 @@
 
 import CoreBrowser
 import ViewModelKit
+import Foundation
 
 /// Tab previews view model action
 public enum TabsPreviewsAction: ViewModelAction {

@@ -6,6 +6,8 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
+import Foundation
+
 extension WebViewModelState {
     enum Error: LocalizedError {
         case unexpectedStateForAction(WebViewModelState, WebViewAction)
