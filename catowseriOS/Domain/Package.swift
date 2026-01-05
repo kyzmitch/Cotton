@@ -182,6 +182,7 @@ let package = Package(
                 .target(name: .searchLibrary),
                 .target(name: .tabsLibrary),
                 .target(name: .genericServiceKit),
+                .target(name: .baseUseCaseKit),
                 .product(name: .autoMockableKit, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
             ]

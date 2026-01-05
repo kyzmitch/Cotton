@@ -81,10 +81,10 @@ import CottonSearch
                 (any SearchDataServiceProtocol).self,
                 .searchDataServiceKey
             )
-            let googleUseCase: ResolveDNSUseCase = ResolveDNSUseCaseImpl(searchDataService)
+            let googleUseCase: any ResolveDNSUseCase = ResolveDNSUseCaseImpl(searchDataService)
             useCaseLocator.registerTyped(
                 googleUseCase,
-                of: ResolveDNSUseCase.self
+                of: (any ResolveDNSUseCase).self
             )
         }
     }

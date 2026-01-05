@@ -48,7 +48,7 @@ import FeatureFlagsKit
         _ context: WebViewContext,
         _ siteNavigation: SiteExternalNavigationDelegate?
     ) async -> any WebViewModel {
-        async let googleDnsUseCase = useCaseRegistry.findUseCase(ResolveDNSUseCase.self)
+        async let googleDnsUseCase = useCaseRegistry.findUseCase((any ResolveDNSUseCase).self)
         async let selectTabUseCase = useCaseRegistry.findUseCase(SelectedTabUseCase.self)
         async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
         return await ModuleVMFactory.createWebViewVM(
