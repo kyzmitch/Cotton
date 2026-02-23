@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import CottonViewModels
+import CottonDesignKit
 
 /// Only UIKit wrapper which needs less amout of parameters than full SwiftUI view
 struct ToolbarView: View {

@@ -10,6 +10,7 @@ import Foundation
 import CoreBrowser
 import FeatureFlagsKit
 import CottonTabs
+import ViewsBase
 
 extension WebAutoCompletionSource: EnumDefaultValueSupportable {
     public var defaultValue: WebAutoCompletionSource {
@@ -46,40 +47,6 @@ extension CoreBrowser.Tab.ContentType: @retroactive EnumDefaultValueSupportable 
         // In Release builds only User can decide which web sites to show by default
         return CoreBrowser.Tab.ContentType.favorites
         #endif
-    }
-}
-
-// MARK: - UI settings
-
-enum UIFrameworkType: Int, CaseIterable {
-    /// Good old UIKit views
-    case uiKit
-    /// SwiftUI view wraps UIKit view controller
-    case swiftUIWrapper
-    /// Clear SwiftUI views without re-using UIKit
-    case swiftUI
-
-    var swiftUIBased: Bool {
-        switch self {
-        case .swiftUI, .swiftUIWrapper:
-            return true
-        case .uiKit:
-            return false
-        }
-    }
-
-    /// Fully without UIKit
-    var isUIKitFree: Bool {
-        self == .swiftUI
-    }
-
-    var uiKitBased: Bool {
-        switch self {
-        case .uiKit, .swiftUIWrapper:
-            return true
-        case .swiftUI:
-            return false
-        }
     }
 }
 

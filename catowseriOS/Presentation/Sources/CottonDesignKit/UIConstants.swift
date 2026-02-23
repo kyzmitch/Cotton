@@ -12,7 +12,8 @@ import UIKit
 extension CGFloat {
     static let tabHeight = CGFloat(40.0)
     static let searchViewHeight = CGFloat(64.0)
-    static let toolbarViewHeight = CGFloat(44.0)
+    /// Toolbar height
+    public static let toolbarViewHeight = CGFloat(44.0)
     static let tabBarHeight = CGFloat(40.0) // system height?
     static let linkTagsHeight = CGFloat(60.0)
     static let tagLabelHorizontalMargin = CGFloat(10.0)
@@ -35,6 +36,8 @@ extension CGFloat {
 
 struct UIConstants {
     static let searchBarTextColour = UIColor.black
-    static let searchBarBackgroundColour = UIColor.white
-    static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
+    /// Search bar background color
+    public static let searchBarBackgroundColour = UIColor.white
+    /// Website tab highlited line color
+    public static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
 }

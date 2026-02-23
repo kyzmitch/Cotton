@@ -9,6 +9,9 @@
 import UIKit
 import CoreBrowser
 import CottonViewModels
+import ViewsBase
+import CottonDesignKit
+import CommonDelegatesLibrary
 
 final class TabletSearchBarViewController: BaseViewController {
 

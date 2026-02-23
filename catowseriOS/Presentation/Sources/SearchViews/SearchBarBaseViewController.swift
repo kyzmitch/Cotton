@@ -11,12 +11,15 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonTabs
 import CottonViewModels
+import ViewsBase
+import CottonDesignKit
 
 @MainActor protocol SearchBarControllerInterface: AnyObject {
     /* non optional */ func handleAction(_ action: SearchBarAction)
 }
 
-final class SearchBarBaseViewController: BaseViewController {
+/// Search bar base view controller
+public final class SearchBarBaseViewController: BaseViewController {
     /// main search bar view
     private let searchBarView: SearchBarLegacyView<SearchBarViewModel>
     private let featureManager: FeatureManager.StateHolder
@@ -59,11 +62,11 @@ final class SearchBarBaseViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
+    public override func loadView() {
         view = searchBarView
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         searchBarView.handleTraitCollectionChange()

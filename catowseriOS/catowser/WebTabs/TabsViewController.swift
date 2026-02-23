@@ -12,6 +12,7 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonTabs
 import CottonViewModels
+import ViewsBase
 
 fileprivate extension TabsViewController {
     struct Sizes {

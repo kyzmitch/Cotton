@@ -9,6 +9,7 @@
 import UIKit
 import CottonBase
 import CottonViewModels
+import ViewsBase
 
 final class TopSitesViewController<
     C: Navigating

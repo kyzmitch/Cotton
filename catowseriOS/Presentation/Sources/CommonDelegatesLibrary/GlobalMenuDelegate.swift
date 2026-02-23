@@ -8,7 +8,12 @@
 
 import UIKit
 
+/// Global menu delegate
 @MainActor
-protocol GlobalMenuDelegate: AnyObject {
+public protocol GlobalMenuDelegate: AnyObject {
+    /// Settings did press
+    ///
+    /// - Parameter sourceView: Source view
+    /// - Parameter sourceRect: Source rectangle
     func settingsDidPress(from sourceView: UIView, and sourceRect: CGRect)
 }

@@ -9,8 +9,10 @@
 import UIKit
 import CoreBrowser
 import CottonViewModels
+import ViewsBase
 
-final class SmartphoneSearchBarViewController: BaseViewController {
+/// Smartphone search bar view controller
+public final class SmartphoneSearchBarViewController: BaseViewController {
 
     private let searchBarViewController: SearchBarBaseViewController
 
@@ -21,18 +23,9 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         return view
     }()
 
-    init(
-        _ searchBarDelegate: UISearchBarDelegate?,
-        _ uiFramework: UIFrameworkType,
-        _ viewModel: SearchBarViewModel
-    ) {
-        searchBarViewController = UIServiceRegistry.shared()
-            .vcFactory
-            .searchBarViewController(
-                searchBarDelegate,
-                uiFramework,
-                viewModel
-            )
+    /// Init
+    public init(_ searchBarViewController: SearchBarBaseViewController) {
+        self.searchBarViewController = searchBarViewController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -40,7 +33,7 @@ final class SmartphoneSearchBarViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         add(asChildViewController: searchBarViewController, to: view)

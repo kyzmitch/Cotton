@@ -12,6 +12,7 @@ import CottonPlugins
 import CottonNetworking
 import CottonBase
 import CottonViewModels
+import ViewsBase
 
 struct NotSelectedIndex: Error {}
 struct OutOfBoundsIndex: Error {}

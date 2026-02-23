@@ -10,6 +10,8 @@ import UIKit
 import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
+import ViewsBase
+import CommonDelegatesLibrary
 
 @MainActor final class MainToolbarCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory

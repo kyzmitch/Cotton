@@ -8,18 +8,22 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {}
+/// Base view controller
+open class BaseViewController: UIViewController {}
 
 extension UIViewController: UIIdiomable {}
 
 extension UIView: UIIdiomable {}
 
-@MainActor protocol UIIdiomable: AnyObject {
+/// UI idiomable interface
+@MainActor public protocol UIIdiomable: AnyObject {
+    /// Is tablet
     var isPad: Bool { get }
 }
 
 extension UIIdiomable {
-    var isPad: Bool {
+    /// Is tablet
+    public var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
 }

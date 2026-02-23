@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonViewModels
+import ViewsBase
 
 struct TabletTabsLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController

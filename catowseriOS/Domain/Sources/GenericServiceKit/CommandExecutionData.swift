@@ -24,8 +24,10 @@ public enum CommandExecutionData<
 >: SendableEquatable {
     /// No one started the command
     case notStarted
-    /// Command has started
+    /// Command is going to be started
     case started(input: Input?)
+    /// Command is in progress if it is async
+    case inProgress(Task<Output, E>)
     /// Command has finished
     case finished(output: Result<Output, E>)
 }

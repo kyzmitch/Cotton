@@ -10,6 +10,7 @@ import UIKit
 import SwiftUI
 import CoreBrowser
 import CottonViewModels
+import ViewsBase
 
 /**
  A replacement for the native SwiftUI starting point:

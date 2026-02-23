@@ -10,6 +10,7 @@ import UIKit
 import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
+import ViewsBase
 
 final class PhoneTabsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory

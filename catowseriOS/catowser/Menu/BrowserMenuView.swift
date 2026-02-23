@@ -12,6 +12,7 @@ import CottonBase
 import CoreBrowser
 import FeatureFlagsKit
 import CottonTabs
+import ViewsBase
 
 struct BrowserMenuView: View {
     @ObservedObject private var model: MenuViewModel

@@ -11,6 +11,8 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
 import CottonTabs
+import CottonDesignKit
+import CommonDelegatesLibrary
 
 enum WebToolbarState {
     case nothingToNavigate

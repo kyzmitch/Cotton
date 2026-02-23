@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonViewModels
+import ViewsBase
 
 struct SearchSuggestionsLegacyView<S: SearchSuggestionsViewModel>: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController

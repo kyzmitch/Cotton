@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CommonDelegatesLibrary
 
 final class DummyDelegate: ContentCoordinatorsInterface {
     let topSitesCoordinator: TopSitesCoordinator? = nil

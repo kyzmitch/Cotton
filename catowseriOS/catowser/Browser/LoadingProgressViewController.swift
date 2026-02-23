@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ViewsBase
 
 final class LoadingProgressViewController: BaseViewController {
     /// The view required to demonstrait web content load process.

@@ -13,6 +13,7 @@ import FeatureFlagsKit
 import CottonTabs
 import CottonViewModels
 import ViewModelKit
+import ViewsBase
 
 final class TabsPreviewsViewController<
     C: Navigating

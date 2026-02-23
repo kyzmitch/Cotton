@@ -18,6 +18,7 @@ import Combine
 import CottonNetworking
 import CottonTabs
 import CottonViewModels
+import CottonDesignKit
 
 @MainActor protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView)

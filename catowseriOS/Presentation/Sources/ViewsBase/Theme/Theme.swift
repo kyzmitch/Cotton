@@ -8,18 +8,24 @@
 
 import UIKit
 
-protocol Theme {
+/// Application theme (TODO: need to be moved to design system)
+public protocol Theme {
+    /// Status bar style
     var statusBarStyle: UIStatusBarStyle { get }
+    /// Search bar button background color
     var searchBarButtonBackgroundColor: UIColor { get }
+    /// Search bar separator color
     var searchBarSeparatorColor: UIColor { get }
 }
 
 extension Theme {
-    var statusBarStyle: UIStatusBarStyle {
+    /// Status bar style
+    public var statusBarStyle: UIStatusBarStyle {
         return .default
     }
 
-    var searchBarSeparatorColor: UIColor {
+    /// Search bar separator color
+    public var searchBarSeparatorColor: UIColor {
         return #colorLiteral(red: 0.9176470588, green: 0.9176470588, blue: 0.9176470588, alpha: 1)
     }
 }

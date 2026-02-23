@@ -12,6 +12,7 @@ import FeatureFlagsKit
 import CottonViewModels
 import ViewModelKit
 import Combine
+import ViewsBase
 
 enum SearchBarConstants {
     static let animationDuration = 0.3

@@ -9,6 +9,7 @@
 import SwiftUI
 import UIKit
 import CottonViewModels
+import ViewsBase
 
 struct TopSitesLegacyView: CatowserUIVCRepresentable {
     @EnvironmentObject private var vm: TopSitesViewModel

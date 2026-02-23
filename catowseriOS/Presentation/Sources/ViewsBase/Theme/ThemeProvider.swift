@@ -8,9 +8,11 @@
 
 import UIKit
 
+/// Theme provider
 @MainActor
-final class ThemeProvider {
-    static let shared = ThemeProvider()
+public final class ThemeProvider {
+    /// Shared instance of Theme provider
+    public static let shared = ThemeProvider()
 
     static let disabledOpacity = 0.4
 
@@ -20,9 +22,10 @@ final class ThemeProvider {
         }
     }
 
-    private(set) var theme: Theme
+    public private(set) var theme: Theme
 
-    func setup(_ searchBarView: UISearchBar) {
+    /// Setup search bar view theme
+    public func setup(_ searchBarView: UISearchBar) {
         // Trying to get rid of the 1px black line underneath the search bar
         // https://stackoverflow.com/a/8998710/483101
         searchBarView.backgroundColor = .white

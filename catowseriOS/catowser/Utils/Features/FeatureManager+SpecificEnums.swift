@@ -9,6 +9,7 @@
 import CoreBrowser
 import FeatureFlagsKit
 import CottonTabs
+import ViewsBase
 
 // MARK: - generic GETTER method
 

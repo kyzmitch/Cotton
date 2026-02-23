@@ -13,6 +13,8 @@ import CottonNetworking
 import CottonBase
 import CottonViewModels
 import CottonSearch
+import ViewsBase
+import CommonDelegatesLibrary
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
