@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 import CottonViewModels
 import ViewModelKit
 import Combine

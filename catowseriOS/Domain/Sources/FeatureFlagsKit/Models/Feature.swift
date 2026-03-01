@@ -10,12 +10,18 @@ import Foundation
 
 /// Represents basic types (no enumeration types, see EnumFeature instead)
 public protocol Feature {
+    /// Feature value type
     associatedtype Value: Sendable
 
+    /// Source where the value is stored
     static var source: FeatureSource.Type { get }
+    /// Default value when it is not stored in the source yet
     static var defaultValue: Value { get }
+    /// Key of feature to find/save in source
     static var key: String { get }
+    /// Name of the feature
     static var name: String { get }
+    /// Human readable description of the fuature
     static var description: String { get }
 }
 

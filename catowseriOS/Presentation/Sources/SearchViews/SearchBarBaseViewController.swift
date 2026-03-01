@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 import CottonTabs
 import CottonViewModels
 import ViewsBase
@@ -23,14 +24,16 @@ public final class SearchBarBaseViewController: BaseViewController {
     /// main search bar view
     private let searchBarView: SearchBarLegacyView<SearchBarViewModel>
     private let featureManager: FeatureManager.StateHolder
-    private let tabsSubject: TabsDataSubject
+    private let tabsDataSubject: TabsDataSubject
+    private let tabsSubjectFactory: () async -> TabsSubject
 
     /// Init
     public init(
         _ searchBarDelegate: UISearchBarDelegate?,
         _ uiFramework: UIFrameworkType,
         _ featureManager: FeatureManager.StateHolder,
-        _ tabsSubject: TabsDataSubject,
+        _ tabsDataSubject: TabsDataSubject,
+        tabsSubjectFactory: @escaping () async -> TabsSubject,
         _ viewModel: SearchBarViewModel
     ) {
         let customFrame: CGRect
@@ -46,7 +49,8 @@ public final class SearchBarBaseViewController: BaseViewController {
         )
         searchBarView.delegate = searchBarDelegate
         self.featureManager = featureManager
-        self.tabsSubject = tabsSubject
+        self.tabsDataSubject = tabsDataSubject
+        self.tabsSubjectFactory = tabsSubjectFactory
         super.init(nibName: nil, bundle: nil)
         
         Task {
@@ -54,7 +58,7 @@ public final class SearchBarBaseViewController: BaseViewController {
             if #available(iOS 17.0, *), observingType.isSystemObservation {
                 startTabsObservation()
             } else {
-                await ServiceRegistry.shared.tabsService.attach(self, notify: false)
+                await tabsSubjectFactory().attach(self, notify: false)
             }
         }
     }
@@ -77,14 +81,14 @@ public final class SearchBarBaseViewController: BaseViewController {
     @MainActor
     private func startTabsObservation() {
         withObservationTracking {
-            _ = tabsSubject.selectedTabId
+            _ = tabsDataSubject.selectedTabId
         } onChange: {
             Task { [weak self] in
                 await self?.handleSelectedTabChange()
             }
         }
         withObservationTracking {
-            _ = tabsSubject.replacedTabIndex
+            _ = tabsDataSubject.replacedTabIndex
         } onChange: {
             Task { [weak self] in
                 await self?.observeReplacedTab()
@@ -95,23 +99,21 @@ public final class SearchBarBaseViewController: BaseViewController {
     @available(iOS 17.0, *)
     @MainActor
     private func handleSelectedTabChange() async {
-        let subject = tabsSubject
-        let tabId = subject.selectedTabId
-        guard let index = subject.tabs
+        let tabId = tabsDataSubject.selectedTabId
+        guard let index = tabsDataSubject.tabs
             .firstIndex(where: { $0.id == tabId }) else {
             return
         }
-        await tabDidSelect(index, subject.tabs[index].contentType, tabId)
+        await tabDidSelect(index, tabsDataSubject.tabs[index].contentType, tabId)
     }
     
     @available(iOS 17.0, *)
     @MainActor
     private func observeReplacedTab() async {
-        let subject = tabsSubject
-        guard let index = subject.replacedTabIndex else {
+        guard let index = tabsDataSubject.replacedTabIndex else {
             return
         }
-        await tabDidReplace(subject.tabs[index], at: index)
+        await tabDidReplace(tabsDataSubject.tabs[index], at: index)
     }
 }
 

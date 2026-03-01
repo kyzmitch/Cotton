@@ -149,6 +149,7 @@ extension ViewControllerFactory {
             uiFramework,
             FeatureManager.shared,
             UIServiceRegistry.shared().tabsSubject,
+            tabsSubjectFactory: { await ServiceRegistry.shared.tabsService },
             viewModel
         )
         return vc

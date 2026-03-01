@@ -10,7 +10,8 @@ import CoreBrowser
 import FeatureFlagsKit
 
 extension ApplicationFeature {
-    static var dnsOverHTTPSAvailable: ApplicationFeature<DoHAvailable> {
+    /// DNS over HTTPs is available or not
+    public static var dnsOverHTTPSAvailable: ApplicationFeature<DoHAvailable> {
         return ApplicationFeature<DoHAvailable>()
     }
     static var javaScriptEnabled: ApplicationFeature<JavaScriptEnabled> {
@@ -22,11 +23,15 @@ extension ApplicationFeature {
 }
 
 /// DNS over HTTPS
-enum DoHAvailable: BasicFeature {
-    typealias Value = Bool
-    static let key = "ios.doh"
-    static let defaultValue = false
-    static let source: FeatureSource.Type = LocalFeatureSource.self
+public enum DoHAvailable: BasicFeature {
+    /// Feature value type
+    public typealias Value = Bool
+    /// Key of feature to find/save in source
+    public static let key = "ios.doh"
+    /// Default value when it is not stored in the source yet
+    public static let defaultValue = false
+    /// Source where the value is stored
+    public static let source: FeatureSource.Type = LocalFeatureSource.self
 }
 
 /// State of JavaScript in webview.
