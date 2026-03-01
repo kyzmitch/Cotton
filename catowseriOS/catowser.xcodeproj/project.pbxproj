@@ -97,7 +97,6 @@
 		75ECAB112F4C753900B6B80D /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB0E2F4C753900B6B80D /* EnvironmentValues+Extension.swift */; };
 		75ECAB122F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB0F2F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift */; };
 		75ECAB162F4C75AE00B6B80D /* TabletSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB152F4C75AE00B6B80D /* TabletSearchBarLegacyView.swift */; };
-		75ECAB182F4C75BC00B6B80D /* TabletSearchBarLegacyView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB172F4C75BC00B6B80D /* TabletSearchBarLegacyView 2.swift */; };
 		75ECAB1C2F4C75E600B6B80D /* PhoneSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB1B2F4C75E600B6B80D /* PhoneSearchBarLegacyView.swift */; };
 		75ECAB1E2F4CCB9900B6B80D /* CottonDesignKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB1D2F4CCB9900B6B80D /* CottonDesignKit */; };
 		75ECAB202F4CD04500B6B80D /* CommonDelegatesLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB1F2F4CD04500B6B80D /* CommonDelegatesLibrary */; };
@@ -152,7 +151,6 @@
 		8A9D9D8F2971E05F0047734C /* TabletTabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D9D8E2971E05F0047734C /* TabletTabsView.swift */; };
 		8AA68A9F245BE47900263E22 /* ServiceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA68A9E245BE47900263E22 /* ServiceRegistry.swift */; };
 		8AB8018A27C3E597002D6628 /* BaseMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB8018927C3E597002D6628 /* BaseMenuView.swift */; };
-		8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */; };
 		8AB9BE1428FF0C55002063C2 /* CollectionViewInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */; };
 		8AB9BE1728FF0C98002063C2 /* ReloadWithCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */; };
 		8AB9BE1B28FF0CE7002063C2 /* CAGradientLayer+CatowserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */; };
@@ -242,7 +240,6 @@
 		60724F79221695C80071BECF /* google.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = google.xml; sourceTree = "<group>"; };
 		607CC66422A52DDE0037E5EC /* DomainNativeAppChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainNativeAppChecker.swift; sourceTree = "<group>"; };
 		607CC66622A5505F0037E5EC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CatowserExtensions.swift"; sourceTree = "<group>"; };
 		60A82C4C22549446008210D9 /* FilesGridViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FilesGridViewController.storyboard; sourceTree = "<group>"; };
 		60A82C4E22549453008210D9 /* FilesGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesGridViewController.swift; sourceTree = "<group>"; };
 		60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+CatowserExtension.swift"; sourceTree = "<group>"; };
@@ -295,7 +292,6 @@
 		75ECAB0E2F4C753900B6B80D /* EnvironmentValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extension.swift"; sourceTree = "<group>"; };
 		75ECAB0F2F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewControllerRepresentable+Extension.swift"; sourceTree = "<group>"; };
 		75ECAB152F4C75AE00B6B80D /* TabletSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabletSearchBarLegacyView.swift; sourceTree = "<group>"; };
-		75ECAB172F4C75BC00B6B80D /* TabletSearchBarLegacyView 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabletSearchBarLegacyView 2.swift"; sourceTree = "<group>"; };
 		75ECAB1B2F4C75E600B6B80D /* PhoneSearchBarLegacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSearchBarLegacyView.swift; sourceTree = "<group>"; };
 		75EFE9682CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservingApiTypeModel.swift; sourceTree = "<group>"; };
 		75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarCoordinator.swift; sourceTree = "<group>"; };
@@ -485,7 +481,6 @@
 				8A97EF24245B44D4003AC9D7 /* UIImageView+Extension.swift */,
 				7586A5BC2D109ECF00D981B6 /* RestClient+Extension.swift */,
 				8A437DA4247E7210001C1E8B /* UIHostingController+Extension.swift */,
-				6094E712221EC8D4004269A2 /* UIViewController+CatowserExtensions.swift */,
 				60D52CED22572F2300CB56F0 /* CollectionViewInterface.swift */,
 				60C2C8F02270886A00F5D869 /* ReloadWithCompletion.swift */,
 				60A82C5022549604008210D9 /* CAGradientLayer+CatowserExtension.swift */,
@@ -567,7 +562,6 @@
 		75ECAB192F4C75BF00B6B80D /* Tablet */ = {
 			isa = PBXGroup;
 			children = (
-				75ECAB172F4C75BC00B6B80D /* TabletSearchBarLegacyView 2.swift */,
 				75ECAB152F4C75AE00B6B80D /* TabletSearchBarLegacyView.swift */,
 			);
 			path = Tablet;
@@ -1062,7 +1056,6 @@
 				75ECAB112F4C753900B6B80D /* EnvironmentValues+Extension.swift in Sources */,
 				75ECAB122F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift in Sources */,
 				8A22D1B42923FDA1005D1F72 /* PhoneTabsCoordinator.swift in Sources */,
-				75ECAB182F4C75BC00B6B80D /* TabletSearchBarLegacyView 2.swift in Sources */,
 				8A963C6D25212A55008EAB27 /* CottonDbModel.xcdatamodeld in Sources */,
 				75DA4C7B2C9C7F4D009AE049 /* UIServiceRegistry.swift in Sources */,
 				753752D22CFEE086008D40CF /* StrategyFactory.swift in Sources */,
@@ -1079,7 +1072,6 @@
 				8A9D9D832971D6B10047734C /* TabletView.swift in Sources */,
 				8A23989328622FCA005DA801 /* ViewModelFactory.swift in Sources */,
 				8AD8C29B296616F40038FE5C /* WebViewController+Reusable.swift in Sources */,
-				8AB9BE1128FF0C23002063C2 /* UIViewController+CatowserExtensions.swift in Sources */,
 				8A9D9D7F2971D2300047734C /* PhoneView.swift in Sources */,
 				75ECAB1C2F4C75E600B6B80D /* PhoneSearchBarLegacyView.swift in Sources */,
 				8AB9BE2028FF0D0D002063C2 /* AnyViewController.swift in Sources */,

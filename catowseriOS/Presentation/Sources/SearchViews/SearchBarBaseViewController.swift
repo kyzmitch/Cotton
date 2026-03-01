@@ -15,7 +15,8 @@ import CottonViewModels
 import ViewsBase
 import CottonDesignKit
 
-@MainActor protocol SearchBarControllerInterface: AnyObject {
+/// Search bar view controller interface
+@MainActor public protocol SearchBarControllerInterface: AnyObject {
     /* non optional */ func handleAction(_ action: SearchBarAction)
 }
 
@@ -157,7 +158,7 @@ extension SearchBarBaseViewController: TabsObserver {
 }
 
 extension SearchBarBaseViewController: SearchBarControllerInterface {
-    func handleAction(_ action: SearchBarAction) {
+    public func handleAction(_ action: SearchBarAction) {
         searchBarView.handleAction(action)
     }
 }

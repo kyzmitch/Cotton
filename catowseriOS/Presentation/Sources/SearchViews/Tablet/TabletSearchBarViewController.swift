@@ -13,7 +13,8 @@ import ViewsBase
 import CottonDesignKit
 import CommonDelegatesLibrary
 
-final class TabletSearchBarViewController: BaseViewController {
+/// Tablet version of search bar view controller
+public final class TabletSearchBarViewController: BaseViewController {
 
     private let searchBarViewController: SearchBarBaseViewController
     
@@ -121,7 +122,7 @@ final class TabletSearchBarViewController: BaseViewController {
         return view
     }()
 
-    override func loadView() {
+    public override func loadView() {
         view = UIView()
 
         view.addSubview(actionsButton)
@@ -133,7 +134,7 @@ final class TabletSearchBarViewController: BaseViewController {
         view.addSubview(lineView)
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         // enable actions even for non site content
@@ -218,15 +219,15 @@ final class TabletSearchBarViewController: BaseViewController {
 }
 
 extension TabletSearchBarViewController: FullSiteNavigationComponent {
-    func changeBackButton(to canGoBack: Bool) {
+    public func changeBackButton(to canGoBack: Bool) {
         goBackButton.isEnabled = canGoBack
     }
 
-    func changeForwardButton(to canGoForward: Bool) {
+    public func changeForwardButton(to canGoForward: Bool) {
         goForwardButton.isEnabled = canGoForward
     }
 
-    var siteNavigator: WebViewNavigatable? {
+    public var siteNavigator: WebViewNavigatable? {
         get {
             return webViewInterface
         }
@@ -235,7 +236,7 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
         }
     }
 
-    func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
+    public func reloadNavigationElements(_ withSite: Bool, downloadsAvailable: Bool = false) {
         goBackButton.isEnabled = webViewInterface?.canGoBack ?? false
         goForwardButton.isEnabled = webViewInterface?.canGoForward ?? false
         reloadButton.isEnabled = withSite
@@ -244,18 +245,18 @@ extension TabletSearchBarViewController: FullSiteNavigationComponent {
 }
 
 extension TabletSearchBarViewController: SearchBarControllerInterface {
-    func handleAction(_ action: SearchBarAction) {
+    public func handleAction(_ action: SearchBarAction) {
         searchBarViewController.handleAction(action)
     }
 }
 
 extension TabletSearchBarViewController: MediaLinksPresenter {
-    func didReceiveMediaLinks() {
+    public func didReceiveMediaLinks() {
         downloadLinksButton.isEnabled = true
         // can animate button to make it more noticeable for user
     }
 
-    var downloadsPopoverStartInfo: (UIView, CGRect) {
+    public var downloadsPopoverStartInfo: (UIView, CGRect) {
         (view, downloadLinksButton.frame)
     }
 }

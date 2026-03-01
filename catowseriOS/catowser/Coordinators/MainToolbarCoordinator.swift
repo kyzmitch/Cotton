@@ -12,6 +12,7 @@ import FeatureFlagsKit
 import CottonViewModels
 import ViewsBase
 import CommonDelegatesLibrary
+import CottonDesignKit
 
 @MainActor final class MainToolbarCoordinator: Coordinator {
     let vcFactory: ViewControllerFactory

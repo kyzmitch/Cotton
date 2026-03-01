@@ -94,8 +94,7 @@ let package = Package(
             dependencies: [
                 .product(name: .coreBrowserLibrary, package: .domainPackage),
                 .product(name: .featureFlagsKit, package: .domainPackage),
-                .product(name: .viewModelsLibrary, package: .domainPackage),
-                .product(name: .featureFlagsKit, package: .domainPackage)
+                .product(name: .viewModelsLibrary, package: .domainPackage)
             ]
         ),
         .target(

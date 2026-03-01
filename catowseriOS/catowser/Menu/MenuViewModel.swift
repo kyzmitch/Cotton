@@ -12,6 +12,7 @@
 import CottonBase
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 import CottonTabs
 import ViewsBase
 

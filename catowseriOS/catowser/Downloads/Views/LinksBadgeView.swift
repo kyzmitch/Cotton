@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonDesignKit
 
 final class LinksBadgeView: UICollectionViewCell, ReusableItem {
     @IBOutlet weak var tagTypeLabel: UILabel! {

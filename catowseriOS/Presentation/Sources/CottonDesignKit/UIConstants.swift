@@ -10,13 +10,17 @@ import Foundation
 import UIKit
 
 extension CGFloat {
-    static let tabHeight = CGFloat(40.0)
+    /// Tab height
+    public static let tabHeight = CGFloat(40.0)
     static let searchViewHeight = CGFloat(64.0)
     /// Toolbar height
     public static let toolbarViewHeight = CGFloat(44.0)
-    static let tabBarHeight = CGFloat(40.0) // system height?
-    static let linkTagsHeight = CGFloat(60.0)
-    static let tagLabelHorizontalMargin = CGFloat(10.0)
+    /// Tab bar height
+    public static let tabBarHeight = CGFloat(40.0) // system height?
+    /// Link tags height
+    public static let linkTagsHeight = CGFloat(60.0)
+    /// Tab label horizontal margin
+    public static let tagLabelHorizontalMargin = CGFloat(10.0)
     static let safeAreaBottomMargin = CGFloat(20.0) /* view.safeAreaInsets.bottom */
 
     @MainActor

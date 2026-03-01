@@ -48,7 +48,8 @@ public final class ThemeProvider {
         view.backgroundColor = .phoneToolbarColor
     }
 
-    func setupUnderLinkTags(_ view: UIView) {
+    /// Setup under link tags
+    public func setupUnderLinkTags(_ view: UIView) {
         view.backgroundColor = .linkTagsBackgroundColor
     }
 

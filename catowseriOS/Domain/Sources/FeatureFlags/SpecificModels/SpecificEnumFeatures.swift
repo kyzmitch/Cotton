@@ -20,8 +20,10 @@ extension String {
 }
 
 typealias WebAutoCompletionFeature = GenericEnumFeature<WebAutoCompletionSource>
-typealias TabAddPositionFeature = GenericEnumFeature<AddedTabPosition>
-typealias TabContentFeature = GenericEnumFeature<CoreBrowser.Tab.ContentType>
+/// Enum feature for tab add position
+public typealias TabAddPositionFeature = GenericEnumFeature<AddedTabPosition>
+/// Tab default content feature
+public typealias TabContentFeature = GenericEnumFeature<CoreBrowser.Tab.ContentType>
 typealias AppAsyncApiFeature = GenericEnumFeature<AsyncApiType>
 typealias ObservingApiFeature = GenericEnumFeature<ObservingApiType>
 

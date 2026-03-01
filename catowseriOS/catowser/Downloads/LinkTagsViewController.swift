@@ -9,6 +9,7 @@
 import UIKit
 import CoreBrowser
 import CottonPlugins
+import ViewsBase
 
 enum LinksType: CustomStringConvertible {
     var description: String {

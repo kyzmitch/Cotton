@@ -55,7 +55,7 @@ public final class SmartphoneSearchBarViewController: BaseViewController {
 }
 
 extension SmartphoneSearchBarViewController: SearchBarControllerInterface {
-    func handleAction(_ action: SearchBarAction) {
+    public func handleAction(_ action: SearchBarAction) {
         searchBarViewController.handleAction(action)
     }
 }

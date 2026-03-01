@@ -11,6 +11,7 @@ import CottonViewModels
 import CottonUseCases
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 
 /// Creates new instances of view models.
 /// Depends on feature flags to determine VM configuration/dependencies.

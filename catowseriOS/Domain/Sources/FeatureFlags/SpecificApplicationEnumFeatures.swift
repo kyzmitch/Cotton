@@ -9,10 +9,12 @@
 import FeatureFlagsKit
 
 extension ApplicationEnumFeature {
-    static var tabAddPosition: ApplicationEnumFeature<TabAddPositionFeature> {
+    /// Tab add position feature
+    public static var tabAddPosition: ApplicationEnumFeature<TabAddPositionFeature> {
         return ApplicationEnumFeature<TabAddPositionFeature>(feature: EnumFeaturesHolder.tabAddPosition)
     }
-    static var tabDefaultContent: ApplicationEnumFeature<TabContentFeature> {
+    /// Tab default content feature
+    public static var tabDefaultContent: ApplicationEnumFeature<TabContentFeature> {
         return ApplicationEnumFeature<TabContentFeature>(feature: EnumFeaturesHolder.tabDefaultContent)
     }
     static var appDefaultAsyncApi: ApplicationEnumFeature<AppAsyncApiFeature> {

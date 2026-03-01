@@ -8,6 +8,7 @@
 
 import UIKit
 import CottonViewModels
+import CottonDesignKit
 
 final class TabletTabsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory

@@ -57,7 +57,8 @@ extension FeatureManager.StateHolder {
         return await source.currentEnumValue(of: feature)
     }
 
-    func appAsyncApiTypeValue() async -> AsyncApiType {
+    /// Selected app async api
+    public func appAsyncApiTypeValue() async -> AsyncApiType {
         let feature: ApplicationEnumFeature = .appDefaultAsyncApi
         #if DEBUG
         guard let source = source(for: feature) else {

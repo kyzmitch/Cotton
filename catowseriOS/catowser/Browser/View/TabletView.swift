@@ -11,6 +11,7 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
 import CottonDesignKit
+import SearchViews
 
 struct TabletView<
     W: WebViewModel,

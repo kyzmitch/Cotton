@@ -10,6 +10,7 @@ import Foundation
 import CottonViewModels
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 
 struct SearchViewContextImpl: SearchViewContext {
     var knownDomainsStorage: KnownDomainsSource {
