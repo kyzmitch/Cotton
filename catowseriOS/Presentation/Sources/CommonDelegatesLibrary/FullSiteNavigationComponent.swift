@@ -8,4 +8,5 @@
 
 import CottonViewModels
 
-typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable
+/// Full site navigation component interface
+public typealias FullSiteNavigationComponent = SiteNavigationComponent & SiteNavigationChangable

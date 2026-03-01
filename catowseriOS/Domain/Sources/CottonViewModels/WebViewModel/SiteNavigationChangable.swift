@@ -7,7 +7,8 @@
 //
 
 /// Site navigation changable interface
-@MainActor public protocol SiteNavigationChangable: AnyObject {
+@MainActor
+public protocol SiteNavigationChangable: AnyObject {
     /// Modify navigation back button
     func changeBackButton(to canGoBack: Bool)
     /// Modify navigation forward button

@@ -36,8 +36,6 @@ extension CGFloat {
 
 struct UIConstants {
     static let searchBarTextColour = UIColor.black
-    /// Search bar background color
-    public static let searchBarBackgroundColour = UIColor.white
     /// Website tab highlited line color
     public static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
 }

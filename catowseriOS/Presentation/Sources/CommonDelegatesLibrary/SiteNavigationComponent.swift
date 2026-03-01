@@ -9,7 +9,9 @@
 import Foundation
 import CottonViewModels
 
-@MainActor protocol SiteNavigationComponent: AnyObject {
+/// Site navigation component interface
+@MainActor
+public protocol SiteNavigationComponent: AnyObject {
     /// Use `nil` to tell that navigation actions should be disabled
     var siteNavigator: WebViewNavigatable? { get set }
     /// Reloads state of UI components

@@ -20,6 +20,7 @@ private extension String {
     static let coreBrowserLibrary = "CoreBrowser"
     static let useCasesLibrary = "CottonUseCases"
     static let viewModelsLibrary = "CottonViewModels"
+    static let featureFlagsLibrary = "FeatureFlags"
     
     // MARK: - Frameworks/Kits
     
@@ -78,6 +79,10 @@ let package = Package(
             targets: [.featureFlagsKit]
         ),
         .library(
+            name: .featureFlagsLibrary,
+            targets: [.featureFlagsLibrary]
+        ),
+        .library(
             name: .searchLibrary,
             targets: [.searchLibrary]
         ),
@@ -134,6 +139,14 @@ let package = Package(
                 .target(name: .coreBrowserLibrary),
                 .target(name: .genericServiceKit),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
+            ]
+        ),
+        .target(
+            name: .featureFlagsLibrary,
+            dependencies: [
+                .target(name: .featureFlagsKit),
+                .target(name: .coreBrowserLibrary),
+                .target(name: .tabsLibrary)
             ]
         ),
         .target(

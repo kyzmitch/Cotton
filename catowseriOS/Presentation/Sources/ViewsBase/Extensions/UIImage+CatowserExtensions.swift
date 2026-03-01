@@ -9,8 +9,9 @@
 import UIKit
 import CoreImage
 
-public extension UIImage {
-    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+extension UIImage {
+    /// Make an image from color and size
+    public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
         color.setFill()
@@ -22,7 +23,8 @@ public extension UIImage {
         self.init(cgImage: cgImage)
     }
 
-    func withRoundCorners(_ cornerRadius: CGFloat) -> UIImage? {
+    /// Convert an image to copy with rounded corners
+    public func withRoundCorners(_ cornerRadius: CGFloat) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         let rect = CGRect(origin: CGPoint.zero, size: size)
         let context = UIGraphicsGetCurrentContext()
@@ -68,12 +70,14 @@ public extension UIImage {
         return nil
     }
 
-    var firstPixelColor: UIColor? {
+    /// Color of the image
+    public var firstPixelColor: UIColor? {
         let point = CGPoint(x: 0, y: 0)
         return averageColorImage?.getPixelColor(pos: point)
     }
 
-    static let arropUp = UIImage(systemName: "square.and.arrow.up")
+    /// Arrow up image
+    public static let arrowUp = UIImage(systemName: "square.and.arrow.up")
 }
 
 fileprivate extension CGImage {

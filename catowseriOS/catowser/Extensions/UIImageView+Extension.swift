@@ -9,6 +9,7 @@
 import AlamofireImage
 import UIKit
 import CottonViewModels
+import ViewsBase
 
 extension UIImageView {
     func updateImage(from source: ImageSource, calculateAverageColor: Bool = true) {

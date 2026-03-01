@@ -6,7 +6,7 @@
 //
 
 /// UI framework type
-public enum UIFrameworkType: Int, CaseIterable {
+public enum UIFrameworkType: Int, CaseIterable, Sendable {
     /// Good old UIKit views
     case uiKit
     /// SwiftUI view wraps UIKit view controller

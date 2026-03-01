@@ -9,7 +9,6 @@
 import CoreBrowser
 import FeatureFlagsKit
 import CottonTabs
-import ViewsBase
 
 // MARK: - generic GETTER method
 
@@ -26,8 +25,9 @@ extension FeatureManager.StateHolder {
             keyStr = .tabDefaultContentKey
         case is AsyncApiType:
             keyStr = .browserAsyncApiKey
-        case is UIFrameworkType:
-            keyStr = .uiFrameworkKey
+        // For now it is unknown how to extend this func from another module,
+        // wanted to move one option to ViewsBase module in Presentation
+        // case is UIFrameworkType: keyStr = .uiFrameworkKey
         case is ObservingApiType:
             keyStr = .observingApiKey
         default:
@@ -70,23 +70,17 @@ extension FeatureManager.StateHolder {
         #endif
     }
 
-    func webSearchAutoCompleteValue() async -> WebAutoCompletionSource {
+    /// Selected web search auto complete method
+    public func webSearchAutoCompleteValue() async -> WebAutoCompletionSource {
         let feature: ApplicationEnumFeature = .webAutoCompletionSource
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
         }
         return await source.currentEnumValue(of: feature)
     }
-
-    func appUIFrameworkValue() async -> UIFrameworkType {
-        let feature: ApplicationEnumFeature = .appDefaultUIFramework
-        guard let source = source(for: feature) else {
-            return feature.defaultEnumValue
-        }
-        return await source.currentEnumValue(of: feature)
-    }
     
-    func observingApiTypeValue() async -> ObservingApiType {
+    /// Selected observing API type
+    public func observingApiTypeValue() async -> ObservingApiType {
         let feature: ApplicationEnumFeature = .observingApi
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue

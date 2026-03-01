@@ -29,6 +29,7 @@ private extension String {
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
     static let coreBrowserLibrary = "CoreBrowser"
     static let viewModelsLibrary = "CottonViewModels"
+    static let featureFlagsLibrary = "FeatureFlags"
     
     // MARK: - Domain Frameworks/Kits
     
@@ -43,7 +44,7 @@ private extension String {
 
 let package = Package(
     name: .presentationPackage,
-    platforms: [.iOS(.v15)],
+    platforms: [.iOS(.v17)],
     products: [
         .library(
             name: .presentationPackage,
@@ -82,8 +83,9 @@ let package = Package(
                 .target(name: .cottonDesignKit),
                 .target(name: .commonDelegatesLibrary),
                 .product(name: .coreBrowserLibrary, package: .domainPackage),
-                .product(name: .featureFlagsKit, package: .domainPackage),
                 .product(name: .tabsLibrary, package: .domainPackage),
+                .product(name: .featureFlagsKit, package: .domainPackage),
+                .product(name: .featureFlagsLibrary, package: .domainPackage),
                 .product(name: .viewModelsLibrary, package: .domainPackage)
             ]
         ),
@@ -92,7 +94,8 @@ let package = Package(
             dependencies: [
                 .product(name: .coreBrowserLibrary, package: .domainPackage),
                 .product(name: .featureFlagsKit, package: .domainPackage),
-                .product(name: .viewModelsLibrary, package: .domainPackage)
+                .product(name: .viewModelsLibrary, package: .domainPackage),
+                .product(name: .featureFlagsKit, package: .domainPackage)
             ]
         ),
         .target(

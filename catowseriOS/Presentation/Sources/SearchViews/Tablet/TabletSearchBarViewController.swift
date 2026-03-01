@@ -16,6 +16,9 @@ import CommonDelegatesLibrary
 final class TabletSearchBarViewController: BaseViewController {
 
     private let searchBarViewController: SearchBarBaseViewController
+    
+    /// Search bar background color
+    static let searchBarBackgroundColour = UIColor.white
 
     /// Site navigation delegate. It is always `nil` during initialization because no active web view is present
     private weak var webViewInterface: WebViewNavigatable? {
@@ -37,20 +40,13 @@ final class TabletSearchBarViewController: BaseViewController {
 
     private weak var downloadPanelDelegate: DownloadPanelPresenter?
 
-    init(
-        _ searchBarDelegate: UISearchBarDelegate?,
+    /// Init
+    public init(
+        _ searchBarViewController: SearchBarBaseViewController,
         _ settingsDelegate: GlobalMenuDelegate?,
-        _ downloadDelegate: DownloadPanelPresenter?,
-        _ uiFramework: UIFrameworkType,
-        _ viewModel: SearchBarViewModel
+        _ downloadDelegate: DownloadPanelPresenter?
     ) {
-        searchBarViewController = UIServiceRegistry.shared()
-            .vcFactory
-            .searchBarViewController(
-                searchBarDelegate,
-                uiFramework,
-                viewModel
-            )
+        self.searchBarViewController = searchBarViewController
         globalSettingsDelegate = settingsDelegate
         downloadPanelDelegate = downloadDelegate
         super.init(nibName: nil, bundle: nil)
@@ -63,7 +59,7 @@ final class TabletSearchBarViewController: BaseViewController {
     private lazy var actionsButton: UIButton = {
         let btn: UIButton
         if #available(iOS 13.0, *) {
-            if let systemImage = UIImage.arropUp {
+            if let systemImage = UIImage.arrowUp {
                 btn = UIButton()
                 btn.setImage(systemImage, for: .normal)
                 btn.addTarget(self, action: .actionsPressed, for: .touchUpInside)
@@ -149,7 +145,7 @@ final class TabletSearchBarViewController: BaseViewController {
         reloadButton.isEnabled = false
         downloadLinksButton.isEnabled = false
 
-        view.backgroundColor = UIConstants.searchBarBackgroundColour
+        view.backgroundColor = Self.searchBarBackgroundColour
 
         actionsButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         actionsButton.topAnchor.constraint(equalTo: view.topAnchor).isActive = true

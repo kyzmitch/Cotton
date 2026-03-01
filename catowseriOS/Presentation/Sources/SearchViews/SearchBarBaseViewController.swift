@@ -23,13 +23,14 @@ public final class SearchBarBaseViewController: BaseViewController {
     /// main search bar view
     private let searchBarView: SearchBarLegacyView<SearchBarViewModel>
     private let featureManager: FeatureManager.StateHolder
-    private let uiServiceRegistry: UIServiceRegistry
+    private let tabsSubject: TabsDataSubject
 
-    init(
+    /// Init
+    public init(
         _ searchBarDelegate: UISearchBarDelegate?,
         _ uiFramework: UIFrameworkType,
         _ featureManager: FeatureManager.StateHolder,
-        _ uiServiceRegistry: UIServiceRegistry,
+        _ tabsSubject: TabsDataSubject,
         _ viewModel: SearchBarViewModel
     ) {
         let customFrame: CGRect
@@ -45,7 +46,7 @@ public final class SearchBarBaseViewController: BaseViewController {
         )
         searchBarView.delegate = searchBarDelegate
         self.featureManager = featureManager
-        self.uiServiceRegistry = uiServiceRegistry
+        self.tabsSubject = tabsSubject
         super.init(nibName: nil, bundle: nil)
         
         Task {
@@ -76,14 +77,14 @@ public final class SearchBarBaseViewController: BaseViewController {
     @MainActor
     private func startTabsObservation() {
         withObservationTracking {
-            _ = uiServiceRegistry.tabsSubject.selectedTabId
+            _ = tabsSubject.selectedTabId
         } onChange: {
             Task { [weak self] in
                 await self?.handleSelectedTabChange()
             }
         }
         withObservationTracking {
-            _ = uiServiceRegistry.tabsSubject.replacedTabIndex
+            _ = tabsSubject.replacedTabIndex
         } onChange: {
             Task { [weak self] in
                 await self?.observeReplacedTab()
@@ -94,7 +95,7 @@ public final class SearchBarBaseViewController: BaseViewController {
     @available(iOS 17.0, *)
     @MainActor
     private func handleSelectedTabChange() async {
-        let subject = uiServiceRegistry.tabsSubject
+        let subject = tabsSubject
         let tabId = subject.selectedTabId
         guard let index = subject.tabs
             .firstIndex(where: { $0.id == tabId }) else {
@@ -106,7 +107,7 @@ public final class SearchBarBaseViewController: BaseViewController {
     @available(iOS 17.0, *)
     @MainActor
     private func observeReplacedTab() async {
-        let subject = uiServiceRegistry.tabsSubject
+        let subject = tabsSubject
         guard let index = subject.replacedTabIndex else {
             return
         }
@@ -117,7 +118,12 @@ public final class SearchBarBaseViewController: BaseViewController {
 // MARK: - TabsObserver
 
 extension SearchBarBaseViewController: TabsObserver {
-    func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
+    /// Notifies about tab content type changes or `site` changes
+    ///
+    /// - parameters:
+    ///     - tab: new tab for replacement
+    ///     - index: original tab's index whichneeds to be replaced
+    public func tabDidReplace(_ tab: CoreBrowser.Tab, at index: Int) async {
         // this also can be called on non active tab
         // but at the same time it really doesn't make sense
         // to replace site on tab which is not active
@@ -126,7 +132,13 @@ extension SearchBarBaseViewController: TabsObserver {
         handleAction(.updateView(tab.title, tab.searchBarContent))
     }
 
-    func tabDidSelect(
+    /// Tells observer that index has changed.
+    ///
+    /// - parameters:
+    ///     - index: new selected index.
+    ///     - content: CoreBrowser.Tab content, e.g. can be site. Need to pass it to allow browser to change content in web view.
+    ///     - identifier: needed to quickly determine visual state (selected view or not)
+    public func tabDidSelect(
         _ index: Int,
         _ content: CoreBrowser.Tab.ContentType,
         _ identifier: UUID

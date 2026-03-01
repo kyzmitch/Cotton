@@ -11,6 +11,7 @@ import UIKit
 import CottonViewModels
 import ViewsBase
 import CommonDelegatesLibrary
+import SearchViews
 
 /// Implements the operations to create tablet layout product objects.
 final class TabletViewControllerFactory: ViewControllerFactory {
@@ -40,12 +41,17 @@ final class TabletViewControllerFactory: ViewControllerFactory {
         if let existingVC = searchBarVC {
             return existingVC
         }
+        let subController = UIServiceRegistry.shared()
+            .vcFactory
+            .searchBarViewController(
+                searchBarDelegate,
+                uiFramework,
+                viewModel
+            )
         searchBarVC = TabletSearchBarViewController(
-            searchBarDelegate,
+            subController,
             settingsDelegate,
             downloadDelegate,
-            uiFramework,
-            viewModel
         )
         return searchBarVC
     }

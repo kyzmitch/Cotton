@@ -114,7 +114,7 @@ final class BrowserToolbarView: UIToolbar {
         let btn: UIBarButtonItem
         let actions = #selector(BrowserToolbarView.handleActionsPressed)
         if #available(iOS 13.0, *) {
-            if let systemImage = UIImage.arropUp {
+            if let systemImage = UIImage.arrowUp {
                 btn = .init(image: systemImage, style: .plain, target: self, action: actions)
             } else {
                 btn = .init(barButtonSystemItem: .action, target: self, action: actions)
