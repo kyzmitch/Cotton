@@ -106,6 +106,7 @@ let package = Package(
         .target(
             name: .commonDelegatesLibrary,
             dependencies: [
+                .product(name: .viewModelsLibrary, package: .domainPackage)
             ]
         )
     ],
