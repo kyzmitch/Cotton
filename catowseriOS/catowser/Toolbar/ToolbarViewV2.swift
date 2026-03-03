@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonViewModels
+import CottonDesignKit
 
 struct ToolbarViewV2: ToolbarContent {
     @EnvironmentObject var viewModel: BrowserToolbarViewModel

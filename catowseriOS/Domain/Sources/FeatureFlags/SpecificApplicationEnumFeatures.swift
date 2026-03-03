@@ -17,13 +17,16 @@ extension ApplicationEnumFeature {
     public static var tabDefaultContent: ApplicationEnumFeature<TabContentFeature> {
         return ApplicationEnumFeature<TabContentFeature>(feature: EnumFeaturesHolder.tabDefaultContent)
     }
-    static var appDefaultAsyncApi: ApplicationEnumFeature<AppAsyncApiFeature> {
+    /// App default async API
+    public static var appDefaultAsyncApi: ApplicationEnumFeature<AppAsyncApiFeature> {
         return ApplicationEnumFeature<AppAsyncApiFeature>(feature: EnumFeaturesHolder.selectedAppAsyncApi)
     }
-    static var webAutoCompletionSource: ApplicationEnumFeature<WebAutoCompletionFeature> {
+    /// Web auto-completion source
+    public static var webAutoCompletionSource: ApplicationEnumFeature<WebAutoCompletionFeature> {
         return ApplicationEnumFeature<WebAutoCompletionFeature>(feature: EnumFeaturesHolder.webAutoCompletionSource)
     }
-    static var observingApi: ApplicationEnumFeature<ObservingApiFeature> {
+    /// Observing API type
+    public static var observingApi: ApplicationEnumFeature<ObservingApiFeature> {
         return ApplicationEnumFeature<ObservingApiFeature>(feature: EnumFeaturesHolder.observingApiKey)
     }
 }

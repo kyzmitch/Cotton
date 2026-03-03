@@ -100,6 +100,7 @@ let package = Package(
         .target(
             name: .cottonDesignKit,
             dependencies: [
+                .target(name: .viewsBaseLibrary)
             ]
         ),
         .target(

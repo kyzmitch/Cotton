@@ -14,7 +14,8 @@ public final class ThemeProvider {
     /// Shared instance of Theme provider
     public static let shared = ThemeProvider()
 
-    static let disabledOpacity = 0.4
+    /// Disableable opacity
+    public static let disabledOpacity = 0.4
 
     var themeType: ThemeType {
         didSet {
@@ -37,14 +38,16 @@ public final class ThemeProvider {
         searchBarView.isTranslucent = false
     }
 
-    func setup(_ toolbar: UIToolbar) {
+    /// Setup toolbar
+    public func setup(_ toolbar: UIToolbar) {
         toolbar.tintColor = .black
         toolbar.isTranslucent = false
         toolbar.barTintColor = .phoneToolbarColor
         // background color is `nil`
     }
 
-    func setupUnderToolbar(_ view: UIView) {
+    /// Setup under toolbar
+    public func setupUnderToolbar(_ view: UIView) {
         view.backgroundColor = .phoneToolbarColor
     }
 

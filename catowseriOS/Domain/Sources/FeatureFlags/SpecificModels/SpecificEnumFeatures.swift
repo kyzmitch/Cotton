@@ -19,13 +19,16 @@ extension String {
     static let observingApiKey = "ios.browser.observing_api"
 }
 
-typealias WebAutoCompletionFeature = GenericEnumFeature<WebAutoCompletionSource>
+/// Web auto-completion feature
+public typealias WebAutoCompletionFeature = GenericEnumFeature<WebAutoCompletionSource>
 /// Enum feature for tab add position
 public typealias TabAddPositionFeature = GenericEnumFeature<AddedTabPosition>
 /// Tab default content feature
 public typealias TabContentFeature = GenericEnumFeature<CoreBrowser.Tab.ContentType>
-typealias AppAsyncApiFeature = GenericEnumFeature<AsyncApiType>
-typealias ObservingApiFeature = GenericEnumFeature<ObservingApiType>
+/// App async API type feature
+public typealias AppAsyncApiFeature = GenericEnumFeature<AsyncApiType>
+/// Observing API type
+public typealias ObservingApiFeature = GenericEnumFeature<ObservingApiType>
 
 /// Enum features holder.
 ///

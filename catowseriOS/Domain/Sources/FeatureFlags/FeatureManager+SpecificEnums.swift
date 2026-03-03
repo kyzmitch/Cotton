@@ -41,7 +41,8 @@ extension FeatureManager.StateHolder {
 // MARK: - GETTER methods specific to Enum features
 
 extension FeatureManager.StateHolder {
-    func tabAddPositionValue() async -> AddedTabPosition {
+    /// Tab add position
+    public func tabAddPositionValue() async -> AddedTabPosition {
         let feature: ApplicationEnumFeature = .tabAddPosition
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue
@@ -49,7 +50,8 @@ extension FeatureManager.StateHolder {
         return await source.currentEnumValue(of: feature)
     }
 
-    func tabDefaultContentValue() async -> CoreBrowser.Tab.ContentType {
+    /// Tab default content
+    public func tabDefaultContentValue() async -> CoreBrowser.Tab.ContentType {
         let feature: ApplicationEnumFeature = .tabDefaultContent
         guard let source = source(for: feature) else {
             return feature.defaultEnumValue

@@ -17,7 +17,7 @@ import CottonViewModels
  - need to use the same logic for overlay view to show/hide it from SearchBarLegacyView
  createShowedLabelConstraint and hiddenLabelConstraint
  */
-struct SearchBarViewV2: View {
+public struct SearchBarViewV2: View {
     @Environment(\.horizontalSizeClass) var hSizeClass
 
     /// Search query field from the super view
@@ -42,7 +42,8 @@ struct SearchBarViewV2: View {
 
     private let overlayHidden: CGFloat = -UIScreen.main.bounds.width
 
-    init(
+    /// Init
+    public init(
         _ query: Binding<String>,
         _ action: Binding<SearchBarAction>,
         _ searchBarVM: SearchBarViewModel
@@ -52,7 +53,8 @@ struct SearchBarViewV2: View {
         self.searchBarVM = searchBarVM
     }
 
-    var body: some View {
+    /// View body
+    public var body: some View {
         ZStack {
             HStack {
                 SearchFieldView($query, showKeyboard, textFieldVM)

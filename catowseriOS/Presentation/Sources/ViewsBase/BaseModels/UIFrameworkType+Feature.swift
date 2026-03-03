@@ -19,10 +19,12 @@ extension String {
     static let uiFrameworkKey = "ios.browser.ui_framework"
 }
 
-typealias UIFrameworkFeature = GenericEnumFeature<UIFrameworkType>
+/// UI framework feature
+public typealias UIFrameworkFeature = GenericEnumFeature<UIFrameworkType>
 
 extension ApplicationEnumFeature {
-    static var appDefaultUIFramework: ApplicationEnumFeature<UIFrameworkFeature> {
+    /// App default UI framework type
+    public static var appDefaultUIFramework: ApplicationEnumFeature<UIFrameworkFeature> {
         return ApplicationEnumFeature<UIFrameworkFeature>(feature: UIFrameworkFeature(.uiFrameworkKey))
     }
 }

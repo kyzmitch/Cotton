@@ -9,7 +9,8 @@
 import SwiftUI
 
 extension Color {
-    static let phoneToolbarColor: Color = {
+    /// Phone toolbar color
+    public static let phoneToolbarColor: Color = {
         let uiKitColor = #colorLiteral(red: 0.9647058824, green: 0.9647058824, blue: 0.9647058824, alpha: 1)
         return .init(uiKitColor)
     }()

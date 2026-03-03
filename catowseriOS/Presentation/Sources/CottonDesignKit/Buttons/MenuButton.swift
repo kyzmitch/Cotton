@@ -8,11 +8,13 @@
 
 import SwiftUI
 
-struct MenuButton: View {
+/// Menu button
+public struct MenuButton: View {
     @Binding private var showSearchSuggestions: Bool
     @Binding private var showingMenu: Bool
 
-    init(
+    /// Init
+    public init(
         _ showSearchSuggestions: Binding<Bool>,
         _ showingMenu: Binding<Bool>
     ) {
@@ -20,7 +22,8 @@ struct MenuButton: View {
         _showingMenu = showingMenu
     }
 
-    var body: some View {
+    /// View body
+    public var body: some View {
         Button {
             showSearchSuggestions = false
             withAnimation(.easeInOut(duration: 1)) {

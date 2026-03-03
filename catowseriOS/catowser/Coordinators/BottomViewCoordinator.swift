@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ViewsBase
 
 final class BottomViewCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory

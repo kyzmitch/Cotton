@@ -12,7 +12,8 @@ import UIKit
 extension CGFloat {
     /// Tab height
     public static let tabHeight = CGFloat(40.0)
-    static let searchViewHeight = CGFloat(64.0)
+    /// Search view height
+    public static let searchViewHeight = CGFloat(64.0)
     /// Toolbar height
     public static let toolbarViewHeight = CGFloat(44.0)
     /// Tab bar height
@@ -21,10 +22,12 @@ extension CGFloat {
     public static let linkTagsHeight = CGFloat(60.0)
     /// Tab label horizontal margin
     public static let tagLabelHorizontalMargin = CGFloat(10.0)
-    static let safeAreaBottomMargin = CGFloat(20.0) /* view.safeAreaInsets.bottom */
+    /// Safe area bottom margin
+    public static let safeAreaBottomMargin = CGFloat(20.0) /* view.safeAreaInsets.bottom */
 
+    /// Tab width
     @MainActor
-    static var tabWidth: CGFloat {
+    public static var tabWidth: CGFloat {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return 40.0
         } else if UIDevice.current.userInterfaceIdiom == .pad {
@@ -33,12 +36,16 @@ extension CGFloat {
             return 180.0
         }
     }
-    static let compactTabWidth = CGFloat(40.0)
-    static let regularTabWidth = CGFloat(180.0)
-    static let highlightLineWidth: CGFloat = 3
+    /// Compact tab width
+    public static let compactTabWidth = CGFloat(40.0)
+    /// Regular tab width
+    public static let regularTabWidth = CGFloat(180.0)
+    /// highlight line width
+    public static let highlightLineWidth: CGFloat = 3
 }
 
-struct UIConstants {
+/// UI constants
+public enum UIConstants {
     static let searchBarTextColour = UIColor.black
     /// Website tab highlited line color
     public static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)

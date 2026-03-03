@@ -15,6 +15,7 @@ import CottonViewModels
 import CottonSearch
 import ViewsBase
 import CommonDelegatesLibrary
+import SearchViews
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {

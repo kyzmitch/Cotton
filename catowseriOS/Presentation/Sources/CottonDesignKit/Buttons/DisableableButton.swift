@@ -7,13 +7,17 @@
 //
 
 import SwiftUI
+import ViewsBase
 
-@MainActor struct DisableableButton: View {
+/// Disableable button
+@MainActor
+public struct DisableableButton: View {
     private let disabled: Bool
     private let imageName: String
     private let onTap: @MainActor () -> Void
 
-    init(
+    /// Init
+    public init(
         _ imageName: String,
         _ disabled: Bool,
         _ onTap: @escaping @MainActor () -> Void
@@ -23,7 +27,8 @@ import SwiftUI
         self.onTap = onTap
     }
 
-    var body: some View {
+    /// View body
+    public var body: some View {
         Button(action: onTap) {
             Image(imageName)
         }
