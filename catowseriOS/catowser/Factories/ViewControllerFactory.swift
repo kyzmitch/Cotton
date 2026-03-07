@@ -13,6 +13,7 @@ import CottonViewModels
 import ViewsBase
 import CommonDelegatesLibrary
 import SearchViews
+import SearchSuggestions
 
 /**
  Tried to make view controller factory generic and depend on one generic parameter which

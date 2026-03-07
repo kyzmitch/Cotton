@@ -1,23 +1,25 @@
 //
 //  SearchSuggestionsViewController.swift
-//  catowser
+//  SearchSuggestions
 //
-//  Created by Andrey Ermoshin on 22/02/2018.
-//  Copyright © 2018 Cotton (former Catowser). All rights reserved.
+//  Created by Andrei Ermoshin on 7/03/26.
+//  Copyright © 2026 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
 import UIKit
-import FeatureFlagsKit
 import Combine
 import CottonViewModels
 
-fileprivate extension String {
-    static let searchSuggestionCellId = "SearchSuggestionCellId"
+/// Search suggestions controller interface
+public protocol SearchSuggestionsControllerInterface: AnyObject {
+    /// Prepare search with a query
+    /// - Parameter searchQuery: Search query
+    func prepareSearch(for searchQuery: String) async
 }
 
 /// View controller for suggestions view
 /// Looks similar to the one in Safari
-final class SearchSuggestionsViewController: UITableViewController {
+public final class SearchSuggestionsViewController: UITableViewController {
     private let viewModel: any SearchSuggestionsViewModel
 
     private var state: SearchSuggestionsViewState = .waitingForQuery {
@@ -31,7 +33,7 @@ final class SearchSuggestionsViewController: UITableViewController {
     /// Delegate to handle suggestion selection
     private weak var delegate: SearchSuggestionsListDelegate?
 
-    init(
+    public init(
         _ delegate: SearchSuggestionsListDelegate?,
         _ viewModel: any SearchSuggestionsViewModel
     ) {
@@ -44,7 +46,7 @@ final class SearchSuggestionsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +55,7 @@ final class SearchSuggestionsViewController: UITableViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: .searchSuggestionCellId)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         taskHandler?.cancel()
@@ -65,7 +67,7 @@ final class SearchSuggestionsViewController: UITableViewController {
         // Need to update FeatureManager enum features
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         taskHandler?.cancel()
@@ -79,28 +81,32 @@ final class SearchSuggestionsViewController: UITableViewController {
     }
 }
 
-extension SearchSuggestionsViewController /* UITableViewDataSource */ {
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return state.sectionsNumber
+// MARK: - UITableViewDataSource
+
+extension SearchSuggestionsViewController {
+    public override func numberOfSections(in tableView: UITableView) -> Int {
+        state.sectionsNumber
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         state.sectionTitle(section: section)
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return state.rowsCount(section)
+    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        state.rowsCount(section)
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: .searchSuggestionCellId, for: indexPath)
         cell.textLabel?.text = state.value(from: indexPath.row, section: indexPath.section)
         return cell
     }
 }
 
-extension SearchSuggestionsViewController /* UITableViewDelegate */ {
-    override func tableView(
+// MARK: - UITableViewDelegate
+
+extension SearchSuggestionsViewController {
+    public override func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
@@ -125,8 +131,15 @@ extension SearchSuggestionsViewController /* UITableViewDelegate */ {
     }
 }
 
+// MARK: - SearchSuggestionsControllerInterface
+
 extension SearchSuggestionsViewController: SearchSuggestionsControllerInterface {
-    func prepareSearch(for searchQuery: String) async {
+    public func prepareSearch(for searchQuery: String) async {
         await viewModel.fetchSuggestions(searchQuery)
     }
 }
+
+private extension String {
+    static let searchSuggestionCellId = "SearchSuggestionCellId"
+}
+
