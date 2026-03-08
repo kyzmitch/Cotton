@@ -169,7 +169,8 @@ let package = Package(
                 .product(name: .cottonNetworkingLibrary, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework),
-                .product(name: .cottonRestKit, package: .basePackage)
+                .product(name: .cottonRestKit, package: .basePackage),
+                .target(name: .coreBrowserLibrary)
             ]
         ),
         .target(

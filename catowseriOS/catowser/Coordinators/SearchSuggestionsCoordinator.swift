@@ -10,10 +10,7 @@ import UIKit
 @preconcurrency import ReactiveSwift
 import FeatureFlagsKit
 import CottonViewModels
-
-protocol SearchSuggestionsControllerInterface: AnyObject {
-    func prepareSearch(for searchQuery: String) async
-}
+import SearchSuggestions
 
 final class SearchSuggestionsCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory

@@ -13,8 +13,9 @@ private extension String {
     static let domainPackage = "Domain"
     
     // MARK: - Libraries
-
+    
     static let searchViewsLibrary = "SearchViews"
+    static let searchSuggestionsLibrary = "SearchSuggestions"
     static let commonDelegatesLibrary = "CommonDelegatesLibrary"
     
     // MARK: - Frameworks/Kits
@@ -55,6 +56,10 @@ let package = Package(
             targets: [.searchViewsLibrary]
         ),
         .library(
+            name: .searchSuggestionsLibrary,
+            targets: [.searchSuggestionsLibrary]
+        ),
+        .library(
             name: .viewsBaseLibrary,
             targets: [.viewsBaseLibrary]
         ),
@@ -86,6 +91,12 @@ let package = Package(
                 .product(name: .tabsLibrary, package: .domainPackage),
                 .product(name: .featureFlagsKit, package: .domainPackage),
                 .product(name: .featureFlagsLibrary, package: .domainPackage),
+                .product(name: .viewModelsLibrary, package: .domainPackage)
+            ]
+        ),
+        .target(
+            name: .searchSuggestionsLibrary,
+            dependencies: [
                 .product(name: .viewModelsLibrary, package: .domainPackage)
             ]
         ),

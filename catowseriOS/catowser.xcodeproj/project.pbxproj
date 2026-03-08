@@ -93,6 +93,7 @@
 		75DA4C7B2C9C7F4D009AE049 /* UIServiceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA4C7A2C9C7F40009AE049 /* UIServiceRegistry.swift */; };
 		75EA4E6F29F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
 		75ECAB092F4C49FF00B6B80D /* SearchViews in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB082F4C49FF00B6B80D /* SearchViews */; };
+		75ECAB262F4C800000B6B80D /* SearchSuggestions in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB252F4C800000B6B80D /* SearchSuggestions */; };
 		75ECAB0B2F4C4AC100B6B80D /* ViewsBase in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB0A2F4C4AC100B6B80D /* ViewsBase */; };
 		75ECAB112F4C753900B6B80D /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB0E2F4C753900B6B80D /* EnvironmentValues+Extension.swift */; };
 		75ECAB122F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB0F2F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift */; };
@@ -191,7 +192,6 @@
 		C22599631F7BEF6D000E4C3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599621F7BEF6D000E4C3A /* WebViewController.swift */; };
 		C22599671F7BF301000E4C3A /* MainBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C22599661F7BF301000E4C3A /* MainBrowserViewController.swift */; };
 		C27371171F7A341900900F03 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C27371191F7A341900900F03 /* Localizable.strings */; };
-		C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -378,7 +378,6 @@
 		C27371181F7A341900900F03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C273711A1F7A345800900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		C273711B1F7A345A00900F03 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -387,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75ECAB092F4C49FF00B6B80D /* SearchViews in Frameworks */,
+				75ECAB262F4C800000B6B80D /* SearchSuggestions in Frameworks */,
 				75ECAB1E2F4CCB9900B6B80D /* CottonDesignKit in Frameworks */,
 				75696D282EFF1DAA007C26DC /* CottonRestKit in Frameworks */,
 				75ECAB0B2F4C4AC100B6B80D /* ViewsBase in Frameworks */,
@@ -780,7 +780,6 @@
 		8AF3352229E4AC7C00A486CF /* SearchSuggestions */ = {
 			isa = PBXGroup;
 			children = (
-				C707CC11203F0BAF002EA258 /* SearchSuggestionsViewController.swift */,
 				8A02AE7F2965CD9F004041D8 /* SearchSuggestionsView.swift */,
 				8A0FC19A29F246640044829A /* SearchSuggestionsLegacyView.swift */,
 				8A917CB029D4A39B00404256 /* SearchSuggestionsViewV2.swift */,
@@ -827,6 +826,7 @@
 				756138BE2EFFFD3500A6F605 /* CottonUseCases */,
 				756139352EFFFF7600A6F605 /* CottonViewModels */,
 				75ECAB082F4C49FF00B6B80D /* SearchViews */,
+				75ECAB252F4C800000B6B80D /* SearchSuggestions */,
 				75ECAB0A2F4C4AC100B6B80D /* ViewsBase */,
 				75ECAB1D2F4CCB9900B6B80D /* CottonDesignKit */,
 				75ECAB1F2F4CD04500B6B80D /* CommonDelegatesLibrary */,
@@ -1041,7 +1041,6 @@
 				8AB9BE1B28FF0CE7002063C2 /* CAGradientLayer+CatowserExtension.swift in Sources */,
 				8AD8A169245D6F7400BE8070 /* WebViewLoadingErrorHandler.swift in Sources */,
 				8AB9BE1428FF0C55002063C2 /* CollectionViewInterface.swift in Sources */,
-				C707CC12203F0BAF002EA258 /* SearchSuggestionsViewController.swift in Sources */,
 				607CC66522A52DDE0037E5EC /* DomainNativeAppChecker.swift in Sources */,
 				8AE0BDDD292D079300A8BF9E /* LoadingProgressCoordinator.swift in Sources */,
 				8A49D80F2BA21B9B00F84700 /* MenuStatefullLabel.swift in Sources */,
@@ -1550,6 +1549,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
 			productName = SearchViews;
+		};
+		75ECAB252F4C800000B6B80D /* SearchSuggestions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
+			productName = SearchSuggestions;
 		};
 		75ECAB0A2F4C4AC100B6B80D /* ViewsBase */ = {
 			isa = XCSwiftPackageProductDependency;
