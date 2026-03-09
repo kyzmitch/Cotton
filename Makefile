@@ -1,4 +1,6 @@
 SHELL := /bin/bash -o pipefail
+# Use -p to prevent the error if the directory exists
+MKDIR_P = mkdir -p
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
 XCPRETTY := bundle exec xcpretty
@@ -80,7 +82,15 @@ setup:
 	$(DISPLAY_SEPARATOR)
 	brew update
 	$(DISPLAY_SEPARATOR)
-	brew bundle install --file=./brew_configs/Brewfile
+	brew untap cotton-user/cotton-brew-taps
+	$(DISPLAY_SEPARATOR)
+	brew tap-new cotton-user/cotton-brew-taps
+	$(DISPLAY_SEPARATOR)
+	$(MKDIR_P) /opt/homebrew/Library/Taps/cotton-user/homebrew-cotton-brew-taps/Formula
+	$(DISPLAY_SEPARATOR)
+	cp ./brew_configs/* /opt/homebrew/Library/Taps/cotton-user/homebrew-cotton-brew-taps/Formula
+	$(DISPLAY_SEPARATOR)
+	brew bundle install --file=/opt/homebrew/Library/Taps/cotton-user/homebrew-cotton-brew-taps/Formula/Brewfile
 	$(DISPLAY_SEPARATOR)
 	mint install MakeAWishFoundation/SwiftyMocky
 	export PATH="${PATH}:${HOME}/.mint/bin"
@@ -123,6 +133,7 @@ android-kotlin-format:
 
 .PHONY: build-cotton-base-ios-release
 build-cotton-base-ios-release:
+	source ~/.zprofile
 	cd cotton-base; \
 	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
 	export ANDROID_HOME=~/Library/Android/sdk; \
