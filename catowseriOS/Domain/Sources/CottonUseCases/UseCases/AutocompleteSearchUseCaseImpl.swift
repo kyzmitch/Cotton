@@ -142,36 +142,4 @@ public final class AutocompleteSearchUseCaseImpl: AutocompleteSearchUseCase {
         }
         return suggestions
     }
-    
-    public func createSearchURL(
-        _ source: WebAutoCompletionSource,
-        _ suggestion: String
-    ) async throws -> URL {
-        let searchURL: URL = try await withCheckedThrowingContinuation { [weak self] continuation in
-            guard let self else {
-                continuation.resume(throwing: AppError.zombieSelf)
-                return
-            }
-            searchDataService.sendCommand(
-                .fetchSearchURL(
-                    identifier: UUID(),
-                    suggestion: suggestion,
-                    searchEngineName: source
-                ),
-                nil
-            ) { result in
-                switch result {
-                case .failure(let searchError):
-                    continuation.resume(throwing: AppError.searchDataServiceError(searchError))
-                case .success(let serviceData):
-                    do {
-                        continuation.resume(returning: try serviceData.searchURL)
-                    } catch {
-                        continuation.resume(throwing: error)
-                    }
-                }
-            }
-        }
-        return searchURL
-    }
 }

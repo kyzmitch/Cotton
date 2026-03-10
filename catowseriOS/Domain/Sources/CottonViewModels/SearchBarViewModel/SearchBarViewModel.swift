@@ -40,7 +40,7 @@ public protocol SearchBarDelegateHolder {
     /// Write tabs use case
     private let writeTabsUseCase: WriteTabsUseCase
     /// Search autocomplete use case
-    private let autocompletionUseCase: AutocompleteSearchUseCase
+    private let createSearchURLUseCase: any CreateSearchURLUseCase
     /// App side context
     private let appContext: SearchBarContext
     /// Delegate (to not be forced to subclass NSObject, because there is no multiple inheritance)
@@ -55,11 +55,11 @@ public protocol SearchBarDelegateHolder {
 
     init(
         _ writeTabsUseCase: WriteTabsUseCase,
-        _ autocompletionUseCase: AutocompleteSearchUseCase,
+        _ createSearchURLUseCase: any CreateSearchURLUseCase,
         _ appContext: SearchBarContext
     ) {
         self.writeTabsUseCase = writeTabsUseCase
-        self.autocompletionUseCase = autocompletionUseCase
+        self.createSearchURLUseCase = createSearchURLUseCase
         self.appContext = appContext
         super.init()
         searchBarDelegate = SearchBarDelegateImpl(viewModel: self)
@@ -105,10 +105,7 @@ extension SearchBarViewModelImpl: SearchBarStateContext {
             try await replaceTab(with: url, with: nil, isJSEnabled)
         case .suggestion(let suggestion):
             let source = await appContext.webAutocompletionSourceValue
-            let url = try await autocompletionUseCase.createSearchURL(
-                source,
-                suggestion
-            )
+            let url = try await createSearchURLUseCase.execute(input: (source, suggestion))
             try await replaceTab(with: url, with: suggestion, isJSEnabled)
         }
     }

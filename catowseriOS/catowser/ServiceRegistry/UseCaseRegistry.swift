@@ -69,10 +69,15 @@ import CottonSearch
                 (any SearchDataServiceProtocol).self,
                 .searchDataServiceKey
             )
-            let googleUseCase: AutocompleteSearchUseCase = AutocompleteSearchUseCaseImpl(searchDataService)
+            let createSearchURLUseCase: any CreateSearchURLUseCase = CreateSearchURLUseCaseImpl(searchDataService)
             useCaseLocator.registerTyped(
-                googleUseCase,
-                of: AutocompleteSearchUseCase.self
+                createSearchURLUseCase,
+                of: (any CreateSearchURLUseCase).self
+            )
+            let fetchSuggestionsUseCase: any FetchAutocompleteSuggestionsUseCase = FetchAutocompleteSuggestionsUseCaseImpl(searchDataService)
+            useCaseLocator.registerTyped(
+                fetchSuggestionsUseCase,
+                of: (any FetchAutocompleteSuggestionsUseCase).self
             )
         }
 

@@ -17,7 +17,7 @@ import ViewModelKit
     private init() { }
     /// Search suggestions view model
     public static func createSearchSuggestionsVM(
-        _ autocompleteUseCase: AutocompleteSearchUseCase,
+        _ autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase,
         _ context: SearchViewContext
     ) -> any SearchSuggestionsViewModel {
         SearchSuggestionsViewModelImpl(autocompleteUseCase, context)
@@ -76,12 +76,12 @@ import ViewModelKit
     /// Search bar view model
     public static func createSearchBarVM(
         _ writeTabsUseCase: WriteTabsUseCase,
-        _ autocompletionUseCase: AutocompleteSearchUseCase,
+        _ createSearchURLUseCase: CreateSearchURLUseCase,
         _ appContext: SearchBarContext
     ) -> SearchBarViewModelWithDelegates {
         SearchBarViewModelImpl(
             writeTabsUseCase,
-            autocompletionUseCase,
+            createSearchURLUseCase,
             appContext
         )
     }

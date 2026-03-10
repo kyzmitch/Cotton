@@ -37,7 +37,7 @@ import FeatureFlags
 
     func searchSuggestionsViewModel() async -> any SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
-        let autocompleteUseCase = await useCaseRegistry.findUseCase(AutocompleteSearchUseCase.self)
+        let autocompleteUseCase = await useCaseRegistry.findUseCase((any FetchAutocompleteSuggestionsUseCase).self)
         return ModuleVMFactory.createSearchSuggestionsVM(
             autocompleteUseCase,
             vmContext
@@ -105,7 +105,7 @@ import FeatureFlags
         _ context: SearchBarContext
     ) async -> SearchBarViewModelWithDelegates {
         async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
-        async let searchUseCase = useCaseRegistry.findUseCase(AutocompleteSearchUseCase.self)
+        async let searchUseCase = useCaseRegistry.findUseCase((any CreateSearchURLUseCase).self)
         return await ModuleVMFactory.createSearchBarVM(
             writeUseCase,
             searchUseCase,

@@ -10,17 +10,34 @@ import Combine
 import CoreBrowser
 import CottonSearch
 import Foundation
+import BaseUseCaseKit
+import AutoMockable
 
-public final class CreateSearchURLUseCase: CoreUseCase {
-    public typealias Input = (source: WebAutoCompletionSource, suggestion: String)
-    public typealias Output = URL
+// MARK: - Interface
+
+/// Create search URL using selected search engine and return async task
+public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable {
     
-    private let searchDataService: any SearchDataServiceProtocol
+    /// Input
+    typealias Input = (source: WebAutoCompletionSource, suggestion: String)
+    /// Output which is URL
+    typealias Output = URL
 
+    func execute(input: Input) async throws -> Output
+}
+
+// MARK: - Implementation
+
+/// Create search URL using selected search engine and return async task
+public final class CreateSearchURLUseCaseImpl: CreateSearchURLUseCase {
+    private let searchDataService: any SearchDataServiceProtocol
+    
+    /// Init
     public init(_ searchDataService: any SearchDataServiceProtocol) {
         self.searchDataService = searchDataService
     }
-
+    
+    /// Executes the use case
     public func execute(input: Input) async throws -> Output {
         let searchURL: URL = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {

@@ -10,10 +10,27 @@ import Combine
 import CoreBrowser
 import CottonSearch
 import Foundation
+import BaseUseCaseKit
+import AutoMockable
 
-public final class FetchAutocompleteSuggestionsUseCase: CoreUseCase {
-    public typealias Input = (source: WebAutoCompletionSource, query: String)
-    public typealias Output = [String]
+// MARK: - Interface
+
+/// Fetch search suggestions and return async task
+public protocol FetchAutocompleteSuggestionsUseCase: CoreUseCase, AutoMockable, Sendable {
+    
+    /// Input
+    typealias Input = (source: WebAutoCompletionSource, query: String)
+    /// Output
+    typealias Output = [String]
+
+    func execute(input: Input) async throws -> Output
+}
+
+// MARK: - Implementation
+
+
+/// Fetch search suggestions and return async task
+public final class FetchAutocompleteSuggestionsUseCaseImpl: FetchAutocompleteSuggestionsUseCase {
     
     private let searchDataService: any SearchDataServiceProtocol
 
@@ -21,6 +38,7 @@ public final class FetchAutocompleteSuggestionsUseCase: CoreUseCase {
         self.searchDataService = searchDataService
     }
 
+    /// Execute a use case
     public func execute(input: Input) async throws -> Output {
         let suggestions: [String] = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {

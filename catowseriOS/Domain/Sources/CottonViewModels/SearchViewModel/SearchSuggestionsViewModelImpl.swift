@@ -15,7 +15,7 @@ import AutoMockable
 
 final class SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     /// Autocomplete client, probably need to depend on all possible use case (google, duckduckgo, etc.)
-    private let autocompleteUseCase: AutocompleteSearchUseCase
+    private let autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase
     /// search view context
     private let searchContext: SearchViewContext
 
@@ -34,7 +34,7 @@ final class SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     #endif
 
     init(
-        _ autocompleteUseCase: AutocompleteSearchUseCase,
+        _ autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase,
         _ context: SearchViewContext
     ) {
         state = .waitingForQuery
@@ -56,7 +56,7 @@ final class SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
         state = .knownDomainsLoaded(fetchData.domainNames)
         searchSuggestionsTaskHandler?.cancel()
         do {
-            let suggestions = try await autocompleteUseCase.fetchSuggestions(fetchData.autocompletionSource, query)
+            let suggestions = try await autocompleteUseCase.execute(input: (fetchData.autocompletionSource, query))
             state = .everythingLoaded(fetchData.domainNames, suggestions)
         } catch {
             state = .everythingLoaded(fetchData.domainNames, [])

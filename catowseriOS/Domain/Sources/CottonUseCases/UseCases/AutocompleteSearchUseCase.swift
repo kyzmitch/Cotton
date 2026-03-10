@@ -33,9 +33,4 @@ public protocol AutocompleteSearchUseCase: BaseUseCase, AutoMockable, Sendable {
         _ source: WebAutoCompletionSource,
         _ query: String
     ) async throws -> [String]
-    /// Create search URL using selected search engine and return async task
-    func createSearchURL(
-        _ source: WebAutoCompletionSource,
-        _ suggestion: String
-    ) async throws -> URL
 }
