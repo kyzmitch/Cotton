@@ -1,7 +1,9 @@
-// Protocol for reading the selected tab ID asynchronously.
-///
-/// Conformants should implement the `execute(input:)` method to provide
-/// the ID of the selected tab.
+import AutoMockable
+import BaseUseCaseKit
+import CottonTabs
+import CoreBrowser
+
+/// Protocol for reading the selected tab ID asynchronously.
 public protocol ReadSelectedTabIdUseCase: CoreUseCase, AutoMockable, Sendable {
     /// Input type for the use case. In this case, it's `Void`.
     typealias Input = Void

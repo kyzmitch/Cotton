@@ -1,7 +1,8 @@
-// Protocol for reading the count of tabs asynchronously.
-///
-/// Conformants should implement the `execute(input:)` method to provide
-/// the count of tabs.
+import AutoMockable
+import BaseUseCaseKit
+import CottonTabs
+
+/// Protocol for reading the count of tabs asynchronously.
 public protocol ReadTabsCountUseCase: CoreUseCase, AutoMockable, Sendable {
     /// Input type for the use case. In this case, it's `Void`.
     typealias Input = Void

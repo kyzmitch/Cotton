@@ -1,7 +1,9 @@
-// Protocol for reading all tabs asynchronously.
-///
-/// Conformants should implement the `execute(input:)` method to provide
-/// a list of tabs.
+import AutoMockable
+import BaseUseCaseKit
+import CottonTabs
+import CoreBrowser
+
+/// Protocol for reading all tabs asynchronously.
 public protocol ReadAllTabsUseCase: CoreUseCase, AutoMockable, Sendable {
     /// Input type for the use case. In this case, it's `Void`.
     typealias Input = Void

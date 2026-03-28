@@ -11,6 +11,7 @@ import Combine
 import CottonViewModels
 
 /// Search suggestions controller interface
+@MainActor
 public protocol SearchSuggestionsControllerInterface: AnyObject {
     /// Prepare search with a query
     /// - Parameter searchQuery: Search query
