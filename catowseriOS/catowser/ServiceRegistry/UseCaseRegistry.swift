@@ -47,11 +47,6 @@ import CottonSearch
         /// factory should be a singleton as well
         private func registerTabsUseCases() async {
             let dataService = await ServiceRegistry.shared.tabsService
-            let readUseCase: ReadTabsUseCase = ReadTabsUseCaseImpl(
-                dataService,
-                DefaultTabProvider.shared
-            )
-            useCaseLocator.registerTyped(readUseCase, of: ReadTabsUseCase.self)
             let writeUseCase: WriteTabsUseCase = WriteTabsUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 writeUseCase,

@@ -45,7 +45,7 @@ import ViewModelKit
     /// tab view model
     public static func createTabVM(
         _ tab: CoreBrowser.Tab,
-        _ readTabUseCase: ReadTabsUseCase,
+        _ readTabUseCase: ReadSelectedTabIdUseCase,
         _ writeTabUseCase: WriteTabsUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
@@ -88,10 +88,16 @@ import ViewModelKit
     
     /// Tab previews view model
     public static func createTabPreviewsVM(
-        _ readTabUseCase: ReadTabsUseCase,
+        _ readTabUseCase: ReadAllTabsUseCase,
+        _ readSelectedIdUseCase: ReadSelectedTabIdUseCase,
         _ writeTabUseCase: WriteTabsUseCase,
         _ appContext: TabPreviewsAppContext
     ) -> TabsPreviewsViewModelWithHolder {
-        TabsPreviewsViewModelImpl(readTabUseCase, writeTabUseCase, appContext)
+        TabsPreviewsViewModelImpl(
+            readTabUseCase,
+            readSelectedIdUseCase,
+            writeTabUseCase,
+            appContext
+        )
     }
 }

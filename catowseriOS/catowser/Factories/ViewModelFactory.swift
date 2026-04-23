@@ -66,7 +66,7 @@ import FeatureFlags
         _ tab: CoreBrowser.Tab,
         _ context: TabViewModelContext
     ) async -> TabViewModel {
-        async let readUseCase = useCaseRegistry.findUseCase(ReadTabsUseCase.self)
+        async let readUseCase = useCaseRegistry.findUseCase((any ReadSelectedTabIdUseCase).self)
         async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
         return await ModuleVMFactory.createTabVM(
             tab,
@@ -80,10 +80,12 @@ import FeatureFlags
     func tabsPreviewsViewModel(
         _ context: TabPreviewsAppContext
     ) async -> TabsPreviewsViewModelWithHolder {
-        async let readUseCase = useCaseRegistry.findUseCase(ReadTabsUseCase.self)
+        async let readUseCase = useCaseRegistry.findUseCase((any ReadAllTabsUseCase).self)
+        async let readSelectedIdUseCase = useCaseRegistry.findUseCase((any ReadSelectedTabIdUseCase).self)
         async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
         return await ModuleVMFactory.createTabPreviewsVM(
             readUseCase,
+            readSelectedIdUseCase,
             writeUseCase,
             context
         )

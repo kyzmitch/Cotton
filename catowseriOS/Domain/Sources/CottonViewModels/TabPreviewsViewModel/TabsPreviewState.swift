@@ -41,7 +41,7 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
         let nextState: BaseState
         switch action {
         case .load:
-            if let info = await context?.load() {
+            if let info = try await context?.load() {
                 nextState = .tabs(
                     info.tabs,
                     info.selectedTabUUID

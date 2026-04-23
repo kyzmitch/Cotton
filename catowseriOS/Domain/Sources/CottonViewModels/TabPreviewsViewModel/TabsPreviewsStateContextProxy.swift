@@ -16,8 +16,8 @@ public final class TabsPreviewsStateContextProxy: TabsPreviewsStateContext {
         self.subject = subject
     }
     
-    public func load() async -> PreviewsInfo {
-        await subject.load()
+    public func load() async throws -> PreviewsInfo {
+        try await subject.load()
     }
     
     public func close(

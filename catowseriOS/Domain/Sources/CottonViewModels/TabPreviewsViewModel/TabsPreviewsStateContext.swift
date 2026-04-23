@@ -29,7 +29,7 @@ public protocol TabsPreviewsStateContext: StateContext {
     
     // MARK: - concurrent API
     
-    func load() async -> PreviewsInfo
+    func load() async throws -> PreviewsInfo
     func close(
         at index: Int,
         from tabs: [CoreBrowser.Tab]

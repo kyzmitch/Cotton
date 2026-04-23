@@ -17,7 +17,7 @@ import CottonTabs
 /// Tab view model implementation
 @MainActor final class TabViewModelImpl: TabViewModel {
     private var tab: CoreBrowser.Tab
-    private let readTabUseCase: ReadTabsUseCase
+    private let readTabUseCase: ReadSelectedTabIdUseCase
     private let writeTabUseCase: WriteTabsUseCase
     private let context: TabViewModelContext
     private let featureManager: FeatureManager.StateHolder
@@ -27,7 +27,7 @@ import CottonTabs
 
     init(
         _ tab: CoreBrowser.Tab,
-        _ readTabUseCase: ReadTabsUseCase,
+        _ readTabUseCase: ReadSelectedTabIdUseCase,
         _ writeTabUseCase: WriteTabsUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
@@ -51,7 +51,8 @@ import CottonTabs
 
     public func load() {
         Task {
-            let selectedTabId = await readTabUseCase.selectedId
+            // TODO: handle error
+            let selectedTabId = try await readTabUseCase.execute()
             let visualState = tab.getVisualState(selectedTabId)
             let favicon: ImageSource?
             if let site = tab.site {
