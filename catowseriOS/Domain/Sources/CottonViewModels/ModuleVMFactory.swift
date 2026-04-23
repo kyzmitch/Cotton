@@ -28,7 +28,7 @@ import ViewModelKit
         _ context: any WebViewContext,
         _ resolveDnsUseCase: any ResolveDNSUseCase,
         _ selectTabUseCase: SelectedTabUseCase,
-        _ writeTabUseCase: WriteTabsUseCase,
+        _ replaceTabUseCase: ReplaceSelectedTabUseCase,
         _ siteNavigation: SiteExternalNavigationDelegate?,
         _ site: Site? = nil
     ) -> any WebViewModel {
@@ -36,7 +36,7 @@ import ViewModelKit
             context,
             resolveDnsUseCase,
             selectTabUseCase,
-            writeTabUseCase,
+            replaceTabUseCase,
             siteNavigation,
             site
         )
@@ -46,14 +46,16 @@ import ViewModelKit
     public static func createTabVM(
         _ tab: CoreBrowser.Tab,
         _ readTabUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: WriteTabsUseCase,
+        _ closeTabUseCase: CloseTabUseCase,
+        _ selectTabUseCase: SelectTabUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
     ) -> TabViewModel {
         TabViewModelImpl(
             tab,
             readTabUseCase,
-            writeTabUseCase,
+            closeTabUseCase,
+            selectTabUseCase,
             context,
             FeatureManager.shared
         )

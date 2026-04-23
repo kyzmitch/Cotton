@@ -87,7 +87,7 @@ import FeatureFlagsKit
 
     private let selectTabUseCase: SelectedTabUseCase
 
-    private let writeTabUseCase: WriteTabsUseCase
+    private let replaceTabUseCase: ReplaceSelectedTabUseCase
 
     public weak var siteNavigation: SiteExternalNavigationDelegate?
 
@@ -103,7 +103,7 @@ import FeatureFlagsKit
         _ context: any WebViewContext,
         _ resolveDnsUseCase: any ResolveDNSUseCase,
         _ selectTabUseCase: SelectedTabUseCase,
-        _ writeTabUseCase: WriteTabsUseCase,
+        _ replaceTabUseCase: ReplaceSelectedTabUseCase,
         _ siteNavigation: SiteExternalNavigationDelegate?,
         _ site: Site? = nil
     ) {
@@ -116,7 +116,7 @@ import FeatureFlagsKit
         }
         self.context = context
         self.selectTabUseCase = selectTabUseCase
-        self.writeTabUseCase = writeTabUseCase
+        self.replaceTabUseCase = replaceTabUseCase
         self.siteNavigation = siteNavigation
     }
 
@@ -327,7 +327,7 @@ private extension WebViewModelImpl {
             let host = updatedInfo.host()
             await InMemoryDomainSearchProvider.shared.remember(host: host)
             context.pluginsSource.jsProgram.enable(on: subject, context: host, jsEnabled: enable)
-            try await writeTabUseCase.replaceSelected(.site(site))
+            try await replaceTabUseCase.execute(input: .site(site))
             await updateState(try state.transition(on: .startView(updatedInfo)))
         case .viewing:
             break

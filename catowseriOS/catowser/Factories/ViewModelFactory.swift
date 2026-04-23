@@ -50,13 +50,13 @@ import FeatureFlags
         _ siteNavigation: SiteExternalNavigationDelegate?
     ) async -> any WebViewModel {
         async let googleDnsUseCase = useCaseRegistry.findUseCase((any ResolveDNSUseCase).self)
-        async let selectTabUseCase = useCaseRegistry.findUseCase(SelectedTabUseCase.self)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let selectTabUseCase = useCaseRegistry.findUseCase((any SelectedTabUseCase).self)
+        async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
         return await ModuleVMFactory.createWebViewVM(
             context,
             googleDnsUseCase,
             selectTabUseCase,
-            writeUseCase,
+            replaceTabUseCase,
             siteNavigation,
             site
         )
@@ -67,11 +67,13 @@ import FeatureFlags
         _ context: TabViewModelContext
     ) async -> TabViewModel {
         async let readUseCase = useCaseRegistry.findUseCase((any ReadSelectedTabIdUseCase).self)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let closeTabUseCase = useCaseRegistry.findUseCase((any CloseTabUseCase).self)
+        async let selectTabUseCase = useCaseRegistry.findUseCase((any SelectTabUseCase).self)
         return await ModuleVMFactory.createTabVM(
             tab,
             readUseCase,
-            writeUseCase,
+            closeTabUseCase,
+            selectTabUseCase,
             context,
             FeatureManager.shared
         )

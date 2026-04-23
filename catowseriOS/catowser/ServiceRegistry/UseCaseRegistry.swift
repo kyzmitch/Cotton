@@ -47,15 +47,35 @@ import CottonSearch
         /// factory should be a singleton as well
         private func registerTabsUseCases() async {
             let dataService = await ServiceRegistry.shared.tabsService
-            let writeUseCase: WriteTabsUseCase = WriteTabsUseCaseImpl(dataService)
+            
+            let addTabUseCase: any AddTabUseCase = AddTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
-                writeUseCase,
-                of: WriteTabsUseCase.self
+                addTabUseCase,
+                of: (any AddTabUseCase).self
             )
-            let selectedTabUseCase: any SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
+            
+            let closeTabUseCase: any CloseTabUseCase = CloseTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
-                selectedTabUseCase,
-                of: (any SelectedTabUseCase).self
+                closeTabUseCase,
+                of: (any CloseTabUseCase).self
+            )
+            
+            let closeAllTabsUseCase: any CloseAllTabsUseCase = CloseAllTabsUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                closeAllTabsUseCase,
+                of: (any CloseAllTabsUseCase).self
+            )
+            
+            let replaceSelectedTabUseCase: any ReplaceSelectedTabUseCase = ReplaceSelectedTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                replaceSelectedTabUseCase,
+                of: (any ReplaceSelectedTabUseCase).self
+            )
+            
+            let selectTabUseCase: any SelectTabUseCase = SelectTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                selectTabUseCase,
+                of: (any SelectTabUseCase).self
             )
             
             // Register ReadAllTabsUseCase
@@ -77,6 +97,13 @@ import CottonSearch
             useCaseLocator.registerTyped(
                 readTabsCountUseCase,
                 of: (any ReadTabsCountUseCase).self
+            )
+            
+            // Register SelectedTabUseCase
+            let selectedTabUseCase: any SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                selectedTabUseCase,
+                of: (any SelectedTabUseCase).self
             )
         }
 

@@ -18,7 +18,8 @@ import CottonTabs
 @MainActor final class TabViewModelImpl: TabViewModel {
     private var tab: CoreBrowser.Tab
     private let readTabUseCase: ReadSelectedTabIdUseCase
-    private let writeTabUseCase: WriteTabsUseCase
+    private let closeTabUseCase: CloseTabUseCase
+    private let selectTabUseCase: SelectTabUseCase
     private let context: TabViewModelContext
     private let featureManager: FeatureManager.StateHolder
 
@@ -28,13 +29,15 @@ import CottonTabs
     init(
         _ tab: CoreBrowser.Tab,
         _ readTabUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: WriteTabsUseCase,
+        _ closeTabUseCase: CloseTabUseCase,
+        _ selectTabUseCase: SelectTabUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
     ) {
         self.tab = tab
         self.readTabUseCase = readTabUseCase
-        self.writeTabUseCase = writeTabUseCase
+        self.closeTabUseCase = closeTabUseCase
+        self.selectTabUseCase = selectTabUseCase
         self.context = context
         self.featureManager = featureManager
         _state = .init(initialValue: .deSelected(tab.title, nil))
@@ -77,7 +80,7 @@ import CottonTabs
         }
         Task {
             do {
-                _ = try await writeTabUseCase.close(tab: tab)
+                _ = try await closeTabUseCase.execute(input: tab)
             } catch {
                 print("Fail to close tab: \(error)")
             }
@@ -88,7 +91,7 @@ import CottonTabs
         print("\(#function): selected tab with id: \(tab.id)")
         Task {
             do {
-                try await writeTabUseCase.select(tab: tab)
+                try await selectTabUseCase.execute(input: tab)
             } catch {
                 print("Fail to select tab: \(error.localizedDescription)")
             }
