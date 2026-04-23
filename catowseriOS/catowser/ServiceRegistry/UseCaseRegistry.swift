@@ -57,6 +57,27 @@ import CottonSearch
                 selectedTabUseCase,
                 of: SelectedTabUseCase.self
             )
+            
+            // Register ReadAllTabsUseCase
+            let readAllTabsUseCase: any ReadAllTabsUseCase = ReadAllTabsUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                readAllTabsUseCase,
+                of: (any ReadAllTabsUseCase).self
+            )
+            
+            // Register ReadSelectedTabIdUseCase
+            let readSelectedTabIdUseCase: any ReadSelectedTabIdUseCase = ReadSelectedTabIdUseCaseImpl(dataService, DefaultTabProvider.shared)
+            useCaseLocator.registerTyped(
+                readSelectedTabIdUseCase,
+                of: (any ReadSelectedTabIdUseCase).self
+            )
+            
+            // Register ReadTabsCountUseCase
+            let readTabsCountUseCase: any ReadTabsCountUseCase = ReadTabsCountUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                readTabsCountUseCase,
+                of: (any ReadTabsCountUseCase).self
+            )
         }
 
         private func registerSearchAutocompleteUseCases() async {
