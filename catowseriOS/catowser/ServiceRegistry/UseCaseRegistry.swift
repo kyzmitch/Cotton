@@ -52,10 +52,10 @@ import CottonSearch
                 writeUseCase,
                 of: WriteTabsUseCase.self
             )
-            let selectedTabUseCase: SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
+            let selectedTabUseCase: any SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 selectedTabUseCase,
-                of: SelectedTabUseCase.self
+                of: (any SelectedTabUseCase).self
             )
             
             // Register ReadAllTabsUseCase

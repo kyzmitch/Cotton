@@ -274,7 +274,7 @@ import FeatureFlagsKit
 
     public func updateTabPreview(_ screenshot: Data?) async {
         do {
-            try await selectTabUseCase.setSelectedPreview(screenshot)
+            try await selectTabUseCase.execute(input: screenshot)
         } catch {
             print("Fail to update tab preview: \(error)")
         }

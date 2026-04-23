@@ -18,11 +18,15 @@ import AutoMockable
 /// Create search URL using selected search engine and return async task
 public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable {
     
-    /// Input
+    /// Input for creating search URL
     typealias Input = (source: WebAutoCompletionSource, suggestion: String)
     /// Output which is URL
     typealias Output = URL
 
+    /// Executes the use case to create a search URL
+    ///
+    /// - Parameter input: The search source and suggestion text
+    /// - Returns: A URL for the search query
     func execute(input: Input) async throws -> Output
 }
 
@@ -30,14 +34,20 @@ public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable {
 
 /// Create search URL using selected search engine and return async task
 public final class CreateSearchURLUseCaseImpl: CreateSearchURLUseCase {
+    /// Search data service for handling search commands
     private let searchDataService: any SearchDataServiceProtocol
     
-    /// Init
+    /// Initializes the use case with search data service
+    ///
+    /// - Parameter searchDataService: Service for handling search data operations
     public init(_ searchDataService: any SearchDataServiceProtocol) {
         self.searchDataService = searchDataService
     }
     
-    /// Executes the use case
+    /// Executes the use case to create a search URL
+    ///
+    /// - Parameter input: The search source and suggestion text
+    /// - Returns: A URL for the search query
     public func execute(input: Input) async throws -> Output {
         let searchURL: URL = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {

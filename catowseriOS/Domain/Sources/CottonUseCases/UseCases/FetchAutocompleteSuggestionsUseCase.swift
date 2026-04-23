@@ -18,27 +18,37 @@ import AutoMockable
 /// Fetch search suggestions and return async task
 public protocol FetchAutocompleteSuggestionsUseCase: CoreUseCase, AutoMockable, Sendable {
     
-    /// Input
+    /// Input for fetching search suggestions
     typealias Input = (source: WebAutoCompletionSource, query: String)
-    /// Output
+    /// Output is an array of suggestion strings
     typealias Output = [String]
 
+    /// Executes the use case to fetch autocomplete suggestions
+    ///
+    /// - Parameter input: The search source and query string
+    /// - Returns: An array of suggestion strings
     func execute(input: Input) async throws -> Output
 }
 
 // MARK: - Implementation
 
-
 /// Fetch search suggestions and return async task
 public final class FetchAutocompleteSuggestionsUseCaseImpl: FetchAutocompleteSuggestionsUseCase {
     
+    /// Search data service for handling search commands
     private let searchDataService: any SearchDataServiceProtocol
 
+    /// Initializes the use case with search data service
+    ///
+    /// - Parameter searchDataService: Service for handling search data operations
     public init(_ searchDataService: any SearchDataServiceProtocol) {
         self.searchDataService = searchDataService
     }
 
-    /// Execute a use case
+    /// Executes the use case to fetch autocomplete suggestions
+    ///
+    /// - Parameter input: The search source and query string
+    /// - Returns: An array of suggestion strings
     public func execute(input: Input) async throws -> Output {
         let suggestions: [String] = try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self else {
