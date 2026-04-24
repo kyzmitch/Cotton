@@ -63,9 +63,9 @@ import ViewModelKit
     
     /// all tabs view model
     public static func createAllTabsVM(
-        _ writeTabUseCase: WriteTabsUseCase
+        _ addTabUseCase: AddTabUseCase
     ) -> AllTabsViewModel {
-        AllTabsViewModelImpl(writeTabUseCase)
+        AllTabsViewModelImpl(addTabUseCase)
     }
     
     /// Toolbar view model

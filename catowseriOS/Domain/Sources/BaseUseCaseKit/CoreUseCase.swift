@@ -61,3 +61,23 @@ extension CoreUseCase where Input == Void {
         makeTask(input: (), priority: priority)
     }
 }
+
+// MARK: - Empty output
+
+extension CoreUseCase where Input == Void, Output == Void {
+    /// Execute a use case without any input and output
+    ///
+    /// - Returns Nothing or throws an error
+    public func execute() async throws {
+        try await execute(input: ())
+    }
+
+    /// Creates an async task which may be cancelled and executed later on.
+    ///
+    /// - Parameters:
+    ///  - priority An optional task priority
+    /// - Returns An async task
+    public func makeTask(priority: TaskPriority?) -> Task<Void, Error> {
+        makeTask(input: (), priority: priority)
+    }
+}

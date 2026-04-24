@@ -20,14 +20,14 @@ public typealias AllTabsViewModel = BaseViewModel<
 
 /// All tabs view model implementation
 final class AllTabsViewModelImpl: AllTabsViewModel {
-    private let writeTabUseCase: WriteTabsUseCase
+    private let addTabUseCase: AddTabUseCase
     private lazy var proxy = {
         AllTabsStateContextProxy(subject: self)
     }()
 
     /// Internal initializer
-    init(_ writeTabUseCase: WriteTabsUseCase) {
-        self.writeTabUseCase = writeTabUseCase
+    init(_ addTabUseCase: AddTabUseCase) {
+        self.addTabUseCase = addTabUseCase
         super.init()
     }
     
@@ -40,7 +40,7 @@ extension AllTabsViewModelImpl: AllTabsStateContext {
     public func handleTabAdd(_ tab: CoreBrowser.Tab) {
         Task {
             do {
-                try await writeTabUseCase.add(tab: tab)
+                try await addTabUseCase.execute(input: tab)
             } catch {
                 print("Fail to add new tab: \(error)")
             }

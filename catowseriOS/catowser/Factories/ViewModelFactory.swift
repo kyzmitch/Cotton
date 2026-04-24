@@ -94,15 +94,15 @@ import FeatureFlags
     }
 
     func allTabsViewModel() async -> AllTabsViewModel {
-        let writeUseCase = await useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        let writeUseCase = await useCaseRegistry.findUseCase((any AddTabUseCase).self)
         return ModuleVMFactory.createAllTabsVM(writeUseCase)
     }
 
     func topSitesViewModel() async -> TopSitesViewModel {
         let isJsEnabled = await featureManager.boolValue(of: .javaScriptEnabled)
         async let sites = defaultTabProvider.topSites(isJsEnabled)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
-        return await TopSitesViewModel(sites, writeUseCase)
+        async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
+        return await TopSitesViewModel(sites, replaceTabUseCase)
     }
     
     func searchBarViewModel(

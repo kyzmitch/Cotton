@@ -13,11 +13,11 @@ import CottonUseCases
 
 @MainActor public final class TopSitesViewModel: ObservableObject {
     public let topSites: [Site]
-    private let writeTabUseCase: WriteTabsUseCase
+    private let writeTabUseCase: ReplaceSelectedTabUseCase
 
     public init(
         _ topSites: [Site],
-        _ writeTabUseCase: WriteTabsUseCase
+        _ writeTabUseCase: ReplaceSelectedTabUseCase
     ) {
         self.topSites = topSites
         self.writeTabUseCase = writeTabUseCase
@@ -28,7 +28,7 @@ import CottonUseCases
     ) {
         Task {
             do {
-                try await writeTabUseCase.replaceSelected(tabContent)
+                try await writeTabUseCase.execute(input: tabContent)
             } catch {
                 print("Fail to replace current tab: \(error)")
             }
