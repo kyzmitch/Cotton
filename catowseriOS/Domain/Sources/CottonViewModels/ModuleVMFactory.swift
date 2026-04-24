@@ -77,7 +77,7 @@ import ViewModelKit
     
     /// Search bar view model
     public static func createSearchBarVM(
-        _ writeTabsUseCase: WriteTabsUseCase,
+        _ writeTabsUseCase: ReplaceSelectedTabUseCase,
         _ createSearchURLUseCase: CreateSearchURLUseCase,
         _ appContext: SearchBarContext
     ) -> SearchBarViewModelWithDelegates {
@@ -92,13 +92,17 @@ import ViewModelKit
     public static func createTabPreviewsVM(
         _ readTabUseCase: ReadAllTabsUseCase,
         _ readSelectedIdUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: WriteTabsUseCase,
+        _ writeTabUseCase: CloseTabUseCase,
+        _ selectUseCase: SelectTabUseCase,
+        _ addTabUseCase: AddTabUseCase,
         _ appContext: TabPreviewsAppContext
     ) -> TabsPreviewsViewModelWithHolder {
         TabsPreviewsViewModelImpl(
             readTabUseCase,
             readSelectedIdUseCase,
             writeTabUseCase,
+            selectUseCase,
+            addTabUseCase,
             appContext
         )
     }

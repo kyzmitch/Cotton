@@ -84,11 +84,15 @@ import FeatureFlags
     ) async -> TabsPreviewsViewModelWithHolder {
         async let readUseCase = useCaseRegistry.findUseCase((any ReadAllTabsUseCase).self)
         async let readSelectedIdUseCase = useCaseRegistry.findUseCase((any ReadSelectedTabIdUseCase).self)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let closeTabUseCase = useCaseRegistry.findUseCase((any CloseTabUseCase).self)
+        async let selectTabUseCase = useCaseRegistry.findUseCase((any SelectTabUseCase).self)
+        async let addTabUseCase = useCaseRegistry.findUseCase((any AddTabUseCase).self)
         return await ModuleVMFactory.createTabPreviewsVM(
             readUseCase,
             readSelectedIdUseCase,
-            writeUseCase,
+            closeTabUseCase,
+            selectTabUseCase,
+            addTabUseCase,
             context
         )
     }
@@ -108,7 +112,7 @@ import FeatureFlags
     func searchBarViewModel(
         _ context: SearchBarContext
     ) async -> SearchBarViewModelWithDelegates {
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let writeUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
         async let searchUseCase = useCaseRegistry.findUseCase((any CreateSearchURLUseCase).self)
         return await ModuleVMFactory.createSearchBarVM(
             writeUseCase,

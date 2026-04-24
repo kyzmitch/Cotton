@@ -34,7 +34,9 @@ public typealias TabsPreviewsViewModelWithHolder = TabsPreviewsViewModel & TabsO
 final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
     private let readAllTabsUseCase: ReadAllTabsUseCase
     private let readSelectedIdUseCase: ReadSelectedTabIdUseCase
-    private let writeTabUseCase: WriteTabsUseCase
+    private let writeTabUseCase: CloseTabUseCase
+    private let selectUseCase: SelectTabUseCase
+    private let addTabUseCase: AddTabUseCase
     private let appContext: TabPreviewsAppContext
     private lazy var proxy: TabsPreviewsStateContextProxy = {
         TabsPreviewsStateContextProxy(subject: self)
@@ -43,12 +45,16 @@ final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
     init(
         _ readAllTabsUseCase: ReadAllTabsUseCase,
         _ readSelectedIdUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: WriteTabsUseCase,
+        _ writeTabUseCase: CloseTabUseCase,
+        _ selectUseCase: SelectTabUseCase,
+        _ addTabUseCase: AddTabUseCase,
         _ appContext: TabPreviewsAppContext
     ) {
         self.readAllTabsUseCase = readAllTabsUseCase
         self.readSelectedIdUseCase = readSelectedIdUseCase
         self.writeTabUseCase = writeTabUseCase
+        self.selectUseCase = selectUseCase
+        self.addTabUseCase = addTabUseCase
         self.appContext = appContext
         super.init()
     }
@@ -96,7 +102,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
         if let site = tab.site {
             _ = appContext.removeWebView(for: site)
         }
-        let newSelectedId = try await writeTabUseCase.close(tab: tab)
+        let newSelectedId = try await writeTabUseCase.execute(input: tab)
         info = PreviewsInfo(tabs, newSelectedId)
         return info
     }
@@ -117,7 +123,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
     }
     
     public func select(_ tab: Tab) async throws {
-        try await writeTabUseCase.select(tab: tab)
+        try await selectUseCase.execute(input: tab)
     }
     
     public func select(
@@ -126,7 +132,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
     ) {
         Task {
             do {
-                try await writeTabUseCase.select(tab: tab)
+                try await selectUseCase.execute(input: tab)
                 onComplete(.success(()))
             } catch {
                 onComplete(.failure(.useCaseFailure(error)))
@@ -137,7 +143,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
     public func addDefaultTab() async throws -> PreviewsInfo {
         let contentState = await appContext.contentState
         let tab = CoreBrowser.Tab(contentType: contentState)
-        try await writeTabUseCase.add(tab: tab)
+        try await addTabUseCase.execute(input: tab)
         // now need to re-check selected tab in the view
         async let allNewTabs = readAllTabsUseCase.execute()
         async let newSelectedId = readSelectedIdUseCase.execute()
