@@ -10,7 +10,9 @@ import SwiftUI
 import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
+import CottonDesignKit
 import ViewModelKit
+import SearchViews
 
 struct PhoneView<
     W: WebViewModel,

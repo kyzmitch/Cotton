@@ -6,7 +6,7 @@
 //  Copyright © 2020 Cotton (former Catowser). All rights reserved.
 //
 
-import DataServiceKit
+import GenericServiceKit
 import Foundation
 import CottonRestKit
 import CoreData
@@ -14,7 +14,9 @@ import CoreBrowser
 import CottonNetworking
 import Alamofire // only needed for `JSONEncoding`
 import FeatureFlagsKit
-import CottonDataServices
+import CottonSearch
+import CottonTabs
+import CottonDependencyAssembly
 
 extension String {
     static let tabsDataServiceKey = "tabs.dataservice"

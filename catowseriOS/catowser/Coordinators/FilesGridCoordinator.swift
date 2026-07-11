@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CottonDesignKit
 
 final class FilesGridCoordinator: Coordinator {
     let vcFactory: any ViewControllerFactory

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ViewsBase
 
 final class MainBrowserViewController<C: Navigating & Layouting>: BaseViewController
 where C.R == MainScreenRoute, C.SP == MainScreenSubview {

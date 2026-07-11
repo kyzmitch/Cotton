@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import ViewsBase
 
 /// Temporarily view for tabs previews, but dismiss is not implemented.
 /// Probably should be handled in MainToolbarCoordinator didTabSelect

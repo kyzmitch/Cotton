@@ -11,6 +11,7 @@ import CottonViewModels
 import CottonUseCases
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 
 /// Creates new instances of view models.
 /// Depends on feature flags to determine VM configuration/dependencies.
@@ -36,7 +37,7 @@ import FeatureFlagsKit
 
     func searchSuggestionsViewModel() async -> any SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
-        let autocompleteUseCase = await useCaseRegistry.findUseCase(AutocompleteSearchUseCase.self)
+        let autocompleteUseCase = await useCaseRegistry.findUseCase((any FetchAutocompleteSuggestionsUseCase).self)
         return ModuleVMFactory.createSearchSuggestionsVM(
             autocompleteUseCase,
             vmContext
@@ -48,14 +49,14 @@ import FeatureFlagsKit
         _ context: WebViewContext,
         _ siteNavigation: SiteExternalNavigationDelegate?
     ) async -> any WebViewModel {
-        async let googleDnsUseCase = useCaseRegistry.findUseCase(ResolveDNSUseCase.self)
-        async let selectTabUseCase = useCaseRegistry.findUseCase(SelectedTabUseCase.self)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let googleDnsUseCase = useCaseRegistry.findUseCase((any ResolveDNSUseCase).self)
+        async let selectTabUseCase = useCaseRegistry.findUseCase((any SelectedTabUseCase).self)
+        async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
         return await ModuleVMFactory.createWebViewVM(
             context,
             googleDnsUseCase,
             selectTabUseCase,
-            writeUseCase,
+            replaceTabUseCase,
             siteNavigation,
             site
         )
@@ -65,12 +66,14 @@ import FeatureFlagsKit
         _ tab: CoreBrowser.Tab,
         _ context: TabViewModelContext
     ) async -> TabViewModel {
-        async let readUseCase = useCaseRegistry.findUseCase(ReadTabsUseCase.self)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let readUseCase = useCaseRegistry.findUseCase((any ReadSelectedTabIdUseCase).self)
+        async let closeTabUseCase = useCaseRegistry.findUseCase((any CloseTabUseCase).self)
+        async let selectTabUseCase = useCaseRegistry.findUseCase((any SelectTabUseCase).self)
         return await ModuleVMFactory.createTabVM(
             tab,
             readUseCase,
-            writeUseCase,
+            closeTabUseCase,
+            selectTabUseCase,
             context,
             FeatureManager.shared
         )
@@ -79,32 +82,38 @@ import FeatureFlagsKit
     func tabsPreviewsViewModel(
         _ context: TabPreviewsAppContext
     ) async -> TabsPreviewsViewModelWithHolder {
-        async let readUseCase = useCaseRegistry.findUseCase(ReadTabsUseCase.self)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        async let readUseCase = useCaseRegistry.findUseCase((any ReadAllTabsUseCase).self)
+        async let readSelectedIdUseCase = useCaseRegistry.findUseCase((any ReadSelectedTabIdUseCase).self)
+        async let closeTabUseCase = useCaseRegistry.findUseCase((any CloseTabUseCase).self)
+        async let selectTabUseCase = useCaseRegistry.findUseCase((any SelectTabUseCase).self)
+        async let addTabUseCase = useCaseRegistry.findUseCase((any AddTabUseCase).self)
         return await ModuleVMFactory.createTabPreviewsVM(
             readUseCase,
-            writeUseCase,
+            readSelectedIdUseCase,
+            closeTabUseCase,
+            selectTabUseCase,
+            addTabUseCase,
             context
         )
     }
 
     func allTabsViewModel() async -> AllTabsViewModel {
-        let writeUseCase = await useCaseRegistry.findUseCase(WriteTabsUseCase.self)
+        let writeUseCase = await useCaseRegistry.findUseCase((any AddTabUseCase).self)
         return ModuleVMFactory.createAllTabsVM(writeUseCase)
     }
 
     func topSitesViewModel() async -> TopSitesViewModel {
         let isJsEnabled = await featureManager.boolValue(of: .javaScriptEnabled)
         async let sites = defaultTabProvider.topSites(isJsEnabled)
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
-        return await TopSitesViewModel(sites, writeUseCase)
+        async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
+        return await TopSitesViewModel(sites, replaceTabUseCase)
     }
     
     func searchBarViewModel(
         _ context: SearchBarContext
     ) async -> SearchBarViewModelWithDelegates {
-        async let writeUseCase = useCaseRegistry.findUseCase(WriteTabsUseCase.self)
-        async let searchUseCase = useCaseRegistry.findUseCase(AutocompleteSearchUseCase.self)
+        async let writeUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
+        async let searchUseCase = useCaseRegistry.findUseCase((any CreateSearchURLUseCase).self)
         return await ModuleVMFactory.createSearchBarVM(
             writeUseCase,
             searchUseCase,

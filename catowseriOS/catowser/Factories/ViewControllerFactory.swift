@@ -10,6 +10,10 @@ import UIKit
 import FeatureFlagsKit
 import CoreBrowser
 import CottonViewModels
+import ViewsBase
+import CommonDelegatesLibrary
+import SearchViews
+import SearchSuggestions
 
 /**
  Tried to make view controller factory generic and depend on one generic parameter which
@@ -145,7 +149,8 @@ extension ViewControllerFactory {
             searchBarDelegate,
             uiFramework,
             FeatureManager.shared,
-            UIServiceRegistry.shared(),
+            UIServiceRegistry.shared().tabsSubject,
+            tabsSubjectFactory: { await ServiceRegistry.shared.tabsService },
             viewModel
         )
         return vc

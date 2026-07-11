@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CottonViewModels
+import ViewsBase
 
 struct ToolbarLegacyView: CatowserUIVCRepresentable {
     typealias UIViewControllerType = UIViewController
@@ -19,10 +20,12 @@ struct ToolbarLegacyView: CatowserUIVCRepresentable {
 
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let interface = context.environment.browserContentCoordinators
-        let vc = vcFactory.toolbarViewController(nil,
-                                                 interface?.globalMenuDelegate,
-                                                 interface?.toolbarCoordinator,
-                                                 interface?.toolbarPresenter)
+        let vc = vcFactory.toolbarViewController(
+            nil,
+            interface?.globalMenuDelegate,
+            interface?.toolbarCoordinator,
+            interface?.toolbarPresenter
+        )
         // swiftlint:disable:next force_unwrapping
         return vc!
     }

@@ -11,6 +11,7 @@ import CottonBase
 import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
+import ViewsBase
 
 @MainActor
 final class TopSitesCoordinator: Coordinator {

@@ -9,8 +9,9 @@
 import UIKit
 import CoreBrowser
 import FeatureFlagsKit
+import FeatureFlags
 import CottonBase
-import CottonDataServices
+import CottonTabs
 
 /// Provides default tab related constants, no need to be global actor, because read-only
 @globalActor

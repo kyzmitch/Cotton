@@ -18,6 +18,8 @@ import UIKit
 import CoreBrowser
 import FeatureFlagsKit
 import CottonViewModels
+import ViewsBase
+import CommonDelegatesLibrary
 
 final class BrowserToolbarController<C: Navigating>: BaseViewController where C.R == ToolbarRoute {
     private weak var coordinator: C?

@@ -8,13 +8,7 @@
 
 import UIKit
 import CottonPlugins
-
-/// An interface only needed on Tablet layout, tablet's search bar implements it
-@MainActor protocol MediaLinksPresenter: AnyObject {
-    func didReceiveMediaLinks()
-    /// Returns source view and rectangle (could be a download arrow button)
-    var downloadsPopoverStartInfo: (UIView, CGRect) { get }
-}
+import CommonDelegatesLibrary
 
 /// Must inherit from NSObject to implement `UINavigationControllerDelegate`
 final class LinkTagsCoordinator: NSObject, Coordinator {

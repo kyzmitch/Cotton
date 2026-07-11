@@ -9,6 +9,7 @@
 import CoreBrowser
 import CottonRestKit
 import CottonNetworking
+import Foundation
 
 /// Local rest client extension with `URLDomainNameResolve` interface
 /// because `CoreBrowser` doesn't know anything about rest clients

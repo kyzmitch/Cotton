@@ -50,6 +50,8 @@ export PATH="$PATH:/usr/local/Cellar/gradle@7/7.6.2/bin"
     - SDK Tools tab
     - Install `Google Play Licensing Library`
 
+- Run `InteliJ IDEA` to be able to set JDK to correct one which is OpenJDK which installed from Homebrew.
+
 #### CottonBase common dependency
 ##### for iOS client
 - run `make build-cotton-base-ios-release`

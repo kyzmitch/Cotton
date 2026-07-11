@@ -8,6 +8,7 @@
 
 import CoreBrowser
 import CottonViewModels
+import Foundation
 
 typealias TabDefaultContentModel = BaseListViewModel<CoreBrowser.Tab.ContentType>
 

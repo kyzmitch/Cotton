@@ -16,8 +16,9 @@ import FeatureFlagsKit
 import Combine
 #endif
 import CottonNetworking
-import CottonDataServices
+import CottonTabs
 import CottonViewModels
+import CottonDesignKit
 
 @MainActor protocol TabDelegate: AnyObject {
     func tabViewDidClose(_ tabView: TabView)

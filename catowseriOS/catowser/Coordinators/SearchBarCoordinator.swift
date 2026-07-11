@@ -11,8 +11,11 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonNetworking
 import CottonBase
-import CottonDataServices
 import CottonViewModels
+import CottonSearch
+import ViewsBase
+import CommonDelegatesLibrary
+import SearchViews
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {

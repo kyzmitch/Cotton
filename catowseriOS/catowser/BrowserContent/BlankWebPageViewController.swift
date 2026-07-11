@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ViewsBase
 
 final class BlankWebPageViewController: BaseViewController {
     private let logo: UIImageView = {

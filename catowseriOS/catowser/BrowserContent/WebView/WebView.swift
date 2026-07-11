@@ -9,9 +9,11 @@
 import SwiftUI
 import CottonBase
 import CottonViewModels
+import ViewsBase
 
 /// A special case web view interface only for SwiftUI
 /// because we have to reuse existing web view for all the tabs
+@MainActor
 protocol WebViewReusable: AnyObject {
     func resetTo(_ site: Site) async
 }

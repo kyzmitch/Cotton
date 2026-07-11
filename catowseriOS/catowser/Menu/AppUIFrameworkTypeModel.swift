@@ -9,6 +9,7 @@
 import Foundation
 import FeatureFlagsKit
 import CottonViewModels
+import ViewsBase
 
 typealias AppUIFrameworkTypeModel = BaseListViewModel<UIFrameworkType>
 

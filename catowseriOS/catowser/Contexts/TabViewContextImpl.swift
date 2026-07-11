@@ -7,10 +7,11 @@
 //
 
 import CottonBase
-import CottonDataServices
+import CottonTabs
 import CottonViewModels
 import CottonNetworking
 import FeatureFlagsKit
+import CottonTabs
 
 final class TabViewContextImpl: TabViewModelContext {
     var observingApiTypeValue: ObservingApiType {

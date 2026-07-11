@@ -1,9 +1,12 @@
 # configs for Swift
-brew './brew_configs/sourcery.rb'
-brew './brew_configs/swiftlint.rb'
-brew './brew_configs/xcode-kotlin.rb'
+tap "cotton-user/cotton-brew-taps"
+brew 'cotton-user/cotton-brew-taps/sourcery'
+# sourcery line is replaced on install command in different make script
+brew 'cotton-user/cotton-brew-taps/swiftlint'
+brew 'cotton-user/cotton-brew-taps/xcode-kotlin'
 # mint needed to install SwiftyMocky
-brew './brew_configs/mint.rb'
-brew './brew_configs/gradle@7.rb'
+brew 'cotton-user/cotton-brew-taps/mint'
+brew 'cotton-user/cotton-brew-taps/gradle@7'
 # configs for Kotlin
-brew './brew_configs/ktlint.rb'
+brew 'cotton-user/cotton-brew-taps/ktlint'
+brew 'cotton-user/cotton-brew-taps/openjdk'

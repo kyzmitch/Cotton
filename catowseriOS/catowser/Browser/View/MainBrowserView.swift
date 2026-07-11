@@ -9,8 +9,8 @@
 import SwiftUI
 import CoreBrowser
 import FeatureFlagsKit
-import CottonDataServices
 import CottonViewModels
+import ViewsBase
 
 enum SwiftUIMode {
     /// Re-uses UIKit views

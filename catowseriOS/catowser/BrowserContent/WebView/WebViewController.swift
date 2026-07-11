@@ -18,6 +18,7 @@ import ReactiveSwift
 @preconcurrency import Combine
 #endif
 import CottonViewModels
+import ViewsBase
 
 /// Can't retroactivly mark web view as sendable, it is a system type and protocol.
 extension WKWebView: @unchecked Sendable { }

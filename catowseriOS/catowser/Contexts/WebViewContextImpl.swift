@@ -11,6 +11,7 @@ import CottonBase
 import CoreBrowser
 import CottonPlugins
 import FeatureFlagsKit
+import FeatureFlags
 import CottonViewModels
 
 final class WebViewContextImpl: WebViewContext {

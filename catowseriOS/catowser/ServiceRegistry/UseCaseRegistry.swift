@@ -6,11 +6,11 @@
 //  Copyright © 2024 Cotton (former Catowser). All rights reserved.
 //
 
-import DataServiceKit
+import GenericServiceKit
 import Foundation
 import CoreBrowser
-import CottonDataServices
 import CottonUseCases
+import CottonSearch
 
 /// A global singletone for storing all the use case classes
 @globalActor final class UseCaseRegistry {
@@ -47,20 +47,63 @@ import CottonUseCases
         /// factory should be a singleton as well
         private func registerTabsUseCases() async {
             let dataService = await ServiceRegistry.shared.tabsService
-            let readUseCase: ReadTabsUseCase = ReadTabsUseCaseImpl(
-                dataService,
-                DefaultTabProvider.shared
-            )
-            useCaseLocator.registerTyped(readUseCase, of: ReadTabsUseCase.self)
-            let writeUseCase: WriteTabsUseCase = WriteTabsUseCaseImpl(dataService)
+            
+            let addTabUseCase: any AddTabUseCase = AddTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
-                writeUseCase,
-                of: WriteTabsUseCase.self
+                addTabUseCase,
+                of: (any AddTabUseCase).self
             )
-            let selectedTabUseCase: SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
+            
+            let closeTabUseCase: any CloseTabUseCase = CloseTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                closeTabUseCase,
+                of: (any CloseTabUseCase).self
+            )
+            
+            let closeAllTabsUseCase: any CloseAllTabsUseCase = CloseAllTabsUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                closeAllTabsUseCase,
+                of: (any CloseAllTabsUseCase).self
+            )
+            
+            let replaceSelectedTabUseCase: any ReplaceSelectedTabUseCase = ReplaceSelectedTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                replaceSelectedTabUseCase,
+                of: (any ReplaceSelectedTabUseCase).self
+            )
+            
+            let selectTabUseCase: any SelectTabUseCase = SelectTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                selectTabUseCase,
+                of: (any SelectTabUseCase).self
+            )
+            
+            // Register ReadAllTabsUseCase
+            let readAllTabsUseCase: any ReadAllTabsUseCase = ReadAllTabsUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                readAllTabsUseCase,
+                of: (any ReadAllTabsUseCase).self
+            )
+            
+            // Register ReadSelectedTabIdUseCase
+            let readSelectedTabIdUseCase: any ReadSelectedTabIdUseCase = ReadSelectedTabIdUseCaseImpl(dataService, DefaultTabProvider.shared)
+            useCaseLocator.registerTyped(
+                readSelectedTabIdUseCase,
+                of: (any ReadSelectedTabIdUseCase).self
+            )
+            
+            // Register ReadTabsCountUseCase
+            let readTabsCountUseCase: any ReadTabsCountUseCase = ReadTabsCountUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                readTabsCountUseCase,
+                of: (any ReadTabsCountUseCase).self
+            )
+            
+            // Register SelectedTabUseCase
+            let selectedTabUseCase: any SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 selectedTabUseCase,
-                of: SelectedTabUseCase.self
+                of: (any SelectedTabUseCase).self
             )
         }
 
@@ -69,10 +112,15 @@ import CottonUseCases
                 (any SearchDataServiceProtocol).self,
                 .searchDataServiceKey
             )
-            let googleUseCase: AutocompleteSearchUseCase = AutocompleteSearchUseCaseImpl(searchDataService)
+            let createSearchURLUseCase: any CreateSearchURLUseCase = CreateSearchURLUseCaseImpl(searchDataService)
             useCaseLocator.registerTyped(
-                googleUseCase,
-                of: AutocompleteSearchUseCase.self
+                createSearchURLUseCase,
+                of: (any CreateSearchURLUseCase).self
+            )
+            let fetchSuggestionsUseCase: any FetchAutocompleteSuggestionsUseCase = FetchAutocompleteSuggestionsUseCaseImpl(searchDataService)
+            useCaseLocator.registerTyped(
+                fetchSuggestionsUseCase,
+                of: (any FetchAutocompleteSuggestionsUseCase).self
             )
         }
 
@@ -81,10 +129,10 @@ import CottonUseCases
                 (any SearchDataServiceProtocol).self,
                 .searchDataServiceKey
             )
-            let googleUseCase: ResolveDNSUseCase = ResolveDNSUseCaseImpl(searchDataService)
+            let googleUseCase: any ResolveDNSUseCase = ResolveDNSUseCaseImpl(searchDataService)
             useCaseLocator.registerTyped(
                 googleUseCase,
-                of: ResolveDNSUseCase.self
+                of: (any ResolveDNSUseCase).self
             )
         }
     }

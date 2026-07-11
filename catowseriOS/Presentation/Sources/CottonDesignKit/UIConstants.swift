@@ -1,0 +1,52 @@
+//
+//  UIConstants.swift
+//  catowser
+//
+//  Created by admin on 20/09/2017.
+//  Copyright © 2017 Cotton/Catowser Andrei Ermoshin. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+extension CGFloat {
+    /// Tab height
+    public static let tabHeight = CGFloat(40.0)
+    /// Search view height
+    public static let searchViewHeight = CGFloat(64.0)
+    /// Toolbar height
+    public static let toolbarViewHeight = CGFloat(44.0)
+    /// Tab bar height
+    public static let tabBarHeight = CGFloat(40.0) // system height?
+    /// Link tags height
+    public static let linkTagsHeight = CGFloat(60.0)
+    /// Tab label horizontal margin
+    public static let tagLabelHorizontalMargin = CGFloat(10.0)
+    /// Safe area bottom margin
+    public static let safeAreaBottomMargin = CGFloat(20.0) /* view.safeAreaInsets.bottom */
+
+    /// Tab width
+    @MainActor
+    public static var tabWidth: CGFloat {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return 40.0
+        } else if UIDevice.current.userInterfaceIdiom == .pad {
+            return 180.0
+        } else {
+            return 180.0
+        }
+    }
+    /// Compact tab width
+    public static let compactTabWidth = CGFloat(40.0)
+    /// Regular tab width
+    public static let regularTabWidth = CGFloat(180.0)
+    /// highlight line width
+    public static let highlightLineWidth: CGFloat = 3
+}
+
+/// UI constants
+public enum UIConstants {
+    static let searchBarTextColour = UIColor.black
+    /// Website tab highlited line color
+    public static let webSiteTabHighlitedLineColour = UIColor(rgb: 0x0066DC)
+}

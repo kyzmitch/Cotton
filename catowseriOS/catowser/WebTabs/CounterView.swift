@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBrowser
-import CottonDataServices
+import CottonTabs
 
 final class CounterView: UIView {
     private let digitLabel: UILabel = {

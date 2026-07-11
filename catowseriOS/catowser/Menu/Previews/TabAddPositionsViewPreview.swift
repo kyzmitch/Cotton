@@ -10,7 +10,7 @@ import CoreBrowser
 #if canImport(SwiftUI)
 import SwiftUI
 #endif
-import CottonDataServices
+import CottonTabs
 
 #if DEBUG
 struct TabAddPositionsView_Previews: PreviewProvider {

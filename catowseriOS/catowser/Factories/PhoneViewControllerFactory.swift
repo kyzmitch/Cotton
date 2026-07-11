@@ -9,6 +9,9 @@
 import FeatureFlagsKit
 import UIKit
 import CottonViewModels
+import ViewsBase
+import SearchViews
+import CommonDelegatesLibrary
 
 /// Implements the operations to create phone layout product objects.
 final class PhoneViewControllerFactory: ViewControllerFactory {
@@ -37,10 +40,15 @@ final class PhoneViewControllerFactory: ViewControllerFactory {
         if let existingVC = searchBarVC {
             return existingVC
         }
+        let searchBarViewController = UIServiceRegistry.shared()
+            .vcFactory
+            .searchBarViewController(
+                searchBarDelegate,
+                uiFramework,
+                viewModel
+            )
         let vc = SmartphoneSearchBarViewController(
-            searchBarDelegate,
-            uiFramework,
-            viewModel
+            searchBarViewController
         )
         searchBarVC = vc
         return vc

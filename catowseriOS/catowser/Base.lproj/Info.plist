@@ -32,6 +32,8 @@
 	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Access is required only to save files for reposts (without reading access)</string>
+	<key>UIDesignRequiresCompatibility</key>
+	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

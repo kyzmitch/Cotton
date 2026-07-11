@@ -10,8 +10,9 @@ import UIKit
 import CoreGraphics
 import CoreBrowser
 import FeatureFlagsKit
-import CottonDataServices
+import CottonTabs
 import CottonViewModels
+import ViewsBase
 
 fileprivate extension TabsViewController {
     struct Sizes {
