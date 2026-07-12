@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import ViewModelKit
 
-class StateMachineV2Tests: XCTestCase {
+struct StateMachineV2Tests {
     
     enum TestState: Equatable {
         case idle
@@ -16,7 +16,7 @@ class StateMachineV2Tests: XCTestCase {
         case failLoading(String)
     }
     
-    func testInitialState() {
+    @Test func initialState() {
         let stateMachine = StateMachineV2<TestState, TestEvent>(
             initialState: .idle,
             stateTransitions: [
@@ -26,10 +26,10 @@ class StateMachineV2Tests: XCTestCase {
             ]
         )
         
-        XCTAssertEqual(stateMachine.currentState, .idle)
+        #expect(stateMachine.currentState == .idle)
     }
     
-    func testStateTransition() {
+    @Test func stateTransition() {
         var stateMachine = StateMachineV2<TestState, TestEvent>(
             initialState: .idle,
             stateTransitions: [
@@ -40,20 +40,20 @@ class StateMachineV2Tests: XCTestCase {
         )
         
         stateMachine.send(.startLoading)
-        XCTAssertEqual(stateMachine.currentState, .loading)
+        #expect(stateMachine.currentState == .loading)
         
         stateMachine.send(.finishLoading)
-        XCTAssertEqual(stateMachine.currentState, .success)
+        #expect(stateMachine.currentState == .success)
         
         stateMachine.send(.failLoading("Network error"))
         if case let .error(error) = stateMachine.currentState {
-            XCTAssertEqual(error, "Network error")
+            #expect(error == "Network error")
         } else {
-            XCTFail("Expected error state")
+            Issue.record("Expected error state")
         }
     }
     
-    func testUnrecognizedEvent() {
+    @Test func unrecognizedEvent() {
         let stateMachine = StateMachineV2<TestState, TestEvent>(
             initialState: .idle,
             stateTransitions: [
@@ -63,6 +63,6 @@ class StateMachineV2Tests: XCTestCase {
         
         let originalState = stateMachine.currentState
         stateMachine.send(.finishLoading) // This event is not handled
-        XCTAssertEqual(stateMachine.currentState, originalState)
+        #expect(stateMachine.currentState == originalState)
     }
 }

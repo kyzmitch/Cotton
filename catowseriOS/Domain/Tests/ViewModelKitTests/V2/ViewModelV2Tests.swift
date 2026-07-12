@@ -1,22 +1,22 @@
-import XCTest
+import Testing
 @testable import ViewModelKit
 
-class ViewModelV2Tests: XCTestCase {
-    
+struct ViewModelV2Tests {
+
     enum TestState: Equatable {
         case idle
         case loading
         case success
         case error(String)
     }
-    
+
     enum TestEvent: Equatable {
         case startLoading
         case finishLoading
         case failLoading(String)
     }
-    
-    func testInitialState() {
+
+    @Test func initialState() {
         let viewModel = ViewModelV2<TestState, TestEvent>(
             initialState: .idle,
             stateTransitions: [
@@ -25,11 +25,11 @@ class ViewModelV2Tests: XCTestCase {
                 .failLoading: { error in .error(error) }
             ]
         )
-        
-        XCTAssertEqual(viewModel.state, .idle)
+
+        #expect(viewModel.state == .idle)
     }
-    
-    func testStateChange() {
+
+    @Test func stateChange() {
         let viewModel = ViewModelV2<TestState, TestEvent>(
             initialState: .idle,
             stateTransitions: [
@@ -38,32 +38,29 @@ class ViewModelV2Tests: XCTestCase {
                 .failLoading: { error in .error(error) }
             ]
         )
-        
+
         viewModel.send(.startLoading)
-        XCTAssertEqual(viewModel.state, .loading)
-        
+        #expect(viewModel.state == .loading)
+
         viewModel.send(.finishLoading)
-        XCTAssertEqual(viewModel.state, .success)
-        
+        #expect(viewModel.state == .success)
+
         viewModel.send(.failLoading("Network error"))
-        if case let .error(error) = viewModel.state {
-            XCTAssertEqual(error, "Network error")
-        } else {
-            XCTFail("Expected error state")
-        }
+        #expect(viewModel.state == .error("Network error"))
     }
-    
-    func testViewModelStateAccess() {
+
+    @Test func viewModelStateAccess() {
         let viewModel = ViewModelV2<TestState, TestEvent>(
             initialState: .idle,
             stateTransitions: [
                 .startLoading: { _ in .loading }
             ]
         )
-        
-        XCTAssertEqual(viewModel.state, .idle)
-        
+
+        #expect(viewModel.state == .idle)
+
         viewModel.send(.startLoading)
-        XCTAssertEqual(viewModel.state, .loading)
+        #expect(viewModel.state == .loading)
     }
 }
+
