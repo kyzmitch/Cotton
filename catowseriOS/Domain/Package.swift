@@ -241,6 +241,16 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "CottonSearchTests",
+            dependencies: [
+                .target(name: .searchLibrary),
+                .target(name: .genericServiceKit),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .cottonRestKit, package: .basePackage),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
+            ]
+        ),
+        .testTarget(
             name: "BaseUseCaseKitTests",
             dependencies: [
                 .target(name: .genericServiceKit)

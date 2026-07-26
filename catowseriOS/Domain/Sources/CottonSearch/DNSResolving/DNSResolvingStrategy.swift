@@ -7,21 +7,13 @@
 //
 
 import Foundation
-import CottonNetworking
 import CottonRestKit
 @preconcurrency import ReactiveSwift
 import Combine
-import AutoMockable
 
 /// DNS resolving strategy interface should be sendable, because it is used by the use cases,
 /// and any use case has to be sendable because a use case shouldn't have any state.
-// swiftlint:disable comment_spacing
-//sourcery: associatedtype = "Context: RestClientContext"
-public protocol DNSResolvingStrategy: AnyObject, AutoMockable, Sendable {
-    // swiftlint:enable comment_spacing
-
-    associatedtype Context: RestClientContext
-    init(_ context: Context)
+public protocol DNSResolvingStrategy: AnyObject, Sendable {
     func domainNameResolvingProducer(_ originalURL: URL) -> SignalProducer<URL, DnsError>
     func domainNameResolvingPublisher(_ originalURL: URL) -> AnyPublisher<URL, DnsError>
     @available(swift 5.5)

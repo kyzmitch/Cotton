@@ -48,6 +48,14 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:Domain",
+        "identifier" : "CottonSearchTests",
+        "name" : "CottonSearchTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Domain",
         "identifier" : "DomainTests",
         "name" : "DomainTests"
       }
