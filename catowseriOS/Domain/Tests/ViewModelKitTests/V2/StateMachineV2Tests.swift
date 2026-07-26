@@ -10,7 +10,7 @@ struct StateMachineV2Tests {
         case error(String)
     }
     
-    enum TestEvent: Equatable {
+    enum TestEvent: Hashable {
         case startLoading
         case finishLoading
         case failLoading(String)
@@ -22,7 +22,7 @@ struct StateMachineV2Tests {
             stateTransitions: [
                 .startLoading: { _ in .loading },
                 .finishLoading: { _ in .success },
-                .failLoading: { error in .error(error) }
+                .failLoading("Some error"): { state in .error("Some error") }
             ]
         )
         
@@ -35,7 +35,7 @@ struct StateMachineV2Tests {
             stateTransitions: [
                 .startLoading: { _ in .loading },
                 .finishLoading: { _ in .success },
-                .failLoading: { error in .error(error) }
+                .failLoading("Some error"): { state in .error("Some error") }
             ]
         )
         

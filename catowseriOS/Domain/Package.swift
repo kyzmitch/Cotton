@@ -42,6 +42,7 @@ private extension String {
     static let reactiveSwiftFramework = "ReactiveSwift"
     static let alamofireFramework = "Alamofire"
     static let swXmlHashFramework = "SWXMLHash"
+    static let swiftyMockyFramework = "SwiftyMocky"
 }
 
 // MARK: - Package
@@ -112,6 +113,10 @@ let package = Package(
         .package(
             url: "https://github.com/drmohundro/SWXMLHash",
             exact: "7.0.1"
+        ),
+        .package(
+            url: "https://github.com/MakeAWishFoundation/SwiftyMocky",
+            from: "4.2.0"
         )
     ],
     targets: [
@@ -236,7 +241,8 @@ let package = Package(
         .testTarget(
             name: "CottonViewModelsTests",
             dependencies: [
-                .target(name: .viewModelsLibrary)
+                .target(name: .viewModelsLibrary),
+                .product(name: .swiftyMockyFramework, package: .swiftyMockyFramework)
             ]
         ),
         .testTarget(

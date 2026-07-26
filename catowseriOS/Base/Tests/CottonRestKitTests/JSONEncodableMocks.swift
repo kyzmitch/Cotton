@@ -7,6 +7,7 @@
 //
 
 import CottonRestKit
+import Foundation
 
 struct MockedGoodJSONEncoding: JSONRequestEncodable {
     func encodeRequest(_ urlRequest: URLRequestCreatable, with parameters: [String: Any]?) throws -> URLRequest {

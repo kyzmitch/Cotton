@@ -26,10 +26,11 @@ final class MockedHTTPAdapteeWithFail<R,
     }
 
     func performRequest(_ request: URLRequest, sucessCodes: [Int]) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        nonisolated(unsafe) weak let adaptee = self
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             let nsError: NSError = .init(domain: "URLSession", code: 101, userInfo: nil)
             let result: Result<Response, HttpError> = .failure(.httpFailure(error: nsError))
-            self?.wrapperHandler()(result)
+            adaptee?.wrapperHandler()(result)
         }
     }
 
