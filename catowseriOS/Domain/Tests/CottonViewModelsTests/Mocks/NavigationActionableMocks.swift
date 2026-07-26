@@ -7,7 +7,9 @@
 //
 
 import WebKit
+import CottonViewModels
 
+@MainActor
 class MockedNavAction: NavigationActionable {
     let navigationType: WKNavigationType
     let request: URLRequest

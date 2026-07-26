@@ -42,7 +42,6 @@ private extension String {
     static let reactiveSwiftFramework = "ReactiveSwift"
     static let alamofireFramework = "Alamofire"
     static let swXmlHashFramework = "SWXMLHash"
-    static let swiftyMockyFramework = "SwiftyMocky"
     static let mockableFramework = "Mockable"
 }
 
@@ -114,10 +113,6 @@ let package = Package(
         .package(
             url: "https://github.com/drmohundro/SWXMLHash",
             exact: "7.0.1"
-        ),
-        .package(
-            url: "https://github.com/MakeAWishFoundation/SwiftyMocky",
-            from: "4.2.0"
         ),
         .package(
             url: "https://github.com/Kolos65/Mockable",
@@ -257,24 +252,11 @@ let package = Package(
                 .target(name: .viewModelsLibrary),
                 .target(name: .useCasesLibrary),
                 .target(name: .coreBrowserLibrary),
+                .product(name: .cottonBase, package: .basePackage),
+                .product(name: .cottonPluginsLibrary, package: .basePackage),
                 .product(name: .cottonRestKit, package: .basePackage),
+                .target(name: .featureFlagsKit),
                 .product(name: .mockableFramework, package: .mockableFramework)
-            ],
-            exclude: [
-                // Still on SwiftyMocky (associated-type / networking mocks). Excluded until next migration
-                // step; SwiftyMocky also fails to compile on the current Swift toolchain.
-                "WebSearchAutocompleteTests.swift",
-                "WebViewVM",
-                "Fixtures/WebViewVMFixture.swift",
-                "Mocks/RestClientContextMocks.swift",
-                "Mocks/WebViewContextMocks.swift",
-                "Mocks/JSPluginsProgramMocks.swift",
-                "Mocks/NavigationActionableMocks.swift",
-                "Mocks/WebViewMocks.swift",
-                "Mocks/JSONEncodableMocks.swift",
-                "Mocks/ServerDescriptionMocks.swift",
-                "Mocks/ResponseTypeMocks.swift",
-                "Utils/XCTestCase+Extension.swift"
             ],
             swiftSettings: [
                 .define("MOCKING")

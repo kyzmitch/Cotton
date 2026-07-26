@@ -19,6 +19,7 @@ final class MockedWebViewContext: WebViewContext, @unchecked Sendable {
     private let asyncApiType: AsyncApiType
     private let appName: String?
 
+    @MainActor
     init(
         doh: Bool,
         js: Bool,
@@ -49,22 +50,20 @@ final class MockedWebViewContext: WebViewContext, @unchecked Sendable {
     }
 
     public func isJavaScriptEnabled() async -> Bool {
-        return enableJS
+        enableJS
     }
 
     public var isDohEnabled: Bool {
-        return enableDoH
-    }
-    
-    func isDohEnabled() async -> Bool {
-        return enableDoH
+        get async {
+            enableDoH
+        }
     }
 
     public func allowNativeAppRedirects() async -> Bool {
-        return nativeAppRedirect
+        nativeAppRedirect
     }
 
-    public func appAsyncApiTypeValue() -> AsyncApiType {
-        return asyncApiType
+    public func appAsyncApiTypeValue() async -> AsyncApiType {
+        asyncApiType
     }
 }

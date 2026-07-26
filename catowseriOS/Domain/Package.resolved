@@ -1,15 +1,6 @@
 {
-  "originHash" : "cd1309ec741956cb7a87b696d32c5dc77328b71e869071fc26e560801c9ce2c8",
+  "originHash" : "53f04e823e8f748b9d2d586ad16a772ec1ab7183d8dfa072a4082079ee7e5d8f",
   "pins" : [
-    {
-      "identity" : "aexml",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tadija/AEXML.git",
-      "state" : {
-        "revision" : "db806756c989760b35108146381535aec231092b",
-        "version" : "4.7.0"
-      }
-    },
     {
       "identity" : "alamofire",
       "kind" : "remoteSourceControl",
@@ -17,24 +8,6 @@
       "state" : {
         "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
         "version" : "5.9.1"
-      }
-    },
-    {
-      "identity" : "chalk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/luoxiu/Chalk",
-      "state" : {
-        "revision" : "8a9d3373bd754fb62f7881d9f639d376f5e4d5a5",
-        "version" : "0.2.1"
-      }
-    },
-    {
-      "identity" : "commander",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Commander",
-      "state" : {
-        "revision" : "4a1f2fb82fb6cef613c4a25d2e38f702e4d812c2",
-        "version" : "0.9.2"
       }
     },
     {
@@ -47,48 +20,12 @@
       }
     },
     {
-      "identity" : "pathkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/PathKit",
-      "state" : {
-        "revision" : "3bfd2737b700b9a36565a8c94f4ad2b050a5e574",
-        "version" : "1.0.1"
-      }
-    },
-    {
-      "identity" : "rainbow",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/luoxiu/Rainbow",
-      "state" : {
-        "revision" : "9d8fcb4c64e816a135c31162a0c319e9f1f09c35",
-        "version" : "0.1.1"
-      }
-    },
-    {
       "identity" : "reactiveswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveCocoa/ReactiveSwift",
       "state" : {
         "revision" : "efb2f0a6f6c8739cce8fb14148a5bd3c83f2f91d",
         "version" : "7.0.0"
-      }
-    },
-    {
-      "identity" : "shellout",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JohnSundell/ShellOut",
-      "state" : {
-        "revision" : "e1577acf2b6e90086d01a6d5e2b8efdaae033568",
-        "version" : "2.3.0"
-      }
-    },
-    {
-      "identity" : "spectre",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kylef/Spectre.git",
-      "state" : {
-        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
-        "version" : "0.10.1"
       }
     },
     {
@@ -110,15 +47,6 @@
       }
     },
     {
-      "identity" : "swiftymocky",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MakeAWishFoundation/SwiftyMocky",
-      "state" : {
-        "revision" : "1e81c0c566c26d2d4e4cc2d799afad7d3ef931ab",
-        "version" : "4.2.0"
-      }
-    },
-    {
       "identity" : "swxmlhash",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/drmohundro/SWXMLHash",
@@ -128,30 +56,12 @@
       }
     },
     {
-      "identity" : "xcodeproj",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tuist/xcodeproj",
-      "state" : {
-        "revision" : "b1caa062d4aaab3e3d2bed5fe0ac5f8ce9bf84f4",
-        "version" : "8.27.7"
-      }
-    },
-    {
       "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
         "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
         "version" : "1.9.0"
-      }
-    },
-    {
-      "identity" : "yams",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jpsim/Yams",
-      "state" : {
-        "revision" : "81a65c4069c28011ee432f2858ba0de49b086677",
-        "version" : "3.0.1"
       }
     }
   ],

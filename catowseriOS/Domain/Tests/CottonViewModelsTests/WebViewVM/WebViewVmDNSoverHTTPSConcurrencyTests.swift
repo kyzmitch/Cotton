@@ -7,11 +7,10 @@
 //
 
 import XCTest
-import CottonRestKit
 import CottonBase
+import CottonRestKit
 import WebKit
-import Combine
-import SwiftyMocky
+@testable import CottonViewModels
 
 @MainActor
 final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
@@ -20,19 +19,18 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
         try super.setUpWithError()
         webViewContext = .init(doh: true, js: false, nativeAppRedirect: false, asyncApiType: .asyncAwait)
     }
+
     func testLoad() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
+        let vm = makeViewModel()
 
         // swiftlint:disable:next force_unwrapping force_try
         let resolvedUrlV1 = try! urlV1!.updatedHost(with: exampleIpAddress!)
         // swiftlint:disable:next force_unwrapping
-        Given(resolveDnsUseCaseMock, .aaResolveDomainName(.value(urlV1!), willReturn: resolvedUrlV1))
+        let expectedURL = urlV1!
+        resolveDnsUseCaseMock.executeHandler = { url in
+            XCTAssertEqual(url, expectedURL)
+            return resolvedUrlV1
+        }
         await vm.load()
 
         // swiftlint:disable:next force_unwrapping

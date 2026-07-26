@@ -8,8 +8,20 @@
 
 import CottonPlugins
 
+@MainActor
 final class MockedWebViewWithError: JavaScriptEvaluateble {
-    func evaluateJavaScript(_ javaScriptString: String, completionHandler: ((Any?, Error?) -> Void)?) {
+    func evaluateJavaScriptV2(
+        _ javaScriptString: String,
+        completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    ) {
+        struct WebViewJSEvaluationError: Error {}
+        completionHandler?(nil, WebViewJSEvaluationError())
+    }
+
+    func evaluateJavaScriptV1(
+        _ javaScriptString: String,
+        completionHandler: ((Any?, Error?) -> Void)?
+    ) {
         struct WebViewJSEvaluationError: Error {}
         completionHandler?(nil, WebViewJSEvaluationError())
     }
