@@ -12,7 +12,70 @@
     "testTimeoutsEnabled" : true
   },
   "testTargets" : [
-
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Domain",
+        "identifier" : "ViewModelKitTests",
+        "name" : "ViewModelKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Domain",
+        "identifier" : "CottonViewModelsTests",
+        "name" : "CottonViewModelsTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Domain",
+        "identifier" : "BaseUseCaseKitTests",
+        "name" : "BaseUseCaseKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Domain",
+        "identifier" : "GenericServiceKitTests",
+        "name" : "GenericServiceKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Domain",
+        "identifier" : "DomainTests",
+        "name" : "DomainTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Base",
+        "identifier" : "BaseTests",
+        "name" : "BaseTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Base",
+        "identifier" : "CottonRestKitTests",
+        "name" : "CottonRestKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:Base",
+        "identifier" : "CottonPluginsTests",
+        "name" : "CottonPluginsTests"
+      }
+    }
   ],
   "version" : 1
 }

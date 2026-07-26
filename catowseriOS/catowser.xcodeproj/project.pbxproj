@@ -32,7 +32,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		40F232353003ADFA00B3C58A /* TestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 40F232343003ADFA00B3C58A /* TestPlan.xctestplan */; };
 		6010ECC621F74E2900972E28 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		605C54F521F8A8A100B3DC73 /* TabsPreviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */; };
 		605C54F721F8A9E900B3DC73 /* TabPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */; };
@@ -904,7 +903,6 @@
 				8AD18E0C2447564B00224702 /* duckduckgo.xml in Resources */,
 				8435A4A51EED5E700020102F /* LaunchScreen.storyboard in Resources */,
 				C27371171F7A341900900F03 /* Localizable.strings in Resources */,
-				40F232353003ADFA00B3C58A /* TestPlan.xctestplan in Resources */,
 				8435A4A21EED5E700020102F /* Assets.xcassets in Resources */,
 				60C2C9002280184B00F5D869 /* TopSitesViewController.xib in Resources */,
 				8AD18E0A2447564600224702 /* google.xml in Resources */,

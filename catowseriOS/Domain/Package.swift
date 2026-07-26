@@ -215,10 +215,6 @@ let package = Package(
                 .target(name: .viewModelKit)
             ]
         ),
-        .binaryTarget(
-            name: .cottonBase,
-            path: "../../cotton-base/build/XCFrameworks/release/CottonBase.xcframework"
-        ),
         .testTarget(
             name: "DomainTests",
             dependencies: [
@@ -241,6 +237,12 @@ let package = Package(
             name: "CottonViewModelsTests",
             dependencies: [
                 .target(name: .viewModelsLibrary)
+            ]
+        ),
+        .testTarget(
+            name: "ViewModelKitTests",
+            dependencies: [
+                .target(name: .viewModelKit)
             ]
         )
     ],
