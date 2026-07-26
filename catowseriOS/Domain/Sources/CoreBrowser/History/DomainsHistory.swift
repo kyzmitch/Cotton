@@ -7,12 +7,13 @@
 //
 
 import CottonBase
-import AutoMockable
+import Mockable
 
 /// Interface for known domain checks. Has to have async methods because actual class is a global actor.
 ///
 /// Can be sendable because implementation is a global actor.
-public protocol KnownDomainsSource: AutoMockable, Actor {
+@Mockable
+public protocol KnownDomainsSource: Actor {
     func domainNames(whereURLContains filter: String) async -> [String]
 }
 

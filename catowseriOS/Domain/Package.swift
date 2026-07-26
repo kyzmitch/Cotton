@@ -43,6 +43,7 @@ private extension String {
     static let alamofireFramework = "Alamofire"
     static let swXmlHashFramework = "SWXMLHash"
     static let swiftyMockyFramework = "SwiftyMocky"
+    static let mockableFramework = "Mockable"
 }
 
 // MARK: - Package
@@ -117,6 +118,10 @@ let package = Package(
         .package(
             url: "https://github.com/MakeAWishFoundation/SwiftyMocky",
             from: "4.2.0"
+        ),
+        .package(
+            url: "https://github.com/Kolos65/Mockable",
+            from: "0.6.4"
         )
     ],
     targets: [
@@ -187,11 +192,15 @@ let package = Package(
             dependencies: [
                 .product(name: .cottonBase, package: .basePackage),
                 .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .mockableFramework, package: .mockableFramework),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swXmlHashFramework, package: .swXmlHashFramework)
             ],
             resources: [
                 .process("Resources/topdomains.txt")
+            ],
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
             ]
         ),
         .target(
@@ -210,6 +219,7 @@ let package = Package(
             name: .viewModelsLibrary,
             dependencies: [
                 .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .mockableFramework, package: .mockableFramework),
                 .target(name: .coreBrowserLibrary),
                 .product(name: .cottonBase, package: .basePackage),
                 .product(name: .cottonPluginsLibrary, package: .basePackage),
@@ -218,6 +228,9 @@ let package = Package(
                 .target(name: .featureFlagsKit),
                 .target(name: .tabsLibrary),
                 .target(name: .viewModelKit)
+            ],
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
             ]
         ),
         .testTarget(
@@ -242,7 +255,29 @@ let package = Package(
             name: "CottonViewModelsTests",
             dependencies: [
                 .target(name: .viewModelsLibrary),
-                .product(name: .swiftyMockyFramework, package: .swiftyMockyFramework)
+                .target(name: .useCasesLibrary),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .cottonRestKit, package: .basePackage),
+                .product(name: .mockableFramework, package: .mockableFramework)
+            ],
+            exclude: [
+                // Still on SwiftyMocky (associated-type / networking mocks). Excluded until next migration
+                // step; SwiftyMocky also fails to compile on the current Swift toolchain.
+                "WebSearchAutocompleteTests.swift",
+                "WebViewVM",
+                "Fixtures/WebViewVMFixture.swift",
+                "Mocks/RestClientContextMocks.swift",
+                "Mocks/WebViewContextMocks.swift",
+                "Mocks/JSPluginsProgramMocks.swift",
+                "Mocks/NavigationActionableMocks.swift",
+                "Mocks/WebViewMocks.swift",
+                "Mocks/JSONEncodableMocks.swift",
+                "Mocks/ServerDescriptionMocks.swift",
+                "Mocks/ResponseTypeMocks.swift",
+                "Utils/XCTestCase+Extension.swift"
+            ],
+            swiftSettings: [
+                .define("MOCKING")
             ]
         ),
         .testTarget(

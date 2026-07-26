@@ -11,7 +11,6 @@ import Combine
 import FeatureFlagsKit
 import CoreBrowser
 import CottonUseCases
-import AutoMockable
 
 final class SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
     /// Autocomplete client, probably need to depend on all possible use case (google, duckduckgo, etc.)

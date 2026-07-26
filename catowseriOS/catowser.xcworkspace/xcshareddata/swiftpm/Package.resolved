@@ -1,5 +1,5 @@
 {
-  "originHash" : "3a477979511422683063c0d7fbd3d91a7eaf00ba30f60e08688793f78eed17d9",
+  "originHash" : "97ed3708ddec9465c25867e03fd9551d02b8e9e407ab11bf6ca7224241c50dae",
   "pins" : [
     {
       "identity" : "aexml",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "4a1f2fb82fb6cef613c4a25d2e38f702e4d812c2",
         "version" : "0.9.2"
+      }
+    },
+    {
+      "identity" : "mockable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Kolos65/Mockable",
+      "state" : {
+        "revision" : "0b239389c5fa6666fb30dc97fbb23fc3ca851a85",
+        "version" : "0.6.4"
       }
     },
     {
@@ -101,6 +110,15 @@
       }
     },
     {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax.git",
+      "state" : {
+        "revision" : "79e4b74a295b6eb74a8b585e3a39d29e70c1dbd1",
+        "version" : "603.0.2"
+      }
+    },
+    {
       "identity" : "swiftsoup",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup",
@@ -134,6 +152,15 @@
       "state" : {
         "revision" : "b6de1bfe021b861c94e7c83821b595083f74b997",
         "version" : "8.8.0"
+      }
+    },
+    {
+      "identity" : "xctest-dynamic-overlay",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
+      "state" : {
+        "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
+        "version" : "1.9.0"
       }
     },
     {
