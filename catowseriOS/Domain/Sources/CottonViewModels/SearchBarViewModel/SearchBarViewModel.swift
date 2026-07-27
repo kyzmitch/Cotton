@@ -64,11 +64,11 @@ public protocol SearchBarDelegateHolder {
         super.init()
         searchBarDelegate = SearchBarDelegateImpl(viewModel: self)
     }
-    
+
     public override var context: Context? {
         proxy
     }
-    
+
     private func replaceTab(
         with url: URL,
         with suggestion: String? = nil,

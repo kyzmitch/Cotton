@@ -18,9 +18,9 @@ public enum SearchBarAction: Equatable, ViewModelAction {
     case cancelSearch
     /// Update on new tab site content
     case updateView(
-        _ overlayLabel: String,
-        _ searchBarContent: String
-    )
+            _ overlayLabel: String,
+            _ searchBarContent: String
+         )
     /// Update to clear state
     case clearView
     /// Select some search suggestion
@@ -39,7 +39,7 @@ public enum SearchBarAction: Equatable, ViewModelAction {
             fatalError("Not handled tab state")
         }
     }
-    
+
     /// All actions
     public static let allCases: [SearchBarAction] = [
         .startSearch(nil),
@@ -48,5 +48,5 @@ public enum SearchBarAction: Equatable, ViewModelAction {
         .clearView,
         .selectSuggestion(.suggestion(""))
     ]
-    
+
 }

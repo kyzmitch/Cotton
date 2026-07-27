@@ -35,9 +35,9 @@ extension WKWebView: @retroactive JavaScriptEvaluateble {
         _ javaScriptString: String,
         completionHandler: ((Any?, Error?) -> Void)?
     ) {
-#if swift(<6.0)
-            evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
-#endif
+        #if swift(<6.0)
+        evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+        #endif
     }
 }
 
@@ -177,7 +177,7 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
     }
 
     // MARK: - WKNavigationDelegate
-    
+
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
@@ -364,15 +364,15 @@ private extension WebViewController {
         loadingProgressObservation?.invalidate()
         loadingProgressObservation = webView?.observe(
             \.estimatedProgress,
-             options: [.new]) { [weak self] (_, change) in
-                 guard let self, let value = change.newValue else {
-                     return
-                 }
-                 Task {
-                     await viewModel
-                         .siteNavigation?
-                         .loadingProgressDidChange(Float(value))
-                 }
+            options: [.new]) { [weak self] (_, change) in
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel
+                    .siteNavigation?
+                    .loadingProgressDidChange(Float(value))
+            }
         }
     }
 

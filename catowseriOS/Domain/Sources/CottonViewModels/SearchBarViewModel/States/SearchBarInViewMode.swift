@@ -19,7 +19,7 @@ public final class SearchBarInViewMode<C: SearchBarStateContext>: SearchBarState
         self.overlayContent = overlayContent
         self.searchBarContent = searchBarContent
     }
-    
+
     @MainActor public override func transitionOn(
         _ action: Action,
         with context: Context?
@@ -46,7 +46,7 @@ public final class SearchBarInViewMode<C: SearchBarStateContext>: SearchBarState
         }
         return nextState
     }
-    
+
     public override var showCancelButton: Bool {
         false
     }

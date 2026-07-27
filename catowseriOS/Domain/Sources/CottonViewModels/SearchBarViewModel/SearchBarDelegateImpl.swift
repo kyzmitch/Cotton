@@ -16,7 +16,7 @@ final class SearchBarDelegateImpl: NSObject {
     @LeadingTrimmed private var tempSearchText: String
     /// View model
     private let viewModel: SearchBarViewModel
-    
+
     init(
         viewModel: SearchBarViewModel
     ) {

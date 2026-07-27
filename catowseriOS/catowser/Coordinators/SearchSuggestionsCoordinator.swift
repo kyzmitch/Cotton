@@ -139,7 +139,7 @@ private extension SearchSuggestionsCoordinator {
     }
 
     func keyboardWillHideClosure() -> @MainActor @Sendable (Notification) -> Void {
-        let handling: @MainActor @Sendable (Notification) -> Void = { [weak self] notification in
+        let handling: @MainActor @Sendable (Notification) -> Void = { [weak self] _ in
             self?._keyboardHeight = nil
         }
 

@@ -22,7 +22,7 @@ import ViewModelKit
     ) -> any SearchSuggestionsViewModel {
         SearchSuggestionsViewModelImpl(autocompleteUseCase, context)
     }
-    
+
     /// Web view model
     public static func createWebViewVM(
         _ context: any WebViewContext,
@@ -41,7 +41,7 @@ import ViewModelKit
             site
         )
     }
-    
+
     /// tab view model
     public static func createTabVM(
         _ tab: CoreBrowser.Tab,
@@ -60,21 +60,21 @@ import ViewModelKit
             FeatureManager.shared
         )
     }
-    
+
     /// all tabs view model
     public static func createAllTabsVM(
         _ addTabUseCase: AddTabUseCase
     ) -> AllTabsViewModel {
         AllTabsViewModelImpl(addTabUseCase)
     }
-    
+
     /// Toolbar view model
     public static func createToolbarVM(
         _ appContext: BrowserToolbarViewContext
     ) -> BrowserToolbarViewModel {
         BrowserToolbarViewModelImpl(appContext)
     }
-    
+
     /// Search bar view model
     public static func createSearchBarVM(
         _ writeTabsUseCase: ReplaceSelectedTabUseCase,
@@ -87,7 +87,7 @@ import ViewModelKit
             appContext
         )
     }
-    
+
     /// Tab previews view model
     public static func createTabPreviewsVM(
         _ readTabUseCase: ReadAllTabsUseCase,

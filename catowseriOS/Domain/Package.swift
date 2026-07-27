@@ -6,14 +6,14 @@ import PackageDescription
 // MARK: - Identifiers
 
 private extension String {
-    
+
     // MARK: - Root
-    
+
     static let domainPackage = "Domain"
     static let basePackage = "Base"
-    
+
     // MARK: - Libraries
-    
+
     static let searchLibrary = "CottonSearch"
     static let tabsLibrary = "CottonTabs"
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
@@ -21,14 +21,14 @@ private extension String {
     static let useCasesLibrary = "CottonUseCases"
     static let viewModelsLibrary = "CottonViewModels"
     static let featureFlagsLibrary = "FeatureFlags"
-    
+
     // MARK: - Frameworks/Kits
-    
+
     static let genericServiceKit = "GenericServiceKit"
     static let viewModelKit = "ViewModelKit"
     static let baseUseCaseKit = "BaseUseCaseKit"
     static let featureFlagsKit = "FeatureFlagsKit"
-    
+
     // MARK: - Frameworks/Kits from Base package
 
     static let cottonNetworkingLibrary = "CottonNetworking"
@@ -36,7 +36,7 @@ private extension String {
     static let cottonBase = "CottonBase"
     static let autoMockableKit = "AutoMockable"
     static let cottonPluginsLibrary = "CottonPlugins"
-    
+
     // MARK: - 3rd party
 
     static let reactiveSwiftFramework = "ReactiveSwift"

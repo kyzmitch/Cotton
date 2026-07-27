@@ -17,7 +17,7 @@ import AutoMockable
 
 /// Fetch search suggestions and return async task
 public protocol FetchAutocompleteSuggestionsUseCase: CoreUseCase, AutoMockable, Sendable {
-    
+
     /// Input for fetching search suggestions
     typealias Input = (source: WebAutoCompletionSource, query: String)
     /// Output is an array of suggestion strings
@@ -34,7 +34,7 @@ public protocol FetchAutocompleteSuggestionsUseCase: CoreUseCase, AutoMockable, 
 
 /// Fetch search suggestions and return async task
 public final class FetchAutocompleteSuggestionsUseCaseImpl: FetchAutocompleteSuggestionsUseCase {
-    
+
     /// Search data service for handling search commands
     private let searchDataService: any SearchDataServiceProtocol
 

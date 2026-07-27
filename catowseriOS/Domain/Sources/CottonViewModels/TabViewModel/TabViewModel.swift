@@ -13,7 +13,7 @@ import CottonTabs
 @MainActor public protocol TabViewModel: TabsObserver, AnyObject, Sendable {
     var state: TabViewState { get }
     var statePublisher: Published<TabViewState>.Publisher { get }
-    
+
     func load()
     func close()
     func activate()

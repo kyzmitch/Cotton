@@ -108,7 +108,7 @@ import FeatureFlags
         async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
         return await TopSitesViewModel(sites, replaceTabUseCase)
     }
-    
+
     func searchBarViewModel(
         _ context: SearchBarContext
     ) async -> SearchBarViewModelWithDelegates {
@@ -120,7 +120,7 @@ import FeatureFlags
             context
         )
     }
-    
+
     func toolbarViewModel() -> BrowserToolbarViewModel {
         let context = BrowserToolbarViewContextImpl()
         return ModuleVMFactory.createToolbarVM(context)

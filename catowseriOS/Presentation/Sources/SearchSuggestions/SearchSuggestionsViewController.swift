@@ -143,4 +143,3 @@ extension SearchSuggestionsViewController: SearchSuggestionsControllerInterface 
 private extension String {
     static let searchSuggestionCellId = "SearchSuggestionCellId"
 }
-

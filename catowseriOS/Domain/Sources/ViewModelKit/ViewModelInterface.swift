@@ -50,7 +50,7 @@ extension ViewModelInterface {
     ) async throws {
         state = try await state.transitionOn(action, with: context)
     }
-    
+
     public func sendAction(
         _ action: Action,
         onComplete: CompletionCallback?

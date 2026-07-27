@@ -15,7 +15,7 @@ import CottonSearch
 /// A global singletone for storing all the use case classes
 @globalActor final class UseCaseRegistry {
     static let shared = StateHolder()
-    
+
     actor StateHolder {
         private let useCaseLocator: UseCaseLocator
         private let serviceRegistry: ServiceRegistry.StateHolder
@@ -27,7 +27,7 @@ import CottonSearch
             self.useCaseLocator = useCaseLocator
             self.serviceRegistry = serviceRegistry
         }
-        
+
         /// Registers all the use cases, usually at the application start
         func registerUseCases() async {
             await registerTabsUseCases()
@@ -47,58 +47,58 @@ import CottonSearch
         /// factory should be a singleton as well
         private func registerTabsUseCases() async {
             let dataService = await ServiceRegistry.shared.tabsService
-            
+
             let addTabUseCase: any AddTabUseCase = AddTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 addTabUseCase,
                 of: (any AddTabUseCase).self
             )
-            
+
             let closeTabUseCase: any CloseTabUseCase = CloseTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 closeTabUseCase,
                 of: (any CloseTabUseCase).self
             )
-            
+
             let closeAllTabsUseCase: any CloseAllTabsUseCase = CloseAllTabsUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 closeAllTabsUseCase,
                 of: (any CloseAllTabsUseCase).self
             )
-            
+
             let replaceSelectedTabUseCase: any ReplaceSelectedTabUseCase = ReplaceSelectedTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 replaceSelectedTabUseCase,
                 of: (any ReplaceSelectedTabUseCase).self
             )
-            
+
             let selectTabUseCase: any SelectTabUseCase = SelectTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 selectTabUseCase,
                 of: (any SelectTabUseCase).self
             )
-            
+
             // Register ReadAllTabsUseCase
             let readAllTabsUseCase: any ReadAllTabsUseCase = ReadAllTabsUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 readAllTabsUseCase,
                 of: (any ReadAllTabsUseCase).self
             )
-            
+
             // Register ReadSelectedTabIdUseCase
             let readSelectedTabIdUseCase: any ReadSelectedTabIdUseCase = ReadSelectedTabIdUseCaseImpl(dataService, DefaultTabProvider.shared)
             useCaseLocator.registerTyped(
                 readSelectedTabIdUseCase,
                 of: (any ReadSelectedTabIdUseCase).self
             )
-            
+
             // Register ReadTabsCountUseCase
             let readTabsCountUseCase: any ReadTabsCountUseCase = ReadTabsCountUseCaseImpl(dataService)
             useCaseLocator.registerTyped(
                 readTabsCountUseCase,
                 of: (any ReadTabsCountUseCase).self
             )
-            
+
             // Register SelectedTabUseCase
             let selectedTabUseCase: any SelectedTabUseCase = SelectedTabUseCaseImpl(dataService)
             useCaseLocator.registerTyped(

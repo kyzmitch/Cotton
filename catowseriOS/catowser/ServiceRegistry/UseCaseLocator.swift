@@ -14,7 +14,7 @@ import BaseUseCaseKit
 public final class UseCaseLocator: LazyServiceLocator {
     /// Init
     public override init() {}
-    
+
     /// Register an instance using a concrete type metadata which can't be determined automatically
     ///
     /// - Parameter instance: an object instance stored in a service locator

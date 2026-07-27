@@ -25,7 +25,7 @@ public final class CloseAllTabsUseCaseImpl: CloseAllTabsUseCase {
         self.tabsDataService = tabsDataService
     }
 
-    public func execute(input: Void) async throws -> Void  {
+    public func execute(input: Void) async throws {
         let serviceData = await tabsDataService.sendCommand(.closeAll, nil)
         guard case let .finished(result) = serviceData.allTabsClosed else {
             throw AppError.commandNotFinishedYet

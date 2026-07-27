@@ -19,7 +19,7 @@ final class BrowserToolbarViewContextImpl: BrowserToolbarViewContext {
         }
         return controller as? SiteNavigationChangable
     }
-    
+
     private var vcFactory: ViewControllerFactory {
         UIServiceRegistry.shared().vcFactory
     }

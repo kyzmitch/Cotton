@@ -6,26 +6,26 @@ import PackageDescription
 // MARK: - Identifiers
 
 private extension String {
-    
+
     // MARK: - Root
 
     static let basePackage = "Base"
     static let cottonBase = "CottonBase"
-    
+
     // MARK: - 3rd party
 
     static let reactiveSwiftFramework = "ReactiveSwift"
     static let swXmlHashFramework = "SWXMLHash"
     static let alamofireFramework = "Alamofire"
     static let swiftSoupFramework = "SwiftSoup"
-    
+
     // MARK: - Libraries
-    
+
     static let cssParserLibrary = "CssParser"
     static let cottonPluginsLibrary = "CottonPlugins"
-    
+
     // MARK: - Frameworks/Kits
-    
+
     static let cottonRestKit = "CottonRestKit"
     static let autoMockableKit = "AutoMockable"
     static let cottonReactiveRestKit = "CottonReactiveRestKit"

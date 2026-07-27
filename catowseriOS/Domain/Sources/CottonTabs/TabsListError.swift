@@ -14,7 +14,7 @@ public enum TabsListError: DataServiceKitError {
     public init(zombyInstance: Bool) {
         self = .zombyInstance
     }
-    
+
     case zombyInstance
     case notInitializedYet
     case selectedNotFound
@@ -27,7 +27,7 @@ public enum TabsListError: DataServiceKitError {
     case closingNonExistingTab
     case failToFindNewSelectedTab
     case onlyDefaultTabPresent
-    
+
     public var errorDescription: String? {
         switch self {
         case .zombyInstance:

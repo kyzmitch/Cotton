@@ -11,7 +11,6 @@ import CottonTabs
 import CottonViewModels
 import CottonNetworking
 import FeatureFlagsKit
-import CottonTabs
 
 final class TabViewContextImpl: TabViewModelContext {
     var observingApiTypeValue: ObservingApiType {
@@ -19,24 +18,24 @@ final class TabViewContextImpl: TabViewModelContext {
             await FeatureManager.shared.observingApiTypeValue()
         }
     }
-    
+
     func removeWebView(for site: Site) -> Bool {
         WebViewsReuseManager.shared.removeWebView(for: site)
     }
-    
+
     var isDohEnabled: Bool {
         get async {
             await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
         }
     }
-    
+
     func faviconURL(
         _ site: Site,
         _ resolve: Bool
     ) async throws -> URL {
         try await site.faviconURL(resolve, GoogleDnsClient.shared)
     }
-    
+
     @available(iOS 17.0, *)
     var tabsSubject: TabsDataSubject {
         get async {

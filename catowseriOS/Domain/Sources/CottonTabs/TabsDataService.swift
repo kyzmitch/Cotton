@@ -13,7 +13,7 @@ import CottonDependencyAssembly
 
 /// Tabs list data service which can be used as a subject for observers.
 actor TabsDataService: TabsDataServiceProtocol {
-    
+
     typealias UUIDStream = AsyncStream<Tab.ID>
     typealias IntStream = AsyncStream<Int>
 
@@ -40,7 +40,7 @@ actor TabsDataService: TabsDataServiceProtocol {
     private let observingType: ObservingApiType
     /// Service data
     public var serviceData: ServiceData
-    
+
     /// tabs computed property
     var tabs: [CoreBrowser.Tab] {
         guard
@@ -51,7 +51,7 @@ actor TabsDataService: TabsDataServiceProtocol {
         }
         return tabs
     }
-    
+
     /// Selected tab id computed property
     var selectedTabIdentifier: CoreBrowser.Tab.ID {
         guard
@@ -62,7 +62,7 @@ actor TabsDataService: TabsDataServiceProtocol {
         }
         return identifier
     }
-    
+
     init(
         _ tabsRepository: TabsRepository,
         _ positioning: TabsStatesInterface,
@@ -442,7 +442,7 @@ private extension TabsDataService {
         serviceData.tabPreviewUpdated = .finished(output: .success(void))
         return serviceData
     }
-    
+
     func removeWeakObserversIfNeeded() {
         guard !tabObservers.isEmpty else {
             return
@@ -776,7 +776,7 @@ struct TabsAppStartInfo {
     var tabs: [Tab]
     /// default tab content
     let defaultContentType: Tab.ContentType
-    
+
     init(
         _ tabs: [Tab],
         _ defaultContentType: Tab.ContentType
@@ -806,4 +806,3 @@ extension DataServiceFactory {
         )
     }
 }
-

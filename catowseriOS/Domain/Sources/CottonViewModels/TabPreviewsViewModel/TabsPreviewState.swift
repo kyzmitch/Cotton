@@ -25,15 +25,15 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
             return box.count
         }
     }
-    
+
     public typealias Context = C
     public typealias Action = TabsPreviewsAction
     public typealias BaseState = TabsPreviewState
-    
+
     public static func createInitial() -> BaseState {
         .loading
     }
-    
+
     @MainActor public func transitionOn(
         _ action: Action,
         with context: Context?
@@ -84,7 +84,7 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
         }
         return nextState
     }
-    
+
     public static func == (
         lhs: TabsPreviewState<C>,
         rhs: TabsPreviewState<C>

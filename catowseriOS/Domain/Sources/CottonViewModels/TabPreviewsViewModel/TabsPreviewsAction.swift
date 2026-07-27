@@ -22,7 +22,7 @@ public enum TabsPreviewsAction: ViewModelAction {
     case selectTabIdWithoutSaving(CoreBrowser.Tab.ID)
     /// Handle user tap on + tab button
     case addDefaultTab
-    
+
     public static let allCases: [TabsPreviewsAction] = [
         .load,
         .closeTab(index: -1),

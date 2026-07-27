@@ -41,7 +41,7 @@ import CottonTabs
         self.context = context
         self.featureManager = featureManager
         _state = .init(initialValue: .deSelected(tab.title, nil))
-        
+
         Task {
             let observingType = await context.observingApiTypeValue
             if #available(iOS 17.0, *), observingType.isSystemObservation {
@@ -127,7 +127,7 @@ import CottonTabs
         }
         return source
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func startTabsObservation(_ tabsSubject: TabsDataSubject) {
@@ -146,19 +146,19 @@ import CottonTabs
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func handleSelectedTabChange(_ tabsSubject: TabsDataSubject) async {
         let tabId = tabsSubject.selectedTabId
         guard let index = tabsSubject.tabs
-            .firstIndex(where: { $0.id == tabId }) else {
+                .firstIndex(where: { $0.id == tabId }) else {
             return
         }
         await tabDidSelect(index, tabsSubject.tabs[index].contentType, tabId)
 
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func observeReplacedTab(_ tabsSubject: TabsDataSubject) async {

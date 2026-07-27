@@ -58,7 +58,7 @@ final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
         self.appContext = appContext
         super.init()
     }
-    
+
     public override var context: Context? {
         proxy
     }
@@ -80,7 +80,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
         async let selectedTabId = readSelectedIdUseCase.execute()
         return try await PreviewsInfo(tabs, selectedTabId)
     }
-    
+
     public func load(onComplete: @escaping (PreviewsInfo) -> Void) {
         Task {
             async let tabs = readAllTabsUseCase.execute()
@@ -90,7 +90,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
             onComplete(info)
         }
     }
-    
+
     public func close(
         at index: Int,
         from tabs: [CoreBrowser.Tab]
@@ -106,7 +106,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
         info = PreviewsInfo(tabs, newSelectedId)
         return info
     }
-    
+
     public func close(
         at index: Int,
         from tabs: [CoreBrowser.Tab],
@@ -121,11 +121,11 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
             }
         }
     }
-    
+
     public func select(_ tab: Tab) async throws {
         try await selectUseCase.execute(input: tab)
     }
-    
+
     public func select(
         _ tab: Tab,
         onComplete: @escaping (Result<Void, TabsPreviewsError>) -> Void
@@ -139,7 +139,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
             }
         }
     }
-    
+
     public func addDefaultTab() async throws -> PreviewsInfo {
         let contentState = await appContext.contentState
         let tab = CoreBrowser.Tab(contentType: contentState)
@@ -149,7 +149,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
         async let newSelectedId = readSelectedIdUseCase.execute()
         return try await PreviewsInfo(allNewTabs, newSelectedId)
     }
-    
+
     public func addTab(
         _ tab: CoreBrowser.Tab,
         at index: Int

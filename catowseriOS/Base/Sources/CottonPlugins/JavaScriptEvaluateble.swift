@@ -57,10 +57,10 @@ extension JavaScriptEvaluateble {
                 promise(.failure(CottonPluginError.zombiError))
                 return
             }
-#if swift(>=6)
+            #if swift(>=6)
             // workaround until Apple Combine fixes the future/promise by adding Sendable conformance
             nonisolated(unsafe) let promise = promise
-#endif
+            #endif
             commonHandleJavaScript(jsScript) { @Sendable (something, error) in
                 if let error {
                     promise(.failure(error))

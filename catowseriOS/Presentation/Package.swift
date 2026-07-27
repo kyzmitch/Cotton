@@ -6,38 +6,38 @@ import PackageDescription
 // MARK: - Identifiers
 
 private extension String {
-    
+
     // MARK: - Root
-    
+
     static let presentationPackage = "Presentation"
     static let domainPackage = "Domain"
-    
+
     // MARK: - Libraries
-    
+
     static let searchViewsLibrary = "SearchViews"
     static let searchSuggestionsLibrary = "SearchSuggestions"
     static let commonDelegatesLibrary = "CommonDelegatesLibrary"
-    
+
     // MARK: - Frameworks/Kits
-    
+
     static let viewsBaseLibrary = "ViewsBase"
     static let cottonDesignKit = "CottonDesignKit"
 
     // MARK: - Domain libraries
-    
+
     static let searchLibrary = "CottonSearch"
     static let tabsLibrary = "CottonTabs"
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
     static let coreBrowserLibrary = "CoreBrowser"
     static let viewModelsLibrary = "CottonViewModels"
     static let featureFlagsLibrary = "FeatureFlags"
-    
+
     // MARK: - Domain Frameworks/Kits
-    
+
     static let featureFlagsKit = "FeatureFlagsKit"
-    
+
     // MARK: - Base Frameworks/Kits
-    
+
     // MARK: - 3rd party
 }
 

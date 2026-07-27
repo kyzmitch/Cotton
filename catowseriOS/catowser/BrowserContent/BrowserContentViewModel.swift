@@ -50,7 +50,7 @@ import CottonTabs
         loading = true
         webViewNeedsUpdate = ()
         tabsCount = 0
-        
+
         Task {
             let observingType = await featureManager.observingApiTypeValue()
             if #available(iOS 17.0, *), observingType.isSystemObservation {
@@ -63,13 +63,13 @@ import CottonTabs
         // Fallback for before iOS 17 is outside in
         // `MainBrowserView.onAppear` by calling `attach`
     }
-    
+
     @available(iOS 17.0, *)
     private func readTabsState() async {
         await handleSelectedTabChange()
         await handleTabsCountChange()
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func startTabsObservation() {
@@ -95,27 +95,27 @@ import CottonTabs
             }
         }
     }
-    
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleSelectedTabChange() async {
         let subject = uiServiceRegistry.tabsSubject
         let tabId = subject.selectedTabId
-        guard let index = subject.tabs
-            .firstIndex(where: { $0.id == tabId }) else {
-            return
+        guard
+          let index = subject.tabs.firstIndex(where: { $0.id == tabId })
+        else {
+          return
         }
         await tabDidSelect(index, subject.tabs[index].contentType, tabId)
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleTabsCountChange() async {
         let count = uiServiceRegistry.tabsSubject.tabsCount
         await updateTabsCount(with: count)
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleReplacedTabChange() async {

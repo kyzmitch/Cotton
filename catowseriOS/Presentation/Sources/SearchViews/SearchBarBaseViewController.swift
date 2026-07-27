@@ -53,7 +53,7 @@ public final class SearchBarBaseViewController: BaseViewController {
         self.tabsDataSubject = tabsDataSubject
         self.tabsSubjectFactory = tabsSubjectFactory
         super.init(nibName: nil, bundle: nil)
-        
+
         Task {
             let observingType = await featureManager.observingApiTypeValue()
             if #available(iOS 17.0, *), observingType.isSystemObservation {
@@ -77,7 +77,7 @@ public final class SearchBarBaseViewController: BaseViewController {
 
         searchBarView.handleTraitCollectionChange()
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func startTabsObservation() {
@@ -96,18 +96,18 @@ public final class SearchBarBaseViewController: BaseViewController {
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleSelectedTabChange() async {
         let tabId = tabsDataSubject.selectedTabId
         guard let index = tabsDataSubject.tabs
-            .firstIndex(where: { $0.id == tabId }) else {
+                .firstIndex(where: { $0.id == tabId }) else {
             return
         }
         await tabDidSelect(index, tabsDataSubject.tabs[index].contentType, tabId)
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func observeReplacedTab() async {

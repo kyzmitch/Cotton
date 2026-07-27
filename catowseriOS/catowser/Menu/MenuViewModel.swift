@@ -38,13 +38,13 @@ final class MenuViewModel: ObservableObject {
         let uiFrameworkRowValue: UIFrameworkType
         let observingApiRowValue: ObservingApiType
     }
-    
+
     // MARK: - global settings
 
     @Published var isDohEnabled: Bool
     @Published var isJavaScriptEnabled: Bool
     @Published var nativeAppRedirectEnabled: Bool
-    
+
     // MARK: - Allow to update text view content dynamically
 
     @Published var tabContentRowValue: CoreBrowser.Tab.ContentType = .favorites
@@ -158,44 +158,44 @@ final class MenuViewModel: ObservableObject {
     func emulateLinkTags() {
         developerMenuPresenter?.emulateLinkTags()
     }
-    
+
     // MARK: - public interface
-    
+
     func setTabAddPosition(_ selected: AddedTabPosition) {
         Task {
             await FeatureManager.shared.setFeature(.tabAddPosition, value: selected)
         }
         tabAddPositionRowValue = selected
     }
-    
+
     func setTabContent(_ selected: CoreBrowser.Tab.ContentType) {
         Task {
             await FeatureManager.shared.setFeature(.tabDefaultContent, value: selected)
         }
         tabContentRowValue = selected
     }
-    
+
     func setAutocomplete(_ selected: WebAutoCompletionSource) {
         Task {
             await FeatureManager.shared.setFeature(.webAutoCompletionSource, value: selected)
         }
         webAutocompleteRowValue = selected
     }
-    
+
     func setAsyncApi(_ selected: AsyncApiType) {
         Task {
             await FeatureManager.shared.setFeature(.appDefaultAsyncApi, value: selected)
         }
         asyncApiRowValue = selected
     }
-    
+
     func setUiFramework(_ selected: UIFrameworkType) {
         Task {
             await FeatureManager.shared.setFeature(.appDefaultUIFramework, value: selected)
         }
         uiFrameworkRowValue = selected
     }
-    
+
     func setObservingApi(_ selected: ObservingApiType) {
         Task {
             await FeatureManager.shared.setFeature(
@@ -205,7 +205,7 @@ final class MenuViewModel: ObservableObject {
         }
         observingApiRowValue = selected
     }
-    
+
     func load() async {
         async let tabValue = FeatureManager.shared.tabDefaultContentValue()
         async let webValue = FeatureManager.shared.webSearchAutoCompleteValue()
@@ -213,7 +213,7 @@ final class MenuViewModel: ObservableObject {
         async let asyncValue = FeatureManager.shared.appAsyncApiTypeValue()
         async let uiValue = FeatureManager.shared.appUIFrameworkValue()
         async let observingValue = FeatureManager.shared.observingApiTypeValue()
-        
+
         let state = await State(
             tabContentRowValue: tabValue,
             webAutocompleteRowValue: webValue,

@@ -9,7 +9,7 @@
 import Combine
 
 /// An interface of MVVM view model consumer (usually view controller).
-/// 
+///
 /// It requires to have only one view model with `viewModel` field name.
 /// So that, if controller or view has more that one view model, then need
 /// to combine them into a single view model wrapper if needed.
@@ -20,7 +20,7 @@ import Combine
     associatedtype ViewModel: ViewModelInterface
     /// State
     associatedtype State: ViewModelState where State == ViewModel.State
-    
+
     /// An instance of view model stored for view controller (or any view)
     ///
     /// TBD: Could inject it automatically from the view models factory later.

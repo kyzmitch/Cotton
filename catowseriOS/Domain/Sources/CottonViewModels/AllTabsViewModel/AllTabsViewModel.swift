@@ -30,7 +30,7 @@ final class AllTabsViewModelImpl: AllTabsViewModel {
         self.addTabUseCase = addTabUseCase
         super.init()
     }
-    
+
     public override var context: Context? {
         proxy
     }

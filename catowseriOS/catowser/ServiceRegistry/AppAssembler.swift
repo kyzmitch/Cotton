@@ -17,7 +17,7 @@ import CottonViewModels
 /// Should be called in App delegate or App coordinator.
 @globalActor final class AppAssembler {
     static let shared = StateHolder()
-    
+
     actor StateHolder {
         private let featureManager: FeatureManager.StateHolder
         private let serviceRegistry: ServiceRegistry.StateHolder
@@ -29,7 +29,7 @@ import CottonViewModels
             self.featureManager = featureManager
             self.serviceRegistry = serviceRegistry
         }
-        
+
         func configure(
             baseDelegate: BasePluginContentDelegate,
             instagramDelegate: InstagramContentDelegate

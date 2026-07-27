@@ -24,18 +24,18 @@ final class BrowserToolbarViewModelImpl: BrowserToolbarViewModel {
     private lazy var proxy: BrowserToolbarStateContextProxy = {
         BrowserToolbarStateContextProxy(subject: self)
     }()
-    
+
     init(
         _ appContext: BrowserToolbarViewContext
     ) {
         self.appContext = appContext
         super.init()
     }
-    
+
     public override var context: Context? {
         proxy
     }
-    
+
     public override func sendAction(_ action: Action) async throws {
         try await super.sendAction(action)
         // side effect of resetting the state back to original value
@@ -50,7 +50,7 @@ extension BrowserToolbarViewModelImpl: BrowserToolbarStateContext {
     var siteNavigationDelegate: (any SiteNavigationChangable)? {
         appContext.siteNavigationDelegate
     }
-    
+
     var siteExternalDelegate: SiteExternalNavigationDelegate? {
         self
     }

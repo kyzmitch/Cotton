@@ -10,6 +10,6 @@ import GenericServiceKit
 
 /// Search data service interface
 public protocol SearchDataServiceProtocol: GenericDataServiceProtocol, Sendable where
-Command == SearchServiceCommand,
-ServiceData == SearchServiceData,
-ServiceError == SearchServiceError { }
+    Command == SearchServiceCommand,
+    ServiceData == SearchServiceData,
+    ServiceError == SearchServiceError { }

@@ -24,7 +24,7 @@ public protocol GenericDataServiceProtocol: AnyObject {
     var executionQueue: DispatchQueueInterface { get }
     /// Dispatch queue to execute a completion closure
     var responseQueue: DispatchQueueInterface { get }
-    
+
     /// A single entry point in data service API for read/write functionality
     /// related to specific domain of business logic.
     ///

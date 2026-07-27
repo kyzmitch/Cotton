@@ -41,7 +41,7 @@ final class AppStartInfo: Sendable {
     let uiFramework: UIFrameworkType
     /// Search data service
     let searchDataService: any SearchDataServiceProtocol
-    
+
     init(
         allTabsVM: AllTabsViewModel,
         topSitesVM: TopSitesViewModel,

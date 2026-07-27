@@ -30,7 +30,7 @@ extension String {
     actor StateHolder {
         /// locator for the data services
         private let dataServiceLocator: DataServiceLocator
-        
+
         let dnsClient: GoogleDnsClient
         let googleClient: GoogleSuggestionsClient
         let duckduckgoClient: DDGoSuggestionsClient
@@ -46,12 +46,12 @@ extension String {
         let dnsClientRxSubscriber: GDNSJsonClientRxSubscriber = .init()
         let dnsClientSubscriber: GDNSJsonClientSubscriber = .init()
         let duckduckgoClientRxSubscriber: DDGoSuggestionsClientRxSubscriber = .init()
-        
+
         private var database: Database?
 
         init() {
             dataServiceLocator = DataServiceLocator()
-            
+
             let googleDNSserver = GoogleDnsServer()
             // swiftlint:disable:next force_unwrapping
             dnsAlReachability = .init(server: googleDNSserver)!
@@ -81,12 +81,12 @@ extension String {
                 httpTimeout: 10
             )
         }
-        
+
         func findDataService<T>(_ type: T.Type, _ key: String? = nil) -> T {
             // swiftlint:disable:next force_unwrapping
             dataServiceLocator.findService(type, key)!
         }
-        
+
         func registerDataServices() async {
             let searchDataService = DataServiceFactory.createSearchService(
                 executionQueue: DispatchQueue.global(),

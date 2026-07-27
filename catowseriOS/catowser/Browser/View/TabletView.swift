@@ -128,7 +128,7 @@ struct TabletView<
                 searchBarAction,
                 toolbarVM.state.webViewInterface
             )
-                .frame(height: .toolbarViewHeight)
+            .frame(height: .toolbarViewHeight)
             // this should be the same with the value in `SearchBarBaseViewController`
             if toolbarVM.state.showProgress {
                 ProgressView(value: toolbarVM.state.loadingProgress)
@@ -205,8 +205,8 @@ struct TabletView<
                 $searchBarAction,
                 searchBarVM
             )
-                .frame(height: .toolbarViewHeight)
-                .environmentObject(toolbarVM)
+            .frame(height: .toolbarViewHeight)
+            .environmentObject(toolbarVM)
             if toolbarVM.state.showProgress {
                 ProgressView(value: toolbarVM.state.loadingProgress)
             }

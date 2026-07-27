@@ -12,7 +12,7 @@ public enum ObservingApiType: Int, CaseIterable, Sendable {
     case observerDesignPattern
     /// Observe tabs using ios 17 Observation framework
     case systemObservation
-    
+
     /// Determines if Observation framework can and should be used
     public var isSystemObservation: Bool {
         if #available(iOS 17.0, *), .systemObservation == self {

@@ -14,11 +14,11 @@ public struct AllTabsState<C: AllTabsStateContext>: ViewModelState {
     public typealias Context = C
     public typealias Action = AllTabsAction
     public typealias BaseState = AllTabsState
-    
+
     public static func createInitial() -> BaseState {
         .init()
     }
-    
+
     @MainActor public func transitionOn(
         _ action: Action,
         with context: Context?
@@ -29,7 +29,7 @@ public struct AllTabsState<C: AllTabsStateContext>: ViewModelState {
         }
         return self
     }
-    
+
     @MainActor public func transitionOn(
         _ action: Action,
         with context: Context?,

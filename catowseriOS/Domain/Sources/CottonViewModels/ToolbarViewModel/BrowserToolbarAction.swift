@@ -18,20 +18,20 @@ public enum BrowserToolbarAction: ViewModelAction {
     case reload
     /// Web view notified about new states of the navigation buttons
     case updateNavigation(
-        canGoBack: Bool?,
-        canGoForward: Bool?
-    )
+            canGoBack: Bool?,
+            canGoForward: Bool?
+         )
     /// Web view notified about progress of web page loading
     case updateProgress(
-        show: Bool?,
-        value: Float?
-    )
+            show: Bool?,
+            value: Float?
+         )
     /// New web page was loaded which means that
     /// the navigation buttons must be updated
     case replaceWebInterface(WebViewNavigatable?)
     /// Stop web view reusage
     case stopWebViewReusage
-    
+
     /// All enum cases
     public static let allCases: [BrowserToolbarAction] = [
         .goForward,

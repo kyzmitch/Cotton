@@ -18,11 +18,11 @@ public protocol AllTabsStateContext: StateContext {
 /// to hide the view model implementation
 public final class AllTabsStateContextProxy: AllTabsStateContext {
     private let subject: any AllTabsStateContext
-    
+
     init(subject: any AllTabsStateContext) {
         self.subject = subject
     }
-    
+
     public func handleTabAdd(_ tab: Tab) {
         subject.handleTabAdd(tab)
     }

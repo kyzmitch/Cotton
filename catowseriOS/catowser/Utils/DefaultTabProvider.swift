@@ -17,7 +17,7 @@ import CottonTabs
 @globalActor
 final class DefaultTabProvider {
     static let shared = StateHolder()
-    
+
     actor StateHolder: TabsStatesInterface {
         @MainActor var selected: Bool {
             UIDevice.current.userInterfaceIdiom == .pad
@@ -43,7 +43,7 @@ final class DefaultTabProvider {
             #endif
             return array.compactMap {$0}
         }
-        
+
         var addPosition: AddedTabPosition {
             get async {
                 await FeatureManager.shared.tabAddPositionValue()

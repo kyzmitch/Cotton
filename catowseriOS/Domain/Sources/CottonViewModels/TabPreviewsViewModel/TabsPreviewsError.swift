@@ -16,7 +16,7 @@ public enum TabsPreviewsError: LocalizedError {
     case useCaseFailure(Error)
     case notImplementedYet
     case tabsNotLoadedToInsert
-    
+
     public var errorDescription: String? {
         switch self {
         case .failToLoad:

@@ -36,7 +36,7 @@ public protocol ViewModelState: Sendable, Equatable {
         _ action: Action,
         with context: Context?
     ) async throws -> BaseState
-    
+
     /// Converts current state to another valid state or Result failure.
     /// This function has async closure for completion, because
     /// action handling usually depends on async operations.

@@ -205,7 +205,7 @@ import FeatureFlagsKit
         let policy = await decidePolicy(navigationAction)
         decisionHandler(policy)
     }
-    
+
     func decidePolicy(
         _ navigationAction: NavigationActionable
     ) async -> WKNavigationActionPolicy {

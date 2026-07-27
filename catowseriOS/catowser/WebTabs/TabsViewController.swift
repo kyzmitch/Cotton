@@ -37,7 +37,7 @@ final class TabsViewController: BaseViewController {
         self.featureManager = featureManager
         self.uiServiceRegistry = uiServiceRegistry
         super.init(nibName: nil, bundle: nil)
-        
+
         Task {
             let observingType = await featureManager.observingApiTypeValue()
             if #available(iOS 17.0, *), observingType.isSystemObservation {
@@ -235,12 +235,12 @@ private extension TabsViewController {
         }
         return newlyAddedTabFrame
     }
-    
+
     @available(iOS 17.0, *)
     func readTabsState() async {
         await handleAddedTabs()
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func startTabsObservation() {
@@ -266,7 +266,7 @@ private extension TabsViewController {
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func handleAddedTabs() async {
@@ -277,19 +277,19 @@ private extension TabsViewController {
             await initializeObserver(with: subject.tabs)
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleSelectedTabChange() async {
         let subject = uiServiceRegistry.tabsSubject
         let tabId = subject.selectedTabId
         guard let index = subject.tabs
-            .firstIndex(where: { $0.id == tabId }) else {
+                .firstIndex(where: { $0.id == tabId }) else {
             return
         }
         await tabDidSelect(index, subject.tabs[index].contentType, tabId)
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleTabsCountChange() async {

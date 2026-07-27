@@ -39,7 +39,7 @@ import CoreBrowser
     public var replacedTabIndex: Int?
     /// Added tab index
     public var addedTabIndex: Int?
-    
+
     /// Init
     public init(
         _ positioning: TabsStatesInterface,

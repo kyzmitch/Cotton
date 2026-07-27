@@ -33,7 +33,7 @@ final class SearchDataService: GenericConcurrentDataService<SearchServiceCommand
     private var autocompleteHandler: AnyCancellable?
     private var domainNameResolveHandler: AnyCancellable?
     private let stratsFactory: SearchStrategiesFactoryProtocol
-    
+
     /// Initializer
     init(
         executionQueue: any DispatchQueueInterface,
@@ -76,7 +76,7 @@ final class SearchDataService: GenericConcurrentDataService<SearchServiceCommand
 // MARK: - Private functions
 
 private extension SearchDataService {
-    
+
     // MARK: - Command handlers
 
     func handleSuggestionsFetch(
@@ -122,7 +122,7 @@ private extension SearchDataService {
                 finishSimilarCommands(command, .success(serviceData))
             })
     }
-    
+
     func handleDomainNameResolve(
         _ command: Command,
         _ urlWithDomainName: URL
@@ -165,9 +165,9 @@ private extension SearchDataService {
         serviceData.constructingSearchURL = .finished(output: .success(url))
         finishCommand(command, .success(serviceData))
     }
-    
+
     // MARK: - private functions
-    
+
     func parseSearchEngine(
         _ selectedPluginName: WebAutoCompletionSource
     ) -> SearchEngine {
@@ -189,7 +189,7 @@ private extension SearchDataService {
 
         return osDescription.html
     }
-    
+
     func finishSimilarCommands(
         _ command: Command,
         _ output: Result<ServiceData, ServiceError>

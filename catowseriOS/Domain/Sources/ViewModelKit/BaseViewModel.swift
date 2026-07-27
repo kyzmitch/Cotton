@@ -22,7 +22,7 @@ open class BaseViewModel<
     public typealias Action = A
     public typealias State = S
     public typealias Context = C
-    
+
     /// UI state of view model
     @Published public var state: State
     /// Combine publisher for the UI state
@@ -30,12 +30,12 @@ open class BaseViewModel<
     /// State context computed property, it is nil for the base view model
     /// because the actual context type is not determined yet.
     open var context: Context? { nil }
-    
+
     /// Creates a base view model with initial UI state
     public init() {
         self.state = .createInitial()
     }
-    
+
     /// Apply an action to the view model state to get a new valid state
     /// - Parameter action: an action to apply to the state
     /// - Throws an error if incoming action is not valid for a current state or due to other errors

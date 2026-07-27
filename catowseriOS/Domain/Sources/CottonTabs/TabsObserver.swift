@@ -95,7 +95,7 @@ public extension TabsObserver {
 /// instead of a protocol TabsObserver which can't be used in a collection data structure.
 public final class TabsObserverProxy: @unchecked Sendable {
     weak var realSubject: TabsObserver?
-    
+
     init(_ realSubject: TabsObserver) {
         self.realSubject = realSubject
     }
@@ -111,15 +111,15 @@ extension TabsObserverProxy: TabsObserver {
     public func initializeObserver(with tabs: [CoreBrowser.Tab]) async {
         await realSubject?.initializeObserver(with: tabs)
     }
-    
+
     public func updateTabsCount(with tabsCount: Int) async {
         await realSubject?.updateTabsCount(with: tabsCount)
     }
-    
+
     public func tabDidAdd(_ tab: Tab, at index: Int) async {
         await realSubject?.tabDidAdd(tab, at: index)
     }
-    
+
     public func tabDidSelect(
         _ index: Int,
         _ content: Tab.ContentType,
@@ -127,7 +127,7 @@ extension TabsObserverProxy: TabsObserver {
     ) async {
         await realSubject?.tabDidSelect(index, content, identifier)
     }
-    
+
     public func tabDidReplace(
         _ tab: Tab,
         at index: Int

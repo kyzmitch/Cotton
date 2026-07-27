@@ -16,13 +16,13 @@ final class SearchBarContextImpl: SearchBarContext {
     var blockPopups: Bool {
         DefaultTabProvider.shared.blockPopups
     }
-    
+
     var isJSEnabled: Bool {
         get async {
             await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
         }
     }
-    
+
     var webAutocompletionSourceValue: WebAutoCompletionSource {
         get async {
             await FeatureManager.shared.webSearchAutoCompleteValue()

@@ -7,10 +7,10 @@ import CoreBrowser
 public protocol ReadSelectedTabIdUseCase: CoreUseCase, AutoMockable, Sendable {
     /// Input type for the use case. In this case, it's `Void`.
     typealias Input = Void
-    
+
     /// Output type for the use case, which is a `CoreBrowser.Tab.ID`.
     typealias Output = CoreBrowser.Tab.ID
-    
+
     /// Reads the selected tab ID asynchronously.
     ///
     /// - Parameter input: Input parameter, which is `Void` for this use case.
@@ -22,7 +22,7 @@ public protocol ReadSelectedTabIdUseCase: CoreUseCase, AutoMockable, Sendable {
 public final class ReadSelectedTabIdUseCaseImpl: ReadSelectedTabIdUseCase {
     /// Service responsible for data operations on tabs.
     private let tabsDataService: any TabsDataServiceProtocol
-    
+
     /// Interface responsible for managing the state of tabs.
     private let positioning: TabsStatesInterface
 

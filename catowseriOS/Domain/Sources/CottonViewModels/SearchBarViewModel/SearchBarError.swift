@@ -17,7 +17,7 @@ public enum SearchBarError: LocalizedError {
     case cannotSeeSuggestionsInViewMode
     case looksLikeUrlButNotExactly(String)
     case failToCreatUrlFromDomain
-    
+
     public var errorDescription: String? {
         switch self {
         case .invalidDummyState:
