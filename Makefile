@@ -133,6 +133,20 @@ android-kotlin-format:
 
 # Cotton base builds
 
+.PHONY: lint-kt-cotton-base
+lint-kt-cotton-base:
+	ktlint cotton-base/**/*.kt --editorconfig=cotton-base/.editorconfig ; \
+	# --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,
+	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports,
+	# final-newline,standard:trailing-comma-on-call-site
+
+.PHONY: lint-kt-cotton-base-format
+lint-kt-cotton-base-format:
+	ktlint --format cotton-base/**/*.kt --editorconfig=cotton-base/.editorconfig ; \
+	# --disabled_rules=trailing-comma,standard:trailing-comma-on-call-site,
+	# standard:trailing-comma-on-declaration-site,standard:colon-spacing,standard:no-wildcard-imports,
+	# final-newline,standard:trailing-comma-on-call-site
+
 .PHONY: build-cotton-base-ios-release
 build-cotton-base-ios-release:
 	source ~/.zprofile
@@ -268,6 +282,8 @@ Local and CI targets
 \t\t* make build-cotton-base-ios-release\t\t: Build cotton-base XCFramework for iOS.
 \t\t* make build-cotton-base-android-release\t: Build & publish cotton-base to local Maven for Android.
 \t\t* make build-cotton-base-release\t\t: Build cotton-base together for iOS & Android.
+\t\t* make lint-kt-cotton-base\t\t\t: Lint Kotlin in cotton-base.
+\t\t* make lint-kt-cotton-base-format\t\t: Auto-correct Kotlin in cotton-base.
 
 \tUnit tests
 \t\t* make ios-unit-tests\t\t\t: Build and run iOS unit tests.

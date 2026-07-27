@@ -28,7 +28,7 @@ actual fun ByteArrayNativeUtils.Companion.convertBytes(byteArray: ByteArray): Da
     return byteArray.usePinned {
         NSData.create(
             bytes = it.addressOf(0),
-            length = byteArray.size.toULong()
+            length = byteArray.size.toULong(),
         )
     }
 }

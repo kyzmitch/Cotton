@@ -32,29 +32,29 @@ class DomainNameTests {
         // https://www.baeldung.com/kotlin/assertfailswith#using-kotlins-assertfailswith-method
         assertFailsWith<DomainName.Error.EmptyString>(
             message = "Domain name can't be constructed from the empty string",
-            block = { DomainName("") }
+            block = { DomainName("") },
         )
 
         assertFailsWith(
             exceptionClass = DomainName.Error.DotAtBeginning::class,
-            block = { DomainName(".example.com") }
+            block = { DomainName(".example.com") },
         )
 
         assertFailsWith(
             exceptionClass = DomainName.Error.DoubleDots::class,
-            block = { DomainName("example..com") }
+            block = { DomainName("example..com") },
         )
 
         val tooLongLength = 254
         var tooLongInputForDomainName = 'a'.repeat(tooLongLength)
         val exception = assertFailsWith<DomainName.Error.WrongLength>(
-            block = { DomainName(tooLongInputForDomainName) }
+            block = { DomainName(tooLongInputForDomainName) },
         )
         assertEquals(tooLongLength, exception.inputLength)
 
         assertFailsWith(
             exceptionClass = DomainName.Error.RightmostDomainLabelStartsWithDigit::class,
-            block = { DomainName(wrongIPv4Addres1) }
+            block = { DomainName(wrongIPv4Addres1) },
         )
     }
 
