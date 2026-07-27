@@ -45,9 +45,9 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         handler: WKScriptMessageHandler
     ) throws {
         let wkScript = try JSPluginFactory.shared.script(
-          for: basePlugin,
-          with: .atDocumentEnd,
-          isMainFrameOnly: true
+            for: basePlugin,
+            with: .atDocumentEnd,
+            isMainFrameOnly: true
         )
         addHandler(wkScript, basePlugin.messageHandlerName, handler)
     }
@@ -57,9 +57,9 @@ extension WKUserContentController: JavaScriptPluginVisitor {
         handler: WKScriptMessageHandler
     ) throws {
         let wkScript = try JSPluginFactory.shared.script(
-          for: instagramPlugin,
-          with: .atDocumentStart,
-          isMainFrameOnly: instagramPlugin.isMainFrameOnly
+            for: instagramPlugin,
+            with: .atDocumentStart,
+            isMainFrameOnly: instagramPlugin.isMainFrameOnly
         )
         addHandler(wkScript, instagramPlugin.messageHandlerName, handler)
     }

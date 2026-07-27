@@ -102,9 +102,9 @@ import CottonTabs
         let subject = uiServiceRegistry.tabsSubject
         let tabId = subject.selectedTabId
         guard
-          let index = subject.tabs.firstIndex(where: { $0.id == tabId })
+            let index = subject.tabs.firstIndex(where: { $0.id == tabId })
         else {
-          return
+            return
         }
         await tabDidSelect(index, subject.tabs[index].contentType, tabId)
     }

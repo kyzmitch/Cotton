@@ -118,7 +118,7 @@ $(SWIFTLINT) 2>&1 | grep "error:" || echo "SwiftLint: Errors not found." \
 .PHONY: ios-lint-format
 ios-lint-format:
 	swiftlint --version; \
-	swiftlint lint catowseriOS --config catowseriOS/.swiftlint.yml --quiet --autocorrect --format; \
+swiftlint lint catowseriOS --config catowseriOS/.swiftlint.yml --quiet --autocorrect --format; \
 
 .PHONY: android-lint
 android-lint:

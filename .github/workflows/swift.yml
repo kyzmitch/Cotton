@@ -26,10 +26,11 @@ jobs:
       - name: "checkout"
         uses: actions/checkout@v3
       - name: "ktlint"
-        uses: "ScaCap/action-ktlint@master"
+        uses: ScaCap/action-ktlint@master
         with:
           args: --editorconfig=cotton-base/.editorconfig --disabled_rules=final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
           patterns: cotton-base/**/*.kt
+          reporter: github-check
   ios-unit-tests:
     needs: [lint-ios, lint-kotlin-cotton-base]
     runs-on: macos-13
