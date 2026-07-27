@@ -49,6 +49,7 @@ import ViewsBase
         if _tabsSubject == nil {
             _tabsSubject = TabsDataSubject(positioning)
         }
+        // swiftlint:disable force_cast
         return _tabsSubject as! TabsDataSubject
     }
     

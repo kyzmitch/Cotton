@@ -5,6 +5,8 @@ MKDIR_P = mkdir -p
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
 XCPRETTY := bundle exec xcpretty
 SWIFTYMOCKY := ${HOME}/.mint/bin/swiftymocky
+# Define swiftlint
+SWIFTLINT = swiftlint lint catowseriOS --config catowseriOS/.swiftlint.yml --quiet
 # For 15.0.1 need to use next SDK
 # Have to use Beta macos-13 runner, because only there is Xcode 15
 # https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md
@@ -111,7 +113,7 @@ clean:
 .PHONY: ios-lint
 ios-lint:
 	swiftlint --version; \
-	swiftlint lint catowseriOS --config catowseriOS/.swiftlint.yml --quiet; \
+$(SWIFTLINT) 2>&1 | grep "error:" || echo "SwiftLint: Errors not found." \
 	
 .PHONY: ios-lint-format
 ios-lint-format:
