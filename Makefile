@@ -145,8 +145,8 @@ lint-kt-cotton-base-format:
 
 .PHONY: build-cotton-base-ios-release
 build-cotton-base-ios-release:
-	source ~/.zprofile
 	cd cotton-base; \
+	if [ -f "$(HOME)/.zprofile" ]; then source "$(HOME)/.zprofile"; fi; \
 	echo "sdk.dir=~/Library/Android/sdk" > local.properties; \
 	export ANDROID_HOME=~/Library/Android/sdk; \
 	./gradlew assembleCottonBaseReleaseXCFramework; \
@@ -164,16 +164,6 @@ build-cotton-base-android-release:
 build-cotton-base-release: build-cotton-base-ios-release build-cotton-base-android-release
 
 # Local unit tests
-
-.PHONY: ios-tests-core-browser
-ios-tests-core-browser: build-cotton-base-ios-release
-	cd catowseriOS; \
-	xcodebuild -scheme "CoreBrowser Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx | $(XCPRETTY) --test \
-	 cd ..; \
 
 .PHONY: ios-unit-tests
 ios-unit-tests: build-cotton-base-ios-release
@@ -230,7 +220,6 @@ Local and CI targets
 
 \tUnit tests
 \t\t* make ios-unit-tests\t\t\t: Build and run iOS unit tests.
-\t\t* make ios-tests-core-browser\t\t: Build and run Cotton-base Kotlin unit tests.
 endef
 
 export HELP_CONTENT
