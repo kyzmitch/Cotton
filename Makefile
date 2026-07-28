@@ -4,13 +4,11 @@ MKDIR_P = mkdir -p
 
 RUBY_USER_DIR := $(shell ruby -r rubygems -e 'puts Gem.user_dir')
 XCPRETTY := bundle exec xcpretty
-SWIFTYMOCKY := ${HOME}/.mint/bin/swiftymocky
 # Define swiftlint
 SWIFTLINT = swiftlint lint catowseriOS --config catowseriOS/.swiftlint.yml --quiet
-# For 15.0.1 need to use next SDK
-# Have to use Beta macos-13 runner, because only there is Xcode 15
-# https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md
-MACOSSDK_VERSION := macosx14.0
+# Domain package is iOS-only; match a simulator available on macos-26 / Xcode 26.x runners.
+# Override locally if needed: make github-ios-unit-tests IOS_SIM_DESTINATION='platform=iOS Simulator,name=iPhone 16'
+IOS_SIM_DESTINATION ?= platform=iOS Simulator,name=iPhone 17
 
 ifeq ($(RUBY_USER_DIR),)
 $(error Unable to find ruby user install directory)
@@ -94,8 +92,6 @@ setup:
 	$(DISPLAY_SEPARATOR)
 	brew bundle install --file=/opt/homebrew/Library/Taps/cotton-user/homebrew-cotton-brew-taps/Formula/Brewfile
 	$(DISPLAY_SEPARATOR)
-	mint install MakeAWishFoundation/SwiftyMocky
-	export PATH="${PATH}:${HOME}/.mint/bin"
 	xcode-kotlin sync
 
 .PHONY: clean
@@ -179,86 +175,33 @@ ios-tests-core-browser: build-cotton-base-ios-release
 	 -sdk macosx | $(XCPRETTY) --test \
 	 cd ..; \
 
-.PHONY: ios-tests-cotton-data
-ios-tests-cotton-data: build-cotton-base-ios-release
-	cd catowseriOS; \
-	$(SWIFTYMOCKY) doctor ; \
-    $(SWIFTYMOCKY) generate ; \
-	xcodebuild -scheme "CottonData Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx | $(XCPRETTY) --test \
-	 cd ..; \
-
 .PHONY: ios-unit-tests
 ios-unit-tests: build-cotton-base-ios-release
 	cd catowseriOS; \
-	xcodebuild -scheme "CoreBrowser Unit Tests" test \
+	xcodebuild -scheme "Cotton" test \
 	 -workspace catowser.xcworkspace \
+	 -testPlan TestPlan \
+	 -destination '$(IOS_SIM_DESTINATION)' \
 	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx | $(XCPRETTY) --test; \
-	xcodebuild -scheme "CottonRestKit Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx | $(XCPRETTY) --test; \
-	xcodebuild -scheme "CottonPlugins Unit tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk macosx | $(XCPRETTY) --test; \
+	 CODE_SIGNING_ALLOWED=NO \
+	 | $(XCPRETTY) --test; \
 	cd ..; \
 
-# $(SWIFTYMOCKY) doctor ; \
-# $(SWIFTYMOCKY) generate ; \
-# xcodebuild -scheme "CottonData Unit Tests" test \
-# -workspace catowser.xcworkspace \
-# -run-tests-until-failure \
-# -destination platform=macOS, arch=x86_64 \
-# -sdk macosx | $(XCPRETTY) --test; \
-
 # Github workflow unit tests (specific macOS runners)
+# Uses Cotton scheme + catowser/TestPlan.xctestplan (SPM test targets in Domain/Base).
 
 .PHONY: github-ios-unit-tests
 github-ios-unit-tests: build-cotton-base-ios-release
-	brew bundle install --file=./brew_configs/Brewfile; \
-	export PATH="${PATH}:${HOME}/.mint/bin" ; \
-	@echo "mint install MakeAWishFoundation/SwiftyMocky;" ; \
-	sourcery --config "catowseriOS/CoreBrowserTests/.sourcery.yml"
 	cd catowseriOS; \
-	xcodebuild -scheme "CoreBrowser Unit Tests" test \
+	xcodebuild -scheme "Cotton" test \
 	 -workspace catowser.xcworkspace \
+	 -testPlan TestPlan \
+	 -destination '$(IOS_SIM_DESTINATION)' \
 	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
-	xcodebuild -scheme "CottonRestKit Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
-	xcodebuild -scheme "CottonPlugins Unit tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
-	 xcodebuild -scheme "CottonData Unit Tests" test \
-	 -workspace catowser.xcworkspace \
-	 -run-tests-until-failure \
-	 -destination platform=macOS, arch=x86_64 \
-	 -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test && exit ${PIPESTATUS[0]}; \
+	 -clonedSourcePackagesDirPath SourcePackages \
+	 CODE_SIGNING_ALLOWED=NO \
+	 | $(XCPRETTY) --test; \
 	cd ..; \
-	cd catowseriOS; \
-	 cd ..; \
-
-# mint install MakeAWishFoundation/SwiftyMocky; \
-# swiftymocky doctor ; \
-# swiftymocky generate ; \
-# xcodebuild -scheme "CottonData Unit Tests" test \
-# -workspace catowser.xcworkspace \
-# -run-tests-until-failure \
-# -destination platform=macOS, arch=x86_64 \
-# -sdk $(MACOSSDK_VERSION) | $(XCPRETTY) --test; \
 
 # Help
 
@@ -288,7 +231,6 @@ Local and CI targets
 \tUnit tests
 \t\t* make ios-unit-tests\t\t\t: Build and run iOS unit tests.
 \t\t* make ios-tests-core-browser\t\t: Build and run Cotton-base Kotlin unit tests.
-\t\t* make ios-tests-cotton-data\t\t: run Swiftymocky based tests
 endef
 
 export HELP_CONTENT
