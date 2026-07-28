@@ -10,7 +10,7 @@ on:
 jobs:
   build-android:
     needs: []
-    runs-on: macos-13
+    runs-on: macos-26
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
