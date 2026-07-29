@@ -1,5 +1,8 @@
 # Agent Rules
 
+## Best practice to use GoF design patterns
+- Use strategy design pattern when `switch` statement has more than 2 cases & the handling in these cases is not short and trivial.
+
 ## Testing Framework Guidelines
 
 When writing new unit tests.
