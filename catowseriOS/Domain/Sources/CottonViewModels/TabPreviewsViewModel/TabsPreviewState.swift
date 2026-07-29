@@ -34,11 +34,33 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
         .loading
     }
 
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> BaseState {
-        let nextState: BaseState
+    public static func == (
+        lhs: TabsPreviewState<C>,
+        rhs: TabsPreviewState<C>
+    ) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            return true
+        case let (.tabs(leftDataSource, leftSelectedId), .tabs(rightDataSource, rightSelectedId)):
+            return leftSelectedId == rightSelectedId && leftDataSource == rightDataSource
+        default:
+            return false
+        }
+    }
+}
+
+/// Transition strategy for `TabsPreviewState`.
+public struct TabsPreviewStateTransitioning<C: TabsPreviewsStateContext>: StateTransitioning {
+    public typealias State = TabsPreviewState<C>
+
+    public init() {}
+
+    @MainActor public func transition(
+        from state: State,
+        on action: State.Action,
+        with context: State.Context?
+    ) async throws -> State {
+        let nextState: State
         switch action {
         case .load:
             if let info = try await context?.load() {
@@ -50,7 +72,7 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
                 throw TabsPreviewsError.failToLoad
             }
         case .closeTab(index: let index):
-            guard case let .tabs(tabs, _) = self else {
+            guard case let .tabs(tabs, _) = state else {
                 throw TabsPreviewsError.tabsNotLoadedToClose
             }
             guard let info = try await context?.close(at: index, from: tabs) else {
@@ -61,14 +83,14 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
                 info.selectedTabUUID
             )
         case .select(let tab):
-            guard case let .tabs(tabs, _) = self else {
+            guard case let .tabs(tabs, _) = state else {
                 throw TabsPreviewsError.tabsNotLoadedToClose
             }
             try await context?.select(tab)
             // Set new selected id
             nextState = .tabs(tabs, tab.id)
         case .selectTabIdWithoutSaving(let identifier):
-            guard case let .tabs(tabs, _) = self else {
+            guard case let .tabs(tabs, _) = state else {
                 throw TabsPreviewsError.tabsNotLoadedToClose
             }
             nextState = .tabs(tabs, identifier)
@@ -83,19 +105,5 @@ public enum TabsPreviewState<C: TabsPreviewsStateContext>: ViewModelState {
             }
         }
         return nextState
-    }
-
-    public static func == (
-        lhs: TabsPreviewState<C>,
-        rhs: TabsPreviewState<C>
-    ) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading):
-            return true
-        case let (.tabs(leftDataSource, leftSelectedId), .tabs(rightDataSource, rightSelectedId)):
-            return leftSelectedId == rightSelectedId && leftDataSource == rightDataSource
-        default:
-            return false
-        }
     }
 }

@@ -11,6 +11,7 @@ import CottonBase
 import CoreBrowser
 import CottonUseCases
 
+/// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` when it gains real UI state/actions.
 @MainActor public final class TopSitesViewModel: ObservableObject {
     public let topSites: [Site]
     private let writeTabUseCase: ReplaceSelectedTabUseCase

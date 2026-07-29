@@ -18,21 +18,23 @@ public struct AllTabsState<C: AllTabsStateContext>: ViewModelState {
     public static func createInitial() -> BaseState {
         .init()
     }
+}
 
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> BaseState {
+/// Transition strategy for `AllTabsState`.
+public struct AllTabsStateTransitioning<C: AllTabsStateContext>: StateTransitioning {
+    public typealias State = AllTabsState<C>
+
+    public init() {}
+
+    @MainActor public func transition(
+        from state: State,
+        on action: State.Action,
+        with context: State.Context?
+    ) async throws -> State {
         switch action {
         case .addTab(let tab):
             context?.handleTabAdd(tab)
         }
-        return self
+        return state
     }
-
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?,
-        onComplete: @escaping (Result<BaseState, Error>) -> Void
-    ) { }
 }

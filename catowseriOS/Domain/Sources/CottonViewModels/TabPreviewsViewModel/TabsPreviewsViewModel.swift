@@ -56,7 +56,7 @@ final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
         self.selectUseCase = selectUseCase
         self.addTabUseCase = addTabUseCase
         self.appContext = appContext
-        super.init()
+        super.init(transitioning: TabsPreviewStateTransitioning())
     }
 
     public override var context: Context? {

@@ -11,6 +11,9 @@
 /// Can be value type (struct or enum) to be thread-safe out of the box.
 /// But it is not required, you can use classes and inheritance to
 /// implement canonical state design pattern as well.
+///
+/// Transition logic lives in `StateTransitioning` / `ViewModelStateMachine`,
+/// not on this protocol.
 public protocol ViewModelState: Sendable, Equatable {
     /// Action type
     associatedtype Action: ViewModelAction
@@ -25,45 +28,4 @@ public protocol ViewModelState: Sendable, Equatable {
     ///
     /// e.g. it could be loading state at the beginning
     static func createInitial() -> BaseState
-
-    /// Converts current state to another valid state based on input action.
-    /// This function should be async, because action handling usually is not serial.
-    ///
-    /// - Parameter action: An action which tells how to convert the state
-    /// - Parameter context: An optional state context if it is needed for state conversion/handling
-    /// - Returns same or modified state value, depending if action was valid or not for the current state
-    @MainActor func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> BaseState
-
-    /// Converts current state to another valid state or Result failure.
-    /// This function has async closure for completion, because
-    /// action handling usually depends on async operations.
-    ///
-    /// - Parameter action: An action which tells how to convert the state
-    /// - Parameter context: An optional state context if it is needed for state conversion/handling
-    /// - Parameter onComplete: Completion closure with new state or failure
-    @MainActor func transitionOn(
-        _ action: Action,
-        with context: Context?,
-        onComplete: @escaping (Result<BaseState, Error>) -> Void
-    )
-}
-
-extension ViewModelState {
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?,
-        onComplete: @escaping (Result<BaseState, Error>) -> Void
-    ) {
-        Task {
-            do {
-                let nextState = try await transitionOn(action, with: context)
-                onComplete(.success(nextState))
-            } catch {
-                onComplete(.failure(error))
-            }
-        }
-    }
 }

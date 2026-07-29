@@ -8,6 +8,8 @@
 
 /// View mode state
 public final class SearchBarInViewMode<C: SearchBarStateContext>: SearchBarState<C>, @unchecked Sendable {
+    private let handler = SearchBarInViewModeHandler<C>()
+
     /// Initializer
     /// - Parameter overlayContent: text for overlay label from previous state
     /// - Parameter searchBarContent: text for search bar from previous state
@@ -20,31 +22,8 @@ public final class SearchBarInViewMode<C: SearchBarStateContext>: SearchBarState
         self.searchBarContent = searchBarContent
     }
 
-    @MainActor public override func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> BaseState {
-        let nextState: SearchBarState<C>
-        switch action {
-        case .startSearch(let query):
-            let searchState = SearchBarInSearchMode<C>(
-                query,
-                overlayContent,
-                searchBarContent
-            )
-            nextState = searchState
-        case .cancelSearch:
-            throw SearchBarError.cannotCancelSearchWhenInViewMode
-        case let .updateView(overlayLabel, searchBarContent):
-            self.overlayContent = overlayLabel
-            self.searchBarContent = searchBarContent
-            nextState = self
-        case .clearView:
-            nextState = SearchBarInViewMode<C>()
-        case .selectSuggestion:
-            throw SearchBarError.cannotSeeSuggestionsInViewMode
-        }
-        return nextState
+    @MainActor public override var modeHandler: any SearchBarModeHandler<C> {
+        handler
     }
 
     public override var showCancelButton: Bool {

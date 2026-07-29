@@ -8,6 +8,8 @@
 
 /// Search mode state (or search suggestions mode)
 public final class SearchBarInSearchMode<C: SearchBarStateContext>: SearchBarState<C>, @unchecked Sendable {
+    private let handler = SearchBarInSearchModeHandler<C>()
+
     /// Init
     /// - Parameter query: optional search request text
     /// - Parameter overlayContent: text for overlay label
@@ -23,30 +25,8 @@ public final class SearchBarInSearchMode<C: SearchBarStateContext>: SearchBarSta
         self.searchBarContent = searchBarContent
     }
 
-    @MainActor public override func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> BaseState {
-        let nextState: SearchBarState<C>
-        switch action {
-        case .startSearch:
-            throw SearchBarError.alreadyInSearchMode
-        case .cancelSearch:
-            nextState = SearchBarInViewMode<C>(
-                overlayContent,
-                searchBarContent
-            )
-        case let .updateView(overlayLabel, searchBarContent):
-            self.overlayContent = overlayLabel
-            self.searchBarContent = searchBarContent
-            nextState = self
-        case .clearView:
-            nextState = SearchBarInViewMode<C>()
-        case .selectSuggestion(let suggestion):
-            nextState = SearchBarInViewMode<C>()
-            try await context?.searchSuggestionDidSelect(suggestion)
-        }
-        return nextState
+    @MainActor public override var modeHandler: any SearchBarModeHandler<C> {
+        handler
     }
 
     public override var showCancelButton: Bool {

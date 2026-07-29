@@ -15,6 +15,7 @@ import CottonUseCases
 import CottonTabs
 
 /// Tab view model implementation
+/// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` (see openspec ADOPTION.md).
 @MainActor final class TabViewModelImpl: TabViewModel {
     private var tab: CoreBrowser.Tab
     private let readTabUseCase: ReadSelectedTabIdUseCase

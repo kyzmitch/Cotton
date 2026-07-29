@@ -28,7 +28,7 @@ final class AllTabsViewModelImpl: AllTabsViewModel {
     /// Internal initializer
     init(_ addTabUseCase: AddTabUseCase) {
         self.addTabUseCase = addTabUseCase
-        super.init()
+        super.init(transitioning: AllTabsStateTransitioning())
     }
 
     public override var context: Context? {

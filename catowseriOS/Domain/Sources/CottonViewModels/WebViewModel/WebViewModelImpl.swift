@@ -16,8 +16,10 @@ import Combine
 import WebKit
 import FeatureFlagsKit
 
+// Follow-up: adopt BaseViewModel + ViewModelStateMachine after redesigning
+// WebViewAction transitions to be fully async (do not wrap sync Actionable.transition).
 /**
- See `decidePolicy` method below
+    See `decidePolicy` method below
 
  To avoid errors, when DoH is enabled, many sites
  uses additional requests but with different hosts

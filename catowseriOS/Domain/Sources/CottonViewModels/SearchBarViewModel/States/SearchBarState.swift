@@ -21,6 +21,11 @@ public class SearchBarState<C: SearchBarStateContext>: ViewModelState, @unchecke
     /// Search request text
     public var query: String?
 
+    /// GoF State handler for this mode (not part of `ViewModelState`).
+    @MainActor open var modeHandler: any SearchBarModeHandler<C> {
+        SearchBarInvalidModeHandler<C>()
+    }
+
     init() { }
 
     /// Initial state without search bar or overlay content
@@ -43,13 +48,6 @@ public class SearchBarState<C: SearchBarStateContext>: ViewModelState, @unchecke
         false
     }
 
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> BaseState {
-        throw SearchBarError.invalidDummyState
-    }
-
     public static func == (lhs: SearchBarState<C>, rhs: SearchBarState<C>) -> Bool {
         guard type(of: lhs) == type(of: rhs) else {
             return false
@@ -59,5 +57,20 @@ public class SearchBarState<C: SearchBarStateContext>: ViewModelState, @unchecke
             lhs.searchBarContent == rhs.searchBarContent &&
             lhs.query == rhs.query &&
             lhs.showCancelButton == rhs.showCancelButton
+    }
+}
+
+/// Transition strategy that dispatches to the current state's mode handler.
+public struct SearchBarStateTransitioning<C: SearchBarStateContext>: StateTransitioning {
+    public typealias State = SearchBarState<C>
+
+    public init() {}
+
+    @MainActor public func transition(
+        from state: State,
+        on action: State.Action,
+        with context: State.Context?
+    ) async throws -> State {
+        try await state.modeHandler.transition(state, on: action, with: context)
     }
 }

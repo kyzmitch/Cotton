@@ -44,18 +44,49 @@ public struct BrowserToolbarState<C: BrowserToolbarStateContext>: ViewModelState
         .init()
     }
 
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?
-    ) async throws -> Self {
-        var copy = self
+    /// Separate function to update several fields and trigger the update only once
+    @MainActor mutating func update(with interface: WebViewNavigatable?) {
+        webViewInterface = interface
+        reloadDisabled = interface == nil
+        goBackDisabled = !(interface?.canGoBack ?? false)
+        goForwardDisabled = !(interface?.canGoForward ?? false)
+    }
+
+    public static func == (
+        lhs: BrowserToolbarState<C>,
+        rhs: BrowserToolbarState<C>
+    ) -> Bool {
+        let valueFieldsEqual = lhs.goBackDisabled == rhs.goBackDisabled &&
+            lhs.goForwardDisabled == rhs.goForwardDisabled &&
+            lhs.reloadDisabled == rhs.reloadDisabled &&
+            lhs.downloadsDisabled == rhs.downloadsDisabled &&
+            lhs.showProgress == rhs.showProgress &&
+            lhs.stopWebViewReusage == rhs.stopWebViewReusage &&
+            lhs.loadingProgress == rhs.loadingProgress
+        let refFieldsEqual = lhs.webViewInterface === rhs.webViewInterface
+        return valueFieldsEqual && refFieldsEqual
+    }
+}
+
+/// Transition strategy for `BrowserToolbarState`.
+public struct BrowserToolbarStateTransitioning<C: BrowserToolbarStateContext>: StateTransitioning {
+    public typealias State = BrowserToolbarState<C>
+
+    public init() {}
+
+    @MainActor public func transition(
+        from state: State,
+        on action: State.Action,
+        with context: State.Context?
+    ) async throws -> State {
+        var copy = state
         switch action {
         case .goBack:
-            webViewInterface?.goBack()
+            state.webViewInterface?.goBack()
         case .goForward:
-            webViewInterface?.goForward()
+            state.webViewInterface?.goForward()
         case .reload:
-            webViewInterface?.reload()
+            state.webViewInterface?.reload()
         case .updateNavigation(let canGoBack?, _):
             copy.goBackDisabled = !canGoBack
             context?.siteNavigationDelegate?.changeBackButton(to: canGoBack)
@@ -82,34 +113,5 @@ public struct BrowserToolbarState<C: BrowserToolbarStateContext>: ViewModelState
             copy.stopWebViewReusage = true
         }
         return copy
-    }
-
-    @MainActor public func transitionOn(
-        _ action: Action,
-        with context: Context?,
-        onComplete: @escaping (Result<BaseState, Error>) -> Void
-    ) { }
-
-    /// Separate function to update several fields and trigger the update only once
-    @MainActor mutating func update(with interface: WebViewNavigatable?) {
-        webViewInterface = interface
-        reloadDisabled = interface == nil
-        goBackDisabled = !(interface?.canGoBack ?? false)
-        goForwardDisabled = !(interface?.canGoForward ?? false)
-    }
-
-    public static func == (
-        lhs: BrowserToolbarState<C>,
-        rhs: BrowserToolbarState<C>
-    ) -> Bool {
-        let valueFieldsEqual = lhs.goBackDisabled == rhs.goBackDisabled &&
-            lhs.goForwardDisabled == rhs.goForwardDisabled &&
-            lhs.reloadDisabled == rhs.reloadDisabled &&
-            lhs.downloadsDisabled == rhs.downloadsDisabled &&
-            lhs.showProgress == rhs.showProgress &&
-            lhs.stopWebViewReusage == rhs.stopWebViewReusage &&
-            lhs.loadingProgress == rhs.loadingProgress
-        let refFieldsEqual = lhs.webViewInterface === rhs.webViewInterface
-        return valueFieldsEqual && refFieldsEqual
     }
 }

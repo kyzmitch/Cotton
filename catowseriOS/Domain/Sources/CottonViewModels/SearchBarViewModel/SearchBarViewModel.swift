@@ -61,7 +61,7 @@ public protocol SearchBarDelegateHolder {
         self.writeTabsUseCase = writeTabsUseCase
         self.createSearchURLUseCase = createSearchURLUseCase
         self.appContext = appContext
-        super.init()
+        super.init(transitioning: SearchBarStateTransitioning())
         searchBarDelegate = SearchBarDelegateImpl(viewModel: self)
     }
 

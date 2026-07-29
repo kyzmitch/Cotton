@@ -45,12 +45,10 @@ import Combine
 }
 
 extension ViewModelInterface {
-    public func sendAction(
-        _ action: Action
-    ) async throws {
-        state = try await state.transitionOn(action, with: context)
-    }
-
+    /// Default completion-based API delegates to the async `sendAction`.
+    ///
+    /// Conformers such as `BaseViewModel` must implement the async path via
+    /// `ViewModelStateMachine` (not via state-level transition APIs).
     public func sendAction(
         _ action: Action,
         onComplete: CompletionCallback?

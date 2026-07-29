@@ -29,7 +29,7 @@ final class BrowserToolbarViewModelImpl: BrowserToolbarViewModel {
         _ appContext: BrowserToolbarViewContext
     ) {
         self.appContext = appContext
-        super.init()
+        super.init(transitioning: BrowserToolbarStateTransitioning())
     }
 
     public override var context: Context? {
