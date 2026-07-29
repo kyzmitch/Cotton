@@ -49,9 +49,9 @@ public protocol StateTransitioning<S: ViewModelState>: Sendable
 - Keep `transitionOn` on state (status quo) — easy for SearchBar, but keeps mixed responsibilities
 - Pure transition table keyed by `(StateID, Action)` — awkward for class hierarchies and associated values
 
-### D2: `StateMachine` as GoF Context + Strategy
+### D2: `ViewModelStateMachine` as GoF Context + Strategy
 
-**Choice:** `@MainActor` generic machine owns current state and a `StateTransitioning` strategy (Strategy pattern). `BaseViewModel` holds the machine and publishes state after successful transitions (Template Method for subclasses that only override `context`).
+**Choice:** `@MainActor` generic `ViewModelStateMachine` owns current state and a `StateTransitioning` strategy (Strategy pattern). `BaseViewModel` holds the machine privately and publishes state after successful transitions (Template Method for subclasses that only override `context`).
 
 ```text
 sendAction(action)
@@ -73,15 +73,17 @@ sendAction(action)
 - Machine with hardcoded switch — not reusable across VMs
 - Only closure-based API — fine for simple VMs, weaker typing for complex SearchBar/WebView cases (still allow closure adapter)
 
-### D3: Closure adapter + polymorphic adapter for migration
+### D3: Closure adapter for simple VMs; handler objects for SearchBar (GoF State)
 
 **Choice:** Ship:
-1. `ClosureStateTransitioning` — wrap `(S, A, C?) async throws -> S`
-2. Optional adapter that, during migration, can call existing per-type transition functions relocated off the protocol
+1. `ClosureStateTransitioning` — wrap `(S, A, C?) async throws -> S` for enum/struct VMs
+2. For SearchBar (and similar class hierarchies): **one handler object per state subclass** implementing the transition behavior (canonical GoF State pattern). The machine’s strategy dispatches to the handler bound to the current state instance; handlers are not part of `ViewModelState`
 
-SearchBar keeps polymorphic behavior by moving overrides into dedicated handler types or free functions selected by dynamic type — not by `ViewModelState` conformance.
+**Why:** Preserves mode-local behavior (view vs search) without a central `type(of:)` switch, and keeps `ViewModelState` as data-only while still using classic State polymorphism via handlers.
 
-**Why:** Lowest-friction path from today’s `transitionOn` implementations without forcing enum-only redesign.
+**Alternatives rejected:**
+- Single strategy with `switch` on dynamic type — less extensible, not canonical State
+- Free functions only — weaker encapsulation than handler objects per subclass
 
 ### D4: Errors for illegal transitions stay throwing
 
@@ -89,14 +91,15 @@ SearchBar keeps polymorphic behavior by moving overrides into dedicated handler 
 
 **Why:** Matches current CottonViewModels behavior and keeps tests assertive.
 
-### D5: Testability first-class in ViewModelKitTests
+### D5: Testability via package/test hooks; machine not public on BaseViewModel
 
 **Choice:**
 - Test strategies and machines without UI
-- Allow injecting a recording/fake `StateTransitioning` into `BaseViewModel` (or a test subclass / package-visible initializer)
+- `BaseViewModel` MUST NOT expose the state machine as a public API
+- Injection / observation of the machine or strategy is available only via package-visible or test hooks (e.g. `internal` initializer, `@_spi`, or test-only subclass helpers)
 - Prefer Swift Testing (`@Test`) per AGENTS.md
 
-**Why:** User requirement to cover view models with unit tests; today’s transitions are buried in state types and hard to fake.
+**Why:** Keeps the production VM surface small (`state`, `sendAction`, `context`) while still allowing unit tests to substitute a fake strategy.
 
 ### D6: Leave `StateMachineV2` alone for now
 
@@ -104,25 +107,35 @@ SearchBar keeps polymorphic behavior by moving overrides into dedicated handler 
 
 **Why:** Different model; risk of confusion if “extended” into something incompatible.
 
+### D7: WebViewModel migration redesigns actions as fully async first
+
+**Choice:** When adapting WebViewModel, redesign its action/transition path to be fully async before (or as the first step of) plugging into `ViewModelStateMachine`. Do not wrap the existing sync `Actionable.transition` in a thin async façade as the end state.
+
+**Why:** Aligns WebView with the kit’s async/throws model and avoids carrying sync transition debt into the new machine.
+
 ## Risks / Trade-offs
 
 - **[BREAKING API]** Removing `transitionOn` from `ViewModelState` breaks all conformers → Mitigate with staged migration: kit + adapters first, then update each CottonViewModels state in the same PR/series; compile failures guide the checklist.
-- **[SearchBar polymorphism]** Class overrides today map cleanly to State pattern on the type itself → Mitigate with explicit handlers / dynamic dispatch strategy so behavior stays local to each mode.
-- **[WebViewModel complexity]** Sync `Actionable` + side effects in VM differs from async kit model → Mitigate by documenting adaptation steps; full WebView migration is phased, not blocking kit landing.
-- **[Published state sync]** Dual sources of truth (machine vs `@Published`) → Mitigate: machine is source of truth; BaseViewModel assigns published state only from machine after success.
-- **[Over-abstraction]** Too many protocols → Mitigate: start with `StateMachine` + `StateTransitioning` + one closure adapter; add more only when a CottonViewModels adopter needs it.
+- **[SearchBar polymorphism]** Moving overrides into per-subclass handlers adds types → Mitigate by 1:1 mapping from current `SearchBarInViewMode` / `SearchBarInSearchMode` `transitionOn` bodies into dedicated handlers.
+- **[WebViewModel complexity]** Full async action redesign is larger than a façade → Mitigate by phasing: redesign actions/transitions async first, then adopt `BaseViewModel` + machine; not blocking kit landing for existing adopters.
+- **[Published state sync]** Dual sources of truth (machine vs `@Published`) → Mitigate: machine is source of truth; BaseViewModel assigns published state only from machine after success; machine stays private.
+- **[Over-abstraction]** Too many protocols → Mitigate: start with `ViewModelStateMachine` + `StateTransitioning` + closure adapter + SearchBar handlers; add more only when a CottonViewModels adopter needs it.
 
 ## Migration Plan
 
-1. **Kit core**: Slim `ViewModelState`; add `StateTransitioning` + `StateMachine`; update `BaseViewModel` / `ViewModelInterface` defaults.
-2. **Migrate kit adopters**: SearchBar, BrowserToolbar, AllTabs, TabsPreviews — relocate transition bodies into strategies/handlers; fix tests.
-3. **Kit tests**: Machine, illegal transitions, async context, BaseViewModel sendAction, injectable fake strategy.
-4. **Phased adopters** (separate tasks/PRs as needed): TabViewModel, SearchSuggestions, TopSites, then WebViewModel (largest).
+1. **Kit core**: Slim `ViewModelState`; add `StateTransitioning` + `ViewModelStateMachine`; update `BaseViewModel` / `ViewModelInterface` defaults; keep machine private with package/test hooks only.
+2. **Migrate kit adopters**: BrowserToolbar, AllTabs, TabsPreviews via closure/strategy; SearchBar via per-subclass handler objects; fix tests.
+3. **Kit tests**: Machine, illegal transitions, async context, BaseViewModel sendAction via package/test hooks and fake strategy.
+4. **Phased adopters** (separate tasks/PRs as needed): TabViewModel, SearchSuggestions, TopSites; then WebViewModel — **async action redesign first**, then machine adoption.
 5. **Rollback**: Revert kit PR if adopters not updated together; keep V2 untouched as unrelated.
+
+## Resolved decisions (former open questions)
+
+- **Public type name:** `ViewModelStateMachine` (not `StateMachine`).
+- **Machine visibility:** `BaseViewModel` does not expose the machine publicly; only package/test hooks.
+- **SearchBar:** Prefer handler objects per subclass (canonical State pattern), not a central dynamic-type switch.
+- **WebViewModel:** Redesign actions to be fully async first; do not settle on a sync-in-async wrapper.
 
 ## Open Questions
 
-- Exact public name: `StateMachine` vs `ViewModelStateMachine` (prefer `ViewModelStateMachine` to avoid clashing with unrelated FSM types).
-- Should `BaseViewModel` expose the machine publicly for advanced tests, or only via package/test hooks?
-- For SearchBar, prefer handler objects per subclass vs one strategy with `switch` on `type(of:)`?
-- When migrating WebViewModel, keep sync transitions inside an async strategy wrapper, or redesign actions to be fully async first?
+- None.
