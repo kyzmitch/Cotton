@@ -1,0 +1,63 @@
+## ADDED Requirements
+
+### Requirement: Generic state machine owns transitions
+ViewModelKit MUST provide a generic `@MainActor` state machine that owns the current `ViewModelState` and applies actions through a pluggable transition strategy, not through methods declared on `ViewModelState`.
+
+The machine MUST be usable as the transition engine for `BaseViewModel`.
+
+#### Scenario: Successful async transition
+- **WHEN** a valid action is sent to the machine with an optional context
+- **THEN** the machine awaits the strategy, replaces its current state with the returned state, and exposes that state as current
+
+#### Scenario: Failed transition leaves state unchanged
+- **WHEN** the transition strategy throws
+- **THEN** the machine MUST preserve the previous current state and surface the error to the caller
+
+### Requirement: Pluggable transition strategy
+The machine MUST accept a transition strategy that can compute the next state from `(currentState, action, context?)` as an `async throws` operation.
+
+ViewModelKit MUST provide at least a closure-based adapter so existing CottonViewModels transition bodies can be relocated without inventing a table DSL.
+
+#### Scenario: Closure strategy
+- **WHEN** a caller constructs the machine with a closure strategy
+- **THEN** sending an action invokes that closure with the current state, action, and context
+
+#### Scenario: Custom strategy type
+- **WHEN** a caller supplies a dedicated strategy type for a view model
+- **THEN** the machine uses that type for all subsequent transitions
+
+### Requirement: BaseViewModel integrates the machine
+`BaseViewModel.sendAction` (and `ViewModelInterface` defaults consistent with it) MUST apply actions via the state machine and publish the resulting state on success.
+
+Subclasses MUST continue to supply optional `context` the same way they do today.
+
+#### Scenario: sendAction updates published state
+- **WHEN** `sendAction` succeeds
+- **THEN** `BaseViewModel.state` equals the machine’s current state after the transition
+
+#### Scenario: sendAction failure
+- **WHEN** `sendAction` fails because the strategy throws
+- **THEN** published state remains the pre-action state and the error is thrown / delivered to the completion callback
+
+### Requirement: Cover current CottonViewModels transition styles
+The state-machine design MUST support the transition styles already used by kit-based CottonViewModels:
+- async work via `StateContext`
+- throwing domain errors for illegal actions
+- enum, struct, and class-hierarchy states
+
+#### Scenario: Async context-backed transition
+- **WHEN** a transition requires awaiting context (e.g. load/close/select tab)
+- **THEN** the machine completes only after the strategy finishes and then stores the next state
+
+#### Scenario: Illegal action
+- **WHEN** an action is invalid for the current state
+- **THEN** the strategy MAY throw and the machine MUST not change state
+
+### Requirement: Gradual adoption path
+The machine and `BaseViewModel` integration MUST allow view models that are not yet kit-based (e.g. WebViewModel) to adopt later without requiring `StateMachineV2`.
+
+`StateMachineV2` MUST NOT be the required production API for this capability.
+
+#### Scenario: New adopter without V2
+- **WHEN** a CottonViewModels type is adapted to `BaseViewModel`
+- **THEN** it uses the new state machine / strategy APIs rather than `StateMachineV2`
