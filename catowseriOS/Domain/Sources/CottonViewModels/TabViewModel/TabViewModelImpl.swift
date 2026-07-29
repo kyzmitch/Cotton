@@ -18,9 +18,9 @@ import CottonTabs
 /// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` (see openspec ADOPTION.md).
 @MainActor final class TabViewModelImpl: TabViewModel {
     private var tab: CoreBrowser.Tab
-    private let readTabUseCase: ReadSelectedTabIdUseCase
-    private let closeTabUseCase: CloseTabUseCase
-    private let selectTabUseCase: SelectTabUseCase
+    private let readTabUseCase: any ReadSelectedTabIdUseCase
+    private let closeTabUseCase: any CloseTabUseCase
+    private let selectTabUseCase: any SelectTabUseCase
     private let context: TabViewModelContext
     private let featureManager: FeatureManager.StateHolder
 
@@ -29,9 +29,9 @@ import CottonTabs
 
     init(
         _ tab: CoreBrowser.Tab,
-        _ readTabUseCase: ReadSelectedTabIdUseCase,
-        _ closeTabUseCase: CloseTabUseCase,
-        _ selectTabUseCase: SelectTabUseCase,
+        _ readTabUseCase: any ReadSelectedTabIdUseCase,
+        _ closeTabUseCase: any CloseTabUseCase,
+        _ selectTabUseCase: any SelectTabUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
     ) {

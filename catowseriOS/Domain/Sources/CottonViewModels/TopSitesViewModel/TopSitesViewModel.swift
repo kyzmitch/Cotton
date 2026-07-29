@@ -14,11 +14,11 @@ import CottonUseCases
 /// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` when it gains real UI state/actions.
 @MainActor public final class TopSitesViewModel: ObservableObject {
     public let topSites: [Site]
-    private let writeTabUseCase: ReplaceSelectedTabUseCase
+    private let writeTabUseCase: any ReplaceSelectedTabUseCase
 
     public init(
         _ topSites: [Site],
-        _ writeTabUseCase: ReplaceSelectedTabUseCase
+        _ writeTabUseCase: any ReplaceSelectedTabUseCase
     ) {
         self.topSites = topSites
         self.writeTabUseCase = writeTabUseCase

@@ -9,7 +9,9 @@
 import CoreBrowser
 import ViewModelKit
 
-/// All tabs view model state
+/// All tabs view model state.
+///
+/// Empty state for now!
 public struct AllTabsState<C: AllTabsStateContext>: ViewModelState {
     public typealias Context = C
     public typealias Action = AllTabsAction

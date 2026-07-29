@@ -20,13 +20,13 @@ public typealias AllTabsViewModel = BaseViewModel<
 
 /// All tabs view model implementation
 final class AllTabsViewModelImpl: AllTabsViewModel {
-    private let addTabUseCase: AddTabUseCase
+    private let addTabUseCase: any AddTabUseCase
     private lazy var proxy = {
         AllTabsStateContextProxy(subject: self)
     }()
 
     /// Internal initializer
-    init(_ addTabUseCase: AddTabUseCase) {
+    init(_ addTabUseCase: any AddTabUseCase) {
         self.addTabUseCase = addTabUseCase
         super.init(transitioning: AllTabsStateTransitioning())
     }

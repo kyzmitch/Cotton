@@ -32,22 +32,22 @@ public typealias TabsPreviewsViewModelWithHolder = TabsPreviewsViewModel & TabsO
 
 /// Tab previews view model implementation
 final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
-    private let readAllTabsUseCase: ReadAllTabsUseCase
-    private let readSelectedIdUseCase: ReadSelectedTabIdUseCase
-    private let writeTabUseCase: CloseTabUseCase
-    private let selectUseCase: SelectTabUseCase
-    private let addTabUseCase: AddTabUseCase
-    private let appContext: TabPreviewsAppContext
+    private let readAllTabsUseCase: any ReadAllTabsUseCase
+    private let readSelectedIdUseCase: any ReadSelectedTabIdUseCase
+    private let writeTabUseCase: any CloseTabUseCase
+    private let selectUseCase: any SelectTabUseCase
+    private let addTabUseCase: any AddTabUseCase
+    private let appContext: any TabPreviewsAppContext
     private lazy var proxy: TabsPreviewsStateContextProxy = {
         TabsPreviewsStateContextProxy(subject: self)
     }()
 
     init(
-        _ readAllTabsUseCase: ReadAllTabsUseCase,
-        _ readSelectedIdUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: CloseTabUseCase,
-        _ selectUseCase: SelectTabUseCase,
-        _ addTabUseCase: AddTabUseCase,
+        _ readAllTabsUseCase: any ReadAllTabsUseCase,
+        _ readSelectedIdUseCase: any ReadSelectedTabIdUseCase,
+        _ writeTabUseCase: any CloseTabUseCase,
+        _ selectUseCase: any SelectTabUseCase,
+        _ addTabUseCase: any AddTabUseCase,
         _ appContext: TabPreviewsAppContext
     ) {
         self.readAllTabsUseCase = readAllTabsUseCase

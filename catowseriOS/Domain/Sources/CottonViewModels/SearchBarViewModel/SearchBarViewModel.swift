@@ -38,7 +38,7 @@ public protocol SearchBarDelegateHolder {
 /// This class is only needed for SwiftUI mode when it uses old UKit view controller.
 @MainActor final class SearchBarViewModelImpl: @preconcurrency SearchBarViewModelWithDelegates {
     /// Write tabs use case
-    private let writeTabsUseCase: ReplaceSelectedTabUseCase
+    private let writeTabsUseCase: any ReplaceSelectedTabUseCase
     /// Search autocomplete use case
     private let createSearchURLUseCase: any CreateSearchURLUseCase
     /// App side context
@@ -54,7 +54,7 @@ public protocol SearchBarDelegateHolder {
     }()
 
     init(
-        _ writeTabsUseCase: ReplaceSelectedTabUseCase,
+        _ writeTabsUseCase: any ReplaceSelectedTabUseCase,
         _ createSearchURLUseCase: any CreateSearchURLUseCase,
         _ appContext: SearchBarContext
     ) {
