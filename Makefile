@@ -84,6 +84,8 @@ setup:
 	$(DISPLAY_SEPARATOR)
 	brew untap cotton-user/cotton-brew-taps
 	$(DISPLAY_SEPARATOR)
+	brew trust cotton-user/cotton-brew-taps
+	$(DISPLAY_SEPARATOR)
 	brew tap-new cotton-user/cotton-brew-taps
 	$(DISPLAY_SEPARATOR)
 	$(MKDIR_P) /opt/homebrew/Library/Taps/cotton-user/homebrew-cotton-brew-taps/Formula
