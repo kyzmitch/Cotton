@@ -31,13 +31,13 @@ final class WebViewVmDNSoverHTTPSConcurrencyTests: WebViewVMFixture {
             XCTAssertEqual(url, expectedURL)
             return resolvedUrlV1
         }
-        await vm.load()
+        try await vm.sendAction(.loadSite)
 
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1 = URLInfo(urlV1!)!
         // swiftlint:disable:next force_unwrapping
         let urlInfoV11: URLInfo = urlInfoV1.withIPAddress(ipAddress: exampleIpAddress!)
-        let expectedStateV1: WebViewModelState = .creatingRequest(urlInfoV11, settings)
+        let expectedStateV1: WebViewModelState<WebViewStateContextProxy> = .creatingRequest(urlInfoV11, settings)
         XCTAssertEqual(vm.state, expectedStateV1)
 
         let navActionV1 = MockedNavAction(resolvedUrlV1, .other)

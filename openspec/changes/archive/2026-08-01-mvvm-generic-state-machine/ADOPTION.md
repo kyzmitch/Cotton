@@ -1,6 +1,6 @@
 # Adapting a CottonViewModels type to `BaseViewModel` + `ViewModelStateMachine`
 
-Use this checklist for view models that are not yet on ViewModelKit (`TabViewModel`, `SearchSuggestionsViewModel`, `TopSitesViewModel`, `WebViewModel`, etc.).
+Use this checklist for view models that are not yet on ViewModelKit (`TabViewModel`, `SearchSuggestionsViewModel`, `TopSitesViewModel`, etc.).
 
 ## Steps
 
@@ -15,9 +15,9 @@ Use this checklist for view models that are not yet on ViewModelKit (`TabViewMod
 7. **Drive UI** only through `sendAction` / published `state` (no transition APIs on state types).
 8. **Unit-test** the strategy/handlers in isolation (Swift Testing); use package/test hooks on `BaseViewModel` when testing `sendAction`.
 
-## WebViewModel note
+## Adopted
 
-Redesign actions to be **fully async** before adopting the machine. Do not wrap the existing sync `Actionable.transition` as the long-term solution.
+- **WebViewModel** — uses `BaseViewModel` + `ViewModelStateMachine` + `WebViewStateTransitioning`; consumers drive via `sendAction` and observe `statePublisher` (`webPageState*` is legacy dual-write).
 
 ## Do not use
 

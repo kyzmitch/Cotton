@@ -9,6 +9,7 @@
 import Foundation
 import CottonBase
 import CottonPlugins
+import ViewModelKit
 
 /// Settings of the site can be sendable cause it is a model.
 /// Can mark it as retroactive because it is from my CottonBase library.
@@ -18,7 +19,11 @@ extension CottonBase.Site.Settings: @unchecked @retroactive Sendable {}
 /// Can mark it as retroactive because it is from my CottonBase library.
 extension CottonBase.URLInfo: @unchecked @retroactive Sendable {}
 
-enum WebViewModelState: Sendable {
+public enum WebViewModelState<C: WebViewStateContext>: ViewModelState {
+    public typealias Context = C
+    public typealias Action = WebViewAction
+    public typealias BaseState = WebViewModelState<C>
+
     /// SwiftUI specific state to avoid waiting for the specific `Site` and create VM right away
     /// to call `load(site)` method when SwiftUI aware of specific `Site`
     case pendingLoad
@@ -36,8 +41,12 @@ enum WebViewModelState: Sendable {
     case viewing(Site.Settings, URLInfo)
     case updatingJS(Site.Settings, JavaScriptEvaluateble, URLInfo)
 
+    public static func createInitial() -> BaseState {
+        .pendingLoad
+    }
+
     /// Returns host with domain name (ignore ip address as a host even if it is present)
-    var host: CottonBase.Host {
+    public var host: CottonBase.Host {
         switch self {
         case .pendingLoad:
             assertionFailure("No host name in pendingLoad state")
@@ -73,7 +82,7 @@ enum WebViewModelState: Sendable {
     }
 
     /// Returns URL with domain name, not with ip address as a host
-    var platformURL: URL {
+    public var platformURL: URL {
         switch self {
         case .pendingLoad:
             assertionFailure("No url in pending load state")
@@ -107,7 +116,7 @@ enum WebViewModelState: Sendable {
     }
 
     /// Returns settings which are always present in any VM state
-    var settings: Site.Settings {
+    public var settings: Site.Settings {
         switch self {
         case .pendingLoad:
             return Site.Settings(isPrivate: false,
@@ -173,7 +182,7 @@ enum WebViewModelState: Sendable {
         }
     }
 
-    var urlInfo: URLInfo {
+    public var urlInfo: URLInfo {
         switch self {
         case .pendingLoad:
             assertionFailure("No url info in pending load state")
@@ -206,7 +215,7 @@ enum WebViewModelState: Sendable {
         }
     }
 
-    var isResetable: Bool {
+    public var isResetable: Bool {
         switch self {
         case .viewing:
             return true
@@ -221,7 +230,7 @@ enum WebViewModelState: Sendable {
 }
 
 extension WebViewModelState: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case .pendingLoad:
             return "pendingLoad"
@@ -283,8 +292,10 @@ extension WebViewModelState: CustomStringConvertible {
 
 extension WebViewModelState: Equatable {
     // swiftlint:disable:next cyclomatic_complexity
-    static func == (lhs: WebViewModelState, rhs: WebViewModelState) -> Bool {
+    public static func == (lhs: WebViewModelState, rhs: WebViewModelState) -> Bool {
         switch (lhs, rhs) {
+        case (.pendingLoad, .pendingLoad):
+            return true
         case (.initialized(let lSite), .initialized(let rSite)):
             return lSite == rSite
         case (.pendingPlugins(let lData, let lSettings), .pendingPlugins(let rData, let rSettings)):
@@ -294,6 +305,11 @@ extension WebViewModelState: Equatable {
             if let lp = lProgram as? JSPluginsProgramImpl, let rp = rProgram as? JSPluginsProgramImpl, lp != rp {
                 return false
             }
+            return lData == rData && lSettings == rSettings
+        case (.pendingDoHStatus(let lData, let lSettings), .pendingDoHStatus(let rData, let rSettings)):
+            return lData == rData && lSettings == rSettings
+        case (.checkingDNResolveSupport(let lData, let lSettings),
+              .checkingDNResolveSupport(let rData, let rSettings)):
             return lData == rData && lSettings == rSettings
         case (.updatingWebView(let lSettings, let lData),
               .updatingWebView(let rSettings, let rData)):
@@ -313,6 +329,9 @@ extension WebViewModelState: Equatable {
         case (.creatingRequest(let lInfo, let lSettings),
               .creatingRequest(let rInfo, let rSettings)):
             return lInfo == rInfo && lSettings == rSettings
+        case (.finishingLoading(let lSettings, let lURL, let lSubject, let lJS, let lInfo),
+              .finishingLoading(let rSettings, let rURL, let rSubject, let rJS, let rInfo)):
+            return lSettings == rSettings && lURL == rURL && lSubject === rSubject && lJS == rJS && lInfo == rInfo
         default:
             return false
         }

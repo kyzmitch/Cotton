@@ -15,6 +15,11 @@ extension WebViewController: WebViewReusable {
             return
         }
         viewModel.siteNavigation?.webViewDidHandleReuseAction()
-        await viewModel.reset(site)
+        do {
+            try await viewModel.sendAction(.resetToSite(site))
+            try await viewModel.sendAction(.loadSite)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

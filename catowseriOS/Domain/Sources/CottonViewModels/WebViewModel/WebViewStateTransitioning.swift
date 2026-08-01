@@ -1,32 +1,43 @@
 //
-//  WebViewModelState+Actionable.swift
-//  catowser
+//  WebViewStateTransitioning.swift
+//  CottonViewModels
 //
-//  Created by Andrei Ermoshin on 8/27/22.
-//  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
+//  Copyright © 2026 Cotton (Catowser). All rights reserved.
 //
 
 import Foundation
 import CottonBase
 import CottonPlugins
+import ViewModelKit
 
-extension WebViewModelState: Actionable {
-    typealias Action = WebViewAction
-    typealias State = Self
+/// Async transition strategy for WebView domain state.
+///
+/// Owns the legal `(state, action) → nextState` graph. Pipeline side effects
+/// (plugins inject, DNS, loading emits) run in `WebViewModelImpl` after each
+/// successful `sendAction`, which may issue follow-up actions — intermediate
+/// states stay observable on `statePublisher`.
+public struct WebViewStateTransitioning<C: WebViewStateContext>: StateTransitioning {
+    public typealias State = WebViewModelState<C>
+
+    public init() {}
 
     // swiftlint:disable:next cyclomatic_complexity function_body_length
-    func transition(on action: Action, _ logging: Bool = false) throws -> State {
+    @MainActor public func transition(
+        from state: State,
+        on action: State.Action,
+        with context: State.Context?
+    ) async throws -> State {
+        _ = context
         let nextState: State
-        switch (self, action) {
+        switch (state, action) {
         case (.pendingLoad, .loadSite):
             /// Nothing to load actually, waiting for `resetToSite` action
-            return self
+            return state
         case (.initialized(let site),
               .loadSite):
             nextState = .pendingPlugins(site.urlInfo, site.settings)
         case (.viewing(let settings, let urlInfo),
               .loadNextLink(let url)):
-            // DoH can be optimized here, if previous URLInfo had same host and resolved ip address
             let updatedURLInfo: URLInfo
             if url.hasIPHost {
                 // swiftlint:disable:next force_unwrapping
@@ -96,52 +107,29 @@ extension WebViewModelState: Actionable {
         case (.viewing(let settings, let urlInfo),
               .changeJavaScript(let subject, let enabled)):
             if settings.isJSEnabled == enabled {
-                // maybe need to just do a return from function
-                nextState = self
+                nextState = state
             } else {
                 let jsSettings = settings.withChanged(javaScriptEnabled: enabled)
                 nextState = .updatingJS(jsSettings, subject, urlInfo)
             }
         case (.updatingJS(let settings, _, let urlInfo),
               .finishLoading):
-            // No need to use middle `finishingLoading` state because
-            // we can be sure that finalURL during JS update web view reload
-            // stays the same, because `.changeJavaScript` action is very similar to `.reload`.
-            // Also, we can ignore `jsEnabled` value from `.finishLoading` action for this case.
             nextState = .viewing(settings, urlInfo)
         case (.viewing(let settings, let urlData),
               .changeDoH(let enable)):
-            // Handling is similar to when state is `pendingDoHStatus`
-            // and action is `resolveDomainName`, because first need to
-            // make sure that domain name supports DNS over HTTPs
-
-            // Probably need to check that current DoH state is not the same,
-            // to not do domane name resolving when it is not needed,
-            // this could be done by checking the host of current ulr data.
-            // On the other hand, this is probably not needed, because
-            // DoH state is controlled by Feature manager which is more reliable,
-            // It is because current host could be based on ip address even
-            // without DoH enabled.
-            // So, basically we have to trust the incoming value.
             if enable {
                 nextState = .checkingDNResolveSupport(urlData, settings)
             } else {
-                // Need to reload web view anyway, because we don't know previus state of DoH
-                // If ip address was used for URL, this reload would replace it with domain name as needed
                 nextState = .creatingRequest(urlData, settings)
             }
         case (.viewing, .resetToSite(let site)):
             nextState = .initialized(site)
         case (.waitingForNavigation, .resetToSite(let site)):
-            // Could be a case when previous web view didn't finish navigation
-            // and it was asked to reset vm
             nextState = .initialized(site)
         case (.pendingLoad, .resetToSite(let site)):
             nextState = .initialized(site)
         case (.waitingForNavigation(let settings, let uRLInfo),
               .reload):
-            // Sometimes state hangs in `waitingForNavigation`
-            // but should be in `viewing`
             nextState = .waitingForNavigation(settings, uRLInfo)
         case (.waitingForNavigation(let settings, let uRLInfo),
               .goBack):
@@ -150,20 +138,7 @@ extension WebViewModelState: Actionable {
               .goForward):
             nextState = .waitingForNavigation(settings, uRLInfo)
         default:
-            #if TESTING
-            print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
-            #endif
-            if logging {
-                print("WebViewModelState: \(self.description) -> \(action.description) -> Error")
-            }
-            throw Error.unexpectedStateForAction(self, action)
-        }
-
-        #if TESTING
-        print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
-        #endif
-        if logging {
-            print("WebViewModelState: \(self.description) -> \(action.description) -> \(nextState.description)")
+            throw State.Error.unexpectedStateForAction(state, action)
         }
         return nextState
     }

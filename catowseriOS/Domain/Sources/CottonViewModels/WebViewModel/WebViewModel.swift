@@ -12,21 +12,30 @@ import CottonPlugins
 import FeatureFlagsKit
 import Combine
 import WebKit
+import ViewModelKit
+
+/// Kit-backed WebView view model base.
+public typealias WebViewModelBase = BaseViewModel<
+    WebViewModelState<WebViewStateContextProxy>,
+    WebViewAction,
+    WebViewStateContextProxy
+>
 
 /// Web view model interface, can be sendable because it is an actor (main one)
 @MainActor public protocol WebViewModel: ObservableObject, Sendable {
 
-    // MARK: - main public methods
+    // MARK: - kit action / observation
 
-    func load() async
-    func reset(_ site: Site) async
-    func reload() async
-    func goBack() async
-    func goForward() async
-    func finishLoading(
-        _ newURL: URL,
-        _ subject: JavaScriptEvaluateble
-    ) async
+    var state: WebViewModelState<WebViewStateContextProxy> { get set }
+    var statePublisher: Published<WebViewModelState<WebViewStateContextProxy>>.Publisher { get }
+    func sendAction(_ action: WebViewAction) async throws
+    func sendAction(
+        _ action: WebViewAction,
+        onComplete: ((Result<Void, Error>) -> Void)?
+    )
+
+    // MARK: - navigation / policy (not pure sendAction)
+
     func decidePolicy(
         _ navigationAction: NavigationActionable,
         _ decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
@@ -34,11 +43,6 @@ import WebKit
     func decidePolicy(
         _ navigationAction: NavigationActionable
     ) async -> WKNavigationActionPolicy
-    func setJavaScript(
-        _ subject: JavaScriptEvaluateble,
-        _ enabled: Bool
-    ) async
-    func setDoH(_ enabled: Bool) async
     func updateTabPreview(_ screenshot: Data?) async
 
     // MARK: - public properties
@@ -52,13 +56,19 @@ import WebKit
     /// Only for SwiftUI check to avoid handling of view updates
     var isResetable: Bool { get }
 
-    // MARK: - main state observers
+    /// Whether DNS-over-HTTPS is currently enabled (for building load requests from domain state).
+    var isDohEnabled: Bool { get async }
 
-    /// wrapped value for Published
+    // MARK: - legacy observation (prefer `statePublisher`)
+
+    /// Legacy view command bus; dual-written during cutover. Prefer `statePublisher`.
+    @available(*, deprecated, message: "Use statePublisher; webPageState is legacy")
     var webPageState: WebPageLoadingAction { get }
+    /// Legacy publisher; dual-written during cutover. Prefer `statePublisher`.
+    @available(*, deprecated, message: "Use statePublisher; webPageStatePublisher is legacy")
     var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { get }
 
-    // MARK: - new properties to have single view model for Web
+    // MARK: - navigation delegate wiring
 
     /// Site navigation delegate property should allow to set it later, e.g. in case of SwiftUI mode (e.g. with ToolbarViewModel)
     var siteNavigation: SiteExternalNavigationDelegate? { get set }

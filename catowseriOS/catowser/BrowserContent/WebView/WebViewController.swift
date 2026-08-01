@@ -125,7 +125,11 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         }
         Task {
             /// Load initial site or just wait for the reset to site action
-            await viewModel.load()
+            do {
+                try await viewModel.sendAction(.loadSite)
+            } catch {
+                print("Wrong state on load action: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -149,9 +153,25 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         }
     }
 
-    private func onStateChange(_ state: WebPageLoadingAction) {
+    private func onDomainStateChange(_ state: WebViewModelState<WebViewStateContextProxy>) {
         switch state {
+        case .updatingWebView(_, let urlInfo):
+            Task { [weak self] in
+                guard let self else { return }
+                let useIP = await viewModel.isDohEnabled
+                webView?.load(urlInfo.urlRequest(useIP))
+            }
+        default:
+            // Recreate/reattach/openApp/updatingJS view work still via legacy dual-write.
+            break
+        }
+    }
+
+    /// Legacy dual-write channel for recreate / reattach / openApp / updatingJS loads.
+    private func onLegacyLoadingAction(_ action: WebPageLoadingAction) {
+        switch action {
         case .load(let uRLRequest):
+            // Prefer domain-state handling for `.updatingWebView`; still apply for `.updatingJS` emits.
             webView?.load(uRLRequest)
         case .recreateView(let forcefullyRecreate):
             recreateWebView(forcefullyRecreate)
@@ -242,7 +262,13 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         }
 
         Task {
-            await viewModel.finishLoading(newURL, webView)
+            do {
+                try await viewModel.sendAction(
+                    .finishLoading(newURL, webView, viewModel.settings.isJSEnabled)
+                )
+            } catch {
+                print("\(#function) - failed to finish loading: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -302,6 +328,7 @@ private extension WebViewController {
         disposable?.dispose()
         cancellable?.cancel()
         taskHandler?.cancel()
+        jsStateCancellable?.cancel()
         loadingProgressObservation?.invalidate()
         canGoForwardObservation?.invalidate()
         canGoBackObservation?.invalidate()
@@ -319,7 +346,11 @@ private extension WebViewController {
         // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
 
         taskHandler?.cancel()
-        taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        cancellable?.cancel()
+        // Primary observation: domain state drives load / JS-update view work.
+        taskHandler = viewModel.statePublisher.sink(receiveValue: onDomainStateChange)
+        // Legacy dual-write: recreate / reattach / openApp during cutover.
+        cancellable = viewModel.webPageStatePublisher.sink(receiveValue: onLegacyLoadingAction)
         dohCancellable?.cancel()
         jsStateCancellable?.cancel()
 
@@ -329,7 +360,11 @@ private extension WebViewController {
                 .sink { _ in
                     Task { [weak self] in
                         let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-                        await self?.viewModel.setDoH(useDoH)
+                        do {
+                            try await self?.viewModel.sendAction(.changeDoH(useDoH))
+                        } catch {
+                            print("Wrong state on DoH change action: \(error.localizedDescription)")
+                        }
                     }
                 }
 
@@ -341,7 +376,11 @@ private extension WebViewController {
                             return
                         }
                         let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-                        await self.viewModel.setJavaScript(jsSubject, enabled)
+                        do {
+                            try await self.viewModel.sendAction(.changeJavaScript(jsSubject, enabled))
+                        } catch {
+                            print("Wrong state on JS change action: \(error.localizedDescription)")
+                        }
                     }
                 }
         }

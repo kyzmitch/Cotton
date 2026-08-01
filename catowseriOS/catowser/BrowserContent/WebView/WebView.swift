@@ -88,7 +88,12 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         let manager = UIServiceRegistry.shared().reuseManager
         let vc = try? manager.controllerFor(site, dummyArgument, viewModel, .swiftUIWrapper)
         Task {
-            await viewModel.reset(site)
+            do {
+                try await viewModel.sendAction(.resetToSite(site))
+                try await viewModel.sendAction(.loadSite)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController

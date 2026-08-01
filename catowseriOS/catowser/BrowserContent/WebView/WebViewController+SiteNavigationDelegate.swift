@@ -31,7 +31,11 @@ extension WebViewController: WebViewNavigatable {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
-            await viewModel.goForward()
+            do {
+                try await viewModel.sendAction(.goForward)
+            } catch {
+                print("Wrong state on go Forward action: \(error.localizedDescription)")
+            }
         }
         _ = webView?.goForward()
     }
@@ -40,7 +44,11 @@ extension WebViewController: WebViewNavigatable {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
-            await viewModel.goBack()
+            do {
+                try await viewModel.sendAction(.goBack)
+            } catch {
+                print("Wrong state on go Back action: \(error.localizedDescription)")
+            }
         }
         _ = webView?.goBack()
     }
@@ -49,7 +57,11 @@ extension WebViewController: WebViewNavigatable {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
         Task {
-            await viewModel.reload()
+            do {
+                try await viewModel.sendAction(.reload)
+            } catch {
+                print("Wrong state on re-load action: \(error.localizedDescription)")
+            }
         }
         _ = webView?.reload()
     }
@@ -59,7 +71,11 @@ extension WebViewController: WebViewNavigatable {
             return
         }
         Task {
-            await viewModel.setJavaScript(jsSubject, enabled)
+            do {
+                try await viewModel.sendAction(.changeJavaScript(jsSubject, enabled))
+            } catch {
+                print("Wrong state on JS change action: \(error.localizedDescription)")
+            }
         }
     }
 

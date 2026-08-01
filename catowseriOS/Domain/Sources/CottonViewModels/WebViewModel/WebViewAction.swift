@@ -9,16 +9,11 @@
 import Foundation
 import CottonBase
 import CottonPlugins
+import ViewModelKit
 
-protocol Actionable {
-    associatedtype Action
-    associatedtype State
-    func transition(on action: Action, _ logging: Bool) throws -> State
-}
+public typealias IPAddress = String
 
-typealias IPAddress = String
-
-enum WebViewAction: Sendable {
+public enum WebViewAction: Sendable, ViewModelAction {
     case loadSite
     case resetToSite(Site)
     case loadNextLink(_ url: URL)
@@ -39,10 +34,67 @@ enum WebViewAction: Sendable {
     case goForward
     /// Similar to `resolveDomainName`
     case changeDoH(Bool)
+
+    /// Representative cases for `ViewModelAction` / `CaseIterable`.
+    public static var allCases: [WebViewAction] {
+        // swiftlint:disable force_unwrapping
+        let url = URL(string: "https://example.com")!
+        let urlInfo = URLInfo(url)!
+        let site = Site(
+            urlInfo: urlInfo,
+            settings: .init(
+                isPrivate: false,
+                blockPopups: false,
+                isJSEnabled: false,
+                canLoadPlugins: false
+            ),
+            faviconData: nil,
+            searchSuggestion: nil,
+            userSpecifiedTitle: nil
+        )
+        let jsSubject = WebViewActionAllCasesJSSubject()
+        // swiftlint:enable force_unwrapping
+        return [
+            .loadSite,
+            .resetToSite(site),
+            .loadNextLink(url),
+            .injectPlugins(nil),
+            .fetchDoHStatus,
+            .checkDNResolvingSupport(false),
+            .resolveDomainName(false),
+            .createRequestAnyway(nil),
+            .loadWebView,
+            .finishLoading(url, jsSubject, false),
+            .startView(urlInfo),
+            .changeJavaScript(jsSubject, false),
+            .reload,
+            .goBack,
+            .goForward,
+            .changeDoH(false)
+        ]
+    }
+}
+
+/// Placeholder subject only for `WebViewAction.allCases`.
+@MainActor
+private final class WebViewActionAllCasesJSSubject: JavaScriptEvaluateble, Sendable {
+    func evaluateJavaScriptV2(
+        _ javaScriptString: String,
+        completionHandler: (@MainActor @Sendable (Any?, (any Error)?) -> Void)?
+    ) {
+        completionHandler?(nil, nil)
+    }
+
+    func evaluateJavaScriptV1(
+        _ javaScriptString: String,
+        completionHandler: ((Any?, Error?) -> Void)?
+    ) {
+        completionHandler?(nil, nil)
+    }
 }
 
 extension WebViewAction: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         switch self {
         case .loadSite:
             return "loadSite"
