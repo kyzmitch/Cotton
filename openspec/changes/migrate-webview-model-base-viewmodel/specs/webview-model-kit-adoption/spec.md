@@ -8,8 +8,8 @@ Domain state transitions MUST run only through `sendAction` → private `ViewMod
 `StateMachineV2` / `ViewModelV2` MUST NOT be used for this adoption.
 
 #### Scenario: loadSite goes through the machine
-- **WHEN** a consumer calls `load()` on a view model in `.initialized` (or equivalent ready) state
-- **THEN** the domain state advances via `sendAction` / the state machine and published kit `state` reflects the resulting domain state
+- **WHEN** a consumer calls `sendAction(.loadSite)` on a view model in `.initialized` (or equivalent ready) state
+- **THEN** the domain state advances via the state machine and published kit `state` / `statePublisher` reflects the resulting domain state
 
 #### Scenario: Illegal action preserves state
 - **WHEN** an action is invalid for the current `WebViewModelState`
@@ -44,28 +44,40 @@ CottonViewModels MUST provide a dedicated `StateTransitioning` type for WebView 
 ### Requirement: StateContext for WebView side effects
 A WebView `StateContext` protocol (plus proxy used as the `BaseViewModel` context type) MUST expose the side-effect operations the strategy or impl needs without the strategy depending on `WebViewModelImpl` directly.
 
-Those operations MUST cover at least: emitting `WebPageLoadingAction`, reading DoH/native-redirect/plugin-related inputs, resolving DNS, and replacing/updating the selected tab as required by current finish-loading behavior.
+Those operations MUST cover at least: emitting view loading commands (for legacy dual-write and/or state-driven UI), reading DoH/native-redirect/plugin-related inputs, resolving DNS, and replacing/updating the selected tab as required by current finish-loading behavior.
 
 #### Scenario: Emit view loading command
-- **WHEN** a transition or protocol method needs the view to recreate, reattach observers, load a request, or open an app URL
-- **THEN** it emits through context (or equivalent) into the existing `webPageState` publisher channel
+- **WHEN** a transition needs the view to recreate, reattach observers, load a request, or open an app URL
+- **THEN** context performs the emission such that kit `state` / `statePublisher` remains the primary signal for updated consumers (legacy `webPageState` MAY be dual-written)
 
 #### Scenario: Proxy does not leak into strategy generics beyond Context
 - **WHEN** the transition strategy is typed over `State.Context`
 - **THEN** it compiles and runs against the proxy/fake context without importing UI layers
 
-### Requirement: Public WebViewModel API compatibility
-The public `WebViewModel` protocol surface (`load`, `reset`, `reload`, `goBack`, `goForward`, `finishLoading`, `decidePolicy`, `setJavaScript`, `setDoH`, `updateTabPreview`, configuration/host/url accessors, `webPageState` / publisher, `siteNavigation`) MUST remain available and preserve existing behavioral contracts for UIKit and SwiftUI consumers.
+### Requirement: Consumers use sendAction and statePublisher
+The public `WebViewModel` protocol MUST expose kit `state`, `statePublisher`, and `sendAction`.
 
-`WebPageLoadingAction` MUST remain a separate published channel from kit domain `state` (dual-channel model).
+In-repo consumers MUST drive the view model with `sendAction` (e.g. `.loadSite`, `.resetToSite`, `.reload`, `.goBack`, `.goForward`, `.finishLoading`, `.changeJavaScript`, `.changeDoH`, `.loadNextLink`) instead of the old convenience methods (`load`, `reset`, `reload`, `goBack`, `goForward`, `finishLoading`, `setJavaScript`, `setDoH`, …).
+
+Updated consumers MUST observe `statePublisher` (not `webPageStatePublisher`) for UI updates.
+
+`webPageState` and `webPageStatePublisher` MUST be marked legacy/deprecated for the migration window and MUST NOT be the recommended observation API.
+
+#### Scenario: Consumer loads via sendAction
+- **WHEN** UI needs to start loading the current site
+- **THEN** it calls `sendAction(.loadSite)` (and any required preceding actions) rather than `load()`
+
+#### Scenario: Consumer resets via sendAction
+- **WHEN** UI needs to reset to a new `Site`
+- **THEN** it calls `sendAction(.resetToSite(site))` (and follow-up actions as designed) rather than `reset(_:)`
+
+#### Scenario: Consumer observes statePublisher
+- **WHEN** UIKit/SwiftUI subscribes to WebView model updates after migration
+- **THEN** it uses `statePublisher` (or `state`) and does not rely on `webPageStatePublisher` as the primary API
 
 #### Scenario: decidePolicy still cancels and loads next link
 - **WHEN** `decidePolicy` handles a user link navigation to a different URL
-- **THEN** navigation is cancelled and domain state advances to handle the next link (plugins/DoH/load path) as today
-
-#### Scenario: reset recreates view and loads site
-- **WHEN** `reset(site)` is called
-- **THEN** the view receives recreate/reattach loading actions and domain state proceeds through initialized → load as today
+- **THEN** navigation is cancelled and domain state advances via `sendAction(.loadNextLink)` (or equivalent) through the plugins/DoH/load path as today
 
 ### Requirement: Actionable sync transitions retired for WebView
 After adoption, WebView domain transitions MUST NOT remain owned by a sync `Actionable` extension on `WebViewModelState` as the live production path. Dead `Actionable` types/files for WebView MUST be removed or left unused only transiently during the cutover task, not as the final design.
