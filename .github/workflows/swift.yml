@@ -26,11 +26,13 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
-      - name: "ktlint"
+      - name: Copy editorconfig
+        run: cp cotton-base/.editorconfig .editorconfig
+      - name: ktlint
         uses: ScaCap/action-ktlint@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # Обязательно для Reviewdog
-          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=standard:indent,final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=indent,final-newline,trailing-comma,trailing-comma-on-call-site,trailing-comma-on-declaration-site,colon-spacing --verbose --no-wildcard-imports
           patterns: cotton-base/**/*.kt
           reporter: github-check
   ios-unit-tests:
