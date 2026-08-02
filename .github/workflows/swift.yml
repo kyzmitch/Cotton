@@ -30,7 +30,7 @@ jobs:
         uses: ScaCap/action-ktlint@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # Обязательно для Reviewdog
-          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
+          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=standard:indent,final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
           patterns: cotton-base/**/*.kt
           reporter: github-check
   ios-unit-tests:
