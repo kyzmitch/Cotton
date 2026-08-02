@@ -88,6 +88,8 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         let manager = UIServiceRegistry.shared().reuseManager
         let vc = try? manager.controllerFor(site, dummyArgument, viewModel, .swiftUIWrapper)
         Task {
+            // Bypasses `WebViewReusable.resetTo` isResetable guard for first embed.
+            // View recreates/loads when it observes `.updatingWebView` on `statePublisher`.
             do {
                 try await viewModel.sendAction(.resetToSite(site))
                 try await viewModel.sendAction(.loadSite)

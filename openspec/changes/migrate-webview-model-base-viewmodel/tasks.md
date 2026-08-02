@@ -26,4 +26,5 @@
 - [x] 4.3 Update `WebViewVMFixture` and existing WebView concurrency/DoH tests for `sendAction` / `statePublisher`
 - [x] 4.4 Add Swift Testing strategy-focused tests (legal paths, illegal action, fake-context DoH/DNS branch) per `viewmodel-testability` delta
 - [x] 4.5 Update `openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/ADOPTION.md` (WebView note) to mark adoption done; remove follow-up comments on `WebViewModelImpl`
-- [ ] 4.6 Run Domain / CottonViewModels-related tests and fix regressions
+- [x] 4.6 Run Domain / CottonViewModels-related tests and fix regressions
+- [x] 4.7 Remove legacy `webPageState` / `emit` dual-write; drive view solely from `statePublisher` + call sites

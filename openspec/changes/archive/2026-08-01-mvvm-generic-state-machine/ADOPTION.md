@@ -17,7 +17,7 @@ Use this checklist for view models that are not yet on ViewModelKit (`TabViewMod
 
 ## Adopted
 
-- **WebViewModel** — uses `BaseViewModel` + `ViewModelStateMachine` + `WebViewStateTransitioning`; consumers drive via `sendAction` and observe `statePublisher` (`webPageState*` is legacy dual-write).
+- **WebViewModel** — uses `BaseViewModel` + `ViewModelStateMachine` + `WebViewStateTransitioning`; consumers drive via `sendAction` and observe `statePublisher` only.
 
 ## Do not use
 

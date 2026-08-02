@@ -124,7 +124,9 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             return
         }
         Task {
-            /// Load initial site or just wait for the reset to site action
+            /// Ensure web view exists, then load initial site (or wait for reset in SwiftUI).
+            recreateWebView(false)
+            reattachWebViewObservers()
             do {
                 try await viewModel.sendAction(.loadSite)
             } catch {
@@ -156,31 +158,23 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
     private func onDomainStateChange(_ state: WebViewModelState<WebViewStateContextProxy>) {
         switch state {
         case .updatingWebView(_, let urlInfo):
+            recreateWebView(false)
+            reattachWebViewObservers()
+            Task { [weak self] in
+                guard let self else { return }
+                let useIP = await viewModel.isDohEnabled
+                webView?.load(urlInfo.urlRequest(useIP))
+            }
+        case .updatingJS(_, _, let urlInfo):
+            recreateWebView(true)
+            reattachWebViewObservers()
             Task { [weak self] in
                 guard let self else { return }
                 let useIP = await viewModel.isDohEnabled
                 webView?.load(urlInfo.urlRequest(useIP))
             }
         default:
-            // Recreate/reattach/openApp/updatingJS view work still via legacy dual-write.
             break
-        }
-    }
-
-    /// Legacy dual-write channel for recreate / reattach / openApp / updatingJS loads.
-    private func onLegacyLoadingAction(_ action: WebPageLoadingAction) {
-        switch action {
-        case .load(let uRLRequest):
-            // Prefer domain-state handling for `.updatingWebView`; still apply for `.updatingJS` emits.
-            webView?.load(uRLRequest)
-        case .recreateView(let forcefullyRecreate):
-            recreateWebView(forcefullyRecreate)
-        case .reattachViewObservers:
-            reattachWebViewObservers()
-        case .openApp(let url):
-            coordinator?.showNext(.openApp(url))
-        @unknown default:
-            fatalError("Not handled web page loading state")
         }
     }
 
@@ -206,6 +200,10 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             viewModel.siteNavigation?.siteDidOpen(appName: domain)
             // no need to interrupt
         }
+        if let url = navigationAction.request.url, viewModel.shouldOpenInExternalApp(url) {
+            coordinator?.showNext(.openApp(url))
+            return .cancel
+        }
         return await viewModel.decidePolicy(navigationAction)
     }
 
@@ -219,6 +217,11 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             // no need to interrupt
         }
         Task {
+            if let url = navigationAction.request.url, viewModel.shouldOpenInExternalApp(url) {
+                coordinator?.showNext(.openApp(url))
+                decisionHandler(.cancel)
+                return
+            }
             await viewModel.decidePolicy(navigationAction, decisionHandler)
         }
     }
@@ -347,10 +350,7 @@ private extension WebViewController {
 
         taskHandler?.cancel()
         cancellable?.cancel()
-        // Primary observation: domain state drives load / JS-update view work.
         taskHandler = viewModel.statePublisher.sink(receiveValue: onDomainStateChange)
-        // Legacy dual-write: recreate / reattach / openApp during cutover.
-        cancellable = viewModel.webPageStatePublisher.sink(receiveValue: onLegacyLoadingAction)
         dohCancellable?.cancel()
         jsStateCancellable?.cancel()
 

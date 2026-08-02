@@ -45,15 +45,6 @@ import ViewModelKit
     /// Domain name resolver with specific strategy
     private let resolveDnsUseCase: any ResolveDNSUseCase
 
-    /// Legacy view command bus storage (dual-written from context emits).
-    @Published private var legacyWebPageState: WebPageLoadingAction = .recreateView(false)
-    /// Legacy view command bus; dual-written during cutover. Prefer `statePublisher`.
-    @available(*, deprecated, message: "Use statePublisher; webPageState is legacy")
-    public var webPageState: WebPageLoadingAction { legacyWebPageState }
-    /// Legacy Combine publisher of view loading commands.
-    @available(*, deprecated, message: "Use statePublisher; webPageStatePublisher is legacy")
-    public var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { $legacyWebPageState }
-
     /// Configuration should be transferred from `Site`
     public var configuration: WKWebViewConfiguration {
         settings.webViewConfig
@@ -121,15 +112,6 @@ import ViewModelKit
     }
 
     public override func sendAction(_ action: Action) async throws {
-        switch action {
-        case .loadSite:
-            emit(.reattachViewObservers)
-        case .resetToSite:
-            emit(.recreateView(true))
-            emit(.reattachViewObservers)
-        default:
-            break
-        }
         try await super.sendAction(action)
         guard !isContinuingPipeline else { return }
         try await runPipeline()
@@ -154,9 +136,8 @@ import ViewModelKit
         guard let url = navigationAction.request.url else {
             return .allow
         }
-        if let policy = isSystemAppRedirectNeeded(url) {
-            emit(.openApp(url))
-            return policy
+        if shouldOpenInExternalApp(url) {
+            return .cancel
         }
         let allowRedirect = await appContext.allowNativeAppRedirects()
         if !allowRedirect, let policy = isNativeAppRedirectNeeded(url) {
@@ -185,6 +166,10 @@ import ViewModelKit
             return .cancel
         }
         return .allow
+    }
+
+    public func shouldOpenInExternalApp(_ url: URL) -> Bool {
+        isSystemAppRedirectNeeded(url) != nil
     }
 
     public func updateTabPreview(_ screenshot: Data?) async {
@@ -245,9 +230,8 @@ private extension WebViewModelImpl {
         case .creatingRequest:
             try await super.sendAction(.loadWebView)
             return true
-        case .updatingWebView(_, let urlInfo):
-            let useIPaddress = await appContext.isDohEnabled
-            emit(.load(urlInfo.urlRequest(useIPaddress)))
+        case .updatingWebView:
+            // View loads via `statePublisher` observation.
             return false
         case .finishingLoading(let settings, let newURL, let subject, let enable, let urlData):
             // swiftlint:disable:next force_unwrapping
@@ -261,10 +245,7 @@ private extension WebViewModelImpl {
             return true
         case .updatingJS(let settings, let subject, let urlInfo):
             enablePlugins(on: subject, context: urlInfo.host(), jsEnabled: settings.isJSEnabled)
-            emit(.recreateView(true))
-            emit(.reattachViewObservers)
-            let useIPaddress = await appContext.isDohEnabled
-            emit(.load(urlInfo.urlRequest(useIPaddress)))
+            // View recreates / reattaches / loads via `statePublisher` observation.
             return false
         }
     }
@@ -352,11 +333,6 @@ extension WebViewModelImpl: WebViewStateContext {
 
     public func nativeApp(for host: CottonBase.Host) -> String? {
         appContext.nativeApp(for: host)
-    }
-
-    public func emit(_ loadingAction: WebPageLoadingAction) {
-        // Legacy dual-write for cutover; primary observation is `statePublisher`.
-        legacyWebPageState = loadingAction
     }
 
     public func resolveDomainName(_ originalURL: URL) async throws -> URL {

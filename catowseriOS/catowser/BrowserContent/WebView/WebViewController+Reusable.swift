@@ -15,6 +15,8 @@ extension WebViewController: WebViewReusable {
             return
         }
         viewModel.siteNavigation?.webViewDidHandleReuseAction()
+        recreateWebView(true)
+        reattachWebViewObservers()
         do {
             try await viewModel.sendAction(.resetToSite(site))
             try await viewModel.sendAction(.loadSite)

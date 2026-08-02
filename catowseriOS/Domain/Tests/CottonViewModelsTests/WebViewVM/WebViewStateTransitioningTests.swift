@@ -15,11 +15,9 @@ private final class FakeWebViewStateContext: WebViewStateContext {
     var pluginsSource: any JSPluginsSource { fatalError("unused") }
     var isDohEnabledValue: Bool = false
     var isDohEnabled: Bool { get async { isDohEnabledValue } }
-    var emitted: [WebPageLoadingAction] = []
 
     func allowNativeAppRedirects() async -> Bool { true }
     func nativeApp(for host: CottonBase.Host) -> String? { nil }
-    func emit(_ loadingAction: WebPageLoadingAction) { emitted.append(loadingAction) }
     func resolveDomainName(_ originalURL: URL) async throws -> URL { originalURL }
     func remember(host: CottonBase.Host) async {}
     func replaceSelectedTab(with site: Site) async throws {}

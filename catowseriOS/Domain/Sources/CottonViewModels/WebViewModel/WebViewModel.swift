@@ -59,14 +59,8 @@ public typealias WebViewModelBase = BaseViewModel<
     /// Whether DNS-over-HTTPS is currently enabled (for building load requests from domain state).
     var isDohEnabled: Bool { get async }
 
-    // MARK: - legacy observation (prefer `statePublisher`)
-
-    /// Legacy view command bus; dual-written during cutover. Prefer `statePublisher`.
-    @available(*, deprecated, message: "Use statePublisher; webPageState is legacy")
-    var webPageState: WebPageLoadingAction { get }
-    /// Legacy publisher; dual-written during cutover. Prefer `statePublisher`.
-    @available(*, deprecated, message: "Use statePublisher; webPageStatePublisher is legacy")
-    var webPageStatePublisher: Published<WebPageLoadingAction>.Publisher { get }
+    /// Returns `true` when `url` should be opened outside the web view (tel, mailto, Maps, App Store, …).
+    func shouldOpenInExternalApp(_ url: URL) -> Bool
 
     // MARK: - navigation delegate wiring
 

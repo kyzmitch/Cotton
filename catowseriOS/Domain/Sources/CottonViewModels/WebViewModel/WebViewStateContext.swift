@@ -18,9 +18,6 @@ import WebKit
     func allowNativeAppRedirects() async -> Bool
     func nativeApp(for host: CottonBase.Host) -> String?
 
-    /// Legacy dual-write of view loading commands during cutover.
-    func emit(_ loadingAction: WebPageLoadingAction)
-
     func resolveDomainName(_ originalURL: URL) async throws -> URL
     func remember(host: CottonBase.Host) async
     func replaceSelectedTab(with site: Site) async throws
@@ -58,10 +55,6 @@ public final class WebViewStateContextProxy: WebViewStateContext {
 
     public func nativeApp(for host: CottonBase.Host) -> String? {
         subject.nativeApp(for: host)
-    }
-
-    public func emit(_ loadingAction: WebPageLoadingAction) {
-        subject.emit(loadingAction)
     }
 
     public func resolveDomainName(_ originalURL: URL) async throws -> URL {
