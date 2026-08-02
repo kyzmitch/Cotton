@@ -57,7 +57,7 @@ Those operations MUST cover at least: emitting view loading commands (for legacy
 ### Requirement: Consumers use sendAction and statePublisher
 The public `WebViewModel` protocol MUST expose kit `state`, `statePublisher`, and `sendAction`.
 
-In-repo consumers MUST drive the view model with `sendAction` (e.g. `.loadSite`, `.resetToSite`, `.reload`, `.goBack`, `.goForward`, `.finishLoading`, `.changeJavaScript`, `.changeDoH`, `.loadNextLink`) instead of the old convenience methods (`load`, `reset`, `reload`, `goBack`, `goForward`, `finishLoading`, `setJavaScript`, `setDoH`, …).
+In-repo consumers MUST drive the view model with `sendAction` (e.g. `.loadSite`, `.resetToSite`, `.openSite`, `.reload`, `.goBack`, `.goForward`, `.finishLoading`, `.changeJavaScript`, `.changeDoH`, `.loadNextLink`) instead of the old convenience methods (`load`, `reset`, `reload`, `goBack`, `goForward`, `finishLoading`, `setJavaScript`, `setDoH`, …).
 
 Updated consumers MUST observe `statePublisher` (not `webPageStatePublisher`) for UI updates.
 
@@ -67,9 +67,9 @@ Updated consumers MUST observe `statePublisher` (not `webPageStatePublisher`) fo
 - **WHEN** UI needs to start loading the current site
 - **THEN** it calls `sendAction(.loadSite)` (and any required preceding actions) rather than `load()`
 
-#### Scenario: Consumer resets via sendAction
-- **WHEN** UI needs to reset to a new `Site`
-- **THEN** it calls `sendAction(.resetToSite(site))` (and follow-up actions as designed) rather than `reset(_:)`
+#### Scenario: Consumer opens a site via sendAction
+- **WHEN** UI needs to show a new `Site` (SwiftUI embed or web-view reuse)
+- **THEN** it calls `sendAction(.openSite(site))` rather than `resetToSite` followed by `loadSite`
 
 #### Scenario: Consumer observes statePublisher
 - **WHEN** UIKit/SwiftUI subscribes to WebView model updates after migration

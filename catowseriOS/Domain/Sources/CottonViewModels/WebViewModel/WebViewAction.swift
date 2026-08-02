@@ -15,7 +15,10 @@ public typealias IPAddress = String
 
 public enum WebViewAction: Sendable, ViewModelAction {
     case loadSite
+    /// Bind a site without starting the load pipeline (lands on `.initialized`).
     case resetToSite(Site)
+    /// Reset to a site and start loading in one step (lands on `.pendingPlugins`).
+    case openSite(Site)
     case loadNextLink(_ url: URL)
     case injectPlugins((any JSPluginsProgram)?)
     case fetchDoHStatus
@@ -57,6 +60,7 @@ public enum WebViewAction: Sendable, ViewModelAction {
         return [
             .loadSite,
             .resetToSite(site),
+            .openSite(site),
             .loadNextLink(url),
             .injectPlugins(nil),
             .fetchDoHStatus,
@@ -100,6 +104,8 @@ extension WebViewAction: CustomStringConvertible {
             return "loadSite"
         case .resetToSite(let site):
             return "resetToSite (\(site.urlInfo.platformURL.absoluteString)"
+        case .openSite(let site):
+            return "openSite (\(site.urlInfo.platformURL.absoluteString)"
         case .loadNextLink(let nextURL):
             #if DEBUG
             return "loadNextLink (\(nextURL.absoluteString))"

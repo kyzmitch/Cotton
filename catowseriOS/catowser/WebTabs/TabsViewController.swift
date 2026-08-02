@@ -147,10 +147,10 @@ private extension TabsViewController {
         Task {
             let defaultContent = await DefaultTabProvider.shared.contentState
             let tab = CoreBrowser.Tab(contentType: defaultContent)
-            do {
-                try await viewModel.sendAction(.addTab(tab))
-            } catch {
-                print("Fail to add a tab: \(error)")
+            viewModel.sendAction(.addTab(tab)) { result in
+                if case .failure(let error) = result {
+                    print("Fail to add a tab: \(error)")
+                }
             }
         }
     }

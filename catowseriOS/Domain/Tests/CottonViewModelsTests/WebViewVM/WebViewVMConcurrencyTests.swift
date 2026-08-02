@@ -247,8 +247,7 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         XCTAssertEqual(state, .viewing(settings, urlInfoV1))
 
         // Now it should be a valid state for reset
-        try await vm.sendAction(.resetToSite(opennetSite))
-        try await vm.sendAction(.loadSite)
+        try await vm.sendAction(.openSite(opennetSite))
 
         // swiftlint:disable:next force_unwrapping
         let urlInfoV2: URLInfo = .init(opennetUrlV1!)!

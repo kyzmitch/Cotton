@@ -3,6 +3,7 @@
 //  ViewModelKitTests
 //
 
+import Combine
 import Testing
 @testable import ViewModelKit
 
@@ -106,14 +107,46 @@ struct ViewModelStateMachineTests {
 
 struct BaseViewModelStateMachineTests {
     @MainActor
-    @Test func sendActionUpdatesPublishedStateWithFakeStrategy() async throws {
+    @Test func sendActionUpdatesPublishedStateWithFakeStrategy() async {
         let viewModel = BaseViewModel<TestState, TestAction, TestContext>(
             transitioning: IncrementTransitioning()
         )
         #expect(viewModel.state.value == 0)
 
-        try await viewModel.sendAction(.increment)
-        #expect(viewModel.state.value == 1)
+        await expectSendAction(
+            viewModel,
+            .increment,
+            succeeds: true
+        ) { emissions in
+            #expect(emissions.last?.value == 1)
+            #expect(viewModel.state.value == 1)
+        }
+    }
+
+    @MainActor
+    @Test func sendActionsRunsInOrderViaCompletion() async {
+        let viewModel = BaseViewModel<TestState, TestAction, TestContext>(
+            transitioning: IncrementTransitioning()
+        )
+        #expect(viewModel.state.value == 0)
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            var emissions: [TestState] = []
+            var cancellable: AnyCancellable?
+            cancellable = viewModel.statePublisher.sink { emissions.append($0) }
+
+            viewModel.sendActions([.increment, .increment]) { result in
+                switch result {
+                case .success:
+                    #expect(emissions.map(\.value) == [0, 1, 2])
+                    #expect(viewModel.state.value == 2)
+                case .failure(let error):
+                    Issue.record("unexpected failure: \(error)")
+                }
+                cancellable?.cancel()
+                continuation.resume()
+            }
+        }
     }
 
     @MainActor
@@ -123,14 +156,19 @@ struct BaseViewModelStateMachineTests {
         )
         viewModel.state = TestState(value: 5)
 
-        await #expect(throws: TestError.self) {
-            try await viewModel.sendAction(.fail)
+        await expectSendAction(
+            viewModel,
+            .fail,
+            succeeds: false
+        ) { emissions in
+            // Subscribe replay + no successful publish after failure.
+            #expect(emissions.map(\.value) == [5])
+            #expect(viewModel.state.value == 5)
         }
-        #expect(viewModel.state.value == 5)
     }
 
     @MainActor
-    @Test func testHookReplacesTransitionStrategy() async throws {
+    @Test func testHookReplacesTransitionStrategy() async {
         let viewModel = BaseViewModel<TestState, TestAction, TestContext>(
             transitioning: IncrementTransitioning()
         )
@@ -140,7 +178,40 @@ struct BaseViewModelStateMachineTests {
             }
         )
 
-        try await viewModel.sendAction(.increment)
-        #expect(viewModel.state.value == 42)
+        await expectSendAction(
+            viewModel,
+            .increment,
+            succeeds: true
+        ) { emissions in
+            #expect(emissions.last?.value == 42)
+            #expect(viewModel.state.value == 42)
+        }
+    }
+}
+
+@MainActor
+private func expectSendAction(
+    _ viewModel: BaseViewModel<TestState, TestAction, TestContext>,
+    _ action: TestAction,
+    succeeds: Bool,
+    assertOnComplete: ([TestState]) -> Void
+) async {
+    await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+        var emissions: [TestState] = []
+        var cancellable: AnyCancellable?
+        cancellable = viewModel.statePublisher.sink { emissions.append($0) }
+
+        viewModel.sendAction(action) { result in
+            switch (result, succeeds) {
+            case (.success, true), (.failure, false):
+                assertOnComplete(emissions)
+            case (.success, false):
+                Issue.record("expected failure, got success")
+            case (.failure(let error), true):
+                Issue.record("expected success, got failure: \(error)")
+            }
+            cancellable?.cancel()
+            continuation.resume()
+        }
     }
 }

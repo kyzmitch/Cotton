@@ -60,21 +60,17 @@ extension BrowserToolbarViewModelImpl: BrowserToolbarStateContext {
 
 extension BrowserToolbarViewModelImpl: SiteExternalNavigationDelegate {
     public func backNavigationDidUpdate(to canGoBack: Bool) {
-        Task {
-            try? await sendAction(.updateNavigation(
-                canGoBack: canGoBack,
-                canGoForward: nil
-            ))
-        }
+        sendAction(.updateNavigation(
+            canGoBack: canGoBack,
+            canGoForward: nil
+        ))
     }
 
     public func forwardNavigationDidUpdate(to canGoForward: Bool) {
-        Task {
-            try? await sendAction(.updateNavigation(
-                canGoBack: nil,
-                canGoForward: canGoForward
-            ))
-        }
+        sendAction(.updateNavigation(
+            canGoBack: nil,
+            canGoForward: canGoForward
+        ))
     }
 
     public func provisionalNavigationDidStart() {}
@@ -82,26 +78,18 @@ extension BrowserToolbarViewModelImpl: SiteExternalNavigationDelegate {
     public func siteDidOpen(appName: String) {}
 
     public func loadingProgressDidChange(_ progress: Float) {
-        Task {
-            try? await sendAction(.updateProgress(show: nil, value: progress))
-        }
+        sendAction(.updateProgress(show: nil, value: progress))
     }
 
     public func showLoadingProgress(_ show: Bool) {
-        Task {
-            try? await sendAction(.updateProgress(show: show, value: nil))
-        }
+        sendAction(.updateProgress(show: show, value: nil))
     }
 
     public func webViewDidHandleReuseAction() {
-        Task {
-            try? await sendAction(.stopWebViewReusage)
-        }
+        sendAction(.stopWebViewReusage)
     }
 
     public func webViewDidReplace(_ interface: WebViewNavigatable?) {
-        Task {
-            try? await sendAction(.replaceWebInterface(interface))
-        }
+        sendAction(.replaceWebInterface(interface))
     }
 }

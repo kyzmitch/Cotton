@@ -22,17 +22,10 @@ public typealias WebViewModelBase = BaseViewModel<
 >
 
 /// Web view model interface, can be sendable because it is an actor (main one)
-@MainActor public protocol WebViewModel: ObservableObject, Sendable {
-
-    // MARK: - kit action / observation
-
-    var state: WebViewModelState<WebViewStateContextProxy> { get set }
-    var statePublisher: Published<WebViewModelState<WebViewStateContextProxy>>.Publisher { get }
-    func sendAction(_ action: WebViewAction) async throws
-    func sendAction(
-        _ action: WebViewAction,
-        onComplete: ((Result<Void, Error>) -> Void)?
-    )
+@MainActor public protocol WebViewModel: ViewModelInterface, ObservableObject
+where State == WebViewModelState<WebViewStateContextProxy>,
+      Action == WebViewAction,
+      Context == WebViewStateContextProxy {
 
     // MARK: - navigation / policy (not pure sendAction)
 

@@ -54,9 +54,13 @@ open class BaseViewModel<
         self.state = stateMachine.state
     }
 
-    /// Apply an action to the view model state to get a new valid state
+    /// Apply an action to the view model state to get a new valid state.
+    ///
+    /// Prefer:
+    /// - `sendAction(_:)` / `sendActions(_:)` for sync UIKit call sites (fire-and-forget)
+    /// - `sendAction(_:) async` / `sendActions(_:) async` when order or errors must be awaited
     /// - Parameter action: an action to apply to the state
-    /// - Throws an error if incoming action is not valid for a current state or due to other errors
+    /// - Throws if the action is invalid for the current state or due to other errors
     open func sendAction(
         _ action: Action
     ) async throws {

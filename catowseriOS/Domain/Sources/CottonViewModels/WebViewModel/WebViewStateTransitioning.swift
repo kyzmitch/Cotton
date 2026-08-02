@@ -128,6 +128,11 @@ public struct WebViewStateTransitioning<C: WebViewStateContext>: StateTransition
             nextState = .initialized(site)
         case (.pendingLoad, .resetToSite(let site)):
             nextState = .initialized(site)
+        case (.pendingLoad, .openSite(let site)),
+             (.initialized, .openSite(let site)),
+             (.viewing, .openSite(let site)),
+             (.waitingForNavigation, .openSite(let site)):
+            nextState = .pendingPlugins(site.urlInfo, site.settings)
         case (.waitingForNavigation(let settings, let uRLInfo),
               .reload):
             nextState = .waitingForNavigation(settings, uRLInfo)

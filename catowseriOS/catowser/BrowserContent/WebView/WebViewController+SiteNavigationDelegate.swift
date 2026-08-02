@@ -30,10 +30,8 @@ extension WebViewController: WebViewNavigatable {
     func goForward() {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
-        Task {
-            do {
-                try await viewModel.sendAction(.goForward)
-            } catch {
+        viewModel.sendAction(.goForward) { result in
+            if case .failure(let error) = result {
                 print("Wrong state on go Forward action: \(error.localizedDescription)")
             }
         }
@@ -43,10 +41,8 @@ extension WebViewController: WebViewNavigatable {
     func goBack() {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
-        Task {
-            do {
-                try await viewModel.sendAction(.goBack)
-            } catch {
+        viewModel.sendAction(.goBack) { result in
+            if case .failure(let error) = result {
                 print("Wrong state on go Back action: \(error.localizedDescription)")
             }
         }
@@ -56,10 +52,8 @@ extension WebViewController: WebViewNavigatable {
     func reload() {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
-        Task {
-            do {
-                try await viewModel.sendAction(.reload)
-            } catch {
+        viewModel.sendAction(.reload) { result in
+            if case .failure(let error) = result {
                 print("Wrong state on re-load action: \(error.localizedDescription)")
             }
         }
@@ -70,10 +64,8 @@ extension WebViewController: WebViewNavigatable {
         guard viewModel.host == host, let jsSubject = webView else {
             return
         }
-        Task {
-            do {
-                try await viewModel.sendAction(.changeJavaScript(jsSubject, enabled))
-            } catch {
+        viewModel.sendAction(.changeJavaScript(jsSubject, enabled)) { result in
+            if case .failure(let error) = result {
                 print("Wrong state on JS change action: \(error.localizedDescription)")
             }
         }

@@ -70,6 +70,39 @@ struct WebViewStateTransitioningTests {
     }
 
     @MainActor
+    @Test func openSiteFromPendingLoadGoesToPendingPlugins() async throws {
+        let settings = Site.Settings(
+            isPrivate: false,
+            blockPopups: true,
+            isJSEnabled: false,
+            canLoadPlugins: false
+        )
+        // swiftlint:disable:next force_try
+        let domain = try! DomainName(input: "www.example.com")
+        let urlInfo = URLInfo(
+            scheme: .https,
+            path: "foo",
+            query: nil,
+            domainName: domain,
+            ipAddress: nil
+        )
+        let site = Site(
+            urlInfo: urlInfo,
+            settings: settings,
+            faviconData: nil,
+            searchSuggestion: nil,
+            userSpecifiedTitle: nil
+        )
+        let strategy = WebViewStateTransitioning<FakeWebViewStateContext>()
+        let next = try await strategy.transition(
+            from: .pendingLoad,
+            on: .openSite(site),
+            with: nil
+        )
+        #expect(next == .pendingPlugins(urlInfo, settings))
+    }
+
+    @MainActor
     @Test func illegalActionThrowsAndLeavesStateUnchangedConceptually() async {
         let strategy = WebViewStateTransitioning<FakeWebViewStateContext>()
         let initial: WebViewModelState<FakeWebViewStateContext> = .pendingLoad

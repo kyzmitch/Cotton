@@ -34,15 +34,29 @@ ViewModelKit MUST provide at least a closure-based adapter so existing CottonVie
 ### Requirement: BaseViewModel integrates the machine
 `BaseViewModel.sendAction` (and `ViewModelInterface` defaults consistent with it) MUST apply actions via the state machine and publish the resulting state on success.
 
+`ViewModelInterface` MUST expose:
+- a synchronous fire-and-forget `sendAction(_:)` for single-action sync call sites
+- an awaitable `sendAction(_:)` for callers that must wait or chain in `async` contexts
+- a completion-based `sendAction(_:onComplete:)` that surfaces success or failure
+- synchronous and awaitable `sendActions` that apply multiple actions **in order** (for sync call sites that need sequencing without nested completion callbacks)
+
 Subclasses MUST continue to supply optional `context` the same way they do today.
 
 #### Scenario: sendAction updates published state
-- **WHEN** `sendAction` succeeds
-- **THEN** `BaseViewModel.state` equals the machine’s current state after the transition
+- **WHEN** completion-based `sendAction` succeeds
+- **THEN** `statePublisher` emits the new state and `BaseViewModel.state` equals the machine’s current state after the transition
+
+#### Scenario: sync sendAction schedules async transition
+- **WHEN** synchronous `sendAction(_:)` or `sendAction(_:onComplete:)` is called
+- **THEN** the kit schedules the awaitable transition without requiring the caller to wrap the call in a `Task`
+
+#### Scenario: sync sendActions preserves order
+- **WHEN** synchronous `sendActions` is called with multiple actions
+- **THEN** the kit applies them sequentially (each completes before the next starts) and delivers one completion for the whole sequence
 
 #### Scenario: sendAction failure
 - **WHEN** `sendAction` fails because the strategy throws
-- **THEN** published state remains the pre-action state and the error is thrown / delivered to the completion callback
+- **THEN** published state remains the pre-action state and the error is delivered to the completion callback
 
 ### Requirement: Cover current CottonViewModels transition styles
 The state-machine design MUST support the transition styles already used by kit-based CottonViewModels:
