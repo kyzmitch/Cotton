@@ -68,9 +68,9 @@ import ViewModelKit
         appContext.nativeApp(for: host)
     }
 
-    private let selectTabUseCase: SelectedTabUseCase
+    private let selectTabUseCase: any SelectedTabUseCase
 
-    private let replaceTabUseCase: ReplaceSelectedTabUseCase
+    private let replaceTabUseCase: any ReplaceSelectedTabUseCase
 
     public weak var siteNavigation: SiteExternalNavigationDelegate?
 
@@ -81,17 +81,23 @@ import ViewModelKit
 
     /**
      Constructs web view model.
+
      For SwiftUI mode it is the same instance all the time, because web view model depends on async use cases
      and the init is async, that is why you can't use it in SwiftUI because it can't wait asynhroniously and
      need to build the view right away. That is why for SwiftUI mode we have to pass specific Site after view was built.
 
+     @param context A context for a view model
+     @param resolveDnsUseCase A use case dependency to check how to load web page links
+     @param selectTabUseCase A use case dependency to select specific tab content
+     @param replaceTabUseCase A use case dependency to replace tab's content
+     @param siteNavigation Delegate site navigation handling (e.g. forward/backward button states)
      @param site Can be nil when you are using just one same web view model because can't create new one every time in SwiftUI mode
      */
     init(
         _ context: any WebViewContext,
         _ resolveDnsUseCase: any ResolveDNSUseCase,
-        _ selectTabUseCase: SelectedTabUseCase,
-        _ replaceTabUseCase: ReplaceSelectedTabUseCase,
+        _ selectTabUseCase: any SelectedTabUseCase,
+        _ replaceTabUseCase: any ReplaceSelectedTabUseCase,
         _ siteNavigation: SiteExternalNavigationDelegate?,
         _ site: Site? = nil
     ) {
