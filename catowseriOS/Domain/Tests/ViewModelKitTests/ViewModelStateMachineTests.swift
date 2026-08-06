@@ -194,7 +194,7 @@ private func expectSendAction(
     _ viewModel: BaseViewModel<TestState, TestAction, TestContext>,
     _ action: TestAction,
     succeeds: Bool,
-    assertOnComplete: ([TestState]) -> Void
+    assertOnComplete: @escaping ([TestState]) -> Void
 ) async {
     await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
         var emissions: [TestState] = []

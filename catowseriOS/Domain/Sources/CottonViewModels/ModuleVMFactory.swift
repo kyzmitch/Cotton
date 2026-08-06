@@ -27,8 +27,8 @@ import ViewModelKit
     public static func createWebViewVM(
         _ context: any WebViewContext,
         _ resolveDnsUseCase: any ResolveDNSUseCase,
-        _ selectTabUseCase: SelectedTabUseCase,
-        _ replaceTabUseCase: ReplaceSelectedTabUseCase,
+        _ selectTabUseCase: any SelectedTabUseCase,
+        _ replaceTabUseCase: any ReplaceSelectedTabUseCase,
         _ siteNavigation: SiteExternalNavigationDelegate?,
         _ site: Site? = nil
     ) -> any WebViewModel {
@@ -45,9 +45,9 @@ import ViewModelKit
     /// tab view model
     public static func createTabVM(
         _ tab: CoreBrowser.Tab,
-        _ readTabUseCase: ReadSelectedTabIdUseCase,
-        _ closeTabUseCase: CloseTabUseCase,
-        _ selectTabUseCase: SelectTabUseCase,
+        _ readTabUseCase: any ReadSelectedTabIdUseCase,
+        _ closeTabUseCase: any CloseTabUseCase,
+        _ selectTabUseCase: any SelectTabUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
     ) -> TabViewModel {
@@ -63,7 +63,7 @@ import ViewModelKit
 
     /// all tabs view model
     public static func createAllTabsVM(
-        _ addTabUseCase: AddTabUseCase
+        _ addTabUseCase: any AddTabUseCase
     ) -> AllTabsViewModel {
         AllTabsViewModelImpl(addTabUseCase)
     }
@@ -77,8 +77,8 @@ import ViewModelKit
 
     /// Search bar view model
     public static func createSearchBarVM(
-        _ writeTabsUseCase: ReplaceSelectedTabUseCase,
-        _ createSearchURLUseCase: CreateSearchURLUseCase,
+        _ writeTabsUseCase: any ReplaceSelectedTabUseCase,
+        _ createSearchURLUseCase: any CreateSearchURLUseCase,
         _ appContext: SearchBarContext
     ) -> SearchBarViewModelWithDelegates {
         SearchBarViewModelImpl(
@@ -90,11 +90,11 @@ import ViewModelKit
 
     /// Tab previews view model
     public static func createTabPreviewsVM(
-        _ readTabUseCase: ReadAllTabsUseCase,
-        _ readSelectedIdUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: CloseTabUseCase,
-        _ selectUseCase: SelectTabUseCase,
-        _ addTabUseCase: AddTabUseCase,
+        _ readTabUseCase: any ReadAllTabsUseCase,
+        _ readSelectedIdUseCase: any ReadSelectedTabIdUseCase,
+        _ writeTabUseCase: any CloseTabUseCase,
+        _ selectUseCase: any SelectTabUseCase,
+        _ addTabUseCase: any AddTabUseCase,
         _ appContext: TabPreviewsAppContext
     ) -> TabsPreviewsViewModelWithHolder {
         TabsPreviewsViewModelImpl(
