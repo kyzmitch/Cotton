@@ -15,7 +15,7 @@ public protocol CoreUseCase: AnyObject, Sendable {
     associatedtype Input: Sendable
     /// Output type for specific Domain of business logic
     associatedtype Output: Sendable
-    
+
     /// Execute a use case with some input
     ///
     /// - Parameter input: Any input, could be Void

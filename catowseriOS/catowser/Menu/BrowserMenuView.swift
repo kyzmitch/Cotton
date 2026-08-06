@@ -115,7 +115,8 @@ struct BrowserMenuView: View {
                 }
             })
             .navigationBarTitle(Text(verbatim: model.viewTitle))
-            .navigationBarItems(trailing: Button<Text>(LocalizedStringKey(.dismissBtn)) { presentationMode.wrappedValue.dismiss() }
+            .navigationBarItems(trailing: Button<Text>(LocalizedStringKey(.dismissBtn)) { presentationMode.wrappedValue.dismiss()
+            }
             .foregroundColor(.black))
         }
         .alert(isPresented: $showingAppRestartAlert) {

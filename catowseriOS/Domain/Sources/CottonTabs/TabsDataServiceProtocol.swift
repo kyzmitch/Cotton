@@ -10,5 +10,5 @@ import GenericServiceKit
 
 /// Tabs data service interface
 public protocol TabsDataServiceProtocol: GenericDataServiceActorProtocol, TabsSubject where
-Command == TabsServiceCommand,
-ServiceData == TabsServiceData { }
+    Command == TabsServiceCommand,
+    ServiceData == TabsServiceData { }

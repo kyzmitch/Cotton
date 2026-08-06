@@ -116,7 +116,7 @@ final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsPr
             searchBarVM
         )
         startedVC = vc
-        
+
         window.rootViewController = startedVC?.viewController
         window.makeKeyAndVisible()
         // we need to attach observer only after adding all child coordinators
@@ -141,7 +141,7 @@ final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsPr
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func startTabsObservation() {
@@ -160,12 +160,12 @@ final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsPr
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     private func readTabsState() async {
         await handleTabSelection()
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleTabSelection() async {
@@ -181,7 +181,7 @@ final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsPr
         let index = selectedIndex ?? subject.tabs.startIndex
         await tabDidSelect(index, subject.tabs[index].contentType, tabId)
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleTabReplace() async {

@@ -126,7 +126,7 @@ extension SearchBarCoordinator: Navigating {
 }
 
 enum SearchBarPart: SubviewPart {
-    case suggestions(any SearchSuggestionsViewModel)
+    case suggestions(SearchSuggestionsViewModel)
     /// Similar case to the existing one, just to be able to create it without a dummy view model
     case simplySuggestions
 }
@@ -198,7 +198,7 @@ private extension SearchBarCoordinator {
         searchView.heightAnchor.constraint(equalToConstant: .searchViewHeight).isActive = true
     }
 
-    func insertSearchSuggestions(_ viewModel: any SearchSuggestionsViewModel) {
+    func insertSearchSuggestions(_ viewModel: SearchSuggestionsViewModel) {
         guard !isSuggestionsShowed else {
             return
         }

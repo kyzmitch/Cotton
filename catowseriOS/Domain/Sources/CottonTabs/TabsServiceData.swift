@@ -61,7 +61,7 @@ public struct TabsServiceData: GenericServiceData, Sendable {
         tabContentReplaced = .notStarted
         tabPreviewUpdated = .notStarted
     }
-    
+
     /// Need an optimization and use data from `allTabs`
     /// to have a single source of truth, but
     /// at the same time still need to have a state for command execution

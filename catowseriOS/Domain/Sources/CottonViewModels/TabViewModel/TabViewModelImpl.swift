@@ -15,11 +15,12 @@ import CottonUseCases
 import CottonTabs
 
 /// Tab view model implementation
+/// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` (see openspec ADOPTION.md).
 @MainActor final class TabViewModelImpl: TabViewModel {
     private var tab: CoreBrowser.Tab
-    private let readTabUseCase: ReadSelectedTabIdUseCase
-    private let closeTabUseCase: CloseTabUseCase
-    private let selectTabUseCase: SelectTabUseCase
+    private let readTabUseCase: any ReadSelectedTabIdUseCase
+    private let closeTabUseCase: any CloseTabUseCase
+    private let selectTabUseCase: any SelectTabUseCase
     private let context: TabViewModelContext
     private let featureManager: FeatureManager.StateHolder
 
@@ -28,9 +29,9 @@ import CottonTabs
 
     init(
         _ tab: CoreBrowser.Tab,
-        _ readTabUseCase: ReadSelectedTabIdUseCase,
-        _ closeTabUseCase: CloseTabUseCase,
-        _ selectTabUseCase: SelectTabUseCase,
+        _ readTabUseCase: any ReadSelectedTabIdUseCase,
+        _ closeTabUseCase: any CloseTabUseCase,
+        _ selectTabUseCase: any SelectTabUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
     ) {
@@ -41,7 +42,7 @@ import CottonTabs
         self.context = context
         self.featureManager = featureManager
         _state = .init(initialValue: .deSelected(tab.title, nil))
-        
+
         Task {
             let observingType = await context.observingApiTypeValue
             if #available(iOS 17.0, *), observingType.isSystemObservation {
@@ -127,7 +128,7 @@ import CottonTabs
         }
         return source
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func startTabsObservation(_ tabsSubject: TabsDataSubject) {
@@ -146,19 +147,19 @@ import CottonTabs
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func handleSelectedTabChange(_ tabsSubject: TabsDataSubject) async {
         let tabId = tabsSubject.selectedTabId
         guard let index = tabsSubject.tabs
-            .firstIndex(where: { $0.id == tabId }) else {
+                .firstIndex(where: { $0.id == tabId }) else {
             return
         }
         await tabDidSelect(index, tabsSubject.tabs[index].contentType, tabId)
 
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func observeReplacedTab(_ tabsSubject: TabsDataSubject) async {

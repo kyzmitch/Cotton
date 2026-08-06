@@ -32,7 +32,7 @@ final class TabsPreviewsViewController<
     private let uiServiceRegistry: UIServiceRegistry
     private var dataSource: [CoreBrowser.Tab]
     private var selectedId: CoreBrowser.Tab.ID?
-    
+
     // MARK: - init
 
     init(
@@ -49,7 +49,7 @@ final class TabsPreviewsViewController<
         self.uiServiceRegistry = uiServiceRegistry
         dataSource = []
         super.init(nibName: nil, bundle: nil)
-        
+
         Task {
             let observingType = await featureManager.observingApiTypeValue()
             if #available(iOS 17.0, *), observingType.isSystemObservation {
@@ -148,9 +148,9 @@ final class TabsPreviewsViewController<
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
+
     // MARK: - ViewModelConsumer
-    
+
     func onStateChange(_ nextState: ViewModel.State) {
         switch nextState {
         case .loading:
@@ -260,7 +260,7 @@ final class TabsPreviewsViewController<
             coordinator?.stop()
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func startTabsObservation() {
@@ -272,7 +272,7 @@ final class TabsPreviewsViewController<
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     private func handleSelectedTab() async {

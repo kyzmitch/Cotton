@@ -6,14 +6,14 @@ import PackageDescription
 // MARK: - Identifiers
 
 private extension String {
-    
+
     // MARK: - Root
-    
+
     static let domainPackage = "Domain"
     static let basePackage = "Base"
-    
+
     // MARK: - Libraries
-    
+
     static let searchLibrary = "CottonSearch"
     static let tabsLibrary = "CottonTabs"
     static let cottonDependencyAssembly = "CottonDependencyAssembly"
@@ -21,14 +21,14 @@ private extension String {
     static let useCasesLibrary = "CottonUseCases"
     static let viewModelsLibrary = "CottonViewModels"
     static let featureFlagsLibrary = "FeatureFlags"
-    
+
     // MARK: - Frameworks/Kits
-    
+
     static let genericServiceKit = "GenericServiceKit"
     static let viewModelKit = "ViewModelKit"
     static let baseUseCaseKit = "BaseUseCaseKit"
     static let featureFlagsKit = "FeatureFlagsKit"
-    
+
     // MARK: - Frameworks/Kits from Base package
 
     static let cottonNetworkingLibrary = "CottonNetworking"
@@ -36,12 +36,13 @@ private extension String {
     static let cottonBase = "CottonBase"
     static let autoMockableKit = "AutoMockable"
     static let cottonPluginsLibrary = "CottonPlugins"
-    
+
     // MARK: - 3rd party
 
     static let reactiveSwiftFramework = "ReactiveSwift"
     static let alamofireFramework = "Alamofire"
     static let swXmlHashFramework = "SWXMLHash"
+    static let mockableFramework = "Mockable"
 }
 
 // MARK: - Package
@@ -112,6 +113,10 @@ let package = Package(
         .package(
             url: "https://github.com/drmohundro/SWXMLHash",
             exact: "7.0.1"
+        ),
+        .package(
+            url: "https://github.com/Kolos65/Mockable",
+            from: "0.6.4"
         )
     ],
     targets: [
@@ -182,11 +187,15 @@ let package = Package(
             dependencies: [
                 .product(name: .cottonBase, package: .basePackage),
                 .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .mockableFramework, package: .mockableFramework),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swXmlHashFramework, package: .swXmlHashFramework)
             ],
             resources: [
                 .process("Resources/topdomains.txt")
+            ],
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
             ]
         ),
         .target(
@@ -205,6 +214,7 @@ let package = Package(
             name: .viewModelsLibrary,
             dependencies: [
                 .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .mockableFramework, package: .mockableFramework),
                 .target(name: .coreBrowserLibrary),
                 .product(name: .cottonBase, package: .basePackage),
                 .product(name: .cottonPluginsLibrary, package: .basePackage),
@@ -213,11 +223,10 @@ let package = Package(
                 .target(name: .featureFlagsKit),
                 .target(name: .tabsLibrary),
                 .target(name: .viewModelKit)
+            ],
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
             ]
-        ),
-        .binaryTarget(
-            name: .cottonBase,
-            path: "../../cotton-base/build/XCFrameworks/release/CottonBase.xcframework"
         ),
         .testTarget(
             name: "DomainTests",
@@ -232,6 +241,16 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "CottonSearchTests",
+            dependencies: [
+                .target(name: .searchLibrary),
+                .target(name: .genericServiceKit),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .cottonRestKit, package: .basePackage),
+                .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
+            ]
+        ),
+        .testTarget(
             name: "BaseUseCaseKitTests",
             dependencies: [
                 .target(name: .genericServiceKit)
@@ -240,7 +259,23 @@ let package = Package(
         .testTarget(
             name: "CottonViewModelsTests",
             dependencies: [
-                .target(name: .viewModelsLibrary)
+                .target(name: .viewModelsLibrary),
+                .target(name: .useCasesLibrary),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .cottonBase, package: .basePackage),
+                .product(name: .cottonPluginsLibrary, package: .basePackage),
+                .product(name: .cottonRestKit, package: .basePackage),
+                .target(name: .featureFlagsKit),
+                .product(name: .mockableFramework, package: .mockableFramework)
+            ],
+            swiftSettings: [
+                .define("MOCKING")
+            ]
+        ),
+        .testTarget(
+            name: "ViewModelKitTests",
+            dependencies: [
+                .target(name: .viewModelKit)
             ]
         )
     ],

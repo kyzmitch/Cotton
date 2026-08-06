@@ -22,7 +22,7 @@ final class AppStartInfo: Sendable {
     /// Top sites UIKit view controller needs that view model and it is async
     let topSitesVM: TopSitesViewModel
     /// Search suggestions view model
-    let suggestionsVM: any SearchSuggestionsViewModel
+    let suggestionsVM: SearchSuggestionsViewModel
     /// phone tab previews view model needed to make Phone previews coordinator
     /// work without a crash, because View model used to fetch VM before use cases registration
     /// which is not the planned sequence of initialization
@@ -41,12 +41,12 @@ final class AppStartInfo: Sendable {
     let uiFramework: UIFrameworkType
     /// Search data service
     let searchDataService: any SearchDataServiceProtocol
-    
+
     init(
         allTabsVM: AllTabsViewModel,
         topSitesVM: TopSitesViewModel,
         phoneTabPreviewsVM: TabsPreviewsViewModelWithHolder,
-        suggestionsVM: any SearchSuggestionsViewModel,
+        suggestionsVM: SearchSuggestionsViewModel,
         webViewModel: any WebViewModel,
         searchBarVM: SearchBarViewModelWithDelegates,
         jsPluginsBuilder: (any JSPluginsSource),

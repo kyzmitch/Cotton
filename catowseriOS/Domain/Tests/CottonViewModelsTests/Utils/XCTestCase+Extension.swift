@@ -12,6 +12,7 @@ import Combine
 // https://www.swiftbysundell.com/articles/unit-testing-combine-based-swift-code/
 
 extension XCTestCase {
+    @MainActor
     func awaitPublisherValue<T: Publisher>(
         _ publisher: T,
         timeout: TimeInterval = 10,

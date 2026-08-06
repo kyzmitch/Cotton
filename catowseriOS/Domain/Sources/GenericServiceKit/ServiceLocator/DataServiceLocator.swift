@@ -6,20 +6,19 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
-
 import Foundation
 
 /// Service locator for the use cases
 public final class DataServiceLocator: LazyServiceLocator {
     /// Init
     public override init() {}
-    
+
     /// Register a closure which could create an instance of a use case
     /// - Parameter instance: an instance (without generic parameters) which is stored by the specific metatype id
     public func register<T: GenericDataServiceProtocol>(_ recipe: @escaping () -> T) {
         super.register(recipe)
     }
-    
+
     /// Register an instance of a use case
     /// - Parameter instance: an instance (without generic parameters) which is stored by the specific metatype id
     public func register<T: GenericDataServiceProtocol>(_ instance: T) {
@@ -35,7 +34,7 @@ public final class DataServiceLocator: LazyServiceLocator {
     public func registerNamed<T: GenericDataServiceProtocol>(_ instance: T, _ key: String) {
         super.registerNamed(instance, key)
     }
-    
+
     /// Register an instance using a concrete type metadata which can't be determined automatically
     ///
     /// - Parameter instance: an object instance stored in a service locator

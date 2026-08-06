@@ -93,7 +93,6 @@
 		75DA4C7B2C9C7F4D009AE049 /* UIServiceRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DA4C7A2C9C7F40009AE049 /* UIServiceRegistry.swift */; };
 		75EA4E6F29F7055800165A07 /* TitledImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EA4E6E29F7055800165A07 /* TitledImageView.swift */; };
 		75ECAB092F4C49FF00B6B80D /* SearchViews in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB082F4C49FF00B6B80D /* SearchViews */; };
-		75ECAB262F4C800000B6B80D /* SearchSuggestions in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB252F4C800000B6B80D /* SearchSuggestions */; };
 		75ECAB0B2F4C4AC100B6B80D /* ViewsBase in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB0A2F4C4AC100B6B80D /* ViewsBase */; };
 		75ECAB112F4C753900B6B80D /* EnvironmentValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB0E2F4C753900B6B80D /* EnvironmentValues+Extension.swift */; };
 		75ECAB122F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB0F2F4C753900B6B80D /* UIViewControllerRepresentable+Extension.swift */; };
@@ -101,6 +100,7 @@
 		75ECAB1C2F4C75E600B6B80D /* PhoneSearchBarLegacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECAB1B2F4C75E600B6B80D /* PhoneSearchBarLegacyView.swift */; };
 		75ECAB1E2F4CCB9900B6B80D /* CottonDesignKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB1D2F4CCB9900B6B80D /* CottonDesignKit */; };
 		75ECAB202F4CD04500B6B80D /* CommonDelegatesLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB1F2F4CD04500B6B80D /* CommonDelegatesLibrary */; };
+		75ECAB262F4C800000B6B80D /* SearchSuggestions in Frameworks */ = {isa = PBXBuildFile; productRef = 75ECAB252F4C800000B6B80D /* SearchSuggestions */; };
 		75EFE9692CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EFE9682CC4C9C8001CD0E6 /* ObservingApiTypeModel.swift */; };
 		75FAAB38292D56880086F2D1 /* SearchBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FAAB37292D56880086F2D1 /* SearchBarCoordinator.swift */; };
 		841022B9224781A20021516F /* LinkTagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841022B8224781A20021516F /* LinkTagsViewController.swift */; };
@@ -228,6 +228,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		40F232343003ADFA00B3C58A /* TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = TestPlan.xctestplan; sourceTree = "<group>"; };
 		605C54F421F8A8A100B3DC73 /* TabsPreviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsPreviewsViewController.swift; sourceTree = "<group>"; };
 		605C54F621F8A9E900B3DC73 /* TabPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPreviewCell.swift; sourceTree = "<group>"; };
 		605C550621F8AA5900B3DC73 /* ReusableItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableItem.swift; sourceTree = "<group>"; };
@@ -665,6 +666,7 @@
 				8435A4A11EED5E700020102F /* Assets.xcassets */,
 				60724F78221694A30071BECF /* SearchPlugins */,
 				8435A4A31EED5E700020102F /* LaunchScreen.storyboard */,
+				40F232343003ADFA00B3C58A /* TestPlan.xctestplan */,
 				60C12BE1226746EB004FCB14 /* Info.plist */,
 				C27371191F7A341900900F03 /* Localizable.strings */,
 			);
@@ -1550,11 +1552,6 @@
 			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
 			productName = SearchViews;
 		};
-		75ECAB252F4C800000B6B80D /* SearchSuggestions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
-			productName = SearchSuggestions;
-		};
 		75ECAB0A2F4C4AC100B6B80D /* ViewsBase */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
@@ -1569,6 +1566,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
 			productName = CommonDelegatesLibrary;
+		};
+		75ECAB252F4C800000B6B80D /* SearchSuggestions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75ECAB072F4C490B00B6B80D /* XCLocalSwiftPackageReference "Presentation" */;
+			productName = SearchSuggestions;
 		};
 		8AD4F51B28F49219009C4BDC /* ReactiveSwift */ = {
 			isa = XCSwiftPackageProductDependency;

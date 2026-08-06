@@ -17,7 +17,7 @@ import AutoMockable
 
 /// Create search URL using selected search engine and return async task
 public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable {
-    
+
     /// Input for creating search URL
     typealias Input = (source: WebAutoCompletionSource, suggestion: String)
     /// Output which is URL
@@ -36,14 +36,14 @@ public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable {
 public final class CreateSearchURLUseCaseImpl: CreateSearchURLUseCase {
     /// Search data service for handling search commands
     private let searchDataService: any SearchDataServiceProtocol
-    
+
     /// Initializes the use case with search data service
     ///
     /// - Parameter searchDataService: Service for handling search data operations
     public init(_ searchDataService: any SearchDataServiceProtocol) {
         self.searchDataService = searchDataService
     }
-    
+
     /// Executes the use case to create a search URL
     ///
     /// - Parameter input: The search source and suggestion text

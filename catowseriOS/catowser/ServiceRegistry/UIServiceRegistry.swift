@@ -29,17 +29,17 @@ import ViewsBase
         internalInstance = created
         return created
     }
-    
+
     /// Internal instance for the singletone
     static private var internalInstance: UIServiceRegistry?
-    
+
     /// Default positioning settings
     private let positioning: TabsStatesInterface
     /// A workaround to be able to use available marker.
     ///
     /// Should be main actor data beacuse observed almost
     /// everytime in some view controller.
-    private var _tabsSubject: Any? = nil
+    private var _tabsSubject: Any?
     /// Yet another way for observing, the most modern way.
     ///
     /// Should be main actor instead of data service own actor,
@@ -49,14 +49,15 @@ import ViewsBase
         if _tabsSubject == nil {
             _tabsSubject = TabsDataSubject(positioning)
         }
+        // swiftlint:disable force_cast
         return _tabsSubject as! TabsDataSubject
     }
-    
+
     /// web views reuse manager
     let reuseManager: WebViewsReuseManager
     /// view controller factory
     let vcFactory: ViewControllerFactory
-    
+
     private init(
         _ positioning: TabsStatesInterface,
         _ uiInterface: UIUserInterfaceIdiom

@@ -104,7 +104,7 @@ final class AlamofireHTTPAdaptee<
             throw HttpError.httpFailure(error: error)
         }
     }
-    
+
     func performAsyncVoidRequest(
         _ request: URLRequest,
         sucessCodes: [Int]

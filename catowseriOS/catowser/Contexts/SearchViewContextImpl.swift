@@ -22,7 +22,7 @@ struct SearchViewContextImpl: SearchViewContext {
             await FeatureManager.shared.appAsyncApiTypeValue()
         }
     }
-    
+
     var webAutocompletionSourceValue: WebAutoCompletionSource {
         get async {
             await FeatureManager.shared.webSearchAutoCompleteValue()

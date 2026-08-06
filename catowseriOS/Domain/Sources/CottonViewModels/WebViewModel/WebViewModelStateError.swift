@@ -9,11 +9,11 @@
 import Foundation
 
 extension WebViewModelState {
-    enum Error: LocalizedError {
+    public enum Error: LocalizedError {
         case unexpectedStateForAction(WebViewModelState, WebViewAction)
         case notImplemented
 
-        var errorDescription: String? {
+        public var errorDescription: String? {
             switch self {
             case .unexpectedStateForAction(let state, let action):
                 "Unexpected state \"\(state.description)\" for action \"\(action.description)\""

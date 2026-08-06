@@ -20,11 +20,11 @@ public enum SearchServiceCommand: GenericDataServiceCommand {
     case resolveDomainNameInURL(UUID, URL)
     /// Fetch a search engine information and use it to construct a URL with a suggested phase
     case fetchSearchURL(
-        identifier: UUID,
-        suggestion: String,
-        searchEngineName: WebAutoCompletionSource
-    )
-    
+            identifier: UUID,
+            suggestion: String,
+            searchEngineName: WebAutoCompletionSource
+         )
+
     public static var allCases: [SearchServiceCommand] {
         // swiftlint:disable:next force_unwrapping
         let dummyURL = URL(string: "www.example.com")!

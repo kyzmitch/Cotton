@@ -25,7 +25,7 @@ final class SearchBarLegacyView<
     typealias ViewModelType = VM
     let viewModel: ViewModelType
     private var stateCancellable: AnyCancellable?
-    
+
     /// Search bar view delegate
     weak var delegate: UISearchBarDelegate? {
         didSet {
@@ -93,11 +93,11 @@ final class SearchBarLegacyView<
         dohStateIcon.topAnchor.constraint(equalTo: topAnchor).isActive = true
         dohStateIcon.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         dohStateIcon.widthAnchor.constraint(equalTo: dohStateIcon.heightAnchor).isActive = true
-        
+
         stateCancellable?.cancel()
         stateCancellable = startStateObserving()
     }
-    
+
     func handleAction(_ action: SearchBarAction) {
         viewModel.sendAction(action) { result in
             switch result {
@@ -207,9 +207,9 @@ final class SearchBarLegacyView<
         searchBarView.becomeFirstResponder()
         prepareForEditMode()
     }
-    
+
     // MARK: - ViewModelConsumer
-    
+
     func onStateChange(_ nextState: State) {
         switch nextState {
         case is SearchBarInViewMode<SearchBarStateContextProxy>:

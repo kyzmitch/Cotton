@@ -16,7 +16,7 @@ final class SearchBarDelegateImpl: NSObject {
     @LeadingTrimmed private var tempSearchText: String
     /// View model
     private let viewModel: SearchBarViewModel
-    
+
     init(
         viewModel: SearchBarViewModel
     ) {
@@ -32,14 +32,11 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
         _ searchBar: UISearchBar,
         textDidChange searchQuery: String
     ) {
-        Task {
-            do {
-                if searchQuery.isEmpty || searchQuery.looksLikeURL() {
-                    try await viewModel.sendAction(.cancelSearch)
-                } else {
-                    try await viewModel.sendAction(.startSearch(searchQuery))
-                }
-            } catch {
+        let action: SearchBarAction = searchQuery.isEmpty || searchQuery.looksLikeURL()
+            ? .cancelSearch
+            : .startSearch(searchQuery)
+        viewModel.sendAction(action) { result in
+            if case .failure(let error) = result {
                 print("textDidChange fail: \(error)")
             }
         }
@@ -68,10 +65,8 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
     }
 
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        Task {
-            do {
-                try await viewModel.sendAction(.startSearch(nil))
-            } catch {
+        viewModel.sendAction(.startSearch(nil)) { result in
+            if case .failure(let error) = result {
                 print("TextDidBeginEditing error: \(error)")
             }
         }
@@ -79,10 +74,8 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
 
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        Task {
-            do {
-                try await viewModel.sendAction(.cancelSearch)
-            } catch {
+        viewModel.sendAction(.cancelSearch) { result in
+            if case .failure(let error) = result {
                 print("CancelButtonClicked error: \(error)")
             }
         }
@@ -99,10 +92,8 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
             // need to open web view with url of search engine and specific search queue
             content = .suggestion(text)
         }
-        Task {
-            do {
-                try await viewModel.sendAction(.selectSuggestion(content))
-            } catch {
+        viewModel.sendAction(.selectSuggestion(content)) { result in
+            if case .failure(let error) = result {
                 print("SearchButtonClicked error: \(error)")
             }
         }

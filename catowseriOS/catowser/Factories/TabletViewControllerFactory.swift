@@ -52,7 +52,7 @@ final class TabletViewControllerFactory: ViewControllerFactory {
             subController,
             settingsDelegate,
             downloadDelegate,
-        )
+            )
         return searchBarVC
     }
 

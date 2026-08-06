@@ -78,7 +78,7 @@ extension RestClient {
             transport: adapter
         )
     }
-    
+
     /// Makes a REST request in Concurrency Task form without any response, with optional authentication
     ///
     /// - Parameter endpoint: An endpoint model describing the request information for specific server

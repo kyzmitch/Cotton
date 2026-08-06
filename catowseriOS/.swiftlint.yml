@@ -9,6 +9,8 @@ excluded:
     - CottonDataTests/GeneratedMocks
     - DerivedData
     - SourcePackages
+    - Base/.build
+    - Domain/.build
 
 identifier_name:
     min_length: 1 # warning

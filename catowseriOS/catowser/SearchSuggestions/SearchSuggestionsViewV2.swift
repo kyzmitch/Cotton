@@ -17,7 +17,7 @@ struct SearchSuggestionsViewV2<S: SearchSuggestionsViewModel>: View {
     /// Save currently selected suggestion to be able to observe it
     @State private var selected: SuggestionType?
     /// Used to update the view from loading to suggestions list
-    @State private var suggestions: SearchSuggestionsViewState = .waitingForQuery
+    @State private var suggestions: SearchSuggestionsState = .waitingForQuery
     /// A view model
     @EnvironmentObject private var viewModel: S
 

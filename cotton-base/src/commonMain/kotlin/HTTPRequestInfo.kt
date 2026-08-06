@@ -10,5 +10,5 @@ data class HTTPRequestInfo(
     val method: HTTPMethod,
     val headers: Set<HTTPHeader>,
     val requestTimeout: Long,
-    val httpBody: ByteArray? = null
+    val httpBody: ByteArray? = null,
 )

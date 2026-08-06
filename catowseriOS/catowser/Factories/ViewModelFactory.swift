@@ -35,7 +35,7 @@ import FeatureFlags
         self.defaultTabProvider = defaultTabProvider
     }
 
-    func searchSuggestionsViewModel() async -> any SearchSuggestionsViewModel {
+    func searchSuggestionsViewModel() async -> SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         let autocompleteUseCase = await useCaseRegistry.findUseCase((any FetchAutocompleteSuggestionsUseCase).self)
         return ModuleVMFactory.createSearchSuggestionsVM(
@@ -108,7 +108,7 @@ import FeatureFlags
         async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
         return await TopSitesViewModel(sites, replaceTabUseCase)
     }
-    
+
     func searchBarViewModel(
         _ context: SearchBarContext
     ) async -> SearchBarViewModelWithDelegates {
@@ -120,7 +120,7 @@ import FeatureFlags
             context
         )
     }
-    
+
     func toolbarViewModel() -> BrowserToolbarViewModel {
         let context = BrowserToolbarViewContextImpl()
         return ModuleVMFactory.createToolbarVM(context)

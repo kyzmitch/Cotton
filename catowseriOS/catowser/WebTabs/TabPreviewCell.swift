@@ -194,7 +194,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
 
         titleText.text = tab.title
         titleText.text = tab.contentType.title
-        
+
         if shouldHighlight {
             self.layer.borderWidth = 2
             self.layer.borderColor = UIColor.black.cgColor

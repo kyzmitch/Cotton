@@ -20,7 +20,7 @@ public enum SearchServiceError: DataServiceKitError {
     public init(zombyInstance: Bool) {
         self = .zombyInstance
     }
-    
+
     public var errorDescription: String? {
         switch self {
         case .zombyInstance:

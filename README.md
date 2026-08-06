@@ -93,7 +93,7 @@ https://github.com/realm/SwiftLint
 ### Sourcery
 Used to generate simple mocks. Can't be used for the Swift protocols with associated types.
 https://github.com/krzysztofzablocki/Sourcery
-### SwiftyMocky
-Used to generate complex mocks for the types and Swift protocols with associated types and constraints. 
-https://github.com/MakeAWishFoundation/SwiftyMocky
+### Kolos65/Mockable
+Used to generate mocks for the types. 
+https://github.com/Kolos65/Mockable
 

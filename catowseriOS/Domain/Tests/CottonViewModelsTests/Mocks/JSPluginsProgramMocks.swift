@@ -10,6 +10,7 @@ import CottonPlugins
 import WebKit
 import CottonBase
 
+@MainActor
 final class MockedJSPluginsProgram: JSPluginsProgram {
     var plugins: [CottonPlugins.HandlablePlugin] = []
 
@@ -38,6 +39,7 @@ final class MockedJSPluginsProgram: JSPluginsProgram {
     }
 }
 
+@MainActor
 final class MockedJSPluginsSource: JSPluginsSource {
     typealias Program = MockedJSPluginsProgram
     let jsProgram: MockedJSPluginsProgram

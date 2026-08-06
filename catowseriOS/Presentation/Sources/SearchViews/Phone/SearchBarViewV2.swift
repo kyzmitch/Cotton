@@ -134,7 +134,7 @@ struct SearchBarViewV2_Previews: PreviewProvider {
         } set: { _ in
             //
         }
-        let viewModel = SearchBarViewModel()
+      let viewModel = SearchBarViewModel(transitioning: SearchBarStateTransitioning())
 
         // For some reason it jumps after selection
         SearchBarViewV2(query, action, viewModel)

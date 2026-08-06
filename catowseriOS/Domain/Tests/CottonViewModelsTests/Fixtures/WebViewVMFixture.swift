@@ -7,36 +7,20 @@
 //
 
 import XCTest
-import CottonRestKit
 import CottonBase
 import WebKit
-import SwiftyMocky
+@testable import CottonViewModels
 
 /// A known state against which a test is running for web view vm
 @MainActor
 class WebViewVMFixture: XCTestCase {
-    // MARK: - mocks and objects to be re-created
-
-    var goodServerMock: MockedGoodDnsServer!
-    var goodJsonEncodingMock: MockedGoodJSONEncoding!
-    var reachabilityMock: NetworkReachabilityAdapterMock<MockedGoodDnsServer>!
-    var goodDnsClient: RestInterfaceMock<MockedGoodDnsServer,
-                                         NetworkReachabilityAdapterMock<MockedGoodDnsServer>,
-                                         MockedGoodJSONEncoding>!
-    var rxSubscriber: MockedDNSContext.HttpKitRxSubscriber!
-    var subscriber: MockedDNSContext.HttpKitSubscriber!
-    var goodDnsContext: MockedDNSContext!
     var exampleIpAddress: String?
-    lazy var goodContextMock: MockedDNSContext = .init(goodDnsClient, rxSubscriber, subscriber)
-    lazy var strategyMock: DNSResolvingStrategyMock = .init(goodContextMock)
-    lazy var resolveDnsUseCaseMock = ResolveDNSUseCaseMock<DNSResolvingStrategyMock<MockedDNSContext>>()
-    lazy var selectedTabUseCaseMock = SelectedTabUseCaseMock()
-    lazy var writeTabsUseCase = WriteTabsUseCaseMock()
+    var resolveDnsUseCaseMock: MockResolveDNSUseCase!
+    var selectedTabUseCaseMock: MockSelectedTabUseCase!
+    var replaceSelectedTabUseCaseMock: MockReplaceSelectedTabUseCase!
     var jsSubject: MockedWebViewWithError!
     var webViewContext: MockedWebViewContext!
     var settings: Site.Settings!
-
-    // MARK: - constants
 
     // swiftlint:disable:next force_try
     let exampleDomainName: DomainName = try! .init(input: "www.example.com")
@@ -78,18 +62,9 @@ class WebViewVMFixture: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        goodServerMock = .init()
-        goodJsonEncodingMock = .init()
-        // swiftlint:disable:next force_unwrapping
-        reachabilityMock = .init(server: goodServerMock)!
-        goodDnsClient = .init(server: goodServerMock,
-                              jsonEncoder: goodJsonEncodingMock,
-                              reachability: reachabilityMock,
-                              httpTimeout: 0)
-
-        rxSubscriber = .init()
-        subscriber = .init()
-        goodDnsContext = .init(goodDnsClient, rxSubscriber, subscriber)
+        resolveDnsUseCaseMock = .init()
+        selectedTabUseCaseMock = .init()
+        replaceSelectedTabUseCaseMock = .init()
         jsSubject = .init()
         webViewContext = .init(doh: false,
                                js: false,
@@ -101,5 +76,16 @@ class WebViewVMFixture: XCTestCase {
                          blockPopups: true,
                          isJSEnabled: false,
                          canLoadPlugins: false)
+    }
+
+    func makeViewModel(site: Site? = nil) -> WebViewModelImpl {
+        WebViewModelImpl(
+            webViewContext,
+            resolveDnsUseCaseMock,
+            selectedTabUseCaseMock,
+            replaceSelectedTabUseCaseMock,
+            nil,
+            site ?? exampleSite
+        )
     }
 }

@@ -19,16 +19,16 @@ import ViewModelKit
     public static func createSearchSuggestionsVM(
         _ autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase,
         _ context: SearchViewContext
-    ) -> any SearchSuggestionsViewModel {
+    ) -> SearchSuggestionsViewModel {
         SearchSuggestionsViewModelImpl(autocompleteUseCase, context)
     }
-    
+
     /// Web view model
     public static func createWebViewVM(
         _ context: any WebViewContext,
         _ resolveDnsUseCase: any ResolveDNSUseCase,
-        _ selectTabUseCase: SelectedTabUseCase,
-        _ replaceTabUseCase: ReplaceSelectedTabUseCase,
+        _ selectTabUseCase: any SelectedTabUseCase,
+        _ replaceTabUseCase: any ReplaceSelectedTabUseCase,
         _ siteNavigation: SiteExternalNavigationDelegate?,
         _ site: Site? = nil
     ) -> any WebViewModel {
@@ -41,13 +41,13 @@ import ViewModelKit
             site
         )
     }
-    
+
     /// tab view model
     public static func createTabVM(
         _ tab: CoreBrowser.Tab,
-        _ readTabUseCase: ReadSelectedTabIdUseCase,
-        _ closeTabUseCase: CloseTabUseCase,
-        _ selectTabUseCase: SelectTabUseCase,
+        _ readTabUseCase: any ReadSelectedTabIdUseCase,
+        _ closeTabUseCase: any CloseTabUseCase,
+        _ selectTabUseCase: any SelectTabUseCase,
         _ context: TabViewModelContext,
         _ featureManager: FeatureManager.StateHolder
     ) -> TabViewModel {
@@ -60,25 +60,25 @@ import ViewModelKit
             FeatureManager.shared
         )
     }
-    
+
     /// all tabs view model
     public static func createAllTabsVM(
-        _ addTabUseCase: AddTabUseCase
+        _ addTabUseCase: any AddTabUseCase
     ) -> AllTabsViewModel {
         AllTabsViewModelImpl(addTabUseCase)
     }
-    
+
     /// Toolbar view model
     public static func createToolbarVM(
         _ appContext: BrowserToolbarViewContext
     ) -> BrowserToolbarViewModel {
         BrowserToolbarViewModelImpl(appContext)
     }
-    
+
     /// Search bar view model
     public static func createSearchBarVM(
-        _ writeTabsUseCase: ReplaceSelectedTabUseCase,
-        _ createSearchURLUseCase: CreateSearchURLUseCase,
+        _ writeTabsUseCase: any ReplaceSelectedTabUseCase,
+        _ createSearchURLUseCase: any CreateSearchURLUseCase,
         _ appContext: SearchBarContext
     ) -> SearchBarViewModelWithDelegates {
         SearchBarViewModelImpl(
@@ -87,14 +87,14 @@ import ViewModelKit
             appContext
         )
     }
-    
+
     /// Tab previews view model
     public static func createTabPreviewsVM(
-        _ readTabUseCase: ReadAllTabsUseCase,
-        _ readSelectedIdUseCase: ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: CloseTabUseCase,
-        _ selectUseCase: SelectTabUseCase,
-        _ addTabUseCase: AddTabUseCase,
+        _ readTabUseCase: any ReadAllTabsUseCase,
+        _ readSelectedIdUseCase: any ReadSelectedTabIdUseCase,
+        _ writeTabUseCase: any CloseTabUseCase,
+        _ selectUseCase: any SelectTabUseCase,
+        _ addTabUseCase: any AddTabUseCase,
         _ appContext: TabPreviewsAppContext
     ) -> TabsPreviewsViewModelWithHolder {
         TabsPreviewsViewModelImpl(

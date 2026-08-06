@@ -1,6 +1,6 @@
 //
 //  StateContext.swift
-//  
+//
 //
 //  Created by Andrey Ermoshin on 23.12.2024.
 //

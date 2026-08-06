@@ -49,7 +49,7 @@ protocol ViewControllerFactory: AnyObject {
     ) -> SearchBarBaseViewController
     func searchSuggestionsViewController(
         _ delegate: SearchSuggestionsListDelegate?,
-        _ viewModel: any SearchSuggestionsViewModel
+        _ viewModel: SearchSuggestionsViewModel
     ) -> AnyViewController
 
     func webViewController<C: Navigating>(
@@ -158,7 +158,7 @@ extension ViewControllerFactory {
 
     func searchSuggestionsViewController(
         _ delegate: SearchSuggestionsListDelegate?,
-        _ viewModel: any SearchSuggestionsViewModel
+        _ viewModel: SearchSuggestionsViewModel
     ) -> AnyViewController {
         // It seems it should be computed property
         // to allow app. to use different view model

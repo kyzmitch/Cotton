@@ -18,7 +18,7 @@ extension SearchEngine {
 
         return SearchEngine(shortName: "Google",
                             domainName: "www.google.com",
-                            path: "search",
+                            path: "/search",
                             queryItems: items,
                             imageData: .none)
     }

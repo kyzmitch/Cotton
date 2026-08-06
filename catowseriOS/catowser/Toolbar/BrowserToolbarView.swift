@@ -174,7 +174,7 @@ final class BrowserToolbarView: UIToolbar {
         } else {
             super.init(frame: frame)
         }
-        
+
         Task {
             let observingType = await featureManager.observingApiTypeValue()
             if #available(iOS 17.0, *), observingType == .systemObservation {
@@ -316,13 +316,13 @@ private extension BrowserToolbarView {
         }
         rotate.startAnimation()
     }
-    
+
     @available(iOS 17.0, *)
     func readTabsState() async {
         await handleSelectedTabChange()
         await handleTabsCountChange()
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func startTabsObservation() {
@@ -342,14 +342,14 @@ private extension BrowserToolbarView {
             }
         }
     }
-    
+
     @available(iOS 17.0, *)
     @MainActor
     func handleSelectedTabChange() async {
         let subject = uiServiceRegistry.tabsSubject
         let tabId = subject.selectedTabId
         guard let index = subject.tabs
-            .firstIndex(where: { $0.id == tabId }) else {
+                .firstIndex(where: { $0.id == tabId }) else {
             return
         }
         await tabDidSelect(index, subject.tabs[index].contentType, tabId)

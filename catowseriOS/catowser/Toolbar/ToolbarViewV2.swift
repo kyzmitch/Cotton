@@ -35,7 +35,7 @@ struct ToolbarViewV2: ToolbarContent {
         isGoForwardDisabled = false
         isRefreshDisabled = false
     }
-    
+
     var body: some ToolbarContent {
         ToolbarItem(placement: .bottomBar) {
             DisableableButton(

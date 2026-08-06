@@ -36,9 +36,9 @@ public struct SearchServiceData: GenericServiceData {
     var fetchingSearchSuggestions: SearchSuggestionsData = .notStarted
     /// state of constructing search URL using search engine
     var constructingSearchURL: SearchURLData = .notStarted
-    
+
     public init() { }
-    
+
     public var suggestions: [String] {
         get throws(SearchServiceError) {
             guard case .finished(let result) = fetchingSearchSuggestions else {
@@ -52,7 +52,7 @@ public struct SearchServiceData: GenericServiceData {
             }
         }
     }
-    
+
     public var resolvedURL: URL {
         get throws(SearchServiceError) {
             guard case .finished(let result) = resolvingDomainName else {
@@ -66,7 +66,7 @@ public struct SearchServiceData: GenericServiceData {
             }
         }
     }
-    
+
     public var searchURL: URL {
         get throws(SearchServiceError) {
             guard case .finished(let result) = constructingSearchURL else {

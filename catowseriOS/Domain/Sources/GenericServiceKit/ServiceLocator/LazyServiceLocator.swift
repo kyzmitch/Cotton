@@ -11,7 +11,7 @@ import Foundation
 enum ServiceRecord {
     case instance(Any)
     case fromClosure(() -> Any)
-    
+
     func unwrap() -> Any {
         switch self {
         case .instance(let instance):
@@ -26,17 +26,17 @@ enum ServiceRecord {
 open class LazyServiceLocator {
     private lazy var idByRecord: [ObjectIdentifier: ServiceRecord] = [:]
     private lazy var stringByRecord: [String: ServiceRecord] = [:]
-    
+
     /// Constructor
     public init() { }
-    
+
     /// Register a closure which could create an instance of a certain type
     /// - Parameter instance: an instance (without generic parameters) which is stored by the specific metatype id
     public func register<T>(_ recipe: @escaping () -> T) {
         let key = ObjectIdentifier(type(of: T.self))
         idByRecord[key] = .fromClosure(recipe)
     }
-    
+
     /// Register an instance of a certain type
     /// - Parameter instance: an instance (without generic parameters) which is stored by the specific metatype id
     public func register<T>(_ instance: T) {
@@ -44,7 +44,7 @@ open class LazyServiceLocator {
         let key = ObjectIdentifier(type)
         idByRecord[key] = .instance(instance)
     }
-    
+
     /// Register an instance using a string constant
     /// it is for the types with the generic parameters which are not
     /// convinient to store by specific metatype
@@ -54,7 +54,7 @@ open class LazyServiceLocator {
     public func registerNamed<T>(_ instance: T, _ key: String) {
         stringByRecord[key] = .instance(instance)
     }
-    
+
     /// Register an instance using a concrete type metadata which can't be determined automatically
     ///
     /// - Parameter instance: an object instance stored in a service locator

@@ -14,7 +14,7 @@ import CottonBase
 public final class HandlablePlugin {
     public let plugin: any JavaScriptPlugin
     public let handler: WKScriptMessageHandler
-    
+
     public init(
         plugin: any JavaScriptPlugin,
         handler: WKScriptMessageHandler

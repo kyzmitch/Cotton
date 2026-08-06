@@ -18,17 +18,17 @@ open class GenericConcurrentDataService<
     S: GenericServiceData,
     E: DataServiceKitError
 >: GenericDataServiceProtocol, @unchecked Sendable {
-    
+
     public typealias Command = C
     public typealias ServiceData = S
     public typealias ServiceError = E
-    
+
     public let executionQueue: DispatchQueueInterface
     public let responseQueue: DispatchQueueInterface
     public var serviceData: ServiceData
     public let lock: NSRecursiveLock
     private(set) var commandToPromise: [Command: Promise]
-    
+
     /// Init the data service
     ///
     /// - Parameter executionQueue: Dispatch queue to execute any async code
@@ -43,7 +43,7 @@ open class GenericConcurrentDataService<
         self.responseQueue = responseQueue
         commandToPromise = [:]
     }
-    
+
     /// Send a command to the data service
     ///
     /// - Parameter command: Data service command
@@ -69,7 +69,7 @@ open class GenericConcurrentDataService<
             handleCommand(command, input)
         }
     }
-    
+
     /// Handle specific command, should be implemented by every specific data service
     ///
     /// - Parameter command: a command to handle by the data service
@@ -78,7 +78,7 @@ open class GenericConcurrentDataService<
         _ command: Command,
         _ input: ServiceData?
     ) { }
-    
+
     /// Finilizes handling of a command by calling completion closure with the result.
     ///
     /// - Parameter command: a command to handle by the data service

@@ -32,7 +32,7 @@ final class StrategyFactory: SearchStrategiesFactoryProtocol {
         )
         return GoogleDNSStrategy(googleContext)
     }
-    
+
     func duckDuckGoSearchStrategy() -> any SearchAutocompleteStrategy {
         let ddGoContext = DDGoContext(
             serviceRegistry.duckduckgoClient,
@@ -41,7 +41,7 @@ final class StrategyFactory: SearchStrategiesFactoryProtocol {
         )
         return DDGoAutocompleteStrategy(ddGoContext)
     }
-    
+
     func googleSearchStrategy() -> any SearchAutocompleteStrategy {
         let googleContext = GoogleContext(
             serviceRegistry.googleClient,

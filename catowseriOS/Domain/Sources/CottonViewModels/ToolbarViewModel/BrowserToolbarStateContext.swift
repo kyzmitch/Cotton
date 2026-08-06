@@ -17,15 +17,15 @@ public protocol BrowserToolbarStateContext: StateContext {
 /// Browser toolbar state context
 public final class BrowserToolbarStateContextProxy: BrowserToolbarStateContext {
     private let subject: any BrowserToolbarStateContext
-    
+
     init(subject: any BrowserToolbarStateContext) {
         self.subject = subject
     }
-    
+
     public var siteNavigationDelegate: SiteNavigationChangable? {
         subject.siteNavigationDelegate
     }
-    
+
     public var siteExternalDelegate: SiteExternalNavigationDelegate? {
         subject.siteExternalDelegate
     }

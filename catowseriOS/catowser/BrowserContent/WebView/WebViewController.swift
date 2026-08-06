@@ -35,9 +35,9 @@ extension WKWebView: @retroactive JavaScriptEvaluateble {
         _ javaScriptString: String,
         completionHandler: ((Any?, Error?) -> Void)?
     ) {
-#if swift(<6.0)
-            evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
-#endif
+        #if swift(<6.0)
+        evaluateJavaScript(javaScriptString, completionHandler: completionHandler)
+        #endif
     }
 }
 
@@ -123,9 +123,13 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             /// see `WebViewLegacyView` and `WebView.swift`
             return
         }
-        Task {
-            /// Load initial site or just wait for the reset to site action
-            await viewModel.load()
+        /// Ensure web view exists, then load initial site (or wait for reset in SwiftUI).
+        recreateWebView(false)
+        reattachWebViewObservers()
+        viewModel.sendAction(.loadSite) { result in
+            if case .failure(let error) = result {
+                print("Wrong state on load action: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -149,18 +153,26 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         }
     }
 
-    private func onStateChange(_ state: WebPageLoadingAction) {
+    private func onDomainStateChange(_ state: WebViewModelState<WebViewStateContextProxy>) {
         switch state {
-        case .load(let uRLRequest):
-            webView?.load(uRLRequest)
-        case .recreateView(let forcefullyRecreate):
-            recreateWebView(forcefullyRecreate)
-        case .reattachViewObservers:
+        case .updatingWebView(_, let urlInfo):
+            recreateWebView(false)
             reattachWebViewObservers()
-        case .openApp(let url):
-            coordinator?.showNext(.openApp(url))
-        @unknown default:
-            fatalError("Not handled web page loading state")
+            Task { [weak self] in
+                guard let self else { return }
+                let useIP = await viewModel.isDohEnabled
+                webView?.load(urlInfo.urlRequest(useIP))
+            }
+        case .updatingJS(_, _, let urlInfo):
+            recreateWebView(true)
+            reattachWebViewObservers()
+            Task { [weak self] in
+                guard let self else { return }
+                let useIP = await viewModel.isDohEnabled
+                webView?.load(urlInfo.urlRequest(useIP))
+            }
+        default:
+            break
         }
     }
 
@@ -177,7 +189,7 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
     }
 
     // MARK: - WKNavigationDelegate
-    
+
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction
@@ -185,6 +197,10 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         if let domain = viewModel.nativeAppDomainNameString {
             viewModel.siteNavigation?.siteDidOpen(appName: domain)
             // no need to interrupt
+        }
+        if let url = navigationAction.request.url, viewModel.shouldOpenInExternalApp(url) {
+            coordinator?.showNext(.openApp(url))
+            return .cancel
         }
         return await viewModel.decidePolicy(navigationAction)
     }
@@ -199,6 +215,11 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             // no need to interrupt
         }
         Task {
+            if let url = navigationAction.request.url, viewModel.shouldOpenInExternalApp(url) {
+                coordinator?.showNext(.openApp(url))
+                decisionHandler(.cancel)
+                return
+            }
             await viewModel.decidePolicy(navigationAction, decisionHandler)
         }
     }
@@ -241,8 +262,12 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             return
         }
 
-        Task {
-            await viewModel.finishLoading(newURL, webView)
+        viewModel.sendAction(
+            .finishLoading(newURL, webView, viewModel.settings.isJSEnabled)
+        ) { result in
+            if case .failure(let error) = result {
+                print("\(#function) - failed to finish loading: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -302,6 +327,7 @@ private extension WebViewController {
         disposable?.dispose()
         cancellable?.cancel()
         taskHandler?.cancel()
+        jsStateCancellable?.cancel()
         loadingProgressObservation?.invalidate()
         canGoForwardObservation?.invalidate()
         canGoBackObservation?.invalidate()
@@ -319,7 +345,8 @@ private extension WebViewController {
         // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
 
         taskHandler?.cancel()
-        taskHandler = viewModel.webPageStatePublisher.sink(receiveValue: onStateChange)
+        cancellable?.cancel()
+        taskHandler = viewModel.statePublisher.sink(receiveValue: onDomainStateChange)
         dohCancellable?.cancel()
         jsStateCancellable?.cancel()
 
@@ -329,7 +356,11 @@ private extension WebViewController {
                 .sink { _ in
                     Task { [weak self] in
                         let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
-                        await self?.viewModel.setDoH(useDoH)
+                        self?.viewModel.sendAction(.changeDoH(useDoH)) { result in
+                            if case .failure(let error) = result {
+                                print("Wrong state on DoH change action: \(error.localizedDescription)")
+                            }
+                        }
                     }
                 }
 
@@ -341,7 +372,11 @@ private extension WebViewController {
                             return
                         }
                         let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
-                        await self.viewModel.setJavaScript(jsSubject, enabled)
+                        self.viewModel.sendAction(.changeJavaScript(jsSubject, enabled)) { result in
+                            if case .failure(let error) = result {
+                                print("Wrong state on JS change action: \(error.localizedDescription)")
+                            }
+                        }
                     }
                 }
         }
@@ -364,15 +399,15 @@ private extension WebViewController {
         loadingProgressObservation?.invalidate()
         loadingProgressObservation = webView?.observe(
             \.estimatedProgress,
-             options: [.new]) { [weak self] (_, change) in
-                 guard let self, let value = change.newValue else {
-                     return
-                 }
-                 Task {
-                     await viewModel
-                         .siteNavigation?
-                         .loadingProgressDidChange(Float(value))
-                 }
+            options: [.new]) { [weak self] (_, change) in
+            guard let self, let value = change.newValue else {
+                return
+            }
+            Task {
+                await viewModel
+                    .siteNavigation?
+                    .loadingProgressDidChange(Float(value))
+            }
         }
     }
 
@@ -399,55 +434,59 @@ private extension WebViewController {
             }
         }
     }
+}
 
-    func reattachWebViewObservers() {
-        guard !webViewObserversAdded else {
-            return
-        }
-        webViewObserversAdded = true
-        addWebViewProgressObserver()
-        addWebViewCanGoBackObserver()
-        addWebViewCanGoForwardObserver()
-    }
+// MARK: - Internal funcs
 
-    func recreateWebView(_ forcefullyRecreate: Bool = false) {
-        if !forcefullyRecreate {
-            guard !isWebViewLoaded else {
-                return
-            }
-        }
+extension WebViewController {
+  func recreateWebView(_ forcefullyRecreate: Bool = false) {
+      if !forcefullyRecreate {
+          guard !isWebViewLoaded else {
+              return
+          }
+      }
 
-        loadingProgressObservation?.invalidate()
-        canGoForwardObservation?.invalidate()
-        canGoBackObservation?.invalidate()
-        webViewObserversAdded = false
+      loadingProgressObservation?.invalidate()
+      canGoForwardObservation?.invalidate()
+      canGoBackObservation?.invalidate()
+      webViewObserversAdded = false
 
-        // Removing of web view from superview leads to
-        // `AttributeGraph: cycle detected through attribute` warning
-        // https://developer.apple.com/forums/thread/126890
-        // but for re-usable web view there is no other way
-        // of resetting the old navigation history
-        webView?.removeFromSuperview()
-        let newWebView = createWebView(with: viewModel.configuration)
-        view.addSubview(newWebView)
+      // Removing of web view from superview leads to
+      // `AttributeGraph: cycle detected through attribute` warning
+      // https://developer.apple.com/forums/thread/126890
+      // but for re-usable web view there is no other way
+      // of resetting the old navigation history
+      webView?.removeFromSuperview()
+      let newWebView = createWebView(with: viewModel.configuration)
+      view.addSubview(newWebView)
 
-        newWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        newWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        newWebView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        newWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        webView = newWebView
+      newWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+      newWebView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+      newWebView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+      newWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+      webView = newWebView
 
-        // Somehow would be good to reset web view interface
-        // to reset navigation delegate (toolbar or table search bar)
-        // because for SwiftUI mode the same view controller stays
-        // and only web view changes, so, `WebViewsReuseManager`
-        // won't create a new view controller and notify navigation delegates
-        // that is why we have to use same `self` and it shouldn't
-        // be checked that it is the same reference.
-        let proxyValue = WebViewControllerProxy(self)
-        proxy = proxyValue
-        viewModel.siteNavigation?.webViewDidReplace(proxyValue)
-    }
+      // Somehow would be good to reset web view interface
+      // to reset navigation delegate (toolbar or table search bar)
+      // because for SwiftUI mode the same view controller stays
+      // and only web view changes, so, `WebViewsReuseManager`
+      // won't create a new view controller and notify navigation delegates
+      // that is why we have to use same `self` and it shouldn't
+      // be checked that it is the same reference.
+      let proxyValue = WebViewControllerProxy(self)
+      proxy = proxyValue
+      viewModel.siteNavigation?.webViewDidReplace(proxyValue)
+  }
+  
+  func reattachWebViewObservers() {
+      guard !webViewObserversAdded else {
+          return
+      }
+      webViewObserversAdded = true
+      addWebViewProgressObserver()
+      addWebViewCanGoBackObserver()
+      addWebViewCanGoForwardObserver()
+  }
 }
 
 /// Can't be retroactive for CustomDebugStringConvertible cause it is a system protocol.

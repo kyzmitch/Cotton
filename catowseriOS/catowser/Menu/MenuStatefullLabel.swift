@@ -11,12 +11,12 @@ import SwiftUI
 struct MenuStatefullLabel: View {
     let menuLocalizationKey: String
     let menuCurrentValue: String
-    
+
     init(_ menuLocalizationKey: String, _ menuCurrentValue: String) {
         self.menuLocalizationKey = menuLocalizationKey
         self.menuCurrentValue = menuCurrentValue
     }
-    
+
     var body: some View {
         Text(LocalizedStringKey(menuLocalizationKey))
         Spacer()

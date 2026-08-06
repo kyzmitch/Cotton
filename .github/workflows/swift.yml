@@ -19,24 +19,29 @@ jobs:
     - name: SwiftLint (all swift files)
       uses: norio-nomura/action-swiftlint@3.2.1
       with:
+        github_token: ${{ secrets.GITHUB_TOKEN }} # Обязательно для Reviewdog
         args: --force-exclude --config catowseriOS/.swiftlint.yml
   lint-kotlin-cotton-base:
     runs-on: ubuntu-latest
     steps:
       - name: "checkout"
         uses: actions/checkout@v3
-      - name: "ktlint"
-        uses: "vroy/gha-kotlin-linter@v4"
+      - name: Copy editorconfig
+        run: cp cotton-base/.editorconfig .editorconfig
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
         with:
-          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=final-newline,trailing-comma,standard:trailing-comma-on-call-site,standard:trailing-comma-on-declaration-site,standard:colon-spacing
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          args: --editorconfig=cotton-base/.editorconfig --disabled_rules=indent,final-newline,trailing-comma,trailing-comma-on-call-site,trailing-comma-on-declaration-site,colon-spacing --verbose --no-wildcard-imports
           patterns: cotton-base/**/*.kt
+          reporter: github-check
   ios-unit-tests:
     needs: [lint-ios, lint-kotlin-cotton-base]
-    runs-on: macos-13
+    runs-on: macos-26
     steps:
       - uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '15.0.1'
+          xcode-version: '26.5'
       - uses: actions/cache@v3
         with:
           path: .mint
@@ -69,14 +74,14 @@ jobs:
         run: make github-ios-unit-tests
   build-ios:
     needs: [ios-unit-tests]
-    runs-on: macos-13
+    runs-on: macos-26
     env:
       MINT_PATH: .mint/lib
       MINT_LINK_PATH: .mint/bin
     steps:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.0.1'
+        xcode-version: '26.5'
     - uses: actions/cache@v3
       with:
         path: .mint

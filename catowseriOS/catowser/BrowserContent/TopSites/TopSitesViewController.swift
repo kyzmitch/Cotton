@@ -20,7 +20,7 @@ final class TopSitesViewController<
     @IBOutlet fileprivate weak var collectionView: UICollectionView!
     weak var coordinator: C?
     private let vm: TopSitesViewModel
-    
+
     init(
         nibName nibNameOrNil: String?,
         bundle nibBundleOrNil: Bundle?,
@@ -29,11 +29,11 @@ final class TopSitesViewController<
         self.vm = vm
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     @MainActor required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // this isn't called for Nib associated with single view controller

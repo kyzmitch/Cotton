@@ -7,9 +7,9 @@
 //
 
 import XCTest
-import CottonRestKit
 import CottonBase
 import WebKit
+@testable import CottonViewModels
 
 @MainActor
 final class WebViewVMConcurrencyTests: WebViewVMFixture {
@@ -19,21 +19,14 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
     }
 
     func testLoad() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
-        await vm.load()
+        let vm = makeViewModel()
+        try await vm.sendAction(.loadSite)
 
         // This is a bad path case, user has to call `finishLoading`
         // to complete the load request and have a final state which is `.viewing`
 
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.webPageState, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
 
         // swiftlint:disable:next force_unwrapping
@@ -43,23 +36,15 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.webPageState, .load(urlInfoV1.urlRequest))
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
 
     func testLinkActivation() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
-        await vm.load()
+        let vm = makeViewModel()
+        try await vm.sendAction(.loadSite)
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.webPageState, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
@@ -67,8 +52,7 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
             XCTAssertEqual(policy, .allow)
         }
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.webPageState, .load(urlInfoV1.urlRequest))
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
 
         // User taps on a link in web view which already displays some web site
@@ -82,23 +66,15 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         let urlDataV3: URLInfo = URLInfo(urlV3!)!
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV3!, jsSubject)
-        XCTAssertEqual(vm.webPageState, .load(urlDataV3.urlRequest))
+        try await vm.sendAction(.finishLoading(urlV3!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlDataV3))
     }
 
     func testReload() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
-        await vm.load()
+        let vm = makeViewModel()
+        try await vm.sendAction(.loadSite)
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.webPageState, .load(urlInfoV1.urlRequest))
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
 
         // swiftlint:disable:next force_unwrapping
@@ -108,45 +84,34 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // User taps on reload before load finish - error in vm state
-        await vm.reload()
+        try? await vm.sendAction(.reload)
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
-        XCTAssertEqual(vm.webPageState, .load(urlInfoV1.urlRequest))
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
 
-        await vm.reload()
+        try await vm.sendAction(.reload)
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
     }
 
     func testGoBack() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
-        await vm.load()
-        // swiftlint:disable:next force_unwrapping
-        let urlRequestV1 = URLRequest(url: urlV1!)
-        var webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlRequestV1))
+        let vm = makeViewModel()
+        try await vm.sendAction(.loadSite)
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        var state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .updatingWebView(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         await vm.decidePolicy(navActionV1) { policy in
             XCTAssertEqual(policy, .allow)
         }
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .viewing(settings, urlInfoV1))
 
         // User taps on a link in web view which already displays some web site
 
@@ -156,19 +121,16 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
             XCTAssertEqual(policy, .cancel)
         }
         // swiftlint:disable:next force_unwrapping
-        let urlRequestV3 = URLRequest(url: urlV3!)
-        // swiftlint:disable:next force_unwrapping
         let urlDataV3: URLInfo = .init(urlV3!)!
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV3!, jsSubject)
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlRequestV3))
-        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3))
+        try await vm.sendAction(.finishLoading(urlV3!, jsSubject, settings.isJSEnabled))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .viewing(settings, urlDataV3))
 
         // User decided to go back
 
-        await vm.goBack()
+        try await vm.sendAction(.goBack)
         let msg1 = "Have to finish loading after back navigation"
         XCTAssertNotEqual(vm.state, .viewing(settings, urlInfoV1), msg1)
         XCTAssertNotEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
@@ -181,37 +143,27 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
     }
 
     // swiftlint:disable:next function_body_length
     func testGoForward() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
-        await vm.load()
-        // swiftlint:disable:next force_unwrapping
-        let urlRequestV1 = URLRequest(url: urlV1!)
-        var webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlRequestV1))
+        let vm = makeViewModel()
+        try await vm.sendAction(.loadSite)
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        var state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .updatingWebView(settings, urlInfoV1))
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
         await vm.decidePolicy(navActionV1) { policy in
             XCTAssertEqual(policy, .allow)
         }
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlRequestV1))
-        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .viewing(settings, urlInfoV1))
 
         // User taps on a link in web view which already displays some web site
 
@@ -221,17 +173,14 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
             XCTAssertEqual(policy, .cancel)
         }
         // swiftlint:disable:next force_unwrapping
-        let urlRequestV3 = URLRequest(url: urlV3!)
-        // swiftlint:disable:next force_unwrapping
         let urlDataV3: URLInfo = .init(urlV3!)!
         XCTAssertEqual(vm.state, .updatingWebView(settings, urlDataV3))
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV3!, jsSubject)
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlRequestV3))
-        XCTAssertEqual(vm.state, .viewing(settings, urlDataV3))
+        try await vm.sendAction(.finishLoading(urlV3!, jsSubject, settings.isJSEnabled))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .viewing(settings, urlDataV3))
 
-        await vm.goBack()
+        try await vm.sendAction(.goBack)
         let msg1 = "Have to finish loading after back navigation"
         XCTAssertNotEqual(vm.state, .viewing(settings, urlInfoV1), msg1)
         XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlDataV3))
@@ -243,12 +192,12 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1), "New url is expected")
 
         // User decides to go forward
 
-        await vm.goForward()
+        try await vm.sendAction(.goForward)
         let msg2 = "Have to finish loading after forward navigation"
         XCTAssertNotEqual(vm.state, .viewing(settings, urlDataV3), msg2)
         XCTAssertEqual(vm.state, .waitingForNavigation(settings, urlInfoV1))
@@ -260,46 +209,31 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV3!, jsSubject)
+        try await vm.sendAction(.finishLoading(urlV3!, jsSubject, settings.isJSEnabled))
         XCTAssertEqual(vm.state, .viewing(settings, urlDataV3), "New url is expected")
     }
 
     func testResetWithError() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
+        let vm = makeViewModel()
         // no call to `load` which is expected before `reset`
         // it only can work if it is a `.viewing` state
         // which could happen only after loading initial site
-        await vm.reset(opennetSite)
+        try? await vm.sendAction(.resetToSite(opennetSite))
 
-        let webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .reattachViewObservers)
         XCTAssertEqual(vm.state, .initialized(exampleSite))
     }
 
     func testReset() async throws {
-        let vm: WebViewModelImpl = WebViewModelImpl(
-            resolveDnsUseCaseMock,
-            webViewContext,
-            selectedTabUseCaseMock,
-            writeTabsUseCase,
-            nil,
-            exampleSite)
-        await vm.load()
+        let vm = makeViewModel()
+        try await vm.sendAction(.loadSite)
 
         // This is a bad path case, user has to call `finishLoading`
         // to complete the load request and have a final state which is `.viewing`
 
         // swiftlint:disable:next force_unwrapping
         let urlInfoV1: URLInfo = .init(urlV1!)!
-        var webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlInfoV1.urlRequest))
-        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV1))
+        var state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .updatingWebView(settings, urlInfoV1))
 
         // swiftlint:disable:next force_unwrapping
         let navActionV1 = MockedNavAction(urlV1!, .other)
@@ -308,19 +242,17 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(urlV1!, jsSubject)
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlInfoV1.urlRequest))
-        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV1))
+        try await vm.sendAction(.finishLoading(urlV1!, jsSubject, settings.isJSEnabled))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .viewing(settings, urlInfoV1))
 
         // Now it should be a valid state for reset
-        await vm.reset(opennetSite)
+        try await vm.sendAction(.openSite(opennetSite))
 
         // swiftlint:disable:next force_unwrapping
         let urlInfoV2: URLInfo = .init(opennetUrlV1!)!
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlInfoV2.urlRequest))
-        XCTAssertEqual(vm.state, .updatingWebView(settings, urlInfoV2))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .updatingWebView(settings, urlInfoV2))
 
         // swiftlint:disable:next force_unwrapping
         let navActionV2 = MockedNavAction(opennetUrlV1!, .other)
@@ -329,9 +261,8 @@ final class WebViewVMConcurrencyTests: WebViewVMFixture {
         }
 
         // swiftlint:disable:next force_unwrapping
-        await vm.finishLoading(opennetUrlV1!, jsSubject)
-        webPageState = try awaitPublisherValue(vm.webPageStatePublisher)
-        XCTAssertEqual(webPageState, .load(urlInfoV2.urlRequest))
-        XCTAssertEqual(vm.state, .viewing(settings, urlInfoV2))
+        try await vm.sendAction(.finishLoading(opennetUrlV1!, jsSubject, settings.isJSEnabled))
+        state = try awaitPublisherValue(vm.statePublisher)
+        XCTAssertEqual(state, .viewing(settings, urlInfoV2))
     }
 }

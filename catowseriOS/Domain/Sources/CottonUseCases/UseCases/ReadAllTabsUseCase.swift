@@ -7,10 +7,10 @@ import CoreBrowser
 public protocol ReadAllTabsUseCase: CoreUseCase, AutoMockable, Sendable {
     /// Input type for the use case. In this case, it's `Void`.
     typealias Input = Void
-    
+
     /// Output type for the use case, which is a list of `CoreBrowser.Tab`.
     typealias Output = [CoreBrowser.Tab]
-    
+
     /// Reads all tabs asynchronously.
     ///
     /// - Parameter input: Input parameter, which is `Void` for this use case.

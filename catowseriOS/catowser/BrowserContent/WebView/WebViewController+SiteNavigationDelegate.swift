@@ -30,8 +30,10 @@ extension WebViewController: WebViewNavigatable {
     func goForward() {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
-        Task {
-            await viewModel.goForward()
+        viewModel.sendAction(.goForward) { result in
+            if case .failure(let error) = result {
+                print("Wrong state on go Forward action: \(error.localizedDescription)")
+            }
         }
         _ = webView?.goForward()
     }
@@ -39,8 +41,10 @@ extension WebViewController: WebViewNavigatable {
     func goBack() {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
-        Task {
-            await viewModel.goBack()
+        viewModel.sendAction(.goBack) { result in
+            if case .failure(let error) = result {
+                print("Wrong state on go Back action: \(error.localizedDescription)")
+            }
         }
         _ = webView?.goBack()
     }
@@ -48,8 +52,10 @@ extension WebViewController: WebViewNavigatable {
     func reload() {
         guard isViewLoaded else { return }
         viewModel.siteNavigation?.provisionalNavigationDidStart()
-        Task {
-            await viewModel.reload()
+        viewModel.sendAction(.reload) { result in
+            if case .failure(let error) = result {
+                print("Wrong state on re-load action: \(error.localizedDescription)")
+            }
         }
         _ = webView?.reload()
     }
@@ -58,8 +64,10 @@ extension WebViewController: WebViewNavigatable {
         guard viewModel.host == host, let jsSubject = webView else {
             return
         }
-        Task {
-            await viewModel.setJavaScript(jsSubject, enabled)
+        viewModel.sendAction(.changeJavaScript(jsSubject, enabled)) { result in
+            if case .failure(let error) = result {
+                print("Wrong state on JS change action: \(error.localizedDescription)")
+            }
         }
     }
 

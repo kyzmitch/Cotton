@@ -7,20 +7,12 @@
 //
 
 import Foundation
-import CottonNetworking
 import CottonRestKit
 @preconcurrency import ReactiveSwift
 import Combine
-import AutoMockable
 
 /// Search auto complete strategy
-// swiftlint:disable comment_spacing
-//sourcery: associatedtype = "Context: RestClientContext"
-public protocol SearchAutocompleteStrategy: AnyObject, AutoMockable, Sendable {
-    // swiftlint:enable comment_spacing
-
-    associatedtype Context: RestClientContext
-    init(_ context: Context)
+public protocol SearchAutocompleteStrategy: AnyObject, Sendable {
     func suggestionsProducer(for text: String) -> SignalProducer<SearchSuggestionsResponse, HttpError>
     func suggestionsPublisher(for text: String) -> AnyPublisher<SearchSuggestionsResponse, HttpError>
     @available(swift 5.5)

@@ -24,7 +24,7 @@ public enum AppError: LocalizedError {
     case commandNotFinishedYet
     /// Tabs data service failure
     case tabsServiceError(TabsListError)
-    
+
     /// Error description for localized error
     public var errorDescription: String? {
         switch self {

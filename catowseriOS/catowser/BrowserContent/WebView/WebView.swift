@@ -15,7 +15,7 @@ import ViewsBase
 /// because we have to reuse existing web view for all the tabs
 @MainActor
 protocol WebViewReusable: AnyObject {
-    func resetTo(_ site: Site) async
+    func resetTo(_ site: Site)
 }
 
 /// web view specific to SwiftUI
@@ -87,8 +87,12 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let manager = UIServiceRegistry.shared().reuseManager
         let vc = try? manager.controllerFor(site, dummyArgument, viewModel, .swiftUIWrapper)
-        Task {
-            await viewModel.reset(site)
+        // Bypasses `WebViewReusable.resetTo` isResetable guard for first embed.
+        // View recreates/loads when it observes `.updatingWebView` on `statePublisher`.
+        viewModel.sendAction(.openSite(site)) { result in
+            if case .failure(let error) = result {
+                print(error.localizedDescription)
+            }
         }
         // swiftlint:disable:next force_unwrapping
         return vc!.viewController
@@ -106,8 +110,6 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         guard webViewNeedsUpdate else {
             return
         }
-        Task {
-            await reusableWebView.resetTo(site)
-        }
+        reusableWebView.resetTo(site)
     }
 }

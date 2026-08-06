@@ -15,11 +15,11 @@ public protocol SearchBarStateContext: StateContext, SearchSuggestionsListDelega
 //// to hide search bar view model implementation.
 public final class SearchBarStateContextProxy: SearchBarStateContext {
     private let subject: any SearchBarStateContext
-    
+
     init(subject: any SearchBarStateContext) {
         self.subject = subject
     }
-    
+
     public func searchSuggestionDidSelect(_ content: SuggestionType) async throws {
         try await subject.searchSuggestionDidSelect(content)
     }

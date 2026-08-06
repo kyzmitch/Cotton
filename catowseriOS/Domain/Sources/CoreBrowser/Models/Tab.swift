@@ -9,7 +9,7 @@
 import CottonBase
 
 /// Site is an obj-c model type.
-///Ccan mark with retroactive because Site type is from own CottonBase library
+/// Ccan mark with retroactive because Site type is from own CottonBase library
 extension Site: @unchecked @retroactive Sendable {}
 
 public extension Tab {
@@ -30,7 +30,7 @@ public extension Tab {
                 return nil
             }
         }
-        
+
         case blank
         case site(Site)
         case homepage

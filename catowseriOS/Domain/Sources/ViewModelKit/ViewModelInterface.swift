@@ -28,29 +28,39 @@ import Combine
     /// State context which could help to convert the state on incoming action.
     /// Usually it should be a wrapper around view model implementation.
     var context: Context? { get }
-    /// Apply an action to the view model state to get a new valid state
-    /// - Parameter action: an action to apply to the state
-    /// - Throws an error if incoming action is not valid for a current state or due to other errors
-    func sendAction(
-        _ action: Action
-    ) async throws
-    /// Apply an action to the view model state using closure API.
-    ///
-    /// - Parameter action: an action to apply to the state
-    /// - Parameter onComplete: Completion closure.
+
+    /// Fire-and-forget apply of one action (no caller `Task` needed).
+    /// Errors are ignored unless using `onComplete`.
+    func sendAction(_ action: Action)
+    /// Awaitable apply of one action — use when the caller must wait or chain in order.
+    /// - Throws if the action is invalid for the current state or due to other errors.
+    func sendAction(_ action: Action) async throws
+    /// Apply one action and deliver the outcome to `onComplete`.
     func sendAction(
         _ action: Action,
+        onComplete: CompletionCallback?
+    )
+
+    /// Fire-and-forget apply of several actions **in order** (no caller `Task` needed).
+    func sendActions(_ actions: [Action])
+    /// Awaitable ordered apply — preferred when the caller is already `async`.
+    func sendActions(_ actions: [Action]) async throws
+    /// Ordered apply with a single completion for the whole sequence (stops on first error).
+    func sendActions(
+        _ actions: [Action],
         onComplete: CompletionCallback?
     )
 }
 
 extension ViewModelInterface {
-    public func sendAction(
-        _ action: Action
-    ) async throws {
-        state = try await state.transitionOn(action, with: context)
+    public func sendAction(_ action: Action) {
+        sendAction(action, onComplete: nil)
     }
-    
+
+    /// Default completion-based API delegates to the async `sendAction`.
+    ///
+    /// Conformers such as `BaseViewModel` must implement the async path via
+    /// `ViewModelStateMachine` (not via state-level transition APIs).
     public func sendAction(
         _ action: Action,
         onComplete: CompletionCallback?
@@ -58,8 +68,31 @@ extension ViewModelInterface {
         Task {
             do {
                 try await sendAction(action)
-                let nothing: Void = ()
-                onComplete?(.success(nothing))
+                onComplete?(.success(()))
+            } catch {
+                onComplete?(.failure(error))
+            }
+        }
+    }
+
+    public func sendActions(_ actions: [Action]) {
+        sendActions(actions, onComplete: nil)
+    }
+
+    public func sendActions(_ actions: [Action]) async throws {
+        for action in actions {
+            try await sendAction(action)
+        }
+    }
+
+    public func sendActions(
+        _ actions: [Action],
+        onComplete: CompletionCallback?
+    ) {
+        Task {
+            do {
+                try await sendActions(actions)
+                onComplete?(.success(()))
             } catch {
                 onComplete?(.failure(error))
             }

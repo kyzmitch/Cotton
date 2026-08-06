@@ -17,7 +17,7 @@ import CommonDelegatesLibrary
 public final class TabletSearchBarViewController: BaseViewController {
 
     private let searchBarViewController: SearchBarBaseViewController
-    
+
     /// Search bar background color
     static let searchBarBackgroundColour = UIColor.white
 

@@ -8,7 +8,7 @@
 
 /// Tabs subject is an object which holds an array of observers
 /// and uses them to notify about specific changes.
-/// 
+///
 /// The detach function is not needed now, since the moment
 /// when subject started to store observers by weak references.
 ///

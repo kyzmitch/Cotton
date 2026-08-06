@@ -23,7 +23,7 @@ public enum TabsServiceCommand: GenericDataServiceCommand, Sendable {
     case selectTab(Tab)
     case replaceContent(Tab.ContentType)
     case updateSelectedTabPreview(Data?)
-    
+
     /// All enum cases
     public static let allCases: [TabsServiceCommand] = [
         .getTabsCount,
