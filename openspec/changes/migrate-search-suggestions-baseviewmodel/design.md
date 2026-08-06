@@ -49,6 +49,18 @@ Remove the standalone protocol. Factory / call sites that today use `any SearchS
 
 **Alternatives:** Keep a protocol that re-declares kit members — extra indirection with no consumer benefit. Composition without subclassing — fights kit `@Published state` conventions.
 
+### D7: Do not add `ObservableObject` to `ViewModelInterface`; rely on `BaseViewModel`
+
+**Choice:** Leave ViewModelKit as-is. `BaseViewModel` already conforms to `ObservableObject` (and publishes `@Published state`). SearchSuggestions SwiftUI (`@EnvironmentObject` / generic `S: SearchSuggestionsViewModel`) gets that conformance via the typealias. Do **not** make `ViewModelInterface: ObservableObject`.
+
+**Why:**
+- Kit already bridges SwiftUI: `BaseViewModel: ViewModelInterface, ObservableObject`.
+- `ObservableObject` carries `associatedtype ObjectWillChangePublisher`, so putting it on `ViewModelInterface` would push that associated-type burden onto every kit protocol/existential and is a broader API change than this adoption needs.
+- `ViewModelInterface` is the FSM/`sendAction` contract; Combine observation belongs on the concrete base used by SwiftUI.
+- WebView keeps `protocol WebViewModel: ViewModelInterface, ObservableObject` **separately** because it still needs a **protocol** for extra methods (`decidePolicy`, …) and `any WebViewModel` call sites—not because the kit lacks `ObservableObject`. SearchSuggestions has no such extra surface, so AllTabs/SearchBar-style typealias is enough.
+
+**Alternatives:** Add `ObservableObject` to `ViewModelInterface` — unnecessary for this change and hurts existential ergonomics. Keep a SearchSuggestions protocol only to restate `ObservableObject` — redundant once the typealias is `BaseViewModel`.
+
 ### D2: Parameterize state by context; `createInitial` → `.waitingForQuery`
 
 **Choice:** Evolve `SearchSuggestionsViewState` to `SearchSuggestionsViewState<C: SearchSuggestionsStateContext>: ViewModelState` with `createInitial() -> .waitingForQuery`. Keep existing `Equatable` helpers (`rowsCount`, `sectionsNumber`, `value`, `sectionTitle`).
@@ -138,4 +150,5 @@ Prefer exposing this as an extension/helper on the typealias or Impl for call-si
 
 ## Open Questions
 
-- None blocking: optional `.resetToWaiting` only if a consumer currently needs an explicit reset (today’s comment suggests it; verify call sites during apply—if unused, omit until needed).
+- None blocking on `ObservableObject` (resolved in D7: already on `BaseViewModel`; do not change `ViewModelInterface`).
+- Optional `.resetToWaiting` only if a consumer currently needs an explicit reset (today’s comment suggests it; verify call sites during apply—if unused, omit until needed).

@@ -1,44 +1,45 @@
 //
 //  SearchSuggestionsViewStateTests.swift
-//  CoreCatowserTests
-//
-//  Created by Andrei Ermoshin on 1/8/23.
-//  Copyright © 2023 Cotton/Catowser Andrei Ermoshin. All rights reserved.
+//  CottonViewModelsTests
 //
 
-import XCTest
+import Testing
 @testable import CottonViewModels
 
-final class SearchSuggestionsViewStateTests: XCTestCase {
+struct SearchSuggestionsViewStateTests {
     let known1 = ["google.com", "gmail.com"]
     let expected1 = ["google", "gmail"]
 
-    func testWaitingForQuery() throws {
-        let state: SearchSuggestionsViewState = .waitingForQuery
-        XCTAssertEqual(state, .waitingForQuery)
-        XCTAssertEqual(state.rowsCount(Int.random(in: -1000...1000)), 0)
-        XCTAssertEqual(state.sectionsNumber, 0)
+    @Test func waitingForQuery() {
+        let state: SearchSuggestionsState = .waitingForQuery
+        #expect(state == .waitingForQuery)
+        #expect(state.rowsCount(Int.random(in: -1000...1000)) == 0)
+        #expect(state.sectionsNumber == 0)
         let row = Int.random(in: -1000...1000)
-        let section =  Int.random(in: -1000...1000)
-        XCTAssertNil(state.value(from: row, section: section))
+        let section = Int.random(in: -1000...1000)
+        #expect(state.value(from: row, section: section) == nil)
     }
 
-    func testKnownDomainsLoaded() throws {
-        let state: SearchSuggestionsViewState = .knownDomainsLoaded(known1)
-        XCTAssertEqual(state, .knownDomainsLoaded(known1))
-        XCTAssertEqual(state.rowsCount(Int.random(in: -1000...1000)), known1.count)
-        XCTAssertEqual(state.sectionsNumber, 1)
-        let section =  Int.random(in: -1000...1000)
-        XCTAssertNil(state.value(from: 3, section: section))
-        XCTAssertEqual(state.value(from: 0, section: section), known1[0])
-        XCTAssertEqual(state.value(from: 1, section: section), known1[1])
+    @Test func knownDomainsLoaded() {
+        let state: SearchSuggestionsState = .knownDomainsLoaded(known1)
+        #expect(state == .knownDomainsLoaded(known1))
+        #expect(state.rowsCount(Int.random(in: -1000...1000)) == known1.count)
+        #expect(state.sectionsNumber == 1)
+        let section = Int.random(in: -1000...1000)
+        #expect(state.value(from: 3, section: section) == nil)
+        #expect(state.value(from: 0, section: section) == known1[0])
+        #expect(state.value(from: 1, section: section) == known1[1])
     }
 
-    func testEverythingLoaded() throws {
-        let state: SearchSuggestionsViewState = .everythingLoaded(known1, expected1)
-        XCTAssertEqual(state, .everythingLoaded(known1, expected1))
-        XCTAssertEqual(state.rowsCount(0), known1.count)
-        XCTAssertEqual(state.rowsCount(1), expected1.count)
-        XCTAssertEqual(state.rowsCount(-1), -1)
+    @Test func everythingLoaded() {
+        let state: SearchSuggestionsState = .everythingLoaded(known1, expected1)
+        #expect(state == .everythingLoaded(known1, expected1))
+        #expect(state.rowsCount(0) == known1.count)
+        #expect(state.rowsCount(1) == expected1.count)
+        #expect(state.rowsCount(-1) == -1)
+    }
+
+    @Test func createInitialIsWaitingForQuery() {
+        #expect(SearchSuggestionsState.createInitial() == .waitingForQuery)
     }
 }

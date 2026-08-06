@@ -7,16 +7,28 @@
 //
 
 import Foundation
+import ViewModelKit
 
 public typealias KnownDomains = [String]
 public typealias QuerySuggestions = [String]
 
-/// View state, without error, because we want to show at least known domains even if there was a network failure
-/// Need to return to `waitingForQuery` state after view changes the text
-public enum SearchSuggestionsViewState: Equatable {
+/// Concrete state type used by the SearchSuggestions `BaseViewModel` adopter.
+public typealias SearchSuggestionsState = SearchSuggestionsViewState<SearchSuggestionsStateContextProxy>
+
+/// View state, without error, because we want to show at least known domains even if there was a network failure.
+/// Need to return to `waitingForQuery` state after view changes the text.
+public enum SearchSuggestionsViewState<C: SearchSuggestionsStateContext>: ViewModelState {
+    public typealias Context = C
+    public typealias Action = SearchSuggestionsAction
+    public typealias BaseState = SearchSuggestionsViewState<C>
+
     case waitingForQuery
     case knownDomainsLoaded(KnownDomains)
     case everythingLoaded(KnownDomains, QuerySuggestions)
+
+    public static func createInitial() -> BaseState {
+        .waitingForQuery
+    }
 
     public func rowsCount(_ section: Int) -> Int {
         switch self {
@@ -84,6 +96,22 @@ public enum SearchSuggestionsViewState: Equatable {
             )
         default:
             return nil
+        }
+    }
+}
+
+extension SearchSuggestionsViewState {
+    public enum Error: LocalizedError {
+        case missingContext
+        case unexpectedStateForAction(SearchSuggestionsViewState<C>, SearchSuggestionsAction)
+
+        public var errorDescription: String? {
+            switch self {
+            case .missingContext:
+                "SearchSuggestions state context is missing"
+            case .unexpectedStateForAction(let state, let action):
+                "Unexpected state \"\(state)\" for action \"\(action)\""
+            }
         }
     }
 }

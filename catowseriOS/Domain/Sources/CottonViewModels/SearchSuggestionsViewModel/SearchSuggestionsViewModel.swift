@@ -6,14 +6,28 @@
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
-import Combine
+import ViewModelKit
 
-/// Search suggestions view model, provides auto-completion results
-@MainActor public protocol SearchSuggestionsViewModel: ObservableObject, Sendable {
-    /// Initiate fetching only after subscribing to the async interfaces below
-    func fetchSuggestions(_ query: String) async
-    /// Concurrency state, also can be used as a synchronous state. A wrapped value for Published
-    var state: SearchSuggestionsViewState { get }
-    /// This is a replacement for Concurrency's `Task.Handler`, property wrapper can't be defined in protocol
-    var statePublisher: Published<SearchSuggestionsViewState>.Publisher { get }
+/// Kit-backed SearchSuggestions view model.
+public typealias SearchSuggestionsViewModel = BaseViewModel<
+    SearchSuggestionsViewState<SearchSuggestionsStateContextProxy>,
+    SearchSuggestionsAction,
+    SearchSuggestionsStateContextProxy
+>
+
+extension SearchSuggestionsViewModel {
+    /// Sequences kit actions so observers see `.knownDomainsLoaded` before `.everythingLoaded`.
+    ///
+    /// Only calls `sendAction`; does not mutate published state directly.
+    public func fetchSuggestions(_ query: String) async {
+        do {
+            try await sendAction(.loadKnownDomains(query))
+            try Task.checkCancellation()
+            try await sendAction(.loadSuggestions(query))
+        } catch is CancellationError {
+            return
+        } catch {
+            return
+        }
+    }
 }

@@ -35,7 +35,7 @@ import FeatureFlags
         self.defaultTabProvider = defaultTabProvider
     }
 
-    func searchSuggestionsViewModel() async -> any SearchSuggestionsViewModel {
+    func searchSuggestionsViewModel() async -> SearchSuggestionsViewModel {
         let vmContext: SearchViewContextImpl = .init()
         let autocompleteUseCase = await useCaseRegistry.findUseCase((any FetchAutocompleteSuggestionsUseCase).self)
         return ModuleVMFactory.createSearchSuggestionsVM(

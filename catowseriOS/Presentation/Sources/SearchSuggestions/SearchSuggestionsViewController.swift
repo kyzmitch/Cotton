@@ -21,9 +21,9 @@ public protocol SearchSuggestionsControllerInterface: AnyObject {
 /// View controller for suggestions view
 /// Looks similar to the one in Safari
 public final class SearchSuggestionsViewController: UITableViewController {
-    private let viewModel: any SearchSuggestionsViewModel
+    private let viewModel: SearchSuggestionsViewModel
 
-    private var state: SearchSuggestionsViewState = .waitingForQuery {
+    private var state: SearchSuggestionsState = .waitingForQuery {
         didSet {
             tableView.reloadData()
         }
@@ -36,7 +36,7 @@ public final class SearchSuggestionsViewController: UITableViewController {
 
     public init(
         _ delegate: SearchSuggestionsListDelegate?,
-        _ viewModel: any SearchSuggestionsViewModel
+        _ viewModel: SearchSuggestionsViewModel
     ) {
         self.viewModel = viewModel
         self.delegate = delegate
@@ -74,7 +74,7 @@ public final class SearchSuggestionsViewController: UITableViewController {
         taskHandler?.cancel()
     }
 
-    private func onStateChange(_ state: SearchSuggestionsViewState) {
+    private func onStateChange(_ state: SearchSuggestionsState) {
         guard self.state != state else {
             return
         }

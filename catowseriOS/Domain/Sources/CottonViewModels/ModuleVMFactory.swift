@@ -19,7 +19,7 @@ import ViewModelKit
     public static func createSearchSuggestionsVM(
         _ autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase,
         _ context: SearchViewContext
-    ) -> any SearchSuggestionsViewModel {
+    ) -> SearchSuggestionsViewModel {
         SearchSuggestionsViewModelImpl(autocompleteUseCase, context)
     }
 

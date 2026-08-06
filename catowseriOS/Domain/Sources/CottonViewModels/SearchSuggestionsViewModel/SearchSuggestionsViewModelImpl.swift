@@ -6,59 +6,35 @@
 //  Copyright © 2022 Cotton (former Catowser). All rights reserved.
 //
 
-import Foundation
-import Combine
-import FeatureFlagsKit
-import CoreBrowser
 import CottonUseCases
+import ViewModelKit
 
 final class SearchSuggestionsViewModelImpl: SearchSuggestionsViewModel {
-    /// Autocomplete client, probably need to depend on all possible use case (google, duckduckgo, etc.)
     private let autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase
-    /// search view context
     private let searchContext: SearchViewContext
-
-    // MARK: - state observers
-
-    @Published public var state: SearchSuggestionsViewState
-    /// State publisher
-    public var statePublisher: Published<SearchSuggestionsViewState>.Publisher { $state }
-
-    // MARK: - cancelation handlers
-
-    #if swift(>=5.5)
-    @available(swift 5.5)
-    @available(macOS 10.15, iOS 13.0, watchOS 6.0, tvOS 13.0, *)
-    lazy var searchSuggestionsTaskHandler: Task<[String], Error>? = nil
-    #endif
+    private lazy var proxy = SearchSuggestionsStateContextProxy(subject: self)
 
     init(
         _ autocompleteUseCase: any FetchAutocompleteSuggestionsUseCase,
         _ context: SearchViewContext
     ) {
-        state = .waitingForQuery
         self.autocompleteUseCase = autocompleteUseCase
-        searchContext = context
+        self.searchContext = context
+        super.init(transitioning: SearchSuggestionsStateTransitioning())
     }
 
-    deinit {
-        /// Can't cancel `searchSuggestionsTaskHandler?.cancel()` because it is async
+    public override var context: Context? {
+        proxy
+    }
+}
+
+extension SearchSuggestionsViewModelImpl: SearchSuggestionsStateContext {
+    public func knownDomains(matching query: String) async -> KnownDomains {
+        await searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
     }
 
-    public func fetchSuggestions(_ query: String) async {
-        async let autocompletionSource = searchContext.webAutocompletionSourceValue
-        async let domainNames = searchContext.knownDomainsStorage.domainNames(whereURLContains: query)
-        let fetchData = await (
-            autocompletionSource: autocompletionSource,
-            domainNames: domainNames
-        )
-        state = .knownDomainsLoaded(fetchData.domainNames)
-        searchSuggestionsTaskHandler?.cancel()
-        do {
-            let suggestions = try await autocompleteUseCase.execute(input: (fetchData.autocompletionSource, query))
-            state = .everythingLoaded(fetchData.domainNames, suggestions)
-        } catch {
-            state = .everythingLoaded(fetchData.domainNames, [])
-        }
+    public func autocompleteSuggestions(for query: String) async throws -> QuerySuggestions {
+        let source = await searchContext.webAutocompletionSourceValue
+        return try await autocompleteUseCase.execute(input: (source, query))
     }
 }
