@@ -98,7 +98,10 @@ final class TabView: UIView {
         super.willMove(toSuperview: newSuperview)
 
         Task {
-            await tabsSubject.attach(viewModel, notify: false)
+            // Runtime type is `TabViewModelImpl`, which conforms to `TabsObserver`.
+            if let observer = viewModel as? any TabsObserver {
+                await tabsSubject.attach(observer, notify: false)
+            }
         }
         stateHandler?.cancel()
         stateHandler = viewModel.statePublisher.sink(receiveValue: onStateChange)
@@ -173,7 +176,7 @@ final class TabView: UIView {
         }
     }
 
-    private func onStateChange(_ state: TabViewState) {
+    private func onStateChange(_ state: TabState) {
         centerBackground.backgroundColor = state.backgroundColor
         backgroundColor = state.realBackgroundColour
         highlightLine.isHidden = !state.isSelected

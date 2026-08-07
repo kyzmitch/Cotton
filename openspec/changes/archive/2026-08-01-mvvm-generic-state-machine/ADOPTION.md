@@ -1,6 +1,6 @@
 # Adapting a CottonViewModels type to `BaseViewModel` + `ViewModelStateMachine`
 
-Use this checklist for view models that are not yet on ViewModelKit (`TabViewModel`, `TopSitesViewModel`, etc.).
+Use this checklist for view models that are not yet on ViewModelKit (`TopSitesViewModel`, etc.).
 
 ## Steps
 
@@ -19,6 +19,7 @@ Use this checklist for view models that are not yet on ViewModelKit (`TabViewMod
 
 - **WebViewModel** — uses `BaseViewModel` + `ViewModelStateMachine` + `WebViewStateTransitioning`; consumers drive via `sendAction` and observe `statePublisher` only.
 - **SearchSuggestionsViewModel** — uses `BaseViewModel` + `ViewModelStateMachine` + `SearchSuggestionsStateTransitioning`; progressive fetch via sequenced `.loadKnownDomains` / `.loadSuggestions` (`fetchSuggestions` helper only sequences `sendAction`).
+- **TabViewModel** — uses `BaseViewModel` + `ViewModelStateMachine` + `TabStateTransitioning`; `TabsObserver` / Observation adapters only `sendAction`; thin `load` / `close` / `activate` helpers only call `sendAction`.
 
 ## Do not use
 
