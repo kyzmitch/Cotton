@@ -44,7 +44,10 @@ struct TabStateTransitioningTests {
         let context = FakeTabStateContext()
         context.selected = true
         context.tabTitle = "Cotton"
-        context.favicon = .url(URL(string: "https://example.com/favicon.ico")!)
+        guard let link = URL(string: "https://example.com/favicon.ico") else {
+          return
+        }
+        context.favicon = .url(link)
         let strategy = TabStateTransitioning<FakeTabStateContext>()
 
         let next = try await strategy.transition(
@@ -80,7 +83,10 @@ struct TabStateTransitioningTests {
     @Test func applySelectionFlipsChromeWithoutChangingTitleOrFavicon() async throws {
         let context = FakeTabStateContext()
         let strategy = TabStateTransitioning<FakeTabStateContext>()
-        let favicon = ImageSource.url(URL(string: "https://example.com/f.png")!)
+        guard let link = URL(string: "https://example.com/f.png") else {
+            return
+        }
+        let favicon = ImageSource.url(link)
         let initial = TabViewState<FakeTabStateContext>.deSelected("Title", favicon)
 
         let next = try await strategy.transition(
@@ -99,7 +105,10 @@ struct TabStateTransitioningTests {
         let context = FakeTabStateContext()
         let strategy = TabStateTransitioning<FakeTabStateContext>()
         let initial = TabViewState<FakeTabStateContext>.selected("Old", nil)
-        let favicon = ImageSource.url(URL(string: "https://example.com/new.png")!)
+        guard let link = URL(string: "https://example.com/new.png") else {
+            return
+        }
+        let favicon = ImageSource.url(link)
 
         let next = try await strategy.transition(
             from: initial,

@@ -143,7 +143,9 @@ struct SearchBarViewModelImplTests {
     @MainActor
     @Test func selectSuggestionCreatesSearchURLThenReplacesTab() async throws {
         let fixture = SearchBarVMFixture()
-        let expectedURL = URL(string: "https://www.google.com/search?q=swift")!
+        guard let expectedURL = URL(string: "https://www.google.com/search?q=swift") else {
+            return
+        }
         fixture.createSearchURLUseCase.executeHandler = { input in
             #expect(input.source == .google)
             #expect(input.suggestion == "swift")
@@ -252,7 +254,9 @@ struct SearchBarViewModelImplTests {
     @Test func usesAppContextAutocompletionSource() async throws {
         let fixture = SearchBarVMFixture()
         fixture.appContext.webAutocompletionSource = .duckduckgo
-        let expectedURL = URL(string: "https://duckduckgo.com/?q=cotton")!
+        guard let expectedURL = URL(string: "https://duckduckgo.com/?q=cotton") else {
+            return
+        }
         fixture.createSearchURLUseCase.executeHandler = { input in
             #expect(input.source == .duckduckgo)
             return expectedURL
