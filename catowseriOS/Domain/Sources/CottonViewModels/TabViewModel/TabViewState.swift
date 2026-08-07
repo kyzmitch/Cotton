@@ -8,14 +8,37 @@
 
 import Foundation
 import UIKit
+import ViewModelKit
 
-public enum ImageSource {
+public enum ImageSource: @unchecked Sendable {
     case url(URL)
     case image(UIImage)
     case urlWithPlaceholder(URL, UIImage)
 }
 
-public struct TabViewState {
+extension ImageSource: Equatable {
+    public static func == (lhs: ImageSource, rhs: ImageSource) -> Bool {
+        switch (lhs, rhs) {
+        case (.url(let left), .url(let right)):
+            return left == right
+        case (.image(let left), .image(let right)):
+            return left === right
+        case (.urlWithPlaceholder(let leftURL, let leftImage), .urlWithPlaceholder(let rightURL, let rightImage)):
+            return leftURL == rightURL && leftImage === rightImage
+        default:
+            return false
+        }
+    }
+}
+
+/// Concrete state type used by the Tab `BaseViewModel` adopter.
+public typealias TabState = TabViewState<TabStateContextProxy>
+
+public struct TabViewState<C: TabStateContext>: ViewModelState, @unchecked Sendable {
+    public typealias Context = C
+    public typealias Action = TabAction
+    public typealias BaseState = TabViewState<C>
+
     public let backgroundColor: UIColor
     public let realBackgroundColour: UIColor
     public let isSelected: Bool
@@ -39,10 +62,14 @@ public struct TabViewState {
         self.favicon = favicon
     }
 
+    public static func createInitial() -> BaseState {
+        .deSelected("", nil)
+    }
+
     static func selected(
         _ title: String,
         _ newFavicon: ImageSource?
-    ) -> TabViewState {
+    ) -> TabViewState<C> {
         TabViewState(
             .superLightGray,
             UIColor.clear,
@@ -56,7 +83,7 @@ public struct TabViewState {
     static func deSelected(
         _ title: String,
         _ newFavicon: ImageSource?
-    ) -> TabViewState {
+    ) -> TabViewState<C> {
         .init(
             .normallyLightGray,
             UIColor.clear,
@@ -70,7 +97,7 @@ public struct TabViewState {
     func withNew(
         _ title: String,
         _ newFavicon: ImageSource?
-    ) -> TabViewState {
+    ) -> TabViewState<C> {
         TabViewState(
             backgroundColor,
             realBackgroundColour,
@@ -81,7 +108,7 @@ public struct TabViewState {
         )
     }
 
-    func selected() -> TabViewState {
+    func selected() -> TabViewState<C> {
         TabViewState(
             .superLightGray,
             UIColor.clear,
@@ -92,7 +119,7 @@ public struct TabViewState {
         )
     }
 
-    func deSelected() -> TabViewState {
+    func deSelected() -> TabViewState<C> {
         TabViewState(
             .normallyLightGray,
             UIColor.clear,
@@ -101,6 +128,28 @@ public struct TabViewState {
             title,
             favicon
         )
+    }
+
+    public static func == (lhs: TabViewState<C>, rhs: TabViewState<C>) -> Bool {
+        lhs.isSelected == rhs.isSelected
+            && lhs.title == rhs.title
+            && lhs.favicon == rhs.favicon
+            && lhs.backgroundColor.isEqual(rhs.backgroundColor)
+            && lhs.realBackgroundColour.isEqual(rhs.realBackgroundColour)
+            && lhs.titleColor.isEqual(rhs.titleColor)
+    }
+}
+
+extension TabViewState {
+    public enum Error: LocalizedError {
+        case missingContext
+
+        public var errorDescription: String? {
+            switch self {
+            case .missingContext:
+                "Tab state context is missing"
+            }
+        }
     }
 }
 

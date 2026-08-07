@@ -6,15 +6,28 @@
 //  Copyright © 2024 Cotton (Catowser). All rights reserved.
 //
 
-import Combine
-import CottonTabs
+import ViewModelKit
 
-/// Tab view model interface
-@MainActor public protocol TabViewModel: TabsObserver, AnyObject, Sendable {
-    var state: TabViewState { get }
-    var statePublisher: Published<TabViewState>.Publisher { get }
+/// Kit-backed Tab view model.
+public typealias TabViewModel = BaseViewModel<
+    TabViewState<TabStateContextProxy>,
+    TabAction,
+    TabStateContextProxy
+>
 
-    func load()
-    func close()
-    func activate()
+extension TabViewModel {
+    /// Fire-and-forget load; only calls `sendAction`.
+    public func load() {
+        sendAction(.load)
+    }
+
+    /// Fire-and-forget close; only calls `sendAction`.
+    public func close() {
+        sendAction(.close)
+    }
+
+    /// Fire-and-forget activate; only calls `sendAction`.
+    public func activate() {
+        sendAction(.activate)
+    }
 }

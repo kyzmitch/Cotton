@@ -7,25 +7,21 @@
 //
 
 import Foundation
-import Combine
 import CottonBase
 import CoreBrowser
 import FeatureFlagsKit
 import CottonUseCases
 import CottonTabs
+import ViewModelKit
 
-/// Tab view model implementation
-/// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` (see openspec ADOPTION.md).
+/// Tab view model implementation on ViewModelKit.
 @MainActor final class TabViewModelImpl: TabViewModel {
     private var tab: CoreBrowser.Tab
     private let readTabUseCase: any ReadSelectedTabIdUseCase
     private let closeTabUseCase: any CloseTabUseCase
     private let selectTabUseCase: any SelectTabUseCase
-    private let context: TabViewModelContext
-    private let featureManager: FeatureManager.StateHolder
-
-    @Published public var state: TabViewState
-    public var statePublisher: Published<TabViewState>.Publisher { $state }
+    private let appContext: TabViewModelContext
+    private lazy var proxy = TabStateContextProxy(subject: self)
 
     init(
         _ tab: CoreBrowser.Tab,
@@ -39,77 +35,35 @@ import CottonTabs
         self.readTabUseCase = readTabUseCase
         self.closeTabUseCase = closeTabUseCase
         self.selectTabUseCase = selectTabUseCase
-        self.context = context
-        self.featureManager = featureManager
-        _state = .init(initialValue: .deSelected(tab.title, nil))
+        self.appContext = context
+        _ = featureManager
+        super.init(transitioning: TabStateTransitioning())
+        // One-time seed: show title immediately (same UX as pre-kit init).
+        state = .deSelected(tab.title, nil)
 
         Task {
-            let observingType = await context.observingApiTypeValue
+            let observingType = await appContext.observingApiTypeValue
             if #available(iOS 17.0, *), observingType.isSystemObservation {
-                startTabsObservation(await context.tabsSubject)
+                startTabsObservation(await appContext.tabsSubject)
             }
         }
     }
 
-    // MARK: - public functions
-
-    public func load() {
-        Task {
-            // TODO: handle error
-            let selectedTabId = try await readTabUseCase.execute()
-            let visualState = tab.getVisualState(selectedTabId)
-            let favicon: ImageSource?
-            if let site = tab.site {
-                favicon = await loadFavicon(site)
-            } else {
-                favicon = nil
-            }
-            switch visualState {
-            case .selected:
-                state = .selected(tab.title, favicon)
-            case .deselected:
-                state = .deSelected(tab.title, favicon)
-            @unknown default:
-                break
-            }
-        }
-    }
-
-    public func close() {
-        if let site = tab.site {
-            _ = context.removeWebView(for: site)
-        }
-        Task {
-            do {
-                _ = try await closeTabUseCase.execute(input: tab)
-            } catch {
-                print("Fail to close tab: \(error)")
-            }
-        }
-    }
-
-    public func activate() {
-        print("\(#function): selected tab with id: \(tab.id)")
-        Task {
-            do {
-                try await selectTabUseCase.execute(input: tab)
-            } catch {
-                print("Fail to select tab: \(error.localizedDescription)")
-            }
-        }
+    public override var context: Context? {
+        proxy
     }
 
     // MARK: - private
 
-    /// Loading of favicon doesn't depend on `self`
-    private func loadFavicon(_ site: Site) async -> ImageSource? {
+    /// Loading of favicon doesn't depend on published state mutation.
+    private func resolveFavicon(_ site: Site) async -> ImageSource? {
         if let hqImage = site.favicon() {
             return .image(hqImage)
         }
-        let resolveNeeded = await context.isDohEnabled
+        let resolveNeeded = await appContext.isDohEnabled
         let url: URL?
         do {
-            url = try await context.faviconURL(site, resolveNeeded)
+            url = try await appContext.faviconURL(site, resolveNeeded)
         } catch {
             print("Fail to resolve favicon url: \(error)")
             url = nil
@@ -157,7 +111,6 @@ import CottonTabs
             return
         }
         await tabDidSelect(index, tabsSubject.tabs[index].contentType, tabId)
-
     }
 
     @available(iOS 17.0, *)
@@ -167,6 +120,46 @@ import CottonTabs
             return
         }
         await tabDidReplace(tabsSubject.tabs[index], at: index)
+    }
+}
+
+// MARK: - TabStateContext
+
+extension TabViewModelImpl: TabStateContext {
+    public var tabTitle: String {
+        tab.title
+    }
+
+    public func isTabSelected() async throws -> Bool {
+        let selectedTabId = try await readTabUseCase.execute()
+        return tab.getVisualState(selectedTabId) == .selected
+    }
+
+    public func loadFavicon() async -> ImageSource? {
+        guard let site = tab.site else {
+            return nil
+        }
+        return await resolveFavicon(site)
+    }
+
+    public func closeTab() async {
+        if let site = tab.site {
+            _ = appContext.removeWebView(for: site)
+        }
+        do {
+            _ = try await closeTabUseCase.execute(input: tab)
+        } catch {
+            print("Fail to close tab: \(error)")
+        }
+    }
+
+    public func activateTab() async {
+        print("\(#function): selected tab with id: \(tab.id)")
+        do {
+            try await selectTabUseCase.execute(input: tab)
+        } catch {
+            print("Fail to select tab: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -182,12 +175,8 @@ extension TabViewModelImpl: TabsObserver {
             /// Need to reload favicon and title as well.
             /// Not sure if it is possible during simple select?
         }
-        /// Next code used to change tab's VisualState `tab.getVisualState(identifier)`
-        if tab.id == identifier {
-            state = state.selected()
-        } else {
-            state = state.deSelected()
-        }
+        let isSelected = tab.id == identifier
+        try? await sendAction(.applySelection(isSelected: isSelected))
     }
 
     public func tabDidReplace(
@@ -200,11 +189,10 @@ extension TabViewModelImpl: TabsObserver {
         self.tab = tab
         let favicon: ImageSource?
         if let site = tab.site {
-            favicon = await loadFavicon(site)
+            favicon = await resolveFavicon(site)
         } else {
             favicon = nil
         }
-
-        state = state.withNew(tab.title, favicon)
+        try? await sendAction(.applyReplace(title: tab.title, favicon: favicon))
     }
 }
