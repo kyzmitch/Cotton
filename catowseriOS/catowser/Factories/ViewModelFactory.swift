@@ -106,7 +106,7 @@ import FeatureFlags
         let isJsEnabled = await featureManager.boolValue(of: .javaScriptEnabled)
         async let sites = defaultTabProvider.topSites(isJsEnabled)
         async let replaceTabUseCase = useCaseRegistry.findUseCase((any ReplaceSelectedTabUseCase).self)
-        return await TopSitesViewModel(sites, replaceTabUseCase)
+        return await ModuleVMFactory.createTopSitesVM(sites, replaceTabUseCase)
     }
 
     func searchBarViewModel(

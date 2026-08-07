@@ -6,33 +6,25 @@
 //  Copyright © 2022 Cotton/Catowser Andrei Ermoshin. All rights reserved.
 //
 
-import Combine
 import CottonBase
 import CoreBrowser
-import CottonUseCases
+import ViewModelKit
 
-/// Follow-up: adapt to `BaseViewModel` + `ViewModelStateMachine` when it gains real UI state/actions.
-@MainActor public final class TopSitesViewModel: ObservableObject {
-    public let topSites: [Site]
-    private let writeTabUseCase: any ReplaceSelectedTabUseCase
+/// Kit-backed Top Sites view model.
+public typealias TopSitesViewModel = BaseViewModel<
+    TopSitesViewState<TopSitesStateContextProxy>,
+    TopSitesAction,
+    TopSitesStateContextProxy
+>
 
-    public init(
-        _ topSites: [Site],
-        _ writeTabUseCase: any ReplaceSelectedTabUseCase
-    ) {
-        self.topSites = topSites
-        self.writeTabUseCase = writeTabUseCase
+extension TopSitesViewModel {
+    /// Sites displayed in the top-sites grid.
+    public var topSites: [Site] {
+        state.sites
     }
 
-    public func replaceSelected(
-        tabContent: CoreBrowser.Tab.ContentType
-    ) {
-        Task {
-            do {
-                try await writeTabUseCase.execute(input: tabContent)
-            } catch {
-                print("Fail to replace current tab: \(error)")
-            }
-        }
+    /// Fire-and-forget replace of the selected tab; only calls `sendAction`.
+    public func replaceSelected(tabContent: CoreBrowser.Tab.ContentType) {
+        sendAction(.replaceSelected(tabContent))
     }
 }

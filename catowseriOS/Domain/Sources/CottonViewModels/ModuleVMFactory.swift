@@ -68,6 +68,14 @@ import ViewModelKit
         AllTabsViewModelImpl(addTabUseCase)
     }
 
+    /// Top sites view model
+    public static func createTopSitesVM(
+        _ topSites: [Site],
+        _ writeTabUseCase: any ReplaceSelectedTabUseCase
+    ) -> TopSitesViewModel {
+        TopSitesViewModelImpl(topSites, writeTabUseCase)
+    }
+
     /// Toolbar view model
     public static func createToolbarVM(
         _ appContext: BrowserToolbarViewContext
