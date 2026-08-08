@@ -1,91 +1,96 @@
 ## Context
 
-Today `TabsDataService` mixes CRUD/persistence with selection policy:
+`TabsDataService` mixes CRUD/persistence with selection policy:
 
-- On **add**, it reads `selectionStrategy.makeTabActiveAfterAdding` and, when true, updates `selectedTabId` and notifies observers inside `handleTabAdded`.
-- On **close**, `handleCachedTabRemove` calls `selectionStrategy.autoSelectedIndexAfterTabRemove(context: self, …)` (using `TabsDataService` as `IndexSelectionContext`), then updates selection and notifies.
+- On **add**, it uses `selectionStrategy.makeTabActiveAfterAdding` and updates `selectedTabId` inside `handleTabAdded`.
+- On **close**, `handleCachedTabRemove` calls `selectionStrategy.autoSelectedIndexAfterTabRemove(context: self, …)` (`TabsDataService` as `IndexSelectionContext`), then updates selection.
 
-Use cases (`AddTabUseCaseImpl`, `CloseTabUseCaseImpl`) only forward commands. `CloseTabUseCase` already carries `#warning("TODO: https://github.com/kyzmitch/Cotton/issues/92")`. Some view-model factories name a dependency `writeTabUseCase` but type it as `CloseTabUseCase`, which hints at a missing write orchestration type.
+The write-side use cases are already split and are thin proxies today:
 
-Constraints: preserve observer / subject notification behavior; keep at least one tab (last-tab close still seeds a default tab); `TabSelectionStrategy` / `NearbySelectionStrategy` behavior must stay equivalent; prefer Swift Testing for new unit tests.
+| Use case | Role today | Role after this change (selection focus) |
+|----------|------------|------------------------------------------|
+| `AddTabUseCase` | `.addTab` forwarder | Own select-after-add policy; drive service |
+| `CloseTabUseCase` | `.closeTab` forwarder (+ #92 TODO) | Own reselect-after-close / last-tab recovery |
+| `SelectTabUseCase` | `.selectTab` forwarder | Apply selection when add/close orchestration needs it |
+| `ReplaceSelectedTabUseCase` | `.replaceContent` forwarder | Unchanged for selection; same “thicken later” direction |
+
+Do **not** reintroduce a combined `WriteTabsUseCase`; that split is intentional.
+
+Constraints: preserve observer/subject notifications; always keep ≥1 tab; keep `NearbySelectionStrategy` behavior equivalent; Swift Testing for new tests.
 
 ## Goals / Non-Goals
 
 **Goals:**
 
-- Move “decide next selected tab after add/close” into the use-case layer.
-- Keep `TabsDataService` responsible for repository I/O, in-memory `ServiceData`, and publishing tabs/selection changes when selection is applied.
-- Expose a clear write API (prefer `WriteTabsUseCase`) that combines mutation + selection for add-with-select and close-with-reselect.
-- Make selection policy unit-testable without spinning up the full tabs actor (strategy + use case with fakes).
+- Move “decide next selected tab after add/close” into `AddTabUseCase` and `CloseTabUseCase`.
+- Keep `TabsDataService` for repository I/O, `ServiceData`, and publishing mutations/selection when applied.
+- Compose with `SelectTabUseCase` (or an explicit select command) when applying a computed selection, rather than hiding policy inside the data service.
+- Make selection policy unit-testable at the use-case layer with fakes.
 
 **Non-Goals:**
 
-- Changing `NearbySelectionStrategy` algorithms or introducing alternate strategies.
-- Reworking explicit user `selectTab`, replace content, preview update, or close-all beyond what last-tab recovery already requires.
+- Creating or restoring `WriteTabsUseCase`.
+- Changing nearby selection algorithms.
+- Moving close-all, preview update (`SelectedTabUseCase`), or replace-content domain logic in this change (follow-ups on the same thin-proxy problem).
 - ViewModelKit / Observation migrations.
-- Broad rename of all “write” naming across the app unless required for the new use-case type.
+- Renaming all `writeTabUseCase` call-site locals (optional cleanup only).
 
 ## Decisions
 
-### 1. Introduce `WriteTabsUseCase` for add/close + selection
+### 1. Thicken existing split use cases (no aggregate write type)
 
-**Choice:** Add `WriteTabsUseCase` (protocol + impl) that owns `TabSelectionStrategy` and orchestrates:
-
-- `add(tab)` → persist add → if strategy says make active, apply selection to the new tab.
-- `close(tab)` → persist remove → if selection must change, compute next id via strategy → apply selection (or handle last-tab default-tab path).
-
-Keep existing `AddTabUseCase` / `CloseTabUseCase` as thin adapters that delegate to `WriteTabsUseCase` **or** migrate call sites to `WriteTabsUseCase` and deprecate the thin wrappers in the same change if touch set is small.
+**Choice:** Put selection orchestration in `AddTabUseCaseImpl` and `CloseTabUseCaseImpl`. Inject `TabSelectionStrategy` into those impls. When a new selection must be applied, call `SelectTabUseCase` (preferred, reuses validation/error mapping) or the data-service select command if a circular dependency appears.
 
 **Alternatives considered:**
 
-- Only inject strategy into `AddTabUseCase` / `CloseTabUseCase` separately — simpler, but duplicates orchestration and misses the issue’s `WriteTabsUseCase` direction / existing `writeTabUseCase` naming.
-- Leave selection inside the data service and only document it — does not address #92.
+- New `WriteTabsUseCase` combining add+close — rejected; use cases were already split and callers depend on the split APIs.
+- Leave strategy in the data service — does not address #92.
 
-### 2. Data service becomes selection-agnostic for policy; still applies selection
+### 2. Data service becomes selection-policy agnostic
 
-**Choice:** Remove `TabSelectionStrategy` from `TabsDataService` init/factory. Add/close commands no longer consult the strategy.
+**Choice:** Remove `TabSelectionStrategy` from `TabsDataService` / `createTabsService`.
 
-- **Add:** Accept an explicit `select: Bool` (command payload or repository already has `add(tab, select:)`) driven by the use case; when `select` is true, update `selectedTabId` and notify as today.
-- **Close:** Remove the tab from cache/repo and publish tabs list/count; do **not** compute next selection via strategy. Return enough info for the use case (e.g. closed tab id / whether it was selected / remaining tabs snapshot), or rely on follow-up read + `selectTab` from the use case.
-- **Apply selection:** Reuse existing `.selectTab` (or a lightweight set-selected-id path) so notifications stay in one place.
+- **Add:** Accept explicit `select: Bool` from `AddTabUseCase` (strategy decides the flag). When true, update `selectedTabId` and notify as today.
+- **Close:** Remove/publish tabs without strategy. Return enough for the use case (e.g. whether reselect is needed / remaining snapshot) **or** let `CloseTabUseCase` read state and then call `SelectTabUseCase`.
+- **Select:** Existing `.selectTab` / `SelectTabUseCase` remains the apply path.
 
-**Alternatives considered:**
+**Alternatives considered:** Service still owns strategy but is called from use cases — policy stays in infrastructure.
 
-- Service returns “suggested” selection while still owning strategy — keeps policy in infrastructure.
-- Use case mutates `ServiceData` directly — breaks actor encapsulation.
+### 3. Snapshot `IndexSelectionContext` in the close use case
 
-### 3. `IndexSelectionContext` for the use case, not the data service
+**Choice:** `CloseTabUseCase` builds a small snapshot `IndexSelectionContext` (last index + currently selected index from tabs after/before remove as required by strategy semantics) instead of using `TabsDataService` as the context.
 
-**Choice:** Build a small sendable/value `IndexSelectionContext` (tabs count / selected index derived from a snapshot after close) inside the use case (or as a pure helper) when calling `autoSelectedIndexAfterTabRemove`. Stop requiring `TabsDataService: IndexSelectionContext` for this flow.
+**Alternatives considered:** Keep `TabsDataService: IndexSelectionContext` and call strategy from the actor — status quo.
 
-**Alternatives considered:** Keep context on the actor and call strategy from inside the service — status quo.
+### 4. Last-tab close in `CloseTabUseCase`
 
-### 4. Last-tab close stays a write orchestration concern
-
-**Choice:** When closing the only tab, the use case (or a dedicated step it invokes) still ensures a default blank/default-content tab exists and is selected. Prefer implementing that sequence in `WriteTabsUseCase` (close → add default → select) using data-service primitives, rather than a hidden side effect buried only in `handleCachedTabRemove`. If a short transitional helper remains in the service, document it as temporary and still trigger selection from the use case.
+**Choice:** Orchestrate last-tab recovery in `CloseTabUseCase`: after removing the only tab, add a default-content tab (via `AddTabUseCase` or service add) and ensure it is selected (via strategy/`SelectTabUseCase`). Avoid leaving that policy only inside `handleCachedTabRemove`.
 
 ### 5. DI wiring
 
-**Choice:** Construct `NearbySelectionStrategy` (or injected `TabSelectionStrategy`) in `UseCaseRegistry` when creating `WriteTabsUseCaseImpl`. Stop passing strategy into `DataServiceFactory.createTabsService`.
+**Choice:** Construct `NearbySelectionStrategy` (or injected `TabSelectionStrategy`) in `UseCaseRegistry` for `AddTabUseCaseImpl` / `CloseTabUseCaseImpl`. Stop passing strategy into `DataServiceFactory.createTabsService`.
+
+### 6. Shared helpers vs cross-use-case calls
+
+**Choice:** Prefer `CloseTabUseCase` → `SelectTabUseCase` and, for last-tab, `CloseTabUseCase` → `AddTabUseCase` if dependency direction stays acyclic (`Add` must not depend on `Close`). If DI cycles appear, extract a small internal helper used by both add/close, or have close call service primitives for the default-tab add only.
 
 ## Risks / Trade-offs
 
-- **[Risk] Double notification or missed selection update during split add/close + select** → Mitigation: keep notification only on the service paths that mutate `selectedTabId`; use case always finishes with an explicit select when policy requires it; add focused tests for add-select and close-selected.
-- **[Risk] Race if another writer mutates tabs between close and select** → Mitigation: tabs writes already go through the single `TabsDataService` actor; perform close+select as sequential awaits on that actor from one use-case execution; avoid overlapping unstructured Tasks in the use case.
-- **[Risk] Behavioral drift vs `NearbySelectionStrategy` edge cases (close non-selected, close last index, etc.)** → Mitigation: port existing expectations into Swift Testing scenarios against the use case + fake service; keep strategy implementation unchanged.
-- **[Risk] API churn for VMs typed as `CloseTabUseCase` / `AddTabUseCase`** → Mitigation: retain protocol façades that delegate to `WriteTabsUseCase`, or update factories in the same PR; prefer one approach and list call sites in tasks.
-- **[Trade-off] Slightly more round-trips (close then select) vs monolithic service command** → Acceptable for clearer layering; same actor, low overhead.
+- **[Risk] Double or missed selection notifications when add/close + select are split** → Mitigation: notify only on service paths that mutate `selectedTabId`; use cases always finish with an explicit select when policy requires it; cover with tests.
+- **[Risk] DI cycle (Close → Add → …)** → Mitigation: last-tab add via service command from close, or shared package-private helper; do not make `AddTabUseCase` depend on `CloseTabUseCase`.
+- **[Risk] Behavioral drift vs nearby strategy edge cases** → Mitigation: Swift Testing scenarios for add/close; keep strategy implementation unchanged.
+- **[Trade-off] Extra round-trips (close then select)** → Acceptable for layering; same actor.
 
 ## Migration Plan
 
-1. Add `WriteTabsUseCase` + wire strategy in `UseCaseRegistry`.
-2. Refactor `TabsDataService` add/close to drop strategy; support explicit select-on-add and selection-free close (plus existing select command).
-3. Point `AddTabUseCase` / `CloseTabUseCase` (or call sites) at the write use case; remove #92 warning.
-4. Update `createTabsService` signature and `ServiceRegistry`.
-5. Add/adjust unit tests; manually smoke add tab, close selected, close non-selected, close last tab.
-6. Rollback: revert use-case/service commits together (strategy must not be removed from service without the use-case owner).
+1. Enrich `AddTabUseCase` / `CloseTabUseCase` with strategy + orchestration; wire in `UseCaseRegistry`.
+2. Refactor `TabsDataService` add/close to drop strategy; support explicit select-on-add and selection-free close.
+3. Compose `SelectTabUseCase` where needed; remove #92 warning.
+4. Update `createTabsService` / `ServiceRegistry`.
+5. Tests + manual smoke (add, close selected/non-selected, last tab).
+6. Rollback: revert use-case and service changes together.
 
 ## Open Questions
 
-- Prefer migrating all call sites to `WriteTabsUseCase` in this change vs keeping `AddTabUseCase` / `CloseTabUseCase` as permanent delegating façades?
-- Should close-all’s “reset to one selected tab” also move into `WriteTabsUseCase` in a follow-up, or stay in the data service for now (current non-goal)?
+- For last-tab recovery, prefer `CloseTabUseCase` calling `AddTabUseCase` vs a direct service `.addTab` to avoid any DI subtlety?
+- Should a follow-up change thicken `ReplaceSelectedTabUseCase` / close-all the same way (logic out of the data service)?

@@ -1,29 +1,32 @@
 ## Why
 
-`TabsDataService` currently owns both tab persistence (add/remove) and selection policy (select newly added tabs, recompute selection after closing the selected tab via `TabSelectionStrategy`). That mixes infrastructure with domain orchestration and leaves `CloseTabUseCase` as a thin pass-through with an open TODO for [issue #92](https://github.com/kyzmitch/Cotton/issues/92). Moving selection decisions into the use-case layer keeps the data service focused on storage/state updates and makes selection policy testable without the full tabs actor.
+`TabsDataService` currently owns both tab persistence and selection policy (select a newly added tab; recompute selection after closing via `TabSelectionStrategy`). The write-side use cases—`AddTabUseCase`, `CloseTabUseCase`, `SelectTabUseCase`, and `ReplaceSelectedTabUseCase`—are thin command proxies and do not own that orchestration. `CloseTabUseCase` already has an open TODO for [issue #92](https://github.com/kyzmitch/Cotton/issues/92). Selection (and, over time, other domain logic) belongs in those existing use cases so the data service stays focused on storage, `ServiceData`, and publishing.
 
 ## What Changes
 
-- Extract post-mutation tab selection (after close of selected tab; after add when the new tab should become active) from `TabsDataService` into the use-case layer, e.g. a `WriteTabsUseCase` (or equivalent orchestration over existing add/close use cases).
-- Have the use case own `TabSelectionStrategy` decisions: whether to select a newly added tab, and which tab becomes selected after removal.
-- Slim `TabsDataService` add/close paths so they apply selection when instructed (or via an explicit select command) rather than embedding strategy logic.
-- Update DI / factories (`UseCaseRegistry`, `createTabsService`) so selection strategy is wired at the use-case boundary, not only into the data service.
-- Preserve existing observable behavior (selected tab id notifications, tabs list updates) for UI consumers.
-- Remove the issue #92 `#warning` / TODO from `CloseTabUseCase` once orchestration lives in the use case.
+- Move post-mutation tab selection out of `TabsDataService` into the **existing** use cases (no new `WriteTabsUseCase`):
+  - `AddTabUseCase` decides whether the new tab becomes selected (`TabSelectionStrategy.makeTabActiveAfterAdding`) and applies selection (directly or via `SelectTabUseCase`).
+  - `CloseTabUseCase` computes the next selected tab after remove (`autoSelectedIndexAfterTabRemove`) and applies it (including last-tab → default tab).
+  - `SelectTabUseCase` remains the shared path to apply an explicit selection when orchestration needs it.
+- Slim `TabsDataService` add/close paths so they do not embed `TabSelectionStrategy`; they persist and publish when selection is requested or applied through select.
+- Wire `TabSelectionStrategy` at the use-case boundary (`UseCaseRegistry`), not into `createTabsService`.
+- Preserve observer/subject behavior for tabs list and selected tab id.
+- Remove the issue #92 `#warning` from `CloseTabUseCase` once close orchestration owns selection.
+- **Direction (this change starts it):** thicken the split write use cases instead of re-aggregating them; `ReplaceSelectedTabUseCase` stays in scope for the same layering goal but is not required to gain selection-policy logic here unless close/add flows need it.
 
 ## Capabilities
 
 ### New Capabilities
-- `write-tabs-selection`: Use-case orchestration for write operations that change the selected tab—add with optional immediate selection, and close with auto-selection of a remaining tab—while `TabsDataService` remains responsible for persistence and publishing state.
+- `tabs-use-case-selection`: Selection-after-add and selection-after-close live in `AddTabUseCase` / `CloseTabUseCase` (composing `SelectTabUseCase` as needed); `TabsDataService` no longer owns `TabSelectionStrategy` for those flows.
 
 ### Modified Capabilities
 - (none)
 
 ## Impact
 
-- **CottonTabs**: `TabsDataService` add/close handlers and `TabSelectionStrategy` injection; factory `DataServiceFactory.createTabsService`.
-- **CottonUseCases**: `AddTabUseCase`, `CloseTabUseCase`, and/or new `WriteTabsUseCase`; strategy dependency and selection sequencing.
-- **App DI**: `UseCaseRegistry`, possibly `ServiceRegistry` where the selection strategy is constructed.
-- **View models / UI**: Prefer stable use-case APIs; rename/consolidate `writeTabUseCase` typing where it is currently aliased to `CloseTabUseCase` if a dedicated write use case is introduced.
-- **Tests**: Unit-test selection policy at the use-case layer (Swift Testing); adjust any tabs data-service tests that assumed strategy lived inside the actor.
-- **Out of scope**: Changing nearby vs other selection algorithms; closing all tabs / replace content / explicit user select (except as needed to apply a computed selection); ViewModelKit migrations.
+- **CottonTabs**: `TabsDataService` add/close handlers; remove strategy from service init/`DataServiceFactory.createTabsService`.
+- **CottonUseCases**: Enrich `AddTabUseCase`, `CloseTabUseCase`; may compose `SelectTabUseCase`; DI for `TabSelectionStrategy`. `ReplaceSelectedTabUseCase` unchanged unless a shared helper is extracted.
+- **App DI**: `UseCaseRegistry`, `ServiceRegistry` strategy wiring.
+- **View models / UI**: Keep existing `AddTabUseCase` / `CloseTabUseCase` / `SelectTabUseCase` APIs; no migration to a combined write type. Optional cleanup of misleading `writeTabUseCase` parameter names that type as `CloseTabUseCase`.
+- **Tests**: Swift Testing for add/close selection at the use-case layer; adjust data-service tests that assumed strategy lived in the actor.
+- **Out of scope**: New aggregate `WriteTabsUseCase`; changing `NearbySelectionStrategy` algorithms; close-all / preview-update logic moves (follow-ups); ViewModelKit migrations.
