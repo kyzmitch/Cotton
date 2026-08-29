@@ -11,6 +11,7 @@ import Foundation
 import CoreBrowser
 import CottonUseCases
 import CottonSearch
+import CottonTabs
 
 /// A global singletone for storing all the use case classes
 @globalActor final class UseCaseRegistry {
@@ -48,13 +49,26 @@ import CottonSearch
         private func registerTabsUseCases() async {
             let dataService = await ServiceRegistry.shared.tabsService
 
-            let addTabUseCase: any AddTabUseCase = AddTabUseCaseImpl(dataService)
+            let strategy = NearbySelectionStrategy()
+            let selectTabUseCase: any SelectTabUseCase = SelectTabUseCaseImpl(dataService)
+            useCaseLocator.registerTyped(
+                selectTabUseCase,
+                of: (any SelectTabUseCase).self
+            )
+
+            let addTabUseCase: any AddTabUseCase = AddTabUseCaseImpl(dataService, strategy)
             useCaseLocator.registerTyped(
                 addTabUseCase,
                 of: (any AddTabUseCase).self
             )
 
-            let closeTabUseCase: any CloseTabUseCase = CloseTabUseCaseImpl(dataService)
+            let closeTabUseCase: any CloseTabUseCase = CloseTabUseCaseImpl(
+                dataService,
+                strategy,
+                selectTabUseCase,
+                addTabUseCase,
+                DefaultTabProvider.shared
+            )
             useCaseLocator.registerTyped(
                 closeTabUseCase,
                 of: (any CloseTabUseCase).self
@@ -70,12 +84,6 @@ import CottonSearch
             useCaseLocator.registerTyped(
                 replaceSelectedTabUseCase,
                 of: (any ReplaceSelectedTabUseCase).self
-            )
-
-            let selectTabUseCase: any SelectTabUseCase = SelectTabUseCaseImpl(dataService)
-            useCaseLocator.registerTyped(
-                selectTabUseCase,
-                of: (any SelectTabUseCase).self
             )
 
             // Register ReadAllTabsUseCase

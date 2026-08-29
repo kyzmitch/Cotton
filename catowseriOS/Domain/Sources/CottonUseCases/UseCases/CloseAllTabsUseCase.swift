@@ -10,13 +10,13 @@ import AutoMockable
 import BaseUseCaseKit
 import CottonTabs
 
+// MARK: - Interface
+
 /// Close all tabs use case.
-public protocol CloseAllTabsUseCase: CoreUseCase, AutoMockable, Sendable {
-    /// Input is nothing
-    typealias Input = Void
-    /// Output is nothing
-    typealias Output = Void
-}
+public protocol CloseAllTabsUseCase: CoreUseCase, AutoMockable, Sendable
+where Input == Void, Output == Void { }
+
+// MARK: - Implementation
 
 public final class CloseAllTabsUseCaseImpl: CloseAllTabsUseCase {
     private let tabsDataService: any TabsDataServiceProtocol

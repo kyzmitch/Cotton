@@ -12,7 +12,7 @@ The write-side use cases are already split and are thin proxies today:
 | `AddTabUseCase` | `.addTab` forwarder | Own select-after-add policy; drive service |
 | `CloseTabUseCase` | `.closeTab` forwarder (+ #92 TODO) | Own reselect-after-close / last-tab recovery |
 | `SelectTabUseCase` | `.selectTab` forwarder | Apply selection when add/close orchestration needs it |
-| `ReplaceSelectedTabUseCase` | `.replaceContent` forwarder | Unchanged for selection; same “thicken later” direction |
+| `ReplaceSelectedTabUseCase` | `.replaceContent` forwarder | Same thicken direction (approved follow-up: move replace-content domain logic out of the data service) |
 
 Do **not** reintroduce a combined `WriteTabsUseCase`; that split is intentional.
 
@@ -31,7 +31,7 @@ Constraints: preserve observer/subject notifications; always keep ≥1 tab; keep
 
 - Creating or restoring `WriteTabsUseCase`.
 - Changing nearby selection algorithms.
-- Moving close-all, preview update (`SelectedTabUseCase`), or replace-content domain logic in this change (follow-ups on the same thin-proxy problem).
+- Implementing replace-content / close-all / preview-update thickening **in this change** (approved as follow-ups; see Decision 7).
 - ViewModelKit / Observation migrations.
 - Renaming all `writeTabUseCase` call-site locals (optional cleanup only).
 
@@ -70,9 +70,35 @@ Constraints: preserve observer/subject notifications; always keep ≥1 tab; keep
 
 **Choice:** Construct `NearbySelectionStrategy` (or injected `TabSelectionStrategy`) in `UseCaseRegistry` for `AddTabUseCaseImpl` / `CloseTabUseCaseImpl`. Stop passing strategy into `DataServiceFactory.createTabsService`.
 
-### 6. Shared helpers vs cross-use-case calls
+### 6. Cross-use-case composition (acyclic)
 
-**Choice:** Prefer `CloseTabUseCase` → `SelectTabUseCase` and, for last-tab, `CloseTabUseCase` → `AddTabUseCase` if dependency direction stays acyclic (`Add` must not depend on `Close`). If DI cycles appear, extract a small internal helper used by both add/close, or have close call service primitives for the default-tab add only.
+**Choice:** Use cases may depend on other use cases and/or data services. For this change:
+
+| Edge | Verdict | Why |
+|------|---------|-----|
+| `CloseTabUseCase` → `SelectTabUseCase` | **Yes (required)** | Close owns *which* tab becomes selected (strategy + snapshot). Select owns *applying* that selection (persist + notify). Reuse `SelectTabUseCase` instead of calling `.selectTab` from Close or mutating selection inside the data-service close path. |
+| `CloseTabUseCase` → `AddTabUseCase` | **Yes (preferred for last-tab)** | Last-tab recovery is “remove then add default.” Prefer composing `AddTabUseCase` so add-side selection policy stays in one place. |
+| `AddTabUseCase` → `SelectTabUseCase` | **No (not needed)** | Add already drives selection via explicit `addTab(..., select:)` from `makeTabActiveAfterAdding`. A second Select call would be redundant. |
+| `AddTabUseCase` → `CloseTabUseCase` | **No** | Would create a cycle with Close → Add. |
+| `SelectTabUseCase` → Close/Add | **No** | Select stays a leaf that only talks to `TabsDataService`. |
+
+If a DI cycle appears despite the above, extract a small shared helper or have Close call a service primitive for the default-tab add only as a fallback.
+
+**Alternatives considered:**
+
+- Close calls `.selectTab` on the data service directly — works, but duplicates Select’s error mapping and skips the dedicated use-case boundary.
+- Fold selection apply into the close command again — re-mixes policy into the data service (rejects #92 goal).
+
+### 7. Thicken `ReplaceSelectedTabUseCase` (follow-up)
+
+**Choice:** Yes — `ReplaceSelectedTabUseCase` SHOULD move replace-content domain logic out of `TabsDataService` the same way add/close selection moved into use cases (guard selected tab, no-op when content unchanged, update + notify orchestration). Keep the data service as persistence/`ServiceData`/publish primitives. Close-all and preview-update (`SelectedTabUseCase`) follow the same pattern later.
+
+**Out of scope for this change:** Implement that thickening in a follow-up; this change only locks the direction.
+
+**Alternatives considered:**
+
+- Leave replace forever as a thin `.replaceContent` proxy — rejected; same thin-proxy problem as #92.
+- Fold replace into a combined write use case — rejected; keep the existing split APIs.
 
 ## Risks / Trade-offs
 
@@ -92,5 +118,4 @@ Constraints: preserve observer/subject notifications; always keep ≥1 tab; keep
 
 ## Open Questions
 
-- For last-tab recovery, prefer `CloseTabUseCase` calling `AddTabUseCase` vs a direct service `.addTab` to avoid any DI subtlety?
-- Should a follow-up change thicken `ReplaceSelectedTabUseCase` / close-all the same way (logic out of the data service)?
+- (none)

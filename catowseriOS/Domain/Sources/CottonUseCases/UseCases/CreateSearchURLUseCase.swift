@@ -13,16 +13,18 @@ import Foundation
 import BaseUseCaseKit
 import AutoMockable
 
+/// Input for creating search URL
+public typealias CreateSearchURLInput = (
+    source: WebAutoCompletionSource,
+    suggestion: String
+)
+
 // MARK: - Interface
 
 /// Create search URL using selected search engine and return async task
-public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable {
-
-    /// Input for creating search URL
-    typealias Input = (source: WebAutoCompletionSource, suggestion: String)
-    /// Output which is URL
-    typealias Output = URL
-
+public protocol CreateSearchURLUseCase: CoreUseCase, AutoMockable, Sendable
+where Output == URL, Input == CreateSearchURLInput {
+    
     /// Executes the use case to create a search URL
     ///
     /// - Parameter input: The search source and suggestion text

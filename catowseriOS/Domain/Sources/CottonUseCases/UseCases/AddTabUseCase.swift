@@ -11,6 +11,8 @@ import CoreBrowser
 import CottonTabs
 import BaseUseCaseKit
 
+// MARK: - Interface
+
 /// Add tab use case.
 public protocol AddTabUseCase: CoreUseCase, AutoMockable, Sendable {
     /// Adds tab to memory and storage. CoreBrowser.Tab can be blank or it can contain URL address.
@@ -20,15 +22,23 @@ public protocol AddTabUseCase: CoreUseCase, AutoMockable, Sendable {
     func execute(input: CoreBrowser.Tab) async throws
 }
 
+// MARK: - Implementation
+
 public final class AddTabUseCaseImpl: AddTabUseCase {
     private let tabsDataService: any TabsDataServiceProtocol
+    private let selectionStrategy: TabSelectionStrategy
 
-    public init(_ tabsDataService: any TabsDataServiceProtocol) {
+    public init(
+        _ tabsDataService: any TabsDataServiceProtocol,
+        _ selectionStrategy: TabSelectionStrategy
+    ) {
         self.tabsDataService = tabsDataService
+        self.selectionStrategy = selectionStrategy
     }
 
     public func execute(input tab: CoreBrowser.Tab) async throws {
-        let serviceData = await tabsDataService.sendCommand(.addTab(tab), nil)
+        let select = selectionStrategy.makeTabActiveAfterAdding
+        let serviceData = await tabsDataService.sendCommand(.addTab(tab, select: select), nil)
         guard case let .finished(result) = serviceData.tabAdded else {
             throw AppError.commandNotFinishedYet
         }

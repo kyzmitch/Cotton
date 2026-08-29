@@ -17,8 +17,6 @@ actor TabsDataService: TabsDataServiceProtocol {
     typealias UUIDStream = AsyncStream<Tab.ID>
     typealias IntStream = AsyncStream<Int>
 
-    /// Tabs selection strategy
-    private let selectionStrategy: TabSelectionStrategy
     /// Async stream for the selected tab id instead of using Combine's @Published
     private var selectedTabIdStream: UUIDStream!
     /// Async's stream continuation to notify about new id
@@ -66,13 +64,11 @@ actor TabsDataService: TabsDataServiceProtocol {
     init(
         _ tabsRepository: TabsRepository,
         _ positioning: TabsStatesInterface,
-        _ selectionStrategy: TabSelectionStrategy,
         _ tabsSubject: TabsDataSubjectProtocol?,
         _ observingType: ObservingApiType = .observerDesignPattern
     ) async {
         self.tabsRepository = tabsRepository
         self.positioning = positioning
-        self.selectionStrategy = selectionStrategy
         self.tabsSubject = tabsSubject
         self.tabObservers = []
         self.observingType = observingType
@@ -127,8 +123,8 @@ actor TabsDataService: TabsDataServiceProtocol {
             return handleSelectedTabIdCommand()
         case .getAllTabs:
             return handleFetchAllTabsCommand()
-        case .addTab(let value):
-            return await handleAddTabCommand(value)
+        case .addTab(let value, let select):
+            return await handleAddTabCommand(value, select: select)
         case .closeTab(let value):
             return await handleCloseTabCommand(value)
         case .closeTabWithId(let value):
@@ -197,7 +193,10 @@ private extension TabsDataService {
         return serviceData
     }
 
-    func handleAddTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceData {
+    func handleAddTabCommand(
+        _ tab: CoreBrowser.Tab,
+        select: Bool
+    ) async -> TabsServiceData {
         let positionType = await positioning.addPosition
         guard
             case let .finished(allTabsValue) = serviceData.allTabs,
@@ -214,10 +213,9 @@ private extension TabsDataService {
         } else {
             tabsCountInput.yield(tabs.count)
         }
-        let needSelect = selectionStrategy.makeTabActiveAfterAdding
         do {
-            let addedTab = try await tabsRepository.add(tab, select: needSelect)
-            await handleTabAdded(addedTab, index: newIndex, select: needSelect)
+            let addedTab = try await tabsRepository.add(tab, select: select)
+            await handleTabAdded(addedTab, index: newIndex, select: select)
             serviceData.tabAdded = .finished(output: .success(newIndex))
             // update state with new tabs array (+ 1 new tab)
             serviceData.allTabs = .finished(output: .success(tabs))
@@ -235,11 +233,9 @@ private extension TabsDataService {
             guard let removedTab = removedTabs.first else {
                 throw TabsListError.failToRemoveTab
             }
-            let newSelectedId = try await handleCachedTabRemove(removedTab)
-            serviceData.tabClosed = .finished(output: .success(newSelectedId))
-            if let newSelectedId {
-                serviceData.selectedTabId = .finished(output: .success(newSelectedId))
-            }
+            try await handleCachedTabRemove(removedTab)
+            // Selection after close is owned by CloseTabUseCase; service only persists removal.
+            serviceData.tabClosed = .finished(output: .success(nil))
         } catch {
             // tab view should be removed immediately on view level anyway
             print("Failure to remove tab from cache: \(error)")
@@ -476,32 +472,6 @@ private extension TabsDataService {
     }
 }
 
-// MARK: - IndexSelectionContext protocol conformance
-
-extension TabsDataService: IndexSelectionContext {
-    public var collectionLastIndex: Int {
-        get async {
-            /// -1 index is not possible because always should be at least 1 tab
-            let amount = tabs.count
-            /// Leaving assert even with unit tests, https://stackoverflow.com/a/410198
-            assert(amount != 0, "Tabs amount shouldn't be 0")
-            return amount - 1
-        }
-    }
-
-    public var currentlySelectedIndex: Int {
-        get async {
-            /// Leaving assert even with unit tests, https://stackoverflow.com/a/410198
-            assert(!tabs.isEmpty, "Tabs amount shouldn't be 0")
-            if let tabTuple = tabs.element(by: selectedTabIdentifier) {
-                return tabTuple.index
-            }
-            /// tabs collection shouldn't be empty, so, it is safe to return index of 1st element
-            return 0
-        }
-    }
-}
-
 // MARK: - TabsSubject protocol conformance
 
 extension TabsDataService: TabsSubject {
@@ -598,69 +568,21 @@ private extension TabsDataService {
         }
     }
 
-    /// Handles tab removal and returns new selected tab id if needed
+    /// Handles tab removal from in-memory cache. Selection after close is owned by `CloseTabUseCase`.
     func handleCachedTabRemove(
         _ tab: CoreBrowser.Tab
-    ) async throws(TabsListError) -> Tab.ID? {
-        // if it is a last tab - replace it with a tab with default content
-        // browser can't function without at least one tab
-        // so, this is kind of a side effect of removing the only one last tab
+    ) async throws(TabsListError) {
         var tabs = tabs
-        if tabs.count == 1 {
-            tabs.removeAll()
-            serviceData.selectedTabId = .finished(output: .success(positioning.defaultSelectedTabId))
-            serviceData.allTabs = .finished(output: .success(tabs))
-            serviceData.tabsCount = .finished(output: .success(0))
-            if observingType.isSystemObservation {
-                await notifyAboutClearedTabs()
-            } else {
-                tabsCountInput.yield(0)
-            }
-            let contentState = await positioning.contentState
-            let tab = CoreBrowser.Tab(contentType: contentState)
-            let updatedData = await sendCommand(.addTab(tab))
-            guard case let .finished(result) = updatedData.tabAdded else {
-                throw .failToAddDefaultTab
-            }
-            guard case .success = result else {
-                throw .failToAddDefaultTab
-            }
-            return tab.id
+        guard let closedTabIndex = tabs.firstIndex(of: tab) else {
+            throw .closingNonExistingTab
+        }
+        tabs.remove(at: closedTabIndex)
+        serviceData.allTabs = .finished(output: .success(tabs))
+        serviceData.tabsCount = .finished(output: .success(tabs.count))
+        if observingType.isSystemObservation {
+            await notifyAboutNewTabs(tabs, nil)
         } else {
-            guard let closedTabIndex = tabs.firstIndex(of: tab) else {
-                throw .closingNonExistingTab
-            }
-            let newIndex = await selectionStrategy.autoSelectedIndexAfterTabRemove(
-                context: self,
-                removedIndex: closedTabIndex
-            )
-            // need to remove it before changing selected index
-            // otherwise in one case the handler will select closed tab
-            tabs.remove(at: closedTabIndex)
-            serviceData.allTabs = .finished(output: .success(tabs))
-            serviceData.tabsCount = .finished(output: .success(tabs.count))
-            if observingType.isSystemObservation {
-                await notifyAboutNewTabs(tabs, nil)
-            } else {
-                tabsCountInput.yield(tabs.count)
-            }
-            if let newIndex {
-                // closed tab was selected, need to update the index
-                guard let selectedTab = tabs[safe: newIndex] else {
-                    throw .failToFindNewSelectedTab
-                }
-                serviceData.selectedTabId = .finished(output: .success(selectedTab.id))
-                if observingType.isSystemObservation {
-                    await notifyAboutNewSelectedTab(selectedTab.id)
-                } else {
-                    selectedTabIdInput.yield(selectedTab.id)
-                }
-                serviceData.selectedTabId = .finished(output: .success(selectedTab.id))
-                return selectedTab.id
-            } else {
-                // selected tab and selected index stay the same
-                return nil
-            }
+            tabsCountInput.yield(tabs.count)
         }
     }
 
@@ -793,14 +715,12 @@ extension DataServiceFactory {
     public static func createTabsService(
         _ tabsRepository: TabsRepository,
         _ positioning: TabsStatesInterface,
-        _ selectionStrategy: TabSelectionStrategy,
         _ tabsSubject: TabsDataSubjectProtocol?,
         _ observingType: ObservingApiType
     ) async -> any TabsDataServiceProtocol {
         await TabsDataService(
             tabsRepository,
             positioning,
-            selectionStrategy,
             tabsSubject,
             observingType
         )

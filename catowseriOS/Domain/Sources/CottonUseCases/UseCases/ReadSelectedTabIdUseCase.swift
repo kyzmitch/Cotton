@@ -4,12 +4,8 @@ import CottonTabs
 import CoreBrowser
 
 /// Protocol for reading the selected tab ID asynchronously.
-public protocol ReadSelectedTabIdUseCase: CoreUseCase, AutoMockable, Sendable {
-    /// Input type for the use case. In this case, it's `Void`.
-    typealias Input = Void
-
-    /// Output type for the use case, which is a `CoreBrowser.Tab.ID`.
-    typealias Output = CoreBrowser.Tab.ID
+public protocol ReadSelectedTabIdUseCase: CoreUseCase, AutoMockable, Sendable
+where Input == Void, Output == CoreBrowser.Tab.ID {
 
     /// Reads the selected tab ID asynchronously.
     ///

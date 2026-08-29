@@ -12,3 +12,7 @@ Use swiftlint rules for *.swift files. Project rules file is at `catowseriOS/.sw
 
 ### OOP
 * Instead of creating static function for unrelated type, try to put that function as an extension of input/output type of that function or make that function as an instance function. This would help to follow encapsulation principle. If that function is beign used only in that file, then put type extension to that file only.
+
+### Use cases
+* A use case may depend on other use cases and/or data services (composition is allowed and preferred for orchestration).
+* Keep the use-case dependency graph acyclic (e.g. `CloseTabUseCase` may depend on `AddTabUseCase` / `SelectTabUseCase`, but `AddTabUseCase` must not depend on `CloseTabUseCase`).
