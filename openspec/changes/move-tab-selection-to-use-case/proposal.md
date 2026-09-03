@@ -12,7 +12,7 @@
 - Wire `TabSelectionStrategy` at the use-case boundary (`UseCaseRegistry`), not into `createTabsService`.
 - Preserve observer/subject behavior for tabs list and selected tab id.
 - Remove the issue #92 `#warning` from `CloseTabUseCase` once close orchestration owns selection.
-- **Direction (this change starts it):** thicken the split write use cases instead of re-aggregating them; `ReplaceSelectedTabUseCase` stays in scope for the same layering goal but is not required to gain selection-policy logic here unless close/add flows need it.
+- **Direction (this change starts it):** thicken the split write use cases instead of re-aggregating them; `ReplaceSelectedTabUseCase` is approved to pull replace-content domain logic out of `TabsDataService` in a follow-up (same layering as add/close selection).
 
 ## Capabilities
 
@@ -25,8 +25,8 @@
 ## Impact
 
 - **CottonTabs**: `TabsDataService` add/close handlers; remove strategy from service init/`DataServiceFactory.createTabsService`.
-- **CottonUseCases**: Enrich `AddTabUseCase`, `CloseTabUseCase`; may compose `SelectTabUseCase`; DI for `TabSelectionStrategy`. `ReplaceSelectedTabUseCase` unchanged unless a shared helper is extracted.
+- **CottonUseCases**: Enrich `AddTabUseCase`, `CloseTabUseCase`; may compose `SelectTabUseCase`; DI for `TabSelectionStrategy`. `ReplaceSelectedTabUseCase` thickening is an approved follow-up.
 - **App DI**: `UseCaseRegistry`, `ServiceRegistry` strategy wiring.
 - **View models / UI**: Keep existing `AddTabUseCase` / `CloseTabUseCase` / `SelectTabUseCase` APIs; no migration to a combined write type. Optional cleanup of misleading `writeTabUseCase` parameter names that type as `CloseTabUseCase`.
 - **Tests**: Swift Testing for add/close selection at the use-case layer; adjust data-service tests that assumed strategy lived in the actor.
-- **Out of scope**: New aggregate `WriteTabsUseCase`; changing `NearbySelectionStrategy` algorithms; close-all / preview-update logic moves (follow-ups); ViewModelKit migrations.
+- **Out of scope (this change)**: New aggregate `WriteTabsUseCase`; changing `NearbySelectionStrategy` algorithms; implementing replace / close-all / preview-update logic moves (follow-ups); ViewModelKit migrations.

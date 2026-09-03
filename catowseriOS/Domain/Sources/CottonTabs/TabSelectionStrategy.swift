@@ -13,6 +13,25 @@ public protocol IndexSelectionContext: AutoMockable {
     var currentlySelectedIndex: Int { get async }
 }
 
+/// Snapshot-based `IndexSelectionContext` for selection strategy calls outside `TabsDataService`.
+public struct TabsIndexSelectionSnapshot: IndexSelectionContext, Sendable {
+    private let lastIndex: Int
+    private let selectedIndex: Int
+
+    public init(collectionLastIndex: Int, currentlySelectedIndex: Int) {
+        self.lastIndex = collectionLastIndex
+        self.selectedIndex = currentlySelectedIndex
+    }
+
+    public var collectionLastIndex: Int {
+        get async { lastIndex }
+    }
+
+    public var currentlySelectedIndex: Int {
+        get async { selectedIndex }
+    }
+}
+
 /// CoreBrowser.Tab selection protocol can be sendable, because implementation
 /// only holds a constant which can't be mutated, so that, no any mutable state for now.
 public protocol TabSelectionStrategy: AutoMockable, Sendable {

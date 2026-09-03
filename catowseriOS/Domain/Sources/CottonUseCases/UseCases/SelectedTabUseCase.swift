@@ -14,17 +14,12 @@ import BaseUseCaseKit
 /// Selected tabs use case.
 /// Use cases do not hold any mutable state, so that, any of them can be sendable.
 public protocol SelectedTabUseCase: CoreUseCase, AutoMockable, Sendable {
-    /// Input type for the use case.
-    typealias Input = Data?
-
-    /// Output type for the use case.
-    typealias Output = Void
 
     /// Sets the preview image for the selected tab asynchronously.
     ///
     /// - Parameter input: The preview image data, or nil to clear it.
     /// - Returns: Void
-    func execute(input: Input) async throws -> Output
+    func execute(input: Data?) async throws -> Void
 }
 
 public final class SelectedTabUseCaseImpl: SelectedTabUseCase {

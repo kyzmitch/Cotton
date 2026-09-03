@@ -123,11 +123,9 @@ extension String {
             let cacheProvider = TabsRepositoryFactory.create(
                 dbResource: tabsResource
             )
-            let strategy = NearbySelectionStrategy()
             let tabsDataService = await DataServiceFactory.createTabsService(
                 cacheProvider,
                 DefaultTabProvider.shared,
-                strategy,
                 tabsSubject,
                 FeatureManager.shared.observingApiTypeValue()
             )
