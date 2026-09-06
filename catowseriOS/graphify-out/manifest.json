@@ -2772,314 +2772,314 @@
     "semantic_hash": "d70f9b8966a2189f02ec8cbde6187d8c"
   },
   ".swiftlint.yml": {
-    "mtime": 1785526964.3214262,
-    "seen": 1788459423.1840022,
+    "mtime": 1786121907.3030813,
+    "seen": 1788719058.882297,
     "ast_hash": "e42620c0bc8b2d6f0ba7c6be95632bc0",
     "semantic_hash": ""
   },
   "Base/Sources/CottonPlugins/Scripts/README.md": {
-    "mtime": 1783850988.5110977,
-    "seen": 1788459423.1840022,
+    "mtime": 1786121907.318073,
+    "seen": 1788719058.8822982,
     "ast_hash": "3927536273c9b6ae251270867b0003e2",
     "semantic_hash": ""
   },
   "Base/Sources/CottonPlugins/Scripts/html/ig_test_slides_json.html": {
-    "mtime": 1783850988.5111892,
-    "seen": 1788459423.184003,
+    "mtime": 1786121907.3181593,
+    "seen": 1788719058.882299,
     "ast_hash": "2ad0df38dab46a5083187ee779862dc1",
     "semantic_hash": ""
   },
   "Base/Sources/CottonPlugins/Scripts/html/non_jquery.html": {
-    "mtime": 1783850988.5112455,
-    "seen": 1788459423.184003,
+    "mtime": 1786121907.3182063,
+    "seen": 1788719058.8823,
     "ast_hash": "7e9a39a02239dccd8dfdae648473ad60",
     "semantic_hash": ""
   },
   "Base/Sources/CottonPlugins/Scripts/html/with_jquery.html": {
-    "mtime": 1783850988.5113237,
-    "seen": 1788459423.184003,
+    "mtime": 1786121907.3182528,
+    "seen": 1788719058.8823,
     "ast_hash": "9fb0a040f0c75244a7b53d096de1b3ea",
     "semantic_hash": ""
   },
   "Base/Sources/CottonPlugins/Scripts/index.html": {
-    "mtime": 1783850988.5113745,
-    "seen": 1788459423.184003,
+    "mtime": 1786121907.3183107,
+    "seen": 1788719058.8823009,
     "ast_hash": "715f6a8ba776b4ae77e66339d37a5e87",
     "semantic_hash": ""
   },
   "Domain/Sources/CoreBrowser/Resources/topdomains.txt": {
-    "mtime": 1783850988.5183935,
-    "seen": 1788459423.184004,
+    "mtime": 1786121907.336797,
+    "seen": 1788719058.882302,
     "ast_hash": "5b7bbd6b8b47f5706344b4abef07ab7a",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/Icon_1024.png": {
-    "mtime": 1759582833.9252782,
-    "seen": 1788459423.184004,
+    "mtime": 1786121907.3997097,
+    "seen": 1788719058.882303,
     "ast_hash": "8e6806383d48cf8d86eab86318acb741",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt.png": {
-    "mtime": 1759582833.9253452,
-    "seen": 1788459423.184004,
+    "mtime": 1786121907.399777,
+    "seen": 1788719058.882303,
     "ast_hash": "17eb9bb94c861ba9fb760491b6eb17ed",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt@2x-1.png": {
-    "mtime": 1759582833.925401,
-    "seen": 1788459423.184004,
+    "mtime": 1786121907.3998215,
+    "seen": 1788719058.882304,
     "ast_hash": "48424da2e3f097ad9e7af27d7c340e06",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt@2x.png": {
-    "mtime": 1759582833.9254541,
-    "seen": 1788459423.184005,
+    "mtime": 1786121907.3998656,
+    "seen": 1788719058.882305,
     "ast_hash": "48424da2e3f097ad9e7af27d7c340e06",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt@3x.png": {
-    "mtime": 1759582833.9255283,
-    "seen": 1788459423.184005,
+    "mtime": 1786121907.3999646,
+    "seen": 1788719058.882306,
     "ast_hash": "54ad0ac4316d35f88f2c1d3cd73aefa9",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt.png": {
-    "mtime": 1759582833.925582,
-    "seen": 1788459423.184005,
+    "mtime": 1786121907.4000084,
+    "seen": 1788719058.882306,
     "ast_hash": "70ee41adb0f66194b4018c91a9516f3f",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt@2x-1.png": {
-    "mtime": 1759582833.9256601,
-    "seen": 1788459423.184005,
+    "mtime": 1786121907.4000883,
+    "seen": 1788719058.882307,
     "ast_hash": "e011da5e2c8fba316a68c5f81d78ca6e",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt@2x.png": {
-    "mtime": 1759582833.9257395,
-    "seen": 1788459423.184006,
+    "mtime": 1786121907.4001672,
+    "seen": 1788719058.882308,
     "ast_hash": "e011da5e2c8fba316a68c5f81d78ca6e",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt@3x.png": {
-    "mtime": 1759582833.925826,
-    "seen": 1788459423.184006,
+    "mtime": 1786121907.4002333,
+    "seen": 1788719058.8823092,
     "ast_hash": "7fce63b74fe430a7574dc96924332940",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt.png": {
-    "mtime": 1759582833.925873,
-    "seen": 1788459423.184006,
+    "mtime": 1786121907.4002776,
+    "seen": 1788719058.8823092,
     "ast_hash": "48424da2e3f097ad9e7af27d7c340e06",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt@2x-1.png": {
-    "mtime": 1759582833.9259436,
-    "seen": 1788459423.184007,
+    "mtime": 1786121907.4003382,
+    "seen": 1788719058.88231,
     "ast_hash": "0021e66bce8aff480d6be0b46ed17e07",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt@2x.png": {
-    "mtime": 1759582833.9260104,
-    "seen": 1788459423.184007,
+    "mtime": 1786121907.4003963,
+    "seen": 1788719058.8823109,
     "ast_hash": "0021e66bce8aff480d6be0b46ed17e07",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt@3x.png": {
-    "mtime": 1759582833.9260917,
-    "seen": 1788459423.184007,
+    "mtime": 1786121907.4004807,
+    "seen": 1788719058.8823109,
     "ast_hash": "3bc4acb57b1e669f7314f0f609349d3e",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_60pt@2x.png": {
-    "mtime": 1759582833.9261692,
-    "seen": 1788459423.184007,
+    "mtime": 1786121907.4005582,
+    "seen": 1788719058.8823118,
     "ast_hash": "3bc4acb57b1e669f7314f0f609349d3e",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_60pt@3x.png": {
-    "mtime": 1759582833.9262273,
-    "seen": 1788459423.184008,
+    "mtime": 1786121907.4006135,
+    "seen": 1788719058.882313,
     "ast_hash": "b0a1167db27a2057842c9507dadc238d",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_76pt.png": {
-    "mtime": 1759582833.9263148,
-    "seen": 1788459423.184008,
+    "mtime": 1786121907.4007025,
+    "seen": 1788719058.882314,
     "ast_hash": "0088542cd7002c804e38edee657228dc",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_76pt@2x.png": {
-    "mtime": 1759582833.9263644,
-    "seen": 1788459423.184008,
+    "mtime": 1786121907.4007614,
+    "seen": 1788719058.882315,
     "ast_hash": "ac3936a0aed4c959a6223ec296d6bbee",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/AppIcon.appiconset/icon_83.5@2x.png": {
-    "mtime": 1759582833.9264255,
-    "seen": 1788459423.184009,
+    "mtime": 1786121907.4008229,
+    "seen": 1788719058.882315,
     "ast_hash": "73577ed866e847fb66a5170b21e10900",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/instagram.imageset/instagram_120x120.png": {
-    "mtime": 1759582833.9267778,
-    "seen": 1788459423.184009,
+    "mtime": 1786121907.4012218,
+    "seen": 1788719058.882316,
     "ast_hash": "004705c9353f5258ee8c4f47a4743f26",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/instagram.imageset/instagram_180x180.png": {
-    "mtime": 1759582833.9268358,
-    "seen": 1788459423.184009,
+    "mtime": 1786121907.4012833,
+    "seen": 1788719058.882317,
     "ast_hash": "94fd767f257be710bc552be64df2c432",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/instagram.imageset/instagram_76x76.png": {
-    "mtime": 1759582833.926904,
-    "seen": 1788459423.184009,
+    "mtime": 1786121907.4013455,
+    "seen": 1788719058.882318,
     "ast_hash": "932e4d9af89121aa8329d5d583af4264",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-back.imageset/back.png": {
-    "mtime": 1759582833.9270163,
-    "seen": 1788459423.18401,
+    "mtime": 1786121907.4014723,
+    "seen": 1788719058.8823192,
     "ast_hash": "7ed2a71300e8cca1bc9aa4f4d98a4b51",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-back.imageset/back@2x.png": {
-    "mtime": 1759582833.9270608,
-    "seen": 1788459423.18401,
+    "mtime": 1786121907.4015179,
+    "seen": 1788719058.8823192,
     "ast_hash": "f46e549d0ec2799983d6c954f2fdc935",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-back.imageset/back@3x.png": {
-    "mtime": 1759582833.9271023,
-    "seen": 1788459423.18401,
+    "mtime": 1786121907.4015625,
+    "seen": 1788719058.88232,
     "ast_hash": "9cf835a98e9bd95bc8b709ba299978d5",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-downloads.imageset/menu-panel-Downloads.png": {
-    "mtime": 1759582833.927209,
-    "seen": 1788459423.184011,
+    "mtime": 1786121907.4016826,
+    "seen": 1788719058.882321,
     "ast_hash": "91aa8d4d1309c6532b58c2d486ec7671",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-downloads.imageset/menu-panel-Downloads@2x.png": {
-    "mtime": 1759582833.927254,
-    "seen": 1788459423.184011,
+    "mtime": 1786121907.40173,
+    "seen": 1788719058.8823218,
     "ast_hash": "7939427736f62f56e1b0ce9e3fe3773b",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-downloads.imageset/menu-panel-Downloads@3x.png": {
-    "mtime": 1759582833.9272995,
-    "seen": 1788459423.184011,
+    "mtime": 1786121907.4017766,
+    "seen": 1788719058.882323,
     "ast_hash": "cd0591ce391592dd6b6aa5cf134c638c",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-forward.imageset/forward.png": {
-    "mtime": 1759582833.9273992,
-    "seen": 1788459423.184012,
+    "mtime": 1786121907.4018917,
+    "seen": 1788719058.882324,
     "ast_hash": "da0cf502031b7df19c57e542f982866f",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-forward.imageset/forward@2x.png": {
-    "mtime": 1759582833.9274352,
-    "seen": 1788459423.184012,
+    "mtime": 1786121907.4019372,
+    "seen": 1788719058.882325,
     "ast_hash": "dc76d5788ab7242ad3049cc6e7c07390",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-forward.imageset/forward@3x.png": {
-    "mtime": 1759582833.9274712,
-    "seen": 1788459423.184012,
+    "mtime": 1786121907.4019835,
+    "seen": 1788719058.882325,
     "ast_hash": "6a373b23b9128cbe961157d8d34daf31",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-refresh.imageset/refresh.png": {
-    "mtime": 1759582833.927571,
-    "seen": 1788459423.184012,
+    "mtime": 1786121907.4021153,
+    "seen": 1788719058.8823261,
     "ast_hash": "19f0c3b5c86a72c3fdd9fb9b75132da2",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-refresh.imageset/refresh@2x.png": {
-    "mtime": 1759582833.9276092,
-    "seen": 1788459423.1840131,
+    "mtime": 1786121907.402168,
+    "seen": 1788719058.882327,
     "ast_hash": "dbb05b70e8cbe5f2b99fdc6b948267db",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/nav-refresh.imageset/refresh@3x.png": {
-    "mtime": 1759582833.92765,
-    "seen": 1788459423.1840131,
+    "mtime": 1786121907.4022152,
+    "seen": 1788719058.882328,
     "ast_hash": "1317b865da0e2715bdd73557d2e74f4f",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/newTabButton-Normal.imageset/menu-NewTab.png": {
-    "mtime": 1759582833.9277575,
-    "seen": 1788459423.1840131,
+    "mtime": 1786121907.4023368,
+    "seen": 1788719058.882328,
     "ast_hash": "9f217a86c3907d879fa3b8c028d6ce8d",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/newTabButton-Normal.imageset/menu-NewTab@2x.png": {
-    "mtime": 1759582833.9277973,
-    "seen": 1788459423.1840131,
+    "mtime": 1786121907.4023829,
+    "seen": 1788719058.882329,
     "ast_hash": "ad2fb80fd0e1074f8d5a12a696d0a778",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/newTabButton-Normal.imageset/menu-NewTab@3x.png": {
-    "mtime": 1759582833.9278371,
-    "seen": 1788459423.184014,
+    "mtime": 1786121907.4024336,
+    "seen": 1788719058.8823302,
     "ast_hash": "6eac030a55dc388b0bbdcde35288fdca",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/tabClose.imageset/close-medium.png": {
-    "mtime": 1759582833.927939,
-    "seen": 1788459423.184014,
+    "mtime": 1786121907.402572,
+    "seen": 1788719058.882331,
     "ast_hash": "9e1539b13879f8f6a74c1bb1b33820ef",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/tabClose.imageset/close-medium@2x.png": {
-    "mtime": 1759582833.9279768,
-    "seen": 1788459423.184014,
+    "mtime": 1786121907.4026177,
+    "seen": 1788719058.882331,
     "ast_hash": "0e5724685f14bf6d4369ad373748b502",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/tabClose.imageset/close-medium@3x.png": {
-    "mtime": 1759582833.9280167,
-    "seen": 1788459423.184015,
+    "mtime": 1786121907.4026623,
+    "seen": 1788719058.8823318,
     "ast_hash": "c4539e574f0c88c77ace894fea4fb6f9",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/closeTab.png": {
-    "mtime": 1759582833.9281292,
-    "seen": 1788459423.184015,
+    "mtime": 1786121907.4027913,
+    "seen": 1788719058.882333,
     "ast_hash": "a6ec82e8447ce98729c81d95526169cf",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/closeTab@2x.png": {
-    "mtime": 1759582833.9281766,
-    "seen": 1788459423.184015,
+    "mtime": 1786121907.4028416,
+    "seen": 1788719058.882334,
     "ast_hash": "0f1ef13e1f1c6136eed0f7d4d12d9354",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/closeTab@3x.png": {
-    "mtime": 1759582833.928215,
-    "seen": 1788459423.184016,
+    "mtime": 1786121907.4028895,
+    "seen": 1788719058.882334,
     "ast_hash": "0478bd9d380510db5e647292dd014f14",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/youtube.imageset/youtube_144.png": {
-    "mtime": 1759582833.9283926,
-    "seen": 1788459423.184016,
+    "mtime": 1786121907.4030676,
+    "seen": 1788719058.882335,
     "ast_hash": "88b01f681a96ed7c964f17c6c08e36be",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/youtube.imageset/youtube_32.png": {
-    "mtime": 1759582833.9284363,
-    "seen": 1788459423.184016,
+    "mtime": 1786121907.4031181,
+    "seen": 1788719058.882336,
     "ast_hash": "3a880420311ad60097059ffc0fc53393",
     "semantic_hash": ""
   },
   "catowser/Assets.xcassets/youtube.imageset/youtube_48.png": {
-    "mtime": 1759582833.9285228,
-    "seen": 1788459423.184016,
+    "mtime": 1786121907.4031966,
+    "seen": 1788719058.882337,
     "ast_hash": "56307f4242fb8b4686b6bdcae485c3ef",
     "semantic_hash": ""
   },

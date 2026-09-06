@@ -1,280 +1,289 @@
-# Graph Report - catowseriOS  (2026-09-03)
+# Graph Report - catowseriOS  (2026-09-06)
 
 ## Corpus Check
-- 463 files · ~139,064 words
+- 470 files · ~140,128 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 4398 nodes · 9122 edges · 266 communities (242 shown, 15 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 453 edges (avg confidence: 0.82)
+- 4446 nodes · 9296 edges · 275 communities (247 shown, 19 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 522 edges (avg confidence: 0.82)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `564caea2`
+- Built from commit: `7073d38e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - CottonViewModels
-- WebViewController
-- TabsDBClient
-- RestClient
 - Foundation
 - CoreBrowser
-- .makeRequestProducer
-- AutoMockable
+- Coordinator
 - TabViewModelImpl
-- WebAutoCompletionSource
 - TabsDataService
-- AnyViewController
-- DnsError
-- BrowserToolbarController
-- Sendable
-- LinkTagsCoordinator
-- Int
-- SearchEngine
-- ViewModelKit
-- WebViewModelImpl
-- Token
-- ReplaceSelectedTabUseCase
-- TabsViewController
-- LayoutStep
-- Bool
-- BaseListViewModel
-- FeatureManager
-- UIServiceRegistry
+- AutoMockable
 - Tab
-- SearchSuggestionsViewController
-- SuggestionType
-- AnyObject
-- BrowserToolbarView
-- TabView
-- SearchSuggestionsResponse
-- CoordinatorOwner
-- TopSitesViewModel
+- UIFrameworkType
+- WebViewModelImpl
+- TabsDataServiceProtocol
+- Combine
+- TabsViewController
+- Token
+- TabletView
+- SearchBarViewV2
+- FeatureManager
+- SearchDataServiceProtocol
+- BrowserToolbarViewModelImpl
 - View
+- LayoutStep
+- FilesGridCoordinator
+- GlobalMenuDelegate
+- BaseListViewModel
+- RxObserverVoidWrapper
+- SearchBarCoordinator
 - SearchBarState
-- TabsPreviewsError
+- TabsPreviewsViewController
+- Sendable
+- AnyViewController
+- ObservingApiType
+- CottonPluginError
+- BrowserToolbarAction
+- Bool
+- ViewControllerFactory
+- TabView
 - WebViewModelState
+- Testing
 - Scanner
 - ResponseVoidHandlingApi
-- FilesGridCoordinator
-- SearchBarCoordinator
-- DummyRxType
+- CatowserUIVCRepresentable
+- SearchBarAction
+- SearchBarBaseViewController
+- ResponseHandlingApi
 - HttpError
 - AppCoordinator
+- LinkTagsCoordinator
+- SearchSuggestionsViewState
+- TabsPreviewsError
 - StateHolder
-- CodingKeys
-- ResponseHandlingApi
-- AddedTabPosition
-- SearchBarViewModelImpl
-- WebViewAction
-- Error
-- Equatable
-- FilesGridViewController
-- TabletView
-- Database
-- URLInfo
-- Testing
-- TabsServiceCommand
-- RxObserverVoidWrapper
-- UIFrameworkType
-- UIImageView
-- WebContentCoordinator
-- TabsPreviewsViewController
-- StateTransitioning
-- ApplicationFeature
-- SearchBarBaseViewController
-- TopSitesViewController
-- Coordinator
-- SearchSuggestionsCoordinator
+- JavaScriptPlugin
 - MockedNavAction
+- BrowserToolbarView
+- SearchBarViewModelImpl
+- LocalFeatureSource
+- AnyObject
+- HTMLContentMessage
+- SiteCollectionViewCell
+- WebViewController
+- SearchSuggestionsCoordinator
+- WebContentCoordinator
+- Database
+- DownloadButtonCellView
+- SearchSuggestionsViewController
+- FilesGridViewController
+- WebViewAction
+- ApplicationFeature
+- AddTabUseCase
+- JSPluginsSource
+- Int
+- State
+- .registerTabsUseCases
+- TopSitesViewModelImpl
 - ApplicationEnumFeature
+- AlamofireReachabilityAdaptee
+- RestClient
 - ComponentValue
 - TopSitesViewV2
-- ImageSource
-- LocalFeatureSource
-- WebViewStateContextProxy
-- HTMLContentMessage
-- BrowserToolbarViewModelImpl
 - BrowserMenuView
-- SearchAutocompleteStrategy
-- MockSearchStrategiesFactory
-- SearchSuggestionsViewState
-- SwiftUIMode
+- ViewModelFactory
+- WebAutoCompletionSource
+- URLInfo
+- SearchSuggestionsViewModelImpl
+- Downloadable
+- SuggestionType
+- .makeAuthorizedRequestProducer
+- Hashable
+- DummyRxType
+- DnsError
+- UIImageView
+- TopSitesViewController
 - LoadingProgressCoordinator
+- FileDownloadViewModel
 - ReusableItem
 - UIImage
-- TabPreviewCell
+- SearchAutocompleteStrategy
+- ReplaceSelectedTabUseCase
+- Trie
+- GenericServiceKit
+- SearchDataService
+- TabsObserver
 - TabsListError
-- SearchBarAction
+- WebViewStateContextProxy
 - LazyServiceLocator
 - FakeTabStateContext
 - ViewModelStateMachineTests.swift
 - SearchBarLegacyView
+- TabletSearchBarViewController
 - DownloadError
 - DDGoSuggestionsResponse
 - GSearchSuggestionsResponse
+- Set
 - JavaScriptEvaluateble
+- AppDelegate
 - .showNext
 - .start
 - BottomViewCoordinator
-- DownloadButtonCellView
-- SearchDataService
-- SearchDataServiceProtocol
-- TabletSearchBarViewController
+- TabsDBClient
+- TabPreviewCell
+- Theme
+- SearchServiceData
+- TabResourceError
+- ImageSource
+- FakeSearchViewContext
 - .source
+- .resolvedDomainName
 - AlamofireHTTPAdaptee
-- JSPluginsSource
-- Hashable
-- ObservingApiType
-- ViewModelState
+- MainToolbarCoordinator
+- ImageParseResult
 - SearchBarError
 - GenericEnumFeature
-- FakeSearchSuggestionsStateContext
+- GenericConcurrentDataService
+- SearchBarModeHandlerTests
 - SwiftUIPreviewable
-- DnsRR
+- BasePluginContentDelegate
+- FakeWebViewStateContext
+- InstagramVideoNode
 - Character
 - MainBrowserViewController
-- MenuStatefullLabel
-- State
-- CounterView
-- Trie
-- ViewModelAction
-- SearchBarViewV2
-- AddTabUseCase
+- WebViewControllerProxy
+- TabsDBClient.swift
+- DataServiceLocator
+- Equatable
+- FakeSearchSuggestionsStateContext
 - AlamofireHTTPRxAdaptee
-- JSPluginsBuilder
 - ig.js
 - package.json
-- ClosureWrapper
+- ClosureVoidWrapper
 - MockedHTTPAdapteeWithFail
 - WebViewController
-- WebViewControllerProxy
+- .webView
+- WKWebView
 - LinkTagsViewController
 - SearchSuggestionsListDelegate
-- StateHolder
-- GenericConcurrentDataService
-- SearchSuggestionsVMTestFixture
-- FakeWebViewStateContext
+- BrowserToolbarController
+- SearchEngine
+- SearchServiceError
+- WebViewVMFixture
 - SearchFieldView
-- Theme
-- NetworkReachabilityStatus
-- .resolvedDomainName
+- WebViewAuthChallengeHandler
+- GoogleDNSEndpointError
+- GoogleDNSOverJSONResponse
 - AlamofireHTTPRxVoidAdaptee
-- HTMLVideoTag
-- WebViewNavigatable
-- .collectionView
+- .makeRequestProducer
+- URL
+- CottonNetworking
+- GoogleDNSStrategy
 - DisableableButton
-- SearchServiceData
+- TabsResource
+- TabsServiceCommand
 - SearchBarDelegateImpl
 - BrowserToolbarState
 - CommandExecutionData
-- MockReplaceSelectedTabUseCase
 - .present
-- FakeSearchViewContext
-- Downloadable
-- FileDownloadViewModel
-- GoogleDNSEndpointError
-- CottonPluginError
+- DnsRR
 - MessageKey
+- Decodable
 - BaseViewController
-- ThemeProvider
-- ObservableObject
-- ClearCancelButtonViewModel
-- GoogleDNSOverJSONResponse
-- CottonRestKit/Extensions/HttpKotlinTypes+Extensions.swift
-- DownloadState
-- .insert
-- Site
-- SearchServiceError
-- TabsPreviewState
-- TabStateContextProxy
-- BrowserToolbarAction
-- WebViewVMFixture
-- .evaluateJavaScriptV2
-- GDNSRequestParams
-- .makeRequest
-- AppDelegate
-- UIViewController
-- Box
-- BrowserToolbarViewContextImpl
+- WebViewLegacyView
+- .layout
+- AsyncApiType
+- SearchSuggestionsResponse
+- TabsIndexSelectionSnapshot
+- MockSearchStrategiesFactory
+- SearchSuggestionsVMTestFixture
+- RestClientContext
+- JSPluginsBuilder
 - HTMLVideoTag
-- CottonMenuItem
+- CodingKeys
+- Combine+Extensions.swift
+- .makeRxRequest
+- TrieNode
 - SuggestionRowView
-- .init
-- AppError
-- SearchBarStateContext
-- SearchSuggestionsStateContext
-- TabAction
-- StateHolder
-- DataServiceLocator
-- BaseViewModel
-- .transferToRxState
-- TabViewContextImpl
-- MainScreenSubview
-- .insertNext
-- LinksBadgeView
-- PhoneSearchBarLegacyView
-- TabletSearchBarLegacyView
-- SearchSuggestionsLegacyView
-- TabletTabsLegacyView
-- .makeTask
-- StateContext
+- Site
+- TabStateContextProxy
 - .evaluateJavaScriptV2
-- FeatureManager.StateHolder
-- MenuButton
+- BaseViewModel
+- .evaluateJavaScriptV2
+- .makeRequest
+- UIViewController
+- TabletSearchBarLegacyView
+- HTMLVideoTag
+- .init
+- DDGoAutocompleteStrategy
+- DispatchTimeInterval
+- SearchBarContext
+- StateHolder
+- Data
+- .transferToRxState
+- .makeRequestFuture
+- MainBrowserViewModel
+- MainScreenSubview
+- SearchSuggestionsLegacyView
+- WebToolbarState
+- CounterView
+- .makeTask
+- SearchServiceCommand
 - PackageDescription
-- AlamofireReachabilityAdaptee
-- DispatchQueue
 - MainScreenRoute
 - ContentCoordinatorsInterface
-- TrieNode
+- MenuStatefullLabel
 - String
 - URL
-- SearchBarInViewMode
+- InMemoryDomainSearchProvider.swift
+- Error
 - Error
 - TopSitesStateTransitioningTests
 - UIConstants.swift
-- .aaGetIPaddress
+- TabsResourceImpl.swift
 - .evaluateWithRecovery
-- .script
-- CSSBackgroundImage
+- GDNSRequestParams
 - URL
-- .failure
+- RestInterface
 - Parser
 - .handleTabSelection
-- DownloadButtonState
+- LinkTagsRoute
+- TabsResourceImpl
 - ReloadWithCompletion.swift
 - ViewModelInterface
-- .read
-- MockedJSPluginsProgram
+- Box
 - MockFetchAutocompleteSuggestionsUseCase
 - ProgressResponse
-- InstagramVideoArray
-- .init
+- TabsCoreDataError
 - .tableView
-- .findDataService
 - .subscript
+- OpenSearchParser.swift
 - LeadingTrimmed
-- ImmediateDispatchQueue
-- MockCreateSearchURLUseCase
-- Database.swift
+- GoogleContext
+- GoogleDNSContext
+- ClosureStateTransitioning
+- LightTheme
 - README.md
-- Combine+Extensions.swift
+- .setup
 - .isSimilar
 - Weak
+- .replaceTab
 - SearchBarStateTransitioning
+- SearchSuggestionsStateTransitioning
+- TabsPreviewStateTransitioning
+- TabStateTransitioning
+- TopSitesStateTransitioning
 - HashType
 - NumberType
-- NavigationActionable
-- Site.Settings
-- DataServiceFactory
+- WebViewReusable
 - .init
-- WebViewVmDNSoverHTTPSConcurrencyTests
+- .traitCollectionDidChange
 
 ## God Nodes (most connected - your core abstractions)
-1. `CoreBrowser` - 232 edges
+1. `CoreBrowser` - 247 edges
 2. `CottonBase` - 135 edges
 3. `AppCoordinator` - 91 edges
 4. `CottonViewModels` - 83 edges
@@ -300,995 +309,1015 @@
 ## Import Cycles
 - None detected.
 
-## Communities (266 total, 15 thin omitted)
+## Communities (275 total, 19 thin omitted)
 
 ### Community 0 - "CottonViewModels"
 Cohesion: 0.05
-Nodes (23): AlamofireImage, BottomViewPart, SubviewPart, FilesGridPart, LinkTagsPart, filesGrid, LoadingProgressPart, ToolbarPart (+15 more)
+Nodes (27): AlamofireImage, BottomViewPart, SubviewPart, FilesGridPart, LinkTagsPart, filesGrid, LoadingProgressPart, ToolbarPart (+19 more)
 
-### Community 1 - "WebViewController"
+### Community 1 - "Foundation"
+Cohesion: 0.06
+Nodes (16): String, CottonBase.ServerDescription, String, CollectionViewSizes, CottonBase, CottonPlugins, Site.Settings, .webViewConfig (+8 more)
+
+### Community 2 - "CoreBrowser"
+Cohesion: 0.06
+Nodes (21): String, CoreBrowser, CottonTabs, CottonUseCases, AllTabsAction, addTab, .allCases, TopSitesAction (+13 more)
+
+### Community 3 - "Coordinator"
 Cohesion: 0.05
-Nodes (42): AuthHandler, Set, .dictionary, String, WebViewReusable, Hasher, MainActor, SecTrust (+34 more)
+Nodes (32): BlankContentCoordinator, BlankContentRoute, R, UINavigationController, UIView, Coordinator, .isPad, .startedView (+24 more)
 
-### Community 2 - "TabsDBClient"
-Cohesion: 0.05
-Nodes (33): CDAppSettings, CDSite, CDSiteSettings, CDTab, CoreBrowser.Tab, Site, Site.Settings, NSManagedObjectContext (+25 more)
-
-### Community 3 - "RestClient"
-Cohesion: 0.06
-Nodes (17): Alamofire, String, HTTPRxVoidAdapter, RestClient, String, E, Encoder, R (+9 more)
-
-### Community 4 - "Foundation"
-Cohesion: 0.06
-Nodes (15): String, RestInterface, CSSBackgroundImageTests, CollectionViewSizes, CottonBase, CottonNetworking, CottonPlugins, String (+7 more)
-
-### Community 5 - "CoreBrowser"
-Cohesion: 0.07
-Nodes (20): ImageViewSizes, CGFloat, TabPreviewsContextImpl, .contentState, String, String, CoreBrowser, CoreGraphics (+12 more)
-
-### Community 6 - ".makeRequestProducer"
-Cohesion: 0.06
-Nodes (40): B, Endpoint, ResponseFuture, RX, RxProducer, RxSubscriber, Server, String (+32 more)
-
-### Community 7 - "AutoMockable"
-Cohesion: 0.07
-Nodes (22): AutoMockable, NetworkReachabilityAdapter, Server, BaseUseCaseKit, TabsDataServiceProtocol, IndexSelectionContext, TabsStatesInterface, AddTabUseCaseImpl (+14 more)
-
-### Community 8 - "TabViewModelImpl"
-Cohesion: 0.07
-Nodes (27): CoreUseCase, TabsDataSubject, .tabsCount, CloseTabUseCase, ReadAllTabsUseCase, ReadAllTabsUseCaseImpl, Void, ReadSelectedTabIdUseCase (+19 more)
-
-### Community 9 - "WebAutoCompletionSource"
-Cohesion: 0.04
-Nodes (44): CaseIterable, SearchViewContextImpl, .appAsyncApiTypeValue, .knownDomainsStorage, .webAutocompletionSourceValue, LinksType, audio, .description (+36 more)
-
-### Community 10 - "TabsDataService"
+### Community 4 - "TabViewModelImpl"
 Cohesion: 0.09
-Nodes (23): AddTabData, AllTabsData, CloseAllTabsData, CloseTabData, Array, Command, ServiceData, TabsDataService (+15 more)
+Nodes (23): CoreUseCase, CloseTabUseCase, ReadAllTabsUseCase, ReadSelectedTabIdUseCase, SelectTabUseCase, ModuleVMFactory, TabsPreviewsViewModelWithHolder, TabPreviewsAppContext (+15 more)
 
-### Community 11 - "AnyViewController"
+### Community 5 - "TabsDataService"
+Cohesion: 0.10
+Nodes (19): AddTabData, AllTabsData, CloseAllTabsData, CloseTabData, Command, ServiceData, TabsDataService, .selectedTabIdentifier (+11 more)
+
+### Community 6 - "AutoMockable"
+Cohesion: 0.06
+Nodes (24): AutoMockable, JSONEncoding, Any, String, URLRequest, JSONRequestEncodable, URLRequest, URLRequestCreatable (+16 more)
+
+### Community 7 - "Tab"
 Cohesion: 0.07
-Nodes (25): BlankContentCoordinator, R, UINavigationController, UIView, Navigating, R, PhoneTabsCoordinator, TabsPreviewsViewModelWithHolder (+17 more)
+Nodes (31): UUID, Date, ContentType, blank, favorites, homepage, .isStatic, .rawValue (+23 more)
 
-### Community 12 - "DnsError"
+### Community 8 - "UIFrameworkType"
 Cohesion: 0.06
-Nodes (34): DnsError, .errorDescription, failToGetUrlFromComponents, hostIsNotIpAddress, httpError, noHost, notHttpScheme, urlComponentsFail (+26 more)
+Nodes (34): MainBrowserV2ViewController, AllTabsViewModel, C, NSCoder, S, SB, W, MainBrowserView (+26 more)
 
-### Community 13 - "BrowserToolbarController"
-Cohesion: 0.06
-Nodes (22): DummyDelegate, PhoneViewControllerFactory, .blankWebPageViewController, .createdDeviceSpecificSearchBarVC, .createdToolbaViewController, AllTabsViewModel, C, SearchBarViewModel (+14 more)
-
-### Community 14 - "Sendable"
-Cohesion: 0.06
-Nodes (30): CottonBase.ServerDescription, RestClientContext, Client, HttpKitRxSubscriber, HttpKitSubscriber, JSONEncoding, Any, String (+22 more)
-
-### Community 15 - "LinkTagsCoordinator"
-Cohesion: 0.08
-Nodes (19): LinkTagsCoordinator, LinkTagsRoute, closeTags, openHtmlTags, openInstagramTags, CGFloat, CGRect, HTMLVideoTag (+11 more)
-
-### Community 16 - "Int"
+### Community 9 - "WebViewModelImpl"
 Cohesion: 0.09
-Nodes (15): VoidResponse, .successCodes, ResponseType, .successCodes, MockedGoodEndpointResponse, .successCodes, BrowserContentViewModel, Void (+7 more)
+Nodes (25): ResolveDNSUseCase, Site, Action, Context, Error, Settings, String, Task (+17 more)
 
-### Community 17 - "SearchEngine"
-Cohesion: 0.07
-Nodes (29): Description, OpenSearch, Error, htmlTemplateUrlNotFound, noAnyURLXml, noTemplateParameter, notImplementedHttpMethod, notValidURL (+21 more)
+### Community 10 - "TabsDataServiceProtocol"
+Cohesion: 0.15
+Nodes (16): TabsDataServiceProtocol, TabSelectionStrategy, AddTabUseCaseImpl, CloseTabUseCaseImpl, SelectedTabUseCaseImpl, SelectTabUseCaseImpl, AddTabUseCaseTests, CloseTabUseCaseTests (+8 more)
 
-### Community 18 - "ViewModelKit"
-Cohesion: 0.06
-Nodes (11): CottonDependencyAssembly, CottonUseCases, AllTabsAction, addTab, .allCases, UIColor, TopSitesAction, .allCases (+3 more)
+### Community 11 - "Combine"
+Cohesion: 0.14
+Nodes (9): Alamofire, String, HTTPRxVoidAdapter, Combine, CottonDependencyAssembly, CottonReactiveRestKit, CottonRestKit, CottonSearch (+1 more)
 
-### Community 19 - "WebViewModelImpl"
-Cohesion: 0.09
-Nodes (23): Action, Context, Error, Site, String, Task, URL, Void (+15 more)
-
-### Community 20 - "Token"
-Cohesion: 0.06
-Nodes (35): Double, String, Token, atKeyword, badString, badUrl, cdc, cdo (+27 more)
-
-### Community 21 - "ReplaceSelectedTabUseCase"
-Cohesion: 0.09
-Nodes (18): AllTabsViewModel, SearchBarViewModelWithDelegates, Site, TabsPreviewsViewModelWithHolder, ViewModelFactory, UseCaseRegistry, DefaultTabProvider, CreateSearchURLUseCase (+10 more)
-
-### Community 22 - "TabsViewController"
+### Community 12 - "TabsViewController"
 Cohesion: 0.10
 Nodes (12): Sizes, AllTabsViewModel, CGFloat, CGRect, CGSize, NSCoder, UIButton, UITraitCollection (+4 more)
 
-### Community 23 - "LayoutStep"
+### Community 13 - "Token"
+Cohesion: 0.06
+Nodes (35): Double, String, Token, atKeyword, badString, badUrl, cdc, cdo (+27 more)
+
+### Community 14 - "TabletView"
+Cohesion: 0.09
+Nodes (30): .body, SwiftUIMode, compatible, full, PhoneView, .body, .menuModel, BrowserToolbarViewModel (+22 more)
+
+### Community 15 - "SearchBarViewV2"
+Cohesion: 0.09
+Nodes (26): ObservableObject, ClearCancelButtonViewModel, ClearCancelPairButton, .body, ClearCancelPairButton_Previews, .previews, LocalizedStringKey, Void (+18 more)
+
+### Community 16 - "FeatureManager"
+Cohesion: 0.09
+Nodes (21): SearchBarContextImpl, .blockPopups, .isJSEnabled, .webAutocompletionSourceValue, Site, TabPreviewsContextImpl, .contentState, .body (+13 more)
+
+### Community 17 - "SearchDataServiceProtocol"
+Cohesion: 0.07
+Nodes (22): SearchDataServiceProtocol, AppError, commandNotFinishedYet, erasedSearchDataServiceError, .errorDescription, searchDataServiceError, tabsServiceError, zombieSelf (+14 more)
+
+### Community 18 - "BrowserToolbarViewModelImpl"
+Cohesion: 0.08
+Nodes (19): BrowserToolbarViewModel, BrowserToolbarViewContextImpl, .siteNavigationDelegate, .vcFactory, BrowserToolbarViewModel, BrowserToolbarViewModel, BrowserToolbarStateContext, BrowserToolbarStateContextProxy (+11 more)
+
+### Community 19 - "View"
+Cohesion: 0.07
+Nodes (31): .uiKitWrapperView, SiteMenuView_Previews, .previews, Content, AppAsyncApiTypeView_Previews, .previews, View, View (+23 more)
+
+### Community 20 - "LayoutStep"
 Cohesion: 0.07
 Nodes (22): Layouting, LayoutStep, viewDidLayoutSubviews, viewDidLoad, viewSafeAreaInsetsDidChange, OwnLayoutStep, viewDidLayoutSubviews, viewDidLoad (+14 more)
 
-### Community 24 - "Bool"
-Cohesion: 0.09
-Nodes (20): Context, Site, UIViewControllerType, W, WebView, .body, WebViewLegacyView, Site (+12 more)
+### Community 21 - "FilesGridCoordinator"
+Cohesion: 0.08
+Nodes (21): FilesGridCoordinator, FilesGridRoute, clear, hide, show, CGFloat, CGRect, NSLayoutConstraint (+13 more)
 
-### Community 25 - "BaseListViewModel"
+### Community 22 - "GlobalMenuDelegate"
+Cohesion: 0.08
+Nodes (18): SearchBarViewModel, UISearchBarDelegate, AllTabsViewModel, C, SearchBarViewModel, TabsPreviewsViewModelWithHolder, UISearchBarDelegate, UIViewController (+10 more)
+
+### Community 23 - "BaseListViewModel"
 Cohesion: 0.07
 Nodes (20): EnumDataSourceType, PopClosure, EnumDataSourceType, PopClosure, BaseMenuView, .body, EnumDataSourceType, PopClosure (+12 more)
 
-### Community 26 - "FeatureManager"
-Cohesion: 0.11
-Nodes (19): SearchBarContextImpl, .blockPopups, .isJSEnabled, .webAutocompletionSourceValue, .body, BrowserMenuStyle, onlyGlobalMenu, withSiteMenu (+11 more)
+### Community 24 - "RxObserverVoidWrapper"
+Cohesion: 0.10
+Nodes (23): Lifetime, RxObserverVoidWrapper, .lifetime, .observer, RxObserverWrapper, .lifetime, .observer, Signal.Observer (+15 more)
 
-### Community 27 - "UIServiceRegistry"
+### Community 25 - "SearchBarCoordinator"
+Cohesion: 0.11
+Nodes (15): SearchBarCoordinator, SearchBarDelegate, SearchBarRoute, handleAction, hideSuggestions, suggestions, NSLayoutYAxisAnchor, NSRange (+7 more)
+
+### Community 26 - "SearchBarState"
 Cohesion: 0.08
-Nodes (19): AllTabsViewModel, C, SearchBarViewModel, TabsPreviewsViewModelWithHolder, UISearchBarDelegate, UIViewController, TabletViewControllerFactory, .blankWebPageViewController (+11 more)
+Nodes (23): SearchBarInSearchMode, .modeHandler, .showCancelButton, C, String, SearchBarInViewMode, .modeHandler, .showCancelButton (+15 more)
 
-### Community 28 - "Tab"
-Cohesion: 0.09
-Nodes (22): UUID, Date, ContentType, blank, favorites, homepage, .isStatic, .rawValue (+14 more)
-
-### Community 29 - "SearchSuggestionsViewController"
-Cohesion: 0.09
-Nodes (17): SearchBarPart, simplySuggestions, suggestions, SearchSuggestionsViewModel, String, SearchSuggestionsControllerInterface, SearchSuggestionsViewController, .state (+9 more)
-
-### Community 30 - "SuggestionType"
+### Community 27 - "TabsPreviewsViewController"
 Cohesion: 0.08
-Nodes (10): SuggestionType, knownDomain, looksLikeURL, suggestion, String, RecordingError, intentional, RecordingSearchBarStateContext (+2 more)
+Nodes (22): Sizes, AnyCancellable, C, CGFloat, CGSize, IndexPath, NSCoder, TabsPreviewsViewModel (+14 more)
 
-### Community 31 - "AnyObject"
+### Community 28 - "Sendable"
+Cohesion: 0.07
+Nodes (27): Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus, Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus.ConnectionType, .httpKitValue, .httpKitValue, CottonBase.ServerDescription, CottonBase.Host, ConnectionType, cellular (+19 more)
+
+### Community 29 - "AnyViewController"
+Cohesion: 0.10
+Nodes (20): DummyDelegate, R, UINavigationController, UIView, TopSitesCoordinator, AnyViewController, UIView, UIViewController (+12 more)
+
+### Community 30 - "ObservingApiType"
+Cohesion: 0.07
+Nodes (22): String, .id, .description, .id, RawValue, String, .description, .id (+14 more)
+
+### Community 31 - "CottonPluginError"
+Cohesion: 0.07
+Nodes (25): CottonPluginError, emptyHtml, jsEvaluationIsNotString, jsEvaluationIsNotURL, nilJSEvaluationResult, notExpectedKey, noVideoTags, parseError (+17 more)
+
+### Community 32 - "BrowserToolbarAction"
+Cohesion: 0.07
+Nodes (25): CaseIterable, TabsPreviewsAction, addDefaultTab, closeTab, load, select, selectTabIdWithoutSaving, String (+17 more)
+
+### Community 33 - "Bool"
 Cohesion: 0.11
-Nodes (18): AnyObject, BaseJSHandler, Any, InstagramHandler, WKScriptMessage, BasePluginContentDelegate, InstagramContentDelegate, PluginHandlerDelegateType (+10 more)
+Nodes (16): Site, URL, TabViewContextImpl, .isDohEnabled, .observingApiTypeValue, .tabsSubject, WKNavigationType, .needsHandling (+8 more)
 
-### Community 32 - "BrowserToolbarView"
+### Community 34 - "ViewControllerFactory"
 Cohesion: 0.11
-Nodes (16): BrowserToolbarView, .downloadsViewHidden, .enableDownloadsButton, .state, CGRect, NSCoder, UIBarButtonItem, WebToolbarState (+8 more)
+Nodes (15): PhoneTabsCoordinator, TabsPreviewsViewModelWithHolder, UINavigationController, C, UIViewController, ViewControllerFactory, .loadingProgressViewController, Any (+7 more)
 
-### Community 33 - "TabView"
+### Community 35 - "TabView"
 Cohesion: 0.11
 Nodes (15): ButtonWithDecreasedTouchArea, AnyCancellable, CGPoint, CGRect, CGSize, NSCoder, UIEvent, UILabel (+7 more)
 
-### Community 34 - "SearchSuggestionsResponse"
-Cohesion: 0.12
-Nodes (16): SearchSuggestionsResponse, String, DDGoAutocompleteStrategy, AnyPublisher, Context, SignalProducer, String, GoogleAutocompleteStrategy (+8 more)
-
-### Community 35 - "CoordinatorOwner"
-Cohesion: 0.08
-Nodes (20): BlankContentRoute, CoordinatorOwner, Route, GlobalMenuCoordinator, MenuScreenRoute, CGRect, R, UINavigationController (+12 more)
-
-### Community 36 - "TopSitesViewModel"
-Cohesion: 0.12
-Nodes (20): MainBrowserV2ViewController, AllTabsViewModel, C, NSCoder, S, SB, W, MainBrowserView (+12 more)
-
-### Community 37 - "View"
-Cohesion: 0.09
-Nodes (25): .uiKitWrapperView, SiteMenuView_Previews, Content, AppAsyncApiTypeView_Previews, .previews, View, View, TabAddPositionsView_Previews (+17 more)
-
-### Community 38 - "SearchBarState"
-Cohesion: 0.10
-Nodes (18): SearchBarInSearchMode, .modeHandler, .showCancelButton, C, String, SearchBarInSearchModeHandler, SearchBarInvalidModeHandler, SearchBarInViewModeHandler (+10 more)
-
-### Community 39 - "TabsPreviewsError"
-Cohesion: 0.10
-Nodes (15): Error, String, TabsPreviewsError, .errorDescription, failToLoad, nilStateContext, notImplementedYet, tabsNotLoadedToClose (+7 more)
-
-### Community 40 - "WebViewModelState"
+### Community 36 - "WebViewModelState"
 Cohesion: 0.08
 Nodes (24): BaseState, Site, String, URL, WebViewModelState, checkingDNResolveSupport, creatingRequest, .description (+16 more)
 
-### Community 41 - "Scanner"
+### Community 37 - "Testing"
+Cohesion: 0.08
+Nodes (8): Base, Domain, AllTabsState, BaseState, AllTabsStateTransitioningTests, RecordingAllTabsContext, SearchSuggestionsViewStateTests, Testing
+
+### Community 38 - "Scanner"
 Cohesion: 0.19
 Nodes (8): String, Scanner, .currentText, .isAtEnd, .peek1, .peek2, .peek3, String
 
-### Community 42 - "ResponseVoidHandlingApi"
+### Community 39 - "ResponseVoidHandlingApi"
 Cohesion: 0.11
 Nodes (17): ClientRxSubscriber, ClientRxVoidSubscriber, R, RX, S, Observer, Server, ResponseVoidHandlingApi (+9 more)
 
-### Community 43 - "FilesGridCoordinator"
-Cohesion: 0.12
-Nodes (14): FilesGridCoordinator, FilesGridRoute, clear, hide, show, CGFloat, CGRect, NSLayoutConstraint (+6 more)
+### Community 40 - "CatowserUIVCRepresentable"
+Cohesion: 0.10
+Nodes (15): .fullySwiftUIView, CatowserUIVCRepresentable, .vcFactory, Context, UIViewControllerType, ToolbarLegacyView, AllTabsViewModel, Context (+7 more)
 
-### Community 44 - "SearchBarCoordinator"
-Cohesion: 0.15
-Nodes (13): SearchBarCoordinator, SearchBarDelegate, SearchBarRoute, handleAction, hideSuggestions, suggestions, NSRange, R (+5 more)
-
-### Community 45 - "DummyRxType"
-Cohesion: 0.09
-Nodes (17): Signal.Observer, Response, DummyRxLifetime, DummyRxObserver, DummyRxType, .endpoint, .lifetime, .observer (+9 more)
-
-### Community 46 - "HttpError"
-Cohesion: 0.08
-Nodes (24): HttpError, emptyQueryParam, failedConstructRequestParameters, failedEncodeEncodable, failedKotlinRequestConstruct, httpFailure, invalidDomainName, invalidURL (+16 more)
-
-### Community 47 - "AppCoordinator"
-Cohesion: 0.16
-Nodes (9): AppCoordinator, .globalMenuDelegate, .navigationComponent, .siteNavigator, .toolbarPresenter, .uiFramework, FullSiteNavigationComponent, UINavigationController (+1 more)
-
-### Community 48 - "StateHolder"
+### Community 41 - "SearchBarAction"
 Cohesion: 0.11
-Nodes (15): DuckDuckGoServer, GoogleDnsServer, GoogleServer, MockedGoodServer, StateHolder, DDGoSuggestionsClientRxSubscriber, DDGoSuggestionsClientSubscriber, GDNSJsonClientRxSubscriber (+7 more)
+Nodes (18): PhoneSearchBarLegacyView, Context, SearchBarViewModel, UISearchBarDelegate, UIViewControllerType, SearchBarAction, cancelSearch, clearView (+10 more)
 
-### Community 49 - "CodingKeys"
-Cohesion: 0.11
-Nodes (20): CottonDummyDecodable, CodingKeys, displayUrl, isVideo, mediaCaption, mediaPreview, pageTitle, thumbnailSrc (+12 more)
+### Community 42 - "SearchBarBaseViewController"
+Cohesion: 0.13
+Nodes (12): TabsDataSubject, .tabsCount, TabsSubject, Observation, SmartphoneSearchBarViewController, NSCoder, UIView, SearchBarBaseViewController (+4 more)
 
-### Community 50 - "ResponseHandlingApi"
+### Community 43 - "ResponseHandlingApi"
 Cohesion: 0.11
 Nodes (21): HTTPAdapter, init(), ObserverWrapper, Response, RxFreeDummy, Server, ResponseHandlingApi, asyncAwaitConcurrency (+13 more)
 
-### Community 51 - "AddedTabPosition"
-Cohesion: 0.09
-Nodes (22): .description, .id, RawValue, String, StateHolder, .addPosition, .addSpeed, .contentState (+14 more)
+### Community 44 - "HttpError"
+Cohesion: 0.08
+Nodes (24): HttpError, emptyQueryParam, failedConstructRequestParameters, failedEncodeEncodable, failedKotlinRequestConstruct, httpFailure, invalidDomainName, invalidURL (+16 more)
 
-### Community 52 - "SearchBarViewModelImpl"
+### Community 45 - "AppCoordinator"
+Cohesion: 0.16
+Nodes (9): AppCoordinator, .globalMenuDelegate, .navigationComponent, .siteNavigator, .toolbarPresenter, .uiFramework, FullSiteNavigationComponent, UINavigationController (+1 more)
+
+### Community 46 - "LinkTagsCoordinator"
+Cohesion: 0.15
+Nodes (10): LinkTagsCoordinator, CGRect, NSLayoutConstraint, R, UINavigationController, UIView, UIViewController, LinkTagsPresenter (+2 more)
+
+### Community 47 - "SearchSuggestionsViewState"
+Cohesion: 0.09
+Nodes (19): SearchSuggestionsAction, .allCases, loadKnownDomains, loadSuggestions, String, Error, .errorDescription, missingContext (+11 more)
+
+### Community 48 - "TabsPreviewsError"
+Cohesion: 0.10
+Nodes (15): Error, String, TabsPreviewsError, .errorDescription, failToLoad, nilStateContext, notImplementedYet, tabsNotLoadedToClose (+7 more)
+
+### Community 49 - "StateHolder"
+Cohesion: 0.11
+Nodes (15): DuckDuckGoServer, GoogleDnsServer, GoogleServer, MockedGoodServer, StateHolder, DDGoSuggestionsClientRxSubscriber, DDGoSuggestionsClientSubscriber, GDNSJsonClientRxSubscriber (+7 more)
+
+### Community 50 - "JavaScriptPlugin"
+Cohesion: 0.13
+Nodes (15): JSPluginFactory, String, WKUserScript, BasePlugin, String, InstagramContentPlugin, String, JavaScriptPlugin (+7 more)
+
+### Community 51 - "MockedNavAction"
+Cohesion: 0.12
+Nodes (11): WKNavigationAction, NavigationActionable, MockedNavAction, URL, URLRequest, T, TimeInterval, WebViewVMConcurrencyTests (+3 more)
+
+### Community 52 - "BrowserToolbarView"
+Cohesion: 0.15
+Nodes (9): BrowserToolbarView, .downloadsViewHidden, .enableDownloadsButton, .state, CGRect, NSCoder, UIBarButtonItem, WebViewNavigatable (+1 more)
+
+### Community 53 - "SearchBarViewModelImpl"
 Cohesion: 0.27
 Nodes (8): SearchBarViewModelImpl, .context, .searchSuggestionsDelegate, Context, UISearchBarDelegate, SearchBarViewModelImplTests, SearchBarVMFixture, SearchBarViewModelWithDelegates
 
-### Community 53 - "WebViewAction"
-Cohesion: 0.09
-Nodes (23): Site, URL, WebViewAction, .allCases, changeDoH, changeJavaScript, checkDNResolvingSupport, createRequestAnyway (+15 more)
-
-### Community 54 - "Error"
-Cohesion: 0.09
-Nodes (20): DecodingError, missingPreviewURL, notVideo, wrongBase64String, wrongDataForImage, CssParseError, failConvertStringToDouble, DbError (+12 more)
-
-### Community 55 - "Equatable"
+### Community 54 - "LocalFeatureSource"
 Cohesion: 0.14
-Nodes (15): BasePlugin, String, InstagramContentPlugin, String, JavaScriptPlugin, WKScriptMessageHandler, JavaScriptPluginVisitor, String (+7 more)
+Nodes (14): LocalFeatureSource, .futureFeatureChanges, .rxFutureFeatureChanges, String, AnyPublisher, F, Never, Signal (+6 more)
 
-### Community 56 - "FilesGridViewController"
+### Community 55 - "AnyObject"
+Cohesion: 0.12
+Nodes (16): AnyObject, InstagramHandler, MessageKey, log, singleVideoNode, videoNodes, WKScriptMessage, Self (+8 more)
+
+### Community 56 - "HTMLContentMessage"
 Cohesion: 0.10
-Nodes (13): HTMLVideoTag, InstagramVideoNode, TagsSiteDataSource, htmlVideos, instagram, .itemsCount, FilesGridViewController, Sizes (+5 more)
+Nodes (14): CSSBackgroundImage, .firstURL, URL, HTMLContentMessage, .mainPosterURL, Decoder, URL, Document (+6 more)
 
-### Community 57 - "TabletView"
+### Community 57 - "SiteCollectionViewCell"
+Cohesion: 0.10
+Nodes (16): SiteCollectionViewCell, CGRect, CGSize, NSCoder, Site, UILabel, UITraitCollection, String (+8 more)
+
+### Community 58 - "WebViewController"
+Cohesion: 0.15
+Nodes (10): Site, AnyCancellable, C, Disposable, NSCoder, WebViewController, WebViewModel, NSKeyValueObservation (+2 more)
+
+### Community 59 - "SearchSuggestionsCoordinator"
 Cohesion: 0.13
-Nodes (20): .body, PhoneView, .body, .menuModel, BrowserToolbarViewModel, S, SB, String (+12 more)
+Nodes (9): SearchSuggestionsCoordinator, .keyboardHeight, CGFloat, MainActor, NSLayoutYAxisAnchor, Sendable, SP, UINavigationController (+1 more)
 
-### Community 58 - "Database"
-Cohesion: 0.14
-Nodes (11): Database, .storeURL, .viewContext, NSManagedObjectContext, String, URL, Void, .shared (+3 more)
-
-### Community 59 - "URLInfo"
-Cohesion: 0.14
-Nodes (10): URL, URLRequest, URLInfo, .platformURL, .urlRequest, .urlWithResolvedDomainName, Site, Settings (+2 more)
-
-### Community 60 - "Testing"
-Cohesion: 0.10
-Nodes (6): Base, Domain, AllTabsStateTransitioningTests, RecordingAllTabsContext, SearchSuggestionsViewStateTests, Testing
-
-### Community 61 - "TabsServiceCommand"
-Cohesion: 0.10
-Nodes (16): Data, Any, TabsServiceCommand, addTab, closeAll, closeTab, closeTabWithId, getAllTabs (+8 more)
-
-### Community 62 - "RxObserverVoidWrapper"
-Cohesion: 0.17
-Nodes (16): Lifetime, RxObserverVoidWrapper, .lifetime, .observer, RxObserverWrapper, .lifetime, .observer, Endpoint (+8 more)
-
-### Community 63 - "UIFrameworkType"
-Cohesion: 0.10
-Nodes (18): .swiftUIMode, AllTabsViewModel, S, SB, W, RawValue, String, .description (+10 more)
-
-### Community 64 - "UIImageView"
-Cohesion: 0.11
-Nodes (13): BlankWebPageViewController, SiteCollectionViewCell, CGRect, NSCoder, Site, UILabel, .mediaFilePreviewURL, URL (+5 more)
-
-### Community 65 - "WebContentCoordinator"
+### Community 60 - "WebContentCoordinator"
 Cohesion: 0.12
 Nodes (10): Float, R, Site, String, UINavigationController, UIView, WebContentCoordinator, .siteNavigationDelegate (+2 more)
 
-### Community 66 - "TabsPreviewsViewController"
-Cohesion: 0.12
-Nodes (13): AnyCancellable, C, NSCoder, TabsPreviewsViewModel, UIBarButtonItem, UIToolbar, TabsPreviewsViewController, .prefersStatusBarHidden (+5 more)
+### Community 61 - "Database"
+Cohesion: 0.14
+Nodes (11): Database, .storeURL, .viewContext, NSManagedObjectContext, String, URL, Void, .shared (+3 more)
 
-### Community 67 - "StateTransitioning"
+### Community 62 - "DownloadButtonCellView"
+Cohesion: 0.11
+Nodes (18): FileDownloadViewDelegate, DownloadButtonCellView, .buttonState, .downloadButton, .previewImageView, .viewModel, DownloadButtonState, canDownload (+10 more)
+
+### Community 63 - "SearchSuggestionsViewController"
+Cohesion: 0.11
+Nodes (12): String, SearchSuggestionsControllerInterface, SearchSuggestionsViewController, .state, String, AnyCancellable, IndexPath, NSCoder (+4 more)
+
+### Community 64 - "FilesGridViewController"
+Cohesion: 0.11
+Nodes (13): HTMLVideoTag, InstagramVideoNode, TagsSiteDataSource, htmlVideos, instagram, .itemsCount, FilesGridViewController, Void (+5 more)
+
+### Community 65 - "WebViewAction"
 Cohesion: 0.10
-Nodes (7): SearchSuggestionsStateTransitioning, TabStateTransitioning, TopSitesStateTransitioning, WebViewStateTransitioning, ClosureStateTransitioning, StateTransitioning, Transition
+Nodes (21): URL, WebViewAction, changeDoH, changeJavaScript, checkDNResolvingSupport, createRequestAnyway, .description, fetchDoHStatus (+13 more)
 
-### Community 68 - "ApplicationFeature"
+### Community 66 - "ApplicationFeature"
 Cohesion: 0.14
 Nodes (17): .dnsOverHTTPSAvailable, .javaScriptEnabled, .nativeAppRedirect, DoHAvailable, JavaScriptEnabled, NativeAppRedirect, String, BasicFeature (+9 more)
 
-### Community 69 - "SearchBarBaseViewController"
+### Community 67 - "AddTabUseCase"
 Cohesion: 0.14
-Nodes (9): SmartphoneSearchBarViewController, NSCoder, UIView, SearchBarBaseViewController, SearchBarControllerInterface, NSCoder, SearchBarViewModel, UISearchBarDelegate (+1 more)
+Nodes (11): AllTabsViewModel, AddTabUseCase, AllTabsStateContext, AllTabsStateContextProxy, AllTabsViewModelImpl, .context, Context, AllTabsViewModel (+3 more)
 
-### Community 70 - "TopSitesViewController"
-Cohesion: 0.11
-Nodes (15): CGSize, UITraitCollection, Bundle, C, CGSize, IndexPath, NSCoder, String (+7 more)
-
-### Community 71 - "Coordinator"
+### Community 68 - "JSPluginsSource"
 Cohesion: 0.13
-Nodes (10): Coordinator, .isPad, .startedView, UIView, MainToolbarCoordinator, NSLayoutYAxisAnchor, R, SP (+2 more)
+Nodes (12): JSPluginsSource, DomainNativeAppChecker, Host, String, Host, String, WebViewContextImpl, .isDohEnabled (+4 more)
 
-### Community 72 - "SearchSuggestionsCoordinator"
-Cohesion: 0.14
-Nodes (11): SearchSuggestionsCoordinator, .keyboardHeight, SearchSuggestionsRoute, startSearch, CGFloat, MainActor, NSLayoutYAxisAnchor, Sendable (+3 more)
+### Community 69 - "Int"
+Cohesion: 0.18
+Nodes (9): VoidResponse, .successCodes, ResponseType, .successCodes, MockedGoodEndpointResponse, .successCodes, BrowserContentViewModel, Void (+1 more)
 
-### Community 73 - "MockedNavAction"
-Cohesion: 0.14
-Nodes (9): MockedNavAction, URL, URLRequest, T, TimeInterval, WebViewVMConcurrencyTests, StaticString, UInt (+1 more)
+### Community 70 - "State"
+Cohesion: 0.19
+Nodes (6): State, AllTabsStateTransitioning, WebViewStateTransitioning, StateTransitioning, ViewModelStateMachine, ViewModelStateMachineTests
 
-### Community 74 - "ApplicationEnumFeature"
+### Community 71 - ".registerTabsUseCases"
+Cohesion: 0.16
+Nodes (9): ServiceRegistry, Any, T, UseCaseLocator, StateHolder, String, T, ReadAllTabsUseCaseImpl (+1 more)
+
+### Community 72 - "TopSitesViewModelImpl"
+Cohesion: 0.15
+Nodes (11): TopSitesStateContext, TopSitesStateContextProxy, Context, TopSitesViewModelImpl, .context, MockReplaceSelectedTabUseCase, async, Void (+3 more)
+
+### Community 73 - "ApplicationEnumFeature"
 Cohesion: 0.14
 Nodes (17): AppAsyncApiFeature, .appDefaultAsyncApi, .observingApi, .tabAddPosition, .tabDefaultContent, .webAutoCompletionSource, EnumFeaturesHolder, ApplicationEnumFeature (+9 more)
 
-### Community 75 - "ComponentValue"
+### Community 74 - "AlamofireReachabilityAdaptee"
+Cohesion: 0.11
+Nodes (10): AlamofireReachabilityAdaptee, Listener, Server, MockedReachabilityAdaptee, Listener, Server, Dispatch, DispatchQueue (+2 more)
+
+### Community 75 - "RestClient"
+Cohesion: 0.13
+Nodes (10): String, URL, RestClient, E, Encoder, R, S, Server (+2 more)
+
+### Community 76 - "ComponentValue"
 Cohesion: 0.18
 Nodes (18): AtRule, Category, descriptor, property, ComponentValue, function, preservedToken, simpleBlock (+10 more)
 
-### Community 76 - "TopSitesViewV2"
+### Community 77 - "TopSitesViewV2"
 Cohesion: 0.12
 Nodes (13): Binding, Site, URL, TitledImageView, .body, Context, UIViewControllerType, TopSitesLegacyView (+5 more)
 
-### Community 77 - "ImageSource"
-Cohesion: 0.18
-Nodes (13): Error, .errorDescription, missingContext, ImageSource, image, url, urlWithPlaceholder, BaseState (+5 more)
-
-### Community 78 - "LocalFeatureSource"
-Cohesion: 0.17
-Nodes (11): LocalFeatureSource, .futureFeatureChanges, .rxFutureFeatureChanges, String, AnyPublisher, F, Never, Signal (+3 more)
-
-### Community 79 - "WebViewStateContextProxy"
+### Community 78 - "BrowserMenuView"
 Cohesion: 0.12
-Nodes (10): JSPluginsProgram, Site, String, URL, WKWebViewConfiguration, WebViewStateContext, WebViewStateContextProxy, .isDohEnabled (+2 more)
+Nodes (13): UIHostingController, BrowserMenuView, CottonMenuItem, asyncApi, defaultTabContent, observingApi, tabAddPosition, uiFramework (+5 more)
 
-### Community 80 - "HTMLContentMessage"
-Cohesion: 0.13
-Nodes (14): CodingKeys, hostname, htmlString, HTMLContentMessage, .mainPosterURL, Decoder, URL, Document (+6 more)
-
-### Community 81 - "BrowserToolbarViewModelImpl"
+### Community 79 - "ViewModelFactory"
 Cohesion: 0.15
-Nodes (9): BrowserToolbarViewModel, BrowserToolbarViewModelImpl, .context, .siteExternalDelegate, .siteNavigationDelegate, Action, Context, Float (+1 more)
+Nodes (13): AllTabsViewModel, SearchBarViewModelWithDelegates, TabsPreviewsViewModelWithHolder, ViewModelFactory, UseCaseRegistry, DefaultTabProvider, StateHolder, .addPosition (+5 more)
 
-### Community 82 - "BrowserMenuView"
-Cohesion: 0.14
-Nodes (10): .fullySwiftUIView, UIHostingController, BrowserMenuView, .previews, SiteMenuViewController, C, NSCoder, Context (+2 more)
+### Community 80 - "WebAutoCompletionSource"
+Cohesion: 0.11
+Nodes (14): RawValue, String, .description, .id, String, Bundle, XmlSearchPluginResource, EnumDefaultValueSupportable (+6 more)
 
-### Community 83 - "SearchAutocompleteStrategy"
-Cohesion: 0.16
-Nodes (10): StrategyFactory, SearchAutocompleteStrategy, DDGoContext, Client, HttpKitRxSubscriber, HttpKitSubscriber, GoogleContext, Client (+2 more)
-
-### Community 84 - "MockSearchStrategiesFactory"
-Cohesion: 0.21
-Nodes (9): SearchServiceCommand, .allCases, fetchAutocompleteSuggestions, fetchSearchURL, resolveDomainNameInURL, String, URL, MockSearchStrategiesFactory (+1 more)
-
-### Community 85 - "SearchSuggestionsViewState"
-Cohesion: 0.12
-Nodes (14): Error, .errorDescription, missingContext, unexpectedStateForAction, SearchSuggestionsViewState, everythingLoaded, knownDomainsLoaded, .sectionsNumber (+6 more)
-
-### Community 86 - "SwiftUIMode"
+### Community 81 - "URLInfo"
 Cohesion: 0.18
-Nodes (12): SwiftUIMode, compatible, full, .fullySwiftUIView, .uiKitWrapperView, BrowserContentView, .body, Binding (+4 more)
+Nodes (8): URL, URLRequest, URLInfo, .platformURL, .urlRequest, .urlWithResolvedDomainName, Site, WebViewStateTransitioningTests
 
-### Community 87 - "LoadingProgressCoordinator"
+### Community 82 - "SearchSuggestionsViewModelImpl"
+Cohesion: 0.15
+Nodes (12): SearchSuggestionsStateContext, SearchSuggestionsStateContextProxy, KnownDomains, QuerySuggestions, String, SearchSuggestionsViewModelImpl, .context, Context (+4 more)
+
+### Community 83 - "Downloadable"
+Cohesion: 0.18
+Nodes (13): download(), Downloadable, .excludeFromBackup, .fileName, fetchRemoteResourceInfo(), String, URL, URL (+5 more)
+
+### Community 84 - "SuggestionType"
+Cohesion: 0.14
+Nodes (11): SearchBarStateContext, SearchBarStateContextProxy, SuggestionType, knownDomain, looksLikeURL, suggestion, String, RecordingError (+3 more)
+
+### Community 85 - ".makeAuthorizedRequestProducer"
+Cohesion: 0.26
+Nodes (11): B, Endpoint, ResponseFuture, RX, RxProducer, RxSubscriber, Server, String (+3 more)
+
+### Community 86 - "Hashable"
+Cohesion: 0.22
+Nodes (11): ClosureWrapper, CombinePromiseWrapper, Endpoint, Future, Hasher, Response, Result, Server (+3 more)
+
+### Community 87 - "DummyRxType"
+Cohesion: 0.13
+Nodes (12): DummyRxLifetime, DummyRxObserver, DummyRxType, .endpoint, .lifetime, .observer, Endpoint, Hasher (+4 more)
+
+### Community 88 - "DnsError"
+Cohesion: 0.16
+Nodes (14): DnsError, .errorDescription, failToGetUrlFromComponents, hostIsNotIpAddress, httpError, noHost, notHttpScheme, urlComponentsFail (+6 more)
+
+### Community 89 - "UIImageView"
+Cohesion: 0.13
+Nodes (10): BlankWebPageViewController, .mediaFilePreviewURL, URL, UIImageView, CGPoint, UIEvent, UIView, CGPoint (+2 more)
+
+### Community 90 - "TopSitesViewController"
+Cohesion: 0.12
+Nodes (13): Bundle, C, CGSize, IndexPath, NSCoder, String, UICollectionView, UICollectionViewCell (+5 more)
+
+### Community 91 - "LoadingProgressCoordinator"
 Cohesion: 0.13
 Nodes (10): LoadingProgressCoordinator, LoadingProgressRoute, setProgress, showProgress, Float, NSLayoutConstraint, NSLayoutYAxisAnchor, R (+2 more)
 
-### Community 88 - "ReusableItem"
+### Community 92 - "FileDownloadViewModel"
+Cohesion: 0.14
+Nodes (15): DownloadState, error, finished, `in`, initial, started, FileDownloadDelegate, FileDownloadViewModel (+7 more)
+
+### Community 93 - "ReusableItem"
 Cohesion: 0.22
 Nodes (8): ReusableItem, .reuseID, IndexPath, String, View, UICollectionView, UITableView, Cell
 
-### Community 89 - "UIImage"
+### Community 94 - "UIImage"
 Cohesion: 0.19
 Nodes (12): CoreBrowser.Tab, .preview, CIImage, CoreImage, CGImage, CGFloat, CGPoint, CGSize (+4 more)
 
-### Community 90 - "TabPreviewCell"
-Cohesion: 0.17
-Nodes (12): FaviconImageViewable, Site, CGFloat, UIButton, UILabel, UITraitCollection, UIView, TabPreviewCell (+4 more)
+### Community 95 - "SearchAutocompleteStrategy"
+Cohesion: 0.15
+Nodes (7): StrategyFactory, SearchAutocompleteStrategy, GoogleAutocompleteStrategy, AnyPublisher, Context, SignalProducer, String
 
-### Community 91 - "TabsListError"
+### Community 96 - "ReplaceSelectedTabUseCase"
+Cohesion: 0.17
+Nodes (8): Site, ReplaceSelectedTabUseCase, SelectedTabUseCase, Site, Site, SiteExternalNavigationDelegate, WebViewContext, Site
+
+### Community 97 - "Trie"
+Cohesion: 0.26
+Nodes (7): String, Trie, .count, .isEmpty, .words, StateHolder, Node
+
+### Community 98 - "GenericServiceKit"
+Cohesion: 0.12
+Nodes (6): DataServiceFactory, Array, ImmediateDispatchQueue, convention, Sendable, GenericServiceKit
+
+### Community 99 - "SearchDataService"
+Cohesion: 0.23
+Nodes (9): SearchDataService, SearchStrategiesFactoryProtocol, AnyCancellable, Command, Result, ServiceData, ServiceError, String (+1 more)
+
+### Community 100 - "TabsObserver"
+Cohesion: 0.17
+Nodes (5): String, TabsObserver, .tabsObserverName, TabsObserverProxy, .tabsObserverName
+
+### Community 101 - "TabsListError"
 Cohesion: 0.12
 Nodes (16): NSError, String, TabsListError, closingNonExistingTab, .errorDescription, failToAddDefaultTab, failToFindNewSelectedTab, failToRemoveTab (+8 more)
 
-### Community 92 - "SearchBarAction"
-Cohesion: 0.14
-Nodes (13): SearchBarAction, cancelSearch, clearView, selectSuggestion, startSearch, updateView, String, Binding (+5 more)
+### Community 102 - "WebViewStateContextProxy"
+Cohesion: 0.13
+Nodes (9): Site, String, URL, WKWebViewConfiguration, WebViewStateContext, WebViewStateContextProxy, .isDohEnabled, .pluginsSource (+1 more)
 
-### Community 93 - "LazyServiceLocator"
+### Community 103 - "LazyServiceLocator"
 Cohesion: 0.20
 Nodes (9): LazyServiceLocator, ServiceRecord, fromClosure, instance, Any, String, T, ServiceLocator (+1 more)
 
-### Community 94 - "FakeTabStateContext"
+### Community 104 - "FakeTabStateContext"
 Cohesion: 0.18
 Nodes (5): FakeTabStateContext, SelectionFailure, Error, String, TabStateTransitioningTests
 
-### Community 95 - "ViewModelStateMachineTests.swift"
+### Community 105 - "ViewModelStateMachineTests.swift"
 Cohesion: 0.23
 Nodes (10): BaseViewModelStateMachineTests, expectSendAction(), IncrementTransitioning, Void, TestAction, .allCases, fail, increment (+2 more)
 
-### Community 96 - "SearchBarLegacyView"
+### Community 106 - "SearchBarLegacyView"
 Cohesion: 0.18
 Nodes (9): SearchBarLegacyView, .delegate, AnyCancellable, NSLayoutConstraint, String, UILabel, UISearchBar, UISearchBarDelegate (+1 more)
 
-### Community 97 - "DownloadError"
+### Community 107 - "TabletSearchBarViewController"
+Cohesion: 0.15
+Nodes (7): CGRect, UIButton, UIView, TabletSearchBarViewController, .downloadsPopoverStartInfo, .siteNavigator, .webViewInterface
+
+### Community 108 - "DownloadError"
 Cohesion: 0.12
 Nodes (15): DownloadError, .errorDescription, failedCreateFileProviderFolder, failedExcludeFromBackup, networkError, noAppGroupDirectory, noContentLengthHeader, noCorrectDownloadDestination (+7 more)
 
-### Community 98 - "DDGoSuggestionsResponse"
+### Community 109 - "DDGoSuggestionsResponse"
 Cohesion: 0.13
 Nodes (11): String, DDGoSuggestionsResponse, .successCodes, Endpoint, DDGoSuggestionsClientRxSubscriber, DDGoSuggestionsClientSubscriber, Decoder, String (+3 more)
 
-### Community 99 - "GSearchSuggestionsResponse"
+### Community 110 - "GSearchSuggestionsResponse"
 Cohesion: 0.14
 Nodes (11): String, Endpoint, GSearchSuggestionsResponse, .successCodes, Decoder, GSearchClientRxSubscriber, GSearchClientSubscriber, String (+3 more)
 
-### Community 100 - "JavaScriptEvaluateble"
+### Community 111 - "Set"
+Cohesion: 0.12
+Nodes (13): Array, .kotlinArray, HTTPRequestInfo, .urlRequest, KotlinArray, .empty, Set, .dictionary (+5 more)
+
+### Community 112 - "JavaScriptEvaluateble"
 Cohesion: 0.30
 Nodes (8): JavaScriptEvaluateble, Any, AnyPublisher, Error, SignalProducer, String, URL, Void
 
-### Community 101 - ".showNext"
+### Community 113 - "AppDelegate"
+Cohesion: 0.15
+Nodes (10): AppDelegate, Any, UIApplication, ResignKeyboardOnDragGesture, Content, View, .isPad, AppAssembler (+2 more)
+
+### Community 114 - ".showNext"
 Cohesion: 0.14
 Nodes (5): Float, Host, HTMLVideoTag, InstagramVideoNode, R
 
-### Community 103 - "BottomViewCoordinator"
+### Community 116 - "BottomViewCoordinator"
 Cohesion: 0.15
 Nodes (9): BottomViewCoordinator, .startedView, .underToolbarViewBounds, CGRect, NSLayoutConstraint, NSLayoutYAxisAnchor, SP, UINavigationController (+1 more)
 
-### Community 104 - "DownloadButtonCellView"
-Cohesion: 0.16
-Nodes (12): FileDownloadViewDelegate, DownloadButtonCellView, .buttonState, .downloadButton, .previewImageView, .viewModel, Disposable, UIButton (+4 more)
+### Community 117 - "TabsDBClient"
+Cohesion: 0.21
+Nodes (3): CDAppSettings, CDTab, TabsDBClient
 
-### Community 105 - "SearchDataService"
-Cohesion: 0.24
-Nodes (9): SearchDataService, SearchStrategiesFactoryProtocol, AnyCancellable, Command, Result, ServiceData, ServiceError, String (+1 more)
+### Community 118 - "TabPreviewCell"
+Cohesion: 0.15
+Nodes (12): Sizes, CGFloat, CGRect, NSCoder, UIButton, UILabel, UITraitCollection, UIView (+4 more)
 
-### Community 106 - "SearchDataServiceProtocol"
-Cohesion: 0.17
-Nodes (9): SearchDataServiceProtocol, CreateSearchURLUseCaseImpl, Input, Output, FetchAutocompleteSuggestionsUseCaseImpl, Input, Output, ResolveDNSUseCaseImpl (+1 more)
+### Community 119 - "Theme"
+Cohesion: 0.15
+Nodes (10): UIColor, UIStatusBarStyle, Theme, .searchBarSeparatorColor, .statusBarStyle, ThemeType, `default`, UIView (+2 more)
 
-### Community 107 - "TabletSearchBarViewController"
-Cohesion: 0.16
-Nodes (7): CGRect, UIButton, UIView, TabletSearchBarViewController, .downloadsPopoverStartInfo, .siteNavigator, .webViewInterface
+### Community 120 - "SearchServiceData"
+Cohesion: 0.14
+Nodes (11): SearchServiceData, .resolvedURL, .searchURL, .suggestions, SuggestionsRequest, String, URL, GenericServiceData (+3 more)
 
-### Community 108 - ".source"
+### Community 121 - "TabResourceError"
+Cohesion: 0.13
+Nodes (14): Error, TabResourceError, deleteError, dummyError, fetchAllError, insertError, selectedTabId, storeNotInitializedYet (+6 more)
+
+### Community 122 - "ImageSource"
+Cohesion: 0.22
+Nodes (10): ImageSource, image, url, urlWithPlaceholder, BaseState, C, String, UIColor (+2 more)
+
+### Community 123 - "FakeSearchViewContext"
+Cohesion: 0.15
+Nodes (12): Actor, SearchViewContextImpl, .appAsyncApiTypeValue, .knownDomainsStorage, .webAutocompletionSourceValue, DomainsHistory, KnownDomainsSource, GenericDataServiceActorProtocol (+4 more)
+
+### Community 124 - ".source"
 Cohesion: 0.26
 Nodes (7): AppFeaturePublisher, StateHolder, F, Never, Signal, String, EnumFeatureSource
 
-### Community 109 - "AlamofireHTTPAdaptee"
+### Community 125 - ".resolvedDomainName"
+Cohesion: 0.16
+Nodes (10): Endpoint, AnyPublisher, GDNSJsonClientRxSubscriber, GDNSJsonClientSubscriber, ResolvedURLProducer, String, URL, GDNSjsonEndpoint (+2 more)
+
+### Community 126 - "AlamofireHTTPAdaptee"
 Cohesion: 0.23
 Nodes (9): AlamofireHTTPAdaptee, Endpoint, Future, Response, Result, RxFreeDummy, Server, URLRequest (+1 more)
 
-### Community 110 - "JSPluginsSource"
-Cohesion: 0.14
-Nodes (8): JSPluginsSource, DomainNativeAppChecker, Host, String, Host, String, WebViewContextImpl, .isDohEnabled
+### Community 127 - "MainToolbarCoordinator"
+Cohesion: 0.18
+Nodes (6): MainToolbarCoordinator, NSLayoutYAxisAnchor, R, SP, TabsPreviewsViewModelWithHolder, UINavigationController
 
-### Community 111 - "Hashable"
-Cohesion: 0.25
-Nodes (11): ClosureVoidWrapper, CombinePromiseVoidWrapper, Endpoint, Future, Hasher, Result, Server, Void (+3 more)
+### Community 128 - "ImageParseResult"
+Cohesion: 0.19
+Nodes (11): ImageEncoding, xIcon, ImageParseResult, base64, none, url, OpenSearch, String (+3 more)
 
-### Community 112 - "ObservingApiType"
-Cohesion: 0.17
-Nodes (13): .description, .id, RawValue, String, AppStartInfo, AllTabsViewModel, SearchBarViewModelWithDelegates, TabsPreviewsViewModelWithHolder (+5 more)
-
-### Community 113 - "ViewModelState"
-Cohesion: 0.14
-Nodes (7): AllTabsState, AllTabsStateTransitioning, BaseState, BaseState, Site, TopSitesViewState, ViewModelState
-
-### Community 114 - "SearchBarError"
+### Community 129 - "SearchBarError"
 Cohesion: 0.13
-Nodes (12): SearchBarError, alreadyInSearchMode, cannotCancelSearchWhenInViewMode, cannotSeeSuggestionsInViewMode, .errorDescription, failToCreatUrlFromDomain, failToInitNewSiteValue, invalidDummyState (+4 more)
+Nodes (14): SearchBarError, alreadyInSearchMode, cannotCancelSearchWhenInViewMode, cannotSeeSuggestionsInViewMode, .errorDescription, failToCreatUrlFromDomain, failToInitNewSiteValue, invalidDummyState (+6 more)
 
-### Community 115 - "GenericEnumFeature"
+### Community 130 - "GenericEnumFeature"
 Cohesion: 0.14
 Nodes (12): .defaultEnumValue, EnumFeature, .description, .name, .source, String, GenericEnumFeature, .defaultEnumValue (+4 more)
 
-### Community 116 - "FakeSearchSuggestionsStateContext"
-Cohesion: 0.23
-Nodes (7): FakeSearchSuggestionsStateContext, SearchSuggestionsStateTransitioningTests, SoftFailError, Error, KnownDomains, QuerySuggestions, String
+### Community 131 - "GenericConcurrentDataService"
+Cohesion: 0.26
+Nodes (9): DispatchQueueInterface, GenericConcurrentDataService, Command, Result, ServiceData, ServiceError, GenericDataServiceProtocol, NSRecursiveLock (+1 more)
 
-### Community 117 - "SwiftUIPreviewable"
+### Community 133 - "SwiftUIPreviewable"
 Cohesion: 0.16
 Nodes (9): AutoHashable, AutoMockable, ProcessInfo, .unitTesting, UIView, SwiftUIPreviewable, .isPreviewingSwiftUI, UIView (+1 more)
 
-### Community 118 - "DnsRR"
-Cohesion: 0.21
-Nodes (10): Answer, DNSRecordType, addressRecord, canonicalName, .knownCase, DnsRR, String, UInt32 (+2 more)
+### Community 134 - "BasePluginContentDelegate"
+Cohesion: 0.20
+Nodes (8): BaseJSHandler, Any, HTMLVideoTagsContainer, HTMLVideoTag, BasePluginContentDelegate, PluginHandlerDelegateType, base, instagram
 
-### Community 119 - "Character"
+### Community 135 - "FakeWebViewStateContext"
+Cohesion: 0.16
+Nodes (8): JSPluginsProgram, FakeWebViewStateContext, .isDohEnabled, .pluginsSource, .webViewConfiguration, String, URL, WKWebViewConfiguration
+
+### Community 136 - "InstagramVideoNode"
+Cohesion: 0.14
+Nodes (11): DecodingError, missingPreviewURL, notVideo, wrongBase64String, wrongDataForImage, InstagramVideoNode, CGSize, Decoder (+3 more)
+
+### Community 137 - "Character"
 Cohesion: 0.14
 Nodes (13): Character, .isDigit, .isHexDigit, .isLetter, .isLowercase, .isMaximumAllowed, .isName, .isNameStart (+5 more)
 
-### Community 120 - "MainBrowserViewController"
+### Community 138 - "MainBrowserViewController"
 Cohesion: 0.15
 Nodes (7): MainBrowserViewController, .preferredStatusBarStyle, C, NSCoder, UIEvent, UIStatusBarStyle, UITouch
 
-### Community 121 - "MenuStatefullLabel"
-Cohesion: 0.19
-Nodes (9): ResignKeyboardOnDragGesture, Content, View, .isPad, AlignTextRight, MenuStatefullLabel, .body, String (+1 more)
+### Community 139 - "WebViewControllerProxy"
+Cohesion: 0.16
+Nodes (9): Host, Site, URL, WebViewControllerProxy, .canGoBack, .canGoForward, .host, .siteSettings (+1 more)
 
-### Community 122 - "State"
-Cohesion: 0.27
-Nodes (4): State, Action, ViewModelStateMachine, ViewModelStateMachineTests
+### Community 140 - "TabsDBClient.swift"
+Cohesion: 0.30
+Nodes (6): CDSite, CDSiteSettings, CoreBrowser.Tab, Site, Site.Settings, NSManagedObjectContext
 
-### Community 123 - "CounterView"
-Cohesion: 0.14
-Nodes (11): CGPoint, UIEvent, UIView, CounterView, .digit, CGPoint, CGRect, NSCoder (+3 more)
+### Community 141 - "DataServiceLocator"
+Cohesion: 0.16
+Nodes (8): ServiceRegistry.StateHolder, .tabsService, String, T, DataServiceLocator, Any, String, T
 
-### Community 124 - "Trie"
-Cohesion: 0.33
-Nodes (6): String, Trie, .count, .isEmpty, .words, Node
+### Community 142 - "Equatable"
+Cohesion: 0.15
+Nodes (10): BaseState, TabsPreviewState, .itemsNumber, loading, tabs, BaseState, Site, TopSitesViewState (+2 more)
 
-### Community 125 - "ViewModelAction"
-Cohesion: 0.14
-Nodes (12): SearchSuggestionsAction, .allCases, loadKnownDomains, loadSuggestions, String, TabsPreviewsAction, addDefaultTab, closeTab (+4 more)
+### Community 143 - "FakeSearchSuggestionsStateContext"
+Cohesion: 0.23
+Nodes (7): FakeSearchSuggestionsStateContext, SearchSuggestionsStateTransitioningTests, SoftFailError, Error, KnownDomains, QuerySuggestions, String
 
-### Community 126 - "SearchBarViewV2"
-Cohesion: 0.21
-Nodes (10): CustomHStackStyle, SearchBarViewV2, SearchBarViewV2_Previews, .previews, Binding, CGFloat, Content, SearchBarViewModel (+2 more)
-
-### Community 127 - "AddTabUseCase"
-Cohesion: 0.22
-Nodes (8): AllTabsViewModel, AddTabUseCase, AllTabsStateContext, AllTabsStateContextProxy, AllTabsViewModelImpl, .context, Context, AllTabsViewModel
-
-### Community 128 - "AlamofireHTTPRxAdaptee"
+### Community 144 - "AlamofireHTTPRxAdaptee"
 Cohesion: 0.24
 Nodes (9): AlamofireHTTPRxAdaptee, Endpoint, Future, ObserverWrapper, Response, Result, Server, URLRequest (+1 more)
 
-### Community 129 - "JSPluginsBuilder"
-Cohesion: 0.24
-Nodes (7): JSPluginsBuilder, .jsProgram, Self, HandlablePlugin, WKScriptMessageHandler, JSPluginsProgramImpl, Program
-
-### Community 130 - "ig.js"
+### Community 145 - "ig.js"
 Cohesion: 0.36
 Nodes (12): cottonFindTitleFromNode(), cottonHandleHtml(), cottonHandleHttpResponseText(), cottonIsIgEnabled(), cottonLog(), cottonNativeAppSendSingleNode(), cottonSearchAdditionalData(), cottonSearchSharedData() (+4 more)
 
-### Community 131 - "package.json"
+### Community 146 - "package.json"
 Cohesion: 0.15
 Nodes (12): author, description, devDependencies, eslint, license, main, name, private (+4 more)
 
-### Community 132 - "ClosureWrapper"
+### Community 147 - "ClosureVoidWrapper"
 Cohesion: 0.31
-Nodes (9): ClosureWrapper, CombinePromiseWrapper, Endpoint, Future, Hasher, Response, Result, Server (+1 more)
+Nodes (8): ClosureVoidWrapper, CombinePromiseVoidWrapper, Endpoint, Future, Hasher, Result, Server, Void
 
-### Community 133 - "MockedHTTPAdapteeWithFail"
+### Community 148 - "MockedHTTPAdapteeWithFail"
 Cohesion: 0.24
 Nodes (9): MockedHTTPAdapteeWithFail, Endpoint, Future, ObserverWrapper, Response, Result, Server, URLRequest (+1 more)
 
-### Community 134 - "WebViewController"
+### Community 149 - "WebViewController"
 Cohesion: 0.17
 Nodes (9): Host, Site, URL, WebViewController, .canGoBack, .canGoForward, .host, .siteSettings (+1 more)
 
-### Community 135 - "WebViewControllerProxy"
-Cohesion: 0.18
-Nodes (9): Host, Site, URL, WebViewControllerProxy, .canGoBack, .canGoForward, .host, .siteSettings (+1 more)
+### Community 150 - ".webView"
+Cohesion: 0.21
+Nodes (10): Any, Error, MainActor, String, URLAuthenticationChallenge, Void, WKNavigationActionPolicy, WKWebViewConfiguration (+2 more)
 
-### Community 136 - "LinkTagsViewController"
+### Community 151 - "WKWebView"
+Cohesion: 0.21
+Nodes (7): WKWebView, Error, NSError, UIViewController, URL, WebViewLoadingErrorHandler, WebViewModelState
+
+### Community 152 - "LinkTagsViewController"
 Cohesion: 0.21
 Nodes (6): LinkTagsDelegate, LinkTagsViewController, IndexPath, UICollectionView, UICollectionViewCell, UICollectionViewController
 
-### Community 137 - "SearchSuggestionsListDelegate"
+### Community 153 - "SearchSuggestionsListDelegate"
 Cohesion: 0.22
 Nodes (10): SearchSuggestionsView, .body, S, String, SearchSuggestionsViewV2, .body, S, SearchSuggestionsState (+2 more)
 
-### Community 138 - "StateHolder"
-Cohesion: 0.23
-Nodes (6): Any, T, UseCaseLocator, StateHolder, String, T
-
-### Community 139 - "GenericConcurrentDataService"
-Cohesion: 0.32
-Nodes (8): DispatchQueueInterface, GenericConcurrentDataService, Command, Result, ServiceData, ServiceError, NSRecursiveLock, Promise
-
-### Community 140 - "SearchSuggestionsVMTestFixture"
-Cohesion: 0.29
-Nodes (5): EndpointHttpError, FakeKnownDomainsSource, SearchSuggestionsViewModelImplTests, SearchSuggestionsVMTestFixture, String
-
-### Community 141 - "FakeWebViewStateContext"
+### Community 154 - "BrowserToolbarController"
 Cohesion: 0.18
-Nodes (7): FakeWebViewStateContext, .isDohEnabled, .pluginsSource, .webViewConfiguration, String, URL, WKWebViewConfiguration
+Nodes (6): BrowserToolbarController, .siteNavigator, .webViewInterface, UIEvent, UITouch, FullSiteNavigationComponent
 
-### Community 142 - "SearchFieldView"
+### Community 155 - "SearchEngine"
+Cohesion: 0.23
+Nodes (8): CottonBase.HTTPMethod, SearchEngine, String, URL, URLQueryItem, HTTPMethod, OpenSearch, URLComponents
+
+### Community 156 - "SearchServiceError"
+Cohesion: 0.15
+Nodes (10): SearchServiceError, .errorDescription, failedToCreateSearchEngine, requestDataWhenNotCorrectState, strategyError, xmlParsingError, zombyInstance, NSError (+2 more)
+
+### Community 157 - "WebViewVMFixture"
+Cohesion: 0.18
+Nodes (8): DomainName, Site, String, WebViewVMFixture, MockResolveDNSUseCase, async, URL, WebViewVmDNSoverHTTPSConcurrencyTests
+
+### Community 158 - "SearchFieldView"
 Cohesion: 0.19
 Nodes (9): LocalizedStringKey, SearchFieldView, .body, SearchFieldView_Previews, .previews, Binding, String, SearchFieldViewModel (+1 more)
 
-### Community 143 - "Theme"
-Cohesion: 0.18
-Nodes (11): LightTheme, .searchBarButtonBackgroundColor, UIColor, UIColor, UIStatusBarStyle, Theme, .searchBarSeparatorColor, .statusBarStyle (+3 more)
-
-### Community 144 - "NetworkReachabilityStatus"
-Cohesion: 0.17
-Nodes (12): Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus, Alamofire.NetworkReachabilityManager.NetworkReachabilityStatus.ConnectionType, .httpKitValue, .httpKitValue, ConnectionType, cellular, ethernetOrWiFi, NetworkReachabilityStatus (+4 more)
-
-### Community 145 - ".resolvedDomainName"
-Cohesion: 0.21
-Nodes (8): AnyPublisher, GDNSJsonClientRxSubscriber, GDNSJsonClientSubscriber, ResolvedURLProducer, String, URL, GDNSjsonProducer, GDNSjsonPublisher
-
-### Community 146 - "AlamofireHTTPRxVoidAdaptee"
-Cohesion: 0.24
-Nodes (8): AlamofireHTTPRxVoidAdaptee, Endpoint, Future, ObserverWrapper, Result, Server, URLRequest, Void
-
-### Community 147 - "HTMLVideoTag"
+### Community 159 - "WebViewAuthChallengeHandler"
 Cohesion: 0.26
-Nodes (9): CodingKeys, poster, src, HTMLVideoTag, Decoder, String, URL, VideoFileNameble (+1 more)
-
-### Community 148 - "WebViewNavigatable"
-Cohesion: 0.21
-Nodes (4): Context, UIViewControllerType, ToolbarLegacyView, WebViewNavigatable
-
-### Community 149 - ".collectionView"
-Cohesion: 0.17
-Nodes (9): Sizes, CGFloat, CGSize, IndexPath, UICollectionView, UICollectionViewCell, UICollectionViewLayout, CGFloat (+1 more)
-
-### Community 150 - "DisableableButton"
-Cohesion: 0.20
-Nodes (10): Binding, BrowserToolbarViewModel, ToolbarViewV2, .body, DisableableButton, .body, MainActor, String (+2 more)
-
-### Community 151 - "SearchServiceData"
-Cohesion: 0.18
-Nodes (10): SearchServiceData, .resolvedURL, .searchURL, .suggestions, SuggestionsRequest, String, URL, DomainResolvingData (+2 more)
-
-### Community 152 - "SearchBarDelegateImpl"
-Cohesion: 0.26
-Nodes (6): SearchBarDelegateImpl, NSRange, SearchBarViewModel, String, UISearchBar, UISearchBarDelegate
-
-### Community 153 - "BrowserToolbarState"
-Cohesion: 0.18
-Nodes (6): BrowserToolbarError, navigationUpdateWithoutData, progressUpdateWithoutData, BrowserToolbarState, BrowserToolbarStateTransitioning, Double
-
-### Community 154 - "CommandExecutionData"
-Cohesion: 0.17
-Nodes (11): CommandExecutionData, finished, inProgress, notStarted, started, E, Input, Output (+3 more)
-
-### Community 155 - "MockReplaceSelectedTabUseCase"
-Cohesion: 0.24
-Nodes (6): MockReplaceSelectedTabUseCase, async, Void, Site, String, TopSitesViewModelImplTests
-
-### Community 156 - ".present"
-Cohesion: 0.31
-Nodes (6): ActionHandler, AlertPresenter, String, UIViewController, UIAlertAction, UIAlertController
-
-### Community 157 - "FakeSearchViewContext"
-Cohesion: 0.22
-Nodes (8): Actor, DomainsHistory, KnownDomainsSource, GenericDataServiceActorProtocol, FakeSearchViewContext, .appAsyncApiTypeValue, .webAutocompletionSourceValue, Mockable
-
-### Community 158 - "Downloadable"
-Cohesion: 0.27
-Nodes (8): download(), Downloadable, .excludeFromBackup, .fileName, String, URL, DownloadRequest, FileDownloadProducer
-
-### Community 159 - "FileDownloadViewModel"
-Cohesion: 0.20
-Nodes (10): fetchRemoteResourceInfo(), URL, FileDownloadDelegate, FileDownloadViewModel, .downloadState, Never, Signal, String (+2 more)
+Nodes (8): AuthHandler, Hasher, MainActor, SecTrust, String, URLAuthenticationChallenge, WebViewAuthChallengeHandler, escaping
 
 ### Community 160 - "GoogleDNSEndpointError"
 Cohesion: 0.18
 Nodes (9): GoogleDNSEndpointError, dnsStatusError, emptyAnswers, .errorDescription, recordTypeParsing, Int32, String, UInt32 (+1 more)
 
-### Community 161 - "CottonPluginError"
-Cohesion: 0.18
-Nodes (10): CottonPluginError, emptyHtml, jsEvaluationIsNotString, jsEvaluationIsNotURL, nilJSEvaluationResult, notExpectedKey, noVideoTags, parseError (+2 more)
+### Community 161 - "GoogleDNSOverJSONResponse"
+Cohesion: 0.23
+Nodes (11): Answer, CodingKeys, answer, ipAddress, name, status, type, GoogleDNSOverJSONResponse (+3 more)
 
-### Community 162 - "MessageKey"
-Cohesion: 0.18
-Nodes (10): MessageKey, DOMVideoTags, html, log, WKScriptMessage, MessageKey, log, singleVideoNode (+2 more)
+### Community 162 - "AlamofireHTTPRxVoidAdaptee"
+Cohesion: 0.24
+Nodes (8): AlamofireHTTPRxVoidAdaptee, Endpoint, Future, ObserverWrapper, Result, Server, URLRequest, Void
 
-### Community 163 - "BaseViewController"
+### Community 163 - ".makeRequestProducer"
+Cohesion: 0.23
+Nodes (10): B, Endpoint, RX, RxProducer, RxSubscriber, Server, String, T (+2 more)
+
+### Community 164 - "URL"
+Cohesion: 0.20
+Nodes (10): AnyPublisher, String, URL, .cHttpHost, .hasIPHost, .hasIPv4Host, .hasIPv6Host, .httpHost (+2 more)
+
+### Community 165 - "CottonNetworking"
+Cohesion: 0.17
+Nodes (4): ImageViewSizes, CGFloat, UIColor, CottonNetworking
+
+### Community 166 - "GoogleDNSStrategy"
+Cohesion: 0.23
+Nodes (6): DNSResolvingStrategy, GoogleDNSStrategy, AnyPublisher, Context, SignalProducer, URL
+
+### Community 167 - "DisableableButton"
+Cohesion: 0.20
+Nodes (10): Binding, BrowserToolbarViewModel, ToolbarViewV2, .body, DisableableButton, .body, MainActor, String (+2 more)
+
+### Community 168 - "TabsResource"
+Cohesion: 0.27
+Nodes (3): TabsRepositoryFactory, TabsRepositoryImpl, TabsResource
+
+### Community 169 - "TabsServiceCommand"
+Cohesion: 0.17
+Nodes (11): TabsServiceCommand, addTab, closeAll, closeTab, closeTabWithId, getAllTabs, getSelectedTabId, getTabsCount (+3 more)
+
+### Community 170 - "SearchBarDelegateImpl"
+Cohesion: 0.26
+Nodes (6): SearchBarDelegateImpl, NSRange, SearchBarViewModel, String, UISearchBar, UISearchBarDelegate
+
+### Community 171 - "BrowserToolbarState"
+Cohesion: 0.18
+Nodes (6): BrowserToolbarError, navigationUpdateWithoutData, progressUpdateWithoutData, BrowserToolbarState, BrowserToolbarStateTransitioning, Double
+
+### Community 172 - "CommandExecutionData"
+Cohesion: 0.17
+Nodes (11): CommandExecutionData, finished, inProgress, notStarted, started, E, Input, Output (+3 more)
+
+### Community 173 - ".present"
+Cohesion: 0.31
+Nodes (6): ActionHandler, AlertPresenter, String, UIViewController, UIAlertAction, UIAlertController
+
+### Community 174 - "DnsRR"
+Cohesion: 0.24
+Nodes (9): DNSRecordType, addressRecord, canonicalName, .knownCase, DnsRR, String, UInt32, RawRepresentable (+1 more)
+
+### Community 175 - "MessageKey"
+Cohesion: 0.18
+Nodes (10): MessageKey, DOMVideoTags, html, log, WKScriptMessage, CodingKeys, hostname, htmlString (+2 more)
+
+### Community 176 - "Decodable"
+Cohesion: 0.24
+Nodes (8): CottonDummyDecodable, InstagramVideoArray, Decoder, InstagramVideoNode, IgEdgeMediaCaption, IgMediaCaptionEdge, IgMediaCaptionNodeText, Decodable
+
+### Community 177 - "BaseViewController"
 Cohesion: 0.22
 Nodes (8): LoadingProgressViewController, UIProgressView, BaseViewController, UIIdiomable, .isPad, UIView, UIViewController, UIViewController
 
-### Community 164 - "ThemeProvider"
+### Community 178 - "WebViewLegacyView"
+Cohesion: 0.29
+Nodes (7): Context, Site, UIViewControllerType, W, WebView, .body, WebViewLegacyView
+
+### Community 179 - ".layout"
 Cohesion: 0.20
-Nodes (5): UISearchBar, UIToolbar, UIView, ThemeProvider, .themeType
+Nodes (3): CGFloat, NSLayoutYAxisAnchor, SP
 
-### Community 165 - "ObservableObject"
-Cohesion: 0.25
-Nodes (8): ObservableObject, String, Void, TappableTextOverlayView, .body, TappableTextOverlayView_Previews, .previews, TappableTextOverlayViewModel
+### Community 180 - "AsyncApiType"
+Cohesion: 0.18
+Nodes (9): .description, .id, RawValue, String, .defaultValue, AsyncApiType, asyncAwait, combine (+1 more)
 
-### Community 166 - "ClearCancelButtonViewModel"
-Cohesion: 0.25
-Nodes (8): ClearCancelButtonViewModel, ClearCancelPairButton, .body, ClearCancelPairButton_Previews, .previews, LocalizedStringKey, Void, .body
+### Community 181 - "SearchSuggestionsResponse"
+Cohesion: 0.33
+Nodes (6): SearchSuggestionsResponse, String, MockSearchAutocompleteStrategy, AnyPublisher, SignalProducer, String
 
-### Community 167 - "GoogleDNSOverJSONResponse"
+### Community 182 - "TabsIndexSelectionSnapshot"
 Cohesion: 0.22
-Nodes (10): CodingKeys, answer, ipAddress, name, status, type, GoogleDNSOverJSONResponse, .successCodes (+2 more)
+Nodes (5): NearbySelectionStrategy, IndexSelectionContext, TabsIndexSelectionSnapshot, .collectionLastIndex, .currentlySelectedIndex
 
-### Community 168 - "CottonRestKit/Extensions/HttpKotlinTypes+Extensions.swift"
+### Community 184 - "SearchSuggestionsVMTestFixture"
+Cohesion: 0.38
+Nodes (4): FakeKnownDomainsSource, SearchSuggestionsViewModelImplTests, SearchSuggestionsVMTestFixture, String
+
+### Community 185 - "RestClientContext"
+Cohesion: 0.27
+Nodes (8): RestClientContext, Client, HttpKitRxSubscriber, HttpKitSubscriber, DDGoContext, Client, HttpKitRxSubscriber, HttpKitSubscriber
+
+### Community 186 - "JSPluginsBuilder"
+Cohesion: 0.29
+Nodes (6): JSPluginsBuilder, .jsProgram, HandlablePlugin, WKScriptMessageHandler, JSPluginsProgramImpl, Program
+
+### Community 187 - "HTMLVideoTag"
+Cohesion: 0.33
+Nodes (8): CodingKeys, poster, src, HTMLVideoTag, Decoder, String, URL, Element
+
+### Community 188 - "CodingKeys"
 Cohesion: 0.20
-Nodes (8): Array, .kotlinArray, HTTPRequestInfo, .urlRequest, KotlinArray, .empty, URLRequest, URLQueryPair
+Nodes (10): CodingKeys, displayUrl, isVideo, mediaCaption, mediaPreview, pageTitle, thumbnailSrc, typeName (+2 more)
 
-### Community 169 - "DownloadState"
-Cohesion: 0.20
-Nodes (9): DownloadState, error, finished, `in`, initial, started, CGFloat, Error (+1 more)
+### Community 189 - "Combine+Extensions.swift"
+Cohesion: 0.27
+Nodes (6): Combine.Deferred, Combine.Future, Future, Output, DeferredPublisher, Failure
 
-### Community 170 - ".insert"
-Cohesion: 0.22
-Nodes (5): CottonBase.Host, InMemoryDomainSearchProvider, InMemoryDomainSearchProvider.StateHolder, StateHolder, String
+### Community 190 - ".makeRxRequest"
+Cohesion: 0.33
+Nodes (6): B, Endpoint, Server, String, HttpClientTests, MockedGoodEndpoint
 
-### Community 171 - "Site"
+### Community 191 - "TrieNode"
+Cohesion: 0.24
+Nodes (7): WKNavigationType, .debugDescription, CustomDebugStringConvertible, T, TrieNode, .debugDescription, .isLeaf
+
+### Community 192 - "SuggestionRowView"
+Cohesion: 0.24
+Nodes (9): .dynamicView, Mode, domain, suggestion, SuggestionRowView, .body, .previews, Binding (+1 more)
+
+### Community 193 - "Site"
 Cohesion: 0.27
 Nodes (6): Site, .id, Settings, String, URL, URLDomainNameResolve
 
-### Community 172 - "SearchServiceError"
-Cohesion: 0.20
-Nodes (9): SearchServiceError, .errorDescription, failedToCreateSearchEngine, requestDataWhenNotCorrectState, strategyError, xmlParsingError, zombyInstance, NSError (+1 more)
-
-### Community 173 - "TabsPreviewState"
-Cohesion: 0.20
-Nodes (6): BaseState, TabsPreviewState, .itemsNumber, loading, tabs, TabsPreviewStateTransitioning
-
-### Community 174 - "TabStateContextProxy"
+### Community 194 - "TabStateContextProxy"
 Cohesion: 0.24
 Nodes (4): String, TabStateContext, TabStateContextProxy, .tabTitle
 
-### Community 175 - "BrowserToolbarAction"
-Cohesion: 0.20
-Nodes (9): BrowserToolbarAction, goBack, goForward, reload, replaceWebInterface, stopWebViewReusage, updateNavigation, updateProgress (+1 more)
+### Community 195 - ".evaluateJavaScriptV2"
+Cohesion: 0.29
+Nodes (8): Any, Error, MainActor, Site, String, Void, .allCases, WebViewActionAllCasesJSSubject
 
-### Community 176 - "WebViewVMFixture"
-Cohesion: 0.24
-Nodes (7): DomainName, Site, String, WebViewVMFixture, MockResolveDNSUseCase, async, URL
+### Community 196 - "BaseViewModel"
+Cohesion: 0.22
+Nodes (7): BaseViewModel, .context, .statePublisher, Action, Context, S, Published
 
-### Community 177 - ".evaluateJavaScriptV2"
+### Community 197 - ".evaluateJavaScriptV2"
 Cohesion: 0.29
 Nodes (7): MockedWebViewWithError, Any, Error, MainActor, Sendable, String, Void
 
-### Community 178 - "GDNSRequestParams"
-Cohesion: 0.28
-Nodes (7): Endpoint, GDNSRequestParams, .urlQueryItems, DomainName, String, URLQueryItem, GDNSjsonEndpoint
-
-### Community 179 - ".makeRequest"
+### Community 198 - ".makeRequest"
 Cohesion: 0.56
 Nodes (5): B, Endpoint, Server, String, T
 
-### Community 180 - "AppDelegate"
-Cohesion: 0.25
-Nodes (6): AppDelegate, Any, UIApplication, AppAssembler, UIApplicationDelegate, UIResponder
-
-### Community 181 - "UIViewController"
+### Community 199 - "UIViewController"
 Cohesion: 0.36
 Nodes (4): Self, String, T, UIViewController
 
-### Community 182 - "Box"
-Cohesion: 0.25
-Nodes (7): WKNavigationType, .debugDescription, CustomDebugStringConvertible, Box, .debugDescription, String, T
+### Community 200 - "TabletSearchBarLegacyView"
+Cohesion: 0.31
+Nodes (6): .uiKitWrapperView, Context, SearchBarViewModel, UISearchBarDelegate, UIViewControllerType, TabletSearchBarLegacyView
 
-### Community 183 - "BrowserToolbarViewContextImpl"
-Cohesion: 0.25
-Nodes (6): BrowserToolbarViewContextImpl, .siteNavigationDelegate, .vcFactory, BrowserToolbarViewModel, BrowserToolbarViewModel, BrowserToolbarViewContext
-
-### Community 184 - "HTMLVideoTag"
+### Community 201 - "HTMLVideoTag"
 Cohesion: 0.25
 Nodes (8): HTMLVideoTag, .hostname, .url, InstagramVideoNode, .hostname, .url, String, URL
 
-### Community 185 - "CottonMenuItem"
-Cohesion: 0.22
-Nodes (8): CottonMenuItem, asyncApi, defaultTabContent, observingApi, tabAddPosition, uiFramework, webAutocompletionSource, String
-
-### Community 186 - "SuggestionRowView"
-Cohesion: 0.28
-Nodes (8): .dynamicView, Mode, domain, suggestion, SuggestionRowView, .body, Binding, String
-
-### Community 187 - ".init"
+### Community 202 - ".init"
 Cohesion: 0.22
 Nodes (5): AnyCancellable, ViewModelConsumer, CGRect, NSCoder, ViewModelType
 
-### Community 188 - "AppError"
-Cohesion: 0.22
-Nodes (9): AppError, commandNotFinishedYet, erasedSearchDataServiceError, .errorDescription, searchDataServiceError, tabsServiceError, zombieSelf, Error (+1 more)
-
-### Community 189 - "SearchBarStateContext"
-Cohesion: 0.25
-Nodes (4): SearchBarStateContext, SearchBarStateContextProxy, String, URL
-
-### Community 190 - "SearchSuggestionsStateContext"
+### Community 203 - "DDGoAutocompleteStrategy"
 Cohesion: 0.31
-Nodes (5): SearchSuggestionsStateContext, SearchSuggestionsStateContextProxy, KnownDomains, QuerySuggestions, String
+Nodes (5): DDGoAutocompleteStrategy, AnyPublisher, Context, SignalProducer, String
 
-### Community 191 - "TabAction"
+### Community 204 - "DispatchTimeInterval"
+Cohesion: 0.25
+Nodes (8): DispatchTimeInterval, .dispatchValue, .inNanoseconds, TabAddSpeed, after, immediately, Duration, UInt64
+
+### Community 205 - "SearchBarContext"
 Cohesion: 0.22
-Nodes (8): String, TabAction, activate, .allCases, applyReplace, applySelection, close, load
+Nodes (5): SearchBarViewModelWithDelegates, SearchBarContext, MockSearchBarContext, .isJSEnabled, .webAutocompletionSourceValue
 
-### Community 192 - "StateHolder"
+### Community 206 - "StateHolder"
 Cohesion: 0.36
 Nodes (3): StateHolder, String, UserDefaults
 
-### Community 193 - "DataServiceLocator"
-Cohesion: 0.28
-Nodes (4): DataServiceLocator, Any, String, T
+### Community 207 - "Data"
+Cohesion: 0.29
+Nodes (5): Data, Any, MockSelectedTabUseCase, async, Void
 
-### Community 194 - "BaseViewModel"
-Cohesion: 0.28
-Nodes (6): BaseViewModel, .context, .statePublisher, Context, S, Published
-
-### Community 195 - ".transferToRxState"
+### Community 208 - ".transferToRxState"
 Cohesion: 0.32
 Nodes (6): HTTPRxAdapter, Endpoint, Response, Server, Signal, Void
 
-### Community 196 - "TabViewContextImpl"
-Cohesion: 0.29
-Nodes (6): Site, URL, TabViewContextImpl, .isDohEnabled, .observingApiTypeValue, .tabsSubject
+### Community 209 - ".makeRequestFuture"
+Cohesion: 0.25
+Nodes (7): B, Endpoint, ResponseFuture, Server, String, T, Subscriber
 
-### Community 197 - "MainScreenSubview"
+### Community 210 - "MainBrowserViewModel"
+Cohesion: 0.29
+Nodes (4): MainBrowserViewModel, C, HTMLVideoTag, InstagramVideoNode
+
+### Community 211 - "MainScreenSubview"
 Cohesion: 0.25
 Nodes (8): MainScreenSubview, dummyView, filesGrid, linkTags, loadingProgress, searchBar, toolbar, webContentContainer
 
-### Community 199 - "LinksBadgeView"
-Cohesion: 0.25
-Nodes (6): String, LinksBadgeView, .tagTypeLabel, UILabel, UICollectionViewCell, UICollectionViewLayoutAttributes
-
-### Community 200 - "PhoneSearchBarLegacyView"
-Cohesion: 0.39
-Nodes (5): PhoneSearchBarLegacyView, Context, SearchBarViewModel, UISearchBarDelegate, UIViewControllerType
-
-### Community 201 - "TabletSearchBarLegacyView"
-Cohesion: 0.36
-Nodes (5): Context, SearchBarViewModel, UISearchBarDelegate, UIViewControllerType, TabletSearchBarLegacyView
-
-### Community 202 - "SearchSuggestionsLegacyView"
+### Community 212 - "SearchSuggestionsLegacyView"
 Cohesion: 0.36
 Nodes (5): SearchSuggestionsLegacyView, Context, S, String, UIViewControllerType
 
-### Community 203 - "TabletTabsLegacyView"
-Cohesion: 0.32
-Nodes (5): AllTabsViewModel, Context, UIViewControllerType, TabletTabsLegacyView, .body
+### Community 213 - "WebToolbarState"
+Cohesion: 0.25
+Nodes (8): WebToolbarState, .downloadsAvailable, downloadsTapped, nothingToNavigate, readyForDownloads, readyForNavigation, updateBackState, updateForwardState
 
-### Community 204 - ".makeTask"
+### Community 214 - "CounterView"
+Cohesion: 0.25
+Nodes (6): CounterView, .digit, CGRect, NSCoder, UILabel, UIView
+
+### Community 215 - ".makeTask"
 Cohesion: 0.29
 Nodes (6): Error, Input, Output, Task, Void, TaskPriority
 
-### Community 205 - "StateContext"
-Cohesion: 0.32
-Nodes (5): BrowserToolbarStateContext, BrowserToolbarStateContextProxy, .siteExternalDelegate, .siteNavigationDelegate, StateContext
+### Community 216 - "SearchServiceCommand"
+Cohesion: 0.25
+Nodes (7): SearchServiceCommand, .allCases, fetchAutocompleteSuggestions, fetchSearchURL, resolveDomainNameInURL, String, URL
 
-### Community 206 - ".evaluateJavaScriptV2"
-Cohesion: 0.39
-Nodes (6): Any, Error, MainActor, String, Void, WebViewActionAllCasesJSSubject
-
-### Community 208 - "MenuButton"
-Cohesion: 0.29
-Nodes (6): MenuButton, .body, MenuButton_Previews, .previews, Binding, .body
-
-### Community 209 - "PackageDescription"
+### Community 217 - "PackageDescription"
 Cohesion: 0.29
 Nodes (4): String, String, PackageDescription, String
 
-### Community 210 - "AlamofireReachabilityAdaptee"
-Cohesion: 0.33
-Nodes (4): AlamofireReachabilityAdaptee, Listener, Server, NetworkReachabilityManager
-
-### Community 211 - "DispatchQueue"
-Cohesion: 0.29
-Nodes (4): Listener, Dispatch, DispatchQueue, convention
-
-### Community 212 - "MainScreenRoute"
+### Community 218 - "MainScreenRoute"
 Cohesion: 0.38
 Nodes (5): MainScreenRoute, menu, openTab, CGRect, UIView
 
-### Community 213 - "ContentCoordinatorsInterface"
+### Community 219 - "ContentCoordinatorsInterface"
 Cohesion: 0.33
 Nodes (5): ContentCoordinatorsInterface, BrowserContentCoordinatorsKey, EnvironmentValues, .browserContentCoordinators, EnvironmentKey
 
-### Community 214 - "TrieNode"
+### Community 220 - "MenuStatefullLabel"
 Cohesion: 0.38
-Nodes (4): T, TrieNode, .debugDescription, .isLeaf
+Nodes (5): AlignTextRight, MenuStatefullLabel, .body, String, ViewModifier
 
-### Community 216 - "URL"
+### Community 222 - "URL"
 Cohesion: 0.29
 Nodes (6): URL, .hasIPHost, .hasIPv4Host, .hasIPv6Host, .isAppleMapsURL, .isStoreURL
 
-### Community 217 - "SearchBarInViewMode"
+### Community 223 - "InMemoryDomainSearchProvider.swift"
 Cohesion: 0.29
-Nodes (5): SearchBarInViewMode, .modeHandler, .showCancelButton, C, String
+Nodes (4): CottonBase.Host, InMemoryDomainSearchProvider, InMemoryDomainSearchProvider.StateHolder, String
 
-### Community 218 - "Error"
+### Community 224 - "Error"
+Cohesion: 0.29
+Nodes (7): Error, htmlTemplateUrlNotFound, noAnyURLXml, noTemplateParameter, notImplementedHttpMethod, notValidURL, templateIsNotURL
+
+### Community 225 - "Error"
 Cohesion: 0.29
 Nodes (6): Error, .errorDescription, notImplemented, unexpectedStateForAction, String, WebViewModelState
 
-### Community 219 - "TopSitesStateTransitioningTests"
+### Community 226 - "TopSitesStateTransitioningTests"
 Cohesion: 0.33
 Nodes (3): Site, String, TopSitesStateTransitioningTests
 
-### Community 220 - "UIConstants.swift"
+### Community 227 - "UIConstants.swift"
 Cohesion: 0.33
 Nodes (4): UIColor, CGFloat, .tabWidth, UIConstants
 
-### Community 221 - ".aaGetIPaddress"
+### Community 228 - "TabsResourceImpl.swift"
 Cohesion: 0.33
-Nodes (3): String, URL, URL
+Nodes (3): Atomics, String, CoreData
 
-### Community 222 - ".evaluateWithRecovery"
+### Community 229 - ".evaluateWithRecovery"
 Cohesion: 0.33
 Nodes (4): DefaultTrustEvaluator, SecTrust, Self, String
 
-### Community 223 - ".script"
-Cohesion: 0.40
-Nodes (4): JSPluginFactory, String, WKUserScript, WKUserScriptInjectionTime
+### Community 230 - "GDNSRequestParams"
+Cohesion: 0.47
+Nodes (5): GDNSRequestParams, .urlQueryItems, DomainName, String, URLQueryItem
 
-### Community 224 - "CSSBackgroundImage"
-Cohesion: 0.33
-Nodes (4): CSSBackgroundImage, .firstURL, URL, CssParser
-
-### Community 225 - "URL"
+### Community 231 - "URL"
 Cohesion: 0.33
 Nodes (5): ResolvedURLProducer, String, URL, .rxHttpHost, HostProducer
 
-### Community 226 - ".failure"
-Cohesion: 0.53
-Nodes (4): Combine.Future, Future, Output, Failure
+### Community 232 - "RestInterface"
+Cohesion: 0.33
+Nodes (5): RestInterface, Encoder, Server, TimeInterval, Reachability
 
-### Community 227 - "Parser"
+### Community 233 - "Parser"
 Cohesion: 0.33
 Nodes (3): Parser, .current, .next
 
-### Community 229 - "DownloadButtonState"
+### Community 235 - "LinkTagsRoute"
 Cohesion: 0.33
-Nodes (6): DownloadButtonState, canDownload, downloaded, downloading, .title, String
+Nodes (6): LinkTagsRoute, closeTags, openHtmlTags, openInstagramTags, HTMLVideoTag, InstagramVideoNode
 
-### Community 230 - "ReloadWithCompletion.swift"
+### Community 237 - "ReloadWithCompletion.swift"
 Cohesion: 0.47
 Nodes (4): ReloadableCollection, Void, UICollectionView, UITableView
 
-### Community 231 - "ViewModelInterface"
+### Community 238 - "ViewModelInterface"
 Cohesion: 0.53
 Nodes (3): CompletionCallback, Action, ViewModelInterface
 
-### Community 232 - ".read"
-Cohesion: 0.33
-Nodes (3): String, Bundle, XmlSearchPluginResource
+### Community 239 - "Box"
+Cohesion: 0.40
+Nodes (4): Box, .debugDescription, String, T
 
-### Community 234 - "MockFetchAutocompleteSuggestionsUseCase"
+### Community 240 - "MockFetchAutocompleteSuggestionsUseCase"
 Cohesion: 0.47
 Nodes (4): MockFetchAutocompleteSuggestionsUseCase, async, Input, Output
 
-### Community 235 - "ProgressResponse"
+### Community 241 - "ProgressResponse"
 Cohesion: 0.40
 Nodes (5): ProgressResponse, complete, progress, T, Progress
 
-### Community 236 - "InstagramVideoArray"
+### Community 242 - "TabsCoreDataError"
 Cohesion: 0.40
-Nodes (3): InstagramVideoArray, Decoder, InstagramVideoNode
+Nodes (5): TabsCoreDataError, fetchedTooManyRecords, mgContextNil, noAppSettingsRecordWasFound, selectedTabIdNotPresent
 
-### Community 237 - ".init"
-Cohesion: 0.40
-Nodes (4): Encoder, Server, TimeInterval, Reachability
-
-### Community 238 - ".tableView"
+### Community 243 - ".tableView"
 Cohesion: 0.40
 Nodes (3): IndexPath, UITableView, UITableViewCell
 
-### Community 239 - ".findDataService"
-Cohesion: 0.40
-Nodes (4): ServiceRegistry.StateHolder, .tabsService, String, T
-
-### Community 240 - ".subscript"
+### Community 244 - ".subscript"
 Cohesion: 0.40
 Nodes (3): Collection, Index, Iterator
 
-### Community 241 - "LeadingTrimmed"
+### Community 245 - "OpenSearchParser.swift"
+Cohesion: 0.40
+Nodes (3): Description, OpenSearch, SWXMLHash
+
+### Community 246 - "LeadingTrimmed"
 Cohesion: 0.50
 Nodes (3): LeadingTrimmed, .wrappedValue, String
 
-### Community 242 - "ImmediateDispatchQueue"
+### Community 247 - "GoogleContext"
+Cohesion: 0.70
+Nodes (4): GoogleContext, Client, HttpKitRxSubscriber, HttpKitSubscriber
+
+### Community 248 - "GoogleDNSContext"
+Cohesion: 0.70
+Nodes (4): GoogleDNSContext, Client, HttpKitRxSubscriber, HttpKitSubscriber
+
+### Community 250 - "LightTheme"
 Cohesion: 0.40
-Nodes (3): ImmediateDispatchQueue, convention, Sendable
+Nodes (4): LightTheme, .searchBarButtonBackgroundColor, UIColor, .theme
 
-### Community 243 - "MockCreateSearchURLUseCase"
-Cohesion: 0.60
-Nodes (4): MockCreateSearchURLUseCase, async, Input, Output
-
-### Community 245 - "README.md"
+### Community 251 - "README.md"
 Cohesion: 0.50
 Nodes (3): Initial setup was, Intallation, JavaScript info
 
-### Community 251 - "HashType"
+### Community 262 - "HashType"
 Cohesion: 0.67
 Nodes (3): HashType, id, unrestricted
 
-### Community 252 - "NumberType"
+### Community 263 - "NumberType"
 Cohesion: 0.67
 Nodes (3): NumberType, integer, number
 
-### Community 254 - "Site.Settings"
-Cohesion: 1.00
-Nodes (3): Site.Settings, .webViewConfig, WKWebViewConfiguration
-
 ## Knowledge Gaps
-- **731 isolated node(s):** `String`, `AutoMockable`, `AutoHashable`, `.unitTesting`, `.httpKitValue` (+726 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1571 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **736 isolated node(s):** `String`, `AutoMockable`, `AutoHashable`, `.unitTesting`, `.httpKitValue` (+731 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1580 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Bool` connect `Bool` to `WebViewController`, `TabsDBClient`, `TabViewModelImpl`, `TabsDataService`, `AnyViewController`, `DnsError`, `BrowserToolbarController`, `LinkTagsCoordinator`, `Int`, `WebViewModelImpl`, `FeatureManager`, `Tab`, `SearchSuggestionsViewController`, `AnyObject`, `BrowserToolbarView`, `TabView`, `CoordinatorOwner`, `TopSitesViewModel`, `SearchBarState`, `WebViewModelState`, `Scanner`, `FilesGridCoordinator`, `SearchBarCoordinator`, `AddedTabPosition`, `WebViewAction`, `Equatable`, `FilesGridViewController`, `TabletView`, `Database`, `URLInfo`, `UIFrameworkType`, `UIImageView`, `WebContentCoordinator`, `TabsPreviewsViewController`, `ApplicationFeature`, `Coordinator`, `ImageSource`, `WebViewStateContextProxy`, `BrowserToolbarViewModelImpl`, `BrowserMenuView`, `SwiftUIMode`, `LoadingProgressCoordinator`, `TabPreviewCell`, `TabsListError`, `SearchBarAction`, `FakeTabStateContext`, `ViewModelStateMachineTests.swift`, `SearchBarLegacyView`, `JavaScriptEvaluateble`, `.showNext`, `TabletSearchBarViewController`, `.source`, `JSPluginsSource`, `ObservingApiType`, `SearchBarError`, `SwiftUIPreviewable`, `Character`, `MenuStatefullLabel`, `CounterView`, `Trie`, `SearchBarViewV2`, `JSPluginsBuilder`, `WebViewController`, `WebViewControllerProxy`, `LinkTagsViewController`, `FakeWebViewStateContext`, `SearchFieldView`, `NetworkReachabilityStatus`, `DisableableButton`, `SearchBarDelegateImpl`, `BrowserToolbarState`, `Downloadable`, `BaseViewController`, `ClearCancelButtonViewModel`, `Site`, `SearchServiceError`, `TabStateContextProxy`, `BrowserToolbarAction`, `GDNSRequestParams`, `AppDelegate`, `SearchBarStateContext`, `TabAction`, `StateHolder`, `TabViewContextImpl`, `MenuButton`, `AlamofireReachabilityAdaptee`, `DispatchQueue`, `TrieNode`, `String`, `URL`, `SearchBarInViewMode`, `.script`, `MockedJSPluginsProgram`, `.isSimilar`?**
-  _High betweenness centrality (0.183) - this node is a cross-community bridge._
-- **Why does `CoreBrowser` connect `CoreBrowser` to `CottonViewModels`, `TabsDBClient`, `RestClient`, `Foundation`, `AutoMockable`, `TabViewModelImpl`, `WebAutoCompletionSource`, `TabsDataService`, `Int`, `ViewModelKit`, `ReplaceSelectedTabUseCase`, `TabsViewController`, `BaseListViewModel`, `FeatureManager`, `MockReplaceSelectedTabUseCase`, `Tab`, `BrowserToolbarView`, `TopSitesViewModel`, `TabsPreviewsError`, `TabsPreviewState`, `AppCoordinator`, `AddedTabPosition`, `TabletView`, `Testing`, `UIFrameworkType`, `TabsPreviewsViewController`, `ApplicationFeature`, `SearchBarBaseViewController`, `TopSitesViewV2`, `FeatureManager.StateHolder`, `MainScreenRoute`, `SwiftUIMode`, `TabPreviewCell`, `SearchBarAction`, `.handleTabSelection`, `.showNext`, `.start`, `MockFetchAutocompleteSuggestionsUseCase`, `ObservingApiType`, `ViewModelState`, `GenericEnumFeature`, `Database.swift`, `State`, `ViewModelAction`, `AddTabUseCase`?**
-  _High betweenness centrality (0.132) - this node is a cross-community bridge._
-- **Why does `Int` connect `Int` to `AlamofireHTTPRxAdaptee`, `MockedHTTPAdapteeWithFail`, `AutoMockable`, `LinkTagsViewController`, `WebAutoCompletionSource`, `TabsDataService`, `AnyViewController`, `TabViewModelImpl`, `AlamofireHTTPRxVoidAdaptee`, `HTMLVideoTag`, `Token`, `.collectionView`, `DisableableButton`, `TabsViewController`, `Bool`, `Tab`, `SearchSuggestionsViewController`, `FileDownloadViewModel`, `BrowserToolbarView`, `GoogleDNSOverJSONResponse`, `TabsPreviewsError`, `TabsPreviewState`, `HttpError`, `AddedTabPosition`, `FilesGridViewController`, `TabletView`, `UIFrameworkType`, `StateHolder`, `TabsPreviewsViewController`, `SearchBarBaseViewController`, `TopSitesViewController`, `LinksBadgeView`, `SearchSuggestionsViewState`, `TabPreviewCell`, `UIConstants.swift`, `ViewModelStateMachineTests.swift`, `DDGoSuggestionsResponse`, `GSearchSuggestionsResponse`, `.handleTabSelection`, `.showNext`, `DownloadButtonCellView`, `.source`, `AlamofireHTTPAdaptee`, `.tableView`, `ObservingApiType`, `CounterView`, `Trie`, `ViewModelAction`?**
-  _High betweenness centrality (0.125) - this node is a cross-community bridge._
+- **Why does `CoreBrowser` connect `CoreBrowser` to `CottonViewModels`, `Foundation`, `TabsPreviewStateTransitioning`, `GenericEnumFeature`, `TabViewModelImpl`, `TabsDataService`, `AutoMockable`, `Tab`, `UIFrameworkType`, `TabsDataServiceProtocol`, `Combine`, `TabsDBClient.swift`, `TabsViewController`, `TabletView`, `Equatable`, `FeatureManager`, `SearchDataServiceProtocol`, `BrowserToolbarViewModelImpl`, `BaseListViewModel`, `TabsPreviewsViewController`, `Sendable`, `ObservingApiType`, `BrowserToolbarAction`, `CottonNetworking`, `Testing`, `TabsResource`, `SearchBarAction`, `SearchBarBaseViewController`, `AppCoordinator`, `TabsPreviewsError`, `BrowserToolbarView`, `ApplicationFeature`, `AddTabUseCase`, `JSPluginsSource`, `Int`, `State`, `.registerTabsUseCases`, `TopSitesViewModelImpl`, `SearchBarContext`, `TopSitesViewV2`, `ViewModelFactory`, `SearchServiceCommand`, `MainScreenRoute`, `ReplaceSelectedTabUseCase`, `GenericServiceKit`, `SearchDataService`, `TabsResourceImpl.swift`, `TabsObserver`, `.handleTabSelection`, `TabsResourceImpl`, `MockFetchAutocompleteSuggestionsUseCase`, `.showNext`, `.start`, `TabsDBClient`, `TabPreviewCell`, `SearchServiceData`, `TabResourceError`?**
+  _High betweenness centrality (0.175) - this node is a cross-community bridge._
+- **Why does `Bool` connect `Bool` to `Coordinator`, `TabViewModelImpl`, `TabsDataService`, `Tab`, `UIFrameworkType`, `WebViewModelImpl`, `TabsDataServiceProtocol`, `TabletView`, `SearchBarViewV2`, `FeatureManager`, `BrowserToolbarViewModelImpl`, `View`, `FilesGridCoordinator`, `SearchBarCoordinator`, `SearchBarState`, `TabsPreviewsViewController`, `Sendable`, `ObservingApiType`, `BrowserToolbarAction`, `ViewControllerFactory`, `TabView`, `WebViewModelState`, `Scanner`, `SearchBarAction`, `LinkTagsCoordinator`, `JavaScriptPlugin`, `BrowserToolbarView`, `SiteCollectionViewCell`, `WebViewController`, `WebContentCoordinator`, `Database`, `SearchSuggestionsViewController`, `FilesGridViewController`, `WebViewAction`, `ApplicationFeature`, `JSPluginsSource`, `Int`, `AlamofireReachabilityAdaptee`, `BrowserMenuView`, `ViewModelFactory`, `URLInfo`, `Downloadable`, `UIImageView`, `LoadingProgressCoordinator`, `Trie`, `TabsObserver`, `TabsListError`, `WebViewStateContextProxy`, `FakeTabStateContext`, `ViewModelStateMachineTests.swift`, `SearchBarLegacyView`, `TabletSearchBarViewController`, `JavaScriptEvaluateble`, `AppDelegate`, `.showNext`, `TabsDBClient`, `TabPreviewCell`, `ImageSource`, `.source`, `SwiftUIPreviewable`, `BasePluginContentDelegate`, `FakeWebViewStateContext`, `Character`, `WebViewControllerProxy`, `WebViewController`, `WKWebView`, `LinkTagsViewController`, `BrowserToolbarController`, `SearchServiceError`, `SearchFieldView`, `URL`, `DisableableButton`, `TabsResource`, `TabsServiceCommand`, `SearchBarDelegateImpl`, `BrowserToolbarState`, `BaseViewController`, `WebViewLegacyView`, `TabsIndexSelectionSnapshot`, `JSPluginsBuilder`, `TrieNode`, `Site`, `TabStateContextProxy`, `SearchBarContext`, `StateHolder`, `WebToolbarState`, `String`, `URL`, `GDNSRequestParams`, `.isSimilar`, `.replaceTab`?**
+  _High betweenness centrality (0.169) - this node is a cross-community bridge._
+- **Why does `Int` connect `Int` to `TabViewModelImpl`, `TabsDataService`, `AutoMockable`, `Tab`, `UIFrameworkType`, `TabsDataServiceProtocol`, `TabsViewController`, `Token`, `TabletView`, `Equatable`, `AlamofireHTTPRxAdaptee`, `MockedHTTPAdapteeWithFail`, `LinkTagsViewController`, `TabsPreviewsViewController`, `ObservingApiType`, `BrowserToolbarAction`, `GoogleDNSOverJSONResponse`, `AlamofireHTTPRxVoidAdaptee`, `ViewControllerFactory`, `Bool`, `DisableableButton`, `SearchBarBaseViewController`, `HttpError`, `SearchSuggestionsViewState`, `TabsPreviewsError`, `BrowserToolbarView`, `AsyncApiType`, `TabsIndexSelectionSnapshot`, `SiteCollectionViewCell`, `HTMLVideoTag`, `DownloadButtonCellView`, `SearchSuggestionsViewController`, `FilesGridViewController`, `StateHolder`, `WebAutoCompletionSource`, `CounterView`, `TopSitesViewController`, `FileDownloadViewModel`, `Trie`, `UIConstants.swift`, `TabsObserver`, `ViewModelStateMachineTests.swift`, `.handleTabSelection`, `DDGoSuggestionsResponse`, `GSearchSuggestionsResponse`, `.showNext`, `.tableView`, `TabPreviewCell`, `.source`, `AlamofireHTTPAdaptee`?**
+  _High betweenness centrality (0.116) - this node is a cross-community bridge._
 - **What connects `String`, `AutoMockable`, `AutoHashable` to the rest of the system?**
-  _731 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _736 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `CottonViewModels` be split into smaller, more focused modules?**
-  _Cohesion score 0.05493827160493827 - nodes in this community are weakly interconnected._
-- **Should `WebViewController` be split into smaller, more focused modules?**
-  _Cohesion score 0.05029838022165388 - nodes in this community are weakly interconnected._
-- **Should `TabsDBClient` be split into smaller, more focused modules?**
-  _Cohesion score 0.050921861281826165 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.048854604955586724 - nodes in this community are weakly interconnected._
+- **Should `Foundation` be split into smaller, more focused modules?**
+  _Cohesion score 0.05687645687645688 - nodes in this community are weakly interconnected._
+- **Should `CoreBrowser` be split into smaller, more focused modules?**
+  _Cohesion score 0.06490384615384616 - nodes in this community are weakly interconnected._
