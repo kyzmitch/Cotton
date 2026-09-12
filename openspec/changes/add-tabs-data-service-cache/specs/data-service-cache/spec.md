@@ -1,25 +1,28 @@
 ## ADDED Requirements
 
-### Requirement: Generic cache entry states
-The system SHALL provide a generic `CacheEntry<Value>` enum (with `Value: Sendable`) that models the state of a single in-memory async load with exactly two states:
-- `.inProgress(Task<Value, Error>)` — a load is currently executing; the task is the shared handle to its result.
-- `.ready(Value)` — a value has been loaded and is cached.
+### Requirement: CommandExecutionData is the cache entry
+The system SHALL use existing `CommandExecutionData<Input, Output, E>` as the in-memory cache entry for a single async load. It MUST NOT introduce a separate `CacheEntry`, `TabsCacheEntry`, or equivalent type whose only purpose is to model in-progress vs ready states.
 
-`CacheEntry` SHALL be `Sendable`.
+Cache semantics map onto existing cases:
+- `.inProgress(Task<Output, E>)` — a load is currently executing; the task is the shared handle to its result.
+- `.finished(output: .success(value))` — a value has been loaded and is cached (the ready state).
+- `.finished(output: .failure(error))` — the load failed; the failure is recorded so callers observe the error and a later request can retry.
+
+`CommandExecutionData` SHALL remain `Sendable`.
 
 #### Scenario: In-progress state holds shared task
 - **WHEN** a load has been started and not yet finished
-- **THEN** the cache entry is `.inProgress` holding the `Task<Value, Error>` that any caller can await to obtain the same result
+- **THEN** the cache entry is `.inProgress` holding the `Task<Output, E>` that any caller can await to obtain the same result
 
-#### Scenario: Ready state holds cached value
+#### Scenario: Finished success is the ready state
 - **WHEN** a load has completed successfully
-- **THEN** the cache entry is `.ready` and exposes the loaded `Value` without re-executing any load
+- **THEN** the cache entry is `.finished(output: .success(value))` and exposes the loaded `Output` without re-executing any load
 
 ### Requirement: First caller initiates load
-When no cache entry exists, the system SHALL start the underlying async load by creating a `Task<Value, Error>`, store it as `.inProgress`, and await its result.
+When the cache entry is `.notStarted`, the system SHALL start the underlying async load by creating a `Task<Output, E>`, store it as `.inProgress`, and await its result.
 
 #### Scenario: Cold cache starts load
-- **WHEN** the cache entry is `nil` and a load is requested
+- **WHEN** the cache entry is `.notStarted` and a load is requested
 - **THEN** exactly one load task is created and stored as `.inProgress` before awaiting
 
 ### Requirement: Concurrent callers coalesce onto in-flight load
@@ -29,30 +32,30 @@ When a load is `.inProgress`, any subsequent caller MUST await the existing task
 - **WHEN** multiple callers request the load while the entry is `.inProgress`
 - **THEN** the underlying load executes exactly once and all callers receive the same result
 
-### Requirement: Successful load is cached
-When the awaited task completes successfully, the system SHALL store `.ready(value)` so subsequent callers receive the value immediately without re-loading.
+### Requirement: Successful load is cached as finished
+When the awaited task completes successfully, the system SHALL store `.finished(output: .success(value))` so subsequent callers receive the value immediately without re-loading.
 
 #### Scenario: Cached read after success
-- **WHEN** the entry is `.ready` and a load is requested
+- **WHEN** the entry is `.finished(output: .success(value))` and a load is requested
 - **THEN** the cached value is returned without invoking the load closure/task again
 
 #### Scenario: Entry promoted after await
 - **WHEN** a caller awaiting an `.inProgress` task receives a successful result
-- **THEN** the entry transitions to `.ready(value)`
+- **THEN** the entry transitions to `.finished(output: .success(value))`
 
-### Requirement: Failed load clears entry for retry
-When the awaited task fails, the system SHALL clear the cache entry (set it back to `nil`) so the next caller starts a fresh load instead of awaiting a failed task forever.
+### Requirement: Failed load is finished failure and retryable
+When the awaited task fails, the system SHALL store `.finished(output: .failure(error))` (not leave a completed failed task in `.inProgress`). A subsequent load request SHALL treat `.finished(.failure)` like a cold cache and start a fresh `.inProgress` load.
 
 #### Scenario: Retry after failure
-- **WHEN** a load task throws and a subsequent load is requested
-- **THEN** the cache entry is `nil` (not `.inProgress` with a failed task) and a new load is started
+- **WHEN** a load task fails and a subsequent load is requested
+- **THEN** the entry is not `.inProgress` with a completed failed task, and a new load is started
 
 #### Scenario: Concurrent callers observe failure
 - **WHEN** multiple callers await an `.inProgress` task that ultimately fails
-- **THEN** all callers receive the error and the entry is cleared for the next attempt
+- **THEN** all callers receive the error and the entry is `.finished(.failure)` until the next attempt
 
-### Requirement: TabsDataService uses cache for initial load
-`TabsDataService` SHALL route its initial tabs load through the in-memory cache entry so that the first consumer initiates the repository load and any subsequent concurrent callers await the same result. The service's public command API (`sendCommand`), `ServiceData` publishing, and observer/subject notifications SHALL remain unchanged.
+### Requirement: TabsDataService uses CommandExecutionData for initial load
+`TabsDataService` SHALL route its initial tabs load through `CommandExecutionData` (already used as `AllTabsData` / `SelectedTabData` on `TabsServiceData`) so that the first consumer initiates the repository load and any subsequent concurrent callers await the same `.inProgress` task. The service's public command API (`sendCommand`) and observer/subject notifications SHALL remain unchanged.
 
 #### Scenario: Initial load is single-flight in TabsDataService
 - **WHEN** `TabsDataService` performs its initial load while another caller requests tabs concurrently
@@ -60,4 +63,4 @@ When the awaited task fails, the system SHALL clear the cache entry (set it back
 
 #### Scenario: Service state and observers unchanged
 - **WHEN** the initial load completes through the cache
-- **THEN** `serviceData.allTabs`, `serviceData.tabsCount`, and `serviceData.selectedTabId` are populated and observer/subject notifications fire exactly as before the change
+- **THEN** `serviceData.allTabs`, `serviceData.tabsCount`, and `serviceData.selectedTabId` are populated as `.finished(.success(...))` and observer/subject notifications fire exactly as before the change
