@@ -13,15 +13,14 @@ import Foundation
 import BaseUseCaseKit
 import AutoMockable
 
+/// Input for fetching search suggestions
+public typealias SuggestionsInput = (source: WebAutoCompletionSource, query: String)
+
 // MARK: - Interface
 
 /// Fetch search suggestions and return async task
-public protocol FetchAutocompleteSuggestionsUseCase: CoreUseCase, AutoMockable, Sendable {
-
-    /// Input for fetching search suggestions
-    typealias Input = (source: WebAutoCompletionSource, query: String)
-    /// Output is an array of suggestion strings
-    typealias Output = [String]
+public protocol FetchAutocompleteSuggestionsUseCase: CoreUseCase, AutoMockable, Sendable
+where Input == SuggestionsInput, Output == [String] {
 
     /// Executes the use case to fetch autocomplete suggestions
     ///

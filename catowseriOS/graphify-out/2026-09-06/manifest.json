@@ -1,0 +1,3128 @@
+{
+  "Base/Package.swift": {
+    "mtime": 1786121907.3042748,
+    "seen": 1788718812.4418461,
+    "ast_hash": "da74d1cfb2567abeab25c86c81c7df02",
+    "semantic_hash": "da74d1cfb2567abeab25c86c81c7df02"
+  },
+  "Base/Sources/AutoMockable/AutoMockable.swift": {
+    "mtime": 1786121907.3048935,
+    "seen": 1788718812.4418502,
+    "ast_hash": "08438c9a9fce9df6abae8f35b8937774",
+    "semantic_hash": "08438c9a9fce9df6abae8f35b8937774"
+  },
+  "Base/Sources/Base/Base.swift": {
+    "mtime": 1786121907.3056433,
+    "seen": 1788718812.4418519,
+    "ast_hash": "3210c97374157059e320d58e02ca5ca5",
+    "semantic_hash": "3210c97374157059e320d58e02ca5ca5"
+  },
+  "Base/Sources/CottonNetworking/AlamofireReachabilityAdaptee.swift": {
+    "mtime": 1786121907.3059833,
+    "seen": 1788718812.441853,
+    "ast_hash": "7a1435dd5bc862784594f3afa0917d82",
+    "semantic_hash": "7a1435dd5bc862784594f3afa0917d82"
+  },
+  "Base/Sources/CottonNetworking/DownloadError.swift": {
+    "mtime": 1786121907.3061557,
+    "seen": 1788718812.441854,
+    "ast_hash": "eba8f44b674390f29d80faa91fde0aeb",
+    "semantic_hash": "eba8f44b674390f29d80faa91fde0aeb"
+  },
+  "Base/Sources/CottonNetworking/Downloadable.swift": {
+    "mtime": 1786121907.3063915,
+    "seen": 1788718812.441855,
+    "ast_hash": "6937ea2e3bb5dac51b52e49117f3a250",
+    "semantic_hash": "6937ea2e3bb5dac51b52e49117f3a250"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/DNSoverHTTPS/GoogleDNSEndpointError.swift": {
+    "mtime": 1786121907.3070009,
+    "seen": 1788718812.441855,
+    "ast_hash": "bb149ca9443b1be501dc48df05a5ad82",
+    "semantic_hash": "bb149ca9443b1be501dc48df05a5ad82"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/DNSoverHTTPS/GoogleDNSOverJSONResponse.swift": {
+    "mtime": 1786121907.3074846,
+    "seen": 1788718812.441856,
+    "ast_hash": "45a20199fb9a4eafa62eeee2b25d7d32",
+    "semantic_hash": "45a20199fb9a4eafa62eeee2b25d7d32"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/DNSoverHTTPS/GoogleJSONDNSoHTTPsEndpoint+AsyncAwait.swift": {
+    "mtime": 1786121907.3078642,
+    "seen": 1788718812.441857,
+    "ast_hash": "c6ca8148444b04576449d6b90fb4f815",
+    "semantic_hash": "c6ca8148444b04576449d6b90fb4f815"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/DNSoverHTTPS/GoogleJSONDNSoHTTPsEndpoint.swift": {
+    "mtime": 1786121907.3083181,
+    "seen": 1788718812.441858,
+    "ast_hash": "fff2b03ef4f258b7b44e4ebb897a09b8",
+    "semantic_hash": "fff2b03ef4f258b7b44e4ebb897a09b8"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/DuckDuckGoAutocomplete/DuckDuckGoSearchEndpoint+AsyncAwait.swift": {
+    "mtime": 1786121907.3087444,
+    "seen": 1788718812.441858,
+    "ast_hash": "354ceff0ff630ec59f56f827ad630e57",
+    "semantic_hash": "354ceff0ff630ec59f56f827ad630e57"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/DuckDuckGoAutocomplete/DuckDuckGoSearchEndpoint.swift": {
+    "mtime": 1786121907.3091004,
+    "seen": 1788718812.441859,
+    "ast_hash": "a08c871bc18c0342985d6c3becec9c8f",
+    "semantic_hash": "a08c871bc18c0342985d6c3becec9c8f"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/Google/GoogleSearchEndpoint+AsyncAwait.swift": {
+    "mtime": 1786121907.3095772,
+    "seen": 1788718812.4418602,
+    "ast_hash": "c69eb72a983139d950987d0793013e55",
+    "semantic_hash": "c69eb72a983139d950987d0793013e55"
+  },
+  "Base/Sources/CottonNetworking/Endpoints/Google/GoogleSearchEndpoint.swift": {
+    "mtime": 1786121907.3097913,
+    "seen": 1788718812.4418612,
+    "ast_hash": "73315ee2146d95a1a2690b60f42d42a4",
+    "semantic_hash": "73315ee2146d95a1a2690b60f42d42a4"
+  },
+  "Base/Sources/CottonNetworking/Extensions/AuthChallenge.swift": {
+    "mtime": 1786121907.309885,
+    "seen": 1788718812.4418612,
+    "ast_hash": "2374baae1e4e678e5626422b403476d9",
+    "semantic_hash": "2374baae1e4e678e5626422b403476d9"
+  },
+  "Base/Sources/CottonNetworking/Extensions/HttpKotlinTypes+Extensions.swift": {
+    "mtime": 1786121907.3099425,
+    "seen": 1788718812.4418619,
+    "ast_hash": "3d351c769b040202599fbf731c0cf16d",
+    "semantic_hash": "3d351c769b040202599fbf731c0cf16d"
+  },
+  "Base/Sources/CottonNetworking/HttpClient+Alamofire.swift": {
+    "mtime": 1786121907.3101797,
+    "seen": 1788718812.4418628,
+    "ast_hash": "2805a38fa407c667cd3fc1b5e5c683c4",
+    "semantic_hash": "2805a38fa407c667cd3fc1b5e5c683c4"
+  },
+  "Base/Sources/CottonNetworking/Models/DnsRR.swift": {
+    "mtime": 1786121907.310277,
+    "seen": 1788718812.441864,
+    "ast_hash": "5782bda6384c2b05928df6812fd39cae",
+    "semantic_hash": "5782bda6384c2b05928df6812fd39cae"
+  },
+  "Base/Sources/CottonNetworking/Models/GDNSRequestParams.swift": {
+    "mtime": 1786121907.3103516,
+    "seen": 1788718812.441864,
+    "ast_hash": "5bea2013e2b18adabf8b720164eb16eb",
+    "semantic_hash": "5bea2013e2b18adabf8b720164eb16eb"
+  },
+  "Base/Sources/CottonNetworking/RestClientContext.swift": {
+    "mtime": 1786121907.3105576,
+    "seen": 1788718812.441865,
+    "ast_hash": "d87dd02f031b8d4bc05afa6d3b935fe8",
+    "semantic_hash": "d87dd02f031b8d4bc05afa6d3b935fe8"
+  },
+  "Base/Sources/CottonNetworking/Servers/DuckDuckGoServer.swift": {
+    "mtime": 1786121907.3114722,
+    "seen": 1788718812.441866,
+    "ast_hash": "fbd60d18dcc0749b231cdd57d04d97a3",
+    "semantic_hash": "fbd60d18dcc0749b231cdd57d04d97a3"
+  },
+  "Base/Sources/CottonNetworking/Servers/GoogleDnsServer.swift": {
+    "mtime": 1786121907.311761,
+    "seen": 1788718812.441866,
+    "ast_hash": "2c1eb24cc6ee27a37c05a1e6a8edd087",
+    "semantic_hash": "2c1eb24cc6ee27a37c05a1e6a8edd087"
+  },
+  "Base/Sources/CottonNetworking/Servers/GoogleServer.swift": {
+    "mtime": 1786121907.3119764,
+    "seen": 1788718812.441867,
+    "ast_hash": "bf28e43f7229f0f8c1d57f3a8be1b98d",
+    "semantic_hash": "bf28e43f7229f0f8c1d57f3a8be1b98d"
+  },
+  "Base/Sources/CottonNetworking/TransportAdapters/AlamofireHTTPAdaptee.swift": {
+    "mtime": 1786121907.3121805,
+    "seen": 1788718812.441868,
+    "ast_hash": "26692e50903dc49239982f2d67adfbc4",
+    "semantic_hash": "26692e50903dc49239982f2d67adfbc4"
+  },
+  "Base/Sources/CottonNetworking/TransportAdapters/AlamofireHTTPRxAdaptee.swift": {
+    "mtime": 1786121907.3124936,
+    "seen": 1788718812.441868,
+    "ast_hash": "0e80c50d30c6b3dd2587da4642cadd52",
+    "semantic_hash": "0e80c50d30c6b3dd2587da4642cadd52"
+  },
+  "Base/Sources/CottonNetworking/TransportAdapters/AlamofireHTTPRxVoidAdaptee.swift": {
+    "mtime": 1786121907.3127697,
+    "seen": 1788718812.441869,
+    "ast_hash": "dc9ce1d65eb19dd039888318e662088e",
+    "semantic_hash": "dc9ce1d65eb19dd039888318e662088e"
+  },
+  "Base/Sources/CottonPlugins/CottonPluginError.swift": {
+    "mtime": 1786121907.313028,
+    "seen": 1788718812.441869,
+    "ast_hash": "e02aea922db3586f31be2618664973ed",
+    "semantic_hash": "e02aea922db3586f31be2618664973ed"
+  },
+  "Base/Sources/CottonPlugins/Data+CatowserExtension.swift": {
+    "mtime": 1786121907.313081,
+    "seen": 1788718812.44187,
+    "ast_hash": "c0ccb255abc8c4c9f0c17a48526dee53",
+    "semantic_hash": "c0ccb255abc8c4c9f0c17a48526dee53"
+  },
+  "Base/Sources/CottonPlugins/Handlers/BaseJSHandler.swift": {
+    "mtime": 1786121907.3135302,
+    "seen": 1788718812.4418712,
+    "ast_hash": "36bf9ab1dbf76c99c5346555e92298f7",
+    "semantic_hash": "36bf9ab1dbf76c99c5346555e92298f7"
+  },
+  "Base/Sources/CottonPlugins/Handlers/InstagramHandler.swift": {
+    "mtime": 1786121907.3137915,
+    "seen": 1788718812.441872,
+    "ast_hash": "bd9721f1021d09734ee7c6c8584a8a68",
+    "semantic_hash": "bd9721f1021d09734ee7c6c8584a8a68"
+  },
+  "Base/Sources/CottonPlugins/JSPluginFactory.swift": {
+    "mtime": 1786121907.3139787,
+    "seen": 1788718812.441872,
+    "ast_hash": "3d29c7aea50edb0898edce7d1079491f",
+    "semantic_hash": "3d29c7aea50edb0898edce7d1079491f"
+  },
+  "Base/Sources/CottonPlugins/JSPluginsBuilder.swift": {
+    "mtime": 1786121907.3143468,
+    "seen": 1788718812.4418728,
+    "ast_hash": "f63701df95cc56b2ccfec29c00239731",
+    "semantic_hash": "f63701df95cc56b2ccfec29c00239731"
+  },
+  "Base/Sources/CottonPlugins/JSPluginsProgram.swift": {
+    "mtime": 1786121907.3146338,
+    "seen": 1788718812.4418728,
+    "ast_hash": "47742eb818baf82f4853477420689a39",
+    "semantic_hash": "47742eb818baf82f4853477420689a39"
+  },
+  "Base/Sources/CottonPlugins/JSPluginsProgramImpl.swift": {
+    "mtime": 1786121907.31489,
+    "seen": 1788718812.441874,
+    "ast_hash": "2df007b214c891f507285de8ed1d8b2e",
+    "semantic_hash": "2df007b214c891f507285de8ed1d8b2e"
+  },
+  "Base/Sources/CottonPlugins/JSPluginsSource.swift": {
+    "mtime": 1786121907.3152795,
+    "seen": 1788718812.441875,
+    "ast_hash": "e58bbd8c963f87e1f2d54ba7d7227d5b",
+    "semantic_hash": "e58bbd8c963f87e1f2d54ba7d7227d5b"
+  },
+  "Base/Sources/CottonPlugins/JavaScriptEvaluateble.swift": {
+    "mtime": 1786121907.3154826,
+    "seen": 1788718812.441875,
+    "ast_hash": "bffe7db0d5a31a1617ab83832515a0a0",
+    "semantic_hash": "bffe7db0d5a31a1617ab83832515a0a0"
+  },
+  "Base/Sources/CottonPlugins/Models/CSSModels/CSSBackgroundImage.swift": {
+    "mtime": 1786121907.3156195,
+    "seen": 1788718812.441876,
+    "ast_hash": "122c010abd7d75d9bd43d584cefcfd09",
+    "semantic_hash": "122c010abd7d75d9bd43d584cefcfd09"
+  },
+  "Base/Sources/CottonPlugins/Models/DummyDecodable.swift": {
+    "mtime": 1786121907.3156738,
+    "seen": 1788718812.441877,
+    "ast_hash": "ad6c3a28f3bb35289ea2da5ca3f3b97d",
+    "semantic_hash": "ad6c3a28f3bb35289ea2da5ca3f3b97d"
+  },
+  "Base/Sources/CottonPlugins/Models/HTMLContentMessage.swift": {
+    "mtime": 1786121907.3157268,
+    "seen": 1788718812.441877,
+    "ast_hash": "cfdd51920739a5bb2acdeb40c98699d7",
+    "semantic_hash": "cfdd51920739a5bb2acdeb40c98699d7"
+  },
+  "Base/Sources/CottonPlugins/Models/HTMLVideoTag.swift": {
+    "mtime": 1786121907.315782,
+    "seen": 1788718812.441878,
+    "ast_hash": "ec3739aef021175b3433cdff25545ac1",
+    "semantic_hash": "ec3739aef021175b3433cdff25545ac1"
+  },
+  "Base/Sources/CottonPlugins/Models/HTMLVideoTagsContainer.swift": {
+    "mtime": 1786121907.3158457,
+    "seen": 1788718812.441878,
+    "ast_hash": "8bfb0b4d71a4376b19888bc136a35f03",
+    "semantic_hash": "8bfb0b4d71a4376b19888bc136a35f03"
+  },
+  "Base/Sources/CottonPlugins/Models/InstagramVideoArray.swift": {
+    "mtime": 1786121907.3159068,
+    "seen": 1788718812.441879,
+    "ast_hash": "8a00234a187f0e0d65cbf75173e9e109",
+    "semantic_hash": "8a00234a187f0e0d65cbf75173e9e109"
+  },
+  "Base/Sources/CottonPlugins/Models/InstagramVideoNode.swift": {
+    "mtime": 1786121907.315975,
+    "seen": 1788718812.44188,
+    "ast_hash": "8269f0a9d12489fc89e3a7046df17705",
+    "semantic_hash": "8269f0a9d12489fc89e3a7046df17705"
+  },
+  "Base/Sources/CottonPlugins/Models/VideoFileNameble.swift": {
+    "mtime": 1786121907.3160255,
+    "seen": 1788718812.44188,
+    "ast_hash": "58379169cedeb1ecb7ab39ed25864443",
+    "semantic_hash": "58379169cedeb1ecb7ab39ed25864443"
+  },
+  "Base/Sources/CottonPlugins/Plugins/BasePlugin.swift": {
+    "mtime": 1786121907.3164763,
+    "seen": 1788718812.4418812,
+    "ast_hash": "66beb054d263b51c35f146807db0efa0",
+    "semantic_hash": "66beb054d263b51c35f146807db0efa0"
+  },
+  "Base/Sources/CottonPlugins/Plugins/InstagramContentPlugin.swift": {
+    "mtime": 1786121907.316657,
+    "seen": 1788718812.4418821,
+    "ast_hash": "03bc099eb467a26faebce569c7f38729",
+    "semantic_hash": "03bc099eb467a26faebce569c7f38729"
+  },
+  "Base/Sources/CottonPlugins/Plugins/JavaScriptPlugin.swift": {
+    "mtime": 1786121907.317083,
+    "seen": 1788718812.4418828,
+    "ast_hash": "e6f40aba23389d781ccc8d8475384f81",
+    "semantic_hash": "e6f40aba23389d781ccc8d8475384f81"
+  },
+  "Base/Sources/CottonPlugins/PluginsVisitor/JavaScriptPluginVisitor.swift": {
+    "mtime": 1786121907.317347,
+    "seen": 1788718812.4418828,
+    "ast_hash": "e35ba63b4b3b6e7eae0ffdafc0f3a075",
+    "semantic_hash": "e35ba63b4b3b6e7eae0ffdafc0f3a075"
+  },
+  "Base/Sources/CottonPlugins/PluginsVisitor/WKUserContentController+Visitor.swift": {
+    "mtime": 1786121907.3177311,
+    "seen": 1788718812.4418838,
+    "ast_hash": "4af92100fcaa872d059acb8ac481ece9",
+    "semantic_hash": "4af92100fcaa872d059acb8ac481ece9"
+  },
+  "Base/Sources/CottonPlugins/Scripts/.eslintrc.js": {
+    "mtime": 1786121907.3178303,
+    "seen": 1788718812.441885,
+    "ast_hash": "2a84a35e2b9069d538ac33bae7a28ce5",
+    "semantic_hash": "2a84a35e2b9069d538ac33bae7a28ce5"
+  },
+  "Base/Sources/CottonPlugins/Scripts/.vscode/launch.json": {
+    "mtime": 1786121907.3179321,
+    "seen": 1788718812.441885,
+    "ast_hash": "2042455e8f9a4b869f98f243358f6d4a",
+    "semantic_hash": "2042455e8f9a4b869f98f243358f6d4a"
+  },
+  "Base/Sources/CottonPlugins/Scripts/.vscode/settings.json": {
+    "mtime": 1786121907.317988,
+    "seen": 1788718812.441886,
+    "ast_hash": "896cfe33e4a26f3fbb41ca6997348077",
+    "semantic_hash": "896cfe33e4a26f3fbb41ca6997348077"
+  },
+  "Base/Sources/CottonPlugins/Scripts/js/__cotton__.js": {
+    "mtime": 1786121907.3184235,
+    "seen": 1788718812.441887,
+    "ast_hash": "16626e3eb10e3565dd0e956b90a4c7f8",
+    "semantic_hash": "16626e3eb10e3565dd0e956b90a4c7f8"
+  },
+  "Base/Sources/CottonPlugins/Scripts/js/ig.js": {
+    "mtime": 1786121907.3185353,
+    "seen": 1788718812.441888,
+    "ast_hash": "fa08ead9b32ac9b9bba9b5706b3aba86",
+    "semantic_hash": "fa08ead9b32ac9b9bba9b5706b3aba86"
+  },
+  "Base/Sources/CottonPlugins/Scripts/json/ig_additionalData.json": {
+    "mtime": 1786121907.3190408,
+    "seen": 1788718812.441889,
+    "ast_hash": "4152a1b9005266c30dfc8a5a5210cd12",
+    "semantic_hash": "4152a1b9005266c30dfc8a5a5210cd12"
+  },
+  "Base/Sources/CottonPlugins/Scripts/json/ig_query_response.json": {
+    "mtime": 1786121907.3191323,
+    "seen": 1788718812.441889,
+    "ast_hash": "6ccab8e65d4c2277a5a365497889ed94",
+    "semantic_hash": "6ccab8e65d4c2277a5a365497889ed94"
+  },
+  "Base/Sources/CottonPlugins/Scripts/json/ig_query_response_single_video.json": {
+    "mtime": 1786121907.3192196,
+    "seen": 1788718812.44189,
+    "ast_hash": "86cc09e85f4db0d4ebea9497be544a7a",
+    "semantic_hash": "86cc09e85f4db0d4ebea9497be544a7a"
+  },
+  "Base/Sources/CottonPlugins/Scripts/json/ig_sharedData.json": {
+    "mtime": 1786121907.3193,
+    "seen": 1788718812.441891,
+    "ast_hash": "ee4b49e7abcf278c9f051d036b778031",
+    "semantic_hash": "ee4b49e7abcf278c9f051d036b778031"
+  },
+  "Base/Sources/CottonPlugins/Scripts/json/ig_slides.json": {
+    "mtime": 1786121907.3193805,
+    "seen": 1788718812.4418921,
+    "ast_hash": "b38c96d55d25dddbb6dc435cc1ae1b51",
+    "semantic_hash": "b38c96d55d25dddbb6dc435cc1ae1b51"
+  },
+  "Base/Sources/CottonPlugins/Scripts/json/t4_post.json": {
+    "mtime": 1786121907.3194373,
+    "seen": 1788718812.4418921,
+    "ast_hash": "e69eeddafb4f5fd2dcb0fb198c5e22f5",
+    "semantic_hash": "e69eeddafb4f5fd2dcb0fb198c5e22f5"
+  },
+  "Base/Sources/CottonPlugins/Scripts/package.json": {
+    "mtime": 1786121907.3195746,
+    "seen": 1788718812.441893,
+    "ast_hash": "2356bc61dbb8e928b3f2be34d76ea1ea",
+    "semantic_hash": "2356bc61dbb8e928b3f2be34d76ea1ea"
+  },
+  "Base/Sources/CottonReactiveRestKit/HTTPAdapter+Rx.swift": {
+    "mtime": 1786121907.320335,
+    "seen": 1788718812.4418938,
+    "ast_hash": "74265122cfa35d0d98cc694ad29dbf85",
+    "semantic_hash": "74265122cfa35d0d98cc694ad29dbf85"
+  },
+  "Base/Sources/CottonReactiveRestKit/HttpClient+RxSwift.swift": {
+    "mtime": 1786121907.3211834,
+    "seen": 1788718812.4418938,
+    "ast_hash": "26fee84af33cfc89ec85f4e0dfbe62a2",
+    "semantic_hash": "26fee84af33cfc89ec85f4e0dfbe62a2"
+  },
+  "Base/Sources/CottonReactiveRestKit/RxObserverWrapper.swift": {
+    "mtime": 1786121907.3215692,
+    "seen": 1788718812.441895,
+    "ast_hash": "d01554ac1a1d36b815a902ea94db1b34",
+    "semantic_hash": "d01554ac1a1d36b815a902ea94db1b34"
+  },
+  "Base/Sources/CottonReactiveRestKit/URL+Rx.swift": {
+    "mtime": 1786121907.3219767,
+    "seen": 1788718812.441896,
+    "ast_hash": "8195040fb35a004a06a3ccfa855ae124",
+    "semantic_hash": "8195040fb35a004a06a3ccfa855ae124"
+  },
+  "Base/Sources/CottonRestKit/ClientSubscriber.swift": {
+    "mtime": 1786121907.3222103,
+    "seen": 1788718812.441896,
+    "ast_hash": "8e952c103066e0a1148ac4b64db7a0ef",
+    "semantic_hash": "8e952c103066e0a1148ac4b64db7a0ef"
+  },
+  "Base/Sources/CottonRestKit/ClosureVoidWrappers.swift": {
+    "mtime": 1786121907.322436,
+    "seen": 1788718812.441897,
+    "ast_hash": "55d9dbd21b0f085a18b02ae0226cca12",
+    "semantic_hash": "55d9dbd21b0f085a18b02ae0226cca12"
+  },
+  "Base/Sources/CottonRestKit/ClosureWrappers.swift": {
+    "mtime": 1786121907.3230114,
+    "seen": 1788718812.4418979,
+    "ast_hash": "054a631c536856f36cf2c4db0f9eed87",
+    "semantic_hash": "054a631c536856f36cf2c4db0f9eed87"
+  },
+  "Base/Sources/CottonRestKit/DummyRxInterface.swift": {
+    "mtime": 1786121907.323128,
+    "seen": 1788718812.4418979,
+    "ast_hash": "38696f1e212778a3d4a9c45a5f586cc2",
+    "semantic_hash": "38696f1e212778a3d4a9c45a5f586cc2"
+  },
+  "Base/Sources/CottonRestKit/Extensions/Combine+Extensions.swift": {
+    "mtime": 1786121907.3235545,
+    "seen": 1788718812.441899,
+    "ast_hash": "ad429ac175fce9a67a963af1165167de",
+    "semantic_hash": "ad429ac175fce9a67a963af1165167de"
+  },
+  "Base/Sources/CottonRestKit/Extensions/HttpKotlinTypes+Extensions.swift": {
+    "mtime": 1786121907.323813,
+    "seen": 1788718812.441899,
+    "ast_hash": "a21d652a2003e5108bd4044a3a603d6f",
+    "semantic_hash": "a21d652a2003e5108bd4044a3a603d6f"
+  },
+  "Base/Sources/CottonRestKit/Extensions/URL+Extensions.swift": {
+    "mtime": 1786121907.3240273,
+    "seen": 1788718812.4419,
+    "ast_hash": "a12210bd15ecdb3d1c098b2423d14304",
+    "semantic_hash": "a12210bd15ecdb3d1c098b2423d14304"
+  },
+  "Base/Sources/CottonRestKit/HTTPAdapter.swift": {
+    "mtime": 1786121907.3244257,
+    "seen": 1788718812.441901,
+    "ast_hash": "d79053ddae5880b7fc0fd88bcf127d2a",
+    "semantic_hash": "d79053ddae5880b7fc0fd88bcf127d2a"
+  },
+  "Base/Sources/CottonRestKit/HTTPVoidAdapter.swift": {
+    "mtime": 1786121907.3246908,
+    "seen": 1788718812.441901,
+    "ast_hash": "ace1e24960dfcaa8c4a9cd9963f85a2b",
+    "semantic_hash": "ace1e24960dfcaa8c4a9cd9963f85a2b"
+  },
+  "Base/Sources/CottonRestKit/Interfaces/RequestInterfaces.swift": {
+    "mtime": 1786121907.3249876,
+    "seen": 1788718812.4419022,
+    "ast_hash": "089c0b73990ca6dc60515aa849e3c3e7",
+    "semantic_hash": "089c0b73990ca6dc60515aa849e3c3e7"
+  },
+  "Base/Sources/CottonRestKit/NetworkReachabilityAdapter.swift": {
+    "mtime": 1786121907.3251207,
+    "seen": 1788718812.441903,
+    "ast_hash": "b358c5e0efe085ad5c1f2006e7b60453",
+    "semantic_hash": "b358c5e0efe085ad5c1f2006e7b60453"
+  },
+  "Base/Sources/CottonRestKit/ResponseHandlingApiType.swift": {
+    "mtime": 1786121907.3252716,
+    "seen": 1788718812.441903,
+    "ast_hash": "988c5077776f65624989e0676c047167",
+    "semantic_hash": "988c5077776f65624989e0676c047167"
+  },
+  "Base/Sources/CottonRestKit/ResponseType.swift": {
+    "mtime": 1786121907.3253975,
+    "seen": 1788718812.441904,
+    "ast_hash": "f72eac48b43fa217e94e76fcd33395aa",
+    "semantic_hash": "f72eac48b43fa217e94e76fcd33395aa"
+  },
+  "Base/Sources/CottonRestKit/ResponseVoidHandlingApiType.swift": {
+    "mtime": 1786121907.3255255,
+    "seen": 1788718812.4419048,
+    "ast_hash": "53c6752f548150273b81061839859e4e",
+    "semantic_hash": "53c6752f548150273b81061839859e4e"
+  },
+  "Base/Sources/CottonRestKit/RestClient+AsyncAwait.swift": {
+    "mtime": 1786121907.3257935,
+    "seen": 1788718812.441906,
+    "ast_hash": "7eb8f7e0db2e1fede658428a3423565f",
+    "semantic_hash": "7eb8f7e0db2e1fede658428a3423565f"
+  },
+  "Base/Sources/CottonRestKit/RestClient+Combine.swift": {
+    "mtime": 1786121907.3259544,
+    "seen": 1788718812.441906,
+    "ast_hash": "c428466383a5834da8872779bbd08a37",
+    "semantic_hash": "c428466383a5834da8872779bbd08a37"
+  },
+  "Base/Sources/CottonRestKit/RestClient+Kotlin.swift": {
+    "mtime": 1786121907.3262389,
+    "seen": 1788718812.441907,
+    "ast_hash": "2aa8f7816dcc5f05a4012b0a714f55a9",
+    "semantic_hash": "2aa8f7816dcc5f05a4012b0a714f55a9"
+  },
+  "Base/Sources/CottonRestKit/RestClient.swift": {
+    "mtime": 1786121907.326361,
+    "seen": 1788718812.441908,
+    "ast_hash": "c6ba0d9ef3992991531cc80b039d79cf",
+    "semantic_hash": "c6ba0d9ef3992991531cc80b039d79cf"
+  },
+  "Base/Sources/CottonRestKit/RestClientError.swift": {
+    "mtime": 1786121907.3265092,
+    "seen": 1788718812.441909,
+    "ast_hash": "b422771eb2bbc62174eb558bb8665a2f",
+    "semantic_hash": "b422771eb2bbc62174eb558bb8665a2f"
+  },
+  "Base/Sources/CottonRestKit/RestInterface.swift": {
+    "mtime": 1786121907.326625,
+    "seen": 1788718812.441909,
+    "ast_hash": "dd9ea441a40948fc2077e2a82c0353b1",
+    "semantic_hash": "dd9ea441a40948fc2077e2a82c0353b1"
+  },
+  "Base/Sources/CssParser/Errors.swift": {
+    "mtime": 1786121907.32676,
+    "seen": 1788718812.44191,
+    "ast_hash": "b553c03b7e0263071ec40fc241692bc1",
+    "semantic_hash": "b553c03b7e0263071ec40fc241692bc1"
+  },
+  "Base/Sources/CssParser/Parser.swift": {
+    "mtime": 1786121907.3268223,
+    "seen": 1788718812.441911,
+    "ast_hash": "0d1101abc52b60f880d5b4d4211e80a1",
+    "semantic_hash": "0d1101abc52b60f880d5b4d4211e80a1"
+  },
+  "Base/Sources/CssParser/Scanner.swift": {
+    "mtime": 1786121907.326942,
+    "seen": 1788718812.4419122,
+    "ast_hash": "dd28a6498a65499d5549a24381e3d34a",
+    "semantic_hash": "dd28a6498a65499d5549a24381e3d34a"
+  },
+  "Base/Sources/CssParser/Token.swift": {
+    "mtime": 1786121907.3269975,
+    "seen": 1788718812.4419131,
+    "ast_hash": "76ba962bd8711a7af396e49e609fe0d2",
+    "semantic_hash": "76ba962bd8711a7af396e49e609fe0d2"
+  },
+  "Base/Tests/BaseTests/BaseTests.swift": {
+    "mtime": 1786121907.32752,
+    "seen": 1788718812.441914,
+    "ast_hash": "562a4cf93484991c5765daceb6f01a9b",
+    "semantic_hash": "562a4cf93484991c5765daceb6f01a9b"
+  },
+  "Base/Tests/CottonPluginsTests/CSSBackgroundImageTests.swift": {
+    "mtime": 1786121907.3276012,
+    "seen": 1788718812.4419148,
+    "ast_hash": "137c738a5d78f9903d91bfe89bc8945b",
+    "semantic_hash": "137c738a5d78f9903d91bfe89bc8945b"
+  },
+  "Base/Tests/CottonRestKitTests/EndpointMocks.swift": {
+    "mtime": 1786121907.3278637,
+    "seen": 1788718812.441916,
+    "ast_hash": "9344b63341b84682717b2c2c1d151679",
+    "semantic_hash": "9344b63341b84682717b2c2c1d151679"
+  },
+  "Base/Tests/CottonRestKitTests/HTTPAdapteeMocks.swift": {
+    "mtime": 1786121907.328093,
+    "seen": 1788718812.441916,
+    "ast_hash": "5e5e10e648a3e1d24b04510a16de98ce",
+    "semantic_hash": "5e5e10e648a3e1d24b04510a16de98ce"
+  },
+  "Base/Tests/CottonRestKitTests/HttpClientTests.swift": {
+    "mtime": 1786121907.3281555,
+    "seen": 1788718812.441917,
+    "ast_hash": "0da24eab3e17d0dd01df75205dac0e57",
+    "semantic_hash": "0da24eab3e17d0dd01df75205dac0e57"
+  },
+  "Base/Tests/CottonRestKitTests/JSONEncodableMocks.swift": {
+    "mtime": 1786121907.3284173,
+    "seen": 1788718812.441918,
+    "ast_hash": "c0ec9ae264d846059646942a3e022505",
+    "semantic_hash": "c0ec9ae264d846059646942a3e022505"
+  },
+  "Base/Tests/CottonRestKitTests/ReachabilityAdapteeMocks.swift": {
+    "mtime": 1786121907.3284676,
+    "seen": 1788718812.441919,
+    "ast_hash": "a4561daae6fc3719c5366386a915236e",
+    "semantic_hash": "a4561daae6fc3719c5366386a915236e"
+  },
+  "Domain/Package.swift": {
+    "mtime": 1787972199.2680898,
+    "seen": 1788718812.441919,
+    "ast_hash": "daca025293f91ed54345d62c87a6f308",
+    "semantic_hash": "daca025293f91ed54345d62c87a6f308"
+  },
+  "Domain/Sources/BaseUseCaseKit/CoreUseCase.swift": {
+    "mtime": 1786121907.3299856,
+    "seen": 1788718812.44192,
+    "ast_hash": "8ace1a0f4dcec50999d322b5c4d5a7f3",
+    "semantic_hash": "8ace1a0f4dcec50999d322b5c4d5a7f3"
+  },
+  "Domain/Sources/CoreBrowser/CottonErrors.swift": {
+    "mtime": 1786121907.330067,
+    "seen": 1788718812.441921,
+    "ast_hash": "19d1a014728ed8ca7834b9977aa3675b",
+    "semantic_hash": "19d1a014728ed8ca7834b9977aa3675b"
+  },
+  "Domain/Sources/CoreBrowser/DataStructures/Trie.swift": {
+    "mtime": 1786121907.3301685,
+    "seen": 1788718812.441922,
+    "ast_hash": "05abbdcf946354f7818d58e7a94f06f0",
+    "semantic_hash": "05abbdcf946354f7818d58e7a94f06f0"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/Collection+CatowserExtensions.swift": {
+    "mtime": 1786121907.3302612,
+    "seen": 1788718812.441922,
+    "ast_hash": "b1ce88bd0587610a382c36f66d068fa3",
+    "semantic_hash": "b1ce88bd0587610a382c36f66d068fa3"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/Host+Extension.swift": {
+    "mtime": 1786121907.3303106,
+    "seen": 1788718812.4419231,
+    "ast_hash": "07350df4b918a51c65281d08d3ceac69",
+    "semantic_hash": "07350df4b918a51c65281d08d3ceac69"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/Site+Extension.swift": {
+    "mtime": 1786121907.3311875,
+    "seen": 1788718812.441924,
+    "ast_hash": "df8486ef36d4f77cfc254e1a78308d8e",
+    "semantic_hash": "df8486ef36d4f77cfc254e1a78308d8e"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/SiteSettings+Extensions.swift": {
+    "mtime": 1786121907.3315563,
+    "seen": 1788718812.441925,
+    "ast_hash": "cec2fb9e07bca7c625b806e4933204cd",
+    "semantic_hash": "cec2fb9e07bca7c625b806e4933204cd"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/String+CatowserExtensions.swift": {
+    "mtime": 1786121907.3319824,
+    "seen": 1788718812.441926,
+    "ast_hash": "1acd4d42ea5ba7e2f8a59e273905cdec",
+    "semantic_hash": "1acd4d42ea5ba7e2f8a59e273905cdec"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/URL+CoreExtensions.swift": {
+    "mtime": 1786121907.3320425,
+    "seen": 1788718812.441926,
+    "ast_hash": "8177ab3be9a9c1a980f424eb1632c476",
+    "semantic_hash": "8177ab3be9a9c1a980f424eb1632c476"
+  },
+  "Domain/Sources/CoreBrowser/Extensions/URLInfo+Extension.swift": {
+    "mtime": 1786121907.3321319,
+    "seen": 1788718812.441927,
+    "ast_hash": "2a699f8dfbca8e4e44cfa8b74356b831",
+    "semantic_hash": "2a699f8dfbca8e4e44cfa8b74356b831"
+  },
+  "Domain/Sources/CoreBrowser/Filesystem/XmlSearchPluginResource.swift": {
+    "mtime": 1786121907.3325589,
+    "seen": 1788718812.441928,
+    "ast_hash": "77b539b61ca34348f1e9579c4548b361",
+    "semantic_hash": "77b539b61ca34348f1e9579c4548b361"
+  },
+  "Domain/Sources/CoreBrowser/FullEnumTypeConstraints.swift": {
+    "mtime": 1786121907.3328843,
+    "seen": 1788718812.4419289,
+    "ast_hash": "bbd46b8313b0ee71d8e6687eb1cd0cb4",
+    "semantic_hash": "bbd46b8313b0ee71d8e6687eb1cd0cb4"
+  },
+  "Domain/Sources/CoreBrowser/History/DomainsHistory.swift": {
+    "mtime": 1786121907.3333633,
+    "seen": 1788718812.4419289,
+    "ast_hash": "0253064ee75cfd93548b6147bb753002",
+    "semantic_hash": "0253064ee75cfd93548b6147bb753002"
+  },
+  "Domain/Sources/CoreBrowser/History/InMemoryDomainSearchProvider.swift": {
+    "mtime": 1786121907.3336952,
+    "seen": 1788718812.44193,
+    "ast_hash": "3989785dbb5ec4d231be116ea1495f8d",
+    "semantic_hash": "3989785dbb5ec4d231be116ea1495f8d"
+  },
+  "Domain/Sources/CoreBrowser/Models/OpenSearch/OpenSearchParser.swift": {
+    "mtime": 1786121907.3339612,
+    "seen": 1788718812.441931,
+    "ast_hash": "dabb7e7a4246283f1323d79a70fa98cf",
+    "semantic_hash": "dabb7e7a4246283f1323d79a70fa98cf"
+  },
+  "Domain/Sources/CoreBrowser/Models/OpenSearch/SearchEngine+OpenSearchParser.swift": {
+    "mtime": 1786121907.3343472,
+    "seen": 1788718812.441932,
+    "ast_hash": "3613d9d272664232fc6514f64a9e834b",
+    "semantic_hash": "3613d9d272664232fc6514f64a9e834b"
+  },
+  "Domain/Sources/CoreBrowser/Models/SearchEngines/GoogleSearchEngine.swift": {
+    "mtime": 1786121907.3345492,
+    "seen": 1788718812.4419332,
+    "ast_hash": "c5ed7d6fa981b2fc7c477e55b539a5a6",
+    "semantic_hash": "c5ed7d6fa981b2fc7c477e55b539a5a6"
+  },
+  "Domain/Sources/CoreBrowser/Models/SearchEngines/SearchEngine.swift": {
+    "mtime": 1786121907.334806,
+    "seen": 1788718812.441934,
+    "ast_hash": "1f3da3d7fa0c6a2f646ca1c992b924ad",
+    "semantic_hash": "1f3da3d7fa0c6a2f646ca1c992b924ad"
+  },
+  "Domain/Sources/CoreBrowser/Models/Tab.swift": {
+    "mtime": 1786121907.3350186,
+    "seen": 1788718812.441934,
+    "ast_hash": "f80958f88d72ce86ed516f5b167309aa",
+    "semantic_hash": "f80958f88d72ce86ed516f5b167309aa"
+  },
+  "Domain/Sources/CoreBrowser/Models/WebAutoCompletionSource.swift": {
+    "mtime": 1786121907.335243,
+    "seen": 1788718812.441935,
+    "ast_hash": "75a85dc50223ba9e6ebff48ff2f11ec0",
+    "semantic_hash": "75a85dc50223ba9e6ebff48ff2f11ec0"
+  },
+  "Domain/Sources/CoreBrowser/Primitives/Box.swift": {
+    "mtime": 1786121907.3361034,
+    "seen": 1788718812.441935,
+    "ast_hash": "b623d98e56a5b32f13ac2ab72c2a80de",
+    "semantic_hash": "b623d98e56a5b32f13ac2ab72c2a80de"
+  },
+  "Domain/Sources/CoreBrowser/Primitives/WeakWrapper.swift": {
+    "mtime": 1786121907.3366048,
+    "seen": 1788718812.4419358,
+    "ast_hash": "5f6763b403371d4a032a196124f9ba77",
+    "semantic_hash": "5f6763b403371d4a032a196124f9ba77"
+  },
+  "Domain/Sources/CoreBrowser/PropertyWrappers/TrimmedString.swift": {
+    "mtime": 1786121907.336686,
+    "seen": 1788718812.441937,
+    "ast_hash": "ed6a3b0c8345049928bddadfbbab59ac",
+    "semantic_hash": "ed6a3b0c8345049928bddadfbbab59ac"
+  },
+  "Domain/Sources/CottonDependencyAssembly/DataServiceFactory.swift": {
+    "mtime": 1786121907.3372538,
+    "seen": 1788718812.441938,
+    "ast_hash": "5b5014df726b10fc1d07114eb029268a",
+    "semantic_hash": "5b5014df726b10fc1d07114eb029268a"
+  },
+  "Domain/Sources/CottonSearch/Autocomplete/SearchAutocompleteStrategy.swift": {
+    "mtime": 1786121907.3376212,
+    "seen": 1788718812.4419389,
+    "ast_hash": "9a808c705e44d32472361a8d636f6e35",
+    "semantic_hash": "9a808c705e44d32472361a8d636f6e35"
+  },
+  "Domain/Sources/CottonSearch/Autocomplete/SearchSuggestionsResponse.swift": {
+    "mtime": 1786121907.3379529,
+    "seen": 1788718812.44194,
+    "ast_hash": "924a98ef1ca43d9dd637cc162ab3fa89",
+    "semantic_hash": "924a98ef1ca43d9dd637cc162ab3fa89"
+  },
+  "Domain/Sources/CottonSearch/Autocomplete/SpecificStrategies/DDGoAutocompleteStrategy.swift": {
+    "mtime": 1786121907.3383298,
+    "seen": 1788718812.44194,
+    "ast_hash": "80d87cd3f19f59b56812942f014ada51",
+    "semantic_hash": "80d87cd3f19f59b56812942f014ada51"
+  },
+  "Domain/Sources/CottonSearch/Autocomplete/SpecificStrategies/GoogleAutocompleteStrategy.swift": {
+    "mtime": 1786121907.3384936,
+    "seen": 1788718812.441941,
+    "ast_hash": "5c91130eb0b9affa771989c220b937be",
+    "semantic_hash": "5c91130eb0b9affa771989c220b937be"
+  },
+  "Domain/Sources/CottonSearch/DNSResolving/DNSResolvingStrategy.swift": {
+    "mtime": 1786121907.3387353,
+    "seen": 1788718812.441942,
+    "ast_hash": "292ba77c517d7c62d3f6c910756476c8",
+    "semantic_hash": "292ba77c517d7c62d3f6c910756476c8"
+  },
+  "Domain/Sources/CottonSearch/DNSResolving/SpecificStrategies/GoogleDNSStrategy.swift": {
+    "mtime": 1786121907.3390648,
+    "seen": 1788718812.441943,
+    "ast_hash": "660e6e8b681da53c009e2a1bcd41fec6",
+    "semantic_hash": "660e6e8b681da53c009e2a1bcd41fec6"
+  },
+  "Domain/Sources/CottonSearch/SearchDataService.swift": {
+    "mtime": 1786121907.33921,
+    "seen": 1788718812.441943,
+    "ast_hash": "6f5e0d1d7487920eb6f01eba47c2a0dc",
+    "semantic_hash": "6f5e0d1d7487920eb6f01eba47c2a0dc"
+  },
+  "Domain/Sources/CottonSearch/SearchDataServiceProtocol.swift": {
+    "mtime": 1786121907.3393238,
+    "seen": 1788718812.4419441,
+    "ast_hash": "0153ef538b2224c387bc40112581b5ce",
+    "semantic_hash": "0153ef538b2224c387bc40112581b5ce"
+  },
+  "Domain/Sources/CottonSearch/SearchServiceCommand.swift": {
+    "mtime": 1786121907.3394318,
+    "seen": 1788718812.441945,
+    "ast_hash": "9b3b55867d30e167b0cce22ceee7236f",
+    "semantic_hash": "9b3b55867d30e167b0cce22ceee7236f"
+  },
+  "Domain/Sources/CottonSearch/SearchServiceData.swift": {
+    "mtime": 1786121907.3395367,
+    "seen": 1788718812.441946,
+    "ast_hash": "c2e56c290f565b086516365bc4cd92fd",
+    "semantic_hash": "c2e56c290f565b086516365bc4cd92fd"
+  },
+  "Domain/Sources/CottonSearch/SearchServiceError.swift": {
+    "mtime": 1786121907.3397331,
+    "seen": 1788718812.441946,
+    "ast_hash": "b7b043c4de9d4cf8401e4f65a499a798",
+    "semantic_hash": "b7b043c4de9d4cf8401e4f65a499a798"
+  },
+  "Domain/Sources/CottonTabs/NearbySelectionStrategy.swift": {
+    "mtime": 1786121907.340062,
+    "seen": 1788718812.441947,
+    "ast_hash": "e18849005d781fa013496b74bde886a3",
+    "semantic_hash": "e18849005d781fa013496b74bde886a3"
+  },
+  "Domain/Sources/CottonTabs/ObservingApiType.swift": {
+    "mtime": 1786121907.3402889,
+    "seen": 1788718812.441948,
+    "ast_hash": "00dc06acf065a60d324429b6af146abe",
+    "semantic_hash": "00dc06acf065a60d324429b6af146abe"
+  },
+  "Domain/Sources/CottonTabs/TabAddStates.swift": {
+    "mtime": 1786121907.3405535,
+    "seen": 1788718812.441948,
+    "ast_hash": "f478339460acac98d895d61fd9d06cd7",
+    "semantic_hash": "f478339460acac98d895d61fd9d06cd7"
+  },
+  "Domain/Sources/CottonTabs/TabCacheErrors.swift": {
+    "mtime": 1786121907.3407698,
+    "seen": 1788718812.441949,
+    "ast_hash": "b8a1e582b823660cd0d8de89b6edb875",
+    "semantic_hash": "b8a1e582b823660cd0d8de89b6edb875"
+  },
+  "Domain/Sources/CottonTabs/TabSelectionStrategy.swift": {
+    "mtime": 1787972059.4880943,
+    "seen": 1788718812.4419498,
+    "ast_hash": "fc263cccbc784665f1c4b7387c3ea603",
+    "semantic_hash": "fc263cccbc784665f1c4b7387c3ea603"
+  },
+  "Domain/Sources/CottonTabs/TabsDataService.swift": {
+    "mtime": 1787972098.272921,
+    "seen": 1788718812.441951,
+    "ast_hash": "1bb1edb3073796c5e4294a61c054263a",
+    "semantic_hash": "1bb1edb3073796c5e4294a61c054263a"
+  },
+  "Domain/Sources/CottonTabs/TabsDataServiceProtocol.swift": {
+    "mtime": 1786121907.3413253,
+    "seen": 1788718812.441951,
+    "ast_hash": "c8b2de7373e86d21cb1e4fc5966ae146",
+    "semantic_hash": "c8b2de7373e86d21cb1e4fc5966ae146"
+  },
+  "Domain/Sources/CottonTabs/TabsDataSubject.swift": {
+    "mtime": 1786121907.3414464,
+    "seen": 1788718812.441952,
+    "ast_hash": "3fe3277543698b680fce8836752cff6c",
+    "semantic_hash": "3fe3277543698b680fce8836752cff6c"
+  },
+  "Domain/Sources/CottonTabs/TabsListError.swift": {
+    "mtime": 1786121907.3415668,
+    "seen": 1788718812.441953,
+    "ast_hash": "53dbe2273a608255f8fb98c3625b00bd",
+    "semantic_hash": "53dbe2273a608255f8fb98c3625b00bd"
+  },
+  "Domain/Sources/CottonTabs/TabsObserver.swift": {
+    "mtime": 1786121907.3417156,
+    "seen": 1788718812.441953,
+    "ast_hash": "17ba940871cf8fc9e98ed3a109cc97df",
+    "semantic_hash": "17ba940871cf8fc9e98ed3a109cc97df"
+  },
+  "Domain/Sources/CottonTabs/TabsRepository.swift": {
+    "mtime": 1786121907.3420007,
+    "seen": 1788718812.4419541,
+    "ast_hash": "d737062883fb310b3a9b52736c74a66a",
+    "semantic_hash": "d737062883fb310b3a9b52736c74a66a"
+  },
+  "Domain/Sources/CottonTabs/TabsRepositoryImpl.swift": {
+    "mtime": 1786121907.342174,
+    "seen": 1788718812.441955,
+    "ast_hash": "14c86a721c5f8d3390a7d7d2ec8f4c1f",
+    "semantic_hash": "14c86a721c5f8d3390a7d7d2ec8f4c1f"
+  },
+  "Domain/Sources/CottonTabs/TabsResource.swift": {
+    "mtime": 1786121907.3426569,
+    "seen": 1788718812.441956,
+    "ast_hash": "cea2076dfb49ea1ea961904187fc3168",
+    "semantic_hash": "cea2076dfb49ea1ea961904187fc3168"
+  },
+  "Domain/Sources/CottonTabs/TabsServiceCommand.swift": {
+    "mtime": 1787972051.8387508,
+    "seen": 1788718812.441956,
+    "ast_hash": "3006ebc1b29ab0577af73005b5c26b08",
+    "semantic_hash": "3006ebc1b29ab0577af73005b5c26b08"
+  },
+  "Domain/Sources/CottonTabs/TabsServiceData.swift": {
+    "mtime": 1786121907.3431067,
+    "seen": 1788718812.4419572,
+    "ast_hash": "1e3527d4fbc3a8159a3f9fb10142cc19",
+    "semantic_hash": "1e3527d4fbc3a8159a3f9fb10142cc19"
+  },
+  "Domain/Sources/CottonTabs/TabsStatesInterface.swift": {
+    "mtime": 1786121907.3433344,
+    "seen": 1788718812.441958,
+    "ast_hash": "9deeed988c36b52b8ca6cf192004773a",
+    "semantic_hash": "9deeed988c36b52b8ca6cf192004773a"
+  },
+  "Domain/Sources/CottonTabs/TabsSubject.swift": {
+    "mtime": 1786121907.3435006,
+    "seen": 1788718812.441958,
+    "ast_hash": "a9ff943cf60c47d5c2d52b3914222e78",
+    "semantic_hash": "a9ff943cf60c47d5c2d52b3914222e78"
+  },
+  "Domain/Sources/CottonUseCases/AppErrors.swift": {
+    "mtime": 1786121907.3437445,
+    "seen": 1788718812.441959,
+    "ast_hash": "cb444686e7c1815f93d1c073b532a132",
+    "semantic_hash": "cb444686e7c1815f93d1c073b532a132"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/AddTabUseCase.swift": {
+    "mtime": 1787976660.2487168,
+    "seen": 1788718812.4419599,
+    "ast_hash": "e66c14ca260baebb38999ef02066c632",
+    "semantic_hash": "e66c14ca260baebb38999ef02066c632"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/CloseAllTabsUseCase.swift": {
+    "mtime": 1787976639.333557,
+    "seen": 1788718812.4419599,
+    "ast_hash": "dbbf1e30e504598820579024045b2ff9",
+    "semantic_hash": "dbbf1e30e504598820579024045b2ff9"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/CloseTabUseCase.swift": {
+    "mtime": 1788043492.8898542,
+    "seen": 1788718812.441961,
+    "ast_hash": "3a75bf269a138c30b99371c31cb78a73",
+    "semantic_hash": "3a75bf269a138c30b99371c31cb78a73"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/CreateSearchURLUseCase.swift": {
+    "mtime": 1787976504.31707,
+    "seen": 1788718812.441962,
+    "ast_hash": "a7d07c17c9d0f3da6bd2e2401a45262d",
+    "semantic_hash": "a7d07c17c9d0f3da6bd2e2401a45262d"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/FetchAutocompleteSuggestionsUseCase.swift": {
+    "mtime": 1787976583.3446355,
+    "seen": 1788718812.441962,
+    "ast_hash": "3fe68b26d649b2db04be02ae7cb4cb0a",
+    "semantic_hash": "3fe68b26d649b2db04be02ae7cb4cb0a"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/ReadAllTabsUseCase.swift": {
+    "mtime": 1787976702.9915063,
+    "seen": 1788718812.441963,
+    "ast_hash": "299dc32c8a25e13457c545775796e8b9",
+    "semantic_hash": "299dc32c8a25e13457c545775796e8b9"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/ReadSelectedTabIdUseCase.swift": {
+    "mtime": 1787976729.4003072,
+    "seen": 1788718812.4419641,
+    "ast_hash": "09c675c83a5b75ff8329364bf09f6393",
+    "semantic_hash": "09c675c83a5b75ff8329364bf09f6393"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/ReadTabsCountUseCase.swift": {
+    "mtime": 1787976749.9606726,
+    "seen": 1788718812.441965,
+    "ast_hash": "d85a964018736526b40b7acee39ba4f3",
+    "semantic_hash": "d85a964018736526b40b7acee39ba4f3"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/ReplaceSelectedTabUseCase.swift": {
+    "mtime": 1786121907.3454378,
+    "seen": 1788718812.441966,
+    "ast_hash": "2248684c8113887b2c33e888cd6a16e8",
+    "semantic_hash": "2248684c8113887b2c33e888cd6a16e8"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/ResolveDNSUseCase.swift": {
+    "mtime": 1786121907.3455565,
+    "seen": 1788718812.441966,
+    "ast_hash": "d04fb5bb77af8f3ae55e754fe877c12b",
+    "semantic_hash": "d04fb5bb77af8f3ae55e754fe877c12b"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/SelectTabUseCase.swift": {
+    "mtime": 1786121907.3456843,
+    "seen": 1788718812.441967,
+    "ast_hash": "f6062108acbc2b1eae905f9b5b42ceed",
+    "semantic_hash": "f6062108acbc2b1eae905f9b5b42ceed"
+  },
+  "Domain/Sources/CottonUseCases/UseCases/SelectedTabUseCase.swift": {
+    "mtime": 1787976791.1813395,
+    "seen": 1788718812.4419682,
+    "ast_hash": "a48c732cbf8d264a77a8a3960298e698",
+    "semantic_hash": "a48c732cbf8d264a77a8a3960298e698"
+  },
+  "Domain/Sources/CottonViewModels/AllTabsViewModel/AllTabsAction.swift": {
+    "mtime": 1786121907.3460212,
+    "seen": 1788718812.4419682,
+    "ast_hash": "9734fcba98b1a31642cd34a34da8a837",
+    "semantic_hash": "9734fcba98b1a31642cd34a34da8a837"
+  },
+  "Domain/Sources/CottonViewModels/AllTabsViewModel/AllTabsState.swift": {
+    "mtime": 1786121907.346337,
+    "seen": 1788718812.441969,
+    "ast_hash": "400b0b8e180ce737a6dea34401537544",
+    "semantic_hash": "400b0b8e180ce737a6dea34401537544"
+  },
+  "Domain/Sources/CottonViewModels/AllTabsViewModel/AllTabsStateContext.swift": {
+    "mtime": 1786121907.3464687,
+    "seen": 1788718812.4419699,
+    "ast_hash": "2a61e262e4910861669add7ed6bea4d4",
+    "semantic_hash": "2a61e262e4910861669add7ed6bea4d4"
+  },
+  "Domain/Sources/CottonViewModels/AllTabsViewModel/AllTabsViewModel.swift": {
+    "mtime": 1786121907.3467054,
+    "seen": 1788718812.4419708,
+    "ast_hash": "f0f6906ca5d03e6cdfcb349a9cfeaaaa",
+    "semantic_hash": "f0f6906ca5d03e6cdfcb349a9cfeaaaa"
+  },
+  "Domain/Sources/CottonViewModels/BaseListViewModel.swift": {
+    "mtime": 1786121907.3469589,
+    "seen": 1788718812.441972,
+    "ast_hash": "2b2cdefbc017888353d0e923a54b97ca",
+    "semantic_hash": "2b2cdefbc017888353d0e923a54b97ca"
+  },
+  "Domain/Sources/CottonViewModels/ModuleVMFactory.swift": {
+    "mtime": 1787972163.8180268,
+    "seen": 1788718812.441973,
+    "ast_hash": "3291447aa9f326dcfb22842c7558c918",
+    "semantic_hash": "3291447aa9f326dcfb22842c7558c918"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarAction.swift": {
+    "mtime": 1786121907.347577,
+    "seen": 1788718812.441973,
+    "ast_hash": "3af700a2aca0d961f5ef1ea2f8257b93",
+    "semantic_hash": "3af700a2aca0d961f5ef1ea2f8257b93"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarContext.swift": {
+    "mtime": 1786121907.3477657,
+    "seen": 1788718812.441974,
+    "ast_hash": "b590d3945c4f2ebabf1f741f0c539e0f",
+    "semantic_hash": "b590d3945c4f2ebabf1f741f0c539e0f"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarDelegateImpl.swift": {
+    "mtime": 1786121907.348053,
+    "seen": 1788718812.441975,
+    "ast_hash": "b904e4f0baa11c36112d1e9b0f77f6a2",
+    "semantic_hash": "b904e4f0baa11c36112d1e9b0f77f6a2"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarError.swift": {
+    "mtime": 1786121907.3482456,
+    "seen": 1788718812.441976,
+    "ast_hash": "1cfeb46fa31d60e3ccd18f0d62a68ff2",
+    "semantic_hash": "1cfeb46fa31d60e3ccd18f0d62a68ff2"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarStateContext.swift": {
+    "mtime": 1786121907.3484325,
+    "seen": 1788718812.441976,
+    "ast_hash": "50e3fcfc62a55ce6a7d7ba3dd4c2a0be",
+    "semantic_hash": "50e3fcfc62a55ce6a7d7ba3dd4c2a0be"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarViewModel.swift": {
+    "mtime": 1786121907.3490262,
+    "seen": 1788718812.441977,
+    "ast_hash": "db5517d44e786fd5a1ee0189b87d1f6d",
+    "semantic_hash": "db5517d44e786fd5a1ee0189b87d1f6d"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SearchSuggestionsListDelegate.swift": {
+    "mtime": 1786121907.3493268,
+    "seen": 1788718812.4419782,
+    "ast_hash": "c0d84766ce83d401be548d971cc1b8ac",
+    "semantic_hash": "c0d84766ce83d401be548d971cc1b8ac"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/States/SearchBarInSearchMode.swift": {
+    "mtime": 1786121907.3497353,
+    "seen": 1788718812.441979,
+    "ast_hash": "8b9fe32dce008c987c9da5f828b23302",
+    "semantic_hash": "8b9fe32dce008c987c9da5f828b23302"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/States/SearchBarInViewMode.swift": {
+    "mtime": 1786121907.3499324,
+    "seen": 1788718812.441979,
+    "ast_hash": "601287f9a9fc083001ed822c79952370",
+    "semantic_hash": "601287f9a9fc083001ed822c79952370"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/States/SearchBarModeHandler.swift": {
+    "mtime": 1786121907.3502257,
+    "seen": 1788718812.44198,
+    "ast_hash": "d7e6360cff3c8d163fd710ffb6490219",
+    "semantic_hash": "d7e6360cff3c8d163fd710ffb6490219"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/States/SearchBarState.swift": {
+    "mtime": 1786121907.3505495,
+    "seen": 1788718812.4419808,
+    "ast_hash": "681d023cea068d8ca60d7187c00b73ed",
+    "semantic_hash": "681d023cea068d8ca60d7187c00b73ed"
+  },
+  "Domain/Sources/CottonViewModels/SearchBarViewModel/SuggestionType.swift": {
+    "mtime": 1786121907.3507633,
+    "seen": 1788718812.4419808,
+    "ast_hash": "fc498a4362c080af05b44f6f62f4a425",
+    "semantic_hash": "fc498a4362c080af05b44f6f62f4a425"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsAction.swift": {
+    "mtime": 1786121907.351148,
+    "seen": 1788718812.441982,
+    "ast_hash": "80d58d1357a3b0e8661587c8a8e54cd0",
+    "semantic_hash": "80d58d1357a3b0e8661587c8a8e54cd0"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsStateContext.swift": {
+    "mtime": 1786121907.351394,
+    "seen": 1788718812.441983,
+    "ast_hash": "74a53f1b7f999c22aff244933eb314ab",
+    "semantic_hash": "74a53f1b7f999c22aff244933eb314ab"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsStateTransitioning.swift": {
+    "mtime": 1786121907.35166,
+    "seen": 1788718812.441983,
+    "ast_hash": "0db5bf945c1378e973a02e559c265833",
+    "semantic_hash": "0db5bf945c1378e973a02e559c265833"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsViewModel.swift": {
+    "mtime": 1786121907.3519242,
+    "seen": 1788718812.441984,
+    "ast_hash": "db1ddf0dab0b0803cc4a4ed87a4c20ed",
+    "semantic_hash": "db1ddf0dab0b0803cc4a4ed87a4c20ed"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsViewModelImpl.swift": {
+    "mtime": 1786121907.352146,
+    "seen": 1788718812.4419851,
+    "ast_hash": "2c19dfe49e3abc33f30a454c42eaf91b",
+    "semantic_hash": "2c19dfe49e3abc33f30a454c42eaf91b"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsViewState.swift": {
+    "mtime": 1786121907.3523645,
+    "seen": 1788718812.441986,
+    "ast_hash": "9b58635e9cb7d7009a42c698316e0822",
+    "semantic_hash": "9b58635e9cb7d7009a42c698316e0822"
+  },
+  "Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchViewContext.swift": {
+    "mtime": 1786121907.352679,
+    "seen": 1788718812.441986,
+    "ast_hash": "623dd74702c4b3ba088afb729b30867d",
+    "semantic_hash": "623dd74702c4b3ba088afb729b30867d"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabPreviewsAppContext.swift": {
+    "mtime": 1786121907.352874,
+    "seen": 1788718812.441987,
+    "ast_hash": "210af266792c8a265d760b751d934ce3",
+    "semantic_hash": "210af266792c8a265d760b751d934ce3"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabsPreviewState.swift": {
+    "mtime": 1786121907.3530974,
+    "seen": 1788718812.441988,
+    "ast_hash": "6bccbbf55eb20fac6d3a99e0fb275cec",
+    "semantic_hash": "6bccbbf55eb20fac6d3a99e0fb275cec"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabsPreviewsAction.swift": {
+    "mtime": 1786121907.3533144,
+    "seen": 1788718812.441988,
+    "ast_hash": "d68d64215ffa1ae6d1f3f6152bd3405f",
+    "semantic_hash": "d68d64215ffa1ae6d1f3f6152bd3405f"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabsPreviewsError.swift": {
+    "mtime": 1786121907.3534296,
+    "seen": 1788718812.4419892,
+    "ast_hash": "aa1ec16cb5589b3a82494038993e0c76",
+    "semantic_hash": "aa1ec16cb5589b3a82494038993e0c76"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabsPreviewsStateContext.swift": {
+    "mtime": 1786121907.3535388,
+    "seen": 1788718812.44199,
+    "ast_hash": "e8ca8e08338975960723c63cb7275aa1",
+    "semantic_hash": "e8ca8e08338975960723c63cb7275aa1"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabsPreviewsStateContextProxy.swift": {
+    "mtime": 1786121907.3536541,
+    "seen": 1788718812.44199,
+    "ast_hash": "b061f88330957a30fce477fc22c1a7da",
+    "semantic_hash": "b061f88330957a30fce477fc22c1a7da"
+  },
+  "Domain/Sources/CottonViewModels/TabPreviewsViewModel/TabsPreviewsViewModel.swift": {
+    "mtime": 1787972160.2064729,
+    "seen": 1788718812.4419909,
+    "ast_hash": "ec91f01c304a94595b4b61a119295404",
+    "semantic_hash": "ec91f01c304a94595b4b61a119295404"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabAction.swift": {
+    "mtime": 1786123915.884807,
+    "seen": 1788718812.441992,
+    "ast_hash": "d8b73bc4c65d9077c7fe752c0f1cc28e",
+    "semantic_hash": "d8b73bc4c65d9077c7fe752c0f1cc28e"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabStateContext.swift": {
+    "mtime": 1786123928.4154303,
+    "seen": 1788718812.441993,
+    "ast_hash": "c98c5ec77f1c45fd2c3bad77ce8e3b59",
+    "semantic_hash": "c98c5ec77f1c45fd2c3bad77ce8e3b59"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabStateTransitioning.swift": {
+    "mtime": 1786123932.9188037,
+    "seen": 1788718812.441993,
+    "ast_hash": "d8407912eb540f7e1b453a9481c094fa",
+    "semantic_hash": "d8407912eb540f7e1b453a9481c094fa"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabViewContext.swift": {
+    "mtime": 1786121907.3541744,
+    "seen": 1788718812.441994,
+    "ast_hash": "b45ac810e3dd13c5b30977dd09d3dbf5",
+    "semantic_hash": "b45ac810e3dd13c5b30977dd09d3dbf5"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabViewModel.swift": {
+    "mtime": 1786123953.347361,
+    "seen": 1788718812.441995,
+    "ast_hash": "7884daab360cc75a55ebca9ab11ff24e",
+    "semantic_hash": "7884daab360cc75a55ebca9ab11ff24e"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabViewModelImpl.swift": {
+    "mtime": 1786124369.2616441,
+    "seen": 1788718812.441995,
+    "ast_hash": "86b71d5ddbbd0497b22095294fe401e0",
+    "semantic_hash": "86b71d5ddbbd0497b22095294fe401e0"
+  },
+  "Domain/Sources/CottonViewModels/TabViewModel/TabViewState.swift": {
+    "mtime": 1786123933.0002847,
+    "seen": 1788718812.441996,
+    "ast_hash": "4e0a8c8fbdfef1c9fe9c6f30c7c76b39",
+    "semantic_hash": "4e0a8c8fbdfef1c9fe9c6f30c7c76b39"
+  },
+  "Domain/Sources/CottonViewModels/ToolbarViewModel/BrowserToolbarAction.swift": {
+    "mtime": 1786121907.3550904,
+    "seen": 1788718812.441997,
+    "ast_hash": "e8974d4529686ccd411ab736da479fd8",
+    "semantic_hash": "e8974d4529686ccd411ab736da479fd8"
+  },
+  "Domain/Sources/CottonViewModels/ToolbarViewModel/BrowserToolbarState.swift": {
+    "mtime": 1786121907.3553262,
+    "seen": 1788718812.441997,
+    "ast_hash": "25e513be64e9edd68c21703c36d9068c",
+    "semantic_hash": "25e513be64e9edd68c21703c36d9068c"
+  },
+  "Domain/Sources/CottonViewModels/ToolbarViewModel/BrowserToolbarStateContext.swift": {
+    "mtime": 1786121907.3555133,
+    "seen": 1788718812.441998,
+    "ast_hash": "c1b1a8ac10d188b6320baa10a5bf4da0",
+    "semantic_hash": "c1b1a8ac10d188b6320baa10a5bf4da0"
+  },
+  "Domain/Sources/CottonViewModels/ToolbarViewModel/BrowserToolbarViewContext.swift": {
+    "mtime": 1786121907.3558886,
+    "seen": 1788718812.4419992,
+    "ast_hash": "09843ee3746a6a067d0b75ab6bfaaefa",
+    "semantic_hash": "09843ee3746a6a067d0b75ab6bfaaefa"
+  },
+  "Domain/Sources/CottonViewModels/ToolbarViewModel/BrowserToolbarViewModel.swift": {
+    "mtime": 1786121907.3561988,
+    "seen": 1788718812.442,
+    "ast_hash": "088726bf76222f4a800d2e1ba4d001ce",
+    "semantic_hash": "088726bf76222f4a800d2e1ba4d001ce"
+  },
+  "Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesAction.swift": {
+    "mtime": 1786140725.1709018,
+    "seen": 1788718812.442,
+    "ast_hash": "1e5ccfccf44d5373bcba7864706e57d9",
+    "semantic_hash": "1e5ccfccf44d5373bcba7864706e57d9"
+  },
+  "Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesStateContext.swift": {
+    "mtime": 1786140725.178873,
+    "seen": 1788718812.4420009,
+    "ast_hash": "37cdeb860c6bf5f85ae10813c3665302",
+    "semantic_hash": "37cdeb860c6bf5f85ae10813c3665302"
+  },
+  "Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesStateTransitioning.swift": {
+    "mtime": 1786140725.1788132,
+    "seen": 1788718812.4420009,
+    "ast_hash": "a50c89790df305ae44ad499a7236e7fe",
+    "semantic_hash": "a50c89790df305ae44ad499a7236e7fe"
+  },
+  "Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesViewModel.swift": {
+    "mtime": 1786140725.2006226,
+    "seen": 1788718812.4420018,
+    "ast_hash": "2d19d3c3e34dfdfaedbc5c10f3c5917a",
+    "semantic_hash": "2d19d3c3e34dfdfaedbc5c10f3c5917a"
+  },
+  "Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesViewModelImpl.swift": {
+    "mtime": 1786140725.1788433,
+    "seen": 1788718812.442003,
+    "ast_hash": "9a7b0fb00b1c3fa5d29846355c75a40e",
+    "semantic_hash": "9a7b0fb00b1c3fa5d29846355c75a40e"
+  },
+  "Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesViewState.swift": {
+    "mtime": 1786140725.1787925,
+    "seen": 1788718812.442004,
+    "ast_hash": "5f3dde46c9c772e2604d5fe9892a5ead",
+    "semantic_hash": "5f3dde46c9c772e2604d5fe9892a5ead"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/NavigationActionable.swift": {
+    "mtime": 1786121907.3567681,
+    "seen": 1788718812.442005,
+    "ast_hash": "6886b4537d339745b30ab4a80c4fb1bb",
+    "semantic_hash": "6886b4537d339745b30ab4a80c4fb1bb"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/SiteNavigationChangable.swift": {
+    "mtime": 1786121907.3569276,
+    "seen": 1788718812.442005,
+    "ast_hash": "f3e3daece93cbc2eaefff90ffc5a4431",
+    "semantic_hash": "f3e3daece93cbc2eaefff90ffc5a4431"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/SiteNavigationProtocols.swift": {
+    "mtime": 1786121907.3571384,
+    "seen": 1788718812.442006,
+    "ast_hash": "846ae7fdc50f7291e2014fc1f99c163c",
+    "semantic_hash": "846ae7fdc50f7291e2014fc1f99c163c"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewAction.swift": {
+    "mtime": 1786121907.357447,
+    "seen": 1788718812.442007,
+    "ast_hash": "3a2faa830de7893a459d5b4f323b936f",
+    "semantic_hash": "3a2faa830de7893a459d5b4f323b936f"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewContext.swift": {
+    "mtime": 1786121907.3577096,
+    "seen": 1788718812.442007,
+    "ast_hash": "f567ff72aed4a5b74942693f2f7f97d1",
+    "semantic_hash": "f567ff72aed4a5b74942693f2f7f97d1"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewModel.swift": {
+    "mtime": 1786121907.3579922,
+    "seen": 1788718812.442008,
+    "ast_hash": "494339ec5b7f3fbda051f249ff3383fe",
+    "semantic_hash": "494339ec5b7f3fbda051f249ff3383fe"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewModelImpl.swift": {
+    "mtime": 1786121907.3583405,
+    "seen": 1788718812.442009,
+    "ast_hash": "8d3bcfd8b56217b21df4510d0d07d5a6",
+    "semantic_hash": "8d3bcfd8b56217b21df4510d0d07d5a6"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewModelState.swift": {
+    "mtime": 1786121907.3586688,
+    "seen": 1788718812.442009,
+    "ast_hash": "8c8008db54c304e644f7a76916a575e0",
+    "semantic_hash": "8c8008db54c304e644f7a76916a575e0"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewModelStateError.swift": {
+    "mtime": 1786121907.3589182,
+    "seen": 1788718812.4420102,
+    "ast_hash": "51fc4bb697e7012578f9c249b1fd3855",
+    "semantic_hash": "51fc4bb697e7012578f9c249b1fd3855"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewNavigatable.swift": {
+    "mtime": 1786121907.3591964,
+    "seen": 1788718812.4420109,
+    "ast_hash": "1deff0e1641d4c410bb55ad165399393",
+    "semantic_hash": "1deff0e1641d4c410bb55ad165399393"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewStateContext.swift": {
+    "mtime": 1786121907.35949,
+    "seen": 1788718812.4420118,
+    "ast_hash": "73a1fa5ae6d4f9834f6f7b8fa1192309",
+    "semantic_hash": "73a1fa5ae6d4f9834f6f7b8fa1192309"
+  },
+  "Domain/Sources/CottonViewModels/WebViewModel/WebViewStateTransitioning.swift": {
+    "mtime": 1786121907.3597028,
+    "seen": 1788718812.442013,
+    "ast_hash": "e368bab5fe479c5bf0b902777ed98f40",
+    "semantic_hash": "e368bab5fe479c5bf0b902777ed98f40"
+  },
+  "Domain/Sources/Domain/Domain.swift": {
+    "mtime": 1786121907.3598228,
+    "seen": 1788718812.442013,
+    "ast_hash": "3210c97374157059e320d58e02ca5ca5",
+    "semantic_hash": "3210c97374157059e320d58e02ca5ca5"
+  },
+  "Domain/Sources/FeatureFlags/BaseModels/SettingsEnumTypes.swift": {
+    "mtime": 1786121907.361818,
+    "seen": 1788718812.442014,
+    "ast_hash": "3c6eeddeef88f0e142dddbced66ebd52",
+    "semantic_hash": "3c6eeddeef88f0e142dddbced66ebd52"
+  },
+  "Domain/Sources/FeatureFlags/FeatureManager+SpecificEnums.swift": {
+    "mtime": 1786121907.3622248,
+    "seen": 1788718812.442015,
+    "ast_hash": "bd58b405c353762fa4ef1bace9a0bb64",
+    "semantic_hash": "bd58b405c353762fa4ef1bace9a0bb64"
+  },
+  "Domain/Sources/FeatureFlags/SpecificApplicationEnumFeatures.swift": {
+    "mtime": 1786121907.3634648,
+    "seen": 1788718812.442016,
+    "ast_hash": "01c879a4f6e1e484e2c88073c052c00d",
+    "semantic_hash": "01c879a4f6e1e484e2c88073c052c00d"
+  },
+  "Domain/Sources/FeatureFlags/SpecificBasicFeatures.swift": {
+    "mtime": 1786121907.3637617,
+    "seen": 1788718812.442017,
+    "ast_hash": "a6d7e13a66211f94e2dc223edf54ea10",
+    "semantic_hash": "a6d7e13a66211f94e2dc223edf54ea10"
+  },
+  "Domain/Sources/FeatureFlags/SpecificModels/SpecificEnumFeatures.swift": {
+    "mtime": 1786121907.364218,
+    "seen": 1788718812.442018,
+    "ast_hash": "63bfe6d085362f442ac8aaa75bba1ac8",
+    "semantic_hash": "63bfe6d085362f442ac8aaa75bba1ac8"
+  },
+  "Domain/Sources/FeatureFlagsKit/FeatureManager.swift": {
+    "mtime": 1786121907.3646803,
+    "seen": 1788718812.442019,
+    "ast_hash": "3dc072284244a47a44a1ac7bf731be35",
+    "semantic_hash": "3dc072284244a47a44a1ac7bf731be35"
+  },
+  "Domain/Sources/FeatureFlagsKit/LocalFeatureSource.swift": {
+    "mtime": 1786121907.3650222,
+    "seen": 1788718812.442019,
+    "ast_hash": "741a2f17c2d02539d1274308c47ae70c",
+    "semantic_hash": "741a2f17c2d02539d1274308c47ae70c"
+  },
+  "Domain/Sources/FeatureFlagsKit/LocalSettings.swift": {
+    "mtime": 1786121907.3653398,
+    "seen": 1788718812.4420202,
+    "ast_hash": "2c75906c09c9b9fd715e363df14a5466",
+    "semantic_hash": "2c75906c09c9b9fd715e363df14a5466"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/AnyFeature.swift": {
+    "mtime": 1786121907.3654318,
+    "seen": 1788718812.4420211,
+    "ast_hash": "8dad8c904c58b13d5064edabb0da5bf6",
+    "semantic_hash": "8dad8c904c58b13d5064edabb0da5bf6"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/AsyncApiType.swift": {
+    "mtime": 1786121907.3657546,
+    "seen": 1788718812.4420218,
+    "ast_hash": "b7e4f1cacab6f82343b2d1c2d5d6bd0d",
+    "semantic_hash": "b7e4f1cacab6f82343b2d1c2d5d6bd0d"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/BasicFeature.swift": {
+    "mtime": 1786121907.3665426,
+    "seen": 1788718812.4420228,
+    "ast_hash": "fe13d768f5de8025baf31b6864de506d",
+    "semantic_hash": "fe13d768f5de8025baf31b6864de506d"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/EnumFeature.swift": {
+    "mtime": 1786121907.3670564,
+    "seen": 1788718812.442024,
+    "ast_hash": "cd74a9418f2dd80fd99eedce73fdf3a0",
+    "semantic_hash": "cd74a9418f2dd80fd99eedce73fdf3a0"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/EnumFeatureSource.swift": {
+    "mtime": 1786121907.3671858,
+    "seen": 1788718812.442024,
+    "ast_hash": "ea95ccbcd3bc9c2f0c256d7b8ac602fe",
+    "semantic_hash": "ea95ccbcd3bc9c2f0c256d7b8ac602fe"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/Feature.swift": {
+    "mtime": 1786121907.3677704,
+    "seen": 1788718812.442025,
+    "ast_hash": "01d0bfe7198040af95b684b7577c8041",
+    "semantic_hash": "01d0bfe7198040af95b684b7577c8041"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/FeatureSource.swift": {
+    "mtime": 1786121907.3680565,
+    "seen": 1788718812.442026,
+    "ast_hash": "eedfab9200ef7ee2006de309b5ce7e5f",
+    "semantic_hash": "eedfab9200ef7ee2006de309b5ce7e5f"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/GenericEnumFeature.swift": {
+    "mtime": 1786121907.3682737,
+    "seen": 1788718812.442027,
+    "ast_hash": "64ca23197b0a331681753196dcd75b77",
+    "semantic_hash": "64ca23197b0a331681753196dcd75b77"
+  },
+  "Domain/Sources/FeatureFlagsKit/Models/RawFeatureValue.swift": {
+    "mtime": 1786121907.3686357,
+    "seen": 1788718812.442027,
+    "ast_hash": "729f2c6995de3022278431a52bde63a6",
+    "semantic_hash": "729f2c6995de3022278431a52bde63a6"
+  },
+  "Domain/Sources/GenericServiceKit/CommandExecutionData.swift": {
+    "mtime": 1786121907.3690546,
+    "seen": 1788718812.442028,
+    "ast_hash": "5e5d36395badb9891e6606b291f8619e",
+    "semantic_hash": "5e5d36395badb9891e6606b291f8619e"
+  },
+  "Domain/Sources/GenericServiceKit/DataServiceKitError.swift": {
+    "mtime": 1786121907.3692505,
+    "seen": 1788718812.442029,
+    "ast_hash": "2b388ff518c76a4d62039606eb1c5277",
+    "semantic_hash": "2b388ff518c76a4d62039606eb1c5277"
+  },
+  "Domain/Sources/GenericServiceKit/DispatchQueueInterface.swift": {
+    "mtime": 1786121907.3696978,
+    "seen": 1788718812.442029,
+    "ast_hash": "fe5523008d1604ec749bee198079f135",
+    "semantic_hash": "fe5523008d1604ec749bee198079f135"
+  },
+  "Domain/Sources/GenericServiceKit/GenericConcurrentDataService.swift": {
+    "mtime": 1786121907.3699272,
+    "seen": 1788718812.4420302,
+    "ast_hash": "a8cba5ee3adc3c85ffc8dcfe34b5597a",
+    "semantic_hash": "a8cba5ee3adc3c85ffc8dcfe34b5597a"
+  },
+  "Domain/Sources/GenericServiceKit/GenericDataServiceActorProtocol.swift": {
+    "mtime": 1786121907.370133,
+    "seen": 1788718812.4420311,
+    "ast_hash": "7fa538c2705044edcbc28d2a9c31e7e2",
+    "semantic_hash": "7fa538c2705044edcbc28d2a9c31e7e2"
+  },
+  "Domain/Sources/GenericServiceKit/GenericDataServiceCommand.swift": {
+    "mtime": 1786121907.370519,
+    "seen": 1788718812.4420311,
+    "ast_hash": "c0d1ee33edd8d3b2ee5ed7d70ed1cd79",
+    "semantic_hash": "c0d1ee33edd8d3b2ee5ed7d70ed1cd79"
+  },
+  "Domain/Sources/GenericServiceKit/GenericDataServiceProtocol.swift": {
+    "mtime": 1786121907.3707256,
+    "seen": 1788718812.442032,
+    "ast_hash": "046f6e3678a57167d53ba013f20c5fb3",
+    "semantic_hash": "046f6e3678a57167d53ba013f20c5fb3"
+  },
+  "Domain/Sources/GenericServiceKit/GenericServiceData.swift": {
+    "mtime": 1786121907.3709047,
+    "seen": 1788718812.4420328,
+    "ast_hash": "bd3d4ec5bad7df0119e357104672e522",
+    "semantic_hash": "bd3d4ec5bad7df0119e357104672e522"
+  },
+  "Domain/Sources/GenericServiceKit/ServiceLocator/DataServiceLocator.swift": {
+    "mtime": 1786121907.3712454,
+    "seen": 1788718812.4420328,
+    "ast_hash": "cc3271ac3bdea3bef9230a45fd70c1f3",
+    "semantic_hash": "cc3271ac3bdea3bef9230a45fd70c1f3"
+  },
+  "Domain/Sources/GenericServiceKit/ServiceLocator/LazyServiceLocator.swift": {
+    "mtime": 1786121907.371546,
+    "seen": 1788718812.442034,
+    "ast_hash": "b688b4e433feda00aa382e442321c503",
+    "semantic_hash": "b688b4e433feda00aa382e442321c503"
+  },
+  "Domain/Sources/GenericServiceKit/ServiceLocator/ServiceLocator.swift": {
+    "mtime": 1786121907.3718138,
+    "seen": 1788718812.442034,
+    "ast_hash": "5c94edb194b7c3e7dcfd710a5c4f5035",
+    "semantic_hash": "5c94edb194b7c3e7dcfd710a5c4f5035"
+  },
+  "Domain/Sources/ViewModelKit/BaseListViewModelInterface.swift": {
+    "mtime": 1786121907.3721478,
+    "seen": 1788718812.442035,
+    "ast_hash": "1a557d4d728d4542929259b0db26f3cb",
+    "semantic_hash": "1a557d4d728d4542929259b0db26f3cb"
+  },
+  "Domain/Sources/ViewModelKit/BaseViewModel.swift": {
+    "mtime": 1786121907.3724482,
+    "seen": 1788718812.442036,
+    "ast_hash": "b3b8f0fa7dbe7a6ed869c680c30c1508",
+    "semantic_hash": "b3b8f0fa7dbe7a6ed869c680c30c1508"
+  },
+  "Domain/Sources/ViewModelKit/StateContext.swift": {
+    "mtime": 1786121907.3726387,
+    "seen": 1788718812.442037,
+    "ast_hash": "a64ea35b9d7601eba999e6ecf5f0d1a1",
+    "semantic_hash": "a64ea35b9d7601eba999e6ecf5f0d1a1"
+  },
+  "Domain/Sources/ViewModelKit/StateTransitioning.swift": {
+    "mtime": 1786121907.372851,
+    "seen": 1788718812.442037,
+    "ast_hash": "5d68c57976b714d113b65910414e96f8",
+    "semantic_hash": "5d68c57976b714d113b65910414e96f8"
+  },
+  "Domain/Sources/ViewModelKit/ViewModelAction.swift": {
+    "mtime": 1786121907.3732264,
+    "seen": 1788718812.442038,
+    "ast_hash": "96d466a81f9317aece37acb30cdd29e8",
+    "semantic_hash": "96d466a81f9317aece37acb30cdd29e8"
+  },
+  "Domain/Sources/ViewModelKit/ViewModelConsumer.swift": {
+    "mtime": 1786121907.373591,
+    "seen": 1788718812.442039,
+    "ast_hash": "cf8c70c0f4e0a780f28299ccac3fc806",
+    "semantic_hash": "cf8c70c0f4e0a780f28299ccac3fc806"
+  },
+  "Domain/Sources/ViewModelKit/ViewModelInterface.swift": {
+    "mtime": 1786121907.3738084,
+    "seen": 1788718812.442039,
+    "ast_hash": "712b86834c70dca68878c112491098d2",
+    "semantic_hash": "712b86834c70dca68878c112491098d2"
+  },
+  "Domain/Sources/ViewModelKit/ViewModelState.swift": {
+    "mtime": 1786121907.3740065,
+    "seen": 1788718812.44204,
+    "ast_hash": "d275cbee668ebfe4cb2a8fcc7826bd91",
+    "semantic_hash": "d275cbee668ebfe4cb2a8fcc7826bd91"
+  },
+  "Domain/Sources/ViewModelKit/ViewModelStateMachine.swift": {
+    "mtime": 1786121907.3741882,
+    "seen": 1788718812.4420412,
+    "ast_hash": "cbffe3a7f84855a2490bed6f3dbfe5aa",
+    "semantic_hash": "cbffe3a7f84855a2490bed6f3dbfe5aa"
+  },
+  "Domain/Tests/BaseUseCaseKitTests/BaseUseCaseKitTests.swift": {
+    "mtime": 1786121907.374496,
+    "seen": 1788718812.442042,
+    "ast_hash": "bf7b0dfc0d4db09ff25aadde2d915826",
+    "semantic_hash": "bf7b0dfc0d4db09ff25aadde2d915826"
+  },
+  "Domain/Tests/CottonSearchTests/ImmediateDispatchQueue.swift": {
+    "mtime": 1786121907.3747375,
+    "seen": 1788718812.442042,
+    "ast_hash": "f8ef6e9e6a527ace2b4be518ee683009",
+    "semantic_hash": "f8ef6e9e6a527ace2b4be518ee683009"
+  },
+  "Domain/Tests/CottonSearchTests/MockDNSResolvingStrategy.swift": {
+    "mtime": 1786121907.374989,
+    "seen": 1788718812.4420428,
+    "ast_hash": "6e3dee8be99be1e53cb905e95211fde5",
+    "semantic_hash": "6e3dee8be99be1e53cb905e95211fde5"
+  },
+  "Domain/Tests/CottonSearchTests/MockSearchAutocompleteStrategy.swift": {
+    "mtime": 1786121907.3752422,
+    "seen": 1788718812.442044,
+    "ast_hash": "ec226a9cbb05bfb3ab09ae897bd6ba0d",
+    "semantic_hash": "ec226a9cbb05bfb3ab09ae897bd6ba0d"
+  },
+  "Domain/Tests/CottonSearchTests/MockSearchStrategiesFactory.swift": {
+    "mtime": 1786121907.3759546,
+    "seen": 1788718812.442044,
+    "ast_hash": "8ec96e246859d543b37937fc8f5b71f9",
+    "semantic_hash": "8ec96e246859d543b37937fc8f5b71f9"
+  },
+  "Domain/Tests/CottonSearchTests/SearchDataServiceTests.swift": {
+    "mtime": 1786121907.3762548,
+    "seen": 1788718812.442045,
+    "ast_hash": "d22ca6ead6fd893da601bbd2ed866b32",
+    "semantic_hash": "d22ca6ead6fd893da601bbd2ed866b32"
+  },
+  "Domain/Tests/CottonViewModelsTests/AllTabsStateTransitioningTests.swift": {
+    "mtime": 1786121907.3765583,
+    "seen": 1788718812.4420512,
+    "ast_hash": "931ab7486f1090bba6138923db04b273",
+    "semantic_hash": "931ab7486f1090bba6138923db04b273"
+  },
+  "Domain/Tests/CottonViewModelsTests/Fixtures/WebViewVMFixture.swift": {
+    "mtime": 1786121907.3768766,
+    "seen": 1788718812.4420521,
+    "ast_hash": "df1082b327ac034921635ad0e305ac97",
+    "semantic_hash": "df1082b327ac034921635ad0e305ac97"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/ErrorTypes.swift": {
+    "mtime": 1786121907.3769693,
+    "seen": 1788718812.442053,
+    "ast_hash": "b72ba9d9ec791cf38514cd58cff7f39c",
+    "semantic_hash": "b72ba9d9ec791cf38514cd58cff7f39c"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/JSPluginsProgramMocks.swift": {
+    "mtime": 1786121907.3772664,
+    "seen": 1788718812.4420538,
+    "ast_hash": "7e9f5b01ff6f3d7bb84b84610d4f24ca",
+    "semantic_hash": "7e9f5b01ff6f3d7bb84b84610d4f24ca"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/MockCreateSearchURLUseCase.swift": {
+    "mtime": 1786121907.3776717,
+    "seen": 1788718812.4420538,
+    "ast_hash": "8e3e9ef5d96975d5a37870fc96335b90",
+    "semantic_hash": "8e3e9ef5d96975d5a37870fc96335b90"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/MockFetchAutocompleteSuggestionsUseCase.swift": {
+    "mtime": 1786121907.3780901,
+    "seen": 1788718812.442055,
+    "ast_hash": "9493b2eef63f2914d12ac03f1f5523e8",
+    "semantic_hash": "9493b2eef63f2914d12ac03f1f5523e8"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/MockReplaceSelectedTabUseCase.swift": {
+    "mtime": 1786121907.3784301,
+    "seen": 1788718812.442056,
+    "ast_hash": "a47f2ad91866f38db3d1ce8d0b043e84",
+    "semantic_hash": "a47f2ad91866f38db3d1ce8d0b043e84"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/MockResolveDNSUseCase.swift": {
+    "mtime": 1786121907.3786905,
+    "seen": 1788718812.442056,
+    "ast_hash": "83e2f85f420271a47072a2cd8bf7b83c",
+    "semantic_hash": "83e2f85f420271a47072a2cd8bf7b83c"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/MockSearchBarContext.swift": {
+    "mtime": 1786121907.3793554,
+    "seen": 1788718812.442057,
+    "ast_hash": "e4d93b6a8dbcdaaf907c4d374288c35d",
+    "semantic_hash": "e4d93b6a8dbcdaaf907c4d374288c35d"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/MockSelectedTabUseCase.swift": {
+    "mtime": 1786121907.379487,
+    "seen": 1788718812.442058,
+    "ast_hash": "e786d44d2e5e9355cb78d80dfc05b1a0",
+    "semantic_hash": "e786d44d2e5e9355cb78d80dfc05b1a0"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/NavigationActionableMocks.swift": {
+    "mtime": 1786121907.3798094,
+    "seen": 1788718812.442058,
+    "ast_hash": "79a6a9be0f443286bfb2179b108e6c4e",
+    "semantic_hash": "79a6a9be0f443286bfb2179b108e6c4e"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/WebViewContextMocks.swift": {
+    "mtime": 1786121907.3801312,
+    "seen": 1788718812.442059,
+    "ast_hash": "0bc1040b6e02a63df7d83e7c69dfc341",
+    "semantic_hash": "0bc1040b6e02a63df7d83e7c69dfc341"
+  },
+  "Domain/Tests/CottonViewModelsTests/Mocks/WebViewMocks.swift": {
+    "mtime": 1786121907.3803463,
+    "seen": 1788718812.44206,
+    "ast_hash": "96258b2ed82a00784b501aea2cbfa9a5",
+    "semantic_hash": "96258b2ed82a00784b501aea2cbfa9a5"
+  },
+  "Domain/Tests/CottonViewModelsTests/SearchBarVM/SearchBarModeHandlerTests.swift": {
+    "mtime": 1786121907.3806334,
+    "seen": 1788718812.44206,
+    "ast_hash": "b23f4da4f427ff4465848af0153efeef",
+    "semantic_hash": "b23f4da4f427ff4465848af0153efeef"
+  },
+  "Domain/Tests/CottonViewModelsTests/SearchBarVM/SearchBarViewModelImplTests.swift": {
+    "mtime": 1786126444.4563427,
+    "seen": 1788718812.442061,
+    "ast_hash": "21f8ab20581b234eeb9750aaf4d3fd3c",
+    "semantic_hash": "21f8ab20581b234eeb9750aaf4d3fd3c"
+  },
+  "Domain/Tests/CottonViewModelsTests/SearchSuggestionsVM/SearchSuggestionsStateTransitioningTests.swift": {
+    "mtime": 1786121907.3815544,
+    "seen": 1788718812.4420621,
+    "ast_hash": "0793bd98c471f38c78cebbf94080462d",
+    "semantic_hash": "0793bd98c471f38c78cebbf94080462d"
+  },
+  "Domain/Tests/CottonViewModelsTests/SearchSuggestionsVM/SearchSuggestionsViewModelImplTests.swift": {
+    "mtime": 1786121907.3818295,
+    "seen": 1788718812.442063,
+    "ast_hash": "e2595d028f88deafb39ad233f9f75631",
+    "semantic_hash": "e2595d028f88deafb39ad233f9f75631"
+  },
+  "Domain/Tests/CottonViewModelsTests/SearchSuggestionsVM/SearchSuggestionsViewStateTests.swift": {
+    "mtime": 1786121907.382097,
+    "seen": 1788718812.442063,
+    "ast_hash": "78e969d28eff94e388539e809bf900a4",
+    "semantic_hash": "78e969d28eff94e388539e809bf900a4"
+  },
+  "Domain/Tests/CottonViewModelsTests/TabVM/TabStateTransitioningTests.swift": {
+    "mtime": 1786126379.3795733,
+    "seen": 1788718812.4420638,
+    "ast_hash": "5235eef3201677372d9f66bc0e27563b",
+    "semantic_hash": "5235eef3201677372d9f66bc0e27563b"
+  },
+  "Domain/Tests/CottonViewModelsTests/TopSitesVM/TopSitesStateTransitioningTests.swift": {
+    "mtime": 1786140725.170923,
+    "seen": 1788718812.442065,
+    "ast_hash": "833df343162089d9b70632c9cb9aacb1",
+    "semantic_hash": "833df343162089d9b70632c9cb9aacb1"
+  },
+  "Domain/Tests/CottonViewModelsTests/TopSitesVM/TopSitesViewModelImplTests.swift": {
+    "mtime": 1786140725.1788304,
+    "seen": 1788718812.442065,
+    "ast_hash": "9282d5ce89e6978eaf1abb2d87bc91a3",
+    "semantic_hash": "9282d5ce89e6978eaf1abb2d87bc91a3"
+  },
+  "Domain/Tests/CottonViewModelsTests/Utils/XCTestCase+Extension.swift": {
+    "mtime": 1786121907.3824139,
+    "seen": 1788718812.442066,
+    "ast_hash": "dcae40797b86a939f041f3706e0b2a67",
+    "semantic_hash": "dcae40797b86a939f041f3706e0b2a67"
+  },
+  "Domain/Tests/CottonViewModelsTests/WebViewVM/WebViewStateTransitioningTests.swift": {
+    "mtime": 1786121907.3826797,
+    "seen": 1788718812.442067,
+    "ast_hash": "882e14379a4d66845ae19a0ddc03ae03",
+    "semantic_hash": "882e14379a4d66845ae19a0ddc03ae03"
+  },
+  "Domain/Tests/CottonViewModelsTests/WebViewVM/WebViewVMConcurrencyTests.swift": {
+    "mtime": 1786121907.3828866,
+    "seen": 1788718812.442067,
+    "ast_hash": "e73b4c257fcd31cb8fb9ee2815ea41fc",
+    "semantic_hash": "e73b4c257fcd31cb8fb9ee2815ea41fc"
+  },
+  "Domain/Tests/CottonViewModelsTests/WebViewVM/WebViewVmDNSoverHTTPSConcurrencyTests.swift": {
+    "mtime": 1786121907.3832965,
+    "seen": 1788718812.4420679,
+    "ast_hash": "c0e4380556e04fae5e5842f6ea466a48",
+    "semantic_hash": "c0e4380556e04fae5e5842f6ea466a48"
+  },
+  "Domain/Tests/DomainTests/DomainTests.swift": {
+    "mtime": 1786121907.3840475,
+    "seen": 1788718812.442069,
+    "ast_hash": "f6e44dd707706d35ee0eedc2e3254a68",
+    "semantic_hash": "f6e44dd707706d35ee0eedc2e3254a68"
+  },
+  "Domain/Tests/GenericServiceKitTests/GenericServiceKitTests.swift": {
+    "mtime": 1786121907.3842971,
+    "seen": 1788718812.442069,
+    "ast_hash": "bd7a35187a513e5ed9073aa5cfccb3fc",
+    "semantic_hash": "bd7a35187a513e5ed9073aa5cfccb3fc"
+  },
+  "Domain/Tests/ViewModelKitTests/ViewModelStateMachineTests.swift": {
+    "mtime": 1786121907.3846803,
+    "seen": 1788718812.44207,
+    "ast_hash": "9345dc6d1745f451f8e801a288f7904d",
+    "semantic_hash": "9345dc6d1745f451f8e801a288f7904d"
+  },
+  "Presentation/Package.swift": {
+    "mtime": 1786121907.3857024,
+    "seen": 1788718812.442071,
+    "ast_hash": "34cda832443cfca83b80813bb1868ac7",
+    "semantic_hash": "34cda832443cfca83b80813bb1868ac7"
+  },
+  "Presentation/Sources/CommonDelegatesLibrary/DownloadPanelPresenter.swift": {
+    "mtime": 1786121907.3861692,
+    "seen": 1788718812.4420722,
+    "ast_hash": "8fdedc7d22f58bedf3539c1596b8f029",
+    "semantic_hash": "8fdedc7d22f58bedf3539c1596b8f029"
+  },
+  "Presentation/Sources/CommonDelegatesLibrary/FullSiteNavigationComponent.swift": {
+    "mtime": 1786121907.3865063,
+    "seen": 1788718812.442073,
+    "ast_hash": "b2c2234c50d4f88d98cff6da61eb84ea",
+    "semantic_hash": "b2c2234c50d4f88d98cff6da61eb84ea"
+  },
+  "Presentation/Sources/CommonDelegatesLibrary/GlobalMenuDelegate.swift": {
+    "mtime": 1786121907.3867967,
+    "seen": 1788718812.442073,
+    "ast_hash": "e5fc7dc89fb816ee078232aae24a8822",
+    "semantic_hash": "e5fc7dc89fb816ee078232aae24a8822"
+  },
+  "Presentation/Sources/CommonDelegatesLibrary/MediaLinksPresenter.swift": {
+    "mtime": 1786121907.3871512,
+    "seen": 1788718812.442074,
+    "ast_hash": "ecbd208e065ef6b8a6c0bb84da38cf8e",
+    "semantic_hash": "ecbd208e065ef6b8a6c0bb84da38cf8e"
+  },
+  "Presentation/Sources/CommonDelegatesLibrary/SiteNavigationComponent.swift": {
+    "mtime": 1786121907.3874047,
+    "seen": 1788718812.4420748,
+    "ast_hash": "152c1733cbe3b4257606c2b4f9467e50",
+    "semantic_hash": "152c1733cbe3b4257606c2b4f9467e50"
+  },
+  "Presentation/Sources/CottonDesignKit/Buttons/DisableableButton.swift": {
+    "mtime": 1786121907.387774,
+    "seen": 1788718812.4420748,
+    "ast_hash": "6ca538046aeafdeef0b4d97a973b3c1a",
+    "semantic_hash": "6ca538046aeafdeef0b4d97a973b3c1a"
+  },
+  "Presentation/Sources/CottonDesignKit/Buttons/MenuButton.swift": {
+    "mtime": 1786121907.3880591,
+    "seen": 1788718812.442076,
+    "ast_hash": "18018b44ba0aad955ca7f4dd3cdec142",
+    "semantic_hash": "18018b44ba0aad955ca7f4dd3cdec142"
+  },
+  "Presentation/Sources/CottonDesignKit/UIColour+CatowserExtensions.swift": {
+    "mtime": 1786121907.3884432,
+    "seen": 1788718812.442077,
+    "ast_hash": "cbb400480883e40edb8555eafd03e860",
+    "semantic_hash": "cbb400480883e40edb8555eafd03e860"
+  },
+  "Presentation/Sources/CottonDesignKit/UIConstants.swift": {
+    "mtime": 1786121907.3888414,
+    "seen": 1788718812.442077,
+    "ast_hash": "596149258a6b50387aee88b6620652ad",
+    "semantic_hash": "596149258a6b50387aee88b6620652ad"
+  },
+  "Presentation/Sources/Presentation/Presentation.swift": {
+    "mtime": 1786121907.3889446,
+    "seen": 1788718812.4420779,
+    "ast_hash": "3210c97374157059e320d58e02ca5ca5",
+    "semantic_hash": "3210c97374157059e320d58e02ca5ca5"
+  },
+  "Presentation/Sources/SearchSuggestions/SearchSuggestionsViewController.swift": {
+    "mtime": 1786121907.3891897,
+    "seen": 1788718812.442079,
+    "ast_hash": "397f11db2b6387ee1db47b16884b764c",
+    "semantic_hash": "397f11db2b6387ee1db47b16884b764c"
+  },
+  "Presentation/Sources/SearchViews/Phone/ClearCancelPairButton.swift": {
+    "mtime": 1786121907.3894634,
+    "seen": 1788718812.44208,
+    "ast_hash": "bb2af3d39fcd0d12fba805fd3d5492e0",
+    "semantic_hash": "bb2af3d39fcd0d12fba805fd3d5492e0"
+  },
+  "Presentation/Sources/SearchViews/Phone/SearchBarViewV2.swift": {
+    "mtime": 1786121907.3897927,
+    "seen": 1788718812.44208,
+    "ast_hash": "e1c6eeb1753522ec8ca7e8032ee3d192",
+    "semantic_hash": "e1c6eeb1753522ec8ca7e8032ee3d192"
+  },
+  "Presentation/Sources/SearchViews/Phone/SearchFieldView.swift": {
+    "mtime": 1786121907.3900824,
+    "seen": 1788718812.442081,
+    "ast_hash": "4dd47b8957d09fcf57cc81a145a23b14",
+    "semantic_hash": "4dd47b8957d09fcf57cc81a145a23b14"
+  },
+  "Presentation/Sources/SearchViews/Phone/SearchFieldViewModel.swift": {
+    "mtime": 1786121907.3902736,
+    "seen": 1788718812.4420822,
+    "ast_hash": "1b2d66242d5f42c042321eef6fe79a44",
+    "semantic_hash": "1b2d66242d5f42c042321eef6fe79a44"
+  },
+  "Presentation/Sources/SearchViews/Phone/SmartphoneSearchBarViewController.swift": {
+    "mtime": 1786121907.3909845,
+    "seen": 1788718812.4420822,
+    "ast_hash": "16e72c21cb2e2d01c97a766907fc8fa0",
+    "semantic_hash": "16e72c21cb2e2d01c97a766907fc8fa0"
+  },
+  "Presentation/Sources/SearchViews/Phone/TappableTextOverlayView.swift": {
+    "mtime": 1786121907.391047,
+    "seen": 1788718812.4420831,
+    "ast_hash": "d03519105caf596022805ed17438f9e5",
+    "semantic_hash": "d03519105caf596022805ed17438f9e5"
+  },
+  "Presentation/Sources/SearchViews/SearchBarBaseViewController.swift": {
+    "mtime": 1786121907.391401,
+    "seen": 1788718812.442084,
+    "ast_hash": "b450a6bcda04d59293f0808d67893b6b",
+    "semantic_hash": "b450a6bcda04d59293f0808d67893b6b"
+  },
+  "Presentation/Sources/SearchViews/SearchBarLegacyView.swift": {
+    "mtime": 1786121907.3916614,
+    "seen": 1788718812.442084,
+    "ast_hash": "19532fd37cb62a95c27f4b0433b24e48",
+    "semantic_hash": "19532fd37cb62a95c27f4b0433b24e48"
+  },
+  "Presentation/Sources/SearchViews/Tablet/TabletSearchBarViewController.swift": {
+    "mtime": 1786121907.3919191,
+    "seen": 1788718812.442085,
+    "ast_hash": "de19edf8fc4910e93721710914c82e0b",
+    "semantic_hash": "de19edf8fc4910e93721710914c82e0b"
+  },
+  "Presentation/Sources/SearchViews/Tablet/TabletSearchBarViewV2.swift": {
+    "mtime": 1786121907.392133,
+    "seen": 1788718812.442086,
+    "ast_hash": "a99d187a390da5c77f7459a004ffdc85",
+    "semantic_hash": "a99d187a390da5c77f7459a004ffdc85"
+  },
+  "Presentation/Sources/ViewsBase/BaseModels/UIFrameworkType+Feature.swift": {
+    "mtime": 1786121907.3924546,
+    "seen": 1788718812.442086,
+    "ast_hash": "bba2ab76af6be5bbc2e4e37ddc54d92b",
+    "semantic_hash": "bba2ab76af6be5bbc2e4e37ddc54d92b"
+  },
+  "Presentation/Sources/ViewsBase/BaseModels/UIFrameworkType.swift": {
+    "mtime": 1786121907.3928475,
+    "seen": 1788718812.442087,
+    "ast_hash": "478b429278da0f329cd51acab72103e0",
+    "semantic_hash": "478b429278da0f329cd51acab72103e0"
+  },
+  "Presentation/Sources/ViewsBase/BaseViewController.swift": {
+    "mtime": 1786121907.393118,
+    "seen": 1788718812.442088,
+    "ast_hash": "45565fe61815b2498289b16eed4d272c",
+    "semantic_hash": "45565fe61815b2498289b16eed4d272c"
+  },
+  "Presentation/Sources/ViewsBase/Extensions/UIImage+CatowserExtensions.swift": {
+    "mtime": 1786121907.3934317,
+    "seen": 1788718812.442088,
+    "ast_hash": "77222ac794f1741263565d26660c000a",
+    "semantic_hash": "77222ac794f1741263565d26660c000a"
+  },
+  "Presentation/Sources/ViewsBase/Extensions/UIViewController+CatowserExtensions.swift": {
+    "mtime": 1786121907.3936188,
+    "seen": 1788718812.4420888,
+    "ast_hash": "1b5409212b2a8e9e63bc40d088799be9",
+    "semantic_hash": "1b5409212b2a8e9e63bc40d088799be9"
+  },
+  "Presentation/Sources/ViewsBase/Theme/Color+Extension.swift": {
+    "mtime": 1786121907.3939707,
+    "seen": 1788718812.44209,
+    "ast_hash": "7468f0b009fe2946af3d2c301580afef",
+    "semantic_hash": "7468f0b009fe2946af3d2c301580afef"
+  },
+  "Presentation/Sources/ViewsBase/Theme/LightTheme.swift": {
+    "mtime": 1786121907.394026,
+    "seen": 1788718812.442091,
+    "ast_hash": "f652394f97bca00de0db7d1bcd6ed0d8",
+    "semantic_hash": "f652394f97bca00de0db7d1bcd6ed0d8"
+  },
+  "Presentation/Sources/ViewsBase/Theme/Theme.swift": {
+    "mtime": 1786121907.3942707,
+    "seen": 1788718812.442092,
+    "ast_hash": "9b8b6d75942c00a52048e3f63764bdda",
+    "semantic_hash": "9b8b6d75942c00a52048e3f63764bdda"
+  },
+  "Presentation/Sources/ViewsBase/Theme/ThemeProvider.swift": {
+    "mtime": 1786121907.3944957,
+    "seen": 1788718812.442092,
+    "ast_hash": "0ad9f508ad1e50bf2472ff1d60702e29",
+    "semantic_hash": "0ad9f508ad1e50bf2472ff1d60702e29"
+  },
+  "Presentation/Sources/ViewsBase/Theme/UIColor+Extension.swift": {
+    "mtime": 1786121907.3945503,
+    "seen": 1788718812.4420931,
+    "ast_hash": "05cc096023444daf8de879e4682d3f70",
+    "semantic_hash": "05cc096023444daf8de879e4682d3f70"
+  },
+  "catowser/AppDelegate.swift": {
+    "mtime": 1786121907.3987827,
+    "seen": 1788718812.442094,
+    "ast_hash": "a80716500b779cc9e0b7c1229205857f",
+    "semantic_hash": "a80716500b779cc9e0b7c1229205857f"
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+    "mtime": 1786121907.3989007,
+    "seen": 1788718812.442095,
+    "ast_hash": "33e93318fa24ba0b494bf4a0cefb8fa4",
+    "semantic_hash": "33e93318fa24ba0b494bf4a0cefb8fa4"
+  },
+  "catowser/Assets.xcassets/Contents.json": {
+    "mtime": 1786121907.4008822,
+    "seen": 1788718812.442095,
+    "ast_hash": "31cc68f34934a99c0b0c1bebde56309c",
+    "semantic_hash": "31cc68f34934a99c0b0c1bebde56309c"
+  },
+  "catowser/Assets.xcassets/Logo.imageset/Contents.json": {
+    "mtime": 1786121907.4009707,
+    "seen": 1788718812.4420962,
+    "ast_hash": "33a3594044970490eb6bb344931b2f9f",
+    "semantic_hash": "33a3594044970490eb6bb344931b2f9f"
+  },
+  "catowser/Assets.xcassets/instagram.imageset/Contents.json": {
+    "mtime": 1786121907.4011643,
+    "seen": 1788718812.442097,
+    "ast_hash": "04462a84d3f38bd517bcaad27ed04c54",
+    "semantic_hash": "04462a84d3f38bd517bcaad27ed04c54"
+  },
+  "catowser/Assets.xcassets/nav-back.imageset/Contents.json": {
+    "mtime": 1786121907.401426,
+    "seen": 1788718812.442097,
+    "ast_hash": "6d9a476e4e02d498d20cd9dcf8a38b62",
+    "semantic_hash": "6d9a476e4e02d498d20cd9dcf8a38b62"
+  },
+  "catowser/Assets.xcassets/nav-downloads.imageset/Contents.json": {
+    "mtime": 1786121907.4016356,
+    "seen": 1788718812.442098,
+    "ast_hash": "0ae6438c1adaa709bc0c66f3a3dc8888",
+    "semantic_hash": "0ae6438c1adaa709bc0c66f3a3dc8888"
+  },
+  "catowser/Assets.xcassets/nav-forward.imageset/Contents.json": {
+    "mtime": 1786121907.4018476,
+    "seen": 1788718812.4420989,
+    "ast_hash": "13cfe3f64969cb36922476d783d94297",
+    "semantic_hash": "13cfe3f64969cb36922476d783d94297"
+  },
+  "catowser/Assets.xcassets/nav-refresh.imageset/Contents.json": {
+    "mtime": 1786121907.4020674,
+    "seen": 1788718812.4421,
+    "ast_hash": "421b55673a413d811770539ee545032d",
+    "semantic_hash": "421b55673a413d811770539ee545032d"
+  },
+  "catowser/Assets.xcassets/newTabButton-Normal.imageset/Contents.json": {
+    "mtime": 1786121907.4022942,
+    "seen": 1788718812.442101,
+    "ast_hash": "44c9a22a42004ace405a6542f16ba4ed",
+    "semantic_hash": "44c9a22a42004ace405a6542f16ba4ed"
+  },
+  "catowser/Assets.xcassets/tabClose.imageset/Contents.json": {
+    "mtime": 1786121907.4025216,
+    "seen": 1788718812.442102,
+    "ast_hash": "ab247ddab90b2c89a9fac731f4e6720e",
+    "semantic_hash": "ab247ddab90b2c89a9fac731f4e6720e"
+  },
+  "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/Contents.json": {
+    "mtime": 1786121907.4027417,
+    "seen": 1788718812.4421031,
+    "ast_hash": "d84e42c04f5b86c21ffee327844d0bf1",
+    "semantic_hash": "d84e42c04f5b86c21ffee327844d0bf1"
+  },
+  "catowser/Assets.xcassets/youtube.imageset/Contents.json": {
+    "mtime": 1786121907.4029624,
+    "seen": 1788718812.442104,
+    "ast_hash": "49d07780ca9f7d6149cae70521e95c32",
+    "semantic_hash": "49d07780ca9f7d6149cae70521e95c32"
+  },
+  "catowser/Browser/LoadingProgressViewController.swift": {
+    "mtime": 1786121907.4047692,
+    "seen": 1788718812.442104,
+    "ast_hash": "857555b72184dfc2a576652cdb8e51dd",
+    "semantic_hash": "857555b72184dfc2a576652cdb8e51dd"
+  },
+  "catowser/Browser/MainBrowserV2ViewController.swift": {
+    "mtime": 1786121907.4049902,
+    "seen": 1788718812.442105,
+    "ast_hash": "25a63d5d99407dab3000c58dfa0e7c5d",
+    "semantic_hash": "25a63d5d99407dab3000c58dfa0e7c5d"
+  },
+  "catowser/Browser/MainBrowserViewController.swift": {
+    "mtime": 1786121907.405131,
+    "seen": 1788718812.442106,
+    "ast_hash": "61481ff8f2f2c9a6c82debbcc537d9d5",
+    "semantic_hash": "61481ff8f2f2c9a6c82debbcc537d9d5"
+  },
+  "catowser/Browser/TagsSiteDataSource.swift": {
+    "mtime": 1786121907.4051847,
+    "seen": 1788718812.442107,
+    "ast_hash": "6cbfd459c46759629e8ef196f1236dfa",
+    "semantic_hash": "6cbfd459c46759629e8ef196f1236dfa"
+  },
+  "catowser/Browser/UIViewController+MainBundle.swift": {
+    "mtime": 1786121907.4052405,
+    "seen": 1788718812.442108,
+    "ast_hash": "c34f3294424dca4698791ff0a11367ab",
+    "semantic_hash": "c34f3294424dca4698791ff0a11367ab"
+  },
+  "catowser/Browser/View/DummyDelegateForPreview.swift": {
+    "mtime": 1786121907.4055676,
+    "seen": 1788718812.442108,
+    "ast_hash": "a326346b87d78a90856db0b40d915d24",
+    "semantic_hash": "a326346b87d78a90856db0b40d915d24"
+  },
+  "catowser/Browser/View/MainBrowserView.swift": {
+    "mtime": 1786121907.4058514,
+    "seen": 1788718812.4421089,
+    "ast_hash": "14d211e669c1f2b8f223db5d0d5ae721",
+    "semantic_hash": "14d211e669c1f2b8f223db5d0d5ae721"
+  },
+  "catowser/Browser/View/MainBrowserViewModel.swift": {
+    "mtime": 1786121907.4062722,
+    "seen": 1788718812.44211,
+    "ast_hash": "2fce674a05bfc23d90d6250c4dc3d7a2",
+    "semantic_hash": "2fce674a05bfc23d90d6250c4dc3d7a2"
+  },
+  "catowser/Browser/View/PhoneView.swift": {
+    "mtime": 1786121907.406605,
+    "seen": 1788718812.442111,
+    "ast_hash": "aa8d0ff4956437c86ab3da46ea8910e2",
+    "semantic_hash": "aa8d0ff4956437c86ab3da46ea8910e2"
+  },
+  "catowser/Browser/View/TabletView.swift": {
+    "mtime": 1786121907.4067554,
+    "seen": 1788718812.442112,
+    "ast_hash": "2f8c98ba2188400e1295398adb6b860f",
+    "semantic_hash": "2f8c98ba2188400e1295398adb6b860f"
+  },
+  "catowser/BrowserContent/BlankWebPageViewController.swift": {
+    "mtime": 1786121907.4069452,
+    "seen": 1788718812.442113,
+    "ast_hash": "62963b4f32f43dbc58f352e34dc2cbb9",
+    "semantic_hash": "62963b4f32f43dbc58f352e34dc2cbb9"
+  },
+  "catowser/BrowserContent/BrowserContentView.swift": {
+    "mtime": 1786121907.4072275,
+    "seen": 1788718812.442114,
+    "ast_hash": "7f208ac245916cc2b0c1cac89fdf8012",
+    "semantic_hash": "7f208ac245916cc2b0c1cac89fdf8012"
+  },
+  "catowser/BrowserContent/BrowserContentViewModel.swift": {
+    "mtime": 1786121907.4075515,
+    "seen": 1788718812.442115,
+    "ast_hash": "13562c8d098950a86a4fac67dccd4487",
+    "semantic_hash": "13562c8d098950a86a4fac67dccd4487"
+  },
+  "catowser/BrowserContent/TopSites/SiteCollectionViewCell.swift": {
+    "mtime": 1786121907.4079003,
+    "seen": 1788718812.442116,
+    "ast_hash": "2a12ab3f7a465e6a052799ea3e5062c8",
+    "semantic_hash": "2a12ab3f7a465e6a052799ea3e5062c8"
+  },
+  "catowser/BrowserContent/TopSites/TitledImageView.swift": {
+    "mtime": 1786121907.4083827,
+    "seen": 1788718812.4421172,
+    "ast_hash": "debc7f3b040cf8fef75bec1b493f3a02",
+    "semantic_hash": "debc7f3b040cf8fef75bec1b493f3a02"
+  },
+  "catowser/BrowserContent/TopSites/TopSitesLegacyView.swift": {
+    "mtime": 1786121907.4085767,
+    "seen": 1788718812.442118,
+    "ast_hash": "2228289630a6e65df1abaf82206a881c",
+    "semantic_hash": "2228289630a6e65df1abaf82206a881c"
+  },
+  "catowser/BrowserContent/TopSites/TopSitesView.swift": {
+    "mtime": 1786121907.4088933,
+    "seen": 1788718812.442119,
+    "ast_hash": "83231097d93351f4c419ab699ea86554",
+    "semantic_hash": "83231097d93351f4c419ab699ea86554"
+  },
+  "catowser/BrowserContent/TopSites/TopSitesViewController.swift": {
+    "mtime": 1786121907.4091208,
+    "seen": 1788718812.442119,
+    "ast_hash": "a955b8d46d9fdf9f53be264e592257f9",
+    "semantic_hash": "a955b8d46d9fdf9f53be264e592257f9"
+  },
+  "catowser/BrowserContent/TopSites/TopSitesViewV2.swift": {
+    "mtime": 1786121907.4094312,
+    "seen": 1788718812.4421198,
+    "ast_hash": "b2bb2d0e6a59de1d54bbb270eb1d2064",
+    "semantic_hash": "b2bb2d0e6a59de1d54bbb270eb1d2064"
+  },
+  "catowser/BrowserContent/WebView/DomainNativeAppChecker.swift": {
+    "mtime": 1786121907.4095201,
+    "seen": 1788718812.442121,
+    "ast_hash": "3a274e4b8ced3381c12366826bbc8b23",
+    "semantic_hash": "3a274e4b8ced3381c12366826bbc8b23"
+  },
+  "catowser/BrowserContent/WebView/WebView.swift": {
+    "mtime": 1786121907.409812,
+    "seen": 1788718812.442122,
+    "ast_hash": "881cbf34e94df0468a89149e38d30b37",
+    "semantic_hash": "881cbf34e94df0468a89149e38d30b37"
+  },
+  "catowser/BrowserContent/WebView/WebViewAuthChallengeHandler.swift": {
+    "mtime": 1786121907.4100504,
+    "seen": 1788718812.442123,
+    "ast_hash": "d4988b8bdaf0c632664f1923da09c543",
+    "semantic_hash": "d4988b8bdaf0c632664f1923da09c543"
+  },
+  "catowser/BrowserContent/WebView/WebViewController+Reusable.swift": {
+    "mtime": 1786121907.410177,
+    "seen": 1788718812.4421241,
+    "ast_hash": "a463e1c8acb95c4dd2acc9914e1b7740",
+    "semantic_hash": "a463e1c8acb95c4dd2acc9914e1b7740"
+  },
+  "catowser/BrowserContent/WebView/WebViewController+SiteNavigationDelegate.swift": {
+    "mtime": 1786121907.4104586,
+    "seen": 1788718812.442125,
+    "ast_hash": "1b633de34ddf6e637df37aa84889f5c0",
+    "semantic_hash": "1b633de34ddf6e637df37aa84889f5c0"
+  },
+  "catowser/BrowserContent/WebView/WebViewController.swift": {
+    "mtime": 1786121907.4108646,
+    "seen": 1788718812.442126,
+    "ast_hash": "ae92ddf621dff75b61e4c2e0ff62c48d",
+    "semantic_hash": "ae92ddf621dff75b61e4c2e0ff62c48d"
+  },
+  "catowser/BrowserContent/WebView/WebViewControllerProxy.swift": {
+    "mtime": 1786121907.4111493,
+    "seen": 1788718812.442126,
+    "ast_hash": "7372527f9d3a1eeee61fb501590a1b91",
+    "semantic_hash": "7372527f9d3a1eeee61fb501590a1b91"
+  },
+  "catowser/BrowserContent/WebView/WebViewLoadingErrorHandler.swift": {
+    "mtime": 1786121907.411382,
+    "seen": 1788718812.442127,
+    "ast_hash": "9740fe201f91c60e73bb858ac137d444",
+    "semantic_hash": "9740fe201f91c60e73bb858ac137d444"
+  },
+  "catowser/Contexts/BrowserToolbarViewContextImpl.swift": {
+    "mtime": 1786121907.4116395,
+    "seen": 1788718812.442128,
+    "ast_hash": "20fe4ab3b445db1b90b927ae1c6123f8",
+    "semantic_hash": "20fe4ab3b445db1b90b927ae1c6123f8"
+  },
+  "catowser/Contexts/SearchBarContextImpl.swift": {
+    "mtime": 1786121907.4118683,
+    "seen": 1788718812.442129,
+    "ast_hash": "c3131bcbdce837f95a2f5b50f82fd0d2",
+    "semantic_hash": "c3131bcbdce837f95a2f5b50f82fd0d2"
+  },
+  "catowser/Contexts/SearchViewContextImpl.swift": {
+    "mtime": 1786121907.4120705,
+    "seen": 1788718812.4421299,
+    "ast_hash": "a8926f31623fac2d040e7e9eb15fe98b",
+    "semantic_hash": "a8926f31623fac2d040e7e9eb15fe98b"
+  },
+  "catowser/Contexts/TabPreviewsContextImpl.swift": {
+    "mtime": 1786121907.4123719,
+    "seen": 1788718812.442131,
+    "ast_hash": "80dbc44983ea106dd4a2d84ea6446d8c",
+    "semantic_hash": "80dbc44983ea106dd4a2d84ea6446d8c"
+  },
+  "catowser/Contexts/TabViewContextImpl.swift": {
+    "mtime": 1786121907.4126003,
+    "seen": 1788718812.442131,
+    "ast_hash": "73da5a08dce8303df6f2435884b4e23c",
+    "semantic_hash": "73da5a08dce8303df6f2435884b4e23c"
+  },
+  "catowser/Contexts/WebViewContextImpl.swift": {
+    "mtime": 1786121907.412922,
+    "seen": 1788718812.442132,
+    "ast_hash": "a21f206e557a2b13d82f19515f23d1c9",
+    "semantic_hash": "a21f206e557a2b13d82f19515f23d1c9"
+  },
+  "catowser/Coordinators/AppCoordinator.swift": {
+    "mtime": 1786121907.4132104,
+    "seen": 1788718812.442133,
+    "ast_hash": "4a3002321f8857168acc6a77da5a9f44",
+    "semantic_hash": "4a3002321f8857168acc6a77da5a9f44"
+  },
+  "catowser/Coordinators/BlankContentCoordinator.swift": {
+    "mtime": 1786121907.413413,
+    "seen": 1788718812.442134,
+    "ast_hash": "210eb269155948e78a10ec0c120dab86",
+    "semantic_hash": "210eb269155948e78a10ec0c120dab86"
+  },
+  "catowser/Coordinators/BottomViewCoordinator.swift": {
+    "mtime": 1786121907.4136956,
+    "seen": 1788718812.442135,
+    "ast_hash": "b2051d7713c140205dde9211f7989314",
+    "semantic_hash": "b2051d7713c140205dde9211f7989314"
+  },
+  "catowser/Coordinators/ContentCoordinatorsInterface.swift": {
+    "mtime": 1786121907.41389,
+    "seen": 1788718812.442135,
+    "ast_hash": "f78090e76d978d82428be26776fdfe1d",
+    "semantic_hash": "f78090e76d978d82428be26776fdfe1d"
+  },
+  "catowser/Coordinators/Coordinator.swift": {
+    "mtime": 1786121907.4139419,
+    "seen": 1788718812.442136,
+    "ast_hash": "77ffec10f515ca631c5adca97d8e531f",
+    "semantic_hash": "77ffec10f515ca631c5adca97d8e531f"
+  },
+  "catowser/Coordinators/FilesGridCoordinator.swift": {
+    "mtime": 1786121907.4141634,
+    "seen": 1788718812.442137,
+    "ast_hash": "9924904dfbbdbbc010b145824a145821",
+    "semantic_hash": "9924904dfbbdbbc010b145824a145821"
+  },
+  "catowser/Coordinators/GlobalMenuCoordinator.swift": {
+    "mtime": 1786121907.4143372,
+    "seen": 1788718812.4421382,
+    "ast_hash": "5e36f8227091c0322e78f4dca2ef3428",
+    "semantic_hash": "5e36f8227091c0322e78f4dca2ef3428"
+  },
+  "catowser/Coordinators/LinkTagsCoordinator.swift": {
+    "mtime": 1786121907.4145737,
+    "seen": 1788718812.442139,
+    "ast_hash": "f960dae8ac60975317b04af72304ed65",
+    "semantic_hash": "f960dae8ac60975317b04af72304ed65"
+  },
+  "catowser/Coordinators/LoadingProgressCoordinator.swift": {
+    "mtime": 1786121907.4146519,
+    "seen": 1788718812.4421399,
+    "ast_hash": "f7552f7a1ffe26e6f19a7f6e5b7f33c3",
+    "semantic_hash": "f7552f7a1ffe26e6f19a7f6e5b7f33c3"
+  },
+  "catowser/Coordinators/MainToolbarCoordinator.swift": {
+    "mtime": 1786121907.4148445,
+    "seen": 1788718812.4421399,
+    "ast_hash": "8dfc28ae4b48c7189a80ee849db9b9da",
+    "semantic_hash": "8dfc28ae4b48c7189a80ee849db9b9da"
+  },
+  "catowser/Coordinators/PhoneTabsCoordinator.swift": {
+    "mtime": 1786121907.4150374,
+    "seen": 1788718812.4421408,
+    "ast_hash": "0bbee713d4c5c19a24e33fdd488dc012",
+    "semantic_hash": "0bbee713d4c5c19a24e33fdd488dc012"
+  },
+  "catowser/Coordinators/SearchBarCoordinator.swift": {
+    "mtime": 1786121907.4153798,
+    "seen": 1788718812.442142,
+    "ast_hash": "c7c8b7391790281ddc203267a65f4e6f",
+    "semantic_hash": "c7c8b7391790281ddc203267a65f4e6f"
+  },
+  "catowser/Coordinators/SearchSuggestionsCoordinator.swift": {
+    "mtime": 1786121907.4156423,
+    "seen": 1788718812.442143,
+    "ast_hash": "17238bd978ba47335afa35c1f27ab10d",
+    "semantic_hash": "17238bd978ba47335afa35c1f27ab10d"
+  },
+  "catowser/Coordinators/TabletTabsCoordinator.swift": {
+    "mtime": 1786121907.4158113,
+    "seen": 1788718812.442144,
+    "ast_hash": "cc1dd0e5be3c5ba2484be4e5ba262aa6",
+    "semantic_hash": "cc1dd0e5be3c5ba2484be4e5ba262aa6"
+  },
+  "catowser/Coordinators/TopSitesCoordinator.swift": {
+    "mtime": 1786121907.4159868,
+    "seen": 1788718812.442145,
+    "ast_hash": "3b6cb42b0aed8d3daebbd33b018f998d",
+    "semantic_hash": "3b6cb42b0aed8d3daebbd33b018f998d"
+  },
+  "catowser/Coordinators/WebContentContainerCoordinator.swift": {
+    "mtime": 1786121907.4160576,
+    "seen": 1788718812.442145,
+    "ast_hash": "5e86f4d1ebe85a72f13912f41a535b0e",
+    "semantic_hash": "5e86f4d1ebe85a72f13912f41a535b0e"
+  },
+  "catowser/Coordinators/WebContentCoordinator.swift": {
+    "mtime": 1786121907.416274,
+    "seen": 1788718812.442146,
+    "ast_hash": "c14c2db08d0fee5f55393235931b034e",
+    "semantic_hash": "c14c2db08d0fee5f55393235931b034e"
+  },
+  "catowser/DB/Database.swift": {
+    "mtime": 1786121907.4170332,
+    "seen": 1788718812.442147,
+    "ast_hash": "9cde19d1363810af1c5a5264018e9619",
+    "semantic_hash": "9cde19d1363810af1c5a5264018e9619"
+  },
+  "catowser/DB/TabsDBClient.swift": {
+    "mtime": 1786121907.417286,
+    "seen": 1788718812.4421482,
+    "ast_hash": "3888081cdf9533249f8a43e8eacd0f8c",
+    "semantic_hash": "3888081cdf9533249f8a43e8eacd0f8c"
+  },
+  "catowser/DB/TabsResourceImpl.swift": {
+    "mtime": 1786121907.4176989,
+    "seen": 1788718812.4421492,
+    "ast_hash": "0492a1760c3c57494a54cd2b60155246",
+    "semantic_hash": "0492a1760c3c57494a54cd2b60155246"
+  },
+  "catowser/Downloads/FileDownloadViewModel.swift": {
+    "mtime": 1786121907.418124,
+    "seen": 1788718812.4421499,
+    "ast_hash": "f852694d79461b6caed657e04d3cca24",
+    "semantic_hash": "f852694d79461b6caed657e04d3cca24"
+  },
+  "catowser/Downloads/FilesGridViewController.swift": {
+    "mtime": 1786121907.4185686,
+    "seen": 1788718812.4421499,
+    "ast_hash": "70d4938c691b290b5d6591b71fa331a0",
+    "semantic_hash": "70d4938c691b290b5d6591b71fa331a0"
+  },
+  "catowser/Downloads/LinkTagsViewController.swift": {
+    "mtime": 1786121907.4190521,
+    "seen": 1788718812.4421508,
+    "ast_hash": "4f61ab8954b7a8c1ac520c1e99aeb877",
+    "semantic_hash": "4f61ab8954b7a8c1ac520c1e99aeb877"
+  },
+  "catowser/Downloads/Views/DownloadButtonCellView.swift": {
+    "mtime": 1786121907.4191628,
+    "seen": 1788718812.442152,
+    "ast_hash": "95393038dea39e90be55e0223b324d39",
+    "semantic_hash": "95393038dea39e90be55e0223b324d39"
+  },
+  "catowser/Downloads/Views/LinksBadgeView.swift": {
+    "mtime": 1786121907.4194334,
+    "seen": 1788718812.442153,
+    "ast_hash": "a0fabd6560da46c32475543099e4cbf5",
+    "semantic_hash": "a0fabd6560da46c32475543099e4cbf5"
+  },
+  "catowser/Extensions/AnyViewController.swift": {
+    "mtime": 1786121907.419511,
+    "seen": 1788718812.442154,
+    "ast_hash": "23c02dd6829b84797b7c5124037d03e6",
+    "semantic_hash": "23c02dd6829b84797b7c5124037d03e6"
+  },
+  "catowser/Extensions/CAGradientLayer+CatowserExtension.swift": {
+    "mtime": 1786121907.4195583,
+    "seen": 1788718812.4421551,
+    "ast_hash": "23f08d58e20b9998b48223acf7666ce5",
+    "semantic_hash": "23f08d58e20b9998b48223acf7666ce5"
+  },
+  "catowser/Extensions/CollectionViewInterface.swift": {
+    "mtime": 1786121907.4199708,
+    "seen": 1788718812.4421551,
+    "ast_hash": "371aee755d2867c739235ba0e437e0d2",
+    "semantic_hash": "371aee755d2867c739235ba0e437e0d2"
+  },
+  "catowser/Extensions/ReloadWithCompletion.swift": {
+    "mtime": 1786121907.4202898,
+    "seen": 1788718812.442156,
+    "ast_hash": "658c6461b04d4b88ffaa979dc0be314d",
+    "semantic_hash": "658c6461b04d4b88ffaa979dc0be314d"
+  },
+  "catowser/Extensions/RestClient+Extension.swift": {
+    "mtime": 1786121907.4206688,
+    "seen": 1788718812.442157,
+    "ast_hash": "60e943da09d3df7028c2b1fe45f8847e",
+    "semantic_hash": "60e943da09d3df7028c2b1fe45f8847e"
+  },
+  "catowser/Extensions/ReusableItem.swift": {
+    "mtime": 1786121907.420723,
+    "seen": 1788718812.442158,
+    "ast_hash": "3c1bd0f7302803f652daf8fc49e34506",
+    "semantic_hash": "3c1bd0f7302803f652daf8fc49e34506"
+  },
+  "catowser/Extensions/String+Extension.swift": {
+    "mtime": 1786121907.4210773,
+    "seen": 1788718812.4421592,
+    "ast_hash": "553f44e3fce75ea30dbbf94053928aec",
+    "semantic_hash": "553f44e3fce75ea30dbbf94053928aec"
+  },
+  "catowser/Extensions/Tab+Extension.swift": {
+    "mtime": 1786121907.4215286,
+    "seen": 1788718812.4421601,
+    "ast_hash": "21fa34322cb2fdf81d031ab2866ae86a",
+    "semantic_hash": "21fa34322cb2fdf81d031ab2866ae86a"
+  },
+  "catowser/Extensions/UIHostingController+Extension.swift": {
+    "mtime": 1786121907.4215896,
+    "seen": 1788718812.4421608,
+    "ast_hash": "afe8835b45e236dc52b6e6066402fe97",
+    "semantic_hash": "afe8835b45e236dc52b6e6066402fe97"
+  },
+  "catowser/Extensions/UIImageView+Extension.swift": {
+    "mtime": 1786121907.4217923,
+    "seen": 1788718812.4421608,
+    "ast_hash": "434fc3b09fe45432b57272a7390cfb26",
+    "semantic_hash": "434fc3b09fe45432b57272a7390cfb26"
+  },
+  "catowser/Extensions/View+Extension.swift": {
+    "mtime": 1786121907.4218462,
+    "seen": 1788718812.442162,
+    "ast_hash": "28d9cf49c8bbd3869de1ec28a7c7b2c5",
+    "semantic_hash": "28d9cf49c8bbd3869de1ec28a7c7b2c5"
+  },
+  "catowser/Factories/PhoneViewControllerFactory.swift": {
+    "mtime": 1786121907.422187,
+    "seen": 1788718812.442163,
+    "ast_hash": "703c1d75eedede6a1e2a5eadb520c455",
+    "semantic_hash": "703c1d75eedede6a1e2a5eadb520c455"
+  },
+  "catowser/Factories/StrategyFactory.swift": {
+    "mtime": 1786121907.422307,
+    "seen": 1788718812.442164,
+    "ast_hash": "9c2ed4a0e436d9734869c4daa3228a5b",
+    "semantic_hash": "9c2ed4a0e436d9734869c4daa3228a5b"
+  },
+  "catowser/Factories/TabletViewControllerFactory.swift": {
+    "mtime": 1786121907.4224095,
+    "seen": 1788718812.442165,
+    "ast_hash": "6feabf9f9747b0fc338de3f3c6524076",
+    "semantic_hash": "6feabf9f9747b0fc338de3f3c6524076"
+  },
+  "catowser/Factories/ViewControllerFactory.swift": {
+    "mtime": 1786121907.4226534,
+    "seen": 1788718812.442165,
+    "ast_hash": "84d20bd3afeec42533c0f54b69cf5539",
+    "semantic_hash": "84d20bd3afeec42533c0f54b69cf5539"
+  },
+  "catowser/Factories/ViewModelFactory.swift": {
+    "mtime": 1786140725.1788595,
+    "seen": 1788718812.442166,
+    "ast_hash": "166731e082275629f18b5d2c240cc307",
+    "semantic_hash": "166731e082275629f18b5d2c240cc307"
+  },
+  "catowser/Menu/AppAsyncApiTypeModel.swift": {
+    "mtime": 1786121907.4232054,
+    "seen": 1788718812.442167,
+    "ast_hash": "03ba306c796fa2186ecf67313e0207a0",
+    "semantic_hash": "03ba306c796fa2186ecf67313e0207a0"
+  },
+  "catowser/Menu/AppUIFrameworkTypeModel.swift": {
+    "mtime": 1786121907.4233382,
+    "seen": 1788718812.442168,
+    "ast_hash": "976d7c81cc28d345033232215851cec4",
+    "semantic_hash": "976d7c81cc28d345033232215851cec4"
+  },
+  "catowser/Menu/BaseMenuView.swift": {
+    "mtime": 1786121907.4235582,
+    "seen": 1788718812.442168,
+    "ast_hash": "91690520707b963a36729d064138bb98",
+    "semantic_hash": "91690520707b963a36729d064138bb98"
+  },
+  "catowser/Menu/BrowserMenuView.swift": {
+    "mtime": 1786121907.4238703,
+    "seen": 1788718812.4421692,
+    "ast_hash": "6c5ec0b3115fcbf75b022e4914a46da2",
+    "semantic_hash": "6c5ec0b3115fcbf75b022e4914a46da2"
+  },
+  "catowser/Menu/MenuItems.swift": {
+    "mtime": 1786121907.4241426,
+    "seen": 1788718812.4421701,
+    "ast_hash": "a09c4b5e38786f782ce312263bc6777e",
+    "semantic_hash": "a09c4b5e38786f782ce312263bc6777e"
+  },
+  "catowser/Menu/MenuStatefullLabel.swift": {
+    "mtime": 1786121907.424382,
+    "seen": 1788718812.4421701,
+    "ast_hash": "5ec28c86c0a38766ed44993e15067e29",
+    "semantic_hash": "5ec28c86c0a38766ed44993e15067e29"
+  },
+  "catowser/Menu/MenuViewModel.swift": {
+    "mtime": 1786121907.42461,
+    "seen": 1788718812.4421709,
+    "ast_hash": "64ff7555077765fe06e564c61c65b560",
+    "semantic_hash": "64ff7555077765fe06e564c61c65b560"
+  },
+  "catowser/Menu/ObservingApiTypeModel.swift": {
+    "mtime": 1786121907.424894,
+    "seen": 1788718812.4421718,
+    "ast_hash": "8fbe6024d3b6ed68f6cfe56dd912e785",
+    "semantic_hash": "8fbe6024d3b6ed68f6cfe56dd912e785"
+  },
+  "catowser/Menu/Previews/AppAsyncApiTypeViewPreview.swift": {
+    "mtime": 1786121907.425254,
+    "seen": 1788718812.4421718,
+    "ast_hash": "8582859f0347f1b8cdfbbf4d1d98ea4c",
+    "semantic_hash": "8582859f0347f1b8cdfbbf4d1d98ea4c"
+  },
+  "catowser/Menu/Previews/TabAddPositionsViewPreview.swift": {
+    "mtime": 1786121907.4254732,
+    "seen": 1788718812.442173,
+    "ast_hash": "bcb35f5311d10d7f2a964a2098f602ee",
+    "semantic_hash": "bcb35f5311d10d7f2a964a2098f602ee"
+  },
+  "catowser/Menu/Previews/TabDefaultContentViewPreview.swift": {
+    "mtime": 1786121907.4257748,
+    "seen": 1788718812.442174,
+    "ast_hash": "ec629bc2b6256861f763da4c4091c3f0",
+    "semantic_hash": "ec629bc2b6256861f763da4c4091c3f0"
+  },
+  "catowser/Menu/SiteMenuViewController.swift": {
+    "mtime": 1786121907.4258351,
+    "seen": 1788718812.442175,
+    "ast_hash": "899aa03c2384cec682cbc99dfbe04a94",
+    "semantic_hash": "899aa03c2384cec682cbc99dfbe04a94"
+  },
+  "catowser/Menu/TabAddPositionsModel.swift": {
+    "mtime": 1786121907.426023,
+    "seen": 1788718812.442175,
+    "ast_hash": "1a113ebadc1c1d7e772cacef9864476a",
+    "semantic_hash": "1a113ebadc1c1d7e772cacef9864476a"
+  },
+  "catowser/Menu/TabDefaultContentModel.swift": {
+    "mtime": 1786121907.4265602,
+    "seen": 1788718812.442176,
+    "ast_hash": "32ba50d02f57587ede7e1704dd074c6a",
+    "semantic_hash": "32ba50d02f57587ede7e1704dd074c6a"
+  },
+  "catowser/Menu/WebSearchSettingsModel.swift": {
+    "mtime": 1786121907.426884,
+    "seen": 1788718812.442177,
+    "ast_hash": "777168c953d5f748e7227d743a8b4d1c",
+    "semantic_hash": "777168c953d5f748e7227d743a8b4d1c"
+  },
+  "catowser/Search/Phone/PhoneSearchBarLegacyView.swift": {
+    "mtime": 1786121907.427406,
+    "seen": 1788718812.442177,
+    "ast_hash": "46d1f42baa69438587b0696055e88761",
+    "semantic_hash": "46d1f42baa69438587b0696055e88761"
+  },
+  "catowser/Search/Tablet/TabletSearchBarLegacyView.swift": {
+    "mtime": 1786121907.4277966,
+    "seen": 1788718812.442178,
+    "ast_hash": "e13eb6d8bb5b11b6aa03977d3ed18ddb",
+    "semantic_hash": "e13eb6d8bb5b11b6aa03977d3ed18ddb"
+  },
+  "catowser/SearchSuggestions/SearchSuggestionsLegacyView.swift": {
+    "mtime": 1786121907.4283586,
+    "seen": 1788718812.442179,
+    "ast_hash": "f76ea423783d9aec68b9d11b12f33fdf",
+    "semantic_hash": "f76ea423783d9aec68b9d11b12f33fdf"
+  },
+  "catowser/SearchSuggestions/SearchSuggestionsView.swift": {
+    "mtime": 1786121907.4286408,
+    "seen": 1788718812.4421802,
+    "ast_hash": "ef5cd8a82541552a36c86cd98eaecb01",
+    "semantic_hash": "ef5cd8a82541552a36c86cd98eaecb01"
+  },
+  "catowser/SearchSuggestions/SearchSuggestionsViewV2.swift": {
+    "mtime": 1786121907.428968,
+    "seen": 1788718812.4421802,
+    "ast_hash": "b9b7eec3ede804ee97fa986b706437b3",
+    "semantic_hash": "b9b7eec3ede804ee97fa986b706437b3"
+  },
+  "catowser/SearchSuggestions/SuggestionRowView.swift": {
+    "mtime": 1786121907.4292483,
+    "seen": 1788718812.442181,
+    "ast_hash": "c43abeee646f164026c357ac637779dd",
+    "semantic_hash": "c43abeee646f164026c357ac637779dd"
+  },
+  "catowser/ServiceRegistry/AppAssembler.swift": {
+    "mtime": 1786121907.4294932,
+    "seen": 1788718812.4421818,
+    "ast_hash": "8d4fcf79fe53a019009fc0d348e4962f",
+    "semantic_hash": "8d4fcf79fe53a019009fc0d348e4962f"
+  },
+  "catowser/ServiceRegistry/AppStartInfo.swift": {
+    "mtime": 1786121907.4298825,
+    "seen": 1788718812.4421818,
+    "ast_hash": "ca1ac7bca87b3c3723d96b0e79770f3f",
+    "semantic_hash": "ca1ac7bca87b3c3723d96b0e79770f3f"
+  },
+  "catowser/ServiceRegistry/PluginsProxy.swift": {
+    "mtime": 1786121907.4301581,
+    "seen": 1788718812.442183,
+    "ast_hash": "9e1f16d68829d9b94f344e7bfb5aa64f",
+    "semantic_hash": "9e1f16d68829d9b94f344e7bfb5aa64f"
+  },
+  "catowser/ServiceRegistry/ServiceRegistry.swift": {
+    "mtime": 1787972145.7442086,
+    "seen": 1788718812.442183,
+    "ast_hash": "6a8cab2ccf5ec22ee488cf3de93f9cee",
+    "semantic_hash": "6a8cab2ccf5ec22ee488cf3de93f9cee"
+  },
+  "catowser/ServiceRegistry/UIServiceRegistry.swift": {
+    "mtime": 1786121907.4305844,
+    "seen": 1788718812.442184,
+    "ast_hash": "b93065a3e90dea350595290fc59e5d4c",
+    "semantic_hash": "b93065a3e90dea350595290fc59e5d4c"
+  },
+  "catowser/ServiceRegistry/UseCaseLocator.swift": {
+    "mtime": 1786121907.4309654,
+    "seen": 1788718812.442185,
+    "ast_hash": "805a58cfb8ad0c9ce26f958b2c9feefe",
+    "semantic_hash": "805a58cfb8ad0c9ce26f958b2c9feefe"
+  },
+  "catowser/ServiceRegistry/UseCaseRegistry.swift": {
+    "mtime": 1788043492.8898451,
+    "seen": 1788718812.4421859,
+    "ast_hash": "1b1ac2faa1c220842f3dfe94b04be0ac",
+    "semantic_hash": "1b1ac2faa1c220842f3dfe94b04be0ac"
+  },
+  "catowser/ServiceRegistry/WebViewsReuseManager.swift": {
+    "mtime": 1786121907.4313645,
+    "seen": 1788718812.4421859,
+    "ast_hash": "d85e7aeef7e06ae3dbfd3e4bb9db5755",
+    "semantic_hash": "d85e7aeef7e06ae3dbfd3e4bb9db5755"
+  },
+  "catowser/SwiftUI+Extensions/EnvironmentValues+Extension.swift": {
+    "mtime": 1786121907.4316766,
+    "seen": 1788718812.442187,
+    "ast_hash": "1ded60fc37ad92c3b970dff64e5b3f9b",
+    "semantic_hash": "1ded60fc37ad92c3b970dff64e5b3f9b"
+  },
+  "catowser/SwiftUI+Extensions/UIViewControllerRepresentable+Extension.swift": {
+    "mtime": 1786121907.4319687,
+    "seen": 1788718812.442188,
+    "ast_hash": "b4902fcde34519a864f3ecf110c3fc07",
+    "semantic_hash": "b4902fcde34519a864f3ecf110c3fc07"
+  },
+  "catowser/Toolbar/BrowserToolbarController.swift": {
+    "mtime": 1786121907.4324384,
+    "seen": 1788718812.442189,
+    "ast_hash": "1b621627d0ce78f20bd6483fc6dfb713",
+    "semantic_hash": "1b621627d0ce78f20bd6483fc6dfb713"
+  },
+  "catowser/Toolbar/BrowserToolbarView.swift": {
+    "mtime": 1786121907.4326334,
+    "seen": 1788718812.442189,
+    "ast_hash": "4b43f4e2a4a648f907be5b61570a6f4a",
+    "semantic_hash": "4b43f4e2a4a648f907be5b61570a6f4a"
+  },
+  "catowser/Toolbar/ToolbarLegacyView.swift": {
+    "mtime": 1786121907.433041,
+    "seen": 1788718812.4421902,
+    "ast_hash": "e1800de90ee0741bd47eefb0fbed22d8",
+    "semantic_hash": "e1800de90ee0741bd47eefb0fbed22d8"
+  },
+  "catowser/Toolbar/ToolbarView.swift": {
+    "mtime": 1786121907.433484,
+    "seen": 1788718812.4421911,
+    "ast_hash": "0571bf3464d31684192d7443078b4c7a",
+    "semantic_hash": "0571bf3464d31684192d7443078b4c7a"
+  },
+  "catowser/Toolbar/ToolbarViewV2.swift": {
+    "mtime": 1786121907.4336202,
+    "seen": 1788718812.4421918,
+    "ast_hash": "f91c5bd1ffdd13044e2b34e16e760e9a",
+    "semantic_hash": "f91c5bd1ffdd13044e2b34e16e760e9a"
+  },
+  "catowser/Utils/AlertPresenter.swift": {
+    "mtime": 1786121907.4337053,
+    "seen": 1788718812.4421928,
+    "ast_hash": "4b8767b3095707df39156163cc77b627",
+    "semantic_hash": "4b8767b3095707df39156163cc77b627"
+  },
+  "catowser/Utils/DefaultTabProvider.swift": {
+    "mtime": 1786121907.4338171,
+    "seen": 1788718812.4421928,
+    "ast_hash": "dbad776bc55c994e779aed43b87bcd94",
+    "semantic_hash": "dbad776bc55c994e779aed43b87bcd94"
+  },
+  "catowser/Utils/FaviconImageViewable.swift": {
+    "mtime": 1786121907.434185,
+    "seen": 1788718812.442194,
+    "ast_hash": "9ce16732259e1f2ae9fe5cd9ef817b87",
+    "semantic_hash": "9ce16732259e1f2ae9fe5cd9ef817b87"
+  },
+  "catowser/WebTabs/CounterView.swift": {
+    "mtime": 1786121907.4344237,
+    "seen": 1788718812.442195,
+    "ast_hash": "a031a433c3d251914f1f14f295c115d9",
+    "semantic_hash": "a031a433c3d251914f1f14f295c115d9"
+  },
+  "catowser/WebTabs/TabPreviewCell.swift": {
+    "mtime": 1786121907.4346237,
+    "seen": 1788718812.442196,
+    "ast_hash": "fc1d7899091a5d6f6d98c19b29820dd7",
+    "semantic_hash": "fc1d7899091a5d6f6d98c19b29820dd7"
+  },
+  "catowser/WebTabs/TabView.swift": {
+    "mtime": 1786123973.5303464,
+    "seen": 1788718812.442197,
+    "ast_hash": "3c9e3cbbf341aba8d76a0b045f85920f",
+    "semantic_hash": "3c9e3cbbf341aba8d76a0b045f85920f"
+  },
+  "catowser/WebTabs/TabletTabsLegacyView.swift": {
+    "mtime": 1786121907.435031,
+    "seen": 1788718812.442197,
+    "ast_hash": "661db941e6c3017ee67db1c2eddbfa7d",
+    "semantic_hash": "661db941e6c3017ee67db1c2eddbfa7d"
+  },
+  "catowser/WebTabs/TabletTabsView.swift": {
+    "mtime": 1786121907.4352438,
+    "seen": 1788718812.442198,
+    "ast_hash": "fbdf05b1da5eedb545304a970c123673",
+    "semantic_hash": "fbdf05b1da5eedb545304a970c123673"
+  },
+  "catowser/WebTabs/TabsPreviewsLegacyView.swift": {
+    "mtime": 1786121907.4354637,
+    "seen": 1788718812.442199,
+    "ast_hash": "0b77efc70e4b5256c89258a27c0b18a7",
+    "semantic_hash": "0b77efc70e4b5256c89258a27c0b18a7"
+  },
+  "catowser/WebTabs/TabsPreviewsViewController.swift": {
+    "mtime": 1786121907.435711,
+    "seen": 1788718812.442199,
+    "ast_hash": "17f97f85e2bf9947faab852d948706d6",
+    "semantic_hash": "17f97f85e2bf9947faab852d948706d6"
+  },
+  "catowser/WebTabs/TabsViewController.swift": {
+    "mtime": 1786121907.4359171,
+    "seen": 1788718812.4422,
+    "ast_hash": "d70f9b8966a2189f02ec8cbde6187d8c",
+    "semantic_hash": "d70f9b8966a2189f02ec8cbde6187d8c"
+  },
+  ".swiftlint.yml": {
+    "mtime": 1785526964.3214262,
+    "seen": 1788459423.1840022,
+    "ast_hash": "e42620c0bc8b2d6f0ba7c6be95632bc0",
+    "semantic_hash": ""
+  },
+  "Base/Sources/CottonPlugins/Scripts/README.md": {
+    "mtime": 1783850988.5110977,
+    "seen": 1788459423.1840022,
+    "ast_hash": "3927536273c9b6ae251270867b0003e2",
+    "semantic_hash": ""
+  },
+  "Base/Sources/CottonPlugins/Scripts/html/ig_test_slides_json.html": {
+    "mtime": 1783850988.5111892,
+    "seen": 1788459423.184003,
+    "ast_hash": "2ad0df38dab46a5083187ee779862dc1",
+    "semantic_hash": ""
+  },
+  "Base/Sources/CottonPlugins/Scripts/html/non_jquery.html": {
+    "mtime": 1783850988.5112455,
+    "seen": 1788459423.184003,
+    "ast_hash": "7e9a39a02239dccd8dfdae648473ad60",
+    "semantic_hash": ""
+  },
+  "Base/Sources/CottonPlugins/Scripts/html/with_jquery.html": {
+    "mtime": 1783850988.5113237,
+    "seen": 1788459423.184003,
+    "ast_hash": "9fb0a040f0c75244a7b53d096de1b3ea",
+    "semantic_hash": ""
+  },
+  "Base/Sources/CottonPlugins/Scripts/index.html": {
+    "mtime": 1783850988.5113745,
+    "seen": 1788459423.184003,
+    "ast_hash": "715f6a8ba776b4ae77e66339d37a5e87",
+    "semantic_hash": ""
+  },
+  "Domain/Sources/CoreBrowser/Resources/topdomains.txt": {
+    "mtime": 1783850988.5183935,
+    "seen": 1788459423.184004,
+    "ast_hash": "5b7bbd6b8b47f5706344b4abef07ab7a",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/Icon_1024.png": {
+    "mtime": 1759582833.9252782,
+    "seen": 1788459423.184004,
+    "ast_hash": "8e6806383d48cf8d86eab86318acb741",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt.png": {
+    "mtime": 1759582833.9253452,
+    "seen": 1788459423.184004,
+    "ast_hash": "17eb9bb94c861ba9fb760491b6eb17ed",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt@2x-1.png": {
+    "mtime": 1759582833.925401,
+    "seen": 1788459423.184004,
+    "ast_hash": "48424da2e3f097ad9e7af27d7c340e06",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt@2x.png": {
+    "mtime": 1759582833.9254541,
+    "seen": 1788459423.184005,
+    "ast_hash": "48424da2e3f097ad9e7af27d7c340e06",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_20pt@3x.png": {
+    "mtime": 1759582833.9255283,
+    "seen": 1788459423.184005,
+    "ast_hash": "54ad0ac4316d35f88f2c1d3cd73aefa9",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt.png": {
+    "mtime": 1759582833.925582,
+    "seen": 1788459423.184005,
+    "ast_hash": "70ee41adb0f66194b4018c91a9516f3f",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt@2x-1.png": {
+    "mtime": 1759582833.9256601,
+    "seen": 1788459423.184005,
+    "ast_hash": "e011da5e2c8fba316a68c5f81d78ca6e",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt@2x.png": {
+    "mtime": 1759582833.9257395,
+    "seen": 1788459423.184006,
+    "ast_hash": "e011da5e2c8fba316a68c5f81d78ca6e",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_29pt@3x.png": {
+    "mtime": 1759582833.925826,
+    "seen": 1788459423.184006,
+    "ast_hash": "7fce63b74fe430a7574dc96924332940",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt.png": {
+    "mtime": 1759582833.925873,
+    "seen": 1788459423.184006,
+    "ast_hash": "48424da2e3f097ad9e7af27d7c340e06",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt@2x-1.png": {
+    "mtime": 1759582833.9259436,
+    "seen": 1788459423.184007,
+    "ast_hash": "0021e66bce8aff480d6be0b46ed17e07",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt@2x.png": {
+    "mtime": 1759582833.9260104,
+    "seen": 1788459423.184007,
+    "ast_hash": "0021e66bce8aff480d6be0b46ed17e07",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_40pt@3x.png": {
+    "mtime": 1759582833.9260917,
+    "seen": 1788459423.184007,
+    "ast_hash": "3bc4acb57b1e669f7314f0f609349d3e",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_60pt@2x.png": {
+    "mtime": 1759582833.9261692,
+    "seen": 1788459423.184007,
+    "ast_hash": "3bc4acb57b1e669f7314f0f609349d3e",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_60pt@3x.png": {
+    "mtime": 1759582833.9262273,
+    "seen": 1788459423.184008,
+    "ast_hash": "b0a1167db27a2057842c9507dadc238d",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_76pt.png": {
+    "mtime": 1759582833.9263148,
+    "seen": 1788459423.184008,
+    "ast_hash": "0088542cd7002c804e38edee657228dc",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_76pt@2x.png": {
+    "mtime": 1759582833.9263644,
+    "seen": 1788459423.184008,
+    "ast_hash": "ac3936a0aed4c959a6223ec296d6bbee",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/AppIcon.appiconset/icon_83.5@2x.png": {
+    "mtime": 1759582833.9264255,
+    "seen": 1788459423.184009,
+    "ast_hash": "73577ed866e847fb66a5170b21e10900",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/instagram.imageset/instagram_120x120.png": {
+    "mtime": 1759582833.9267778,
+    "seen": 1788459423.184009,
+    "ast_hash": "004705c9353f5258ee8c4f47a4743f26",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/instagram.imageset/instagram_180x180.png": {
+    "mtime": 1759582833.9268358,
+    "seen": 1788459423.184009,
+    "ast_hash": "94fd767f257be710bc552be64df2c432",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/instagram.imageset/instagram_76x76.png": {
+    "mtime": 1759582833.926904,
+    "seen": 1788459423.184009,
+    "ast_hash": "932e4d9af89121aa8329d5d583af4264",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-back.imageset/back.png": {
+    "mtime": 1759582833.9270163,
+    "seen": 1788459423.18401,
+    "ast_hash": "7ed2a71300e8cca1bc9aa4f4d98a4b51",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-back.imageset/back@2x.png": {
+    "mtime": 1759582833.9270608,
+    "seen": 1788459423.18401,
+    "ast_hash": "f46e549d0ec2799983d6c954f2fdc935",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-back.imageset/back@3x.png": {
+    "mtime": 1759582833.9271023,
+    "seen": 1788459423.18401,
+    "ast_hash": "9cf835a98e9bd95bc8b709ba299978d5",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-downloads.imageset/menu-panel-Downloads.png": {
+    "mtime": 1759582833.927209,
+    "seen": 1788459423.184011,
+    "ast_hash": "91aa8d4d1309c6532b58c2d486ec7671",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-downloads.imageset/menu-panel-Downloads@2x.png": {
+    "mtime": 1759582833.927254,
+    "seen": 1788459423.184011,
+    "ast_hash": "7939427736f62f56e1b0ce9e3fe3773b",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-downloads.imageset/menu-panel-Downloads@3x.png": {
+    "mtime": 1759582833.9272995,
+    "seen": 1788459423.184011,
+    "ast_hash": "cd0591ce391592dd6b6aa5cf134c638c",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-forward.imageset/forward.png": {
+    "mtime": 1759582833.9273992,
+    "seen": 1788459423.184012,
+    "ast_hash": "da0cf502031b7df19c57e542f982866f",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-forward.imageset/forward@2x.png": {
+    "mtime": 1759582833.9274352,
+    "seen": 1788459423.184012,
+    "ast_hash": "dc76d5788ab7242ad3049cc6e7c07390",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-forward.imageset/forward@3x.png": {
+    "mtime": 1759582833.9274712,
+    "seen": 1788459423.184012,
+    "ast_hash": "6a373b23b9128cbe961157d8d34daf31",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-refresh.imageset/refresh.png": {
+    "mtime": 1759582833.927571,
+    "seen": 1788459423.184012,
+    "ast_hash": "19f0c3b5c86a72c3fdd9fb9b75132da2",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-refresh.imageset/refresh@2x.png": {
+    "mtime": 1759582833.9276092,
+    "seen": 1788459423.1840131,
+    "ast_hash": "dbb05b70e8cbe5f2b99fdc6b948267db",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/nav-refresh.imageset/refresh@3x.png": {
+    "mtime": 1759582833.92765,
+    "seen": 1788459423.1840131,
+    "ast_hash": "1317b865da0e2715bdd73557d2e74f4f",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/newTabButton-Normal.imageset/menu-NewTab.png": {
+    "mtime": 1759582833.9277575,
+    "seen": 1788459423.1840131,
+    "ast_hash": "9f217a86c3907d879fa3b8c028d6ce8d",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/newTabButton-Normal.imageset/menu-NewTab@2x.png": {
+    "mtime": 1759582833.9277973,
+    "seen": 1788459423.1840131,
+    "ast_hash": "ad2fb80fd0e1074f8d5a12a696d0a778",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/newTabButton-Normal.imageset/menu-NewTab@3x.png": {
+    "mtime": 1759582833.9278371,
+    "seen": 1788459423.184014,
+    "ast_hash": "6eac030a55dc388b0bbdcde35288fdca",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/tabClose.imageset/close-medium.png": {
+    "mtime": 1759582833.927939,
+    "seen": 1788459423.184014,
+    "ast_hash": "9e1539b13879f8f6a74c1bb1b33820ef",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/tabClose.imageset/close-medium@2x.png": {
+    "mtime": 1759582833.9279768,
+    "seen": 1788459423.184014,
+    "ast_hash": "0e5724685f14bf6d4369ad373748b502",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/tabClose.imageset/close-medium@3x.png": {
+    "mtime": 1759582833.9280167,
+    "seen": 1788459423.184015,
+    "ast_hash": "c4539e574f0c88c77ace894fea4fb6f9",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/closeTab.png": {
+    "mtime": 1759582833.9281292,
+    "seen": 1788459423.184015,
+    "ast_hash": "a6ec82e8447ce98729c81d95526169cf",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/closeTab@2x.png": {
+    "mtime": 1759582833.9281766,
+    "seen": 1788459423.184015,
+    "ast_hash": "0f1ef13e1f1c6136eed0f7d4d12d9354",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/tabCloseButton-Normal.imageset/closeTab@3x.png": {
+    "mtime": 1759582833.928215,
+    "seen": 1788459423.184016,
+    "ast_hash": "0478bd9d380510db5e647292dd014f14",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/youtube.imageset/youtube_144.png": {
+    "mtime": 1759582833.9283926,
+    "seen": 1788459423.184016,
+    "ast_hash": "88b01f681a96ed7c964f17c6c08e36be",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/youtube.imageset/youtube_32.png": {
+    "mtime": 1759582833.9284363,
+    "seen": 1788459423.184016,
+    "ast_hash": "3a880420311ad60097059ffc0fc53393",
+    "semantic_hash": ""
+  },
+  "catowser/Assets.xcassets/youtube.imageset/youtube_48.png": {
+    "mtime": 1759582833.9285228,
+    "seen": 1788459423.184016,
+    "ast_hash": "56307f4242fb8b4686b6bdcae485c3ef",
+    "semantic_hash": ""
+  },
+  "Domain/Tests/CottonUseCasesTests/AddTabUseCaseTests.swift": {
+    "mtime": 1787972220.8736112,
+    "seen": 1788718812.442046,
+    "ast_hash": "bdb54c4d83972f3cc051e65de93e587b",
+    "semantic_hash": "bdb54c4d83972f3cc051e65de93e587b"
+  },
+  "Domain/Tests/CottonUseCasesTests/CloseTabUseCaseTests.swift": {
+    "mtime": 1788043492.8746266,
+    "seen": 1788718812.4420469,
+    "ast_hash": "add0122d7461cc637674f4766e1212b0",
+    "semantic_hash": "add0122d7461cc637674f4766e1212b0"
+  },
+  "Domain/Tests/CottonUseCasesTests/FakeAddTabUseCase.swift": {
+    "mtime": 1788043492.8899355,
+    "seen": 1788718812.442048,
+    "ast_hash": "53ee2dbc35e259521061f15bbe335dbc",
+    "semantic_hash": "53ee2dbc35e259521061f15bbe335dbc"
+  },
+  "Domain/Tests/CottonUseCasesTests/FakeSelectTabUseCase.swift": {
+    "mtime": 1788043492.8799436,
+    "seen": 1788718812.442049,
+    "ast_hash": "f7bb1f140d406d0ec0666d610001660e",
+    "semantic_hash": "f7bb1f140d406d0ec0666d610001660e"
+  },
+  "Domain/Tests/CottonUseCasesTests/FakeTabSelectionStrategy.swift": {
+    "mtime": 1787972204.4702935,
+    "seen": 1788718812.442049,
+    "ast_hash": "453df1a84db160f28cb8ba6283332509",
+    "semantic_hash": "453df1a84db160f28cb8ba6283332509"
+  },
+  "Domain/Tests/CottonUseCasesTests/FakeTabsDataService.swift": {
+    "mtime": 1787972202.7773395,
+    "seen": 1788718812.44205,
+    "ast_hash": "7cf9c5ddafac990305191f61e933cfc8",
+    "semantic_hash": "7cf9c5ddafac990305191f61e933cfc8"
+  },
+  "Domain/Tests/CottonUseCasesTests/FakeTabsStates.swift": {
+    "mtime": 1787972209.507507,
+    "seen": 1788718812.4420512,
+    "ast_hash": "09584d059ad81beaa307b63b895980d3",
+    "semantic_hash": "09584d059ad81beaa307b63b895980d3"
+  }
+}

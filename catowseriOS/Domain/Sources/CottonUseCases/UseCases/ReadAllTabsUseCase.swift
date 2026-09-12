@@ -4,12 +4,8 @@ import CottonTabs
 import CoreBrowser
 
 /// Protocol for reading all tabs asynchronously.
-public protocol ReadAllTabsUseCase: CoreUseCase, AutoMockable, Sendable {
-    /// Input type for the use case. In this case, it's `Void`.
-    typealias Input = Void
-
-    /// Output type for the use case, which is a list of `CoreBrowser.Tab`.
-    typealias Output = [CoreBrowser.Tab]
+public protocol ReadAllTabsUseCase: CoreUseCase, AutoMockable, Sendable
+where Input == Void, Output == [CoreBrowser.Tab] {
 
     /// Reads all tabs asynchronously.
     ///

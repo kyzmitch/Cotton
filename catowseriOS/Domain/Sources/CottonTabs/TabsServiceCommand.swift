@@ -16,7 +16,7 @@ public enum TabsServiceCommand: GenericDataServiceCommand, Sendable {
     case getTabsCount
     case getSelectedTabId
     case getAllTabs
-    case addTab(Tab)
+    case addTab(Tab, select: Bool)
     case closeTab(Tab)
     case closeTabWithId(Tab.ID)
     case closeAll
@@ -29,7 +29,7 @@ public enum TabsServiceCommand: GenericDataServiceCommand, Sendable {
         .getTabsCount,
         .getSelectedTabId,
         .getAllTabs,
-        .addTab(.blank),
+        .addTab(.blank, select: false),
         .closeTab(.blank),
         .closeTabWithId(.init()),
         .closeAll,

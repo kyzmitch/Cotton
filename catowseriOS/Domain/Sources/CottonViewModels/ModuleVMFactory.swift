@@ -100,7 +100,7 @@ import ViewModelKit
     public static func createTabPreviewsVM(
         _ readTabUseCase: any ReadAllTabsUseCase,
         _ readSelectedIdUseCase: any ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: any CloseTabUseCase,
+        _ closeTabUseCase: any CloseTabUseCase,
         _ selectUseCase: any SelectTabUseCase,
         _ addTabUseCase: any AddTabUseCase,
         _ appContext: TabPreviewsAppContext
@@ -108,7 +108,7 @@ import ViewModelKit
         TabsPreviewsViewModelImpl(
             readTabUseCase,
             readSelectedIdUseCase,
-            writeTabUseCase,
+            closeTabUseCase,
             selectUseCase,
             addTabUseCase,
             appContext

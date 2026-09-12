@@ -34,7 +34,7 @@ public typealias TabsPreviewsViewModelWithHolder = TabsPreviewsViewModel & TabsO
 final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
     private let readAllTabsUseCase: any ReadAllTabsUseCase
     private let readSelectedIdUseCase: any ReadSelectedTabIdUseCase
-    private let writeTabUseCase: any CloseTabUseCase
+    private let closeTabUseCase: any CloseTabUseCase
     private let selectUseCase: any SelectTabUseCase
     private let addTabUseCase: any AddTabUseCase
     private let appContext: any TabPreviewsAppContext
@@ -45,14 +45,14 @@ final public class TabsPreviewsViewModelImpl: TabsPreviewsViewModel {
     init(
         _ readAllTabsUseCase: any ReadAllTabsUseCase,
         _ readSelectedIdUseCase: any ReadSelectedTabIdUseCase,
-        _ writeTabUseCase: any CloseTabUseCase,
+        _ closeTabUseCase: any CloseTabUseCase,
         _ selectUseCase: any SelectTabUseCase,
         _ addTabUseCase: any AddTabUseCase,
         _ appContext: TabPreviewsAppContext
     ) {
         self.readAllTabsUseCase = readAllTabsUseCase
         self.readSelectedIdUseCase = readSelectedIdUseCase
-        self.writeTabUseCase = writeTabUseCase
+        self.closeTabUseCase = closeTabUseCase
         self.selectUseCase = selectUseCase
         self.addTabUseCase = addTabUseCase
         self.appContext = appContext
@@ -102,7 +102,7 @@ extension TabsPreviewsViewModelImpl: TabsPreviewsStateContext {
         if let site = tab.site {
             _ = appContext.removeWebView(for: site)
         }
-        let newSelectedId = try await writeTabUseCase.execute(input: tab)
+        let newSelectedId = try await closeTabUseCase.execute(input: tab)
         info = PreviewsInfo(tabs, newSelectedId)
         return info
     }

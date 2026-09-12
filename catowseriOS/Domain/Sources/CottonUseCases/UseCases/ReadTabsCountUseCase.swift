@@ -4,17 +4,12 @@ import CottonTabs
 
 /// Protocol for reading the count of tabs asynchronously.
 public protocol ReadTabsCountUseCase: CoreUseCase, AutoMockable, Sendable {
-    /// Input type for the use case. In this case, it's `Void`.
-    typealias Input = Void
-
-    /// Output type for the use case, which is the count of tabs.
-    typealias Output = Int
 
     /// Reads the count of tabs asynchronously.
     ///
     /// - Parameter input: Input parameter, which is `Void` for this use case.
     /// - Returns: An integer representing the count of tabs.
-    func execute(input: Input) async throws -> Output
+    func execute(input: Void) async throws -> Int
 }
 
 /// Concrete implementation of `ReadTabsCountUseCase`.

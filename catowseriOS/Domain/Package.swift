@@ -175,6 +175,7 @@ let package = Package(
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework),
                 .product(name: .cottonRestKit, package: .basePackage),
+                .product(name: .autoMockableKit, package: .basePackage),
                 .target(name: .coreBrowserLibrary)
             ]
         ),
@@ -270,6 +271,15 @@ let package = Package(
             ],
             swiftSettings: [
                 .define("MOCKING")
+            ]
+        ),
+        .testTarget(
+            name: "CottonUseCasesTests",
+            dependencies: [
+                .target(name: .useCasesLibrary),
+                .target(name: .tabsLibrary),
+                .target(name: .coreBrowserLibrary),
+                .target(name: .genericServiceKit)
             ]
         ),
         .testTarget(
