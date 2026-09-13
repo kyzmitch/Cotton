@@ -13,6 +13,19 @@ public protocol AutoHashable {}
 
 public extension ProcessInfo {
     static var unitTesting: Bool {
-        processInfo.environment["XCTestConfigurationFilePath"] != nil
+        let environment = processInfo.environment
+        if environment["XCTestConfigurationFilePath"] != nil {
+            return true
+        }
+        if environment["XCTestBundlePath"] != nil {
+            return true
+        }
+        if environment["XCTestSessionIdentifier"] != nil {
+            return true
+        }
+        if processInfo.arguments.contains(where: { $0.contains("xctest") }) {
+            return true
+        }
+        return NSClassFromString("XCTestCase") != nil
     }
 }

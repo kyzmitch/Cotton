@@ -282,10 +282,10 @@
     "semantic_hash": "da74d1cfb2567abeab25c86c81c7df02"
   },
   "catowseriOS/Base/Sources/AutoMockable/AutoMockable.swift": {
-    "mtime": 1789278099.3258672,
-    "seen": 1789278888.5656068,
-    "ast_hash": "e75183d40d8be8e88c4fd408ffd7322e",
-    "semantic_hash": ""
+    "mtime": 1786121907.3048935,
+    "seen": 1788754139.633767,
+    "ast_hash": "08438c9a9fce9df6abae8f35b8937774",
+    "semantic_hash": "08438c9a9fce9df6abae8f35b8937774"
   },
   "catowseriOS/Base/Sources/Base/Base.swift": {
     "mtime": 1786121907.3056433,
@@ -852,10 +852,10 @@
     "semantic_hash": "a4561daae6fc3719c5366386a915236e"
   },
   "catowseriOS/Domain/Package.swift": {
-    "mtime": 1789278485.4401307,
-    "seen": 1789278888.565684,
-    "ast_hash": "37e4d36ab21c628d3deead8898248de8",
-    "semantic_hash": ""
+    "mtime": 1787972199.2680898,
+    "seen": 1788754139.633801,
+    "ast_hash": "daca025293f91ed54345d62c87a6f308",
+    "semantic_hash": "daca025293f91ed54345d62c87a6f308"
   },
   "catowseriOS/Domain/Sources/BaseUseCaseKit/CoreUseCase.swift": {
     "mtime": 1786121907.3299856,
@@ -1098,10 +1098,10 @@
     "semantic_hash": "fc263cccbc784665f1c4b7387c3ea603"
   },
   "catowseriOS/Domain/Sources/CottonTabs/TabsDataService.swift": {
-    "mtime": 1789278416.8359447,
-    "seen": 1789278888.5657768,
-    "ast_hash": "ff114e3879ee987747d669572ba26e2f",
-    "semantic_hash": ""
+    "mtime": 1787972098.272921,
+    "seen": 1788754139.6338172,
+    "ast_hash": "1bb1edb3073796c5e4294a61c054263a",
+    "semantic_hash": "1bb1edb3073796c5e4294a61c054263a"
   },
   "catowseriOS/Domain/Sources/CottonTabs/TabsDataServiceProtocol.swift": {
     "mtime": 1786121907.3413253,
@@ -3522,10 +3522,10 @@
     "semantic_hash": "22df468babd539ada23a9dcc51aebdba"
   },
   "openspec/changes/add-tabs-data-service-cache/design.md": {
-    "mtime": 1789276632.1950788,
-    "seen": 1789278888.566242,
-    "ast_hash": "0764679371f9d98a9fba168da7cf376e",
-    "semantic_hash": ""
+    "mtime": 1788752774.239366,
+    "seen": 1788754139.633973,
+    "ast_hash": "620270f4711d282fa1dfe733feb1fb2f",
+    "semantic_hash": "620270f4711d282fa1dfe733feb1fb2f"
   },
   "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/ADOPTION.md": {
     "mtime": 1786140725.170876,
@@ -3544,6 +3544,24 @@
     "seen": 1788754139.633974,
     "ast_hash": "daaa520688da60009b113e3e1499d5b6",
     "semantic_hash": "daaa520688da60009b113e3e1499d5b6"
+  },
+  "openspec/changes/migrate-search-suggestions-baseviewmodel/design.md": {
+    "mtime": 1786121907.4466355,
+    "seen": 1788754139.633974,
+    "ast_hash": "ff43fd4cfed2108dd9ede0c1c1142c32",
+    "semantic_hash": "ff43fd4cfed2108dd9ede0c1c1142c32"
+  },
+  "openspec/changes/migrate-webview-model-base-viewmodel/design.md": {
+    "mtime": 1786121907.448496,
+    "seen": 1788754139.633975,
+    "ast_hash": "acfbadff892a3952d34f4497d34db804",
+    "semantic_hash": "acfbadff892a3952d34f4497d34db804"
+  },
+  "openspec/changes/move-tab-selection-to-use-case/design.md": {
+    "mtime": 1787975813.6014671,
+    "seen": 1788754139.633975,
+    "ast_hash": "efc6371d539df44c2cac9a7e4899f7cc",
+    "semantic_hash": "efc6371d539df44c2cac9a7e4899f7cc"
   },
   "openspec/config.yaml": {
     "mtime": 1786121907.4497736,
@@ -3570,10 +3588,10 @@
     "semantic_hash": "f3ac4c82d04676c10d7f947437167879"
   },
   "openspec/specs/viewmodel-testability/spec.md": {
-    "mtime": 1789277371.731674,
-    "seen": 1789278888.566273,
-    "ast_hash": "a2a80c7605c60a64aa343eaffe7dd8b8",
-    "semantic_hash": ""
+    "mtime": 1786125826.674101,
+    "seen": 1788754139.6339772,
+    "ast_hash": "5d05165897b4411307388ae510776fb6",
+    "semantic_hash": "5d05165897b4411307388ae510776fb6"
   },
   "catowserAndroid/app/src/debug/ic_launcher-playstore.png": {
     "mtime": 1786121907.2939808,
@@ -4036,317 +4054,5 @@
     "seen": 1788754139.634007,
     "ast_hash": "56307f4242fb8b4686b6bdcae485c3ef",
     "semantic_hash": "56307f4242fb8b4686b6bdcae485c3ef"
-  },
-  "catowseriOS/Domain/Sources/GenericServiceKit/CommandExecutionData+Load.swift": {
-    "mtime": 1789278066.1710901,
-    "seen": 1789278888.565956,
-    "ast_hash": "eb54499801fad6dd967b640809617997",
-    "semantic_hash": ""
-  },
-  "catowseriOS/Domain/Tests/CottonTabsTests/AsyncGate.swift": {
-    "mtime": 1789278490.4340143,
-    "seen": 1789278888.56598,
-    "ast_hash": "759e6551a689d72639a11289697eb0c6",
-    "semantic_hash": ""
-  },
-  "catowseriOS/Domain/Tests/CottonTabsTests/FakeTabsRepository.swift": {
-    "mtime": 1789278635.0367222,
-    "seen": 1789278888.5659819,
-    "ast_hash": "f8174f9dc960c435ecdf8251ef549499",
-    "semantic_hash": ""
-  },
-  "catowseriOS/Domain/Tests/CottonTabsTests/FakeTabsStates.swift": {
-    "mtime": 1789278498.185502,
-    "seen": 1789278888.5659819,
-    "ast_hash": "cf1eaa048662f2f774cd60551c7c56cf",
-    "semantic_hash": ""
-  },
-  "catowseriOS/Domain/Tests/CottonTabsTests/RecordingTabsObserver.swift": {
-    "mtime": 1789278520.604677,
-    "seen": 1789278888.565983,
-    "ast_hash": "31bd13831eeb03f5d110523a552f0753",
-    "semantic_hash": ""
-  },
-  "catowseriOS/Domain/Tests/CottonTabsTests/TabsDataServiceCacheTests.swift": {
-    "mtime": 1789278843.672459,
-    "seen": 1789278888.565984,
-    "ast_hash": "c71e015e059b49170dfc1009deff5ace",
-    "semantic_hash": ""
-  },
-  "catowseriOS/Domain/Tests/GenericServiceKitTests/CommandExecutionDataLoadTests.swift": {
-    "mtime": 1789278843.672459,
-    "seen": 1789278888.566014,
-    "ast_hash": "1c9f6f0d6ee0679030418c20287e8ca6",
-    "semantic_hash": ""
-  },
-  ".cursor/skills/openspec-apply-change/SKILL.md": {
-    "mtime": 1788752611.72638,
-    "seen": 1789278888.5662122,
-    "ast_hash": "73640d98e355e3e4a5ecaa6116865a82",
-    "semantic_hash": ""
-  },
-  ".cursor/skills/openspec-archive-change/SKILL.md": {
-    "mtime": 1788752611.7265828,
-    "seen": 1789278888.5662131,
-    "ast_hash": "ee587087578ab9d2d283ad5b1f76371e",
-    "semantic_hash": ""
-  },
-  ".cursor/skills/openspec-continue-change/SKILL.md": {
-    "mtime": 1788752611.726223,
-    "seen": 1789278888.5662138,
-    "ast_hash": "b0ef085158d436934048578c8394525a",
-    "semantic_hash": ""
-  },
-  ".cursor/skills/openspec-explore/SKILL.md": {
-    "mtime": 1788752611.7257001,
-    "seen": 1789278888.5662222,
-    "ast_hash": "c4c6fe598e86d13378e0b5ecd202cec6",
-    "semantic_hash": ""
-  },
-  ".cursor/skills/openspec-new-change/SKILL.md": {
-    "mtime": 1788752611.7259898,
-    "seen": 1789278888.5662222,
-    "ast_hash": "a55f364f3d815263bd3fa38deb665083",
-    "semantic_hash": ""
-  },
-  ".cursor/skills/openspec-propose/SKILL.md": {
-    "mtime": 1788752611.7267737,
-    "seen": 1789278888.5662231,
-    "ast_hash": "140ba650e1a73dbb6d77948ccc1e2e59",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-cotton-logger-kit/.openspec.yaml": {
-    "mtime": 1788717645.0333629,
-    "seen": 1789278888.566237,
-    "ast_hash": "adb74568e08fbff87d6eaf1847f3ae9b",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-cotton-logger-kit/proposal.md": {
-    "mtime": 1788717645.034022,
-    "seen": 1789278888.5662389,
-    "ast_hash": "44399ba8f56287173fd60e4ba0972cf3",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-cotton-logger-kit/specs/cotton-logger-kit/spec.md": {
-    "mtime": 1788717645.0344734,
-    "seen": 1789278888.56624,
-    "ast_hash": "e80f63b30bff4e8820c782ab05714156",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-cotton-logger-kit/tasks.md": {
-    "mtime": 1788717645.0348358,
-    "seen": 1789278888.56624,
-    "ast_hash": "9feeff16b0efdd78d39fa4a8d7e1c738",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-tabs-data-service-cache/.openspec.yaml": {
-    "mtime": 1788718087.0013769,
-    "seen": 1789278888.566241,
-    "ast_hash": "ea5992f51f2d5a73833ec2e0d965f5e9",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-tabs-data-service-cache/proposal.md": {
-    "mtime": 1789276605.6437898,
-    "seen": 1789278888.5662432,
-    "ast_hash": "1079dc2ff4ac20cac8cdf61e5c99f76f",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-tabs-data-service-cache/specs/data-service-cache/spec.md": {
-    "mtime": 1789276676.3927526,
-    "seen": 1789278888.5662441,
-    "ast_hash": "9fea2067df5e0f7bd871f60fe4b9de24",
-    "semantic_hash": ""
-  },
-  "openspec/changes/add-tabs-data-service-cache/tasks.md": {
-    "mtime": 1789278879.336562,
-    "seen": 1789278888.5662441,
-    "ast_hash": "b5d82d501f241275028714df1521f894",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/.openspec.yaml": {
-    "mtime": 1786121907.443095,
-    "seen": 1789278888.566245,
-    "ast_hash": "4b73e626833ad537213df5cd1bfa63a5",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/proposal.md": {
-    "mtime": 1786121907.4440658,
-    "seen": 1789278888.566248,
-    "ast_hash": "3510b1da3808e7d1a50a5c46ef1f3806",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/specs/viewmodel-state-machine/spec.md": {
-    "mtime": 1786121907.4443705,
-    "seen": 1789278888.566249,
-    "ast_hash": "57b6b35cafc07e139325a960cfd257c9",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/specs/viewmodel-state/spec.md": {
-    "mtime": 1786121907.4445932,
-    "seen": 1789278888.566249,
-    "ast_hash": "2d6f19fe54ba09eaf89b82581037e88d",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/specs/viewmodel-testability/spec.md": {
-    "mtime": 1786121907.4455152,
-    "seen": 1789278888.56625,
-    "ast_hash": "153d285809f53c484e828240fb2c1842",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-01-mvvm-generic-state-machine/tasks.md": {
-    "mtime": 1786121907.445794,
-    "seen": 1789278888.566251,
-    "ast_hash": "87cf0e1410cc7a20296263f65d7a3d3f",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-07-migrate-tab-viewmodel-baseviewmodel/.openspec.yaml": {
-    "mtime": 1786123394.820466,
-    "seen": 1789278888.566251,
-    "ast_hash": "29df9fc9512a6f4bd5b0de0a084a3b93",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-07-migrate-tab-viewmodel-baseviewmodel/proposal.md": {
-    "mtime": 1786123418.4963176,
-    "seen": 1789278888.566253,
-    "ast_hash": "2b4258e5e62d8438dc4c733753d8b807",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-07-migrate-tab-viewmodel-baseviewmodel/specs/tab-viewmodel-kit-adoption/spec.md": {
-    "mtime": 1786123515.9309993,
-    "seen": 1789278888.5662541,
-    "ast_hash": "40a2f9ade6aa2dfdbb256e836477ede7",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-07-migrate-tab-viewmodel-baseviewmodel/specs/viewmodel-testability/spec.md": {
-    "mtime": 1786123516.006541,
-    "seen": 1789278888.566255,
-    "ast_hash": "9210545ee3d23f0bf04c5b129fbe61ed",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-08-07-migrate-tab-viewmodel-baseviewmodel/tasks.md": {
-    "mtime": 1786124888.2236676,
-    "seen": 1789278888.566255,
-    "ast_hash": "32de880e00d4cc8543a24c21ae7bc8ba",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-search-suggestions-baseviewmodel/.openspec.yaml": {
-    "mtime": 1786121907.446109,
-    "seen": 1789278888.566256,
-    "ast_hash": "0a96bfc1c9218995064f38f9e9b19caa",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-search-suggestions-baseviewmodel/design.md": {
-    "mtime": 1786121907.4466355,
-    "seen": 1789278888.566257,
-    "ast_hash": "ff43fd4cfed2108dd9ede0c1c1142c32",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-search-suggestions-baseviewmodel/proposal.md": {
-    "mtime": 1786121907.4469426,
-    "seen": 1789278888.566257,
-    "ast_hash": "adc54dda9576494c0f98b695e36c931c",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-search-suggestions-baseviewmodel/specs/search-suggestions-kit-adoption/spec.md": {
-    "mtime": 1786121907.4472718,
-    "seen": 1789278888.566258,
-    "ast_hash": "83c3d6de085302f456b8a4477d2b4aa3",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-search-suggestions-baseviewmodel/specs/viewmodel-testability/spec.md": {
-    "mtime": 1786121907.447607,
-    "seen": 1789278888.566259,
-    "ast_hash": "164a019e40cc4db213a89f10bf337679",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-search-suggestions-baseviewmodel/tasks.md": {
-    "mtime": 1786121907.447961,
-    "seen": 1789278888.566259,
-    "ast_hash": "7ed0b015ede7591d459e41a487554f9d",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-webview-model-base-viewmodel/.openspec.yaml": {
-    "mtime": 1786121907.4482512,
-    "seen": 1789278888.5662599,
-    "ast_hash": "77c897de8023b0c6df09fea94ab57c52",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-webview-model-base-viewmodel/design.md": {
-    "mtime": 1786121907.448496,
-    "seen": 1789278888.566261,
-    "ast_hash": "acfbadff892a3952d34f4497d34db804",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-webview-model-base-viewmodel/proposal.md": {
-    "mtime": 1786121907.4486966,
-    "seen": 1789278888.566262,
-    "ast_hash": "fc913c13f80ea9c138a286b358b1da00",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-webview-model-base-viewmodel/specs/viewmodel-testability/spec.md": {
-    "mtime": 1786121907.448955,
-    "seen": 1789278888.566262,
-    "ast_hash": "5f61fd5e9f354879e72e963aab8f6a51",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-webview-model-base-viewmodel/specs/webview-model-kit-adoption/spec.md": {
-    "mtime": 1786121907.4492335,
-    "seen": 1789278888.566263,
-    "ast_hash": "7cf0240eb2c585bc25a5556e0c858e2f",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-migrate-webview-model-base-viewmodel/tasks.md": {
-    "mtime": 1786121907.4494991,
-    "seen": 1789278888.5662642,
-    "ast_hash": "67188c708314a412141e8c31e3c5a28b",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-move-tab-selection-to-use-case/.openspec.yaml": {
-    "mtime": 1786168362.2487543,
-    "seen": 1789278888.5662642,
-    "ast_hash": "2997b5c1e0bc007a9024a1ef06bfc3a8",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-move-tab-selection-to-use-case/design.md": {
-    "mtime": 1787975813.6014671,
-    "seen": 1789278888.566265,
-    "ast_hash": "efc6371d539df44c2cac9a7e4899f7cc",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-move-tab-selection-to-use-case/proposal.md": {
-    "mtime": 1787975820.4212387,
-    "seen": 1789278888.566266,
-    "ast_hash": "531a348e0bc6baed2a31357c3965a2fd",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-move-tab-selection-to-use-case/specs/tabs-use-case-selection/spec.md": {
-    "mtime": 1786169533.551234,
-    "seen": 1789278888.566266,
-    "ast_hash": "4abbce9cd9a5f85242f675ec9bd9c903",
-    "semantic_hash": ""
-  },
-  "openspec/changes/archive/2026-09-13-move-tab-selection-to-use-case/tasks.md": {
-    "mtime": 1788043492.8898318,
-    "seen": 1789278888.5662668,
-    "ast_hash": "29be61b90adc5ce389b067902ab206b0",
-    "semantic_hash": ""
-  },
-  "openspec/specs/search-suggestions-kit-adoption/spec.md": {
-    "mtime": 1789277371.6904466,
-    "seen": 1789278888.566269,
-    "ast_hash": "40be404e6e264457d5909de0593f2124",
-    "semantic_hash": ""
-  },
-  "openspec/specs/tabs-use-case-selection/spec.md": {
-    "mtime": 1789276983.0983543,
-    "seen": 1789278888.566271,
-    "ast_hash": "0e130cf075e21b452eeb122ea5c3c0fa",
-    "semantic_hash": ""
-  },
-  "openspec/specs/webview-model-kit-adoption/spec.md": {
-    "mtime": 1789277182.9909408,
-    "seen": 1789278888.5662742,
-    "ast_hash": "da2343151077914066be37aa490a4293",
-    "semantic_hash": ""
   }
 }

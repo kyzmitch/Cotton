@@ -6,6 +6,7 @@
 //  Copyright © 2019 Cotton (former Catowser). All rights reserved.
 //
 
+import AutoMockable
 import CoreBrowser
 import GenericServiceKit
 import Foundation
@@ -38,6 +39,8 @@ actor TabsDataService: TabsDataServiceProtocol {
     private let observingType: ObservingApiType
     /// Service data
     public var serviceData: ServiceData
+    /// Shared wait-then-start lock for every mutation that writes `allTabs` / `selectedTabId`.
+    private var mutationLock: CommandExecutionData<Void, Void, TabsListError> = .notStarted
 
     /// tabs computed property
     var tabs: [CoreBrowser.Tab] {
@@ -122,7 +125,7 @@ actor TabsDataService: TabsDataServiceProtocol {
         case .getSelectedTabId:
             return handleSelectedTabIdCommand()
         case .getAllTabs:
-            return handleFetchAllTabsCommand()
+            return await handleFetchAllTabsCommand()
         case .addTab(let value, let select):
             return await handleAddTabCommand(value, select: select)
         case .closeTab(let value):
@@ -189,7 +192,12 @@ private extension TabsDataService {
         return serviceData
     }
 
-    func handleFetchAllTabsCommand() -> TabsServiceData {
+    func handleFetchAllTabsCommand() async -> TabsServiceData {
+        do {
+            _ = try await fetchAllTabs()
+        } catch {
+            // Failure is already stored on `allTabs` / `tabsCount`.
+        }
         return serviceData
     }
 
@@ -197,13 +205,25 @@ private extension TabsDataService {
         _ tab: CoreBrowser.Tab,
         select: Bool
     ) async -> TabsServiceData {
+        await waitThenRunMutation {
+            await self.performAddTab(tab, select: select)
+        }
+    }
+
+    func performAddTab(
+        _ tab: CoreBrowser.Tab,
+        select: Bool
+    ) async -> TabsServiceData {
         let positionType = await positioning.addPosition
-        guard
-            case let .finished(allTabsValue) = serviceData.allTabs,
-            case var .success(tabs) = allTabsValue,
-            case let .finished(selectedTabValue) = serviceData.selectedTabId,
-            case let .success(selectedTabIdentifier) = selectedTabValue
-        else {
+        var tabs: [CoreBrowser.Tab]
+        let selectedTabIdentifier: CoreBrowser.Tab.ID
+        do {
+            tabs = try await resolvedAllTabs()
+            selectedTabIdentifier = await resolvedSelectedTabId()
+        } catch let error as TabsListError {
+            serviceData.tabAdded = .finished(output: .failure(error))
+            return serviceData
+        } catch {
             serviceData.tabAdded = .finished(output: .failure(.noAnyTabs))
             return serviceData
         }
@@ -228,7 +248,14 @@ private extension TabsDataService {
     }
 
     func handleCloseTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceData {
+        await waitThenRunMutation {
+            await self.performCloseTab(tab)
+        }
+    }
+
+    func performCloseTab(_ tab: CoreBrowser.Tab) async -> TabsServiceData {
         do {
+            _ = try await resolvedAllTabs()
             let removedTabs = try await tabsRepository.remove(tabs: [tab])
             guard let removedTab = removedTabs.first else {
                 throw TabsListError.failToRemoveTab
@@ -236,6 +263,9 @@ private extension TabsDataService {
             try await handleCachedTabRemove(removedTab)
             // Selection after close is owned by CloseTabUseCase; service only persists removal.
             serviceData.tabClosed = .finished(output: .success(nil))
+        } catch let error as TabsListError {
+            print("Failure to remove tab from cache: \(error)")
+            serviceData.tabClosed = .finished(output: .failure(error))
         } catch {
             // tab view should be removed immediately on view level anyway
             print("Failure to remove tab from cache: \(error)")
@@ -247,10 +277,19 @@ private extension TabsDataService {
     }
 
     func handleCloseTabWithIdCommand(_ tabId: Tab.ID) async -> TabsServiceData {
-        guard
-            case let .finished(allTabsValue) = serviceData.allTabs,
-            case let .success(tabs) = allTabsValue
-        else {
+        await waitThenRunMutation {
+            await self.performCloseTabWithId(tabId)
+        }
+    }
+
+    func performCloseTabWithId(_ tabId: Tab.ID) async -> TabsServiceData {
+        let tabs: [CoreBrowser.Tab]
+        do {
+            tabs = try await resolvedAllTabs()
+        } catch let error as TabsListError {
+            serviceData.tabClosed = .finished(output: .failure(error))
+            return serviceData
+        } catch {
             serviceData.tabClosed = .finished(output: .failure(.noAnyTabs))
             return serviceData
         }
@@ -259,15 +298,24 @@ private extension TabsDataService {
             serviceData.tabClosed = .finished(output: .success(tabId))
             return serviceData
         }
-        return await handleCloseTabCommand(tabToRemove)
+        return await performCloseTab(tabToRemove)
     }
 
     func handleCloseAllCommand() async -> TabsServiceData {
+        await waitThenRunMutation {
+            await self.performCloseAll()
+        }
+    }
+
+    func performCloseAll() async -> TabsServiceData {
         let contentState = await positioning.contentState
-        guard
-            case let .finished(allTabsValue) = serviceData.allTabs,
-            case let .success(tabsCopy) = allTabsValue
-        else {
+        let tabsCopy: [CoreBrowser.Tab]
+        do {
+            tabsCopy = try await resolvedAllTabs()
+        } catch let error as TabsListError {
+            serviceData.allTabsClosed = .finished(output: .failure(error))
+            return serviceData
+        } catch {
             serviceData.allTabsClosed = .finished(output: .failure(.noAnyTabs))
             return serviceData
         }
@@ -302,13 +350,13 @@ private extension TabsDataService {
     }
 
     func handleSelectTabCommand(_ tab: CoreBrowser.Tab) async -> TabsServiceData {
-        guard
-            case let .finished(selectedTabValue) = serviceData.selectedTabId,
-            case let .success(selectedTabIdentifier) = selectedTabValue
-        else {
-            serviceData.tabSelected = .finished(output: .failure(.selectedNotFound))
-            return serviceData
+        await waitThenRunMutation {
+            await self.performSelectTab(tab)
         }
+    }
+
+    func performSelectTab(_ tab: CoreBrowser.Tab) async -> TabsServiceData {
+        let selectedTabIdentifier = await resolvedSelectedTabId()
         do {
             let identifier = try await tabsRepository.select(tab: tab)
             let void: Void = ()
@@ -334,17 +382,22 @@ private extension TabsDataService {
     func handleReplaceTabContentCommand(
         _ tabContent: CoreBrowser.Tab.ContentType
     ) async -> TabsServiceData {
-        guard
-            case let .finished(selectedTabValue) = serviceData.selectedTabId,
-            case let .success(selectedTabIdentifier) = selectedTabValue
-        else {
-            serviceData.tabContentReplaced = .finished(output: .failure(.selectedNotFound))
-            return serviceData
+        await waitThenRunMutation {
+            await self.performReplaceTabContent(tabContent)
         }
-        guard
-            case let .finished(allTabsValue) = serviceData.allTabs,
-            case var .success(tabs) = allTabsValue
-        else {
+    }
+
+    func performReplaceTabContent(
+        _ tabContent: CoreBrowser.Tab.ContentType
+    ) async -> TabsServiceData {
+        let selectedTabIdentifier = await resolvedSelectedTabId()
+        var tabs: [CoreBrowser.Tab]
+        do {
+            tabs = try await resolvedAllTabs()
+        } catch let error as TabsListError {
+            serviceData.tabContentReplaced = .finished(output: .failure(error))
+            return serviceData
+        } catch {
             serviceData.tabContentReplaced = .finished(output: .failure(.noAnyTabs))
             return serviceData
         }
@@ -385,22 +438,25 @@ private extension TabsDataService {
     }
 
     func handleUpdateSelectedTabPreviewCommand(_ image: Data?) async -> TabsServiceData {
-        guard
-            case let .finished(selectedTabValue) = serviceData.selectedTabId,
-            case let .success(selectedTabIdentifier) = selectedTabValue
-        else {
-            serviceData.tabContentReplaced = .finished(output: .failure(.selectedNotFound))
-            return serviceData
+        await waitThenRunMutation {
+            await self.performUpdateSelectedTabPreview(image)
         }
+    }
+
+    func performUpdateSelectedTabPreview(_ image: Data?) async -> TabsServiceData {
+        let selectedTabIdentifier = await resolvedSelectedTabId()
         let defaultValue = positioning.defaultSelectedTabId
         guard selectedTabIdentifier != defaultValue else {
             serviceData.tabPreviewUpdated = .finished(output: .failure(.onlyDefaultTabPresent))
             return serviceData
         }
-        guard
-            case let .finished(allTabsValue) = serviceData.allTabs,
-            case var .success(tabs) = allTabsValue
-        else {
+        var tabs: [CoreBrowser.Tab]
+        do {
+            tabs = try await resolvedAllTabs()
+        } catch let error as TabsListError {
+            serviceData.tabPreviewUpdated = .finished(output: .failure(error))
+            return serviceData
+        } catch {
             serviceData.tabPreviewUpdated = .finished(output: .failure(.noAnyTabs))
             return serviceData
         }
@@ -409,10 +465,6 @@ private extension TabsDataService {
             return serviceData
         }
         var tab = tabTuple.tab
-        guard let tabTuple = tabs.element(by: selectedTabIdentifier) else {
-            serviceData.tabPreviewUpdated = .finished(output: .failure(.selectedNotFound))
-            return serviceData
-        }
         let tabIndex = tabTuple.index
         if case .site = tab.contentType, image == nil {
             serviceData.tabPreviewUpdated = .finished(output: .failure(.wrongTabContent))
@@ -572,7 +624,14 @@ private extension TabsDataService {
     func handleCachedTabRemove(
         _ tab: CoreBrowser.Tab
     ) async throws(TabsListError) {
-        var tabs = tabs
+        var tabs: [CoreBrowser.Tab]
+        do {
+            tabs = try await resolvedAllTabs()
+        } catch let error as TabsListError {
+            throw error
+        } catch {
+            throw .noAnyTabs
+        }
         guard let closedTabIndex = tabs.firstIndex(of: tab) else {
             throw .closingNonExistingTab
         }
@@ -587,31 +646,154 @@ private extension TabsDataService {
     }
 
     func fetchTabs() async throws {
-        async let cachedTabs = tabsRepository.fetchAllTabs()
-        async let defaultContentType = positioning.contentState
-        var cachedData = try await TabsAppStartInfo(
-            cachedTabs,
-            defaultContentType
-        )
+        var tabs = try await fetchAllTabs()
         let selectedTabId: Tab.ID
-        if cachedData.tabs.isEmpty {
-            let tab = CoreBrowser.Tab(contentType: cachedData.defaultContentType)
+        if tabs.isEmpty {
+            let defaultContentType = await positioning.contentState
+            let tab = CoreBrowser.Tab(contentType: defaultContentType)
             let savedTab = try await tabsRepository.add(tab, select: true)
-            cachedData.tabs = [savedTab]
+            tabs = [savedTab]
+            serviceData.allTabs = .finished(output: .success(tabs))
+            serviceData.tabsCount = .finished(output: .success(tabs.count))
             selectedTabId = tab.id
+            serviceData.selectedTabId = .finished(output: .success(selectedTabId))
         } else {
-            selectedTabId = try await tabsRepository.fetchSelectedTabId()
+            selectedTabId = await fetchSelectedTabId(forceReloadPlaceholder: true)
         }
-        serviceData.allTabs = .finished(output: .success(cachedData.tabs))
-        serviceData.tabsCount = .finished(output: .success(cachedData.tabs.count))
-        serviceData.selectedTabId = .finished(output: .success(selectedTabId))
         if observingType.isSystemObservation {
-            await notifyAboutNewTabs(cachedData.tabs, nil)
+            await notifyAboutNewTabs(tabs, nil)
             await notifyAboutNewSelectedTab(selectedTabId)
         } else {
-            tabsCountInput.yield(cachedData.tabs.count)
+            tabsCountInput.yield(tabs.count)
             selectedTabIdInput.yield(selectedTabId)
         }
+    }
+
+    func fetchAllTabs() async throws -> [CoreBrowser.Tab] {
+        let operation: @Sendable () async throws -> [CoreBrowser.Tab] = { [tabsRepository] in
+            do {
+                return try await tabsRepository.fetchAllTabs()
+            } catch {
+                throw TabsListError.repositoryFailure(error as NSError)
+            }
+        }
+        let (next, task) = serviceData.allTabs.startingOrJoiningLoad(operation: operation)
+        serviceData.allTabs = next
+        if let task {
+            serviceData.tabsCount = .inProgress(
+                CommandExecutionData<Void, Int, TabsListError>.makeInProgressTask {
+                    let loadedTabs = try await task.value
+                    return loadedTabs.count
+                }
+            )
+        }
+        var allTabs = serviceData.allTabs
+        do {
+            let tabs = try await allTabs.loadOrJoin(operation: operation)
+            serviceData.allTabs = allTabs
+            serviceData.tabsCount = .finished(output: .success(tabs.count))
+            return tabs
+        } catch let error as TabsListError {
+            serviceData.allTabs = allTabs
+            serviceData.tabsCount = .finished(output: .failure(error))
+            throw error
+        }
+    }
+
+    func fetchSelectedTabId(forceReloadPlaceholder: Bool) async -> Tab.ID {
+        let fallback = positioning.defaultSelectedTabId
+        if forceReloadPlaceholder {
+            if case .finished(let output) = serviceData.selectedTabId,
+               case .success = output {
+                serviceData.selectedTabId = .notStarted
+            }
+        }
+        let operation: @Sendable () async throws -> Tab.ID = { [tabsRepository] in
+            do {
+                return try await tabsRepository.fetchSelectedTabId()
+            } catch {
+                return fallback
+            }
+        }
+        let (next, _) = serviceData.selectedTabId.startingOrJoiningLoad(operation: operation)
+        serviceData.selectedTabId = next
+        var selectedTabId = serviceData.selectedTabId
+        do {
+            let identifier = try await selectedTabId.loadOrJoin(operation: operation)
+            serviceData.selectedTabId = selectedTabId
+            return identifier
+        } catch {
+            serviceData.selectedTabId = .finished(output: .success(fallback))
+            return fallback
+        }
+    }
+
+    func resolvedAllTabs() async throws -> [CoreBrowser.Tab] {
+        switch serviceData.allTabs {
+        case .inProgress(let task):
+            do {
+                let tabs = try await task.value
+                serviceData.allTabs = .finished(output: .success(tabs))
+                serviceData.tabsCount = .finished(output: .success(tabs.count))
+                return tabs
+            } catch let error as TabsListError {
+                serviceData.allTabs = .finished(output: .failure(error))
+                serviceData.tabsCount = .finished(output: .failure(error))
+                throw error
+            } catch {
+                let wrapped = TabsListError.repositoryFailure(error as NSError)
+                serviceData.allTabs = .finished(output: .failure(wrapped))
+                serviceData.tabsCount = .finished(output: .failure(wrapped))
+                throw wrapped
+            }
+        case .finished(let output):
+            switch output {
+            case .success(let tabs):
+                return tabs
+            case .failure(let error):
+                throw error
+            }
+        case .notStarted, .started:
+            throw TabsListError.noAnyTabs
+        }
+    }
+
+    func resolvedSelectedTabId() async -> CoreBrowser.Tab.ID {
+        let fallback = positioning.defaultSelectedTabId
+        switch serviceData.selectedTabId {
+        case .inProgress(let task):
+            do {
+                let identifier = try await task.value
+                serviceData.selectedTabId = .finished(output: .success(identifier))
+                return identifier
+            } catch {
+                serviceData.selectedTabId = .finished(output: .success(fallback))
+                return fallback
+            }
+        case .finished(let output):
+            switch output {
+            case .success(let identifier):
+                return identifier
+            case .failure:
+                return fallback
+            }
+        case .notStarted, .started:
+            return fallback
+        }
+    }
+
+    func waitThenRunMutation(
+        _ work: () async -> TabsServiceData
+    ) async -> TabsServiceData {
+        while case .inProgress(let existing) = mutationLock {
+            _ = try? await existing.value
+        }
+        let gate = MutationLockGate()
+        mutationLock = .inProgress(gate.task)
+        let result = await work()
+        gate.finish()
+        mutationLock = .finished(output: .success(()))
+        return result
     }
 
     func subscribeForTabsCountChange() {
@@ -687,6 +869,27 @@ private extension AddedTabPosition {
             tabs.insert(tab, at: newIndex)
         }
         return newIndex
+    }
+}
+
+/// Signals completion of one mutation so waiters can start the next.
+private final class MutationLockGate: @unchecked Sendable {
+    let task: Task<Void, TabsListError>
+    private let continuation: AsyncStream<Void>.Continuation
+
+    init() {
+        let (stream, continuation) = AsyncStream<Void>.makeStream()
+        self.continuation = continuation
+        self.task = CommandExecutionData<Void, Void, TabsListError>.makeInProgressTask {
+            for await _ in stream {
+                break
+            }
+        }
+    }
+
+    func finish() {
+        continuation.yield(())
+        continuation.finish()
     }
 }
 
