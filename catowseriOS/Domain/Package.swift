@@ -274,6 +274,15 @@ let package = Package(
             ]
         ),
         .testTarget(
+            name: "CottonTabsTests",
+            dependencies: [
+                .target(name: .tabsLibrary),
+                .target(name: .genericServiceKit),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .autoMockableKit, package: .basePackage)
+            ]
+        ),
+        .testTarget(
             name: "CottonUseCasesTests",
             dependencies: [
                 .target(name: .useCasesLibrary),

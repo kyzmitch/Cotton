@@ -1,24 +1,32 @@
-## 1. CacheEntry type
+## 1. CommandExecutionData as cache entry
 
-- [ ] 1.1 Create `CacheEntry<Value>` generic enum (`Sendable`, `Value: Sendable`) in `CottonTabs` with `.inProgress(Task<Value, Error>)` and `.ready(Value)` cases, documented per issue #97
-- [ ] 1.2 Add an awaiting helper on `CacheEntry` (e.g. `value()` or equivalent) that awaits the in-flight task or returns the ready value, keeping error propagation untyped
-- [ ] 1.3 Add a small single-flight load helper (start-or-join) usable by actor hosts: creates the task when entry is `nil`, stores `.inProgress`, awaits, promotes to `.ready` on success, clears to `nil` on failure
+- [x] 1.1 Do **not** add `CacheEntry` / `TabsCacheEntry`; use existing `CommandExecutionData` (`.inProgress` / `.finished`) as the cache entry
+- [x] 1.2 Add the load/coalesce helper as an extension of `CommandExecutionData` in `GenericServiceKit`: `.inProgress` awaits and returns that result; `.notStarted` / `.finished(.failure)` start a new load; `.finished(.success)` returns the cached value
+- [x] 1.3 Add a mutation wait-then-start helper **local to `TabsDataService`** that operates on the shared mutation lock (await `.inProgress` if present, then start a **new** task)
+- [x] 1.4 On success promote to `.finished(.success)`; on failure store `.finished(.failure)` (never leave a completed failed task in `.inProgress`)
 
 ## 2. TabsDataService integration
 
-- [ ] 2.1 Add private cache entry storage to `TabsDataService` for the initial load (tabs array + selected tab id combined, per design D5 / open question)
-- [ ] 2.2 Route `fetchTabs()` repository reads through the cache entry, preserving all `serviceData` writes (`allTabs`, `tabsCount`, `selectedTabId`) and observer/subject notifications exactly as before
-- [ ] 2.3 Verify the `init` load path (including the empty-tabs → add default tab branch) still works through the cache and the unit-testing `print` vs `fatalError` behavior is preserved
+- [x] 2.1 Use existing `serviceData.allTabs`, `serviceData.tabsCount`, and `serviceData.selectedTabId` as separate cache entries; put `allTabs` / `tabsCount` in `.inProgress` for `fetchAllTabs()` and `selectedTabId` in `.inProgress` for `fetchSelectedTabId()` (D8)
+- [x] 2.2 Route those repository reads through the GenericServiceKit coalesce helper; **keep** pre-seeding `selectedTabId` as `.finished(defaultSelectedTabId)` in `init`; still move it to `.inProgress` for `fetchSelectedTabId()` (placeholder is not a cache hit); on failure restore `.finished(.success(defaultSelectedTabId))`; preserve observer/subject notifications on successful completion
+- [x] 2.3 Verify the `init` load path (including the empty-tabs → add default tab branch) still works through `.inProgress` and the unit-testing `print` vs `fatalError` behavior is preserved
+- [x] 2.4 In `handleAddTabCommand` (and other handlers that guard on `allTabs` / `selectedTabId`), await whichever of those entries is `.inProgress` instead of failing with `.noAnyTabs` / `.selectedNotFound`
+- [x] 2.5 Add one shared mutation `CommandExecutionData` on `TabsDataService` (not `tabAdded` / `tabClosed` / …). Wait-then-claim before repository `await`s that write `allTabs` / `selectedTabId`. Do not coalesce two commands onto one task and do not add a pending-tabs queue
+- [x] 2.6 Route add, close, select, replace, and preview through that shared lock so they cannot interleave; keep per-command `ServiceData` fields as last-write results only
 
 ## 3. Tests
 
-- [ ] 3.1 Add Swift Testing unit tests for `CacheEntry` cold-load start (exactly one load task created)
-- [ ] 3.2 Add concurrency tests: multiple callers while `.inProgress` share one task and receive identical results
-- [ ] 3.3 Add tests: cached read after success does not re-invoke load; failure clears entry so a subsequent call retries fresh
-- [ ] 3.4 Add tests: `TabsDataService` initial load is single-flight (repository fetch invoked once under concurrent callers), and `serviceData` / observer notifications are unchanged
-- [ ] 3.5 Run the full domain test suite (`CottonUseCasesTests`, `GenericServiceKitTests`, new cache tests) and fix any regressions
+- [x] 3.1 Add Swift Testing unit tests in `GenericServiceKitTests` for the `CommandExecutionData` coalesce helper: cold-load start from `.notStarted` (exactly one load task created and stored as `.inProgress`)
+- [x] 3.2 Add concurrency tests in `GenericServiceKitTests`: multiple callers while `.inProgress` share one task and receive identical results
+- [x] 3.3 Add tests in `GenericServiceKitTests`: cached read after `.finished(.success)` does not re-invoke load; `.finished(.failure)` lets a subsequent call retry fresh
+- [x] 3.4 Add tests: `TabsDataService` initial `allTabs` load is single-flight (repository fetch invoked once under concurrent callers), and observer notifications are unchanged on success
+- [x] 3.5 Add tests: `selectedTabId` is pre-seeded with `defaultSelectedTabId`, then single-flight via `fetchSelectedTabId()`; if that call fails while tabs succeed, `selectedTabId` is `.finished(.success(defaultSelectedTabId))` (not `.failure`) and the UI/app can still function
+- [x] 3.6 Add tests: `handleAddTabCommand` waits when `allTabs` and/or `selectedTabId` is `.inProgress`, then adds against the loaded values
+- [x] 3.7 Add tests: two overlapping `addTab` commands serialize through the shared lock (two repository adds, both tabs present in `allTabs`); the second result is not the first add’s index
+- [x] 3.8 Add tests: `closeTab` (or select) while `addTab` holds the shared lock waits, then mutates the post-add `allTabs`
+- [x] 3.9 Run the full domain test suite (`CottonUseCasesTests`, `GenericServiceKitTests`, new cache tests) and fix any regressions
 
 ## 4. Verification
 
-- [ ] 4.1 Run SwiftLint on changed files; fix any violations
-- [ ] 4.2 Manually smoke-test app start (initial tabs load through the cache) and normal add/close/select flows in the app
+- [x] 4.1 Run SwiftLint on changed files; fix any violations
+- [ ] 4.2 Manually smoke-test app start (initial tabs load through `.inProgress` → `.finished`) and normal add/close/select flows in the app
