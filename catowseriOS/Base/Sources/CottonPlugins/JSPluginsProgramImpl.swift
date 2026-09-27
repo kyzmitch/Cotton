@@ -49,7 +49,8 @@ public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equat
             do {
                 try pair.plugin.accept(visitor, context, canInject, pair.handler)
             } catch {
-                print("\(#function) failed to load plugin: \(error.localizedDescription)")
+                let message = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+                print("\(#function) failed to load plugin: \(message)")
             }
         }
     }

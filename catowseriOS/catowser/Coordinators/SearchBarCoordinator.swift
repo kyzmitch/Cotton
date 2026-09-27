@@ -172,6 +172,7 @@ extension SearchBarCoordinator: CoordinatorOwner {
         if coordinator === searhSuggestionsCoordinator {
             // maybe need to reuse it actually and not create it each time
             searhSuggestionsCoordinator = nil
+            isSuggestionsShowed = false
         }
     }
 }
@@ -215,7 +216,6 @@ private extension SearchBarCoordinator {
 
     func hideSearchController() {
         guard isSuggestionsShowed else {
-            print("Attempted to hide suggestions when they are not showed")
             return
         }
         isSuggestionsShowed = false

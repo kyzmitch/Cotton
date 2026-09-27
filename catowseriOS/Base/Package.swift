@@ -130,6 +130,9 @@ let package = Package(
                 .target(name: .cssParserLibrary),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swiftSoupFramework, package: .swiftSoupFramework)
+            ],
+            resources: [
+                .copy("Scripts/js")
             ]
         ),
         .target(

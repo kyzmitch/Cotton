@@ -32,12 +32,27 @@ final class JSPluginFactory {
 
 fileprivate extension JSPluginFactory {
     static func loadScriptSource(_ resourceName: String) throws -> String {
-        guard let filepath = Bundle.init(for: self).path(forResource: resourceName, ofType: "js") else {
-            print("\(resourceName).js not found!")
-            struct JSFileNotExist: Error {}
-            throw JSFileNotExist()
+        guard let filepath = scriptFilePath(for: resourceName) else {
+            throw CottonPluginError.jsFileNotFound(fileName: resourceName)
         }
 
         return try String(contentsOfFile: filepath)
+    }
+
+    static func scriptFilePath(for resourceName: String) -> String? {
+        let bundles = [Bundle.module, Bundle(for: JSPluginFactory.self)]
+        let subdirectories = ["Scripts/js", "js", nil as String?]
+        for bundle in bundles {
+            for subdirectory in subdirectories {
+                if let path = bundle.path(
+                    forResource: resourceName,
+                    ofType: "js",
+                    inDirectory: subdirectory
+                ) {
+                    return path
+                }
+            }
+        }
+        return nil
     }
 }
