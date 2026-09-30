@@ -10,6 +10,7 @@ import Foundation
 @preconcurrency import ReactiveSwift
 // needed for `Downloadable`
 import CottonNetworking
+import CottonLoggerKit
 
 @MainActor protocol FileDownloadDelegate: AnyObject {
     func didPressOpenFile(withLocal url: URL)
@@ -63,7 +64,7 @@ final class FileDownloadViewModel {
                 case .success(let bytesCount):
                     self.resourceSizeOutput.value = bytesCount
                 case .failure(let error):
-                    print("Fail to fetch file size: \(error.localizedDescription)")
+                    CottonLogger.downloads.error("Fail to fetch file size: \(error.localizedDescription)")
                 }
             }
     }
@@ -90,7 +91,7 @@ final class FileDownloadViewModel {
                         fatalError("Not handled progress case")
                     }
                 case .failure(let error):
-                    print("download error: \(error)")
+                    CottonLogger.downloads.error("download error: \(error)")
                     self.downloadOutput.value = .error(error)
                 }
             }

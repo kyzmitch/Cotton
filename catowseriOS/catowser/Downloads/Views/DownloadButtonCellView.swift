@@ -10,6 +10,7 @@ import UIKit
 import AlamofireImage
 @preconcurrency import ReactiveSwift
 import CoreBrowser
+import CottonLoggerKit
 
 final class DownloadButtonCellView: UITableViewCell {
     fileprivate static let bytesInMegabyte: Int = 1048576 // 1024 * 1024
@@ -160,12 +161,12 @@ private extension DownloadButtonCellView {
                 // not it is not used
                 delegate?.didPressDownload(callback: { [weak self] possibleViewModel in
                     guard let self = self else {
-                        print("\(#function) - zomby self")
+                        CottonLogger.downloads.warning("\(#function) - zomby self")
                         return
                     }
                     self.viewModel = possibleViewModel
                     guard let vm = self.viewModel else {
-                        print("selected view model is nil")
+                        CottonLogger.downloads.warning("selected view model is nil")
                         return
                     }
                     vm.download()

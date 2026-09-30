@@ -7,6 +7,7 @@
 //
 
 import CottonBase
+import CottonLoggerKit
 
 /// Site is an obj-c model type.
 /// Ccan mark with retroactive because Site type is from own CottonBase library
@@ -60,7 +61,7 @@ public extension Tab {
                 return .blank
             case 1:
                 guard let actualSite = site else {
-                    print("No site instance for CoreBrowser.Tab.ContentType site \(rawValue)")
+                    CottonLogger.general.warning("No site instance for CoreBrowser.Tab.ContentType site \(rawValue)")
                     return nil
                 }
                 return .site(actualSite)
@@ -71,7 +72,7 @@ public extension Tab {
             case 4:
                 return .topSites
             default:
-                print("Unexpected CoreBrowser.Tab.ContentType \(rawValue)")
+                CottonLogger.general.warning("Unexpected CoreBrowser.Tab.ContentType \(rawValue)")
                 return nil
             }
         }

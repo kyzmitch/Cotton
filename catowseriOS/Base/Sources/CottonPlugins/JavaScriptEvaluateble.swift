@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import CottonLoggerKit
 @preconcurrency import ReactiveSwift
 
 /// Протокол для вэб вью по выполнения JavaScript, должно быть на main thread
@@ -43,9 +44,9 @@ extension JavaScriptEvaluateble {
         // https://github.com/WebKit/WebKit/blob/main/Source/WebKit/UIProcess/API/Cocoa/WKWebView.mm
         commonHandleJavaScript(jsScript, {(something, error) in
             if let err = error {
-                print("Error evaluating JavaScript: \(err)")
+                CottonLogger.plugins.error("Error evaluating JavaScript: \(err)")
             } else if let thing = something {
-                print("Received value after evaluating: \(thing)")
+                CottonLogger.plugins.info("Received value after evaluating: \(thing)")
             }
         })
     }

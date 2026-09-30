@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CottonLoggerKit
 
 /// Base generic data service which will use dispatch queue as a synhronization.
 /// There is another approach in this framework using an actor base protocol.
@@ -62,7 +63,7 @@ open class GenericConcurrentDataService<
             }
             lock.lock()
             if commandToPromise[command] != nil {
-                print("There was existing not finished command")
+                CottonLogger.general.warning("There was existing not finished command")
             }
             commandToPromise[command] = onComplete
             lock.unlock()

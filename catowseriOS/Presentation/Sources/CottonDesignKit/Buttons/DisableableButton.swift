@@ -8,6 +8,7 @@
 
 import SwiftUI
 import ViewsBase
+import CottonLoggerKit
 
 /// Disableable button
 @MainActor
@@ -41,7 +42,7 @@ struct DisableableButton_Previews: PreviewProvider {
     static var previews: some View {
         let disabled = false
         DisableableButton("square.and.arrow.up", disabled) {
-            print("onTap")
+            CottonLogger.ui.debug("onTap")
         }
     }
 }

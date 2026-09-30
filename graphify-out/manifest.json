@@ -276,9 +276,9 @@
     "semantic_hash": "074b4daf84a78e6e2f6117d2620752eb"
   },
   "catowseriOS/Base/Package.swift": {
-    "mtime": 1790535227.0285592,
-    "seen": 1790535935.938816,
-    "ast_hash": "debcc67456ce2c1b0edb3b2de9825b2a",
+    "mtime": 1790753294.1096818,
+    "seen": 1790753430.574786,
+    "ast_hash": "4d8f010c227c687cfa90355f23040f7c",
     "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/AutoMockable/AutoMockable.swift": {
@@ -414,16 +414,16 @@
     "semantic_hash": "bf28e43f7229f0f8c1d57f3a8be1b98d"
   },
   "catowseriOS/Base/Sources/CottonNetworking/TransportAdapters/AlamofireHTTPAdaptee.swift": {
-    "mtime": 1786121907.3121805,
-    "seen": 1788754139.6337762,
-    "ast_hash": "26692e50903dc49239982f2d67adfbc4",
-    "semantic_hash": "26692e50903dc49239982f2d67adfbc4"
+    "mtime": 1790753338.4482043,
+    "seen": 1790753430.574805,
+    "ast_hash": "41136aee9091393ea1d545acff2cf529",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonNetworking/TransportAdapters/AlamofireHTTPRxAdaptee.swift": {
-    "mtime": 1786121907.3124936,
-    "seen": 1788754139.6337762,
-    "ast_hash": "0e80c50d30c6b3dd2587da4642cadd52",
-    "semantic_hash": "0e80c50d30c6b3dd2587da4642cadd52"
+    "mtime": 1790753338.4485307,
+    "seen": 1790753430.574806,
+    "ast_hash": "3da0b15917b919514c3e35692781e50d",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonNetworking/TransportAdapters/AlamofireHTTPRxVoidAdaptee.swift": {
     "mtime": 1786121907.3127697,
@@ -438,22 +438,22 @@
     "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Data+CatowserExtension.swift": {
-    "mtime": 1786121907.313081,
-    "seen": 1788754139.633777,
-    "ast_hash": "c0ccb255abc8c4c9f0c17a48526dee53",
-    "semantic_hash": "c0ccb255abc8c4c9f0c17a48526dee53"
+    "mtime": 1790753338.4488814,
+    "seen": 1790753430.5748081,
+    "ast_hash": "24d880562cf7fd2838b42d6f834cbe0c",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Handlers/BaseJSHandler.swift": {
-    "mtime": 1786121907.3135302,
-    "seen": 1788754139.6337779,
-    "ast_hash": "36bf9ab1dbf76c99c5346555e92298f7",
-    "semantic_hash": "36bf9ab1dbf76c99c5346555e92298f7"
+    "mtime": 1790753338.4494295,
+    "seen": 1790753430.574809,
+    "ast_hash": "931094dd2a6606e10b580c7f4eca2101",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Handlers/InstagramHandler.swift": {
-    "mtime": 1786121907.3137915,
-    "seen": 1788754139.6337779,
-    "ast_hash": "bd9721f1021d09734ee7c6c8584a8a68",
-    "semantic_hash": "bd9721f1021d09734ee7c6c8584a8a68"
+    "mtime": 1790753338.4495254,
+    "seen": 1790753430.574809,
+    "ast_hash": "96651b0760128a66cade6ffa6dd5cdf5",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/JSPluginFactory.swift": {
     "mtime": 1790535220.240513,
@@ -474,9 +474,9 @@
     "semantic_hash": "47742eb818baf82f4853477420689a39"
   },
   "catowseriOS/Base/Sources/CottonPlugins/JSPluginsProgramImpl.swift": {
-    "mtime": 1790535220.9247174,
-    "seen": 1790535935.938849,
-    "ast_hash": "05fab50a58ae68f93e29a4e0858bf5c0",
+    "mtime": 1790753338.4493258,
+    "seen": 1790753430.574811,
+    "ast_hash": "26e8c1fe60863878091e86584c55f9b7",
     "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/JSPluginsSource.swift": {
@@ -486,10 +486,10 @@
     "semantic_hash": "e58bbd8c963f87e1f2d54ba7d7227d5b"
   },
   "catowseriOS/Base/Sources/CottonPlugins/JavaScriptEvaluateble.swift": {
-    "mtime": 1786121907.3154826,
-    "seen": 1788754139.633781,
-    "ast_hash": "bffe7db0d5a31a1617ab83832515a0a0",
-    "semantic_hash": "bffe7db0d5a31a1617ab83832515a0a0"
+    "mtime": 1790753338.4490077,
+    "seen": 1790753430.574812,
+    "ast_hash": "92fdc08f7729ca1c436ee0c061bcf709",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Models/CSSModels/CSSBackgroundImage.swift": {
     "mtime": 1786121907.3156195,
@@ -504,22 +504,22 @@
     "semantic_hash": "ad6c3a28f3bb35289ea2da5ca3f3b97d"
   },
   "catowseriOS/Base/Sources/CottonPlugins/Models/HTMLContentMessage.swift": {
-    "mtime": 1786121907.3157268,
-    "seen": 1788754139.633782,
-    "ast_hash": "cfdd51920739a5bb2acdeb40c98699d7",
-    "semantic_hash": "cfdd51920739a5bb2acdeb40c98699d7"
+    "mtime": 1790753338.4496212,
+    "seen": 1790753430.5748138,
+    "ast_hash": "43a3a9cfa9ff0011c26b8958c9863a85",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Models/HTMLVideoTag.swift": {
-    "mtime": 1786121907.315782,
-    "seen": 1788754139.633782,
-    "ast_hash": "ec3739aef021175b3433cdff25545ac1",
-    "semantic_hash": "ec3739aef021175b3433cdff25545ac1"
+    "mtime": 1790753338.4497166,
+    "seen": 1790753430.5748138,
+    "ast_hash": "bc54dad44b6bd32001b91e2d2d6cb295",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Models/HTMLVideoTagsContainer.swift": {
-    "mtime": 1786121907.3158457,
-    "seen": 1788754139.633783,
-    "ast_hash": "8bfb0b4d71a4376b19888bc136a35f03",
-    "semantic_hash": "8bfb0b4d71a4376b19888bc136a35f03"
+    "mtime": 1790753338.4498138,
+    "seen": 1790753430.5748138,
+    "ast_hash": "d8d067be79c274f4033f0fa4c049f1ed",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonPlugins/Models/InstagramVideoArray.swift": {
     "mtime": 1786121907.3159068,
@@ -756,10 +756,10 @@
     "semantic_hash": "7eb8f7e0db2e1fede658428a3423565f"
   },
   "catowseriOS/Base/Sources/CottonRestKit/RestClient+Combine.swift": {
-    "mtime": 1786121907.3259544,
-    "seen": 1788754139.6337962,
-    "ast_hash": "c428466383a5834da8872779bbd08a37",
-    "semantic_hash": "c428466383a5834da8872779bbd08a37"
+    "mtime": 1790753338.4488008,
+    "seen": 1790753430.574835,
+    "ast_hash": "28c11e4d9506992d92d595b6e84e978a",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonRestKit/RestClient+Kotlin.swift": {
     "mtime": 1786121907.3262389,
@@ -768,10 +768,10 @@
     "semantic_hash": "2aa8f7816dcc5f05a4012b0a714f55a9"
   },
   "catowseriOS/Base/Sources/CottonRestKit/RestClient.swift": {
-    "mtime": 1786121907.326361,
-    "seen": 1788754139.6337972,
-    "ast_hash": "c6ba0d9ef3992991531cc80b039d79cf",
-    "semantic_hash": "c6ba0d9ef3992991531cc80b039d79cf"
+    "mtime": 1790753338.4486976,
+    "seen": 1790753430.574836,
+    "ast_hash": "077f0b59d42700877a2625cc5bd45d06",
+    "semantic_hash": ""
   },
   "catowseriOS/Base/Sources/CottonRestKit/RestClientError.swift": {
     "mtime": 1786121907.3265092,
@@ -852,9 +852,9 @@
     "semantic_hash": "a4561daae6fc3719c5366386a915236e"
   },
   "catowseriOS/Domain/Package.swift": {
-    "mtime": 1789278485.4401307,
-    "seen": 1789278888.565684,
-    "ast_hash": "37e4d36ab21c628d3deead8898248de8",
+    "mtime": 1790753296.003133,
+    "seen": 1790753430.574844,
+    "ast_hash": "e1f143933c14ef48981d47d7b3d7227f",
     "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/BaseUseCaseKit/CoreUseCase.swift": {
@@ -942,10 +942,10 @@
     "semantic_hash": "3989785dbb5ec4d231be116ea1495f8d"
   },
   "catowseriOS/Domain/Sources/CoreBrowser/Models/OpenSearch/OpenSearchParser.swift": {
-    "mtime": 1786121907.3339612,
-    "seen": 1788754139.633806,
-    "ast_hash": "dabb7e7a4246283f1323d79a70fa98cf",
-    "semantic_hash": "dabb7e7a4246283f1323d79a70fa98cf"
+    "mtime": 1790753352.7728698,
+    "seen": 1790753430.574852,
+    "ast_hash": "3292a111181d8afd7c71865562faebf3",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CoreBrowser/Models/OpenSearch/SearchEngine+OpenSearchParser.swift": {
     "mtime": 1786121907.3343472,
@@ -966,10 +966,10 @@
     "semantic_hash": "1f3da3d7fa0c6a2f646ca1c992b924ad"
   },
   "catowseriOS/Domain/Sources/CoreBrowser/Models/Tab.swift": {
-    "mtime": 1786121907.3350186,
-    "seen": 1788754139.633808,
-    "ast_hash": "f80958f88d72ce86ed516f5b167309aa",
-    "semantic_hash": "f80958f88d72ce86ed516f5b167309aa"
+    "mtime": 1790753352.7725353,
+    "seen": 1790753430.574854,
+    "ast_hash": "af25ea1ddcd8b27aca94d9f063841a0e",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CoreBrowser/Models/WebAutoCompletionSource.swift": {
     "mtime": 1786121907.335243,
@@ -1038,10 +1038,10 @@
     "semantic_hash": "660e6e8b681da53c009e2a1bcd41fec6"
   },
   "catowseriOS/Domain/Sources/CottonSearch/SearchDataService.swift": {
-    "mtime": 1786121907.33921,
-    "seen": 1788754139.633813,
-    "ast_hash": "6f5e0d1d7487920eb6f01eba47c2a0dc",
-    "semantic_hash": "6f5e0d1d7487920eb6f01eba47c2a0dc"
+    "mtime": 1790753352.7731397,
+    "seen": 1790753430.57486,
+    "ast_hash": "74e6f53b18c4448a162db22a1132d644",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonSearch/SearchDataServiceProtocol.swift": {
     "mtime": 1786121907.3393238,
@@ -1098,9 +1098,9 @@
     "semantic_hash": "fc263cccbc784665f1c4b7387c3ea603"
   },
   "catowseriOS/Domain/Sources/CottonTabs/TabsDataService.swift": {
-    "mtime": 1789278416.8359447,
-    "seen": 1789278888.5657768,
-    "ast_hash": "ff114e3879ee987747d669572ba26e2f",
+    "mtime": 1790753352.7738318,
+    "seen": 1790753430.5748649,
+    "ast_hash": "b398d334712612aa34994b30b3e7903b",
     "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonTabs/TabsDataServiceProtocol.swift": {
@@ -1266,10 +1266,10 @@
     "semantic_hash": "2a61e262e4910861669add7ed6bea4d4"
   },
   "catowseriOS/Domain/Sources/CottonViewModels/AllTabsViewModel/AllTabsViewModel.swift": {
-    "mtime": 1786121907.3467054,
-    "seen": 1788754139.633827,
-    "ast_hash": "f0f6906ca5d03e6cdfcb349a9cfeaaaa",
-    "semantic_hash": "f0f6906ca5d03e6cdfcb349a9cfeaaaa"
+    "mtime": 1790753352.7751484,
+    "seen": 1790753430.57488,
+    "ast_hash": "a6bc32f5d3bd321cebb686dfca2774a4",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonViewModels/BaseListViewModel.swift": {
     "mtime": 1786121907.3469589,
@@ -1296,10 +1296,10 @@
     "semantic_hash": "b590d3945c4f2ebabf1f741f0c539e0f"
   },
   "catowseriOS/Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarDelegateImpl.swift": {
-    "mtime": 1786121907.348053,
-    "seen": 1788754139.633829,
-    "ast_hash": "b904e4f0baa11c36112d1e9b0f77f6a2",
-    "semantic_hash": "b904e4f0baa11c36112d1e9b0f77f6a2"
+    "mtime": 1790753352.7749674,
+    "seen": 1790753430.574883,
+    "ast_hash": "cf4362639a7f5e9f9c4e752cbcf95ffd",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonViewModels/SearchBarViewModel/SearchBarError.swift": {
     "mtime": 1786121907.3482456,
@@ -1386,10 +1386,10 @@
     "semantic_hash": "2c19dfe49e3abc33f30a454c42eaf91b"
   },
   "catowseriOS/Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchSuggestionsViewState.swift": {
-    "mtime": 1786121907.3523645,
-    "seen": 1788754139.633833,
-    "ast_hash": "9b58635e9cb7d7009a42c698316e0822",
-    "semantic_hash": "9b58635e9cb7d7009a42c698316e0822"
+    "mtime": 1790753352.7753875,
+    "seen": 1790753430.574891,
+    "ast_hash": "c1b9129916cda8c4c8330f81d0ce2463",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonViewModels/SearchSuggestionsViewModel/SearchViewContext.swift": {
     "mtime": 1786121907.352679,
@@ -1470,10 +1470,10 @@
     "semantic_hash": "7884daab360cc75a55ebca9ab11ff24e"
   },
   "catowseriOS/Domain/Sources/CottonViewModels/TabViewModel/TabViewModelImpl.swift": {
-    "mtime": 1786124369.2616441,
-    "seen": 1788754139.6338382,
-    "ast_hash": "86b71d5ddbbd0497b22095294fe401e0",
-    "semantic_hash": "86b71d5ddbbd0497b22095294fe401e0"
+    "mtime": 1790753352.77462,
+    "seen": 1790753430.574898,
+    "ast_hash": "6a8cf39ef7e1954a01ddfb1a1743dfaf",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonViewModels/TabViewModel/TabViewState.swift": {
     "mtime": 1786123933.0002847,
@@ -1536,10 +1536,10 @@
     "semantic_hash": "2d19d3c3e34dfdfaedbc5c10f3c5917a"
   },
   "catowseriOS/Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesViewModelImpl.swift": {
-    "mtime": 1786140725.1788433,
-    "seen": 1788754139.633842,
-    "ast_hash": "9a7b0fb00b1c3fa5d29846355c75a40e",
-    "semantic_hash": "9a7b0fb00b1c3fa5d29846355c75a40e"
+    "mtime": 1790753352.7741933,
+    "seen": 1790753430.574904,
+    "ast_hash": "53b369be22c3ab415e40784e7ca85818",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonViewModels/TopSitesViewModel/TopSitesViewState.swift": {
     "mtime": 1786140725.1787925,
@@ -1584,10 +1584,10 @@
     "semantic_hash": "494339ec5b7f3fbda051f249ff3383fe"
   },
   "catowseriOS/Domain/Sources/CottonViewModels/WebViewModel/WebViewModelImpl.swift": {
-    "mtime": 1786121907.3583405,
-    "seen": 1788754139.633845,
-    "ast_hash": "8d3bcfd8b56217b21df4510d0d07d5a6",
-    "semantic_hash": "8d3bcfd8b56217b21df4510d0d07d5a6"
+    "mtime": 1790753352.7760444,
+    "seen": 1790753430.574934,
+    "ast_hash": "92ead114ea2da408d6710ad02a153d3f",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/CottonViewModels/WebViewModel/WebViewModelState.swift": {
     "mtime": 1786121907.3586688,
@@ -1662,10 +1662,10 @@
     "semantic_hash": "3dc072284244a47a44a1ac7bf731be35"
   },
   "catowseriOS/Domain/Sources/FeatureFlagsKit/LocalFeatureSource.swift": {
-    "mtime": 1786121907.3650222,
-    "seen": 1788754139.633853,
-    "ast_hash": "741a2f17c2d02539d1274308c47ae70c",
-    "semantic_hash": "741a2f17c2d02539d1274308c47ae70c"
+    "mtime": 1790753352.7762601,
+    "seen": 1790753430.574954,
+    "ast_hash": "2479c183670b6f1578df87eb72a07414",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/FeatureFlagsKit/LocalSettings.swift": {
     "mtime": 1786121907.3653398,
@@ -1746,10 +1746,10 @@
     "semantic_hash": "fe5523008d1604ec749bee198079f135"
   },
   "catowseriOS/Domain/Sources/GenericServiceKit/GenericConcurrentDataService.swift": {
-    "mtime": 1786121907.3699272,
-    "seen": 1788754139.633858,
-    "ast_hash": "a8cba5ee3adc3c85ffc8dcfe34b5597a",
-    "semantic_hash": "a8cba5ee3adc3c85ffc8dcfe34b5597a"
+    "mtime": 1790753352.7764647,
+    "seen": 1790753430.574974,
+    "ast_hash": "51cc299d533ceffaf2fa0a05db14748b",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/GenericServiceKit/GenericDataServiceActorProtocol.swift": {
     "mtime": 1786121907.370133,
@@ -1824,10 +1824,10 @@
     "semantic_hash": "96d466a81f9317aece37acb30cdd29e8"
   },
   "catowseriOS/Domain/Sources/ViewModelKit/ViewModelConsumer.swift": {
-    "mtime": 1786121907.373591,
-    "seen": 1788754139.633864,
-    "ast_hash": "cf8c70c0f4e0a780f28299ccac3fc806",
-    "semantic_hash": "cf8c70c0f4e0a780f28299ccac3fc806"
+    "mtime": 1790753352.7768972,
+    "seen": 1790753430.574991,
+    "ast_hash": "3772b9fc284569db4cdc8fc6167c81ba",
+    "semantic_hash": ""
   },
   "catowseriOS/Domain/Sources/ViewModelKit/ViewModelInterface.swift": {
     "mtime": 1786121907.3738084,
@@ -2094,10 +2094,10 @@
     "semantic_hash": "9345dc6d1745f451f8e801a288f7904d"
   },
   "catowseriOS/Presentation/Package.swift": {
-    "mtime": 1786121907.3857024,
-    "seen": 1788754139.6338828,
-    "ast_hash": "34cda832443cfca83b80813bb1868ac7",
-    "semantic_hash": "34cda832443cfca83b80813bb1868ac7"
+    "mtime": 1790753297.69663,
+    "seen": 1790753430.575068,
+    "ast_hash": "53c457316112e528d8a2c76ff9b1427b",
+    "semantic_hash": ""
   },
   "catowseriOS/Presentation/Sources/CommonDelegatesLibrary/DownloadPanelPresenter.swift": {
     "mtime": 1786121907.3861692,
@@ -2130,10 +2130,10 @@
     "semantic_hash": "152c1733cbe3b4257606c2b4f9467e50"
   },
   "catowseriOS/Presentation/Sources/CottonDesignKit/Buttons/DisableableButton.swift": {
-    "mtime": 1786121907.387774,
-    "seen": 1788754139.633887,
-    "ast_hash": "6ca538046aeafdeef0b4d97a973b3c1a",
-    "semantic_hash": "6ca538046aeafdeef0b4d97a973b3c1a"
+    "mtime": 1790753352.7772744,
+    "seen": 1790753430.5750751,
+    "ast_hash": "c261c9a2c911bbba1451ec2cabde5b5d",
+    "semantic_hash": ""
   },
   "catowseriOS/Presentation/Sources/CottonDesignKit/Buttons/MenuButton.swift": {
     "mtime": 1786121907.3880591,
@@ -2208,10 +2208,10 @@
     "semantic_hash": "b450a6bcda04d59293f0808d67893b6b"
   },
   "catowseriOS/Presentation/Sources/SearchViews/SearchBarLegacyView.swift": {
-    "mtime": 1786121907.3916614,
-    "seen": 1788754139.633892,
-    "ast_hash": "19532fd37cb62a95c27f4b0433b24e48",
-    "semantic_hash": "19532fd37cb62a95c27f4b0433b24e48"
+    "mtime": 1790753352.777171,
+    "seen": 1790753430.57509,
+    "ast_hash": "7a057a17809c0d3ba4dcb4f9c94caf03",
+    "semantic_hash": ""
   },
   "catowseriOS/Presentation/Sources/SearchViews/Tablet/TabletSearchBarViewController.swift": {
     "mtime": 1786121907.3919191,
@@ -2448,10 +2448,10 @@
     "semantic_hash": "2a12ab3f7a465e6a052799ea3e5062c8"
   },
   "catowseriOS/catowser/BrowserContent/TopSites/TitledImageView.swift": {
-    "mtime": 1786121907.4083827,
-    "seen": 1788754139.633908,
-    "ast_hash": "debc7f3b040cf8fef75bec1b493f3a02",
-    "semantic_hash": "debc7f3b040cf8fef75bec1b493f3a02"
+    "mtime": 1790753398.25806,
+    "seen": 1790753430.575139,
+    "ast_hash": "f4a7f81085c08273a9ca64360f04e949",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/BrowserContent/TopSites/TopSitesLegacyView.swift": {
     "mtime": 1786121907.4085767,
@@ -2484,34 +2484,34 @@
     "semantic_hash": "3a274e4b8ced3381c12366826bbc8b23"
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebView.swift": {
-    "mtime": 1786121907.409812,
-    "seen": 1788754139.6339111,
-    "ast_hash": "881cbf34e94df0468a89149e38d30b37",
-    "semantic_hash": "881cbf34e94df0468a89149e38d30b37"
+    "mtime": 1790753398.2587597,
+    "seen": 1790753430.575146,
+    "ast_hash": "e329619568821cb856402c0cb1f9f9d5",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebViewAuthChallengeHandler.swift": {
-    "mtime": 1786121907.4100504,
-    "seen": 1788754139.6339111,
-    "ast_hash": "d4988b8bdaf0c632664f1923da09c543",
-    "semantic_hash": "d4988b8bdaf0c632664f1923da09c543"
+    "mtime": 1790753398.259636,
+    "seen": 1790753430.575148,
+    "ast_hash": "92dfa851b9c3af672d1be30cbf12b6fb",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebViewController+Reusable.swift": {
-    "mtime": 1786121907.410177,
-    "seen": 1788754139.6339111,
-    "ast_hash": "a463e1c8acb95c4dd2acc9914e1b7740",
-    "semantic_hash": "a463e1c8acb95c4dd2acc9914e1b7740"
+    "mtime": 1790753398.2588801,
+    "seen": 1790753430.575149,
+    "ast_hash": "ad2b5e0a128b5fafea611c2e3feac307",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebViewController+SiteNavigationDelegate.swift": {
-    "mtime": 1786121907.4104586,
-    "seen": 1788754139.633912,
-    "ast_hash": "1b633de34ddf6e637df37aa84889f5c0",
-    "semantic_hash": "1b633de34ddf6e637df37aa84889f5c0"
+    "mtime": 1790753398.2593925,
+    "seen": 1790753430.57515,
+    "ast_hash": "b98a464cb67fccaa5cc82310e44a1221",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebViewController.swift": {
-    "mtime": 1786121907.4108646,
-    "seen": 1788754139.633912,
-    "ast_hash": "ae92ddf621dff75b61e4c2e0ff62c48d",
-    "semantic_hash": "ae92ddf621dff75b61e4c2e0ff62c48d"
+    "mtime": 1790753398.2592583,
+    "seen": 1790753430.5751512,
+    "ast_hash": "59ba0a1f2782e431e04207a04ccfe125",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebViewControllerProxy.swift": {
     "mtime": 1786121907.4111493,
@@ -2520,10 +2520,10 @@
     "semantic_hash": "7372527f9d3a1eeee61fb501590a1b91"
   },
   "catowseriOS/catowser/BrowserContent/WebView/WebViewLoadingErrorHandler.swift": {
-    "mtime": 1786121907.411382,
-    "seen": 1788754139.633913,
-    "ast_hash": "9740fe201f91c60e73bb858ac137d444",
-    "semantic_hash": "9740fe201f91c60e73bb858ac137d444"
+    "mtime": 1790753398.2582903,
+    "seen": 1790753430.5751529,
+    "ast_hash": "5bfbcd5f47472ecfa48eb874c40be83c",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/Contexts/BrowserToolbarViewContextImpl.swift": {
     "mtime": 1786121907.4116395,
@@ -2562,10 +2562,10 @@
     "semantic_hash": "a21f206e557a2b13d82f19515f23d1c9"
   },
   "catowseriOS/catowser/Coordinators/AppCoordinator.swift": {
-    "mtime": 1786121907.4132104,
-    "seen": 1788754139.633915,
-    "ast_hash": "4a3002321f8857168acc6a77da5a9f44",
-    "semantic_hash": "4a3002321f8857168acc6a77da5a9f44"
+    "mtime": 1790753358.143176,
+    "seen": 1790753430.5751622,
+    "ast_hash": "fae4f169cec0069197ea327d97cc0869",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/Coordinators/BlankContentCoordinator.swift": {
     "mtime": 1786121907.413413,
@@ -2628,9 +2628,9 @@
     "semantic_hash": "0bbee713d4c5c19a24e33fdd488dc012"
   },
   "catowseriOS/catowser/Coordinators/SearchBarCoordinator.swift": {
-    "mtime": 1790535221.9871972,
-    "seen": 1790535935.9391758,
-    "ast_hash": "3dd337e6c3813dc8794a59c4c7c2351e",
+    "mtime": 1790753358.1425877,
+    "seen": 1790753430.5751748,
+    "ast_hash": "21c242fdefe0b9c6f91cd26eae51639b",
     "semantic_hash": ""
   },
   "catowseriOS/catowser/Coordinators/SearchSuggestionsCoordinator.swift": {
@@ -2682,10 +2682,10 @@
     "semantic_hash": "0492a1760c3c57494a54cd2b60155246"
   },
   "catowseriOS/catowser/Downloads/FileDownloadViewModel.swift": {
-    "mtime": 1786121907.418124,
-    "seen": 1788754139.633923,
-    "ast_hash": "f852694d79461b6caed657e04d3cca24",
-    "semantic_hash": "f852694d79461b6caed657e04d3cca24"
+    "mtime": 1790753398.2578394,
+    "seen": 1790753430.575186,
+    "ast_hash": "e6989c3a37e1af6f676d605afaa7d315",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/Downloads/FilesGridViewController.swift": {
     "mtime": 1786121907.4185686,
@@ -2700,10 +2700,10 @@
     "semantic_hash": "4f61ab8954b7a8c1ac520c1e99aeb877"
   },
   "catowseriOS/catowser/Downloads/Views/DownloadButtonCellView.swift": {
-    "mtime": 1786121907.4191628,
-    "seen": 1788754139.633924,
-    "ast_hash": "95393038dea39e90be55e0223b324d39",
-    "semantic_hash": "95393038dea39e90be55e0223b324d39"
+    "mtime": 1790753398.25757,
+    "seen": 1790753430.57519,
+    "ast_hash": "eb716b15268a81a3a802d8b6e993e036",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/Downloads/Views/LinksBadgeView.swift": {
     "mtime": 1786121907.4194334,
@@ -2766,10 +2766,10 @@
     "semantic_hash": "afe8835b45e236dc52b6e6066402fe97"
   },
   "catowseriOS/catowser/Extensions/UIImageView+Extension.swift": {
-    "mtime": 1786121907.4217923,
-    "seen": 1788754139.6339278,
-    "ast_hash": "434fc3b09fe45432b57272a7390cfb26",
-    "semantic_hash": "434fc3b09fe45432b57272a7390cfb26"
+    "mtime": 1790753398.2572734,
+    "seen": 1790753430.575202,
+    "ast_hash": "ba7834eb8bf01d95ad6cb45ef12bbd0e",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/Extensions/View+Extension.swift": {
     "mtime": 1786121907.4218462,
@@ -3036,10 +3036,10 @@
     "semantic_hash": "dbad776bc55c994e779aed43b87bcd94"
   },
   "catowseriOS/catowser/Utils/FaviconImageViewable.swift": {
-    "mtime": 1786121907.434185,
-    "seen": 1788754139.633943,
-    "ast_hash": "9ce16732259e1f2ae9fe5cd9ef817b87",
-    "semantic_hash": "9ce16732259e1f2ae9fe5cd9ef817b87"
+    "mtime": 1790753398.2570107,
+    "seen": 1790753430.575256,
+    "ast_hash": "e897508b4425eab9ef50bc9ce0a2c30e",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/WebTabs/CounterView.swift": {
     "mtime": 1786121907.4344237,
@@ -3048,10 +3048,10 @@
     "semantic_hash": "a031a433c3d251914f1f14f295c115d9"
   },
   "catowseriOS/catowser/WebTabs/TabPreviewCell.swift": {
-    "mtime": 1786121907.4346237,
-    "seen": 1788754139.633944,
-    "ast_hash": "fc1d7899091a5d6f6d98c19b29820dd7",
-    "semantic_hash": "fc1d7899091a5d6f6d98c19b29820dd7"
+    "mtime": 1790753398.2363398,
+    "seen": 1790753430.575258,
+    "ast_hash": "a09bd8a2ebec0356e54a66aa1cb2467f",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/WebTabs/TabView.swift": {
     "mtime": 1786123973.5303464,
@@ -3078,16 +3078,16 @@
     "semantic_hash": "0b77efc70e4b5256c89258a27c0b18a7"
   },
   "catowseriOS/catowser/WebTabs/TabsPreviewsViewController.swift": {
-    "mtime": 1786121907.435711,
-    "seen": 1788754139.6339462,
-    "ast_hash": "17f97f85e2bf9947faab852d948706d6",
-    "semantic_hash": "17f97f85e2bf9947faab852d948706d6"
+    "mtime": 1790753358.1438768,
+    "seen": 1790753430.575264,
+    "ast_hash": "be54419c76b028cc3575d3d13fe88c33",
+    "semantic_hash": ""
   },
   "catowseriOS/catowser/WebTabs/TabsViewController.swift": {
-    "mtime": 1786121907.4359171,
-    "seen": 1788754139.633947,
-    "ast_hash": "d70f9b8966a2189f02ec8cbde6187d8c",
-    "semantic_hash": "d70f9b8966a2189f02ec8cbde6187d8c"
+    "mtime": 1790753358.1435723,
+    "seen": 1790753430.575265,
+    "ast_hash": "0d31e2704390239417cc12be24a0a9e1",
+    "semantic_hash": ""
   },
   "cotton-base/build.gradle.kts": {
     "mtime": 1786121907.437576,
@@ -4134,9 +4134,9 @@
     "semantic_hash": ""
   },
   "openspec/changes/add-cotton-logger-kit/tasks.md": {
-    "mtime": 1788717645.0348358,
-    "seen": 1789278888.56624,
-    "ast_hash": "9feeff16b0efdd78d39fa4a8d7e1c738",
+    "mtime": 1790753412.3717787,
+    "seen": 1790753430.575371,
+    "ast_hash": "225fd04866ea29187a22c2e2ad94eb2b",
     "semantic_hash": ""
   },
   "openspec/changes/add-tabs-data-service-cache/.openspec.yaml": {
@@ -4347,6 +4347,48 @@
     "mtime": 1789277182.9909408,
     "seen": 1789278888.5662742,
     "ast_hash": "da2343151077914066be37aa490a4293",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Sources/CottonLoggerKit/CottonLogger.swift": {
+    "mtime": 1790753240.9529803,
+    "seen": 1790753430.574789,
+    "ast_hash": "42ba99f5041c1ad4b3f04041ce41bac5",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Sources/CottonLoggerKit/LogBackend.swift": {
+    "mtime": 1790753205.8494837,
+    "seen": 1790753430.57479,
+    "ast_hash": "bfd6df58f4f3ece2fccc474b93572724",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Sources/CottonLoggerKit/LogCategory.swift": {
+    "mtime": 1790753205.5794182,
+    "seen": 1790753430.574791,
+    "ast_hash": "96e95d737c0c217bae9ff3c5ef3b2648",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Sources/CottonLoggerKit/LogLevel.swift": {
+    "mtime": 1790753205.0261583,
+    "seen": 1790753430.574791,
+    "ast_hash": "24151e969c0c0f9837e9e4b5cb57e2ab",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Sources/CottonLoggerKit/LoggerConfiguration.swift": {
+    "mtime": 1790753240.7885635,
+    "seen": 1790753430.574792,
+    "ast_hash": "4e67b72ccab0002ab4b6c72fc0ddd8ce",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Sources/CottonLoggerKit/SystemLogBackend.swift": {
+    "mtime": 1790753206.9599466,
+    "seen": 1790753430.574792,
+    "ast_hash": "99a5a5f78a04c3344d572143422a826b",
+    "semantic_hash": ""
+  },
+  "catowseriOS/Base/Tests/CottonLoggerKitTests/CottonLoggerKitTests.swift": {
+    "mtime": 1790753245.9234624,
+    "seen": 1790753430.57484,
+    "ast_hash": "937517612dd826e6d039d80e9de067f5",
     "semantic_hash": ""
   }
 }

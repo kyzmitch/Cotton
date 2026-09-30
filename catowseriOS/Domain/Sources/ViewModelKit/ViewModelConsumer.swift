@@ -7,6 +7,7 @@
 //
 
 import Combine
+import CottonLoggerKit
 
 /// An interface of MVVM view model consumer (usually view controller).
 ///
@@ -37,7 +38,7 @@ extension ViewModelConsumer where Self: AnyObject {
         onStateChange(viewModel.state)
         // Observe all next states
         return viewModel.statePublisher.sink { failure in
-            print("Fail to start state observing: \(failure)")
+            CottonLogger.viewModels.error("Fail to start state observing: \(failure)")
         } receiveValue: { [weak self] nextState in
             self?.onStateChange(nextState)
         }

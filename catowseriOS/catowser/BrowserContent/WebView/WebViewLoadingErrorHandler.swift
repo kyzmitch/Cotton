@@ -8,6 +8,7 @@
 
 import WebKit
 import UIKit
+import CottonLoggerKit
 
 /**
  Called when an error occurs while the web view is loading content.
@@ -48,7 +49,7 @@ final class WebViewLoadingErrorHandler {
             // "The operation couldn't be completed. (Cocoa error 3072.)" - useless
             return
         case ("WebKitErrorDomain", WKError.webContentProcessTerminated.rawValue /* 102 */):
-            print("WebContent process has crashed. Trying to reload to restart it.")
+            CottonLogger.webView.fault("WebContent process has crashed. Trying to reload to restart it.")
             /**
              TODO: for DoH case this should be improved, because currently it creates an infinit loop of reloading
              */

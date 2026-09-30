@@ -16,6 +16,7 @@ import Combine
 import WebKit
 import FeatureFlagsKit
 import ViewModelKit
+import CottonLoggerKit
 
 /**
     See `decidePolicy` method below
@@ -135,10 +136,10 @@ import ViewModelKit
         _ navigationAction: NavigationActionable
     ) async -> WKNavigationActionPolicy {
         guard navigationAction.navigationType.needsHandling else {
-            print("navigationType: ignored '\(navigationAction.navigationType)'")
+            CottonLogger.viewModels.debug("navigationType: ignored '\(navigationAction.navigationType)'")
             return .allow
         }
-        print("navigationType: need to handle '\(navigationAction.navigationType)'")
+        CottonLogger.viewModels.debug("navigationType: need to handle '\(navigationAction.navigationType)'")
         guard let url = navigationAction.request.url else {
             return .allow
         }
@@ -164,7 +165,7 @@ import ViewModelKit
                 try await sendAction(.loadNextLink(url))
                 return .cancel
             } catch {
-                print("Fail to load next URL due to error: \(error.localizedDescription)")
+                CottonLogger.viewModels.error("Fail to load next URL due to error: \(error.localizedDescription)")
             }
         case .about:
             return .allow
@@ -182,7 +183,7 @@ import ViewModelKit
         do {
             try await selectTabUseCase.execute(input: screenshot)
         } catch {
-            print("Fail to update tab preview: \(error)")
+            CottonLogger.viewModels.error("Fail to update tab preview: \(error)")
         }
     }
 }
@@ -279,7 +280,7 @@ private extension WebViewModelImpl {
             let finalURL = try await taskHandler.value
             await applyCreateRequestWithoutPipeline(finalURL.host)
         } catch {
-            print("Fail to resolve domain name: \(error.localizedDescription)")
+            CottonLogger.viewModels.error("Fail to resolve domain name: \(error.localizedDescription)")
             await applyCreateRequestWithoutPipeline(originalURL.host)
         }
     }

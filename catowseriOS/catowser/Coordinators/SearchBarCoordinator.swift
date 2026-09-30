@@ -16,6 +16,7 @@ import CottonSearch
 import ViewsBase
 import CommonDelegatesLibrary
 import SearchViews
+import CottonLoggerKit
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
@@ -358,7 +359,7 @@ private extension SearchBarCoordinator {
         ) { [weak self] result in
             switch result {
             case .failure(let failure):
-                print("Fail to fetch search engine: \(failure)")
+                CottonLogger.coordinator.error("Fail to fetch search engine: \(failure)")
             case .success(let serviceData):
                 do {
                     let url = try serviceData.searchURL
@@ -366,7 +367,7 @@ private extension SearchBarCoordinator {
                         try await self?.replaceTab(with: url, with: suggestion)
                     }
                 } catch {
-                    print("Fail to construct search URL: \(error)")
+                    CottonLogger.coordinator.error("Fail to construct search URL: \(error)")
                 }
             }
         }

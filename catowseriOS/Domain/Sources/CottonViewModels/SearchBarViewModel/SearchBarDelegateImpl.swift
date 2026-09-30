@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreBrowser
+import CottonLoggerKit
 
 /// Internal delegate implementation
 /// which uses view model as a subject for this proxy.
@@ -37,7 +38,7 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
             : .startSearch(searchQuery)
         viewModel.sendAction(action) { result in
             if case .failure(let error) = result {
-                print("textDidChange fail: \(error)")
+                CottonLogger.viewModels.error("textDidChange fail: \(error)")
             }
         }
     }
@@ -67,7 +68,7 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         viewModel.sendAction(.startSearch(nil)) { result in
             if case .failure(let error) = result {
-                print("TextDidBeginEditing error: \(error)")
+                CottonLogger.viewModels.error("TextDidBeginEditing error: \(error)")
             }
         }
     }
@@ -76,7 +77,7 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         viewModel.sendAction(.cancelSearch) { result in
             if case .failure(let error) = result {
-                print("CancelButtonClicked error: \(error)")
+                CottonLogger.viewModels.error("CancelButtonClicked error: \(error)")
             }
         }
     }
@@ -94,7 +95,7 @@ extension SearchBarDelegateImpl: UISearchBarDelegate {
         }
         viewModel.sendAction(.selectSuggestion(content)) { result in
             if case .failure(let error) = result {
-                print("SearchButtonClicked error: \(error)")
+                CottonLogger.viewModels.error("SearchButtonClicked error: \(error)")
             }
         }
     }

@@ -30,6 +30,7 @@ private extension String {
     static let autoMockableKit = "AutoMockable"
     static let cottonReactiveRestKit = "CottonReactiveRestKit"
     static let cottonNetworkingLibrary = "CottonNetworking"
+    static let cottonLoggerKit = "CottonLoggerKit"
 }
 
 let package = Package(
@@ -86,6 +87,12 @@ let package = Package(
             targets: [
                 .cssParserLibrary
             ]
+        ),
+        .library(
+            name: .cottonLoggerKit,
+            targets: [
+                .cottonLoggerKit
+            ]
         )
     ],
     dependencies: [
@@ -111,6 +118,9 @@ let package = Package(
             name: .basePackage
         ),
         .target(
+            name: .cottonLoggerKit
+        ),
+        .target(
             name: .autoMockableKit
         ),
         .target(
@@ -120,7 +130,8 @@ let package = Package(
             name: .cottonRestKit,
             dependencies: [
                 .target(name: .cottonBase),
-                .target(name: .autoMockableKit)
+                .target(name: .autoMockableKit),
+                .target(name: .cottonLoggerKit)
             ]
         ),
         .target(
@@ -128,6 +139,7 @@ let package = Package(
             dependencies: [
                 .target(name: .cottonBase),
                 .target(name: .cssParserLibrary),
+                .target(name: .cottonLoggerKit),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swiftSoupFramework, package: .swiftSoupFramework)
             ],
@@ -151,6 +163,7 @@ let package = Package(
                 .target(name: .cottonReactiveRestKit),
                 .target(name: .cottonBase),
                 .target(name: .autoMockableKit),
+                .target(name: .cottonLoggerKit),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swXmlHashFramework, package: .swXmlHashFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework)
@@ -176,6 +189,12 @@ let package = Package(
             name: "CottonPluginsTests",
             dependencies: [
                 .target(name: .cottonPluginsLibrary)
+            ]
+        ),
+        .testTarget(
+            name: "CottonLoggerKitTests",
+            dependencies: [
+                .target(name: .cottonLoggerKit)
             ]
         )
     ],

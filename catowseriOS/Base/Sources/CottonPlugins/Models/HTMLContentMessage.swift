@@ -9,6 +9,7 @@
 import Foundation
 import CottonBase
 import SwiftSoup
+import CottonLoggerKit
 
 struct HTMLContentMessage: Decodable {
     let hostname: CottonBase.Host
@@ -33,18 +34,18 @@ struct HTMLContentMessage: Decodable {
                 // or use `getElementsByClass` but it's not optimal and requires
                 // to fetch all divs which we don't need
             } catch {
-                print("Failed to find poster for youtube: \(error)")
+                CottonLogger.plugins.error("Failed to find poster for youtube: \(error)")
                 return nil
             }
             let thumbnailCssStyle: String?
             do {
                 thumbnailCssStyle = try divs.first()?.attr("style")
             } catch {
-                print("Failed to extract css style from youtube thumbnail \(error)")
+                CottonLogger.plugins.error("Failed to extract css style from youtube thumbnail \(error)")
                 return nil
             }
             guard let cssString = thumbnailCssStyle else {
-                print("Empty string for youtube thumbnail css")
+                CottonLogger.plugins.warning("Empty string for youtube thumbnail css")
                 return nil
             }
             return CSSBackgroundImage(cssString: cssString)?.firstURL

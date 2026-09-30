@@ -11,6 +11,7 @@ import Foundation
 import Combine
 #endif
 import CottonBase
+import CottonLoggerKit
 
 extension RestClient {
     /// Apple's Combine Future publisher with generic parameter and Http type of error
@@ -56,7 +57,7 @@ extension RestClient {
                     subscriber?.remove(adapter.handlerType)
                 },
                 receiveCancel: {
-                    print("Implement Combine.Deferred cancel")
+                    CottonLogger.restKit.warning("Implement Combine.Deferred cancel")
                 }
             )
         }

@@ -11,6 +11,7 @@ import Foundation
 import Combine
 #endif
 import CottonBase
+import CottonLoggerKit
 
 fileprivate extension String {
     static let threadName = "Client"
@@ -57,7 +58,7 @@ public final class RestClient<
         self.jsonEncoder = jsonEncoder
         connectivityManager = reachability
         guard connectivityManager.startListening(onQueue: .main, onUpdatePerforming: hostListener) else {
-            print("Connectivity listening failed to start")
+            CottonLogger.restKit.error("Connectivity listening failed to start")
             return
         }
     }

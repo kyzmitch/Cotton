@@ -74,6 +74,7 @@
 		756139362EFFFF7600A6F605 /* CottonViewModels in Frameworks */ = {isa = PBXBuildFile; productRef = 756139352EFFFF7600A6F605 /* CottonViewModels */; };
 		75696D282EFF1DAA007C26DC /* CottonRestKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75696D272EFF1DAA007C26DC /* CottonRestKit */; };
 		75696D2A2EFF1DBE007C26DC /* CottonNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 75696D292EFF1DBE007C26DC /* CottonNetworking */; };
+		75F0A0012F50100100B6B80D /* CottonLoggerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 75F0A0022F50100100B6B80D /* CottonLoggerKit */; };
 		756A491D2EF1DB77009DB175 /* CoreBrowser in Frameworks */ = {isa = PBXBuildFile; productRef = 756A491C2EF1DB77009DB175 /* CoreBrowser */; };
 		7570F7462B5C07E90066ABF1 /* UseCaseRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7570F7452B5C07E90066ABF1 /* UseCaseRegistry.swift */; };
 		75869E052D01B38B00D981B6 /* UseCaseLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75869D9E2CFEE2D400D981B6 /* UseCaseLocator.swift */; };
@@ -404,6 +405,7 @@
 				756139362EFFFF7600A6F605 /* CottonViewModels in Frameworks */,
 				75ECAB202F4CD04500B6B80D /* CommonDelegatesLibrary in Frameworks */,
 				75696D2A2EFF1DBE007C26DC /* CottonNetworking in Frameworks */,
+				75F0A0012F50100100B6B80D /* CottonLoggerKit in Frameworks */,
 				759E3E4D2C863B3D00245B44 /* Atomics in Frameworks */,
 				8AD4F52028F49303009C4BDC /* Alamofire in Frameworks */,
 				7586A1C22D05C08600D981B6 /* Foundation.framework in Frameworks */,
@@ -823,6 +825,7 @@
 				756A491C2EF1DB77009DB175 /* CoreBrowser */,
 				75696D272EFF1DAA007C26DC /* CottonRestKit */,
 				75696D292EFF1DBE007C26DC /* CottonNetworking */,
+				75F0A0022F50100100B6B80D /* CottonLoggerKit */,
 				756137902EFFB51F00A6F605 /* FeatureFlagsKit */,
 				756138BA2EFFC2FE00A6F605 /* CottonPlugins */,
 				756138BE2EFFFD3500A6F605 /* CottonUseCases */,
@@ -1506,6 +1509,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 75D2EDC82E74BB0D00556C5B /* XCLocalSwiftPackageReference "Base" */;
 			productName = CottonNetworking;
+		};
+		75F0A0022F50100100B6B80D /* CottonLoggerKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75D2EDC82E74BB0D00556C5B /* XCLocalSwiftPackageReference "Base" */;
+			productName = CottonLoggerKit;
 		};
 		756A491C2EF1DB77009DB175 /* CoreBrowser */ = {
 			isa = XCSwiftPackageProductDependency;

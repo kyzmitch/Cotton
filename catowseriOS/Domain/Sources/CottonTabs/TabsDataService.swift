@@ -11,6 +11,7 @@ import CoreBrowser
 import GenericServiceKit
 import Foundation
 import CottonDependencyAssembly
+import CottonLoggerKit
 
 /// Tabs list data service which can be used as a subject for observers.
 actor TabsDataService: TabsDataServiceProtocol {
@@ -108,7 +109,7 @@ actor TabsDataService: TabsDataServiceProtocol {
             try await fetchTabs()
         } catch {
             if ProcessInfo.unitTesting {
-                print("Failed to init tabs data service: \(error)")
+                CottonLogger.tabs.fault("Failed to init tabs data service: \(error)")
             } else {
                 fatalError("Failed to init tabs data service: \(error)")
             }
@@ -241,7 +242,7 @@ private extension TabsDataService {
             serviceData.allTabs = .finished(output: .success(tabs))
         } catch {
             // It doesn't matter, on view level it must be added right away
-            print("Failed to add this tab to cache: \(error)")
+            CottonLogger.tabs.error("Failed to add this tab to cache: \(error)")
             serviceData.tabAdded = .finished(output: .failure(.repositoryFailure(error as NSError)))
         }
         return serviceData
@@ -264,11 +265,11 @@ private extension TabsDataService {
             // Selection after close is owned by CloseTabUseCase; service only persists removal.
             serviceData.tabClosed = .finished(output: .success(nil))
         } catch let error as TabsListError {
-            print("Failure to remove tab from cache: \(error)")
+            CottonLogger.tabs.error("Failure to remove tab from cache: \(error)")
             serviceData.tabClosed = .finished(output: .failure(error))
         } catch {
             // tab view should be removed immediately on view level anyway
-            print("Failure to remove tab from cache: \(error)")
+            CottonLogger.tabs.error("Failure to remove tab from cache: \(error)")
             serviceData.tabClosed = .finished(
                 output: .failure(.repositoryFailure(error as NSError))
             )
@@ -341,7 +342,7 @@ private extension TabsDataService {
             serviceData.allTabs = .finished(output: .success([tab]))
         } catch {
             // tab view should be removed immediately on view level anyway
-            print("Failure to remove tab and reset to one tab: \(error)")
+            CottonLogger.tabs.error("Failure to remove tab and reset to one tab: \(error)")
         }
         let void: Void = ()
         serviceData.allTabsClosed = .finished(output: .success(void))
@@ -361,7 +362,7 @@ private extension TabsDataService {
             let identifier = try await tabsRepository.select(tab: tab)
             let void: Void = ()
             guard identifier != selectedTabIdentifier else {
-                print("Tab is already selected")
+                CottonLogger.tabs.warning("Tab is already selected")
                 serviceData.tabSelected = .finished(output: .success(void))
                 return serviceData
             }
@@ -373,7 +374,7 @@ private extension TabsDataService {
                 selectedTabIdInput.yield(identifier)
             }
         } catch {
-            print("Failed to select tab with id \(tab.id) \(error)")
+            CottonLogger.tabs.error("Failed to select tab with id \(tab.id) \(error)")
             serviceData.tabSelected = .finished(output: .failure(.repositoryFailure(error as NSError)))
         }
         return serviceData
@@ -431,7 +432,7 @@ private extension TabsDataService {
             serviceData.tabContentReplaced = .finished(output: .success(void))
             return serviceData
         } catch {
-            print("Failed to update tab content to storage \(error)")
+            CottonLogger.tabs.error("Failed to update tab content to storage \(error)")
             serviceData.tabContentReplaced = .finished(output: .failure(.repositoryFailure(error as NSError)))
             return serviceData
         }
@@ -615,7 +616,7 @@ private extension TabsDataService {
                     }
                 }
             } catch {
-                print("Failed to wait before adding a new tab: \(error)")
+                CottonLogger.tabs.error("Failed to wait before adding a new tab: \(error)")
             }
         }
     }

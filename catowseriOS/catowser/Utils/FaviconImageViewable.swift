@@ -12,6 +12,7 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonNetworking
 import CottonViewModels
+import CottonLoggerKit
 
 @MainActor protocol FaviconImageViewable: AnyObject {
     var faviconImageView: UIImageView { get }
@@ -29,7 +30,7 @@ extension FaviconImageViewable {
         do {
             url = try await site.faviconURL(useDoH, GoogleDnsClient.shared)
         } catch {
-            print("Fail to resolve favicon url: \(error)")
+            CottonLogger.ui.error("Fail to resolve favicon url: \(error)")
             url = nil
         }
 

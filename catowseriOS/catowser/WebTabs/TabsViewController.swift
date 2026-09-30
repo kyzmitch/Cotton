@@ -13,6 +13,7 @@ import FeatureFlagsKit
 import CottonTabs
 import CottonViewModels
 import ViewsBase
+import CottonLoggerKit
 
 fileprivate extension TabsViewController {
     struct Sizes {
@@ -137,19 +138,19 @@ private extension TabsViewController {
     // MARK: IBActions
 
     @objc func showTabPreviewsPressed() {
-        print("\(#function): show pressed")
+        CottonLogger.tabs.debug("\(#function): show pressed")
         /// Coordinator should be used here, to show tab previews collection view modally
     }
 
     @objc func addTabPressed() {
-        print("\(#function): add pressed")
+        CottonLogger.tabs.debug("\(#function): add pressed")
 
         Task {
             let defaultContent = await DefaultTabProvider.shared.contentState
             let tab = CoreBrowser.Tab(contentType: defaultContent)
             viewModel.sendAction(.addTab(tab)) { result in
                 if case .failure(let error) = result {
-                    print("Fail to add a tab: \(error)")
+                    CottonLogger.tabs.error("Fail to add a tab: \(error)")
                 }
             }
         }
@@ -370,7 +371,7 @@ extension TabsViewController: TabsObserver {
 
 extension TabsViewController: TabDelegate {
     func tabViewDidClose(_ tabView: TabView) {
-        print("\(#function): tab closed")
+        CottonLogger.tabs.debug("\(#function): tab closed")
         removeTabView(tabView)
     }
 }
