@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreBrowser
-import CottonLoggerKit
+import CottonLogs
 
 /// Internal delegate implementation
 /// which uses view model as a subject for this proxy.

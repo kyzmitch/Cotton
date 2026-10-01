@@ -8,7 +8,7 @@
 
 import Foundation
 import SwiftSoup
-import CottonLoggerKit
+import CottonLogs
 
 public struct HTMLVideoTag {
     public let src: URL

@@ -7,7 +7,7 @@
 //
 
 import WebKit
-import CottonLoggerKit
+import CottonLogs
 
 /// Handler for the base java script based web site,
 ///

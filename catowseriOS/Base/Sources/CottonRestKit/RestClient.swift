@@ -11,7 +11,7 @@ import Foundation
 import Combine
 #endif
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 fileprivate extension String {
     static let threadName = "Client"

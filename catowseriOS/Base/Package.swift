@@ -31,6 +31,7 @@ private extension String {
     static let cottonReactiveRestKit = "CottonReactiveRestKit"
     static let cottonNetworkingLibrary = "CottonNetworking"
     static let cottonLoggerKit = "CottonLoggerKit"
+    static let cottonLogs = "CottonLogs"
 }
 
 let package = Package(
@@ -93,6 +94,12 @@ let package = Package(
             targets: [
                 .cottonLoggerKit
             ]
+        ),
+        .library(
+            name: .cottonLogs,
+            targets: [
+                .cottonLogs
+            ]
         )
     ],
     dependencies: [
@@ -121,6 +128,12 @@ let package = Package(
             name: .cottonLoggerKit
         ),
         .target(
+            name: .cottonLogs,
+            dependencies: [
+                .target(name: .cottonLoggerKit)
+            ]
+        ),
+        .target(
             name: .autoMockableKit
         ),
         .target(
@@ -131,7 +144,7 @@ let package = Package(
             dependencies: [
                 .target(name: .cottonBase),
                 .target(name: .autoMockableKit),
-                .target(name: .cottonLoggerKit)
+                .target(name: .cottonLogs)
             ]
         ),
         .target(
@@ -139,7 +152,7 @@ let package = Package(
             dependencies: [
                 .target(name: .cottonBase),
                 .target(name: .cssParserLibrary),
-                .target(name: .cottonLoggerKit),
+                .target(name: .cottonLogs),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swiftSoupFramework, package: .swiftSoupFramework)
             ],
@@ -163,7 +176,7 @@ let package = Package(
                 .target(name: .cottonReactiveRestKit),
                 .target(name: .cottonBase),
                 .target(name: .autoMockableKit),
-                .target(name: .cottonLoggerKit),
+                .target(name: .cottonLogs),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swXmlHashFramework, package: .swXmlHashFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework)

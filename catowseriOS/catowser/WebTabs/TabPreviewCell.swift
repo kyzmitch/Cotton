@@ -14,7 +14,7 @@ import Combine
 #endif
 import CottonNetworking
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 fileprivate extension CGFloat {
     static let cornerRadius = CGFloat(6.0)

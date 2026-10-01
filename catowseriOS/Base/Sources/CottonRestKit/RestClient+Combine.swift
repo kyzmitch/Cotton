@@ -11,7 +11,7 @@ import Foundation
 import Combine
 #endif
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 extension RestClient {
     /// Apple's Combine Future publisher with generic parameter and Http type of error

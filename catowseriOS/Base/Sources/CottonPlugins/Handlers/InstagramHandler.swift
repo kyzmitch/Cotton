@@ -8,7 +8,7 @@
 
 import Foundation
 import WebKit
-import CottonLoggerKit
+import CottonLogs
 
 /// Handler for the instagram web site,
 ///

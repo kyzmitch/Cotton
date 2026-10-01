@@ -11,7 +11,7 @@ import CottonBase
 import Alamofire
 import Foundation
 import CottonNetworking
-import CottonLoggerKit
+import CottonLogs
 
 /// Web view authentication challenge handler, should be on main actor because it uses web view
 @MainActor final class WebViewAuthChallengeHandler: Sendable {

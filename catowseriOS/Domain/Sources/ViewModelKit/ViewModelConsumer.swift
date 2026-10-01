@@ -7,7 +7,7 @@
 //
 
 import Combine
-import CottonLoggerKit
+import CottonLogs
 
 /// An interface of MVVM view model consumer (usually view controller).
 ///

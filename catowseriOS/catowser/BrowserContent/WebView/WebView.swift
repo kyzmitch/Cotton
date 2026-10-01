@@ -10,7 +10,7 @@ import SwiftUI
 import CottonBase
 import CottonViewModels
 import ViewsBase
-import CottonLoggerKit
+import CottonLogs
 
 /// A special case web view interface only for SwiftUI
 /// because we have to reuse existing web view for all the tabs

@@ -12,7 +12,7 @@ import CoreBrowser
 import FeatureFlagsKit
 import CottonNetworking
 import CottonViewModels
-import CottonLoggerKit
+import CottonLogs
 
 @MainActor protocol FaviconImageViewable: AnyObject {
     var faviconImageView: UIImageView { get }

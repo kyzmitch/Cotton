@@ -9,7 +9,7 @@ import CottonBase
 import CoreBrowser
 import CottonUseCases
 import ViewModelKit
-import CottonLoggerKit
+import CottonLogs
 
 /// Top Sites view model implementation on ViewModelKit.
 @MainActor final class TopSitesViewModelImpl: TopSitesViewModel {

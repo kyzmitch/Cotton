@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonLoggerKit
+import CottonLogs
 
 extension Data {
     static func dataFrom(_ value: Any) -> Data? {

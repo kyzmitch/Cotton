@@ -90,13 +90,13 @@ struct CottonLoggerKitTests {
         let capturing = CapturingLogBackend()
         LoggerConfiguration.backend = capturing
         LoggerConfiguration.minimumLevel = .debug
-        CottonLogger.general.info("before restore")
+        CottonLogger(.general).info("before restore")
 
         LoggerConfiguration.restoreDefaults()
 
         let postRestore = CapturingLogBackend()
         LoggerConfiguration.backend = postRestore
-        CottonLogger.general.info("after restore")
+        CottonLogger(.general).info("after restore")
 
         #expect(capturing.snapshot().count == 1)
         #expect(postRestore.snapshot().count == 1)

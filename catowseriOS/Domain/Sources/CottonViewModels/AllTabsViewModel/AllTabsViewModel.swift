@@ -11,7 +11,7 @@ import Foundation
 import CoreBrowser
 import CottonUseCases
 import ViewModelKit
-import CottonLoggerKit
+import CottonLogs
 
 public typealias AllTabsViewModel = BaseViewModel<
     AllTabsState<AllTabsStateContextProxy>,

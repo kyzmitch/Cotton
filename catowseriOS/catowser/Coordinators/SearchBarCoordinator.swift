@@ -16,7 +16,7 @@ import CottonSearch
 import ViewsBase
 import CommonDelegatesLibrary
 import SearchViews
-import CottonLoggerKit
+import CottonLogs
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {

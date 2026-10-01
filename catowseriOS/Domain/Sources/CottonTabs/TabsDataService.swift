@@ -11,7 +11,7 @@ import CoreBrowser
 import GenericServiceKit
 import Foundation
 import CottonDependencyAssembly
-import CottonLoggerKit
+import CottonLogs
 
 /// Tabs list data service which can be used as a subject for observers.
 actor TabsDataService: TabsDataServiceProtocol {

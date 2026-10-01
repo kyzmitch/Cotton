@@ -8,7 +8,7 @@
 
 import Foundation
 import ViewModelKit
-import CottonLoggerKit
+import CottonLogs
 
 public typealias KnownDomains = [String]
 public typealias QuerySuggestions = [String]

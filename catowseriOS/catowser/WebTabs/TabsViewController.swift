@@ -13,7 +13,7 @@ import FeatureFlagsKit
 import CottonTabs
 import CottonViewModels
 import ViewsBase
-import CottonLoggerKit
+import CottonLogs
 
 fileprivate extension TabsViewController {
     struct Sizes {

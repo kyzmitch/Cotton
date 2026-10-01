@@ -9,7 +9,7 @@
 import Foundation
 @preconcurrency import ReactiveSwift
 import Combine
-import CottonLoggerKit
+import CottonLogs
 
 /// FeatureSource that uses UserDefaults
 public final class LocalFeatureSource: @unchecked Sendable {

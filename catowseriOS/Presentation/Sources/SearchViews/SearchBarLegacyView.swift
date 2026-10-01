@@ -14,7 +14,7 @@ import CottonViewModels
 import ViewModelKit
 import Combine
 import ViewsBase
-import CottonLoggerKit
+import CottonLogs
 
 enum SearchBarConstants {
     static let animationDuration = 0.3

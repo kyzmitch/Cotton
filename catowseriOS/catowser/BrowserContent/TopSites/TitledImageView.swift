@@ -10,7 +10,7 @@ import SwiftUI
 import CottonBase
 import CottonNetworking
 import FeatureFlagsKit
-import CottonLoggerKit
+import CottonLogs
 
 struct TitledImageView: View {
     private let site: Site

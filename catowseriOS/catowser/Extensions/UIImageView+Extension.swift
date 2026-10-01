@@ -10,7 +10,7 @@ import AlamofireImage
 import UIKit
 import CottonViewModels
 import ViewsBase
-import CottonLoggerKit
+import CottonLogs
 
 extension UIImageView {
     func updateImage(from source: ImageSource, calculateAverageColor: Bool = true) {

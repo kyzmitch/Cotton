@@ -13,7 +13,7 @@ import FeatureFlagsKit
 import CottonUseCases
 import CottonTabs
 import ViewModelKit
-import CottonLoggerKit
+import CottonLogs
 
 /// Tab view model implementation on ViewModelKit.
 @MainActor final class TabViewModelImpl: TabViewModel {

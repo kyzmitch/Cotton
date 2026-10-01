@@ -7,7 +7,7 @@
 //
 
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 extension WebViewController: WebViewReusable {
     func resetTo(_ site: Site) {

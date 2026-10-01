@@ -10,7 +10,7 @@ import Foundation
 @preconcurrency import ReactiveSwift
 // needed for `Downloadable`
 import CottonNetworking
-import CottonLoggerKit
+import CottonLogs
 
 @MainActor protocol FileDownloadDelegate: AnyObject {
     func didPressOpenFile(withLocal url: URL)

@@ -8,7 +8,7 @@
 
 import CottonBase
 import SWXMLHash
-import CottonLoggerKit
+import CottonLogs
 
 extension OpenSearch {
     public struct Description {

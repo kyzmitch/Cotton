@@ -14,7 +14,7 @@ import Alamofire
 import Combine
 #endif
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 final class AlamofireHTTPAdaptee<
     R: ResponseType,

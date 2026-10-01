@@ -14,7 +14,7 @@ import CottonTabs
 import CottonViewModels
 import ViewModelKit
 import ViewsBase
-import CottonLoggerKit
+import CottonLogs
 
 final class TabsPreviewsViewController<
     C: Navigating

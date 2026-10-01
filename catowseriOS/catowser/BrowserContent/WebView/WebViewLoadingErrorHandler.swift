@@ -8,7 +8,7 @@
 
 import WebKit
 import UIKit
-import CottonLoggerKit
+import CottonLogs
 
 /**
  Called when an error occurs while the web view is loading content.

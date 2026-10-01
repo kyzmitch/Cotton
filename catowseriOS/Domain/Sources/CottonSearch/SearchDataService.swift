@@ -11,7 +11,7 @@ import CoreBrowser
 import GenericServiceKit
 import CottonDependencyAssembly
 import Foundation
-import CottonLoggerKit
+import CottonLogs
 
 // MARK: - Strats interface
 

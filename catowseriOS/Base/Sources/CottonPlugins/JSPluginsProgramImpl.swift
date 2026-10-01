@@ -9,7 +9,7 @@
 import Foundation
 import WebKit
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 /// Host type is a model and can be sendable.
 /// Can mark it as retroactive because it is from my CottonBase library.

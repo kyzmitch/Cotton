@@ -9,7 +9,7 @@
 import Foundation
 import CottonBase
 import SwiftSoup
-import CottonLoggerKit
+import CottonLogs
 
 struct HTMLContentMessage: Decodable {
     let hostname: CottonBase.Host

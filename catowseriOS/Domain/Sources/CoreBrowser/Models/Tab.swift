@@ -7,7 +7,7 @@
 //
 
 import CottonBase
-import CottonLoggerKit
+import CottonLogs
 
 /// Site is an obj-c model type.
 /// Ccan mark with retroactive because Site type is from own CottonBase library

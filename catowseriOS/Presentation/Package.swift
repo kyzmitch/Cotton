@@ -36,7 +36,7 @@ private extension String {
     // MARK: - Domain Frameworks/Kits
 
     static let featureFlagsKit = "FeatureFlagsKit"
-    static let cottonLoggerKit = "CottonLoggerKit"
+    static let cottonLogs = "CottonLogs"
 
     // MARK: - Base Frameworks/Kits
 
@@ -95,7 +95,7 @@ let package = Package(
                 .product(name: .featureFlagsKit, package: .domainPackage),
                 .product(name: .featureFlagsLibrary, package: .domainPackage),
                 .product(name: .viewModelsLibrary, package: .domainPackage),
-                .product(name: .cottonLoggerKit, package: .basePackage)
+                .product(name: .cottonLogs, package: .basePackage)
             ]
         ),
         .target(
@@ -116,7 +116,7 @@ let package = Package(
             name: .cottonDesignKit,
             dependencies: [
                 .target(name: .viewsBaseLibrary),
-                .product(name: .cottonLoggerKit, package: .basePackage)
+                .product(name: .cottonLogs, package: .basePackage)
             ]
         ),
         .target(

@@ -16,7 +16,7 @@ import Combine
 import WebKit
 import FeatureFlagsKit
 import ViewModelKit
-import CottonLoggerKit
+import CottonLogs
 
 /**
     See `decidePolicy` method below

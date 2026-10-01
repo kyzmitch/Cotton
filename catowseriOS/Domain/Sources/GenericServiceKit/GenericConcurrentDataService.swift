@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CottonLoggerKit
+import CottonLogs
 
 /// Base generic data service which will use dispatch queue as a synhronization.
 /// There is another approach in this framework using an actor base protocol.

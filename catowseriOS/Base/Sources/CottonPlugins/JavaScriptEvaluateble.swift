@@ -8,7 +8,7 @@
 
 import Foundation
 import Combine
-import CottonLoggerKit
+import CottonLogs
 @preconcurrency import ReactiveSwift
 
 /// Протокол для вэб вью по выполнения JavaScript, должно быть на main thread

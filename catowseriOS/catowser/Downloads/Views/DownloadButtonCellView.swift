@@ -10,7 +10,7 @@ import UIKit
 import AlamofireImage
 @preconcurrency import ReactiveSwift
 import CoreBrowser
-import CottonLoggerKit
+import CottonLogs
 
 final class DownloadButtonCellView: UITableViewCell {
     fileprivate static let bytesInMegabyte: Int = 1048576 // 1024 * 1024

@@ -1,8 +1,8 @@
 {
   "Package.swift": {
-    "mtime": 1790753206.5896711,
-    "seen": 1790753252.9404118,
-    "ast_hash": "d364576e53c3b6872e7351ba57ae68e2",
+    "mtime": 1790785472.2201748,
+    "seen": 1790792721.673078,
+    "ast_hash": "6bd1a678f6dff12fdf6c1762516046c4",
     "semantic_hash": ""
   },
   "Sources/AutoMockable/AutoMockable.swift": {
@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "Sources/CottonLoggerKit/CottonLogger.swift": {
-    "mtime": 1790753240.9529803,
-    "seen": 1790753252.940415,
-    "ast_hash": "42ba99f5041c1ad4b3f04041ce41bac5",
+    "mtime": 1790785470.0897527,
+    "seen": 1790792721.673086,
+    "ast_hash": "82278f3c1fd18db20eec2c1cbd9f6966",
     "semantic_hash": ""
   },
   "Sources/CottonLoggerKit/LogBackend.swift": {
@@ -174,15 +174,15 @@
     "semantic_hash": ""
   },
   "Sources/CottonNetworking/TransportAdapters/AlamofireHTTPAdaptee.swift": {
-    "mtime": 1786121907.3121805,
-    "seen": 1790753252.940425,
-    "ast_hash": "26692e50903dc49239982f2d67adfbc4",
+    "mtime": 1790792682.6552768,
+    "seen": 1790792721.6731038,
+    "ast_hash": "774c6334ab4d0628b5f316858b8362f8",
     "semantic_hash": ""
   },
   "Sources/CottonNetworking/TransportAdapters/AlamofireHTTPRxAdaptee.swift": {
-    "mtime": 1786121907.3124936,
-    "seen": 1790753252.9404259,
-    "ast_hash": "0e80c50d30c6b3dd2587da4642cadd52",
+    "mtime": 1790792682.6550674,
+    "seen": 1790792721.673105,
+    "ast_hash": "b01d78e3f8554c0743bc1373493829df",
     "semantic_hash": ""
   },
   "Sources/CottonNetworking/TransportAdapters/AlamofireHTTPRxVoidAdaptee.swift": {
@@ -198,21 +198,21 @@
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Data+CatowserExtension.swift": {
-    "mtime": 1786121907.313081,
-    "seen": 1790753252.940427,
-    "ast_hash": "c0ccb255abc8c4c9f0c17a48526dee53",
+    "mtime": 1790792682.6537185,
+    "seen": 1790792721.673106,
+    "ast_hash": "77b3c7ec9fb233d6599e949a76e6be6a",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Handlers/BaseJSHandler.swift": {
-    "mtime": 1786121907.3135302,
-    "seen": 1790753252.940427,
-    "ast_hash": "36bf9ab1dbf76c99c5346555e92298f7",
+    "mtime": 1790792682.656665,
+    "seen": 1790792721.673107,
+    "ast_hash": "0ff85d22054fa1967d32769959dc8279",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Handlers/InstagramHandler.swift": {
-    "mtime": 1786121907.3137915,
-    "seen": 1790753252.940428,
-    "ast_hash": "bd9721f1021d09734ee7c6c8584a8a68",
+    "mtime": 1790792682.6565647,
+    "seen": 1790792721.673107,
+    "ast_hash": "ed2aa757c0bc77ff5af6c001c6425814",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/JSPluginFactory.swift": {
@@ -234,9 +234,9 @@
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/JSPluginsProgramImpl.swift": {
-    "mtime": 1790535220.9247174,
-    "seen": 1790753252.940429,
-    "ast_hash": "05fab50a58ae68f93e29a4e0858bf5c0",
+    "mtime": 1790792682.6539426,
+    "seen": 1790792721.673109,
+    "ast_hash": "37b7c778d4f353d449deb1525e3eb877",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/JSPluginsSource.swift": {
@@ -246,9 +246,9 @@
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/JavaScriptEvaluateble.swift": {
-    "mtime": 1786121907.3154826,
-    "seen": 1790753252.9404302,
-    "ast_hash": "bffe7db0d5a31a1617ab83832515a0a0",
+    "mtime": 1790792682.65382,
+    "seen": 1790792721.67311,
+    "ast_hash": "0456500848a87869ab32c8e9860aaf4f",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Models/CSSModels/CSSBackgroundImage.swift": {
@@ -264,21 +264,21 @@
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Models/HTMLContentMessage.swift": {
-    "mtime": 1786121907.3157268,
-    "seen": 1790753252.940431,
-    "ast_hash": "cfdd51920739a5bb2acdeb40c98699d7",
+    "mtime": 1790792682.6560957,
+    "seen": 1790792721.6731122,
+    "ast_hash": "c25c85cbec8d3ae9614bbc072501dd49",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Models/HTMLVideoTag.swift": {
-    "mtime": 1786121907.315782,
-    "seen": 1790753252.9404318,
-    "ast_hash": "ec3739aef021175b3433cdff25545ac1",
+    "mtime": 1790792682.6560042,
+    "seen": 1790792721.6731122,
+    "ast_hash": "11de58f1c9026a532a4feaa6e4396c1b",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Models/HTMLVideoTagsContainer.swift": {
-    "mtime": 1786121907.3158457,
-    "seen": 1790753252.9404318,
-    "ast_hash": "8bfb0b4d71a4376b19888bc136a35f03",
+    "mtime": 1790792682.6563578,
+    "seen": 1790792721.673113,
+    "ast_hash": "25ee53fe2221e765873cfcb7886786b9",
     "semantic_hash": ""
   },
   "Sources/CottonPlugins/Models/InstagramVideoArray.swift": {
@@ -516,9 +516,9 @@
     "semantic_hash": ""
   },
   "Sources/CottonRestKit/RestClient+Combine.swift": {
-    "mtime": 1786121907.3259544,
-    "seen": 1790753252.940447,
-    "ast_hash": "c428466383a5834da8872779bbd08a37",
+    "mtime": 1790792682.6541786,
+    "seen": 1790792721.6731331,
+    "ast_hash": "27549ab3f9427034c84a1c495ea87c69",
     "semantic_hash": ""
   },
   "Sources/CottonRestKit/RestClient+Kotlin.swift": {
@@ -528,9 +528,9 @@
     "semantic_hash": ""
   },
   "Sources/CottonRestKit/RestClient.swift": {
-    "mtime": 1786121907.326361,
-    "seen": 1790753252.940448,
-    "ast_hash": "c6ba0d9ef3992991531cc80b039d79cf",
+    "mtime": 1790792682.654392,
+    "seen": 1790792721.673134,
+    "ast_hash": "95d94779b0e3b7c11c54ce72c064b40f",
     "semantic_hash": ""
   },
   "Sources/CottonRestKit/RestClientError.swift": {
@@ -576,9 +576,9 @@
     "semantic_hash": ""
   },
   "Tests/CottonLoggerKitTests/CottonLoggerKitTests.swift": {
-    "mtime": 1790753245.9234624,
-    "seen": 1790753252.9404511,
-    "ast_hash": "937517612dd826e6d039d80e9de067f5",
+    "mtime": 1790788508.5013273,
+    "seen": 1790792721.6731389,
+    "ast_hash": "9532c759100b30e2d3f612d5f3e7b756",
     "semantic_hash": ""
   },
   "Tests/CottonPluginsTests/CSSBackgroundImageTests.swift": {
@@ -645,6 +645,18 @@
     "mtime": 1786121907.3183107,
     "seen": 1790753252.940455,
     "ast_hash": "715f6a8ba776b4ae77e66339d37a5e87",
+    "semantic_hash": ""
+  },
+  "Sources/CottonLogs/CottonLogger+Instances.swift": {
+    "mtime": 1790785477.1118014,
+    "seen": 1790792721.6730912,
+    "ast_hash": "8d8c47c015c8a10947f8a08e299f13dd",
+    "semantic_hash": ""
+  },
+  "Sources/CottonLogs/CottonLogs.swift": {
+    "mtime": 1790785470.0335317,
+    "seen": 1790792721.6730921,
+    "ast_hash": "0758a26049739982c84f78c0c49ad088",
     "semantic_hash": ""
   }
 }
