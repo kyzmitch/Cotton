@@ -11,6 +11,7 @@ import CoreBrowser
 import GenericServiceKit
 import CottonDependencyAssembly
 import Foundation
+import CottonLogs
 
 // MARK: - Strats interface
 
@@ -183,7 +184,7 @@ private extension SearchDataService {
         do {
             osDescription = try OpenSearch.Description(data: xmlData)
         } catch {
-            print("Open search xml parser error: \(error.localizedDescription)")
+            CottonLogger.search.error("Open search xml parser error: \(error.localizedDescription)")
             return .googleSearchEngine()
         }
 

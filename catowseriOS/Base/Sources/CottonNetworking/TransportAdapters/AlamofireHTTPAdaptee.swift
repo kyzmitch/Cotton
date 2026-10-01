@@ -14,6 +14,7 @@ import Alamofire
 import Combine
 #endif
 import CottonBase
+import CottonLogs
 
 final class AlamofireHTTPAdaptee<
     R: ResponseType,
@@ -65,11 +66,11 @@ final class AlamofireHTTPAdaptee<
                     case .success(let value):
                         result = .success(value)
                     case .failure(let error):
-                        print("Http request failed: \(error.localizedDescription)")
+                        CottonLogger.networking.error("Http request failed: \(error.localizedDescription)")
                         result = .failure(.httpFailure(error: error))
                     }
                     guard let self else {
-                        print("Networking backend was deallocated")
+                        CottonLogger.networking.error("Networking backend was deallocated")
                         return
                     }
                     self.wrapperHandler()(result)

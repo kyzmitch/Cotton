@@ -14,6 +14,7 @@ import CottonTabs
 import CottonViewModels
 import ViewModelKit
 import ViewsBase
+import CottonLogs
 
 final class TabsPreviewsViewController<
     C: Navigating
@@ -222,7 +223,7 @@ final class TabsPreviewsViewController<
         let shouldHighlightTab = tab?.id == selectedId
 
         guard let correctTab = tab else {
-            print("\(#function) wrong index")
+            CottonLogger.tabs.warning("\(#function) wrong index")
             return UICollectionViewCell(frame: .zero)
         }
         let cell = collectionView.dequeueCell(at: indexPath, type: TabPreviewCell.self)

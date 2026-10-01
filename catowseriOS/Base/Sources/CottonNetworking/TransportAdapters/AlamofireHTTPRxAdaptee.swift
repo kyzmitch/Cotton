@@ -15,6 +15,7 @@ import Alamofire
 import Combine
 #endif
 import CottonBase
+import CottonLogs
 
 final class AlamofireHTTPRxAdaptee<
     R,
@@ -81,7 +82,7 @@ final class AlamofireHTTPRxAdaptee<
                         result = .failure(.httpFailure(error: error))
                     }
                     guard let self else {
-                        print("Networking backend was deallocated")
+                        CottonLogger.networking.error("Networking backend was deallocated")
                         return
                     }
                     wrapperHandler()(result)

@@ -9,6 +9,7 @@
 import Foundation
 @preconcurrency import ReactiveSwift
 import Combine
+import CottonLogs
 
 /// FeatureSource that uses UserDefaults
 public final class LocalFeatureSource: @unchecked Sendable {
@@ -52,7 +53,7 @@ extension LocalFeatureSource: FeatureSource {
         default:
             // Shouldn't be here...
             let errString = "Trying to save invalid state for feature setting"
-            print(errString)
+            CottonLogger.featureFlags.error(errString)
             assertionFailure(errString)
             return F.defaultValue
         }

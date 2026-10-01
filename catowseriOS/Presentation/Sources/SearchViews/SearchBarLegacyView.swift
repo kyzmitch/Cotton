@@ -14,6 +14,7 @@ import CottonViewModels
 import ViewModelKit
 import Combine
 import ViewsBase
+import CottonLogs
 
 enum SearchBarConstants {
     static let animationDuration = 0.3
@@ -104,7 +105,7 @@ final class SearchBarLegacyView<
             case .success:
                 break
             case .failure(let error):
-                print("Fail to send action: \(error)")
+                CottonLogger.ui.error("Fail to send action: \(error)")
             }
         }
     }

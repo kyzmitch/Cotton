@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftSoup
+import CottonLogs
 
 public struct HTMLVideoTagsContainer {
     public let videoTags: [HTMLVideoTag]
@@ -17,10 +18,10 @@ public struct HTMLVideoTagsContainer {
         do {
             videoElements = try htmlMessage.html.select("video")
         } catch Exception.Error( _, let message) {
-            print("Failed parse html video tags: \(message)")
+            CottonLogger.plugins.error("Failed parse html video tags: \(message)")
             throw CottonPluginError.parseError
         } catch {
-            print("Failed to parse html video tags")
+            CottonLogger.plugins.error("Failed to parse html video tags")
             throw CottonPluginError.parseError
         }
 

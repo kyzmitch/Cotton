@@ -10,6 +10,7 @@ import SwiftUI
 import CottonBase
 import CottonNetworking
 import FeatureFlagsKit
+import CottonLogs
 
 struct TitledImageView: View {
     private let site: Site
@@ -50,7 +51,7 @@ struct TitledImageView: View {
             do {
                 url = try await site.faviconURL(useDoH, GoogleDnsClient.shared)
             } catch {
-                print("Fail to resolve favicon URL: \(error)")
+                CottonLogger.ui.error("Fail to resolve favicon URL: \(error)")
             }
         }
     }

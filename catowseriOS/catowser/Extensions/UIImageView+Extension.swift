@@ -10,6 +10,7 @@ import AlamofireImage
 import UIKit
 import CottonViewModels
 import ViewsBase
+import CottonLogs
 
 extension UIImageView {
     func updateImage(from source: ImageSource, calculateAverageColor: Bool = true) {
@@ -58,7 +59,7 @@ extension UIImageView {
 
                 self?.backgroundColor = color
             case .failure(let afError):
-                print("Failed to download image using url: \(afError.localizedDescription)")
+                CottonLogger.ui.error("Failed to download image using url: \(afError.localizedDescription)")
             }
 
         }

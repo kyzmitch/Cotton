@@ -9,6 +9,7 @@
 import WebKit
 import CottonBase
 import CottonViewModels
+import CottonLogs
 
 // MARK: - Allow users of this delegate to control webview navigation
 
@@ -32,7 +33,7 @@ extension WebViewController: WebViewNavigatable {
         viewModel.siteNavigation?.provisionalNavigationDidStart()
         viewModel.sendAction(.goForward) { result in
             if case .failure(let error) = result {
-                print("Wrong state on go Forward action: \(error.localizedDescription)")
+                CottonLogger.webView.error("Wrong state on go Forward action: \(error.localizedDescription)")
             }
         }
         _ = webView?.goForward()
@@ -43,7 +44,7 @@ extension WebViewController: WebViewNavigatable {
         viewModel.siteNavigation?.provisionalNavigationDidStart()
         viewModel.sendAction(.goBack) { result in
             if case .failure(let error) = result {
-                print("Wrong state on go Back action: \(error.localizedDescription)")
+                CottonLogger.webView.error("Wrong state on go Back action: \(error.localizedDescription)")
             }
         }
         _ = webView?.goBack()
@@ -54,7 +55,7 @@ extension WebViewController: WebViewNavigatable {
         viewModel.siteNavigation?.provisionalNavigationDidStart()
         viewModel.sendAction(.reload) { result in
             if case .failure(let error) = result {
-                print("Wrong state on re-load action: \(error.localizedDescription)")
+                CottonLogger.webView.error("Wrong state on re-load action: \(error.localizedDescription)")
             }
         }
         _ = webView?.reload()
@@ -66,7 +67,7 @@ extension WebViewController: WebViewNavigatable {
         }
         viewModel.sendAction(.changeJavaScript(jsSubject, enabled)) { result in
             if case .failure(let error) = result {
-                print("Wrong state on JS change action: \(error.localizedDescription)")
+                CottonLogger.webView.error("Wrong state on JS change action: \(error.localizedDescription)")
             }
         }
     }

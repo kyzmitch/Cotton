@@ -10,6 +10,7 @@ import SwiftUI
 import CottonBase
 import CottonViewModels
 import ViewsBase
+import CottonLogs
 
 /// A special case web view interface only for SwiftUI
 /// because we have to reuse existing web view for all the tabs
@@ -91,7 +92,7 @@ private struct WebViewLegacyView: CatowserUIVCRepresentable {
         // View recreates/loads when it observes `.updatingWebView` on `statePublisher`.
         viewModel.sendAction(.openSite(site)) { result in
             if case .failure(let error) = result {
-                print(error.localizedDescription)
+                CottonLogger.webView.error(error.localizedDescription)
             }
         }
         // swiftlint:disable:next force_unwrapping

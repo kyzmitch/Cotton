@@ -9,6 +9,7 @@ import CottonBase
 import CoreBrowser
 import CottonUseCases
 import ViewModelKit
+import CottonLogs
 
 /// Top Sites view model implementation on ViewModelKit.
 @MainActor final class TopSitesViewModelImpl: TopSitesViewModel {
@@ -37,7 +38,7 @@ extension TopSitesViewModelImpl: TopSitesStateContext {
         do {
             try await writeTabUseCase.execute(input: content)
         } catch {
-            print("Fail to replace current tab: \(error)")
+            CottonLogger.viewModels.error("Fail to replace current tab: \(error)")
         }
     }
 }

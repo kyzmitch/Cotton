@@ -13,6 +13,7 @@ import FeatureFlagsKit
 import CottonUseCases
 import CottonTabs
 import ViewModelKit
+import CottonLogs
 
 /// Tab view model implementation on ViewModelKit.
 @MainActor final class TabViewModelImpl: TabViewModel {
@@ -65,7 +66,7 @@ import ViewModelKit
         do {
             url = try await appContext.faviconURL(site, resolveNeeded)
         } catch {
-            print("Fail to resolve favicon url: \(error)")
+            CottonLogger.viewModels.error("Fail to resolve favicon url: \(error)")
             url = nil
         }
 
@@ -149,16 +150,16 @@ extension TabViewModelImpl: TabStateContext {
         do {
             _ = try await closeTabUseCase.execute(input: tab)
         } catch {
-            print("Fail to close tab: \(error)")
+            CottonLogger.viewModels.error("Fail to close tab: \(error)")
         }
     }
 
     public func activateTab() async {
-        print("\(#function): selected tab with id: \(tab.id)")
+        CottonLogger.viewModels.debug("\(#function): selected tab with id: \(tab.id)")
         do {
             try await selectTabUseCase.execute(input: tab)
         } catch {
-            print("Fail to select tab: \(error.localizedDescription)")
+            CottonLogger.viewModels.error("Fail to select tab: \(error.localizedDescription)")
         }
     }
 }

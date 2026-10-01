@@ -16,6 +16,7 @@ import CottonSearch
 import ViewsBase
 import CommonDelegatesLibrary
 import SearchViews
+import CottonLogs
 
 @MainActor
 protocol SearchBarDelegate: AnyObject {
@@ -172,6 +173,7 @@ extension SearchBarCoordinator: CoordinatorOwner {
         if coordinator === searhSuggestionsCoordinator {
             // maybe need to reuse it actually and not create it each time
             searhSuggestionsCoordinator = nil
+            isSuggestionsShowed = false
         }
     }
 }
@@ -215,7 +217,6 @@ private extension SearchBarCoordinator {
 
     func hideSearchController() {
         guard isSuggestionsShowed else {
-            print("Attempted to hide suggestions when they are not showed")
             return
         }
         isSuggestionsShowed = false
@@ -358,7 +359,7 @@ private extension SearchBarCoordinator {
         ) { [weak self] result in
             switch result {
             case .failure(let failure):
-                print("Fail to fetch search engine: \(failure)")
+                CottonLogger.coordinator.error("Fail to fetch search engine: \(failure)")
             case .success(let serviceData):
                 do {
                     let url = try serviceData.searchURL
@@ -366,7 +367,7 @@ private extension SearchBarCoordinator {
                         try await self?.replaceTab(with: url, with: suggestion)
                     }
                 } catch {
-                    print("Fail to construct search URL: \(error)")
+                    CottonLogger.coordinator.error("Fail to construct search URL: \(error)")
                 }
             }
         }

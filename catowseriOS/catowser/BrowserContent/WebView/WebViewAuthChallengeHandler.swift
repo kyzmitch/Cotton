@@ -11,6 +11,7 @@ import CottonBase
 import Alamofire
 import Foundation
 import CottonNetworking
+import CottonLogs
 
 /// Web view authentication challenge handler, should be on main actor because it uses web view
 @MainActor final class WebViewAuthChallengeHandler: Sendable {
@@ -64,7 +65,7 @@ import CottonNetworking
 handleServerTrust: domainName[\(rawDomainName)],
 challengeHost[\(challengeHost)], ip[\(possibleIPAddress ?? "none")]
 """
-            print(logString)
+            CottonLogger.webView.debug(logString)
         }
         if let ipAddress = possibleIPAddress, ipAddress == challenge.protectionSpace.host {
             handleServerTrust(serverTrust,
@@ -112,10 +113,10 @@ private extension WebViewAuthChallengeHandler {
 
             var certificates = serverTrust.af.certificates
             if logAuthChallenge {
-                print("handleServerTrust: domain name - \(host) has \(certificates.count) certificates")
+                CottonLogger.webView.debug("handleServerTrust: domain name - \(host) has \(certificates.count) certificates")
                 for cert in certificates {
                     let string: String? = SecCertificateCopySubjectSummary(cert) as String?
-                    print("handleServerTrust: certificate[\(string ?? "none")]")
+                    CottonLogger.webView.debug("handleServerTrust: certificate[\(string ?? "none")]")
                 }
             }
             _ = certificates.removeFirst()
@@ -131,7 +132,7 @@ private extension WebViewAuthChallengeHandler {
         } catch {
             if logAuthChallenge {
                 let msg = "handleServerTrust: validation failed.\n\n \(error.localizedDescription)\n\n\(host)"
-                print("Error: \(msg)")
+                CottonLogger.webView.fault("Error: \(msg)")
             }
             let credential = URLCredential(trust: serverTrust)
             queue.async { [weak self] in

@@ -19,6 +19,7 @@ import ReactiveSwift
 #endif
 import CottonViewModels
 import ViewsBase
+import CottonLogs
 
 /// Can't retroactivly mark web view as sendable, it is a system type and protocol.
 extension WKWebView: @unchecked Sendable { }
@@ -128,7 +129,7 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         reattachWebViewObservers()
         viewModel.sendAction(.loadSite) { result in
             if case .failure(let error) = result {
-                print("Wrong state on load action: \(error.localizedDescription)")
+                CottonLogger.webView.error("Wrong state on load action: \(error.localizedDescription)")
             }
         }
     }
@@ -246,19 +247,19 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             webView.takeSnapshot(with: snapshotConfig) { [weak self] (image, error) in
                 switch (image, error) {
                 case (_, let err?):
-                    print("failed to take a screenshot \(err)")
+                    CottonLogger.webView.error("failed to take a screenshot \(err)")
                 case (let img?, _):
                     Task {
                         await self?.viewModel.updateTabPreview(img.pngData())
                     }
                 default:
-                    print("failed to take a screenshot")
+                    CottonLogger.webView.error("failed to take a screenshot")
                 }
             }
         }
 
         guard let newURL = webView.url else {
-            print("web view without url")
+            CottonLogger.webView.warning("web view without url")
             return
         }
 
@@ -266,7 +267,7 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
             .finishLoading(newURL, webView, viewModel.settings.isJSEnabled)
         ) { result in
             if case .failure(let error) = result {
-                print("\(#function) - failed to finish loading: \(error.localizedDescription)")
+                CottonLogger.webView.error("\(#function) - failed to finish loading: \(error.localizedDescription)")
             }
         }
     }
@@ -276,7 +277,7 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         didFail navigation: WKNavigation!,
         withError error: Error
     ) {
-        print("Error occured during a committed main frame: \(error.localizedDescription)")
+        CottonLogger.webView.error("Error occured during a committed main frame: \(error.localizedDescription)")
         viewModel.siteNavigation?.showLoadingProgress(false)
     }
 
@@ -311,7 +312,7 @@ final class WebViewController<C: Navigating>: BaseViewController, WKUIDelegate, 
         didFailProvisionalNavigation navigation: WKNavigation!,
         withError error: Error
     ) {
-        print("Error occured while starting to load data: \(error.localizedDescription)")
+        CottonLogger.webView.error("Error occured while starting to load data: \(error.localizedDescription)")
         viewModel.siteNavigation?.showLoadingProgress(false)
         let handler = WebViewLoadingErrorHandler(error, webView)
         handler.recover(self)
@@ -339,7 +340,7 @@ private extension WebViewController {
         } else {
             // so, reuse of web view controller isn't ready
             // but probably not needed
-            print("Resubscribtion for web view isn't implemented yet")
+            CottonLogger.webView.warning("Resubscribtion for web view isn't implemented yet")
         }
 
         // Using only Concurrency (ReactiveSwift and Combine are not easy to maintain for this method)
@@ -358,7 +359,7 @@ private extension WebViewController {
                         let useDoH = await FeatureManager.shared.boolValue(of: .dnsOverHTTPSAvailable)
                         self?.viewModel.sendAction(.changeDoH(useDoH)) { result in
                             if case .failure(let error) = result {
-                                print("Wrong state on DoH change action: \(error.localizedDescription)")
+                                CottonLogger.webView.error("Wrong state on DoH change action: \(error.localizedDescription)")
                             }
                         }
                     }
@@ -374,7 +375,7 @@ private extension WebViewController {
                         let enabled = await FeatureManager.shared.boolValue(of: .javaScriptEnabled)
                         self.viewModel.sendAction(.changeJavaScript(jsSubject, enabled)) { result in
                             if case .failure(let error) = result {
-                                print("Wrong state on JS change action: \(error.localizedDescription)")
+                                CottonLogger.webView.error("Wrong state on JS change action: \(error.localizedDescription)")
                             }
                         }
                     }

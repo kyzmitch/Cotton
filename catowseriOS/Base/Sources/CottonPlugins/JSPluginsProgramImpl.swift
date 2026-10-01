@@ -9,6 +9,7 @@
 import Foundation
 import WebKit
 import CottonBase
+import CottonLogs
 
 /// Host type is a model and can be sendable.
 /// Can mark it as retroactive because it is from my CottonBase library.
@@ -49,7 +50,8 @@ public final class JSPluginsProgramImpl: JSPluginsProgram, @preconcurrency Equat
             do {
                 try pair.plugin.accept(visitor, context, canInject, pair.handler)
             } catch {
-                print("\(#function) failed to load plugin: \(error.localizedDescription)")
+                let message = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+                CottonLogger.plugins.error("\(#function) failed to load plugin: \(message)")
             }
         }
     }

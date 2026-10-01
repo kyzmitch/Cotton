@@ -8,6 +8,7 @@
 
 import Foundation
 import WebKit
+import CottonLogs
 
 /// Handler for the instagram web site,
 ///
@@ -37,7 +38,7 @@ fileprivate extension InstagramHandler {
 extension InstagramHandler: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let args = message.body as? [String: Any] else {
-            print("\(#function) message.body has unexpected format")
+            CottonLogger.plugins.warning("\(#function) message.body has unexpected format")
             return
         }
 
@@ -45,7 +46,7 @@ extension InstagramHandler: WKScriptMessageHandler {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
                 // swiftlint:disable:next force_cast
-                print("JS Instagram log: \(value as! String)")
+                CottonLogger.plugins.info("JS Instagram log: \(value as! String)")
             case .videoNodes?:
                 guard let jsonObject = Data.dataFrom(value) else {
                     break
@@ -54,7 +55,7 @@ extension InstagramHandler: WKScriptMessageHandler {
                     let decoded = try JSONDecoder().decode([InstagramVideoNode].self, from: jsonObject)
                     delegate?.didReceiveVideoNodes(decoded)
                 } catch {
-                    print("failed decode video nodes array: \(error)")
+                    CottonLogger.plugins.error("failed decode video nodes array: \(error)")
                 }
             case .singleVideoNode?:
                 guard let jsonObject = Data.dataFrom(value) else {
@@ -64,10 +65,10 @@ extension InstagramHandler: WKScriptMessageHandler {
                     let decoded = try JSONDecoder().decode(InstagramVideoNode.self, from: jsonObject)
                     delegate?.didReceiveVideoNodes([decoded])
                 } catch {
-                    print("failed decode single video node: \(error)")
+                    CottonLogger.plugins.error("failed decode single video node: \(error)")
                 }
             default:
-                print("unexpected key \(key)")
+                CottonLogger.plugins.warning("unexpected key \(key)")
             }
         }
     }

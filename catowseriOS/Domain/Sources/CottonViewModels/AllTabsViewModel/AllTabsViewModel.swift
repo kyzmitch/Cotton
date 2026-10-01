@@ -11,6 +11,7 @@ import Foundation
 import CoreBrowser
 import CottonUseCases
 import ViewModelKit
+import CottonLogs
 
 public typealias AllTabsViewModel = BaseViewModel<
     AllTabsState<AllTabsStateContextProxy>,
@@ -42,7 +43,7 @@ extension AllTabsViewModelImpl: AllTabsStateContext {
             do {
                 try await addTabUseCase.execute(input: tab)
             } catch {
-                print("Fail to add new tab: \(error)")
+                CottonLogger.viewModels.error("Fail to add new tab: \(error)")
             }
         }
     }

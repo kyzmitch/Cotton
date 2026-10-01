@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import CottonLogs
 
 extension Data {
     static func dataFrom(_ value: Any) -> Data? {
         guard let jsArrayString =  value as? String else {
-            print("js value is not a string")
+            CottonLogger.plugins.warning("js value is not a string")
             return nil
         }
         guard let jsonObject = jsArrayString.data(using: .utf8, allowLossyConversion: true) else {
-            print("failed to convert string to data")
+            CottonLogger.plugins.error("failed to convert string to data")
             return nil
         }
         return jsonObject

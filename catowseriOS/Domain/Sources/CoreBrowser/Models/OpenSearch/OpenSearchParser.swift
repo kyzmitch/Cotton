@@ -8,6 +8,7 @@
 
 import CottonBase
 import SWXMLHash
+import CottonLogs
 
 extension OpenSearch {
     public struct Description {
@@ -62,7 +63,7 @@ extension OpenSearch {
                                                  shortName: shortName,
                                                  imageData: imageResult)
                 default:
-                    print("Unhandled url type for OpenSearch format: \(contentType.stringValue)")
+                    CottonLogger.search.warning("Unhandled url type for OpenSearch format: \(contentType.stringValue)")
                 }
             }
 

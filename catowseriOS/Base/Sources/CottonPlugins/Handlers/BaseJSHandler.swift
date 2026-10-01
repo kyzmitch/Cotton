@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import CottonLogs
 
 /// Handler for the base java script based web site,
 ///
@@ -37,7 +38,7 @@ fileprivate extension BaseJSHandler {
 extension BaseJSHandler: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let args = message.body as? [String: Any] else {
-            print("\(#function) message.body has unexpected format")
+            CottonLogger.plugins.warning("\(#function) message.body has unexpected format")
             return
         }
 
@@ -45,7 +46,7 @@ extension BaseJSHandler: WKScriptMessageHandler {
             switch MessageKey(rawValue: key) {
             case .log? where value is String:
                 // swiftlint:disable:next force_cast
-                print("JS Base log: \(value as! String)")
+                CottonLogger.plugins.info("JS Base log: \(value as! String)")
             case .html?:
                 if !handleHtmlKey(value) {
                     break
@@ -55,7 +56,7 @@ extension BaseJSHandler: WKScriptMessageHandler {
                     break
                 }
             default:
-                print("unexpected key \(key)")
+                CottonLogger.plugins.warning("unexpected key \(key)")
             }
         }
     }
@@ -70,7 +71,7 @@ private extension BaseJSHandler {
         do {
             htmlContentMsg = try JSONDecoder().decode(HTMLContentMessage.self, from: jsonObject)
         } catch {
-            print("HTML content is corrupted: \(error)")
+            CottonLogger.plugins.error("HTML content is corrupted: \(error)")
             return false
         }
         // now need to parse to find video tags and extract urls
@@ -87,9 +88,9 @@ private extension BaseJSHandler {
         }
         do {
             let decoded = try JSONDecoder().decode([HTMLVideoTag].self, from: jsonObject)
-            print("DOM video tags: \(decoded.count)")
+            CottonLogger.plugins.info("DOM video tags: \(decoded.count)")
         } catch {
-            print("failed decode DOM videos: \(error)")
+            CottonLogger.plugins.error("failed decode DOM videos: \(error)")
         }
         return true
     }

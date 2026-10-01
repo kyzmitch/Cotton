@@ -15,6 +15,7 @@ import CottonViewModels
 import CottonTabs
 import ViewsBase
 import CommonDelegatesLibrary
+import CottonLogs
 
 final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsProxyDelegate {
     /// Could be accessed using `ViewsEnvironment.shared.vcFactory` singleton as well
@@ -176,7 +177,7 @@ final class AppCoordinator: Coordinator, ContentCoordinatorsInterface, PluginsPr
         let tabId = subject.selectedTabId
         let selectedIndex = subject.tabs.firstIndex(where: { $0.id == tabId })
         if selectedIndex == nil {
-            print("Error: unknown selected tab")
+            CottonLogger.coordinator.error("Error: unknown selected tab")
         }
         let index = selectedIndex ?? subject.tabs.startIndex
         await tabDidSelect(index, subject.tabs[index].contentType, tabId)

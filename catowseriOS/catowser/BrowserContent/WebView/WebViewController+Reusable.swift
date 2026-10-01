@@ -7,6 +7,7 @@
 //
 
 import CottonBase
+import CottonLogs
 
 extension WebViewController: WebViewReusable {
     func resetTo(_ site: Site) {
@@ -19,7 +20,7 @@ extension WebViewController: WebViewReusable {
         reattachWebViewObservers()
         viewModel.sendAction(.openSite(site)) { result in
             if case .failure(let error) = result {
-                print(error.localizedDescription)
+                CottonLogger.webView.error(error.localizedDescription)
             }
         }
     }

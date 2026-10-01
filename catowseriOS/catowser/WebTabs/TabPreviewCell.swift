@@ -14,6 +14,7 @@ import Combine
 #endif
 import CottonNetworking
 import CottonBase
+import CottonLogs
 
 fileprivate extension CGFloat {
     static let cornerRadius = CGFloat(6.0)
@@ -174,7 +175,7 @@ final class TabPreviewCell: UICollectionViewCell, ReusableItem, FaviconImageView
     }
 
     @objc func close() {
-        print("tab preview cell \(#function)")
+        CottonLogger.ui.debug("tab preview cell \(#function)")
         #warning("TODO: bug https://github.com/kyzmitch/Cotton/issues/85")
         guard let closedIndex = tabIndex else {
             return

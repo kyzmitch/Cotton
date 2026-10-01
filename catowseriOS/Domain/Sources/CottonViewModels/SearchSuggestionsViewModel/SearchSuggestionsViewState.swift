@@ -8,6 +8,7 @@
 
 import Foundation
 import ViewModelKit
+import CottonLogs
 
 public typealias KnownDomains = [String]
 public typealias QuerySuggestions = [String]
@@ -46,7 +47,7 @@ public enum SearchSuggestionsViewState<C: SearchSuggestionsStateContext>: ViewMo
                 #if TESTING
                 #else
                 // can't assert here because of unit tests
-                print(errMsg)
+                CottonLogger.viewModels.error(errMsg)
                 #endif
                 return -1
             }

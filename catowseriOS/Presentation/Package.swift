@@ -11,6 +11,7 @@ private extension String {
 
     static let presentationPackage = "Presentation"
     static let domainPackage = "Domain"
+    static let basePackage = "Base"
 
     // MARK: - Libraries
 
@@ -35,6 +36,7 @@ private extension String {
     // MARK: - Domain Frameworks/Kits
 
     static let featureFlagsKit = "FeatureFlagsKit"
+    static let cottonLogs = "CottonLogs"
 
     // MARK: - Base Frameworks/Kits
 
@@ -73,7 +75,8 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../Domain")
+        .package(path: "../Domain"),
+        .package(path: "../Base")
     ],
     targets: [
         .target(
@@ -91,7 +94,8 @@ let package = Package(
                 .product(name: .tabsLibrary, package: .domainPackage),
                 .product(name: .featureFlagsKit, package: .domainPackage),
                 .product(name: .featureFlagsLibrary, package: .domainPackage),
-                .product(name: .viewModelsLibrary, package: .domainPackage)
+                .product(name: .viewModelsLibrary, package: .domainPackage),
+                .product(name: .cottonLogs, package: .basePackage)
             ]
         ),
         .target(
@@ -111,7 +115,8 @@ let package = Package(
         .target(
             name: .cottonDesignKit,
             dependencies: [
-                .target(name: .viewsBaseLibrary)
+                .target(name: .viewsBaseLibrary),
+                .product(name: .cottonLogs, package: .basePackage)
             ]
         ),
         .target(

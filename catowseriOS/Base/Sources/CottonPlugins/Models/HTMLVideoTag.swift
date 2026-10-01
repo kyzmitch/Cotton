@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftSoup
+import CottonLogs
 
 public struct HTMLVideoTag {
     public let src: URL
@@ -33,7 +34,7 @@ public struct HTMLVideoTag {
         } else {
             let sources = try? videoElement.select("source")
             guard let sourceURL = try? sources?.first()?.attr("src") else {
-                print("Found video tag source subtag but without URL")
+                CottonLogger.plugins.warning("Found video tag source subtag but without URL")
                 return nil
             }
             videoUrl = sourceURL

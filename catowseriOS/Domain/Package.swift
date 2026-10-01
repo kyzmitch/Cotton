@@ -36,6 +36,7 @@ private extension String {
     static let cottonBase = "CottonBase"
     static let autoMockableKit = "AutoMockable"
     static let cottonPluginsLibrary = "CottonPlugins"
+    static let cottonLogs = "CottonLogs"
 
     // MARK: - 3rd party
 
@@ -128,11 +129,15 @@ let package = Package(
         ),
         .target(
             name: .genericServiceKit,
-            dependencies: []
+            dependencies: [
+                .product(name: .cottonLogs, package: .basePackage)
+            ]
         ),
         .target(
             name: .viewModelKit,
-            dependencies: []
+            dependencies: [
+                .product(name: .cottonLogs, package: .basePackage)
+            ]
         ),
         .target(
             name: .baseUseCaseKit,
@@ -143,6 +148,7 @@ let package = Package(
             dependencies: [
                 .target(name: .coreBrowserLibrary),
                 .target(name: .genericServiceKit),
+                .product(name: .cottonLogs, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework)
             ]
         ),
@@ -161,6 +167,7 @@ let package = Package(
                 .target(name: .cottonDependencyAssembly),
                 .target(name: .coreBrowserLibrary),
                 .product(name: .cottonNetworkingLibrary, package: .basePackage),
+                .product(name: .cottonLogs, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework),
                 .product(name: .cottonRestKit, package: .basePackage)
@@ -172,6 +179,7 @@ let package = Package(
                 .target(name: .genericServiceKit),
                 .target(name: .cottonDependencyAssembly),
                 .product(name: .cottonNetworkingLibrary, package: .basePackage),
+                .product(name: .cottonLogs, package: .basePackage),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .alamofireFramework, package: .alamofireFramework),
                 .product(name: .cottonRestKit, package: .basePackage),
@@ -188,6 +196,7 @@ let package = Package(
             dependencies: [
                 .product(name: .cottonBase, package: .basePackage),
                 .product(name: .autoMockableKit, package: .basePackage),
+                .product(name: .cottonLogs, package: .basePackage),
                 .product(name: .mockableFramework, package: .mockableFramework),
                 .product(name: .reactiveSwiftFramework, package: .reactiveSwiftFramework),
                 .product(name: .swXmlHashFramework, package: .swXmlHashFramework)
@@ -220,6 +229,7 @@ let package = Package(
                 .product(name: .cottonBase, package: .basePackage),
                 .product(name: .cottonPluginsLibrary, package: .basePackage),
                 .product(name: .cottonRestKit, package: .basePackage),
+                .product(name: .cottonLogs, package: .basePackage),
                 .target(name: .useCasesLibrary),
                 .target(name: .featureFlagsKit),
                 .target(name: .tabsLibrary),
@@ -271,6 +281,15 @@ let package = Package(
             ],
             swiftSettings: [
                 .define("MOCKING")
+            ]
+        ),
+        .testTarget(
+            name: "CottonTabsTests",
+            dependencies: [
+                .target(name: .tabsLibrary),
+                .target(name: .genericServiceKit),
+                .target(name: .coreBrowserLibrary),
+                .product(name: .autoMockableKit, package: .basePackage)
             ]
         ),
         .testTarget(
