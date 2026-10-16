@@ -65,6 +65,20 @@ export PATH="$PATH:/usr/local/Cellar/gradle@7/7.6.2/bin"
 
 Open `catowserAndroid` folder using Android Studio after that.
 
+## Development
+### OpenCode + GitHub MCP server
+[OpenCode](https://opencode.ai) is used as an AI coding agent, its config is in `opencode.jsonc` in the repo root. It has a preconfigured **local** GitHub MCP server (not the hosted one), so the agent can work with GitHub API (issues, pull requests, reviews) right from the session.
+
+- install OpenCode: `brew install sst/tap/opencode` (skip if already installed)
+- install the GitHub MCP server from Homebrew: `brew install github-mcp-server`
+- create a personal access token with access to this repo (fine-grained is fine) at https://github.com/settings/personal-access-tokens/new and make it visible for OpenCode, e.g. in `.zprofile`
+```
+export GITHUB_PERSONAL_ACCESS_TOKEN=github_pat_...
+```
+- run `source ~/.zprofile` and restart OpenCode, then check `opencode mcp list` shows the `github` server as connected
+
+Why local instead of the hosted `https://api.githubcopilot.com/mcp/`? The hosted variant is served by the Copilot infrastructure and can be unavailable or forbidden in some regions, while the local binary talks to `api.github.com` directly.
+
 Design documents
 -----------------
 Private repo https://github.com/kyzmitch/CatowserEvolution
